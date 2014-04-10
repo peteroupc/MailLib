@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectGuid>{49EE222D-6E5D-4677-9E4D-1286B30E8BAA}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MailLib</RootNamespace>
+    <AssemblyName>MailLib</AssemblyName>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile1</TargetFrameworkProfile>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Mail\Address.cs" />
+    <Compile Include="Mail\Base64Transform.cs" />
+    <Compile Include="Mail\BEncodingStringTransform.cs" />
+    <Compile Include="Mail\BinaryTransform.cs" />
+    <Compile Include="Mail\BoundaryCheckerTransform.cs" />
+    <Compile Include="Mail\Charsets.cs" />
+    <Compile Include="Mail\EightBitTransform.cs" />
+    <Compile Include="Mail\EncodedWordEncoder.cs" />
+    <Compile Include="Mail\Exception.cs" />
+    <Compile Include="Mail\HeaderFields.cs" />
+    <Compile Include="Mail\HeaderParser.cs" />
+    <Compile Include="Mail\HeaderParserUtility.cs" />
+    <Compile Include="Mail\ITokener.cs" />
+    <Compile Include="Mail\ITransform.cs" />
+    <Compile Include="Mail\LiberalSevenBitTransform.cs" />
+    <Compile Include="Mail\MediaType.cs" />
+    <Compile Include="Mail\MediaTypeBuilder.cs" />
+    <Compile Include="Mail\Message.cs" />
+    <Compile Include="Mail\NamedAddress.cs" />
+    <Compile Include="Mail\ParserUtility.cs" />
+    <Compile Include="Mail\PercentEncodingStringTransform.cs" />
+    <Compile Include="Mail\QEncodingStringTransform.cs" />
+    <Compile Include="Mail\QuotedPrintableTransform.cs" />
+    <Compile Include="Mail\SevenBitTransform.cs" />
+    <Compile Include="Mail\StreamWithUnget.cs" />
+    <Compile Include="Mail\Tokener.cs" />
+    <Compile Include="Mail\WordWrapEncoder.cs" />
+    <Compile Include="Mail\WrappedStream.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadOnlyMap.cs" />
+    <Compile Include="RedBlackTree.cs" />
+    <Compile Include="SortedMap.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Mail" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+<Import Project='$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets'/>
+</Project>
