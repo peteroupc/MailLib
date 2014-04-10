@@ -867,7 +867,7 @@ namespace PeterO.Mail
         }
         attribute = ParserUtility.ToLowerCaseAscii(attribute);
         if (this.parameters.ContainsKey(attribute)) {
-          //Console.WriteLine("Contains duplicate attribute " + attribute);
+          // Console.WriteLine("Contains duplicate attribute " + attribute);
           return false;
         }
         ++indexAfterTypeSubtype;
@@ -886,7 +886,7 @@ namespace PeterO.Mail
           }
           return true;
         }
-        builder.Remove(0,builder.Length);
+        builder.Remove(0, builder.Length);
         int qs;
         // If the attribute name ends with '*' the value may not be a quoted string
         if (attribute[attribute.Length - 1] != '*') {
@@ -902,7 +902,7 @@ namespace PeterO.Mail
             indexAfterTypeSubtype = qs;
             continue;
           }
-          builder.Remove(0,builder.Length);
+          builder.Remove(0, builder.Length);
         }
         // try getting the value unquoted
         // Note we don't use getAtom
@@ -948,7 +948,7 @@ namespace PeterO.Mail
       mt.parameters = new SortedMap<string, string>();
       if (!mt.ParseMediaType(str)) {
         #if DEBUG
-        //Console.WriteLine("Unparsable: " + str);
+        // Console.WriteLine("Unparsable: " + str);
         #endif
         return defaultValue;
       }

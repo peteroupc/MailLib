@@ -132,10 +132,10 @@ namespace PeterO.Mail
     /// begins with the delimiter, the result will start with an empty _string.
     /// If the delimiter is null or empty, exception. @param s a _string to
     /// split. @param delimiter a _string to signal where each substring
-    /// begins and ends. @return </summary>
-    /// <returns>An array containing strings that are split
-    /// by the delimiter. If s is null or empty, returns an array whose sole
-    /// element is the empty string.</returns>
+    /// begins and ends. @return.</summary>
+    /// <returns>An array containing strings that are split by the delimiter.
+    /// If s is null or empty, returns an array whose sole element is the empty
+    /// string.</returns>
     /// <param name='s'>A string object.</param>
     /// <param name='delimiter'>A string object. (2).</param>
     public static string[] SplitAt(string s, string delimiter) {
@@ -226,7 +226,7 @@ namespace PeterO.Mail
             return true;
           }
           // More complex cases
-          string[] splitString = SplitAt(str.Substring(startIndex, (endIndex)-startIndex),"-");
+          string[] splitString = SplitAt(str.Substring(startIndex, (endIndex)-startIndex), "-");
           if (splitString.Length == 0) {
             return false;
           }

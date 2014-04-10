@@ -60,8 +60,8 @@ namespace PeterO.Mail
     /// <param name='str'>A string object.</param>
     /// <returns>A Message object.</returns>
     public Message SetTextBody(string str) {
-      // TODO: 
-      //this.body = DataUtilities.GetUtf8Bytes(str, true);
+      // TODO:
+      // this.body = DataUtilities.GetUtf8Bytes(str, true);
       this.contentType = MediaType.Parse("text/plain; charset=utf-8");
       return this.SetHeader("content-type", "text/plain; charset=utf-8");
     }
@@ -367,7 +367,7 @@ namespace PeterO.Mail
         string value = this.headers[i + 1];
         if (name.Equals("from")) {
           if (HeaderParser.ParseHeaderFrom(value, 0, value.Length, null) == 0) {
-            //Console.WriteLine(this.GetHeader("date"));
+            // Console.WriteLine(this.GetHeader("date"));
             // throw new MessageDataException("Invalid From header: "+value);
           }
         }
@@ -585,12 +585,12 @@ namespace PeterO.Mail
         throw new ArgumentException("Header field name too long");
       }
       for (int i = 0; i < name.Length; ++i) {
-        if (name[i] <= 0x20 || name[i] == ':' || name[i]>= 0x7f) {
+        if (name[i] <= 0x20 || name[i] == ':' || name[i] >= 0x7f) {
           throw new ArgumentException("Header field name contains an invalid character");
         }
       }
       name = ParserUtility.ToLowerCaseAscii(name);
-      for (int i = 0; i<this.headers.Count; ++i) {
+      for (int i = 0; i < this.headers.Count; ++i) {
         if (this.headers[i].Equals(name)) {
           this.headers[i + 1] = value;
           return this;
@@ -751,7 +751,7 @@ namespace PeterO.Mail
         }
         // Get the next run of non-parentheses
         int parenEnd = index;
-        builder.Remove(0,builder.Length);
+        builder.Remove(0, builder.Length);
         while (index < endIndex) {
           if (str[index] == '(' || str[index] == ')') {
             break;
@@ -783,7 +783,7 @@ namespace PeterO.Mail
     }
 
     private bool StartsWithWhitespace(string str) {
-      return str.Length > 0 && (str[0]==' ' || str[0]==0x09 || str[0]=='\r');
+      return str.Length > 0 && (str[0] == ' ' || str[0]==0x09 || str[0]=='\r');
     }
 
     private int TransferEncodingToUse(bool isMultipartChild) {
@@ -933,7 +933,7 @@ namespace PeterO.Mail
       StringBuilder sb = new StringBuilder();
       StreamWithUnget ungetStream = new StreamWithUnget(stream);
       while (true) {
-        sb.Remove(0,sb.Length);
+        sb.Remove(0, sb.Length);
         bool first = true;
         bool endOfHeaders = false;
         bool wsp = false;
@@ -980,7 +980,7 @@ namespace PeterO.Mail
           throw new MessageDataException("Empty header field name");
         }
         string fieldName = sb.ToString();
-        sb.Remove(0,sb.Length);
+        sb.Remove(0, sb.Length);
         // Read the header field value
         while (true) {
           int c = ungetStream.ReadByte();
@@ -1279,7 +1279,7 @@ namespace PeterO.Mail
         this.ReadMultipartBody(stream);
       } else {
         if (this.contentType.TopLevelType.Equals("message")) {
-          //Console.WriteLine(this.contentType);
+          // Console.WriteLine(this.contentType);
         }
         this.ReadSimpleBody(stream);
       }

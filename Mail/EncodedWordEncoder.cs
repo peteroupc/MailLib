@@ -45,7 +45,7 @@ namespace PeterO.Mail
         }
         this.fullString.Append(this.currentWord);
         this.fullString.Append("?=");
-        this.currentWord.Remove(0,this.currentWord.Length);
+        this.currentWord.Remove(0, this.currentWord.Length);
         this.currentWord.Append("=?utf-8?q?");
         this.spaceCount = 1;
       }
@@ -70,7 +70,7 @@ namespace PeterO.Mail
           this.fullString.Append(suffix);
         }
         this.spaceCount = 1;
-        this.currentWord.Remove(0,this.currentWord.Length);
+        this.currentWord.Remove(0, this.currentWord.Length);
       }
       return this;
     }

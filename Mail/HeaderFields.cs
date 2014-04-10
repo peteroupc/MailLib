@@ -173,7 +173,7 @@ namespace PeterO.Mail
         if (endIndex != str.Length) {
           // The header field is syntactically invalid,
           // so don't decode any encoded words
-          //Console.WriteLine("Invalid syntax: " + this.GetType().Name + ", " + str);
+          // Console.WriteLine("Invalid syntax: " + this.GetType().Name + ", " + str);
           return str;
         }
         int lastIndex = 0;
@@ -265,7 +265,7 @@ namespace PeterO.Mail
         if (endIndex != str.Length) {
           // The header field is syntactically invalid,
           // so don't decode any encoded words
-          //Console.WriteLine("Invalid syntax: " + this.GetType().Name + ", " + str);
+          // Console.WriteLine("Invalid syntax: " + this.GetType().Name + ", " + str);
           return str;
         }
         int lastIndex = 0;
