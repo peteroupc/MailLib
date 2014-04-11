@@ -23,8 +23,9 @@ namespace PeterO.Mail
     internal const int TokenQuotedString = 7;
     internal const int TokenLocalPart = 8;
     internal const int TokenDomain = 9;
+    internal const int TokenAtom = 10;
 
-    private static string ParseDotAtomAfterCFWS(string str, int index, int endIndex) {
+    public static string ParseDotAtomAfterCFWS(string str, int index, int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a dot-atom
       StringBuilder builder = new StringBuilder();

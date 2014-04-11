@@ -12,21 +12,13 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-  internal interface IHeaderFieldParser {
-    bool IsStructured();
-
-    string DowngradeComments(string str);
-
-    string ReplaceEncodedWords(string str);
-  }
-
   internal class HeaderFields
   {
     private class UnstructuredHeaderField : IHeaderFieldParser {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object. (2).</param>
     /// <returns>A string object.</returns>
-      public string DowngradeComments(string str) {
+      public string DowngradeFieldValue(string str) {
         return str;
       }
 
@@ -57,7 +49,7 @@ namespace PeterO.Mail
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object. (2).</param>
     /// <returns>A string object.</returns>
-      public string DowngradeComments(string str) {
+      public string DowngradeFieldValue(string str) {
         return str;
       }
 
@@ -72,7 +64,7 @@ namespace PeterO.Mail
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object. (2).</param>
     /// <returns>A string object.</returns>
-      public string DowngradeComments(string str) {
+      public string DowngradeFieldValue(string str) {
         if (str.IndexOf('(') < 0) {
           // No comments in the header field value, a common case
           return str;
@@ -158,39 +150,169 @@ namespace PeterO.Mail
     internal abstract class EncodedWordsInSyntax : IHeaderFieldParser {
       protected abstract int Parse(string str, int index, int endIndex, ITokener tokener);
 
-      public string DowngradeComments(string str) {
+      private static string ReplacePhraseWithEncodedWords(string str, int index, int endIndex, IList<int[]> tokens) {
+        // Assumes the value matches the production "phrase"
+        if (!Message.HasTextToEscape(str, index, endIndex)) {
+          // No need to use encoded words
+          return str.Substring(index, endIndex - index);
+        }
+        // TODO: Extract all comments, not just at the start
+        // (if the other comments are placed at the end,
+        // the method ReplaceWordWithEncodedWords won't
+        // be needed anymore)
+        int startIndex = index;
+        int startIndexAfterCFWS = HeaderParser.ParseCFWS(str, index, endIndex, null);
+        string phrase = HeaderParserUtility.ParsePhrase(str, startIndexAfterCFWS, endIndex, tokens);
+        StringBuilder builder = new StringBuilder();
+        if (startIndexAfterCFWS != startIndex) {
+          // Copy CFWS
+          builder.Append(str.Substring(index, startIndexAfterCFWS - index));
+          index = startIndexAfterCFWS;
+          if (!PrecededByStartOrLinearWhitespace(str, index)) {
+            builder.Append(' ');
+          }
+        }
+        // Convert the parsed string to encoded words
+        EncodedWordEncoder encoder = new EncodedWordEncoder(String.Empty);
+        encoder.AddString(phrase);
+        encoder.FinalizeEncoding();
+        if (!PrecededByStartOrLinearWhitespace(str, index)) {
+          builder.Append(' ');
+        }
+        builder.Append(encoder.ToString());
+        if (!FollowedByEndOrLinearWhitespace(str, endIndex, str.Length)) {
+          builder.Append(' ');
+        }
+        return builder.ToString();
+      }
+
+      private static string ReplaceWordWithEncodedWords(string str, int index, int endIndex) {
+        // Assumes the value matches the production "word"
+        int startIndex = index;
+        int startIndexAfterCFWS = HeaderParser.ParseCFWS(str, index, endIndex, null);
+        StringBuilder builder = new StringBuilder();
+        if (startIndexAfterCFWS != startIndex) {
+          // Copy CFWS
+          builder.Append(str.Substring(index, startIndexAfterCFWS - index));
+          index = startIndexAfterCFWS;
+        }
+        if (index < endIndex && str[index] == '"') {
+          // It's a quoted string
+          StringBuilder builder2 = new StringBuilder();
+          int index2 = MediaType.skipQuotedString(str, index, endIndex, builder2);
+          // index2 is now just after the end quote
+          if (!Message.HasTextToEscape(str, index, index2)) {
+            // No need to use encoded words
+            return str.Substring(startIndex, endIndex - startIndex);
+          }
+          // Convert the parsed string to encoded wordss
+          EncodedWordEncoder encoder = new EncodedWordEncoder(String.Empty);
+          encoder.AddString(builder2.ToString());
+          encoder.FinalizeEncoding();
+          if (!PrecededByStartOrLinearWhitespace(str, index)) {
+            builder.Append(' ');
+          }
+          builder.Append(encoder.ToString());
+          if (!FollowedByEndOrLinearWhitespace(str, index2, str.Length)) {
+            builder.Append(' ');
+          }
+          builder.Append(HeaderParserUtility.ParseDotAtomAfterCFWS(str, index2, endIndex));
+          return builder.ToString();
+        } else {
+          // It's an atom
+          int index2 = HeaderParser.ParsePhraseAtom(str, index, endIndex, null);
+          if (!Message.HasTextToEscape(str, index, index2)) {
+            // No need to use encoded words
+            return str.Substring(startIndex, endIndex - startIndex);
+          }
+          // Convert the atom to encoded words
+          EncodedWordEncoder encoder = new EncodedWordEncoder(String.Empty);
+          encoder.AddString(str, index, index2 - index);
+          encoder.FinalizeEncoding();
+          if (!PrecededByStartOrLinearWhitespace(str, index)) {
+            builder.Append(' ');
+          }
+          builder.Append(encoder.ToString());
+          if (!FollowedByEndOrLinearWhitespace(str, index2, str.Length)) {
+            builder.Append(' ');
+          }
+          builder.Append(HeaderParserUtility.ParseDotAtomAfterCFWS(str, index2, endIndex));
+          return builder.ToString();
+        }
+      }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object. (2).</param>
+    /// <returns>A string object.</returns>
+public string DowngradeFieldValue(string str) {
         if (str.IndexOf('(') < 0) {
           // No comments in the header field value, a common case
           return str;
         }
-        if (!Message.HasTextToEscape(str)) {
-          return str;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        Tokener tokener = new Tokener();
-        int endIndex = this.Parse(str, 0, str.Length, tokener);
-        if (endIndex != str.Length) {
-          // The header field is syntactically invalid,
-          // so don't decode any encoded words
-          // Console.WriteLine("Invalid syntax: " + this.GetType().Name + ", " + str);
-          return str;
-        }
-        int lastIndex = 0;
-        // Get each relevant token sorted by starting index
-        foreach (int[] token in tokener.GetTokens()) {
-          if (token[0] == 1 && token[1] >= lastIndex) {
-            // This is a comment token
-            int startIndex = token[1];
-            endIndex = token[2];
-            string newComment = Message.ConvertCommentsToEncodedWords(str, startIndex, endIndex);
-            sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
-            sb.Append(newComment);
-            lastIndex = endIndex;
+        for (int phase = 0; phase < 5; ++phase) {
+          if (!Message.HasTextToEscape(str)) {
+            return str;
           }
+          StringBuilder sb = new StringBuilder();
+          Tokener tokener = new Tokener();
+          int endIndex = this.Parse(str, 0, str.Length, tokener);
+          if (endIndex != str.Length) {
+            // The header field is syntactically invalid,
+            // so don't decode any encoded words
+            // Console.WriteLine("Invalid syntax: " + this.GetType().Name + ", " + str);
+            return str;
+          }
+          int lastIndex = 0;
+          // Get each relevant token sorted by starting index
+          IList<int[]> tokens = tokener.GetTokens();
+          foreach (int[] token in tokens) {
+            if (token[1] < lastIndex) {
+              continue;
+            }
+            if (phase == -1) {  // ID-Left and ID-right
+              // TODO: Don't downgrade if extended characters appear
+              // in ID-Left or ID-right (doesn't apply to the Received header
+              // field)
+            }
+            if (phase == 0) {  // Comment downgrading
+              if (token[0] == HeaderParserUtility.TokenComment) {
+                int startIndex = token[1];
+                endIndex = token[2];
+                string newComment = Message.ConvertCommentsToEncodedWords(str, startIndex, endIndex);
+                sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
+                sb.Append(newComment);
+                lastIndex = endIndex;
+              }
+            } else if (phase == 1) {  // Word downgrading
+              if (token[0] == HeaderParserUtility.TokenPhrase) {
+                int startIndex = token[1];
+                endIndex = token[2];
+                string newComment = ReplacePhraseWithEncodedWords(str, startIndex, endIndex, tokens);
+                sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
+                sb.Append(newComment);
+                lastIndex = endIndex;
+              }
+              if (token[0] == HeaderParserUtility.TokenAtom ||
+                  token[0] == HeaderParserUtility.TokenQuotedString) {
+                int startIndex = token[1];
+                endIndex = token[2];
+                string newComment = ReplacePhraseWithEncodedWords(str, startIndex, endIndex, tokens);
+                sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
+                sb.Append(newComment);
+                lastIndex = endIndex;
+              }
+            } else if (phase == 2) {  // Group downgrading
+              // TODO: Group downgrading
+            } else if (phase == 3) {  // Mailbox downgrading
+              // TODO: Mailbox downgrading
+            } else if (phase == 4) {  // type addr downgrading
+              // TODO: check RFC 6533
+            }
+          }
+          sb.Append(str.Substring(lastIndex, str.Length - lastIndex));
+          str = sb.ToString();
         }
-        sb.Append(str.Substring(lastIndex, str.Length - lastIndex));
-        return sb.ToString();
+        return str;
       }
 
       private static bool FollowedByEndOrLinearWhitespace(string str, int index, int endIndex) {

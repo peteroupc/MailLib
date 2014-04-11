@@ -13,13 +13,13 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-    /// <summary>Represents an email message. <para><b>Thread safety:</b>
-    /// This class is mutable; its properties can be changed. None of its methods
-    /// are designed to be thread safe. Therefore, access to objects from
-    /// this class must be synchronized if multiple threads can access them
-    /// at the same time.</para>
-    /// </summary>
-  internal sealed class Message {
+  /// <summary>Represents an email message. <para><b>Thread safety:</b>
+  /// This class is mutable; its properties can be changed. None of its methods
+  /// are designed to be thread safe. Therefore, access to objects from
+  /// this class must be synchronized if multiple threads can access them
+  /// at the same time.</para>
+  /// </summary>
+  public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
     private const int EncodingEightBit = 3;
@@ -60,7 +60,7 @@ namespace PeterO.Mail
     /// <param name='str'>A string object.</param>
     /// <returns>A Message object.</returns>
     public Message SetTextBody(string str) {
-      // TODO:
+      // TODO: Add the GetUtf8Bytes method
       // this.body = DataUtilities.GetUtf8Bytes(str, true);
       this.contentType = MediaType.Parse("text/plain; charset=utf-8");
       return this.SetHeader("content-type", "text/plain; charset=utf-8");
@@ -146,6 +146,19 @@ namespace PeterO.Mail
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();
+    }
+
+    /// <summary>Returns the mail message contained in this message's body.</summary>
+    /// <returns>A message object if this object's content type is "message/rfc822",
+    /// or null otherwise.</returns>
+    private Message GetBodyMessage() {
+      if (this.ContentType.TopLevelType.Equals("message") &&
+          this.ContentType.SubType.Equals("rfc822")) {
+        using (MemoryStream ms = new MemoryStream(this.body)) {
+          return new Message(ms);
+        }
+      }
+      return null;
     }
 
     internal static string ReplaceEncodedWords(string str) {
@@ -398,11 +411,20 @@ namespace PeterO.Mail
         if (name.Equals("mime-version")) {
           mime = true;
         }
+        if (value.IndexOf("=?") >= 0) {
+          if (!HeaderFields.GetParser(name).IsStructured()) {
+            // Replace encoded words where they appear in unstructured
+            // header fields
+            // TODO: Also replace encoded words in structured header
+            // fields (at least in phrases and maybe also comments)
+            value = ReplaceEncodedWords(value);
+            this.headers[i + 1] = value;
+          }
+        }
       }
       bool haveFrom = false;
       bool haveSubject = false;
       bool haveTo = false;
-      // TODO: Treat message/rfc822 specially
       this.contentType = digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
       for (int i = 0; i < this.headers.Count; i += 2) {
         string name = this.headers[i];
@@ -526,12 +548,34 @@ namespace PeterO.Mail
       return true;
     }
 
+    private static string Capitalize(string s) {
+      StringBuilder builder = new StringBuilder();
+      bool afterHyphen = true;
+      for (int i = 0; i < s.Length; ++i) {
+        if (afterHyphen && s[i] >= 'a' && s[i] <= 'z') {
+          builder.Append((char)(s[i] - 0x20));
+        } else {
+          builder.Append(s[i]);
+        }
+        if (s[i] == '-') {
+          afterHyphen = true;
+        } else {
+          afterHyphen = false;
+        }
+      }
+      return builder.ToString();
+    }
+
+    internal static bool HasTextToEscape(string s) {
+      return HasTextToEscape(s, 0, s.Length);
+    }
+
     // Has non-ASCII characters, "=?", CTLs other than tab,
     // or a word longer than 75 characters
-    internal static bool HasTextToEscape(string s) {
-      int len = s.Length;
+    internal static bool HasTextToEscape(string s, int index, int endIndex) {
+      int len = endIndex;
       int chunkLength = 0;
-      for (int i = 0; i < len; ++i) {
+      for (int i = index; i < endIndex; ++i) {
         char c = s[i];
         if (c == '=' && i + 1 < len && c == '?') {
           // "=?" (start of an encoded word)
@@ -570,9 +614,117 @@ namespace PeterO.Mail
       return false;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='name'>A string object.</param>
-    /// <param name='value'>A string object. (2).</param>
+    private static int ParseUnstructuredText(string str, int index, int endIndex) {
+      int indexStart = index;
+      int indexTemp = index;
+      do {
+        while (true) {
+          int indexTemp2 = index;
+          do {
+            int indexStart2 = index;
+            do {
+              int indexTemp3 = index;
+              do {
+                int indexStart3 = index;
+                do {
+                  int indexTemp4;
+                  indexTemp4 = index;
+                  do {
+                    int indexStart4 = index;
+                    while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                      ++index;
+                    }
+                    if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
+                      index += 2;
+                    } else {
+                      index = indexStart4; break;
+                    }
+                    indexTemp4 = index;
+                    index = indexStart4;
+                  } while (false);
+                  if (indexTemp4 != index) {
+                    index = indexTemp4;
+                  } else { break;
+                  }
+                } while (false);
+                if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                  ++index;
+                  while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                    ++index;
+                  }
+                } else {
+                  index = indexStart3; break;
+                }
+                indexTemp3 = index;
+                index = indexStart3;
+              } while (false);
+              if (indexTemp3 != index) {
+                index = indexTemp3;
+              } else { break;
+              }
+            } while (false);
+            do {
+              int indexTemp3 = index;
+              do {
+                int indexStart3 = index;
+                if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                  ++indexTemp3; break;
+                }
+                int indexTemp4;
+                indexTemp4 = index;
+                do {
+                  int indexStart4 = index;
+                  if (index < endIndex && (str[index] >= 55296 && str[index] <= 56319)) {
+                    ++index;
+                  } else {
+                    break;
+                  }
+                  if (index < endIndex && (str[index] >= 56320 && str[index] <= 57343)) {
+                    ++index;
+                  } else {
+                    index = indexStart4; break;
+                  }
+                  indexTemp4 = index;
+                  index = indexStart4;
+                } while (false);
+                if (indexTemp4 != index) {
+                  indexTemp3 = indexTemp4; break;
+                }
+                if (index < endIndex && (str[index] >= 33 && str[index] <= 126)) {
+                  ++indexTemp3; break;
+                }
+              } while (false);
+              if (indexTemp3 != index) {
+                index = indexTemp3;
+              } else {
+                index = indexStart2; break;
+              }
+            } while (false);
+            if (index == indexStart2) {
+              break;
+            }
+            indexTemp2 = index;
+            index = indexStart2;
+          } while (false);
+          if (indexTemp2 != index) {
+            index = indexTemp2;
+          } else {
+            break;
+          }
+        }
+        while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+          ++index;
+        }
+        indexTemp = index;
+      } while (false);
+      return indexTemp;
+    }
+
+    /// <summary>Sets the value of this message's header field. If a header
+    /// field with the same name exists, its value is replaced.</summary>
+    /// <param name='name'>The name of a header field, such as &quot;from&quot;
+    /// or &quot;subject&quot;.</param>
+    /// <param name='value'>A string object.</param>
     /// <returns>A Message object.</returns>
     public Message SetHeader(string name, string value) {
       if (name == null) {
@@ -590,6 +742,13 @@ namespace PeterO.Mail
         }
       }
       name = ParserUtility.ToLowerCaseAscii(name);
+      // Check characters in structured header fields
+      if (HeaderFields.GetParser(name).IsStructured()) {
+        if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
+          throw new ArgumentException("Header field value contains invalid text");
+        }
+      }
+      // Add the header field
       for (int i = 0; i < this.headers.Count; ++i) {
         if (this.headers[i].Equals(name)) {
           this.headers[i + 1] = value;
@@ -783,7 +942,7 @@ namespace PeterO.Mail
     }
 
     private bool StartsWithWhitespace(string str) {
-      return str.Length > 0 && (str[0] == ' ' || str[0]==0x09 || str[0]=='\r');
+      return str.Length > 0 && (str[0] == ' ' || str[0] == 0x09 || str[0]=='\r');
     }
 
     private int TransferEncodingToUse(bool isMultipartChild) {
@@ -849,11 +1008,11 @@ namespace PeterO.Mail
         if (!parser.IsStructured()) {
           if (CanOutputRaw(name + ":" + value)) {
             // TODO: Try to preserve header field name (before the colon)
-            sb.Append(name);
+            sb.Append(Capitalize(name));
             sb.Append(':');
             sb.Append(value);
           } else {
-            var encoder = new WordWrapEncoder(name + ":");
+            var encoder = new WordWrapEncoder(Capitalize(name) + ":");
             if (HasTextToEscape(value)) {
               // Convert the entire header field value to encoded
               // words
@@ -874,19 +1033,20 @@ namespace PeterO.Mail
         } else {
           if (CanOutputRaw(name + ":" + value)) {
             // TODO: Try to preserve header field name (before the colon)
-            sb.Append(name);
+            sb.Append(Capitalize(name));
             sb.Append(':');
             sb.Append(value);
           } else if (HasTextToEscape(value)) {
-            // TODO: Not perfect yet
-            sb.Append(name);
-            sb.Append(':');
-            if (!this.StartsWithWhitespace(value)) {
- sb.Append(' ');
-}
-            sb.Append(value);
+            string downgraded = HeaderFields.GetParser(name).DowngradeFieldValue(value);
+            // TODO: If the header field is still not downgraded,
+            // write a "Downgraded-" header field instead (applies to
+            // Message-ID, Resent-Message-ID, In-Reply-To, References,
+            // Original-Recipient, and Final-Recipient)
+            var encoder = new WordWrapEncoder(Capitalize(name) + ":");
+            encoder.AddString(value);
+            sb.Append(encoder.ToString());
           } else {
-            var encoder = new WordWrapEncoder(name + ":");
+            var encoder = new WordWrapEncoder(Capitalize(name) + ":");
             encoder.AddString(value);
             sb.Append(encoder.ToString());
           }
@@ -1066,8 +1226,8 @@ namespace PeterO.Mail
     private class MessageStackEntry {
       private Message message;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public Message Message {
         get {
           return this.message;
@@ -1076,8 +1236,8 @@ namespace PeterO.Mail
 
       private string boundary;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public string Boundary {
         get {
           return this.boundary;
@@ -1135,7 +1295,7 @@ namespace PeterO.Mail
               Math.Min(buffer.Length, 80),
               true);
             Console.WriteLine(ss);
-            */
+             */
             throw;
           }
           if (ch < 0) {
@@ -1237,7 +1397,6 @@ namespace PeterO.Mail
       byte[] buffer = new byte[8192];
       int bufferCount = 0;
       int bufferLength = buffer.Length;
-      // TODO: Support message/rfc822
       using (MemoryStream ms = new MemoryStream()) {
         while (true) {
           int ch = 0;
@@ -1253,7 +1412,7 @@ namespace PeterO.Mail
               Math.Min(buffer.Length, 80),
               true);
             Console.WriteLine(ss);
-            */
+             */
             throw;
           }
           if (ch < 0) {

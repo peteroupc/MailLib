@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace PeterO.Mail
 {
-  internal class NamedAddress {
+  public class NamedAddress {
     private string name;
 
     /// <summary>Gets a value not documented yet.</summary>
@@ -66,7 +66,6 @@ namespace PeterO.Mail
       }
       this.address = new Address(localPart, domain);
       if (String.IsNullOrEmpty(displayName)) {
-        // TODO: Implement Address.ToString()
         displayName = this.address.ToString();
       }
       this.name = displayName;

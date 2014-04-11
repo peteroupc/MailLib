@@ -32,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DataUtilities.cs" />
     <Compile Include="Mail\Address.cs" />
     <Compile Include="Mail\Base64Transform.cs" />
     <Compile Include="Mail\BEncodingStringTransform.cs" />
@@ -44,6 +45,7 @@
     <Compile Include="Mail\HeaderFields.cs" />
     <Compile Include="Mail\HeaderParser.cs" />
     <Compile Include="Mail\HeaderParserUtility.cs" />
+    <Compile Include="Mail\IHeaderFieldParser.cs" />
     <Compile Include="Mail\ITokener.cs" />
     <Compile Include="Mail\ITransform.cs" />
     <Compile Include="Mail\LiberalSevenBitTransform.cs" />
@@ -69,5 +71,5 @@
     <Folder Include="Mail" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-<Import Project='$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets'/>
+  <Import Project="$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets" />
 </Project>

@@ -222,8 +222,12 @@ namespace PeterO.Mail {
         index = ParseCFWS(str, index, endIndex, tokener);
         indexTemp = index;
       } while (false);
-      if (tokener != null && indexTemp == indexStart) {
-        tokener.RestoreState(state);
+      if (tokener != null) {
+        if (indexTemp == indexStart) {
+          tokener.RestoreState(state);
+        } else {
+          tokener.Commit(10, indexStart, indexTemp);
+        }
       }
       return indexTemp;
     }
@@ -251,7 +255,7 @@ namespace PeterO.Mail {
     }
 
     public static int ParseAuthservId(string str, int index, int endIndex, ITokener tokener) {
-      return ParseX400Value(str, index, endIndex, tokener);
+      return ParseValue(str, index, endIndex, tokener);
     }
 
     public static int ParseCFWS(string str, int index, int endIndex, ITokener tokener) {
@@ -4159,9 +4163,7 @@ namespace PeterO.Mail {
           int indexTemp2 = index;
           do {
             int indexStart2 = index;
-            int indexTemp3 = index;
-            // Unlimited production in choice
-            index = indexStart2;
+            int indexTemp3;
             int state3 = (tokener != null) ? tokener.GetState() : 0;
             indexTemp3 = index;
             do {
@@ -4199,6 +4201,17 @@ namespace PeterO.Mail {
             }
             if (tokener != null) {
               tokener.RestoreState(state3);
+            }
+            indexTemp3 = ParseQuotedString(str, index, endIndex, tokener);
+            if (indexTemp3 != index) {
+              indexTemp2 = indexTemp3; break;
+            }
+            if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
+              ++indexTemp2;
+              while (indexTemp2 < endIndex && ((str[indexTemp2] == 33) || (str[indexTemp2] >= 35 && str[indexTemp2] <= 36) || (str[indexTemp2] >= 45 && str[indexTemp2] <= 46) || (str[indexTemp2] >= 65 && str[indexTemp2] <= 90) || (str[indexTemp2] >= 48 && str[indexTemp2] <= 57) || (str[indexTemp2] >= 94 && str[indexTemp2] <= 126) || (str[indexTemp2] >= 42 && str[indexTemp2] <= 43) || (str[indexTemp2] >= 38 && str[indexTemp2] <= 39) || (str[indexTemp2] == 63))) {
+                ++indexTemp2;
+              }
+              break;
             }
           } while (false);
           if (indexTemp2 != index) {
@@ -4423,13 +4436,11 @@ namespace PeterO.Mail {
           index = indexStart; break;
         }
         index = ParseCFWS(str, index, endIndex, tokener);
-        while (true) {
-          int indexTemp2 = ParseStdPrintablestring(str, index, endIndex, tokener);
-          if (indexTemp2 != index) {
-            index = indexTemp2;
-          } else {
-            break;
-          }
+        indexTemp = ParseValue(str, index, endIndex, tokener);
+        if (indexTemp == index) {
+          indexTemp = indexStart; index = indexStart; break;
+        } else {
+          index = indexTemp;
         }
         indexTemp = index;
       } while (false);
@@ -4690,83 +4701,6 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseStdChar(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
-      int indexTemp = index;
-      do {
-        if (index < endIndex && (str[index] >= 65 && str[index] <= 90)) {
-          ++indexTemp; break;
-        }
-        if (index < endIndex && (str[index] >= 40 && str[index] <= 41)) {
-          ++indexTemp; break;
-        }
-        if (index < endIndex && ((str[index] == 32) || (str[index] == 39) || (str[index] >= 97 && str[index] <= 123) || (str[index] >= 48 && str[index] <= 58) || (str[index] == 125) || (str[index] == 63) || (str[index] >= 42 && str[index] <= 46))) {
-          ++indexTemp; break;
-        }
-      } while (false);
-      return indexTemp;
-    }
-
-    public static int ParseStdPair(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
-      int state = (tokener != null) ? tokener.GetState() : 0;
-      int indexTemp = index;
-      do {
-        if (index < endIndex && (str[index] == 36)) {
-          ++index;
-        } else {
-          break;
-        }
-        indexTemp = ParsePsChar(str, index, endIndex, tokener);
-        if (indexTemp == index) {
-          indexTemp = indexStart; index = indexStart; break;
-        } else {
-          index = indexTemp;
-        }
-        indexTemp = index;
-      } while (false);
-      if (tokener != null && indexTemp == indexStart) {
-        tokener.RestoreState(state);
-      }
-      return indexTemp;
-    }
-
-    public static int ParseStdPrintablestring(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
-      int state = (tokener != null) ? tokener.GetState() : 0;
-      int indexTemp = index;
-      do {
-        while (true) {
-          int indexTemp2;
-          int state2 = (tokener != null) ? tokener.GetState() : 0;
-          indexTemp2 = index;
-          do {
-            int indexStart2 = index;
-            int indexTemp3 = ParseStdChar(str, index, endIndex, tokener);
-            if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
-            }
-            indexTemp3 = ParseStdPair(str, index, endIndex, tokener);
-            if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
-            }
-          } while (false);
-          if (indexTemp2 != index) {
-            index = indexTemp2;
-          } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
-          } else {
-            break;
-          }
-        }
-        indexTemp = index;
-      } while (false);
-      if (tokener != null && indexTemp == indexStart) {
-        tokener.RestoreState(state);
-      }
-      return indexTemp;
-    }
-
     public static int ParseText(string str, int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int indexTemp = index;
@@ -4895,6 +4829,112 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
+    public static int ParseUnstructuredStrictNoCfws(string str, int index, int endIndex, ITokener tokener) {
+      int indexStart = index;
+      int indexTemp = index;
+      do {
+        while (true) {
+          int indexTemp2 = index;
+          do {
+            int indexStart2 = index;
+            do {
+              int indexTemp3 = index;
+              do {
+                int indexStart3 = index;
+                do {
+                  int indexTemp4;
+                  indexTemp4 = index;
+                  do {
+                    int indexStart4 = index;
+                    while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                      ++index;
+                    }
+                    if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
+                      index += 2;
+                    } else {
+                      index = indexStart4; break;
+                    }
+                    indexTemp4 = index;
+                    index = indexStart4;
+                  } while (false);
+                  if (indexTemp4 != index) {
+                    index = indexTemp4;
+                  } else { break;
+                  }
+                } while (false);
+                if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                  ++index;
+                  while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                    ++index;
+                  }
+                } else {
+                  index = indexStart3; break;
+                }
+                indexTemp3 = index;
+                index = indexStart3;
+              } while (false);
+              if (indexTemp3 != index) {
+                index = indexTemp3;
+              } else { break;
+              }
+            } while (false);
+            do {
+              int indexTemp3 = index;
+              do {
+                int indexStart3 = index;
+                if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                  ++indexTemp3; break;
+                }
+                int indexTemp4;
+                indexTemp4 = index;
+                do {
+                  int indexStart4 = index;
+                  if (index < endIndex && (str[index] >= 55296 && str[index] <= 56319)) {
+                    ++index;
+                  } else {
+                    break;
+                  }
+                  if (index < endIndex && (str[index] >= 56320 && str[index] <= 57343)) {
+                    ++index;
+                  } else {
+                    index = indexStart4; break;
+                  }
+                  indexTemp4 = index;
+                  index = indexStart4;
+                } while (false);
+                if (indexTemp4 != index) {
+                  indexTemp3 = indexTemp4; break;
+                }
+                if (index < endIndex && (str[index] >= 33 && str[index] <= 126)) {
+                  ++indexTemp3; break;
+                }
+              } while (false);
+              if (indexTemp3 != index) {
+                index = indexTemp3;
+              } else {
+                index = indexStart2; break;
+              }
+            } while (false);
+            if (index == indexStart2) {
+              break;
+            }
+            indexTemp2 = index;
+            index = indexStart2;
+          } while (false);
+          if (indexTemp2 != index) {
+            index = indexTemp2;
+          } else {
+            break;
+          }
+        }
+        while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+          ++index;
+        }
+        indexTemp = index;
+      } while (false);
+      return indexTemp;
+    }
+
     public static int ParseValue(string str, int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
@@ -4936,10 +4976,6 @@ namespace PeterO.Mail {
         tokener.RestoreState(state);
       }
       return indexTemp;
-    }
-
-    public static int ParseX400Value(string str, int index, int endIndex, ITokener tokener) {
-      return ParseStdPrintablestring(str, index, endIndex, tokener);
     }
 
     public static int ParseYear(string str, int index, int endIndex, ITokener tokener) {

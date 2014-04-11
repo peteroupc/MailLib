@@ -152,6 +152,7 @@ namespace PeterO.Mail
         this.AppendChar('_');
       } else if (ch < 0x80 && ch > 0x20 && ch != (char)'"' && ch != (char)',' &&
                  "?()<>[]:;@\\.=_".IndexOf((char)ch) < 0) {
+        // A visible ASCII character other than specials, quote, or ? , ()
         this.AppendChar((char)ch);
       } else if (ch < 0x80) {
         this.PrepareToAppend(3);

@@ -127,17 +127,17 @@ namespace PeterO.Mail
       return index;
     }
 
-    /// <summary>* Splits a _string by a delimiter. If the _string ends with
-    /// the delimiter, the result will end with an empty _string. If the _string
-    /// begins with the delimiter, the result will start with an empty _string.
-    /// If the delimiter is null or empty, exception. @param s a _string to
-    /// split. @param delimiter a _string to signal where each substring
-    /// begins and ends. @return.</summary>
+    /// <summary>Splits a string by a delimiter. If the string ends with
+    /// the delimiter, the result will end with an empty string. If the string
+    /// begins with the delimiter, the result will start with an empty string.
+    /// If the delimiter is null or empty, exception.</summary>
     /// <returns>An array containing strings that are split by the delimiter.
     /// If s is null or empty, returns an array whose sole element is the empty
     /// string.</returns>
-    /// <param name='s'>A string object.</param>
-    /// <param name='delimiter'>A string object. (2).</param>
+    /// <param name='s'>a string to
+    /// split.</param>
+    /// <param name='delimiter'>a string to signal where each substring
+    /// begins and ends.</param>
     public static string[] SplitAt(string s, string delimiter) {
       if (delimiter == null) {
         throw new ArgumentNullException("delimiter");
@@ -156,7 +156,7 @@ namespace PeterO.Mail
         int index2 = s.IndexOf(delimiter, index, StringComparison.Ordinal);
         if (index2 < 0) {
           if (first) {
-            return new string[] { s};
+            return new string[] { s };
           }
           strings.Add(s.Substring(index));
           break;
