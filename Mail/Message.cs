@@ -13,12 +13,12 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-  /// <summary>Represents an email message. <para><b>Thread safety:</b>
-  /// This class is mutable; its properties can be changed. None of its methods
-  /// are designed to be thread safe. Therefore, access to objects from
-  /// this class must be synchronized if multiple threads can access them
-  /// at the same time.</para>
-  /// </summary>
+    /// <summary>Represents an email message. <para><b>Thread safety:</b>
+    /// This class is mutable; its properties can be changed. None of its methods
+    /// are designed to be thread safe. Therefore, access to objects from
+    /// this class must be synchronized if multiple threads can access them
+    /// at the same time.</para>
+    /// </summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -60,10 +60,44 @@ namespace PeterO.Mail
     /// <param name='str'>A string object.</param>
     /// <returns>A Message object.</returns>
     public Message SetTextBody(string str) {
-      // TODO: Add the GetUtf8Bytes method
-      // this.body = DataUtilities.GetUtf8Bytes(str, true);
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      this.body = DataUtilities.GetUtf8Bytes(str, true);
       this.contentType = MediaType.Parse("text/plain; charset=utf-8");
-      return this.SetHeader("content-type", "text/plain; charset=utf-8");
+      this.SetHeader("content-transfer-encoding", "quoted-printable");
+      return this;
+    }
+
+    private Message SetHtmlBody(string str) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      this.body = DataUtilities.GetUtf8Bytes(str, true);
+      this.contentType = MediaType.Parse("text/html; charset=utf-8");
+      this.SetHeader("content-transfer-encoding", "quoted-printable");
+      return this;
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='text'>A string object.</param>
+    /// <param name='html'>A string object. (2).</param>
+    /// <returns>A Message object.</returns>
+    public Message SetTextAndHtml(string text, string html) {
+      if (text == null) {
+        throw new ArgumentNullException("text");
+      }
+      if (html == null) {
+        throw new ArgumentNullException("html");
+      }
+      Message textMessage = new Message().SetTextBody(text);
+      Message htmlMessage = new Message().SetTextBody(html);
+      this.contentType =MediaType.Parse("multipart/alternative; boundary=\"=_boundary\"");
+      this.SetHeader("content-transfer-encoding", "7bit");
+      this.Parts.Clear();
+      this.Parts.Add(textMessage);
+      this.Parts.Add(htmlMessage);
+      return this;
     }
 
     /// <summary>Gets a value not documented yet.</summary>
@@ -134,6 +168,14 @@ namespace PeterO.Mail
       }
     }
 
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
+    public string Subject {
+      get {
+        return this.GetHeader("subject");
+      }
+    }
+
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException("stream");
@@ -146,6 +188,173 @@ namespace PeterO.Mail
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();
+    }
+
+    private static bool HasSuspiciousTextInComments(string str) {
+      for (int i = 0; i < str.Length; ++i) {
+        char c = str[i];
+        if ((c < 0x20 && c != '\t') || c=='(' || c==')' || c=='\\' || c==0x7f) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    private static bool HasSuspiciousTextInStructured(string str) {
+      for (int i = 0; i < str.Length; ++i) {
+        char c = str[i];
+        if ((c < 0x20 && c == '\t') || c==0x28 || c==0x29 || c==0x3c || c==0x3e ||
+            c == 0x5b || c == 0x5d || c==0x3a || c==0x3b || c==0x40 || c==0x5c || c==0x2c || c==0x2e || c=='"') {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    private static int ParseCommentStrict(string str, int index, int endIndex) {
+      int indexStart = index;
+      int indexTemp = index;
+      do {
+        if (index < endIndex && (str[index] == 40)) {
+          ++index;
+        } else {
+          break;
+        }
+        int depth = 0;
+        while (true) {
+          int indexTemp2 = index;
+          do {
+            int indexStart2 = index;
+            do {
+              int indexTemp3 = index;
+              do {
+                int indexStart3 = index;
+                do {
+                  int indexTemp4;
+                  indexTemp4 = index;
+                  do {
+                    int indexStart4 = index;
+                    while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                      ++index;
+                    }
+                    if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
+                      index += 2;
+                    } else {
+                      index = indexStart4; break;
+                    }
+                    indexTemp4 = index;
+                    index = indexStart4;
+                  } while (false);
+                  if (indexTemp4 != index) {
+                    index = indexTemp4;
+                  } else { break;
+                  }
+                } while (false);
+                if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                  ++index;
+                  while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                    ++index;
+                  }
+                } else {
+                  index = indexStart3; break;
+                }
+                indexTemp3 = index;
+                index = indexStart3;
+              } while (false);
+              if (indexTemp3 != index) {
+                index = indexTemp3;
+              } else { break;
+              }
+            } while (false);
+            do {
+              int indexTemp3 = index;
+              do {
+                int indexStart3 = index;
+                int indexTemp4;
+                indexTemp4 = index;
+                do {
+                  int indexStart4 = index;
+                  if (index < endIndex && (str[index] == 92)) {
+                    ++index;
+                  } else {
+                    break;
+                  }
+                  do {
+                    int indexTemp5;
+                    indexTemp5 = index;
+                    do {
+                      int indexStart5 = index;
+                      if (index < endIndex && ((str[index] == 32) || (str[index] == 9) || (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                        ++indexTemp5; break;
+                      }
+                      if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+                        indexTemp5 += 2; break;
+                      }
+                      if (index < endIndex && (str[index] >= 33 && str[index] <= 126)) {
+                        ++indexTemp5; break;
+                      }
+                    } while (false);
+                    if (indexTemp5 != index) {
+                      index = indexTemp5;
+                    } else {
+                      index = indexStart4; break;
+                    }
+                  } while (false);
+                  if (index == indexStart4) {
+                    break;
+                  }
+                  indexTemp4 = index;
+                  index = indexStart4;
+                } while (false);
+                if (indexTemp4 != index) {
+                  indexTemp3 = indexTemp4; break;
+                }
+                if (index + 1 < endIndex && str[index] == 41) {
+                  // End of current comment
+                  ++indexTemp3;
+                  --depth;
+                  if (depth < 0) {
+                    return indexTemp3;
+                  }
+                  break;
+                }
+                if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                  ++indexTemp3; break;
+                }
+                if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+                  indexTemp3 += 2; break;
+                }
+                if (index + 1 < endIndex && str[index] == 40) {
+                  // Start of nested comment
+                  ++indexTemp3;
+                  ++depth;
+                  break;
+                }
+                if (index < endIndex && ((str[index] >= 93 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 91) || (str[index] >= 33 && str[index] <= 39))) {
+                  ++indexTemp3; break;
+                }
+              } while (false);
+              if (indexTemp3 != index) {
+                index = indexTemp3;
+              } else {
+                index = indexStart2; break;
+              }
+            } while (false);
+            if (index == indexStart2) {
+              break;
+            }
+            indexTemp2 = index;
+            index = indexStart2;
+          } while (false);
+          if (indexTemp2 != index) {
+            index = indexTemp2;
+          } else {
+            break;
+          }
+        }
+        indexTemp = index;
+      } while (false);
+      return indexTemp;
     }
 
     /// <summary>Returns the mail message contained in this message's body.</summary>
@@ -193,7 +402,9 @@ namespace PeterO.Mail
       if (str.IndexOf('=') < 0) {
         return str.Substring(index, endIndex - index);
       }
+      int start = index;
       StringBuilder builder = new StringBuilder();
+      bool hasSuspiciousText = false;
       bool lastWordWasEncodedWord = false;
       int whitespaceStart = -1;
       int whitespaceEnd = -1;
@@ -299,10 +510,20 @@ namespace PeterO.Mail
                 } else {
                   // Console.WriteLine("Encoded " + (base64 ? "B" : "Q") + " to: " + (encoding.GetString(transform)));
                   decodedWord = encoding.GetString(transform);
+                  // TODO: Check for suspicious text in phrases of structured
+                  // header fields
+                  // decodedWord may itself be part of an encoded word
+                  // or contain ASCII control characters: encoded word decoding is
+                  // not idempotent; if this is a comment it could also contain '(', ')', and '\'
+                  if (!hasSuspiciousText) {
+                    // Check for text in the decoded string
+                    // that could render the comment syntactically invalid (the encoded
+                    // word could even encode ASCII control characters and specials)
+                    if (inComments && HasSuspiciousTextInComments(decodedWord)) {
+                      hasSuspiciousText = true;
+                    }
+                  }
                 }
-                // TODO: decodedWord may itself be part of an encoded word
-                // or contain ASCII control characters: encoded word decoding is
-                // not idempotent; if this is a comment it could also contain '(', ')', and '\'
               } else {
                 decodedWord = str.Substring(startIndex - 2, afterLast - (startIndex - 2));
               }
@@ -357,7 +578,16 @@ namespace PeterO.Mail
         }
         lastWordWasEncodedWord = acceptedEncodedWord;
       }
-      return builder.ToString();
+      string retval = builder.ToString();
+      if (!hasSuspiciousText) {
+        string wrappedComment = "(" + retval+")";
+        if (ParseCommentStrict(wrappedComment, 0, wrappedComment.Length) != wrappedComment.Length) {
+          // Comment is syntactically invalid after decoding, so
+          // don't decode any of the encoded words
+          return str.Substring(start, endIndex - start);
+        }
+      }
+      return retval;
     }
 
     private MediaType contentType;
@@ -368,6 +598,15 @@ namespace PeterO.Mail
     public MediaType ContentType {
       get {
         return this.contentType;
+      }
+
+      set {
+        if (value == null) {
+          throw new ArgumentNullException("value");
+        }
+        // TODO: Check equality of content types
+        this.contentType = value;
+        this.SetHeader("content-type", this.contentType.ToString());
       }
     }
 
@@ -519,9 +758,16 @@ namespace PeterO.Mail
       return null;
     }
 
+    // Returns true only if:
+    // * Text matches the production "unstructured"
+    // in RFC 5322 without any obsolete syntax
+    // * Each line is no more than 75 characters in length
+    // * Text has only printable ASCII characters, CR,
+    // LF, and/or TAB
     internal static bool CanOutputRaw(string s) {
       int len = s.Length;
       int chunkLength = 0;
+      bool maybe = false;
       for (int i = 0; i < len; ++i) {
         char c = s[i];
         if (c == 0x0d) {
@@ -533,6 +779,8 @@ namespace PeterO.Mail
             return false;
           }
           chunkLength = 0;
+          maybe = true;
+          i += 2;
           continue;
         }
         if (c >= 0x7f || (c < 0x20 && c != 0x09 && c != 0x0d)) {
@@ -544,6 +792,9 @@ namespace PeterO.Mail
         if (chunkLength > 75) {
           return false;
         }
+      }
+      if (maybe) {
+        return ParseUnstructuredText(s, 0, s.Length) == s.Length;
       }
       return true;
     }
@@ -570,8 +821,13 @@ namespace PeterO.Mail
       return HasTextToEscape(s, 0, s.Length);
     }
 
-    // Has non-ASCII characters, "=?", CTLs other than tab,
-    // or a word longer than 75 characters
+    // Returns true if the string has:
+    // * non-ASCII characters
+    // * "=?"
+    // * CTLs other than tab, or
+    // * a word longer than 75 characters
+    // Can return false even if the string has:
+    // * CRLF followed by a line with just whitespace
     internal static bool HasTextToEscape(string s, int index, int endIndex) {
       int len = endIndex;
       int chunkLength = 0;
@@ -670,25 +926,8 @@ namespace PeterO.Mail
                 if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                   ++indexTemp3; break;
                 }
-                int indexTemp4;
-                indexTemp4 = index;
-                do {
-                  int indexStart4 = index;
-                  if (index < endIndex && (str[index] >= 55296 && str[index] <= 56319)) {
-                    ++index;
-                  } else {
-                    break;
-                  }
-                  if (index < endIndex && (str[index] >= 56320 && str[index] <= 57343)) {
-                    ++index;
-                  } else {
-                    index = indexStart4; break;
-                  }
-                  indexTemp4 = index;
-                  index = indexStart4;
-                } while (false);
-                if (indexTemp4 != index) {
-                  indexTemp3 = indexTemp4; break;
+                if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+                  indexTemp3 += 2; break;
                 }
                 if (index < endIndex && (str[index] >= 33 && str[index] <= 126)) {
                   ++indexTemp3; break;
@@ -709,8 +948,8 @@ namespace PeterO.Mail
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
-            break;
-          }
+ break;
+}
         }
         while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
           ++index;
@@ -942,7 +1181,7 @@ namespace PeterO.Mail
     }
 
     private bool StartsWithWhitespace(string str) {
-      return str.Length > 0 && (str[0] == ' ' || str[0] == 0x09 || str[0]=='\r');
+      return str.Length > 0 && (str[0] == ' ' || str[0] == 0x09 || str[0] == '\r');
     }
 
     private int TransferEncodingToUse(bool isMultipartChild) {
@@ -1006,6 +1245,7 @@ namespace PeterO.Mail
         }
         IHeaderFieldParser parser = HeaderFields.GetParser(name);
         if (!parser.IsStructured()) {
+          // Outputting an unstructured header field
           if (CanOutputRaw(name + ":" + value)) {
             // TODO: Try to preserve header field name (before the colon)
             sb.Append(Capitalize(name));
@@ -1013,6 +1253,8 @@ namespace PeterO.Mail
             sb.Append(value);
           } else {
             var encoder = new WordWrapEncoder(Capitalize(name) + ":");
+            // If this header field contains text that must be
+            // encoded (such as non-ASCII characters)
             if (HasTextToEscape(value)) {
               // Convert the entire header field value to encoded
               // words
@@ -1029,8 +1271,9 @@ namespace PeterO.Mail
           }
         } else if (name.Equals("content-type") ||
                    name.Equals("content-transfer-encoding")) {
-          // don't write now
+          // These header fields will be written later
         } else {
+          // Outputting a structured header field
           if (CanOutputRaw(name + ":" + value)) {
             // TODO: Try to preserve header field name (before the colon)
             sb.Append(Capitalize(name));
@@ -1226,8 +1469,8 @@ namespace PeterO.Mail
     private class MessageStackEntry {
       private Message message;
 
-      /// <summary>Gets a value not documented yet.</summary>
-      /// <value>A value not documented yet.</value>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public Message Message {
         get {
           return this.message;
@@ -1236,8 +1479,8 @@ namespace PeterO.Mail
 
       private string boundary;
 
-      /// <summary>Gets a value not documented yet.</summary>
-      /// <value>A value not documented yet.</value>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public string Boundary {
         get {
           return this.boundary;

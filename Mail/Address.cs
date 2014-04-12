@@ -11,7 +11,7 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-  /// <summary/>
+    /// <summary>Represents an email address.</summary>
   public class Address {
     private string localPart;
 
@@ -31,11 +31,11 @@ namespace PeterO.Mail
       } else {
         StringBuilder sb = new StringBuilder();
         sb.Append('"');
-        for (int i = 0;i<this.localPart.Length; ++i) {
+        for (int i = 0; i < this.localPart.Length; ++i) {
           char c = this.localPart[i];
           if (c == 0x20 || c == 0x09) {
             sb.Append(c);
-          } else if (c == '"' || c==0x7f || c=='\\' || c<0x20) {
+          } else if (c == '"' || c == 0x7f || c == '\\' || c < 0x20) {
             sb.Append('\\');
             sb.Append(c);
           } else {

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 
 namespace PeterO.Mail
 {
+    /// <summary>Represents an email address and a name for that address.</summary>
   public class NamedAddress {
     private string name;
 
@@ -83,7 +84,7 @@ namespace PeterO.Mail
       }
       this.isGroup = true;
       this.name = groupName;
-       foreach (NamedAddress mailbox in mailboxes) {
+      foreach (NamedAddress mailbox in mailboxes) {
         if (mailbox.IsGroup) {
           throw new ArgumentException("A mailbox in the list is a group");
         }

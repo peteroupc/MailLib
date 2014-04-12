@@ -318,7 +318,6 @@ namespace MailLibTest
     public void TestHeaderFields() {
       string testString = "Joe P Customer <customer@example.com>, Jane W Customer <jane@example.com>";
       HeaderParser.ParseMailboxList(testString, 0, testString.Length, null);
-      
     }
 
     [Test]
@@ -487,7 +486,7 @@ namespace MailLibTest
         expected,
         HeaderFields.GetParser("subject").ReplaceEncodedWords(input));
     }
-    
+
     [Test]
     public void TestCommentsBareCROrLF() {
       Assert.AreEqual(

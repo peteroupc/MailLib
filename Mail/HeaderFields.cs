@@ -244,7 +244,7 @@ namespace PeterO.Mail
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object. (2).</param>
     /// <returns>A string object.</returns>
-public string DowngradeFieldValue(string str) {
+      public string DowngradeFieldValue(string str) {
         if (str.IndexOf('(') < 0) {
           // No comments in the header field value, a common case
           return str;
@@ -460,175 +460,175 @@ public string DowngradeFieldValue(string str) {
       }
     }
 
-    internal class HeaderAuthenticationResults : EncodedWordsInSyntax {
+    private sealed class HeaderAuthenticationResults : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderAuthenticationResults(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderAutoSubmitted : EncodedWordsInSyntax {
+    private sealed class HeaderAutoSubmitted : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderAutoSubmitted(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderBcc : EncodedWordsInSyntax {
+    private sealed class HeaderBcc : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderBcc(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderContentBase : EncodedWordsInSyntax {
+    private sealed class HeaderContentBase : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentBase(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderContentDisposition : EncodedWordsInSyntax {
+    private sealed class HeaderContentDisposition : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentDisposition(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderContentId : EncodedWordsInSyntax {
+    private sealed class HeaderContentId : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentId(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderContentType : EncodedWordsInSyntax {
+    private sealed class HeaderContentType : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentType(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderDate : EncodedWordsInSyntax {
+    private sealed class HeaderDate : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDate(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderDispositionNotificationOptions : EncodedWordsInSyntax {
+    private sealed class HeaderDispositionNotificationOptions : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDispositionNotificationOptions(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderDispositionNotificationTo : EncodedWordsInSyntax {
+    private sealed class HeaderDispositionNotificationTo : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDispositionNotificationTo(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderEncrypted : EncodedWordsInSyntax {
+    private sealed class HeaderEncrypted : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderEncrypted(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderFrom : EncodedWordsInSyntax {
+    private sealed class HeaderFrom : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderFrom(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderInReplyTo : EncodedWordsInSyntax {
+    private sealed class HeaderInReplyTo : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderInReplyTo(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderKeywords : EncodedWordsInSyntax {
+    private sealed class HeaderKeywords : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderKeywords(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderLanguage : EncodedWordsInSyntax {
+    private sealed class HeaderLanguage : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderLanguage(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderListArchive : EncodedWordsInSyntax {
+    private sealed class HeaderListArchive : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderListArchive(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderListId : EncodedWordsInSyntax {
+    private sealed class HeaderListId : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderListId(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderListPost : EncodedWordsInSyntax {
+    private sealed class HeaderListPost : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderListPost(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderMmhsCopyPrecedence : EncodedWordsInSyntax {
+    private sealed class HeaderMmhsCopyPrecedence : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsCopyPrecedence(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderMmhsExemptedAddress : EncodedWordsInSyntax {
+    private sealed class HeaderMmhsExemptedAddress : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsExemptedAddress(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderMmhsExtendedAuthorisationInfo : EncodedWordsInSyntax {
+    private sealed class HeaderMmhsExtendedAuthorisationInfo : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsExtendedAuthorisationInfo(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderMmhsMessageType : EncodedWordsInSyntax {
+    private sealed class HeaderMmhsMessageType : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsMessageType(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderObsoletes : EncodedWordsInSyntax {
+    private sealed class HeaderObsoletes : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderObsoletes(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderOriginalRecipient : EncodedWordsInSyntax {
+    private sealed class HeaderOriginalRecipient : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderOriginalRecipient(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderReceived : EncodedWordsInSyntax {
+    private sealed class HeaderReceived : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderReceived(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderReceivedSpf : EncodedWordsInSyntax {
+    private sealed class HeaderReceivedSpf : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderReceivedSpf(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderReturnPath : EncodedWordsInSyntax {
+    private sealed class HeaderReturnPath : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderReturnPath(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderSender : EncodedWordsInSyntax {
+    private sealed class HeaderSender : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderSender(str, index, endIndex, tokener);
       }
     }
 
-    internal class HeaderTo : EncodedWordsInSyntax {
+    private sealed class HeaderTo : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderTo(str, index, endIndex, tokener);
       }

@@ -15,7 +15,8 @@ using PeterO;
 
 namespace PeterO.Mail
 {
-  public sealed class MediaType {
+    /// <summary/>
+public sealed class MediaType {
     private string topLevelType;
 
     /// <summary>Gets a value not documented yet.</summary>

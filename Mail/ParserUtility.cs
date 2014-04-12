@@ -127,16 +127,15 @@ namespace PeterO.Mail
       return index;
     }
 
-    /// <summary>Splits a string by a delimiter. If the string ends with
-    /// the delimiter, the result will end with an empty string. If the string
+    /// <summary>Splits a string by a delimiter. If the string ends with the
+    /// delimiter, the result will end with an empty string. If the string
     /// begins with the delimiter, the result will start with an empty string.
     /// If the delimiter is null or empty, exception.</summary>
     /// <returns>An array containing strings that are split by the delimiter.
     /// If s is null or empty, returns an array whose sole element is the empty
     /// string.</returns>
-    /// <param name='s'>a string to
-    /// split.</param>
-    /// <param name='delimiter'>a string to signal where each substring
+    /// <param name='s'>A string to split.</param>
+    /// <param name='delimiter'>A string to signal where each substring
     /// begins and ends.</param>
     public static string[] SplitAt(string s, string delimiter) {
       if (delimiter == null) {
