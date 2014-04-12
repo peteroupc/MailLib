@@ -150,19 +150,48 @@ namespace PeterO.Mail
     internal abstract class EncodedWordsInSyntax : IHeaderFieldParser {
       protected abstract int Parse(string str, int index, int endIndex, ITokener tokener);
 
+      private static string GetCFWS(string str, int index, int endIndex) {
+        StringBuilder builder = new StringBuilder();
+        while (index < endIndex) {
+          if (str[index] == '"') {
+            int index2 = MediaType.skipQuotedString(str, index, endIndex, null);
+            if (index2 == index) {
+              ++index;
+            } else {
+              index = index2;
+            }
+          } else if (str[index] == '(' || str[index] == 0x0d || str[index] == 0x09 || str[index] == 0x20) {
+            int index2 = HeaderParser.ParseCFWS(str, index, endIndex, null);
+            if (index2 != index) {
+              string cfws = str.Substring(index, index2 - index);
+              // Don't append if there are no comments in
+              // this CFWS and the last character
+              // in the buffer is a space or tab
+              if (!(cfws.IndexOf('(') < 0 && builder.Length > 0 && (str[index] == 0x09 || str[index] == 0x20))) {
+                builder.Append(cfws);
+              }
+              index = index2;
+            } else {
+              ++index;
+            }
+          } else {
+            ++index;
+          }
+        }
+        return builder.ToString();
+      }
+
       private static string ReplacePhraseWithEncodedWords(string str, int index, int endIndex, IList<int[]> tokens) {
-        // Assumes the value matches the production "phrase"
+        // Assumes the value matches the production "phrase",
+        // and assumes that endIndex is the end of all CFWS
+        // found after the phrase
         if (!Message.HasTextToEscape(str, index, endIndex)) {
           // No need to use encoded words
           return str.Substring(index, endIndex - index);
         }
-        // TODO: Extract all comments, not just at the start
-        // (if the other comments are placed at the end,
-        // the method ReplaceWordWithEncodedWords won't
-        // be needed anymore)
         int startIndex = index;
         int startIndexAfterCFWS = HeaderParser.ParseCFWS(str, index, endIndex, null);
-        string phrase = HeaderParserUtility.ParsePhrase(str, startIndexAfterCFWS, endIndex, tokens);
+        string phrase = HeaderParserUtility.ParsePhrase(str, index, endIndex, tokens);
         StringBuilder builder = new StringBuilder();
         if (startIndexAfterCFWS != startIndex) {
           // Copy CFWS
@@ -173,72 +202,23 @@ namespace PeterO.Mail
           }
         }
         // Convert the parsed string to encoded words
-        EncodedWordEncoder encoder = new EncodedWordEncoder(String.Empty);
+        EncodedWordEncoder encoder = new EncodedWordEncoder();
         encoder.AddString(phrase);
         encoder.FinalizeEncoding();
         if (!PrecededByStartOrLinearWhitespace(str, index)) {
           builder.Append(' ');
         }
         builder.Append(encoder.ToString());
-        if (!FollowedByEndOrLinearWhitespace(str, endIndex, str.Length)) {
+        // Extract all CFWS after the start of the phrase
+        string cfws = GetCFWS(str, startIndexAfterCFWS, endIndex);
+        if (cfws.Length == 0 || (cfws[0] != 0x20 && cfws[0] != 0x09)) {
+          // Append a space if the CFWS is empty or doesn't start with
+          // whitespace (RFC 2047 requires encoded words to be separated
+          // by linear whitespace)
           builder.Append(' ');
         }
+        builder.Append(cfws);
         return builder.ToString();
-      }
-
-      private static string ReplaceWordWithEncodedWords(string str, int index, int endIndex) {
-        // Assumes the value matches the production "word"
-        int startIndex = index;
-        int startIndexAfterCFWS = HeaderParser.ParseCFWS(str, index, endIndex, null);
-        StringBuilder builder = new StringBuilder();
-        if (startIndexAfterCFWS != startIndex) {
-          // Copy CFWS
-          builder.Append(str.Substring(index, startIndexAfterCFWS - index));
-          index = startIndexAfterCFWS;
-        }
-        if (index < endIndex && str[index] == '"') {
-          // It's a quoted string
-          StringBuilder builder2 = new StringBuilder();
-          int index2 = MediaType.skipQuotedString(str, index, endIndex, builder2);
-          // index2 is now just after the end quote
-          if (!Message.HasTextToEscape(str, index, index2)) {
-            // No need to use encoded words
-            return str.Substring(startIndex, endIndex - startIndex);
-          }
-          // Convert the parsed string to encoded wordss
-          EncodedWordEncoder encoder = new EncodedWordEncoder(String.Empty);
-          encoder.AddString(builder2.ToString());
-          encoder.FinalizeEncoding();
-          if (!PrecededByStartOrLinearWhitespace(str, index)) {
-            builder.Append(' ');
-          }
-          builder.Append(encoder.ToString());
-          if (!FollowedByEndOrLinearWhitespace(str, index2, str.Length)) {
-            builder.Append(' ');
-          }
-          builder.Append(HeaderParserUtility.ParseDotAtomAfterCFWS(str, index2, endIndex));
-          return builder.ToString();
-        } else {
-          // It's an atom
-          int index2 = HeaderParser.ParsePhraseAtom(str, index, endIndex, null);
-          if (!Message.HasTextToEscape(str, index, index2)) {
-            // No need to use encoded words
-            return str.Substring(startIndex, endIndex - startIndex);
-          }
-          // Convert the atom to encoded words
-          EncodedWordEncoder encoder = new EncodedWordEncoder(String.Empty);
-          encoder.AddString(str, index, index2 - index);
-          encoder.FinalizeEncoding();
-          if (!PrecededByStartOrLinearWhitespace(str, index)) {
-            builder.Append(' ');
-          }
-          builder.Append(encoder.ToString());
-          if (!FollowedByEndOrLinearWhitespace(str, index2, str.Length)) {
-            builder.Append(' ');
-          }
-          builder.Append(HeaderParserUtility.ParseDotAtomAfterCFWS(str, index2, endIndex));
-          return builder.ToString();
-        }
       }
 
     /// <summary>Not documented yet.</summary>
@@ -258,8 +238,7 @@ namespace PeterO.Mail
           int endIndex = this.Parse(str, 0, str.Length, tokener);
           if (endIndex != str.Length) {
             // The header field is syntactically invalid,
-            // so don't decode any encoded words
-            // Console.WriteLine("Invalid syntax: " + this.GetType().Name + ", " + str);
+            // so downgrading is not possible
             return str;
           }
           int lastIndex = 0;
@@ -278,9 +257,14 @@ namespace PeterO.Mail
               if (token[0] == HeaderParserUtility.TokenComment) {
                 int startIndex = token[1];
                 endIndex = token[2];
-                string newComment = Message.ConvertCommentsToEncodedWords(str, startIndex, endIndex);
-                sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
-                sb.Append(newComment);
+                if (Message.HasTextToEscape(str, startIndex, endIndex)) {
+                  string newComment = Message.ConvertCommentsToEncodedWords(str, startIndex, endIndex);
+                  sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
+                  sb.Append(newComment);
+                } else {
+                  // No text needs to be escaped, output the comment as is
+                  sb.Append(str.Substring(lastIndex, endIndex - lastIndex));
+                }
                 lastIndex = endIndex;
               }
             } else if (phase == 1) {  // Word downgrading
@@ -291,9 +275,9 @@ namespace PeterO.Mail
                 sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
                 sb.Append(newComment);
                 lastIndex = endIndex;
-              }
-              if (token[0] == HeaderParserUtility.TokenAtom ||
-                  token[0] == HeaderParserUtility.TokenQuotedString) {
+              } else if (token[0] == HeaderParserUtility.TokenAtom ||
+                         token[0] == HeaderParserUtility.TokenQuotedString) {
+                // TODO: Currently not limited to atoms and quoted strings in "words"
                 int startIndex = token[1];
                 endIndex = token[2];
                 string newComment = ReplacePhraseWithEncodedWords(str, startIndex, endIndex, tokens);

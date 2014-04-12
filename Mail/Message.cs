@@ -92,7 +92,7 @@ namespace PeterO.Mail
       }
       Message textMessage = new Message().SetTextBody(text);
       Message htmlMessage = new Message().SetTextBody(html);
-      this.contentType =MediaType.Parse("multipart/alternative; boundary=\"=_boundary\"");
+      this.contentType = MediaType.Parse("multipart/alternative; boundary=\"=_boundary\"");
       this.SetHeader("content-transfer-encoding", "7bit");
       this.Parts.Clear();
       this.Parts.Add(textMessage);
@@ -193,7 +193,7 @@ namespace PeterO.Mail
     private static bool HasSuspiciousTextInComments(string str) {
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
-        if ((c < 0x20 && c != '\t') || c=='(' || c==')' || c=='\\' || c==0x7f) {
+        if ((c < 0x20 && c != '\t') || c == '(' || c == ')' || c == '\\' || c == 0x7f) {
           return true;
         }
       }
@@ -203,15 +203,15 @@ namespace PeterO.Mail
     private static bool HasSuspiciousTextInStructured(string str) {
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
-        if ((c < 0x20 && c == '\t') || c==0x28 || c==0x29 || c==0x3c || c==0x3e ||
-            c == 0x5b || c == 0x5d || c==0x3a || c==0x3b || c==0x40 || c==0x5c || c==0x2c || c==0x2e || c=='"') {
+        if ((c < 0x20 && c == '\t') || c == 0x28 || c == 0x29 || c == 0x3c || c == 0x3e ||
+            c == 0x5b || c == 0x5d || c == 0x3a || c == 0x3b || c == 0x40 || c == 0x5c || c == 0x2c || c == 0x2e || c == '"') {
           return true;
         }
       }
       return false;
     }
 
-    private static int ParseCommentStrict(string str, int index, int endIndex) {
+    internal static int ParseCommentStrict(string str, int index, int endIndex) {
       int indexStart = index;
       int indexTemp = index;
       do {
@@ -309,7 +309,7 @@ namespace PeterO.Mail
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
-                if (index + 1 < endIndex && str[index] == 41) {
+                if (index < endIndex && str[index] == 41) {
                   // End of current comment
                   ++indexTemp3;
                   --depth;
@@ -324,7 +324,7 @@ namespace PeterO.Mail
                 if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
                   indexTemp3 += 2; break;
                 }
-                if (index + 1 < endIndex && str[index] == 40) {
+                if (index < endIndex && str[index] == 40) {
                   // Start of nested comment
                   ++indexTemp3;
                   ++depth;
@@ -545,6 +545,7 @@ namespace PeterO.Mail
         if (decodedWord != null) {
           builder.Append(decodedWord);
         }
+        // Console.WriteLine(builder);
         // Console.WriteLine("" + index + " " + endIndex + " [" + (index<endIndex ? str[index] : '~') + "]");
         // Read to whitespace
         int oldIndex = index;
@@ -579,8 +580,8 @@ namespace PeterO.Mail
         lastWordWasEncodedWord = acceptedEncodedWord;
       }
       string retval = builder.ToString();
-      if (!hasSuspiciousText) {
-        string wrappedComment = "(" + retval+")";
+      if (hasSuspiciousText) {
+        string wrappedComment = "(" + retval + ")";
         if (ParseCommentStrict(wrappedComment, 0, wrappedComment.Length) != wrappedComment.Length) {
           // Comment is syntactically invalid after decoding, so
           // don't decode any of the encoded words
@@ -593,8 +594,8 @@ namespace PeterO.Mail
     private MediaType contentType;
     private int transferEncoding;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets or sets this message's media type.</summary>
+    /// <value>This message&apos;s media type.</value>
     public MediaType ContentType {
       get {
         return this.contentType;
@@ -604,9 +605,10 @@ namespace PeterO.Mail
         if (value == null) {
           throw new ArgumentNullException("value");
         }
-        // TODO: Check equality of content types
-        this.contentType = value;
-        this.SetHeader("content-type", this.contentType.ToString());
+        if (!this.ContentType.Equals(value)) {
+          this.contentType = value;
+          this.SetHeader("content-type", this.contentType.ToString());
+        }
       }
     }
 
@@ -948,8 +950,8 @@ namespace PeterO.Mail
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
- break;
-}
+            break;
+          }
         }
         while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
           ++index;
@@ -1064,7 +1066,7 @@ namespace PeterO.Mail
         if (length == 2) {
           return "()";
         }
-        encoder = new EncodedWordEncoder(String.Empty);
+        encoder = new EncodedWordEncoder();
         encoder.AddPrefix("(");
         encoder.AddString(str, index + 1, length - 2);
         encoder.FinalizeEncoding(")");
@@ -1072,7 +1074,7 @@ namespace PeterO.Mail
       }
       if (nextBackslash < 0) {
         // No escapes; just look for '(' and ')'
-        encoder = new EncodedWordEncoder(String.Empty);
+        encoder = new EncodedWordEncoder();
         while (true) {
           int parenStart = index;
           // Get the next run of parentheses
@@ -1129,14 +1131,14 @@ namespace PeterO.Mail
         if (builder.Length == 0) {
           return "()";
         }
-        encoder = new EncodedWordEncoder(String.Empty);
+        encoder = new EncodedWordEncoder();
         encoder.AddPrefix("(");
         encoder.AddString(builder.ToString());
         encoder.FinalizeEncoding(")");
         return encoder.ToString();
       }
       // escapes and nested comments
-      encoder = new EncodedWordEncoder(String.Empty);
+      encoder = new EncodedWordEncoder();
       while (true) {
         int parenStart = index;
         // Get the next run of parentheses
@@ -1259,7 +1261,7 @@ namespace PeterO.Mail
               // Convert the entire header field value to encoded
               // words
               encoder.AddString(
-                new EncodedWordEncoder(String.Empty)
+                new EncodedWordEncoder()
                 .AddString(value)
                 .FinalizeEncoding()
                 .ToString());

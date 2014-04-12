@@ -15,7 +15,7 @@ namespace PeterO.Mail
 {
   internal sealed class WordWrapEncoder {
     private const int MaxLineLength = 76;
-
+// TODO: try not to create lines with just whitespace
     private string lastSpaces;
     private StringBuilder fullString;
     private int lineLength;

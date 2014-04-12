@@ -10,7 +10,7 @@ using System;
 
 namespace PeterO.Mail
 {
-    /// <summary/>
+    /// <summary>Exception thrown when a message has invalid syntax.</summary>
   public class MessageDataException : Exception
   {
     public MessageDataException() {

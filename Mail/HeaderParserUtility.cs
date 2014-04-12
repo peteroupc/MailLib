@@ -139,7 +139,8 @@ namespace PeterO.Mail
           int tokenKind = tokens[i][0];
           if (tokenKind == TokenPhrase && !haveDisplayName) {
             // Phrase
-            displayName = ParsePhrase(str, tokenIndex, tokenEnd, tokens);
+            displayName = Message.ReplaceEncodedWords(
+              ParsePhrase(str, tokenIndex, tokenEnd, tokens));
             haveDisplayName = true;
           } else if (tokenKind == TokenMailbox) {
             mailboxes.Add(ParseMailbox(str, tokenIndex, tokenEnd, tokens));
@@ -166,7 +167,8 @@ namespace PeterO.Mail
           int tokenKind = tokens[i][0];
           if (tokenKind == TokenPhrase) {
             // Phrase
-            displayName = ParsePhrase(str, tokenIndex, tokenEnd, tokens);
+            displayName = Message.ReplaceEncodedWords(
+              ParsePhrase(str, tokenIndex, tokenEnd, tokens));
           } else if (tokenKind == TokenLocalPart) {
             localPart = ParseLocalPart(str, tokenIndex, tokenEnd);
           } else if (tokenKind == TokenDomain) {
@@ -186,7 +188,8 @@ namespace PeterO.Mail
       return new NamedAddress(displayName, localPart, domain);
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>NOTE: Does not replace any encoded words in the returned
+    /// string automatically.</summary>
     /// <param name='str'>A string object. (2).</param>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
@@ -225,8 +228,7 @@ namespace PeterO.Mail
           }
         }
       }
-      // Replace encoded words in the string, if any
-      return Message.ReplaceEncodedWords(builder.ToString());
+      return builder.ToString();
     }
   }
 }

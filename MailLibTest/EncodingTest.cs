@@ -488,16 +488,6 @@ namespace MailLibTest
     }
 
     [Test]
-    public void TestCommentsBareCROrLF() {
-      Assert.AreEqual(
-        "(=?utf-8?q?tes=0Dt?=) x@x.example",
-        HeaderFields.GetParser("from").DowngradeFieldValue("(tes\rt) x@x.example"));
-      Assert.AreEqual(
-        "(=?utf-8?q?tes=0At?=) x@x.example",
-        HeaderFields.GetParser("from").DowngradeFieldValue("(tes\nt) x@x.example"));
-    }
-
-    [Test]
     public void TestCommentsToWords() {
       string par = "(";
       Assert.AreEqual("(=?utf-8?q?x?=)", Message.ConvertCommentsToEncodedWords("(x)"));
@@ -543,6 +533,24 @@ namespace MailLibTest
       Assert.AreEqual(
         "(comment) =?utf-8?q?Tes=C2=BEt___Subject?= <x@x.example>",
         HeaderFields.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet   Subject\" <x@x.example>"));
+      Assert.AreEqual(
+        "(comment) =?utf-8?q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+        HeaderFields.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>"));
+      Assert.AreEqual(
+        "=?utf-8?q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+        HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" (comment) <x@x.example>"));
+    }
+
+    private void TestParseCommentStrictCore(string input) {
+      Assert.AreEqual(input.Length, Message.ParseCommentStrict(input, 0, input.Length), input);
+    }
+    [Test]
+    public void TestParseCommentStrict() {
+      TestParseCommentStrictCore("(y)");
+      TestParseCommentStrictCore("(e\\y)");
+      TestParseCommentStrictCore("(a(b)c)");
+      TestParseCommentStrictCore("(())");
+      TestParseCommentStrictCore("((x))");
     }
 
     [Test]

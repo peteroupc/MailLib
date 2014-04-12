@@ -15,8 +15,8 @@ using PeterO;
 
 namespace PeterO.Mail
 {
-    /// <summary/>
-public sealed class MediaType {
+    /// <summary>Specifies what kind of data a message body is.</summary>
+  public sealed class MediaType {
     private string topLevelType;
 
     /// <summary>Gets a value not documented yet.</summary>
@@ -26,6 +26,63 @@ public sealed class MediaType {
         return this.topLevelType;
       }
     }
+
+    #region Equals and GetHashCode implementation
+    public override bool Equals(object obj) {
+      MediaType other = obj as MediaType;
+      if (other == null) {
+        return false;
+      }
+      return this.topLevelType == other.topLevelType && this.subType == other.subType &&
+        MapEquals(this.parameters, other.parameters);
+    }
+
+    private static bool MapEquals<TKey, TValue>(IDictionary<TKey, TValue> mapA, IDictionary<TKey, TValue> mapB) {
+      if (mapA == null) {
+        return mapB == null;
+      }
+      if (mapB == null) {
+        return false;
+      }
+      if (mapA.Count != mapB.Count) {
+        return false;
+      }
+      foreach (KeyValuePair<TKey, TValue> kvp in mapA) {
+        TValue valueB = default(TValue);
+        bool hasKey = mapB.TryGetValue(kvp.Key, out valueB);
+        if (hasKey) {
+          TValue valueA = kvp.Value;
+          if (!Object.Equals(valueA, valueB)) {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    /// <summary>Returns the hash code for this instance.</summary>
+    /// <returns>A 32-bit hash code.</returns>
+    public override int GetHashCode() {
+      // NOTE: Parameter names are sorted, ensuring
+      // the stability of their order for hash code
+      // calculation purposes
+      int hashCode = 632580499;
+      unchecked {
+        if (this.topLevelType != null) {
+          hashCode += 632580503 * this.topLevelType.GetHashCode();
+        }
+        if (this.subType != null) {
+          hashCode += 632580563 * this.subType.GetHashCode();
+        }
+        if (this.parameters != null) {
+          hashCode += 632580587 * this.parameters.Count;
+        }
+      }
+      return hashCode;
+    }
+    #endregion
 
     private string subType;
 
@@ -179,11 +236,8 @@ public sealed class MediaType {
         char c = str[index];
         if (c == '"') { // end of quoted-string
           ++index;
-          if (rule == QuotedStringRule.Rfc5322) {
-            return HeaderParser.ParseCFWS(str, index, endIndex, null);
-          } else {
-            return index;
-          }
+          // NOTE: Don't skip CFWS even if the rule is Rfc5322
+          return index;
         }
         int oldIndex = index;
         index = skipQtextOrQuotedPair(str, index, endIndex, rule);
@@ -898,6 +952,9 @@ public sealed class MediaType {
             endIndex,
             builder,
             httpRules ? QuotedStringRule.Http : QuotedStringRule.Rfc5322);
+          if (!httpRules && qs != indexAfterTypeSubtype) {
+            qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
+          }
           if (qs != indexAfterTypeSubtype) {
             this.parameters[attribute] = builder.ToString();
             indexAfterTypeSubtype = qs;
