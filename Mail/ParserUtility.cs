@@ -13,7 +13,7 @@ using System.Text;
 namespace PeterO.Mail
 {
   internal sealed class ParserUtility {
-    internal static string ToLowerCaseAscii(string str) {
+    public static string ToLowerCaseAscii(string str) {
       if (str == null) {
         return null;
       }
@@ -67,6 +67,13 @@ namespace PeterO.Mail
       if (s == null || s.Length == 0) {
         return s;
       }
+      return TrimSpaceAndTabLeft(TrimSpaceAndTabRight(s));
+    }
+
+    public static string TrimSpaceAndTabLeft(string s) {
+      if (s == null || s.Length == 0) {
+        return s;
+      }
       int index = 0;
       int valueSLength = s.Length;
       while (index < valueSLength) {
@@ -78,9 +85,19 @@ namespace PeterO.Mail
       }
       if (index == valueSLength) {
         return String.Empty;
+      } else if (index == 0) {
+        return s;
+      } else {
+        return s.Substring(index);
       }
-      int startIndex = index;
-      index = valueSLength - 1;
+    }
+
+    public static string TrimSpaceAndTabRight(string s) {
+      if (s == null || s.Length == 0) {
+        return s;
+      }
+      int startIndex = 0;
+      int index = s.Length - 1;
       while (index >= 0) {
         char c = s[index];
         if (c != 0x09 && c != 0x20) {
@@ -91,11 +108,11 @@ namespace PeterO.Mail
       return String.Empty;
     }
 
-    public static bool IsNullEmptyOrWhitespace(string str) {
+    public static bool IsNullEmptyOrSpaceTabOnly(string str) {
       return String.IsNullOrEmpty(str) || SkipSpaceAndTab(str, 0, str.Length) == str.Length;
     }
 
-    public static int ParseFWS(string str, int index, int endIndex, StringBuilder sb) {
+    public static int ParseFWSLiberal(string str, int index, int endIndex, StringBuilder sb) {
       while (index < endIndex) {
         int tmp = index;
         // Skip CRLF
@@ -170,14 +187,6 @@ namespace PeterO.Mail
         }
       }
       return strings.ToArray();
-    }
-
-    public static int SkipCrLf(string str, int index, int endIndex) {
-      if (index + 1 < endIndex && str[index] == 0x0d && str[index + 1] == 0x0a) {
-        return index + 2;
-      } else {
-        return index;
-      }
     }
 
     public static bool IsValidLanguageTag(string str) {

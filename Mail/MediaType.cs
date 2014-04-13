@@ -204,7 +204,7 @@ namespace PeterO.Mail
       return skipQuotedString(s, index, endIndex, builder, QuotedStringRule.Rfc5322);
     }
 
-    internal static int skipQuotedString(
+    private static int skipQuotedString(
       string str,
       int index,
       int endIndex,
@@ -230,7 +230,7 @@ namespace PeterO.Mail
           }
         } else if (rule == QuotedStringRule.Rfc5322) {
           // Skip tabs, spaces, and folding whitespace
-          i2 = ParserUtility.ParseFWS(str, index, endIndex, builder);
+          i2 = ParserUtility.ParseFWSLiberal(str, index, endIndex, builder);
         }
         index = i2;
         char c = str[index];
@@ -487,7 +487,7 @@ namespace PeterO.Mail
       return sb.ToString();
     }
 
-    internal static int skipMimeToken(
+    private static int skipMimeToken(
       string str,
       int index,
       int endIndex,
@@ -510,7 +510,7 @@ namespace PeterO.Mail
       return i;
     }
 
-    internal static int skipAttributeNameRfc2231(
+    private static int skipAttributeNameRfc2231(
       string str,
       int index,
       int endIndex,
@@ -802,7 +802,7 @@ namespace PeterO.Mail
       }
     }
 
-    internal static int skipLws(string s, int index, int endIndex) {
+    private static int skipLws(string s, int index, int endIndex) {
       // While HTTP usually only allows CRLF, it also allows
       // us to be tolerant here
       int i2 = index;

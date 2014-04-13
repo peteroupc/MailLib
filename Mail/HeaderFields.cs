@@ -25,9 +25,9 @@ namespace PeterO.Mail
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object. (2).</param>
     /// <returns>A string object.</returns>
-      public string ReplaceEncodedWords(string str) {
+      public string DecodeEncodedWords(string str) {
         // For unstructured header fields.
-        return Message.ReplaceEncodedWords(str);
+        return Rfc2047.DecodeEncodedWords(str, 0, str.Length, EncodedWordContext.Unstructured);
       }
 
     /// <summary>Not documented yet.</summary>
@@ -41,7 +41,7 @@ namespace PeterO.Mail
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object. (2).</param>
     /// <returns>A string object.</returns>
-      public string ReplaceEncodedWords(string str) {
+      public string DecodeEncodedWords(string str) {
         // For structured header fields that don't allow comments
         return str;
       }
@@ -97,7 +97,7 @@ namespace PeterO.Mail
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object. (2).</param>
     /// <returns>A string object.</returns>
-      public string ReplaceEncodedWords(string str) {
+      public string DecodeEncodedWords(string str) {
         #if DEBUG
         if (str == null) {
           throw new ArgumentNullException("str");
@@ -126,7 +126,11 @@ namespace PeterO.Mail
             if (endIndex != i) {
               // This is a comment, so replace any encoded words
               // in the comment
-              string newComment = Message.ReplaceEncodedWords(str, i + 1, endIndex - 1, true);
+              string newComment = Rfc2047.DecodeEncodedWords(
+str,
+i + 1,
+endIndex - 1,
+EncodedWordContext.Comment);
               sb.Append(str.Substring(lastIndex, i + 1 - lastIndex));
               sb.Append(newComment);
               lastIndex = endIndex - 1;
@@ -150,77 +154,6 @@ namespace PeterO.Mail
     internal abstract class EncodedWordsInSyntax : IHeaderFieldParser {
       protected abstract int Parse(string str, int index, int endIndex, ITokener tokener);
 
-      private static string GetCFWS(string str, int index, int endIndex) {
-        StringBuilder builder = new StringBuilder();
-        while (index < endIndex) {
-          if (str[index] == '"') {
-            int index2 = MediaType.skipQuotedString(str, index, endIndex, null);
-            if (index2 == index) {
-              ++index;
-            } else {
-              index = index2;
-            }
-          } else if (str[index] == '(' || str[index] == 0x0d || str[index] == 0x09 || str[index] == 0x20) {
-            int index2 = HeaderParser.ParseCFWS(str, index, endIndex, null);
-            if (index2 != index) {
-              string cfws = str.Substring(index, index2 - index);
-              // Don't append if there are no comments in
-              // this CFWS and the last character
-              // in the buffer is a space or tab
-              if (!(cfws.IndexOf('(') < 0 && builder.Length > 0 && (str[index] == 0x09 || str[index] == 0x20))) {
-                builder.Append(cfws);
-              }
-              index = index2;
-            } else {
-              ++index;
-            }
-          } else {
-            ++index;
-          }
-        }
-        return builder.ToString();
-      }
-
-      private static string ReplacePhraseWithEncodedWords(string str, int index, int endIndex, IList<int[]> tokens) {
-        // Assumes the value matches the production "phrase",
-        // and assumes that endIndex is the end of all CFWS
-        // found after the phrase
-        if (!Message.HasTextToEscape(str, index, endIndex)) {
-          // No need to use encoded words
-          return str.Substring(index, endIndex - index);
-        }
-        int startIndex = index;
-        int startIndexAfterCFWS = HeaderParser.ParseCFWS(str, index, endIndex, null);
-        string phrase = HeaderParserUtility.ParsePhrase(str, index, endIndex, tokens);
-        StringBuilder builder = new StringBuilder();
-        if (startIndexAfterCFWS != startIndex) {
-          // Copy CFWS
-          builder.Append(str.Substring(index, startIndexAfterCFWS - index));
-          index = startIndexAfterCFWS;
-          if (!PrecededByStartOrLinearWhitespace(str, index)) {
-            builder.Append(' ');
-          }
-        }
-        // Convert the parsed string to encoded words
-        EncodedWordEncoder encoder = new EncodedWordEncoder();
-        encoder.AddString(phrase);
-        encoder.FinalizeEncoding();
-        if (!PrecededByStartOrLinearWhitespace(str, index)) {
-          builder.Append(' ');
-        }
-        builder.Append(encoder.ToString());
-        // Extract all CFWS after the start of the phrase
-        string cfws = GetCFWS(str, startIndexAfterCFWS, endIndex);
-        if (cfws.Length == 0 || (cfws[0] != 0x20 && cfws[0] != 0x09)) {
-          // Append a space if the CFWS is empty or doesn't start with
-          // whitespace (RFC 2047 requires encoded words to be separated
-          // by linear whitespace)
-          builder.Append(' ');
-        }
-        builder.Append(cfws);
-        return builder.ToString();
-      }
-
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object. (2).</param>
     /// <returns>A string object.</returns>
@@ -230,6 +163,7 @@ namespace PeterO.Mail
           return str;
         }
         for (int phase = 0; phase < 5; ++phase) {
+          // Console.WriteLine("Downgrading: phase " + phase + ", " + (str));
           if (!Message.HasTextToEscape(str)) {
             return str;
           }
@@ -257,9 +191,11 @@ namespace PeterO.Mail
               if (token[0] == HeaderParserUtility.TokenComment) {
                 int startIndex = token[1];
                 endIndex = token[2];
+                // Console.WriteLine(str.Substring(startIndex, endIndex - startIndex));
                 if (Message.HasTextToEscape(str, startIndex, endIndex)) {
                   string newComment = Message.ConvertCommentsToEncodedWords(str, startIndex, endIndex);
                   sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
+                  // Console.WriteLine("newcomment "+newComment);
                   sb.Append(newComment);
                 } else {
                   // No text needs to be escaped, output the comment as is
@@ -267,20 +203,11 @@ namespace PeterO.Mail
                 }
                 lastIndex = endIndex;
               }
-            } else if (phase == 1) {  // Word downgrading
+            } else if (phase == 1) {  // Phrase downgrading
               if (token[0] == HeaderParserUtility.TokenPhrase) {
                 int startIndex = token[1];
                 endIndex = token[2];
-                string newComment = ReplacePhraseWithEncodedWords(str, startIndex, endIndex, tokens);
-                sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
-                sb.Append(newComment);
-                lastIndex = endIndex;
-              } else if (token[0] == HeaderParserUtility.TokenAtom ||
-                         token[0] == HeaderParserUtility.TokenQuotedString) {
-                // TODO: Currently not limited to atoms and quoted strings in "words"
-                int startIndex = token[1];
-                endIndex = token[2];
-                string newComment = ReplacePhraseWithEncodedWords(str, startIndex, endIndex, tokens);
+                string newComment = Rfc2047.EncodePhraseText(str, startIndex, endIndex, tokens);
                 sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
                 sb.Append(newComment);
                 lastIndex = endIndex;
@@ -299,56 +226,10 @@ namespace PeterO.Mail
         return str;
       }
 
-      private static bool FollowedByEndOrLinearWhitespace(string str, int index, int endIndex) {
-        if (index == endIndex) {
-          return true;
-        }
-        if (str[index] != 0x09 && str[index] != 0x20 && str[index] != 0x0d) {
-          return false;
-        }
-        int cws = HeaderParser.ParseCFWS(str, index, endIndex, null);
-        if (cws == index) {
-          // No linear whitespace
-          return false;
-        }
-        return true;
-      }
-
-      private static bool PrecededByStartOrLinearWhitespace(string str, int index) {
-        if (index == 0) {
-          return true;
-        }
-        if (index - 1 >= 0 && (str[index - 1] == 0x09 || str[index - 1] == 0x20)) {
-          return true;
-        }
-        return false;
-      }
-
-      private static int IndexOfNextPossibleEncodedWord(string str, int index, int endIndex) {
-        int cws = HeaderParser.ParseCFWS(str, index, endIndex, null);
-        if (cws == index) {
-          // No linear whitespace
-          return -1;
-        }
-        while (index < cws) {
-          if (str[index] == '(') {
-            // Has a comment, so no encoded word
-            // immediately follows
-            return -1;
-          }
-          ++index;
-        }
-        if (index + 1 < endIndex && str[index] == '=' && str[index + 1] == '?') {
-          // Has a possible encoded word
-          return index;
-        }
-        return -1;
-      }
-
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object. (2).</param>
     /// <returns>A string object.</returns>
-      public string ReplaceEncodedWords(string str) {
+      public string DecodeEncodedWords(string str) {
         #if DEBUG
         if (str == null) {
           throw new ArgumentNullException("str");
@@ -375,62 +256,35 @@ namespace PeterO.Mail
           return str;
         }
         int lastIndex = 0;
-        int lastPhraseStart = -1;
-        int lastPhraseEnd = -1;
         // Get each relevant token sorted by starting index
-        foreach (int[] token in tokener.GetTokens()) {
-          if (token[0] == 1) {
+        IList<int[]> tokens = tokener.GetTokens();
+        foreach (int[] token in tokens) {
+          // Console.WriteLine("" + token[0] + " [" + (str.Substring(token[1],token[2]-token[1])) + "]");
+          if (token[0] == HeaderParserUtility.TokenComment && token[0] >= lastIndex) {
             // This is a comment token
             int startIndex = token[1];
             endIndex = token[2];
-            string newComment = Message.ReplaceEncodedWords(str, startIndex + 1, endIndex - 1, true);
+            string newComment = Rfc2047.DecodeEncodedWords(
+              str,
+              startIndex + 1,
+              endIndex - 1,
+              EncodedWordContext.Comment);
             sb.Append(str.Substring(lastIndex, startIndex + 1 - lastIndex));
             sb.Append(newComment);
             lastIndex = endIndex - 1;
-          } else if (token[0] == 2) {
+          } else if (token[0] == HeaderParserUtility.TokenPhrase) {
             // This is a phrase token
-            lastPhraseStart = token[1];
-            lastPhraseEnd = token[2];
-          } else if (token[0] == HeaderParserUtility.TokenPhraseAtom ||
-                     token[0] == HeaderParserUtility.TokenPhraseAtomOrDot) {
-            // This is an atom token; only words within
-            // a phrase can be encoded words
-            if (token[1] >= lastIndex &&
-                token[1] >= lastPhraseStart && token[1] <= lastPhraseEnd &&
-                token[2] >= lastPhraseStart && token[2] <= lastPhraseEnd) {
-              // This is an atom within a phrase
-              int wordStart = HeaderParser.ParseCFWS(str, token[1], token[2], null);
-              int wordEnd;
-              int previousWord = wordStart;
-              if (wordStart >= token[2] || str[wordStart] != '=') {
-                // Not an encoded word
-                continue;
-              }
-              wordEnd = wordStart;
-              while (true) {
-                if (!PrecededByStartOrLinearWhitespace(str, wordEnd)) {
-                  break;
-                }
-                // Find the end of the atom
-                wordEnd = HeaderParser.ParsePhraseAtom(str, wordEnd, lastPhraseEnd, null);
-                if (!FollowedByEndOrLinearWhitespace(str, wordEnd, lastPhraseEnd)) {
-                  // The encoded word is not followed by whitespace, so it's not valid
-                  wordEnd = previousWord;
-                  break;
-                }
-                int nextWord = IndexOfNextPossibleEncodedWord(str, wordEnd, lastPhraseEnd);
-                if (nextWord < 0) {
-                  // The next word isn't an encoded word
-                  break;
-                }
-                previousWord = nextWord;
-                wordEnd = nextWord;
-              }
-              string replacement = Message.ReplaceEncodedWords(str, wordStart, wordEnd, false);
-              sb.Append(str.Substring(lastIndex, wordStart - lastIndex));
-              sb.Append(replacement);
-              lastIndex = wordEnd;
-            }
+            int startIndex = token[1];
+            endIndex = token[2];
+            string newComment = Rfc2047.GetPhraseText(
+str,
+startIndex,
+endIndex,
+tokens,
+PhraseTextMode.DecodedTextAndComments);
+            sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
+            sb.Append(newComment);
+            lastIndex = endIndex;
           }
         }
         sb.Append(str.Substring(lastIndex, str.Length - lastIndex));

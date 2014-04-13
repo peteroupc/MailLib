@@ -40,8 +40,9 @@
     <Compile Include='Mail\BoundaryCheckerTransform.cs'/>
     <Compile Include='Mail\Charsets.cs'/>
     <Compile Include='Mail\EightBitTransform.cs'/>
+    <Compile Include='Mail\EncodedWordContext.cs'/>
     <Compile Include='Mail\EncodedWordEncoder.cs'/>
-    <Compile Include='Mail\Exception.cs'/>
+    <Compile Include='Mail\MessageDataException.cs'/>
     <Compile Include='Mail\HeaderFields.cs'/>
     <Compile Include='Mail\HeaderParser.cs'/>
     <Compile Include='Mail\HeaderParserUtility.cs'/>
@@ -55,8 +56,10 @@
     <Compile Include='Mail\NamedAddress.cs'/>
     <Compile Include='Mail\ParserUtility.cs'/>
     <Compile Include='Mail\PercentEncodingStringTransform.cs'/>
+    <Compile Include='Mail\PhraseTextMode.cs'/>
     <Compile Include='Mail\QEncodingStringTransform.cs'/>
     <Compile Include='Mail\QuotedPrintableTransform.cs'/>
+    <Compile Include='Mail\Rfc2047.cs'/>
     <Compile Include='Mail\SevenBitTransform.cs'/>
     <Compile Include='Mail\StreamWithUnget.cs'/>
     <Compile Include='Mail\Tokener.cs'/>
@@ -66,10 +69,12 @@
     <Compile Include='ReadOnlyMap.cs'/>
     <Compile Include='RedBlackTree.cs'/>
     <Compile Include='SortedMap.cs'/>
+    
+    
+    
   </ItemGroup>
   <ItemGroup>
     <Folder Include='Mail'/>
   </ItemGroup>
   <Import Project='$(MSBuildExtensionsPath)\Microsoft\Portable\v4.0\Microsoft.Portable.CSharp.targets'/>
-  
 <Import Project='$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets'/></Project>

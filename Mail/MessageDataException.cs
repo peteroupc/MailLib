@@ -16,7 +16,7 @@ namespace PeterO.Mail
     public MessageDataException() {
     }
 
-     public MessageDataException(string message) : base(message) {
+    public MessageDataException(string message) : base(message) {
     }
 
     public MessageDataException(string message, Exception innerException) : base(message, innerException) {

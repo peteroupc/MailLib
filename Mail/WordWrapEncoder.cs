@@ -15,10 +15,10 @@ namespace PeterO.Mail
 {
   internal sealed class WordWrapEncoder {
     private const int MaxLineLength = 76;
-// TODO: try not to create lines with just whitespace
     private string lastSpaces;
     private StringBuilder fullString;
     private int lineLength;
+    private bool haveNonwhitespace;
 
     public WordWrapEncoder(string c) {
       this.fullString = new StringBuilder();
@@ -26,8 +26,10 @@ namespace PeterO.Mail
       if (this.fullString.Length >= MaxLineLength) {
         this.fullString.Append("\r\n");
         this.lastSpaces = " ";
+        this.haveNonwhitespace = false;
         this.lineLength = 0;
       } else {
+        this.haveNonwhitespace = true;  // assume have nonwhitespace
         this.lastSpaces = " ";
         this.lineLength = this.fullString.Length;
       }
@@ -43,15 +45,19 @@ namespace PeterO.Mail
     }
 
     private void AppendWord(string str) {
-      if (this.lineLength + this.lastSpaces.Length + str.Length > MaxLineLength) {
+      if (this.lineLength + this.lastSpaces.Length + str.Length > MaxLineLength &&
+         this.haveNonwhitespace) {
         // Too big to fit the current line,
-        // create a new line
+        // create a new line (but only if the current
+        // line isn't all whitespace)
         this.fullString.Append("\r\n");
         this.lastSpaces = " ";
+        this.haveNonwhitespace = false;
         this.lineLength = 0;
       }
       this.fullString.Append(this.lastSpaces);
       this.fullString.Append(str);
+      this.haveNonwhitespace = true;
       this.lineLength += this.lastSpaces.Length;
       this.lineLength += str.Length;
       this.lastSpaces = String.Empty;

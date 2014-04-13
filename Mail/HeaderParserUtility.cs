@@ -14,16 +14,15 @@ namespace PeterO.Mail
 {
   internal class HeaderParserUtility
   {
-    internal const int TokenComment = 1;
+    internal const int TokenComment = 2;
     internal const int TokenPhraseAtom = 3;
     internal const int TokenPhraseAtomOrDot = 4;
-    internal const int TokenPhrase = 2;
+    internal const int TokenPhrase = 1;
     internal const int TokenGroup = 5;
     internal const int TokenMailbox = 6;
     internal const int TokenQuotedString = 7;
     internal const int TokenLocalPart = 8;
     internal const int TokenDomain = 9;
-    internal const int TokenAtom = 10;
 
     public static string ParseDotAtomAfterCFWS(string str, int index, int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
@@ -139,8 +138,14 @@ namespace PeterO.Mail
           int tokenKind = tokens[i][0];
           if (tokenKind == TokenPhrase && !haveDisplayName) {
             // Phrase
-            displayName = Message.ReplaceEncodedWords(
-              ParsePhrase(str, tokenIndex, tokenEnd, tokens));
+            displayName = Rfc2047.GetPhraseText(
+              str,
+              tokenIndex,
+              tokenEnd,
+              tokens,
+              PhraseTextMode.DecodedText);
+            // Set haveDisplayName, which needs to be done because
+            // the mailboxes that follow may themselves have display names
             haveDisplayName = true;
           } else if (tokenKind == TokenMailbox) {
             mailboxes.Add(ParseMailbox(str, tokenIndex, tokenEnd, tokens));
@@ -167,8 +172,12 @@ namespace PeterO.Mail
           int tokenKind = tokens[i][0];
           if (tokenKind == TokenPhrase) {
             // Phrase
-            displayName = Message.ReplaceEncodedWords(
-              ParsePhrase(str, tokenIndex, tokenEnd, tokens));
+            displayName = Rfc2047.GetPhraseText(
+              str,
+              tokenIndex,
+              tokenEnd,
+              tokens,
+              PhraseTextMode.DecodedText);
           } else if (tokenKind == TokenLocalPart) {
             localPart = ParseLocalPart(str, tokenIndex, tokenEnd);
           } else if (tokenKind == TokenDomain) {
@@ -188,47 +197,150 @@ namespace PeterO.Mail
       return new NamedAddress(displayName, localPart, domain);
     }
 
-    /// <summary>NOTE: Does not replace any encoded words in the returned
-    /// string automatically.</summary>
-    /// <param name='str'>A string object. (2).</param>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
-    /// <param name='tokens'>An IList object.</param>
-    /// <returns>A string object.</returns>
-    public static string ParsePhrase(string str, int index, int endIndex, IList<int[]> tokens) {
-      StringBuilder builder = new StringBuilder();
-      bool appendSpace = false;
-      for (int i = 0; i < tokens.Count; ++i) {
-        int tokenIndex = tokens[i][1];
-        int tokenEnd = tokens[i][2];
-        if (tokenIndex >= index && tokenIndex < endIndex) {
-          int tokenKind = tokens[i][0];
-          bool hasCFWS = false;
-          if (tokenKind == TokenPhraseAtom || tokenKind == TokenPhraseAtomOrDot) {
-            // Phrase atom
-            if (appendSpace) {
-              builder.Append(' ');
-              appendSpace = false;
+        internal static int ParseCommentStrict(string str, int index, int endIndex) {
+      int indexStart = index;
+      int indexTemp = index;
+      do {
+        if (index < endIndex && (str[index] == 40)) {
+          ++index;
+        } else {
+          break;
+        }
+        int depth = 0;
+        while (true) {
+          int indexTemp2 = index;
+          do {
+            int indexStart2 = index;
+            do {
+              int indexTemp3 = index;
+              do {
+                int indexStart3 = index;
+                do {
+                  int indexTemp4;
+                  indexTemp4 = index;
+                  do {
+                    int indexStart4 = index;
+                    while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                      ++index;
+                    }
+                    if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
+                      index += 2;
+                    } else {
+                      index = indexStart4; break;
+                    }
+                    indexTemp4 = index;
+                    index = indexStart4;
+                  } while (false);
+                  if (indexTemp4 != index) {
+                    index = indexTemp4;
+                  } else { break;
+                  }
+                } while (false);
+                if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                  ++index;
+                  while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                    ++index;
+                  }
+                } else {
+                  index = indexStart3; break;
+                }
+                indexTemp3 = index;
+                index = indexStart3;
+              } while (false);
+              if (indexTemp3 != index) {
+                index = indexTemp3;
+              } else { break;
+              }
+            } while (false);
+            do {
+              int indexTemp3 = index;
+              do {
+                int indexStart3 = index;
+                int indexTemp4;
+                indexTemp4 = index;
+                do {
+                  int indexStart4 = index;
+                  if (index < endIndex && (str[index] == 92)) {
+                    ++index;
+                  } else {
+                    break;
+                  }
+                  do {
+                    int indexTemp5;
+                    indexTemp5 = index;
+                    do {
+                      int indexStart5 = index;
+                      if (index < endIndex && ((str[index] == 32) || (str[index] == 9) || (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                        ++indexTemp5; break;
+                      }
+                      if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+                        indexTemp5 += 2; break;
+                      }
+                      if (index < endIndex && (str[index] >= 33 && str[index] <= 126)) {
+                        ++indexTemp5; break;
+                      }
+                    } while (false);
+                    if (indexTemp5 != index) {
+                      index = indexTemp5;
+                    } else {
+                      index = indexStart4; break;
+                    }
+                  } while (false);
+                  if (index == indexStart4) {
+                    break;
+                  }
+                  indexTemp4 = index;
+                  index = indexStart4;
+                } while (false);
+                if (indexTemp4 != index) {
+                  indexTemp3 = indexTemp4; break;
+                }
+                if (index < endIndex && str[index] == 41) {
+                  // End of current comment
+                  ++indexTemp3;
+                  --depth;
+                  if (depth < 0) {
+                    return indexTemp3;
+                  }
+                  break;
+                }
+                if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                  ++indexTemp3; break;
+                }
+                if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+                  indexTemp3 += 2; break;
+                }
+                if (index < endIndex && str[index] == 40) {
+                  // Start of nested comment
+                  ++indexTemp3;
+                  ++depth;
+                  break;
+                }
+                if (index < endIndex && ((str[index] >= 93 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 91) || (str[index] >= 33 && str[index] <= 39))) {
+                  ++indexTemp3; break;
+                }
+              } while (false);
+              if (indexTemp3 != index) {
+                index = indexTemp3;
+              } else {
+                index = indexStart2; break;
+              }
+            } while (false);
+            if (index == indexStart2) {
+              break;
             }
-            builder.Append(str.Substring(tokenIndex, tokenEnd - tokenIndex));
-            hasCFWS = HeaderParser.ParseCFWS(str, tokenEnd, endIndex, null) != tokenEnd;
-          } else if (tokenKind == TokenQuotedString) {
-            if (appendSpace) {
-              builder.Append(' ');
-              appendSpace = false;
-            }
-            tokenIndex = MediaType.skipQuotedString(str, tokenIndex, tokenEnd, builder);
-            // tokenIndex is now just after the end quote
-            hasCFWS = HeaderParser.ParseCFWS(str, tokenIndex, endIndex, null) != tokenEnd;
-          }
-          if (hasCFWS) {
-            // Add a space character if CFWS follows the atom or
-            // quoted string and if additional words follow
-            appendSpace = true;
+            indexTemp2 = index;
+            index = indexStart2;
+          } while (false);
+          if (indexTemp2 != index) {
+            index = indexTemp2;
+          } else {
+            break;
           }
         }
-      }
-      return builder.ToString();
+        indexTemp = index;
+      } while (false);
+      return indexTemp;
     }
   }
 }

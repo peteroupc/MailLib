@@ -71,7 +71,7 @@ namespace PeterO.Mail
             return (byte)((value >> 16) & 0xff);
           } else if (count == 3) {
             this.input.Unget();
-            value <<= 18;
+            value <<= 6;
             this.ResizeBuffer(1);
             this.buffer[0] = (byte)((value >> 8) & 0xff);
             return (byte)((value >> 16) & 0xff);

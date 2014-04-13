@@ -26,7 +26,7 @@ namespace PeterO.Mail
     /// <summary>Converts this object to a text string.</summary>
     /// <returns>A string representation of this object.</returns>
     public override string ToString() {
-      if (HeaderParser.ParseDotAtomText(this.localPart, 0, this.localPart.Length, null) != this.localPart.Length) {
+      if (HeaderParser.ParseDotAtomText(this.localPart, 0, this.localPart.Length, null) == this.localPart.Length) {
         return this.localPart + "@" + this.domain;
       } else {
         StringBuilder sb = new StringBuilder();

@@ -17,6 +17,6 @@ namespace PeterO.Mail
 
     string DowngradeFieldValue(string str);
 
-    string ReplaceEncodedWords(string str);
+    string DecodeEncodedWords(string str);
   }
 }

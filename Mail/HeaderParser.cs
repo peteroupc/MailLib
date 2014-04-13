@@ -206,12 +206,8 @@ namespace PeterO.Mail {
         index = ParseCFWS(str, index, endIndex, tokener);
         indexTemp = index;
       } while (false);
-      if (tokener != null) {
-        if (indexTemp == indexStart) {
-          tokener.RestoreState(state);
-        } else {
-          tokener.Commit(10, indexStart, indexTemp);
-        }
+      if (tokener != null && indexTemp == indexStart) {
+        tokener.RestoreState(state);
       }
       return indexTemp;
     }
@@ -402,7 +398,7 @@ namespace PeterO.Mail {
         if (indexTemp == indexStart) {
           tokener.RestoreState(state);
         } else {
-          tokener.Commit(1, indexStart, indexTemp);
+          tokener.Commit(2, indexStart, indexTemp);
         }
       }
       return indexTemp;
@@ -3661,7 +3657,7 @@ namespace PeterO.Mail {
         if (indexTemp == indexStart) {
           tokener.RestoreState(state);
         } else {
-          tokener.Commit(2, indexStart, indexTemp);
+          tokener.Commit(1, indexStart, indexTemp);
         }
       }
       return indexTemp;

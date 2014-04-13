@@ -304,7 +304,7 @@ namespace MailLibTest
     public void TestWordWrapOne(string firstWord, string nextWords, string expected) {
       var ww = new WordWrapEncoder(firstWord);
       ww.AddString(nextWords);
-      Console.WriteLine(ww.ToString());
+      //Console.WriteLine(ww.ToString());
       Assert.AreEqual(expected, ww.ToString());
     }
 
@@ -455,56 +455,56 @@ namespace MailLibTest
     public void TestEncodedWordsPhrase(string expected, string input) {
       Assert.AreEqual(
         expected + " <test@example.com>",
-        HeaderFields.GetParser("from").ReplaceEncodedWords(input + " <test@example.com>"));
+        HeaderFields.GetParser("from").DecodeEncodedWords(input + " <test@example.com>"));
     }
 
     public void TestEncodedWordsOne(string expected, string input) {
       string par = "(";
-      Assert.AreEqual(expected, Message.ReplaceEncodedWords(input));
+      Assert.AreEqual(expected, Rfc2047.DecodeEncodedWords(input, 0, input.Length, EncodedWordContext.Unstructured));
       Assert.AreEqual(
         "(" + expected + ") en",
-        HeaderFields.GetParser("content-language").ReplaceEncodedWords("(" + input + ") en"));
+        HeaderFields.GetParser("content-language").DecodeEncodedWords("(" + input + ") en"));
       Assert.AreEqual(
         " (" + expected + ") en",
-        HeaderFields.GetParser("content-language").ReplaceEncodedWords(" (" + input + ") en"));
+        HeaderFields.GetParser("content-language").DecodeEncodedWords(" (" + input + ") en"));
       Assert.AreEqual(
         " " + par + "comment " + par + "cmt " + expected + ")comment) en",
-        HeaderFields.GetParser("content-language").ReplaceEncodedWords(" (comment (cmt " + input + ")comment) en"));
+        HeaderFields.GetParser("content-language").DecodeEncodedWords(" (comment (cmt " + input + ")comment) en"));
       Assert.AreEqual(
         " " + par + "comment " + par + "=?bad?= " + expected + ")comment) en",
-        HeaderFields.GetParser("content-language").ReplaceEncodedWords(" (comment (=?bad?= " + input + ")comment) en"));
+        HeaderFields.GetParser("content-language").DecodeEncodedWords(" (comment (=?bad?= " + input + ")comment) en"));
       Assert.AreEqual(
         " " + par + "comment " + par + String.Empty + expected + ")comment) en",
-        HeaderFields.GetParser("content-language").ReplaceEncodedWords(" (comment (" + input + ")comment) en"));
+        HeaderFields.GetParser("content-language").DecodeEncodedWords(" (comment (" + input + ")comment) en"));
       Assert.AreEqual(
         " (" + expected + "()) en",
-        HeaderFields.GetParser("content-language").ReplaceEncodedWords(" (" + input + "()) en"));
+        HeaderFields.GetParser("content-language").DecodeEncodedWords(" (" + input + "()) en"));
       Assert.AreEqual(
         " en (" + expected + ")",
-        HeaderFields.GetParser("content-language").ReplaceEncodedWords(" en (" + input + ")"));
+        HeaderFields.GetParser("content-language").DecodeEncodedWords(" en (" + input + ")"));
       Assert.AreEqual(
         expected,
-        HeaderFields.GetParser("subject").ReplaceEncodedWords(input));
+        HeaderFields.GetParser("subject").DecodeEncodedWords(input));
     }
 
     [Test]
     public void TestCommentsToWords() {
       string par = "(";
-      Assert.AreEqual("(=?utf-8?q?x?=)", Message.ConvertCommentsToEncodedWords("(x)"));
-      Assert.AreEqual("(=?utf-8?q?xy?=)", Message.ConvertCommentsToEncodedWords("(x\\y)"));
-      Assert.AreEqual("(=?utf-8?q?x_y?=)", Message.ConvertCommentsToEncodedWords("(x\r\n y)"));
-      Assert.AreEqual("(=?utf-8?q?x=C2=A0?=)", Message.ConvertCommentsToEncodedWords("(x\u00a0)"));
-      Assert.AreEqual("(=?utf-8?q?x=C2=A0?=)", Message.ConvertCommentsToEncodedWords("(x\\\u00a0)"));
-      Assert.AreEqual("(=?utf-8?q?x?=())", Message.ConvertCommentsToEncodedWords("(x())"));
-      Assert.AreEqual("(=?utf-8?q?x?=()=?utf-8?q?y?=)", Message.ConvertCommentsToEncodedWords("(x()y)"));
-      Assert.AreEqual("(=?utf-8?q?x?=(=?utf-8?q?ab?=)=?utf-8?q?y?=)", Message.ConvertCommentsToEncodedWords("(x(a\\b)y)"));
+      Assert.AreEqual("(=?utf-8?Q?x?=)", Message.ConvertCommentsToEncodedWords("(x)"));
+      Assert.AreEqual("(=?utf-8?Q?xy?=)", Message.ConvertCommentsToEncodedWords("(x\\y)"));
+      Assert.AreEqual("(=?utf-8?Q?x_y?=)", Message.ConvertCommentsToEncodedWords("(x\r\n y)"));
+      Assert.AreEqual("(=?utf-8?Q?x=C2=A0?=)", Message.ConvertCommentsToEncodedWords("(x\u00a0)"));
+      Assert.AreEqual("(=?utf-8?Q?x=C2=A0?=)", Message.ConvertCommentsToEncodedWords("(x\\\u00a0)"));
+      Assert.AreEqual("(=?utf-8?Q?x?=())", Message.ConvertCommentsToEncodedWords("(x())"));
+      Assert.AreEqual("(=?utf-8?Q?x?=()=?utf-8?Q?y?=)", Message.ConvertCommentsToEncodedWords("(x()y)"));
+      Assert.AreEqual("(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)", Message.ConvertCommentsToEncodedWords("(x(a\\b)y)"));
       Assert.AreEqual("()", Message.ConvertCommentsToEncodedWords("()"));
       Assert.AreEqual("(test) x@x.example", HeaderFields.GetParser("from").DowngradeFieldValue("(test) x@x.example"));
       Assert.AreEqual(
-        "(=?utf-8?q?tes=C2=BEt?=) x@x.example",
+        "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
         HeaderFields.GetParser("from").DowngradeFieldValue("(tes\u00bet) x@x.example"));
       Assert.AreEqual(
-        "(=?utf-8?q?tes=C2=BEt?=) en",
+        "(=?utf-8?Q?tes=C2=BEt?=) en",
         HeaderFields.GetParser("content-language").DowngradeFieldValue("(tes\u00bet) en"));
       Assert.AreEqual(
         par + "tes\u00bet) x@x.example",
@@ -513,44 +513,44 @@ namespace MailLibTest
         "(comment) Test <x@x.example>",
         HeaderFields.GetParser("from").DowngradeFieldValue("(comment) Test <x@x.example>"));
       Assert.AreEqual(
-        "(comment) =?utf-8?q?Tes=C2=BEt?= <x@x.example>",
+        "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
         HeaderFields.GetParser("from").DowngradeFieldValue("(comment) Tes\u00bet <x@x.example>"));
       Assert.AreEqual(
-        "(comment) =?utf-8?q?Tes=C2=BEt_Subject?= <x@x.example>",
+        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
         HeaderFields.GetParser("from").DowngradeFieldValue("(comment) Tes\u00bet Subject <x@x.example>"));
       Assert.AreEqual(
-        "(comment) =?utf-8?q?Test_Sub=C2=BEject?= <x@x.example>",
+        "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
         HeaderFields.GetParser("from").DowngradeFieldValue("(comment) Test Sub\u00beject <x@x.example>"));
       Assert.AreEqual(
-        "(comment) =?utf-8?q?Tes=C2=BEt?= <x@x.example>",
+        "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
         HeaderFields.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet\" <x@x.example>"));
       Assert.AreEqual(
-        "(comment) =?utf-8?q?Tes=C2=BEt_Subject?= <x@x.example>",
+        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
         HeaderFields.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet Subject\" <x@x.example>"));
       Assert.AreEqual(
-        "(comment) =?utf-8?q?Test_Sub=C2=BEject?= <x@x.example>",
+        "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
         HeaderFields.GetParser("from").DowngradeFieldValue("(comment) \"Test Sub\u00beject\" <x@x.example>"));
       Assert.AreEqual(
-        "(comment) =?utf-8?q?Tes=C2=BEt___Subject?= <x@x.example>",
+        "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
         HeaderFields.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet   Subject\" <x@x.example>"));
       Assert.AreEqual(
-        "(comment) =?utf-8?q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
         HeaderFields.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>"));
       Assert.AreEqual(
-        "=?utf-8?q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+        "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
         HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" (comment) <x@x.example>"));
     }
 
     private void TestParseCommentStrictCore(string input) {
-      Assert.AreEqual(input.Length, Message.ParseCommentStrict(input, 0, input.Length), input);
+      Assert.AreEqual(input.Length, HeaderParserUtility.ParseCommentStrict(input, 0, input.Length), input);
     }
     [Test]
     public void TestParseCommentStrict() {
       TestParseCommentStrictCore("(y)");
       TestParseCommentStrictCore("(e\\y)");
       TestParseCommentStrictCore("(a(b)c)");
-      TestParseCommentStrictCore("(())");
-      TestParseCommentStrictCore("((x))");
+      TestParseCommentStrictCore("()");
+      TestParseCommentStrictCore("(x)");
     }
 
     [Test]
@@ -565,36 +565,36 @@ namespace MailLibTest
       this.TestEncodedWordsPhrase(" xy", " =?us-ascii?q?x?= =?us-ascii?q?y?=");
       this.TestEncodedWordsPhrase("xy (sss)", "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
       this.TestEncodedWordsPhrase("x (sss) y", "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
-      this.TestEncodedWordsPhrase("x (z) y", "=?us-ascii?q?x?= (=?utf-8?q?z?=) =?us-ascii?q?y?=");
+      this.TestEncodedWordsPhrase("x (z) y", "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
       this.TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + par + "sss)=?us-ascii?q?y?=",
         "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
       this.TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + par + "z)=?us-ascii?q?y?=",
-        "=?us-ascii?q?x?=(=?utf-8?q?z?=)=?us-ascii?q?y?=");
+        "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
       this.TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + par + "z) y",
-        "=?us-ascii?q?x?=(=?utf-8?q?z?=) =?us-ascii?q?y?=");
-      this.TestEncodedWordsOne("x y", "=?utf-8?q?x_?= =?utf-8?q?y?=");
+        "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+      this.TestEncodedWordsOne("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
       this.TestEncodedWordsOne("abcde abcde", "abcde abcde");
       this.TestEncodedWordsOne("abcde", "abcde");
-      this.TestEncodedWordsOne("abcde", "=?utf-8?q?abcde?=");
-      this.TestEncodedWordsOne("=?utf-8?q?abcde?=extra", "=?utf-8?q?abcde?=extra");
-      this.TestEncodedWordsOne("abcde ", "=?utf-8?q?abcde?= ");
-      this.TestEncodedWordsOne(" abcde", " =?utf-8?q?abcde?=");
-      this.TestEncodedWordsOne(" abcde", " =?utf-8?q?abcde?=");
-      this.TestEncodedWordsOne("ab\u00a0de", "=?utf-8?q?ab=C2=A0de?=");
-      this.TestEncodedWordsOne("xy", "=?utf-8?q?x?= =?utf-8?q?y?=");
-      this.TestEncodedWordsOne("x y", "x =?utf-8?q?y?=");
-      this.TestEncodedWordsOne("x y", "x =?utf-8?q?y?=");
-      this.TestEncodedWordsOne("x y", "=?utf-8?q?x?= y");
-      this.TestEncodedWordsOne("x y", "=?utf-8?q?x?= y");
-      this.TestEncodedWordsOne("xy", "=?utf-8?q?x?= =?utf-8?q?y?=");
-      this.TestEncodedWordsOne("abc de", "=?utf-8?q?abc=20de?=");
-      this.TestEncodedWordsOne("abc de", "=?utf-8?q?abc_de?=");
+      this.TestEncodedWordsOne("abcde", "=?utf-8?Q?abcde?=");
+      this.TestEncodedWordsOne("=?utf-8?Q?abcde?=extra", "=?utf-8?Q?abcde?=extra");
+      this.TestEncodedWordsOne("abcde ", "=?utf-8?Q?abcde?= ");
+      this.TestEncodedWordsOne(" abcde", " =?utf-8?Q?abcde?=");
+      this.TestEncodedWordsOne(" abcde", " =?utf-8?Q?abcde?=");
+      this.TestEncodedWordsOne("ab\u00a0de", "=?utf-8?Q?ab=C2=A0de?=");
+      this.TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
+      this.TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
+      this.TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
+      this.TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
+      this.TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
+      this.TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
+      this.TestEncodedWordsOne("abc de", "=?utf-8?Q?abc=20de?=");
+      this.TestEncodedWordsOne("abc de", "=?utf-8?Q?abc_de?=");
       this.TestEncodedWordsOne("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
       this.TestEncodedWordsOne("=?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?=");
-      this.TestEncodedWordsOne("=?utf-8?q?" + this.Repeat("x", 200) + "?=", "=?utf-8?q?" + this.Repeat("x", 200) + "?=");
+      this.TestEncodedWordsOne("=?utf-8?Q?" + this.Repeat("x", 200) + "?=", "=?utf-8?Q?" + this.Repeat("x", 200) + "?=");
     }
 
     [Test]

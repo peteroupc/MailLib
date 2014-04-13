@@ -13,12 +13,12 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-    /// <summary>Represents an email message. <para><b>Thread safety:</b>
-    /// This class is mutable; its properties can be changed. None of its methods
-    /// are designed to be thread safe. Therefore, access to objects from
-    /// this class must be synchronized if multiple threads can access them
-    /// at the same time.</para>
-    /// </summary>
+  /// <summary>Represents an email message. <para><b>Thread safety:</b>
+  /// This class is mutable; its properties can be changed. None of its methods
+  /// are designed to be thread safe. Therefore, access to objects from
+  /// this class must be synchronized if multiple threads can access them
+  /// at the same time.</para>
+  /// </summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -190,173 +190,6 @@ namespace PeterO.Mail
       this.parts = new List<Message>();
     }
 
-    private static bool HasSuspiciousTextInComments(string str) {
-      for (int i = 0; i < str.Length; ++i) {
-        char c = str[i];
-        if ((c < 0x20 && c != '\t') || c == '(' || c == ')' || c == '\\' || c == 0x7f) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    private static bool HasSuspiciousTextInStructured(string str) {
-      for (int i = 0; i < str.Length; ++i) {
-        char c = str[i];
-        if ((c < 0x20 && c == '\t') || c == 0x28 || c == 0x29 || c == 0x3c || c == 0x3e ||
-            c == 0x5b || c == 0x5d || c == 0x3a || c == 0x3b || c == 0x40 || c == 0x5c || c == 0x2c || c == 0x2e || c == '"') {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    internal static int ParseCommentStrict(string str, int index, int endIndex) {
-      int indexStart = index;
-      int indexTemp = index;
-      do {
-        if (index < endIndex && (str[index] == 40)) {
-          ++index;
-        } else {
-          break;
-        }
-        int depth = 0;
-        while (true) {
-          int indexTemp2 = index;
-          do {
-            int indexStart2 = index;
-            do {
-              int indexTemp3 = index;
-              do {
-                int indexStart3 = index;
-                do {
-                  int indexTemp4;
-                  indexTemp4 = index;
-                  do {
-                    int indexStart4 = index;
-                    while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
-                      ++index;
-                    }
-                    if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
-                      index += 2;
-                    } else {
-                      index = indexStart4; break;
-                    }
-                    indexTemp4 = index;
-                    index = indexStart4;
-                  } while (false);
-                  if (indexTemp4 != index) {
-                    index = indexTemp4;
-                  } else { break;
-                  }
-                } while (false);
-                if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
-                  ++index;
-                  while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
-                    ++index;
-                  }
-                } else {
-                  index = indexStart3; break;
-                }
-                indexTemp3 = index;
-                index = indexStart3;
-              } while (false);
-              if (indexTemp3 != index) {
-                index = indexTemp3;
-              } else { break;
-              }
-            } while (false);
-            do {
-              int indexTemp3 = index;
-              do {
-                int indexStart3 = index;
-                int indexTemp4;
-                indexTemp4 = index;
-                do {
-                  int indexStart4 = index;
-                  if (index < endIndex && (str[index] == 92)) {
-                    ++index;
-                  } else {
-                    break;
-                  }
-                  do {
-                    int indexTemp5;
-                    indexTemp5 = index;
-                    do {
-                      int indexStart5 = index;
-                      if (index < endIndex && ((str[index] == 32) || (str[index] == 9) || (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
-                        ++indexTemp5; break;
-                      }
-                      if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
-                        indexTemp5 += 2; break;
-                      }
-                      if (index < endIndex && (str[index] >= 33 && str[index] <= 126)) {
-                        ++indexTemp5; break;
-                      }
-                    } while (false);
-                    if (indexTemp5 != index) {
-                      index = indexTemp5;
-                    } else {
-                      index = indexStart4; break;
-                    }
-                  } while (false);
-                  if (index == indexStart4) {
-                    break;
-                  }
-                  indexTemp4 = index;
-                  index = indexStart4;
-                } while (false);
-                if (indexTemp4 != index) {
-                  indexTemp3 = indexTemp4; break;
-                }
-                if (index < endIndex && str[index] == 41) {
-                  // End of current comment
-                  ++indexTemp3;
-                  --depth;
-                  if (depth < 0) {
-                    return indexTemp3;
-                  }
-                  break;
-                }
-                if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
-                  ++indexTemp3; break;
-                }
-                if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
-                  indexTemp3 += 2; break;
-                }
-                if (index < endIndex && str[index] == 40) {
-                  // Start of nested comment
-                  ++indexTemp3;
-                  ++depth;
-                  break;
-                }
-                if (index < endIndex && ((str[index] >= 93 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 91) || (str[index] >= 33 && str[index] <= 39))) {
-                  ++indexTemp3; break;
-                }
-              } while (false);
-              if (indexTemp3 != index) {
-                index = indexTemp3;
-              } else {
-                index = indexStart2; break;
-              }
-            } while (false);
-            if (index == indexStart2) {
-              break;
-            }
-            indexTemp2 = index;
-            index = indexStart2;
-          } while (false);
-          if (indexTemp2 != index) {
-            index = indexTemp2;
-          } else {
-            break;
-          }
-        }
-        indexTemp = index;
-      } while (false);
-      return indexTemp;
-    }
-
     /// <summary>Returns the mail message contained in this message's body.</summary>
     /// <returns>A message object if this object's content type is "message/rfc822",
     /// or null otherwise.</returns>
@@ -368,227 +201,6 @@ namespace PeterO.Mail
         }
       }
       return null;
-    }
-
-    internal static string ReplaceEncodedWords(string str) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      return ReplaceEncodedWords(str, 0, str.Length, false);
-    }
-
-    internal static string ReplaceEncodedWords(string str, int index, int endIndex, bool inComments) {
-      #if DEBUG
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
-      }
-      if (index > str.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      if (endIndex < 0) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
-      }
-      if (endIndex > str.Length) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      #endif
-
-      if (endIndex - index < 9) {
-        return str.Substring(index, endIndex - index);
-      }
-      if (str.IndexOf('=') < 0) {
-        return str.Substring(index, endIndex - index);
-      }
-      int start = index;
-      StringBuilder builder = new StringBuilder();
-      bool hasSuspiciousText = false;
-      bool lastWordWasEncodedWord = false;
-      int whitespaceStart = -1;
-      int whitespaceEnd = -1;
-      while (index < endIndex) {
-        int charCount = 2;
-        bool acceptedEncodedWord = false;
-        string decodedWord = null;
-        int startIndex = 0;
-        bool havePossibleEncodedWord = false;
-        bool startParen = false;
-        if (index + 1 < endIndex && str[index] == '=' && str[index + 1] == '?') {
-          startIndex = index + 2;
-          index += 2;
-          havePossibleEncodedWord = true;
-        } else if (inComments && index + 2 < endIndex && str[index] == '(' &&
-                   str[index + 1] == '=' && str[index + 2] == '?') {
-          startIndex = index + 3;
-          index += 3;
-          startParen = true;
-          havePossibleEncodedWord = true;
-        }
-        if (havePossibleEncodedWord) {
-          bool maybeWord = true;
-          int afterLast = endIndex;
-          while (index < endIndex) {
-            char c = str[index];
-            ++index;
-            // Check for a run of printable ASCII characters (except space)
-            // with length up to 75 (also exclude '(' and ')' if 'inComments'
-            // is true)
-            if (c >= 0x21 && c < 0x7e && (!inComments || (c != '(' && c != ')'))) {
-              ++charCount;
-              if (charCount > 75) {
-                maybeWord = false;
-                index = startIndex - 2;
-                break;
-              }
-            } else {
-              afterLast = index - 1;
-              break;
-            }
-          }
-          if (maybeWord) {
-            // May be an encoded word
-            // Console.WriteLine("maybe "+str.Substring(startIndex-2,afterLast-(startIndex-2)));
-            index = startIndex;
-            int i2;
-            // Parse charset
-            // (NOTE: Compatible with RFC 2231's addition of language
-            // to charset, since charset is defined as a 'token' in
-            // RFC 2047, which includes '*')
-            int charsetEnd = -1;
-            int encodedTextStart = -1;
-            bool base64 = false;
-            i2 = MediaType.skipMimeTokenRfc2047(str, index, afterLast);
-            if (i2 != index && i2 < endIndex && str[i2] == '?') {
-              // Parse encoding
-              charsetEnd = i2;
-              index = i2 + 1;
-              i2 = MediaType.skipMimeTokenRfc2047(str, index, afterLast);
-              if (i2 != index && i2 < endIndex && str[i2] == '?') {
-                // check for supported encoding (B or Q)
-                char encodingChar = str[index];
-                if (i2 - index == 1 && (encodingChar == 'b' || encodingChar == 'B' ||
-                                        encodingChar == 'q' || encodingChar == 'Q')) {
-                  // Parse encoded text
-                  base64 = encodingChar == 'b' || encodingChar == 'B';
-                  index = i2 + 1;
-                  encodedTextStart = index;
-                  i2 = MediaType.skipEncodedTextRfc2047(str, index, afterLast, inComments);
-                  if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
-                      i2 + 2 == afterLast) {
-                    acceptedEncodedWord = true;
-                    i2 += 2;
-                  }
-                }
-              }
-            }
-            if (acceptedEncodedWord) {
-              string charset = str.Substring(startIndex, charsetEnd - startIndex);
-              string encodedText = str.Substring(
-                encodedTextStart,
-                (afterLast - 2) - encodedTextStart);
-              int asterisk = charset.IndexOf('*');
-              if (asterisk >= 1) {
-                charset = str.Substring(0, asterisk);
-                string language = str.Substring(asterisk + 1, str.Length - (asterisk + 1));
-                if (!ParserUtility.IsValidLanguageTag(language)) {
-                  acceptedEncodedWord = false;
-                }
-              } else if (asterisk == 0) {
-                // Impossible, a charset can't start with an asterisk
-                acceptedEncodedWord = false;
-              }
-              if (acceptedEncodedWord) {
-                ITransform transform = base64 ?
-                  (ITransform)new BEncodingStringTransform(encodedText) :
-                  (ITransform)new QEncodingStringTransform(encodedText);
-                Charsets.ICharset encoding = Charsets.GetCharset(charset);
-                if (encoding == null) {
-                  // Console.WriteLine("Unknown charset " + charset);
-                  decodedWord = str.Substring(startIndex - 2, afterLast - (startIndex - 2));
-                } else {
-                  // Console.WriteLine("Encoded " + (base64 ? "B" : "Q") + " to: " + (encoding.GetString(transform)));
-                  decodedWord = encoding.GetString(transform);
-                  // TODO: Check for suspicious text in phrases of structured
-                  // header fields
-                  // decodedWord may itself be part of an encoded word
-                  // or contain ASCII control characters: encoded word decoding is
-                  // not idempotent; if this is a comment it could also contain '(', ')', and '\'
-                  if (!hasSuspiciousText) {
-                    // Check for text in the decoded string
-                    // that could render the comment syntactically invalid (the encoded
-                    // word could even encode ASCII control characters and specials)
-                    if (inComments && HasSuspiciousTextInComments(decodedWord)) {
-                      hasSuspiciousText = true;
-                    }
-                  }
-                }
-              } else {
-                decodedWord = str.Substring(startIndex - 2, afterLast - (startIndex - 2));
-              }
-            } else {
-              decodedWord = str.Substring(startIndex - 2, afterLast - (startIndex - 2));
-            }
-            index = afterLast;
-          }
-        }
-        if (whitespaceStart >= 0 && whitespaceStart < whitespaceEnd &&
-            (!acceptedEncodedWord || !lastWordWasEncodedWord)) {
-          // Append whitespace as long as it doesn't occur between two
-          // encoded words
-          builder.Append(str.Substring(whitespaceStart, whitespaceEnd - whitespaceStart));
-        }
-        if (startParen) {
-          builder.Append('(');
-        }
-        if (decodedWord != null) {
-          builder.Append(decodedWord);
-        }
-        // Console.WriteLine(builder);
-        // Console.WriteLine("" + index + " " + endIndex + " [" + (index<endIndex ? str[index] : '~') + "]");
-        // Read to whitespace
-        int oldIndex = index;
-        while (index < endIndex) {
-          char c = str[index];
-          if (c == 0x0d && index + 1 < endIndex && str[index + 1] == 0x0a) {
-            break;
-          } else if (c == 0x09 || c == 0x20) {
-            break;
-          } else {
-            ++index;
-          }
-        }
-        bool hasNonWhitespace = oldIndex != index;
-        whitespaceStart = index;
-        // Read to nonwhitespace
-        index = HeaderParser.ParseFWS(str, index, endIndex, null);
-        whitespaceEnd = index;
-        if (builder.Length == 0 && oldIndex == 0 && index == str.Length) {
-          // Nothing to replace, and the whole string
-          // is being checked
-          return str;
-        }
-        if (oldIndex != index) {
-          // Append nonwhitespace only, unless this is the end
-          if (index == endIndex) {
-            builder.Append(str.Substring(oldIndex, index - oldIndex));
-          } else {
-            builder.Append(str.Substring(oldIndex, whitespaceStart - oldIndex));
-          }
-        }
-        lastWordWasEncodedWord = acceptedEncodedWord;
-      }
-      string retval = builder.ToString();
-      if (hasSuspiciousText) {
-        string wrappedComment = "(" + retval + ")";
-        if (ParseCommentStrict(wrappedComment, 0, wrappedComment.Length) != wrappedComment.Length) {
-          // Comment is syntactically invalid after decoding, so
-          // don't decode any of the encoded words
-          return str.Substring(start, endIndex - start);
-        }
-      }
-      return retval;
     }
 
     private MediaType contentType;
@@ -625,17 +237,17 @@ namespace PeterO.Mail
             // throw new MessageDataException("Invalid From header: "+value);
           }
         }
-        if (name.Equals("to") && !ParserUtility.IsNullEmptyOrWhitespace(value)) {
+        if (name.Equals("to") && !ParserUtility.IsNullEmptyOrSpaceTabOnly(value)) {
           if (HeaderParser.ParseHeaderTo(value, 0, value.Length, null) == 0) {
             throw new MessageDataException("Invalid To header: " + value);
           }
         }
-        if (name.Equals("cc") && !ParserUtility.IsNullEmptyOrWhitespace(value)) {
+        if (name.Equals("cc") && !ParserUtility.IsNullEmptyOrSpaceTabOnly(value)) {
           if (HeaderParser.ParseHeaderCc(value, 0, value.Length, null) == 0) {
             throw new MessageDataException("Invalid Cc header: " + value);
           }
         }
-        if (name.Equals("bcc") && !ParserUtility.IsNullEmptyOrWhitespace(value)) {
+        if (name.Equals("bcc") && !ParserUtility.IsNullEmptyOrSpaceTabOnly(value)) {
           if (HeaderParser.ParseHeaderBcc(value, 0, value.Length, null) == 0) {
             throw new MessageDataException("Invalid Bcc header: " + value);
           }
@@ -654,11 +266,11 @@ namespace PeterO.Mail
         }
         if (value.IndexOf("=?") >= 0) {
           if (!HeaderFields.GetParser(name).IsStructured()) {
-            // Replace encoded words where they appear in unstructured
+            // Decode encoded words where they appear in unstructured
             // header fields
-            // TODO: Also replace encoded words in structured header
+            // TODO: Also decode encoded words in structured header
             // fields (at least in phrases and maybe also comments)
-            value = ReplaceEncodedWords(value);
+            value = Rfc2047.DecodeEncodedWords(value, 0, value.Length, EncodedWordContext.Unstructured);
             this.headers[i + 1] = value;
           }
         }
@@ -819,17 +431,16 @@ namespace PeterO.Mail
       return builder.ToString();
     }
 
+    /// <summary>Returns true if the string has: * non-ASCII characters
+    /// * "=?" * CTLs other than tab, or * a word longer than 75 characters. Can
+    /// return false even if the string has: * CRLF followed by a line with just
+    /// whitespace.</summary>
+    /// <param name='s'>A string object.</param>
+    /// <returns>A Boolean object.</returns>
     internal static bool HasTextToEscape(string s) {
       return HasTextToEscape(s, 0, s.Length);
     }
 
-    // Returns true if the string has:
-    // * non-ASCII characters
-    // * "=?"
-    // * CTLs other than tab, or
-    // * a word longer than 75 characters
-    // Can return false even if the string has:
-    // * CRLF followed by a line with just whitespace
     internal static bool HasTextToEscape(string s, int index, int endIndex) {
       int len = endIndex;
       int chunkLength = 0;
@@ -1191,6 +802,9 @@ namespace PeterO.Mail
       if (topLevel.Equals("message") || topLevel.Equals("multipart")) {
         return EncodingSevenBit;
       }
+      if (this.body == null || this.body.Length == 0) {
+        return EncodingSevenBit;
+      }
       if (topLevel.Equals("text")) {
         int lengthCheck = Math.Min(this.body.Length, 4096);
         int highBytes = 0;
@@ -1234,6 +848,62 @@ namespace PeterO.Mail
       return EncodingBase64;
     }
 
+    internal string GenerateAddressList(IList<NamedAddress> list) {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i<list.Count; ++i) {
+        if (i > 0) {
+          sb.Append(", ");
+        }
+        sb.Append(list[i].ToString());
+      }
+      return sb.ToString();
+    }
+
+    internal string GenerateAbbreviatedHeaders() {
+      StringBuilder sb = new StringBuilder();
+      var listFrom = this.GenerateAddressList(this.FromAddresses);
+      var listTo = this.GenerateAddressList(this.ToAddresses);
+      var listCc = this.GenerateAddressList(this.CcAddresses);
+      string oldFrom=this.GetHeader("from");
+      string oldTo=this.GetHeader("to");
+      string oldCC=this.GetHeader("cc");
+      this.headers.Clear();
+      if (oldFrom != null) {
+        this.SetHeader("x-old-from",oldFrom);
+      }
+      if (oldTo != null) {
+        this.SetHeader("x-old-to",oldTo);
+      }
+      if (oldCC != null) {
+        this.SetHeader("x-old-cc",oldCC);
+      }
+      try {
+        if (!String.IsNullOrEmpty(listFrom)) {
+          this.SetHeader("from",listFrom);
+        }
+      } catch (ArgumentException ex) {
+        throw new MessageDataException(ex.Message + "\r\n"+listFrom,ex);
+      }
+      try {
+        if (!String.IsNullOrEmpty(listTo)) {
+          this.SetHeader("to",listTo);
+        }
+      } catch (ArgumentException ex) {
+        throw new MessageDataException(ex.Message + "\r\n"+listTo,ex);
+      }
+      try {
+        if (!String.IsNullOrEmpty(listCc)) {
+          this.SetHeader("cc", listCc);
+        }
+      } catch (ArgumentException ex) {
+        throw new MessageDataException(ex.Message + "\r\n"+listCc, ex);
+      }
+      this.ContentType = MediaType.Parse("text/plain");
+      string newHeaders = this.GenerateHeaders();
+      Message newMessage = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(newHeaders, true)));
+      return String.Empty;
+    }
+
     /// <summary>Not documented yet.</summary>
     /// <returns>A string object.</returns>
     public string GenerateHeaders() {
@@ -1248,11 +918,11 @@ namespace PeterO.Mail
         IHeaderFieldParser parser = HeaderFields.GetParser(name);
         if (!parser.IsStructured()) {
           // Outputting an unstructured header field
-          if (CanOutputRaw(name + ":" + value)) {
+          string rawField = Capitalize(name)+":"+value;
+          if (CanOutputRaw(rawField)) {
             // TODO: Try to preserve header field name (before the colon)
-            sb.Append(Capitalize(name));
-            sb.Append(':');
-            sb.Append(value);
+            sb.Append(rawField);
+            sb.Append("\r\n");
           } else {
             var encoder = new WordWrapEncoder(Capitalize(name) + ":");
             // If this header field contains text that must be
@@ -1471,8 +1141,8 @@ namespace PeterO.Mail
     private class MessageStackEntry {
       private Message message;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public Message Message {
         get {
           return this.message;
@@ -1481,8 +1151,8 @@ namespace PeterO.Mail
 
       private string boundary;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public string Boundary {
         get {
           return this.boundary;

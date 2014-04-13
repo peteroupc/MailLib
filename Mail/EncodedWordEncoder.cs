@@ -56,7 +56,7 @@ namespace PeterO.Mail
         this.fullString.Append(this.currentWord);
         this.fullString.Append("?=");
         this.currentWord.Remove(0, this.currentWord.Length);
-        this.currentWord.Append("=?utf-8?q?");
+        this.currentWord.Append("=?utf-8?Q?");
         this.spaceCount = 1;
       }
     }
@@ -98,7 +98,7 @@ namespace PeterO.Mail
       if (!String.IsNullOrEmpty(str)) {
         this.FinalizeEncoding();
         this.currentWord.Append(str);
-        this.currentWord.Append("=?utf-8?q?");
+        this.currentWord.Append("=?utf-8?Q?");
         this.spaceCount = 0;
       }
       return this;
@@ -155,7 +155,7 @@ namespace PeterO.Mail
     /// <param name='ch'>A 32-bit signed integer.</param>
     public void AddChar(int ch) {
       if (this.currentWord.Length == 0) {
-        this.currentWord.Append("=?utf-8?q?");
+        this.currentWord.Append("=?utf-8?Q?");
       }
       if (ch == 0x20) {
         this.AppendChar('_');
