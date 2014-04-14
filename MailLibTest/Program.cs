@@ -13,6 +13,7 @@ namespace MailLibTest
   class Program
   {
     public static void Main(string[] args) {
+      //new EncodingTest().TestMessage();
     }
   }
 }

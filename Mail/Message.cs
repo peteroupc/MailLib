@@ -13,12 +13,12 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-  /// <summary>Represents an email message. <para><b>Thread safety:</b>
-  /// This class is mutable; its properties can be changed. None of its methods
-  /// are designed to be thread safe. Therefore, access to objects from
-  /// this class must be synchronized if multiple threads can access them
-  /// at the same time.</para>
-  /// </summary>
+    /// <summary>Represents an email message. <para><b>Thread safety:</b>
+    /// This class is mutable; its properties can be changed. None of its methods
+    /// are designed to be thread safe. Therefore, access to objects from
+    /// this class must be synchronized if multiple threads can access them
+    /// at the same time.</para>
+    /// </summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -104,33 +104,27 @@ namespace PeterO.Mail
     /// <value>A value not documented yet.</value>
     public IList<NamedAddress> FromAddresses {
       get {
-        Tokener tokener = new Tokener();
-        string value = this.GetHeader("from");
-        if (value == null) {
-          return new List<NamedAddress>();
-        }
-        if (HeaderParser.ParseHeaderFrom(value, 0, value.Length, tokener) != value.Length) {
-          // Invalid syntax
-          return new List<NamedAddress>();
-        }
-        return HeaderParserUtility.ParseAddressList(value, 0, value.Length, tokener.GetTokens());
+        return this.ParseAddresses(this.GetHeader("from"));
       }
+    }
+
+    private IList<NamedAddress> ParseAddresses(string value) {
+      Tokener tokener = new Tokener();
+      if (value == null) {
+        return new List<NamedAddress>();
+      }
+      if (HeaderParser.ParseHeaderTo(value, 0, value.Length, tokener) != value.Length) {
+        // Invalid syntax
+        return new List<NamedAddress>();
+      }
+      return HeaderParserUtility.ParseAddressList(value, 0, value.Length, tokener.GetTokens());
     }
 
     /// <summary>Gets a value not documented yet.</summary>
     /// <value>A value not documented yet.</value>
     public IList<NamedAddress> ToAddresses {
       get {
-        Tokener tokener = new Tokener();
-        string value = this.GetHeader("to");
-        if (value == null) {
-          return new List<NamedAddress>();
-        }
-        if (HeaderParser.ParseHeaderTo(value, 0, value.Length, tokener) != value.Length) {
-          // Invalid syntax
-          return new List<NamedAddress>();
-        }
-        return HeaderParserUtility.ParseAddressList(value, 0, value.Length, tokener.GetTokens());
+        return this.ParseAddresses(this.GetHeader("to"));
       }
     }
 
@@ -138,16 +132,7 @@ namespace PeterO.Mail
     /// <value>A value not documented yet.</value>
     public IList<NamedAddress> CcAddresses {
       get {
-        Tokener tokener = new Tokener();
-        string value = this.GetHeader("cc");
-        if (value == null) {
-          return new List<NamedAddress>();
-        }
-        if (HeaderParser.ParseHeaderTo(value, 0, value.Length, tokener) != value.Length) {
-          // Invalid syntax
-          return new List<NamedAddress>();
-        }
-        return HeaderParserUtility.ParseAddressList(value, 0, value.Length, tokener.GetTokens());
+        return this.ParseAddresses(this.GetHeader("cc"));
       }
     }
 
@@ -155,16 +140,7 @@ namespace PeterO.Mail
     /// <value>A value not documented yet.</value>
     public IList<NamedAddress> BccAddresses {
       get {
-        Tokener tokener = new Tokener();
-        string value = this.GetHeader("bcc");
-        if (value == null || HeaderParser.ParseCFWS(value, 0, value.Length, null) == value.Length) {
-          return new List<NamedAddress>();
-        }
-        if (HeaderParser.ParseHeaderTo(value, 0, value.Length, tokener) != value.Length) {
-          // Invalid syntax
-          return new List<NamedAddress>();
-        }
-        return HeaderParserUtility.ParseAddressList(value, 0, value.Length, tokener.GetTokens());
+        return this.ParseAddresses(this.GetHeader("bcc"));
       }
     }
 
@@ -232,23 +208,23 @@ namespace PeterO.Mail
         string name = this.headers[i];
         string value = this.headers[i + 1];
         if (name.Equals("from")) {
-          if (HeaderParser.ParseHeaderFrom(value, 0, value.Length, null) == 0) {
+          if (HeaderParser.ParseHeaderFrom(value, 0, value.Length, null) != value.Length) {
             // Console.WriteLine(this.GetHeader("date"));
             // throw new MessageDataException("Invalid From header: "+value);
           }
         }
         if (name.Equals("to") && !ParserUtility.IsNullEmptyOrSpaceTabOnly(value)) {
-          if (HeaderParser.ParseHeaderTo(value, 0, value.Length, null) == 0) {
+          if (HeaderParser.ParseHeaderTo(value, 0, value.Length, null) != value.Length) {
             throw new MessageDataException("Invalid To header: " + value);
           }
         }
         if (name.Equals("cc") && !ParserUtility.IsNullEmptyOrSpaceTabOnly(value)) {
-          if (HeaderParser.ParseHeaderCc(value, 0, value.Length, null) == 0) {
+          if (HeaderParser.ParseHeaderCc(value, 0, value.Length, null) != value.Length) {
             throw new MessageDataException("Invalid Cc header: " + value);
           }
         }
         if (name.Equals("bcc") && !ParserUtility.IsNullEmptyOrSpaceTabOnly(value)) {
-          if (HeaderParser.ParseHeaderBcc(value, 0, value.Length, null) == 0) {
+          if (HeaderParser.ParseHeaderBcc(value, 0, value.Length, null) != value.Length) {
             throw new MessageDataException("Invalid Bcc header: " + value);
           }
         }
@@ -321,7 +297,9 @@ namespace PeterO.Mail
           }
           haveTo = true;
         } else if (name.Equals("subject")) {
-          if (haveSubject) {
+          if (haveSubject && value!=this.GetHeader("subject")) {
+            // DEVIATION: Don't throw an error unless
+            // the new subject is different from the existing one
             throw new MessageDataException("Already have this header: " + name);
           }
           haveSubject = true;
@@ -797,6 +775,25 @@ namespace PeterO.Mail
       return str.Length > 0 && (str[0] == ' ' || str[0] == 0x09 || str[0] == '\r');
     }
 
+    private static void CheckDiff(string a, string b) {
+      if (!a.Equals(b)) {
+        int pt = Math.Min(a.Length, b.Length);
+        for (int i = 0; i<Math.Min(a.Length, b.Length); ++i) {
+          if (a[i] != b[i]) {
+            pt = i;
+            break;
+          }
+        }
+        int sa = Math.Max(pt - 50, 0);
+        int salen = Math.Min(100, a.Length - sa);
+        int sblen = Math.Min(100, b.Length - sa);
+        throw new MessageDataException(
+          String.Format("Differs (
+length {0} vs. {1})\r\nA={2}\r\nB={3}",a.Length,b.Length,
+                        a.Substring(sa, salen), b.Substring(sa, sblen)));
+      }
+    }
+
     private int TransferEncodingToUse(bool isMultipartChild) {
       string topLevel = this.contentType.TopLevelType;
       if (topLevel.Equals("message") || topLevel.Equals("multipart")) {
@@ -850,7 +847,7 @@ namespace PeterO.Mail
 
     internal string GenerateAddressList(IList<NamedAddress> list) {
       StringBuilder sb = new StringBuilder();
-      for (int i = 0; i<list.Count; ++i) {
+      for (int i = 0; i < list.Count; ++i) {
         if (i > 0) {
           sb.Append(", ");
         }
@@ -861,46 +858,54 @@ namespace PeterO.Mail
 
     internal string GenerateAbbreviatedHeaders() {
       StringBuilder sb = new StringBuilder();
-      var listFrom = this.GenerateAddressList(this.FromAddresses);
+      string listFrom = null;
+      try {
+        listFrom = this.GenerateAddressList(this.FromAddresses);
+      } catch (ArgumentException ex) {
+        throw new MessageDataException(ex.Message + " "+this.GetHeader("from"),ex);
+      }
       var listTo = this.GenerateAddressList(this.ToAddresses);
       var listCc = this.GenerateAddressList(this.CcAddresses);
-      string oldFrom=this.GetHeader("from");
-      string oldTo=this.GetHeader("to");
-      string oldCC=this.GetHeader("cc");
+      string oldFrom = this.GetHeader("from");
+      string oldTo = this.GetHeader("to");
+      string oldCC = this.GetHeader("cc");
       this.headers.Clear();
       if (oldFrom != null) {
-        this.SetHeader("x-old-from",oldFrom);
+        this.SetHeader("x-old-from", oldFrom);
       }
       if (oldTo != null) {
-        this.SetHeader("x-old-to",oldTo);
+        this.SetHeader("x-old-to", oldTo);
       }
       if (oldCC != null) {
-        this.SetHeader("x-old-cc",oldCC);
+        this.SetHeader("x-old-cc", oldCC);
       }
       try {
         if (!String.IsNullOrEmpty(listFrom)) {
-          this.SetHeader("from",listFrom);
+          this.SetHeader("from", listFrom);
         }
       } catch (ArgumentException ex) {
-        throw new MessageDataException(ex.Message + "\r\n"+listFrom,ex);
+        throw new MessageDataException(ex.Message + "\r\n" + listFrom, ex);
       }
       try {
         if (!String.IsNullOrEmpty(listTo)) {
-          this.SetHeader("to",listTo);
+          this.SetHeader("to", listTo);
         }
       } catch (ArgumentException ex) {
-        throw new MessageDataException(ex.Message + "\r\n"+listTo,ex);
+        throw new MessageDataException(ex.Message + "\r\n" + listTo, ex);
       }
       try {
         if (!String.IsNullOrEmpty(listCc)) {
           this.SetHeader("cc", listCc);
         }
       } catch (ArgumentException ex) {
-        throw new MessageDataException(ex.Message + "\r\n"+listCc, ex);
+        throw new MessageDataException(ex.Message + "\r\n" + listCc, ex);
       }
       this.ContentType = MediaType.Parse("text/plain");
       string newHeaders = this.GenerateHeaders();
       Message newMessage = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(newHeaders, true)));
+      CheckDiff(listFrom, this.GenerateAddressList(newMessage.FromAddresses));
+      CheckDiff(listTo, this.GenerateAddressList(newMessage.ToAddresses));
+      CheckDiff(listCc, this.GenerateAddressList(newMessage.CcAddresses));
       return String.Empty;
     }
 
@@ -918,7 +923,8 @@ namespace PeterO.Mail
         IHeaderFieldParser parser = HeaderFields.GetParser(name);
         if (!parser.IsStructured()) {
           // Outputting an unstructured header field
-          string rawField = Capitalize(name)+":"+value;
+          string rawField = Capitalize(name) + ":" +
+            (this.StartsWithWhitespace(value) ? String.Empty : " ") + value;
           if (CanOutputRaw(rawField)) {
             // TODO: Try to preserve header field name (before the colon)
             sb.Append(rawField);
@@ -946,11 +952,11 @@ namespace PeterO.Mail
           // These header fields will be written later
         } else {
           // Outputting a structured header field
-          if (CanOutputRaw(name + ":" + value)) {
+          string rawField = Capitalize(name) + ":" +
+            (this.StartsWithWhitespace(value) ? String.Empty : " ") + value;
+          if (CanOutputRaw(rawField)) {
             // TODO: Try to preserve header field name (before the colon)
-            sb.Append(Capitalize(name));
-            sb.Append(':');
-            sb.Append(value);
+            sb.Append(rawField);
           } else if (HasTextToEscape(value)) {
             string downgraded = HeaderFields.GetParser(name).DowngradeFieldValue(value);
             // TODO: If the header field is still not downgraded,
@@ -958,7 +964,7 @@ namespace PeterO.Mail
             // Message-ID, Resent-Message-ID, In-Reply-To, References,
             // Original-Recipient, and Final-Recipient)
             var encoder = new WordWrapEncoder(Capitalize(name) + ":");
-            encoder.AddString(value);
+            encoder.AddString(downgraded);
             sb.Append(encoder.ToString());
           } else {
             var encoder = new WordWrapEncoder(Capitalize(name) + ":");
@@ -1128,7 +1134,8 @@ namespace PeterO.Mail
               // or other unstructured header field
               sb.Append('\ufffd');
             } else {
-              throw new MessageDataException("Malformed header field value " + sb.ToString());
+              throw new MessageDataException("Malformed header field value " + sb.ToString().Substring(
+                Math.Max(sb.Length - 100, 0)));
             }
           }
         }
@@ -1141,8 +1148,8 @@ namespace PeterO.Mail
     private class MessageStackEntry {
       private Message message;
 
-      /// <summary>Gets a value not documented yet.</summary>
-      /// <value>A value not documented yet.</value>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public Message Message {
         get {
           return this.message;
@@ -1151,8 +1158,8 @@ namespace PeterO.Mail
 
       private string boundary;
 
-      /// <summary>Gets a value not documented yet.</summary>
-      /// <value>A value not documented yet.</value>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public string Boundary {
         get {
           return this.boundary;

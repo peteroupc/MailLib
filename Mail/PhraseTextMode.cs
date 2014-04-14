@@ -13,17 +13,13 @@ using System.Text;
 namespace PeterO.Mail
 {
   internal enum PhraseTextMode {
-    /// <summary>
-    /// Return the decoded text of the phrase
-    /// </summary>
+    /// <summary>Return the decoded text of the phrase.</summary>
     DecodedText,
-    /// <summary>
-    /// Return the undecoded text of the phrase.
-    /// </summary>
+
+    /// <summary>Return the un-decoded text of the phrase.</summary>
     UndecodedText,
-    /// <summary>
-    /// Return the decoded text of the phrase and its comments.
-    /// </summary>
+
+    /// <summary>Return the decoded text of the phrase and its comments.</summary>
     DecodedTextAndComments
   }
 }

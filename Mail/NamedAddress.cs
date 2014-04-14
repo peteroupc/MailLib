@@ -46,18 +46,34 @@ namespace PeterO.Mail
     }
 
     private static bool ShouldQuote(string str) {
-      for (int i = 0; i<str.Length; ++i) {
+      if (str.Length == 0) {
+        // Empty string
+        return true;
+      }
+      if (str[str.Length - 1]==' ' || str[str.Length-1]=='\t') {
+        // Space or tab at end
+        return true;
+      }
+      if (str[0] == ' ' || str[0]=='\t') {
+        // Space or tab at beginning
+        return true;
+      }
+      for (int i = 0; i < str.Length; ++i) {
         if (str[i] == '\\' || str[i] == '"') {
           return true;
         }
-        if ((str[i] == ' ' || str[i] == '\t') && i+1<str.Length &&
-            (str[i + 1] == ' ' || str[i+1] == '\t')) {
+        if ((str[i] == ' ' || str[i] == '\t') && i + 1 < str.Length &&
+            (str[i + 1] == ' ' || str[i + 1] == '\t')) {
           // run of two or more space and/or tab
           return true;
         }
-        if ((str[i] == '\r') && i+1<str.Length &&
+        if ((str[i] == '\r') && i + 1 < str.Length &&
             (str[i + 1] == '\n')) {
           // CRLF
+          if (i == 0 && i+2<str.Length && (str[i + 1] == ' ' || str[i + 1] == '\t')) {
+            // CRLF followed by space or tab at beginning
+            return true;
+          }
           continue;
         }
         char c = str[i];
@@ -76,7 +92,7 @@ namespace PeterO.Mail
       }
       StringBuilder builder = new StringBuilder();
       builder.Append('"');
-      for (int i = 0; i<str.Length; ++i) {
+      for (int i = 0; i < str.Length; ++i) {
         if (str[i] == '\\' || str[i] == '"') {
           builder.Append('\\');
           builder.Append(str[i]);
@@ -96,7 +112,7 @@ namespace PeterO.Mail
         builder.Append(QuoteValue(this.name));
         builder.Append(": ");
         bool first = true;
-        foreach(NamedAddress address in this.groupAddresses) {
+         foreach (NamedAddress address in this.groupAddresses) {
           if (!first) {
             builder.Append(", ");
           }
@@ -112,7 +128,7 @@ namespace PeterO.Mail
         if (addressString.Equals(this.name)) {
           return addressString;
         } else {
-          return QuoteValue(this.name)+" <"+addressString+">";
+          return QuoteValue(this.name) +" <" + addressString+">";
         }
       }
     }
@@ -130,6 +146,18 @@ namespace PeterO.Mail
       this.name = displayName;
       this.groupAddresses = new List<NamedAddress>();
       this.address = new Address(address);
+    }
+
+    public NamedAddress(string displayName, Address address) {
+      if (String.IsNullOrEmpty(displayName)) {
+        displayName = address.ToString();
+      }
+      if (address == null) {
+        throw new ArgumentNullException("address");
+      }
+      this.name = displayName;
+      this.groupAddresses = new List<NamedAddress>();
+      this.address = address;
     }
 
     public NamedAddress(string displayName, string localPart, string domain) {

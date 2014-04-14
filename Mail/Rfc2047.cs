@@ -12,7 +12,7 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-  /// <summary>Description of Rfc2047.</summary>
+    /// <summary>Description of Rfc2047.</summary>
   internal static class Rfc2047
   {
     private static bool HasSuspiciousTextInComments(string str) {
@@ -221,7 +221,9 @@ namespace PeterO.Mail
         int oldIndex = index;
         while (index < endIndex) {
           char c = str[index];
-          if (c == 0x0d && index + 1 < endIndex && str[index + 1] == 0x0a) {
+          if (c == 0x0d && index + 2 < endIndex && str[index + 1] == 0x0a &&
+              (str[index + 2] == 0x09 || str[index + 2] == 0x20)) {
+            index += 2;  // skip the CRLF
             break;
           } else if (c == 0x09 || c == 0x20) {
             break;

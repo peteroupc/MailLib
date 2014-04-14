@@ -76,7 +76,7 @@ namespace PeterO.Mail
         int lastIndex = 0;
         for (int i = 0; i < str.Length; ++i) {
           if (str[i] == '(') {
-            int endIndex = HeaderParser.ParseComment(str, i, str.Length, null);
+            int endIndex = HeaderParserUtility.ParseCommentLax(str, i, str.Length, null);
             if (endIndex != i) {
               // This is a comment, so replace any encoded words
               // in the comment
@@ -122,15 +122,15 @@ namespace PeterO.Mail
         int lastIndex = 0;
         for (int i = 0; i < str.Length; ++i) {
           if (str[i] == '(') {
-            int endIndex = HeaderParser.ParseComment(str, i, str.Length, null);
+            int endIndex = HeaderParserUtility.ParseCommentLax(str, i, str.Length, null);
             if (endIndex != i) {
               // This is a comment, so replace any encoded words
               // in the comment
               string newComment = Rfc2047.DecodeEncodedWords(
-str,
-i + 1,
-endIndex - 1,
-EncodedWordContext.Comment);
+                str,
+                i + 1,
+                endIndex - 1,
+                EncodedWordContext.Comment);
               sb.Append(str.Substring(lastIndex, i + 1 - lastIndex));
               sb.Append(newComment);
               lastIndex = endIndex - 1;
@@ -158,12 +158,11 @@ EncodedWordContext.Comment);
     /// <param name='str'>A string object. (2).</param>
     /// <returns>A string object.</returns>
       public string DowngradeFieldValue(string str) {
-        if (str.IndexOf('(') < 0) {
-          // No comments in the header field value, a common case
-          return str;
-        }
         for (int phase = 0; phase < 5; ++phase) {
-          // Console.WriteLine("Downgrading: phase " + phase + ", " + (str));
+          if (str.IndexOf('(') < 0 && phase == 0) {
+            // No comments in the header field value, a common case
+            continue;
+          }
           if (!Message.HasTextToEscape(str)) {
             return str;
           }
@@ -277,11 +276,11 @@ EncodedWordContext.Comment);
             int startIndex = token[1];
             endIndex = token[2];
             string newComment = Rfc2047.GetPhraseText(
-str,
-startIndex,
-endIndex,
-tokens,
-PhraseTextMode.DecodedTextAndComments);
+              str,
+              startIndex,
+              endIndex,
+              tokens,
+              PhraseTextMode.DecodedTextAndComments);
             sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
             sb.Append(newComment);
             lastIndex = endIndex;

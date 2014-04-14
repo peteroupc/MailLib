@@ -45,6 +45,33 @@ namespace PeterO.Mail
       return builder.ToString();
     }
 
+    public static string ParseDotWordAfterCFWS(string str, int index, int endIndex) {
+      // NOTE: Also parses the obsolete syntax of CFWS between parts
+      // of a word separated by dots
+      StringBuilder builder = new StringBuilder();
+      while (index < endIndex) {
+        int start = index;
+        index = HeaderParser.ParsePhraseAtom(str, index, endIndex, null);
+        if (index == start) {
+          if (index < endIndex && str[index] == '"') {
+            // it's a quoted string instead
+            index = MediaType.skipQuotedString(str, index, endIndex, builder);
+          } else {
+            break;
+          }
+        } else {
+          builder.Append(str.Substring(start, index - start));
+        }
+        index = HeaderParser.ParseCFWS(str, index, endIndex, null);
+        if (index < endIndex && str[index] == '.') {
+          builder.Append('.');
+          ++index;
+          index = HeaderParser.ParseCFWS(str, index, endIndex, null);
+        }
+      }
+      return builder.ToString();
+    }
+
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object. (2).</param>
     /// <param name='index'>A 32-bit signed integer.</param>
@@ -52,17 +79,8 @@ namespace PeterO.Mail
     /// <returns>A string object.</returns>
     public static string ParseLocalPart(string str, int index, int endIndex) {
       // NOTE: Assumes the string matches the production "local-part"
-      // The local part is either a quoted string or a set of words
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      if (index < endIndex && str[index] == '"') {
-        // It's a quoted string
-        StringBuilder builder = new StringBuilder();
-        MediaType.skipQuotedString(str, index, endIndex, builder);
-        return builder.ToString();
-      } else {
-        // It's a dot-atom
-        return ParseDotAtomAfterCFWS(str, index, endIndex);
-      }
+      return ParseDotWordAfterCFWS(str, index, endIndex);
     }
 
     /// <summary>Not documented yet.</summary>
@@ -197,16 +215,102 @@ namespace PeterO.Mail
       return new NamedAddress(displayName, localPart, domain);
     }
 
-        internal static int ParseCommentStrict(string str, int index, int endIndex) {
+    // Parses a comment using the obsolete syntax.
+    internal static int ParseCommentLax(string str, int index, int endIndex, ITokener tokener) {
+      if (index < endIndex && (str[index] == 40)) {
+        ++index;
+      } else {
+        return index;
+      }
       int indexStart = index;
-      int indexTemp = index;
+      int depth = 0;
+      int state = (tokener != null) ? tokener.GetState() : 0;
       do {
-        if (index < endIndex && (str[index] == 40)) {
-          ++index;
-        } else {
-          break;
+        while (true) {
+          int indexTemp2;
+          int state2 = (tokener != null) ? tokener.GetState() : 0;
+          indexTemp2 = index;
+          do {
+            int indexStart2 = index;
+            index = HeaderParser.ParseFWS(str, index, endIndex, tokener);
+            do {
+              int indexTemp3 = index;
+              do {
+                int indexStart3 = index;
+                if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                  ++indexTemp3; break;
+                }
+                if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+                  indexTemp3 += 2; break;
+                }
+                int indexTemp4;
+                indexTemp4 = HeaderParser.ParseQuotedPair(str, index, endIndex, tokener);
+                if (indexTemp4 != index) {
+                  indexTemp3 = indexTemp4; break;
+                }
+                indexTemp4 = HeaderParser.ParseObsCtext(str, index, endIndex, tokener);
+                if (indexTemp4 != index) {
+                  indexTemp3 = indexTemp4; break;
+                }
+                if (index < endIndex && ((str[index] >= 93 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 91) || (str[index] >= 33 && str[index] <= 39))) {
+                  ++indexTemp3; break;
+                }
+              } while (false);
+              if (indexTemp3 != index) {
+                index = indexTemp3;
+              } else {
+                index = indexStart2; break;
+              }
+            } while (false);
+            if (index == indexStart2) {
+              break;
+            }
+            indexTemp2 = index;
+            index = indexStart2;
+          } while (false);
+          if (indexTemp2 != index) {
+            index = indexTemp2;
+  } else if (tokener != null) {
+            tokener.RestoreState(state2); break;
+          } else {
+ break;
+}
         }
-        int depth = 0;
+        index = HeaderParser.ParseFWS(str, index, endIndex, tokener);
+        if (index < endIndex && str[index] == 41) {
+          // End of current comment
+          ++index;
+          if (depth == 0) {
+            if (tokener != null) {
+ tokener.Commit(TokenComment, indexStart, index);
+}
+            return index;
+          }
+          --depth;
+        } else if (index < endIndex && str[index] == 40) {
+          // Start of nested comment
+          ++index;
+          ++depth;
+        } else {
+          if (tokener != null) {
+ tokener.RestoreState(state);
+}
+          return indexStart;
+        }
+      } while (true);
+    }
+
+    // Parses a comment without using the obsolete syntax.
+    internal static int ParseCommentStrict(string str, int index, int endIndex) {
+      if (index < endIndex && (str[index] == 40)) {
+        ++index;
+      } else {
+        return index;
+      }
+
+      int indexStart = index;
+      int depth = 0;
+      do {
         while (true) {
           int indexTemp2 = index;
           do {
@@ -256,6 +360,12 @@ namespace PeterO.Mail
               int indexTemp3 = index;
               do {
                 int indexStart3 = index;
+                if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                  ++indexTemp3; break;
+                }
+                if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+                  indexTemp3 += 2; break;
+                }
                 int indexTemp4;
                 indexTemp4 = index;
                 do {
@@ -295,27 +405,6 @@ namespace PeterO.Mail
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
-                if (index < endIndex && str[index] == 41) {
-                  // End of current comment
-                  ++indexTemp3;
-                  --depth;
-                  if (depth < 0) {
-                    return indexTemp3;
-                  }
-                  break;
-                }
-                if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
-                  ++indexTemp3; break;
-                }
-                if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
-                  indexTemp3 += 2; break;
-                }
-                if (index < endIndex && str[index] == 40) {
-                  // Start of nested comment
-                  ++indexTemp3;
-                  ++depth;
-                  break;
-                }
                 if (index < endIndex && ((str[index] >= 93 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 91) || (str[index] >= 33 && str[index] <= 39))) {
                   ++indexTemp3; break;
                 }
@@ -338,9 +427,61 @@ namespace PeterO.Mail
             break;
           }
         }
-        indexTemp = index;
-      } while (false);
-      return indexTemp;
+        do {
+          int indexTemp2 = index;
+          do {
+            int indexStart2 = index;
+            do {
+              int indexTemp3 = index;
+              do {
+                int indexStart3 = index;
+                while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                  ++index;
+                }
+                if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
+                  index += 2;
+                } else {
+                  index = indexStart3; break;
+                }
+                indexTemp3 = index;
+                index = indexStart3;
+              } while (false);
+              if (indexTemp3 != index) {
+                index = indexTemp3;
+              } else { break;
+              }
+            } while (false);
+            if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+              ++index;
+              while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+                ++index;
+              }
+            } else {
+              index = indexStart2; break;
+            }
+            indexTemp2 = index;
+            index = indexStart2;
+          } while (false);
+          if (indexTemp2 != index) {
+            index = indexTemp2;
+          } else { break;
+          }
+        } while (false);
+        if (index < endIndex && str[index] == 41) {
+          // End of current comment
+          ++index;
+          if (depth == 0) {
+            return index;
+          }
+          --depth;
+        } else if (index < endIndex && str[index] == 40) {
+          // Start of nested comment
+          ++index;
+          ++depth;
+        } else {
+          return indexStart;
+        }
+      } while (true);
     }
   }
 }

@@ -317,11 +317,12 @@ namespace MailLibTest
     [Test]
     public void TestHeaderFields() {
       string testString = "Joe P Customer <customer@example.com>, Jane W Customer <jane@example.com>";
-      HeaderParser.ParseMailboxList(testString, 0, testString.Length, null);
+      Assert.AreEqual(testString.Length,
+                      HeaderParser.ParseMailboxList(testString, 0, testString.Length, null));
     }
 
     [Test]
-    public void testCharset() {
+    public void TestCharset() {
       Assert.AreEqual("us-ascii", MediaType.Parse("text/plain").GetCharset());
       Assert.AreEqual("us-ascii", MediaType.Parse("TEXT/PLAIN").GetCharset());
       Assert.AreEqual("us-ascii", MediaType.Parse("TeXt/PlAiN").GetCharset());
@@ -539,6 +540,33 @@ namespace MailLibTest
       Assert.AreEqual(
         "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
         HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" (comment) <x@x.example>"));
+      Assert.AreEqual(
+        "Test <x@x.example>",
+        HeaderFields.GetParser("from").DowngradeFieldValue("Test <x@x.example>"));
+      Assert.AreEqual(
+        "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+        HeaderFields.GetParser("from").DowngradeFieldValue("Tes\u00bet <x@x.example>"));
+      Assert.AreEqual(
+        "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+        HeaderFields.GetParser("from").DowngradeFieldValue("Tes\u00bet Subject <x@x.example>"));
+      Assert.AreEqual(
+        "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+        HeaderFields.GetParser("from").DowngradeFieldValue("Test Sub\u00beject <x@x.example>"));
+      Assert.AreEqual(
+        "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+        HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet\" <x@x.example>"));
+      Assert.AreEqual(
+        "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+        HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" <x@x.example>"));
+      Assert.AreEqual(
+        "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+        HeaderFields.GetParser("from").DowngradeFieldValue("\"Test Sub\u00beject\" <x@x.example>"));
+      Assert.AreEqual(
+        "=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
+        HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet   Subject\" <x@x.example>"));
+      Assert.AreEqual(
+        "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+        HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" (comment) <x@x.example>"));
     }
 
     private void TestParseCommentStrictCore(string input) {
@@ -595,6 +623,41 @@ namespace MailLibTest
       this.TestEncodedWordsOne("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
       this.TestEncodedWordsOne("=?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?=");
       this.TestEncodedWordsOne("=?utf-8?Q?" + this.Repeat("x", 200) + "?=", "=?utf-8?Q?" + this.Repeat("x", 200) + "?=");
+    }
+
+    [Test]
+    public void TestNamedAddress() {
+      Assert.AreEqual("\"Me \" <me@example.com>",new NamedAddress("Me ","me@example.com").ToString());
+      Assert.AreEqual("\" Me\" <me@example.com>",new NamedAddress(" Me","me@example.com").ToString());
+    }
+
+    [Test]
+    [Timeout(5000)]
+    public void TestHeaderParsing() {
+      string tmp;
+      tmp=" A Xxxxx: Yyy Zzz <x@x.example>;";
+      Assert.AreEqual(tmp.Length, HeaderParser.ParseHeaderTo(tmp, 0, tmp.Length, null));
+      // just a local part in address
+      Assert.AreEqual(0,HeaderParser.ParseHeaderFrom("\"Me\" <1234>",0,11,null));
+      tmp="<x@x.invalid>";
+      Assert.AreEqual(tmp.Length, HeaderParser.ParseHeaderTo(tmp, 0, tmp.Length, null));
+      tmp="<x y@x.invalid>";  // local part is not a dot-atom
+      Assert.AreEqual(0, HeaderParser.ParseHeaderTo(tmp, 0, tmp.Length, null));
+      tmp=" <x@x.invalid>";
+      Assert.AreEqual(tmp.Length, HeaderParser.ParseHeaderTo(tmp, 0, tmp.Length, null));
+      tmp="=?utf-8?q??=\r\n \r\nABC";
+      Assert.AreEqual(tmp, Rfc2047.DecodeEncodedWords(tmp, 0, tmp.Length, EncodedWordContext.Unstructured));
+      tmp="=?utf-8?q??=\r\n \r\n ABC";
+      Assert.AreEqual(tmp, Rfc2047.DecodeEncodedWords(tmp, 0, tmp.Length, EncodedWordContext.Unstructured));
+      // Group syntax
+      tmp="G:;";
+      Assert.AreEqual(tmp.Length, HeaderParser.ParseHeaderTo(tmp, 0, tmp.Length, null));
+      tmp="G:a <x@x.example>;";
+      Assert.AreEqual(tmp.Length, HeaderParser.ParseHeaderTo(tmp, 0, tmp.Length, null));
+      tmp=" A Xxxxx: ;";
+      Assert.AreEqual(tmp.Length, HeaderParser.ParseHeaderTo(tmp, 0, tmp.Length, null));
+      tmp=" A Xxxxx: Yyy Zzz <x@x.example>, y@y.example, Ww <z@z.invalid>;";
+      Assert.AreEqual(tmp.Length, HeaderParser.ParseHeaderTo(tmp, 0, tmp.Length, null));
     }
 
     [Test]
