@@ -270,11 +270,11 @@ namespace PeterO.Mail
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
-  } else if (tokener != null) {
+          } else if (tokener != null) {
             tokener.RestoreState(state2); break;
           } else {
- break;
-}
+            break;
+          }
         }
         index = HeaderParser.ParseFWS(str, index, endIndex, tokener);
         if (index < endIndex && str[index] == 41) {
@@ -282,8 +282,8 @@ namespace PeterO.Mail
           ++index;
           if (depth == 0) {
             if (tokener != null) {
- tokener.Commit(TokenComment, indexStart, index);
-}
+              tokener.Commit(TokenComment, indexStart, index);
+            }
             return index;
           }
           --depth;
@@ -293,8 +293,8 @@ namespace PeterO.Mail
           ++depth;
         } else {
           if (tokener != null) {
- tokener.RestoreState(state);
-}
+            tokener.RestoreState(state);
+          }
           return indexStart;
         }
       } while (true);

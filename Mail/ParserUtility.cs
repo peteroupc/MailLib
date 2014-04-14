@@ -42,20 +42,32 @@ namespace PeterO.Mail
       return builder.ToString();
     }
 
-    public static bool EndsWith(string str, string suffix, int index) {
-      if (str == null || suffix == null || index < 0 || index >= str.Length) {
-        throw new ArgumentException();
+    public static bool EndsWith(string str, string suffix, int strStartPos) {
+      if ((str) == null) {
+        throw new ArgumentNullException("str");
       }
-      int endpos = suffix.Length + index;
+      if ((suffix) == null) {
+        throw new ArgumentNullException("suffix");
+      }
+      if (strStartPos < 0) {
+        throw new ArgumentException("strStartPos (" + Convert.ToString((long)(strStartPos), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      }
+      if (strStartPos > str.Length) {
+        throw new ArgumentException("strStartPos (" + Convert.ToString((long)(strStartPos), System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)(str.Length), System.Globalization.CultureInfo.InvariantCulture));
+      }
+      int endpos = suffix.Length + strStartPos;
       if (endpos > str.Length) {
         return false;
       }
-      return str.Substring(index, (endpos)-index).Equals(suffix);
+      return str.Substring(strStartPos, (endpos)-strStartPos).Equals(suffix);
     }
 
     public static bool StartsWith(string str, string prefix) {
-      if (str == null || prefix == null) {
-        throw new ArgumentException();
+      if ((str) == null) {
+        throw new ArgumentNullException("str");
+      }
+      if ((prefix) == null) {
+        throw new ArgumentNullException("prefix");
       }
       if (prefix.Length < str.Length) {
         return false;
@@ -112,7 +124,7 @@ namespace PeterO.Mail
       return String.IsNullOrEmpty(str) || SkipSpaceAndTab(str, 0, str.Length) == str.Length;
     }
 
-    public static int ParseFWSLiberal(string str, int index, int endIndex, StringBuilder sb) {
+    public static int ParseFWSLax(string str, int index, int endIndex, StringBuilder sb) {
       while (index < endIndex) {
         int tmp = index;
         // Skip CRLF

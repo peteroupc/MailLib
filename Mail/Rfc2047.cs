@@ -231,7 +231,6 @@ namespace PeterO.Mail
             ++index;
           }
         }
-        bool hasNonWhitespace = oldIndex != index;
         whitespaceStart = index;
         // Read to nonwhitespace
         index = HeaderParser.ParseFWS(str, index, endIndex, null);

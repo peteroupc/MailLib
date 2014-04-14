@@ -230,7 +230,7 @@ namespace PeterO.Mail
           }
         } else if (rule == QuotedStringRule.Rfc5322) {
           // Skip tabs, spaces, and folding whitespace
-          i2 = ParserUtility.ParseFWSLiberal(str, index, endIndex, builder);
+          i2 = ParserUtility.ParseFWSLax(str, index, endIndex, builder);
         }
         index = i2;
         char c = str[index];
@@ -257,24 +257,6 @@ namespace PeterO.Mail
         builder.Remove(valueBLength, (builder.Length)-valueBLength);
       }
       return startIndex;  // not a valid quoted-string
-    }
-
-    private static int SafeSplit(string str, int index) {
-      if (str == null) {
-        return 0;
-      }
-      if (index < 0) {
-        return 0;
-      }
-      if (index > str.Length) {
-        return str.Length;
-      }
-      if (index > 0 && str[index] >= 0xdc00 && str[index] <= 0xdfff &&
-          str[index - 1] >= 0xd800 && str[index - 1] <= 0xdbff) {
-        // Avoid splitting legal surrogate pairs
-        return index - 1;
-      }
-      return index;
     }
 
     private static void AppendComplexParamValue(string name, string str, StringBuilder sb) {
@@ -983,9 +965,6 @@ namespace PeterO.Mail
 
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
-
-    private static MediaType valueApplicationOctetStream =
-      new MediaTypeBuilder("application", "octet-stream").ToMediaType();
 
     private MediaType() {
     }

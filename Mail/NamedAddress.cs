@@ -50,11 +50,11 @@ namespace PeterO.Mail
         // Empty string
         return true;
       }
-      if (str[str.Length - 1]==' ' || str[str.Length-1]=='\t') {
+      if (str[str.Length - 1] == ' ' || str[str.Length - 1] == '\t') {
         // Space or tab at end
         return true;
       }
-      if (str[0] == ' ' || str[0]=='\t') {
+      if (str[0] == ' ' || str[0] == '\t') {
         // Space or tab at beginning
         return true;
       }
@@ -70,7 +70,7 @@ namespace PeterO.Mail
         if ((str[i] == '\r') && i + 1 < str.Length &&
             (str[i + 1] == '\n')) {
           // CRLF
-          if (i == 0 && i+2<str.Length && (str[i + 1] == ' ' || str[i + 1] == '\t')) {
+          if (i == 0 && i + 2<str.Length && (str[i + 1] == ' ' || str[i + 1] == '\t')) {
             // CRLF followed by space or tab at beginning
             return true;
           }
@@ -128,7 +128,7 @@ namespace PeterO.Mail
         if (addressString.Equals(this.name)) {
           return addressString;
         } else {
-          return QuoteValue(this.name) +" <" + addressString+">";
+          return QuoteValue(this.name) +" <" + addressString + ">";
         }
       }
     }

@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MailLib")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
+[assembly: CLSCompliant(true)]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MailLib")]
 [assembly: AssemblyCopyright("Copyright 2014")]
@@ -24,6 +25,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can use the default the Revision and
 // Build Numbers by using the '*' as shown below:
 [assembly: AssemblyVersion("1.0.*")]
+[assembly: ComVisible(false)]
 #if DEBUG
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("MailLibTest")]
 #endif

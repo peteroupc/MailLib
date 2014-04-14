@@ -13,12 +13,12 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-    /// <summary>Represents an email message. <para><b>Thread safety:</b>
-    /// This class is mutable; its properties can be changed. None of its methods
-    /// are designed to be thread safe. Therefore, access to objects from
-    /// this class must be synchronized if multiple threads can access them
-    /// at the same time.</para>
-    /// </summary>
+  /// <summary>Represents an email message. <para><b>Thread safety:</b>
+  /// This class is mutable; its properties can be changed. None of its methods
+  /// are designed to be thread safe. Therefore, access to objects from
+  /// this class must be synchronized if multiple threads can access them
+  /// at the same time.</para>
+  /// </summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -69,7 +69,10 @@ namespace PeterO.Mail
       return this;
     }
 
-    private Message SetHtmlBody(string str) {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <returns>A Message object.</returns>
+    public Message SetHtmlBody(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
@@ -104,11 +107,11 @@ namespace PeterO.Mail
     /// <value>A value not documented yet.</value>
     public IList<NamedAddress> FromAddresses {
       get {
-        return this.ParseAddresses(this.GetHeader("from"));
+        return ParseAddresses(this.GetHeader("from"));
       }
     }
 
-    private IList<NamedAddress> ParseAddresses(string value) {
+    private static IList<NamedAddress> ParseAddresses(string value) {
       Tokener tokener = new Tokener();
       if (value == null) {
         return new List<NamedAddress>();
@@ -124,15 +127,15 @@ namespace PeterO.Mail
     /// <value>A value not documented yet.</value>
     public IList<NamedAddress> ToAddresses {
       get {
-        return this.ParseAddresses(this.GetHeader("to"));
+        return ParseAddresses(this.GetHeader("to"));
       }
     }
 
     /// <summary>Gets a value not documented yet.</summary>
     /// <value>A value not documented yet.</value>
-    public IList<NamedAddress> CcAddresses {
+    public IList<NamedAddress> CCAddresses {
       get {
-        return this.ParseAddresses(this.GetHeader("cc"));
+        return ParseAddresses(this.GetHeader("cc"));
       }
     }
 
@@ -140,7 +143,7 @@ namespace PeterO.Mail
     /// <value>A value not documented yet.</value>
     public IList<NamedAddress> BccAddresses {
       get {
-        return this.ParseAddresses(this.GetHeader("bcc"));
+        return ParseAddresses(this.GetHeader("bcc"));
       }
     }
 
@@ -169,7 +172,7 @@ namespace PeterO.Mail
     /// <summary>Returns the mail message contained in this message's body.</summary>
     /// <returns>A message object if this object's content type is "message/rfc822",
     /// or null otherwise.</returns>
-    private Message GetBodyMessage() {
+    public Message GetBodyMessage() {
       if (this.ContentType.TopLevelType.Equals("message") &&
           this.ContentType.SubType.Equals("rfc822")) {
         using (MemoryStream ms = new MemoryStream(this.body)) {
@@ -297,7 +300,7 @@ namespace PeterO.Mail
           }
           haveTo = true;
         } else if (name.Equals("subject")) {
-          if (haveSubject && value!=this.GetHeader("subject")) {
+          if (haveSubject && value != this.GetHeader("subject")) {
             // DEVIATION: Don't throw an error unless
             // the new subject is different from the existing one
             throw new MessageDataException("Already have this header: " + name);
@@ -603,6 +606,9 @@ namespace PeterO.Mail
     }
 
     public static string ConvertCommentsToEncodedWords(string str) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
       return ConvertCommentsToEncodedWords(str, 0, str.Length);
     }
 
@@ -771,14 +777,14 @@ namespace PeterO.Mail
       return encoder.ToString();
     }
 
-    private bool StartsWithWhitespace(string str) {
+    private static bool StartsWithWhitespace(string str) {
       return str.Length > 0 && (str[0] == ' ' || str[0] == 0x09 || str[0] == '\r');
     }
 
     private static void CheckDiff(string a, string b) {
       if (!a.Equals(b)) {
         int pt = Math.Min(a.Length, b.Length);
-        for (int i = 0; i<Math.Min(a.Length, b.Length); ++i) {
+        for (int i = 0; i < Math.Min(a.Length, b.Length); ++i) {
           if (a[i] != b[i]) {
             pt = i;
             break;
@@ -788,13 +794,11 @@ namespace PeterO.Mail
         int salen = Math.Min(100, a.Length - sa);
         int sblen = Math.Min(100, b.Length - sa);
         throw new MessageDataException(
-          String.Format("Differs (
-length {0} vs. {1})\r\nA={2}\r\nB={3}",a.Length,b.Length,
-                        a.Substring(sa, salen), b.Substring(sa, sblen)));
+          String.Format("Differs [length {0} vs. {1}]\r\nA={2}\r\nB={3}", a.Length, b.Length, a.Substring(sa, salen), b.Substring(sa, sblen)));
       }
     }
 
-    private int TransferEncodingToUse(bool isMultipartChild) {
+    private int TransferEncodingToUse(bool isBodyPart) {
       string topLevel = this.contentType.TopLevelType;
       if (topLevel.Equals("message") || topLevel.Equals("multipart")) {
         return EncodingSevenBit;
@@ -806,7 +810,7 @@ length {0} vs. {1})\r\nA={2}\r\nB={3}",a.Length,b.Length,
         int lengthCheck = Math.Min(this.body.Length, 4096);
         int highBytes = 0;
         int lineLength = 0;
-        bool allTextBytes = isMultipartChild ? false : true;
+        bool allTextBytes = isBodyPart ? false : true;
         for (int i = 0; i < lengthCheck; ++i) {
           if ((this.body[i] & 0x80) != 0) {
             ++highBytes;
@@ -829,8 +833,19 @@ length {0} vs. {1})\r\nA={2}\r\nB={3}",a.Length,b.Length,
             // bare LF
             allTextBytes = false;
           }
+          if (lineLength == 0 && i + 2 < this.body.Length &&
+              this.body[i] == '.' && this.body[i+1]=='\r' && this.body[i+2]=='\n') {
+            // See RFC2049 sec. 3
+            allTextBytes = false;
+          }
+          if (lineLength == 0 && i + 4 < this.body.Length &&
+              this.body[i] == 'F' && this.body[i+1]=='r' && this.body[i+2]=='o' &&
+              this.body[i + 3]=='m' && this.body[i+4]==' ') {
+            // See RFC2049 sec. 3
+            allTextBytes = false;
+          }
           ++lineLength;
-          if (lineLength > 76) {
+          if (lineLength > 78) {
             allTextBytes = false;
           }
         }
@@ -845,7 +860,7 @@ length {0} vs. {1})\r\nA={2}\r\nB={3}",a.Length,b.Length,
       return EncodingBase64;
     }
 
-    internal string GenerateAddressList(IList<NamedAddress> list) {
+    internal static string GenerateAddressList(IList<NamedAddress> list) {
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < list.Count; ++i) {
         if (i > 0) {
@@ -857,15 +872,14 @@ length {0} vs. {1})\r\nA={2}\r\nB={3}",a.Length,b.Length,
     }
 
     internal string GenerateAbbreviatedHeaders() {
-      StringBuilder sb = new StringBuilder();
       string listFrom = null;
       try {
-        listFrom = this.GenerateAddressList(this.FromAddresses);
+        listFrom = GenerateAddressList(this.FromAddresses);
       } catch (ArgumentException ex) {
-        throw new MessageDataException(ex.Message + " "+this.GetHeader("from"),ex);
+        throw new MessageDataException(ex.Message + " " + this.GetHeader("from"),ex);
       }
-      var listTo = this.GenerateAddressList(this.ToAddresses);
-      var listCc = this.GenerateAddressList(this.CcAddresses);
+      var listTo = GenerateAddressList(this.ToAddresses);
+      var listCc = GenerateAddressList(this.CCAddresses);
       string oldFrom = this.GetHeader("from");
       string oldTo = this.GetHeader("to");
       string oldCC = this.GetHeader("cc");
@@ -903,15 +917,22 @@ length {0} vs. {1})\r\nA={2}\r\nB={3}",a.Length,b.Length,
       this.ContentType = MediaType.Parse("text/plain");
       string newHeaders = this.GenerateHeaders();
       Message newMessage = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(newHeaders, true)));
-      CheckDiff(listFrom, this.GenerateAddressList(newMessage.FromAddresses));
-      CheckDiff(listTo, this.GenerateAddressList(newMessage.ToAddresses));
-      CheckDiff(listCc, this.GenerateAddressList(newMessage.CcAddresses));
+      CheckDiff(listFrom, GenerateAddressList(newMessage.FromAddresses));
+      CheckDiff(listTo, GenerateAddressList(newMessage.ToAddresses));
+      CheckDiff(listCc, GenerateAddressList(newMessage.CCAddresses));
       return String.Empty;
     }
 
     /// <summary>Not documented yet.</summary>
     /// <returns>A string object.</returns>
     public string GenerateHeaders() {
+      return this.GenerateHeaders(false);
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A string object.</returns>
+    /// <param name='bodyPart'>A Boolean object.</param>
+    public string GenerateHeaders(bool bodyPart) {
       StringBuilder sb = new StringBuilder();
       bool haveMimeVersion = false;
       for (int i = 0; i < this.headers.Count; i += 2) {
@@ -924,7 +945,7 @@ length {0} vs. {1})\r\nA={2}\r\nB={3}",a.Length,b.Length,
         if (!parser.IsStructured()) {
           // Outputting an unstructured header field
           string rawField = Capitalize(name) + ":" +
-            (this.StartsWithWhitespace(value) ? String.Empty : " ") + value;
+            (StartsWithWhitespace(value) ? String.Empty : " ") + value;
           if (CanOutputRaw(rawField)) {
             // TODO: Try to preserve header field name (before the colon)
             sb.Append(rawField);
@@ -953,7 +974,7 @@ length {0} vs. {1})\r\nA={2}\r\nB={3}",a.Length,b.Length,
         } else {
           // Outputting a structured header field
           string rawField = Capitalize(name) + ":" +
-            (this.StartsWithWhitespace(value) ? String.Empty : " ") + value;
+            (StartsWithWhitespace(value) ? String.Empty : " ") + value;
           if (CanOutputRaw(rawField)) {
             // TODO: Try to preserve header field name (before the colon)
             sb.Append(rawField);
@@ -974,36 +995,41 @@ length {0} vs. {1})\r\nA={2}\r\nB={3}",a.Length,b.Length,
           sb.Append("\r\n");
         }
       }
-      if (!haveMimeVersion) {
+      if (!haveMimeVersion && bodyPart) {
         sb.Append("MIME-Version: 1.0\r\n");
       }
-      // TODO: Check if this message is a body part
-      int transferEncoding = this.TransferEncodingToUse(false);
+      MediaTypeBuilder builder = new MediaTypeBuilder(this.ContentType);
+      int transferEncoding = this.TransferEncodingToUse(bodyPart);
+      IStringEncoder bodyEncoder = null;
       switch (transferEncoding) {
         case EncodingBase64:
           sb.Append("Content-Transfer-Encoding: base64\r\n");
+          bodyEncoder=new Base64Encoder(true, builder.TopLevelType.Equals("text") ? true : false);
           break;
         case EncodingQuotedPrintable:
           sb.Append("Content-Transfer-Encoding: quoted-printable\r\n");
+          bodyEncoder = new QuotedPrintableEncoder(builder.TopLevelType.Equals("text") ? 2 : 0);
           break;
         default:
           sb.Append("Content-Transfer-Encoding: 7bit\r\n");
+          bodyEncoder = new IdentityEncoder();
           break;
       }
-      MediaTypeBuilder builder = new MediaTypeBuilder(this.ContentType);
       int index = 0;
+      bool isMultipart = false;
       if (builder.TopLevelType.Equals("multipart")) {
         string boundary = "=_" + Convert.ToString((int)index, System.Globalization.CultureInfo.CurrentCulture);
         builder.SetParameter("boundary", boundary);
-      } else if (builder.TopLevelType.Equals("text")) {
-        if (transferEncoding == EncodingSevenBit) {
-          builder.SetParameter("charset", "us-ascii");
-        } else {
-          builder.SetParameter("charset", "utf-8");
-        }
+        isMultipart = true;
       }
       sb.Append("Content-Type: " + builder.ToMediaType().ToString() + "\r\n");
       sb.Append("\r\n");
+      if (!isMultipart) {
+        bodyEncoder.WriteToString(sb, this.body, 0, this.body.Length);
+        bodyEncoder.FinalizeEncoding(sb);
+      } else {
+        // TODO: Implement multipart body encoding
+      }
       return sb.ToString();
     }
 
@@ -1148,8 +1174,8 @@ length {0} vs. {1})\r\nA={2}\r\nB={3}",a.Length,b.Length,
     private class MessageStackEntry {
       private Message message;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public Message Message {
         get {
           return this.message;
@@ -1158,8 +1184,8 @@ length {0} vs. {1})\r\nA={2}\r\nB={3}",a.Length,b.Length,
 
       private string boundary;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public string Boundary {
         get {
           return this.boundary;
@@ -1202,6 +1228,7 @@ length {0} vs. {1})\r\nA={2}\r\nB={3}",a.Length,b.Length,
       byte[] buffer = new byte[8192];
       int bufferCount = 0;
       int bufferLength = buffer.Length;
+      this.body = new byte[0];
       using (MemoryStream ms = new MemoryStream()) {
         while (true) {
           int ch = 0;

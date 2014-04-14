@@ -59,29 +59,29 @@ namespace PeterO.Mail
       }
     }
 
-    public Address(string addressString) {
-      if (addressString == null) {
+    public Address(string addressValue) {
+      if (addressValue == null) {
         throw new ArgumentNullException("addressString");
       }
-      if (addressString.Length == 0) {
+      if (addressValue.Length == 0) {
         throw new ArgumentException("addressString is empty.");
       }
-      if (addressString.IndexOf('@') < 0) {
+      if (addressValue.IndexOf('@') < 0) {
         throw new ArgumentException("Address doesn't contain a '@' sign");
       }
-      int localPartEnd = HeaderParser.ParseLocalPartNoCfws(addressString, 0, addressString.Length, null);
+      int localPartEnd = HeaderParser.ParseLocalPartNoCfws(addressValue, 0, addressValue.Length, null);
       if (localPartEnd == 0) {
         throw new ArgumentException("Invalid local part");
       }
-      if (localPartEnd >= addressString.Length || addressString[localPartEnd] != '@') {
+      if (localPartEnd >= addressValue.Length || addressValue[localPartEnd] != '@') {
         throw new ArgumentException("Expected '@' sign after local part");
       }
-      int domainEnd = HeaderParser.ParseDomainNoCfws(addressString, localPartEnd + 1, addressString.Length, null);
-      if (domainEnd != addressString.Length) {
+      int domainEnd = HeaderParser.ParseDomainNoCfws(addressValue, localPartEnd + 1, addressValue.Length, null);
+      if (domainEnd != addressValue.Length) {
         throw new ArgumentException("Invalid domain");
       }
-      this.localPart = HeaderParserUtility.ParseLocalPart(addressString, 0, localPartEnd);
-      this.domain = HeaderParserUtility.ParseDomain(addressString, localPartEnd + 1, addressString.Length);
+      this.localPart = HeaderParserUtility.ParseLocalPart(addressValue, 0, localPartEnd);
+      this.domain = HeaderParserUtility.ParseDomain(addressValue, localPartEnd + 1, addressValue.Length);
     }
 
     internal Address(string localPart, string domain) {

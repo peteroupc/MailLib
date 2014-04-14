@@ -149,7 +149,7 @@ namespace PeterO.Mail
               c <<= 4;
               c |= b1 + 10 - 'a';
             } else {
-              throw new MessageDataException(String.Format("Invalid hex character"));
+              throw new MessageDataException("Invalid hex character");
             }
             if (b2 >= '0' && b2 <= '9') {
               c <<= 4;
@@ -161,7 +161,7 @@ namespace PeterO.Mail
               c <<= 4;
               c |= b2 + 10 - 'a';
             } else {
-              throw new MessageDataException(String.Format("Invalid hex character"));
+              throw new MessageDataException("Invalid hex character");
             }
             this.lineCharCount += 2;
             if (this.maxLineSize >= 0 && this.lineCharCount > this.maxLineSize) {
@@ -216,10 +216,12 @@ namespace PeterO.Mail
           bool endsWithLineBreak = false;
           while (true) {
             if ((c2 == '\n' && this.lenientLineBreaks) || c2 < 0) {
+              // EOF, or LF with lenient line breaks
               this.input.Unget();
               endsWithLineBreak = true;
               break;
             } else if (c2 == '\r' && this.lenientLineBreaks) {
+              // CR with lenient line breaks
               this.input.Unget();
               endsWithLineBreak = true;
               break;

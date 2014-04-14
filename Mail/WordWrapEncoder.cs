@@ -27,7 +27,6 @@ namespace PeterO.Mail
         this.fullString.Append("\r\n");
         this.lastSpaces = " ";
         this.haveNonwhitespace = false;
-        this.lineLength = 0;
       } else {
         this.haveNonwhitespace = true;  // assume have nonwhitespace
         this.lastSpaces = " ";

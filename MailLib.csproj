@@ -5,12 +5,15 @@
     <Configuration Condition=' &apos;$(Configuration)&apos; == &apos;&apos; '>Debug</Configuration>
     <Platform Condition=' &apos;$(Platform)&apos; == &apos;&apos; '>AnyCPU</Platform>
     <OutputType>Library</OutputType>
-    <RootNamespace>MailLib</RootNamespace>
+    <RootNamespace>PeterO</RootNamespace>
     <AssemblyName>MailLib</AssemblyName>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile1</TargetFrameworkProfile>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <NoWin32Manifest>False</NoWin32Manifest>
+    <RunCodeAnalysis>False</RunCodeAnalysis>
+    <CodeAnalysisRules>-Microsoft.Design#CA1032;-Microsoft.Globalization#CA1303;-Microsoft.Usage#CA2236;-Microsoft.Usage#CA2237</CodeAnalysisRules>
   </PropertyGroup>
   <PropertyGroup Condition=' &apos;$(Platform)&apos; == &apos;AnyCPU&apos; '>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,6 +37,7 @@
   <ItemGroup>
     <Compile Include='DataUtilities.cs'/>
     <Compile Include='Mail\Address.cs'/>
+    <Compile Include='Mail\Base64Encoder.cs'/>
     <Compile Include='Mail\Base64Transform.cs'/>
     <Compile Include='Mail\BEncodingStringTransform.cs'/>
     <Compile Include='Mail\BinaryTransform.cs'/>
@@ -42,6 +46,8 @@
     <Compile Include='Mail\EightBitTransform.cs'/>
     <Compile Include='Mail\EncodedWordContext.cs'/>
     <Compile Include='Mail\EncodedWordEncoder.cs'/>
+    <Compile Include='Mail\IdentityEncoder.cs'/>
+    <Compile Include='Mail\IStringEncoder.cs'/>
     <Compile Include='Mail\MessageDataException.cs'/>
     <Compile Include='Mail\HeaderFields.cs'/>
     <Compile Include='Mail\HeaderParser.cs'/>
@@ -58,6 +64,7 @@
     <Compile Include='Mail\PercentEncodingStringTransform.cs'/>
     <Compile Include='Mail\PhraseTextMode.cs'/>
     <Compile Include='Mail\QEncodingStringTransform.cs'/>
+    <Compile Include='Mail\QuotedPrintableEncoder.cs'/>
     <Compile Include='Mail\QuotedPrintableTransform.cs'/>
     <Compile Include='Mail\Rfc2047.cs'/>
     <Compile Include='Mail\SevenBitTransform.cs'/>

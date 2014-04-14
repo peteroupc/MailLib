@@ -34,7 +34,6 @@ namespace PeterO.Mail
     public EncodedWordEncoder() {
       this.currentWord = new StringBuilder();
       this.fullString = new StringBuilder();
-      this.spaceCount = 0;
     }
 
     private void AppendChar(char ch) {
