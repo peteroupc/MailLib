@@ -17,24 +17,24 @@ namespace PeterO.Mail
   {
     private const string Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-    internal int lineCount;
-    internal int quantumCount;
-    internal int byte1;
-    internal int byte2;
-    internal bool padding;
-    internal bool lenientLineBreaks;
-    internal bool haveCR;
+    private int lineCount;
+    private int quantumCount;
+    private int byte1;
+    private int byte2;
+    private bool padding;
+    private bool lenientLineBreaks;
+    private bool haveCR;
 
     public Base64Encoder(bool padding, bool lenientLineBreaks) {
       this.padding = padding;
       this.lenientLineBreaks = lenientLineBreaks;
-      this.byte1=-1;
-      this.byte2=-1;
+      this.byte1 = -1;
+      this.byte2 = -1;
     }
 
     private void LineAwareAppend(StringBuilder sb, char c) {
       ++this.lineCount;
-      if (this.lineCount>76) {
+      if (this.lineCount > 76) {
         sb.Append("\r\n");
         this.lineCount = 0;
       }
@@ -48,8 +48,8 @@ namespace PeterO.Mail
         this.LineAwareAppend(str, Base64Classic[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)]);
         this.LineAwareAppend(str, Base64Classic[((this.byte2 & 15) << 2) + ((ib >> 6) & 3)]);
         this.LineAwareAppend(str, Base64Classic[ib & 63]);
-        this.byte1=-1;
-        this.byte2=-1;
+        this.byte1 = -1;
+        this.byte2 = -1;
         this.quantumCount = 0;
       } else if (this.quantumCount == 1) {
         this.byte2 = ib;
@@ -82,21 +82,21 @@ namespace PeterO.Mail
 
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A StringBuilder object.</param>
-public void FinalizeEncoding(StringBuilder str) {
-      if (this.byte1<0 || this.byte2< 0) {  // if one or two bytes are left over
+    public void FinalizeEncoding(StringBuilder str) {
+      if (this.byte1 < 0 || this.byte2 < 0) {  // if one or two bytes are left over
         string alphabet = Base64Classic;
         this.LineAwareAppend(str, alphabet[(this.byte1 >> 2) & 63]);
         if (this.byte2 >= 0) {  // if two bytes are left over
           this.LineAwareAppend(str, alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)]);
           this.LineAwareAppend(str, alphabet[(this.byte2 & 15) << 2]);
           if (this.padding) {
-            this.LineAwareAppend(str,'=');
+            this.LineAwareAppend(str, '=');
           }
         } else {
           this.LineAwareAppend(str, alphabet[(this.byte1 & 3) << 4]);
           if (this.padding) {
-            this.LineAwareAppend(str,'=');
-            this.LineAwareAppend(str,'=');
+            this.LineAwareAppend(str, '=');
+            this.LineAwareAppend(str, '=');
           }
         }
         this.byte1 = 0;
@@ -109,7 +109,7 @@ public void FinalizeEncoding(StringBuilder str) {
     /// <param name='data'>A byte array.</param>
     /// <param name='offset'>A 32-bit signed integer.</param>
     /// <param name='count'>A 32-bit signed integer. (2).</param>
-public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
+    public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }

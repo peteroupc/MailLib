@@ -162,7 +162,7 @@ namespace PeterO.Mail
           return i2;
         }
         index = i2;
-        i2 = skipQuotedPair(s, index, endIndex);
+        i2 = HeaderParser.ParseQuotedPair(s, index, endIndex, null);
         if (index != i2) {
           return i2;
         }
@@ -556,37 +556,10 @@ namespace PeterO.Mail
       return i;
     }
 
-    internal static int skipMimeTokenRfc2047(string str, int index, int endIndex) {
-      int i = index;
-      while (i < endIndex) {
-        char c = str[i];
-        if (c <= 0x20 || c >= 0x7F || ((c & 0x7F) == c && "()<>@,;:\\\"/[]?=.".IndexOf(c) >= 0)) {
-          break;
-        }
-        ++i;
-      }
-      return i;
-    }
-
-    internal static int skipEncodedTextRfc2047(string str, int index, int endIndex, bool inComments) {
-      int i = index;
-      while (i < endIndex) {
-        char c = str[i];
-        if (c <= 0x20 || c >= 0x7F || c == '?') {
-          break;
-        }
-        if (inComments && (c == '(' || c == ')' || c == '\\')) {
-          break;
-        }
-        ++i;
-      }
-      return i;
-    }
-
     internal static int skipMimeTypeSubtype(string str, int index, int endIndex, StringBuilder builder) {
       int i = index;
       int count = 0;
-      while (i < str.Length) {
+      while (i < endIndex) {
         char c = str[i];
         // See RFC6838
         if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) {
@@ -618,6 +591,12 @@ namespace PeterO.Mail
     /// type is "text/plain" or "text/xml" and doesn't have a charset parameter
     /// (see RFC2046 and RFC3023, respectively), or the empty string otherwise.</summary>
     /// <returns>A string object.</returns>
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+      "Microsoft.Design",
+      "CA1024",
+      Justification="This method has different semantics from GetParameter(\"charset\").")]
+    #endif
     public string GetCharset() {
       string param = this.GetParameter("charset");
       if (param != null) {
@@ -957,20 +936,44 @@ namespace PeterO.Mail
       }
     }
 
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+      "Microsoft.Security",
+      "CA2104",
+      Justification="This instance is immutable")]
+    #endif
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder("text", "plain").SetParameter("charset", "us-ascii").ToMediaType();
 
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+      "Microsoft.Security",
+      "CA2104",
+      Justification="This instance is immutable")]
+    #endif
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder("text", "plain").SetParameter("charset", "utf-8").ToMediaType();
 
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+      "Microsoft.Security",
+      "CA2104",
+      Justification="This instance is immutable")]
+    #endif
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
     private MediaType() {
     }
 
-    public static MediaType Parse(string str) {
-      return Parse(str, TextPlainAscii);
+    /// <summary>
+    /// Parses a media type string and returns a media type object.
+    /// </summary>
+    /// <param name="mediaTypeString"></param>
+    /// <returns>A media type object, or <code>MediaType.TextPlainAscii</code>
+    /// if "mediaTypeString" is empty or syntactically invalid.</returns>
+    public static MediaType Parse(string mediaTypeString) {
+      return Parse(mediaTypeString, TextPlainAscii);
     }
 
     /// <summary>Not documented yet.</summary>

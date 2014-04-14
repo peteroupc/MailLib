@@ -11,12 +11,10 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-    /// <summary>Represents an email address.</summary>
+  /// <summary>Represents an email address.</summary>
   public class Address {
     private string localPart;
 
-    // TODO: Honor length limits when outputting (recommended
-    // limit 76 characters, required limit 998 bytes)
     public string LocalPart {
       get {
         return this.localPart;
@@ -49,6 +47,25 @@ namespace PeterO.Mail
       }
     }
 
+    private int StringLength() {
+      if (HeaderParser.ParseDotAtomText(this.localPart, 0, this.localPart.Length, null) == this.localPart.Length) {
+        return this.localPart.Length+this.domain.Length+1;
+      } else {
+        int length=3+this.domain.Length; // two quotes, at sign, and domain length
+        for (int i = 0; i < this.localPart.Length; ++i) {
+          char c = this.localPart[i];
+          if (c == 0x20 || c == 0x09) {
+            length++;
+          } else if (c == '"' || c == 0x7f || c == '\\' || c < 0x20) {
+            length+=2;
+          } else {
+            length++;
+          }
+        }
+        return length;
+      }
+    }
+
     private string domain;
 
     /// <summary>Gets a value not documented yet.</summary>
@@ -61,10 +78,10 @@ namespace PeterO.Mail
 
     public Address(string addressValue) {
       if (addressValue == null) {
-        throw new ArgumentNullException("addressString");
+        throw new ArgumentNullException("addressValue");
       }
       if (addressValue.Length == 0) {
-        throw new ArgumentException("addressString is empty.");
+        throw new ArgumentException("addressValue is empty.");
       }
       if (addressValue.IndexOf('@') < 0) {
         throw new ArgumentException("Address doesn't contain a '@' sign");
@@ -82,6 +99,18 @@ namespace PeterO.Mail
       }
       this.localPart = HeaderParserUtility.ParseLocalPart(addressValue, 0, localPartEnd);
       this.domain = HeaderParserUtility.ParseDomain(addressValue, localPartEnd + 1, addressValue.Length);
+      // Check length restrictions. Using the character length to see
+      // if the address is too long is sufficient for this purpose.  If it becomes
+      // necessary to convert each label of the
+      // domain name to an A-label under IDNA2008, the Punycode encoding will only increase the
+      // length of the string, and IDNA2008 never maps clusters of characters to
+      // smaller clusters.
+      if(this.StringLength()>997){
+        // Maximum character length per line for an Internet message is 998;
+        // we check if the length exceeds 997 (thus excluding the space character
+        // of a folded line).
+        throw new ArgumentException("Address too long");
+      }
     }
 
     internal Address(string localPart, string domain) {
@@ -93,6 +122,10 @@ namespace PeterO.Mail
       }
       this.localPart = localPart;
       this.domain = domain;
+      // Check length restrictions.  See above.
+      if(this.StringLength()>997){
+        throw new ArgumentException("Address too long");
+      }
     }
   }
 }

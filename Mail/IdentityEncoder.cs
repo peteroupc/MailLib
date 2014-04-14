@@ -11,7 +11,7 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-    /// <summary>Desctiption of IdentityEncoder.</summary>
+    /// <summary>An IdentityEncoder.</summary>
   internal sealed class IdentityEncoder : IStringEncoder
   {
     public IdentityEncoder() {

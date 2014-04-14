@@ -53,7 +53,7 @@ namespace PeterO.Mail
           if (count == 1) {
             // Not supposed to happen;
             // invalid number of base64 characters
-            return '?';
+            return -1;
           } else if (count == 2) {
             --this.inputIndex;
             value <<= 12;
@@ -67,9 +67,10 @@ namespace PeterO.Mail
           }
           return -1;
         } else if (c >= 0x80) {
-          // ignore
+          // ignore this character
         } else {
           c = Base64Transform.Alphabet[c];
+          // non-base64 characters are ignored
           if (c >= 0) {
             value <<= 6;
             value |= c;

@@ -15,6 +15,18 @@ namespace PeterO.Mail
     /// <summary>Description of Rfc2047.</summary>
   internal static class Rfc2047
   {
+    private static int CharLength(string str, int index) {
+      if (str == null || index < 0 || index >= str.Length) {
+        return 1;
+      }
+      int c = str[index];
+      if (c >= 0xd800 && c <= 0xdbff && index + 1 < str.Length &&
+          str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
+        return 2;
+      }
+      return 1;
+    }
+
     private static bool HasSuspiciousTextInComments(string str) {
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
@@ -35,6 +47,195 @@ namespace PeterO.Mail
         }
       }
       return false;
+    }
+    
+    public static string EncodeComment(string str, int index, int endIndex) {
+      // NOTE: Assumes that the comment is syntactically valid
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      if (index < 0) {
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      }
+      if (index > str.Length) {
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+      }
+      if (endIndex < 0) {
+        throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      }
+      if (endIndex > str.Length) {
+        throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+      }
+      int length = endIndex - index;
+      if (length < 2 || str[index] != '(' || str[endIndex - 1] != ')') {
+        return str.Substring(index, length);
+      }
+      EncodedWordEncoder encoder;
+      int nextComment = str.IndexOf('(', index + 1);
+      int nextBackslash = str.IndexOf('\\', index + 1);
+      // don't count comments or backslashes beyond
+      // the desired portion
+      if (nextComment >= endIndex) {
+        nextComment = -1;
+      }
+      if (nextBackslash >= endIndex) {
+        nextBackslash = -1;
+      }
+      bool haveEscape = nextBackslash >= 0;
+      if (!haveEscape) {
+        // Check for possible folding whitespace
+        nextBackslash = str.IndexOf('\n', index + 1);
+        if (nextBackslash >= endIndex) {
+          nextBackslash = -1;
+        }
+        haveEscape = nextBackslash >= 0;
+      }
+      if (nextComment < 0 && nextBackslash < 0) {
+        // No escapes or nested comments, so it's relatively easy
+        if (length == 2) {
+          return "()";
+        }
+        encoder = new EncodedWordEncoder();
+        encoder.AddPrefix("(");
+        encoder.AddString(str, index + 1, length - 2);
+        encoder.FinalizeEncoding(")");
+        return encoder.ToString();
+      }
+      if (nextBackslash < 0) {
+        // No escapes; just look for '(' and ')'
+        encoder = new EncodedWordEncoder();
+        while (true) {
+          int parenStart = index;
+          // Get the next run of parentheses
+          while (index < endIndex) {
+            if (str[index] == '(' || str[index] == ')') {
+              ++index;
+            } else {
+              break;
+            }
+          }
+          // Get the next run of non-parentheses
+          int parenEnd = index;
+          while (index < endIndex) {
+            if (str[index] == '(' || str[index] == ')') {
+              break;
+            } else {
+              ++index;
+            }
+          }
+          if (parenEnd == index) {
+            encoder.FinalizeEncoding(str.Substring(parenStart, parenEnd - parenStart));
+            break;
+          } else {
+            encoder.AddPrefix(str.Substring(parenStart, parenEnd - parenStart));
+            encoder.AddString(str, parenEnd, index - parenEnd);
+          }
+        }
+        return encoder.ToString();
+      }
+      StringBuilder builder = new StringBuilder();
+      // escapes, but no nested comments
+      if (nextComment < 0) {
+        ++index;  // skip the first parenthesis
+        while (index < endIndex) {
+          if (str[index] == ')') {
+            // End of the comment
+            break;
+          } else if (str[index] == '\r' && index + 2 < endIndex &&
+                     str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] == 0x09)) {
+            // Folding whitespace
+            builder.Append(str[index + 2]);
+            index += 3;
+          } else if (str[index] == '\\' && index + 1 < endIndex) {
+            // Quoted pair
+            int charLen = CharLength(str, index + 1);
+            builder.Append(str.Substring(index + 1, charLen));
+            index += 1 + charLen;
+          } else {
+            // Other comment text
+            builder.Append(str[index]);
+            ++index;
+          }
+        }
+        if (builder.Length == 0) {
+          return "()";
+        }
+        encoder = new EncodedWordEncoder();
+        encoder.AddPrefix("(");
+        encoder.AddString(builder.ToString());
+        encoder.FinalizeEncoding(")");
+        return encoder.ToString();
+      }
+      // escapes and nested comments
+      encoder = new EncodedWordEncoder();
+      while (true) {
+        int parenStart = index;
+        // Get the next run of parentheses
+        while (index < endIndex) {
+          if (str[index] == '(' || str[index] == ')') {
+            ++index;
+          } else {
+            break;
+          }
+        }
+        // Get the next run of non-parentheses
+        int parenEnd = index;
+        builder.Remove(0, builder.Length);
+        while (index < endIndex) {
+          if (str[index] == '(' || str[index] == ')') {
+            break;
+          } else if (str[index] == '\r' && index + 2 < endIndex &&
+                     str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] == 0x09)) {
+            // Folding whitespace
+            builder.Append(str[index + 2]);
+            index += 3;
+          } else if (str[index] == '\\' && index + 1 < endIndex) {
+            // Quoted pair
+            int charLen = CharLength(str, index + 1);
+            builder.Append(str.Substring(index + 1, charLen));
+            index += 1 + charLen;
+          } else {
+            // Other comment text
+            builder.Append(str[index]);
+            ++index;
+          }
+        }
+        if (builder.Length == 0) {
+          encoder.FinalizeEncoding(str.Substring(parenStart, parenEnd - parenStart));
+          break;
+        } else {
+          encoder.AddPrefix(str.Substring(parenStart, parenEnd - parenStart));
+          encoder.AddString(builder.ToString());
+        }
+      }
+      return encoder.ToString();
+    }
+
+    private static int SkipCharsetOrEncoding(string str, int index, int endIndex) {
+      int i = index;
+      while (i < endIndex) {
+        char c = str[i];
+        if (c <= 0x20 || c >= 0x7F || ((c & 0x7F) == c && "()<>@,;:\\\"/[]?=.".IndexOf(c) >= 0)) {
+          break;
+        }
+        ++i;
+      }
+      return i;
+    }
+
+    private static int SkipEncodedText(string str, int index, int endIndex, bool inComments) {
+      int i = index;
+      while (i < endIndex) {
+        char c = str[i];
+        if (c <= 0x20 || c >= 0x7F || c == '?') {
+          break;
+        }
+        if (inComments && (c == '(' || c == ')' || c == '\\')) {
+          break;
+        }
+        ++i;
+      }
+      return i;
     }
 
     public static string DecodeEncodedWords(
@@ -124,12 +325,12 @@ namespace PeterO.Mail
             int charsetEnd = -1;
             int encodedTextStart = -1;
             bool base64 = false;
-            i2 = MediaType.skipMimeTokenRfc2047(str, index, afterLast);
+            i2 = SkipCharsetOrEncoding(str, index, afterLast);
             if (i2 != index && i2 < endIndex && str[i2] == '?') {
               // Parse encoding
               charsetEnd = i2;
               index = i2 + 1;
-              i2 = MediaType.skipMimeTokenRfc2047(str, index, afterLast);
+              i2 = SkipCharsetOrEncoding(str, index, afterLast);
               if (i2 != index && i2 < endIndex && str[i2] == '?') {
                 // check for supported encoding (B or Q)
                 char encodingChar = str[index];
@@ -139,7 +340,7 @@ namespace PeterO.Mail
                   base64 = encodingChar == 'b' || encodingChar == 'B';
                   index = i2 + 1;
                   encodedTextStart = index;
-                  i2 = MediaType.skipEncodedTextRfc2047(
+                  i2 = SkipEncodedText(
                     str,
                     index,
                     afterLast,
@@ -469,7 +670,7 @@ namespace PeterO.Mail
     public static string EncodePhraseText(string str, int index, int endIndex, IList<int[]> tokens) {
       // Assumes the value matches the production "phrase",
       // and assumes that endIndex is the end of all whitespace
-      // found after the phrase
+      // found after the phrase.  Doesn't encode text within comments.
       if (index == endIndex) {
         return String.Empty;
       }

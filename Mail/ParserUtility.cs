@@ -43,17 +43,17 @@ namespace PeterO.Mail
     }
 
     public static bool EndsWith(string str, string suffix, int strStartPos) {
-      if ((str) == null) {
+      if (str == null) {
         throw new ArgumentNullException("str");
       }
-      if ((suffix) == null) {
+      if (suffix == null) {
         throw new ArgumentNullException("suffix");
       }
       if (strStartPos < 0) {
-        throw new ArgumentException("strStartPos (" + Convert.ToString((long)(strStartPos), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("strStartPos (" + Convert.ToString((long)strStartPos, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (strStartPos > str.Length) {
-        throw new ArgumentException("strStartPos (" + Convert.ToString((long)(strStartPos), System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)(str.Length), System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("strStartPos (" + Convert.ToString((long)strStartPos, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       int endpos = suffix.Length + strStartPos;
       if (endpos > str.Length) {
@@ -63,10 +63,10 @@ namespace PeterO.Mail
     }
 
     public static bool StartsWith(string str, string prefix) {
-      if ((str) == null) {
+      if (str == null) {
         throw new ArgumentNullException("str");
       }
-      if ((prefix) == null) {
+      if (prefix == null) {
         throw new ArgumentNullException("prefix");
       }
       if (prefix.Length < str.Length) {

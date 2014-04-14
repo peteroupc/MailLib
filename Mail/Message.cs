@@ -13,12 +13,12 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-  /// <summary>Represents an email message. <para><b>Thread safety:</b>
-  /// This class is mutable; its properties can be changed. None of its methods
-  /// are designed to be thread safe. Therefore, access to objects from
-  /// this class must be synchronized if multiple threads can access them
-  /// at the same time.</para>
-  /// </summary>
+    /// <summary>Represents an email message. <para><b>Thread safety:</b>
+    /// This class is mutable; its properties can be changed. None of its methods
+    /// are designed to be thread safe. Therefore, access to objects from
+    /// this class must be synchronized if multiple threads can access them
+    /// at the same time.</para>
+    /// </summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -169,9 +169,21 @@ namespace PeterO.Mail
       this.parts = new List<Message>();
     }
 
+    public Message(string fromAddress) {
+      this.headers = new List<string>();
+      this.parts = new List<Message>();
+      this.SetHeader("from", fromAddress);
+    }
+
     /// <summary>Returns the mail message contained in this message's body.</summary>
     /// <returns>A message object if this object's content type is "message/rfc822",
     /// or null otherwise.</returns>
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+      "Microsoft.Design",
+      "CA1024",
+      Justification="This method may throw MessageDataException among other things - making it too heavyweight to be a property.")]
+    #endif
     public Message GetBodyMessage() {
       if (this.ContentType.TopLevelType.Equals("message") &&
           this.ContentType.SubType.Equals("rfc822")) {
@@ -465,7 +477,6 @@ namespace PeterO.Mail
     }
 
     private static int ParseUnstructuredText(string str, int index, int endIndex) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         while (true) {
@@ -593,190 +604,6 @@ namespace PeterO.Mail
       return this;
     }
 
-    private static int CharLength(string str, int index) {
-      if (str == null || index < 0 || index >= str.Length) {
-        return 1;
-      }
-      int c = str[index];
-      if (c >= 0xd800 && c <= 0xdbff && index + 1 < str.Length &&
-          str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
-        return 2;
-      }
-      return 1;
-    }
-
-    public static string ConvertCommentsToEncodedWords(string str) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      return ConvertCommentsToEncodedWords(str, 0, str.Length);
-    }
-
-    public static string ConvertCommentsToEncodedWords(string str, int index, int length) {
-      // NOTE: Assumes that the comment is syntactically valid
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
-      }
-      if (index > str.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
-      }
-      if (length > str.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      if (str.Length - index < length) {
-        throw new ArgumentException("str's length minus " + index + " (" + Convert.ToString((long)(str.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      int endIndex = index + length;
-      if (length < 2 || str[index] != '(' || str[endIndex - 1] != ')') {
-        return str.Substring(index, length);
-      }
-      EncodedWordEncoder encoder;
-      int nextComment = str.IndexOf('(', index + 1);
-      int nextBackslash = str.IndexOf('\\', index + 1);
-      // don't count comments or backslashes beyond
-      // the desired portion
-      if (nextComment >= endIndex) {
-        nextComment = -1;
-      }
-      if (nextBackslash >= endIndex) {
-        nextBackslash = -1;
-      }
-      bool haveEscape = nextBackslash >= 0;
-      if (!haveEscape) {
-        // Check for possible folding whitespace
-        nextBackslash = str.IndexOf('\n', index + 1);
-        if (nextBackslash >= endIndex) {
-          nextBackslash = -1;
-        }
-        haveEscape = nextBackslash >= 0;
-      }
-      if (nextComment < 0 && nextBackslash < 0) {
-        // No escapes or nested comments, so it's relatively easy
-        if (length == 2) {
-          return "()";
-        }
-        encoder = new EncodedWordEncoder();
-        encoder.AddPrefix("(");
-        encoder.AddString(str, index + 1, length - 2);
-        encoder.FinalizeEncoding(")");
-        return encoder.ToString();
-      }
-      if (nextBackslash < 0) {
-        // No escapes; just look for '(' and ')'
-        encoder = new EncodedWordEncoder();
-        while (true) {
-          int parenStart = index;
-          // Get the next run of parentheses
-          while (index < endIndex) {
-            if (str[index] == '(' || str[index] == ')') {
-              ++index;
-            } else {
-              break;
-            }
-          }
-          // Get the next run of non-parentheses
-          int parenEnd = index;
-          while (index < endIndex) {
-            if (str[index] == '(' || str[index] == ')') {
-              break;
-            } else {
-              ++index;
-            }
-          }
-          if (parenEnd == index) {
-            encoder.FinalizeEncoding(str.Substring(parenStart, parenEnd - parenStart));
-            break;
-          } else {
-            encoder.AddPrefix(str.Substring(parenStart, parenEnd - parenStart));
-            encoder.AddString(str, parenEnd, index - parenEnd);
-          }
-        }
-        return encoder.ToString();
-      }
-      StringBuilder builder = new StringBuilder();
-      // escapes, but no nested comments
-      if (nextComment < 0) {
-        ++index;  // skip the first parenthesis
-        while (index < endIndex) {
-          if (str[index] == ')') {
-            // End of the comment
-            break;
-          } else if (str[index] == '\r' && index + 2 < endIndex &&
-                     str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] == 0x09)) {
-            // Folding whitespace
-            builder.Append(str[index + 2]);
-            index += 3;
-          } else if (str[index] == '\\' && index + 1 < endIndex) {
-            // Quoted pair
-            int charLen = CharLength(str, index + 1);
-            builder.Append(str.Substring(index + 1, charLen));
-            index += 1 + charLen;
-          } else {
-            // Other comment text
-            builder.Append(str[index]);
-            ++index;
-          }
-        }
-        if (builder.Length == 0) {
-          return "()";
-        }
-        encoder = new EncodedWordEncoder();
-        encoder.AddPrefix("(");
-        encoder.AddString(builder.ToString());
-        encoder.FinalizeEncoding(")");
-        return encoder.ToString();
-      }
-      // escapes and nested comments
-      encoder = new EncodedWordEncoder();
-      while (true) {
-        int parenStart = index;
-        // Get the next run of parentheses
-        while (index < endIndex) {
-          if (str[index] == '(' || str[index] == ')') {
-            ++index;
-          } else {
-            break;
-          }
-        }
-        // Get the next run of non-parentheses
-        int parenEnd = index;
-        builder.Remove(0, builder.Length);
-        while (index < endIndex) {
-          if (str[index] == '(' || str[index] == ')') {
-            break;
-          } else if (str[index] == '\r' && index + 2 < endIndex &&
-                     str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] == 0x09)) {
-            // Folding whitespace
-            builder.Append(str[index + 2]);
-            index += 3;
-          } else if (str[index] == '\\' && index + 1 < endIndex) {
-            // Quoted pair
-            int charLen = CharLength(str, index + 1);
-            builder.Append(str.Substring(index + 1, charLen));
-            index += 1 + charLen;
-          } else {
-            // Other comment text
-            builder.Append(str[index]);
-            ++index;
-          }
-        }
-        if (builder.Length == 0) {
-          encoder.FinalizeEncoding(str.Substring(parenStart, parenEnd - parenStart));
-          break;
-        } else {
-          encoder.AddPrefix(str.Substring(parenStart, parenEnd - parenStart));
-          encoder.AddString(builder.ToString());
-        }
-      }
-      return encoder.ToString();
-    }
-
     private static bool StartsWithWhitespace(string str) {
       return str.Length > 0 && (str[0] == ' ' || str[0] == 0x09 || str[0] == '\r');
     }
@@ -794,7 +621,7 @@ namespace PeterO.Mail
         int salen = Math.Min(100, a.Length - sa);
         int sblen = Math.Min(100, b.Length - sa);
         throw new MessageDataException(
-          String.Format("Differs [length {0} vs. {1}]\r\nA={2}\r\nB={3}", a.Length, b.Length, a.Substring(sa, salen), b.Substring(sa, sblen)));
+          "Differs [length " + a.Length + " vs. " + b.Length + "]\r\nA=" + a.Substring(sa, salen) + "\r\nB=" + b.Substring(sa, sblen));
       }
     }
 
@@ -834,13 +661,13 @@ namespace PeterO.Mail
             allTextBytes = false;
           }
           if (lineLength == 0 && i + 2 < this.body.Length &&
-              this.body[i] == '.' && this.body[i+1]=='\r' && this.body[i+2]=='\n') {
+              this.body[i] == '.' && this.body[i + 1] == '\r' && this.body[i + 2] == '\n') {
             // See RFC2049 sec. 3
             allTextBytes = false;
           }
           if (lineLength == 0 && i + 4 < this.body.Length &&
-              this.body[i] == 'F' && this.body[i+1]=='r' && this.body[i+2]=='o' &&
-              this.body[i + 3]=='m' && this.body[i+4]==' ') {
+              this.body[i] == 'F' && this.body[i + 1] == 'r' && this.body[i + 2] == 'o' &&
+              this.body[i + 3] == 'm' && this.body[i + 4] == ' ') {
             // See RFC2049 sec. 3
             allTextBytes = false;
           }
@@ -876,7 +703,7 @@ namespace PeterO.Mail
       try {
         listFrom = GenerateAddressList(this.FromAddresses);
       } catch (ArgumentException ex) {
-        throw new MessageDataException(ex.Message + " " + this.GetHeader("from"),ex);
+        throw new MessageDataException(ex.Message + " " + this.GetHeader("from"), ex);
       }
       var listTo = GenerateAddressList(this.ToAddresses);
       var listCc = GenerateAddressList(this.CCAddresses);
@@ -925,14 +752,14 @@ namespace PeterO.Mail
 
     /// <summary>Not documented yet.</summary>
     /// <returns>A string object.</returns>
-    public string GenerateHeaders() {
+    internal string GenerateHeaders() {
       return this.GenerateHeaders(false);
     }
 
     /// <summary>Not documented yet.</summary>
     /// <returns>A string object.</returns>
     /// <param name='bodyPart'>A Boolean object.</param>
-    public string GenerateHeaders(bool bodyPart) {
+    internal string GenerateHeaders(bool bodyPart) {
       StringBuilder sb = new StringBuilder();
       bool haveMimeVersion = false;
       for (int i = 0; i < this.headers.Count; i += 2) {
@@ -1004,7 +831,7 @@ namespace PeterO.Mail
       switch (transferEncoding) {
         case EncodingBase64:
           sb.Append("Content-Transfer-Encoding: base64\r\n");
-          bodyEncoder=new Base64Encoder(true, builder.TopLevelType.Equals("text") ? true : false);
+          bodyEncoder = new Base64Encoder(true, builder.TopLevelType.Equals("text") ? true : false);
           break;
         case EncodingQuotedPrintable:
           sb.Append("Content-Transfer-Encoding: quoted-printable\r\n");
@@ -1174,8 +1001,8 @@ namespace PeterO.Mail
     private class MessageStackEntry {
       private Message message;
 
-      /// <summary>Gets a value not documented yet.</summary>
-      /// <value>A value not documented yet.</value>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public Message Message {
         get {
           return this.message;
@@ -1184,8 +1011,8 @@ namespace PeterO.Mail
 
       private string boundary;
 
-      /// <summary>Gets a value not documented yet.</summary>
-      /// <value>A value not documented yet.</value>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public string Boundary {
         get {
           return this.boundary;

@@ -20,6 +20,7 @@ namespace PeterO.Mail
     private int lineLength;
     private bool haveNonwhitespace;
 
+    // TODO: Collapse spaces in this implementation
     public WordWrapEncoder(string c) {
       this.fullString = new StringBuilder();
       this.fullString.Append(c);

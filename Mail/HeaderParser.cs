@@ -100,9 +100,7 @@ namespace PeterO.Mail {
             do {
               int indexTemp3 = index;
               do {
-                int indexStart3 = index;
-                int indexTemp4;
-                indexTemp4 = ParseAddress(str, index, endIndex, tokener);
+                int indexTemp4 = ParseAddress(str, index, endIndex, tokener);
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
@@ -166,9 +164,11 @@ namespace PeterO.Mail {
       }
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseAtext(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index] == 33) || (str[index] == 35) || (str[index] == 36) || (str[index] == 37) || (str[index] == 38) || (str[index] == 39) || (str[index] == 42) || (str[index] == 43) || (str[index] == 45) || (str[index] == 47) || (str[index] == 61) || (str[index] == 63) || (str[index] == 94) || (str[index] == 95) || (str[index] == 96) || (str[index] == 123) || (str[index] == 124) || (str[index] == 125) || (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
@@ -334,9 +334,11 @@ namespace PeterO.Mail {
       }
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseCharset(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] == 43) || (str[index] == 45) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 94 && str[index] <= 126) || (str[index] == 63))) {
@@ -788,14 +790,11 @@ namespace PeterO.Mail {
           while (true) {
             int indexTemp3 = index;
             do {
-              int indexStart3 = index;
               if (index < endIndex && ((str[index] >= 33 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
                 ++indexTemp3; break;
               }
-              int indexTemp4;
-              indexTemp4 = index;
+              int indexTemp4 = index;
               do {
-                int indexStart4 = index;
                 if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                   ++indexTemp4; break;
                 }
@@ -934,7 +933,10 @@ namespace PeterO.Mail {
       }
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseExtendedInitialName(string str, int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int indexTemp = index;
@@ -1024,15 +1026,16 @@ namespace PeterO.Mail {
       }
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseExtendedOtherValues(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         while (true) {
           int indexTemp2 = index;
           do {
-            int indexStart2 = index;
             if (index + 2 < endIndex && ((str[index] == 37) && (((str[index + 1] >= 65 && str[index + 1] <= 70) && (str[index + 2] >= 65 && str[index + 2] <= 70)) || ((str[index + 1] >= 97 && str[index + 1] <= 102) && (str[index + 2] >= 97 && str[index + 2] <= 102)) || ((str[index + 1] >= 48 && str[index + 1] <= 57) && (str[index + 2] >= 48 && str[index + 2] <= 57))))) {
               indexTemp2 += 3; break;
             }
@@ -1050,7 +1053,10 @@ namespace PeterO.Mail {
       } while (false);
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseFWS(string str, int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int indexTemp = index;
@@ -1232,11 +1238,11 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            int indexStart2 = index;
             int indexTemp3 = ParseNoResult(str, index, endIndex, tokener);
             if (indexTemp3 != index) {
               indexTemp2 = indexTemp3; break;
             }
+            int indexStart2 = index;
             for (int i2 = 0;; ++i2) {
               indexTemp3 = ParseResinfo(str, index, endIndex, tokener);
               if (indexTemp3 == index) { if (i2 < 1) {
@@ -1246,7 +1252,7 @@ namespace PeterO.Mail {
                 index = indexTemp3;
               }
             }
-            if (indexTemp3 != indexStart) {
+            if (indexTemp3 != indexStart2) {
               indexTemp2 = indexTemp3; break;
             }
             index = indexStart2;
@@ -1312,7 +1318,6 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            int indexStart2 = index;
             int indexTemp3 = ParseAddressList(str, index, endIndex, tokener);
             if (indexTemp3 != index) {
               indexTemp2 = indexTemp3; break;
@@ -1831,7 +1836,6 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            int indexStart2 = index;
             int indexTemp3 = ParsePhrase(str, index, endIndex, tokener);
             if (indexTemp3 != index) {
               indexTemp2 = indexTemp3; break;
@@ -1872,9 +1876,7 @@ namespace PeterO.Mail {
             do {
               int indexTemp3 = index;
               do {
-                int indexStart3 = index;
-                int indexTemp4;
-                indexTemp4 = ParseDotAtomText(str, index, endIndex, tokener);
+                int indexTemp4 = ParseDotAtomText(str, index, endIndex, tokener);
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
@@ -2040,7 +2042,6 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            int indexStart2 = index;
             int indexTemp3 = index;
             do {
               int indexStart3 = index;
@@ -2267,7 +2268,6 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            int indexStart2 = index;
             if (index + 3 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 83) {
               indexTemp2 += 4; break;
             }
@@ -2512,9 +2512,11 @@ namespace PeterO.Mail {
       }
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseKey(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
@@ -2601,7 +2603,6 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            int indexStart2 = index;
             int indexTemp3 = ParseDotAtom(str, index, endIndex, tokener);
             if (indexTemp3 != index) {
               indexTemp2 = indexTemp3; break;
@@ -2631,9 +2632,11 @@ namespace PeterO.Mail {
     public static int ParseLanguageDescription(string str, int index, int endIndex, ITokener tokener) {
       return ParsePrintablestring(str, index, endIndex, tokener);
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseLanguageTag(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
@@ -2648,7 +2651,10 @@ namespace PeterO.Mail {
       } while (false);
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseLdhStr(string str, int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int indexTemp = index;
@@ -2817,25 +2823,21 @@ namespace PeterO.Mail {
           while (true) {
             int indexTemp3 = index;
             do {
-              int indexStart3 = index;
               if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
                 ++indexTemp3; break;
               }
               if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 91) || (str[index] >= 93 && str[index] <= 126))) {
                 ++indexTemp3; break;
               }
-              int indexTemp4;
-              indexTemp4 = index;
+              int indexTemp4 = index;
               do {
                 int indexStart4 = index;
                 if (index < endIndex && (str[index] == 92)) {
                   ++index;
                 }
                 do {
-                  int indexTemp5;
-                  indexTemp5 = index;
+                  int indexTemp5 = index;
                   do {
-                    int indexStart5 = index;
                     if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                       ++indexTemp5; break;
                     }
@@ -2958,9 +2960,7 @@ namespace PeterO.Mail {
             do {
               int indexTemp3 = index;
               do {
-                int indexStart3 = index;
-                int indexTemp4;
-                indexTemp4 = ParseMailbox(str, index, endIndex, tokener);
+                int indexTemp4 = ParseMailbox(str, index, endIndex, tokener);
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
@@ -3261,10 +3261,6 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseObsCtext(string str, int index, int endIndex, ITokener tokener) {
-      return ParseObsNOWSCTL(str, index, endIndex, tokener);
-    }
-
     public static int ParseObsDomainList(string str, int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
@@ -3275,7 +3271,6 @@ namespace PeterO.Mail {
           int state2 = (tokener != null) ? tokener.GetState() : 0;
           indexTemp2 = index;
           do {
-            int indexStart2 = index;
             int indexTemp3 = ParseCFWS(str, index, endIndex, tokener);
             if (indexTemp3 != index) {
               indexTemp2 = indexTemp3; break;
@@ -3395,17 +3390,6 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseObsNOWSCTL(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
-      int indexTemp = index;
-      do {
-        if (index < endIndex && ((str[index] >= 1 && str[index] <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) || (str[index] == 127))) {
-          ++indexTemp; break;
-        }
-      } while (false);
-      return indexTemp;
-    }
-
     public static int ParseObsRoute(string str, int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
@@ -3472,9 +3456,11 @@ namespace PeterO.Mail {
       }
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseOtherSections(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         if (index + 1 < endIndex && (str[index] == 42) && (str[index + 1] >= 49 && str[index + 1] <= 57)) {
@@ -3499,7 +3485,6 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            int indexStart2 = index;
             int indexTemp3;
             int state3 = (tokener != null) ? tokener.GetState() : 0;
             indexTemp3 = index;
@@ -3547,8 +3532,7 @@ namespace PeterO.Mail {
                 index = indexStart3; break;
               }
               while (true) {
-                int indexTemp4;
-                indexTemp4 = ParseExtendedOtherValues(str, index, endIndex, tokener);
+                int indexTemp4 = ParseExtendedOtherValues(str, index, endIndex, tokener);
                 if (indexTemp4 != index) {
                   index = indexTemp4;
                 } else {
@@ -3668,7 +3652,6 @@ namespace PeterO.Mail {
         for (int i = 0;; ++i) {
           int indexTemp2 = index;
           do {
-            int indexStart2 = index;
             if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
               ++indexTemp2; break;
             }
@@ -3677,7 +3660,6 @@ namespace PeterO.Mail {
             }
             int indexTemp3 = index;
             do {
-              int indexStart3 = index;
               if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                 ++indexTemp3; break;
               }
@@ -3829,7 +3811,6 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            int indexStart2 = index;
             int indexTemp3 = index;
             do {
               int indexStart3 = index;
@@ -3886,15 +3867,16 @@ namespace PeterO.Mail {
       }
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParsePrintablestring(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         while (true) {
           int indexTemp2 = index;
           do {
-            int indexStart2 = index;
             if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) || (str[index] == 39) || (str[index] >= 43 && str[index] <= 58) || (str[index] == 61) || (str[index] == 63))) {
               ++indexTemp2; break;
             }
@@ -3978,9 +3960,11 @@ namespace PeterO.Mail {
       }
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParsePsChar(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) || (str[index] == 39) || (str[index] >= 43 && str[index] <= 58) || (str[index] == 61) || (str[index] == 63))) {
@@ -3992,9 +3976,11 @@ namespace PeterO.Mail {
       } while (false);
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParsePtype(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         if (index + 3 < endIndex && (str[index] & ~32) == 83 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 84 && (str[index + 3] & ~32) == 80) {
@@ -4022,15 +4008,13 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            int indexStart2 = index;
             int indexTemp3;
             int state3 = (tokener != null) ? tokener.GetState() : 0;
             indexTemp3 = index;
             do {
               int indexStart3 = index;
               do {
-                int indexTemp4;
-                indexTemp4 = index;
+                int indexTemp4 = index;
                 do {
                   int indexStart4 = index;
                   index = ParseLocalPart(str, index, endIndex, tokener);
@@ -4069,7 +4053,7 @@ namespace PeterO.Mail {
             if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
               ++indexTemp2;
               while (indexTemp2 < endIndex && ((str[indexTemp2] == 33) || (str[indexTemp2] >= 35 && str[indexTemp2] <= 36) || (str[indexTemp2] >= 45 && str[indexTemp2] <= 46) || (str[indexTemp2] >= 65 && str[indexTemp2] <= 90) || (str[indexTemp2] >= 48 && str[indexTemp2] <= 57) || (str[indexTemp2] >= 94 && str[indexTemp2] <= 126) || (str[indexTemp2] >= 42 && str[indexTemp2] <= 43) || (str[indexTemp2] >= 38 && str[indexTemp2] <= 39) || (str[indexTemp2] == 63))) {
-                ++indexTemp2;
+                indexTemp2++;
               }
               break;
             }
@@ -4155,7 +4139,10 @@ namespace PeterO.Mail {
       }
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseQuotedPair(string str, int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int indexTemp = index;
@@ -4168,7 +4155,6 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            int indexStart2 = index;
             if (index < endIndex && ((str[index] >= 1 && str[index] <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) || (str[index] == 127) || (str[index] == 0) || (str[index] == 10) || (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
               ++indexTemp2; break;
             }
@@ -4439,9 +4425,11 @@ namespace PeterO.Mail {
       }
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseRestrictedName(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 65 && str[index] <= 90))) {
@@ -4460,9 +4448,11 @@ namespace PeterO.Mail {
       } while (false);
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseResult(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         if (index + 3 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 83) {
@@ -4528,9 +4518,11 @@ namespace PeterO.Mail {
       }
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseText(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         if (index < endIndex && ((str[index] >= 1 && str[index] <= 9) || (str[index] == 11) || (str[index] == 12) || (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
@@ -4623,9 +4615,11 @@ namespace PeterO.Mail {
       }
       return indexTemp;
     }
-
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage","CA1801",
+                                                     Justification="Tokener argument appears for consistency with other Parse* methods defined here.")]
+    #endif
     public static int ParseToken(string str, int index, int endIndex, ITokener tokener) {
-      int indexStart = index;
       int indexTemp = index;
       do {
         if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
@@ -4649,7 +4643,7 @@ namespace PeterO.Mail {
         if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
           ++indexTemp;
           while (indexTemp < endIndex && ((str[indexTemp] == 33) || (str[indexTemp] >= 35 && str[indexTemp] <= 36) || (str[indexTemp] >= 45 && str[indexTemp] <= 46) || (str[indexTemp] >= 65 && str[indexTemp] <= 90) || (str[indexTemp] >= 48 && str[indexTemp] <= 57) || (str[indexTemp] >= 94 && str[indexTemp] <= 126) || (str[indexTemp] >= 42 && str[indexTemp] <= 43) || (str[indexTemp] >= 38 && str[indexTemp] <= 39) || (str[indexTemp] == 63))) {
-            ++indexTemp;
+            indexTemp++;
           }
           break;
         }

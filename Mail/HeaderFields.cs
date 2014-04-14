@@ -80,7 +80,7 @@ namespace PeterO.Mail
             if (endIndex != i) {
               // This is a comment, so replace any encoded words
               // in the comment
-              string newComment = Message.ConvertCommentsToEncodedWords(str, i, endIndex);
+              string newComment = Rfc2047.EncodeComment(str, i, endIndex);
               sb.Append(str.Substring(lastIndex, i - lastIndex));
               sb.Append(newComment);
               lastIndex = endIndex;
@@ -151,7 +151,7 @@ namespace PeterO.Mail
       }
     }
 
-    internal abstract class EncodedWordsInSyntax : IHeaderFieldParser {
+    private abstract class EncodedWordsInSyntax : IHeaderFieldParser {
       protected abstract int Parse(string str, int index, int endIndex, ITokener tokener);
 
     /// <summary>Not documented yet.</summary>
@@ -192,7 +192,7 @@ namespace PeterO.Mail
                 endIndex = token[2];
                 // Console.WriteLine(str.Substring(startIndex, endIndex - startIndex));
                 if (Message.HasTextToEscape(str, startIndex, endIndex)) {
-                  string newComment = Message.ConvertCommentsToEncodedWords(str, startIndex, endIndex);
+                  string newComment = Rfc2047.EncodeComment(str, startIndex, endIndex);
                   sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
                   // Console.WriteLine("newcomment "+newComment);
                   sb.Append(newComment);
@@ -471,7 +471,7 @@ namespace PeterO.Mail
       }
     }
 
-    internal class Mailbox : EncodedWordsInSyntax {
+    private class Mailbox : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderXMittente(str, index, endIndex, tokener);
       }

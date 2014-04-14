@@ -12,7 +12,7 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-    /// <summary>Represents an email address and a name for that address.</summary>
+  /// <summary>Represents an email address and a name for that address.</summary>
   public class NamedAddress {
     private string name;
 
@@ -70,7 +70,7 @@ namespace PeterO.Mail
         if ((str[i] == '\r') && i + 1 < str.Length &&
             (str[i + 1] == '\n')) {
           // CRLF
-          if (i == 0 && i + 2<str.Length && (str[i + 1] == ' ' || str[i + 1] == '\t')) {
+          if (i == 0 && i + 2 < str.Length && (str[i + 1] == ' ' || str[i + 1] == '\t')) {
             // CRLF followed by space or tab at beginning
             return true;
           }
@@ -112,7 +112,7 @@ namespace PeterO.Mail
         builder.Append(QuoteValue(this.name));
         builder.Append(": ");
         bool first = true;
-         foreach (NamedAddress address in this.groupAddresses) {
+        foreach (NamedAddress address in this.groupAddresses) {
           if (!first) {
             builder.Append(", ");
           }
@@ -128,7 +128,12 @@ namespace PeterO.Mail
         if (addressString.Equals(this.name)) {
           return addressString;
         } else {
-          return QuoteValue(this.name) +" <" + addressString + ">";
+          if(addressString.Length>990){
+            // Give some space to ease line wrapping
+            return QuoteValue(this.name) + " < " + addressString + " >";
+          } else {
+            return QuoteValue(this.name) + " <" + addressString + ">";
+          }
         }
       }
     }

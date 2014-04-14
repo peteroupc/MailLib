@@ -11,7 +11,7 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-    /// <summary>Desctiption of QuotedPrintableEncoder.</summary>
+    /// <summary>Encodes binary data into Quoted Printable.</summary>
   internal sealed class QuotedPrintableEncoder : IStringEncoder
   {
     private static string valueHexAlphabet = "0123456789ABCDEF";

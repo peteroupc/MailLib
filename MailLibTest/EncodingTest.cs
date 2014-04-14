@@ -19,139 +19,6 @@ namespace MailLibTest
   [TestFixture]
   public class EncodingTest
   {
-    private static string valueHexAlphabet = "0123456789ABCDEF";
-
-    private static void IncrementLineCount(StringBuilder str, int length, int[] count) {
-      if (count[0] + length > 75) { // 76 including the final '='
-        str.Append("=\r\n");
-        count[0] = length;
-      } else {
-        count[0] += length;
-      }
-    }
-
-    // lineBreakMode:
-    // 0 - no line breaks
-    // 1 - treat CRLF as a line break
-    // 2 - treat CR, LF, and CRLF as a line break
-    private static void ToQuotedPrintableRfc2045(
-      StringBuilder str,
-      byte[] data,
-      int offset,
-      int count,
-      int lineBreakMode) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      if (data == null) {
-        throw new ArgumentNullException("data");
-      }
-      if (offset < 0) {
-        throw new ArgumentException("offset (" + Convert.ToString((long)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
-      }
-      if (offset > data.Length) {
-        throw new ArgumentException("offset (" + Convert.ToString((long)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)data.Length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      if (count < 0) {
-        throw new ArgumentException("count (" + Convert.ToString((long)count, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
-      }
-      if (count > data.Length) {
-        throw new ArgumentException("count (" + Convert.ToString((long)count, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)data.Length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      if (data.Length - offset < count) {
-        throw new ArgumentException("data's length minus " + offset + " (" + Convert.ToString((long)(data.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)count, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      int length = offset + count;
-      int[] lineCount = new int[] { 0 };
-      int i = offset;
-      for (i = offset; i < length; ++i) {
-        if (data[i] == 0x0d) {
-          if (lineBreakMode == 0) {
-            IncrementLineCount(str, 3, lineCount);
-            str.Append("=0D");
-          } else if (i + 1 >= length || data[i + 1] != 0x0a) {
-            if (lineBreakMode == 2) {
-              str.Append("\r\n");
-              lineCount[0] = 0;
-            } else {
-              IncrementLineCount(str, 3, lineCount);
-              str.Append("=0D");
-            }
-          } else {
-            ++i;
-            str.Append("\r\n");
-            lineCount[0] = 0;
-          }
-        } else if (data[i] == 0x0a) {
-          if (lineBreakMode == 2) {
-            str.Append("\r\n");
-            lineCount[0] = 0;
-          } else {
-            IncrementLineCount(str, 3, lineCount);
-            str.Append("=0A");
-          }
-        } else if (data[i] == 9) {
-          IncrementLineCount(str, 3, lineCount);
-          str.Append("=09");
-        } else if (lineCount[0] == 0 &&
-                   data[i] == (byte)'.' && i + 1 < length && (data[i] == '\r' || data[i] == '\n')) {
-          IncrementLineCount(str, 3, lineCount);
-          str.Append("=2E");
-        } else if (lineCount[0] == 0 && i + 4 < length &&
-                   data[i] == (byte)'F' &&
-                   data[i + 1] == (byte)'r' &&
-                   data[i + 2] == (byte)'o' &&
-                   data[i + 3] == (byte)'m' &&
-                   data[i + 4] == (byte)' ') {
-          // See page 7-8 of RFC 2049
-          IncrementLineCount(str, 7, lineCount);
-          str.Append("=46rom ");
-          i += 4;
-        } else if (data[i] == 32) {
-          if (i + 1 == length) {
-            IncrementLineCount(str, 3, lineCount);
-            str.Append(data[i] == 9 ? "=09" : "=20");
-            lineCount[0] = 0;
-          } else if (i + 2 < length && lineBreakMode > 0) {
-            if (data[i + 1] == 0x0d && data[i + 2] == 0x0a) {
-              IncrementLineCount(str, 3, lineCount);
-              str.Append(data[i] == 9 ? "=09\r\n" : "=20\r\n");
-              lineCount[0] = 0;
-              i += 2;
-            } else {
-              IncrementLineCount(str, 1, lineCount);
-              str.Append((char)data[i]);
-            }
-          } else if (i + 1 < length && lineBreakMode == 2) {
-            if (data[i + 1] == 0x0d || data[i + 1] == 0x0a) {
-              IncrementLineCount(str, 3, lineCount);
-              str.Append(data[i] == 9 ? "=09\r\n" : "=20\r\n");
-              lineCount[0] = 0;
-              ++i;
-            } else {
-              IncrementLineCount(str, 1, lineCount);
-              str.Append((char)data[i]);
-            }
-          } else {
-            IncrementLineCount(str, 1, lineCount);
-            str.Append((char)data[i]);
-          }
-        } else if (data[i] == (byte)'=') {
-          IncrementLineCount(str, 3, lineCount);
-          str.Append("=3D");
-        } else if (data[i] > 0x20 && data[i] < 0x7f && data[i] != ',' &&
-                   "()'+-./?:".IndexOf((char)data[i]) < 0) {
-          IncrementLineCount(str, 1, lineCount);
-          str.Append((char)data[i]);
-        } else {
-          IncrementLineCount(str, 3, lineCount);
-          str.Append('=');
-          str.Append(valueHexAlphabet[(data[i] >> 4) & 15]);
-          str.Append(valueHexAlphabet[data[i] & 15]);
-        }
-      }
-    }
-
     /// <summary>Note: If lenientLineBreaks is true, treats CR, LF, and
     /// CRLF as line breaks and writes CRLF when encountering these breaks.
     /// If unlimitedLineLength is true, doesn't check that no more than 76
@@ -245,7 +112,8 @@ namespace MailLibTest
     public void TestQuotedPrintable(string input, int mode, string expectedOutput) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
       StringBuilder sb = new StringBuilder();
-      ToQuotedPrintableRfc2045(sb, bytes, 0, bytes.Length, mode);
+      var enc = new QuotedPrintableEncoder(mode);
+      enc.WriteToString(sb, bytes, 0, bytes.Length);
       Assert.AreEqual(expectedOutput, sb.ToString());
     }
 
@@ -488,18 +356,22 @@ namespace MailLibTest
         HeaderFields.GetParser("subject").DecodeEncodedWords(input));
     }
 
+    private static string EncodeComment(string str){
+      return Rfc2047.EncodeComment(str,0,str.Length);
+    }
+    
     [Test]
     public void TestCommentsToWords() {
       string par = "(";
-      Assert.AreEqual("(=?utf-8?Q?x?=)", Message.ConvertCommentsToEncodedWords("(x)"));
-      Assert.AreEqual("(=?utf-8?Q?xy?=)", Message.ConvertCommentsToEncodedWords("(x\\y)"));
-      Assert.AreEqual("(=?utf-8?Q?x_y?=)", Message.ConvertCommentsToEncodedWords("(x\r\n y)"));
-      Assert.AreEqual("(=?utf-8?Q?x=C2=A0?=)", Message.ConvertCommentsToEncodedWords("(x\u00a0)"));
-      Assert.AreEqual("(=?utf-8?Q?x=C2=A0?=)", Message.ConvertCommentsToEncodedWords("(x\\\u00a0)"));
-      Assert.AreEqual("(=?utf-8?Q?x?=())", Message.ConvertCommentsToEncodedWords("(x())"));
-      Assert.AreEqual("(=?utf-8?Q?x?=()=?utf-8?Q?y?=)", Message.ConvertCommentsToEncodedWords("(x()y)"));
-      Assert.AreEqual("(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)", Message.ConvertCommentsToEncodedWords("(x(a\\b)y)"));
-      Assert.AreEqual("()", Message.ConvertCommentsToEncodedWords("()"));
+      Assert.AreEqual("(=?utf-8?Q?x?=)", EncodeComment("(x)"));
+      Assert.AreEqual("(=?utf-8?Q?xy?=)", EncodeComment("(x\\y)"));
+      Assert.AreEqual("(=?utf-8?Q?x_y?=)", EncodeComment("(x\r\n y)"));
+      Assert.AreEqual("(=?utf-8?Q?x=C2=A0?=)", EncodeComment("(x\u00a0)"));
+      Assert.AreEqual("(=?utf-8?Q?x=C2=A0?=)", EncodeComment("(x\\\u00a0)"));
+      Assert.AreEqual("(=?utf-8?Q?x?=())", EncodeComment("(x())"));
+      Assert.AreEqual("(=?utf-8?Q?x?=()=?utf-8?Q?y?=)", EncodeComment("(x()y)"));
+      Assert.AreEqual("(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)", EncodeComment("(x(a\\b)y)"));
+      Assert.AreEqual("()", EncodeComment("()"));
       Assert.AreEqual("(test) x@x.example", HeaderFields.GetParser("from").DowngradeFieldValue("(test) x@x.example"));
       Assert.AreEqual(
         "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",

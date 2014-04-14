@@ -24,7 +24,7 @@ namespace PeterO.Mail
     internal const int TokenLocalPart = 8;
     internal const int TokenDomain = 9;
 
-    public static string ParseDotAtomAfterCFWS(string str, int index, int endIndex) {
+    private static string ParseDotAtomAfterCFWS(string str, int index, int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a dot-atom
       StringBuilder builder = new StringBuilder();
@@ -45,7 +45,7 @@ namespace PeterO.Mail
       return builder.ToString();
     }
 
-    public static string ParseDotWordAfterCFWS(string str, int index, int endIndex) {
+    private static string ParseDotWordAfterCFWS(string str, int index, int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a word separated by dots
       StringBuilder builder = new StringBuilder();
@@ -106,7 +106,7 @@ namespace PeterO.Mail
           }
           if (str[index] == '\\') {
             int startQuote = index;
-            index = MediaType.skipQuotedPair(str, index, endIndex);
+            index = HeaderParser.ParseQuotedPair(str, index, endIndex, null);
             if (index == startQuote) {
               builder.Append(str.Substring(startQuote + 1, index - (startQuote + 1)));
             } else {
@@ -236,7 +236,6 @@ namespace PeterO.Mail
             do {
               int indexTemp3 = index;
               do {
-                int indexStart3 = index;
                 if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                   ++indexTemp3; break;
                 }
@@ -248,9 +247,8 @@ namespace PeterO.Mail
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
-                indexTemp4 = HeaderParser.ParseObsCtext(str, index, endIndex, tokener);
-                if (indexTemp4 != index) {
-                  indexTemp3 = indexTemp4; break;
+                if (index < endIndex && ((str[index] >= 1 && str[index] <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) || (str[index] == 127))) {
+                  ++indexTemp3; break;
                 }
                 if (index < endIndex && ((str[index] >= 93 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 91) || (str[index] >= 33 && str[index] <= 39))) {
                   ++indexTemp3; break;
@@ -379,7 +377,6 @@ namespace PeterO.Mail
                     int indexTemp5;
                     indexTemp5 = index;
                     do {
-                      int indexStart5 = index;
                       if (index < endIndex && ((str[index] == 32) || (str[index] == 9) || (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                         ++indexTemp5; break;
                       }
