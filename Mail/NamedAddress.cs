@@ -1,10 +1,9 @@
 /*
- * Created by SharpDevelop.
- * User: Peter
- * Date: 3/31/2014
- * Time: 3:18 PM
- *
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
+Written by Peter O. in 2014.
+Any copyright is dedicated to the Public Domain.
+http://creativecommons.org/publicdomain/zero/1.0/
+If you like this, you should donate to Peter O.
+at: http://upokecenter.com/d/
  */
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-  /// <summary>Represents an email address and a name for that address.</summary>
+    /// <summary>Represents an email address and a name for that address.</summary>
   public class NamedAddress {
     private string name;
 
@@ -128,7 +127,7 @@ namespace PeterO.Mail
         if (addressString.Equals(this.name)) {
           return addressString;
         } else {
-          if(addressString.Length>990){
+          if (addressString.Length > 990) {
             // Give some space to ease line wrapping
             return QuoteValue(this.name) + " < " + addressString + " >";
           } else {

@@ -1,20 +1,21 @@
 /*
- * Created by SharpDevelop.
- * User: Peter
- * Date: 3/31/2014
- * Time: 3:18 PM
- *
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
+Written by Peter O. in 2014.
+Any copyright is dedicated to the Public Domain.
+http://creativecommons.org/publicdomain/zero/1.0/
+If you like this, you should donate to Peter O.
+at: http://upokecenter.com/d/
  */
 using System;
 using System.Text;
 
 namespace PeterO.Mail
 {
-  /// <summary>Represents an email address.</summary>
+    /// <summary>Represents an email address.</summary>
   public class Address {
     private string localPart;
 
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
     public string LocalPart {
       get {
         return this.localPart;
@@ -24,7 +25,8 @@ namespace PeterO.Mail
     /// <summary>Converts this object to a text string.</summary>
     /// <returns>A string representation of this object.</returns>
     public override string ToString() {
-      if (HeaderParser.ParseDotAtomText(this.localPart, 0, this.localPart.Length, null) == this.localPart.Length) {
+      if (this.localPart.Length > 0 &&
+          HeaderParser.ParseDotAtomText(this.localPart, 0, this.localPart.Length, null) == this.localPart.Length) {
         return this.localPart + "@" + this.domain;
       } else {
         StringBuilder sb = new StringBuilder();
@@ -48,18 +50,25 @@ namespace PeterO.Mail
     }
 
     private int StringLength() {
-      if (HeaderParser.ParseDotAtomText(this.localPart, 0, this.localPart.Length, null) == this.localPart.Length) {
-        return this.localPart.Length+this.domain.Length+1;
+      int domainLength = this.domain.Length;
+      if (domainLength > 0 && this.domain[0] != '[') {
+        // "domain" is a domain name, and not an address literal,
+        // so get its A-label length
+        domainLength = DomainUtility.EncodedDomainNameLength(this.domain, 0, domainLength);
+      }
+      if (this.localPart.Length > 0 &&
+          HeaderParser.ParseDotAtomText(this.localPart, 0, this.localPart.Length, null) == this.localPart.Length) {
+        return this.localPart.Length + domainLength + 1;
       } else {
-        int length=3+this.domain.Length; // two quotes, at sign, and domain length
+        int length = 3 + domainLength;  // two quotes, at sign, and domain length
         for (int i = 0; i < this.localPart.Length; ++i) {
           char c = this.localPart[i];
           if (c == 0x20 || c == 0x09) {
-            length++;
+            ++length;
           } else if (c == '"' || c == 0x7f || c == '\\' || c < 0x20) {
-            length+=2;
+            length += 2;
           } else {
-            length++;
+            ++length;
           }
         }
         return length;
@@ -99,13 +108,8 @@ namespace PeterO.Mail
       }
       this.localPart = HeaderParserUtility.ParseLocalPart(addressValue, 0, localPartEnd);
       this.domain = HeaderParserUtility.ParseDomain(addressValue, localPartEnd + 1, addressValue.Length);
-      // Check length restrictions. Using the character length to see
-      // if the address is too long is sufficient for this purpose.  If it becomes
-      // necessary to convert each label of the
-      // domain name to an A-label under IDNA2008, the Punycode encoding will only increase the
-      // length of the string, and IDNA2008 never maps clusters of characters to
-      // smaller clusters.
-      if(this.StringLength()>997){
+      // Check length restrictions.
+      if (this.StringLength() >997) {
         // Maximum character length per line for an Internet message is 998;
         // we check if the length exceeds 997 (thus excluding the space character
         // of a folded line).
@@ -122,8 +126,8 @@ namespace PeterO.Mail
       }
       this.localPart = localPart;
       this.domain = domain;
-      // Check length restrictions.  See above.
-      if(this.StringLength()>997){
+      // Check length restrictions. See above.
+      if (this.StringLength() >997) {
         throw new ArgumentException("Address too long");
       }
     }

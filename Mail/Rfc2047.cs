@@ -1,10 +1,9 @@
 /*
- * Created by SharpDevelop.
- * User: Peter
- * Date: 4/12/2014
- * Time: 4:51 PM
- *
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
+Written by Peter O. in 2014.
+Any copyright is dedicated to the Public Domain.
+http://creativecommons.org/publicdomain/zero/1.0/
+If you like this, you should donate to Peter O.
+at: http://upokecenter.com/d/
  */
 using System;
 using System.Collections.Generic;
@@ -48,7 +47,7 @@ namespace PeterO.Mail
       }
       return false;
     }
-    
+
     public static string EncodeComment(string str, int index, int endIndex) {
       // NOTE: Assumes that the comment is syntactically valid
       if (str == null) {

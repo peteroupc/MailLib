@@ -1,10 +1,9 @@
 /*
- * Created by SharpDevelop.
- * User: Peter
- * Date: 3/24/2014
- * Time: 10:26 AM
- *
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
+Written by Peter O. in 2014.
+Any copyright is dedicated to the Public Domain.
+http://creativecommons.org/publicdomain/zero/1.0/
+If you like this, you should donate to Peter O.
+at: http://upokecenter.com/d/
  */
 using System;
 using System.Collections.Generic;
@@ -966,12 +965,10 @@ namespace PeterO.Mail
     private MediaType() {
     }
 
-    /// <summary>
-    /// Parses a media type string and returns a media type object.
-    /// </summary>
-    /// <param name="mediaTypeString"></param>
-    /// <returns>A media type object, or <code>MediaType.TextPlainAscii</code>
-    /// if "mediaTypeString" is empty or syntactically invalid.</returns>
+    /// <summary>Parses a media type string and returns a media type object.</summary>
+    /// <param name='mediaTypeString'>A string object.</param>
+    /// <returns>A media type object, or MediaType.TextPlainAscii if <paramref
+    /// name='mediaTypeString'/> is empty or syntactically invalid.</returns>
     public static MediaType Parse(string mediaTypeString) {
       return Parse(mediaTypeString, TextPlainAscii);
     }

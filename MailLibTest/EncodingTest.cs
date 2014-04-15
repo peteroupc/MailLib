@@ -1,10 +1,9 @@
 /*
- * Created by SharpDevelop.
- * User: Peter
- * Date: 3/24/2014
- * Time: 10:26 AM
- *
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
+Written by Peter O. in 2014.
+Any copyright is dedicated to the Public Domain.
+http://creativecommons.org/publicdomain/zero/1.0/
+If you like this, you should donate to Peter O.
+at: http://upokecenter.com/d/
  */
 using System;
 using System.IO;
@@ -356,10 +355,10 @@ namespace MailLibTest
         HeaderFields.GetParser("subject").DecodeEncodedWords(input));
     }
 
-    private static string EncodeComment(string str){
-      return Rfc2047.EncodeComment(str,0,str.Length);
+    private static string EncodeComment(string str) {
+      return Rfc2047.EncodeComment(str, 0, str.Length);
     }
-    
+
     [Test]
     public void TestCommentsToWords() {
       string par = "(";
