@@ -11,7 +11,7 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-  internal sealed class ParserUtility {
+  internal static class ParserUtility {
     public static string ToLowerCaseAscii(string str) {
       if (str == null) {
         return null;

@@ -11,7 +11,7 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-    /// <summary>Description of Rfc2047.</summary>
+  /// <summary>Description of Rfc2047.</summary>
   internal static class Rfc2047
   {
     private static int CharLength(string str, int index) {
@@ -383,16 +383,16 @@ namespace PeterO.Mail
                   // or contain ASCII control characters: encoded word decoding is
                   // not idempotent; if this is a comment it could also contain '(', ')', and '\'
                   if (!hasSuspiciousText) {
-                    }
-                    if (context == EncodedWordContext.Phrase && HasSuspiciousTextInStructured(decodedWord)) {
-                      hasSuspiciousText = true;
-                    }
                   }
-                    // Check for text in the decoded string
-                    // that could render the comment syntactically invalid (the encoded
-                    // word could even encode ASCII control characters and specials)
-                    if (context == EncodedWordContext.Comment && HasSuspiciousTextInComments(decodedWord)) {
-                      hasSuspiciousText = true;
+                  if (context == EncodedWordContext.Phrase && HasSuspiciousTextInStructured(decodedWord)) {
+                    hasSuspiciousText = true;
+                  }
+                }
+                // Check for text in the decoded string
+                // that could render the comment syntactically invalid (the encoded
+                // word could even encode ASCII control characters and specials)
+                if (context == EncodedWordContext.Comment && HasSuspiciousTextInComments(decodedWord)) {
+                  hasSuspiciousText = true;
                 }
               } else {
                 decodedWord = str.Substring(startIndex - 2, afterLast - (startIndex - 2));
@@ -465,37 +465,6 @@ namespace PeterO.Mail
         }
       }
       return retval;
-    }
-
-    private static string GetCFWS(string str, int index, int endIndex) {
-      StringBuilder builder = new StringBuilder();
-      while (index < endIndex) {
-        if (str[index] == '"') {
-          int index2 = MediaType.skipQuotedString(str, index, endIndex, null);
-          if (index2 == index) {
-            ++index;
-          } else {
-            index = index2;
-          }
-        } else if (str[index] == '(' || str[index] == 0x0d || str[index] == 0x09 || str[index] == 0x20) {
-          int index2 = HeaderParser.ParseCFWS(str, index, endIndex, null);
-          if (index2 != index) {
-            string cfws = str.Substring(index, index2 - index);
-            // Don't append if there are no comments in
-            // this CFWS and the last character
-            // in the buffer is a space or tab
-            if (!(cfws.IndexOf('(') < 0 && builder.Length > 0 && (str[index] == 0x09 || str[index] == 0x20))) {
-              builder.Append(cfws);
-            }
-            index = index2;
-          } else {
-            ++index;
-          }
-        } else {
-          ++index;
-        }
-      }
-      return builder.ToString();
     }
 
     private static bool FollowedByEndOrLinearWhitespace(string str, int index, int endIndex) {
@@ -665,7 +634,61 @@ namespace PeterO.Mail
       }
       return builder.ToString();
     }
-
+    
+    private static void EncodePhraseTextInternal(
+      string str, int index, int endIndex, IList<int[]> tokens, StringBuilder builder) {
+      // Assumes the value matches the production "phrase"
+      // and that there are no comments in the value
+      if(index==endIndex)return; // Empty, so nothing to do
+      int index2=HeaderParser.ParseCFWS(str, index, endIndex, null);
+      if(index2==endIndex){
+        // Just linear whitespace
+        builder.Append(str.Substring(index,endIndex-index));
+        return;
+      }
+      string phrase = GetPhraseText(str, index2, endIndex, tokens, PhraseTextMode.UndecodedText);
+      EncodedWordEncoder encoder = new EncodedWordEncoder();
+      encoder.AddString(phrase);
+      encoder.FinalizeEncoding();
+      if (!PrecededByStartOrLinearWhitespace(str, index2)) {
+        // Append a space before the encoded words
+        builder.Append(' ');
+      } else {
+        // Append the linear whitespace
+        builder.Append(str.Substring(index,endIndex-index));
+      }
+      builder.Append(encoder.ToString());
+      int lastFws=endIndex;
+      // Read FWS back from the end of the string portion
+      // (NOTE: Uses obsolete syntax for FWS)
+      while(true){
+        int last=lastFws-1;
+        // Check required whitespace
+        if(last<index || (str[last]!=0x20 && str[last]!=0x09)){
+          break;
+        }
+        last--;
+        // Check optional additional whitespace
+        while(last>=index){
+          if(str[last]!=0x20 && str[last]!=0x09)
+            break;
+          last--;
+        }
+        // Check optional CRLF
+        if(last-1>=index && str[last-1]==0x0d && str[last]==0x0a){
+          last-=2;
+        }
+        lastFws=last+1;
+      }
+      if(lastFws!=endIndex){
+        // Add linear whitespace
+        builder.Append(str.Substring(lastFws,endIndex-lastFws));
+      } else if(!FollowedByEndOrLinearWhitespace(str,endIndex,str.Length)){
+        // Add a space if no linear whitespace follows
+        builder.Append(' ');
+      }
+    }
+    
     public static string EncodePhraseText(string str, int index, int endIndex, IList<int[]> tokens) {
       // Assumes the value matches the production "phrase",
       // and assumes that endIndex is the end of all whitespace
@@ -677,38 +700,23 @@ namespace PeterO.Mail
         // No need to use encoded words
         return str.Substring(index, endIndex - index);
       }
-      // TODO: Don't rearrange comments (a suggested strategy
-      // is to split the phrase on comment delimiters and call the
-      // rest of the method on the pieces)
-      int startIndex = index;
-      int startIndexAfterCFWS = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      string phrase = GetPhraseText(str, index, endIndex, tokens, PhraseTextMode.UndecodedText);
-      StringBuilder builder = new StringBuilder();
-      if (startIndexAfterCFWS != startIndex) {
-        // Copy CFWS
-        builder.Append(str.Substring(index, startIndexAfterCFWS - index));
-        index = startIndexAfterCFWS;
-        if (!PrecededByStartOrLinearWhitespace(str, index)) {
-          builder.Append(' ');
+      int lastIndex=index;
+      StringBuilder builder=new StringBuilder();
+      foreach (int[] token in tokens) {
+        if (!(token[1] >= lastIndex &&
+              token[1] >= index && token[1] <= endIndex &&
+              token[2] >= index && token[2] <= endIndex)) {
+          continue;
+        }
+        if (token[0] == HeaderParserUtility.TokenComment) {
+          // Process this piece of the phrase
+          EncodePhraseTextInternal(str,lastIndex,token[1],tokens,builder);
+          // Append the comment
+          builder.Append(str.Substring(token[1], token[2] - token[1]));
+          lastIndex = token[2];
         }
       }
-      // Convert the parsed string to encoded words
-      EncodedWordEncoder encoder = new EncodedWordEncoder();
-      encoder.AddString(phrase);
-      encoder.FinalizeEncoding();
-      if (!PrecededByStartOrLinearWhitespace(str, index)) {
-        builder.Append(' ');
-      }
-      builder.Append(encoder.ToString());
-      // Extract all CFWS after the start of the phrase
-      string cfws = GetCFWS(str, startIndexAfterCFWS, endIndex);
-      if (cfws.Length == 0 || (cfws[0] != 0x20 && cfws[0] != 0x09)) {
-        // Append a space if the CFWS is empty or doesn't start with
-        // whitespace (RFC 2047 requires encoded words to be separated
-        // by linear whitespace)
-        builder.Append(' ');
-      }
-      builder.Append(cfws);
+      EncodePhraseTextInternal(str,lastIndex,endIndex,tokens,builder);
       return builder.ToString();
     }
   }

@@ -13,7 +13,7 @@ using System.Text;
 namespace PeterO.Mail
 {
   internal sealed class BoundaryCheckerTransform : ITransform {
-    private StreamWithUnget input;
+    private TransformWithUnget input;
     private byte[] buffer;
     private int bufferIndex;
     private int bufferCount;
@@ -37,7 +37,7 @@ namespace PeterO.Mail
     }
 
     public BoundaryCheckerTransform(ITransform stream) {
-      this.input = new StreamWithUnget(stream);
+      this.input = new TransformWithUnget(stream);
       this.boundaries = new List<string>();
       this.started = true;
     }

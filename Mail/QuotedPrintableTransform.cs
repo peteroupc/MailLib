@@ -13,7 +13,7 @@ using System.Text;
 namespace PeterO.Mail
 {
   internal sealed class QuotedPrintableTransform : ITransform {
-    private StreamWithUnget input;
+    private TransformWithUnget input;
     private int lineCharCount;
     private bool lenientLineBreaks;
     private byte[] buffer;
@@ -27,27 +27,15 @@ namespace PeterO.Mail
       bool lenientLineBreaks,
       int maxLineSize) {
       this.maxLineSize = maxLineSize;
-      this.input = new StreamWithUnget(input);
+      this.input = new TransformWithUnget(input);
       this.lenientLineBreaks = lenientLineBreaks;
     }
 
-    public QuotedPrintableTransform(
-      Stream input,
-      bool lenientLineBreaks,
-      int maxLineSize) {
-      this.maxLineSize = maxLineSize;
-      this.input = new StreamWithUnget(new WrappedStream(input));
-      this.lenientLineBreaks = lenientLineBreaks;
-    }
-
+    // DEVIATION: The max line size is actually 76, but some emails
+    // write lines that exceed this size
     public QuotedPrintableTransform(
       ITransform input,
-      bool lenientLineBreaks) {
-      // DEVIATION: The max line size is actually 76, but some emails
-      // write lines that exceed this size
-      this.maxLineSize = 200;
-      this.input = new StreamWithUnget(input);
-      this.lenientLineBreaks = lenientLineBreaks;
+      bool lenientLineBreaks) : this(input, lenientLineBreaks, 200) {
     }
 
     /// <summary>Not documented yet.</summary>

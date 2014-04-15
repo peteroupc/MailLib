@@ -11,7 +11,7 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-  internal class HeaderParserUtility
+  internal static class HeaderParserUtility
   {
     internal const int TokenComment = 2;
     internal const int TokenPhraseAtom = 3;

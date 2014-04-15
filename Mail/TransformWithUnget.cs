@@ -12,17 +12,12 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-  internal sealed class StreamWithUnget : ITransform {
+  internal sealed class TransformWithUnget : ITransform {
     private ITransform stream;
     private int lastByte;
     private bool unget;
 
-    public StreamWithUnget(Stream stream) {
-      this.lastByte = -1;
-      this.stream = new WrappedStream(stream);
-    }
-
-    public StreamWithUnget(ITransform stream) {
+    public TransformWithUnget(ITransform stream) {
       this.lastByte = -1;
       this.stream = stream;
     }

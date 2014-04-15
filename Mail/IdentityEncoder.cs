@@ -10,7 +10,7 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-    /// <summary>An IdentityEncoder.</summary>
+  /// <summary>An IdentityEncoder.</summary>
   internal sealed class IdentityEncoder : IStringEncoder
   {
     public IdentityEncoder() {
@@ -21,7 +21,7 @@ namespace PeterO.Mail
     /// <param name='data'>A byte array.</param>
     /// <param name='offset'>A 32-bit signed integer.</param>
     /// <param name='count'>A 32-bit signed integer. (2).</param>
-public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
+    public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
@@ -44,8 +44,8 @@ public void WriteToString(StringBuilder str, byte[] data, int offset, int count)
         throw new ArgumentException("data's length minus " + offset + " (" + Convert.ToString((long)(data.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)count, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (count == 0) {
- return;
-}
+        return;
+      }
       for (int i = 0; i < count; ++i) {
         str.Append((char)(((int)data[i + offset]) & 0xff));
       }
@@ -53,7 +53,7 @@ public void WriteToString(StringBuilder str, byte[] data, int offset, int count)
 
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A StringBuilder object.</param>
-public void FinalizeEncoding(StringBuilder str) {
+    public void FinalizeEncoding(StringBuilder str) {
       // No need to finalize for identity encodings
     }
   }

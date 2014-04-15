@@ -69,7 +69,7 @@
     <Compile Include="Mail\QuotedPrintableTransform.cs" />
     <Compile Include="Mail\Rfc2047.cs" />
     <Compile Include="Mail\SevenBitTransform.cs" />
-    <Compile Include="Mail\StreamWithUnget.cs" />
+    <Compile Include="Mail\TransformWithUnget.cs" />
     <Compile Include="Mail\Tokener.cs" />
     <Compile Include="Mail\WordWrapEncoder.cs" />
     <Compile Include="Mail\WrappedStream.cs" />

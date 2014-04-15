@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace PeterO.Mail
 {
-  internal sealed class MediaTypeBuilder
+  public sealed class MediaTypeBuilder
   {
     private string type;
     private string subtype;

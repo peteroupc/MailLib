@@ -46,11 +46,6 @@ namespace PeterO.Mail
       this.tokenStack.Add(new int[] { token, startIndex, endIndex });
     }
 
-    /// <summary>Not documented yet.</summary>
-    public void Clear() {
-      this.tokenStack.Clear();
-    }
-
     public IList<int[]> GetTokens() {
       this.tokenStack.Sort(this);
       return this.tokenStack;

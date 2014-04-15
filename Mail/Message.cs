@@ -632,23 +632,6 @@ public string BodyString {
       return str.Length > 0 && (str[0] == ' ' || str[0] == 0x09 || str[0] == '\r');
     }
 
-    private static void CheckDiff(string a, string b) {
-      if (!a.Equals(b)) {
-        int pt = Math.Min(a.Length, b.Length);
-        for (int i = 0; i < Math.Min(a.Length, b.Length); ++i) {
-          if (a[i] != b[i]) {
-            pt = i;
-            break;
-          }
-        }
-        int sa = Math.Max(pt - 50, 0);
-        int salen = Math.Min(100, a.Length - sa);
-        int sblen = Math.Min(100, b.Length - sa);
-        throw new MessageDataException(
-          "Differs [length " + a.Length + " vs. " + b.Length + "]\r\nA=" + a.Substring(sa, salen) + "\r\nB=" + b.Substring(sa, sblen));
-      }
-    }
-
     private int TransferEncodingToUse(bool isBodyPart) {
       string topLevel = this.contentType.TopLevelType;
       if (topLevel.Equals("message") || topLevel.Equals("multipart")) {
@@ -779,7 +762,7 @@ public string BodyString {
 
     /// <summary>Not documented yet.</summary>
     /// <returns>A string object.</returns>
-    internal string Generate() {
+    public string Generate() {
       return this.Generate(0);
     }
 
@@ -875,10 +858,10 @@ public string BodyString {
         sb.Append("MIME-Version: 1.0\r\n");
       }
       if (!haveContentType) {
-        sb.Append("Content-Type: " + builder.ToString()+"\r\n");
+        sb.Append("Content-Type: " + builder.ToString() +"\r\n");
       }
       if (!haveContentEncoding) {
-        sb.Append("Content-Transfer-Encoding: " + encodingString+"\r\n");
+        sb.Append("Content-Transfer-Encoding: " + encodingString + "\r\n");
       }
       IStringEncoder bodyEncoder = null;
       switch (transferEncoding) {
@@ -912,7 +895,7 @@ public string BodyString {
       IList<string> headerList) {
       int lineCount = 0;
       StringBuilder sb = new StringBuilder();
-      StreamWithUnget ungetStream = new StreamWithUnget(stream);
+      TransformWithUnget ungetStream = new TransformWithUnget(stream);
       while (true) {
         sb.Remove(0, sb.Length);
         bool first = true;

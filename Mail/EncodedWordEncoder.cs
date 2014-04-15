@@ -19,15 +19,6 @@ namespace PeterO.Mail
 
     private static string hex = "0123456789ABCDEF";
 
-    // Adds a space to the output if c is empty;
-    // c is the first text in the output
-    public EncodedWordEncoder(string c) {
-      this.currentWord = new StringBuilder();
-      this.fullString = new StringBuilder();
-      this.fullString.Append(c);
-      this.spaceCount = (c.Length > 0) ? 1 : 0;
-    }
-
     // Doesn't add a space to the beginning of
     // the output
     public EncodedWordEncoder() {

@@ -1,7 +1,7 @@
 using System;
 
 namespace PeterO.Mail {
-  internal class HeaderParser {
+  internal static class HeaderParser {
     public static int ParseAddrSpec(string str, int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;

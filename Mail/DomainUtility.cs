@@ -32,7 +32,6 @@ namespace PeterO.Mail
       if (endIndex < index) {
         throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture));
       }
-      int length = endIndex - index;
       // Split into labels
       int lastLabel = 0;
       int retval = 0;
@@ -204,7 +203,6 @@ namespace PeterO.Mail
               if (q < t) {
                 break;
               }
-              int digit = t + ((q - t) %(36 - t));
               ++length;
               q -= t;
               q /= 36 - t;
@@ -231,6 +229,7 @@ namespace PeterO.Mail
 
     private static string valuePunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
 
+    /*
     //
     // Gets the Punycode encoding of a string (Punycode
     // is defined in RFC 3492).
@@ -259,7 +258,6 @@ namespace PeterO.Mail
       int bias = 72;
       int h = 0;
       int tmpIndex;
-      int length = endIndex - index;
       int firstIndex = -1;
       int codePointLength = 0;
       int basicsBeforeFirstNonbasic = 0;
@@ -396,5 +394,6 @@ namespace PeterO.Mail
       }
       return builder.ToString();
     }
+    */
   }
 }

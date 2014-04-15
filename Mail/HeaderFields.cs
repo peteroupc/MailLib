@@ -326,7 +326,7 @@ namespace PeterO.Mail
       }
     }
 
-    private sealed class HeaderContentId : EncodedWordsInSyntax {
+    private sealed class HeaderMessageId : EncodedWordsInSyntax {
       protected override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentId(str, index, endIndex, tokener);
       }
@@ -580,7 +580,7 @@ namespace PeterO.Mail
       list["cc"] = new HeaderTo();
       list["content-base"] = new HeaderContentBase();
       list["content-disposition"] = new HeaderContentDisposition();
-      list["content-id"] = new HeaderContentId();
+      list["content-id"] = new HeaderMessageId();
       list["content-location"] = new HeaderContentBase();
       list["content-type"] = new HeaderContentType();
       list["date"] = new HeaderDate();
@@ -603,7 +603,7 @@ namespace PeterO.Mail
       list["list-post"] = new HeaderListPost();
       list["list-subscribe"] = new HeaderListArchive();
       list["list-unsubscribe"] = new HeaderListArchive();
-      list["message-id"] = new HeaderContentId();
+      list["message-id"] = new HeaderMessageId();
       list["mmhs-copy-precedence"] = new HeaderMmhsCopyPrecedence();
       list["mmhs-exempted-address"] = new HeaderMmhsExemptedAddress();
       list["mmhs-extended-authorisation-info"] = new HeaderMmhsExtendedAuthorisationInfo();
@@ -611,7 +611,7 @@ namespace PeterO.Mail
       list["mmhs-primary-precedence"] = new HeaderMmhsCopyPrecedence();
       list["obsoletes"] = new HeaderObsoletes();
       list["original-from"] = new HeaderFrom();
-      list["original-message-id"] = new HeaderContentId();
+      list["original-message-id"] = new HeaderMessageId();
       list["original-recipient"] = new HeaderOriginalRecipient();
       list["received"] = new HeaderReceived();
       list["received-spf"] = new HeaderReceivedSpf();
@@ -622,7 +622,7 @@ namespace PeterO.Mail
       list["resent-cc"] = new HeaderTo();
       list["resent-date"] = new HeaderDate();
       list["resent-from"] = new HeaderFrom();
-      list["resent-message-id"] = new HeaderContentId();
+      list["resent-message-id"] = new HeaderMessageId();
       list["resent-reply-to"] = new HeaderTo();
       list["resent-sender"] = new HeaderSender();
       list["resent-to"] = new HeaderTo();
@@ -630,7 +630,7 @@ namespace PeterO.Mail
       list["sender"] = new HeaderSender();
       list["to"] = new HeaderTo();
       list["x-mittente"] = new Mailbox();
-      list["x-riferimento-message-id"] = new HeaderContentId();
+      list["x-riferimento-message-id"] = new HeaderMessageId();
       list["x400-originator"] = new Mailbox();
       list["x400-recipients"] = new HeaderDispositionNotificationTo();
       return list;
