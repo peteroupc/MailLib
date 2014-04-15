@@ -85,11 +85,28 @@ namespace PeterO.Mail
 
     private string subType;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets this media type's subtype.</summary>
+    /// <value>This media type&apos;s subtype.</value>
     public string SubType {
       get {
         return this.subType;
+      }
+    }
+
+    /// <summary>Gets a value indicating whether this is a text media type.</summary>
+    /// <value>Whether this is a text media type.</value>
+    public bool IsText {
+      get {
+        return this.TopLevelType.Equals("text");
+      }
+    }
+
+    /// <summary>Gets a value indicating whether this is a multipart media
+    /// type.</summary>
+    /// <value>Whether this is a multipart media type.</value>
+    public bool IsMultipart {
+      get {
+        return this.TopLevelType.Equals("multipart");
       }
     }
 
@@ -601,7 +618,7 @@ namespace PeterO.Mail
       if (param != null) {
         return ParserUtility.ToLowerCaseAscii(param);
       }
-      if (this.topLevelType.Equals("text")) {
+      if (this.IsText) {
         if (this.subType.Equals("xml") || this.subType.Equals("plain")) {
           return "us-ascii";
         }

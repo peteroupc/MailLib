@@ -234,6 +234,7 @@ namespace PeterO.Mail
               // There's nothing else significant
               // after this boundary,
               // so return now
+              this.bufferCount = 0;
               return -1;
             }
             // Read to end of line. Since this is the last body
@@ -298,6 +299,7 @@ namespace PeterO.Mail
                 } else if (c == 0x0a) {
                   // Start of new body part
                   this.hasNewBodyPart = true;
+                  this.bufferCount = 0;
                   return -1;
                 } else {
                   this.input.Unget();

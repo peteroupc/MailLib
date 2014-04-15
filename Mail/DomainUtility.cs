@@ -204,21 +204,21 @@ namespace PeterO.Mail
               if (q < t) {
                 break;
               }
-              int digit = t + ((q - t)%(36-t));
+              int digit = t + ((q - t) %(36 - t));
               ++length;
               q -= t;
-              q /= 36-t;
+              q /= 36 - t;
               k += 36;
             }
             ++length;
             delta = (h == b) ? delta / 700 : delta >> 1;
-            delta += delta/(h + 1);
+            delta += delta / (h + 1);
             k = 0;
             while (delta > 455) {
               delta /= 35;
               k += 36;
             }
-            bias = k + ((36 * delta)/(delta + 38));
+            bias = k + ((36 * delta) /(delta + 38));
             delta = 0;
             ++h;
           }
@@ -372,21 +372,21 @@ namespace PeterO.Mail
               if (q < t) {
                 break;
               }
-              int digit = t + ((q - t)%(36-t));
+              int digit = t + ((q - t) %(36 - t));
               builder.Append(valuePunycodeAlphabet[digit]);
               q -= t;
-              q /= 36-t;
+              q /= 36 - t;
               k += 36;
             }
             builder.Append(valuePunycodeAlphabet[q]);
             delta = (h == b) ? delta / 700 : delta >> 1;
-            delta += delta/(h + 1);
+            delta += delta / (h + 1);
             k = 0;
             while (delta > 455) {
               delta /= 35;
               k += 36;
             }
-            bias = k + ((36 * delta)/(delta + 38));
+            bias = k + ((36 * delta) /(delta + 38));
             delta = 0;
             ++h;
           }

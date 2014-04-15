@@ -16,28 +16,32 @@ namespace PeterO.Mail
     private static string valueHexAlphabet = "0123456789ABCDEF";
     private int lineCount;
     private int lineBreakMode;
+    private bool unlimitedLineLength;
 
     // lineBreakMode:
     // 0 - no line breaks
     // 1 - treat CRLF as a line break
     // 2 - treat CR, LF, and CRLF as a line break
-    public QuotedPrintableEncoder(int lineBreakMode) {
+    public QuotedPrintableEncoder(int lineBreakMode, bool unlimitedLineLength) {
       this.lineBreakMode = lineBreakMode;
+      this.unlimitedLineLength = unlimitedLineLength;
     }
 
     private void IncrementLineCount(StringBuilder str, int length) {
-      if (this.lineCount + length > 75) {
-        // 76 including the final '='
-        str.Append("=\r\n");
-        this.lineCount = length;
-      } else {
-        this.lineCount += length;
+      if (!this.unlimitedLineLength) {
+        if (this.lineCount + length > 75) {
+          // 76 including the final '='
+          str.Append("=\r\n");
+          this.lineCount = length;
+        } else {
+          this.lineCount += length;
+        }
       }
     }
 
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A StringBuilder object.</param>
-public void FinalizeEncoding(StringBuilder str) {
+    public void FinalizeEncoding(StringBuilder str) {
       // No need to finalize encoding for quoted printable
     }
 
@@ -46,7 +50,7 @@ public void FinalizeEncoding(StringBuilder str) {
     /// <param name='data'>A byte array.</param>
     /// <param name='offset'>A 32-bit signed integer.</param>
     /// <param name='count'>A 32-bit signed integer. (2).</param>
-public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
+    public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }

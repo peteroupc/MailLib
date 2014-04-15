@@ -383,16 +383,16 @@ namespace PeterO.Mail
                   // or contain ASCII control characters: encoded word decoding is
                   // not idempotent; if this is a comment it could also contain '(', ')', and '\'
                   if (!hasSuspiciousText) {
-                    // Check for text in the decoded string
-                    // that could render the comment syntactically invalid (the encoded
-                    // word could even encode ASCII control characters and specials)
-                    if (context == EncodedWordContext.Comment && HasSuspiciousTextInComments(decodedWord)) {
-                      hasSuspiciousText = true;
                     }
                     if (context == EncodedWordContext.Phrase && HasSuspiciousTextInStructured(decodedWord)) {
                       hasSuspiciousText = true;
                     }
                   }
+                    // Check for text in the decoded string
+                    // that could render the comment syntactically invalid (the encoded
+                    // word could even encode ASCII control characters and specials)
+                    if (context == EncodedWordContext.Comment && HasSuspiciousTextInComments(decodedWord)) {
+                      hasSuspiciousText = true;
                 }
               } else {
                 decodedWord = str.Substring(startIndex - 2, afterLast - (startIndex - 2));

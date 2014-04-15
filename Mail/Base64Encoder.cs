@@ -11,7 +11,7 @@ using PeterO;
 
 namespace PeterO.Mail
 {
-    /// <summary>Encodes binary data in Base64.</summary>
+  /// <summary>Encodes binary data in Base64.</summary>
   internal sealed class Base64Encoder : IStringEncoder
   {
     private const string Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -23,19 +23,35 @@ namespace PeterO.Mail
     private bool padding;
     private bool lenientLineBreaks;
     private bool haveCR;
+    private bool unlimitedLineLength;
+    private string alphabet;
 
-    public Base64Encoder(bool padding, bool lenientLineBreaks) {
+    public Base64Encoder(bool padding, bool lenientLineBreaks, bool unlimitedLineLength) :
+      this(padding, lenientLineBreaks, unlimitedLineLength, Base64Classic) {
+    }
+
+    public Base64Encoder(bool padding, bool lenientLineBreaks, bool unlimitedLineLength, string alphabet) {
+      if (alphabet == null) {
+        throw new ArgumentNullException("alphabet");
+      }
+      if (alphabet.Length!=64) {
+        throw new ArgumentException("alphabet.Length (" + alphabet.Length + ") is not equal to " + "64");
+      }
       this.padding = padding;
+      this.unlimitedLineLength = unlimitedLineLength;
       this.lenientLineBreaks = lenientLineBreaks;
       this.byte1 = -1;
       this.byte2 = -1;
+      this.alphabet = alphabet;
     }
 
     private void LineAwareAppend(StringBuilder sb, char c) {
-      ++this.lineCount;
-      if (this.lineCount > 76) {
-        sb.Append("\r\n");
-        this.lineCount = 0;
+      if (!this.unlimitedLineLength) {
+        if (this.lineCount >= 76) {
+          sb.Append("\r\n");
+          this.lineCount = 0;
+        }
+        ++this.lineCount;
       }
       sb.Append(c);
     }
@@ -43,10 +59,10 @@ namespace PeterO.Mail
     private void AddByteInternal(StringBuilder str, byte b) {
       int ib = ((int)b) & 0xff;
       if (this.quantumCount == 2) {
-        this.LineAwareAppend(str, Base64Classic[(this.byte1 >> 2) & 63]);
-        this.LineAwareAppend(str, Base64Classic[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)]);
-        this.LineAwareAppend(str, Base64Classic[((this.byte2 & 15) << 2) + ((ib >> 6) & 3)]);
-        this.LineAwareAppend(str, Base64Classic[ib & 63]);
+        this.LineAwareAppend(str, this.alphabet[(this.byte1 >> 2) & 63]);
+        this.LineAwareAppend(str, this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)]);
+        this.LineAwareAppend(str, this.alphabet[((this.byte2 & 15) << 2) + ((ib >> 6) & 3)]);
+        this.LineAwareAppend(str, this.alphabet[ib & 63]);
         this.byte1 = -1;
         this.byte2 = -1;
         this.quantumCount = 0;
@@ -82,25 +98,28 @@ namespace PeterO.Mail
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A StringBuilder object.</param>
     public void FinalizeEncoding(StringBuilder str) {
-      if (this.byte1 < 0 || this.byte2 < 0) {  // if one or two bytes are left over
-        string alphabet = Base64Classic;
+      if (this.quantumCount == 2) {
         this.LineAwareAppend(str, alphabet[(this.byte1 >> 2) & 63]);
-        if (this.byte2 >= 0) {  // if two bytes are left over
-          this.LineAwareAppend(str, alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)]);
-          this.LineAwareAppend(str, alphabet[(this.byte2 & 15) << 2]);
-          if (this.padding) {
-            this.LineAwareAppend(str, '=');
-          }
-        } else {
-          this.LineAwareAppend(str, alphabet[(this.byte1 & 3) << 4]);
-          if (this.padding) {
-            this.LineAwareAppend(str, '=');
-            this.LineAwareAppend(str, '=');
-          }
+        this.LineAwareAppend(str, alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)]);
+        this.LineAwareAppend(str, alphabet[((this.byte2 & 15) << 2)]);
+        if(this.padding){
+          this.LineAwareAppend(str, '=');
         }
-        this.byte1 = 0;
-        this.byte2 = 0;
+        this.byte1 = -1;
+        this.byte2 = -1;
+        this.quantumCount = 0;
+      } else if(this.quantumCount==1) {
+        this.LineAwareAppend(str, alphabet[(this.byte1 >> 2) & 63]);
+        this.LineAwareAppend(str, alphabet[((this.byte1 & 3) << 4)]);
+        if(this.padding){
+          this.LineAwareAppend(str, '=');
+          this.LineAwareAppend(str, '=');
+        }
+        this.byte1 = -1;
+        this.byte2 = -1;
+        this.quantumCount = 0;
       }
+      this.haveCR=false;
     }
 
     /// <summary>Not documented yet.</summary>

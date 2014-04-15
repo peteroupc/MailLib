@@ -55,33 +55,38 @@ namespace PeterO.Mail
       return this.body;
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Sets the body of this message to the specified plain text
+    /// string. When encoded, the character sequences CR, LF, and CR/LF will
+    /// be treated as line breaks.</summary>
     /// <param name='str'>A string object.</param>
-    /// <returns>A Message object.</returns>
+    /// <returns>This instance.</returns>
     public Message SetTextBody(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true);
       this.contentType = MediaType.Parse("text/plain; charset=utf-8");
-      this.SetHeader("content-transfer-encoding", "quoted-printable");
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Sets the body of this message to the specified string in
+    /// HTML format. When encoded, the character sequences CR, LF, and CR/LF
+    /// will be treated as line breaks.</summary>
     /// <param name='str'>A string object.</param>
-    /// <returns>A Message object.</returns>
+    /// <returns>This instance.</returns>
     public Message SetHtmlBody(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true);
       this.contentType = MediaType.Parse("text/html; charset=utf-8");
-      this.SetHeader("content-transfer-encoding", "quoted-printable");
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Sets the body of this message to a multipart body with plain
+    /// text and HTML versions of the same message. When encoded, the character
+    /// sequences CR, LF, and CR/LF in the text and HTML parts will be treated
+    /// as line breaks.</summary>
     /// <param name='text'>A string object.</param>
     /// <param name='html'>A string object. (2).</param>
     /// <returns>A Message object.</returns>
@@ -92,10 +97,12 @@ namespace PeterO.Mail
       if (html == null) {
         throw new ArgumentNullException("html");
       }
+      // The spec for multipart/alternative (RFC 2046) says that
+      // the fanciest version of the message should go last (in
+      // this case, the HTML version)
       Message textMessage = new Message().SetTextBody(text);
-      Message htmlMessage = new Message().SetTextBody(html);
+      Message htmlMessage = new Message().SetHtmlBody(html);
       this.contentType = MediaType.Parse("multipart/alternative; boundary=\"=_boundary\"");
-      this.SetHeader("content-transfer-encoding", "7bit");
       this.Parts.Clear();
       this.Parts.Add(textMessage);
       this.Parts.Add(htmlMessage);
@@ -154,6 +161,21 @@ namespace PeterO.Mail
       }
     }
 
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
+public string BodyString {
+      get {
+         using (MemoryStream ms = new MemoryStream(this.body)) {
+          Charsets.ICharset charset = Charsets.GetCharset(this.ContentType.GetCharset());
+          if (charset == null) {
+            throw new NotSupportedException("Not in a supported character set.");
+          }
+          ITransform transform = new WrappedStream(ms);
+          return charset.GetString(transform);
+        }
+      }
+    }
+
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException("stream");
@@ -209,6 +231,9 @@ namespace PeterO.Mail
         }
         if (!this.ContentType.Equals(value)) {
           this.contentType = value;
+          if (!value.IsMultipart) {
+            this.Parts.Clear();
+          }
           this.SetHeader("content-type", this.contentType.ToString());
         }
       }
@@ -325,7 +350,7 @@ namespace PeterO.Mail
       if (this.transferEncoding == EncodingQuotedPrintable ||
           this.transferEncoding == EncodingBase64 ||
           this.transferEncoding == EncodingUnknown) {
-        if (this.contentType.TopLevelType.Equals("multipart") ||
+        if (this.contentType.IsMultipart ||
             this.contentType.TopLevelType.Equals("message")) {
           throw new MessageDataException("Invalid content encoding for multipart or message");
         }
@@ -632,58 +657,61 @@ namespace PeterO.Mail
       if (this.body == null || this.body.Length == 0) {
         return EncodingSevenBit;
       }
-      if (topLevel.Equals("text")) {
-        int lengthCheck = Math.Min(this.body.Length, 4096);
-        int highBytes = 0;
-        int lineLength = 0;
-        bool allTextBytes = isBodyPart ? false : true;
-        for (int i = 0; i < lengthCheck; ++i) {
-          if ((this.body[i] & 0x80) != 0) {
-            ++highBytes;
+      int lengthCheck = Math.Min(this.body.Length, 4096);
+      int highBytes = 0;
+      int zeroBytes = 0;
+      int lineLength = 0;
+      bool allTextBytes = isBodyPart ? false : true;
+      for (int i = 0; i < lengthCheck; ++i) {
+        if ((this.body[i] & 0x80) != 0) {
+          ++highBytes;
+          allTextBytes = false;
+        } else if (this.body[i] == 0x00) {
+          allTextBytes = false;
+          ++zeroBytes;
+        } else if (this.body[i] == 0x7f) {
+          allTextBytes = false;
+        } else if (this.body[i] == (byte)'\r') {
+          if (i + 1 >= this.body.Length || this.body[i + 1] != (byte)'\n') {
+            // bare CR
             allTextBytes = false;
-          } else if (this.body[i] == 0x00 || this.body[i] == 0x7f) {
+          } else if (i > 0 && (this.body[i - 1] == (byte)' ' || this.body[i - 1] == (byte)'\t')) {
+            // Space followed immediately by CRLF
             allTextBytes = false;
-          } else if (this.body[i] == (byte)'\r') {
-            if (i + 1 >= this.body.Length || this.body[i + 1] != (byte)'\n') {
-              // bare CR
-              allTextBytes = false;
-            } else if (i > 0 && (this.body[i - 1] == (byte)' ' || this.body[i - 1] == (byte)'\t')) {
-              // Space followed immediately by CRLF
-              allTextBytes = false;
-            } else {
-              ++i;
-              lineLength = 0;
-              continue;
-            }
-          } else if (this.body[i] == (byte)'\n') {
-            // bare LF
-            allTextBytes = false;
+          } else {
+            ++i;
+            lineLength = 0;
+            continue;
           }
-          if (lineLength == 0 && i + 2 < this.body.Length &&
-              this.body[i] == '.' && this.body[i + 1] == '\r' && this.body[i + 2] == '\n') {
-            // See RFC2049 sec. 3
-            allTextBytes = false;
-          }
-          if (lineLength == 0 && i + 4 < this.body.Length &&
-              this.body[i] == 'F' && this.body[i + 1] == 'r' && this.body[i + 2] == 'o' &&
-              this.body[i + 3] == 'm' && this.body[i + 4] == ' ') {
-            // See RFC2049 sec. 3
-            allTextBytes = false;
-          }
-          ++lineLength;
-          if (lineLength > 78) {
-            allTextBytes = false;
-          }
+        } else if (this.body[i] == (byte)'\n') {
+          // bare LF
+          allTextBytes = false;
         }
-        if (lengthCheck == this.body.Length && allTextBytes) {
-          return EncodingSevenBit;
-        } if (highBytes > (lengthCheck / 3)) {
-          return EncodingBase64;
-        } else {
-          return EncodingQuotedPrintable;
+        if (lineLength == 0 && i + 2 < this.body.Length &&
+            this.body[i] == '.' && this.body[i + 1] == '\r' && this.body[i + 2] == '\n') {
+          // See RFC2049 sec. 3
+          allTextBytes = false;
+        }
+        if (lineLength == 0 && i + 4 < this.body.Length &&
+            this.body[i] == 'F' && this.body[i + 1] == 'r' && this.body[i + 2] == 'o' &&
+            this.body[i + 3] == 'm' && this.body[i + 4] == ' ') {
+          // See RFC2049 sec. 3
+          allTextBytes = false;
+        }
+        ++lineLength;
+        if (lineLength > 78) {
+          allTextBytes = false;
         }
       }
-      return EncodingBase64;
+      if (lengthCheck == this.body.Length && allTextBytes) {
+        return EncodingSevenBit;
+      } if (highBytes > (lengthCheck / 3)) {
+        return EncodingBase64;
+      } if (zeroBytes > (lengthCheck / 10)) {
+        return EncodingBase64;
+      } else {
+        return EncodingQuotedPrintable;
+      }
     }
 
     internal static string GenerateAddressList(IList<NamedAddress> list) {
@@ -741,7 +769,7 @@ namespace PeterO.Mail
         throw new MessageDataException(ex.Message + "\r\n" + listCc, ex);
       }
       this.ContentType = MediaType.Parse("text/plain");
-      string newHeaders = this.GenerateHeaders();
+      string newHeaders = this.Generate();
       Message newMessage = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(newHeaders, true)));
       CheckDiff(listFrom, GenerateAddressList(newMessage.FromAddresses));
       CheckDiff(listTo, GenerateAddressList(newMessage.ToAddresses));
@@ -751,16 +779,35 @@ namespace PeterO.Mail
 
     /// <summary>Not documented yet.</summary>
     /// <returns>A string object.</returns>
-    internal string GenerateHeaders() {
-      return this.GenerateHeaders(false);
+    internal string Generate() {
+      return this.Generate(0);
     }
 
     /// <summary>Not documented yet.</summary>
     /// <returns>A string object.</returns>
-    /// <param name='bodyPart'>A Boolean object.</param>
-    internal string GenerateHeaders(bool bodyPart) {
+    /// <param name='depth'>A 32-bit signed integer.</param>
+    private string Generate(int depth) {
       StringBuilder sb = new StringBuilder();
       bool haveMimeVersion = false;
+      bool haveContentEncoding = false;
+      bool haveContentType = false;
+      MediaTypeBuilder builder = new MediaTypeBuilder(this.ContentType);
+      int transferEncoding = this.TransferEncodingToUse(depth > 0);
+      string encodingString = "7bit";
+      if (transferEncoding == EncodingBase64) {
+ encodingString = "base64";
+  } else if (transferEncoding == EncodingQuotedPrintable) {
+ encodingString = "quoted-printable";
+}
+      bool isMultipart = false;
+      string boundary = String.Empty;
+      if (builder.IsMultipart) {
+        boundary = "=_Boundary" +
+          Convert.ToString((int)depth, System.Globalization.CultureInfo.CurrentCulture);
+        builder.SetParameter("boundary", boundary);
+        isMultipart = true;
+      }
+      // Write the header fields
       for (int i = 0; i < this.headers.Count; i += 2) {
         string name = this.headers[i];
         string value = this.headers[i + 1];
@@ -794,9 +841,12 @@ namespace PeterO.Mail
             sb.Append(encoder.ToString());
             sb.Append("\r\n");
           }
-        } else if (name.Equals("content-type") ||
-                   name.Equals("content-transfer-encoding")) {
-          // These header fields will be written later
+        } else if (name.Equals("content-transfer-encoding")) {
+          sb.Append(Capitalize(name) + ":" + encodingString);
+          haveContentEncoding = true;
+        } else if (name.Equals("content-type")) {
+          sb.Append(Capitalize(name) + ":" + builder.ToString());
+          haveContentType = true;
         } else {
           // Outputting a structured header field
           string rawField = Capitalize(name) + ":" +
@@ -821,40 +871,38 @@ namespace PeterO.Mail
           sb.Append("\r\n");
         }
       }
-      if (!haveMimeVersion && bodyPart) {
+      if (!haveMimeVersion && depth == 0) {
         sb.Append("MIME-Version: 1.0\r\n");
       }
-      MediaTypeBuilder builder = new MediaTypeBuilder(this.ContentType);
-      int transferEncoding = this.TransferEncodingToUse(bodyPart);
+      if (!haveContentType) {
+        sb.Append("Content-Type: " + builder.ToString()+"\r\n");
+      }
+      if (!haveContentEncoding) {
+        sb.Append("Content-Transfer-Encoding: " + encodingString+"\r\n");
+      }
       IStringEncoder bodyEncoder = null;
       switch (transferEncoding) {
         case EncodingBase64:
-          sb.Append("Content-Transfer-Encoding: base64\r\n");
-          bodyEncoder = new Base64Encoder(true, builder.TopLevelType.Equals("text") ? true : false);
+          bodyEncoder = new Base64Encoder(true, builder.IsText ? true : false, false);
           break;
         case EncodingQuotedPrintable:
-          sb.Append("Content-Transfer-Encoding: quoted-printable\r\n");
-          bodyEncoder = new QuotedPrintableEncoder(builder.TopLevelType.Equals("text") ? 2 : 0);
+          bodyEncoder = new QuotedPrintableEncoder(builder.IsText ? 2 : 0, false);
           break;
         default:
-          sb.Append("Content-Transfer-Encoding: 7bit\r\n");
           bodyEncoder = new IdentityEncoder();
           break;
       }
-      int index = 0;
-      bool isMultipart = false;
-      if (builder.TopLevelType.Equals("multipart")) {
-        string boundary = "=_" + Convert.ToString((int)index, System.Globalization.CultureInfo.CurrentCulture);
-        builder.SetParameter("boundary", boundary);
-        isMultipart = true;
-      }
-      sb.Append("Content-Type: " + builder.ToMediaType().ToString() + "\r\n");
+      // Write the body
       sb.Append("\r\n");
       if (!isMultipart) {
         bodyEncoder.WriteToString(sb, this.body, 0, this.body.Length);
         bodyEncoder.FinalizeEncoding(sb);
       } else {
-        // TODO: Implement multipart body encoding
+         foreach (var part in this.Parts) {
+          sb.Append("\r\n--" + boundary + "\r\n");
+          sb.Append(part.Generate(depth + 1));
+        }
+        sb.Append("\r\n--" + boundary + "--");
       }
       return sb.ToString();
     }
@@ -1027,7 +1075,7 @@ namespace PeterO.Mail
 
         this.message = msg;
         MediaType mediaType = msg.ContentType;
-        if (mediaType.TopLevelType.Equals("multipart")) {
+        if (mediaType.IsMultipart) {
           this.boundary = mediaType.GetParameter("boundary");
           if (this.boundary == null) {
             throw new MessageDataException("Multipart message has no boundary defined");
@@ -1086,9 +1134,15 @@ namespace PeterO.Mail
               if (leaf != null) {
                 if (bufferCount > 0) {
                   ms.Write(buffer, 0, bufferCount);
-                  bufferCount = 0;
                 }
                 leaf.body = ms.ToArray();
+                // Clear for the next body
+                ms.SetLength(0);
+                bufferCount = 0;
+              } else {
+                // Clear for the next body
+                bufferCount = 0;
+                ms.SetLength(0);
               }
               while (multipartStack.Count > stackCount) {
                 multipartStack.RemoveAt(stackCount);
@@ -1097,7 +1151,7 @@ namespace PeterO.Mail
               boundaryChecker.StartBodyPartHeaders();
               ReadHeaders(stream, msg.headers);
               bool parentIsDigest = parentMessage.ContentType.SubType.Equals("digest") &&
-                parentMessage.ContentType.TopLevelType.Equals("multipart");
+                parentMessage.ContentType.IsMultipart;
               msg.ProcessHeaders(true, parentIsDigest);
               entry = new MessageStackEntry(msg);
               // Add the body part to the multipart
@@ -1105,7 +1159,7 @@ namespace PeterO.Mail
               parentMessage.Parts.Add(msg);
               multipartStack.Add(entry);
               ms.SetLength(0);
-              if (msg.ContentType.TopLevelType.Equals("multipart")) {
+              if (msg.ContentType.IsMultipart) {
                 leaf = null;
               } else {
                 leaf = msg;
@@ -1209,7 +1263,7 @@ namespace PeterO.Mail
     private void ReadMessage(ITransform stream) {
       ReadHeaders(stream, this.headers);
       this.ProcessHeaders(false, false);
-      if (this.contentType.TopLevelType.Equals("multipart")) {
+      if (this.contentType.IsMultipart) {
         this.ReadMultipartBody(stream);
       } else {
         if (this.contentType.TopLevelType.Equals("message")) {
