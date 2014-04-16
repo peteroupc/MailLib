@@ -10,7 +10,7 @@ using System.Text;
 
 namespace PeterO.Mail
 {
-  /// <summary>An IdentityEncoder.</summary>
+    /// <summary>An IdentityEncoder.</summary>
   internal sealed class IdentityEncoder : IStringEncoder
   {
     public IdentityEncoder() {

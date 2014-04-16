@@ -983,9 +983,9 @@ namespace PeterO.Mail
     }
 
     /// <summary>Parses a media type string and returns a media type object.</summary>
-    /// <param name='mediaTypeString'>A string object.</param>
-    /// <returns>A media type object, or MediaType.TextPlainAscii if <paramref
-    /// name='mediaTypeString'/> is empty or syntactically invalid.</returns>
+    /// <returns>A media type object, or MediaType.TextPlainAscii if "mediaTypeString"
+    /// is empty or syntactically invalid.</returns>
+    /// <param name='mediaTypeValue'>A string object.</param>
     public static MediaType Parse(string mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);
     }

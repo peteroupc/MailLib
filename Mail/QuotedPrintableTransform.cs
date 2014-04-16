@@ -32,7 +32,7 @@ namespace PeterO.Mail
     }
 
     // DEVIATION: The max line size is actually 76, but some emails
-    // write lines that exceed this size
+    // have lines that exceed this size
     public QuotedPrintableTransform(
       ITransform input,
       bool lenientLineBreaks) : this(input, lenientLineBreaks, 200) {

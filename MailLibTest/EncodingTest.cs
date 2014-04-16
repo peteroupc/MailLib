@@ -59,7 +59,7 @@ namespace MailLibTest
       }
       using (MemoryStream ms = new MemoryStream(data, offset, count)) {
         QuotedPrintableTransform t = new QuotedPrintableTransform(
-          ms,
+          new WrappedStream(ms),
           lenientLineBreaks,
           unlimitedLineLength ? -1 : 76);
         while (true) {
@@ -111,7 +111,7 @@ namespace MailLibTest
     public void TestQuotedPrintable(string input, int mode, string expectedOutput) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
       StringBuilder sb = new StringBuilder();
-      var enc = new QuotedPrintableEncoder(mode);
+      var enc = new QuotedPrintableEncoder(mode, false);
       enc.WriteToString(sb, bytes, 0, bytes.Length);
       Assert.AreEqual(expectedOutput, sb.ToString());
     }
@@ -355,6 +355,24 @@ namespace MailLibTest
         HeaderFields.GetParser("subject").DecodeEncodedWords(input));
     }
 
+    [Test]
+    public void TestEncodedPhrase() {
+      string sep=", ";
+      Assert.AreEqual(
+        "x <x@example.com>" + sep + "\"X\" <y@example.com>",
+        HeaderFields.GetParser("to").DowngradeFieldValue("x <x@example.com>, \"X\" <y@example.com>"));
+      Assert.AreEqual(
+        "x <x@example.com>" + sep + "=?utf-8?Q?=C2=BE?= <y@example.com>",
+        HeaderFields.GetParser("to").DowngradeFieldValue("x <x@example.com>, \u00be <y@example.com>"));
+      Assert.AreEqual(
+        "x <x@example.com>" + sep + "=?utf-8?Q?=C2=BE?= <y@example.com>",
+        HeaderFields.GetParser("to").DowngradeFieldValue("x <x@example.com>, \"\u00be\" <y@example.com>"));
+      Assert.AreEqual(
+        "x <x@example.com>" + sep + "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>",
+        HeaderFields.GetParser("to").DowngradeFieldValue("x <x@example.com>, x\u00e1 x x\u00e1 <y@example.com>"));
+      // TEST_018160.eml
+    }
+
     private static string EncodeComment(string str) {
       return Rfc2047.EncodeComment(str, 0, str.Length);
     }
@@ -580,6 +598,71 @@ namespace MailLibTest
           Assert.Fail(trace);
         }
       }
+    }
+
+    [Test]
+    public void TestBoundaryReading() {
+      string messageStart="MIME-Version: 1.0\r\n";
+      messageStart+="Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
+      messageStart+="Preamble\r\n";
+      messageStart+="--b1\r\n";
+      string message = messageStart;
+      message+="Content-Type: text/plain\r\n\r\n";
+      message+="Test\r\n";
+      message+="--b1--\r\n";
+      message+="Epilogue";
+      Message msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message, true)));
+      Assert.AreEqual("multipart",msg.ContentType.TopLevelType);
+      Assert.AreEqual("b1",msg.ContentType.GetParameter("boundary"));
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual("text",msg.Parts[0].ContentType.TopLevelType);
+      Assert.AreEqual("Test",msg.Parts[0].BodyString);
+      // Nested Multipart body part
+      message = messageStart;
+      message+="Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message+="\r\n--b2\r\n";
+      message+="Content-Type: text/plain\r\n\r\n";
+      message+="Test\r\n";
+      message+="--b2--\r\n";
+      message+="--b1--\r\n";
+      message+="Epilogue";
+      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message, true)));
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(1, msg.Parts[0].Parts.Count);
+      Assert.AreEqual("Test",msg.Parts[0].Parts[0].BodyString);
+      // No headers in body part
+      message = messageStart;
+      message+="\r\n";
+      message+="Test\r\n";
+      message+="--b1--\r\n";
+      message+="Epilogue";
+      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message, true)));
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual("Test",msg.Parts[0].BodyString);
+      // No CRLF before first boundary
+      message="MIME-Version: 1.0\r\n";
+      message+="Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
+      message+="--b1\r\n";
+      message+="Content-Type: text/plain\r\n\r\n";
+      message+="Test\r\n";
+      message+="--b1--\r\n";
+      message+="Epilogue";
+      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message, true)));
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual("Test",msg.Parts[0].BodyString);
+      // Nested Multipart body part II
+      message = messageStart;
+      message+="Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message+="--b2\r\n";
+      message+="Content-Type: text/plain\r\n\r\n";
+      message+="Test\r\n";
+      message+="--b2--\r\n";
+      message+="--b1--\r\n";
+      message+="Epilogue";
+      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message, true)));
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(1, msg.Parts[0].Parts.Count);
+      Assert.AreEqual("Test",msg.Parts[0].Parts[0].BodyString);
     }
   }
 }

@@ -274,12 +274,12 @@ namespace PeterO.Mail
             // This is a phrase token
             int startIndex = token[1];
             endIndex = token[2];
-            string newComment = Rfc2047.GetPhraseText(
+            string newComment = Rfc2047.DecodePhraseText(
               str,
               startIndex,
               endIndex,
               tokens,
-              PhraseTextMode.DecodedTextAndComments);
+              true);
             sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
             sb.Append(newComment);
             lastIndex = endIndex;

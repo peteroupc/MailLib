@@ -55,38 +55,53 @@ namespace PeterO.Mail
       return this.body;
     }
 
+    private static byte[] GetUtf8Bytes(string str) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      try {
+        using (MemoryStream ms = new MemoryStream()) {
+          if (DataUtilities.WriteUtf8(str, 0, str.Length, ms, true, true) != 0) {
+            throw new ArgumentException("Unpaired surrogate code point");
+          }
+          return ms.ToArray();
+        }
+      } catch (IOException ex) {
+        throw new ArgumentException("I/O error occurred", ex);
+      }
+    }
+
     /// <summary>Sets the body of this message to the specified plain text
-    /// string. When encoded, the character sequences CR, LF, and CR/LF will
-    /// be treated as line breaks.</summary>
+    /// string. The character sequences CR, LF, and CR/LF will be converted
+    /// to CR/LF line breaks.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
     public Message SetTextBody(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
-      this.body = DataUtilities.GetUtf8Bytes(str, true);
+      this.body = GetUtf8Bytes(str);
       this.contentType = MediaType.Parse("text/plain; charset=utf-8");
       return this;
     }
 
     /// <summary>Sets the body of this message to the specified string in
-    /// HTML format. When encoded, the character sequences CR, LF, and CR/LF
-    /// will be treated as line breaks.</summary>
+    /// HTML format. The character sequences CR, LF, and CR/LF will be converted
+    /// to CR/LF line breaks.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
     public Message SetHtmlBody(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
-      this.body = DataUtilities.GetUtf8Bytes(str, true);
+      this.body = GetUtf8Bytes(str);
       this.contentType = MediaType.Parse("text/html; charset=utf-8");
       return this;
     }
 
     /// <summary>Sets the body of this message to a multipart body with plain
-    /// text and HTML versions of the same message. When encoded, the character
-    /// sequences CR, LF, and CR/LF in the text and HTML parts will be treated
-    /// as line breaks.</summary>
+    /// text and HTML versions of the same message. The character sequences
+    /// CR, LF, and CR/LF will be converted to CR/LF line breaks.</summary>
     /// <param name='text'>A string object.</param>
     /// <param name='html'>A string object. (2).</param>
     /// <returns>A Message object.</returns>
@@ -117,7 +132,7 @@ namespace PeterO.Mail
       }
     }
 
-    private static IList<NamedAddress> ParseAddresses(string value) {
+    internal static IList<NamedAddress> ParseAddresses(string value) {
       Tokener tokener = new Tokener();
       if (value == null) {
         return new List<NamedAddress>();
@@ -163,9 +178,9 @@ namespace PeterO.Mail
 
     /// <summary>Gets a value not documented yet.</summary>
     /// <value>A value not documented yet.</value>
-public string BodyString {
+    public string BodyString {
       get {
-         using (MemoryStream ms = new MemoryStream(this.body)) {
+        using (MemoryStream ms = new MemoryStream(this.body)) {
           Charsets.ICharset charset = Charsets.GetCharset(this.ContentType.GetCharset());
           if (charset == null) {
             throw new NotSupportedException("Not in a supported character set.");
@@ -280,12 +295,13 @@ public string BodyString {
           mime = true;
         }
         if (value.IndexOf("=?") >= 0) {
-          if (!HeaderFields.GetParser(name).IsStructured()) {
+          IHeaderFieldParser parser = HeaderFields.GetParser(name);
+          if (!parser.IsStructured()) {
             // Decode encoded words where they appear in unstructured
             // header fields
             // TODO: Also decode encoded words in structured header
             // fields (at least in phrases and maybe also comments)
-            value = Rfc2047.DecodeEncodedWords(value, 0, value.Length, EncodedWordContext.Unstructured);
+            value = parser.DecodeEncodedWords(value);
             this.headers[i + 1] = value;
           }
         }
@@ -632,6 +648,23 @@ public string BodyString {
       return str.Length > 0 && (str[0] == ' ' || str[0] == 0x09 || str[0] == '\r');
     }
 
+    private static void CheckDiff(string a, string b) {
+      if (!a.Equals(b)) {
+        int pt = Math.Min(a.Length, b.Length);
+        for (int i = 0; i < Math.Min(a.Length, b.Length); ++i) {
+          if (a[i] != b[i]) {
+            pt = i;
+            break;
+          }
+        }
+        int sa = Math.Max(pt - 50, 0);
+        int salen = Math.Min(100, a.Length - sa);
+        int sblen = Math.Min(100, b.Length - sa);
+        throw new MessageDataException(
+          "Differs [length " + a.Length + " vs. " + b.Length + "]\r\nA=" + a.Substring(sa, salen) + "\r\nB=" + b.Substring(sa, sblen));
+      }
+    }
+
     private int TransferEncodingToUse(bool isBodyPart) {
       string topLevel = this.contentType.TopLevelType;
       if (topLevel.Equals("message") || topLevel.Equals("multipart")) {
@@ -753,7 +786,7 @@ public string BodyString {
       }
       this.ContentType = MediaType.Parse("text/plain");
       string newHeaders = this.Generate();
-      Message newMessage = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(newHeaders, true)));
+      Message newMessage = new Message(new MemoryStream(GetUtf8Bytes(newHeaders)));
       CheckDiff(listFrom, GenerateAddressList(newMessage.FromAddresses));
       CheckDiff(listTo, GenerateAddressList(newMessage.ToAddresses));
       CheckDiff(listCc, GenerateAddressList(newMessage.CCAddresses));
@@ -778,10 +811,10 @@ public string BodyString {
       int transferEncoding = this.TransferEncodingToUse(depth > 0);
       string encodingString = "7bit";
       if (transferEncoding == EncodingBase64) {
- encodingString = "base64";
-  } else if (transferEncoding == EncodingQuotedPrintable) {
- encodingString = "quoted-printable";
-}
+        encodingString = "base64";
+      } else if (transferEncoding == EncodingQuotedPrintable) {
+        encodingString = "quoted-printable";
+      }
       bool isMultipart = false;
       string boundary = String.Empty;
       if (builder.IsMultipart) {
@@ -877,6 +910,7 @@ public string BodyString {
       }
       // Write the body
       sb.Append("\r\n");
+      /*
       if (!isMultipart) {
         bodyEncoder.WriteToString(sb, this.body, 0, this.body.Length);
         bodyEncoder.FinalizeEncoding(sb);
@@ -887,6 +921,7 @@ public string BodyString {
         }
         sb.Append("\r\n--" + boundary + "--");
       }
+       */
       return sb.ToString();
     }
 

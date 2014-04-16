@@ -23,6 +23,72 @@ namespace PeterO.Mail
     internal const int TokenLocalPart = 8;
     internal const int TokenDomain = 9;
 
+    private static bool ShouldQuote(string str) {
+      if (str.Length == 0) {
+        // Empty string
+        return true;
+      }
+      if (str[str.Length - 1] == ' ' || str[str.Length - 1] == '\t') {
+        // Space or tab at end
+        return true;
+      }
+      if (str[0] == ' ' || str[0] == '\t') {
+        // Space or tab at beginning
+        return true;
+      }
+      for (int i = 0; i < str.Length; ++i) {
+        if (str[i] == '\\' || str[i] == '"') {
+          return true;
+        }
+        if ((str[i] == ' ' || str[i] == '\t') && i + 1 < str.Length &&
+            (str[i + 1] == ' ' || str[i + 1] == '\t')) {
+          // run of two or more space and/or tab
+          return true;
+        }
+        if ((str[i] == '\r') && i + 1 < str.Length &&
+            (str[i + 1] == '\n')) {
+          // CRLF
+          if (i == 0 && i + 2 < str.Length && (str[i + 1] == ' ' || str[i + 1] == '\t')) {
+            // CRLF followed by space or tab at beginning
+            return true;
+          }
+          continue;
+        }
+        char c = str[i];
+        // Has specials, or CTLs other than tab
+        if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29 || c == 0x3c || c == 0x3e ||
+            c == 0x5b || c == 0x5d || c == 0x3a || c == 0x3b || c == 0x40 || c == 0x5c || c == 0x2c || c == 0x2e || c == '"') {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    public static string QuoteValueIfNeeded(String str) {
+      if (!ShouldQuote(str)) {
+        return str;
+      }
+      return QuoteValue(str);
+    }
+
+    /// <summary>Quotes a string according to RFC 5322 rules.</summary>
+    /// <param name='str'>A String object.</param>
+    /// <returns>A string object.</returns>
+    public static string QuoteValue(String str) {
+      StringBuilder builder = new StringBuilder();
+      builder.Append('"');
+      for (int i = 0; i < str.Length; ++i) {
+        if (str[i] == '\\' || str[i] == '"') {
+          builder.Append('\\');
+          builder.Append(str[i]);
+        } else {
+          builder.Append(str[i]);
+        }
+      }
+      builder.Append('"');
+      return builder.ToString();
+    }
+
     private static string ParseDotAtomAfterCFWS(string str, int index, int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a dot-atom
@@ -155,12 +221,12 @@ namespace PeterO.Mail
           int tokenKind = tokens[i][0];
           if (tokenKind == TokenPhrase && !haveDisplayName) {
             // Phrase
-            displayName = Rfc2047.GetPhraseText(
+            displayName = Rfc2047.DecodePhraseText(
               str,
               tokenIndex,
               tokenEnd,
               tokens,
-              PhraseTextMode.DecodedText);
+              false);
             // Set haveDisplayName, which needs to be done because
             // the mailboxes that follow may themselves have display names
             haveDisplayName = true;
@@ -189,12 +255,12 @@ namespace PeterO.Mail
           int tokenKind = tokens[i][0];
           if (tokenKind == TokenPhrase) {
             // Phrase
-            displayName = Rfc2047.GetPhraseText(
+            displayName = Rfc2047.DecodePhraseText(
               str,
               tokenIndex,
               tokenEnd,
               tokens,
-              PhraseTextMode.DecodedText);
+              false);
           } else if (tokenKind == TokenLocalPart) {
             localPart = ParseLocalPart(str, tokenIndex, tokenEnd);
           } else if (tokenKind == TokenDomain) {

@@ -109,7 +109,7 @@ namespace PeterO.Mail
       this.localPart = HeaderParserUtility.ParseLocalPart(addressValue, 0, localPartEnd);
       this.domain = HeaderParserUtility.ParseDomain(addressValue, localPartEnd + 1, addressValue.Length);
       // Check length restrictions.
-      if (this.StringLength() >997) {
+      if (this.StringLength() > 997) {
         // Maximum character length per line for an Internet message is 998;
         // we check if the length exceeds 997 (thus excluding the space character
         // of a folded line).
@@ -127,7 +127,7 @@ namespace PeterO.Mail
       this.localPart = localPart;
       this.domain = domain;
       // Check length restrictions. See above.
-      if (this.StringLength() >997) {
+      if (this.StringLength() > 997) {
         throw new ArgumentException("Address too long");
       }
     }

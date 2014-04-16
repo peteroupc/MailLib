@@ -216,7 +216,7 @@ namespace PeterO.Mail
               delta /= 35;
               k += 36;
             }
-            bias = k + ((36 * delta) /(delta + 38));
+            bias = k + ((36 * delta) / (delta + 38));
             delta = 0;
             ++h;
           }
@@ -227,13 +227,12 @@ namespace PeterO.Mail
       return length;
     }
 
-    private static string valuePunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
-
     /*
     //
     // Gets the Punycode encoding of a string (Punycode
     // is defined in RFC 3492).
     //
+    private static string valuePunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
     public static string PunycodeEncode(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");
