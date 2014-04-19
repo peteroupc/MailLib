@@ -7,8 +7,7 @@ at: http://upokecenter.com/d/
  */
 using System;
 
-namespace MailLibTest
-{
+namespace MailLibTest {
   class Program
   {
     public static void Main(string[] args) {

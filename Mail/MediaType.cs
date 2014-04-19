@@ -12,8 +12,7 @@ using System.Text;
 
 using PeterO;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
     /// <summary>Specifies what kind of data a message body is.</summary>
   public sealed class MediaType {
     private string topLevelType;
@@ -604,8 +603,10 @@ namespace PeterO.Mail
     /// <summary>Returns the charset parameter, converted to ASCII lower-case,
     /// if it exists, or <code>"us-ascii"</code>
     /// if the media type is ill-formed (RFC2045 sec. 5.2), or if the media
-    /// type is "text/plain" or "text/xml" and doesn't have a charset parameter
-    /// (see RFC2046 and RFC3023, respectively), or the empty string otherwise.</summary>
+    /// type is "text/plain" and doesn't have a charset parameter (see RFC2046
+    /// and RFC3023, respectively), or the default charset, if any, for the
+    /// media type if the charset parameter is absent. Returns an empty string
+    /// in all other cases.</summary>
     /// <returns>A string object.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -614,20 +615,87 @@ namespace PeterO.Mail
       Justification="This method has different semantics from GetParameter(\"charset\").")]
     #endif
     public string GetCharset() {
+      // NOTE: RFC6657 changed the rules for the default charset in text media types,
+      // so that there is no default charset for as yet undefined media types. However,
+      // media types defined before this RFC are grandfathered from the rule: those
+      // media types "that fail to specify how the charset is determined" still
+      // have US-ASCII as default. The text media types defined as of Apr. 17,
+      // 2014, are listed below:
+      //
+      // -- No default charset assumed: --
+      //
+      // RTP payload types; these are usually unsuitable for MIME,
+      // and don't permit a charset parameter, so a default charset is irrelevant:
+      // 1d-interleaved-parityfec, fwdred, red, parityfec, encaprtp,
+      // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback
+      //
+      // These media types don't define a charset parameter:
+      // dns, grammar-ref-list, mizar, vnd-latex-z, vnd.motorola.reflex,
+      // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript, vnd.dvb.subtitle,
+      // vnd.fly, rtf, rfc822-headers
+      //
+      // Special procedure defined for charset detection:
+      // ecmascript, javascript, html
+      //
+      // XML formats (no default assumed if charset is absent, according
+      // to revision of XML media type specification):
+      // xml, xml-external-parsed-entity,
+      // vnd.in3d.3dml*, vnd.iptc.newsml, vnd.iptc.nitf, vnd.ms-mediapackage,
+      // vnd.net2phone.commcenter.command, vnd.radisys.msml-basic-layout,
+      // vnd.wap.si, vnd.wap.sl, vnd.wap.wml
+      //
+      // Deliberately undefined:
+      // example
+      //
+      // -- US-ASCII assumed: --
+      //
+      // These media types don't define a default charset:
+      // css, richtext, enriched, tab-separated-values, vnd.in3d.spot*,
+      // vnd.abc, vnd.wap.wmlscript, vnd.curl, vnd.fmi.flexstor, uri-list,
+      // directory
+      //
+      // US-ASCII default:
+      // plain, sgml, troff
+      //
+      // -- UTF-8 assumed: --
+      //
+      // UTF-8 only:
+      // vcard, jcr-cnd
+      //
+      // Charset parameter defined but is "always UTF-8":
+      // n3, turtle, vnd.debian.copyright, provenance-notation
+      //
+      // UTF-8 default:
+      // csv, calendar**, vnd.a***, parameters, prs.fallenstein.rst,
+      // vnd.esmertec.theme.descriptor, vnd.trolltech.linguist,
+      // vnd.graphviz, vnd.sun.j2me.app-descriptor
+      //
+      // * Required parameter.
+      // ** No explicit default, but says that "[t]he charset supported
+      // by this revision of iCalendar is UTF-8."
+      // *** Default is UTF-8 "if 8-bit bytes are encountered" (even if
+      // none are found, though, a 7-bit ASCII text is still also UTF-8)
       string param = this.GetParameter("charset");
       if (param != null) {
         return ParserUtility.ToLowerCaseAscii(param);
       }
       if (this.IsText) {
-        if (this.subType.Equals("xml") || this.subType.Equals("plain")) {
+        string sub = this.SubType;
+        // Media types that assume a default of US-ASCII
+        if (sub.Equals("plain") || sub.Equals("sgml") || sub.Equals("troff") || sub.Equals("directory") ||
+            sub.Equals("css") || sub.Equals("richtext") || sub.Equals("enriched") ||
+            sub.Equals("tab-separated-values") || sub.Equals("vnd.in3d.spot") || sub.Equals("vnd.abc") ||
+            sub.Equals("vnd.wap.wmlscript") || sub.Equals("vnd.curl") || sub.Equals("vnd.fmi.flexstor") ||
+            sub.Equals("uri-list")) {
           return "us-ascii";
         }
-        if (this.subType.Equals("csv")) {
-          // see RFC 7111 sec. 5.1
-          return "utf-8";
-        }
-        if (this.subType.Equals("vnd.graphviz")) {
-          // see http://iana.org/assignments/media-types/text/vnd.graphviz
+        // Media types that assume a default of UTF-8
+        if (sub.Equals("vcard") || sub.Equals("jcr-cnd") || sub.Equals("n3") || sub.Equals("turtle") ||
+            sub.Equals("vnd.debian.copyright") || sub.Equals("provenance-notation") || sub.Equals("csv") ||
+            sub.Equals("calendar") || sub.Equals("vnd.a") || sub.Equals("parameters") ||
+            sub.Equals("prs.fallenstein.rst") || sub.Equals("vnd.esmertec.theme.descriptor") ||
+            sub.Equals("vnd.trolltech.linguist") || sub.Equals("vnd.graphviz") ||
+            sub.Equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";
         }
       }
@@ -983,8 +1051,8 @@ namespace PeterO.Mail
     }
 
     /// <summary>Parses a media type string and returns a media type object.</summary>
-    /// <returns>A media type object, or MediaType.TextPlainAscii if "mediaTypeString"
-    /// is empty or syntactically invalid.</returns>
+    /// <returns>A media type object, or "MediaType.TextPlainAscii" if
+    /// "mediaTypeString" is empty or syntactically invalid.</returns>
     /// <param name='mediaTypeValue'>A string object.</param>
     public static MediaType Parse(string mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);

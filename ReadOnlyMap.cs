@@ -8,8 +8,7 @@ at: http://upokecenter.com/d/
 using System;
 using System.Collections.Generic;
 
-namespace PeterO
-{
+namespace PeterO {
   internal sealed class ReadOnlyMap<TKey, TValue> : IDictionary<TKey, TValue> {
     private IDictionary<TKey, TValue> wrapped;
 

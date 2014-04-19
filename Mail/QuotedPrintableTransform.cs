@@ -10,8 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
   internal sealed class QuotedPrintableTransform : ITransform {
     private TransformWithUnget input;
     private int lineCharCount;

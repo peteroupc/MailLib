@@ -9,8 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
   internal static class HeaderParserUtility
   {
     internal const int TokenComment = 2;

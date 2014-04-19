@@ -2,6 +2,7 @@ bin/
 obj/
 .settings/
 Help/
+cache/
 TestResults/
 CBORTest/bin/
 CBORTest/obj/

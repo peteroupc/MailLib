@@ -7,8 +7,7 @@ at: http://upokecenter.com/d/
  */
 using System;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
     /// <summary>Exception thrown when a message has invalid syntax.</summary>
   public class MessageDataException : Exception
   {

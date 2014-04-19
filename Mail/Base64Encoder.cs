@@ -9,8 +9,7 @@ using System;
 using System.Text;
 using PeterO;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
     /// <summary>Encodes binary data in Base64.</summary>
   internal sealed class Base64Encoder : IStringEncoder
   {
@@ -93,6 +92,16 @@ namespace PeterO.Mail
         this.AddByteInternal(str, b);
         this.haveCR = false;
       }
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A StringBuilder object.</param>
+    /// <param name='b'>A Byte object.</param>
+    public void WriteToString(StringBuilder str, byte b) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      this.AddByte(str, b);
     }
 
     /// <summary>Not documented yet.</summary>

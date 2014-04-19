@@ -8,10 +8,9 @@ at: http://upokecenter.com/d/
 using System;
 using System.Collections.Generic;
 
-namespace PeterO.Mail
-{
-    /// <summary/>
-public sealed class MediaTypeBuilder
+namespace PeterO.Mail {
+    /// <summary>A mutable media type object.</summary>
+  public sealed class MediaTypeBuilder
   {
     private string type;
     private string subtype;

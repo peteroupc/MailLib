@@ -8,8 +8,7 @@ at: http://upokecenter.com/d/
 using System;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
     /// <summary>Represents an email address.</summary>
   public class Address {
     private string localPart;

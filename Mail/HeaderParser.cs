@@ -3416,11 +3416,13 @@ namespace PeterO.Mail {
               if (index == indexStart3) {
                 break;
               }
+              index = ParseCFWS(str, index, endIndex, tokener);
               if (index < endIndex && (str[index] == 61)) {
                 ++index;
               } else {
                 index = indexStart3; break;
               }
+              index = ParseCFWS(str, index, endIndex, tokener);
               do {
                 int indexTemp4 = index;
                 do {
@@ -4310,11 +4312,13 @@ namespace PeterO.Mail {
         } else {
           index = tx2;
         }
+        index = ParseCFWS(str, index, endIndex, tokener);
         if (index < endIndex && (str[index] == 61)) {
           ++index;
         } else {
           index = indexStart; break;
         }
+        index = ParseCFWS(str, index, endIndex, tokener);
         tx2 = ParseValue(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;

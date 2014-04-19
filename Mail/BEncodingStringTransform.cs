@@ -7,8 +7,7 @@ at: http://upokecenter.com/d/
  */
 using System;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
   internal sealed class BEncodingStringTransform : ITransform {
     private const int MaxLineSize = 76;
 

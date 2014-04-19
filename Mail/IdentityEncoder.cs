@@ -8,8 +8,7 @@ at: http://upokecenter.com/d/
 using System;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
     /// <summary>An IdentityEncoder.</summary>
   internal sealed class IdentityEncoder : IStringEncoder
   {
@@ -55,6 +54,13 @@ namespace PeterO.Mail
     /// <param name='str'>A StringBuilder object.</param>
     public void FinalizeEncoding(StringBuilder str) {
       // No need to finalize for identity encodings
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A StringBuilder object.</param>
+    /// <param name='b'>A Byte object.</param>
+    public void WriteToString(StringBuilder str, byte b) {
+      str.Append((char)(((int)b) & 0xff));
     }
   }
 }

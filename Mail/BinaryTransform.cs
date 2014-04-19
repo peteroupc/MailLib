@@ -10,8 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
   internal sealed class BinaryTransform : ITransform {
     private ITransform stream;
 

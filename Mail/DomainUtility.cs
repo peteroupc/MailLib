@@ -8,8 +8,7 @@ at: http://upokecenter.com/d/
 using System;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
     /// <summary>Utility methods for domain names.</summary>
   internal static class DomainUtility
   {
@@ -59,15 +58,14 @@ namespace PeterO.Mail
       return retval;
     }
 
-    /// <summary>Gets the Punycode length of a string (Punycode is defined
+    /// <summary>Gets the PunyCode length of a string (PunyCode is defined
     /// in RFC 3492).</summary>
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
-    /// <returns>The Punycode length of the encoded string. If the string
-    /// contains non-ASCII characters, returns the Punycode length plus
-    /// 4 (the length of the prefix "xn--"). Returns -1 if an overflow error
-    /// occurs.</returns>
+    /// <returns>The PunyCode length of the encoded string. If the string
+    /// contains non-ASCII characters, returns the PunyCode length plus
+    /// 4 (the length of the ACE prefix). Returns -1 if an overflow error occurs.</returns>
     public static int PunycodeLength(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");

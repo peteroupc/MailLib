@@ -8,10 +8,11 @@ at: http://upokecenter.com/d/
 using System;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
   internal interface IStringEncoder
   {
+    void WriteToString(StringBuilder str, byte b);
+
     void WriteToString(StringBuilder str, byte[] data, int offset, int count);
 
     void FinalizeEncoding(StringBuilder str);

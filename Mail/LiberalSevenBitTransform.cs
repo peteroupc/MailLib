@@ -10,8 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
   // A seven-bit transform used for text/plain data
   internal sealed class LiberalSevenBitTransform : ITransform {
     private ITransform stream;

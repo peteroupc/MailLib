@@ -10,8 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
     /// <summary>A generic interface for reading data one byte at a time.</summary>
   internal interface ITransform {
     /// <summary>Reads a byte from the data source.</summary>

@@ -13,8 +13,7 @@ using NUnit.Framework;
 using PeterO;
 using PeterO.Mail;
 
-namespace MailLibTest
-{
+namespace MailLibTest {
   [TestFixture]
   public class EncodingTest
   {
@@ -186,6 +185,58 @@ namespace MailLibTest
       string testString = "Joe P Customer <customer@example.com>, Jane W Customer <jane@example.com>";
       Assert.AreEqual(testString.Length,
                       HeaderParser.ParseMailboxList(testString, 0, testString.Length, null));
+      try {
+        new Message().SetHeader("from","\"a\r\nb\" <x@example.com>");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Message().SetHeader("from","\"a\rb\" <x@example.com>");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Message().SetHeader("from","\"a\r b\" <x@example.com>");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Message().SetHeader("from","\"a\r\n b\" <x@example.com");
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Message().SetHeader("from","\"a\nb\" <x@example.com>");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Message().SetHeader("from","\"a\0b\" <x@example.com>");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Message().SetHeader("from","=?utf-8?q?=01?= <x@example.com");
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
     }
 
     [Test]
@@ -193,7 +244,7 @@ namespace MailLibTest
       Assert.AreEqual("us-ascii", MediaType.Parse("text/plain").GetCharset());
       Assert.AreEqual("us-ascii", MediaType.Parse("TEXT/PLAIN").GetCharset());
       Assert.AreEqual("us-ascii", MediaType.Parse("TeXt/PlAiN").GetCharset());
-      Assert.AreEqual("us-ascii", MediaType.Parse("text/xml").GetCharset());
+      Assert.AreEqual("us-ascii", MediaType.Parse("text/troff").GetCharset());
       Assert.AreEqual("utf-8", MediaType.Parse("text/plain; CHARSET=UTF-8").GetCharset());
       Assert.AreEqual("utf-8", MediaType.Parse("text/plain; ChArSeT=UTF-8").GetCharset());
       Assert.AreEqual("utf-8", MediaType.Parse("text/plain; charset=UTF-8").GetCharset());

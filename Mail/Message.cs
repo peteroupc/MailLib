@@ -10,8 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
     /// <summary>Represents an email message. <para><b>Thread safety:</b>
     /// This class is mutable; its properties can be changed. None of its methods
     /// are designed to be thread safe. Therefore, access to objects from
@@ -203,10 +202,12 @@ namespace PeterO.Mail
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();
+      this.body = new byte[0];
     }
 
     public Message(string fromAddress) {
       this.headers = new List<string>();
+      this.body = new byte[0];
       this.parts = new List<Message>();
       this.SetHeader("from", fromAddress);
     }
@@ -891,7 +892,7 @@ namespace PeterO.Mail
         sb.Append("MIME-Version: 1.0\r\n");
       }
       if (!haveContentType) {
-        sb.Append("Content-Type: " + builder.ToString() +"\r\n");
+        sb.Append("Content-Type: " + builder.ToString() + "\r\n");
       }
       if (!haveContentEncoding) {
         sb.Append("Content-Transfer-Encoding: " + encodingString + "\r\n");
@@ -910,7 +911,6 @@ namespace PeterO.Mail
       }
       // Write the body
       sb.Append("\r\n");
-      /*
       if (!isMultipart) {
         bodyEncoder.WriteToString(sb, this.body, 0, this.body.Length);
         bodyEncoder.FinalizeEncoding(sb);
@@ -921,7 +921,6 @@ namespace PeterO.Mail
         }
         sb.Append("\r\n--" + boundary + "--");
       }
-       */
       return sb.ToString();
     }
 

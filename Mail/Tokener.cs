@@ -9,8 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
   internal sealed class Tokener : ITokener, IComparer<int[]> {
     private List<int[]> tokenStack = new List<int[]>();
 

@@ -10,8 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
     /// <summary>Specifies the context where an encoded word under RFC 2047
     /// can appear.</summary>
   internal enum EncodedWordContext {

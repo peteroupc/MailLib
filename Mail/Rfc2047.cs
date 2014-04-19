@@ -9,8 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
     /// <summary>Description of Rfc2047.</summary>
   internal static class Rfc2047
   {

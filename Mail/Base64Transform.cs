@@ -8,8 +8,7 @@ at: http://upokecenter.com/d/
 using System;
 using System.IO;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
   internal sealed class Base64Transform : ITransform {
     private const int MaxLineSize = 76;
 

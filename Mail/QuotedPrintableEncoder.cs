@@ -8,8 +8,7 @@ at: http://upokecenter.com/d/
 using System;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
     /// <summary>Encodes binary data into Quoted Printable.</summary>
   internal sealed class QuotedPrintableEncoder : IStringEncoder
   {
@@ -43,6 +42,16 @@ namespace PeterO.Mail
     /// <param name='str'>A StringBuilder object.</param>
     public void FinalizeEncoding(StringBuilder str) {
       // No need to finalize encoding for quoted printable
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A StringBuilder object.</param>
+    /// <param name='b'>A Byte object.</param>
+public void WriteToString(StringBuilder str, byte b) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      this.WriteToString(str, new byte[] { b }, 0, 1);
     }
 
     /// <summary>Not documented yet.</summary>
@@ -114,12 +123,12 @@ namespace PeterO.Mail
         } else if (data[i] == 32) {
           if (i + 1 == length) {
             this.IncrementLineCount(str, 3);
-            str.Append(data[i] == 9 ? "=09" : "=20");
+            str.Append("=20");
             this.lineCount = 0;
           } else if (i + 2 < length && this.lineBreakMode > 0) {
             if (data[i + 1] == 0xd && data[i + 2] == 0xa) {
               this.IncrementLineCount(str, 3);
-              str.Append(data[i] == 9 ? "=09\r\n" : "=20\r\n");
+              str.Append("=20\r\n");
               this.lineCount = 0;
               i += 2;
             } else {
@@ -129,7 +138,7 @@ namespace PeterO.Mail
           } else if (i + 1 < length && this.lineBreakMode == 2) {
             if (data[i + 1] == 0xd || data[i + 1] == 0xa) {
               this.IncrementLineCount(str, 3);
-              str.Append(data[i] == 9 ? "=09\r\n" : "=20\r\n");
+              str.Append("=20\r\n");
               this.lineCount = 0;
               ++i;
             } else {

@@ -9,8 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
     /// <summary>Represents an email address and a name for that address.</summary>
   public class NamedAddress {
     private string name;

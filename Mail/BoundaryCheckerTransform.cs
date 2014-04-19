@@ -10,8 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
   internal sealed class BoundaryCheckerTransform : ITransform {
     private TransformWithUnget input;
     private byte[] buffer;
@@ -358,6 +357,7 @@ namespace PeterO.Mail
 
       this.readingHeaders = false;
       this.hasNewBodyPart = false;
+      this.started = true;  // in case a boundary delimiter immediately starts
     }
 
     /// <summary>Gets a value indicating whether a new body part was detected.</summary>

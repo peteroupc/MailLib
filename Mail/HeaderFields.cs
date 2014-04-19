@@ -9,8 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
   internal class HeaderFields
   {
     private class UnstructuredHeaderField : IHeaderFieldParser {
