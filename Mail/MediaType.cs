@@ -626,47 +626,47 @@ namespace PeterO.Mail {
       //
       // RTP payload types; these are usually unsuitable for MIME,
       // and don't permit a charset parameter, so a default charset is irrelevant:
-      // 1d-interleaved-parityfec, fwdred, red, parityfec, encaprtp,
+      // -- 1d-interleaved-parityfec, fwdred, red, parityfec, encaprtp,
       // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback
       //
       // These media types don't define a charset parameter:
-      // dns, grammar-ref-list, mizar, vnd-latex-z, vnd.motorola.reflex,
+      // -- dns, grammar-ref-list, mizar, vnd-latex-z, vnd.motorola.reflex,
       // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript, vnd.dvb.subtitle,
       // vnd.fly, rtf, rfc822-headers
       //
       // Special procedure defined for charset detection:
-      // ecmascript, javascript, html
+      // -- ecmascript, javascript, html
       //
       // XML formats (no default assumed if charset is absent, according
       // to revision of XML media type specification):
-      // xml, xml-external-parsed-entity,
+      // -- xml, xml-external-parsed-entity,
       // vnd.in3d.3dml*, vnd.iptc.newsml, vnd.iptc.nitf, vnd.ms-mediapackage,
       // vnd.net2phone.commcenter.command, vnd.radisys.msml-basic-layout,
       // vnd.wap.si, vnd.wap.sl, vnd.wap.wml
       //
       // Deliberately undefined:
-      // example
+      // -- example
       //
       // -- US-ASCII assumed: --
       //
       // These media types don't define a default charset:
-      // css, richtext, enriched, tab-separated-values, vnd.in3d.spot*,
+      // -- css, richtext, enriched, tab-separated-values, vnd.in3d.spot*,
       // vnd.abc, vnd.wap.wmlscript, vnd.curl, vnd.fmi.flexstor, uri-list,
       // directory
       //
       // US-ASCII default:
-      // plain, sgml, troff
+      // -- plain, sgml, troff
       //
       // -- UTF-8 assumed: --
       //
       // UTF-8 only:
-      // vcard, jcr-cnd
+      // -- vcard, jcr-cnd
       //
       // Charset parameter defined but is "always UTF-8":
-      // n3, turtle, vnd.debian.copyright, provenance-notation
+      // -- n3, turtle, vnd.debian.copyright, provenance-notation
       //
       // UTF-8 default:
-      // csv, calendar**, vnd.a***, parameters, prs.fallenstein.rst,
+      // -- csv, calendar**, vnd.a***, parameters, prs.fallenstein.rst,
       // vnd.esmertec.theme.descriptor, vnd.trolltech.linguist,
       // vnd.graphviz, vnd.sun.j2me.app-descriptor
       //
@@ -677,7 +677,7 @@ namespace PeterO.Mail {
       // none are found, though, a 7-bit ASCII text is still also UTF-8)
       string param = this.GetParameter("charset");
       if (param != null) {
-        return ParserUtility.ToLowerCaseAscii(param);
+        return DataUtilities.ToLowerCaseAscii(param);
       }
       if (this.IsText) {
         string sub = this.SubType;
@@ -712,7 +712,7 @@ namespace PeterO.Mail {
       if (name.Length == 0) {
         throw new ArgumentException("name is empty.");
       }
-      name = ParserUtility.ToLowerCaseAscii(name);
+      name = DataUtilities.ToLowerCaseAscii(name);
       if (this.parameters.ContainsKey(name)) {
         return this.parameters[name];
       }
@@ -884,13 +884,13 @@ namespace PeterO.Mail {
       if (i == index || i >= endIndex || str[i] != '/') {
         return false;
       }
-      this.topLevelType = ParserUtility.ToLowerCaseAscii(str.Substring(index, i - index));
+      this.topLevelType = DataUtilities.ToLowerCaseAscii(str.Substring(index, i - index));
       ++i;
       int i2 = skipMimeTypeSubtype(str, i, endIndex, null);
       if (i == i2) {
         return false;
       }
-      this.subType = ParserUtility.ToLowerCaseAscii(str.Substring(i, i2 - i));
+      this.subType = DataUtilities.ToLowerCaseAscii(str.Substring(i, i2 - i));
       if (i2 < endIndex) {
         // if not at end
         int i3 = HeaderParser.ParseCFWS(str, i2, endIndex, null);
@@ -965,7 +965,7 @@ namespace PeterO.Mail {
         if (str[indexAfterTypeSubtype] != '=') {
           return false;
         }
-        attribute = ParserUtility.ToLowerCaseAscii(attribute);
+        attribute = DataUtilities.ToLowerCaseAscii(attribute);
         if (this.parameters.ContainsKey(attribute)) {
           // Console.WriteLine("Contains duplicate attribute " + attribute);
           return false;
@@ -1051,8 +1051,8 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Parses a media type string and returns a media type object.</summary>
-    /// <returns>A media type object, or "MediaType.TextPlainAscii" if
-    /// "mediaTypeString" is empty or syntactically invalid.</returns>
+    /// <returns>A media type object, or text/plain if <paramref name='mediaTypeValue'/>
+    /// is empty or syntactically invalid.</returns>
     /// <param name='mediaTypeValue'>A string object.</param>
     public static MediaType Parse(string mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);

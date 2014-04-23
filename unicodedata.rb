@@ -28,34 +28,66 @@ def downloadIfNeeded(localFile,remoteUrl)
      File.open(localFile,"wb"){|f| f.write(response.body) }
   end
 end
-
-def getCompEx(file)
-  ret=[]
+def getProp(file,name)
+  ret={}
   File.open(file,"rb"){|f|
     while !f.eof?
       ln=f.gets.gsub(/^\s+|\s+$/,"").gsub(/\s*\#.*$/,"")
-      if ln[/^([A-Fa-f0-9]+)\.\.([A-Fa-f0-9]+)\s*;\s*Full_Composition_Exclusion\b/]
+      if ln[/^([A-Fa-f0-9]+)\.\.([A-Fa-f0-9]+)\s*;\s*#{name}\b/]
         a=$1.to_i(16)
         b=$2.to_i(16)
         for i in a..b
-         ret.push(i)
+         ret[i]=true
         end
-      elsif ln[/^([A-Fa-f0-9]+)\s*;\s*Full_Composition_Exclusion\b/]
+      elsif ln[/^([A-Fa-f0-9]+)\s*;\s*#{name}\b/]
         a=$1.to_i(16)
-        ret.push(a)
+        ret[a]=true
       end
     end
   }
   return ret
 end
+
+def getMutexProp(file,name)
+  # Reads a file where all the properties are
+  # mutually exclusive
+  ret={}
+  File.open(file,"rb"){|f|
+    while !f.eof?
+      ln=f.gets.gsub(/^\s+|\s+$/,"").gsub(/\s*\#.*$/,"")
+      if ln[/^([A-Fa-f0-9]+)\.\.([A-Fa-f0-9]+)\s*;\s*([A-Za-z0-9_]+)\b/]
+        a=$1.to_i(16)
+        b=$2.to_i(16)
+        value=$3
+        for i in a..b
+         ret[i]=value
+        end
+      elsif ln[/^([A-Fa-f0-9]+)\s*;\s*([A-Za-z0-9_]+)\b/]
+        a=$1.to_i(16)
+        value=$2
+        ret[a]=value
+      end
+    end
+  }
+  return ret
+end
+
+def getCompEx(file)
+  return getProp(file,"Full_Composition_Exclusion")
+end
 def getUnicodeData(file)
   ccc=[]
   decompType=[]
+  gencats=[]
   decompMapping={}
+  names=[]
   File.open(file,"rb"){|f|
    while !f.eof?
     ln=f.gets.gsub(/^\s+|\s+$/,"").gsub(/\s*\#.*$/,"")
     ln=ln.split(";")
+    # Get the general category
+    gencat=ln[2]
+    name=ln[1]
     # Get the canonical combining class
     lnccc=ln[3].to_i(10)
     type=""
@@ -78,11 +110,13 @@ def getUnicodeData(file)
     for i in first..last
       ccc[i]=lnccc
       decompType[i]=type
+      gencats[i]=gencat
+      names[i]=name
       decompMapping[i]=mapping if mapping
     end
    end
   }
-  return [ccc,decompType,decompMapping]
+  return [ccc,decompType,decompMapping,gencats,names]
 end
 
 def generateComposites(dtypes,dmappings,compex)
@@ -92,7 +126,7 @@ def generateComposites(dtypes,dmappings,compex)
     dtype=dtypes[i]
     iscompat=(dtype && dtype.length>0)
     if decomp && decomp.length==2 && !iscompat &&
-        !compex.include?(i)
+        !compex[i]
         ret[decomp[0]*0x110000+decomp[1]]=i
     end
   end
@@ -110,6 +144,9 @@ module UnicodeDatabase
      return [ch] if dt && dt.length!=0
    end
    return dm
+ end
+ def self.getGeneralCategory(ch)
+   return $GeneralCategories[ch]||"Cn"
  end
  def self.getCombiningClass(ch)
    return $CombiningClasses[ch]||0
@@ -173,13 +210,11 @@ def self.compress(x)
           litLength-=255
         end
         literalPack=literalPack.pack("C*")
-      #  puts "literal "+lastLiteral.unpack("C*").to_s if lastLiteral.length>0
         literalPack+=lastLiteral
         lastLiteral=[]
         matchOffset=offset-token[0]
         matchPack=[matchOffset]
         matchLength=token[1]
-       # puts "match "+x[offset,token[1]].unpack("C*").to_s
         while matchLength>=19
           matchPack.push((matchLength-19 >= 255) ? 255 : matchLength-19)
           break if matchLength-19<255
@@ -221,6 +256,8 @@ module Normalizer
   @@decompositions={}
   @@decomposeToSelfCompat={}
   @@decompositionsCompat={}
+  @@canonDecompMappings=nil
+  @@compatDecompMappings=nil
   @@foundInDecompMapping=nil
   @@maxAffectedCodePoint=nil
   def self.normalize(chars,form)
@@ -239,8 +276,17 @@ module Normalizer
     if ch>=0xac00 && ch<0xac00+11172
       # Special case for Hangul syllables
       return false if form==:NFD || form==:NFKD
+      if (ch-0xAC00)%28!=0
+         # This is an LVT Hangul syllable
+        return true
+      else
+         # This is an LV Hangul syllable; this is not stable since
+         # a T jamo may follow it
+        return false
+      end
     else
       return false if UnicodeDatabase.getCombiningClass(ch)!=0
+      return true if UnicodeDatabase.getGeneralCategory(ch)=="Cn"
       result=normalize([ch],form)
       return false if result.length!=1 || result[0]!=ch
     end
@@ -249,41 +295,34 @@ module Normalizer
       return true if @@foundInDecompMapping && !@@foundInDecompMapping[ch]
       # NOTE: No Hangul syllables occur in decomposition
       # mappings
-      for k in $DecompMappings
-        compat=$DecompTypes[k[0]]
-        next if form==:NFC && compat!=nil && compat.length>0
-        return false if k[1].include?(ch)
-      end
       if !@@foundInDecompMapping
         @@foundInDecompMapping={}
+        @@canonDecompMappings={}
+        @@compatDecompMappings={}
         for k in $DecompMappings
           for m in k[1]
+           compat=$DecompTypes[k[0]]
+           compat=(compat!=nil && compat.length>0)
            @@foundInDecompMapping[m]=true
+           @@canonDecompMappings[m]=true
+           @@compatDecompMappings[m]=true if compat
           end
         end
       end
+      if form==:NFC
+        return !@@canonDecompMappings[ch]
+      else
+        return !@@compatDecompMappings[ch]        
+      end
       return true
     end
-   if (ch>=0xac00 && ch<0xac00+11172)
-      sIndex=ch-0xAC00;
-      trail = 0x11A7 + sIndex % 28;
-      if trail!=0x11A7
-        return true # This is an LVT Hangul syllable
-      else
-         # This is an LV Hangul syllable; this is not stable since
-         # a T jamo may follow it
-        return false
-      end
-   end
-   if !@@maxAffectedCodePoint
+    if !@@maxAffectedCodePoint
       @@maxAffectedCodePoint=0
       for k in $DecompMappings
         next if !k[1]
         @@maxAffectedCodePoint=[k[0],@@maxAffectedCodePoint].concat(k[1]).max
       end
-#      p @@maxAffectedCodePoint
    end
-#   p [ch,form]
    return false
   end
   def self.decomposeChar(ch,form)
@@ -404,6 +443,7 @@ module Normalizer
     return buffer[0,retval];    
   end
   def self.reorder(buffer)
+    return buffer if buffer.length<=1
     changed=true
     index=0
     while changed
@@ -609,6 +649,33 @@ def linebrokenjoin(arr)
  return data
 end
 
+def caseFoldingCF(file)
+  ret=[]
+  File.open(file,"rb"){|f|
+    while !f.eof?
+      ln=f.gets.gsub(/^\s+|\s+$/,"").gsub(/\s*\#.*$/,"")
+      if ln[/^([A-Fa-f0-9]+)\s*;\s*[CF]\s*;\s*([^;]+)\b/]
+        a=$1.to_i(16)
+        fold=$2
+        fold=fold.gsub(/\s+$/,"")
+        fold=fold.split(/\s+/).transform{|x| x.to_i(16) }
+        ret[a]=fold
+      end
+    end
+  }
+  return ret  
+end
+
+def toCaseFold(chars,casefold)
+  return chars if chars.length==1 && !casefold[chars[0]]
+  ret=[]
+  for c in chars
+    cf=casefold[c] || [c]
+    ret.concat(cf)
+  end
+  return ret
+end
+
 Dir.mkdir("cache") rescue nil
 puts "Gathering Unicode data..."
 downloadIfNeeded("cache/DerivedNormalizationProps.txt",
@@ -616,13 +683,26 @@ downloadIfNeeded("cache/DerivedNormalizationProps.txt",
 compex=getCompEx("cache/DerivedNormalizationProps.txt")
 downloadIfNeeded("cache/UnicodeData.txt",
  "http://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt")
+downloadIfNeeded("cache/DerivedBidiClass.txt",
+ "http://www.unicode.org/Public/UCD/latest/extracted/DerivedBidiClass.txt")
+downloadIfNeeded("cache/HangulSyllableType.txt",
+ "http://www.unicode.org/Public/UCD/latest/ucd/HangulSyllableType.txt")
+downloadIfNeeded("cache/DerivedCoreProperties.txt",
+ "http://www.unicode.org/Public/UCD/latest/ucd/DerivedCoreProperties.txt")
 downloadIfNeeded("cache/NormalizationTest.txt",
  "http://www.unicode.org/Public/UCD/latest/ucd/NormalizationTest.txt")
+downloadIfNeeded("cache/PropList.txt",
+ "http://www.unicode.org/Public/UCD/latest/ucd/PropList.txt")
+downloadIfNeeded("cache/CaseFolding.txt",
+ "http://www.unicode.org/Public/UCD/latest/ucd/CaseFolding.txt")
 udata=getUnicodeData("cache/UnicodeData.txt")
 $CombiningClasses=udata[0]
 $DecompTypes=udata[1]
 $DecompMappings=udata[2]
+$GeneralCategories=udata[3]
+$CaseFolding=caseFoldingCF("cache/CaseFolding.txt")
 $ComposedPairs=generateComposites($DecompTypes,$DecompMappings,compex)
+$CharacterNames=udata[4]
 #puts "Testing normalization..."
 #assigned=doNormTest("cache/NormalizationTest.txt")
 puts "Generating data files..."
@@ -713,21 +793,25 @@ data=linebrokenjoin(data)
 f.puts("      "+data)
 f.puts("      };");
 f.puts("    }");
+puts "Finding stable NFC code points..."
 stablenfc=[]
 for i in 0...0x110000; stablenfc.push(Normalizer.isStable(i,:NFC)); end
 f.puts("    public static #{final} byte[] StableNFC = new byte[] {")
 f.puts("      "+linebrokenjoinbytes(LZ4.compress(toBoolArray(stablenfc))))
 f.puts("    };")
+puts "Finding stable NFD code points..."
 stablenfc=[]
 for i in 0...0x110000; stablenfc.push(Normalizer.isStable(i,:NFD)); end
 f.puts("    public static #{final} byte[] StableNFD = new byte[] {")
 f.puts("      "+linebrokenjoinbytes(LZ4.compress(toBoolArray(stablenfc))))
 f.puts("    };")
+puts "Finding stable NFKC code points..."
 stablenfc=[]
 for i in 0...0x110000; stablenfc.push(Normalizer.isStable(i,:NFKC)); end
 f.puts("    public static #{final} byte[] StableNFKC = new byte[] {")
 f.puts("      "+linebrokenjoinbytes(LZ4.compress(toBoolArray(stablenfc))))
 f.puts("    };")
+puts "Finding stable NFKD code points..."
 stablenfc=[]
 for i in 0...0x110000; stablenfc.push(Normalizer.isStable(i,:NFKD)); end
 f.puts("    public static #{final} byte[] StableNFKD = new byte[] {")
@@ -737,5 +821,113 @@ f.puts("  }")
 if true
 f.puts("}")
 end
+}
+puts "Generating IDNA data..."
+letterDigits=[]
+idnaCategories=[]
+combiningMarks=[]
+defaultIgnore=getProp("cache/DerivedCoreProperties.txt",
+  "Default_Ignorable_Code_Point")
+whiteSpace=getProp("cache/PropList.txt",
+  "White_Space")
+noncharacterCP=getProp("cache/PropList.txt","Noncharacter_Code_Point")
+joinControls=getProp("cache/PropList.txt","Join_Control")
+hangulL=getProp("cache/HangulSyllableType.txt","L")
+hangulV=getProp("cache/HangulSyllableType.txt","V")
+hangulT=getProp("cache/HangulSyllableType.txt","T")
+categories=%w( Ll Lu Lo Lm Nd Mn Mc )
+for i in 0...0x110000
+ cat=UnicodeDatabase.getGeneralCategory(i)
+ if cat.include?("M")
+   combiningMarks[i]=true
+ end
+ if [0xdf,0x3c2,0x6fd,0x6fe,0xf0b,0x3007].include?(i)
+   idnaCategories[i]=1 # PVALID
+   next
+ end
+ if [0xb7,0x375,0x5f3,0x5f4,0x30fb].include?(i) ||
+      (i>=0x660 && i<=0x669) || (i>=0x6f0 && i<=0x6f9)
+   idnaCategories[i]=4; next # CONTEXTO
+   next
+ end
+ if [0x640,0x7f,0x302e,0x302f,0x3031,0x3032,0x3033,0x3034,
+       0x3035,0x303b].include?(i)
+   idnaCategories[i]=2; next # DISALLOWED
+ end
+ # Unassigned
+ if cat=="Cn" && !noncharacterCP[i]
+   idnaCategories[i]=0; next # UNASSIGNED
+   next
+ end
+ # LDH
+ if i==0x2d || (i>=0x30 && i<=0x39) || (i>=0x61 && i<=0x7a)
+   idnaCategories[i]=1; next # PVALID
+ end
+ # Join Controls
+ if joinControls[i]
+   idnaCategories[i]=3; next # CONTEXTJ
+ end
+ # Ignorable properties
+ if defaultIgnore[i] || whiteSpace[i] || noncharacterCP[i]
+   idnaCategories[i]=2; next # DISALLOWED
+ end
+ # Ignorable blocks
+ if (i>=0x20d0 && i<=0x20ff) || (i>=0x1d100 && i<=0x1d24f)
+   idnaCategories[i]=2; next # DISALLOWED
+ end
+ # Hangul jamo
+ if hangulL[i] || hangulV[i] || hangulT[i]
+   idnaCategories[i]=2; next # DISALLOWED
+ end
+ # Unstable
+ temp=Normalizer.normalize([i],:NFKC)
+ temp=toCaseFold(temp,$CaseFolding)
+ temp=Normalizer.normalize(temp,:NFKC)
+ if temp.length!=1 || temp[0]!=i
+   idnaCategories[i]=2; next # DISALLOWED
+ end
+ if categories.include?(cat)
+   idnaCategories[i]=1; next # PVALID
+ end
+ idnaCategories[i]=2; next # DISALLOWED
+end
+
+puts "Checking for M* with CCC of 0"
+for i in 0...0xf0000
+uc=UnicodeDatabase.getGeneralCategory(i)
+if uc=="Mn" || uc=="Mc" || uc=="Me"
+ if UnicodeDatabase.getCombiningClass(i)==0
+  p sprintf("%04X %d %s",i,idnaCategories[i],$CharacterNames[i])
+ end
+end
+end
+
+
+File.open("Text/IdnaData.cs","wb"){|f|
+f.puts("/* Generated by unicodedata.rb from data from the Unicode Character Database (UCD).")
+f.puts(" The UCD's copyright owner is Unicode, Inc.")
+f.puts(" Licensed under the Unicode License ")
+f.puts(" (see http://www.unicode.org/copyright.html Exhibit 1). */")
+f.puts("/* Character data required for IDNA2008 (RFC 5890-5894) */")
+f.puts("namespace PeterO.Text {")
+f.puts("  internal class IdnaData {")
+final="readonly"
+bidi=getMutexProp("DerivedBidiClass.txt")
+bidivalues=%w( L R AL EN ES ET AN CS NSM BN ON B S WS 
+  LRE LRO RLE RLO PDF LRI RLI FSI PDI )
+bidivalueshash={}
+for i in 0...bidivalues.length; bidivalueshash[bidivalues[i]]=i; end
+for b in bidi.keys; bidi[b]=bidivalueshash[bidi[b]]; end
+f.puts("    public static #{final} byte[] IdnaCategories = new byte[] {")
+f.puts("      "+linebrokenjoinbytes(LZ4.compress(toByteArray(idnaCategories))))
+f.puts("    };")
+f.puts("    public static #{final} byte[] BidiClasses = new byte[] {")
+f.puts("      "+linebrokenjoinbytes(LZ4.compress(toByteArray(bidi))))
+f.puts("    };")
+f.puts("    public static #{final} byte[] CombiningMarks = new byte[] {")
+f.puts("      "+linebrokenjoinbytes(LZ4.compress(toBoolArray(combiningMarks))))
+f.puts("    };")
+f.puts("  }")
+f.puts("}")
 }
 puts "Done"

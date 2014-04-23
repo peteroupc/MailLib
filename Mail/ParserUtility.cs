@@ -9,37 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using PeterO;
+
 namespace PeterO.Mail {
   internal static class ParserUtility {
-    public static string ToLowerCaseAscii(string str) {
-      if (str == null) {
-        return null;
-      }
-      int len = str.Length;
-      char c = (char)0;
-      bool hasUpperCase = false;
-      for (int i = 0; i < len; ++i) {
-        c = str[i];
-        if (c >= 'A' && c <= 'Z') {
-          hasUpperCase = true;
-          break;
-        }
-      }
-      if (!hasUpperCase) {
-        return str;
-      }
-      StringBuilder builder = new StringBuilder();
-      for (int i = 0; i < len; ++i) {
-        c = str[i];
-        if (c >= 'A' && c <= 'Z') {
-          builder.Append((char)(c + 0x20));
-        } else {
-          builder.Append(c);
-        }
-      }
-      return builder.ToString();
-    }
-
     public static bool EndsWith(string str, string suffix, int strStartPos) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -217,7 +190,7 @@ namespace PeterO.Mail {
           index += 2;
           // convert the language tag to lower case
           // to simplify handling
-          str = ParserUtility.ToLowerCaseAscii(str);
+          str = DataUtilities.ToLowerCaseAscii(str);
           c1 = str[index];
           // Straightforward cases
           if (c1 >= 'a' && c1 <= 'z') {
@@ -398,7 +371,7 @@ namespace PeterO.Mail {
           return true;
         } else if (c2 == '-' && (c1 == 'i' || c1 == 'I')) {
           // grandfathered language tags
-          str = ToLowerCaseAscii(str);
+          str = DataUtilities.ToLowerCaseAscii(str);
           return str.Equals("i-ami") || str.Equals("i-bnn") ||
             str.Equals("i-default") || str.Equals("i-enochian") ||
             str.Equals("i-hak") || str.Equals("i-klingon") ||

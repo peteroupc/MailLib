@@ -8,6 +8,8 @@ at: http://upokecenter.com/d/
 using System;
 using System.Text;
 
+using PeterO.Text;
+
 namespace PeterO.Mail {
     /// <summary>Represents an email address.</summary>
   public class Address {
@@ -53,7 +55,7 @@ namespace PeterO.Mail {
       if (domainLength > 0 && this.domain[0] != '[') {
         // "domain" is a domain name, and not an address literal,
         // so get its A-label length
-        domainLength = DomainUtility.EncodedDomainNameLength(this.domain, 0, domainLength);
+        domainLength = checked((int)DataUtilities.GetUtf8Length(Idna.DomainNameEncode(this.domain), true));
       }
       if (this.localPart.Length > 0 &&
           HeaderParser.ParseDotAtomText(this.localPart, 0, this.localPart.Length, null) == this.localPart.Length) {

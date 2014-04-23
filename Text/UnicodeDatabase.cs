@@ -11,7 +11,7 @@ namespace PeterO.Text {
         if (!first) {
           builder.Append(", ");
         }
-        builder.Append(("" + (array[i+index])));
+        builder.Append(String.Empty + array[i + index]);
         first = false;
       }
       builder.Append("]");
@@ -30,7 +30,7 @@ namespace PeterO.Text {
           int literalLength = (b >> 4) & 15;
           int matchLength = b & 15;
           ++index;
-          //Console.WriteLine("New token, index=" + (index));
+          // Console.WriteLine("New token, index=" + (index));
           // Literals
           if (literalLength == 15) {
             while (index < input.Length) {
@@ -45,13 +45,13 @@ namespace PeterO.Text {
               }
             }
           }
-          //Console.WriteLine("literal=" + literalLength + ", index=" + (index));
+          // Console.WriteLine("literal=" + literalLength + ", index=" + (index));
           if (index + literalLength - 1 >= input.Length) {
             throw new ArgumentException("Invalid LZ4");
           }
           if (literalLength > 0) {
             ms.Write(input, index, literalLength);
-            //Console.WriteLine("literal [idx="+index+"] "+ToString(input,index,literalLength));
+            // Console.WriteLine("literal [idx="+index+"] "+ToString(input,index,literalLength));
             index += literalLength;
           }
           if (index == input.Length) {
@@ -63,8 +63,8 @@ namespace PeterO.Text {
           // Match copy
           int offset = ((int)input[index]) & 0xff;
           offset |= (((int)input[index + 1]) & 0xff) << 8;
-          index+=2;
-          //Console.WriteLine("offset=" + offset + ", index=" + (index));
+          index += 2;
+          // Console.WriteLine("offset=" + offset + ", index=" + (index));
           if (offset == 0) {
             throw new ArgumentException("Invalid LZ4");
           }
@@ -96,7 +96,7 @@ namespace PeterO.Text {
           }
           ms.Position = pos;
           ms.Read(copy, 0, matchLength);
-          //Console.WriteLine("match "+ToString(copy,0,matchLength));
+          // Console.WriteLine("match "+ToString(copy,0,matchLength));
           ms.Position = oldPos;
           ms.Write(copy, 0, matchLength);
         }
@@ -116,9 +116,9 @@ namespace PeterO.Text {
         this.array = array;
       }
 
-      /// <summary>Not documented yet.</summary>
-      /// <param name='cp'>A 32-bit signed integer.</param>
-      /// <returns>A Boolean object.</returns>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='cp'>A 32-bit signed integer.</param>
+    /// <returns>A Boolean object.</returns>
       public bool ReadBoolean(int cp) {
         if (cp < 0) {
           throw new ArgumentException("cp (" + Convert.ToString((long)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
@@ -141,9 +141,9 @@ namespace PeterO.Text {
         }
       }
 
-      /// <summary>Not documented yet.</summary>
-      /// <param name='cp'>A 32-bit signed integer.</param>
-      /// <returns>A Byte object.</returns>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='cp'>A 32-bit signed integer.</param>
+    /// <returns>A Byte object.</returns>
       public byte ReadByte(int cp) {
         if (cp < 0) {
           throw new ArgumentException("cp (" + Convert.ToString((long)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
@@ -172,13 +172,40 @@ namespace PeterO.Text {
           classes = new ByteData(Lz4Decompress(NormalizationData.CombiningClasses));
         }
       }
-      return classes.ReadByte(cp) & 0xff;
+      return ((int)classes.ReadByte(cp)) & 0xff;
     }
+
+    private static ByteData idnaCat = null;
+    private static Object idnaCatSyncRoot = new Object();
+
+    public static int GetIdnaCategory(int cp) {
+      lock (idnaCatSyncRoot) {
+        if (idnaCat == null) {
+          idnaCat = new ByteData(Lz4Decompress(IdnaData.IdnaCategories));
+        }
+      }
+      return ((int)idnaCat.ReadByte(cp)) & 0xff;
+    }
+
+    private static ByteData combmark = null;
+    private static Object valueCmSyncRoot = new Object();
+
+    public static bool IsCombiningMark(int cp) {
+      lock (valueCmSyncRoot) {
+        if (combmark == null) {
+          combmark = new ByteData(Lz4Decompress(
+            IdnaData.CombiningMarks));
+        }
+        return combmark.ReadBoolean(cp);
+      }
+    }
+
     private static ByteData stablenfc = null;
     private static ByteData stablenfd = null;
     private static ByteData stablenfkc = null;
     private static ByteData stablenfkd = null;
     private static Object stableSyncRoot = new Object();
+
     public static bool IsStableCodePoint(int cp, Normalization form) {
       lock (stableSyncRoot) {
         if (form == Normalization.NFC) {
@@ -237,7 +264,7 @@ namespace PeterO.Text {
           int size = data >> 24;
           if (size > 0) {
             if ((data & (1 << 23)) > 0) {
-              realIndex = (data & 0x1fffff);
+              realIndex = data & 0x1fffff;
               Array.Copy(NormalizationData.CompatDecompMappings, realIndex, buffer, offset, size);
             } else {
               realIndex = 1 + (decomps[0] << 1) + (data & 0x1fffff);

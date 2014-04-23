@@ -89,7 +89,7 @@ namespace PeterO.Mail {
       if (MediaType.skipMimeTypeSubtype(str, 0, str.Length, null) != str.Length) {
         throw new ArgumentException("Not a well-formed top level type: " + str);
       }
-      this.type = ParserUtility.ToLowerCaseAscii(str);
+      this.type = DataUtilities.ToLowerCaseAscii(str);
       return this;
     }
 
@@ -100,7 +100,7 @@ namespace PeterO.Mail {
       if (name == null) {
         throw new ArgumentNullException("name");
       }
-      this.parameters.Remove(ParserUtility.ToLowerCaseAscii(name));
+      this.parameters.Remove(DataUtilities.ToLowerCaseAscii(name));
       return this;
     }
 
@@ -124,7 +124,7 @@ namespace PeterO.Mail {
       if (MediaType.skipMimeTypeSubtype(name, 0, name.Length, null) != name.Length) {
         throw new ArgumentException("Not a well-formed parameter name: " + name);
       }
-      this.parameters[ParserUtility.ToLowerCaseAscii(name)] = value;
+      this.parameters[DataUtilities.ToLowerCaseAscii(name)] = value;
       return this;
     }
 
@@ -141,7 +141,7 @@ namespace PeterO.Mail {
       if (MediaType.skipMimeTypeSubtype(str, 0, str.Length, null) != str.Length) {
         throw new ArgumentException("Not a well-formed subtype: " + str);
       }
-      this.subtype = ParserUtility.ToLowerCaseAscii(str);
+      this.subtype = DataUtilities.ToLowerCaseAscii(str);
       return this;
     }
 

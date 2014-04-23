@@ -642,7 +642,7 @@ namespace PeterO.Mail {
       }
       #endif
 
-      name = ParserUtility.ToLowerCaseAscii(name);
+      name = DataUtilities.ToLowerCaseAscii(name);
       if (list.ContainsKey(name)) {
         return list[name];
       }

@@ -1,17 +1,61 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace PeterO.Text {
-  /// <summary>Not documented yet.</summary>
+    /// <summary>Not documented yet.</summary>
   public sealed class Normalizer : ICharacterInput
   {
     public static IList<int> GetChars(string str, Normalization form) {
-      if ((str) == null) {
+      if (str == null) {
         throw new ArgumentNullException("str");
       }
       return GetChars(new StringCharacterInput(str), form);
     }
+
+    /// <summary>
+    /// Converts a string to Unicode normalization form C.
+    /// </summary>
+    /// <param name="str">A string.  Cannot be null.</param>
+    /// <returns>The normalized string.</returns>
+    public static string Normalize(string str) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+       if (str.Length < 1000) {
+        bool allLatinOne = true;
+         for (int i = 0; i < str.Length; ++i) {
+           if ((str[i] >> 8) != 0) {
+            allLatinOne = false;
+            break;
+          }
+        }
+        if (allLatinOne) {
+          return str;
+        }
+      }
+      return Normalize(str, Normalization.NFC);
+    }
+
+    public static string Normalize(string str, Normalization form) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      Normalizer norm = new Normalizer(str, form);
+      StringBuilder builder = new StringBuilder();
+      int c = 0;
+      while ((c = norm.Read()) >= 0) {
+        if (c <= 0xffff) {
+          builder.Append((char)c);
+        } else if (c <= 0x10ffff) {
+          builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
+          builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+        }
+      }
+      return builder.ToString();
+    }
+
     public static IList<int> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -103,6 +147,7 @@ namespace PeterO.Text {
       this.basicEnd = (form == Normalization.NFC) ? 0x100 : 0x80;
       this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
     }
+
     public Normalizer(string str, Normalization form) :
       this(new StringCharacterInput(str), form) {
     }
@@ -116,6 +161,34 @@ namespace PeterO.Text {
       this.form = form;
       this.basicEnd = (form == Normalization.NFC) ? 0x100 : 0x80;
       this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
+    }
+
+    public static bool IsNormalized(string str) {
+      return IsNormalized(str, Normalization.NFC);
+    }
+
+    public static bool IsNormalized(string str, Normalization form) {
+      int maxbasic = (form == Normalization.NFC) ? 0xff : 0x7f;
+      bool basic = true;
+      for (int i = 0; i < str.Length; ++i) {
+        if (str[i] > maxbasic) {
+          basic = false;
+          break;
+        }
+      }
+      if (basic) {
+        return true;
+      }
+      return IsNormalized(new StringCharacterInput(str), form);
+    }
+
+    public static bool IsNormalized(ICharacterInput chars, Normalization form) {
+      IList<int> list = new List<int>();
+      int ch = 0;
+      while ((ch = chars.Read()) >= 0) {
+        list.Add(ch);
+      }
+      return IsNormalized(chars, form);
     }
 
     public static bool IsNormalized(IList<int> chars, Normalization form) {
@@ -255,7 +328,7 @@ namespace PeterO.Text {
       int count = 0;
       // Fill buffer with processed code points
       do {
-        //Console.WriteLine("indexes=" + this.processedIndex + " " + this.flushIndex + ", length=" + length + " total=" + (total));
+        // Console.WriteLine("indexes=" + this.processedIndex + " " + this.flushIndex + ", length=" + length + " total=" + (total));
         count = Math.Max(0, Math.Min(this.processedIndex - this.flushIndex, length - total));
         if (count != 0) {
           #if DEBUG
@@ -337,13 +410,13 @@ namespace PeterO.Text {
             if (this.buffer == null) {
               throw new ArgumentNullException("this.buffer");
             }
-            if (this.endIndex<this.lastStableIndex) {
+            if (this.endIndex < this.lastStableIndex) {
               throw new ArgumentException("endIndex less than lastStableIndex");
             }
             #endif
             Array.Copy(this.buffer, this.lastStableIndex, this.buffer, 0, this.buffer.Length - this.lastStableIndex);
-            //       Console.WriteLine("endIndex=" + (this.endIndex));
-            this.endIndex-=this.lastStableIndex;
+            // Console.WriteLine("endIndex=" + (this.endIndex));
+            this.endIndex -= this.lastStableIndex;
             this.lastStableIndex = 0;
           } else {
             this.endIndex = 0;
@@ -389,7 +462,7 @@ namespace PeterO.Text {
           bool haveNewStable = false;
           // NOTE: lastStableIndex begins at -1
           for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
-            //Console.WriteLine("stable({0:X4})=" + (IsStableCodePoint(this.buffer[i], this.form)));
+            // Console.WriteLine("stable({0:X4})=" + (IsStableCodePoint(this.buffer[i], this.form)));
             if (IsStableCodePoint(this.buffer[i], this.form)) {
               this.lastStableIndex = i;
               haveNewStable = true;
@@ -456,7 +529,7 @@ namespace PeterO.Text {
       bool changed;
       do {
         changed = false;
-        //Console.WriteLine(ToString(buffer, index, length));
+        // Console.WriteLine(ToString(buffer, index, length));
         int lead = UnicodeDatabase.GetCombiningClass(buffer[index]);
         int trail;
         for (i = 1; i < length; ++i) {
@@ -466,9 +539,9 @@ namespace PeterO.Text {
             int c = buffer[offset - 1];
             buffer[offset - 1] = buffer[offset];
             buffer[offset] = c;
-            //Console.WriteLine("lead= {0:X4} ccc=" + (lead));
-            //Console.WriteLine("trail={0:X4} ccc=" + (trail));
-            //Console.WriteLine("now "+ToString(buffer,index,length));
+            // Console.WriteLine("lead= {0:X4} ccc=" + (lead));
+            // Console.WriteLine("trail={0:X4} ccc=" + (trail));
+            // Console.WriteLine("now "+ToString(buffer,index,length));
             changed = true;
             // Lead is now at trail's position
           } else {
@@ -516,7 +589,7 @@ namespace PeterO.Text {
             // Found Hangul L jamo
             int vowel = ch - 0x1161;
             if (0 <= vowel && vowel < 21 && (lastClass < valueChClass || lastClass == 0)) {
-              starterCh = 0xac00 + ((lead * 21 + vowel) * 28);
+              starterCh = 0xac00 + (((lead * 21) + vowel) * 28);
               list[starterPos] = starterCh;
               list[decompPos] = 0x110000;
               composed = true;

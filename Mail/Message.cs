@@ -315,7 +315,7 @@ namespace PeterO.Mail {
         string name = this.headers[i];
         string value = this.headers[i + 1];
         if (mime && name.Equals("content-transfer-encoding")) {
-          value = ParserUtility.ToLowerCaseAscii(transferEncodingValue);
+          value = DataUtilities.ToLowerCaseAscii(transferEncodingValue);
           this.headers[i + 1] = value;
           if (value.Equals("7bit")) {
             this.transferEncoding = EncodingSevenBit;
@@ -397,7 +397,7 @@ namespace PeterO.Mail {
     /// <param name='name'>A string object. (2).</param>
     /// <returns>A string object.</returns>
     public string GetHeader(string name) {
-      name = ParserUtility.ToLowerCaseAscii(name);
+      name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.Count; i += 2) {
         if (this.headers[i].Equals(name)) {
           return this.headers[i + 1];
@@ -626,7 +626,7 @@ namespace PeterO.Mail {
           throw new ArgumentException("Header field name contains an invalid character");
         }
       }
-      name = ParserUtility.ToLowerCaseAscii(name);
+      name = DataUtilities.ToLowerCaseAscii(name);
       // Check characters in structured header fields
       if (HeaderFields.GetParser(name).IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
