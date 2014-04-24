@@ -9,7 +9,7 @@ using System;
 using System.Text;
 using PeterO;
 
-namespace PeterO.Mail {
+namespace PeterO.Text {
     /// <summary>Utility methods for domain names.</summary>
   internal static class DomainUtility
   {
@@ -316,6 +316,10 @@ namespace PeterO.Mail {
     }
 
     private static string valuePunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+    internal static string PunycodeEncode(string str) {
+      return PunycodeEncode(str, 0, str.Length);
+    }
 
     internal static string PunycodeEncode(string str, int index, int endIndex) {
       if (str == null) {

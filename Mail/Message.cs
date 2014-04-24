@@ -11,12 +11,12 @@ using System.IO;
 using System.Text;
 
 namespace PeterO.Mail {
-    /// <summary>Represents an email message. <para><b>Thread safety:</b>
-    /// This class is mutable; its properties can be changed. None of its methods
-    /// are designed to be thread safe. Therefore, access to objects from
-    /// this class must be synchronized if multiple threads can access them
-    /// at the same time.</para>
-    /// </summary>
+  /// <summary>Represents an email message. <para><b>Thread safety:</b>
+  /// This class is mutable; its properties can be changed. None of its methods
+  /// are designed to be thread safe. Therefore, access to objects from
+  /// this class must be synchronized if multiple threads can access them
+  /// at the same time.</para>
+  /// </summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -368,8 +368,14 @@ namespace PeterO.Mail {
           this.transferEncoding == EncodingBase64 ||
           this.transferEncoding == EncodingUnknown) {
         if (this.contentType.IsMultipart ||
-            this.contentType.TopLevelType.Equals("message")) {
-          throw new MessageDataException("Invalid content encoding for multipart or message");
+            (this.contentType.TopLevelType.Equals("message") && !this.contentType.SubType.Equals("global"))) {
+          if (this.transferEncoding == EncodingQuotedPrintable) {
+            // DEVIATION: Treat quoted-printable for multipart and message
+            // as 7bit instead
+            this.transferEncoding = EncodingSevenBit;
+          } else {
+            throw new MessageDataException("Invalid content encoding for multipart or message");
+          }
         }
       }
     }
@@ -915,7 +921,7 @@ namespace PeterO.Mail {
         bodyEncoder.WriteToString(sb, this.body, 0, this.body.Length);
         bodyEncoder.FinalizeEncoding(sb);
       } else {
-         foreach (var part in this.Parts) {
+        foreach (var part in this.Parts) {
           sb.Append("\r\n--" + boundary + "\r\n");
           sb.Append(part.Generate(depth + 1));
         }
@@ -1065,8 +1071,8 @@ namespace PeterO.Mail {
     private class MessageStackEntry {
       private Message message;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public Message Message {
         get {
           return this.message;
@@ -1075,8 +1081,8 @@ namespace PeterO.Mail {
 
       private string boundary;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public string Boundary {
         get {
           return this.boundary;
@@ -1215,7 +1221,10 @@ namespace PeterO.Mail {
       bool plain) {
       ITransform transform = new EightBitTransform(stream);
       if (encoding == EncodingQuotedPrintable) {
-        transform = new QuotedPrintableTransform(stream, false);
+        // DEVIATION: The max line size is actually 76, but some emails
+        // have lines that exceed this size, so use an unlimited line length
+        // when parsing
+        transform = new QuotedPrintableTransform(stream, false, -1);
       } else if (encoding == EncodingBase64) {
         transform = new Base64Transform(stream, false);
       } else if (encoding == EncodingEightBit) {
@@ -1276,7 +1285,7 @@ namespace PeterO.Mail {
         this.body = ms.ToArray();
       }
     }
-
+    
     private void ReadMessage(ITransform stream) {
       ReadHeaders(stream, this.headers);
       this.ProcessHeaders(false, false);

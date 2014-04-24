@@ -12,6 +12,7 @@ using System.Text;
 using NUnit.Framework;
 using PeterO;
 using PeterO.Mail;
+using PeterO.Text;
 
 namespace MailLibTest {
   [TestFixture]
@@ -279,6 +280,284 @@ namespace MailLibTest {
     }
 
     [Test]
+    public void TestArgumentValidation() {
+      try {
+        new Base64Encoder(false, false, false, null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Base64Encoder(false,false,false,"xyz");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new WordWrapEncoder(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      #if DEBUG
+      try {
+        new Tokener().RestoreState(-1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Tokener().RestoreState(1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      #endif
+      try {
+        MediaType.TextPlainAscii.GetParameter(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        MediaType.TextPlainAscii.GetParameter("");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        MediaType.Parse(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      Assert.AreEqual("application",new MediaTypeBuilder().TopLevelType);
+      Assert.AreEqual("text",new MediaTypeBuilder(MediaType.TextPlainAscii).TopLevelType);
+      Assert.AreEqual("plain",new MediaTypeBuilder(MediaType.TextPlainAscii).SubType);
+      Assert.IsTrue(MediaType.TextPlainAscii.Equals(MediaType.Parse("text/plain; charset=us-ascii")));
+      Assert.IsTrue(MediaType.TextPlainAscii.GetHashCode()==MediaType.Parse("text/plain; charset=us-ascii").GetHashCode());
+    }
+
+    [Test]
+    public void TestMediaTypeBuilder() {
+      MediaTypeBuilder builder;
+      try {
+        new MediaTypeBuilder(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      builder=new MediaTypeBuilder("text","plain");
+      try {
+        builder.SetTopLevelType(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        builder.SetParameter(null,"v");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        builder.SetParameter(null, null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        builder.SetParameter("","v");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        builder.SetParameter("v",null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        builder.SetTopLevelType("");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        builder.SetTopLevelType("e=");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        builder.SetTopLevelType("e/e");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new MediaTypeBuilder().SetSubType(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new MediaTypeBuilder().RemoveParameter(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new MediaTypeBuilder().RemoveParameter(String.Empty);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new MediaTypeBuilder().RemoveParameter("v");
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new MediaTypeBuilder().SetSubType(String.Empty);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new MediaTypeBuilder().SetSubType("x;y");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new MediaTypeBuilder().SetSubType("x/y");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new MediaTypeBuilder().SetParameter("x",String.Empty);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new MediaTypeBuilder().SetParameter("x;y","v");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new MediaTypeBuilder().SetParameter("x/y","v");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      Assert.Throws(typeof(ArgumentNullException),()=>Charsets.GetCharset(null));
+      Assert.IsTrue(MediaType.Parse("text/plain").IsText);
+      Assert.IsTrue(MediaType.Parse("multipart/alternative").IsMultipart);
+    }
+
+    [Test]
+    public void TestLanguageTags() {
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("en-a-bb-x-y-z"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("0-xx-xx"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("9-xx-xx"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("a-xx-xx"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("x-xx-xx"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("en-US-u-islamcal"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("zh-CN-a-myext-x-private"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("en-a-myext-b-another"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("de-419-DE"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("a-DE"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("ar-a-aaa-b-bbb-a-ccc"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("en"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("qbb-us"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("zh-yue"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("en-us"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("e0-us"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("en-gb-1999"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("en-gb-1999-1998"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("en-gb-1999-1999"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("en-gb-oed"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("sr-Latn-RS"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("x-aaaaaaaaa-y-z"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("x-aaaaaaaa-y-z"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("a-b-x-y-z"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("a-bb-xx-yy-zz"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("a-bb-x-y-z"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("a-x-y-z"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("x-x-y-z"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("i-lojban"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("i-klingon"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("art-lojban"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("sgn-be-fr"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("no-bok"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("z-xx-xx"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("en-aaa-bbbb-x-xxx-yyy-zzz"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("en-aaa-bbbb-x-x-y-z"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("en-aaa-bbb"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("en-aaa-bbb-ccc"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("en-aaa-bbbb"));
+      Assert.IsTrue(ParserUtility.IsValidLanguageTag("en-aaa-bbbb-cc"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("en-aaa-bbb-"));
+      Assert.IsFalse(ParserUtility.IsValidLanguageTag("en-aaa-bbb-ccc-"));
+    }
+
+    [Test]
     public void TestMediaTypeEncoding() {
       this.SingleTestMediaTypeEncoding("xyz", "x/y;z=xyz");
       this.SingleTestMediaTypeEncoding("xy z", "x/y;z=\"xy z\"");
@@ -405,6 +684,15 @@ namespace MailLibTest {
         expected,
         HeaderFields.GetParser("subject").DecodeEncodedWords(input));
     }
+    
+    [Test]
+    public void TestEncodedPhrase2(){
+      // TODO: Why isn't this downgraded?
+      string par = "(";
+      Assert.AreEqual(
+        par + "tes\u00bet) x@x.example",
+        HeaderFields.GetParser("subject").DowngradeFieldValue("(tes\u00bet) x@x.example"));
+    }
 
     [Test]
     public void TestEncodedPhrase() {
@@ -430,7 +718,6 @@ namespace MailLibTest {
 
     [Test]
     public void TestCommentsToWords() {
-      string par = "(";
       Assert.AreEqual("(=?utf-8?Q?x?=)", EncodeComment("(x)"));
       Assert.AreEqual("(=?utf-8?Q?xy?=)", EncodeComment("(x\\y)"));
       Assert.AreEqual("(=?utf-8?Q?x_y?=)", EncodeComment("(x\r\n y)"));
@@ -447,9 +734,6 @@ namespace MailLibTest {
       Assert.AreEqual(
         "(=?utf-8?Q?tes=C2=BEt?=) en",
         HeaderFields.GetParser("content-language").DowngradeFieldValue("(tes\u00bet) en"));
-      Assert.AreEqual(
-        par + "tes\u00bet) x@x.example",
-        HeaderFields.GetParser("subject").DowngradeFieldValue("(tes\u00bet) x@x.example"));
       Assert.AreEqual(
         "(comment) Test <x@x.example>",
         HeaderFields.GetParser("from").DowngradeFieldValue("(comment) Test <x@x.example>"));
@@ -512,6 +796,38 @@ namespace MailLibTest {
     private void TestParseCommentStrictCore(string input) {
       Assert.AreEqual(input.Length, HeaderParserUtility.ParseCommentStrict(input, 0, input.Length), input);
     }
+
+    [Test]
+    public void TestPercentEncoding() {
+      Assert.AreEqual(
+        "test\u00be",
+        Charsets.Utf8.GetString(new PercentEncodingStringTransform("test%c2%be")));
+      Assert.AreEqual(
+        "tesA",
+        Charsets.Utf8.GetString(new PercentEncodingStringTransform("tes%41")));
+      Assert.AreEqual(
+        "tesa",
+        Charsets.Utf8.GetString(new PercentEncodingStringTransform("tes%61")));
+      Assert.AreEqual(
+        "tes\r\na",
+        Charsets.Utf8.GetString(new PercentEncodingStringTransform("tes%0d%0aa")));
+      Assert.AreEqual(
+        "tes\r\na",
+        Charsets.Utf8.GetString(new QEncodingStringTransform("tes=0d=0aa")));
+      Assert.AreEqual(
+        "tes?xx",
+        Charsets.Utf8.GetString(new PercentEncodingStringTransform("tes%xx")));
+      Assert.AreEqual(
+        "tes?xx",
+        Charsets.Utf8.GetString(new PercentEncodingStringTransform("tes%dxx")));
+      Assert.AreEqual(
+        "tes?xx",
+        Charsets.Utf8.GetString(new QEncodingStringTransform("tes=dxx")));
+      Assert.AreEqual(
+        "tes??x",
+        Charsets.Utf8.GetString(new PercentEncodingStringTransform("tes\r\nx")));
+    }
+
     [Test]
     public void TestParseCommentStrict() {
       TestParseCommentStrictCore("(y)");
@@ -569,6 +885,129 @@ namespace MailLibTest {
     public void TestNamedAddress() {
       Assert.AreEqual("\"Me \" <me@example.com>",new NamedAddress("Me ","me@example.com").ToString());
       Assert.AreEqual("\" Me\" <me@example.com>",new NamedAddress(" Me","me@example.com").ToString());
+      try {
+        new NamedAddress("",(string)null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new NamedAddress("",(Address)null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new NamedAddress("x at example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new NamedAddress("x");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new NamedAddress("x@");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new NamedAddress("@example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new NamedAddress("example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Address((string)null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new NamedAddress("");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Address("");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new NamedAddress("a b@example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Address("a b@example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new NamedAddress("ab.example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Address("ab@exa mple.example");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Address("ab@example.com addr");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      Assert.IsFalse(new NamedAddress("x@example.com").IsGroup);
+      Assert.AreEqual("x@example.com",new NamedAddress("x@example.com").Name);
+      Assert.AreEqual("x@example.com",new NamedAddress("x@example.com").Address.ToString());
     }
 
     [Test]
@@ -649,6 +1088,13 @@ namespace MailLibTest {
           Assert.Fail(trace);
         }
       }
+    }
+
+    public bool IsRareMixerHeader(string hdrname) {
+      return hdrname.Equals("content-identifier") || hdrname.Equals("x400-content-identifier") || hdrname.Equals("x400-content-return") || hdrname.Equals("x400-content-type") || hdrname.Equals("x400-mts-identifier") || hdrname.Equals("x400-originator") || hdrname.Equals("x400-received") || hdrname.Equals("x400-recipients") || hdrname.Equals("x400-trace") || hdrname.Equals("original-encoded-information-types") || hdrname.Equals("conversion") || hdrname.Equals("conversion-with-loss") || hdrname.Equals("dl-expansion-history") || hdrname.Equals("originator-return-address") ||
+        hdrname.Equals("discarded-x400-mts-extensions") || hdrname.Equals("supersedes") || hdrname.Equals("expires") ||
+        hdrname.Equals("content-return") ||
+        hdrname.Equals("autoforwarded") || hdrname.Equals("generate-delivery-report") || hdrname.Equals("incomplete-copy") || hdrname.Equals("message-type") || hdrname.Equals("discarded-x400-ipms-extensions") || hdrname.Equals("autosubmitted") || hdrname.Equals("prevent-nondelivery-report") || hdrname.Equals("alternate-recipient") || hdrname.Equals("disclose-recipients");
     }
 
     [Test]

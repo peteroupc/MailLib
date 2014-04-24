@@ -79,7 +79,21 @@ namespace PeterO.Mail {
       }
     }
 
-    public NamedAddress(string address) : this(address, address) {
+    public NamedAddress(string address) {
+      if (address == null) {
+        throw new ArgumentNullException("address");
+      }
+      Tokener tokener = new Tokener();
+      if (HeaderParser.ParseHeaderTo(address, 0, address.Length, tokener) != address.Length) {
+        throw new ArgumentException("Address has an invalid syntax.");
+      }
+      NamedAddress na = HeaderParserUtility.ParseAddress(address, 0, address.Length, tokener.GetTokens());
+      if (na == null) {
+        throw new ArgumentException("Address has an invalid syntax.");
+      }
+      this.name = na.name;
+      this.address = na.address;
+      this.groupAddresses = na.groupAddresses;
     }
 
     public NamedAddress(string displayName, string address) {
@@ -95,6 +109,9 @@ namespace PeterO.Mail {
     }
 
     public NamedAddress(string displayName, Address address) {
+      if (address == null) {
+        throw new ArgumentNullException("address");
+      }
       if (String.IsNullOrEmpty(displayName)) {
         displayName = address.ToString();
       }

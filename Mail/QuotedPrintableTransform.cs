@@ -30,11 +30,9 @@ namespace PeterO.Mail {
       this.lenientLineBreaks = lenientLineBreaks;
     }
 
-    // DEVIATION: The max line size is actually 76, but some emails
-    // have lines that exceed this size
     public QuotedPrintableTransform(
       ITransform input,
-      bool lenientLineBreaks) : this(input, lenientLineBreaks, 200) {
+      bool lenientLineBreaks) : this(input, lenientLineBreaks, 76) {
     }
 
     /// <summary>Not documented yet.</summary>

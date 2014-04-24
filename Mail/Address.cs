@@ -103,6 +103,9 @@ namespace PeterO.Mail {
       if (localPartEnd >= addressValue.Length || addressValue[localPartEnd] != '@') {
         throw new ArgumentException("Expected '@' sign after local part");
       }
+      if (localPartEnd + 1 == addressValue.Length) {
+        throw new ArgumentException("Expected domain after '@'");
+      }
       int domainEnd = HeaderParser.ParseDomainNoCfws(addressValue, localPartEnd + 1, addressValue.Length, null);
       if (domainEnd != addressValue.Length) {
         throw new ArgumentException("Invalid domain");

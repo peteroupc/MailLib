@@ -14,10 +14,8 @@ namespace PeterO.Text {
       return GetChars(new StringCharacterInput(str), form);
     }
 
-    /// <summary>
-    /// Converts a string to Unicode normalization form C.
-    /// </summary>
-    /// <param name="str">A string.  Cannot be null.</param>
+    /// <summary>Converts a string to Unicode normalization form C.</summary>
+    /// <param name='str'>A string. Cannot be null.</param>
     /// <returns>The normalized string.</returns>
     public static string Normalize(string str) {
       if (str == null) {

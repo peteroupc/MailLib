@@ -65,34 +65,6 @@ namespace MailLibTest {
     }
 
     [Test]
-    public void IdnaTest() {
-      Assert.IsTrue(Idna.IsValidULabel("el\u00b7la"));
-Assert.IsFalse(Idna.IsValidULabel("el\u00b7"));
-Assert.IsFalse(Idna.IsValidULabel("el\u00b7ma"));
-Assert.IsFalse(Idna.IsValidULabel("em\u00b7la"));
-// 0x300 is the combining grave accent
-Assert.IsFalse(Idna.IsValidULabel("\u0300xyz"));
-Assert.IsTrue(Idna.IsValidULabel("x\u0300yz"));
-// Has white space
-Assert.IsFalse(Idna.IsValidULabel("x\u0300y z"));
-// 0x323 is dot below, with a lower combining
-// class than grave accent
-Assert.IsTrue(Idna.IsValidULabel("x\u0323\u0300yz"));
-// Not in NFC, due to the reordered combining marks
-Assert.IsFalse(Idna.IsValidULabel("x\u0300\u0323yz"));
-// 0xffbf is unassigned as of Unicode 6.3
-Assert.IsFalse(Idna.IsValidULabel("x\uffbfyz"));
-// 0xffff is a noncharacter
-Assert.IsFalse(Idna.IsValidULabel("x\uffffyz"));
-// 0x3042 is hiragana A, 0x30a2 is katakana A,
-// and 0x5000 is a Han character
-Assert.IsFalse(Idna.IsValidULabel("xy\u30fb"));
-Assert.IsTrue(Idna.IsValidULabel("xy\u3042\u30fb"));
-Assert.IsTrue(Idna.IsValidULabel("xy\u30a2\u30fb"));
-Assert.IsTrue(Idna.IsValidULabel("xy\u5000\u30fb"));
-    }
-
-    [Test]
     public void NormTest() {
       if (!File.Exists("..\\..\\..\\cache\\NormalizationTest.txt")) {
         Assert.Ignore();
@@ -146,8 +118,8 @@ Assert.IsTrue(Idna.IsValidULabel("xy\u5000\u30fb"));
       int[] cptemp = new int[1];
       for (int i = 0;i<handled.Length; ++i) {
         if (i >= 0xd800 && i <= 0xdfff) {
- continue;
-}
+          continue;
+        }
         if (!handled[i]) {
           cptemp[0]=i;
           ICharacterInput ci = new IntArrayCharacterInput(cptemp);

@@ -85,13 +85,11 @@ namespace PeterO.Mail {
           } else if (b2 >= 'A' && b2 <= 'F') {
             c <<= 4;
             c |= b2 + 10 - 'A';
-          } else if (b1 >= 'a' && b2 <= 'f') {
+          } else if (b2 >= 'a' && b2 <= 'f') {
             c <<= 4;
             c |= b2 + 10 - 'a';
           } else {
             --this.inputIndex;
-            this.ResizeBuffer(1);
-            this.buffer[0] = (byte)b1;  // will be 0-9 or a-f or A-F
             return '?';
           }
           return c;

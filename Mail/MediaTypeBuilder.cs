@@ -78,7 +78,7 @@ namespace PeterO.Mail {
 
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
-    /// <returns>A MediaTypeBuilder object.</returns>
+    /// <returns>This instance.</returns>
     public MediaTypeBuilder SetTopLevelType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -95,7 +95,7 @@ namespace PeterO.Mail {
 
     /// <summary>Not documented yet.</summary>
     /// <param name='name'>A string object.</param>
-    /// <returns>A MediaTypeBuilder object.</returns>
+    /// <returns>This instance.</returns>
     public MediaTypeBuilder RemoveParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -107,7 +107,7 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='name'>A string object.</param>
     /// <param name='value'>A string object. (2).</param>
-    /// <returns>A MediaTypeBuilder object.</returns>
+    /// <returns>This instance.</returns>
     public MediaTypeBuilder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException("value");
@@ -130,7 +130,7 @@ namespace PeterO.Mail {
 
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
-    /// <returns>A MediaTypeBuilder object.</returns>
+    /// <returns>This instance.</returns>
     public MediaTypeBuilder SetSubType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");

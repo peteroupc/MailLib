@@ -63,9 +63,6 @@ namespace PeterO.Mail {
     /// <summary>Returns the hash code for this instance.</summary>
     /// <returns>A 32-bit hash code.</returns>
     public override int GetHashCode() {
-      // NOTE: Parameter names are sorted, ensuring
-      // the stability of their order for hash code
-      // calculation purposes
       int hashCode = 632580499;
       unchecked {
         if (this.topLevelType != null) {
@@ -868,7 +865,7 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>A Boolean object.</returns>
-    public bool ParseMediaType(string str) {
+    private bool ParseMediaType(string str) {
       bool httpRules = false;
       int index = 0;
       int endIndex = str.Length;

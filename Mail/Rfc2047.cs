@@ -10,21 +10,9 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace PeterO.Mail {
-    /// <summary>Description of Rfc2047.</summary>
+  /// <summary>Description of Rfc2047.</summary>
   internal static class Rfc2047
   {
-    private static int CharLength(string str, int index) {
-      if (str == null || index < 0 || index >= str.Length) {
-        return 1;
-      }
-      int c = str[index];
-      if (c >= 0xd800 && c <= 0xdbff && index + 1 < str.Length &&
-          str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
-        return 2;
-      }
-      return 1;
-    }
-
     private static bool HasSuspiciousTextInComments(string str) {
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
@@ -49,6 +37,7 @@ namespace PeterO.Mail {
 
     public static string EncodeComment(string str, int index, int endIndex) {
       // NOTE: Assumes that the comment is syntactically valid
+      #if DEBUG
       if (str == null) {
         throw new ArgumentNullException("str");
       }
@@ -64,6 +53,7 @@ namespace PeterO.Mail {
       if (endIndex > str.Length) {
         throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
+      #endif
       int length = endIndex - index;
       if (length < 2 || str[index] != '(' || str[endIndex - 1] != ')') {
         return str.Substring(index, length);
@@ -146,9 +136,13 @@ namespace PeterO.Mail {
             index += 3;
           } else if (str[index] == '\\' && index + 1 < endIndex) {
             // Quoted pair
-            int charLen = CharLength(str, index + 1);
-            builder.Append(str.Substring(index + 1, charLen));
-            index += 1 + charLen;
+            int cp = DataUtilities.CodePointAt(str, index + 1);
+            if (cp <= 0xffff) { builder.Append((char)cp);
+            } else if (cp <= 0x10ffff) {
+              builder.Append((char)((((cp - 0x10000) >> 10) & 0x3ff) + 0xd800));
+              builder.Append((char)(((cp - 0x10000) & 0x3ff) + 0xdc00));
+            }
+            index += 1 + (cp >= 0x10000 ? 2 : 1);
           } else {
             // Other comment text
             builder.Append(str[index]);
@@ -189,9 +183,13 @@ namespace PeterO.Mail {
             index += 3;
           } else if (str[index] == '\\' && index + 1 < endIndex) {
             // Quoted pair
-            int charLen = CharLength(str, index + 1);
-            builder.Append(str.Substring(index + 1, charLen));
-            index += 1 + charLen;
+            int cp = DataUtilities.CodePointAt(str, index + 1);
+            if (cp <= 0xffff) { builder.Append((char)cp);
+            } else if (cp <= 0x10ffff) {
+              builder.Append((char)((((cp - 0x10000) >> 10) & 0x3ff) + 0xd800));
+              builder.Append((char)(((cp - 0x10000) & 0x3ff) + 0xdc00));
+            }
+            index += 1 + (cp >= 0x10000 ? 2 : 1);
           } else {
             // Other comment text
             builder.Append(str[index]);

@@ -636,11 +636,9 @@ namespace PeterO.Mail {
     }
 
     public static IHeaderFieldParser GetParser(string name) {
-      #if DEBUG
       if (name == null) {
         throw new ArgumentNullException("name");
       }
-      #endif
 
       name = DataUtilities.ToLowerCaseAscii(name);
       if (list.ContainsKey(name)) {

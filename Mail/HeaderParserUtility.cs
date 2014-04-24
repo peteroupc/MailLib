@@ -209,6 +209,23 @@ namespace PeterO.Mail {
       return addresses;
     }
 
+    public static NamedAddress ParseAddress(string str, int index, int endIndex, IList<int[]> tokens) {
+      int lastIndex = index;
+      for (int i = 0; i < tokens.Count; ++i) {
+        int tokenIndex = tokens[i][1];
+        int tokenEnd = tokens[i][2];
+        if (tokenIndex >= lastIndex && tokenIndex < endIndex) {
+          int tokenKind = tokens[i][0];
+          if (tokenKind == TokenGroup) {
+            return ParseGroup(str, tokenIndex, tokenEnd, tokens);
+          } else if (tokenKind == TokenMailbox) {
+            return ParseMailbox(str, tokenIndex, tokenEnd, tokens);
+          }
+        }
+      }
+      return null;
+    }
+
     public static NamedAddress ParseGroup(string str, int index, int endIndex, IList<int[]> tokens) {
       string displayName = null;
       bool haveDisplayName = false;

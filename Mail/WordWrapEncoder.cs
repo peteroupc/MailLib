@@ -16,12 +16,19 @@ namespace PeterO.Mail {
     private string lastSpaces;
     private StringBuilder fullString;
     private int lineLength;
+    private bool collapseSpaces;
     private bool haveNonwhitespace;
 
-    // TODO: Collapse spaces in this implementation
-    public WordWrapEncoder(string c) {
+    public WordWrapEncoder(string c) : this(c, true) {
+    }
+
+    public WordWrapEncoder(string c, bool collapseSpaces) {
+      if (c == null) {
+        throw new ArgumentNullException("c");
+      }
       this.fullString = new StringBuilder();
       this.fullString.Append(c);
+      this.collapseSpaces = collapseSpaces;
       if (this.fullString.Length >= MaxLineLength) {
         this.fullString.Append("\r\n");
         this.lastSpaces = " ";
@@ -38,13 +45,13 @@ namespace PeterO.Mail {
         // Too big to fit the current line
         this.lastSpaces = " ";
       } else {
-        this.lastSpaces = str;
+        this.lastSpaces = this.collapseSpaces ? " " : str;
       }
     }
 
     private void AppendWord(string str) {
       if (this.lineLength + this.lastSpaces.Length + str.Length > MaxLineLength &&
-         this.haveNonwhitespace) {
+          this.haveNonwhitespace) {
         // Too big to fit the current line,
         // create a new line (but only if the current
         // line isn't all whitespace)

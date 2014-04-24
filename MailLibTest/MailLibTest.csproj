@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainTest.cs" />
     <Compile Include="EncodingTest.cs" />
     <Compile Include="NormalizationTest.cs" />
     <Compile Include="Program.cs" />
