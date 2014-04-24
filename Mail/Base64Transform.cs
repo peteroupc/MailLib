@@ -21,7 +21,7 @@ namespace PeterO.Mail {
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
-    private TransformWithUnget input;
+    private ITransform input;
     private int lineCharCount;
     private bool lenientLineBreaks;
     private byte[] buffer;
@@ -29,7 +29,7 @@ namespace PeterO.Mail {
     private int bufferCount;
 
     public Base64Transform(ITransform input, bool lenientLineBreaks) {
-      this.input = new TransformWithUnget(input);
+      this.input = input;
       this.lenientLineBreaks = lenientLineBreaks;
       this.buffer = new byte[4];
     }
@@ -56,19 +56,20 @@ namespace PeterO.Mail {
       }
       int value = 0;
       int count = 0;
+      int lastByte = 0;
+      bool ungetting = false;
       while (count < 4) {
-        int c = this.input.ReadByte();
+        int c = lastByte = ungetting ? lastByte : this.input.ReadByte();
+        ungetting = false;
         if (c < 0) {
           // End of stream
           if (count == 1) {
             // Not supposed to happen
             throw new MessageDataException("Invalid number of base64 characters");
           } else if (count == 2) {
-            this.input.Unget();
             value <<= 12;
             return (byte)((value >> 16) & 0xff);
           } else if (count == 3) {
-            this.input.Unget();
             value <<= 6;
             this.ResizeBuffer(1);
             this.buffer[0] = (byte)((value >> 8) & 0xff);
@@ -76,11 +77,11 @@ namespace PeterO.Mail {
           }
           return -1;
         } else if (c == 0x0d) {
-          c = this.input.ReadByte();
+          c = lastByte = ungetting ? lastByte : this.input.ReadByte();
           if (c == 0x0a) {
             this.lineCharCount = 0;
           } else {
-            this.input.Unget();
+            ungetting = true;
             if (this.lenientLineBreaks) {
               this.lineCharCount = 0;
             }

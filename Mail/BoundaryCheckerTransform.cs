@@ -12,7 +12,9 @@ using System.Text;
 
 namespace PeterO.Mail {
   internal sealed class BoundaryCheckerTransform : ITransform {
-    private TransformWithUnget input;
+    private ITransform input;
+    private bool ungetting;
+    private int lastByte;
     private byte[] buffer;
     private int bufferIndex;
     private int bufferCount;
@@ -36,7 +38,7 @@ namespace PeterO.Mail {
     }
 
     public BoundaryCheckerTransform(ITransform stream) {
-      this.input = new TransformWithUnget(stream);
+      this.input = stream;
       this.boundaries = new List<string>();
       this.started = true;
     }
@@ -63,10 +65,10 @@ namespace PeterO.Mail {
       if (this.hasNewBodyPart) {
         return -1;
       }
+      int c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
       if (this.readingHeaders) {
-        return this.input.ReadByte();
+        return c;
       }
-      int c = this.input.ReadByte();
       if (c < 0) {
         this.started = false;
         return c;
@@ -74,29 +76,29 @@ namespace PeterO.Mail {
       if (c == '-' && this.started) {
         // Check for a boundary
         this.started = false;
-        c = this.input.ReadByte();
+        c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
         if (c == '-') {
           // Possible boundary candidate
           return this.CheckBoundaries(false);
         } else {
-          this.input.Unget();
+          this.ungetting = true;
           return '-';
         }
       } else {
         this.started = false;
       }
       if (c == 0x0d) {
-        c = this.input.ReadByte();
+        c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
         if (c == 0x0a) {
           // Line break was read
-          c = this.input.ReadByte();
+          c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
           if (c == -1) {
             this.ResizeBuffer(1);
             this.buffer[0] = 0x0a;
             return 0x0d;
           } else if (c == 0x0d) {
             // Unget the CR, in case the next line is a boundary line
-            this.input.Unget();
+            this.ungetting = true;
             this.ResizeBuffer(1);
             this.buffer[0] = 0x0a;
             return 0x0d;
@@ -106,7 +108,7 @@ namespace PeterO.Mail {
             this.buffer[1] = (byte)c;
             return 0x0d;
           }
-          c = this.input.ReadByte();
+          c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
           if (c == -1) {
             this.ResizeBuffer(2);
             this.buffer[0] = 0x0a;
@@ -114,7 +116,7 @@ namespace PeterO.Mail {
             return 0x0d;
           } else if (c == 0x0d) {
             // Unget the CR, in case the next line is a boundary line
-            this.input.Unget();
+            this.ungetting = true;
             this.ResizeBuffer(2);
             this.buffer[0] = 0x0a;
             this.buffer[1] = (byte)'-';
@@ -129,7 +131,7 @@ namespace PeterO.Mail {
           // Possible boundary candidate
           return this.CheckBoundaries(true);
         } else {
-          this.input.Unget();
+          this.ungetting = true;
           return 0x0d;
         }
       } else {
@@ -174,9 +176,9 @@ namespace PeterO.Mail {
         int c;
         int bytesRead = 0;
         for (int i = 0; i < 72; ++i) {
-          c = this.input.ReadByte();
+          c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
           if (c < 0 || c >= 0x80 || c == 0x0d) {
-            this.input.Unget();
+            this.ungetting = true;
             break;
           }
           ++bytesRead;
@@ -240,33 +242,33 @@ namespace PeterO.Mail {
             // part, the rest of the data before the next boundary
             // is insignificant
             while (true) {
-              c = this.input.ReadByte();
+              c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
               if (c == -1) {
                 // The body higher up didn't end yet
                 throw new MessageDataException("Premature end of message");
               } else if (c == 0x0d) {
-                c = this.input.ReadByte();
+                c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
                 if (c == -1) {
                   // The body higher up didn't end yet
                   throw new MessageDataException("Premature end of message");
                 } else if (c == 0x0a) {
                   // Start of new body part
-                  c = this.input.ReadByte();
+                  c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
                   if (c == -1) {
                     throw new MessageDataException("Premature end of message");
                   } else if (c == 0x0d) {
                     // Unget the CR, in case the next line is a boundary line
-                    this.input.Unget();
+                    this.ungetting = true;
                   } else if (c != '-') {
                     // Not a boundary delimiter
                     continue;
                   }
-                  c = this.input.ReadByte();
+                  c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
                   if (c == -1) {
                     throw new MessageDataException("Premature end of message");
                   } else if (c == 0x0d) {
                     // Unget the CR, in case the next line is a boundary line
-                    this.input.Unget();
+                    this.ungetting = true;
                   } else if (c != '-') {
                     // Not a boundary delimiter
                     continue;
@@ -275,7 +277,7 @@ namespace PeterO.Mail {
                   done = false;
                   break;
                 } else {
-                  this.input.Unget();
+                  this.ungetting = true;
                 }
               }
             }
@@ -288,11 +290,11 @@ namespace PeterO.Mail {
             // next line will start the headers of the
             // next body part).
             while (true) {
-              c = this.input.ReadByte();
+              c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
               if (c == -1) {
                 throw new MessageDataException("Premature end of message");
               } else if (c == 0x0d) {
-                c = this.input.ReadByte();
+                c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
                 if (c == -1) {
                   throw new MessageDataException("Premature end of message");
                 } else if (c == 0x0a) {
@@ -301,7 +303,7 @@ namespace PeterO.Mail {
                   this.bufferCount = 0;
                   return -1;
                 } else {
-                  this.input.Unget();
+                  this.ungetting = true;
                 }
               }
             }

@@ -91,6 +91,11 @@
     <Folder Include="Mail" />
     <Folder Include="Text" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="ProfilingSessions\Session20140423_233256.sdps" />
+    <Content Include="ProfilingSessions\Session20140424_090403.sdps" />
+    <Content Include="ProfilingSessions\Session20140424_120623.sdps" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Portable\v4.0\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets" />
 </Project>

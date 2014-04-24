@@ -48,7 +48,11 @@ namespace MailLibTest {
       }
       return ret;
     }
-
+    public static void AssertEqual(int expected, int actual, String msg) {
+      if (expected != actual) {
+        Assert.AreEqual(expected, actual, msg);
+      }
+    }
     public static void AssertEqual(int[] expected, int[] actual, String msg) {
       if (expected.Length != actual.Length) {
         Assert.Fail(
@@ -116,21 +120,32 @@ namespace MailLibTest {
         }
       }
       int[] cptemp = new int[1];
+      // Individual code points that don't appear in Part 1 of the
+      // test will normalize to themselves in all four normalization forms
       for (int i = 0;i<handled.Length; ++i) {
         if (i >= 0xd800 && i <= 0xdfff) {
           continue;
         }
         if (!handled[i]) {
           cptemp[0]=i;
-          ICharacterInput ci = new IntArrayCharacterInput(cptemp);
           string imsg=""+i;
-          AssertEqual(cptemp, ToIntArray(Normalizer.GetChars(ci, Normalization.NFC)), imsg);
+          ICharacterInput ci = new IntArrayCharacterInput(cptemp);
+          Normalizer norm;
+          norm = new Normalizer(ci, Normalization.NFC);
+          AssertEqual(i, norm.Read(), imsg);
+          AssertEqual(-1, norm.Read(), imsg);
           ci = new IntArrayCharacterInput(cptemp);
-          AssertEqual(cptemp, ToIntArray(Normalizer.GetChars(ci, Normalization.NFD)), imsg);
+          norm = new Normalizer(ci, Normalization.NFD);
+          AssertEqual(i, norm.Read(), imsg);
+          AssertEqual(-1, norm.Read(), imsg);
           ci = new IntArrayCharacterInput(cptemp);
-          AssertEqual(cptemp, ToIntArray(Normalizer.GetChars(ci, Normalization.NFKC)), imsg);
+          norm = new Normalizer(ci, Normalization.NFKC);
+          AssertEqual(i, norm.Read(), imsg);
+          AssertEqual(-1, norm.Read(), imsg);
           ci = new IntArrayCharacterInput(cptemp);
-          AssertEqual(cptemp, ToIntArray(Normalizer.GetChars(ci, Normalization.NFKD)), imsg);
+          norm = new Normalizer(ci, Normalization.NFKD);
+          AssertEqual(i, norm.Read(), imsg);
+          AssertEqual(-1, norm.Read(), imsg);
         }
       }
     }

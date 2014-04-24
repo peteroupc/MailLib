@@ -21,10 +21,10 @@ namespace PeterO.Text {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
-       if (str.Length < 1000) {
+      if (str.Length < 1000) {
         bool allLatinOne = true;
-         for (int i = 0; i < str.Length; ++i) {
-           if ((str[i] >> 8) != 0) {
+        for (int i = 0; i < str.Length; ++i) {
+          if ((str[i] >> 8) != 0) {
             allLatinOne = false;
             break;
           }
@@ -60,7 +60,7 @@ namespace PeterO.Text {
       }
       Normalizer norm = new Normalizer(str, form);
       int[] buffer = new int[64];
-      IList<int> ret = new List<int>();
+      IList<int> ret = new List<int>(24);
       int count = 0;
       while ((count = norm.Read(buffer, 0, buffer.Length)) > 0) {
         for (int i = 0; i < count; ++i) {
@@ -135,6 +135,25 @@ namespace PeterO.Text {
     private IList<int> characterList;
     private int characterListPos;
 
+    /// <summary>Initializes a new instance of the Normalizer class using
+    /// Normalization Form C.</summary>
+    /// <param name='characterList'>An IList object.</param>
+    public Normalizer(IList<int> characterList) : this(characterList, Normalization.NFC) {}
+
+    /// <summary>Initializes a new instance of the Normalizer class using
+    /// Normalization Form C.</summary>
+    /// <param name='str'>A string object.</param>
+    public Normalizer(string str) : this(str, Normalization.NFC) {}
+
+    /// <summary>Initializes a new instance of the Normalizer class using
+    /// Normalization Form C.</summary>
+    /// <param name='input'>An ICharacterInput object.</param>
+    public Normalizer(ICharacterInput input) : this(input, Normalization.NFC) {}
+
+    /// <summary>Initializes a new instance of the Normalizer class using
+    /// the given normalization form.</summary>
+    /// <param name='characterList'>An IList object.</param>
+    /// <param name='form'>A Normalization object.</param>
     public Normalizer(IList<int> characterList, Normalization form) {
       if (characterList == null) {
         throw new ArgumentException("characterList");
@@ -244,62 +263,38 @@ namespace PeterO.Text {
     }
 
     private bool endOfString = false;
-    private int[] charbuffer = new int[4];
-    private bool charbufmark = true;
-    private int charbufpos = 0;
-    private int charbufend = 0;
+    private int lastChar = -1;
+    private bool ungetting = false;
 
-    private void Unmark() {
-      this.charbufmark = false;
-    }
-
-    private void Mark() {
-      // Already have unread data; shift buffer to the beginning
-      if (this.charbufpos < this.charbufend) {
-        Array.Copy(this.charbuffer, this.charbufpos, this.charbuffer, 0, this.charbufend - this.charbufpos);
-      }
-      this.charbufend -= this.charbufpos;
-      this.charbufpos = 0;
-      this.charbufmark = true;
-    }
-
-    private void Unget(int length) {
-      this.charbufpos -= length;
-      this.charbufpos = Math.Max(this.charbufpos, 0);
+    private void Unget() {
+      this.ungetting = true;
     }
 
     private int GetNextChar() {
-      if (this.charbufpos < this.charbufend) {
-        return this.charbuffer[this.charbufpos++];
-      }
       int ch;
-      if (this.iterator == null) {
+      if (this.ungetting) {
+        ch = this.lastChar;
+        this.ungetting = false;
+        return ch;
+      } else if (this.iterator == null) {
         ch = (this.characterListPos >= this.characterList.Count) ? -1 : this.characterList[this.characterListPos++];
       } else {
         ch = this.iterator.Read();
       }
       if (ch < 0) {
         this.endOfString = true;
-      } else if (ch > 0x10ffff || (ch >= 0xd800 && ch <= 0xdfff)) {
-        throw new IOException();
+      } else if (ch > 0x10ffff || ((ch & 0x1ff800) == 0xd800)) {
+        throw new ArgumentException("Invalid character: " + ch);
       }
-      if (this.charbufmark) {
-        if (this.charbufpos >= this.charbufend) {
-          if (this.charbufend >= this.charbuffer.Length) {
-            Array.Copy(this.charbuffer, this.charbufpos, this.charbuffer, 0, this.charbufend - this.charbufpos);
-            --this.charbufpos;
-            --this.charbufend;
-          }
-        }
-        this.charbuffer[this.charbufpos++] = ch;
-        ++this.charbufend;
-      }
+      this.lastChar = ch;
       return ch;
     }
 
-    // static bool stable = false;
-    private bool basic = true;
-
+    /// <summary>Not documented yet.</summary>
+    /// <param name='chars'>An array of 32-bit unsigned integers.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='length'>A 32-bit signed integer. (3).</param>
+    /// <returns>A 32-bit signed integer.</returns>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new ArgumentNullException("chars");
@@ -324,66 +319,47 @@ namespace PeterO.Text {
       }
       int total = 0;
       int count = 0;
-      // Fill buffer with processed code points
+      if (this.processedIndex == this.flushIndex && this.flushIndex == 0) {
+        while (total < length) {
+          int c = this.GetNextChar();
+          if (c < 0) {
+            return (total == 0) ? -1 : total;
+          } else if (UnicodeDatabase.IsStableCodePoint(c, this.form)) {
+            chars[index] = c;
+            ++total;
+            ++index;
+          } else {
+            this.Unget();
+            break;
+          }
+        }
+        if (total == length) {
+          return total;
+        }
+      }
       do {
         // Console.WriteLine("indexes=" + this.processedIndex + " " + this.flushIndex + ", length=" + length + " total=" + (total));
-        count = Math.Max(0, Math.Min(this.processedIndex - this.flushIndex, length - total));
+        count = Math.Min(this.processedIndex - this.flushIndex, length - total);
+        if (count < 0) {
+          count = 0;
+        }
         if (count != 0) {
           #if DEBUG
           if (this.buffer == null) {
             throw new ArgumentException("buffer is null");
           }
           #endif
+          // Fill buffer with processed code points
           Array.Copy(this.buffer, this.flushIndex, chars, index, count);
         }
         index += count;
         total += count;
         this.flushIndex += count;
-        // Check for all-ASCII text (all-Latin-1 text for NFC)
-        while (this.basic && total < length) {
-          this.Mark();
-          int c = this.GetNextChar();
-          // DebugUtility.log("%c [%04X] ascii %d %d",(char)c,c,
-          // charbufpos, charbufend);
-          if (c < 0) {
-            this.endOfString = true;
-            break;
-          } else if (c < this.basicEnd) {
-            while (total < length) {
-              int c2 = this.GetNextChar();
-              if (c2 < 0) {
-                this.endOfString = true;
-                chars[index++] = c;
-                ++total;
-                break;
-              } else if (c2 < this.basicEnd) {
-                chars[index++] = c;
-                ++total;
-                this.Unget(1);
-                c = c2;
-              } else {
-                this.Unget(2);
-                break;
-              }
-            }
-            break;
-          } else {
-            this.basic = false;
-            this.Unget(1);
-            // DebugUtility.log("%c ascii false %d %d %d %d",(char)c,
-            // charbufpos, charbufend, total, length);
-            break;
-          }
-        }
-        // DebugUtility.log("unmarking total=%d length=%d",
-        // charbufpos, charbufend);
-        this.Unmark();
         // Try to fill buffer with stable code points,
         // as an optimization
         while (total < length) {
           // DebugUtility.log("before mark total=%d length=%d",
           // charbufpos, charbufend);
-          this.Mark();
           int c = this.GetNextChar();
           if (c < 0) {
             this.endOfString = true;
@@ -394,11 +370,10 @@ namespace PeterO.Text {
             chars[index++] = c;
             ++total;
           } else {
-            this.Unget(1);
+            this.Unget();
             break;
           }
         }
-        this.Unmark();
         // Ensure that more data is available
         if (total < length && this.flushIndex == this.processedIndex) {
           if (this.lastStableIndex > 0) {

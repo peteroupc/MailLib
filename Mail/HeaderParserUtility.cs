@@ -297,6 +297,7 @@ namespace PeterO.Mail {
     }
 
     // Parses a comment using the obsolete syntax.
+    // TODO: Use this method in HeaderParser too
     internal static int ParseCommentLax(string str, int index, int endIndex, ITokener tokener) {
       if (index < endIndex && (str[index] == 40)) {
         ++index;

@@ -38,6 +38,32 @@ namespace PeterO.Mail {
       }
     }
 
+    private void IncrementAndAppend(StringBuilder str, string appendStr) {
+      if (!this.unlimitedLineLength) {
+        if (this.lineCount + appendStr.Length > 75) {
+          // 76 including the final '='
+          str.Append("=\r\n");
+          this.lineCount = appendStr.Length;
+        } else {
+          this.lineCount += appendStr.Length;
+        }
+      }
+      str.Append(appendStr);
+    }
+
+    private void IncrementAndAppendChar(StringBuilder str, char ch) {
+      if (!this.unlimitedLineLength) {
+        if (this.lineCount + 1 > 75) {
+          // 76 including the final '='
+          str.Append("=\r\n");
+          this.lineCount = 1;
+        } else {
+          ++this.lineCount;
+        }
+      }
+      str.Append(ch);
+    }
+
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A StringBuilder object.</param>
     public void FinalizeEncoding(StringBuilder str) {
@@ -47,7 +73,7 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A StringBuilder object.</param>
     /// <param name='b'>A Byte object.</param>
-public void WriteToString(StringBuilder str, byte b) {
+    public void WriteToString(StringBuilder str, byte b) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
@@ -83,18 +109,17 @@ public void WriteToString(StringBuilder str, byte b) {
       }
       int length = offset + count;
       int i = offset;
+      char[] buf = new char[4];
       for (i = offset; i < length; ++i) {
         if (data[i] == 0xd) {
           if (this.lineBreakMode == 0) {
-            this.IncrementLineCount(str, 3);
-            str.Append("=0D");
+            this.IncrementAndAppend(str, "=0D");
           } else if (i + 1 >= length || data[i + 1] != 0xa) {
             if (this.lineBreakMode == 2) {
               str.Append("\r\n");
               this.lineCount = 0;
             } else {
-              this.IncrementLineCount(str, 3);
-              str.Append("=0D");
+              this.IncrementAndAppend(str, "=0D");
             }
           } else {
             ++i;
@@ -106,34 +131,27 @@ public void WriteToString(StringBuilder str, byte b) {
             str.Append("\r\n");
             this.lineCount = 0;
           } else {
-            this.IncrementLineCount(str, 3);
-            str.Append("=0A");
+            this.IncrementAndAppend(str, "=0A");
           }
         } else if (data[i] == 9) {
-          this.IncrementLineCount(str, 3);
-          str.Append("=09");
+          this.IncrementAndAppend(str, "=09");
         } else if (this.lineCount == 0 && data[i] == (byte)'.' && i + 1 < length && (data[i] == '\r' || data[i] == '\n')) {
-          this.IncrementLineCount(str, 3);
-          str.Append("=2E");
+          this.IncrementAndAppend(str, "=2E");
         } else if (this.lineCount == 0 && i + 4 < length && data[i] == (byte)'F' && data[i + 1] == (byte)'r' && data[i + 2] == (byte)'o' && data[i + 3] == (byte)'m' && data[i + 4] == (byte)' ') {
           // See page 7-8 of RFC 2049
-          this.IncrementLineCount(str, 7);
-          str.Append("=46rom ");
+          this.IncrementAndAppend(str, "=46rom ");
           i += 4;
         } else if (data[i] == 32) {
           if (i + 1 == length) {
-            this.IncrementLineCount(str, 3);
-            str.Append("=20");
+            this.IncrementAndAppend(str, "=20");
             this.lineCount = 0;
           } else if (i + 2 < length && this.lineBreakMode > 0) {
             if (data[i + 1] == 0xd && data[i + 2] == 0xa) {
-              this.IncrementLineCount(str, 3);
-              str.Append("=20\r\n");
+              this.IncrementAndAppend(str, "=20\r\n");
               this.lineCount = 0;
               i += 2;
             } else {
-              this.IncrementLineCount(str, 1);
-              str.Append((char)data[i]);
+              this.IncrementAndAppendChar(str, (char)data[i]);
             }
           } else if (i + 1 < length && this.lineBreakMode == 2) {
             if (data[i + 1] == 0xd || data[i + 1] == 0xa) {
@@ -142,27 +160,24 @@ public void WriteToString(StringBuilder str, byte b) {
               this.lineCount = 0;
               ++i;
             } else {
-              this.IncrementLineCount(str, 1);
-              str.Append((char)data[i]);
+              this.IncrementAndAppendChar(str, (char)data[i]);
             }
           } else {
-            this.IncrementLineCount(str, 1);
-            str.Append((char)data[i]);
+            this.IncrementAndAppendChar(str, (char)data[i]);
           }
         } else if (data[i] == (byte)'=') {
-          this.IncrementLineCount(str, 3);
-          str.Append("=3D");
+          this.IncrementAndAppend(str, "=3D");
         } else if ((data[i] >= 'A' && data[i] <= 'Z') ||
                    (data[i] >= '0' && data[i] <= '9') ||
                    (data[i] >= 'a' && data[i] <= 'z') ||
                    "()'+-.,/?:".IndexOf((char)data[i]) >= 0) {
-          this.IncrementLineCount(str, 1);
-          str.Append((char)data[i]);
+          this.IncrementAndAppendChar(str, (char)data[i]);
         } else {
           this.IncrementLineCount(str, 3);
-          str.Append('=');
-          str.Append(valueHexAlphabet[(data[i] >> 4) & 15]);
-          str.Append(valueHexAlphabet[data[i] & 15]);
+          buf[0]='=';
+          buf[1]=valueHexAlphabet[(data[i] >> 4) & 15];
+          buf[2]=valueHexAlphabet[data[i] & 15];
+          str.Append(buf, 0, 3);
         }
       }
     }

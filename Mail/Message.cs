@@ -11,12 +11,12 @@ using System.IO;
 using System.Text;
 
 namespace PeterO.Mail {
-  /// <summary>Represents an email message. <para><b>Thread safety:</b>
-  /// This class is mutable; its properties can be changed. None of its methods
-  /// are designed to be thread safe. Therefore, access to objects from
-  /// this class must be synchronized if multiple threads can access them
-  /// at the same time.</para>
-  /// </summary>
+    /// <summary>Represents an email message. <para><b>Thread safety:</b>
+    /// This class is mutable; its properties can be changed. None of its methods
+    /// are designed to be thread safe. Therefore, access to objects from
+    /// this class must be synchronized if multiple threads can access them
+    /// at the same time.</para>
+    /// </summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -986,6 +986,8 @@ namespace PeterO.Mail {
         string fieldName = sb.ToString();
         sb.Remove(0, sb.Length);
         // Read the header field value
+        // TODO: Decode header field values using UTF-8, which
+        // is allowed under RFC 6532
         while (true) {
           int c = ungetStream.ReadByte();
           if (c == -1) {
@@ -1071,8 +1073,8 @@ namespace PeterO.Mail {
     private class MessageStackEntry {
       private Message message;
 
-      /// <summary>Gets a value not documented yet.</summary>
-      /// <value>A value not documented yet.</value>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public Message Message {
         get {
           return this.message;
@@ -1081,8 +1083,8 @@ namespace PeterO.Mail {
 
       private string boundary;
 
-      /// <summary>Gets a value not documented yet.</summary>
-      /// <value>A value not documented yet.</value>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public string Boundary {
         get {
           return this.boundary;
@@ -1285,7 +1287,7 @@ namespace PeterO.Mail {
         this.body = ms.ToArray();
       }
     }
-    
+
     private void ReadMessage(ITransform stream) {
       ReadHeaders(stream, this.headers);
       this.ProcessHeaders(false, false);

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace PeterO.Mail {
-  /// <summary>Description of Rfc2047.</summary>
+    /// <summary>Description of Rfc2047.</summary>
   internal static class Rfc2047
   {
     private static bool HasSuspiciousTextInComments(string str) {
@@ -137,7 +137,9 @@ namespace PeterO.Mail {
           } else if (str[index] == '\\' && index + 1 < endIndex) {
             // Quoted pair
             int cp = DataUtilities.CodePointAt(str, index + 1);
-            if (cp <= 0xffff) { builder.Append((char)cp);
+            if (cp <= 0xffff) {
+              { builder.Append((char)cp);
+              }
             } else if (cp <= 0x10ffff) {
               builder.Append((char)((((cp - 0x10000) >> 10) & 0x3ff) + 0xd800));
               builder.Append((char)(((cp - 0x10000) & 0x3ff) + 0xdc00));
@@ -184,7 +186,8 @@ namespace PeterO.Mail {
           } else if (str[index] == '\\' && index + 1 < endIndex) {
             // Quoted pair
             int cp = DataUtilities.CodePointAt(str, index + 1);
-            if (cp <= 0xffff) { builder.Append((char)cp);
+            if (cp <= 0xffff) {
+              builder.Append((char)cp);
             } else if (cp <= 0x10ffff) {
               builder.Append((char)((((cp - 0x10000) >> 10) & 0x3ff) + 0xd800));
               builder.Append((char)(((cp - 0x10000) & 0x3ff) + 0xdc00));

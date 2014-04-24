@@ -18,6 +18,9 @@ namespace PeterO.Mail {
     private int bufferCount;
 
     public BEncodingStringTransform(String input) {
+      if (input == null) {
+        throw new ArgumentNullException("input");
+      }
       this.input = input;
       this.buffer = new byte[4];
     }

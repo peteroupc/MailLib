@@ -20,6 +20,12 @@ namespace PeterO.Mail {
     }
 
     public static ICharset GetCharset(string name) {
+      if (name == null) {
+ throw new ArgumentNullException("name");
+}
+      if (name.Length == 0) {
+ return null;
+}
       name = DataUtilities.ToLowerCaseAscii(name);
       if (name.Equals("utf-8")) {
         return Utf8;

@@ -24,6 +24,7 @@ namespace PeterO.Mail {
     private bool haveCR;
     private bool unlimitedLineLength;
     private string alphabet;
+    private char[] charBuffer;
 
     public Base64Encoder(bool padding, bool lenientLineBreaks, bool unlimitedLineLength) :
       this(padding, lenientLineBreaks, unlimitedLineLength, Base64Classic) {
@@ -36,6 +37,7 @@ namespace PeterO.Mail {
       if (alphabet.Length != 64) {
         throw new ArgumentException("alphabet.Length (" + alphabet.Length + ") is not equal to 64");
       }
+      this.charBuffer = new char[8];
       this.padding = padding;
       this.unlimitedLineLength = unlimitedLineLength;
       this.lenientLineBreaks = lenientLineBreaks;
@@ -55,13 +57,39 @@ namespace PeterO.Mail {
       sb.Append(c);
     }
 
+    private void LineAwareAppendFour(StringBuilder sb, char c1, char c2, char c3, char c4) {
+      int charCount = 0;
+      if (!this.unlimitedLineLength) {
+        if (this.lineCount >= 76) {
+          // Output CRLF
+          this.charBuffer[charCount++] = '\r';
+          this.charBuffer[charCount++] = '\n';
+          this.lineCount = 0;
+        } else if (this.lineCount + 3 >= 76) {
+          this.LineAwareAppend(sb, c1);
+          this.LineAwareAppend(sb, c2);
+          this.LineAwareAppend(sb, c3);
+          this.LineAwareAppend(sb, c4);
+          return;
+        }
+        ++this.lineCount;
+      }
+      this.charBuffer[charCount++] = c1;
+      this.charBuffer[charCount++] = c2;
+      this.charBuffer[charCount++] = c3;
+      this.charBuffer[charCount++] = c4;
+      sb.Append(this.charBuffer, 0, charCount);
+    }
+
     private void AddByteInternal(StringBuilder str, byte b) {
       int ib = ((int)b) & 0xff;
       if (this.quantumCount == 2) {
-        this.LineAwareAppend(str, this.alphabet[(this.byte1 >> 2) & 63]);
-        this.LineAwareAppend(str, this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)]);
-        this.LineAwareAppend(str, this.alphabet[((this.byte2 & 15) << 2) + ((ib >> 6) & 3)]);
-        this.LineAwareAppend(str, this.alphabet[ib & 63]);
+        this.LineAwareAppendFour(
+          str,
+          this.alphabet[(this.byte1 >> 2) & 63],
+          this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)],
+          this.alphabet[((this.byte2 & 15) << 2) + ((ib >> 6) & 3)],
+          this.alphabet[ib & 63]);
         this.byte1 = -1;
         this.byte2 = -1;
         this.quantumCount = 0;
@@ -75,23 +103,28 @@ namespace PeterO.Mail {
     }
 
     private void AddByte(StringBuilder str, byte b) {
-      if (b == 0x0d && this.lenientLineBreaks) {
-        // CR
-        this.haveCR = true;
-        this.AddByteInternal(str, 0x0d);
-        this.AddByteInternal(str, 0x0a);
-      } else if (b == 0x0a && this.lenientLineBreaks && !this.haveCR) {
-        // bare LF
-        this.AddByteInternal(str, 0x0d);
-        this.AddByteInternal(str, 0x0a);
-        this.haveCR = false;
-      } else if (b == 0x0a && this.lenientLineBreaks) {
-        // Do nothing, this is an LF that follows CR
-        this.haveCR = false;
-      } else {
-        this.AddByteInternal(str, b);
-        this.haveCR = false;
+      if (this.lenientLineBreaks) {
+        if (b == 0x0d) {
+          // CR
+          this.haveCR = true;
+          this.AddByteInternal(str, 0x0d);
+          this.AddByteInternal(str, 0x0a);
+          return;
+        } else if (b == 0x0a && !this.haveCR) {
+          // bare LF
+          if (this.haveCR) {
+            // Do nothing, this is an LF that follows CR
+            this.haveCR = false;
+          } else {
+            this.AddByteInternal(str, 0x0d);
+            this.AddByteInternal(str, 0x0a);
+            this.haveCR = false;
+          }
+          return;
+        }
       }
+      this.AddByteInternal(str, b);
+      this.haveCR = false;
     }
 
     /// <summary>Not documented yet.</summary>
@@ -108,21 +141,27 @@ namespace PeterO.Mail {
     /// <param name='str'>A StringBuilder object.</param>
     public void FinalizeEncoding(StringBuilder str) {
       if (this.quantumCount == 2) {
-        this.LineAwareAppend(str, this.alphabet[(this.byte1 >> 2) & 63]);
-        this.LineAwareAppend(str, this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)]);
-        this.LineAwareAppend(str, this.alphabet[((this.byte2 & 15) << 2)]);
+        char c1 = this.alphabet[(this.byte1 >> 2) & 63];
+        char c2 = this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)];
+        char c3 = this.alphabet[((this.byte2 & 15) << 2)];
         if (this.padding) {
-          this.LineAwareAppend(str, '=');
+          this.LineAwareAppendFour(str, c1, c2, c3,'=');
+        } else {
+          this.LineAwareAppend(str, c1);
+          this.LineAwareAppend(str, c2);
+          this.LineAwareAppend(str, c3);
         }
         this.byte1 = -1;
         this.byte2 = -1;
         this.quantumCount = 0;
       } else if (this.quantumCount == 1) {
-        this.LineAwareAppend(str, this.alphabet[(this.byte1 >> 2) & 63]);
-        this.LineAwareAppend(str, this.alphabet[((this.byte1 & 3) << 4)]);
+        char c1 = this.alphabet[(this.byte1 >> 2) & 63];
+        char c2 = this.alphabet[((this.byte1 & 3) << 4)];
         if (this.padding) {
-          this.LineAwareAppend(str, '=');
-          this.LineAwareAppend(str, '=');
+          this.LineAwareAppendFour(str, c1, c2,'=','=');
+        } else {
+          this.LineAwareAppend(str, c1);
+          this.LineAwareAppend(str, c2);
         }
         this.byte1 = -1;
         this.byte2 = -1;

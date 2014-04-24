@@ -67,7 +67,7 @@ namespace PeterO.Mail {
         if (c < 0) {
           // End of stream
           return -1;
-        } else if (c == 0x0d) {
+        } else if (c == 0x0d) {  // CR
           c = this.input.ReadByte();
           if (c == 0x0a) {
             // CRLF
@@ -86,7 +86,7 @@ namespace PeterO.Mail {
             this.lineCharCount = 0;
             return 0x0d;
           }
-        } else if (c == 0x0a) {
+        } else if (c == 0x0a) {  // LF
           if (!this.lenientLineBreaks) {
             throw new MessageDataException("Expected LF after CR");
           }
@@ -95,7 +95,7 @@ namespace PeterO.Mail {
           this.buffer[0] = 0x0a;
           this.lineCharCount = 0;
           return 0x0d;
-        } else if (c == '=') {
+        } else if (c == '=') { // Equals
           ++this.lineCharCount;
           if (this.maxLineSize >= 0 && this.lineCharCount > this.maxLineSize) {
             throw new MessageDataException("Encoded quoted-printable line too long");
@@ -176,7 +176,7 @@ namespace PeterO.Mail {
             // Equal sign at end; ignore
             return -1;
           }
-        } else if (c != '\t' && (c < 0x20 || c >= 0x7f)) {
+        } else if (c != '\t' && (c < 0x20 || c >= 0x7f)) { // Invalid character
           throw new MessageDataException("Invalid character in quoted-printable");
         } else if (c == ' ' || c == '\t') {
           // Space or tab. Since the quoted-printable spec
@@ -194,7 +194,15 @@ namespace PeterO.Mail {
           if (c2 != ' ' && c2 != '\t' && c2 != '\r' && c2 != '\n' && c2 >= 0) {
             // Simple: Space before a character other than
             // space, tab, CR, LF, or EOF
-            this.input.Unget();
+            if (c2 != '=' && c2>0x20 && c2<0x7f) {
+              // Add the character to the buffer rather
+              // than ungetting, for printable ASCII except
+              // the Equals sign
+              this.ResizeBuffer(1);
+              this.buffer[0] = (byte)c2;
+            } else {
+              this.input.Unget();
+            }
             return c;
           }
           bool endsWithLineBreak = false;

@@ -240,6 +240,75 @@ namespace MailLibTest {
       }
     }
 
+    public static String ToString(byte[] array) {
+      StringBuilder builder = new StringBuilder();
+      bool first = true;
+      builder.Append("[");
+      foreach(byte v in array) {
+        if (!first) {
+          builder.Append(", ");
+        }
+        builder.Append(Convert.ToString(v, System.Globalization.CultureInfo.InvariantCulture));
+        first = false;
+      }
+      builder.Append("]");
+      return builder.ToString();
+    }
+
+    public static void AssertEqual(byte[] expected, byte[] actual) {
+      AssertEqual(expected, actual, String.Empty);
+    }
+    public static void AssertEqual(byte[] expected, byte[] actual, String msg) {
+      if (expected.Length != actual.Length) {
+        Assert.Fail(
+          "\nexpected: "+ToString(expected)+"\n"+
+          "\nwas:      "+ToString(actual)+"\n"+msg);
+      }
+      for (int i = 0;i<expected.Length; ++i) {
+        if (expected[i]!=actual[i]) {
+          Assert.Fail(
+            "\nexpected: "+ToString(expected)+"\n"+
+            "\nwas:      "+ToString(actual)+"\n"+msg);
+        }
+      }
+    }
+
+    internal static ITransform Transform(string str) {
+      return new WrappedStream(new MemoryStream(DataUtilities.GetUtf8Bytes(str, true)));
+    }
+
+    internal static byte[] GetBytes(ITransform trans) {
+      using(var ms = new MemoryStream()) {
+        int c;
+        while ((c = trans.ReadByte()) >= 0) {
+          ms.WriteByte((byte)c);
+        }
+        return ms.ToArray();
+      }
+    }
+
+    [Test]
+    public void TestBase64() {
+      AssertEqual(
+        new byte[] { 0, 16, 1 },
+        GetBytes(new Base64Transform(Transform("ABAB"),true)));
+      AssertEqual(
+        new byte[] { 0, 16, 1, 93 },
+        GetBytes(new Base64Transform(Transform("ABABXX=="),true)));
+      AssertEqual(
+        new byte[] { 0, 16, 1, 93 },
+        GetBytes(new Base64Transform(Transform("ABABXX==="),true)));
+      AssertEqual(
+        new byte[] { 0, 16, 1, 93 },
+        GetBytes(new Base64Transform(Transform("ABABXX"),true)));
+      AssertEqual(
+        new byte[] { 169, 172, 241, 179, 7, 157, 114, 247, 235 },
+        GetBytes(new Base64Transform(Transform("qazxswedcvfr"),true)));
+      AssertEqual(
+        new byte[] { 255, 239, 254, 103 },
+        GetBytes(new Base64Transform(Transform("/+/+Zz=="),true)));
+    }
+
     [Test]
     public void TestCharset() {
       Assert.AreEqual("us-ascii", MediaType.Parse("text/plain").GetCharset());
@@ -506,7 +575,118 @@ namespace MailLibTest {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      Assert.Throws(typeof(ArgumentNullException),()=>Charsets.GetCharset(null));
+      try {
+        Charsets.GetCharset(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Base64Encoder(false, false, false).WriteToString(new StringBuilder(), null, 0, 1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Base64Encoder(false, false, false).WriteToString(new StringBuilder(), new byte[] { 0 }, -1, 1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Base64Encoder(false, false, false).WriteToString(new StringBuilder(), new byte[] { 0 }, 2, 1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Base64Encoder(false, false, false).WriteToString(new StringBuilder(), new byte[] { 0 }, 0, -1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Base64Encoder(false, false, false).WriteToString(new StringBuilder(), new byte[] { 0 }, 0, 2);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Base64Encoder(false, false, false).WriteToString(new StringBuilder(), new byte[] { 0 }, 1, 1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new QuotedPrintableEncoder(0, false).WriteToString(new StringBuilder(), null, 0, 1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new QuotedPrintableEncoder(0, false).WriteToString(new StringBuilder(), new byte[] { 0 }, -1, 1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new QuotedPrintableEncoder(0, false).WriteToString(new StringBuilder(), new byte[] { 0 }, 2, 1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new QuotedPrintableEncoder(0, false).WriteToString(new StringBuilder(), new byte[] { 0 }, 0, -1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new QuotedPrintableEncoder(0, false).WriteToString(new StringBuilder(), new byte[] { 0 }, 0, 2);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new QuotedPrintableEncoder(0, false).WriteToString(new StringBuilder(), new byte[] { 0 }, 1, 1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new BEncodingStringTransform(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       Assert.IsTrue(MediaType.Parse("text/plain").IsText);
       Assert.IsTrue(MediaType.Parse("multipart/alternative").IsMultipart);
     }
@@ -684,9 +864,9 @@ namespace MailLibTest {
         expected,
         HeaderFields.GetParser("subject").DecodeEncodedWords(input));
     }
-    
+
     [Test]
-    public void TestEncodedPhrase2(){
+    public void TestEncodedPhrase2() {
       // TODO: Why isn't this downgraded?
       string par = "(";
       Assert.AreEqual(
