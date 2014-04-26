@@ -72,7 +72,7 @@ namespace PeterO.Mail {
           this.LineAwareAppend(sb, c4);
           return;
         }
-        ++this.lineCount;
+        this.lineCount += 4;
       }
       this.charBuffer[charCount++] = c1;
       this.charBuffer[charCount++] = c2;
@@ -145,7 +145,7 @@ namespace PeterO.Mail {
         char c2 = this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)];
         char c3 = this.alphabet[((this.byte2 & 15) << 2)];
         if (this.padding) {
-          this.LineAwareAppendFour(str, c1, c2, c3,'=');
+          this.LineAwareAppendFour(str, c1, c2, c3, '=');
         } else {
           this.LineAwareAppend(str, c1);
           this.LineAwareAppend(str, c2);
@@ -158,7 +158,7 @@ namespace PeterO.Mail {
         char c1 = this.alphabet[(this.byte1 >> 2) & 63];
         char c2 = this.alphabet[((this.byte1 & 3) << 4)];
         if (this.padding) {
-          this.LineAwareAppendFour(str, c1, c2,'=','=');
+          this.LineAwareAppendFour(str, c1, c2, '=', '=');
         } else {
           this.LineAwareAppend(str, c1);
           this.LineAwareAppend(str, c2);

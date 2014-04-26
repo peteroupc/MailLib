@@ -13,6 +13,8 @@ namespace PeterO.Mail {
   internal interface IHeaderFieldParser {
     bool IsStructured();
 
+    int Parse(string str, int index, int endIndex, ITokener tokener);
+
     string DowngradeFieldValue(string str);
 
     string DecodeEncodedWords(string str);

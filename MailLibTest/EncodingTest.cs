@@ -774,6 +774,18 @@ namespace MailLibTest {
         "text/plain; charset*0*=utf-8''a%20b;charset*1=a%20b",
         "charset",
         "a ba%20b");
+      this.TestRfc2231Extension(
+        "text/plain\r\n (; charset=x;y=\");ChaRseT*=''a%41b-c(\")",
+        "charset",
+        "aAb-c");
+      this.TestRfc2231Extension(
+        "text/plain;\r\n chARSet (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
+        "charset",
+        "abc");
+      this.TestRfc2231Extension(
+        "text/plain;\r\n charsET (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
+        "format",
+        "flowed");
     }
 
     [Test]
@@ -1275,6 +1287,29 @@ namespace MailLibTest {
         hdrname.Equals("discarded-x400-mts-extensions") || hdrname.Equals("supersedes") || hdrname.Equals("expires") ||
         hdrname.Equals("content-return") ||
         hdrname.Equals("autoforwarded") || hdrname.Equals("generate-delivery-report") || hdrname.Equals("incomplete-copy") || hdrname.Equals("message-type") || hdrname.Equals("discarded-x400-ipms-extensions") || hdrname.Equals("autosubmitted") || hdrname.Equals("prevent-nondelivery-report") || hdrname.Equals("alternate-recipient") || hdrname.Equals("disclose-recipients");
+    }
+
+    [Test]
+    public void TestReceivedHeader() {
+      IHeaderFieldParser parser=HeaderFields.GetParser("received");
+      string test="from x.y.example by a.b.example; Thu, 31 Dec 2012 00:00:00 -0100";
+      Assert.AreEqual(test.Length, parser.Parse(test, 0, test.Length, null));
+    }
+
+    private static string ToBase16(byte[] bytes) {
+      StringBuilder sb = new StringBuilder();
+      string hex="0123456789ABCDEF";
+      for (int i = 0;i<bytes.Length; ++i) {
+        sb.Append(hex[(bytes[i]>>4) & 15]);
+        sb.Append(hex[(bytes[i]) & 15]);
+      }
+      return sb.ToString();
+    }
+
+    private static string Hash(string str) {
+      using(var sha1 = new System.Security.Cryptography.SHA1Managed()) {
+        return ToBase16(sha1.ComputeHash(DataUtilities.GetUtf8Bytes(str, true)));
+      }
     }
 
     [Test]

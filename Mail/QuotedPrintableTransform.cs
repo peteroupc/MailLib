@@ -133,7 +133,15 @@ namespace PeterO.Mail {
               c <<= 4;
               c |= b1 + 10 - 'a';
             } else {
-              throw new MessageDataException("Invalid hex character");
+              if (this.maxLineSize > 76 || this.maxLineSize < 0) {
+                // Unget the character, since it might
+                // start a valid hex encoding or need
+                // to be treated some other way
+                this.input.Unget();
+                return '=';
+              } else {
+                throw new MessageDataException("Invalid hex character in quoted-printable");
+              }
             }
             if (b2 >= '0' && b2 <= '9') {
               c <<= 4;
@@ -145,7 +153,17 @@ namespace PeterO.Mail {
               c <<= 4;
               c |= b2 + 10 - 'a';
             } else {
-              throw new MessageDataException("Invalid hex character");
+              if (this.maxLineSize > 76 || this.maxLineSize < 0) {
+                // Unget the character, since it might
+                // start a valid hex encoding or need
+                // to be treated some other way
+                this.input.Unget();
+                this.ResizeBuffer(1);
+                this.buffer[0] = (byte)b1;
+                return '=';
+              } else {
+                throw new MessageDataException("Invalid hex character in quoted-printable");
+              }
             }
             this.lineCharCount += 2;
             if (this.maxLineSize >= 0 && this.lineCharCount > this.maxLineSize) {
@@ -176,8 +194,13 @@ namespace PeterO.Mail {
             // Equal sign at end; ignore
             return -1;
           }
-        } else if (c != '\t' && (c < 0x20 || c >= 0x7f)) { // Invalid character
-          throw new MessageDataException("Invalid character in quoted-printable");
+        } else if (c != '\t' && (c < 0x20 || c >= 0x7f)) {
+          // Invalid character
+          if (this.maxLineSize > 76 || this.maxLineSize < 0) {
+            // Ignore the character
+          } else {
+            throw new MessageDataException("Invalid character in quoted-printable");
+          }
         } else if (c == ' ' || c == '\t') {
           // Space or tab. Since the quoted-printable spec
           // requires decoders to delete spaces and tabs before
@@ -194,7 +217,7 @@ namespace PeterO.Mail {
           if (c2 != ' ' && c2 != '\t' && c2 != '\r' && c2 != '\n' && c2 >= 0) {
             // Simple: Space before a character other than
             // space, tab, CR, LF, or EOF
-            if (c2 != '=' && c2>0x20 && c2<0x7f) {
+            if (c2 != '=' && c2 > 0x20 && c2 < 0x7f) {
               // Add the character to the buffer rather
               // than ungetting, for printable ASCII except
               // the Equals sign

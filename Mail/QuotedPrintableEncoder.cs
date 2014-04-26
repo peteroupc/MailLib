@@ -174,9 +174,9 @@ namespace PeterO.Mail {
           this.IncrementAndAppendChar(str, (char)data[i]);
         } else {
           this.IncrementLineCount(str, 3);
-          buf[0]='=';
-          buf[1]=valueHexAlphabet[(data[i] >> 4) & 15];
-          buf[2]=valueHexAlphabet[data[i] & 15];
+          buf[0] = '=';
+          buf[1] = valueHexAlphabet[(data[i] >> 4) & 15];
+          buf[2] = valueHexAlphabet[data[i] & 15];
           str.Append(buf, 0, 3);
         }
       }

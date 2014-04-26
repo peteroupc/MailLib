@@ -138,17 +138,20 @@ namespace PeterO.Text {
     /// <summary>Initializes a new instance of the Normalizer class using
     /// Normalization Form C.</summary>
     /// <param name='characterList'>An IList object.</param>
-    public Normalizer(IList<int> characterList) : this(characterList, Normalization.NFC) {}
+    public Normalizer(IList<int> characterList) : this(characterList, Normalization.NFC) {
+    }
 
     /// <summary>Initializes a new instance of the Normalizer class using
     /// Normalization Form C.</summary>
     /// <param name='str'>A string object.</param>
-    public Normalizer(string str) : this(str, Normalization.NFC) {}
+    public Normalizer(string str) : this(str, Normalization.NFC) {
+    }
 
     /// <summary>Initializes a new instance of the Normalizer class using
     /// Normalization Form C.</summary>
     /// <param name='input'>An ICharacterInput object.</param>
-    public Normalizer(ICharacterInput input) : this(input, Normalization.NFC) {}
+    public Normalizer(ICharacterInput input) : this(input, Normalization.NFC) {
+    }
 
     /// <summary>Initializes a new instance of the Normalizer class using
     /// the given normalization form.</summary>
