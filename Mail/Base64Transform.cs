@@ -10,8 +10,6 @@ using System.IO;
 
 namespace PeterO.Mail {
   internal sealed class Base64Transform : ITransform {
-    private const int MaxLineSize = 76;
-
     internal static readonly int[] Alphabet = new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
@@ -27,9 +25,14 @@ namespace PeterO.Mail {
     private byte[] buffer;
     private int bufferIndex;
     private int bufferCount;
+    private int maxLineLength;
 
-    public Base64Transform(ITransform input, bool lenientLineBreaks) {
+    public Base64Transform(ITransform input, bool lenientLineBreaks) : this(input, lenientLineBreaks, 76) {
+    }
+
+    public Base64Transform(ITransform input, bool lenientLineBreaks, int maxLineLength) {
       this.input = input;
+      this.maxLineLength = maxLineLength;
       this.lenientLineBreaks = lenientLineBreaks;
       this.buffer = new byte[4];
     }
@@ -80,31 +83,33 @@ namespace PeterO.Mail {
           c = lastByte = ungetting ? lastByte : this.input.ReadByte();
           if (c == 0x0a) {
             this.lineCharCount = 0;
+            continue;
           } else {
             ungetting = true;
             if (this.lenientLineBreaks) {
               this.lineCharCount = 0;
+              continue;
             }
           }
         } else if (c == 0x0a) {
           if (this.lenientLineBreaks) {
             this.lineCharCount = 0;
+            continue;
           }
         } else if (c >= 0x80) {
-          ++this.lineCharCount;
-          if (this.lineCharCount > MaxLineSize) {
-            throw new MessageDataException("Encoded base64 line too long");
-          }
+          // Ignore
         } else {
-          ++this.lineCharCount;
-          if (this.lineCharCount > MaxLineSize) {
-            throw new MessageDataException("Encoded base64 line too long");
-          }
           c = Alphabet[c];
           if (c >= 0) {
             value <<= 6;
             value |= c;
             ++count;
+          }
+        }
+        if (this.maxLineLength > 0) {
+          ++this.lineCharCount;
+          if (this.lineCharCount > this.maxLineLength) {
+            throw new MessageDataException("Encoded base64 line too long");
           }
         }
       }

@@ -334,7 +334,9 @@ namespace PeterO.Mail {
             length += 3;
           }
           first = false;
-          sb.Append((char)c);
+          sb.Append('%');
+          sb.Append(hex[c >> 4]);
+          sb.Append(hex[c & 15]);
         } else if (c < 0x800) {
           length += 6;
           if (!first && length + 1 > maxLength) {
@@ -434,7 +436,7 @@ namespace PeterO.Mail {
       sb.Append('"');
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
-        if (c >= 32 && c <= 126) {
+        if (c >= 32 && c <= 126 && c!='\\' && c!='"') {
           sb.Append(c);
         } else if (c == 0x20 || c == 0x09 || c == '\\' || c == '"') {
           sb.Append('\\');

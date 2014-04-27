@@ -108,6 +108,10 @@ namespace PeterO.Text {
     public sealed class ByteData {
       private byte[] array;
 
+      public static ByteData Decompress(byte[] data) {
+        return new ByteData(Lz4Decompress(data));
+      }
+
       public ByteData(String path) {
         throw new NotSupportedException();
       }
@@ -169,7 +173,7 @@ namespace PeterO.Text {
     public static int GetCombiningClass(int cp) {
       lock (classesSyncRoot) {
         if (classes == null) {
-          classes = new ByteData(Lz4Decompress(NormalizationData.CombiningClasses));
+          classes = ByteData.Decompress(NormalizationData.CombiningClasses);
         }
       }
       return ((int)classes.ReadByte(cp)) & 0xff;
@@ -181,7 +185,7 @@ namespace PeterO.Text {
     public static int GetIdnaCategory(int cp) {
       lock (idnaCatSyncRoot) {
         if (idnaCat == null) {
-          idnaCat = new ByteData(Lz4Decompress(IdnaData.IdnaCategories));
+          idnaCat = ByteData.Decompress(IdnaData.IdnaCategories);
         }
       }
       return ((int)idnaCat.ReadByte(cp)) & 0xff;
@@ -193,8 +197,8 @@ namespace PeterO.Text {
     public static bool IsCombiningMark(int cp) {
       lock (valueCmSyncRoot) {
         if (combmark == null) {
-          combmark = new ByteData(Lz4Decompress(
-            IdnaData.CombiningMarks));
+          combmark = ByteData.Decompress(
+            IdnaData.CombiningMarks);
         }
         return combmark.ReadBoolean(cp);
       }
@@ -210,25 +214,25 @@ namespace PeterO.Text {
       lock (stableSyncRoot) {
         if (form == Normalization.NFC) {
           if (stablenfc == null) {
-            stablenfc = new ByteData(Lz4Decompress(NormalizationData.StableNFC));
+            stablenfc = ByteData.Decompress(NormalizationData.StableNFC);
           }
           return stablenfc.ReadBoolean(cp);
         }
         if (form == Normalization.NFD) {
           if (stablenfd == null) {
-            stablenfd = new ByteData(Lz4Decompress(NormalizationData.StableNFD));
+            stablenfd = ByteData.Decompress(NormalizationData.StableNFD);
           }
           return stablenfd.ReadBoolean(cp);
         }
         if (form == Normalization.NFKC) {
           if (stablenfkc == null) {
-            stablenfkc = new ByteData(Lz4Decompress(NormalizationData.StableNFKC));
+            stablenfkc = ByteData.Decompress(NormalizationData.StableNFKC);
           }
           return stablenfkc.ReadBoolean(cp);
         }
         if (form == Normalization.NFKD) {
           if (stablenfkd == null) {
-            stablenfkd = new ByteData(Lz4Decompress(NormalizationData.StableNFKD));
+            stablenfkd = ByteData.Decompress(NormalizationData.StableNFKD);
           }
           return stablenfkd.ReadBoolean(cp);
         }

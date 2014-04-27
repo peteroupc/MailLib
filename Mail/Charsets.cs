@@ -31,7 +31,7 @@ namespace PeterO.Mail {
         return Utf8;
       }
       if (name.Equals("us-ascii") || name.Equals("ascii")) {
-        // NOTE: "ascii" is not an IANA-registered name,
+        // DEVIATION: "ascii" is not an IANA-registered name,
         // but occurs quite frequently
         return Ascii;
       }

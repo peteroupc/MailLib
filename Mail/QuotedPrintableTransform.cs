@@ -96,108 +96,115 @@ namespace PeterO.Mail {
           this.lineCharCount = 0;
           return 0x0d;
         } else if (c == '=') { // Equals
-          ++this.lineCharCount;
-          if (this.maxLineSize >= 0 && this.lineCharCount > this.maxLineSize) {
-            throw new MessageDataException("Encoded quoted-printable line too long");
-          }
-          int b1 = this.input.ReadByte();
-          int b2 = this.input.ReadByte();
-          if (b2 >= 0 && b1 >= 0) {
-            if (b1 == '\r' && b2 == '\n') {
-              // Soft line break
-              this.lineCharCount = 0;
-              continue;
-            } else if (b1 == '\r') {
-              if (!this.lenientLineBreaks) {
-                throw new MessageDataException("Expected LF after CR");
-              }
-              this.lineCharCount = 0;
-              this.input.Unget();
-              continue;
-            } else if (b1 == '\n') {
-              if (!this.lenientLineBreaks) {
-                throw new MessageDataException("Bare LF not expected");
-              }
-              this.lineCharCount = 0;
-              this.input.Unget();
-              continue;
-            }
-            c = 0;
-            if (b1 >= '0' && b1 <= '9') {
-              c <<= 4;
-              c |= b1 - '0';
-            } else if (b1 >= 'A' && b1 <= 'F') {
-              c <<= 4;
-              c |= b1 + 10 - 'A';
-            } else if (b1 >= 'a' && b1 <= 'f') {
-              c <<= 4;
-              c |= b1 + 10 - 'a';
-            } else {
-              if (this.maxLineSize > 76 || this.maxLineSize < 0) {
-                // Unget the character, since it might
-                // start a valid hex encoding or need
-                // to be treated some other way
-                this.input.Unget();
-                return '=';
-              } else {
-                throw new MessageDataException("Invalid hex character in quoted-printable");
-              }
-            }
-            if (b2 >= '0' && b2 <= '9') {
-              c <<= 4;
-              c |= b2 - '0';
-            } else if (b2 >= 'A' && b2 <= 'F') {
-              c <<= 4;
-              c |= b2 + 10 - 'A';
-            } else if (b2 >= 'a' && b2 <= 'f') {
-              c <<= 4;
-              c |= b2 + 10 - 'a';
-            } else {
-              if (this.maxLineSize > 76 || this.maxLineSize < 0) {
-                // Unget the character, since it might
-                // start a valid hex encoding or need
-                // to be treated some other way
-                this.input.Unget();
-                this.ResizeBuffer(1);
-                this.buffer[0] = (byte)b1;
-                return '=';
-              } else {
-                throw new MessageDataException("Invalid hex character in quoted-printable");
-              }
-            }
-            this.lineCharCount += 2;
-            if (this.maxLineSize >= 0 && this.lineCharCount > this.maxLineSize) {
+          if (this.maxLineSize >= 0) {
+            ++this.lineCharCount;
+            if (this.lineCharCount > this.maxLineSize) {
               throw new MessageDataException("Encoded quoted-printable line too long");
             }
-            return c;
-          } else if (b1 >= 0) {
-            if (b1 == '\r') {
+          }
+          int b1 = this.input.ReadByte();
+          c = 0;
+          if (b1 >= '0' && b1 <= '9') {
+            c <<= 4;
+            c |= b1 - '0';
+          } else if (b1 >= 'A' && b1 <= 'F') {
+            c <<= 4;
+            c |= b1 + 10 - 'A';
+          } else if (b1 >= 'a' && b1 <= 'f') {
+            c <<= 4;
+            c |= b1 + 10 - 'a';
+          } else if (b1 =='\r') {
+            b1 = this.input.ReadByte();
+            if (b1 == '\n') {
               // Soft line break
-              if (!this.lenientLineBreaks) {
-                throw new MessageDataException("Expected LF after CR");
-              }
               this.lineCharCount = 0;
-              this.input.Unget();
-              continue;
-            } else if (b1 == '\n') {
-              // Soft line break
-              if (!this.lenientLineBreaks) {
-                throw new MessageDataException("Bare LF not expected");
-              }
-              this.lineCharCount = 0;
-              this.input.Unget();
               continue;
             } else {
-              throw new MessageDataException("Invalid data after equal sign");
+              // Anything else
+              if(lenientLineBreaks){
+                this.lineCharCount = 0;
+                this.input.Unget();
+                continue;
+              } else if (this.maxLineSize > 76 || this.maxLineSize < 0) {
+                if (this.maxLineSize >= 0) {
+                  ++this.lineCharCount;
+                  if (this.lineCharCount > this.maxLineSize) {
+                    throw new MessageDataException("Encoded quoted-printable line too long");
+                  }
+                }
+                this.input.Unget();
+                this.ResizeBuffer(1);
+                this.buffer[0] = (byte)'\r';
+                return '=';
+              } else {
+                throw new MessageDataException("CR not followed by LF in quoted-printable");
+              }
             }
-          } else {
-            // Equal sign at end; ignore
+          } else if (b1 == -1) {
+            // Equals sign at end, ignore
             return -1;
+          } else if (b1=='\n' && this.lenientLineBreaks) {
+            // Soft line break
+            this.lineCharCount = 0;
+            continue;
+          } else {
+            if (this.maxLineSize > 76 || this.maxLineSize < 0) {
+              // Unget the character, since it might
+              // start a valid hex encoding or need
+              // to be treated some other way
+              this.input.Unget();
+              return '=';
+            } else {
+              throw new MessageDataException("Invalid hex character in quoted-printable");
+            }
           }
+          int b2 = this.input.ReadByte();
+          // At this point, only a hex character is expected
+          if (b2 >= '0' && b2 <= '9') {
+            c <<= 4;
+            c |= b2 - '0';
+          } else if (b2 >= 'A' && b2 <= 'F') {
+            c <<= 4;
+            c |= b2 + 10 - 'A';
+          } else if (b2 >= 'a' && b2 <= 'f') {
+            c <<= 4;
+            c |= b2 + 10 - 'a';
+          } else {
+            if (this.maxLineSize > 76 || this.maxLineSize < 0) {
+              // Unget the character, since it might
+              // start a valid hex encoding or need
+              // to be treated some other way
+              this.input.Unget();
+              if (this.maxLineSize >= 0) {
+                ++this.lineCharCount;
+                if (this.lineCharCount > this.maxLineSize) {
+                  throw new MessageDataException("Encoded quoted-printable line too long");
+                }
+              }
+              this.ResizeBuffer(1);
+              this.buffer[0] = (byte)b1;
+              return '=';
+            } else {
+              throw new MessageDataException("Invalid hex character in quoted-printable");
+            }
+          }
+          if (this.maxLineSize >= 0) {
+            this.lineCharCount += 2;
+            if (this.lineCharCount > this.maxLineSize) {
+              throw new MessageDataException("Encoded quoted-printable line too long");
+            }
+          }
+          return c;
         } else if (c != '\t' && (c < 0x20 || c >= 0x7f)) {
           // Invalid character
-          if (this.maxLineSize > 76 || this.maxLineSize < 0) {
+          if (this.maxLineSize < 0) {
             // Ignore the character
+          } else if (this.maxLineSize > 76) {
+            // Just increment the line count
+            ++this.lineCharCount;
+            if (this.lineCharCount > this.maxLineSize) {
+              throw new MessageDataException("Encoded quoted-printable line too long");
+            }
           } else {
             throw new MessageDataException("Invalid character in quoted-printable");
           }
@@ -207,9 +214,11 @@ namespace PeterO.Mail {
           // CRLF, we need to create a lookahead buffer for
           // tabs and spaces read to see if they precede CRLF.
           int spaceCount = 1;
-          ++this.lineCharCount;
-          if (this.maxLineSize >= 0 && this.lineCharCount > this.maxLineSize) {
-            throw new MessageDataException("Encoded quoted-printable line too long");
+          if (this.maxLineSize >= 0) {
+            ++this.lineCharCount;
+            if (this.lineCharCount > this.maxLineSize) {
+              throw new MessageDataException("Encoded quoted-printable line too long");
+            }
           }
           // In most cases, though, there will only be
           // one space or tab
@@ -274,9 +283,11 @@ namespace PeterO.Mail {
               this.ResizeBuffer(spaceCount);
               this.buffer[spaceCount - 1] = (byte)c2;
               ++spaceCount;
-              ++this.lineCharCount;
-              if (this.maxLineSize >= 0 && this.lineCharCount > this.maxLineSize) {
-                throw new MessageDataException("Encoded quoted-printable line too long");
+              if (this.maxLineSize >= 0) {
+                ++this.lineCharCount;
+                if (this.lineCharCount > this.maxLineSize) {
+                  throw new MessageDataException("Encoded quoted-printable line too long");
+                }
               }
             }
             c2 = this.input.ReadByte();
@@ -289,9 +300,12 @@ namespace PeterO.Mail {
             continue;
           }
         } else {
-          ++this.lineCharCount;
-          if (this.maxLineSize >= 0 && this.lineCharCount > this.maxLineSize) {
-            throw new MessageDataException("Encoded quoted-printable line too long");
+          // Any other character
+          if (this.maxLineSize >= 0) {
+            ++this.lineCharCount;
+            if (this.lineCharCount > this.maxLineSize) {
+              throw new MessageDataException("Encoded quoted-printable line too long");
+            }
           }
           return c;
         }

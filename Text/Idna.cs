@@ -31,32 +31,68 @@ namespace PeterO.Text {
     private const int BidiClassBN = 9;
     private const int BidiClassON = 10;
 
+    private static UnicodeDatabase.ByteData bidiClasses;
+    private static UnicodeDatabase.ByteData joiningTypes;
+    private static UnicodeDatabase.ByteData scripts;
+    private static object bidiClassesSync = new Object();
+    private static object joiningTypesSync = new Object();
+    private static object scriptsSync = new Object();
+
     private static int GetBidiClass(int ch) {
-      throw new NotImplementedException();
+      UnicodeDatabase.ByteData table = null;
+      lock (bidiClassesSync) {
+        if (bidiClasses == null) {
+          bidiClasses = UnicodeDatabase.ByteData.Decompress(IdnaData.BidiClasses);
+        }
+        table = bidiClasses;
+      }
+      return table.ReadByte(ch);
+    }
+
+    private static int GetJoiningType(int ch) {
+      UnicodeDatabase.ByteData table = null;
+      lock (joiningTypesSync) {
+        if (joiningTypes == null) {
+          joiningTypes = UnicodeDatabase.ByteData.Decompress(IdnaData.JoiningTypes);
+        }
+        table = joiningTypes;
+      }
+      return table.ReadByte(ch);
+    }
+
+    private static int GetScript(int ch) {
+      UnicodeDatabase.ByteData table = null;
+      lock (scriptsSync) {
+        if (scripts == null) {
+          scripts = UnicodeDatabase.ByteData.Decompress(IdnaData.IdnaRelevantScripts);
+        }
+        table = scripts;
+      }
+      return table.ReadByte(ch);
     }
 
     private static bool JoiningTypeTransparent(int ch) {
-      throw new NotImplementedException();
+      return GetJoiningType(ch) == 1;
     }
 
     private static bool JoiningTypeLeft(int ch) {
-      throw new NotImplementedException();
+      return GetJoiningType(ch) == 3;
     }
 
     private static bool JoiningTypeRight(int ch) {
-      throw new NotImplementedException();
+      return GetJoiningType(ch) == 2;
     }
 
     private static bool IsGreek(int ch) {
-      throw new NotImplementedException();
+      return GetScript(ch) == 1;
     }
 
     private static bool IsHebrew(int ch) {
-      throw new NotImplementedException();
+      return GetScript(ch) == 2;
     }
 
     private static bool IsKanaOrHan(int ch) {
-      throw new NotImplementedException();
+      return GetScript(ch) == 3;
     }
 
     private static bool IsValidConjunct(string str, int index) {

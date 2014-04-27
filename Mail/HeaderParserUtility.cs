@@ -298,13 +298,13 @@ namespace PeterO.Mail {
 
     // Parses a comment using the obsolete syntax.
     internal static int ParseCommentLax(string str, int index, int endIndex, ITokener tokener) {
+      int indexStart = index;
+      int depth = 0;
       if (index < endIndex && (str[index] == 40)) {
         ++index;
       } else {
         return index;
       }
-      int indexStart = index;
-      int depth = 0;
       int state = (tokener != null) ? tokener.GetState() : 0;
       do {
         while (true) {

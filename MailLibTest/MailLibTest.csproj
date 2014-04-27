@@ -49,6 +49,7 @@
     <Compile Include="DomainTest.cs" />
     <Compile Include="EncodingTest.cs" />
     <Compile Include="NormalizationTest.cs" />
+    <Compile Include="OtherTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

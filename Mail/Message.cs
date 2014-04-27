@@ -11,31 +11,34 @@ using System.IO;
 using System.Text;
 
 namespace PeterO.Mail {
-    /// <summary>Represents an email message. <para><b>Thread safety:</b>
-    /// This class is mutable; its properties can be changed. None of its methods
-    /// are designed to be thread safe. Therefore, access to objects from
-    /// this class must be synchronized if multiple threads can access them
-    /// at the same time.</para>
-    /// <para>The following lists known deviations from the mail specifications
-    /// (Internet Message Format and MIME):</para>
-    /// <list type=''> <item>The content-transfer-encoding "quoted-printable"
-    /// is treated as 7bit instead if it occurs in a message or body part with
-    /// content type "multipart/*" or "message/*" (other than "message/global").</item>
-    /// <item>Non-UTF-8 bytes appearing in header field values are replaced
-    /// with replacement characters. Moreover, UTF-8 is parsed everywhere
-    /// in header field values, even in structured header fields where this
-    /// appears not to be allowed.</item>
-    /// <item>The To and Cc header fields are allowed to contain only comments
-    /// and whitespace, but empty To and Cc header fields will be omitted when
-    /// generating.</item>
-    /// <item>There is no line limit imposed when parsing quoted-printable
-    /// encoded bodies.</item>
-    /// <item>In non-MIME messages, in text/plain messages, and in the prologue
-    /// and epilogue of multipart messages (which will be ignored), if the
-    /// transfer encoding is absent or declared as 7bit, any 8-bit bytes are
-    /// replaced with question marks.</item>
-    /// </list>
-    /// </summary>
+  /// <summary>Represents an email message. <para><b>Thread safety:</b>
+  /// This class is mutable; its properties can be changed. None of its methods
+  /// are designed to be thread safe. Therefore, access to objects from
+  /// this class must be synchronized if multiple threads can access them
+  /// at the same time.</para>
+  /// <para>The following lists known deviations from the mail specifications
+  /// (Internet Message Format and MIME):</para>
+  /// <list type=''> <item>The content-transfer-encoding "quoted-printable"
+  /// is treated as 7bit instead if it occurs in a message or body part with
+  /// content type "multipart/*" or "message/*" (other than "message/global").</item>
+  /// <item>Non-UTF-8 bytes appearing in header field values are replaced
+  /// with replacement characters. Moreover, UTF-8 is parsed everywhere
+  /// in header field values, even in those parts of some structured header fields 
+  /// where this appears not to be allowed.</item>
+  /// <item>The To and Cc header fields are allowed to contain only comments
+  /// and whitespace, but these "empty" header fields will be omitted when
+  /// generating.</item>
+  /// <item>There is no line length limit imposed when parsing quoted-printable
+  /// or base64 encoded bodies.</item>
+  /// <item>In non-MIME message bodies, in text/plain message bodies, and
+  /// in the prologue
+  /// and epilogue of multipart messages (which will be ignored), if the
+  /// transfer encoding is absent or declared as 7bit, any 8-bit bytes are
+  /// replaced with question marks.</item>
+  /// <item>The name "ascii" is treated as a synonym for "us-ascii", despite
+  /// being a reserved name under RFC 2026.</item>
+  /// </list>
+  /// </summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -89,6 +92,15 @@ namespace PeterO.Mail {
       }
     }
 
+    private static bool IsShortAndAllAscii(string str){
+      if(str.Length>0x10000)
+        return false;
+      for(int i=0;i<str.Length;i++){
+        if((((int)str[i])>>7)!=0)return false;
+      }
+      return true;
+    }
+    
     /// <summary>Sets the body of this message to the specified plain text
     /// string. The character sequences CR, LF, and CR/LF will be converted
     /// to CR/LF line breaks.</summary>
@@ -99,7 +111,7 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("str");
       }
       this.body = GetUtf8Bytes(str);
-      this.contentType = MediaType.Parse("text/plain; charset=utf-8");
+      this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii : MediaType.TextPlainUtf8;
       return this;
     }
 
@@ -113,7 +125,7 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("str");
       }
       this.body = GetUtf8Bytes(str);
-      this.contentType = MediaType.Parse("text/html; charset=utf-8");
+      this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii : MediaType.TextPlainUtf8;
       return this;
     }
 
@@ -265,7 +277,8 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Returns the mail message contained in this message's body.</summary>
-    /// <returns>A message object if this object's content type is "message/rfc822",
+    /// <returns>A message object if this object's content type is "message/rfc822"
+    /// or "message/global",
     /// or null otherwise.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -275,7 +288,7 @@ namespace PeterO.Mail {
     #endif
     public Message GetBodyMessage() {
       if (this.ContentType.TopLevelType.Equals("message") &&
-          this.ContentType.SubType.Equals("rfc822")) {
+          (this.ContentType.SubType.Equals("rfc822") || this.ContentType.SubType.Equals("global"))) {
         using (MemoryStream ms = new MemoryStream(this.body)) {
           return new Message(ms);
         }
@@ -382,7 +395,7 @@ namespace PeterO.Mail {
             /*
             valueExMessage+="[old="+this.contentType+", new="+value+"]";
             valueExMessage = valueExMessage.Replace("\r\n"," ");
-            */
+             */
             throw new MessageDataException(valueExMessage);
           }
           this.contentType = MediaType.Parse(
@@ -722,7 +735,7 @@ namespace PeterO.Mail {
           "Differs [length " + a.Length + " vs. " + b.Length + "]\r\nA=" + a.Substring(sa, salen) + "\r\nB=" + b.Substring(sa, sblen));
       }
     }
-
+    
     private int TransferEncodingToUse(bool isBodyPart) {
       string topLevel = this.contentType.TopLevelType;
       if (topLevel.Equals("message") || topLevel.Equals("multipart")) {
@@ -733,7 +746,7 @@ namespace PeterO.Mail {
       }
       int lengthCheck = Math.Min(this.body.Length, 4096);
       int highBytes = 0;
-      int zeroBytes = 0;
+      int ctlBytes = 0;
       int lineLength = 0;
       bool allTextBytes = isBodyPart ? false : true;
       for (int i = 0; i < lengthCheck; ++i) {
@@ -742,9 +755,12 @@ namespace PeterO.Mail {
           allTextBytes = false;
         } else if (this.body[i] == 0x00) {
           allTextBytes = false;
-          ++zeroBytes;
-        } else if (this.body[i] == 0x7f) {
+          ++ctlBytes;
+        } else if (this.body[i] == 0x7f ||
+                   (this.body[i] < 0x20 && this.body[i]!=0x0d &&
+                    this.body[i] != 0x0a && this.body[i]!=0x09)) {
           allTextBytes = false;
+          ++ctlBytes;
         } else if (this.body[i] == (byte)'\r') {
           if (i + 1 >= this.body.Length || this.body[i + 1] != (byte)'\n') {
             // bare CR
@@ -781,7 +797,7 @@ namespace PeterO.Mail {
         return EncodingSevenBit;
       } if (highBytes > (lengthCheck / 3)) {
         return EncodingBase64;
-      } if (zeroBytes > (lengthCheck / 10)) {
+      } if (ctlBytes > 10) {
         return EncodingBase64;
       } else {
         return EncodingQuotedPrintable;
@@ -842,95 +858,106 @@ namespace PeterO.Mail {
           haveMimeVersion = true;
         }
         IHeaderFieldParser parser = HeaderFields.GetParser(name);
-        if (name.Equals("content-transfer-encoding")) {
-          // Ignore the declared transfer encoding
-          sb.Append(Capitalize(name) + ":" + encodingString + "\r\n");
-          haveContentEncoding = true;
-        } else if (name.Equals("content-type")) {
-          sb.Append(Capitalize(name) + ":" + builder.ToString() + "\r\n");
+        if (name.Equals("content-type")) {
+          if (haveContentType) {
+            // Already outputted, continue
+            continue;
+          }
           haveContentType = true;
-        } else {
-          if (name.Equals("from")) {
-            if (haveFrom) {
-              // Already outputted, continue
-              continue;
-            }
-            haveFrom = true;
-            if (!this.IsValidAddressingField(name)) {
-              value = GenerateAddressList(this.FromAddresses);
-              if (value.Length == 0) {
-                // No addresses
-                continue;
-              }
-            }
-            outputtedFrom = true;
-          } else if (name.Equals("to")) {
-            if (haveTo) {
-              // Already outputted, continue
-              continue;
-            }
-            haveTo = true;
-            if (!this.IsValidAddressingField(name)) {
-              value = GenerateAddressList(this.ToAddresses);
-              if (value.Length == 0) {
-                // No addresses
-                continue;
-              }
-            }
-          } else if (name.Equals("cc")) {
-            if (haveCc) {
-              // Already outputted, continue
-              continue;
-            }
-            haveCc = true;
-            if (!this.IsValidAddressingField(name)) {
-              value = GenerateAddressList(this.CCAddresses);
-              if (value.Length == 0) {
-                // No addresses
-                continue;
-              }
-            }
-          } else if (name.Equals("bcc")) {
-            if (haveBcc) {
-              // Already outputted, continue
-              continue;
-            }
-            haveBcc = true;
-            if (!this.IsValidAddressingField(name)) {
-              value = GenerateAddressList(this.BccAddresses);
-              if (value.Length == 0) {
-                // No addresses
-                continue;
+          value = builder.ToString();
+        } else if (name.Equals("content-transfer-encoding")) {
+          if (haveContentEncoding) {
+            // Already outputted, continue
+            continue;
+          }
+          haveContentEncoding = true;
+          value = encodingString;
+        } else if (name.Equals("from")) {
+          if (haveFrom) {
+            // Already outputted, continue
+            continue;
+          }
+          haveFrom = true;
+          if (!this.IsValidAddressingField(name)) {
+            string oldValue=value;
+            value = GenerateAddressList(this.FromAddresses);
+            if (value.Length == 0) {
+              // No addresses, synthesize a From field
+              value=new EncodedWordEncoder().AddString(oldValue).FinalizeEncoding().ToString();
+              if(value.Length>0){
+                value+=" <me@author-address.invalid>";
+              } else {
+                value="me@author-address.invalid";
               }
             }
           }
-          string rawField = Capitalize(name) + ":" +
-            (StartsWithWhitespace(value) ? String.Empty : " ") + value;
-          if (CanOutputRaw(rawField)) {
-            // TODO: Try to preserve header field name (before the colon)
-            sb.Append(rawField);
-          } else if (HasTextToEscape(value)) {
-            string downgraded = HeaderFields.GetParser(name).DowngradeFieldValue(value);
-            // TODO: If the header field is still not downgraded,
-            // write a "Downgraded-" header field instead (applies to
-            // Message-ID, Resent-Message-ID, In-Reply-To, References,
-            // Original-Recipient, and Final-Recipient)
-            // TODO: Don't collapse spaces if a DQUOTE appears
-            var encoder = new WordWrapEncoder(Capitalize(name) + ":");
-            encoder.AddString(downgraded);
-            sb.Append(encoder.ToString());
-          } else {
-            var encoder = new WordWrapEncoder(Capitalize(name) + ":");
-            encoder.AddString(value);
-            sb.Append(encoder.ToString());
+          outputtedFrom = true;
+        } else if (name.Equals("to")) {
+          if (haveTo) {
+            // Already outputted, continue
+            continue;
           }
-          sb.Append("\r\n");
+          haveTo = true;
+          if (!this.IsValidAddressingField(name)) {
+            value = GenerateAddressList(this.ToAddresses);
+            if (value.Length == 0) {
+              // No addresses
+              continue;
+            }
+          }
+        } else if (name.Equals("cc")) {
+          if (haveCc) {
+            // Already outputted, continue
+            continue;
+          }
+          haveCc = true;
+          if (!this.IsValidAddressingField(name)) {
+            value = GenerateAddressList(this.CCAddresses);
+            if (value.Length == 0) {
+              // No addresses
+              continue;
+            }
+          }
+        } else if (name.Equals("bcc")) {
+          if (haveBcc) {
+            // Already outputted, continue
+            continue;
+          }
+          haveBcc = true;
+          if (!this.IsValidAddressingField(name)) {
+            value = GenerateAddressList(this.BccAddresses);
+            if (value.Length == 0) {
+              // No addresses
+              continue;
+            }
+          }
         }
+        string rawField = Capitalize(name) + ":" +
+          (StartsWithWhitespace(value) ? String.Empty : " ") + value;
+        if (CanOutputRaw(rawField)) {
+          // TODO: Try to preserve header field name (before the colon)
+          sb.Append(rawField);
+        } else if (HasTextToEscape(value)) {
+          string downgraded = HeaderFields.GetParser(name).DowngradeFieldValue(value);
+          // TODO: If the header field is still not downgraded,
+          // write a "Downgraded-" header field instead (applies to
+          // Message-ID, Resent-Message-ID, In-Reply-To, References,
+          // Original-Recipient, and Final-Recipient)
+          // TODO: Don't collapse spaces if a DQUOTE appears
+          var encoder = new WordWrapEncoder(Capitalize(name) + ":");
+          encoder.AddString(downgraded);
+          sb.Append(encoder.ToString());
+        } else {
+          var encoder = new WordWrapEncoder(Capitalize(name) + ":");
+          encoder.AddString(value);
+          sb.Append(encoder.ToString());
+        }
+        sb.Append("\r\n");
       }
       if (!outputtedFrom && depth == 0) {
         // Output a synthetic From field if it doesn't
         // exist and this isn't a body part
-        sb.Append("From: me@invalid.invalid\r\n");
+        sb.Append("From: me@author.invalid\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
         sb.Append("MIME-Version: 1.0\r\n");
@@ -1153,7 +1180,7 @@ namespace PeterO.Mail {
             }
           }
           lineCount += bytesRead[0];
-          // NOTE: Header field line limit not enforced here; only
+          // NOTE: Header field line limit not enforced here, only
           // in the header field name; it's impossible to generate
           // a conforming message if the name is too long
           // NOTE: Some emails still have 8-bit bytes in an unencoded subject line
@@ -1177,8 +1204,8 @@ namespace PeterO.Mail {
     private class MessageStackEntry {
       private Message message;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public Message Message {
         get {
           return this.message;
@@ -1187,8 +1214,8 @@ namespace PeterO.Mail {
 
       private string boundary;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public string Boundary {
         get {
           return this.boundary;
@@ -1333,12 +1360,13 @@ namespace PeterO.Mail {
       bool useLiberalSevenBit) {
       ITransform transform = new EightBitTransform(stream);
       if (encoding == EncodingQuotedPrintable) {
-        // DEVIATION: The max line size is actually 76, but some emails
+        // NOTE: The max line size is actually 76, but some emails
         // have lines that exceed this size, so use an unlimited line length
         // when parsing
         transform = new QuotedPrintableTransform(stream, false, -1);
       } else if (encoding == EncodingBase64) {
-        transform = new Base64Transform(stream, false);
+        // NOTE: Same as quoted-printable regarding line length
+        transform = new Base64Transform(stream, false, -1);
       } else if (encoding == EncodingEightBit) {
         transform = new EightBitTransform(stream);
       } else if (encoding == EncodingBinary) {

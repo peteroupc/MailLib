@@ -144,7 +144,6 @@ namespace PeterO.Mail {
         } else if (data[i] == 32) {
           if (i + 1 == length) {
             this.IncrementAndAppend(str, "=20");
-            this.lineCount = 0;
           } else if (i + 2 < length && this.lineBreakMode > 0) {
             if (data[i + 1] == 0xd && data[i + 2] == 0xa) {
               this.IncrementAndAppend(str, "=20\r\n");

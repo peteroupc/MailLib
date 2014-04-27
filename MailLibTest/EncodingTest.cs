@@ -739,12 +739,26 @@ namespace MailLibTest {
 
     [Test]
     public void TestMediaTypeEncoding() {
+      TestMediaTypeRoundTrip("xy"+this.Repeat("\"",20)+"z");
       this.SingleTestMediaTypeEncoding("xyz", "x/y;z=xyz");
       this.SingleTestMediaTypeEncoding("xy z", "x/y;z=\"xy z\"");
       this.SingleTestMediaTypeEncoding("xy\u00a0z", "x/y;z*=utf-8''xy%C2%A0z");
       this.SingleTestMediaTypeEncoding("xy\ufffdz", "x/y;z*=utf-8''xy%C2z");
       this.SingleTestMediaTypeEncoding("xy" + this.Repeat("\ufffc", 50) + "z", "x/y;z*=utf-8''xy" + this.Repeat("%EF%BF%BD", 50) + "z");
       this.SingleTestMediaTypeEncoding("xy" + this.Repeat("\u00a0", 50) + "z", "x/y;z*=utf-8''xy" + this.Repeat("%C2%A0", 50) + "z");
+      TestMediaTypeRoundTrip("xy"+this.Repeat(" ",20)+"z");
+      TestMediaTypeRoundTrip("xy"+this.Repeat(" ",50)+"z");
+      TestMediaTypeRoundTrip("xy"+this.Repeat(" ",80)+"z");
+      TestMediaTypeRoundTrip("xy"+this.Repeat(" ",150)+"z");
+      TestMediaTypeRoundTrip("xy"+this.Repeat("\"",150)+"z");
+      TestMediaTypeRoundTrip("xy"+this.Repeat(":",20)+"z");
+      TestMediaTypeRoundTrip("xy"+this.Repeat(":",150)+"z");
+      TestMediaTypeRoundTrip("xy"+this.Repeat("@",20)+"z");
+      TestMediaTypeRoundTrip("xy"+this.Repeat("@",150)+"z");
+    }
+    
+    private static void TestMediaTypeRoundTrip(string str){
+      Assert.AreEqual(str,MediaType.Parse(new MediaTypeBuilder("x","y").SetParameter("z",str).ToString()).GetParameter("z"));
     }
 
     [Test]
@@ -804,7 +818,8 @@ namespace MailLibTest {
       this.TestDecodeQuotedPrintable("te=0Dst", "te\rst");
       this.TestDecodeQuotedPrintable("te=0Ast", "te\nst");
       this.TestDecodeQuotedPrintable("te=C2=A0st", "te\u00a0st");
-      this.TestFailQuotedPrintable("te=3st");
+      this.TestDecodeQuotedPrintable("te=3st", "te=3st");
+      this.TestDecodeQuotedPrintable("te==C2=A0st", "te=\u00a0st");
       this.TestDecodeQuotedPrintable(this.Repeat("a", 100), this.Repeat("a", 100));
       this.TestDecodeQuotedPrintable("te\r\nst", "te\r\nst");
       this.TestDecodeQuotedPrintable("te\rst", "te\r\nst");
@@ -814,11 +829,19 @@ namespace MailLibTest {
       this.TestDecodeQuotedPrintable("te=\nst", "test");
       this.TestDecodeQuotedPrintable("te=\r", "te");
       this.TestDecodeQuotedPrintable("te=\n", "te");
-      this.TestFailQuotedPrintable("te=xy");
-      this.TestFailQuotedPrintable("te\u000cst");
-      this.TestFailQuotedPrintable("te\u007fst");
-      this.TestFailQuotedPrintable("te\u00a0st");
-      this.TestFailQuotedPrintable("te=3");
+      this.TestDecodeQuotedPrintable("te=xy", "te=xy");
+      this.TestDecodeQuotedPrintable("te\u000cst", "test");
+      this.TestDecodeQuotedPrintable("te\u007fst", "test");
+      this.TestDecodeQuotedPrintable("te\u00a0st", "test");
+      this.TestDecodeQuotedPrintable("te==20", "te= ");
+      this.TestDecodeQuotedPrintable("te===20", "te== ");
+      this.TestDecodeQuotedPrintable("te==xy", "te==xy");
+      // here, the first '=' starts a malformed sequence, so is
+      // output as is; the second '=' starts a soft line break,
+      // so is ignored
+      this.TestDecodeQuotedPrintable("te==", "te=");
+      this.TestDecodeQuotedPrintable("te==\r\nst", "te=st");
+      this.TestDecodeQuotedPrintable("te=3", "te=3");
       this.TestDecodeQuotedPrintable("te \r\n", "te\r\n");
       this.TestDecodeQuotedPrintable("te \r\nst", "te\r\nst");
       this.TestDecodeQuotedPrintable("te w\r\nst", "te w\r\nst");
@@ -879,10 +902,8 @@ namespace MailLibTest {
 
     [Test]
     public void TestEncodedPhrase2() {
-      // TODO: Why isn't this downgraded?
-      string par = "(";
       Assert.AreEqual(
-        par + "tes\u00bet) x@x.example",
+        "=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
         HeaderFields.GetParser("subject").DowngradeFieldValue("(tes\u00bet) x@x.example"));
     }
 
@@ -985,6 +1006,65 @@ namespace MailLibTest {
         HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" (comment) <x@x.example>"));
     }
 
+    private bool IsGoodAsciiOnlyAndGoodLineLength(string str) {
+      int lineLength = 0;
+      int wordLength = 0;
+      int index = 0;
+      int endIndex = str.Length;
+      bool headers = true;
+      bool hasLongWord=false;
+      while (index<endIndex) {
+        char c = str[index];
+        if (c >= 0x80) {
+          Console.WriteLine("Non-ASCII character (0x {0:X2})",(int)c);
+          return false;
+        }
+        if (c=='\r' && index+1<endIndex && str[index+1]=='\n') {
+          index+=2;
+          if (headers && lineLength == 0) {
+            // Start of the body
+            headers = false;
+          }
+          lineLength = 0;
+          wordLength = 0;
+          hasLongWord=false;
+          continue;
+        } else if (c=='\r' || c=='\n') {
+          Console.WriteLine("Bare CR or bare LF");
+          return false;
+        }
+        if(c=='\t'  || c==0x20){
+          ++lineLength;
+          wordLength = 0;
+        } else {
+          ++lineLength;
+          ++wordLength;
+          hasLongWord|=(wordLength>77) || (lineLength==wordLength && wordLength>78);
+        }
+        if (c == 0) {
+          Console.WriteLine("CTL in message (0x {0:X2})",(int)c);
+          return false;
+        }
+        if (headers && (c == 0x7f || (c<0x20 && c != 0x09))) {
+          Console.WriteLine("CTL in header (0x {0:X2})",(int)c);
+          return false;
+        }
+        int maxLineLength=998;
+        if(!headers && !hasLongWord){
+          // Set max length for the body to 78 unless a line
+          // contains a word so long that exceeding 78 characters
+          // is unavoidable
+          maxLineLength=78;
+        }
+        if (lineLength>maxLineLength) {
+          Console.WriteLine("Line length exceeded (" + (maxLineLength) + " " + (str.Substring(index-78, 78)) + ")");
+          return false;
+        }
+        ++index;
+      }
+      return true;
+    }
+
     private void TestParseCommentStrictCore(string input) {
       Assert.AreEqual(input.Length, HeaderParserUtility.ParseCommentStrict(input, 0, input.Length), input);
     }
@@ -1013,7 +1093,7 @@ namespace MailLibTest {
         "tes?xx",
         Charsets.Utf8.GetString(new PercentEncodingStringTransform("tes%dxx")));
       Assert.AreEqual(
-        "tes?xx",
+        "tes=dxx",
         Charsets.Utf8.GetString(new QEncodingStringTransform("tes=dxx")));
       Assert.AreEqual(
         "tes??x",
@@ -1027,6 +1107,28 @@ namespace MailLibTest {
       TestParseCommentStrictCore("(a(b)c)");
       TestParseCommentStrictCore("()");
       TestParseCommentStrictCore("(x)");
+    }
+    [Test]
+    public void TestEncodedWordsReservedChars() {
+      // Check decoding of encoded words containing reserved characters
+      // such as specials and CTLs:
+      // U+007F, not directly representable
+      this.TestEncodedWordsPhrase("=?utf-8?q?x_=7F?=","=?utf-8?q?x_=7F?=");
+      // U+0001, not directly representable
+      this.TestEncodedWordsPhrase("=?utf-8?q?x_=01?=","=?utf-8?q?x_=01?=");
+      // CR and LF, not directly representable
+      this.TestEncodedWordsPhrase("=?utf-8?q?x_=0D=0A?=","=?utf-8?q?x_=0D=0A?=");
+      // Parentheses
+      this.TestEncodedWordsPhrase("=?utf-8?q?x_=28y=29?=","\"x (y)\"");
+      // Colons and angle brackets
+      this.TestEncodedWordsPhrase("=?utf-8?q?x_=3Cy=3Az=3E?=","\"x <y:z>\"");
+      // Encoded word lookalikes
+      this.TestEncodedWordsPhrase(
+        "=?utf-8?q?=3D=3Futf-8=3Fq=3Fxyz=3F=3D?=",
+        "\"=?utf-8?q?xyz?=\"");
+      this.TestEncodedWordsPhrase(
+        "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=",
+        "\"=?utf-8?q?xyz?=\"");
     }
 
     [Test]
@@ -1296,7 +1398,7 @@ namespace MailLibTest {
       Assert.AreEqual(test.Length, parser.Parse(test, 0, test.Length, null));
     }
 
-    private static string ToBase16(byte[] bytes) {
+    internal static string ToBase16(byte[] bytes) {
       StringBuilder sb = new StringBuilder();
       string hex="0123456789ABCDEF";
       for (int i = 0;i<bytes.Length; ++i) {
@@ -1310,6 +1412,16 @@ namespace MailLibTest {
       using(var sha1 = new System.Security.Cryptography.SHA1Managed()) {
         return ToBase16(sha1.ComputeHash(DataUtilities.GetUtf8Bytes(str, true)));
       }
+    }
+
+    internal static bool HasNestedMessageType(Message message){
+      if(message.ContentType.TopLevelType.Equals("message")){
+        return true;
+      }
+      foreach(var part in message.Parts){
+        if(HasNestedMessageType(part))return true;
+      }
+      return false;
     }
 
     [Test]
