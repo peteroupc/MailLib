@@ -436,7 +436,7 @@ namespace PeterO.Mail {
       sb.Append('"');
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
-        if (c >= 32 && c <= 126 && c!='\\' && c!='"') {
+        if (c >= 32 && c <= 126 && c != '\\' && c != '"') {
           sb.Append(c);
         } else if (c == 0x20 || c == 0x09 || c == '\\' || c == '"') {
           sb.Append('\\');

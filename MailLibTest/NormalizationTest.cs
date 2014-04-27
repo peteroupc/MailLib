@@ -70,11 +70,12 @@ namespace MailLibTest {
 
     [Test]
     public void NormTest() {
-      if (!File.Exists("..\\..\\..\\cache\\NormalizationTest.txt")) {
+      string normTestFile="..\\..\\..\\cache\\NormalizationTest.txt";
+      if (!File.Exists(normTestFile)) {
         Assert.Ignore();
       }
       bool[] handled = new bool[0x110000];
-      using(StreamReader reader=new StreamReader("..\\..\\..\\cache\\NormalizationTest.txt")) {
+      using(StreamReader reader = new StreamReader(normTestFile)) {
         bool part1 = false;
         while (true) {
           String line = reader.ReadLine();
@@ -107,16 +108,28 @@ namespace MailLibTest {
           int[] actual;
           ICharacterInput ci = new IntArrayCharacterInput(cps);
           actual = ToIntArray(Normalizer.GetChars(ci, Normalization.NFC));
+          if (!Normalizer.IsNormalized(expected, Normalization.NFC)) {
+ Assert.Fail(line);
+}
           AssertEqual(expected, actual, line);
           ci = new IntArrayCharacterInput(cps);
           actual = ToIntArray(Normalizer.GetChars(ci, Normalization.NFD));
           AssertEqual(GetCodePoints(columns[2]), actual, line);
+          if (!Normalizer.IsNormalized(GetCodePoints(columns[2]), Normalization.NFD)) {
+ Assert.Fail(line);
+}
           ci = new IntArrayCharacterInput(cps);
           actual = ToIntArray(Normalizer.GetChars(ci, Normalization.NFKC));
           AssertEqual(GetCodePoints(columns[3]), actual, line);
+          if (!Normalizer.IsNormalized(GetCodePoints(columns[3]), Normalization.NFKC)) {
+ Assert.Fail(line);
+}
           ci = new IntArrayCharacterInput(cps);
           actual = ToIntArray(Normalizer.GetChars(ci, Normalization.NFKD));
           AssertEqual(GetCodePoints(columns[4]), actual, line);
+          if (!Normalizer.IsNormalized(GetCodePoints(columns[4]), Normalization.NFKD)) {
+ Assert.Fail(line);
+}
         }
       }
       int[] cptemp = new int[1];
@@ -124,6 +137,7 @@ namespace MailLibTest {
       // test will normalize to themselves in all four normalization forms
       for (int i = 0;i<handled.Length; ++i) {
         if (i >= 0xd800 && i <= 0xdfff) {
+          // skip surrogate code points
           continue;
         }
         if (!handled[i]) {
@@ -146,8 +160,23 @@ namespace MailLibTest {
           norm = new Normalizer(ci, Normalization.NFKD);
           AssertEqual(i, norm.Read(), imsg);
           AssertEqual(-1, norm.Read(), imsg);
+          if (!Normalizer.IsNormalized(cptemp, Normalization.NFC)) {
+ Assert.Fail(imsg);
+}
+          if (!Normalizer.IsNormalized(cptemp, Normalization.NFD)) {
+ Assert.Fail(imsg);
+}
+          if (!Normalizer.IsNormalized(cptemp, Normalization.NFKC)) {
+ Assert.Fail(imsg);
+}
+          if (!Normalizer.IsNormalized(cptemp, Normalization.NFKD)) {
+ Assert.Fail(imsg);
+}
         }
       }
+      // Additional normalization tests
+      Assert.IsFalse(Normalizer.IsNormalized("x\u0300\u0323yz",Normalization.NFC));
+      Assert.IsFalse(Normalizer.IsNormalized("x\u0300\u0323",Normalization.NFC));
     }
   }
 }

@@ -23,6 +23,16 @@ namespace PeterO.Mail {
       return false;
     }
 
+    private static bool HasAsciiCtl(string str) {
+      for (int i = 0; i < str.Length; ++i) {
+        char c = str[i];
+        if ((c < 0x20 && c != '\t') || c == 0x7f) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     private static bool HasSuspiciousTextInStructured(string str) {
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
@@ -275,6 +285,7 @@ namespace PeterO.Mail {
       bool lastWordWasEncodedWord = false;
       int whitespaceStart = -1;
       int whitespaceEnd = -1;
+      bool wordsWereDecoded = false;
       while (index < endIndex) {
         int charCount = 2;
         bool acceptedEncodedWord = false;
@@ -382,20 +393,15 @@ namespace PeterO.Mail {
                 } else {
                   // Console.WriteLine("Encoded " + (base64 ? "B" : "Q") + " to: " + (encoding.GetString(transform)));
                   decodedWord = encoding.GetString(transform);
-                  // decodedWord may itself be part of an encoded word
-                  // or contain ASCII control characters: encoded word decoding is
-                  // not idempotent; if this is a comment it could also contain '(', ')', and '\'
-                  if (!hasSuspiciousText) {
-                  }
+                  // Check for text in the decoded string
+                  // that could render the comment syntactically invalid (the encoded
+                  // word could even encode ASCII control characters and specials)
                   if (context == EncodedWordContext.Phrase && HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
+                  } else if (context == EncodedWordContext.Comment && HasSuspiciousTextInComments(decodedWord)) {
+                    hasSuspiciousText = true;
                   }
-                }
-                // Check for text in the decoded string
-                // that could render the comment syntactically invalid (the encoded
-                // word could even encode ASCII control characters and specials)
-                if (context == EncodedWordContext.Comment && HasSuspiciousTextInComments(decodedWord)) {
-                  hasSuspiciousText = true;
+                  wordsWereDecoded = true;
                 }
               } else {
                 decodedWord = str.Substring(startIndex - 2, afterLast - (startIndex - 2));
@@ -454,7 +460,7 @@ namespace PeterO.Mail {
         lastWordWasEncodedWord = acceptedEncodedWord;
       }
       string retval = builder.ToString();
-      if (hasSuspiciousText) {
+      if (wordsWereDecoded && (hasSuspiciousText || (retval.Contains("=?") && retval.Contains("?=")))) {
         if (context == EncodedWordContext.Comment) {
           string wrappedComment = "(" + retval + ")";
           if (HeaderParserUtility.ParseCommentStrict(wrappedComment, 0, wrappedComment.Length) != wrappedComment.Length) {
@@ -464,11 +470,10 @@ namespace PeterO.Mail {
           }
         }
         if (context == EncodedWordContext.Phrase) {
-          // TODO: More dealing with suspicious text, esp. syntactic invalidity
-          if (retval.Contains("=?") && retval.Contains("?=")) {
-            // Return value contains a potential encoded word itself
-            retval = HeaderParserUtility.QuoteValue(retval);
+          if (HasAsciiCtl(retval)) {
+            return str.Substring(start, endIndex - start);
           }
+          retval = HeaderParserUtility.QuoteValue(retval);
         }
       }
 

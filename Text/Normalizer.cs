@@ -195,6 +195,12 @@ namespace PeterO.Text {
           basic = false;
           break;
         }
+        if ((str[i] & 0xf800) == 0xd800) {
+          int cp = DataUtilities.CodePointAt(str, i);
+          if (cp == 0xfffd) {
+ return false;
+}
+        }
       }
       if (basic) {
         return true;
@@ -206,53 +212,70 @@ namespace PeterO.Text {
       IList<int> list = new List<int>();
       int ch = 0;
       while ((ch = chars.Read()) >= 0) {
+        if (ch >= 0xd800 && ch <= 0xdfff) {
+ return false;
+}
         list.Add(ch);
       }
-      return IsNormalized(chars, form);
+      return IsNormalized(list, form);
+    }
+
+    private static bool NormalizeAndCheck(
+      IList<int> chars,
+      int start,
+      int length,
+      Normalization form) {
+      int i = 0;
+      foreach (int ch in Normalizer.GetChars(
+        new PartialListCharacterInput(chars, start, length),
+        form)) {
+        if (i >= length) {
+ return false;
+}
+        if (ch != chars[start + i]) {
+          return false;
+        }
+        ++i;
+      }
+      return true;
     }
 
     public static bool IsNormalized(IList<int> chars, Normalization form) {
       int lastNonStable = -1;
-      bool fastCheck = true;
-      int mask = (form == Normalization.NFC) ? unchecked((int)0xffffff00) :
-        unchecked((int)0xffffff80);
+      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       if (chars == null) {
         throw new ArgumentException("chars");
       }
       for (int i = 0; i < chars.Count; ++i) {
         int c = chars[i];
-        if (c < 0 || c > 0x10ffff || (c >= 0xd800 && c <= 0xdfff)) {
-          throw new ArgumentException("'chars' contains an invalid Unicode code point.");
+        if (c < 0 || c > 0x10ffff || ((c & 0x1ff800) == 0xd800)) {
+          return false;
         }
-        if (fastCheck && (c & mask) == 0) {
+        bool isStable = false;
+        if ((c & mask) == c && (i + 1 == chars.Count || (chars[i + 1]&mask) == chars[i + 1])) {
           // Quick check for an ASCII character followed by another
-          // ASCII character (or Latin-1 in NFC).
-          // No normalization is ever necessary
+          // ASCII character (or Latin-1 in NFC) or the end of string.
+          // Treat the first character as stable
           // in this situation.
-          continue;
+          isStable = true;
         } else {
-          bool isStable = IsStableCodePoint(c, form);
-          fastCheck = false;
-          if (lastNonStable < 0 && !isStable) {
-            // First non-stable code point in a row
-            lastNonStable = i;
-          } else if (lastNonStable >= 0 && isStable) {
-            // We have at least one non-stable code point,
-            // normalize these code points.
-            int j = lastNonStable;
-            foreach (int ch in Normalizer.GetChars(
-              new PartialListCharacterInput(chars, lastNonStable, i - lastNonStable),
-              form)) {
-              if (ch != chars[j++]) {
-                return false;
-              }
-            }
-            // If result's length doesn't match
-            if (j != i) {
-              return false;
-            }
-            lastNonStable = -1;
+          isStable = IsStableCodePoint(c, form);
+        }
+        if (lastNonStable < 0 && !isStable) {
+          // First non-stable code point in a row
+          lastNonStable = i;
+        } else if (lastNonStable >= 0 && isStable) {
+          // We have at least one non-stable code point,
+          // normalize these code points.
+          if (!NormalizeAndCheck(chars, lastNonStable, i - lastNonStable, form)) {
+            return false;
           }
+          lastNonStable = -1;
+        }
+      }
+      if (lastNonStable >= 0) {
+        if (!NormalizeAndCheck(chars, lastNonStable, chars.Count - lastNonStable, form)) {
+          return false;
         }
       }
       return true;

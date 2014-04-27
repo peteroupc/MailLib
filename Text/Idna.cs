@@ -75,12 +75,14 @@ namespace PeterO.Text {
       return GetJoiningType(ch) == 1;
     }
 
-    private static bool JoiningTypeLeft(int ch) {
-      return GetJoiningType(ch) == 3;
+    private static bool JoiningTypeLeftOrDual(int ch) {
+      int jtype = GetJoiningType(ch);
+      return jtype == 3 || jtype == 4;
     }
 
-    private static bool JoiningTypeRight(int ch) {
-      return GetJoiningType(ch) == 2;
+    private static bool JoiningTypeRightOrDual(int ch) {
+      int jtype = GetJoiningType(ch);
+      return jtype == 2 || jtype == 4;
     }
 
     private static bool IsGreek(int ch) {
@@ -104,7 +106,7 @@ namespace PeterO.Text {
       while (index > 0) {
         int ch = DataUtilities.CodePointBefore(str, index);
         index -= (ch >= 0x10000) ? 2 : 1;
-        if (JoiningTypeLeft(ch)) {
+        if (JoiningTypeLeftOrDual(ch)) {
           found = true;
         } else if (!JoiningTypeTransparent(ch)) {
           return false;
@@ -118,7 +120,7 @@ namespace PeterO.Text {
       while (index < str.Length) {
         int ch = DataUtilities.CodePointAt(str, index);
         index += (ch >= 0x10000) ? 2 : 1;
-        if (JoiningTypeRight(ch)) {
+        if (JoiningTypeRightOrDual(ch)) {
           return true;
         } else if (!JoiningTypeTransparent(ch)) {
           return false;
@@ -180,7 +182,6 @@ namespace PeterO.Text {
       } else {
         builder.Append(retval);
       }
-      builder.Append(retval);
       return builder.ToString();
     }
 
@@ -384,6 +385,7 @@ namespace PeterO.Text {
           if (thisChar >= 0x10000) {
             ++i;
           }
+          lastChar = thisChar;
         }
         if (haveKatakanaMiddleDot && !haveKanaOrHan) {
           // NOTE: Test done here even under lookup rules,

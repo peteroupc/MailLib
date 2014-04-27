@@ -90,8 +90,8 @@ namespace PeterO.Mail {
             c |= b2 + 10 - 'a';
           } else {
             --this.inputIndex;
-            ResizeBuffer(1);
-            this.buffer[0]=(byte)b1;
+            this.ResizeBuffer(1);
+            this.buffer[0] = (byte)b1;
             return '=';
           }
           return c;

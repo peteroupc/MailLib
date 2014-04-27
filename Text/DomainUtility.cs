@@ -84,23 +84,23 @@ namespace PeterO.Text {
       if (allBasics) {
         return endIndex - index;
       }
-      int length = 4;
+      int outputLength = 4;
       tmpIndex = index;
       while (tmpIndex < endIndex) {
         int c = CodePointAt(str, tmpIndex, endIndex);
-        tmpIndex += (c >= 0x10000) ? 2 : 1;
         ++codePointLength;
         if (c < 0x80) {
           // This is a basic (ASCII) code point
-          ++length;
+          ++outputLength;
           ++h;
         } else if (firstIndex < 0) {
           firstIndex = tmpIndex;
         }
-        ++tmpIndex;
+        // Increment index after setting firstIndex
+        tmpIndex += (c >= 0x10000) ? 2 : 1;
       }
       if (h != 0) {
-        ++length;
+        ++outputLength;
       }
       int b = h;
       if (firstIndex >= 0) {
@@ -157,12 +157,12 @@ namespace PeterO.Text {
               if (q < t) {
                 break;
               }
-              ++length;
+              ++outputLength;
               q -= t;
               q /= 36 - t;
               k += 36;
             }
-            ++length;
+            ++outputLength;
             delta = (h == b) ? delta / 700 : delta >> 1;
             delta += delta / (h + 1);
             k = 0;
@@ -178,7 +178,7 @@ namespace PeterO.Text {
         ++n;
         ++delta;
       }
-      return length;
+      return outputLength;
     }
 
     private static int[] valueDigitValues = new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,

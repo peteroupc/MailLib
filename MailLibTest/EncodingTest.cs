@@ -756,8 +756,8 @@ namespace MailLibTest {
       TestMediaTypeRoundTrip("xy"+this.Repeat("@",20)+"z");
       TestMediaTypeRoundTrip("xy"+this.Repeat("@",150)+"z");
     }
-    
-    private static void TestMediaTypeRoundTrip(string str){
+
+    private static void TestMediaTypeRoundTrip(string str) {
       Assert.AreEqual(str,MediaType.Parse(new MediaTypeBuilder("x","y").SetParameter("z",str).ToString()).GetParameter("z"));
     }
 
@@ -1006,13 +1006,13 @@ namespace MailLibTest {
         HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" (comment) <x@x.example>"));
     }
 
-    private bool IsGoodAsciiOnlyAndGoodLineLength(string str) {
+    internal static bool IsGoodAsciiOnlyAndGoodLineLength(string str) {
       int lineLength = 0;
       int wordLength = 0;
       int index = 0;
       int endIndex = str.Length;
       bool headers = true;
-      bool hasLongWord=false;
+      bool hasLongWord = false;
       while (index<endIndex) {
         char c = str[index];
         if (c >= 0x80) {
@@ -1027,19 +1027,19 @@ namespace MailLibTest {
           }
           lineLength = 0;
           wordLength = 0;
-          hasLongWord=false;
+          hasLongWord = false;
           continue;
         } else if (c=='\r' || c=='\n') {
           Console.WriteLine("Bare CR or bare LF");
           return false;
         }
-        if(c=='\t'  || c==0x20){
+        if (c=='\t'  || c==0x20) {
           ++lineLength;
           wordLength = 0;
         } else {
           ++lineLength;
           ++wordLength;
-          hasLongWord|=(wordLength>77) || (lineLength==wordLength && wordLength>78);
+          hasLongWord|=(wordLength>77) || (lineLength == wordLength && wordLength>78);
         }
         if (c == 0) {
           Console.WriteLine("CTL in message (0x {0:X2})",(int)c);
@@ -1049,15 +1049,15 @@ namespace MailLibTest {
           Console.WriteLine("CTL in header (0x {0:X2})",(int)c);
           return false;
         }
-        int maxLineLength=998;
-        if(!headers && !hasLongWord){
+        int maxLineLength = 998;
+        if (!headers && !hasLongWord) {
           // Set max length for the body to 78 unless a line
           // contains a word so long that exceeding 78 characters
           // is unavoidable
-          maxLineLength=78;
+          maxLineLength = 78;
         }
         if (lineLength>maxLineLength) {
-          Console.WriteLine("Line length exceeded (" + (maxLineLength) + " " + (str.Substring(index-78, 78)) + ")");
+          Console.WriteLine("Line length exceeded (" + maxLineLength + " " + (str.Substring(index-78, 78)) + ")");
           return false;
         }
         ++index;
@@ -1112,23 +1112,31 @@ namespace MailLibTest {
     public void TestEncodedWordsReservedChars() {
       // Check decoding of encoded words containing reserved characters
       // such as specials and CTLs:
-      // U+007F, not directly representable
+      // U + 007F, should not be directly representable
       this.TestEncodedWordsPhrase("=?utf-8?q?x_=7F?=","=?utf-8?q?x_=7F?=");
-      // U+0001, not directly representable
+      // U + 0001, should not be directly representable
       this.TestEncodedWordsPhrase("=?utf-8?q?x_=01?=","=?utf-8?q?x_=01?=");
-      // CR and LF, not directly representable
+      // CR and LF, should not be directly representable
       this.TestEncodedWordsPhrase("=?utf-8?q?x_=0D=0A?=","=?utf-8?q?x_=0D=0A?=");
       // Parentheses
-      this.TestEncodedWordsPhrase("=?utf-8?q?x_=28y=29?=","\"x (y)\"");
+      this.TestEncodedWordsPhrase("\"x (y)\"","=?utf-8?q?x_=28y=29?=");
       // Colons and angle brackets
-      this.TestEncodedWordsPhrase("=?utf-8?q?x_=3Cy=3Az=3E?=","\"x <y:z>\"");
+      this.TestEncodedWordsPhrase("\"x <y:z>\"","=?utf-8?q?x_=3Cy=3Az=3E?=");
       // Encoded word lookalikes
       this.TestEncodedWordsPhrase(
-        "=?utf-8?q?=3D=3Futf-8=3Fq=3Fxyz=3F=3D?=",
-        "\"=?utf-8?q?xyz?=\"");
+        "\"=?utf-8?q?xyz?=\"",
+        "=?utf-8?q?=3D=3Futf-8=3Fq=3Fxyz=3F=3D?=");
       this.TestEncodedWordsPhrase(
-        "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=",
-        "\"=?utf-8?q?xyz?=\"");
+        "\"=?utf-8?q?xyz?=\"",
+        "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
+      // Already quoted material
+      this.TestEncodedWordsPhrase(
+        "me (x) \"x:y\"",
+        "=?utf-8?q?me?= (x) \"x:y\"");
+      // Already quoted material with a special
+      this.TestEncodedWordsPhrase(
+        "me \"x:y\"",
+        "=?utf-8?q?me?= \"x:y\"");
     }
 
     [Test]
@@ -1137,8 +1145,10 @@ namespace MailLibTest {
       this.TestEncodedWordsPhrase("(sss) y", "(sss) =?us-ascii?q?y?=");
       this.TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       this.TestEncodedWordsPhrase("=?bad1?= =?bad2?= =?bad3?=", "=?bad1?= =?bad2?= =?bad3?=");
-      this.TestEncodedWordsPhrase("y =?bad2?= =?bad3?=", "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
-      this.TestEncodedWordsPhrase("=?bad1?= y =?bad3?=", "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
+      // quoted because one word was decoded
+      this.TestEncodedWordsPhrase("\"y =?bad2?= =?bad3?=\"", "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
+      // quoted because one word was decoded
+      this.TestEncodedWordsPhrase("\"=?bad1?= y =?bad3?=\"", "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
       this.TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       this.TestEncodedWordsPhrase(" xy", " =?us-ascii?q?x?= =?us-ascii?q?y?=");
       this.TestEncodedWordsPhrase("xy (sss)", "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
@@ -1384,7 +1394,7 @@ namespace MailLibTest {
       }
     }
 
-    public bool IsRareMixerHeader(string hdrname) {
+    internal static bool IsRareMixerHeader(string hdrname) {
       return hdrname.Equals("content-identifier") || hdrname.Equals("x400-content-identifier") || hdrname.Equals("x400-content-return") || hdrname.Equals("x400-content-type") || hdrname.Equals("x400-mts-identifier") || hdrname.Equals("x400-originator") || hdrname.Equals("x400-received") || hdrname.Equals("x400-recipients") || hdrname.Equals("x400-trace") || hdrname.Equals("original-encoded-information-types") || hdrname.Equals("conversion") || hdrname.Equals("conversion-with-loss") || hdrname.Equals("dl-expansion-history") || hdrname.Equals("originator-return-address") ||
         hdrname.Equals("discarded-x400-mts-extensions") || hdrname.Equals("supersedes") || hdrname.Equals("expires") ||
         hdrname.Equals("content-return") ||
@@ -1408,18 +1418,20 @@ namespace MailLibTest {
       return sb.ToString();
     }
 
-    private static string Hash(string str) {
+    internal static string Hash(string str) {
       using(var sha1 = new System.Security.Cryptography.SHA1Managed()) {
         return ToBase16(sha1.ComputeHash(DataUtilities.GetUtf8Bytes(str, true)));
       }
     }
 
-    internal static bool HasNestedMessageType(Message message){
-      if(message.ContentType.TopLevelType.Equals("message")){
+    internal static bool HasNestedMessageType(Message message) {
+      if (message.ContentType.TopLevelType.Equals("message")) {
         return true;
       }
-      foreach(var part in message.Parts){
-        if(HasNestedMessageType(part))return true;
+      foreach(var part in message.Parts) {
+        if (HasNestedMessageType(part)) {
+          return true;
+        }
       }
       return false;
     }

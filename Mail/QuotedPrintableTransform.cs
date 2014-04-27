@@ -120,8 +120,7 @@ namespace PeterO.Mail {
               this.lineCharCount = 0;
               continue;
             } else {
-              // Anything else
-              if(lenientLineBreaks){
+              if (this.lenientLineBreaks) {
                 this.lineCharCount = 0;
                 this.input.Unget();
                 continue;
@@ -143,7 +142,7 @@ namespace PeterO.Mail {
           } else if (b1 == -1) {
             // Equals sign at end, ignore
             return -1;
-          } else if (b1=='\n' && this.lenientLineBreaks) {
+          } else if (b1 == '\n' && this.lenientLineBreaks) {
             // Soft line break
             this.lineCharCount = 0;
             continue;

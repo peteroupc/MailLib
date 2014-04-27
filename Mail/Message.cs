@@ -11,34 +11,37 @@ using System.IO;
 using System.Text;
 
 namespace PeterO.Mail {
-  /// <summary>Represents an email message. <para><b>Thread safety:</b>
-  /// This class is mutable; its properties can be changed. None of its methods
-  /// are designed to be thread safe. Therefore, access to objects from
-  /// this class must be synchronized if multiple threads can access them
-  /// at the same time.</para>
-  /// <para>The following lists known deviations from the mail specifications
-  /// (Internet Message Format and MIME):</para>
-  /// <list type=''> <item>The content-transfer-encoding "quoted-printable"
-  /// is treated as 7bit instead if it occurs in a message or body part with
-  /// content type "multipart/*" or "message/*" (other than "message/global").</item>
-  /// <item>Non-UTF-8 bytes appearing in header field values are replaced
-  /// with replacement characters. Moreover, UTF-8 is parsed everywhere
-  /// in header field values, even in those parts of some structured header fields 
-  /// where this appears not to be allowed.</item>
-  /// <item>The To and Cc header fields are allowed to contain only comments
-  /// and whitespace, but these "empty" header fields will be omitted when
-  /// generating.</item>
-  /// <item>There is no line length limit imposed when parsing quoted-printable
-  /// or base64 encoded bodies.</item>
-  /// <item>In non-MIME message bodies, in text/plain message bodies, and
-  /// in the prologue
-  /// and epilogue of multipart messages (which will be ignored), if the
-  /// transfer encoding is absent or declared as 7bit, any 8-bit bytes are
-  /// replaced with question marks.</item>
-  /// <item>The name "ascii" is treated as a synonym for "us-ascii", despite
-  /// being a reserved name under RFC 2026.</item>
-  /// </list>
-  /// </summary>
+    /// <summary>Represents an email message. <para><b>Thread safety:</b>
+    /// This class is mutable; its properties can be changed. None of its methods
+    /// are designed to be thread safe. Therefore, access to objects from
+    /// this class must be synchronized if multiple threads can access them
+    /// at the same time.</para>
+    /// <para>The following lists known deviations from the mail specifications
+    /// (Internet Message Format and MIME):</para>
+    /// <list type=''> <item>The content-transfer-encoding "quoted-printable"
+    /// is treated as 7bit instead if it occurs in a message or body part with
+    /// content type "multipart/*" or "message/*" (other than "message/global").</item>
+    /// <item>Non-UTF-8 bytes appearing in header field values are replaced
+    /// with replacement characters. Moreover, UTF-8 is parsed everywhere
+    /// in header field values, even in those parts of some structured header
+    /// fields where this appears not to be allowed.</item>
+    /// <item>The To and Cc header fields are allowed to contain only comments
+    /// and whitespace, but these "empty" header fields will be omitted when
+    /// generating.</item>
+    /// <item>There is no line length limit imposed when parsing quoted-printable
+    /// or base64 encoded bodies.</item>
+    /// <item>In non-MIME message bodies, in text/plain message bodies,
+    /// and in the prologue and epilogue of multipart messages (which will
+    /// be ignored), if the transfer encoding is absent or declared as 7bit,
+    /// any 8-bit bytes are replaced with question marks.</item>
+    /// <item>The name "ascii" is treated as a synonym for "us-ascii", despite
+    /// being a reserved name under RFC 2046.</item>
+    /// <item>If a sequence of encoded words (RFC 2047) decodes to a string
+    /// with a CTL character (U + 007F, or a character less than U + 0020 and not
+    /// TAB) after being converted to Unicode, the encoded words are left
+    /// undecoded.</item>
+    /// </list>
+    /// </summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -92,15 +95,16 @@ namespace PeterO.Mail {
       }
     }
 
-    private static bool IsShortAndAllAscii(string str){
-      if(str.Length>0x10000)
+    private static bool IsShortAndAllAscii(string str) {
+      if (str.Length > 0x10000) {
         return false;
-      for(int i=0;i<str.Length;i++){
-        if((((int)str[i])>>7)!=0)return false;
+      }
+      for (int i = 0; i < str.Length; ++i) {
+        if ((((int)str[i]) >> 7) != 0) return false;
       }
       return true;
     }
-    
+
     /// <summary>Sets the body of this message to the specified plain text
     /// string. The character sequences CR, LF, and CR/LF will be converted
     /// to CR/LF line breaks.</summary>
@@ -278,8 +282,7 @@ namespace PeterO.Mail {
 
     /// <summary>Returns the mail message contained in this message's body.</summary>
     /// <returns>A message object if this object's content type is "message/rfc822"
-    /// or "message/global",
-    /// or null otherwise.</returns>
+    /// or "message/global", or null otherwise.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
@@ -358,14 +361,9 @@ namespace PeterO.Mail {
         }
         if (value.IndexOf("=?") >= 0) {
           IHeaderFieldParser parser = HeaderFields.GetParser(name);
-          if (!parser.IsStructured()) {
-            // Decode encoded words where they appear in unstructured
-            // header fields
-            // TODO: Also decode encoded words in structured header
-            // fields (at least in phrases and maybe also comments)
-            value = parser.DecodeEncodedWords(value);
-            this.headers[i + 1] = value;
-          }
+          // Decode encoded words in the header field where possible
+          value = parser.DecodeEncodedWords(value);
+          this.headers[i + 1] = value;
         }
       }
       this.contentType = digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
@@ -456,6 +454,24 @@ namespace PeterO.Mail {
         }
       }
       return null;
+    }
+
+    private static string Implode(string[] strings, string delim) {
+      if (strings.Length == 0) {
+ return String.Empty;
+}
+      if (strings.Length == 1) {
+ return strings[0];
+}
+      StringBuilder sb = new StringBuilder();
+      bool first = true;
+       foreach (string s in strings) {
+        if (!first) {
+          sb.Append(delim);
+        }
+        sb.Append(s);
+      }
+      return sb.ToString();
     }
 
     private string[] GetMultipleHeaders(string name) {
@@ -735,7 +751,7 @@ namespace PeterO.Mail {
           "Differs [length " + a.Length + " vs. " + b.Length + "]\r\nA=" + a.Substring(sa, salen) + "\r\nB=" + b.Substring(sa, sblen));
       }
     }
-    
+
     private int TransferEncodingToUse(bool isBodyPart) {
       string topLevel = this.contentType.TopLevelType;
       if (topLevel.Equals("message") || topLevel.Equals("multipart")) {
@@ -757,8 +773,8 @@ namespace PeterO.Mail {
           allTextBytes = false;
           ++ctlBytes;
         } else if (this.body[i] == 0x7f ||
-                   (this.body[i] < 0x20 && this.body[i]!=0x0d &&
-                    this.body[i] != 0x0a && this.body[i]!=0x09)) {
+                   (this.body[i] < 0x20 && this.body[i] != 0x0d &&
+                    this.body[i] != 0x0a && this.body[i] != 0x09)) {
           allTextBytes = false;
           ++ctlBytes;
         } else if (this.body[i] == (byte)'\r') {
@@ -818,8 +834,14 @@ namespace PeterO.Mail {
     /// <summary>Generates this message's data in text form. The generated
     /// message will always be 7-bit ASCII, and the transfer encoding will
     /// always be 7bit, quoted-printable, or base64 (the declared transfer
-    /// encoding for this message will be ignored).</summary>
-    /// <returns>A string object.</returns>
+    /// encoding for this message will be ignored).<para> If the From header
+    /// field has an invalid syntax or has no addresses, or if the field is missing,
+    /// this method will generate a synthetic From field with the contents
+    /// of the previous From field or fields as the name, and the address <code>me@author-address.invalid</code>
+    /// as the address (a <code>.invalid</code>
+    /// address is a reserved address that can never belong to anyone). </para>
+    /// </summary>
+    /// <returns>The generated message.</returns>
     public string Generate() {
       return this.Generate(0);
     }
@@ -879,15 +901,16 @@ namespace PeterO.Mail {
           }
           haveFrom = true;
           if (!this.IsValidAddressingField(name)) {
-            string oldValue=value;
+            string oldValue = value;
             value = GenerateAddressList(this.FromAddresses);
             if (value.Length == 0) {
               // No addresses, synthesize a From field
-              value=new EncodedWordEncoder().AddString(oldValue).FinalizeEncoding().ToString();
-              if(value.Length>0){
-                value+=" <me@author-address.invalid>";
+              string fullField=Implode(this.GetMultipleHeaders(name), ", ");
+              value = new EncodedWordEncoder().AddString(fullField).FinalizeEncoding().ToString();
+              if (value.Length > 0) {
+                value += " <me@author-address.invalid>";
               } else {
-                value="me@author-address.invalid";
+                value = "me@author-address.invalid";
               }
             }
           }
@@ -957,7 +980,7 @@ namespace PeterO.Mail {
       if (!outputtedFrom && depth == 0) {
         // Output a synthetic From field if it doesn't
         // exist and this isn't a body part
-        sb.Append("From: me@author.invalid\r\n");
+        sb.Append("From: me@author-address.invalid\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
         sb.Append("MIME-Version: 1.0\r\n");
@@ -1204,8 +1227,8 @@ namespace PeterO.Mail {
     private class MessageStackEntry {
       private Message message;
 
-      /// <summary>Gets a value not documented yet.</summary>
-      /// <value>A value not documented yet.</value>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public Message Message {
         get {
           return this.message;
@@ -1214,8 +1237,8 @@ namespace PeterO.Mail {
 
       private string boundary;
 
-      /// <summary>Gets a value not documented yet.</summary>
-      /// <value>A value not documented yet.</value>
+    /// <summary>Gets a value not documented yet.</summary>
+    /// <value>A value not documented yet.</value>
       public string Boundary {
         get {
           return this.boundary;
