@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using PeterO.Text;
+
 namespace PeterO.Mail {
   internal class HeaderFields
   {
@@ -17,10 +19,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object. (2).</param>
     /// <returns>A string object.</returns>
       public string DowngradeFieldValue(string str) {
-        return new EncodedWordEncoder()
-          .AddString(str)
-          .FinalizeEncoding()
-          .ToString();
+        return Rfc2047.EncodeString(str);
       }
 
     /// <summary>Not documented yet.</summary>
@@ -51,16 +50,35 @@ namespace PeterO.Mail {
     private abstract class StructuredHeaderField : IHeaderFieldParser {
       public abstract int Parse(string str, int index, int endIndex, ITokener tokener);
 
+      private IList<string> ParseGroupLists(string str, int index, int endIndex) {
+        var groups = new List<string>();
+        Tokener tokener = new Tokener();
+        this.Parse(str, index, endIndex, tokener);
+        foreach (int[] token in tokener.GetTokens()) {
+          if (token[0] == HeaderParserUtility.TokenGroup) {
+            int startIndex = token[1];
+            endIndex = token[2];
+            string groupList = HeaderParserUtility.ParseGroupList(str, startIndex, endIndex);
+            groupList = ParserUtility.TrimSpaceAndTab(groupList);
+            groups.Add(groupList);
+          }
+        }
+        return groups;
+      }
+
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object. (2).</param>
     /// <returns>A string object.</returns>
       public string DowngradeFieldValue(string str) {
+        string originalString = str;
+        IList<string> originalGroups = null;
         for (int phase = 0; phase < 5; ++phase) {
           if (str.IndexOf('(') < 0 && phase == 0) {
             // No comments in the header field value, a common case
             continue;
           }
           if (!Message.HasTextToEscape(str)) {
+            // No text needs to be encoded
             return str;
           }
           StringBuilder sb = new StringBuilder();
@@ -74,6 +92,7 @@ namespace PeterO.Mail {
           int lastIndex = 0;
           // Get each relevant token sorted by starting index
           IList<int[]> tokens = tokener.GetTokens();
+          int groupIndex = 0;
           foreach (int[] token in tokens) {
             if (token[1] < lastIndex) {
               continue;
@@ -91,7 +110,6 @@ namespace PeterO.Mail {
                 if (Message.HasTextToEscape(str, startIndex, endIndex)) {
                   string newComment = Rfc2047.EncodeComment(str, startIndex, endIndex);
                   sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
-                  // Console.WriteLine("newcomment "+newComment);
                   sb.Append(newComment);
                 } else {
                   // No text needs to be escaped, output the comment as is
@@ -109,9 +127,126 @@ namespace PeterO.Mail {
                 lastIndex = endIndex;
               }
             } else if (phase == 2) {  // Group downgrading
-              // TODO: Group downgrading
+              if (token[0] == HeaderParserUtility.TokenGroup) {
+                int startIndex = token[1];
+                endIndex = token[2];
+                bool nonasciiLocalParts = false;
+                int displayNameEnd = -1;
+                string originalGroupList;
+                foreach (int[] token2 in tokens) {
+                  if (token2[0] == HeaderParserUtility.TokenPhrase) {
+                    if (displayNameEnd < 0) {
+                      displayNameEnd = token2[2];
+                    }
+                  }
+                  if (token2[0] == HeaderParserUtility.TokenLocalPart) {
+                    if (token2[1] >= startIndex && token2[2] <= endIndex) {
+                      // Local part within a group
+                      if (Message.HasTextToEscapeIgnoreEncodedWords(str, token2[1], token2[2])) {
+                        nonasciiLocalParts = true;
+                        break;
+                      }
+                    }
+                  }
+                }
+                if (nonasciiLocalParts) {
+                  if (originalGroups == null) {
+                    originalGroups = this.ParseGroupLists(originalString, 0, originalString.Length);
+                  }
+                  originalGroupList = originalGroups[groupIndex];
+                  string groupText = originalGroupList;
+                  string displayNameText = str.Substring(startIndex, displayNameEnd - startIndex);
+                  string encodedText = displayNameText + " " + Rfc2047.EncodeString(groupText) + " :;";
+                  sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
+                  sb.Append(encodedText);
+                  lastIndex = endIndex;
+                  ++groupIndex;
+                } else {
+                  int localLastIndex = startIndex;
+                  bool nonasciiDomains = false;
+                  StringBuilder sb2 = new StringBuilder();
+                  foreach (int[] token2 in tokens) {
+                    if (token2[0] == HeaderParserUtility.TokenDomain) {
+                      if (token2[1] >= startIndex && token2[2] <= endIndex) {
+                        // Domain within the group
+                        string domain = HeaderParserUtility.ParseDomain(str, token2[1], token[2]);
+                        // NOTE: "domain" can include domain literals, enclosed
+                        // in brackets; they are invalid under "IsValidDomainName".
+                        if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.Length) &&
+                            Idna.IsValidDomainName(domain, false)) {
+                          domain = Idna.EncodeDomainName(domain);
+                        } else {
+                          domain = str.Substring(token2[1], token2[2] - token2[1]);
+                        }
+                        if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.Length)) {
+                          // ASCII encoding failed
+                          nonasciiDomains = true;
+                          break;
+                        }
+                        sb2.Append(str.Substring(localLastIndex, token2[1] - localLastIndex));
+                        sb2.Append(domain);
+                        localLastIndex = token2[2];
+                      }
+                    }
+                  }
+                  if (nonasciiDomains) {
+                    // At least some of the domains could not
+                    // be converted to ASCII
+                    if (originalGroups == null) {
+                      originalGroups = this.ParseGroupLists(originalString, 0, originalString.Length);
+                    }
+                    originalGroupList = originalGroups[groupIndex];
+                    string groupText = originalGroupList;
+                    string displayNameText = str.Substring(startIndex, displayNameEnd - startIndex);
+                    string encodedText = displayNameText + " " + Rfc2047.EncodeString(groupText) + " :;";
+                    sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
+                    sb.Append(encodedText);
+                    lastIndex = endIndex;
+                  } else {
+                    // All of the domains could be converted to ASCII
+                    sb2.Append(str.Substring(localLastIndex, endIndex - localLastIndex));
+                    sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
+                    sb.Append(sb2.ToString());
+                    lastIndex = endIndex;
+                  }
+                  ++groupIndex;
+                }
+              }
             } else if (phase == 3) {  // Mailbox downgrading
-              // TODO: Mailbox downgrading
+              if (token[0] == HeaderParserUtility.TokenGroup) {
+                int startIndex = token[1];
+                endIndex = token[2];
+                bool nonasciiLocalPart = false;
+                bool hasPhrase = false;
+                foreach (int[] token2 in tokens) {
+                  if (token2[0] == HeaderParserUtility.TokenPhrase) {
+                    hasPhrase = true;
+                  }
+                  if (token2[0] == HeaderParserUtility.TokenLocalPart) {
+                    if (token2[1] >= startIndex && token2[2] <= endIndex) {
+                      if (Message.HasTextToEscapeIgnoreEncodedWords(str, token2[1], token2[2])) {
+                        nonasciiLocalPart = true;
+                        break;
+                      }
+                    }
+                  }
+                }
+                if (nonasciiLocalPart) {
+                  sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
+                  if (!hasPhrase) {
+                    string addrSpec = str.Substring(token[1], token[2] - token[1]);
+                    string encodedText = " " + Rfc2047.EncodeString(addrSpec) + " :;";
+                    sb.Append(encodedText);
+                  } else {
+                    // TODO: Extract the addr-spec
+                  }
+                  lastIndex = endIndex;
+                  ++groupIndex;
+                } else {
+                  // TODO: Downgrade domains within the group
+                  ++groupIndex;
+                }
+              }
             } else if (phase == 4) {  // type addr downgrading
               // TODO: check RFC 6533
             }
@@ -482,18 +617,6 @@ namespace PeterO.Mail {
       }
     }
 
-    private sealed class HeaderContentAlternative : StructuredHeaderField {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <param name='index'>A 32-bit signed integer. (2).</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
-    /// <returns>A 32-bit signed integer.</returns>
-      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
-        return HeaderParser.ParseHeaderContentAlternative(str, index, endIndex, tokener);
-      }
-    }
-
     private sealed class HeaderContentBase : StructuredHeaderField {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
@@ -527,18 +650,6 @@ namespace PeterO.Mail {
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentDuration(str, index, endIndex, tokener);
-      }
-    }
-
-    private sealed class HeaderContentFeatures : StructuredHeaderField {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <param name='index'>A 32-bit signed integer. (2).</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
-    /// <returns>A 32-bit signed integer.</returns>
-      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
-        return HeaderParser.ParseHeaderContentFeatures(str, index, endIndex, tokener);
       }
     }
 
@@ -1034,30 +1145,6 @@ namespace PeterO.Mail {
       }
     }
 
-    private sealed class HeaderPicsLabel : StructuredHeaderField {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <param name='index'>A 32-bit signed integer. (2).</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
-    /// <returns>A 32-bit signed integer.</returns>
-      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
-        return HeaderParser.ParseHeaderPicsLabel(str, index, endIndex, tokener);
-      }
-    }
-
-    private sealed class HeaderPrivicon : StructuredHeaderField {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <param name='index'>A 32-bit signed integer. (2).</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
-    /// <returns>A 32-bit signed integer.</returns>
-      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
-        return HeaderParser.ParseHeaderPrivicon(str, index, endIndex, tokener);
-      }
-    }
-
     private sealed class HeaderReceived : StructuredHeaderField {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
@@ -1237,11 +1324,9 @@ namespace PeterO.Mail {
       list["base"] = new HeaderContentBase();
       list["bcc"] = new HeaderBcc();
       list["cc"] = new HeaderTo();
-      list["content-alternative"] = new HeaderContentAlternative();
       list["content-base"] = new HeaderContentBase();
       list["content-disposition"] = new HeaderContentDisposition();
       list["content-duration"] = new HeaderContentDuration();
-      list["content-features"] = new HeaderContentFeatures();
       list["content-id"] = new HeaderContentId();
       list["content-language"] = new HeaderContentLanguage();
       list["content-location"] = new HeaderContentLocation();
@@ -1286,8 +1371,6 @@ namespace PeterO.Mail {
       list["original-from"] = new HeaderFrom();
       list["original-message-id"] = new HeaderMessageId();
       list["original-recipient"] = new HeaderOriginalRecipient();
-      list["pics-label"] = new HeaderPicsLabel();
-      list["privicon"] = new HeaderPrivicon();
       list["received"] = new HeaderReceived();
       list["received-spf"] = new HeaderReceivedSpf();
       list["references"] = new HeaderInReplyTo();

@@ -55,7 +55,7 @@ namespace PeterO.Mail {
       if (domainLength > 0 && this.domain[0] != '[') {
         // "domain" is a domain name, and not an address literal,
         // so get its A-label length
-        domainLength = checked((int)DataUtilities.GetUtf8Length(Idna.DomainNameEncode(this.domain), true));
+        domainLength = checked((int)DataUtilities.GetUtf8Length(Idna.EncodeDomainName(this.domain), true));
       }
       if (this.localPart.Length > 0 &&
           HeaderParser.ParseDotAtomText(this.localPart, 0, this.localPart.Length, null) == this.localPart.Length) {

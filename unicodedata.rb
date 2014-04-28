@@ -693,26 +693,26 @@ end
 Dir.mkdir("cache") rescue nil
 puts "Gathering Unicode data..."
 downloadIfNeeded("cache/DerivedNormalizationProps.txt",
- "http://www.unicode.org/Public/UCD/latest/ucd/DerivedNormalizationProps.txt")
+ "http://www.unicode.org/Public/UNIDATA/DerivedNormalizationProps.txt")
 compex=getCompEx("cache/DerivedNormalizationProps.txt")
 downloadIfNeeded("cache/UnicodeData.txt",
- "http://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt")
+ "http://www.unicode.org/Public/UNIDATA/UnicodeData.txt")
 downloadIfNeeded("cache/ArabicShaping.txt",
- "http://www.unicode.org/Public/UCD/latest/ucd/ArabicShaping.txt")
+ "http://www.unicode.org/Public/UNIDATA/ArabicShaping.txt")
 downloadIfNeeded("cache/Scripts.txt",
- "http://www.unicode.org/Public/UCD/latest/ucd/Scripts.txt")
+ "http://www.unicode.org/Public/UNIDATA/Scripts.txt")
 downloadIfNeeded("cache/DerivedBidiClass.txt",
- "http://www.unicode.org/Public/UCD/latest/ucd/extracted/DerivedBidiClass.txt")
+ "http://www.unicode.org/Public/UNIDATA/extracted/DerivedBidiClass.txt")
 downloadIfNeeded("cache/HangulSyllableType.txt",
- "http://www.unicode.org/Public/UCD/latest/ucd/HangulSyllableType.txt")
+ "http://www.unicode.org/Public/UNIDATA/HangulSyllableType.txt")
 downloadIfNeeded("cache/DerivedCoreProperties.txt",
- "http://www.unicode.org/Public/UCD/latest/ucd/DerivedCoreProperties.txt")
+ "http://www.unicode.org/Public/UNIDATA/DerivedCoreProperties.txt")
 downloadIfNeeded("cache/NormalizationTest.txt",
- "http://www.unicode.org/Public/UCD/latest/ucd/NormalizationTest.txt")
+ "http://www.unicode.org/Public/UNIDATA/NormalizationTest.txt")
 downloadIfNeeded("cache/PropList.txt",
- "http://www.unicode.org/Public/UCD/latest/ucd/PropList.txt")
+ "http://www.unicode.org/Public/UNIDATA/PropList.txt")
 downloadIfNeeded("cache/CaseFolding.txt",
- "http://www.unicode.org/Public/UCD/latest/ucd/CaseFolding.txt")
+ "http://www.unicode.org/Public/UNIDATA/CaseFolding.txt")
 udata=getUnicodeData("cache/UnicodeData.txt")
 $CombiningClasses=udata[0]
 $DecompTypes=udata[1]
@@ -752,11 +752,7 @@ f.puts("    public static #{final} int[] ComposedPairs = new int[] {")
 f.puts("      "+linebrokenjoin(binary))
 f.puts("    };");
 f.puts("    public static #{final} byte[] CombiningClasses = new byte[] {")
-# Generate a packed byte array for combining classes
-cc=toByteArray($CombiningClasses)
-# Then compress the array with the LZ4 algorithm
-cc=LZ4.compress(cc)
-f.puts("      "+linebrokenjoinbytes(cc))
+f.puts("      "+linebrokenjoinbytes(LZ4.compress(toByteArray($CombiningClasses))))
 f.puts("    };");
 pointers=[]
 decomps=[]

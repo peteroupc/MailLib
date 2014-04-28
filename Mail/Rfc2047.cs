@@ -390,6 +390,7 @@ namespace PeterO.Mail {
                 if (encoding == null) {
                   // Console.WriteLine("Unknown charset " + charset);
                   decodedWord = str.Substring(startIndex - 2, afterLast - (startIndex - 2));
+                  acceptedEncodedWord = false;
                 } else {
                   // Console.WriteLine("Encoded " + (base64 ? "B" : "Q") + " to: " + (encoding.GetString(transform)));
                   decodedWord = encoding.GetString(transform);
@@ -691,6 +692,36 @@ namespace PeterO.Mail {
         }
         index = index2;
       }
+    }
+
+    public static string EncodeString(string str) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      return EncodeString(str, 0, str.Length);
+    }
+
+    public static string EncodeString(string str, int index, int endIndex) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      if (index < 0) {
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      }
+      if (index > str.Length) {
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+      }
+      if (endIndex < 0) {
+        throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      }
+      if (endIndex > str.Length) {
+        throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+      }
+      if (str.Length - index < endIndex) {
+        throw new ArgumentException("str's length minus " + index + " (" + Convert.ToString((long)(str.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture));
+      }
+      return new EncodedWordEncoder().AddString(
+        str.Substring(index, endIndex)).FinalizeEncoding().ToString();
     }
 
     public static string EncodePhraseText(string str, int index, int endIndex, IList<int[]> tokens) {

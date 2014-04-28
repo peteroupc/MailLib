@@ -151,7 +151,7 @@ namespace PeterO.Text {
     /// is encoded into PunyCode. Labels where this is not possible remain
     /// unchanged.</returns>
     /// <exception cref='System.ArgumentNullException'>Value is null.</exception>
-    public static string DomainNameEncode(string value) {
+    public static string EncodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException("value");
       }
@@ -164,13 +164,14 @@ namespace PeterO.Text {
       for (int i = 0; i < value.Length; ++i) {
         char c = value[i];
         if (c == '.') {
-          builder.Append('.');
           if (i != lastIndex) {
             retval = DomainUtility.PunycodeEncode(value, lastIndex, i);
             if (retval == null) {
-              builder.Append(value.Substring(lastIndex, i - lastIndex));
+              // Append the unmodified domain plus the dot
+              builder.Append(value.Substring(lastIndex, (i + 1) - lastIndex));
             } else {
               builder.Append(retval);
+              builder.Append('.');
             }
           }
           lastIndex = i + 1;

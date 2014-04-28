@@ -198,8 +198,8 @@ namespace PeterO.Text {
         if ((str[i] & 0xf800) == 0xd800) {
           int cp = DataUtilities.CodePointAt(str, i);
           if (cp == 0xfffd) {
- return false;
-}
+            return false;
+          }
         }
       }
       if (basic) {
@@ -213,8 +213,8 @@ namespace PeterO.Text {
       int ch = 0;
       while ((ch = chars.Read()) >= 0) {
         if (ch >= 0xd800 && ch <= 0xdfff) {
- return false;
-}
+          return false;
+        }
         list.Add(ch);
       }
       return IsNormalized(list, form);
@@ -230,8 +230,8 @@ namespace PeterO.Text {
         new PartialListCharacterInput(chars, start, length),
         form)) {
         if (i >= length) {
- return false;
-}
+          return false;
+        }
         if (ch != chars[start + i]) {
           return false;
         }
@@ -252,7 +252,7 @@ namespace PeterO.Text {
           return false;
         }
         bool isStable = false;
-        if ((c & mask) == c && (i + 1 == chars.Count || (chars[i + 1]&mask) == chars[i + 1])) {
+        if ((c & mask) == c && (i + 1 == chars.Count || (chars[i + 1] & mask) == chars[i + 1])) {
           // Quick check for an ASCII character followed by another
           // ASCII character (or Latin-1 in NFC) or the end of string.
           // Treat the first character as stable

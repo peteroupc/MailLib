@@ -109,27 +109,27 @@ namespace MailLibTest {
           ICharacterInput ci = new IntArrayCharacterInput(cps);
           actual = ToIntArray(Normalizer.GetChars(ci, Normalization.NFC));
           if (!Normalizer.IsNormalized(expected, Normalization.NFC)) {
- Assert.Fail(line);
-}
+            Assert.Fail(line);
+          }
           AssertEqual(expected, actual, line);
           ci = new IntArrayCharacterInput(cps);
           actual = ToIntArray(Normalizer.GetChars(ci, Normalization.NFD));
           AssertEqual(GetCodePoints(columns[2]), actual, line);
           if (!Normalizer.IsNormalized(GetCodePoints(columns[2]), Normalization.NFD)) {
- Assert.Fail(line);
-}
+            Assert.Fail(line);
+          }
           ci = new IntArrayCharacterInput(cps);
           actual = ToIntArray(Normalizer.GetChars(ci, Normalization.NFKC));
           AssertEqual(GetCodePoints(columns[3]), actual, line);
           if (!Normalizer.IsNormalized(GetCodePoints(columns[3]), Normalization.NFKC)) {
- Assert.Fail(line);
-}
+            Assert.Fail(line);
+          }
           ci = new IntArrayCharacterInput(cps);
           actual = ToIntArray(Normalizer.GetChars(ci, Normalization.NFKD));
           AssertEqual(GetCodePoints(columns[4]), actual, line);
           if (!Normalizer.IsNormalized(GetCodePoints(columns[4]), Normalization.NFKD)) {
- Assert.Fail(line);
-}
+            Assert.Fail(line);
+          }
         }
       }
       int[] cptemp = new int[1];
@@ -161,17 +161,17 @@ namespace MailLibTest {
           AssertEqual(i, norm.Read(), imsg);
           AssertEqual(-1, norm.Read(), imsg);
           if (!Normalizer.IsNormalized(cptemp, Normalization.NFC)) {
- Assert.Fail(imsg);
-}
+            Assert.Fail(imsg);
+          }
           if (!Normalizer.IsNormalized(cptemp, Normalization.NFD)) {
- Assert.Fail(imsg);
-}
+            Assert.Fail(imsg);
+          }
           if (!Normalizer.IsNormalized(cptemp, Normalization.NFKC)) {
- Assert.Fail(imsg);
-}
+            Assert.Fail(imsg);
+          }
           if (!Normalizer.IsNormalized(cptemp, Normalization.NFKD)) {
- Assert.Fail(imsg);
-}
+            Assert.Fail(imsg);
+          }
         }
       }
       // Additional normalization tests

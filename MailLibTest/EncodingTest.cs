@@ -689,6 +689,11 @@ namespace MailLibTest {
       }
       Assert.IsTrue(MediaType.Parse("text/plain").IsText);
       Assert.IsTrue(MediaType.Parse("multipart/alternative").IsMultipart);
+      Assert.AreEqual("example/x",MediaType.Parse("example/x ").TypeAndSubType);
+      Assert.AreEqual("text/plain",MediaType.Parse("example/x, a=b").TypeAndSubType);
+      Assert.AreEqual("example/x",MediaType.Parse("example/x ; a=b").TypeAndSubType);
+      Assert.AreEqual("example/x",MediaType.Parse("example/x; a=b").TypeAndSubType);
+      Assert.AreEqual("example/x",MediaType.Parse("example/x; a=b ").TypeAndSubType);
     }
 
     [Test]
@@ -908,7 +913,7 @@ namespace MailLibTest {
     }
 
     [Test]
-    public void TestEncodedPhrase() {
+    public void TestToFieldDowngrading() {
       string sep=", ";
       Assert.AreEqual(
         "x <x@example.com>" + sep + "\"X\" <y@example.com>",
@@ -922,7 +927,15 @@ namespace MailLibTest {
       Assert.AreEqual(
         "x <x@example.com>" + sep + "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>",
         HeaderFields.GetParser("to").DowngradeFieldValue("x <x@example.com>, x\u00e1 x x\u00e1 <y@example.com>"));
-      // TEST_018160.eml
+      Assert.AreEqual(
+        "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;",
+        HeaderFields.GetParser("to").DowngradeFieldValue("g: x@example.com, x\u00e1y@example.com;"));
+      Assert.AreEqual(
+        "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;",
+        HeaderFields.GetParser("to").DowngradeFieldValue("g: x@example.com, x@\u0300.example;"));
+      Assert.AreEqual(
+        "g: x@example.com" + sep + "x@xn--e-ufa.example;",
+        HeaderFields.GetParser("to").DowngradeFieldValue("g: x@example.com, x@e\u00e1.example;"));
     }
 
     private static string EncodeComment(string str) {
@@ -1183,6 +1196,7 @@ namespace MailLibTest {
       this.TestEncodedWordsOne("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
       this.TestEncodedWordsOne("=?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?=");
       this.TestEncodedWordsOne("=?utf-8?Q?" + this.Repeat("x", 200) + "?=", "=?utf-8?Q?" + this.Repeat("x", 200) + "?=");
+      this.TestEncodedWordsPhrase("=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
     }
 
     [Test]
@@ -1312,6 +1326,13 @@ namespace MailLibTest {
       Assert.IsFalse(new NamedAddress("x@example.com").IsGroup);
       Assert.AreEqual("x@example.com",new NamedAddress("x@example.com").Name);
       Assert.AreEqual("x@example.com",new NamedAddress("x@example.com").Address.ToString());
+    }
+
+    [Test]
+    public void TestMailbox() {
+      var mbox="Me <@example.org,@example.net,@example.com:me@x.example>";
+      var result = new NamedAddress(mbox);
+      Assert.AreEqual("Me <me@x.example>",result.ToString());
     }
 
     [Test]

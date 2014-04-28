@@ -32,32 +32,7 @@ namespace PeterO.Mail {
         return false;
       }
       return this.topLevelType == other.topLevelType && this.subType == other.subType &&
-        MapEquals(this.parameters, other.parameters);
-    }
-
-    private static bool MapEquals<TKey, TValue>(IDictionary<TKey, TValue> mapA, IDictionary<TKey, TValue> mapB) {
-      if (mapA == null) {
-        return mapB == null;
-      }
-      if (mapB == null) {
-        return false;
-      }
-      if (mapA.Count != mapB.Count) {
-        return false;
-      }
-      foreach (KeyValuePair<TKey, TValue> kvp in mapA) {
-        TValue valueB = default(TValue);
-        bool hasKey = mapB.TryGetValue(kvp.Key, out valueB);
-        if (hasKey) {
-          TValue valueA = kvp.Value;
-          if (!Object.Equals(valueA, valueB)) {
-            return false;
-          }
-        } else {
-          return false;
-        }
-      }
-      return true;
+        CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
     /// <summary>Returns the hash code for this instance.</summary>
@@ -450,7 +425,7 @@ namespace PeterO.Mail {
       return true;
     }
 
-    private static void AppendParamValue(string name, string str, StringBuilder sb) {
+    internal static void AppendParamValue(string name, string str, StringBuilder sb) {
       int valueSbStart = sb.Length;
       if (!AppendSimpleParamValue(name, str, sb)) {
         sb.Length = valueSbStart;
@@ -483,7 +458,7 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    private static int skipMimeToken(
+    internal static int SkipMimeToken(
       string str,
       int index,
       int endIndex,
@@ -506,14 +481,14 @@ namespace PeterO.Mail {
       return i;
     }
 
-    private static int skipAttributeNameRfc2231(
+    internal static int SkipAttributeNameRfc2231(
       string str,
       int index,
       int endIndex,
       StringBuilder builder,
       bool httpRules) {
       if (httpRules) {
-        return skipMimeToken(str, index, endIndex, builder, httpRules);
+        return SkipMimeToken(str, index, endIndex, builder, httpRules);
       }
       int i = index;
       while (i < endIndex) {
@@ -768,16 +743,16 @@ namespace PeterO.Mail {
       return charset.GetString(new PercentEncodingStringTransform(value));
     }
 
-    private bool ExpandRfc2231Extensions() {
-      if (this.parameters.Count == 0) {
+    private static bool ExpandRfc2231Extensions(IDictionary<string, string> parameters) {
+      if (parameters.Count == 0) {
         return true;
       }
-      IList<string> keyList = new List<string>(this.parameters.Keys);
+      IList<string> keyList = new List<string>(parameters.Keys);
       foreach (string name in keyList) {
-        if (!this.parameters.ContainsKey(name)) {
+        if (!parameters.ContainsKey(name)) {
           continue;
         }
-        string value = this.parameters[name];
+        string value = parameters[name];
         int asterisk = name.IndexOf('*');
         if (asterisk == name.Length - 1 && asterisk > 0) {
           // name*="value" (except when the parameter is just "*")
@@ -786,8 +761,8 @@ namespace PeterO.Mail {
           if (realValue == null) {
             continue;
           }
-          this.parameters.Remove(name);
-          this.parameters[realName] = realValue;
+          parameters.Remove(name);
+          parameters[realName] = realValue;
           continue;
         }
         // name*0 or name*0*
@@ -800,7 +775,7 @@ namespace PeterO.Mail {
             value;
           Charsets.ICharset charsetUsed = GetRfc2231Charset(
             (asterisk == name.Length - 3) ? value : null);
-          this.parameters.Remove(name);
+          parameters.Remove(name);
           if (realValue == null) {
             realValue = value;
           }
@@ -811,23 +786,23 @@ namespace PeterO.Mail {
             string contin = realName + "*" +
               Convert.ToString(pindex, CultureInfo.InvariantCulture);
             string continEncoded = contin + "*";
-            if (this.parameters.ContainsKey(contin)) {
+            if (parameters.ContainsKey(contin)) {
               // Unencoded continuation
-              realValue += this.parameters[contin];
-              this.parameters.Remove(contin);
-            } else if (this.parameters.ContainsKey(continEncoded)) {
+              realValue += parameters[contin];
+              parameters.Remove(contin);
+            } else if (parameters.ContainsKey(continEncoded)) {
               // Encoded continuation
-              realValue += DecodeRfc2231Encoding(this.parameters[continEncoded], charsetUsed);
-              this.parameters.Remove(continEncoded);
+              realValue += DecodeRfc2231Encoding(parameters[continEncoded], charsetUsed);
+              parameters.Remove(continEncoded);
             } else {
               break;
             }
             ++pindex;
           }
-          this.parameters[realName] = realValue;
+          parameters[realName] = realValue;
         }
       }
-      foreach (string name in this.parameters.Keys) {
+      foreach (string name in parameters.Keys) {
         // Check parameter names using stricter format
         // in RFC6838
         if (skipMimeTypeSubtype(name, 0, name.Length, null) != name.Length) {
@@ -846,7 +821,7 @@ namespace PeterO.Mail {
       }
     }
 
-    private static int skipLws(string s, int index, int endIndex) {
+    internal static int skipLws(string s, int index, int endIndex) {
       // While HTTP usually only allows CRLF, it also allows
       // us to be tolerant here
       int i2 = index;
@@ -862,6 +837,131 @@ namespace PeterO.Mail {
         break;
       }
       return index;
+    }
+
+    internal static bool ParseParameters(
+      string str,
+      int index,
+      int endIndex,
+      bool httpRules,
+      IDictionary<string, string> parameters) {
+      while (true) {
+        // RFC5322 uses ParseCFWS when skipping whitespace;
+        // HTTP currently uses skipLws, though that may change
+        // to skipWsp in a future revision of HTTP
+        if (httpRules) {
+          index = skipLws(str, index, endIndex);
+        } else {
+          index = HeaderParser.ParseCFWS(
+            str,
+            index,
+            endIndex,
+            null);
+        }
+        if (index >= endIndex) {
+          // No more parameters
+          if (!httpRules) {
+            return ExpandRfc2231Extensions(parameters);
+          }
+          return true;
+        }
+        if (str[index] != ';') {
+          return false;
+        }
+        ++index;
+        if (httpRules) {
+          index = skipLws(str, index, endIndex);
+        } else {
+          index = HeaderParser.ParseCFWS(
+            str,
+            index,
+            endIndex,
+            null);
+        }
+        StringBuilder builder = new StringBuilder();
+        // NOTE: RFC6838 restricts the format of parameter names to the same
+        // syntax as types and subtypes, but this syntax is incompatible with
+        // the RFC2231 format
+        int afteratt = SkipAttributeNameRfc2231(
+          str,
+          index,
+          endIndex,
+          builder,
+          httpRules);
+        if (afteratt == index) {  // ill-formed attribute
+          return false;
+        }
+        string attribute = builder.ToString();
+        index = afteratt;
+        if (!httpRules) {
+          // NOTE: MIME implicitly doesn't restrict whether whitespace can appear
+          // around the equal sign separating an attribute and value, while
+          // HTTP explicitly forbids such whitespace
+          index = HeaderParser.ParseCFWS(
+            str,
+            index,
+            endIndex,
+            null);
+        }
+        if (index >= endIndex) {
+          return false;
+        }
+        if (str[index] != '=') {
+          return false;
+        }
+        attribute = DataUtilities.ToLowerCaseAscii(attribute);
+        if (parameters.ContainsKey(attribute)) {
+          // Console.WriteLine("Contains duplicate attribute " + attribute);
+          return false;
+        }
+        ++index;
+        if (!httpRules) {
+          // See note above on whitespace around the equal sign
+          index = HeaderParser.ParseCFWS(
+            str,
+            index,
+            endIndex,
+            null);
+        }
+        if (index >= endIndex) {
+          // No more parameters
+          if (!httpRules) {
+            return ExpandRfc2231Extensions(parameters);
+          }
+          return true;
+        }
+        builder.Remove(0, builder.Length);
+        int qs;
+        // If the attribute name ends with '*' the value may not be a quoted string
+        if (attribute[attribute.Length - 1] != '*') {
+          // try getting the value quoted
+          qs = skipQuotedString(
+            str,
+            index,
+            endIndex,
+            builder,
+            httpRules ? QuotedStringRule.Http : QuotedStringRule.Rfc5322);
+          if (!httpRules && qs != index) {
+            qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
+          }
+          if (qs != index) {
+            parameters[attribute] = builder.ToString();
+            index = qs;
+            continue;
+          }
+          builder.Remove(0, builder.Length);
+        }
+        // try getting the value unquoted
+        // Note we don't use getAtom
+        qs = SkipMimeToken(str, index, endIndex, builder, httpRules);
+        if (qs != index) {
+          parameters[attribute] = builder.ToString();
+          index = qs;
+          continue;
+        }
+        // no valid value, return
+        return false;
+      }
     }
 
     /// <summary>Not documented yet.</summary>
@@ -893,130 +993,17 @@ namespace PeterO.Mail {
       if (i2 < endIndex) {
         // if not at end
         int i3 = HeaderParser.ParseCFWS(str, i2, endIndex, null);
-        if (i3 == endIndex || (i3 < endIndex && str[i3] != ';' && str[i3] != ',')) {
-          // at end, or not followed by ";" or ",", so not a media type
+        if (i3 == endIndex) {
+          // at end
+          return true;
+        }
+        if (i3 < endIndex && str[i3] != ';') {
+          // not followed by ";", so not a media type
           return false;
         }
       }
       index = i2;
-      int indexAfterTypeSubtype = index;
-      while (true) {
-        // RFC5322 uses ParseCFWS when skipping whitespace;
-        // HTTP currently uses skipLws, though that may change
-        // to skipWsp in a future revision of HTTP
-        if (httpRules) {
-          indexAfterTypeSubtype = skipLws(str, indexAfterTypeSubtype, endIndex);
-        } else {
-          indexAfterTypeSubtype = HeaderParser.ParseCFWS(
-            str,
-            indexAfterTypeSubtype,
-            endIndex,
-            null);
-        }
-        if (indexAfterTypeSubtype >= endIndex) {
-          // No more parameters
-          if (!httpRules) {
-            return this.ExpandRfc2231Extensions();
-          }
-          return true;
-        }
-        if (str[indexAfterTypeSubtype] != ';') {
-          return false;
-        }
-        ++indexAfterTypeSubtype;
-        if (httpRules) {
-          indexAfterTypeSubtype = skipLws(str, indexAfterTypeSubtype, endIndex);
-        } else {
-          indexAfterTypeSubtype = HeaderParser.ParseCFWS(
-            str,
-            indexAfterTypeSubtype,
-            endIndex,
-            null);
-        }
-        StringBuilder builder = new StringBuilder();
-        // NOTE: RFC6838 restricts the format of parameter names to the same
-        // syntax as types and subtypes, but this syntax is incompatible with
-        // the RFC2231 format
-        int afteratt = skipAttributeNameRfc2231(
-          str,
-          indexAfterTypeSubtype,
-          endIndex,
-          builder,
-          httpRules);
-        if (afteratt == indexAfterTypeSubtype) {  // ill-formed attribute
-          return false;
-        }
-        string attribute = builder.ToString();
-        indexAfterTypeSubtype = afteratt;
-        if (!httpRules) {
-          // NOTE: MIME implicitly doesn't restrict whether whitespace can appear
-          // around the equal sign separating an attribute and value, while
-          // HTTP explicitly forbids such whitespace
-          indexAfterTypeSubtype = HeaderParser.ParseCFWS(
-            str,
-            indexAfterTypeSubtype,
-            endIndex,
-            null);
-        }
-        if (indexAfterTypeSubtype >= endIndex) {
-          return false;
-        }
-        if (str[indexAfterTypeSubtype] != '=') {
-          return false;
-        }
-        attribute = DataUtilities.ToLowerCaseAscii(attribute);
-        if (this.parameters.ContainsKey(attribute)) {
-          // Console.WriteLine("Contains duplicate attribute " + attribute);
-          return false;
-        }
-        ++indexAfterTypeSubtype;
-        if (!httpRules) {
-          // See note above on whitespace around the equal sign
-          indexAfterTypeSubtype = HeaderParser.ParseCFWS(
-            str,
-            indexAfterTypeSubtype,
-            endIndex,
-            null);
-        }
-        if (indexAfterTypeSubtype >= endIndex) {
-          // No more parameters
-          if (!httpRules) {
-            return this.ExpandRfc2231Extensions();
-          }
-          return true;
-        }
-        builder.Remove(0, builder.Length);
-        int qs;
-        // If the attribute name ends with '*' the value may not be a quoted string
-        if (attribute[attribute.Length - 1] != '*') {
-          // try getting the value quoted
-          qs = skipQuotedString(
-            str,
-            indexAfterTypeSubtype,
-            endIndex,
-            builder,
-            httpRules ? QuotedStringRule.Http : QuotedStringRule.Rfc5322);
-          if (!httpRules && qs != indexAfterTypeSubtype) {
-            qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
-          }
-          if (qs != indexAfterTypeSubtype) {
-            this.parameters[attribute] = builder.ToString();
-            indexAfterTypeSubtype = qs;
-            continue;
-          }
-          builder.Remove(0, builder.Length);
-        }
-        // try getting the value unquoted
-        // Note we don't use getAtom
-        qs = skipMimeToken(str, indexAfterTypeSubtype, endIndex, builder, httpRules);
-        if (qs != indexAfterTypeSubtype) {
-          this.parameters[attribute] = builder.ToString();
-          indexAfterTypeSubtype = qs;
-          continue;
-        }
-        // no valid value, return
-        return false;
-      }
+      return ParseParameters(str, index, endIndex, httpRules, this.parameters);
     }
 
     #if CODE_ANALYSIS

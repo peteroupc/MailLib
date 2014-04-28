@@ -70,6 +70,22 @@ namespace PeterO.Mail {
       return QuoteValue(str);
     }
 
+    public static string ParseGroupList(string str, int index, int endIndex) {
+      // NOTE: Assumes the string matches the production "group"
+      int tmp = HeaderParser.ParsePhrase(str, index, endIndex, null);
+      if (tmp == index) {
+        return String.Empty;
+      }
+      index = tmp;
+      if (index < endIndex && str[index] == ':') {
+        ++index;
+      } else {
+        return String.Empty;
+      }
+      tmp = HeaderParser.ParseGroupList(str, index, endIndex, null);
+      return str.Substring(index, tmp - index);
+    }
+
     /// <summary>Quotes a string according to RFC 5322 rules.</summary>
     /// <param name='str'>A String object.</param>
     /// <returns>A string object.</returns>
@@ -280,6 +296,8 @@ namespace PeterO.Mail {
           } else if (tokenKind == TokenLocalPart) {
             localPart = ParseLocalPart(str, tokenIndex, tokenEnd);
           } else if (tokenKind == TokenDomain) {
+            // NOTE: Domain will end up as the last domain token,
+            // even if the mailbox contains obsolete route syntax
             domain = ParseDomain(str, tokenIndex, tokenEnd);
           }
         }

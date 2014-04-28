@@ -113,7 +113,7 @@ namespace PeterO.Mail {
           } else if (b1 >= 'a' && b1 <= 'f') {
             c <<= 4;
             c |= b1 + 10 - 'a';
-          } else if (b1 =='\r') {
+          } else if (b1 == '\r') {
             b1 = this.input.ReadByte();
             if (b1 == '\n') {
               // Soft line break

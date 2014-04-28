@@ -34,8 +34,9 @@ namespace PeterO.Mail {
     /// and in the prologue and epilogue of multipart messages (which will
     /// be ignored), if the transfer encoding is absent or declared as 7bit,
     /// any 8-bit bytes are replaced with question marks.</item>
-    /// <item>The name "ascii" is treated as a synonym for "us-ascii", despite
-    /// being a reserved name under RFC 2046.</item>
+    /// <item>The name <code>ascii</code>
+    /// is treated as a synonym for <code>us-ascii</code>
+    /// , despite being a reserved name under RFC 2046.</item>
     /// <item>If a sequence of encoded words (RFC 2047) decodes to a string
     /// with a CTL character (U + 007F, or a character less than U + 0020 and not
     /// TAB) after being converted to Unicode, the encoded words are left
@@ -458,14 +459,14 @@ namespace PeterO.Mail {
 
     private static string Implode(string[] strings, string delim) {
       if (strings.Length == 0) {
- return String.Empty;
-}
+        return String.Empty;
+      }
       if (strings.Length == 1) {
- return strings[0];
-}
+        return strings[0];
+      }
       StringBuilder sb = new StringBuilder();
       bool first = true;
-       foreach (string s in strings) {
+      foreach (string s in strings) {
         if (!first) {
           sb.Append(delim);
         }
@@ -545,6 +546,9 @@ namespace PeterO.Mail {
       if (ret.Equals("Mime-Version")) {
         return "MIME-Version";
       }
+      if (ret.Equals("Message-Id")) {
+        return "Message-ID";
+      }
       return ret;
     }
 
@@ -567,6 +571,44 @@ namespace PeterO.Mail {
           // "=?" (start of an encoded word)
           return true;
         }
+        if (c == 0x0d) {
+          if (i + 1 >= len || s[i + 1] != 0x0a) {
+            // bare CR
+            // Console.WriteLine("bare CR");
+            return true;
+          } else if (i + 2 >= len || (s[i + 2] != 0x09 && s[i + 2] != 0x20)) {
+            // CRLF not followed by whitespace
+            return true;
+          }
+          chunkLength = 0;
+          ++i;
+          continue;
+        } else if (c == 0x0a) {
+          // bare LF
+          return true;
+        }
+        if (c >= 0x7f || (c < 0x20 && c != 0x09 && c != 0x0d)) {
+          // CTLs (except TAB, SPACE, and CR) and non-ASCII
+          // characters
+          return true;
+        }
+        if (c == 0x20 || c == 0x09) {
+          chunkLength = 0;
+        } else {
+          ++chunkLength;
+          if (chunkLength > 75) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    internal static bool HasTextToEscapeIgnoreEncodedWords(string s, int index, int endIndex) {
+      int len = endIndex;
+      int chunkLength = 0;
+      for (int i = index; i < endIndex; ++i) {
+        char c = s[i];
         if (c == 0x0d) {
           if (i + 1 >= len || s[i + 1] != 0x0a) {
             // bare CR
@@ -905,7 +947,7 @@ namespace PeterO.Mail {
             value = GenerateAddressList(this.FromAddresses);
             if (value.Length == 0) {
               // No addresses, synthesize a From field
-              string fullField=Implode(this.GetMultipleHeaders(name), ", ");
+              string fullField = Implode(this.GetMultipleHeaders(name), ", ");
               value = new EncodedWordEncoder().AddString(fullField).FinalizeEncoding().ToString();
               if (value.Length > 0) {
                 value += " <me@author-address.invalid>";
@@ -958,14 +1000,24 @@ namespace PeterO.Mail {
         string rawField = Capitalize(name) + ":" +
           (StartsWithWhitespace(value) ? String.Empty : " ") + value;
         if (CanOutputRaw(rawField)) {
-          // TODO: Try to preserve header field name (before the colon)
           sb.Append(rawField);
         } else if (HasTextToEscape(value)) {
           string downgraded = HeaderFields.GetParser(name).DowngradeFieldValue(value);
-          // TODO: If the header field is still not downgraded,
-          // write a "Downgraded-" header field instead (applies to
-          // Message-ID, Resent-Message-ID, In-Reply-To, References,
-          // Original-Recipient, and Final-Recipient)
+          if (HasTextToEscapeIgnoreEncodedWords(downgraded, 0, downgraded.Length)) {
+            if (name.Equals("message-id") ||
+               name.Equals("resent-message-id") ||
+               name.Equals("in-reply-to") ||
+               name.Equals("references") ||
+               name.Equals("original-recipient") ||
+               name.Equals("final-recipient")) {
+              // Header field still contains non-ASCII characters, convert
+              // to a downgraded field
+              name = "downgraded-"+name;
+              downgraded = Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTab(value));
+            } else {
+              throw new MessageDataException("Header field still has non-Ascii: " + name+" "+value);
+            }
+          }
           // TODO: Don't collapse spaces if a DQUOTE appears
           var encoder = new WordWrapEncoder(Capitalize(name) + ":");
           encoder.AddString(downgraded);
