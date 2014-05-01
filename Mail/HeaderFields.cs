@@ -247,8 +247,6 @@ namespace PeterO.Mail {
                   ++groupIndex;
                 }
               }
-            } else if (phase == 4) {  // type addr downgrading
-              // TODO: check RFC 6533
             }
           }
           sb.Append(str.Substring(lastIndex, str.Length - lastIndex));

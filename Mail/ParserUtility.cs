@@ -129,14 +129,15 @@ namespace PeterO.Mail {
 
     /// <summary>Splits a string by a delimiter. If the string ends with the
     /// delimiter, the result will end with an empty string. If the string
-    /// begins with the delimiter, the result will start with an empty string.
-    /// If the delimiter is null or empty, exception.</summary>
+    /// begins with the delimiter, the result will start with an empty string.</summary>
     /// <returns>An array containing strings that are split by the delimiter.
     /// If s is null or empty, returns an array whose sole element is the empty
     /// string.</returns>
     /// <param name='s'>A string to split.</param>
     /// <param name='delimiter'>A string to signal where each substring
     /// begins and ends.</param>
+    /// <exception cref='System.ArgumentException'>Delimiter is null
+    /// or empty.</exception>
     public static string[] SplitAt(string s, string delimiter) {
       if (delimiter == null) {
         throw new ArgumentNullException("delimiter");

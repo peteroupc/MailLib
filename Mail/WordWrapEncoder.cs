@@ -35,7 +35,7 @@ namespace PeterO.Mail {
         this.haveNonwhitespace = false;
       } else {
         this.haveNonwhitespace = true;  // assume have nonwhitespace
-        this.lastSpaces = " ";
+        this.lastSpaces = c.Length == 0 ? String.Empty : " ";
         this.lineLength = this.fullString.Length;
       }
     }
@@ -70,7 +70,8 @@ namespace PeterO.Mail {
 
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
-    public void AddString(string str) {
+    /// <returns>A WordWrapEncoder object.</returns>
+    public WordWrapEncoder AddString(string str) {
       int wordStart = 0;
       for (int j = 0; j < str.Length; ++j) {
         int c = str[j];
@@ -94,6 +95,7 @@ namespace PeterO.Mail {
       if (wordStart != str.Length) {
         this.AppendWord(str.Substring(wordStart, str.Length - wordStart));
       }
+      return this;
     }
 
     /// <summary>Converts this object to a text string.</summary>

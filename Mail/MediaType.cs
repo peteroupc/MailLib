@@ -425,21 +425,35 @@ namespace PeterO.Mail {
       return true;
     }
 
-    internal static void AppendParamValue(string name, string str, StringBuilder sb) {
-      int valueSbStart = sb.Length;
-      if (!AppendSimpleParamValue(name, str, sb)) {
-        sb.Length = valueSbStart;
-        AppendComplexParamValue(name, str, sb);
-        return;
+    internal static int LastLineStart(StringBuilder sb) {
+      for (int i = sb.Length - 1; i >= 0; --i) {
+        if (sb[i] == '\n') {
+          return i + 1;
+        }
       }
-      if (sb.Length > 76) {
-        sb.Length = valueSbStart;
-        sb.Append("\r\n ");
-        int valueSbStart2 = sb.Length - 1;
-        AppendSimpleParamValue(name, str, sb);
-        if (sb.Length - valueSbStart2 > 76) {
-          sb.Length = valueSbStart;
-          AppendComplexParamValue(name, str, sb);
+      return 0;
+    }
+
+    internal static void AppendParameters(IDictionary<string, string> parameters, StringBuilder sb) {
+      StringBuilder tmp = new StringBuilder();
+      foreach (string key in parameters.Keys) {
+        int lineIndex = LastLineStart(sb);
+        string name = key;
+        string value = parameters[key];
+        sb.Append(';');
+        tmp.Length = 0;
+        if (!AppendSimpleParamValue(name, value, tmp)) {
+          tmp.Length = 0;
+          AppendComplexParamValue(name, value, tmp);
+          if ((sb.Length - lineIndex) + tmp.Length > (lineIndex == 0 ? 75 : 76)) {
+            sb.Append("\r\n ");
+          }
+          sb.Append(tmp);
+        } else {
+          if ((sb.Length - lineIndex) + tmp.Length > (lineIndex == 0 ? 75 : 76)) {
+            sb.Append("\r\n ");
+          }
+          sb.Append(tmp);
         }
       }
     }
@@ -451,10 +465,7 @@ namespace PeterO.Mail {
       sb.Append(this.topLevelType);
       sb.Append('/');
       sb.Append(this.subType);
-      foreach (string key in this.parameters.Keys) {
-        sb.Append(';');
-        AppendParamValue(key, this.parameters[key], sb);
-      }
+      AppendParameters(this.parameters, sb);
       return sb.ToString();
     }
 
@@ -618,7 +629,8 @@ namespace PeterO.Mail {
       // vnd.net2phone.commcenter.command, vnd.radisys.msml-basic-layout,
       // vnd.wap.si, vnd.wap.sl, vnd.wap.wml
       //
-      // Deliberately undefined:
+      // Behavior deliberately undefined (so whether US-ASCII or another
+      // charset is treated as default is irrelevant):
       // -- example
       //
       // -- US-ASCII assumed: --

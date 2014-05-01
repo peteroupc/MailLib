@@ -696,6 +696,83 @@ namespace MailLibTest {
       Assert.AreEqual("example/x",MediaType.Parse("example/x; a=b ").TypeAndSubType);
     }
 
+    private static void AssertUtf8Equal(byte[] expected, byte[] actual) {
+      Assert.AreEqual(DataUtilities.GetUtf8String(expected, true),
+                      DataUtilities.GetUtf8String(actual, true));
+    }
+
+    private static string WrapHeader(string s) {
+      return new WordWrapEncoder("").AddString(s).ToString();
+    }
+
+    private void TestDowngradeDSNOne(string expected, string actual) {
+      Assert.AreEqual(expected, Message.DowngradeRecipientHeaderValue(actual));
+      string dsn;
+      string expectedDSN;
+      byte[] bytes;
+      byte[] expectedBytes;
+      bool encap=(expected.StartsWith("=?"));
+      dsn="X-Ignore: X\r\n\r\nOriginal-Recipient: "+actual+"\r\nFinal-Recipient: "+actual+"\r\nX-Ignore: Y\r\n\r\n";
+      if (encap)
+        expectedDSN="X-Ignore: X\r\n\r\n"+WrapHeader("Downgraded-Original-Recipient: "+expected)+
+          "\r\n"+WrapHeader("Downgraded-Final-Recipient: "+expected)+"\r\nX-Ignore: Y\r\n\r\n";
+      else {
+        expectedDSN="X-Ignore: X\r\n\r\n"+WrapHeader("Original-Recipient: "+expected)+"\r\n"+WrapHeader("Final-Recipient: "+expected)+"\r\nX-Ignore: Y\r\n\r\n";
+      }
+      bytes = Message.DowngradeDeliveryStatus(DataUtilities.GetUtf8Bytes(dsn, true));
+      expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
+      AssertUtf8Equal(expectedBytes, bytes);
+      dsn="X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\nOriginal-Recipient: "+actual+"\r\nFinal-Recipient: "+actual+"\r\nX-Ignore: Y\r\n\r\n";
+      if (encap)
+        expectedDSN="X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n"+WrapHeader("Downgraded-Original-Recipient: "+expected)+
+          "\r\n"+WrapHeader("Downgraded-Final-Recipient: "+expected)+"\r\nX-Ignore: Y\r\n\r\n";
+      else {
+        expectedDSN="X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n"+WrapHeader("Original-Recipient: "+expected)+"\r\n"+WrapHeader("Final-Recipient: "+expected)+"\r\nX-Ignore: Y\r\n\r\n";
+      }
+      bytes = Message.DowngradeDeliveryStatus(DataUtilities.GetUtf8Bytes(dsn, true));
+      expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
+      AssertUtf8Equal(expectedBytes, bytes);
+      dsn="X-Ignore: X\r\n\r\nOriginal-recipient : "+actual+"\r\nFinal-Recipient: "+actual+"\r\nX-Ignore: Y\r\n\r\n";
+      if (encap)
+        expectedDSN="X-Ignore: X\r\n\r\n"+WrapHeader("Downgraded-Original-Recipient: "+expected)+
+          "\r\n"+WrapHeader("Downgraded-Final-Recipient: "+expected)+"\r\nX-Ignore: Y\r\n\r\n";
+      else {
+        expectedDSN="X-Ignore: X\r\n\r\n"+WrapHeader("Original-recipient : "+expected)+"\r\n"+WrapHeader("Final-Recipient: "+expected)+"\r\nX-Ignore: Y\r\n\r\n";
+      }
+      bytes = Message.DowngradeDeliveryStatus(DataUtilities.GetUtf8Bytes(dsn, true));
+      expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
+      AssertUtf8Equal(expectedBytes, bytes);
+    }
+
+    [Test]
+    public void TestDowngradeDSN() {
+      string hexstart = "\\x" + "{";
+      TestDowngradeDSNOne(
+        "utf-8; x@x.example",
+        ("utf-8; x@x.example"));
+      TestDowngradeDSNOne(
+        "utf-8; x@x" + hexstart + "BE}.example",
+        ("utf-8; x@x\u00be.example"));
+      TestDowngradeDSNOne(
+        "utf-8; x@x" + hexstart + "BE}" + hexstart + "FF20}.example",
+        ("utf-8; x@x\u00be\uff20.example"));
+      TestDowngradeDSNOne(
+        "(=?utf-8?Q?=C2=BE?=) utf-8; x@x.example",
+        ("(\u00be) utf-8; x@x.example"));
+      TestDowngradeDSNOne(
+        "(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
+        ("(\u00be) rfc822; x@x.example"));
+      TestDowngradeDSNOne(
+        "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=); x@x.example",
+        ("(\u00be) rfc822(\u00be); x@x.example"));
+      TestDowngradeDSNOne(
+        "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=); x@x" + hexstart + "BE}" + hexstart + "FF20}.example",
+        ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example"));
+      TestDowngradeDSNOne(
+        "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40x=C2=BE=EF=BC=A0=2Eexample?=",
+        ("(\u00be) rfc822; x@x\u00be\uff20.example"));
+    }
+
     [Test]
     public void TestLanguageTags() {
       Assert.IsTrue(ParserUtility.IsValidLanguageTag("en-a-bb-x-y-z"));
@@ -1019,7 +1096,7 @@ namespace MailLibTest {
         HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" (comment) <x@x.example>"));
     }
 
-    internal static bool IsGoodAsciiOnlyAndGoodLineLength(string str) {
+    internal static bool IsGoodAsciiOnlyAndGoodLineLength(string str, bool hasMessageType) {
       int lineLength = 0;
       int wordLength = 0;
       int index = 0;
@@ -1063,7 +1140,7 @@ namespace MailLibTest {
           return false;
         }
         int maxLineLength = 998;
-        if (!headers && !hasLongWord) {
+        if (!headers && (!hasLongWord && !hasMessageType)) {
           // Set max length for the body to 78 unless a line
           // contains a word so long that exceeding 78 characters
           // is unavoidable
@@ -1197,6 +1274,11 @@ namespace MailLibTest {
       this.TestEncodedWordsOne("=?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?=");
       this.TestEncodedWordsOne("=?utf-8?Q?" + this.Repeat("x", 200) + "?=", "=?utf-8?Q?" + this.Repeat("x", 200) + "?=");
       this.TestEncodedWordsPhrase("=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
+    }
+
+    [Test]
+    public void TestSetHeader() {
+      Assert.AreEqual("my subject",new Message().SetHeader("comments","subject").SetHeader("subject","my subject").GetHeader("subject"));
     }
 
     [Test]
@@ -1447,6 +1529,18 @@ namespace MailLibTest {
 
     internal static bool HasNestedMessageType(Message message) {
       if (message.ContentType.TopLevelType.Equals("message")) {
+        if (message.ContentType.SubType.Equals("global")) {
+          return false;
+        }
+        if (message.ContentType.SubType.Equals("global-headers")) {
+          return false;
+        }
+        if (message.ContentType.SubType.Equals("global-delivery-status")) {
+          return false;
+        }
+        if (message.ContentType.SubType.Equals("global-disposition-notification")) {
+          return false;
+        }
         return true;
       }
       foreach(var part in message.Parts) {

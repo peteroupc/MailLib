@@ -88,10 +88,7 @@ namespace PeterO.Mail {
     public override string ToString() {
       StringBuilder sb = new StringBuilder();
       sb.Append(this.dispositionType);
-      foreach (string key in this.parameters.Keys) {
-        sb.Append(';');
-        MediaType.AppendParamValue(key, this.parameters[key], sb);
-      }
+      MediaType.AppendParameters(this.parameters, sb);
       return sb.ToString();
     }
 
@@ -148,9 +145,9 @@ namespace PeterO.Mail {
       return MediaType.ParseParameters(str, index, endIndex, httpRules, this.parameters);
     }
 
-    // TODO: Create a builder for Content-Disposition
     private static ContentDisposition Build(string name) {
       ContentDisposition dispo = new ContentDisposition();
+      dispo.parameters = new SortedMap<string, string>();
       dispo.dispositionType = name;
       return dispo;
     }

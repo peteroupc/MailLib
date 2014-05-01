@@ -1381,10 +1381,6 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderContentAlternative(string str, int index, int endIndex, ITokener tokener) {
-      return ParseNoEncodedWords(str, index, endIndex, tokener);
-    }
-
     public static int ParseHeaderContentBase(string str, int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
@@ -1484,10 +1480,6 @@ namespace PeterO.Mail {
         tokener.RestoreState(state);
       }
       return indexTemp;
-    }
-
-    public static int ParseHeaderContentFeatures(string str, int index, int endIndex, ITokener tokener) {
-      return ParseNoEncodedWords(str, index, endIndex, tokener);
     }
 
     public static int ParseHeaderContentId(string str, int index, int endIndex, ITokener tokener) {
@@ -2923,10 +2915,6 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderPicsLabel(string str, int index, int endIndex, ITokener tokener) {
-      return ParseNoEncodedWords(str, index, endIndex, tokener);
-    }
-
     public static int ParseHeaderPreventNondeliveryReport(string str, int index, int endIndex, ITokener tokener) {
       return ParseFWS(str, index, endIndex, tokener);
     }
@@ -2935,23 +2923,39 @@ namespace PeterO.Mail {
       return ParseMixerKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderPrivicon(string str, int index, int endIndex, ITokener tokener) {
-      return ParseNoEncodedWords(str, index, endIndex, tokener);
-    }
-
     public static int ParseHeaderReceived(string str, int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        while (true) {
-          int indexTemp2 = ParseReceivedToken(str, index, endIndex, tokener);
+        do {
+          int indexTemp2 = index;
+          do {
+            int indexTemp3 = index;
+            int indexStart2 = index;
+            for (int i2 = 0;; ++i2) {
+              indexTemp3 = ParseReceivedToken(str, index, endIndex, tokener);
+              if (indexTemp3 == index) { if (i2 < 1) {
+                  indexTemp2 = indexStart2;
+                } break;
+              } else {
+                index = indexTemp3;
+              }
+            }
+            index = indexStart2;
+            if (indexTemp3 != indexStart2) {
+              indexTemp2 = indexTemp3; break;
+            }
+            indexTemp3 = ParseCFWS(str, index, endIndex, tokener);
+            if (indexTemp3 != index) {
+              indexTemp2 = indexTemp3; break;
+            }
+          } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
-          } else {
-            break;
+          } else { break;
           }
-        }
+        } while (false);
         if (index < endIndex && (str[index] == 59)) {
           ++index;
         } else {

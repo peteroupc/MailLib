@@ -20,7 +20,9 @@ namespace PeterO.Mail {
     /// (Internet Message Format and MIME):</para>
     /// <list type=''> <item>The content-transfer-encoding "quoted-printable"
     /// is treated as 7bit instead if it occurs in a message or body part with
-    /// content type "multipart/*" or "message/*" (other than "message/global").</item>
+    /// content type "multipart/*" or "message/*" (other than "message/global",
+    /// "message/global-headers", "message/global-disposition-notification",
+    /// or "message/global-delivery-status").</item>
     /// <item>Non-UTF-8 bytes appearing in header field values are replaced
     /// with replacement characters. Moreover, UTF-8 is parsed everywhere
     /// in header field values, even in those parts of some structured header
@@ -63,11 +65,15 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets a snapshot of the header fields of this message. The
+    /// list contains an alternating set of header field names and values,
+    /// in the order they were declared in the message.</summary>
+    /// <value>A snapshot of the header fields of this message. The list contains
+    /// an alternating set of header field names and values, in the order they
+    /// were declared in the message.</value>
     public IList<string> Headers {
       get {
-        return this.headers;
+        return new List<string>(this.headers);
       }
     }
 
@@ -101,14 +107,17 @@ namespace PeterO.Mail {
         return false;
       }
       for (int i = 0; i < str.Length; ++i) {
-        if ((((int)str[i]) >> 7) != 0) return false;
+        if ((((int)str[i]) >> 7) != 0) {
+          return false;
+        }
       }
       return true;
     }
 
     /// <summary>Sets the body of this message to the specified plain text
     /// string. The character sequences CR, LF, and CR/LF will be converted
-    /// to CR/LF line breaks.</summary>
+    /// to CR/LF line breaks. Unpaired surrogate code points will be replaced
+    /// with replacement characters.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
     public Message SetTextBody(string str) {
@@ -122,7 +131,8 @@ namespace PeterO.Mail {
 
     /// <summary>Sets the body of this message to the specified string in
     /// HTML format. The character sequences CR, LF, and CR/LF will be converted
-    /// to CR/LF line breaks.</summary>
+    /// to CR/LF line breaks. Unpaired surrogate code points will be replaced
+    /// with replacement characters.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
     public Message SetHtmlBody(string str) {
@@ -136,10 +146,11 @@ namespace PeterO.Mail {
 
     /// <summary>Sets the body of this message to a multipart body with plain
     /// text and HTML versions of the same message. The character sequences
-    /// CR, LF, and CR/LF will be converted to CR/LF line breaks.</summary>
+    /// CR, LF, and CR/LF will be converted to CR/LF line breaks. Unpaired
+    /// surrogate code points will be replaced with replacement characters.</summary>
     /// <param name='text'>A string object.</param>
     /// <param name='html'>A string object. (2).</param>
-    /// <returns>A Message object.</returns>
+    /// <returns>This instance.</returns>
     public Message SetTextAndHtml(string text, string html) {
       if (text == null) {
         throw new ArgumentNullException("text");
@@ -236,11 +247,15 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets or sets this message's subject.</summary>
+    /// <value>This message&apos;s subject.</value>
     public string Subject {
       get {
         return this.GetHeader("subject");
+      }
+
+      set {
+        this.SetHeader("subject", value);
       }
     }
 
@@ -274,13 +289,6 @@ namespace PeterO.Mail {
       this.body = new byte[0];
     }
 
-    public Message(string fromAddress) {
-      this.headers = new List<string>();
-      this.body = new byte[0];
-      this.parts = new List<Message>();
-      this.SetHeader("from", fromAddress);
-    }
-
     /// <summary>Returns the mail message contained in this message's body.</summary>
     /// <returns>A message object if this object's content type is "message/rfc822"
     /// or "message/global", or null otherwise.</returns>
@@ -301,6 +309,7 @@ namespace PeterO.Mail {
     }
 
     private MediaType contentType;
+    private ContentDisposition contentDisposition;
     private int transferEncoding;
 
     /// <summary>Gets or sets this message's media type.</summary>
@@ -324,9 +333,29 @@ namespace PeterO.Mail {
       }
     }
 
+    /// <summary>Gets or sets this message's content disposition.</summary>
+    /// <value>This message&apos;s content disposition, or null if none
+    /// is specified.</value>
+    public ContentDisposition ContentDisposition {
+      get {
+        return this.contentDisposition;
+      }
+
+      set {
+        if (value == null) {
+          this.contentDisposition = null;
+          this.RemoveHeader("content-disposition");
+        } else if (!value.Equals(this.contentDisposition)) {
+          this.contentDisposition = value;
+          this.SetHeader("content-disposition", this.contentDisposition.ToString());
+        }
+      }
+    }
+
     private void ProcessHeaders(bool assumeMime, bool digest) {
       bool haveContentType = false;
       bool mime = assumeMime;
+      bool haveContentDisp = false;
       string transferEncodingValue = String.Empty;
       for (int i = 0; i < this.headers.Count; i += 2) {
         string name = this.headers[i];
@@ -401,6 +430,17 @@ namespace PeterO.Mail {
             value,
             digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii);
           haveContentType = true;
+        } else if (mime && name.Equals("content-disposition")) {
+          if (haveContentDisp) {
+            string valueExMessage = "Already have this header: " + name;
+            /*
+            valueExMessage+="[old="+this.contentType+", new="+value+"]";
+            valueExMessage = valueExMessage.Replace("\r\n"," ");
+             */
+            throw new MessageDataException(valueExMessage);
+          }
+          this.contentDisposition = ContentDisposition.Parse(value);
+          haveContentDisp = true;
         }
       }
       if (this.transferEncoding == EncodingUnknown) {
@@ -410,7 +450,11 @@ namespace PeterO.Mail {
           this.transferEncoding == EncodingBase64 ||
           this.transferEncoding == EncodingUnknown) {
         if (this.contentType.IsMultipart ||
-            (this.contentType.TopLevelType.Equals("message") && !this.contentType.SubType.Equals("global"))) {
+            (this.contentType.TopLevelType.Equals("message") &&
+             !this.contentType.SubType.Equals("global") &&
+             !this.contentType.SubType.Equals("global-headers") &&
+             !this.contentType.SubType.Equals("global-disposition-notification") &&
+             !this.contentType.SubType.Equals("global-delivery-status"))) {
           if (this.transferEncoding == EncodingQuotedPrintable) {
             // DEVIATION: Treat quoted-printable for multipart and message
             // as 7bit instead
@@ -634,7 +678,7 @@ namespace PeterO.Mail {
           chunkLength = 0;
         } else {
           ++chunkLength;
-          if (chunkLength > 75) {
+          if (chunkLength > 997) {
             return true;
           }
         }
@@ -762,7 +806,7 @@ namespace PeterO.Mail {
         }
       }
       // Add the header field
-      for (int i = 0; i < this.headers.Count; ++i) {
+      for (int i = 0; i < this.headers.Count; i += 2) {
         if (this.headers[i].Equals(name)) {
           this.headers[i + 1] = value;
           return this;
@@ -770,6 +814,25 @@ namespace PeterO.Mail {
       }
       this.headers.Add(name);
       this.headers.Add(value);
+      return this;
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='name'>A string object.</param>
+    /// <returns>A Message object.</returns>
+    public Message RemoveHeader(string name) {
+      if (name == null) {
+        throw new ArgumentNullException("name");
+      }
+      name = DataUtilities.ToLowerCaseAscii(name);
+      // Remove the header field
+      for (int i = 0; i < this.headers.Count; i += 2) {
+        if (this.headers[i].Equals(name)) {
+          this.headers.RemoveAt(i);
+          this.headers.RemoveAt(i);
+          i -= 2;
+        }
+      }
       return this;
     }
 
@@ -794,36 +857,32 @@ namespace PeterO.Mail {
       }
     }
 
-    private int TransferEncodingToUse(bool isBodyPart) {
-      string topLevel = this.contentType.TopLevelType;
-      if (topLevel.Equals("message") || topLevel.Equals("multipart")) {
+    private static int TransferEncodingToUse(byte[] body, bool isBodyPart) {
+      if (body == null || body.Length == 0) {
         return EncodingSevenBit;
       }
-      if (this.body == null || this.body.Length == 0) {
-        return EncodingSevenBit;
-      }
-      int lengthCheck = Math.Min(this.body.Length, 4096);
+      int lengthCheck = Math.Min(body.Length, 4096);
       int highBytes = 0;
       int ctlBytes = 0;
       int lineLength = 0;
       bool allTextBytes = isBodyPart ? false : true;
       for (int i = 0; i < lengthCheck; ++i) {
-        if ((this.body[i] & 0x80) != 0) {
+        if ((body[i] & 0x80) != 0) {
           ++highBytes;
           allTextBytes = false;
-        } else if (this.body[i] == 0x00) {
+        } else if (body[i] == 0x00) {
           allTextBytes = false;
           ++ctlBytes;
-        } else if (this.body[i] == 0x7f ||
-                   (this.body[i] < 0x20 && this.body[i] != 0x0d &&
-                    this.body[i] != 0x0a && this.body[i] != 0x09)) {
+        } else if (body[i] == 0x7f ||
+                   (body[i] < 0x20 && body[i] != 0x0d &&
+                    body[i] != 0x0a && body[i] != 0x09)) {
           allTextBytes = false;
           ++ctlBytes;
-        } else if (this.body[i] == (byte)'\r') {
-          if (i + 1 >= this.body.Length || this.body[i + 1] != (byte)'\n') {
+        } else if (body[i] == (byte)'\r') {
+          if (i + 1 >= body.Length || body[i + 1] != (byte)'\n') {
             // bare CR
             allTextBytes = false;
-          } else if (i > 0 && (this.body[i - 1] == (byte)' ' || this.body[i - 1] == (byte)'\t')) {
+          } else if (i > 0 && (body[i - 1] == (byte)' ' || body[i - 1] == (byte)'\t')) {
             // Space followed immediately by CRLF
             allTextBytes = false;
           } else {
@@ -831,18 +890,18 @@ namespace PeterO.Mail {
             lineLength = 0;
             continue;
           }
-        } else if (this.body[i] == (byte)'\n') {
+        } else if (body[i] == (byte)'\n') {
           // bare LF
           allTextBytes = false;
         }
-        if (lineLength == 0 && i + 2 < this.body.Length &&
-            this.body[i] == '.' && this.body[i + 1] == '\r' && this.body[i + 2] == '\n') {
+        if (lineLength == 0 && i + 2 < body.Length &&
+            body[i] == '.' && body[i + 1] == '\r' && body[i + 2] == '\n') {
           // See RFC2049 sec. 3
           allTextBytes = false;
         }
-        if (lineLength == 0 && i + 4 < this.body.Length &&
-            this.body[i] == 'F' && this.body[i + 1] == 'r' && this.body[i + 2] == 'o' &&
-            this.body[i + 3] == 'm' && this.body[i + 4] == ' ') {
+        if (lineLength == 0 && i + 4 < body.Length &&
+            body[i] == 'F' && body[i + 1] == 'r' && body[i + 2] == 'o' &&
+            body[i + 3] == 'm' && body[i + 4] == ' ') {
           // See RFC2049 sec. 3
           allTextBytes = false;
         }
@@ -851,7 +910,7 @@ namespace PeterO.Mail {
           allTextBytes = false;
         }
       }
-      if (lengthCheck == this.body.Length && allTextBytes) {
+      if (lengthCheck == body.Length && allTextBytes) {
         return EncodingSevenBit;
       } if (highBytes > (lengthCheck / 3)) {
         return EncodingBase64;
@@ -873,13 +932,50 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    /// <summary>Generates this message's data in text form. The generated
-    /// message will always be 7-bit ASCII, and the transfer encoding will
-    /// always be 7bit, quoted-printable, or base64 (the declared transfer
-    /// encoding for this message will be ignored).<para> If the From header
-    /// field has an invalid syntax or has no addresses, or if the field is missing,
-    /// this method will generate a synthetic From field with the contents
-    /// of the previous From field or fields as the name, and the address <code>me@author-address.invalid</code>
+    internal static bool IsGoodLineLength(byte[] str) {
+      if (str == null || str.Length == 0) {
+        return true;
+      }
+      int lineLength = 0;
+      int index = 0;
+      int endIndex = str.Length;
+      bool headers = true;
+      while (index < endIndex) {
+        int c = ((int)str[index]) & 0xff;
+        if (c >= 0x80) {
+          // Console.WriteLine("Non-ASCII character (0x {0:X2})",(int)c);
+          return false;
+        }
+        if (c == '\r' && index + 1 < endIndex && str[index+1]=='\n') {
+          index += 2;
+          if (headers && lineLength == 0) {
+            // Start of the body
+            headers = false;
+          }
+          lineLength = 0;
+          continue;
+        } else if (c == '\r' || c == '\n') {
+          // Console.WriteLine("Bare CR or bare LF");
+          return false;
+        }
+        ++lineLength;
+        if (lineLength > 78) {
+          // Console.WriteLine("Line length exceeded (" + maxLineLength + " " + (str.Substring(index-78, 78)) + ")");
+          return false;
+        }
+        ++index;
+      }
+      return true;
+    }
+
+    /// <summary>Generates this message's data in text form.<para>The
+    /// generated message will always be 7-bit ASCII, and the transfer encoding
+    /// will always be 7bit, quoted-printable, or base64 (the declared transfer
+    /// encoding for this message will be ignored).</para>
+    /// <para> If the From header field has an invalid syntax or has no addresses,
+    /// or if the field is missing, this method will generate a synthetic From
+    /// field with the contents of the previous From field or fields as the
+    /// name, and the address <code>me@author-address.invalid</code>
     /// as the address (a <code>.invalid</code>
     /// address is a reserved address that can never belong to anyone). </para>
     /// </summary>
@@ -893,19 +989,17 @@ namespace PeterO.Mail {
       bool haveMimeVersion = false;
       bool haveContentEncoding = false;
       bool haveContentType = false;
+      bool haveContentDisp = false;
       bool haveFrom = false;
       bool outputtedFrom = false;
       bool haveTo = false;
+      byte[] bodyToWrite = this.body;
       bool haveCc = false;
       bool haveBcc = false;
       MediaTypeBuilder builder = new MediaTypeBuilder(this.ContentType);
-      int transferEncoding = this.TransferEncodingToUse(depth > 0);
-      string encodingString = "7bit";
-      if (transferEncoding == EncodingBase64) {
-        encodingString = "base64";
-      } else if (transferEncoding == EncodingQuotedPrintable) {
-        encodingString = "quoted-printable";
-      }
+      string contentDisp = (this.ContentDisposition == null) ? null :
+        this.ContentDisposition.ToString();
+      int transferEncoding = 0;
       bool isMultipart = false;
       string boundary = String.Empty;
       if (builder.IsMultipart) {
@@ -913,6 +1007,41 @@ namespace PeterO.Mail {
           Convert.ToString((int)depth, System.Globalization.CultureInfo.CurrentCulture);
         builder.SetParameter("boundary", boundary);
         isMultipart = true;
+      }
+      if (!isMultipart) {
+        if (builder.TopLevelType.Equals("message")) {
+          if (builder.SubType.Equals("delivery-status") ||
+              builder.SubType.Equals("global-delivery-status")) {
+            bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
+          }
+          if (builder.SubType.Equals("rfc822") && !IsGoodLineLength(bodyToWrite)) {
+            builder.SetSubType("global");
+          } else if (builder.SubType.Equals("disposition-notification") && !IsGoodLineLength(bodyToWrite)) {
+            builder.SetSubType("global-disposition-notification");
+          } else if (builder.SubType.Equals("delivery-status") && !IsGoodLineLength(bodyToWrite)) {
+            builder.SetSubType("global-delivery-status");
+          }
+        }
+      }
+      string topLevel = builder.TopLevelType;
+      if (topLevel.Equals("message") || topLevel.Equals("multipart")) {
+        if (topLevel.Equals("multipart") || (
+          !builder.SubType.Equals("global") &&
+          !builder.SubType.Equals("global-headers") &&
+          !builder.SubType.Equals("global-disposition-notification") &&
+          !builder.SubType.Equals("global-delivery-status"))) {
+          transferEncoding = EncodingSevenBit;
+        } else {
+          transferEncoding = TransferEncodingToUse(bodyToWrite, depth > 0);
+        }
+      } else {
+        transferEncoding = TransferEncodingToUse(bodyToWrite, depth > 0);
+      }
+      string encodingString = "7bit";
+      if (transferEncoding == EncodingBase64) {
+        encodingString = "base64";
+      } else if (transferEncoding == EncodingQuotedPrintable) {
+        encodingString = "quoted-printable";
       }
       // Write the header fields
       for (int i = 0; i < this.headers.Count; i += 2) {
@@ -929,6 +1058,13 @@ namespace PeterO.Mail {
           }
           haveContentType = true;
           value = builder.ToString();
+        } if (name.Equals("content-disposition")) {
+          if (haveContentDisp || contentDisp == null) {
+            // Already outputted, continue
+            continue;
+          }
+          haveContentDisp = true;
+          value = contentDisp;
         } else if (name.Equals("content-transfer-encoding")) {
           if (haveContentEncoding) {
             // Already outputted, continue
@@ -1005,17 +1141,17 @@ namespace PeterO.Mail {
           string downgraded = HeaderFields.GetParser(name).DowngradeFieldValue(value);
           if (HasTextToEscapeIgnoreEncodedWords(downgraded, 0, downgraded.Length)) {
             if (name.Equals("message-id") ||
-               name.Equals("resent-message-id") ||
-               name.Equals("in-reply-to") ||
-               name.Equals("references") ||
-               name.Equals("original-recipient") ||
-               name.Equals("final-recipient")) {
+                name.Equals("resent-message-id") ||
+                name.Equals("in-reply-to") ||
+                name.Equals("references") ||
+                name.Equals("original-recipient") ||
+                name.Equals("final-recipient")) {
               // Header field still contains non-ASCII characters, convert
               // to a downgraded field
-              name = "downgraded-"+name;
+              name = "downgraded-" + name;
               downgraded = Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTab(value));
             } else {
-              throw new MessageDataException("Header field still has non-Ascii: " + name+" "+value);
+              throw new MessageDataException("Header field still has non-Ascii: " + name + " " + value);
             }
           }
           // TODO: Don't collapse spaces if a DQUOTE appears
@@ -1058,7 +1194,7 @@ namespace PeterO.Mail {
       // Write the body
       sb.Append("\r\n");
       if (!isMultipart) {
-        bodyEncoder.WriteToString(sb, this.body, 0, this.body.Length);
+        bodyEncoder.WriteToString(sb, bodyToWrite, 0, bodyToWrite.Length);
         bodyEncoder.FinalizeEncoding(sb);
       } else {
         foreach (var part in this.Parts) {
@@ -1128,6 +1264,251 @@ namespace PeterO.Mail {
           return cp;
         }
       }
+    }
+
+    internal static string DowngradeRecipientHeaderValue(string headerValue) {
+      return DowngradeRecipientHeaderValue(headerValue, null);
+    }
+
+    internal static string DowngradeRecipientHeaderValue(string headerValue, int[] status) {
+      int index;
+      if (HasTextToEscapeIgnoreEncodedWords(headerValue, 0, headerValue.Length)) {
+        index = HeaderParser.ParseCFWS(headerValue, 0, headerValue.Length, null);
+        int atomText = HeaderParser.ParsePhraseAtom(headerValue, index, headerValue.Length, null);
+        int typeEnd = atomText;
+        Tokener tokener = new Tokener();
+        string origValue = headerValue;
+        bool isUtf8 = (typeEnd - index == 5 &&
+                       (headerValue[index] & ~0x20) =='U' &&
+                       (headerValue[index + 1] & ~0x20) =='T' &&
+                       (headerValue[index + 2] & ~0x20) =='F' &&
+                       headerValue[index + 3] == '-' &&
+                       headerValue[index + 4] == '8');
+        atomText = HeaderParser.ParseCFWS(headerValue, atomText, headerValue.Length, null);
+        if (index < headerValue.Length && headerValue[atomText] == ';') {
+          string typePart = headerValue.Substring(0, atomText + 1);
+          // Downgrade the comments in the type part
+          // NOTE: Final-recipient has the same syntax as original-recipient,
+          // except for the header field name
+          typePart = HeaderFields.GetParser("original-recipient").DowngradeFieldValue(typePart);
+          if (isUtf8) {
+            // Downgrade the non-ASCII characters in the address
+            StringBuilder builder = new StringBuilder();
+            string hex = "0123456789ABCDEF";
+            for (int i = atomText + 1; i < headerValue.Length; ++i) {
+              if (headerValue[i] < 0x80) {
+                builder.Append(headerValue[i]);
+              } else {
+                int cp = DataUtilities.CodePointAt(headerValue, i);
+                if (cp >= 0x10000) {
+                  ++i;
+                }
+                builder.Append("\\x");
+                builder.Append('{');
+                for (int j = 20; j >= 0; j -= 4) {
+                  if ((cp >> j) != 0) {
+                    builder.Append(hex[(cp >> j) & 15]);
+                  }
+                }
+                builder.Append('}');
+              }
+            }
+            headerValue = typePart + builder.ToString();
+          } else {
+            headerValue = typePart + headerValue.Substring(atomText + 1);
+          }
+        }
+        if (HasTextToEscapeIgnoreEncodedWords(headerValue, 0, headerValue.Length)) {
+          // Encapsulate the header field in encoded words
+          if (status != null) {
+            status[0] = 2;  // Encapsulated
+          }
+          return Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTabLeft(origValue));
+        }
+        if (status != null) {
+          status[0] = 1;  // Downgraded
+        }
+        return headerValue;
+      } else {
+        if (status != null) {
+          status[0] = 0;  // Unchanged
+        }
+        return headerValue;
+      }
+    }
+
+    // Parse the delivery status byte array to downgrade
+    // the Original-Recipient and Final-Recipient header fields
+    internal static byte[] DowngradeDeliveryStatus(byte[] bytes) {
+      int lineCount = 0;
+      int[] bytesRead = new int[1];
+      StringBuilder sb = new StringBuilder();
+      int index = 0;
+      int endIndex = bytes.Length;
+      int lastIndex = -1;
+      MemoryStream ms = null;
+      while (index < endIndex) {
+        sb.Remove(0, sb.Length);
+        bool first = true;
+        int headerNameStart = index;
+        int headerNameEnd = index;
+        lineCount = 0;
+        bool endOfHeaders = false;
+        while (true) {
+          if (index >= endIndex) {
+            // All headers read
+            endOfHeaders = true;
+            break;
+          }
+          int c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
+          ++lineCount;
+          ++index;
+          if (c == '\r') {
+            c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
+            ++index;
+            if (c == '\n') {
+              lineCount = 0;
+              headerNameStart = index;
+            } else {
+              --index;
+              headerNameEnd = index;
+            }
+            continue;
+          }
+          if ((c >= 0x21 && c <= 57) || (c >= 59 && c <= 0x7e)) {
+            first = false;
+            if (c >= 'A' && c <= 'Z') {
+              c += 0x20;
+            }
+            sb.Append((char)c);
+          } else if (!first && c == ':') {
+            break;
+          } else if (c == 0x20 || c == 0x09) {
+            first = false;
+          }
+          if (c != 0x20 && c != 0x09) {
+            headerNameEnd = index;
+          }
+        }
+        if (endOfHeaders) {
+          break;
+        }
+        int headerValueStart = index;
+        int headerValueEnd = index;
+        string origFieldName =
+          DataUtilities.GetUtf8String(bytes, headerNameStart, headerValueStart - headerNameStart, true);
+        string fieldName = DataUtilities.ToLowerCaseAscii(
+          DataUtilities.GetUtf8String(bytes, headerNameStart, headerNameEnd - headerNameStart, true));
+        bool origRecipient = fieldName.Equals("original-recipient");
+        bool finalRecipient = fieldName.Equals("final-recipient");
+        bool useBuilder = origRecipient || finalRecipient;
+        // Read the header field value using UTF-8 characters
+        // rather than bytes
+        while (true) {
+          if (index >= endIndex) {
+            // All headers read
+            headerValueEnd = index;
+            break;
+          }
+          int c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
+          ++index;
+          if (c == '\r') {
+            c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
+            ++index;
+            if (c == '\n') {
+              lineCount = 0;
+              // Parse obsolete folding whitespace (obs-fws) under RFC5322
+              // (parsed according to errata), same as LWSP in RFC5234
+              bool fwsFirst = true;
+              bool haveFWS = false;
+              while (true) {
+                // Skip the CRLF pair, if any (except if iterating for
+                // the first time, since CRLF was already parsed)
+                if (!fwsFirst) {
+                  c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
+                  ++index;
+                  if (c == '\r') {
+                    c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
+                    ++index;
+                    if (c == '\n') {
+                      // CRLF was read
+                      lineCount = 0;
+                    } else {
+                      // It's the first part of the line, where the header name
+                      // should be, so the CR here is illegal
+                      throw new MessageDataException("CR not followed by LF");
+                    }
+                  } else {
+                    // anything else, unget
+                    --index;
+                  }
+                }
+                fwsFirst = false;
+                // Use ReadByte here since we're just looking for the single
+                // byte characters space and tab
+                int c2 = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
+                ++index;
+                if (c2 == 0x20 || c2 == 0x09) {
+                  ++lineCount;
+                  haveFWS = true;
+                } else {
+                  --index;
+                  break;
+                }
+              }
+              if (haveFWS) {
+                // We have folding whitespace, line
+                // count found as above
+                continue;
+              }
+              // This ends the header field
+              // (the last two characters will be CRLF)
+              headerValueEnd = index - 2;
+              break;
+            } else {
+              --index;
+              ++lineCount;
+            }
+          }
+          ++lineCount;
+        }
+        if (origRecipient || finalRecipient) {
+          string headerValue = DataUtilities.GetUtf8String(
+            bytes,
+            headerValueStart,
+            headerValueEnd - headerValueStart,
+            true);
+          int[] status = new int[1];
+          headerValue = DowngradeRecipientHeaderValue(headerValue, status);
+          if (status[0] == 2 || status[0] == 1) {
+            // Downgraded or encapsulated
+            if (ms == null) {
+              ms = new MemoryStream();
+              ms.Write(bytes, 0, headerNameStart);
+            } else {
+              ms.Write(bytes, lastIndex, headerNameStart - lastIndex);
+            }
+            WordWrapEncoder encoder = null;
+            if (status[0] == 2) {
+              encoder = new WordWrapEncoder((origRecipient ?
+                                             "Downgraded-Original-Recipient" :
+                                             "Downgraded-Final-Recipient") + ":");
+            } else {
+              encoder = new WordWrapEncoder(origFieldName);
+            }
+            encoder.AddString(headerValue);
+            byte[] newBytes = DataUtilities.GetUtf8Bytes(encoder.ToString(), true);
+            ms.Write(newBytes, 0, newBytes.Length);
+            lastIndex = headerValueEnd;
+          }
+        }
+      }
+      if (ms != null) {
+        ms.Write(bytes, lastIndex, bytes.Length - lastIndex);
+        bytes = ms.ToArray();
+        ms.Dispose();
+      }
+      return bytes;
     }
 
     private static void ReadHeaders(
@@ -1247,6 +1628,7 @@ namespace PeterO.Mail {
                 // count found as above
                 continue;
               }
+              // This ends the header field
               break;
             } else {
               sb.Append('\r');
@@ -1312,7 +1694,7 @@ namespace PeterO.Mail {
             throw new MessageDataException("Multipart message has no boundary defined");
           }
           if (!IsWellFormedBoundary(this.boundary)) {
-            throw new MessageDataException("Multipart message has an invalid boundary defined");
+            throw new MessageDataException("Multipart message has an invalid boundary defined: " + this.boundary);
           }
         }
       }

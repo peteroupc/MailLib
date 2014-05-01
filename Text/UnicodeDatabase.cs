@@ -84,7 +84,6 @@ namespace PeterO.Text {
           matchLength += 4;
           long pos = ms.Position - offset;
           long oldPos = ms.Position;
-
           if (pos < 0) {
             throw new ArgumentException("Invalid LZ4");
           }

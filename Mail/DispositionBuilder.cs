@@ -9,63 +9,47 @@ using System;
 using System.Collections.Generic;
 
 namespace PeterO.Mail {
-    /// <summary>A mutable media type object.</summary>
-  public sealed class MediaTypeBuilder
+    /// <summary>Description of DispositionBuilder.</summary>
+  public class DispositionBuilder
   {
     private string type;
-    private string subtype;
     private IDictionary<string, string> parameters;
 
     /// <summary>Gets a value not documented yet.</summary>
     /// <value>A value not documented yet.</value>
-    public string TopLevelType {
+    public string DispositionType {
       get {
         return this.type;
       }
 
       set {
-        this.SetTopLevelType(value);
+        this.SetDispositionType(value);
       }
     }
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
-    public string SubType {
-      get {
-        return this.subtype;
-      }
-
-      set {
-        this.SetSubType(value);
-      }
-    }
-
-    public MediaTypeBuilder() {
+    public DispositionBuilder() {
       this.parameters = new Dictionary<string, string>();
-      this.type = "application";
-      this.subtype = "octet-stream";
+      this.type = "attachment";
     }
 
-    public MediaTypeBuilder(MediaType mt) {
+    public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
         throw new ArgumentNullException("mt");
       }
       this.parameters = new Dictionary<string, string>(mt.Parameters);
-      this.type = mt.TopLevelType;
-      this.subtype = mt.SubType;
+      this.type = mt.DispositionType;
     }
 
-    public MediaTypeBuilder(string type, string subtype) {
+    public DispositionBuilder(string type) {
       this.parameters = new Dictionary<string, string>();
-      this.SetTopLevelType(type);
-      this.SetSubType(subtype);
+      this.SetDispositionType(type);
     }
 
     /// <summary>Gets a value indicating whether this is a text media type.</summary>
     /// <value>Whether this is a text media type.</value>
     public bool IsText {
       get {
-        return this.TopLevelType.Equals("text");
+        return this.DispositionType.Equals("text");
       }
     }
 
@@ -74,20 +58,20 @@ namespace PeterO.Mail {
     /// <value>Whether this is a multipart media type.</value>
     public bool IsMultipart {
       get {
-        return this.TopLevelType.Equals("multipart");
+        return this.DispositionType.Equals("multipart");
       }
     }
 
     /// <summary>Not documented yet.</summary>
     /// <returns>A MediaType object.</returns>
-    public MediaType ToMediaType() {
-      return new MediaType(this.type, this.subtype, this.parameters);
+    public ContentDisposition ToDisposition() {
+      return new ContentDisposition(this.type, this.parameters);
     }
 
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
-    public MediaTypeBuilder SetTopLevelType(string str) {
+    public DispositionBuilder SetDispositionType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
@@ -95,7 +79,7 @@ namespace PeterO.Mail {
         throw new ArgumentException("str is empty.");
       }
       if (MediaType.skipMimeTypeSubtype(str, 0, str.Length, null) != str.Length) {
-        throw new ArgumentException("Not a well-formed top level type: " + str);
+        throw new ArgumentException("Not a well-formed type: " + str);
       }
       this.type = DataUtilities.ToLowerCaseAscii(str);
       return this;
@@ -104,7 +88,7 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='name'>A string object.</param>
     /// <returns>This instance.</returns>
-    public MediaTypeBuilder RemoveParameter(string name) {
+    public DispositionBuilder RemoveParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
       }
@@ -116,7 +100,7 @@ namespace PeterO.Mail {
     /// <param name='name'>A string object.</param>
     /// <param name='value'>A string object. (2).</param>
     /// <returns>This instance.</returns>
-    public MediaTypeBuilder SetParameter(string name, string value) {
+    public DispositionBuilder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException("value");
       }
@@ -136,27 +120,10 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <returns>This instance.</returns>
-    public MediaTypeBuilder SetSubType(string str) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      if (str.Length == 0) {
-        throw new ArgumentException("str is empty.");
-      }
-      if (MediaType.skipMimeTypeSubtype(str, 0, str.Length, null) != str.Length) {
-        throw new ArgumentException("Not a well-formed subtype: " + str);
-      }
-      this.subtype = DataUtilities.ToLowerCaseAscii(str);
-      return this;
-    }
-
     /// <summary>Converts this object to a text string.</summary>
     /// <returns>A string representation of this object.</returns>
     public override string ToString() {
-      return this.ToMediaType().ToString();
+      return this.ToDisposition().ToString();
     }
   }
 }
