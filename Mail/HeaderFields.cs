@@ -238,7 +238,21 @@ namespace PeterO.Mail {
                     string encodedText = " " + Rfc2047.EncodeString(addrSpec) + " :;";
                     sb.Append(encodedText);
                   } else {
-                    // TODO: Extract the addr-spec
+                    // Has a phrase, extract the addr-spec and convert
+                    // the mailbox to a group
+                    int angleAddrStart = HeaderParser.ParsePhrase(str, token[1], token[2], null);
+                    sb.Append(str.Substring(lastIndex, token[1], angleAddrStart - token[1]));
+                    int addrSpecStart = HeaderParser.ParseCFWS(str, angleAddrStart, token[2], null);
+                    if (addrSpecStart<token[2] && str[addrSpecStart]=='<') {
+                      ++addrSpecStart;
+                    }
+                    addrSpecStart = HeaderParser.ParseObsRoute(str, addrSpecStart, token[2], null);
+                    int addrSpecEnd = HeaderParser.ParseAddrSpec(str, addrSpecStart, token[2], null);
+                    string addrSpec = str.Substring(addrSpecStart, addrSpecEnd-addrSpecStart);
+                    bool endsWithSpace = sb.Length>0 && (sb[sb.Length-1]==0x20 || sb[sb.Length-1]==0x09);
+                    string encodedText = (endsWithSpace ? String.Empty : " ") +
+                      Rfc2047.EncodeString(addrSpec) + " :;";
+                    sb.Append(encodedText);
                   }
                   lastIndex = endIndex;
                   ++groupIndex;
