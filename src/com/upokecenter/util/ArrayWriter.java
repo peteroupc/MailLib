@@ -122,8 +122,8 @@ public void setPosition(int value) {
       if (src.length - offset < length) {
         throw new IllegalArgumentException("src's length minus " + offset + " (" + Long.toString((long)(src.length - offset)) + ") is less than " + Long.toString((long)length));
       }
-      if (this.retval.length - this.retvalPos > length) {
-        // Array too big, make it grow
+      if (this.retval.length - this.retvalPos < length) {
+        // Array too small, make it grow
         int newLength = Math.max(this.retvalPos + length + 1000, this.retval.length * 2);
         byte[] newArray = new byte[newLength];
         System.arraycopy(this.retval, 0, newArray, 0, this.retvalPos);

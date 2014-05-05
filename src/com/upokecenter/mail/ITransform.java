@@ -7,9 +7,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
-import java.util.*;
-import java.io.*;
-
     /**
      * A generic interface for reading data one byte at a time.
      */

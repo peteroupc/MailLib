@@ -9,12 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using PeterO;
-
 namespace PeterO.Text {
-    /// <summary>Implements the Unicode normalization algorithm and contains
-    /// methods and functionality to test and convert Unicode strings for
-    /// Unicode normalization.</summary>
+  /// <summary>Implements the Unicode normalization algorithm and contains
+  /// methods and functionality to test and convert Unicode strings for
+  /// Unicode normalization.</summary>
   public sealed class Normalizer : ICharacterInput
   {
     public static IList<int> GetChars(string str, Normalization form) {
@@ -203,20 +201,20 @@ namespace PeterO.Text {
 
     /// <summary>Returns whether this string is in a given Unicode normalization
     /// form.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <param name='form'>A Normalization object.</param>
-    /// <returns>A Boolean object.</returns>
+    /// <returns>True if the string is in the given normalization form; false otherwise,
+    /// including if the string is null or contains an unpaired surrogate
+    /// code point.</returns>
     public static bool IsNormalized(string str, Normalization form) {
       if (str == null) {
- return false;
-}
+        return false;
+      }
       int maxbasic = (form == Normalization.NFC) ? 0xff : 0x7f;
       bool basic = true;
       for (int i = 0; i < str.Length; ++i) {
         // Check for bare surrogates
         if ((str[i] & 0xf800) == 0xd800) {
-          int cp = DataUtilities.CodePointAt(str, i);
-          if (cp == 0xfffd) {
+          if ((str[i] & 0xfc00) == 0xdc00 || i + 1 >= str.Length || (str[i + 1] & 0xfc00) != 0xdc00) {
+            // Not a valid surrogate pair
             return false;
           }
         }
@@ -233,8 +231,8 @@ namespace PeterO.Text {
 
     public static bool IsNormalized(ICharacterInput chars, Normalization form) {
       if (chars == null) {
- return false;
-}
+        return false;
+      }
       IList<int> list = new List<int>();
       int ch = 0;
       while ((ch = chars.ReadChar()) >= 0) {

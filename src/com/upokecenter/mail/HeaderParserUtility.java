@@ -449,7 +449,6 @@ private HeaderParserUtility() {
             do {
               int indexTemp3 = index;
               do {
-                int indexStart3 = index;
                 if (index < endIndex && ((str.charAt(index) >= 128 && str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
                   ++indexTemp3; break;
                 }

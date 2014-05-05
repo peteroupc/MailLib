@@ -7,8 +7,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
-import java.util.*;
-
   interface IHeaderFieldParser {
     boolean IsStructured();
 

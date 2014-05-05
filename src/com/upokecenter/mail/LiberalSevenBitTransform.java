@@ -7,9 +7,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
-import java.util.*;
-import java.io.*;
-
   // A seven-bit transform used for text/plain data
   final class LiberalSevenBitTransform implements ITransform {
     private ITransform stream;
