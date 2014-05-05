@@ -796,7 +796,7 @@ namespace PeterO.Mail {
           // and so on
           while (true) {
             string contin = realName + "*" +
-              Convert.ToString(pindex, CultureInfo.InvariantCulture);
+              Convert.ToString((int)pindex, CultureInfo.InvariantCulture);
             string continEncoded = contin + "*";
             if (parameters.ContainsKey(contin)) {
               // Unencoded continuation

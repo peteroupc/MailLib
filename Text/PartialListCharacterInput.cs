@@ -35,7 +35,7 @@ namespace PeterO.Text {
 
     /// <summary>Not documented yet.</summary>
     /// <returns>A 32-bit signed integer.</returns>
-    public int Read() {
+    public int ReadChar() {
       if (this.pos < this.endPos) {
         return this.ilist[this.pos++];
       }

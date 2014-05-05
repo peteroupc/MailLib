@@ -35,7 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CollectionUtilities.cs" />
+    <Compile Include="ArrayWriter.cs" />
     <Compile Include="DataUtilities.cs" />
     <Compile Include="Lz4.cs" />
     <Compile Include="Mail\Address.cs" />
@@ -44,6 +44,7 @@
     <Compile Include="Mail\BEncodingStringTransform.cs" />
     <Compile Include="Mail\BoundaryCheckerTransform.cs" />
     <Compile Include="Mail\Charsets.cs" />
+    <Compile Include="Mail\CollectionUtilities.cs" />
     <Compile Include="Mail\ContentDisposition.cs" />
     <Compile Include="Mail\DispositionBuilder.cs" />
     <Compile Include="Mail\EightBitTransform.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="ReadOnlyMap.cs" />
     <Compile Include="RedBlackTree.cs" />
     <Compile Include="SortedMap.cs" />
+    <Compile Include="Text\ByteData.cs" />
     <Compile Include="Text\DomainUtility.cs" />
     <Compile Include="Text\ICharacterInput.cs" />
     <Compile Include="Text\Idna.cs" />

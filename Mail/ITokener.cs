@@ -6,8 +6,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PeterO.Mail {
   internal interface ITokener {

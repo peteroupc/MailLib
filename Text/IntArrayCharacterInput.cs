@@ -14,7 +14,7 @@ namespace PeterO.Text {
 
     /// <summary>Not documented yet.</summary>
     /// <returns>A 32-bit signed integer.</returns>
-    public int Read() {
+    public int ReadChar() {
       int[] arr = this.ilist;
       if (this.pos < this.ilist.Length) {
         return arr[this.pos++];

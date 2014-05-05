@@ -1,4 +1,4 @@
 MailLib
 =======
 
-A portable library in C# for parsing Internet mail messages.
+A portable library in C# and Java for parsing Internet mail messages.

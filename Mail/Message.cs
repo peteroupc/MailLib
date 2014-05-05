@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+using PeterO;
+
 namespace PeterO.Mail {
     /// <summary>Represents an email message. <para><b>Thread safety:</b>
     /// This class is mutable; its properties can be changed. None of its methods
@@ -42,7 +44,7 @@ namespace PeterO.Mail {
     /// <item>If a sequence of encoded words (RFC 2047) decodes to a string
     /// with a CTL character (U + 007F, or a character less than U + 0020 and not
     /// TAB) after being converted to Unicode, the encoded words are left
-    /// undecoded.</item>
+    /// un-decoded.</item>
     /// </list>
     /// </summary>
   public sealed class Message {
@@ -164,9 +166,10 @@ namespace PeterO.Mail {
       Message textMessage = new Message().SetTextBody(text);
       Message htmlMessage = new Message().SetHtmlBody(html);
       this.contentType = MediaType.Parse("multipart/alternative; boundary=\"=_boundary\"");
-      this.Parts.Clear();
-      this.Parts.Add(textMessage);
-      this.Parts.Add(htmlMessage);
+      IList<Message> parts = this.Parts;
+      parts.Clear();
+      parts.Add(textMessage);
+      parts.Add(htmlMessage);
       return this;
     }
 
@@ -186,7 +189,9 @@ namespace PeterO.Mail {
           if (have) {
             return false;
           }
-          if (HeaderFields.GetParser(name).Parse(this.headers[i + 1], 0, this.headers[i + 1].Length, null) != this.headers[i + 1].Length) {
+          string headerValue = this.headers[i + 1];
+          if (HeaderFields.GetParser(name).Parse(headerValue, 0, headerValue.Length, null) !=
+              headerValue.Length) {
             return false;
           }
           have = true;
@@ -207,18 +212,18 @@ namespace PeterO.Mail {
       return HeaderParserUtility.ParseAddressList(value, 0, value.Length, tokener.GetTokens());
     }
 
-    internal static IList<NamedAddress> ParseAddresses(IList<string> values) {
+    internal static IList<NamedAddress> ParseAddresses(string[] values) {
       Tokener tokener = new Tokener();
       var list = new List<NamedAddress>();
-      foreach (string value in values) {
-        if (value == null) {
+      foreach (string addressValue in values) {
+        if (addressValue == null) {
           continue;
         }
-        if (HeaderParser.ParseHeaderTo(value, 0, value.Length, tokener) != value.Length) {
+        if (HeaderParser.ParseHeaderTo(addressValue, 0, addressValue.Length, tokener) != addressValue.Length) {
           // Invalid syntax
           continue;
         }
-        list.AddRange(HeaderParserUtility.ParseAddressList(value, 0, value.Length, tokener.GetTokens()));
+        list.AddRange(HeaderParserUtility.ParseAddressList(addressValue, 0, addressValue.Length, tokener.GetTokens()));
       }
       return list;
     }
@@ -326,7 +331,8 @@ namespace PeterO.Mail {
         if (!this.ContentType.Equals(value)) {
           this.contentType = value;
           if (!value.IsMultipart) {
-            this.Parts.Clear();
+            IList<Message> parts = this.Parts;
+            parts.Clear();
           }
           this.SetHeader("content-type", this.contentType.ToString());
         }
@@ -737,7 +743,6 @@ namespace PeterO.Mail {
             do {
               int indexTemp3 = index;
               do {
-                int indexStart3 = index;
                 if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                   ++indexTemp3; break;
                 }
@@ -932,21 +937,21 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    internal static bool IsGoodLineLength(byte[] str) {
-      if (str == null || str.Length == 0) {
+    internal static bool IsGoodLineLength(byte[] bytes) {
+      if (bytes == null || bytes.Length == 0) {
         return true;
       }
       int lineLength = 0;
       int index = 0;
-      int endIndex = str.Length;
+      int endIndex = bytes.Length;
       bool headers = true;
       while (index < endIndex) {
-        int c = ((int)str[index]) & 0xff;
+        int c = ((int)bytes[index]) & 0xff;
         if (c >= 0x80) {
           // Console.WriteLine("Non-ASCII character (0x {0:X2})",(int)c);
           return false;
         }
-        if (c == '\r' && index + 1 < endIndex && str[index+1]=='\n') {
+        if (c == '\r' && index + 1 < endIndex && bytes[index + 1] == '\n') {
           index += 2;
           if (headers && lineLength == 0) {
             // Start of the body
@@ -1197,7 +1202,7 @@ namespace PeterO.Mail {
         bodyEncoder.WriteToString(sb, bodyToWrite, 0, bodyToWrite.Length);
         bodyEncoder.FinalizeEncoding(sb);
       } else {
-        foreach (var part in this.Parts) {
+        foreach (Message part in this.Parts) {
           sb.Append("\r\n--" + boundary + "\r\n");
           sb.Append(part.Generate(depth + 1));
         }
@@ -1278,12 +1283,12 @@ namespace PeterO.Mail {
         int typeEnd = atomText;
         Tokener tokener = new Tokener();
         string origValue = headerValue;
-        bool isUtf8 = (typeEnd - index == 5 &&
-                       (headerValue[index] & ~0x20) =='U' &&
-                       (headerValue[index + 1] & ~0x20) =='T' &&
-                       (headerValue[index + 2] & ~0x20) =='F' &&
+        bool isUtf8 = typeEnd - index == 5 &&
+                       (headerValue[index] & ~0x20) == 'U' &&
+                       (headerValue[index + 1] & ~0x20) == 'T' &&
+                       (headerValue[index + 2] & ~0x20) == 'F' &&
                        headerValue[index + 3] == '-' &&
-                       headerValue[index + 4] == '8');
+                       headerValue[index + 4] == '8';
         atomText = HeaderParser.ParseCFWS(headerValue, atomText, headerValue.Length, null);
         if (index < headerValue.Length && headerValue[atomText] == ';') {
           string typePart = headerValue.Substring(0, atomText + 1);
@@ -1346,7 +1351,7 @@ namespace PeterO.Mail {
       int index = 0;
       int endIndex = bytes.Length;
       int lastIndex = -1;
-      MemoryStream ms = null;
+      ArrayWriter writer = null;
       while (index < endIndex) {
         sb.Remove(0, sb.Length);
         bool first = true;
@@ -1482,11 +1487,11 @@ namespace PeterO.Mail {
           headerValue = DowngradeRecipientHeaderValue(headerValue, status);
           if (status[0] == 2 || status[0] == 1) {
             // Downgraded or encapsulated
-            if (ms == null) {
-              ms = new MemoryStream();
-              ms.Write(bytes, 0, headerNameStart);
+            if (writer == null) {
+              writer = new ArrayWriter();
+              writer.WriteBytes(bytes, 0, headerNameStart);
             } else {
-              ms.Write(bytes, lastIndex, headerNameStart - lastIndex);
+              writer.WriteBytes(bytes, lastIndex, headerNameStart - lastIndex);
             }
             WordWrapEncoder encoder = null;
             if (status[0] == 2) {
@@ -1498,15 +1503,14 @@ namespace PeterO.Mail {
             }
             encoder.AddString(headerValue);
             byte[] newBytes = DataUtilities.GetUtf8Bytes(encoder.ToString(), true);
-            ms.Write(newBytes, 0, newBytes.Length);
+            writer.WriteBytes(newBytes, 0, newBytes.Length);
             lastIndex = headerValueEnd;
           }
         }
       }
-      if (ms != null) {
-        ms.Write(bytes, lastIndex, bytes.Length - lastIndex);
-        bytes = ms.ToArray();
-        ms.Dispose();
+      if (writer != null) {
+        writer.WriteBytes(bytes, lastIndex, bytes.Length - lastIndex);
+        bytes = writer.ToArray();
       }
       return bytes;
     }
@@ -1769,8 +1773,9 @@ namespace PeterO.Mail {
               Message parentMessage = multipartStack[multipartStack.Count - 1].Message;
               boundaryChecker.StartBodyPartHeaders();
               ReadHeaders(stream, msg.headers);
-              bool parentIsDigest = parentMessage.ContentType.SubType.Equals("digest") &&
-                parentMessage.ContentType.IsMultipart;
+              MediaType ctype = parentMessage.ContentType;
+              bool parentIsDigest = ctype.SubType.Equals("digest") &&
+                ctype.IsMultipart;
               msg.ProcessHeaders(true, parentIsDigest);
               entry = new MessageStackEntry(msg);
               // Add the body part to the multipart
@@ -1778,7 +1783,8 @@ namespace PeterO.Mail {
               parentMessage.Parts.Add(msg);
               multipartStack.Add(entry);
               ms.SetLength(0);
-              if (msg.ContentType.IsMultipart) {
+              ctype = msg.ContentType;
+              if (ctype.IsMultipart) {
                 leaf = null;
               } else {
                 leaf = msg;
@@ -1788,7 +1794,7 @@ namespace PeterO.Mail {
               currentTransform = MakeTransferEncoding(
                 boundaryChecker,
                 msg.transferEncoding,
-                msg.ContentType.TypeAndSubType.Equals("text/plain"));
+                ctype.TypeAndSubType.Equals("text/plain"));
             } else {
               // All body parts were read
               if (leaf != null) {

@@ -146,20 +146,20 @@ namespace MailLibTest {
           ICharacterInput ci = new IntArrayCharacterInput(cptemp);
           Normalizer norm;
           norm = new Normalizer(ci, Normalization.NFC);
-          AssertEqual(i, norm.Read(), imsg);
-          AssertEqual(-1, norm.Read(), imsg);
+          AssertEqual(i, norm.ReadChar(), imsg);
+          AssertEqual(-1, norm.ReadChar(), imsg);
           ci = new IntArrayCharacterInput(cptemp);
           norm = new Normalizer(ci, Normalization.NFD);
-          AssertEqual(i, norm.Read(), imsg);
-          AssertEqual(-1, norm.Read(), imsg);
+          AssertEqual(i, norm.ReadChar(), imsg);
+          AssertEqual(-1, norm.ReadChar(), imsg);
           ci = new IntArrayCharacterInput(cptemp);
           norm = new Normalizer(ci, Normalization.NFKC);
-          AssertEqual(i, norm.Read(), imsg);
-          AssertEqual(-1, norm.Read(), imsg);
+          AssertEqual(i, norm.ReadChar(), imsg);
+          AssertEqual(-1, norm.ReadChar(), imsg);
           ci = new IntArrayCharacterInput(cptemp);
           norm = new Normalizer(ci, Normalization.NFKD);
-          AssertEqual(i, norm.Read(), imsg);
-          AssertEqual(-1, norm.Read(), imsg);
+          AssertEqual(i, norm.ReadChar(), imsg);
+          AssertEqual(-1, norm.ReadChar(), imsg);
           if (!Normalizer.IsNormalized(cptemp, Normalization.NFC)) {
             Assert.Fail(imsg);
           }

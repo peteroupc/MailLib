@@ -115,9 +115,6 @@ namespace PeterO.Mail {
       if (String.IsNullOrEmpty(displayName)) {
         displayName = address.ToString();
       }
-      if (address == null) {
-        throw new ArgumentNullException("address");
-      }
       this.name = displayName;
       this.groupAddresses = new List<NamedAddress>();
       this.address = address;

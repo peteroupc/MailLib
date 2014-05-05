@@ -389,39 +389,39 @@ module Normalizer
     return buffer if form==:NFD || form==:NFKD || buffer.length<2
     starterPos = 0;
     retval = buffer.length;
-    starterCh = buffer[0];
-    lastClass = UnicodeDatabase.getCombiningClass(starterCh);
-    if (lastClass != 0)
-      lastClass = 256;
+    starter = buffer[0];
+    last = UnicodeDatabase.getCombiningClass(starter);
+    if (last != 0)
+      last = 256;
     end
     compPos=0;
     endPos=0+buffer.length;
     composed=false;
     for decompPos in compPos...endPos
       ch = buffer[decompPos];
-      chClass = UnicodeDatabase.getCombiningClass(ch);
+      cc = UnicodeDatabase.getCombiningClass(ch);
       if(decompPos>compPos)
-        lead = starterCh-0x1100;
+        lead = starter-0x1100;
         if(0 <= lead && lead < 19)
           # Found Hangul L jamo
           vowel = ch-0x1161;
-          if(0<=vowel && vowel < 21 && (lastClass < chClass || lastClass == 0))
-            starterCh = 0xAC00 + (lead * 21 + vowel) * 28;
-            buffer[starterPos] = starterCh;
+          if(0<=vowel && vowel < 21 && (last < cc || last == 0))
+            starter = 0xAC00 + (lead * 21 + vowel) * 28;
+            buffer[starterPos] = starter;
             buffer[decompPos] = 0x110000;
             composed=true;
             retval-=1;
             next;
           end
         end
-        syllable = starterCh - 0xAC00;
+        syllable = starter - 0xAC00;
         if (0 <= syllable && syllable < 11172 &&
             (syllable % 28) == 0) 
           # Found Hangul LV jamo
           trail = ch-0x11A7;
-          if (0 < trail && trail < 28 && (lastClass < chClass || lastClass == 0))
-            starterCh +=trail;
-            buffer[starterPos] = starterCh;
+          if (0 < trail && trail < 28 && (last < cc || last == 0))
+            starter +=trail;
+            buffer[starterPos] = starter;
             buffer[decompPos] = 0x110000;
             composed=true;
             retval-=1;
@@ -429,21 +429,21 @@ module Normalizer
           end
         end
       end
-      composite=UnicodeDatabase.getComposedPair(starterCh,ch);
-      diffClass=lastClass < chClass;
-      if(composite>=0 && (diffClass || lastClass == 0)) 
+      composite=UnicodeDatabase.getComposedPair(starter,ch);
+      diffClass=last < cc;
+      if(composite>=0 && (diffClass || last == 0)) 
         buffer[starterPos]=composite;
-        starterCh = composite;
+        starter = composite;
         buffer[decompPos] = 0x110000;
         composed=true;
         retval-=1;
         next;
       end
-      if (chClass == 0)
+      if (cc == 0)
         starterPos = decompPos;
-        starterCh  = ch;
+        starter  = ch;
       end
-      lastClass = chClass;
+      last = cc;
     end
     if(composed)
       j=compPos;
@@ -730,14 +730,10 @@ f.puts(" Licensed under the Unicode License")
 f.puts(" (see LICENSE.md in the source code root or visit")
 f.puts(" http://www.unicode.org/copyright.html Exhibit 1). */")
 final="final"
-if true
+f.puts("using System;")
 f.puts("namespace PeterO.Text {")
 f.puts("  internal class NormalizationData {")
 final="readonly"
-else
-f.puts("package com.upokescenter.internal;")
-f.puts("class NormalizationData {")  
-end
 binary=[]
 for key in $ComposedPairs.keys.sort
   a=key/0x110000
@@ -748,9 +744,33 @@ for key in $ComposedPairs.keys.sort
   binary.push(b)
   binary.push(val)
 end
-f.puts("    public static #{final} int[] ComposedPairs = new int[] {")
-f.puts("      "+linebrokenjoin(binary))
-f.puts("    };");
+def getChunkedFunctions(arr, name, chunkSize)
+  j=0
+  ret=""
+  i=0; while i<arr.length
+    ret+=("    private static int[] #{name}#{j}() {\n")
+    ret+=("      return new int[] {\n")
+    ret+=("        "+linebrokenjoin(arr[i,chunkSize]))+"\n"
+    ret+=("      };\n");
+    ret+=("    }\n");
+    i+=chunkSize
+    j+=1
+  end
+  ret+=("    private static int[] #{name}() {\n")
+  ret+=("      int[] ret=new int[#{arr.length}];\n")
+  i=0; j=0; while i<arr.length
+    alen=[chunkSize,arr.length-i].min
+    ret+=("      Array.Copy(#{name}#{j}(), 0, ret, #{i}, #{alen});\n")
+    i+=chunkSize
+    j+=1
+  end
+  ret+=("      return ret;\n")
+  ret+=("    }\n");
+  return ret
+end
+
+f.puts("    public static #{final} int[] ComposedPairs = GetComposedPairs();")
+f.puts(getChunkedFunctions(binary, "GetComposedPairs", 4000))
 f.puts("    public static #{final} byte[] CombiningClasses = new byte[] {")
 f.puts("      "+linebrokenjoinbytes(LZ4.compress(toByteArray($CombiningClasses))))
 f.puts("    };");
@@ -791,14 +811,9 @@ end
 binary=[pointers.length/2]
 binary.concat(pointers)
 binary.concat(decomps)
-f.puts("    public static #{final} int[] DecompMappings = GetDecompMappings();")
-f.puts("    private static int[] GetDecompMappings(){")
-f.puts("      return new int[] {")
 data=binary.transform{|x| (x>>31)!=0 ? "unchecked((int)#{x})" : x.to_s }
-data=linebrokenjoin(data)
-f.puts("      "+data)
-f.puts("      };");
-f.puts("    }");
+f.puts("    public static #{final} int[] DecompMappings = GetDecompMappings();")
+f.puts(getChunkedFunctions(data, "GetDecompMappings", 4000))
 f.puts("    public static #{final} int[] CompatDecompMappings = GetCompatDecompMappings();")
 f.puts("    private static int[] GetCompatDecompMappings(){")
 f.puts("      return new int[] {")

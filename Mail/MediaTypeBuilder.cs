@@ -8,6 +8,8 @@ at: http://upokecenter.com/d/
 using System;
 using System.Collections.Generic;
 
+using PeterO;
+
 namespace PeterO.Mail {
     /// <summary>A mutable media type object.</summary>
   public sealed class MediaTypeBuilder
@@ -16,8 +18,8 @@ namespace PeterO.Mail {
     private string subtype;
     private IDictionary<string, string> parameters;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets or sets this value's top-level type.</summary>
+    /// <value>This value&apos;s top-level type.</value>
     public string TopLevelType {
       get {
         return this.type;
@@ -28,8 +30,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets or sets this value's subtype.</summary>
+    /// <value>This value&apos;s subtype.</value>
     public string SubType {
       get {
         return this.subtype;

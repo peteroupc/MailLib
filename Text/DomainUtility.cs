@@ -7,7 +7,6 @@ at: http://upokecenter.com/d/
  */
 using System;
 using System.Text;
-using PeterO;
 
 namespace PeterO.Text {
     /// <summary>Utility methods for domain names.</summary>

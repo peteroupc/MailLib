@@ -9,12 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-  internal class HeaderFields
+  internal static class HeaderFields
   {
-    private class UnstructuredHeaderField : IHeaderFieldParser {
+    private sealed class UnstructuredHeaderField : IHeaderFieldParser {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object. (2).</param>
     /// <returns>A string object.</returns>
@@ -241,15 +242,16 @@ namespace PeterO.Mail {
                     // Has a phrase, extract the addr-spec and convert
                     // the mailbox to a group
                     int angleAddrStart = HeaderParser.ParsePhrase(str, token[1], token[2], null);
-                    sb.Append(str.Substring(lastIndex, token[1], angleAddrStart - token[1]));
+                    // append the rest of the string so far up to and including the phrase
+                    sb.Append(str.Substring(lastIndex, angleAddrStart - lastIndex));
                     int addrSpecStart = HeaderParser.ParseCFWS(str, angleAddrStart, token[2], null);
-                    if (addrSpecStart<token[2] && str[addrSpecStart]=='<') {
+                    if (addrSpecStart < token[2] && str[addrSpecStart] == '<') {
                       ++addrSpecStart;
                     }
                     addrSpecStart = HeaderParser.ParseObsRoute(str, addrSpecStart, token[2], null);
                     int addrSpecEnd = HeaderParser.ParseAddrSpec(str, addrSpecStart, token[2], null);
-                    string addrSpec = str.Substring(addrSpecStart, addrSpecEnd-addrSpecStart);
-                    bool endsWithSpace = sb.Length>0 && (sb[sb.Length-1]==0x20 || sb[sb.Length-1]==0x09);
+                    string addrSpec = str.Substring(addrSpecStart, addrSpecEnd - addrSpecStart);
+                    bool endsWithSpace = sb.Length > 0 && (sb[sb.Length - 1] == 0x20 || sb[sb.Length - 1] == 0x09);
                     string encodedText = (endsWithSpace ? String.Empty : " ") +
                       Rfc2047.EncodeString(addrSpec) + " :;";
                     sb.Append(encodedText);
@@ -1301,143 +1303,143 @@ namespace PeterO.Mail {
       }
     }
 
-    private static IDictionary<string, IHeaderFieldParser> list = CreateHeaderFieldList();
+    private static IDictionary<string, IHeaderFieldParser> fieldMap = CreateHeaderFieldList();
     private static IHeaderFieldParser unstructured = new UnstructuredHeaderField();
 
     private static IDictionary<string, IHeaderFieldParser> CreateHeaderFieldList() {
-      list = new Dictionary<string, IHeaderFieldParser>();
-      list["content-return"] = new HeaderX400ContentReturn();
-      list["x400-content-return"] = new HeaderX400ContentReturn();
-      list["delivery-date"] = new HeaderDeliveryDate();
-      list["priority"] = new HeaderPriority();
-      list["importance"] = new HeaderImportance();
-      list["sensitivity"] = new HeaderSensitivity();
-      list["reply-by"] = new HeaderDate();
-      list["x400-content-identifier"] = new HeaderX400ContentIdentifier();
-      list["x400-received"] = new HeaderX400Received();
-      list["x400-mts-identifier"] = new HeaderX400MtsIdentifier();
-      list["x400-trace"] = new HeaderX400Received();
-      list["x400-originator"] = new HeaderX400Originator();
-      list["x400-recipients"] = new HeaderX400Recipients();
-      list["conversion"] = new HeaderConversion();
-      list["conversion-with-loss"] = new HeaderConversionWithLoss();
-      list["expires"] = new HeaderDate();
-      list["autoforwarded"] = new HeaderAutoforwarded();
-      list["generate-delivery-report"] = new HeaderGenerateDeliveryReport();
-      list["incomplete-copy"] = new HeaderIncompleteCopy();
-      list["autosubmitted"] = new HeaderAutosubmitted();
-      list["prevent-nondelivery-report"] = new HeaderPreventNondeliveryReport();
-      list["alternate-recipient"] = new HeaderAlternateRecipient();
-      list["disclose-recipients"] = new HeaderDiscloseRecipients();
-      list["accept-language"] = new HeaderAcceptLanguage();
-      list["archived-at"] = new HeaderArchivedAt();
-      list["authentication-results"] = new HeaderAuthenticationResults();
-      list["auto-submitted"] = new HeaderAutoSubmitted();
-      list["base"] = new HeaderContentBase();
-      list["bcc"] = new HeaderBcc();
-      list["cc"] = new HeaderTo();
-      list["content-base"] = new HeaderContentBase();
-      list["content-disposition"] = new HeaderContentDisposition();
-      list["content-duration"] = new HeaderContentDuration();
-      list["content-id"] = new HeaderContentId();
-      list["content-language"] = new HeaderContentLanguage();
-      list["content-location"] = new HeaderContentLocation();
-      list["content-md5"] = new HeaderContentMd5();
-      list["content-transfer-encoding"] = new HeaderContentTransferEncoding();
-      list["content-type"] = new HeaderContentType();
-      list["date"] = new HeaderDate();
-      list["deferred-delivery"] = new HeaderDeferredDelivery();
-      list["disposition-notification-options"] = new HeaderDispositionNotificationOptions();
-      list["disposition-notification-to"] = new HeaderDispositionNotificationTo();
-      list["dkim-signature"] = new HeaderDkimSignature();
-      list["ediint-features"] = new HeaderEdiintFeatures();
-      list["encoding"] = new HeaderEncoding();
-      list["encrypted"] = new HeaderEncrypted();
-      list["expiry-date"] = new HeaderDate();
-      list["from"] = new HeaderFrom();
-      list["in-reply-to"] = new HeaderInReplyTo();
-      list["jabber-id"] = new HeaderJabberId();
-      list["keywords"] = new HeaderKeywords();
-      list["language"] = new HeaderLanguage();
-      list["latest-delivery-time"] = new HeaderLatestDeliveryTime();
-      list["list-id"] = new HeaderListId();
-      list["message-context"] = new HeaderMessageContext();
-      list["message-id"] = new HeaderMessageId();
-      list["mime-version"] = new HeaderMimeVersion();
-      list["mmhs-acp127-message-identifier"] = new HeaderMmhsAcp127MessageIdentifier();
-      list["mmhs-codress-message-indicator"] = new HeaderMmhsCodressMessageIndicator();
-      list["mmhs-copy-precedence"] = new HeaderMmhsCopyPrecedence();
-      list["mmhs-exempted-address"] = new HeaderMmhsExemptedAddress();
-      list["mmhs-extended-authorisation-info"] = new HeaderMmhsExtendedAuthorisationInfo();
-      list["mmhs-handling-instructions"] = new HeaderMmhsHandlingInstructions();
-      list["mmhs-message-instructions"] = new HeaderMmhsMessageInstructions();
-      list["mmhs-message-type"] = new HeaderMmhsMessageType();
-      list["mmhs-originator-plad"] = new HeaderMmhsOriginatorPlad();
-      list["mmhs-originator-reference"] = new HeaderMmhsOriginatorReference();
-      list["mmhs-other-recipients-indicator-cc"] = new HeaderMmhsOtherRecipientsIndicatorCc();
-      list["mmhs-other-recipients-indicator-to"] = new HeaderMmhsOtherRecipientsIndicatorTo();
-      list["mmhs-primary-precedence"] = new HeaderMmhsPrimaryPrecedence();
-      list["mmhs-subject-indicator-codes"] = new HeaderMmhsSubjectIndicatorCodes();
-      list["mt-priority"] = new HeaderMtPriority();
-      list["obsoletes"] = new HeaderObsoletes();
-      list["original-from"] = new HeaderFrom();
-      list["original-message-id"] = new HeaderMessageId();
-      list["original-recipient"] = new HeaderOriginalRecipient();
-      list["received"] = new HeaderReceived();
-      list["received-spf"] = new HeaderReceivedSpf();
-      list["references"] = new HeaderInReplyTo();
-      list["reply-to"] = new HeaderResentTo();
-      list["resent-bcc"] = new HeaderBcc();
-      list["resent-cc"] = new HeaderResentTo();
-      list["resent-date"] = new HeaderDate();
-      list["resent-from"] = new HeaderFrom();
-      list["resent-message-id"] = new HeaderMessageId();
-      list["resent-reply-to"] = new HeaderResentTo();
-      list["resent-sender"] = new HeaderSender();
-      list["resent-to"] = new HeaderResentTo();
-      list["return-path"] = new HeaderReturnPath();
-      list["sender"] = new HeaderSender();
-      list["solicitation"] = new HeaderSolicitation();
-      list["to"] = new HeaderTo();
-      list["vbr-info"] = new HeaderVbrInfo();
-      list["x-archived-at"] = new HeaderArchivedAt();
-      list["x-mittente"] = new HeaderSender();
-      list["x-ricevuta"] = new HeaderXRicevuta();
-      list["x-riferimento-message-id"] = new HeaderMessageId();
-      list["x-tiporicevuta"] = new HeaderXTiporicevuta();
-      list["x-trasporto"] = new HeaderXTrasporto();
-      list["x-verificasicurezza"] = new HeaderXVerificasicurezza();
+      fieldMap = new Dictionary<string, IHeaderFieldParser>();
+      fieldMap["content-return"] = new HeaderX400ContentReturn();
+      fieldMap["x400-content-return"] = new HeaderX400ContentReturn();
+      fieldMap["delivery-date"] = new HeaderDeliveryDate();
+      fieldMap["priority"] = new HeaderPriority();
+      fieldMap["importance"] = new HeaderImportance();
+      fieldMap["sensitivity"] = new HeaderSensitivity();
+      fieldMap["reply-by"] = new HeaderDate();
+      fieldMap["x400-content-identifier"] = new HeaderX400ContentIdentifier();
+      fieldMap["x400-received"] = new HeaderX400Received();
+      fieldMap["x400-mts-identifier"] = new HeaderX400MtsIdentifier();
+      fieldMap["x400-trace"] = new HeaderX400Received();
+      fieldMap["x400-originator"] = new HeaderX400Originator();
+      fieldMap["x400-recipients"] = new HeaderX400Recipients();
+      fieldMap["conversion"] = new HeaderConversion();
+      fieldMap["conversion-with-loss"] = new HeaderConversionWithLoss();
+      fieldMap["expires"] = new HeaderDate();
+      fieldMap["autoforwarded"] = new HeaderAutoforwarded();
+      fieldMap["generate-delivery-report"] = new HeaderGenerateDeliveryReport();
+      fieldMap["incomplete-copy"] = new HeaderIncompleteCopy();
+      fieldMap["autosubmitted"] = new HeaderAutosubmitted();
+      fieldMap["prevent-nondelivery-report"] = new HeaderPreventNondeliveryReport();
+      fieldMap["alternate-recipient"] = new HeaderAlternateRecipient();
+      fieldMap["disclose-recipients"] = new HeaderDiscloseRecipients();
+      fieldMap["accept-language"] = new HeaderAcceptLanguage();
+      fieldMap["archived-at"] = new HeaderArchivedAt();
+      fieldMap["authentication-results"] = new HeaderAuthenticationResults();
+      fieldMap["auto-submitted"] = new HeaderAutoSubmitted();
+      fieldMap["base"] = new HeaderContentBase();
+      fieldMap["bcc"] = new HeaderBcc();
+      fieldMap["cc"] = new HeaderTo();
+      fieldMap["content-base"] = new HeaderContentBase();
+      fieldMap["content-disposition"] = new HeaderContentDisposition();
+      fieldMap["content-duration"] = new HeaderContentDuration();
+      fieldMap["content-id"] = new HeaderContentId();
+      fieldMap["content-language"] = new HeaderContentLanguage();
+      fieldMap["content-location"] = new HeaderContentLocation();
+      fieldMap["content-md5"] = new HeaderContentMd5();
+      fieldMap["content-transfer-encoding"] = new HeaderContentTransferEncoding();
+      fieldMap["content-type"] = new HeaderContentType();
+      fieldMap["date"] = new HeaderDate();
+      fieldMap["deferred-delivery"] = new HeaderDeferredDelivery();
+      fieldMap["disposition-notification-options"] = new HeaderDispositionNotificationOptions();
+      fieldMap["disposition-notification-to"] = new HeaderDispositionNotificationTo();
+      fieldMap["dkim-signature"] = new HeaderDkimSignature();
+      fieldMap["ediint-features"] = new HeaderEdiintFeatures();
+      fieldMap["encoding"] = new HeaderEncoding();
+      fieldMap["encrypted"] = new HeaderEncrypted();
+      fieldMap["expiry-date"] = new HeaderDate();
+      fieldMap["from"] = new HeaderFrom();
+      fieldMap["in-reply-to"] = new HeaderInReplyTo();
+      fieldMap["jabber-id"] = new HeaderJabberId();
+      fieldMap["keywords"] = new HeaderKeywords();
+      fieldMap["language"] = new HeaderLanguage();
+      fieldMap["latest-delivery-time"] = new HeaderLatestDeliveryTime();
+      fieldMap["list-id"] = new HeaderListId();
+      fieldMap["message-context"] = new HeaderMessageContext();
+      fieldMap["message-id"] = new HeaderMessageId();
+      fieldMap["mime-version"] = new HeaderMimeVersion();
+      fieldMap["mmhs-acp127-message-identifier"] = new HeaderMmhsAcp127MessageIdentifier();
+      fieldMap["mmhs-codress-message-indicator"] = new HeaderMmhsCodressMessageIndicator();
+      fieldMap["mmhs-copy-precedence"] = new HeaderMmhsCopyPrecedence();
+      fieldMap["mmhs-exempted-address"] = new HeaderMmhsExemptedAddress();
+      fieldMap["mmhs-extended-authorisation-info"] = new HeaderMmhsExtendedAuthorisationInfo();
+      fieldMap["mmhs-handling-instructions"] = new HeaderMmhsHandlingInstructions();
+      fieldMap["mmhs-message-instructions"] = new HeaderMmhsMessageInstructions();
+      fieldMap["mmhs-message-type"] = new HeaderMmhsMessageType();
+      fieldMap["mmhs-originator-plad"] = new HeaderMmhsOriginatorPlad();
+      fieldMap["mmhs-originator-reference"] = new HeaderMmhsOriginatorReference();
+      fieldMap["mmhs-other-recipients-indicator-cc"] = new HeaderMmhsOtherRecipientsIndicatorCc();
+      fieldMap["mmhs-other-recipients-indicator-to"] = new HeaderMmhsOtherRecipientsIndicatorTo();
+      fieldMap["mmhs-primary-precedence"] = new HeaderMmhsPrimaryPrecedence();
+      fieldMap["mmhs-subject-indicator-codes"] = new HeaderMmhsSubjectIndicatorCodes();
+      fieldMap["mt-priority"] = new HeaderMtPriority();
+      fieldMap["obsoletes"] = new HeaderObsoletes();
+      fieldMap["original-from"] = new HeaderFrom();
+      fieldMap["original-message-id"] = new HeaderMessageId();
+      fieldMap["original-recipient"] = new HeaderOriginalRecipient();
+      fieldMap["received"] = new HeaderReceived();
+      fieldMap["received-spf"] = new HeaderReceivedSpf();
+      fieldMap["references"] = new HeaderInReplyTo();
+      fieldMap["reply-to"] = new HeaderResentTo();
+      fieldMap["resent-bcc"] = new HeaderBcc();
+      fieldMap["resent-cc"] = new HeaderResentTo();
+      fieldMap["resent-date"] = new HeaderDate();
+      fieldMap["resent-from"] = new HeaderFrom();
+      fieldMap["resent-message-id"] = new HeaderMessageId();
+      fieldMap["resent-reply-to"] = new HeaderResentTo();
+      fieldMap["resent-sender"] = new HeaderSender();
+      fieldMap["resent-to"] = new HeaderResentTo();
+      fieldMap["return-path"] = new HeaderReturnPath();
+      fieldMap["sender"] = new HeaderSender();
+      fieldMap["solicitation"] = new HeaderSolicitation();
+      fieldMap["to"] = new HeaderTo();
+      fieldMap["vbr-info"] = new HeaderVbrInfo();
+      fieldMap["x-archived-at"] = new HeaderArchivedAt();
+      fieldMap["x-mittente"] = new HeaderSender();
+      fieldMap["x-ricevuta"] = new HeaderXRicevuta();
+      fieldMap["x-riferimento-message-id"] = new HeaderMessageId();
+      fieldMap["x-tiporicevuta"] = new HeaderXTiporicevuta();
+      fieldMap["x-trasporto"] = new HeaderXTrasporto();
+      fieldMap["x-verificasicurezza"] = new HeaderXVerificasicurezza();
       // These following header fields, defined in the
       // Message Headers registry as of Apr. 3, 2014,
       // are treated as unstructured.
-      // list["apparently-to"] = unstructured;
-      // list["body"] = unstructured;
-      // list["comments"] = unstructured;
-      // list["content-description"] = unstructured;
-      // list["downgraded-bcc"] = unstructured;
-      // list["downgraded-cc"] = unstructured;
-      // list["downgraded-disposition-notification-to"] = unstructured;
-      // list["downgraded-final-recipient"] = unstructured;
-      // list["downgraded-from"] = unstructured;
-      // list["downgraded-in-reply-to"] = unstructured;
-      // list["downgraded-mail-from"] = unstructured;
-      // list["downgraded-message-id"] = unstructured;
-      // list["downgraded-original-recipient"] = unstructured;
-      // list["downgraded-rcpt-to"] = unstructured;
-      // list["downgraded-references"] = unstructured;
-      // list["downgraded-reply-to"] = unstructured;
-      // list["downgraded-resent-bcc"] = unstructured;
-      // list["downgraded-resent-cc"] = unstructured;
-      // list["downgraded-resent-from"] = unstructured;
-      // list["downgraded-resent-reply-to"] = unstructured;
-      // list["downgraded-resent-sender"] = unstructured;
-      // list["downgraded-resent-to"] = unstructured;
-      // list["downgraded-return-path"] = unstructured;
-      // list["downgraded-sender"] = unstructured;
-      // list["downgraded-to"] = unstructured;
-      // list["errors-to"] = unstructured;
-      // list["subject"] = unstructured;
-      return list;
+      // fieldMap["apparently-to"] = unstructured;
+      // fieldMap["body"] = unstructured;
+      // fieldMap["comments"] = unstructured;
+      // fieldMap["content-description"] = unstructured;
+      // fieldMap["downgraded-bcc"] = unstructured;
+      // fieldMap["downgraded-cc"] = unstructured;
+      // fieldMap["downgraded-disposition-notification-to"] = unstructured;
+      // fieldMap["downgraded-final-recipient"] = unstructured;
+      // fieldMap["downgraded-from"] = unstructured;
+      // fieldMap["downgraded-in-reply-to"] = unstructured;
+      // fieldMap["downgraded-mail-from"] = unstructured;
+      // fieldMap["downgraded-message-id"] = unstructured;
+      // fieldMap["downgraded-original-recipient"] = unstructured;
+      // fieldMap["downgraded-rcpt-to"] = unstructured;
+      // fieldMap["downgraded-references"] = unstructured;
+      // fieldMap["downgraded-reply-to"] = unstructured;
+      // fieldMap["downgraded-resent-bcc"] = unstructured;
+      // fieldMap["downgraded-resent-cc"] = unstructured;
+      // fieldMap["downgraded-resent-from"] = unstructured;
+      // fieldMap["downgraded-resent-reply-to"] = unstructured;
+      // fieldMap["downgraded-resent-sender"] = unstructured;
+      // fieldMap["downgraded-resent-to"] = unstructured;
+      // fieldMap["downgraded-return-path"] = unstructured;
+      // fieldMap["downgraded-sender"] = unstructured;
+      // fieldMap["downgraded-to"] = unstructured;
+      // fieldMap["errors-to"] = unstructured;
+      // fieldMap["subject"] = unstructured;
+      return fieldMap;
     }
 
     public static IHeaderFieldParser GetParser(string name) {
@@ -1445,8 +1447,8 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("name");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
-      if (list.ContainsKey(name)) {
-        return list[name];
+      if (fieldMap.ContainsKey(name)) {
+        return fieldMap[name];
       }
       return unstructured;
     }

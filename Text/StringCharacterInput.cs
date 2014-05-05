@@ -49,7 +49,7 @@ namespace PeterO.Text {
 
     /// <summary>Not documented yet.</summary>
     /// <returns>A 32-bit signed integer.</returns>
-    public int Read() {
+    public int ReadChar() {
       if (this.index >= this.endIndex) {
         return -1;
       }
@@ -98,7 +98,7 @@ namespace PeterO.Text {
         return 0;
       }
       for (int i = 0; i < length; ++i) {
-        int c = this.Read();
+        int c = this.ReadChar();
         if (c == -1) {
           return (i == 0) ? -1 : i;
         }

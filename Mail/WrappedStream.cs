@@ -21,7 +21,11 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <returns>A 32-bit signed integer.</returns>
     public int ReadByte() {
-      return this.stream.ReadByte();
+      try {
+        return this.stream.ReadByte();
+      } catch (IOException ex) {
+        throw new MessageDataException(ex.Message, ex);
+      }
     }
   }
 }

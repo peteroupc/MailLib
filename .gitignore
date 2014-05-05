@@ -11,6 +11,7 @@ CBORTest/OpenCover/
 js/*.ht*
 js/DecTest.*
 ProfilingSessions/
+coverage.xml
 CBORTest/ProfilingSessions/
 .project
 .classpath

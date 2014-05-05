@@ -8,7 +8,7 @@ at: http://upokecenter.com/d/
 using System;
 using System.Collections.Generic;
 
-namespace PeterO {
+namespace PeterO.Mail {
     /// <summary>Description of CollectionUtilities.</summary>
   internal static class CollectionUtilities
   {

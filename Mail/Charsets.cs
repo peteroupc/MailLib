@@ -8,6 +8,8 @@ at: http://upokecenter.com/d/
 using System;
 using System.Text;
 
+using PeterO;
+
 namespace PeterO.Mail {
     /// <summary>Description of Charsets.</summary>
   internal static class Charsets
@@ -360,10 +362,10 @@ namespace PeterO.Mail {
     }
 
     private sealed class SingleByteEncoding : ICharset {
-      private int[] map;
+      private int[] encodingMapping;
 
       public SingleByteEncoding(int[] map) {
-        this.map = map;
+        this.encodingMapping = map;
       }
 
     /// <summary>Not documented yet.</summary>
@@ -379,7 +381,7 @@ namespace PeterO.Mail {
           if (b < 0x80) {
             builder.Append((char)b);
           } else {
-            builder.Append((char)this.map[b & 0x7f]);
+            builder.Append((char)this.encodingMapping[b & 0x7f]);
           }
         }
         return builder.ToString();

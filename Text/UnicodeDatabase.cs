@@ -1,71 +1,10 @@
 using System;
 using System.IO;
 
+using PeterO;
+
 namespace PeterO.Text {
   internal static class UnicodeDatabase {
-    /// <summary>Not documented yet.</summary>
-    public sealed class ByteData {
-      private byte[] array;
-
-      public static ByteData Decompress(byte[] data) {
-        return new ByteData(Lz4Decompress(data));
-      }
-
-      public ByteData(String path) {
-        throw new NotSupportedException();
-      }
-
-      public ByteData(byte[] array) {
-        this.array = array;
-      }
-
-    /// <summary>Not documented yet.</summary>
-    /// <param name='cp'>A 32-bit signed integer.</param>
-    /// <returns>A Boolean object.</returns>
-      public bool ReadBoolean(int cp) {
-        if (cp < 0) {
-          throw new ArgumentException("cp (" + Convert.ToString((long)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
-        }
-        if (cp > 0x10ffff) {
-          throw new ArgumentException("cp (" + Convert.ToString((long)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)0x10ffff, System.Globalization.CultureInfo.InvariantCulture));
-        }
-        int b = this.array[cp >> 13] & 0xff;
-        switch (b) {
-          case 0xfe:
-            return false;
-          case 0xff:
-            return true;
-          default:
-            {
-              int t = cp & 8191;
-              int index = 136 + (b << 10) + (t >> 3);
-              return (this.array[index] & (1 << (t & 7))) > 0;
-            }
-        }
-      }
-
-    /// <summary>Not documented yet.</summary>
-    /// <param name='cp'>A 32-bit signed integer.</param>
-    /// <returns>A Byte object.</returns>
-      public byte ReadByte(int cp) {
-        if (cp < 0) {
-          throw new ArgumentException("cp (" + Convert.ToString((long)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
-        }
-        if (cp > 0x10ffff) {
-          throw new ArgumentException("cp (" + Convert.ToString((long)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)0x10ffff, System.Globalization.CultureInfo.InvariantCulture));
-        }
-        int index = (cp >> 9) << 1;
-        int x = this.array[index + 1];
-        if ((x & 0x80) != 0) {  // Indicates a default value.
-          return this.array[index];
-        } else {
-          x = (x << 8) | (((int)this.array[index]) & 0xff);  // Indicates an array block.
-          index = 0x1100 + (x << 9) + (cp & 511);
-          return this.array[index];
-        }
-      }
-    }
-
     private static ByteData classes = null;
     private static Object classesSyncRoot = new Object();
 
@@ -75,7 +14,7 @@ namespace PeterO.Text {
           classes = ByteData.Decompress(NormalizationData.CombiningClasses);
         }
       }
-      return ((int)classes.ReadByte(cp)) & 0xff;
+      return ((int)classes.GetByte(cp)) & 0xff;
     }
 
     private static ByteData idnaCat = null;
@@ -87,7 +26,7 @@ namespace PeterO.Text {
           idnaCat = ByteData.Decompress(IdnaData.IdnaCategories);
         }
       }
-      return ((int)idnaCat.ReadByte(cp)) & 0xff;
+      return ((int)idnaCat.GetByte(cp)) & 0xff;
     }
 
     private static ByteData combmark = null;
@@ -99,7 +38,7 @@ namespace PeterO.Text {
           combmark = ByteData.Decompress(
             IdnaData.CombiningMarks);
         }
-        return combmark.ReadBoolean(cp);
+        return combmark.GetBoolean(cp);
       }
     }
 
@@ -115,25 +54,25 @@ namespace PeterO.Text {
           if (stablenfc == null) {
             stablenfc = ByteData.Decompress(NormalizationData.StableNFC);
           }
-          return stablenfc.ReadBoolean(cp);
+          return stablenfc.GetBoolean(cp);
         }
         if (form == Normalization.NFD) {
           if (stablenfd == null) {
             stablenfd = ByteData.Decompress(NormalizationData.StableNFD);
           }
-          return stablenfd.ReadBoolean(cp);
+          return stablenfd.GetBoolean(cp);
         }
         if (form == Normalization.NFKC) {
           if (stablenfkc == null) {
             stablenfkc = ByteData.Decompress(NormalizationData.StableNFKC);
           }
-          return stablenfkc.ReadBoolean(cp);
+          return stablenfkc.GetBoolean(cp);
         }
         if (form == Normalization.NFKD) {
           if (stablenfkd == null) {
             stablenfkd = ByteData.Decompress(NormalizationData.StableNFKD);
           }
-          return stablenfkd.ReadBoolean(cp);
+          return stablenfkd.GetBoolean(cp);
         }
         return false;
       }

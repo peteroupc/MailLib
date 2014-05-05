@@ -8,6 +8,7 @@ at: http://upokecenter.com/d/
 using System;
 using System.Text;
 
+using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {

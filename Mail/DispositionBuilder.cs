@@ -8,6 +8,8 @@ at: http://upokecenter.com/d/
 using System;
 using System.Collections.Generic;
 
+using PeterO;
+
 namespace PeterO.Mail {
     /// <summary>Description of DispositionBuilder.</summary>
   public class DispositionBuilder
@@ -15,7 +17,7 @@ namespace PeterO.Mail {
     private string type;
     private IDictionary<string, string> parameters;
 
-    /// <summary>Gets a value not documented yet.</summary>
+    /// <summary>Gets or sets a value not documented yet.</summary>
     /// <value>A value not documented yet.</value>
     public string DispositionType {
       get {

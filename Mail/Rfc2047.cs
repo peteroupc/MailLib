@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using PeterO;
+
 namespace PeterO.Mail {
     /// <summary>Description of Rfc2047.</summary>
   internal static class Rfc2047
@@ -461,7 +463,8 @@ namespace PeterO.Mail {
         lastWordWasEncodedWord = acceptedEncodedWord;
       }
       string retval = builder.ToString();
-      if (wordsWereDecoded && (hasSuspiciousText || (retval.Contains("=?") && retval.Contains("?=")))) {
+      if (wordsWereDecoded && (hasSuspiciousText || (retval.IndexOf("=?") >= 0 &&
+                                                     retval.IndexOf("?=") >= 0))) {
         if (context == EncodedWordContext.Comment) {
           string wrappedComment = "(" + retval + ")";
           if (HeaderParserUtility.ParseCommentStrict(wrappedComment, 0, wrappedComment.Length) != wrappedComment.Length) {

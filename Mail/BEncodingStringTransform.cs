@@ -9,8 +9,6 @@ using System;
 
 namespace PeterO.Mail {
   internal sealed class BEncodingStringTransform : ITransform {
-    private const int MaxLineSize = 76;
-
     private string input;
     private int inputIndex;
     private byte[] buffer;
@@ -47,6 +45,7 @@ namespace PeterO.Mail {
       }
       int value = 0;
       int count = 0;
+      int[] alphabet = Base64Transform.Alphabet;
       while (count < 4) {
         int c = (this.inputIndex < this.input.Length) ? this.input[this.inputIndex++] : -1;
         if (c < 0) {
@@ -70,7 +69,7 @@ namespace PeterO.Mail {
         } else if (c >= 0x80) {
           // ignore this character
         } else {
-          c = Base64Transform.Alphabet[c];
+          c = alphabet[c];
           // non-base64 characters are ignored
           if (c >= 0) {
             value <<= 6;

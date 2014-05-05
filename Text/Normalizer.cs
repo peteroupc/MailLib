@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+using PeterO;
+
 namespace PeterO.Text {
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Implements the Unicode normalization algorithm and contains
+    /// methods and functionality to test and convert Unicode strings for
+    /// Unicode normalization.</summary>
   public sealed class Normalizer : ICharacterInput
   {
     public static IList<int> GetChars(string str, Normalization form) {
@@ -16,7 +20,8 @@ namespace PeterO.Text {
 
     /// <summary>Converts a string to Unicode normalization form C.</summary>
     /// <param name='str'>A string. Cannot be null.</param>
-    /// <returns>The normalized string.</returns>
+    /// <returns>The normalized string. Unpaired surrogate code points
+    /// are replaced with the replacement character (U + FFFD).</returns>
     public static string Normalize(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -43,7 +48,7 @@ namespace PeterO.Text {
       Normalizer norm = new Normalizer(str, form);
       StringBuilder builder = new StringBuilder();
       int c = 0;
-      while ((c = norm.Read()) >= 0) {
+      while ((c = norm.ReadChar()) >= 0) {
         if (c <= 0xffff) {
           builder.Append((char)c);
         } else if (c <= 0x10ffff) {
@@ -159,7 +164,7 @@ namespace PeterO.Text {
     /// <param name='form'>A Normalization object.</param>
     public Normalizer(IList<int> characterList, Normalization form) {
       if (characterList == null) {
-        throw new ArgumentException("characterList");
+        throw new ArgumentNullException("characterList");
       }
       this.lastStableIndex = -1;
       this.characterList = characterList;
@@ -183,23 +188,38 @@ namespace PeterO.Text {
       this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
     }
 
+    /// <summary>Returns whether this string is in Unicode normalization
+    /// form C.</summary>
+    /// <param name='str'>A string. Can be null.</param>
+    /// <returns>True if the string is in normalization form C; false otherwise,
+    /// including if the string is null or contains an unpaired surrogate
+    /// code point.</returns>
     public static bool IsNormalized(string str) {
       return IsNormalized(str, Normalization.NFC);
     }
 
+    /// <summary>Returns whether this string is in a given Unicode normalization
+    /// form.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='form'>A Normalization object.</param>
+    /// <returns>A Boolean object.</returns>
     public static bool IsNormalized(string str, Normalization form) {
+      if (str == null) {
+ return false;
+}
       int maxbasic = (form == Normalization.NFC) ? 0xff : 0x7f;
       bool basic = true;
       for (int i = 0; i < str.Length; ++i) {
-        if (str[i] > maxbasic) {
-          basic = false;
-          break;
-        }
+        // Check for bare surrogates
         if ((str[i] & 0xf800) == 0xd800) {
           int cp = DataUtilities.CodePointAt(str, i);
           if (cp == 0xfffd) {
             return false;
           }
+        }
+        if (str[i] > maxbasic) {
+          basic = false;
+          break;
         }
       }
       if (basic) {
@@ -209,9 +229,12 @@ namespace PeterO.Text {
     }
 
     public static bool IsNormalized(ICharacterInput chars, Normalization form) {
+      if (chars == null) {
+ return false;
+}
       IList<int> list = new List<int>();
       int ch = 0;
-      while ((ch = chars.Read()) >= 0) {
+      while ((ch = chars.ReadChar()) >= 0) {
         if (ch >= 0xd800 && ch <= 0xdfff) {
           return false;
         }
@@ -221,18 +244,18 @@ namespace PeterO.Text {
     }
 
     private static bool NormalizeAndCheck(
-      IList<int> chars,
+      IList<int> charList,
       int start,
       int length,
       Normalization form) {
       int i = 0;
       foreach (int ch in Normalizer.GetChars(
-        new PartialListCharacterInput(chars, start, length),
+        new PartialListCharacterInput(charList, start, length),
         form)) {
         if (i >= length) {
           return false;
         }
-        if (ch != chars[start + i]) {
+        if (ch != charList[start + i]) {
           return false;
         }
         ++i;
@@ -240,19 +263,19 @@ namespace PeterO.Text {
       return true;
     }
 
-    public static bool IsNormalized(IList<int> chars, Normalization form) {
+    public static bool IsNormalized(IList<int> charList, Normalization form) {
       int lastNonStable = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
-      if (chars == null) {
+      if (charList == null) {
         throw new ArgumentException("chars");
       }
-      for (int i = 0; i < chars.Count; ++i) {
-        int c = chars[i];
+      for (int i = 0; i < charList.Count; ++i) {
+        int c = charList[i];
         if (c < 0 || c > 0x10ffff || ((c & 0x1ff800) == 0xd800)) {
           return false;
         }
         bool isStable = false;
-        if ((c & mask) == c && (i + 1 == chars.Count || (chars[i + 1] & mask) == chars[i + 1])) {
+        if ((c & mask) == c && (i + 1 == charList.Count || (charList[i + 1] & mask) == charList[i + 1])) {
           // Quick check for an ASCII character followed by another
           // ASCII character (or Latin-1 in NFC) or the end of string.
           // Treat the first character as stable
@@ -267,14 +290,14 @@ namespace PeterO.Text {
         } else if (lastNonStable >= 0 && isStable) {
           // We have at least one non-stable code point,
           // normalize these code points.
-          if (!NormalizeAndCheck(chars, lastNonStable, i - lastNonStable, form)) {
+          if (!NormalizeAndCheck(charList, lastNonStable, i - lastNonStable, form)) {
             return false;
           }
           lastNonStable = -1;
         }
       }
       if (lastNonStable >= 0) {
-        if (!NormalizeAndCheck(chars, lastNonStable, chars.Count - lastNonStable, form)) {
+        if (!NormalizeAndCheck(charList, lastNonStable, charList.Count - lastNonStable, form)) {
           return false;
         }
       }
@@ -283,7 +306,7 @@ namespace PeterO.Text {
 
     private int[] readbuffer = new int[1];
 
-    public int Read() {
+    public int ReadChar() {
       int r = this.Read(this.readbuffer, 0, 1);
       return r == 1 ? this.readbuffer[0] : -1;
     }
@@ -305,7 +328,7 @@ namespace PeterO.Text {
       } else if (this.iterator == null) {
         ch = (this.characterListPos >= this.characterList.Count) ? -1 : this.characterList[this.characterListPos++];
       } else {
-        ch = this.iterator.Read();
+        ch = this.iterator.ReadChar();
       }
       if (ch < 0) {
         this.endOfString = true;
@@ -550,19 +573,19 @@ namespace PeterO.Text {
       } while (changed);
     }
 
-    private int ComposeBuffer(int[] list, int length) {
+    private int ComposeBuffer(int[] array, int length) {
       #if DEBUG
-      if (list == null) {
-        throw new ArgumentNullException("list");
+      if (array == null) {
+        throw new ArgumentNullException("array");
       }
       if (length < 0) {
         throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
-      if (length > list.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)list.Length, System.Globalization.CultureInfo.InvariantCulture));
+      if (length > array.Length) {
+        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)array.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
-      if (list.Length < length) {
-        throw new ArgumentException("list's length (" + Convert.ToString((long)list.Length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
+      if (array.Length < length) {
+        throw new ArgumentException("array's length (" + Convert.ToString((long)array.Length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
       }
       #endif
 
@@ -571,66 +594,66 @@ namespace PeterO.Text {
       }
       int starterPos = 0;
       int retval = length;
-      int starterCh = list[0];
-      int lastClass = UnicodeDatabase.GetCombiningClass(starterCh);
-      if (lastClass != 0) {
-        lastClass = 256;
+      int starter = array[0];
+      int last = UnicodeDatabase.GetCombiningClass(starter);
+      if (last != 0) {
+        last = 256;
       }
       int compPos = 0;
       int endPos = 0 + length;
       bool composed = false;
       for (int decompPos = compPos; decompPos < endPos; ++decompPos) {
-        int ch = list[decompPos];
-        int valueChClass = UnicodeDatabase.GetCombiningClass(ch);
+        int ch = array[decompPos];
+        int valuecc = UnicodeDatabase.GetCombiningClass(ch);
         if (decompPos > compPos) {
-          int lead = starterCh - 0x1100;
+          int lead = starter - 0x1100;
           if (0 <= lead && lead < 19) {
             // Found Hangul L jamo
             int vowel = ch - 0x1161;
-            if (0 <= vowel && vowel < 21 && (lastClass < valueChClass || lastClass == 0)) {
-              starterCh = 0xac00 + (((lead * 21) + vowel) * 28);
-              list[starterPos] = starterCh;
-              list[decompPos] = 0x110000;
+            if (0 <= vowel && vowel < 21 && (last < valuecc || last == 0)) {
+              starter = 0xac00 + (((lead * 21) + vowel) * 28);
+              array[starterPos] = starter;
+              array[decompPos] = 0x110000;
               composed = true;
               --retval;
               continue;
             }
           }
-          int syllable = starterCh - 0xac00;
+          int syllable = starter - 0xac00;
           if (0 <= syllable && syllable < 11172 && (syllable % 28) == 0) {
             // Found Hangul LV jamo
             int trail = ch - 0x11a7;
-            if (0 < trail && trail < 28 && (lastClass < valueChClass || lastClass == 0)) {
-              starterCh += trail;
-              list[starterPos] = starterCh;
-              list[decompPos] = 0x110000;
+            if (0 < trail && trail < 28 && (last < valuecc || last == 0)) {
+              starter += trail;
+              array[starterPos] = starter;
+              array[decompPos] = 0x110000;
               composed = true;
               --retval;
               continue;
             }
           }
         }
-        int composite = UnicodeDatabase.GetComposedPair(starterCh, ch);
-        bool diffClass = lastClass < valueChClass;
-        if (composite >= 0 && (diffClass || lastClass == 0)) {
-          list[starterPos] = composite;
-          starterCh = composite;
-          list[decompPos] = 0x110000;
+        int composite = UnicodeDatabase.GetComposedPair(starter, ch);
+        bool diffClass = last < valuecc;
+        if (composite >= 0 && (diffClass || last == 0)) {
+          array[starterPos] = composite;
+          starter = composite;
+          array[decompPos] = 0x110000;
           composed = true;
           --retval;
           continue;
         }
-        if (valueChClass == 0) {
+        if (valuecc == 0) {
           starterPos = decompPos;
-          starterCh = ch;
+          starter = ch;
         }
-        lastClass = valueChClass;
+        last = valuecc;
       }
       if (composed) {
         int j = compPos;
         for (int i = compPos; i < endPos; ++i) {
-          if (list[i] != 0x110000) {
-            list[j++] = list[i];
+          if (array[i] != 0x110000) {
+            array[j++] = array[i];
           }
         }
       }

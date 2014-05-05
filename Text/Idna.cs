@@ -7,6 +7,8 @@ at: http://upokecenter.com/d/
  */
 using System;
 using System.Text;
+
+using PeterO;
 using PeterO.Mail;
 
 namespace PeterO.Text {
@@ -31,44 +33,44 @@ namespace PeterO.Text {
     private const int BidiClassBN = 9;
     private const int BidiClassON = 10;
 
-    private static UnicodeDatabase.ByteData bidiClasses;
-    private static UnicodeDatabase.ByteData joiningTypes;
-    private static UnicodeDatabase.ByteData scripts;
+    private static ByteData bidiClasses;
+    private static ByteData joiningTypes;
+    private static ByteData scripts;
     private static object bidiClassesSync = new Object();
     private static object joiningTypesSync = new Object();
     private static object scriptsSync = new Object();
 
     private static int GetBidiClass(int ch) {
-      UnicodeDatabase.ByteData table = null;
+      ByteData table = null;
       lock (bidiClassesSync) {
         if (bidiClasses == null) {
-          bidiClasses = UnicodeDatabase.ByteData.Decompress(IdnaData.BidiClasses);
+          bidiClasses = ByteData.Decompress(IdnaData.BidiClasses);
         }
         table = bidiClasses;
       }
-      return table.ReadByte(ch);
+      return table.GetByte(ch);
     }
 
     private static int GetJoiningType(int ch) {
-      UnicodeDatabase.ByteData table = null;
+      ByteData table = null;
       lock (joiningTypesSync) {
         if (joiningTypes == null) {
-          joiningTypes = UnicodeDatabase.ByteData.Decompress(IdnaData.JoiningTypes);
+          joiningTypes = ByteData.Decompress(IdnaData.JoiningTypes);
         }
         table = joiningTypes;
       }
-      return table.ReadByte(ch);
+      return table.GetByte(ch);
     }
 
     private static int GetScript(int ch) {
-      UnicodeDatabase.ByteData table = null;
+      ByteData table = null;
       lock (scriptsSync) {
         if (scripts == null) {
-          scripts = UnicodeDatabase.ByteData.Decompress(IdnaData.IdnaRelevantScripts);
+          scripts = ByteData.Decompress(IdnaData.IdnaRelevantScripts);
         }
         table = scripts;
       }
-      return table.ReadByte(ch);
+      return table.GetByte(ch);
     }
 
     private static bool JoiningTypeTransparent(int ch) {
