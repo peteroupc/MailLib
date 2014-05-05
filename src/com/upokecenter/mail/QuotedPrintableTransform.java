@@ -7,9 +7,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
-import java.util.*;
-import java.io.*;
-
   final class QuotedPrintableTransform implements ITransform {
     private TransformWithUnget input;
     private int lineCharCount;

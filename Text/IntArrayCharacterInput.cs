@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace PeterO.Text {
     /// <summary>A character input with an integer array as the backing store.</summary>

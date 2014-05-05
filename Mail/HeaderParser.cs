@@ -1347,10 +1347,6 @@ namespace PeterO.Mail {
       return ParseMixerKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderAutosubmitted(string str, int index, int endIndex, ITokener tokener) {
-      return ParseMixerKeyword(str, index, endIndex, tokener);
-    }
-
     public static int ParseHeaderBcc(string str, int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;

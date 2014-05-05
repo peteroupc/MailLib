@@ -7,7 +7,6 @@ at: http://upokecenter.com/d/
  */
 using System;
 using System.Text;
-using PeterO;
 
 namespace PeterO.Mail {
     /// <summary>Encodes binary data in Base64.</summary>

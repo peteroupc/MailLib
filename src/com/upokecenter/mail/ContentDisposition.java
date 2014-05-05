@@ -121,10 +121,10 @@ import com.upokecenter.util.*;
     private boolean ParseDisposition(String str) {
       boolean httpRules = false;
       int index = 0;
-      int endIndex = str.length();
       if (str == null) {
         throw new NullPointerException("str");
       }
+      int endIndex = str.length();
       if (httpRules) {
         index = MediaType.skipLws(str, index, endIndex);
       } else {

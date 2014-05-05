@@ -1,8 +1,5 @@
 package com.upokecenter.text;
 
-import java.util.*;
-import java.io.*;
-
     /**
      * A character input with an integer array as the backing store.
      */

@@ -456,7 +456,6 @@ namespace PeterO.Mail {
             do {
               int indexTemp3 = index;
               do {
-                int indexStart3 = index;
                 if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                   ++indexTemp3; break;
                 }

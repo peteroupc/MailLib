@@ -1177,10 +1177,10 @@ namespace MailLibTest {
         "tes\r\na",
         Charsets.Utf8.GetString(new QEncodingStringTransform("tes=0d=0aa")));
       Assert.AreEqual(
-        "tes?xx",
+        "tes%xx",
         Charsets.Utf8.GetString(new PercentEncodingStringTransform("tes%xx")));
       Assert.AreEqual(
-        "tes?xx",
+        "tes%dxx",
         Charsets.Utf8.GetString(new PercentEncodingStringTransform("tes%dxx")));
       Assert.AreEqual(
         "tes=dxx",

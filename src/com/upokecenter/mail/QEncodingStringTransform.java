@@ -7,9 +7,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
-import java.util.*;
-import java.io.*;
-
   final class QEncodingStringTransform implements ITransform {
     private String input;
     private int inputIndex;

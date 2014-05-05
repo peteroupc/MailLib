@@ -8,7 +8,6 @@ at: http://upokecenter.com/d/
  */
 
 import com.upokecenter.util.*;
-import com.upokecenter.mail.*;
 
     /**
      * Contains methods that implement Internationalized Domain Names
@@ -17,7 +16,7 @@ import com.upokecenter.mail.*;
   public class Idna
   {
     private static final int Unassigned = 0;
-    private static final int PValid = 1;
+    // PValid = 1;
     private static final int Disallowed = 2;
     private static final int ContextJ = 3;
     private static final int ContextO = 4;
@@ -239,7 +238,7 @@ import com.upokecenter.mail.*;
       if (maybeALabel) {
         str = DataUtilities.ToLowerCaseAscii(str);
         String ustr = DomainUtility.PunycodeDecode(str, 4, str.length());
-        if (str == null) {
+        if (ustr == null) {
           return false;
         }
         if (!IsValidULabel(ustr, lookupRules, bidiRule)) {
@@ -284,7 +283,6 @@ import com.upokecenter.mail.*;
       int ch;
       boolean first = true;
       boolean haveContextual = false;
-      int firstChar = -1;
       boolean rtl = false;
       int bidiClass;
       for (int i = 0; i < str.length(); ++i) {
@@ -297,7 +295,6 @@ import com.upokecenter.mail.*;
           return false;
         }
         if (first) {
-          firstChar = ch;
           if (UnicodeDatabase.IsCombiningMark(ch)) {
             return false;
           }

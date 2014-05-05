@@ -9,7 +9,6 @@ using System;
 using System.Text;
 
 using PeterO;
-using PeterO.Mail;
 
 namespace PeterO.Text {
     /// <summary>Contains methods that implement Internationalized Domain
@@ -17,7 +16,7 @@ namespace PeterO.Text {
   public class Idna
   {
     private const int Unassigned = 0;
-    private const int PValid = 1;
+    // PValid = 1;
     private const int Disallowed = 2;
     private const int ContextJ = 3;
     private const int ContextO = 4;
@@ -237,7 +236,7 @@ namespace PeterO.Text {
       if (maybeALabel) {
         str = DataUtilities.ToLowerCaseAscii(str);
         string ustr = DomainUtility.PunycodeDecode(str, 4, str.Length);
-        if (str == null) {
+        if (ustr == null) {
           return false;
         }
         if (!IsValidULabel(ustr, lookupRules, bidiRule)) {
@@ -282,7 +281,6 @@ namespace PeterO.Text {
       int ch;
       bool first = true;
       bool haveContextual = false;
-      int firstChar = -1;
       bool rtl = false;
       int bidiClass;
       for (int i = 0; i < str.Length; ++i) {
@@ -295,7 +293,6 @@ namespace PeterO.Text {
           return false;
         }
         if (first) {
-          firstChar = ch;
           if (UnicodeDatabase.IsCombiningMark(ch)) {
             return false;
           }

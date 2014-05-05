@@ -6,7 +6,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 using System;
-using System.IO;
 
 namespace PeterO.Mail {
   internal sealed class Base64Transform : ITransform {

@@ -6,9 +6,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace PeterO.Mail {
     /// <summary>Specifies the context where an encoded word under RFC 2047

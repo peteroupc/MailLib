@@ -523,18 +523,6 @@ namespace PeterO.Mail {
       }
     }
 
-    private sealed class HeaderAutosubmitted : StructuredHeaderField {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <param name='index'>A 32-bit signed integer. (2).</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
-    /// <returns>A 32-bit signed integer.</returns>
-      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
-        return HeaderParser.ParseHeaderAutosubmitted(str, index, endIndex, tokener);
-      }
-    }
-
     private sealed class HeaderPreventNondeliveryReport : StructuredHeaderField {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
@@ -1327,7 +1315,7 @@ namespace PeterO.Mail {
       fieldMap["autoforwarded"] = new HeaderAutoforwarded();
       fieldMap["generate-delivery-report"] = new HeaderGenerateDeliveryReport();
       fieldMap["incomplete-copy"] = new HeaderIncompleteCopy();
-      fieldMap["autosubmitted"] = new HeaderAutosubmitted();
+      fieldMap["autosubmitted"] = new HeaderAutoforwarded();
       fieldMap["prevent-nondelivery-report"] = new HeaderPreventNondeliveryReport();
       fieldMap["alternate-recipient"] = new HeaderAlternateRecipient();
       fieldMap["disclose-recipients"] = new HeaderDiscloseRecipients();

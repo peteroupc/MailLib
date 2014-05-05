@@ -7,9 +7,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
-import java.util.*;
-import java.io.*;
-
   final class PercentEncodingStringTransform implements ITransform {
     private String input;
     private int inputIndex;
@@ -79,7 +76,7 @@ import java.io.*;
             c |= b1 + 10 - 'a';
           } else {
             --this.inputIndex;
-            return '?';
+            return '%';
           }
           int b2 = (this.inputIndex < endIndex) ? this.input.charAt(this.inputIndex++) : -1;
           if (b2 >= '0' && b2 <= '9') {
@@ -93,10 +90,12 @@ import java.io.*;
             c |= b2 + 10 - 'a';
           } else {
             --this.inputIndex;
-            return '?';
+            this.ResizeBuffer(1);
+            this.buffer[0] = (byte)b1;
+            return '%';
           }
           return c;
-        } else if ((c < 0x20 || c >= 0x7f) && c != '\t') {
+        } else if (c < 0x20 || c >= 0x7f) {
           // Can't occur in parameter value percent-encoding; replace
           return '?';
         } else {

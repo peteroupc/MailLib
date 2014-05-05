@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace PeterO.Text {
     /// <summary>Not documented yet.</summary>

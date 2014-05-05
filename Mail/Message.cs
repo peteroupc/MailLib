@@ -845,23 +845,6 @@ namespace PeterO.Mail {
       return str.Length > 0 && (str[0] == ' ' || str[0] == 0x09 || str[0] == '\r');
     }
 
-    private static void CheckDiff(string a, string b) {
-      if (!a.Equals(b)) {
-        int pt = Math.Min(a.Length, b.Length);
-        for (int i = 0; i < Math.Min(a.Length, b.Length); ++i) {
-          if (a[i] != b[i]) {
-            pt = i;
-            break;
-          }
-        }
-        int sa = Math.Max(pt - 50, 0);
-        int salen = Math.Min(100, a.Length - sa);
-        int sblen = Math.Min(100, b.Length - sa);
-        throw new MessageDataException(
-          "Differs [length " + a.Length + " vs. " + b.Length + "]\r\nA=" + a.Substring(sa, salen) + "\r\nB=" + b.Substring(sa, sblen));
-      }
-    }
-
     private static int TransferEncodingToUse(byte[] body, bool isBodyPart) {
       if (body == null || body.Length == 0) {
         return EncodingSevenBit;
@@ -1055,7 +1038,6 @@ namespace PeterO.Mail {
         if (name.Equals("mime-version")) {
           haveMimeVersion = true;
         }
-        IHeaderFieldParser parser = HeaderFields.GetParser(name);
         if (name.Equals("content-type")) {
           if (haveContentType) {
             // Already outputted, continue
@@ -1084,7 +1066,6 @@ namespace PeterO.Mail {
           }
           haveFrom = true;
           if (!this.IsValidAddressingField(name)) {
-            string oldValue = value;
             value = GenerateAddressList(this.FromAddresses);
             if (value.Length == 0) {
               // No addresses, synthesize a From field
@@ -1281,7 +1262,6 @@ namespace PeterO.Mail {
         index = HeaderParser.ParseCFWS(headerValue, 0, headerValue.Length, null);
         int atomText = HeaderParser.ParsePhraseAtom(headerValue, index, headerValue.Length, null);
         int typeEnd = atomText;
-        Tokener tokener = new Tokener();
         string origValue = headerValue;
         bool isUtf8 = typeEnd - index == 5 &&
                        (headerValue[index] & ~0x20) == 'U' &&
@@ -1345,8 +1325,7 @@ namespace PeterO.Mail {
     // Parse the delivery status byte array to downgrade
     // the Original-Recipient and Final-Recipient header fields
     internal static byte[] DowngradeDeliveryStatus(byte[] bytes) {
-      int lineCount = 0;
-      int[] bytesRead = new int[1];
+// int lineCount = 0;
       StringBuilder sb = new StringBuilder();
       int index = 0;
       int endIndex = bytes.Length;
@@ -1357,7 +1336,7 @@ namespace PeterO.Mail {
         bool first = true;
         int headerNameStart = index;
         int headerNameEnd = index;
-        lineCount = 0;
+   // lineCount = 0;
         bool endOfHeaders = false;
         while (true) {
           if (index >= endIndex) {
@@ -1366,13 +1345,13 @@ namespace PeterO.Mail {
             break;
           }
           int c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
-          ++lineCount;
+          // ++lineCount;
           ++index;
           if (c == '\r') {
             c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
             ++index;
             if (c == '\n') {
-              lineCount = 0;
+      // lineCount = 0;
               headerNameStart = index;
             } else {
               --index;
@@ -1406,7 +1385,6 @@ namespace PeterO.Mail {
           DataUtilities.GetUtf8String(bytes, headerNameStart, headerNameEnd - headerNameStart, true));
         bool origRecipient = fieldName.Equals("original-recipient");
         bool finalRecipient = fieldName.Equals("final-recipient");
-        bool useBuilder = origRecipient || finalRecipient;
         // Read the header field value using UTF-8 characters
         // rather than bytes
         while (true) {
@@ -1421,7 +1399,7 @@ namespace PeterO.Mail {
             c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
             ++index;
             if (c == '\n') {
-              lineCount = 0;
+       // lineCount = 0;
               // Parse obsolete folding whitespace (obs-fws) under RFC5322
               // (parsed according to errata), same as LWSP in RFC5234
               bool fwsFirst = true;
@@ -1437,7 +1415,7 @@ namespace PeterO.Mail {
                     ++index;
                     if (c == '\n') {
                       // CRLF was read
-                      lineCount = 0;
+    // lineCount = 0;
                     } else {
                       // It's the first part of the line, where the header name
                       // should be, so the CR here is illegal
@@ -1454,7 +1432,7 @@ namespace PeterO.Mail {
                 int c2 = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
                 ++index;
                 if (c2 == 0x20 || c2 == 0x09) {
-                  ++lineCount;
+ // ++lineCount;
                   haveFWS = true;
                 } else {
                   --index;
@@ -1472,10 +1450,10 @@ namespace PeterO.Mail {
               break;
             } else {
               --index;
-              ++lineCount;
+// ++lineCount;
             }
           }
-          ++lineCount;
+// ++lineCount;
         }
         if (origRecipient || finalRecipient) {
           string headerValue = DataUtilities.GetUtf8String(

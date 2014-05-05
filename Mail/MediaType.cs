@@ -982,10 +982,10 @@ namespace PeterO.Mail {
     private bool ParseMediaType(string str) {
       bool httpRules = false;
       int index = 0;
-      int endIndex = str.Length;
       if (str == null) {
         throw new ArgumentNullException("str");
       }
+      int endIndex = str.Length;
       if (httpRules) {
         index = skipLws(str, index, endIndex);
       } else {

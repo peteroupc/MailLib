@@ -115,10 +115,10 @@ namespace PeterO.Mail {
     private bool ParseDisposition(string str) {
       bool httpRules = false;
       int index = 0;
-      int endIndex = str.Length;
       if (str == null) {
         throw new ArgumentNullException("str");
       }
+      int endIndex = str.Length;
       if (httpRules) {
         index = MediaType.skipLws(str, index, endIndex);
       } else {

@@ -115,8 +115,8 @@ namespace PeterO {
       if (src.Length - offset < length) {
         throw new ArgumentException("src's length minus " + offset + " (" + Convert.ToString((long)(src.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
       }
-      if (this.retval.Length - this.retvalPos > length) {
-        // Array too big, make it grow
+      if (this.retval.Length - this.retvalPos < length) {
+        // Array too small, make it grow
         int newLength = Math.Max(this.retvalPos + length + 1000, this.retval.Length * 2);
         byte[] newArray = new byte[newLength];
         Array.Copy(this.retval, 0, newArray, 0, this.retvalPos);

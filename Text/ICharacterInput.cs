@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace PeterO.Text {
     /// <summary>Not documented yet.</summary>

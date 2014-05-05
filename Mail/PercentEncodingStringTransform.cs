@@ -6,8 +6,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace PeterO.Mail {
@@ -76,7 +74,7 @@ namespace PeterO.Mail {
             c |= b1 + 10 - 'a';
           } else {
             --this.inputIndex;
-            return '?';
+            return '%';
           }
           int b2 = (this.inputIndex < endIndex) ? this.input[this.inputIndex++] : -1;
           if (b2 >= '0' && b2 <= '9') {
@@ -90,10 +88,12 @@ namespace PeterO.Mail {
             c |= b2 + 10 - 'a';
           } else {
             --this.inputIndex;
-            return '?';
+            this.ResizeBuffer(1);
+            this.buffer[0] = (byte)b1;
+            return '%';
           }
           return c;
-        } else if ((c < 0x20 || c >= 0x7f) && c != '\t') {
+        } else if (c < 0x20 || c >= 0x7f) {
           // Can't occur in parameter value percent-encoding; replace
           return '?';
         } else {

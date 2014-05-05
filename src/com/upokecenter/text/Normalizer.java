@@ -1,7 +1,13 @@
 package com.upokecenter.text;
+/*
+Written by Peter O. in 2014.
+Any copyright is dedicated to the Public Domain.
+http://creativecommons.org/publicdomain/zero/1.0/
+If you like this, you should donate to Peter O.
+at: http://upokecenter.com/d/
+ */
 
 import java.util.*;
-import java.io.*;
 
 import com.upokecenter.util.*;
 
@@ -116,7 +122,6 @@ import com.upokecenter.util.*;
     private Normalization form;
     private int processedIndex;
     private int flushIndex;
-    private int basicEnd;
     private ICharacterInput iterator;
     private List<Integer> characterList;
     private int characterListPos;
@@ -161,7 +166,6 @@ import com.upokecenter.util.*;
       this.lastStableIndex = -1;
       this.characterList = characterList;
       this.form = form;
-      this.basicEnd = (form == Normalization.NFC) ? 0x100 : 0x80;
       this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
     }
 
@@ -176,7 +180,6 @@ import com.upokecenter.util.*;
       this.lastStableIndex = -1;
       this.iterator = stream;
       this.form = form;
-      this.basicEnd = (form == Normalization.NFC) ? 0x100 : 0x80;
       this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
     }
 

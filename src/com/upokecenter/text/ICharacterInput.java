@@ -1,7 +1,5 @@
 package com.upokecenter.text;
 
-import java.util.*;
-
     /**
      * Not documented yet.
      */

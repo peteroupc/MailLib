@@ -562,20 +562,6 @@ private HeaderFields() {
       }
     }
 
-    private static final class HeaderAutosubmitted extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that receives parsed tokens.
-     * @return A 32-bit signed integer.
-     */
-      @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
-        return HeaderParser.ParseHeaderAutosubmitted(str, index, endIndex, tokener);
-      }
-    }
-
     private static final class HeaderPreventNondeliveryReport extends StructuredHeaderField {
     /**
      * Not documented yet.
@@ -1496,7 +1482,7 @@ private HeaderFields() {
       fieldMap.put("autoforwarded",new HeaderAutoforwarded());
       fieldMap.put("generate-delivery-report",new HeaderGenerateDeliveryReport());
       fieldMap.put("incomplete-copy",new HeaderIncompleteCopy());
-      fieldMap.put("autosubmitted",new HeaderAutosubmitted());
+      fieldMap.put("autosubmitted",new HeaderAutoforwarded());
       fieldMap.put("prevent-nondelivery-report",new HeaderPreventNondeliveryReport());
       fieldMap.put("alternate-recipient",new HeaderAlternateRecipient());
       fieldMap.put("disclose-recipients",new HeaderDiscloseRecipients());

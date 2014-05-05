@@ -1333,10 +1333,6 @@ private HeaderParser() {
       return ParseMixerKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderAutosubmitted(String str, int index, int endIndex, ITokener tokener) {
-      return ParseMixerKeyword(str, index, endIndex, tokener);
-    }
-
     public static int ParseHeaderBcc(String str, int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;

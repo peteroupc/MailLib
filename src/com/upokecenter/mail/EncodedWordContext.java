@@ -7,9 +7,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
-import java.util.*;
-import java.io.*;
-
     /**
      * Specifies the context where an encoded word under RFC 2047 can appear.
      */

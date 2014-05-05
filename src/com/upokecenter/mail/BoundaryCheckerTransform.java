@@ -8,7 +8,6 @@ at: http://upokecenter.com/d/
  */
 
 import java.util.*;
-import java.io.*;
 
   final class BoundaryCheckerTransform implements ITransform {
     private ITransform input;

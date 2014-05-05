@@ -987,10 +987,10 @@ import com.upokecenter.util.*;
     private boolean ParseMediaType(String str) {
       boolean httpRules = false;
       int index = 0;
-      int endIndex = str.length();
       if (str == null) {
         throw new NullPointerException("str");
       }
+      int endIndex = str.length();
       if (httpRules) {
         index = skipLws(str, index, endIndex);
       } else {
