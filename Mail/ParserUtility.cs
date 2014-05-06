@@ -21,10 +21,10 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("suffix");
       }
       if (strStartPos < 0) {
-        throw new ArgumentException("strStartPos (" + Convert.ToString((long)strStartPos, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("strStartPos (" + Convert.ToString((int)strStartPos, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (strStartPos > str.Length) {
-        throw new ArgumentException("strStartPos (" + Convert.ToString((long)strStartPos, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("strStartPos (" + Convert.ToString((int)strStartPos, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       int endpos = suffix.Length + strStartPos;
       if (endpos > str.Length) {

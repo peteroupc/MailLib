@@ -51,19 +51,19 @@ private DomainUtility() {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is less than " + "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is more than " + Long.toString((long)str.length()));
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is more than " + Integer.toString((int)str.length()));
       }
       if (endIndex < 0) {
-        throw new IllegalArgumentException("endIndex (" + Long.toString((long)endIndex) + ") is less than " + "0");
+        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + "0");
       }
       if (endIndex > str.length()) {
-        throw new IllegalArgumentException("endIndex (" + Long.toString((long)endIndex) + ") is more than " + Long.toString((long)str.length()));
+        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is more than " + Integer.toString((int)str.length()));
       }
       if (endIndex < index) {
-        throw new IllegalArgumentException("endIndex (" + Long.toString((long)endIndex) + ") is less than " + Long.toString((long)index));
+        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + Integer.toString((int)index));
       }
       int n = 128;
       int delta = 0;
@@ -191,6 +191,15 @@ private DomainUtility() {
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1 };
 
+    private static int[] basicDigits = new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+      15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1 };
+
     /**
      * Decodes a PunyCode-encoded string.
      * @param str A string to decode. Note that this doesn&apos;t include
@@ -204,19 +213,19 @@ private DomainUtility() {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is less than " + "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is more than " + Long.toString((long)str.length()));
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is more than " + Integer.toString((int)str.length()));
       }
       if (endIndex < 0) {
-        throw new IllegalArgumentException("endIndex (" + Long.toString((long)endIndex) + ") is less than " + "0");
+        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + "0");
       }
       if (endIndex > str.length()) {
-        throw new IllegalArgumentException("endIndex (" + Long.toString((long)endIndex) + ") is more than " + Long.toString((long)str.length()));
+        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is more than " + Integer.toString((int)str.length()));
       }
       if (endIndex < index) {
-        throw new IllegalArgumentException("endIndex (" + Long.toString((long)endIndex) + ") is less than " + Long.toString((long)index));
+        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + Integer.toString((int)index));
       }
       if (index == endIndex) {
         return "";
@@ -237,7 +246,15 @@ private DomainUtility() {
         }
       }
       StringBuilder builder = new StringBuilder();
-      builder.append(str.substring(index,(index)+(endIndex - index)));
+      // Append all characters up to the last hyphen
+      // (they will be ASCII at this point)
+      for (int k = index; k < endIndex; ++k) {
+        int c = str.charAt(i);
+        if (c >= 0x41 && c <= 0x5a) {
+          c+=0x20;  // convert to lowercase
+        }
+        builder.append((char)c);
+      }
       if (lastHyphen >= index) {
         index = lastHyphen + 1;
       }
@@ -320,27 +337,27 @@ private DomainUtility() {
     private static String valuePunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
 
     static String PunycodeEncode(String str) {
-      return PunycodeEncode(str, 0, str.length());
+      return PunycodeEncodePortion(str, 0, str.length());
     }
 
-    static String PunycodeEncode(String str, int index, int endIndex) {
+    static String PunycodeEncodePortion(String str, int index, int endIndex) {
       if (str == null) {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is less than " + "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is more than " + Long.toString((long)str.length()));
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is more than " + Integer.toString((int)str.length()));
       }
       if (endIndex < 0) {
-        throw new IllegalArgumentException("endIndex (" + Long.toString((long)endIndex) + ") is less than " + "0");
+        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + "0");
       }
       if (endIndex > str.length()) {
-        throw new IllegalArgumentException("endIndex (" + Long.toString((long)endIndex) + ") is more than " + Long.toString((long)str.length()));
+        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is more than " + Integer.toString((int)str.length()));
       }
       if (endIndex < index) {
-        throw new IllegalArgumentException("endIndex (" + Long.toString((long)endIndex) + ") is less than " + Long.toString((long)index));
+        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + Integer.toString((int)index));
       }
       int n = 128;
       int delta = 0;
@@ -356,6 +373,12 @@ private DomainUtility() {
         if (str.charAt(tmpIndex) >= 0x80) {
           allBasics = false;
           break;
+        } else if (str.charAt(tmpIndex) >= 0x41 && str.charAt(tmpIndex)<= 0x5a) {
+          // Treat as having a non-basic in case of an
+          // upper-case ASCII character, since special
+          // handling is required here
+          allBasics = false;
+          break;
         }
         ++tmpIndex;
       }
@@ -366,50 +389,46 @@ private DomainUtility() {
       builder.append("xn--");
       tmpIndex = index;
       while (tmpIndex < endIndex) {
-        int c = (int)str.charAt(tmpIndex);
-        if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-            str.charAt(tmpIndex + 1) >= 0xdc00 && str.charAt(tmpIndex + 1) <= 0xdfff) {
-          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
-          ++tmpIndex;
-        } else if ((c & 0xf800) == 0xd800) {
-          // unpaired surrogate
-          c = 0xfffd;
-        }
+        int c = Idna.CodePointAt(str, tmpIndex);
         ++codePointLength;
-        if (c < 0x80) {
+        if (c >= 0x41 && c <= 0x5a) {
+          // This is an uppercase ASCII character,
+          // convert to lowercase
+          builder.append((char)(c + 0x20));
+          ++h;
+        } else if (c < 0x80) {
           // This is a basic (ASCII) code point
           builder.append((char)c);
           ++h;
         } else if (firstIndex < 0) {
           firstIndex = tmpIndex;
         }
+        if (c >= 0x10000) {
+          ++tmpIndex;
+        }
         ++tmpIndex;
-      }
-      if (h != 0) {
-        builder.append('-');
       }
       int b = h;
       if (firstIndex >= 0) {
         basicsBeforeFirstNonbasic = firstIndex - index;
       } else {
         // No non-basic code points
-        return str.substring(index,(index)+(endIndex - index));
+        // (NOTE: Not encoded with "-" at end)
+        return builder.toString();
+      }
+      if (h != 0) {
+        builder.append('-');
       }
       while (h < codePointLength) {
         int min = 0x110000;
         tmpIndex = firstIndex;
         while (tmpIndex < endIndex) {
-          int c = (int)str.charAt(tmpIndex);
-          if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              str.charAt(index + 1) >= 0xdc00 && str.charAt(tmpIndex + 1) <= 0xdfff) {
-            c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
-            ++tmpIndex;
-          } else if ((c & 0xf800) == 0xd800) {
-            // unpaired surrogate
-            c = 0xfffd;
-          }
+          int c = Idna.CodePointAt(str, tmpIndex);
           if (c >= n && c < min) {
             min = c;
+          }
+          if (c >= 0x10000) {
+            ++tmpIndex;
           }
           ++tmpIndex;
         }
@@ -429,14 +448,9 @@ private DomainUtility() {
         }
         delta += basicsBeforeFirstNonbasic;
         while (tmpIndex < endIndex) {
-          int c = (int)str.charAt(tmpIndex);
-          if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
-              str.charAt(tmpIndex + 1) >= 0xdc00 && str.charAt(tmpIndex + 1) <= 0xdfff) {
-            c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
+          int c = Idna.CodePointAt(str, tmpIndex);
+          if (c >= 0x10000) {
             ++tmpIndex;
-          } else if ((c & 0xf800) == 0xd800) {
-            // unpaired surrogate
-            c = 0xfffd;
           }
           ++tmpIndex;
           if (c < n) {

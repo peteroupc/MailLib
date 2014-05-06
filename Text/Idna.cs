@@ -9,8 +9,8 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-  /// <summary>Contains methods that implement Internationalized Domain
-  /// Names in Applications (IDNA).</summary>
+    /// <summary>Contains methods that implement Internationalized Domain
+    /// Names in Applications (IDNA).</summary>
   public class Idna
   {
     private const int Unassigned = 0;
@@ -48,7 +48,7 @@ namespace PeterO.Text {
         return -1;
       }
       int c = str[index - 1];
-      if (c >= 0xdc00 && c <= 0xdfff && index - 2 >= 0 &&
+      if ((c & 0xfc00) == 0xdc00 && index - 2 >= 0 &&
           str[index - 2] >= 0xd800 && str[index - 2] <= 0xdbff) {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((str[index - 2] - 0xd800) << 10) + (c - 0xdc00);
@@ -80,7 +80,7 @@ namespace PeterO.Text {
       }
       return c;
     }
-    
+
     internal static int GetBidiClass(int ch) {
       ByteData table = null;
       lock (bidiClassesSync) {
@@ -147,7 +147,7 @@ namespace PeterO.Text {
       bool found = false;
       int oldIndex = index;
       while (index > 0) {
-        int ch = DataUtilities.CodePointBefore(str, index);
+        int ch = CodePointBefore(str, index);
         index -= (ch >= 0x10000) ? 2 : 1;
         if (JoiningTypeLeftOrDual(ch)) {
           found = true;
@@ -161,7 +161,7 @@ namespace PeterO.Text {
       // Check the right
       index = oldIndex + 1;
       while (index < str.Length) {
-        int ch = DataUtilities.CodePointAt(str, index);
+        int ch = CodePointAt(str, index);
         index += (ch >= 0x10000) ? 2 : 1;
         if (JoiningTypeRightOrDual(ch)) {
           return true;
@@ -175,7 +175,7 @@ namespace PeterO.Text {
     private static bool HasRtlCharacters(string str) {
       for (int i = 0; i < str.Length; ++i) {
         if (str[i] >= 0x80) {
-          int c = DataUtilities.CodePointAt(str, i);
+          int c = CodePointAt(str, i);
           if (c >= 0x10000) {
             ++i;
           }
@@ -208,7 +208,7 @@ namespace PeterO.Text {
         char c = value[i];
         if (c == '.') {
           if (i != lastIndex) {
-            retval = DomainUtility.PunycodeEncode(value, lastIndex, i);
+            retval = DomainUtility.PunycodeEncodePortion(value, lastIndex, i);
             if (retval == null) {
               // Append the unmodified domain plus the dot
               builder.Append(value.Substring(lastIndex, (i + 1) - lastIndex));
@@ -220,7 +220,7 @@ namespace PeterO.Text {
           lastIndex = i + 1;
         }
       }
-      retval = DomainUtility.PunycodeEncode(value, lastIndex, value.Length);
+      retval = DomainUtility.PunycodeEncodePortion(value, lastIndex, value.Length);
       if (retval == null) {
         builder.Append(value.Substring(lastIndex, value.Length - lastIndex));
       } else {
@@ -253,7 +253,7 @@ namespace PeterO.Text {
       }
       return IsValidLabel(str.Substring(lastIndex, str.Length - lastIndex), lookupRules, bidiRule);
     }
-    
+
     private static string ToLowerCaseAscii(string str) {
       if (str == null) {
         return null;
@@ -308,19 +308,19 @@ namespace PeterO.Text {
         str = ToLowerCaseAscii(str);
         string ustr = DomainUtility.PunycodeDecode(str, 4, str.Length);
         if (ustr == null) {
+          // NOTE: Returns null if "str" contains non-ASCII characters
           return false;
         }
         if (!IsValidULabel(ustr, lookupRules, bidiRule)) {
           return false;
         }
-        string astr = DomainUtility.PunycodeEncode(ustr, 0, ustr.Length);
+        string astr = DomainUtility.PunycodeEncodePortion(ustr, 0, ustr.Length);
         if (astr == null) {
           return false;
         }
-        if (DataUtilities.CodePointCompare(astr, str) != 0) {
-          return false;
-        }
-        return true;
+        // NOTE: "astr" and "str" will contain only ASCII characters
+        // at this point, so a simple binary comparison is enough
+        return astr.Equals(str);
       } else {
         return IsValidULabel(str, lookupRules, bidiRule);
       }
@@ -355,7 +355,7 @@ namespace PeterO.Text {
       bool rtl = false;
       int bidiClass;
       for (int i = 0; i < str.Length; ++i) {
-        ch = DataUtilities.CodePointAt(str, i);
+        ch = CodePointAt(str, i);
         if (ch >= 0x10000) {
           ++i;
         }
@@ -389,7 +389,7 @@ namespace PeterO.Text {
         bool haveKanaOrHan = false;
         int lastChar = 0;
         for (int i = 0; i < str.Length; ++i) {
-          int thisChar = DataUtilities.CodePointAt(str, i);
+          int thisChar = CodePointAt(str, i);
           if (thisChar >= 0x660 && thisChar <= 0x669) {
             // Arabic-Indic digits
             // NOTE: Test done here even under lookup rules,
@@ -431,7 +431,7 @@ namespace PeterO.Text {
             // Keraia
             // NOTE: Test done here even under lookup rules,
             // even though it's a CONTEXTO character
-            if (i + 1 >= str.Length || !IsGreek(DataUtilities.CodePointAt(str, i + 1))) {
+            if (i + 1 >= str.Length || !IsGreek(CodePointAt(str, i + 1))) {
               return false;
             }
           } else if (thisChar == 0x5f3 || thisChar == 0x5f4) {
@@ -468,7 +468,7 @@ namespace PeterO.Text {
       if (bidiRule) {
         bool found = false;
         for (int i = str.Length; i > 0; --i) {
-          int c = DataUtilities.CodePointBefore(str, i);
+          int c = CodePointBefore(str, i);
           if (c >= 0x10000) {
             --i;
           }
@@ -494,7 +494,7 @@ namespace PeterO.Text {
         bool haveEN = false;
         bool haveAN = false;
         for (int i = 0; i < str.Length; ++i) {
-          int c = DataUtilities.CodePointAt(str, i);
+          int c = CodePointAt(str, i);
           if (c >= 0x10000) {
             ++i;
           }

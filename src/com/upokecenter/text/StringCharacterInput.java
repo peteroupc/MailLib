@@ -7,6 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
+import com.upokecenter.util.*;
+
     /**
      * Description of StringCharacterInput.
      */
@@ -56,16 +58,10 @@ at: http://upokecenter.com/d/
       if (this.index >= this.endIndex) {
         return -1;
       }
-      int c = this.str.charAt(this.index);
-      if ((c & 0xfc00) == 0xd800 && this.index + 1 < this.endIndex &&
-          this.str.charAt(this.index + 1) >= 0xdc00 && this.str.charAt(this.index + 1) <= 0xdfff) {
-        // Get the Unicode code point for the surrogate pair
-        c = 0x10000 + ((c - 0xd800) << 10) + (this.str.charAt(this.index + 1) - 0xdc00);
-        ++this.index;
-      } else if ((c & 0xf800) == 0xd800) {
-        // unpaired surrogate
-        c = 0xfffd;
-      }
+      int c = DataUtilities.CodePointAt(this.str, this.index);
+      if (c >= 0x10000) {
+ ++this.index;
+}
       ++this.index;
       return c;
     }

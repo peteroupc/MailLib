@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace PeterO.Text {
-  /// <summary>Implements the Unicode normalization algorithm and contains
-  /// methods and functionality to test and convert Unicode strings for
-  /// Unicode normalization.</summary>
+    /// <summary>Implements the Unicode normalization algorithm and contains
+    /// methods and functionality to test and convert Unicode strings for
+    /// Unicode normalization.</summary>
   public sealed class NormalizingCharacterInput : ICharacterInput
   {
     public static IList<int> GetChars(string str, Normalization form) {
@@ -85,10 +85,10 @@ namespace PeterO.Text {
         throw new ArgumentNullException("buffer");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (index > buffer.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       #endif
 
@@ -110,10 +110,10 @@ namespace PeterO.Text {
         throw new ArgumentNullException("buffer");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (index > buffer.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       #endif
 
@@ -400,19 +400,19 @@ namespace PeterO.Text {
         throw new ArgumentNullException("chars");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (index > chars.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)chars.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)chars.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (length > chars.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)chars.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)chars.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (chars.Length - index < length) {
-        throw new ArgumentException("chars's length minus " + index + " (" + Convert.ToString((long)(chars.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("chars's length minus " + index + " (" + Convert.ToString((int)(chars.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (length == 0) {
         return 0;
@@ -580,19 +580,19 @@ namespace PeterO.Text {
         throw new ArgumentNullException("buffer");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (index > buffer.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (length > buffer.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (buffer.Length - index < length) {
-        throw new ArgumentException("buffer's length minus " + index + " (" + Convert.ToString((long)(buffer.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("buffer's length minus " + index + " (" + Convert.ToString((int)(buffer.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
       }
       #endif
 
@@ -630,13 +630,13 @@ namespace PeterO.Text {
         throw new ArgumentNullException("array");
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (length > array.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)array.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)array.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (array.Length < length) {
-        throw new ArgumentException("array's length (" + Convert.ToString((long)array.Length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("array's length (" + Convert.ToString((int)array.Length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
       }
       #endif
 

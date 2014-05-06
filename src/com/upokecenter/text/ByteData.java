@@ -5,7 +5,7 @@ import com.upokecenter.util.*;
     /**
      * Not documented yet.
      */
-  public final class ByteData {
+  final class ByteData {
     private byte[] array;
 
     public static ByteData Decompress(byte[] data) {

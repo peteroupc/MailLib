@@ -54,16 +54,16 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("str");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (index > str.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (endIndex < 0) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (endIndex > str.Length) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       #endif
       int length = endIndex - index;
@@ -259,16 +259,16 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("str");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (index > str.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (endIndex < 0) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (endIndex > str.Length) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       #endif
 
@@ -709,19 +709,19 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("str");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (index > str.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (endIndex < 0) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (endIndex > str.Length) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (str.Length - index < endIndex) {
-        throw new ArgumentException("str's length minus " + index + " (" + Convert.ToString((long)(str.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)endIndex, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("str's length minus " + index + " (" + Convert.ToString((int)(str.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture));
       }
       return new EncodedWordEncoder().AddString(
         str.Substring(index, endIndex)).FinalizeEncoding().ToString();

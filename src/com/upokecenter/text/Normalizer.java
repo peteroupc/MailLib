@@ -7,47 +7,13 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
-import java.util.*;
-
     /**
      * Implements the Unicode normalization algorithm and contains methods
      * and functionality to test and convert Unicode strings for Unicode
      * normalization.
      */
-  public final class Normalizer implements ICharacterInput
+  public final class Normalizer
   {
-    public static List<Integer> GetChars(String str, Normalization form) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      return GetChars(new StringCharacterInput(str), form);
-    }
-
-    /**
-     * Converts a string to Unicode normalization form C.
-     * @param str A string. Cannot be null.
-     * @return The normalized string. Unpaired surrogate code points are
-     * replaced with the replacement character (U + FFFD).
-     */
-    public static String Normalize(String str) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      if (str.length() < 1000) {
-        boolean allLatinOne = true;
-        for (int i = 0; i < str.length(); ++i) {
-          if ((str.charAt(i) >> 8) != 0) {
-            allLatinOne = false;
-            break;
-          }
-        }
-        if (allLatinOne) {
-          return str;
-        }
-      }
-      return Normalize(str, Normalization.NFC);
-    }
-
     public static String Normalize(String str, Normalization form) {
       if (str == null) {
         throw new NullPointerException("str");
@@ -66,22 +32,6 @@ import java.util.*;
       return builder.toString();
     }
 
-    public static List<Integer> GetChars(ICharacterInput str, Normalization form) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      Normalizer norm = new Normalizer(str, form);
-      int[] buffer = new int[64];
-      List<Integer> ret = new ArrayList<Integer>(24);
-      int count = 0;
-      while ((count = norm.Read(buffer, 0, buffer.length)) > 0) {
-        for (int i = 0; i < count; ++i) {
-          ret.add(buffer[i]);
-        }
-      }
-      return ret;
-    }
-
     static int DecompToBufferInternal(int ch, boolean compat, int[] buffer, int index) {
 
       int offset = UnicodeDatabase.GetDecomposition(ch, compat, buffer, index);
@@ -89,8 +39,8 @@ import java.util.*;
         int[] copy = new int[offset - index];
         System.arraycopy(buffer, index, copy, 0, copy.length);
         offset = index;
-        for(int element : copy) {
-          offset = DecompToBufferInternal(element, compat, buffer, offset);
+        for (int i = 0;i<copy.length; ++i) {
+          offset = DecompToBufferInternal(copy[i], compat, buffer, offset);
         }
       }
       return offset;
@@ -115,129 +65,63 @@ import java.util.*;
 
     private int lastStableIndex;
     private int endIndex;
+    private int iterEndIndex;
     private int[] buffer;
     private boolean compatMode;
     private Normalization form;
     private int processedIndex;
     private int flushIndex;
-    private ICharacterInput iterator;
-    private List<Integer> characterList;
+    private String iterator;
     private int characterListPos;
 
-    /**
-     * Initializes a new instance of the Normalizer class using Normalization
-     * Form C.
-     * @param characterList An List object.
-     */
-    public Normalizer (List<Integer> characterList) {
- this(characterList,Normalization.NFC);
-    }
-
-    /**
-     * Initializes a new instance of the Normalizer class using Normalization
-     * Form C.
-     * @param str A string object.
-     */
-    public Normalizer (String str) {
- this(str,Normalization.NFC);
-    }
-
-    /**
-     * Initializes a new instance of the Normalizer class using Normalization
-     * Form C.
-     * @param input An ICharacterInput object.
-     */
-    public Normalizer (ICharacterInput input) {
- this(input,Normalization.NFC);
-    }
-
-    /**
-     * Initializes a new instance of the Normalizer class using the given
-     * normalization form.
-     * @param characterList An List object.
-     * @param form A Normalization object.
-     */
-    public Normalizer (List<Integer> characterList, Normalization form) {
-      if (characterList == null) {
-        throw new NullPointerException("characterList");
-      }
-      this.lastStableIndex = -1;
-      this.characterList = characterList;
-      this.form = form;
-      this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
-    }
-
-    public Normalizer (String str, int index, int length, Normalization form) {
- this(new StringCharacterInput(str, index, length),form);
-    }
-
     public Normalizer (String str, Normalization form) {
- this(new StringCharacterInput(str),form);
-    }
-
-    public Normalizer (ICharacterInput stream, Normalization form) {
-      if (stream == null) {
+      if (str == null) {
         throw new IllegalArgumentException("stream");
       }
+      this.readbuffer = new int[1];
+      this.iterEndIndex = str.length();
       this.lastStableIndex = -1;
-      this.iterator = stream;
+      this.iterator = str;
       this.form = form;
       this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
     }
 
-    /**
-     * Returns whether this string is in Unicode normalization form C.
-     * @param str A string. Can be null.
-     * @return True if the string is in normalization form C; false otherwise,
-     * including if the string is null or contains an unpaired surrogate
-     * code point.
-     */
-    public static boolean IsNormalized(String str) {
-      return IsNormalized(str, Normalization.NFC);
-    }
-
-    public static boolean IsNormalized(ICharacterInput chars, Normalization form) {
-      if (chars == null) {
-        return false;
+    private Normalizer Init(String str, int index, int length, Normalization form) {
+      if (str == null) {
+        throw new NullPointerException("str");
       }
-      List<Integer> list = new ArrayList<Integer>();
-      int ch = 0;
-      while ((ch = chars.ReadChar()) >= 0) {
-        if ((ch & 0xf800) == 0xd800) {
-          return false;
-        }
-        list.add(ch);
+      if (index < 0) {
+        throw new IllegalArgumentException("index (" + index + ") is less than " + "0");
       }
-      return IsNormalized(list, form);
-    }
-
-    private static boolean NormalizeAndCheck(
-      List<Integer> charList,
-      int start,
-      int length,
-      Normalization form) {
-      int i = 0;
-      for(int ch : Normalizer.GetChars(
-        new PartialListCharacterInput(charList, start, length),
-        form)) {
-        if (i >= length) {
-          return false;
-        }
-        if (ch != charList.charAt(start + i)) {
-          return false;
-        }
-        ++i;
+      if (index > str.length()) {
+        throw new IllegalArgumentException("index (" + index + ") is more than " + Integer.toString((int)str.length()));
       }
-      return true;
+      if (length < 0) {
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is less than " + "0");
+      }
+      if (length > str.length()) {
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is more than " + Integer.toString((int)str.length()));
+      }
+      if (str.length() - index < length) {
+        throw new IllegalArgumentException("str's length minus " + index + " (" + Integer.toString((int)(str.length() - index)) + ") is less than " + Integer.toString((int)length));
+      }
+      this.readbuffer = new int[1];
+      this.lastStableIndex = -1;
+      this.characterListPos = index;
+      this.iterator = str;
+      this.iterEndIndex = index + length;
+      this.form = form;
+      this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
+      return this;
     }
 
     private static boolean NormalizeAndCheckString(
       String charList,
       int start,
       int length,
-      PeterO.Text.Normalization form) {
+      Normalization form) {
       int i = start;
-      Normalizer norm=new Normalizer(charList, start, length, form);
+      Normalizer norm = new Normalizer(charList, form).Init(charList, start, length, form);
       int ch = 0;
       while ((ch = norm.ReadChar()) >= 0) {
         int c = charList.charAt(i);
@@ -252,18 +136,18 @@ import java.util.*;
         }
         ++i;
         if (c != ch) {
- return false;
-}
+          return false;
+        }
       }
       return i == start + length;
     }
 
-    public static boolean IsNormalized(String str, PeterO.Text.Normalization form) {
+    public static boolean IsNormalized(String str, Normalization form) {
       if (str == null) {
- return false;
-}
+        return false;
+      }
       int lastNonStable = -1;
-      int mask = (form == PeterO.Text.Normalization.NFC) ? 0xff : 0x7f;
+      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       for (int i = 0; i < str.length(); ++i) {
         int c = str.charAt(i);
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.length() &&
@@ -296,8 +180,8 @@ import java.util.*;
           lastNonStable = -1;
         }
         if (c >= 0x10000) {
- ++i;
-}
+          ++i;
+        }
       }
       if (lastNonStable >= 0) {
         if (!NormalizeAndCheckString(str, lastNonStable, str.length() - lastNonStable, form)) {
@@ -307,48 +191,7 @@ import java.util.*;
       return true;
     }
 
-    public static boolean IsNormalized(List<Integer> charList, Normalization form) {
-      int lastNonStable = -1;
-      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
-      if (charList == null) {
-        throw new IllegalArgumentException("chars");
-      }
-      for (int i = 0; i < charList.size(); ++i) {
-        int c = charList.charAt(i);
-        if (c < 0 || c > 0x10ffff || ((c & 0x1ff800) == 0xd800)) {
-          return false;
-        }
-        boolean isStable = false;
-        if ((c & mask) == c && (i + 1 == charList.size() || (charList.charAt(i + 1) & mask) == charList.charAt(i + 1))) {
-          // Quick check for an ASCII character followed by another
-          // ASCII character (or Latin-1 in NFC) or the end of String.
-          // Treat the first character as stable
-          // in this situation.
-          isStable = true;
-        } else {
-          isStable = IsStableCodePoint(c, form);
-        }
-        if (lastNonStable < 0 && !isStable) {
-          // First non-stable code point in a row
-          lastNonStable = i;
-        } else if (lastNonStable >= 0 && isStable) {
-          // We have at least one non-stable code point,
-          // normalize these code points.
-          if (!NormalizeAndCheck(charList, lastNonStable, i - lastNonStable, form)) {
-            return false;
-          }
-          lastNonStable = -1;
-        }
-      }
-      if (lastNonStable >= 0) {
-        if (!NormalizeAndCheck(charList, lastNonStable, charList.size() - lastNonStable, form)) {
-          return false;
-        }
-      }
-      return true;
-    }
-
-    private int[] readbuffer = new int[1];
+    private int[] readbuffer;
 
     public int ReadChar() {
       int r = this.Read(this.readbuffer, 0, 1);
@@ -369,10 +212,20 @@ import java.util.*;
         ch = this.lastChar;
         this.ungetting = false;
         return ch;
-      } else if (this.iterator == null) {
-        ch = (this.characterListPos >= this.characterList.size()) ? -1 : this.characterList.get(this.characterListPos++);
+      } else if (this.characterListPos >= this.iterEndIndex) {
+        ch = -1;
       } else {
-        ch = this.iterator.ReadChar();
+        ch = this.iterator.charAt(this.characterListPos);
+        if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex &&
+            this.iterator.charAt(this.characterListPos + 1) >= 0xdc00 && this.iterator.charAt(this.characterListPos + 1) <= 0xdfff) {
+          // Get the Unicode code point for the surrogate pair
+          ch = 0x10000 + ((ch - 0xd800) << 10) + (this.iterator.charAt(this.characterListPos + 1) - 0xdc00);
+          ++this.characterListPos;
+        } else if ((ch & 0xf800) == 0xd800) {
+          // unpaired surrogate
+          ch = 0xfffd;
+        }
+        ++this.characterListPos;
       }
       if (ch < 0) {
         this.endOfString = true;
@@ -395,19 +248,19 @@ import java.util.*;
         throw new NullPointerException("chars");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
+        throw new IllegalArgumentException("index (" + index + ") is less than " + "0");
       }
       if (index > chars.length) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is more than " + Long.toString((long)chars.length));
+        throw new IllegalArgumentException("index (" + index + ") is more than " + chars.length);
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is less than " + "0");
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is less than " + "0");
       }
       if (length > chars.length) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is more than " + Long.toString((long)chars.length));
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is more than " + chars.length);
       }
       if (chars.length - index < length) {
-        throw new IllegalArgumentException("chars's length minus " + index + " (" + Long.toString((long)(chars.length - index)) + ") is less than " + Long.toString((long)length));
+        throw new IllegalArgumentException("chars's length minus " + index + " (" + Integer.toString((int)(chars.length - index)) + ") is less than " + Integer.toString((int)length));
       }
       if (length == 0) {
         return 0;

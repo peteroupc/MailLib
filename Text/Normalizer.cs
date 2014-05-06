@@ -9,12 +9,12 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-  /// <summary>Implements the Unicode normalization algorithm and contains
-  /// methods and functionality to test and convert Unicode strings for
-  /// Unicode normalization.</summary>
+    /// <summary>Implements the Unicode normalization algorithm and contains
+    /// methods and functionality to test and convert Unicode strings for
+    /// Unicode normalization.</summary>
   public sealed class Normalizer
   {
-    public static string Normalize(string str, PeterO.Text.Normalization form) {
+    public static string Normalize(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
@@ -38,20 +38,20 @@ namespace PeterO.Text {
         throw new ArgumentNullException("buffer");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + index + ") is less than " + "0");
       }
       if (index > buffer.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + index + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       #endif
 
-      int offset = PeterO.Text.UnicodeDatabase.GetDecomposition(ch, compat, buffer, index);
+      int offset = UnicodeDatabase.GetDecomposition(ch, compat, buffer, index);
       if (buffer[index] != ch) {
         int[] copy = new int[offset - index];
         Array.Copy(buffer, index, copy, 0, copy.Length);
         offset = index;
-        foreach (int element in copy) {
-          offset = DecompToBufferInternal(element, compat, buffer, offset);
+        for (int i = 0;i<copy.Length; ++i) {
+          offset = DecompToBufferInternal(copy[i], compat, buffer, offset);
         }
       }
       return offset;
@@ -63,10 +63,10 @@ namespace PeterO.Text {
         throw new ArgumentNullException("buffer");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + index + ") is less than " + "0");
       }
       if (index > buffer.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + index + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       #endif
 
@@ -90,48 +90,50 @@ namespace PeterO.Text {
     private int iterEndIndex;
     private int[] buffer;
     private bool compatMode;
-    private PeterO.Text.Normalization form;
+    private Normalization form;
     private int processedIndex;
     private int flushIndex;
     private string iterator;
     private int characterListPos;
 
-    public Normalizer(string str, PeterO.Text.Normalization form) {
+    public Normalizer(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentException("stream");
       }
+      this.readbuffer = new int[1];
       this.iterEndIndex = str.Length;
       this.lastStableIndex = -1;
       this.iterator = str;
       this.form = form;
-      this.compatMode = form == PeterO.Text.Normalization.NFKC || form == PeterO.Text.Normalization.NFKD;
+      this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
     }
 
-    private Normalizer Init(string str, int index, int length, PeterO.Text.Normalization form) {
+    private Normalizer Init(string str, int index, int length, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + index + ") is less than " + "0");
       }
       if (index > str.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)(str.Length), System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + index + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (length > str.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)(str.Length), System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (str.Length - index < length) {
-        throw new ArgumentException("str's length minus " + index + " (" + Convert.ToString((long)(str.Length-index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("str's length minus " + index + " (" + Convert.ToString((int)(str.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
       }
+      this.readbuffer = new int[1];
       this.lastStableIndex = -1;
       this.characterListPos = index;
       this.iterator = str;
       this.iterEndIndex = index + length;
       this.form = form;
-      this.compatMode = form == PeterO.Text.Normalization.NFKC || form == PeterO.Text.Normalization.NFKD;
+      this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
       return this;
     }
 
@@ -139,7 +141,7 @@ namespace PeterO.Text {
       string charList,
       int start,
       int length,
-      PeterO.Text.Normalization form) {
+      Normalization form) {
       int i = start;
       Normalizer norm = new Normalizer(charList, form).Init(charList, start, length, form);
       int ch = 0;
@@ -162,12 +164,12 @@ namespace PeterO.Text {
       return i == start + length;
     }
 
-    public static bool IsNormalized(string str, PeterO.Text.Normalization form) {
+    public static bool IsNormalized(string str, Normalization form) {
       if (str == null) {
         return false;
       }
       int lastNonStable = -1;
-      int mask = (form == PeterO.Text.Normalization.NFC) ? 0xff : 0x7f;
+      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       for (int i = 0; i < str.Length; ++i) {
         int c = str[i];
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
@@ -211,7 +213,7 @@ namespace PeterO.Text {
       return true;
     }
 
-    private int[] readbuffer = new int[1];
+    private int[] readbuffer;
 
     public int ReadChar() {
       int r = this.Read(this.readbuffer, 0, 1);
@@ -232,7 +234,7 @@ namespace PeterO.Text {
         ch = this.lastChar;
         this.ungetting = false;
         return ch;
-      } else if(this.characterListPos>=this.iterEndIndex){
+      } else if (this.characterListPos >= this.iterEndIndex) {
         ch = -1;
       } else {
         ch = this.iterator[this.characterListPos];
@@ -266,19 +268,19 @@ namespace PeterO.Text {
         throw new ArgumentNullException("chars");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + index + ") is less than " + "0");
       }
       if (index > chars.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)chars.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + index + ") is more than " + chars.Length);
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (length > chars.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)chars.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + chars.Length);
       }
       if (chars.Length - index < length) {
-        throw new ArgumentException("chars's length minus " + index + " (" + Convert.ToString((long)(chars.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("chars's length minus " + index + " (" + Convert.ToString((int)(chars.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (length == 0) {
         return 0;
@@ -290,7 +292,7 @@ namespace PeterO.Text {
           int c = this.GetNextChar();
           if (c < 0) {
             return (total == 0) ? -1 : total;
-          } else if (PeterO.Text.UnicodeDatabase.IsStableCodePoint(c, this.form)) {
+          } else if (UnicodeDatabase.IsStableCodePoint(c, this.form)) {
             chars[index] = c;
             ++total;
             ++index;
@@ -374,9 +376,9 @@ namespace PeterO.Text {
       return (total == 0) ? -1 : total;
     }
 
-    private static bool IsStableCodePoint(int cp, PeterO.Text.Normalization form) {
+    private static bool IsStableCodePoint(int cp, Normalization form) {
       // Exclude YOD and HIRIQ because of Corrigendum 2
-      return PeterO.Text.UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 && cp != 0x5d9;
+      return UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 && cp != 0x5d9;
     }
 
     private bool LoadMoreData() {
@@ -430,7 +432,7 @@ namespace PeterO.Text {
       this.flushIndex = 0;
       // Canonical reordering
       this.ReorderBuffer(this.buffer, 0, this.lastStableIndex);
-      if (this.form == PeterO.Text.Normalization.NFC || this.form == PeterO.Text.Normalization.NFKC) {
+      if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
         // Composition
         this.processedIndex = this.ComposeBuffer(this.buffer, this.lastStableIndex);
       } else {
@@ -446,19 +448,19 @@ namespace PeterO.Text {
         throw new ArgumentNullException("buffer");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + index + ") is less than " + "0");
       }
       if (index > buffer.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + index + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (length > buffer.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (buffer.Length - index < length) {
-        throw new ArgumentException("buffer's length minus " + index + " (" + Convert.ToString((long)(buffer.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("buffer's length minus " + index + " (" + Convert.ToString((int)(buffer.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
       }
       #endif
 
@@ -469,11 +471,11 @@ namespace PeterO.Text {
       do {
         changed = false;
         // Console.WriteLine(ToString(buffer, index, length));
-        int lead = PeterO.Text.UnicodeDatabase.GetCombiningClass(buffer[index]);
+        int lead = UnicodeDatabase.GetCombiningClass(buffer[index]);
         int trail;
         for (i = 1; i < length; ++i) {
           int offset = index + i;
-          trail = PeterO.Text.UnicodeDatabase.GetCombiningClass(buffer[offset]);
+          trail = UnicodeDatabase.GetCombiningClass(buffer[offset]);
           if (trail != 0 && lead > trail) {
             int c = buffer[offset - 1];
             buffer[offset - 1] = buffer[offset];
@@ -496,13 +498,13 @@ namespace PeterO.Text {
         throw new ArgumentNullException("array");
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (length > array.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)array.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)array.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (array.Length < length) {
-        throw new ArgumentException("array's length (" + Convert.ToString((long)array.Length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("array's length (" + Convert.ToString((int)array.Length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
       }
       #endif
 
@@ -512,7 +514,7 @@ namespace PeterO.Text {
       int starterPos = 0;
       int retval = length;
       int starter = array[0];
-      int last = PeterO.Text.UnicodeDatabase.GetCombiningClass(starter);
+      int last = UnicodeDatabase.GetCombiningClass(starter);
       if (last != 0) {
         last = 256;
       }
@@ -521,7 +523,7 @@ namespace PeterO.Text {
       bool composed = false;
       for (int decompPos = compPos; decompPos < endPos; ++decompPos) {
         int ch = array[decompPos];
-        int valuecc = PeterO.Text.UnicodeDatabase.GetCombiningClass(ch);
+        int valuecc = UnicodeDatabase.GetCombiningClass(ch);
         if (decompPos > compPos) {
           int lead = starter - 0x1100;
           if (0 <= lead && lead < 19) {
@@ -550,7 +552,7 @@ namespace PeterO.Text {
             }
           }
         }
-        int composite = PeterO.Text.UnicodeDatabase.GetComposedPair(starter, ch);
+        int composite = UnicodeDatabase.GetComposedPair(starter, ch);
         bool diffClass = last < valuecc;
         if (composite >= 0 && (diffClass || last == 0)) {
           array[starterPos] = composite;

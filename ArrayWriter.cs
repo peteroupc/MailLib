@@ -26,10 +26,10 @@ namespace PeterO {
     /// <param name='length'>A 32-bit signed integer.</param>
     public void SetLength(int length) {
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (length > this.retvalMax) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)this.retvalMax, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)this.retvalMax, System.Globalization.CultureInfo.InvariantCulture));
       }
       this.retvalMax = length;
       if (this.retvalPos > this.retvalMax) {
@@ -46,10 +46,10 @@ namespace PeterO {
 
       set {
         if (value < 0) {
-          throw new ArgumentException("value (" + Convert.ToString((long)value, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+          throw new ArgumentException("value (" + Convert.ToString((int)value, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
         }
         if (value > this.retvalMax) {
-          throw new ArgumentException("value (" + Convert.ToString((long)value, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)this.retvalMax, System.Globalization.CultureInfo.InvariantCulture));
+          throw new ArgumentException("value (" + Convert.ToString((int)value, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)this.retvalMax, System.Globalization.CultureInfo.InvariantCulture));
         }
         this.retvalPos = value;
       }
@@ -71,19 +71,19 @@ namespace PeterO {
         throw new ArgumentNullException("src");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + Convert.ToString((long)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (offset > src.Length) {
-        throw new ArgumentException("offset (" + Convert.ToString((long)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)src.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)src.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (length > src.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)src.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)src.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (src.Length - offset < length) {
-        throw new ArgumentException("src's length minus " + offset + " (" + Convert.ToString((long)(src.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("src's length minus " + offset + " (" + Convert.ToString((int)(src.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
       }
       int maxLength = Math.Min(length, this.retvalMax - this.retvalPos);
       Array.Copy(this.retval, this.retvalPos, src, offset, maxLength);
@@ -101,19 +101,19 @@ namespace PeterO {
         throw new ArgumentNullException("src");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + Convert.ToString((long)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (offset > src.Length) {
-        throw new ArgumentException("offset (" + Convert.ToString((long)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)src.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)src.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (length > src.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)src.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)src.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (src.Length - offset < length) {
-        throw new ArgumentException("src's length minus " + offset + " (" + Convert.ToString((long)(src.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("src's length minus " + offset + " (" + Convert.ToString((int)(src.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (this.retval.Length - this.retvalPos < length) {
         // Array too small, make it grow

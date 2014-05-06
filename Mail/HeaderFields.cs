@@ -98,11 +98,8 @@ namespace PeterO.Mail {
             if (token[1] < lastIndex) {
               continue;
             }
-            if (phase == -1) {  // ID-Left and ID-right
-              // TODO: Don't downgrade if extended characters appear
-              // in ID-Left or ID-right (doesn't apply to the Received header
-              // field)
-            }
+            // NOTE: Doesn't downgrade ID-Left or ID-Right
+            // if extended characters appear in those areas
             if (phase == 0) {  // Comment downgrading
               if (token[0] == HeaderParserUtility.TokenComment) {
                 int startIndex = token[1];

@@ -30,19 +30,19 @@ namespace PeterO.Text {
         throw new ArgumentNullException("buf");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + Convert.ToString((long)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (offset > buf.Length) {
-        throw new ArgumentException("offset (" + Convert.ToString((long)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)buf.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buf.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (unitCount < 0) {
-        throw new ArgumentException("unitCount (" + Convert.ToString((long)unitCount, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("unitCount (" + Convert.ToString((int)unitCount, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (unitCount > buf.Length) {
-        throw new ArgumentException("unitCount (" + Convert.ToString((long)unitCount, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)buf.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("unitCount (" + Convert.ToString((int)unitCount, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buf.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (buf.Length - offset < unitCount) {
-        throw new ArgumentException("buf's length minus " + offset + " (" + Convert.ToString((long)(buf.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)unitCount, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("buf's length minus " + offset + " (" + Convert.ToString((int)(buf.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)unitCount, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (unitCount == 0) {
         return 0;

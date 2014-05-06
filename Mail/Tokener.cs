@@ -22,10 +22,10 @@ namespace PeterO.Mail {
     public void RestoreState(int state) {
       #if DEBUG
       if (state > this.tokenStack.Count) {
-        throw new ArgumentException("state (" + Convert.ToString((long)state, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)this.tokenStack.Count, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("state (" + Convert.ToString((int)state, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)this.tokenStack.Count, System.Globalization.CultureInfo.InvariantCulture));
       }
       if (state < 0) {
-        throw new ArgumentException("state (" + Convert.ToString((long)state, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("state (" + Convert.ToString((int)state, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       #endif
       // if (tokenStack.Count != state) {

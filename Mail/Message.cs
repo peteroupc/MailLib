@@ -1264,11 +1264,11 @@ namespace PeterO.Mail {
         int typeEnd = atomText;
         string origValue = headerValue;
         bool isUtf8 = typeEnd - index == 5 &&
-                       (headerValue[index] & ~0x20) == 'U' &&
-                       (headerValue[index + 1] & ~0x20) == 'T' &&
-                       (headerValue[index + 2] & ~0x20) == 'F' &&
-                       headerValue[index + 3] == '-' &&
-                       headerValue[index + 4] == '8';
+          (headerValue[index] & ~0x20) == 'U' &&
+          (headerValue[index + 1] & ~0x20) == 'T' &&
+          (headerValue[index + 2] & ~0x20) == 'F' &&
+          headerValue[index + 3] == '-' &&
+          headerValue[index + 4] == '8';
         atomText = HeaderParser.ParseCFWS(headerValue, atomText, headerValue.Length, null);
         if (index < headerValue.Length && headerValue[atomText] == ';') {
           string typePart = headerValue.Substring(0, atomText + 1);
@@ -1325,7 +1325,7 @@ namespace PeterO.Mail {
     // Parse the delivery status byte array to downgrade
     // the Original-Recipient and Final-Recipient header fields
     internal static byte[] DowngradeDeliveryStatus(byte[] bytes) {
-// int lineCount = 0;
+      // int lineCount = 0;
       StringBuilder sb = new StringBuilder();
       int index = 0;
       int endIndex = bytes.Length;
@@ -1336,7 +1336,7 @@ namespace PeterO.Mail {
         bool first = true;
         int headerNameStart = index;
         int headerNameEnd = index;
-   // lineCount = 0;
+        // lineCount = 0;
         bool endOfHeaders = false;
         while (true) {
           if (index >= endIndex) {
@@ -1351,7 +1351,7 @@ namespace PeterO.Mail {
             c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
             ++index;
             if (c == '\n') {
-      // lineCount = 0;
+              // lineCount = 0;
               headerNameStart = index;
             } else {
               --index;
@@ -1399,7 +1399,7 @@ namespace PeterO.Mail {
             c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
             ++index;
             if (c == '\n') {
-       // lineCount = 0;
+              // lineCount = 0;
               // Parse obsolete folding whitespace (obs-fws) under RFC5322
               // (parsed according to errata), same as LWSP in RFC5234
               bool fwsFirst = true;
@@ -1415,7 +1415,7 @@ namespace PeterO.Mail {
                     ++index;
                     if (c == '\n') {
                       // CRLF was read
-    // lineCount = 0;
+                      // lineCount = 0;
                     } else {
                       // It's the first part of the line, where the header name
                       // should be, so the CR here is illegal
@@ -1432,7 +1432,7 @@ namespace PeterO.Mail {
                 int c2 = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
                 ++index;
                 if (c2 == 0x20 || c2 == 0x09) {
- // ++lineCount;
+                  // ++lineCount;
                   haveFWS = true;
                 } else {
                   --index;
@@ -1450,10 +1450,10 @@ namespace PeterO.Mail {
               break;
             } else {
               --index;
-// ++lineCount;
+              // ++lineCount;
             }
           }
-// ++lineCount;
+          // ++lineCount;
         }
         if (origRecipient || finalRecipient) {
           string headerValue = DataUtilities.GetUtf8String(
@@ -1729,7 +1729,7 @@ namespace PeterO.Mail {
               // Pop entries if needed to match the stack
               #if DEBUG
               if (multipartStack.Count < stackCount) {
-                throw new ArgumentException("multipartStack.Count (" + Convert.ToString((long)multipartStack.Count, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)stackCount, System.Globalization.CultureInfo.InvariantCulture));
+                throw new ArgumentException("multipartStack.Count (" + Convert.ToString((int)multipartStack.Count, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)stackCount, System.Globalization.CultureInfo.InvariantCulture));
               }
               #endif
               if (leaf != null) {

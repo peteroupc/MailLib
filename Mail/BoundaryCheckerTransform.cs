@@ -146,7 +146,7 @@ namespace PeterO.Mail {
       #if DEBUG
       if (this.bufferCount != 0) {
         throw new ArgumentException("this.bufferCount (" + Convert.ToString(
-          (long)this.bufferCount,
+          (int)this.bufferCount,
           System.Globalization.CultureInfo.InvariantCulture) + ") is not equal to " + "0");
       }
       #endif
@@ -337,7 +337,7 @@ namespace PeterO.Mail {
         throw new ArgumentException("doesn't satisfy !this.hasNewBodyPart");
       }
       if (!this.bufferCount.Equals(0)) {
-        throw new ArgumentException("this.bufferCount (" + Convert.ToString((long)this.bufferCount, System.Globalization.CultureInfo.InvariantCulture) + ") is not equal to " + "0");
+        throw new ArgumentException("this.bufferCount (" + Convert.ToString((int)this.bufferCount, System.Globalization.CultureInfo.InvariantCulture) + ") is not equal to " + "0");
       }
       #endif
 
@@ -352,7 +352,7 @@ namespace PeterO.Mail {
         throw new ArgumentException("doesn't satisfy this.readingHeaders");
       }
       if (!this.bufferCount.Equals(0)) {
-        throw new ArgumentException("this.bufferCount (" + Convert.ToString((long)this.bufferCount, System.Globalization.CultureInfo.InvariantCulture) + ") is not equal to " + "0");
+        throw new ArgumentException("this.bufferCount (" + Convert.ToString((int)this.bufferCount, System.Globalization.CultureInfo.InvariantCulture) + ") is not equal to " + "0");
       }
       #endif
 

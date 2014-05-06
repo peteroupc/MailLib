@@ -7,8 +7,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
-import com.upokecenter.util.*;
-
     /**
      * Contains methods that implement Internationalized Domain Names
      * in Applications (IDNA).
@@ -39,7 +37,51 @@ import com.upokecenter.util.*;
     private static Object joiningTypesSync = new Object();
     private static Object scriptsSync = new Object();
 
-    private static int GetBidiClass(int ch) {
+    static int CodePointBefore(String str, int index) {
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
+      if (index <= 0) {
+        return -1;
+      }
+      if (index > str.length()) {
+        return -1;
+      }
+      int c = str.charAt(index - 1);
+      if ((c & 0xfc00) == 0xdc00 && index - 2 >= 0 &&
+          str.charAt(index - 2) >= 0xd800 && str.charAt(index - 2) <= 0xdbff) {
+        // Get the Unicode code point for the surrogate pair
+        return 0x10000 + ((str.charAt(index - 2) - 0xd800) << 10) + (c - 0xdc00);
+      } else if ((c & 0xf800) == 0xd800) {
+        // unpaired surrogate
+        return 0xfffd;
+      } else {
+        return c;
+      }
+    }
+
+    static int CodePointAt(String str, int index) {
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
+      if (index >= str.length()) {
+        return -1;
+      }
+      if (index < 0) {
+        return -1;
+      }
+      int c = str.charAt(index);
+      if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
+          str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
+        // Get the Unicode code point for the surrogate pair
+        c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
+      } else if ((c & 0xf800) == 0xd800) {
+        return 0xfffd;
+      }
+      return c;
+    }
+
+    static int GetBidiClass(int ch) {
       ByteData table = null;
       synchronized(bidiClassesSync) {
         if (bidiClasses == null) {
@@ -105,7 +147,7 @@ import com.upokecenter.util.*;
       boolean found = false;
       int oldIndex = index;
       while (index > 0) {
-        int ch = DataUtilities.CodePointBefore(str, index);
+        int ch = CodePointBefore(str, index);
         index -= (ch >= 0x10000) ? 2 : 1;
         if (JoiningTypeLeftOrDual(ch)) {
           found = true;
@@ -119,7 +161,7 @@ import com.upokecenter.util.*;
       // Check the right
       index = oldIndex + 1;
       while (index < str.length()) {
-        int ch = DataUtilities.CodePointAt(str, index);
+        int ch = CodePointAt(str, index);
         index += (ch >= 0x10000) ? 2 : 1;
         if (JoiningTypeRightOrDual(ch)) {
           return true;
@@ -133,7 +175,7 @@ import com.upokecenter.util.*;
     private static boolean HasRtlCharacters(String str) {
       for (int i = 0; i < str.length(); ++i) {
         if (str.charAt(i) >= 0x80) {
-          int c = DataUtilities.CodePointAt(str, i);
+          int c = CodePointAt(str, i);
           if (c >= 0x10000) {
             ++i;
           }
@@ -168,7 +210,7 @@ import com.upokecenter.util.*;
         char c = value.charAt(i);
         if (c == '.') {
           if (i != lastIndex) {
-            retval = DomainUtility.PunycodeEncode(value, lastIndex, i);
+            retval = DomainUtility.PunycodeEncodePortion(value, lastIndex, i);
             if (retval == null) {
               // Append the unmodified domain plus the dot
               builder.append(value.substring(lastIndex,(lastIndex)+((i + 1) - lastIndex)));
@@ -180,7 +222,7 @@ import com.upokecenter.util.*;
           lastIndex = i + 1;
         }
       }
-      retval = DomainUtility.PunycodeEncode(value, lastIndex, value.length());
+      retval = DomainUtility.PunycodeEncodePortion(value, lastIndex, value.length());
       if (retval == null) {
         builder.append(value.substring(lastIndex,(lastIndex)+(value.length() - lastIndex)));
       } else {
@@ -214,6 +256,35 @@ import com.upokecenter.util.*;
       return IsValidLabel(str.substring(lastIndex,(lastIndex)+(str.length() - lastIndex)), lookupRules, bidiRule);
     }
 
+    private static String ToLowerCaseAscii(String str) {
+      if (str == null) {
+        return null;
+      }
+      int len = str.length();
+      char c = (char)0;
+      boolean hasUpperCase = false;
+      for (int i = 0; i < len; ++i) {
+        c = str.charAt(i);
+        if (c >= 'A' && c <= 'Z') {
+          hasUpperCase = true;
+          break;
+        }
+      }
+      if (!hasUpperCase) {
+        return str;
+      }
+      StringBuilder builder = new StringBuilder();
+      for (int i = 0; i < len; ++i) {
+        c = str.charAt(i);
+        if (c >= 'A' && c <= 'Z') {
+          builder.append((char)(c + 0x20));
+        } else {
+          builder.append(c);
+        }
+      }
+      return builder.toString();
+    }
+
     private static boolean IsValidLabel(String str, boolean lookupRules, boolean bidiRule) {
       if (((str)==null || (str).length()==0)) {
         return false;
@@ -236,22 +307,22 @@ import com.upokecenter.util.*;
         }
       }
       if (maybeALabel) {
-        str = DataUtilities.ToLowerCaseAscii(str);
+        str = ToLowerCaseAscii(str);
         String ustr = DomainUtility.PunycodeDecode(str, 4, str.length());
         if (ustr == null) {
+          // NOTE: Returns null if "str" contains non-ASCII characters
           return false;
         }
         if (!IsValidULabel(ustr, lookupRules, bidiRule)) {
           return false;
         }
-        String astr = DomainUtility.PunycodeEncode(ustr, 0, ustr.length());
+        String astr = DomainUtility.PunycodeEncodePortion(ustr, 0, ustr.length());
         if (astr == null) {
           return false;
         }
-        if (DataUtilities.CodePointCompare(astr, str) != 0) {
-          return false;
-        }
-        return true;
+        // NOTE: "astr" and "str" will contain only ASCII characters
+        // at this point, so a simple binary comparison is enough
+        return astr.equals(str);
       } else {
         return IsValidULabel(str, lookupRules, bidiRule);
       }
@@ -265,7 +336,7 @@ import com.upokecenter.util.*;
         // Too long
         return false;
       }
-      if (!Normalizer.IsNormalized(str)) {
+      if (!Normalizer.IsNormalized(str, Normalization.NFC)) {
         return false;
       }
       if (str.length() >= 4 && str.charAt(2) == '-' && str.charAt(3) == '-') {
@@ -286,7 +357,7 @@ import com.upokecenter.util.*;
       boolean rtl = false;
       int bidiClass;
       for (int i = 0; i < str.length(); ++i) {
-        ch = DataUtilities.CodePointAt(str, i);
+        ch = CodePointAt(str, i);
         if (ch >= 0x10000) {
           ++i;
         }
@@ -320,7 +391,7 @@ import com.upokecenter.util.*;
         boolean haveKanaOrHan = false;
         int lastChar = 0;
         for (int i = 0; i < str.length(); ++i) {
-          int thisChar = DataUtilities.CodePointAt(str, i);
+          int thisChar = CodePointAt(str, i);
           if (thisChar >= 0x660 && thisChar <= 0x669) {
             // Arabic-Indic digits
             // NOTE: Test done here even under lookup rules,
@@ -362,7 +433,7 @@ import com.upokecenter.util.*;
             // Keraia
             // NOTE: Test done here even under lookup rules,
             // even though it's a CONTEXTO character
-            if (i + 1 >= str.length() || !IsGreek(DataUtilities.CodePointAt(str, i + 1))) {
+            if (i + 1 >= str.length() || !IsGreek(CodePointAt(str, i + 1))) {
               return false;
             }
           } else if (thisChar == 0x5f3 || thisChar == 0x5f4) {
@@ -399,7 +470,7 @@ import com.upokecenter.util.*;
       if (bidiRule) {
         boolean found = false;
         for (int i = str.length(); i > 0; --i) {
-          int c = DataUtilities.CodePointBefore(str, i);
+          int c = CodePointBefore(str, i);
           if (c >= 0x10000) {
             --i;
           }
@@ -425,7 +496,7 @@ import com.upokecenter.util.*;
         boolean haveEN = false;
         boolean haveAN = false;
         for (int i = 0; i < str.length(); ++i) {
-          int c = DataUtilities.CodePointAt(str, i);
+          int c = CodePointAt(str, i);
           if (c >= 0x10000) {
             ++i;
           }

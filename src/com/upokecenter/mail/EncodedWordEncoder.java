@@ -7,6 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
+import com.upokecenter.util.*;
+
   final class EncodedWordEncoder {
     private StringBuilder currentWord;
     private StringBuilder fullString;
@@ -121,15 +123,9 @@ at: http://upokecenter.com/d/
         throw new IllegalArgumentException("str's length minus " + index + " (" + Long.toString((long)(str.length() - index)) + ") is less than " + Long.toString((long)length));
       }
       for (int j = index; j < index + length; ++j) {
-        int c = str.charAt(j);
-        if ((c & 0xfc00) == 0xd800 && j + 1 < str.length() &&
-            str.charAt(j + 1) >= 0xdc00 && str.charAt(j + 1) <= 0xdfff) {
-          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(j + 1) - 0xdc00);
+        int c = DataUtilities.CodePointAt(str, j);
+        if (c >= 0x10000) {
           ++j;
-        } else if ((c & 0xf800) == 0xd800) {
-          // unpaired surrogate
-          c = 0xfffd;
         }
         this.AddChar(c);
       }

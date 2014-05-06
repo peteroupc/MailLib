@@ -4,7 +4,7 @@ using PeterO;
 
 namespace PeterO.Text {
     /// <summary>Not documented yet.</summary>
-  public sealed class ByteData {
+  internal sealed class ByteData {
     private byte[] array;
 
     public static ByteData Decompress(byte[] data) {
@@ -20,10 +20,10 @@ namespace PeterO.Text {
     /// <returns>A Boolean object.</returns>
     public bool GetBoolean(int cp) {
       if (cp < 0) {
-        throw new ArgumentException("cp (" + Convert.ToString((long)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("cp (" + Convert.ToString((int)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (cp > 0x10ffff) {
-        throw new ArgumentException("cp (" + Convert.ToString((long)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)0x10ffff, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("cp (" + Convert.ToString((int)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)0x10ffff, System.Globalization.CultureInfo.InvariantCulture));
       }
       int b = this.array[cp >> 13] & 0xff;
       switch (b) {
@@ -45,10 +45,10 @@ namespace PeterO.Text {
     /// <returns>A Byte object.</returns>
     public byte GetByte(int cp) {
       if (cp < 0) {
-        throw new ArgumentException("cp (" + Convert.ToString((long)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("cp (" + Convert.ToString((int)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
       if (cp > 0x10ffff) {
-        throw new ArgumentException("cp (" + Convert.ToString((long)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)0x10ffff, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("cp (" + Convert.ToString((int)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)0x10ffff, System.Globalization.CultureInfo.InvariantCulture));
       }
       int index = (cp >> 9) << 1;
       int x = this.array[index + 1];

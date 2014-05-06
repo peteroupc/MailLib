@@ -186,7 +186,7 @@ namespace MailLibTest {
           norm = new NormalizingCharacterInput(ci, Normalization.NFKD);
           AssertEqual(i, norm.ReadChar(), imsg);
           AssertEqual(-1, norm.ReadChar(), imsg);
-          string cps=ToCodePointString(cptemp);
+          string cps = ToCodePointString(cptemp);
           if (!PeterO.Text.Normalizer.IsNormalized(cps, Normalization.NFC)) {
             Assert.Fail(imsg);
           }

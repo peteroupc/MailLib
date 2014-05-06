@@ -28,7 +28,7 @@ private Lz4() {
         int literalLength = (b >> 4) & 15;
         int matchLength = b & 15;
         ++index;
-        // System.out.println("New token, index=" + (index));
+//        System.out.println("New token, index=" + (index));
         // Literals
         if (literalLength == 15) {
           while (index < input.length) {
@@ -43,13 +43,13 @@ private Lz4() {
             }
           }
         }
-        // System.out.println("literal=" + literalLength + ", index=" + (index));
+//        System.out.println("literal=" + literalLength + ", index=" + (index));
         if (index + literalLength - 1 >= input.length) {
           throw new IllegalArgumentException("Invalid LZ4");
         }
         if (literalLength > 0) {
           ms.WriteBytes(input, index, literalLength);
-          // System.out.println("literal [idx="+index+"] "+toString(input,index,literalLength));
+//          System.out.println("literal [idx="+index+", len="+literalLength+"] ");
           index += literalLength;
         }
         if (index == input.length) {
@@ -62,7 +62,7 @@ private Lz4() {
         int offset = ((int)input[index]) & 0xff;
         offset |= (((int)input[index + 1]) & 0xff) << 8;
         index += 2;
-        // System.out.println("offset=" + offset + ", index=" + (index));
+//        System.out.println("offset=" + offset + ", index=" + (index));
         if (offset == 0) {
           throw new IllegalArgumentException("Invalid LZ4");
         }

@@ -1284,11 +1284,11 @@ public void setContentDisposition(ContentDisposition value) {
         int typeEnd = atomText;
         String origValue = headerValue;
         boolean isUtf8 = typeEnd - index == 5 &&
-                       (headerValue.charAt(index) & ~0x20) == 'U' &&
-                       (headerValue.charAt(index + 1) & ~0x20) == 'T' &&
-                       (headerValue.charAt(index + 2) & ~0x20) == 'F' &&
-                       headerValue.charAt(index + 3) == '-' &&
-                       headerValue.charAt(index + 4) == '8';
+          (headerValue.charAt(index) & ~0x20) == 'U' &&
+          (headerValue.charAt(index + 1) & ~0x20) == 'T' &&
+          (headerValue.charAt(index + 2) & ~0x20) == 'F' &&
+          headerValue.charAt(index + 3) == '-' &&
+          headerValue.charAt(index + 4) == '8';
         atomText = HeaderParser.ParseCFWS(headerValue, atomText, headerValue.length(), null);
         if (index < headerValue.length() && headerValue.charAt(atomText) == ';') {
           String typePart = headerValue.substring(0,atomText + 1);
@@ -1345,7 +1345,7 @@ public void setContentDisposition(ContentDisposition value) {
     // Parse the delivery status byte array to downgrade
     // the Original-Recipient and Final-Recipient header fields
     static byte[] DowngradeDeliveryStatus(byte[] bytes) {
-// int lineCount = 0;
+      // int lineCount = 0;
       StringBuilder sb = new StringBuilder();
       int index = 0;
       int endIndex = bytes.length;
@@ -1356,7 +1356,7 @@ public void setContentDisposition(ContentDisposition value) {
         boolean first = true;
         int headerNameStart = index;
         int headerNameEnd = index;
-   // lineCount = 0;
+        // lineCount = 0;
         boolean endOfHeaders = false;
         while (true) {
           if (index >= endIndex) {
@@ -1371,7 +1371,7 @@ public void setContentDisposition(ContentDisposition value) {
             c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
             ++index;
             if (c == '\n') {
-      // lineCount = 0;
+              // lineCount = 0;
               headerNameStart = index;
             } else {
               --index;
@@ -1419,7 +1419,7 @@ public void setContentDisposition(ContentDisposition value) {
             c = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
             ++index;
             if (c == '\n') {
-       // lineCount = 0;
+              // lineCount = 0;
               // Parse obsolete folding whitespace (obs-fws) under RFC5322
               // (parsed according to errata), same as LWSP in RFC5234
               boolean fwsFirst = true;
@@ -1435,7 +1435,7 @@ public void setContentDisposition(ContentDisposition value) {
                     ++index;
                     if (c == '\n') {
                       // CRLF was read
-    // lineCount = 0;
+                      // lineCount = 0;
                     } else {
                       // It's the first part of the line, where the header name
                       // should be, so the CR here is illegal
@@ -1452,7 +1452,7 @@ public void setContentDisposition(ContentDisposition value) {
                 int c2 = (index < endIndex) ? (((int)bytes[index]) & 0xff) : -1;
                 ++index;
                 if (c2 == 0x20 || c2 == 0x09) {
- // ++lineCount;
+                  // ++lineCount;
                   haveFWS = true;
                 } else {
                   --index;
@@ -1470,10 +1470,10 @@ public void setContentDisposition(ContentDisposition value) {
               break;
             } else {
               --index;
-// ++lineCount;
+              // ++lineCount;
             }
           }
-// ++lineCount;
+          // ++lineCount;
         }
         if (origRecipient || finalRecipient) {
           String headerValue = DataUtilities.GetUtf8String(

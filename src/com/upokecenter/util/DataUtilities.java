@@ -211,7 +211,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         return -1;
       }
       int c = str.charAt(index - 1);
-      if (c >= 0xdc00 && c <= 0xdfff && index - 2 >= 0 &&
+      if ((c & 0xfc00) == 0xdc00 && index - 2 >= 0 &&
           str.charAt(index - 2) >= 0xd800 && str.charAt(index - 2) <= 0xdbff) {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((str.charAt(index - 2) - 0xd800) << 10) + (c - 0xdc00);
@@ -274,7 +274,6 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
           str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
         // Get the Unicode code point for the surrogate pair
         c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
-        ++index;
       } else if ((c & 0xf800) == 0xd800) {
         // unpaired surrogate
         if (surrogateBehavior == 0) {
