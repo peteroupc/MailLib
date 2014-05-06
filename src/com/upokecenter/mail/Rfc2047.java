@@ -680,19 +680,19 @@ private Rfc2047() {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is less than " + "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is more than " + Long.toString((long)str.length()));
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is more than " + Integer.toString((int)str.length()));
       }
       if (endIndex < 0) {
-        throw new IllegalArgumentException("endIndex (" + Long.toString((long)endIndex) + ") is less than " + "0");
+        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + "0");
       }
       if (endIndex > str.length()) {
-        throw new IllegalArgumentException("endIndex (" + Long.toString((long)endIndex) + ") is more than " + Long.toString((long)str.length()));
+        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is more than " + Integer.toString((int)str.length()));
       }
       if (str.length() - index < endIndex) {
-        throw new IllegalArgumentException("str's length minus " + index + " (" + Long.toString((long)(str.length() - index)) + ") is less than " + Long.toString((long)endIndex));
+        throw new IllegalArgumentException("str's length minus " + index + " (" + Integer.toString((int)(str.length() - index)) + ") is less than " + Integer.toString((int)endIndex));
       }
       return new EncodedWordEncoder().AddString(
         str.substring(index,(index)+(endIndex))).FinalizeEncoding().toString();

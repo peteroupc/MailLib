@@ -108,19 +108,19 @@ import com.upokecenter.util.*;
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is less than " + "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is more than " + Long.toString((long)str.length()));
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is more than " + Integer.toString((int)str.length()));
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is less than " + "0");
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is less than " + "0");
       }
       if (length > str.length()) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is more than " + Long.toString((long)str.length()));
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is more than " + Integer.toString((int)str.length()));
       }
       if (str.length() - index < length) {
-        throw new IllegalArgumentException("str's length minus " + index + " (" + Long.toString((long)(str.length() - index)) + ") is less than " + Long.toString((long)length));
+        throw new IllegalArgumentException("str's length minus " + index + " (" + Integer.toString((int)(str.length() - index)) + ") is less than " + Integer.toString((int)length));
       }
       for (int j = index; j < index + length; ++j) {
         int c = DataUtilities.CodePointAt(str, j);

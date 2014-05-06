@@ -30,10 +30,10 @@ at: http://upokecenter.com/d/
      */
     public void SetLength(int length) {
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is less than " + "0");
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is less than " + "0");
       }
       if (length > this.retvalMax) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is more than " + Long.toString((long)this.retvalMax));
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is more than " + Integer.toString((int)this.retvalMax));
       }
       this.retvalMax = length;
       if (this.retvalPos > this.retvalMax) {
@@ -50,10 +50,10 @@ at: http://upokecenter.com/d/
       }
 public void setPosition(int value) {
         if (value < 0) {
-          throw new IllegalArgumentException("value (" + Long.toString((long)value) + ") is less than " + "0");
+          throw new IllegalArgumentException("value (" + Integer.toString((int)value) + ") is less than " + "0");
         }
         if (value > this.retvalMax) {
-          throw new IllegalArgumentException("value (" + Long.toString((long)value) + ") is more than " + Long.toString((long)this.retvalMax));
+          throw new IllegalArgumentException("value (" + Integer.toString((int)value) + ") is more than " + Integer.toString((int)this.retvalMax));
         }
         this.retvalPos = value;
       }
@@ -76,19 +76,19 @@ public void setPosition(int value) {
         throw new NullPointerException("src");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + Long.toString((long)offset) + ") is less than " + "0");
+        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is less than " + "0");
       }
       if (offset > src.length) {
-        throw new IllegalArgumentException("offset (" + Long.toString((long)offset) + ") is more than " + Long.toString((long)src.length));
+        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is more than " + Integer.toString((int)src.length));
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is less than " + "0");
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is less than " + "0");
       }
       if (length > src.length) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is more than " + Long.toString((long)src.length));
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is more than " + Integer.toString((int)src.length));
       }
       if (src.length - offset < length) {
-        throw new IllegalArgumentException("src's length minus " + offset + " (" + Long.toString((long)(src.length - offset)) + ") is less than " + Long.toString((long)length));
+        throw new IllegalArgumentException("src's length minus " + offset + " (" + Integer.toString((int)(src.length - offset)) + ") is less than " + Integer.toString((int)length));
       }
       int maxLength = Math.min(length, this.retvalMax - this.retvalPos);
       System.arraycopy(this.retval, this.retvalPos, src, offset, maxLength);
@@ -108,19 +108,19 @@ public void setPosition(int value) {
         throw new NullPointerException("src");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + Long.toString((long)offset) + ") is less than " + "0");
+        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is less than " + "0");
       }
       if (offset > src.length) {
-        throw new IllegalArgumentException("offset (" + Long.toString((long)offset) + ") is more than " + Long.toString((long)src.length));
+        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is more than " + Integer.toString((int)src.length));
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is less than " + "0");
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is less than " + "0");
       }
       if (length > src.length) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is more than " + Long.toString((long)src.length));
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is more than " + Integer.toString((int)src.length));
       }
       if (src.length - offset < length) {
-        throw new IllegalArgumentException("src's length minus " + offset + " (" + Long.toString((long)(src.length - offset)) + ") is less than " + Long.toString((long)length));
+        throw new IllegalArgumentException("src's length minus " + offset + " (" + Integer.toString((int)(src.length - offset)) + ") is less than " + Integer.toString((int)length));
       }
       if (this.retval.length - this.retvalPos < length) {
         // Array too small, make it grow

@@ -308,10 +308,10 @@ namespace MailLibTest {
         new byte[] { 255, 239, 254, 103 },
         GetBytes(new Base64Transform(Transform("/+/+Zz=="),true)));
     }
-    
+
     [Test]
-    public void TestLz4(){
-      Lz4.Decompress(NormalizationData.StableNFKD);
+    public void TestLz4() {
+      Lz4.Decompress(NormalizationData.CombiningClasses);
     }
 
     [Test]

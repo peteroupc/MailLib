@@ -22,10 +22,10 @@ private ParserUtility() {
         throw new NullPointerException("suffix");
       }
       if (strStartPos < 0) {
-        throw new IllegalArgumentException("strStartPos (" + Long.toString((long)strStartPos) + ") is less than " + "0");
+        throw new IllegalArgumentException("strStartPos (" + Integer.toString((int)strStartPos) + ") is less than " + "0");
       }
       if (strStartPos > str.length()) {
-        throw new IllegalArgumentException("strStartPos (" + Long.toString((long)strStartPos) + ") is more than " + Long.toString((long)str.length()));
+        throw new IllegalArgumentException("strStartPos (" + Integer.toString((int)strStartPos) + ") is more than " + Integer.toString((int)str.length()));
       }
       int endpos = suffix.length() + strStartPos;
       if (endpos > str.length()) {

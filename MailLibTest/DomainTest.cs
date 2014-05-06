@@ -64,6 +64,8 @@ namespace MailLibTest {
       // 0x323 is dot below, with a lower combining
       // class than grave accent
       Assert.IsTrue(Idna.IsValidDomainName("x\u0323\u0300yz",false));
+      // Not in NFC, due to the reordered combining marks
+      Assert.IsFalse(Idna.IsValidDomainName("x\u0300\u0323yz",false));
       // 0xffbf is unassigned as of Unicode 6.3
       Assert.IsFalse(Idna.IsValidDomainName("x\uffbfyz",false));
       // 0xffff is a noncharacter
@@ -112,8 +114,6 @@ namespace MailLibTest {
       Assert.IsFalse(Idna.IsValidDomainName("\u05d0a",false));  // Hebrew
       // Arabic-indic digits and extended Arabic-indic digits
       Assert.IsFalse(Idna.IsValidDomainName("\u0627\u0660\u06f0\u0627",false));
-      // Not in NFC, due to the reordered combining marks
-      Assert.IsFalse(Idna.IsValidDomainName("x\u0300\u0323yz",false));
       // Right-joining character (U + 062F; since the only right-joining characters in
       // Unicode have Bidi type R,
       // a different dual-joining character is used, U + 062D, which also has

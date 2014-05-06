@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version='1.0' encoding='UTF-8'?>
+<Project DefaultTargets='Build' ToolsVersion='4.0' xmlns='http://schemas.microsoft.com/developer/msbuild/2003'>
   <PropertyGroup>
     <ProjectGuid>{49EE222D-6E5D-4677-9E4D-1286B30E8BAA}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Configuration Condition=' &apos;$(Configuration)&apos; == &apos;&apos; '>Debug</Configuration>
+    <Platform Condition=' &apos;$(Platform)&apos; == &apos;&apos; '>AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>PeterO</RootNamespace>
     <AssemblyName>MailLib</AssemblyName>
@@ -15,10 +15,10 @@
     <RunCodeAnalysis>False</RunCodeAnalysis>
     <CodeAnalysisRules>-Microsoft.Design#CA1017;-Microsoft.Design#CA1020;-Microsoft.Design#CA1032;-Microsoft.Design#CA2210;-Microsoft.Globalization#CA1303;-Microsoft.Usage#CA2209;-Microsoft.Usage#CA2236;-Microsoft.Usage#CA2237</CodeAnalysisRules>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+  <PropertyGroup Condition=' &apos;$(Platform)&apos; == &apos;AnyCPU&apos; '>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+  <PropertyGroup Condition=' &apos;$(Configuration)&apos; == &apos;Debug&apos; '>
     <OutputPath>bin\Debug\</OutputPath>
     <DebugSymbols>True</DebugSymbols>
     <DebugType>Full</DebugType>
@@ -26,7 +26,7 @@
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+  <PropertyGroup Condition=' &apos;$(Configuration)&apos; == &apos;Release&apos; '>
     <OutputPath>bin\Release\</OutputPath>
     <DebugSymbols>False</DebugSymbols>
     <DebugType>None</DebugType>
@@ -35,73 +35,73 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ArrayWriter.cs" />
-    <Compile Include="DataUtilities.cs" />
-    <Compile Include="Lz4.cs" />
-    <Compile Include="Mail\Address.cs" />
-    <Compile Include="Mail\Base64Encoder.cs" />
-    <Compile Include="Mail\Base64Transform.cs" />
-    <Compile Include="Mail\BEncodingStringTransform.cs" />
-    <Compile Include="Mail\BoundaryCheckerTransform.cs" />
-    <Compile Include="Mail\Charsets.cs" />
-    <Compile Include="Mail\CollectionUtilities.cs" />
-    <Compile Include="Mail\ContentDisposition.cs" />
-    <Compile Include="Mail\DispositionBuilder.cs" />
-    <Compile Include="Mail\EightBitTransform.cs" />
-    <Compile Include="Mail\EncodedWordContext.cs" />
-    <Compile Include="Mail\EncodedWordEncoder.cs" />
-    <Compile Include="Mail\IdentityEncoder.cs" />
-    <Compile Include="Mail\IStringEncoder.cs" />
-    <Compile Include="Mail\MessageDataException.cs" />
-    <Compile Include="Mail\HeaderFields.cs" />
-    <Compile Include="Mail\HeaderParser.cs" />
-    <Compile Include="Mail\HeaderParserUtility.cs" />
-    <Compile Include="Mail\IHeaderFieldParser.cs" />
-    <Compile Include="Mail\ITokener.cs" />
-    <Compile Include="Mail\ITransform.cs" />
-    <Compile Include="Mail\LiberalSevenBitTransform.cs" />
-    <Compile Include="Mail\MediaType.cs" />
-    <Compile Include="Mail\MediaTypeBuilder.cs" />
-    <Compile Include="Mail\Message.cs" />
-    <Compile Include="Mail\NamedAddress.cs" />
-    <Compile Include="Mail\ParserUtility.cs" />
-    <Compile Include="Mail\PercentEncodingStringTransform.cs" />
-    <Compile Include="Mail\QEncodingStringTransform.cs" />
-    <Compile Include="Mail\QuotedPrintableEncoder.cs" />
-    <Compile Include="Mail\QuotedPrintableTransform.cs" />
-    <Compile Include="Mail\Rfc2047.cs" />
-    <Compile Include="Mail\SevenBitTransform.cs" />
-    <Compile Include="Mail\TransformWithUnget.cs" />
-    <Compile Include="Mail\Tokener.cs" />
-    <Compile Include="Mail\WordWrapEncoder.cs" />
-    <Compile Include="Mail\WrappedStream.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadOnlyMap.cs" />
-    <Compile Include="RedBlackTree.cs" />
-    <Compile Include="SortedMap.cs" />
-    <Compile Include="Text\ByteData.cs" />
-    <Compile Include="Text\DomainUtility.cs" />
-    <Compile Include="Text\ICharacterInput.cs" />
-    <Compile Include="Text\Idna.cs" />
-    <Compile Include="Text\IdnaData.cs" />
-    <Compile Include="Text\IntArrayCharacterInput.cs" />
-    <Compile Include="Text\NormalizationData.cs" />
-    <Compile Include="Text\Normalization.cs" />
-    <Compile Include="Text\NormalizingCharacterInput.cs" />
-    <Compile Include="Text\Normalizer.cs" />
-    <Compile Include="Text\PartialListCharacterInput.cs" />
-    <Compile Include="Text\StringCharacterInput.cs" />
-    <Compile Include="Text\UnicodeDatabase.cs" />
+    <Compile Include='ArrayWriter.cs'/>
+    <Compile Include='DataUtilities.cs'/>
+    <Compile Include='Lz4.cs'/>
+    <Compile Include='Mail\Address.cs'/>
+    <Compile Include='Mail\Base64Encoder.cs'/>
+    <Compile Include='Mail\Base64Transform.cs'/>
+    <Compile Include='Mail\BEncodingStringTransform.cs'/>
+    <Compile Include='Mail\BoundaryCheckerTransform.cs'/>
+    <Compile Include='Mail\Charsets.cs'/>
+    <Compile Include='Mail\CollectionUtilities.cs'/>
+    <Compile Include='Mail\ContentDisposition.cs'/>
+    <Compile Include='Mail\DispositionBuilder.cs'/>
+    <Compile Include='Mail\EightBitTransform.cs'/>
+    <Compile Include='Mail\EncodedWordContext.cs'/>
+    <Compile Include='Mail\EncodedWordEncoder.cs'/>
+    <Compile Include='Mail\IdentityEncoder.cs'/>
+    <Compile Include='Mail\IStringEncoder.cs'/>
+    <Compile Include='Mail\MessageDataException.cs'/>
+    <Compile Include='Mail\HeaderFields.cs'/>
+    <Compile Include='Mail\HeaderParser.cs'/>
+    <Compile Include='Mail\HeaderParserUtility.cs'/>
+    <Compile Include='Mail\IHeaderFieldParser.cs'/>
+    <Compile Include='Mail\ITokener.cs'/>
+    <Compile Include='Mail\ITransform.cs'/>
+    <Compile Include='Mail\LiberalSevenBitTransform.cs'/>
+    <Compile Include='Mail\MediaType.cs'/>
+    <Compile Include='Mail\MediaTypeBuilder.cs'/>
+    <Compile Include='Mail\Message.cs'/>
+    <Compile Include='Mail\NamedAddress.cs'/>
+    <Compile Include='Mail\ParserUtility.cs'/>
+    <Compile Include='Mail\PercentEncodingStringTransform.cs'/>
+    <Compile Include='Mail\QEncodingStringTransform.cs'/>
+    <Compile Include='Mail\QuotedPrintableEncoder.cs'/>
+    <Compile Include='Mail\QuotedPrintableTransform.cs'/>
+    <Compile Include='Mail\Rfc2047.cs'/>
+    <Compile Include='Mail\SevenBitTransform.cs'/>
+    <Compile Include='Mail\TransformWithUnget.cs'/>
+    <Compile Include='Mail\Tokener.cs'/>
+    <Compile Include='Mail\WordWrapEncoder.cs'/>
+    <Compile Include='Mail\WrappedStream.cs'/>
+    <Compile Include='Properties\AssemblyInfo.cs'/>
+    <Compile Include='ReadOnlyMap.cs'/>
+    <Compile Include='RedBlackTree.cs'/>
+    <Compile Include='SortedMap.cs'/>
+    <Compile Include='Text\ByteData.cs'/>
+    <Compile Include='Text\DomainUtility.cs'/>
+    <Compile Include='Text\ICharacterInput.cs'/>
+    <Compile Include='Text\Idna.cs'/>
+    <Compile Include='Text\IdnaData.cs'/>
+    <Compile Include='Text\IntArrayCharacterInput.cs'/>
+    <Compile Include='Text\NormalizationData.cs'/>
+    <Compile Include='Text\Normalization.cs'/>
+    <Compile Include='Text\NormalizingCharacterInput.cs'/>
+    <Compile Include='Text\Normalizer.cs'/>
+    <Compile Include='Text\PartialListCharacterInput.cs'/>
+    <Compile Include='Text\StringCharacterInput.cs'/>
+    <Compile Include='Text\UnicodeDatabase.cs'/>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Mail" />
-    <Folder Include="Text" />
+    <Folder Include='Mail'/>
+    <Folder Include='Text'/>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ProfilingSessions\Session20140423_233256.sdps" />
-    <Content Include="ProfilingSessions\Session20140424_090403.sdps" />
-    <Content Include="ProfilingSessions\Session20140424_120623.sdps" />
+    <Content Include='ProfilingSessions\Session20140423_233256.sdps'/>
+    <Content Include='ProfilingSessions\Session20140424_090403.sdps'/>
+    <Content Include='ProfilingSessions\Session20140424_120623.sdps'/>
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Portable\v4.0\Microsoft.Portable.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets" />
-</Project>
+  <Import Project='$(MSBuildExtensionsPath)\Microsoft\Portable\v4.0\Microsoft.Portable.CSharp.targets'/>
+  
+<Import Project='$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets'/></Project>

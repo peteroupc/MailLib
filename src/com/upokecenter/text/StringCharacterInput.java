@@ -31,19 +31,19 @@ import com.upokecenter.util.*;
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is less than " + "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is more than " + Long.toString((long)str.length()));
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is more than " + Integer.toString((int)str.length()));
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is less than " + "0");
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is less than " + "0");
       }
       if (length > str.length()) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is more than " + Long.toString((long)str.length()));
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is more than " + Integer.toString((int)str.length()));
       }
       if (str.length() - index < length) {
-        throw new IllegalArgumentException("str's length minus " + index + " (" + Long.toString((long)(str.length() - index)) + ") is less than " + Long.toString((long)length));
+        throw new IllegalArgumentException("str's length minus " + index + " (" + Integer.toString((int)(str.length() - index)) + ") is less than " + Integer.toString((int)length));
       }
       this.str = str;
       this.index = index;
@@ -78,19 +78,19 @@ import com.upokecenter.util.*;
         throw new NullPointerException("chars");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is less than " + "0");
       }
       if (index > chars.length) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is more than " + Long.toString((long)chars.length));
+        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is more than " + Integer.toString((int)chars.length));
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is less than " + "0");
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is less than " + "0");
       }
       if (length > chars.length) {
-        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is more than " + Long.toString((long)chars.length));
+        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is more than " + Integer.toString((int)chars.length));
       }
       if (chars.length - index < length) {
-        throw new IllegalArgumentException("chars's length minus " + index + " (" + Long.toString((long)(chars.length - index)) + ") is less than " + Long.toString((long)length));
+        throw new IllegalArgumentException("chars's length minus " + index + " (" + Integer.toString((int)(chars.length - index)) + ") is less than " + Integer.toString((int)length));
       }
       if (this.endIndex == this.index) {
         return -1;

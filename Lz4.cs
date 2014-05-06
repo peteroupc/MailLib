@@ -39,7 +39,7 @@ namespace PeterO {
             }
           }
         }
-//        Console.WriteLine("literal=" + literalLength + ", index=" + (index));
+        Console.WriteLine("literal=" + literalLength + ", index=" + (index));
         if (index + literalLength - 1 >= input.Length) {
           throw new ArgumentException("Invalid LZ4");
         }
@@ -58,8 +58,7 @@ namespace PeterO {
         int offset = ((int)input[index]) & 0xff;
         offset |= (((int)input[index + 1]) & 0xff) << 8;
         index += 2;
-//        Console.WriteLine("offset=" + offset + ", index=" + (index));
-        if (offset == 0) {
+        if(offset == 0) {
           throw new ArgumentException("Invalid LZ4");
         }
         if (matchLength == 15) {
@@ -76,6 +75,7 @@ namespace PeterO {
           }
         }
         matchLength += 4;
+       // Console.WriteLine("match={0} offset={1} index={2}",matchLength,offset,index);
         int pos = ms.Position - offset;
         int oldPos = ms.Position;
         if (pos < 0) {
