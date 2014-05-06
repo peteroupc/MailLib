@@ -8,11 +8,9 @@ at: http://upokecenter.com/d/
 using System;
 using System.Text;
 
-using PeterO;
-
 namespace PeterO.Text {
-    /// <summary>Contains methods that implement Internationalized Domain
-    /// Names in Applications (IDNA).</summary>
+  /// <summary>Contains methods that implement Internationalized Domain
+  /// Names in Applications (IDNA).</summary>
   public class Idna
   {
     private const int Unassigned = 0;
@@ -39,7 +37,51 @@ namespace PeterO.Text {
     private static object joiningTypesSync = new Object();
     private static object scriptsSync = new Object();
 
-    private static int GetBidiClass(int ch) {
+    internal static int CodePointBefore(string str, int index) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      if (index <= 0) {
+        return -1;
+      }
+      if (index > str.Length) {
+        return -1;
+      }
+      int c = str[index - 1];
+      if (c >= 0xdc00 && c <= 0xdfff && index - 2 >= 0 &&
+          str[index - 2] >= 0xd800 && str[index - 2] <= 0xdbff) {
+        // Get the Unicode code point for the surrogate pair
+        return 0x10000 + ((str[index - 2] - 0xd800) << 10) + (c - 0xdc00);
+      } else if ((c & 0xf800) == 0xd800) {
+        // unpaired surrogate
+        return 0xfffd;
+      } else {
+        return c;
+      }
+    }
+
+    internal static int CodePointAt(string str, int index) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      if (index >= str.Length) {
+        return -1;
+      }
+      if (index < 0) {
+        return -1;
+      }
+      int c = str[index];
+      if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length &&
+          str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
+        // Get the Unicode code point for the surrogate pair
+        c = 0x10000 + ((c - 0xd800) << 10) + (str[index + 1] - 0xdc00);
+      } else if ((c & 0xf800) == 0xd800) {
+        return 0xfffd;
+      }
+      return c;
+    }
+    
+    internal static int GetBidiClass(int ch) {
       ByteData table = null;
       lock (bidiClassesSync) {
         if (bidiClasses == null) {
@@ -211,6 +253,35 @@ namespace PeterO.Text {
       }
       return IsValidLabel(str.Substring(lastIndex, str.Length - lastIndex), lookupRules, bidiRule);
     }
+    
+    private static string ToLowerCaseAscii(string str) {
+      if (str == null) {
+        return null;
+      }
+      int len = str.Length;
+      char c = (char)0;
+      bool hasUpperCase = false;
+      for (int i = 0; i < len; ++i) {
+        c = str[i];
+        if (c >= 'A' && c <= 'Z') {
+          hasUpperCase = true;
+          break;
+        }
+      }
+      if (!hasUpperCase) {
+        return str;
+      }
+      StringBuilder builder = new StringBuilder();
+      for (int i = 0; i < len; ++i) {
+        c = str[i];
+        if (c >= 'A' && c <= 'Z') {
+          builder.Append((char)(c + 0x20));
+        } else {
+          builder.Append(c);
+        }
+      }
+      return builder.ToString();
+    }
 
     private static bool IsValidLabel(string str, bool lookupRules, bool bidiRule) {
       if (String.IsNullOrEmpty(str)) {
@@ -234,7 +305,7 @@ namespace PeterO.Text {
         }
       }
       if (maybeALabel) {
-        str = DataUtilities.ToLowerCaseAscii(str);
+        str = ToLowerCaseAscii(str);
         string ustr = DomainUtility.PunycodeDecode(str, 4, str.Length);
         if (ustr == null) {
           return false;
@@ -263,7 +334,7 @@ namespace PeterO.Text {
         // Too long
         return false;
       }
-      if (!Normalizer.IsNormalized(str)) {
+      if (!Normalizer.IsNormalized(str, Normalization.NFC)) {
         return false;
       }
       if (str.Length >= 4 && str[2] == '-' && str[3] == '-') {

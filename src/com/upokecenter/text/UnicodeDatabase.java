@@ -16,7 +16,7 @@ private UnicodeDatabase() {
     public static int GetCombiningClass(int cp) {
       synchronized(classesSyncRoot) {
         if (classes == null) {
-          classes = ByteData.Decompress(NormalizationData.CombiningClasses);
+          classes = ByteData.Decompress(PeterO.Text.NormalizationData.CombiningClasses);
         }
       }
       return ((int)classes.GetByte(cp)) & 0xff;
@@ -53,29 +53,29 @@ private UnicodeDatabase() {
     private static ByteData stablenfkd = null;
     private static Object stableSyncRoot = new Object();
 
-    public static boolean IsStableCodePoint(int cp, Normalization form) {
+    public static boolean IsStableCodePoint(int cp, PeterO.Text.Normalization form) {
       synchronized(stableSyncRoot) {
-        if (form == Normalization.NFC) {
+        if (form == PeterO.Text.Normalization.NFC) {
           if (stablenfc == null) {
-            stablenfc = ByteData.Decompress(NormalizationData.StableNFC);
+            stablenfc = ByteData.Decompress(PeterO.Text.NormalizationData.StableNFC);
           }
           return stablenfc.GetBoolean(cp);
         }
-        if (form == Normalization.NFD) {
+        if (form == PeterO.Text.Normalization.NFD) {
           if (stablenfd == null) {
-            stablenfd = ByteData.Decompress(NormalizationData.StableNFD);
+            stablenfd = ByteData.Decompress(PeterO.Text.NormalizationData.StableNFD);
           }
           return stablenfd.GetBoolean(cp);
         }
-        if (form == Normalization.NFKC) {
+        if (form == PeterO.Text.Normalization.NFKC) {
           if (stablenfkc == null) {
-            stablenfkc = ByteData.Decompress(NormalizationData.StableNFKC);
+            stablenfkc = ByteData.Decompress(PeterO.Text.NormalizationData.StableNFKC);
           }
           return stablenfkc.GetBoolean(cp);
         }
-        if (form == Normalization.NFKD) {
+        if (form == PeterO.Text.Normalization.NFKD) {
           if (stablenfkd == null) {
-            stablenfkd = ByteData.Decompress(NormalizationData.StableNFKD);
+            stablenfkd = ByteData.Decompress(PeterO.Text.NormalizationData.StableNFKD);
           }
           return stablenfkd.GetBoolean(cp);
         }
@@ -91,7 +91,7 @@ private UnicodeDatabase() {
         buffer[offset++] = cp;
         return offset;
       }
-      decomps = NormalizationData.DecompMappings;
+      decomps = PeterO.Text.NormalizationData.DecompMappings;
       int left = 0;
       int right = decomps[0] - 1;
       while (left <= right) {
@@ -112,7 +112,7 @@ private UnicodeDatabase() {
           if (size > 0) {
             if ((data & (1 << 23)) > 0) {
               realIndex = data & 0x1fffff;
-              System.arraycopy(NormalizationData.CompatDecompMappings, realIndex, buffer, offset, size);
+              System.arraycopy(PeterO.Text.NormalizationData.CompatDecompMappings, realIndex, buffer, offset, size);
             } else {
               realIndex = 1 + (decomps[0] << 1) + (data & 0x1fffff);
               System.arraycopy(decomps, realIndex, buffer, offset, size);
@@ -137,7 +137,7 @@ private UnicodeDatabase() {
     private static void EnsurePairs() {
       synchronized(pairsSyncRoot) {
         if (pairs == null) {
-          pairs = NormalizationData.ComposedPairs;
+          pairs = PeterO.Text.NormalizationData.ComposedPairs;
           pairsLength = pairs.length / 3;
         }
       }

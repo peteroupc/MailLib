@@ -24,12 +24,12 @@ private DomainUtility() {
         return -1;
       }
       int c = str.charAt(index);
-      if (c >= 0xd800 && c <= 0xdbff && index + 1 < endIndex &&
+      if ((c & 0xfc00) == 0xd800 && index + 1 < endIndex &&
           str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
         // Get the Unicode code point for the surrogate pair
-        c = 0x10000 + ((c - 0xd800) * 0x400) + (str.charAt(index + 1) - 0xdc00);
+        c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
         ++index;
-      } else if (c >= 0xd800 && c <= 0xdfff) {
+      } else if ((c & 0xf800) == 0xd800) {
         // unpaired surrogate
         return 0xfffd;
       }
@@ -367,11 +367,11 @@ private DomainUtility() {
       tmpIndex = index;
       while (tmpIndex < endIndex) {
         int c = (int)str.charAt(tmpIndex);
-        if (c >= 0xd800 && c <= 0xdbff && tmpIndex + 1 < endIndex &&
+        if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
             str.charAt(tmpIndex + 1) >= 0xdc00 && str.charAt(tmpIndex + 1) <= 0xdfff) {
-          c = 0x10000 + ((c - 0xd800) * 0x400) + (str.charAt(tmpIndex + 1) - 0xdc00);
+          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
           ++tmpIndex;
-        } else if (c >= 0xd800 && c <= 0xdfff) {
+        } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate
           c = 0xfffd;
         }
@@ -400,11 +400,11 @@ private DomainUtility() {
         tmpIndex = firstIndex;
         while (tmpIndex < endIndex) {
           int c = (int)str.charAt(tmpIndex);
-          if (c >= 0xd800 && c <= 0xdbff && tmpIndex + 1 < endIndex &&
+          if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
               str.charAt(index + 1) >= 0xdc00 && str.charAt(tmpIndex + 1) <= 0xdfff) {
-            c = 0x10000 + ((c - 0xd800) * 0x400) + (str.charAt(tmpIndex + 1) - 0xdc00);
+            c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(tmpIndex + 1) - 0xdc00);
             ++tmpIndex;
-          } else if (c >= 0xd800 && c <= 0xdfff) {
+          } else if ((c & 0xf800) == 0xd800) {
             // unpaired surrogate
             c = 0xfffd;
           }
@@ -430,11 +430,11 @@ private DomainUtility() {
         delta += basicsBeforeFirstNonbasic;
         while (tmpIndex < endIndex) {
           int c = (int)str.charAt(tmpIndex);
-          if (c >= 0xd800 && c <= 0xdbff && tmpIndex + 1 < endIndex &&
+          if ((c & 0xfc00) == 0xd800 && tmpIndex + 1 < endIndex &&
               str.charAt(tmpIndex + 1) >= 0xdc00 && str.charAt(tmpIndex + 1) <= 0xdfff) {
-            c = 0x10000 + ((c - 0xd800) * 0x400) + (str.charAt(index + 1) - 0xdc00);
+            c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
             ++tmpIndex;
-          } else if (c >= 0xd800 && c <= 0xdfff) {
+          } else if ((c & 0xf800) == 0xd800) {
             // unpaired surrogate
             c = 0xfffd;
           }

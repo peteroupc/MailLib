@@ -133,9 +133,9 @@ import com.upokecenter.util.*;
         if (i2 < endIndex) {
           char c = s.charAt(i2);
           // Non-ASCII (allowed in internationalized email headers under RFC6532)
-          if (c >= 0xd800 && c <= 0xdbff && i2 + 1 < endIndex && s.charAt(i2 + 1) >= 0xdc00 && s.charAt(i2 + 1) <= 0xdfff) {
+          if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && s.charAt(i2 + 1) >= 0xdc00 && s.charAt(i2 + 1) <= 0xdfff) {
             i2 += 2;
-          } else if (c >= 0xd800 && c <= 0xdfff) {
+          } else if ((c & 0xf800) == 0xd800) {
             // unchanged; it's a bare surrogate
           } else if (c >= 0x80) {
             ++i2;
@@ -167,9 +167,9 @@ import com.upokecenter.util.*;
       if (index + 1 < endIndex && s.charAt(index) == '\\') {
         char c = s.charAt(index + 1);
         // Non-ASCII (allowed in internationalized email headers under RFC6532)
-        if (c >= 0xd800 && c <= 0xdbff && index + 2 < endIndex && s.charAt(index + 2) >= 0xdc00 && s.charAt(index + 2) <= 0xdfff) {
+        if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && s.charAt(index + 2) >= 0xdc00 && s.charAt(index + 2) <= 0xdfff) {
           return index + 3;
-        } else if (c >= 0xd800 && c <= 0xdfff) {
+        } else if ((c & 0xf800) == 0xd800) {
           return index;
         } else if (c >= 0x80) {
           return index + 2;
@@ -273,12 +273,12 @@ import com.upokecenter.util.*;
       int index = 0;
       while (index < str.length()) {
         int c = str.charAt(index);
-        if (c >= 0xd800 && c <= 0xdbff && index + 1 < str.length() &&
+        if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
             str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) * 0x400) + (str.charAt(index + 1) - 0xdc00);
+          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
           ++index;
-        } else if (c >= 0xd800 && c <= 0xdfff) {
+        } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate
           c = 0xfffd;
         }

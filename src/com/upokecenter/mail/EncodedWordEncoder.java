@@ -122,12 +122,12 @@ at: http://upokecenter.com/d/
       }
       for (int j = index; j < index + length; ++j) {
         int c = str.charAt(j);
-        if (c >= 0xd800 && c <= 0xdbff && j + 1 < str.length() &&
+        if ((c & 0xfc00) == 0xd800 && j + 1 < str.length() &&
             str.charAt(j + 1) >= 0xdc00 && str.charAt(j + 1) <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) * 0x400) + (str.charAt(j + 1) - 0xdc00);
+          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(j + 1) - 0xdc00);
           ++j;
-        } else if (c >= 0xd800 && c <= 0xdfff) {
+        } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate
           c = 0xfffd;
         }

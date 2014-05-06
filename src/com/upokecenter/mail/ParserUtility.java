@@ -172,7 +172,7 @@ private ParserUtility() {
           index = index2 + delimLength;
         }
       }
-      return strings.toArray(new String[] { });
+      return strings.toArray(new String[]{});
     }
 
     public static boolean IsValidLanguageTag(String str) {

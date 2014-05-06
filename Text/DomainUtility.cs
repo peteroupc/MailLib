@@ -9,7 +9,7 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-    /// <summary>Utility methods for domain names.</summary>
+  /// <summary>Utility methods for domain names.</summary>
   internal static class DomainUtility
   {
     private static int CodePointAt(string str, int index, int endIndex) {
@@ -23,12 +23,12 @@ namespace PeterO.Text {
         return -1;
       }
       int c = str[index];
-      if (c >= 0xd800 && c <= 0xdbff && index + 1 < endIndex &&
+      if ((c & 0xfc00) == 0xd800 && index + 1 < endIndex &&
           str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
         // Get the Unicode code point for the surrogate pair
-        c = 0x10000 + ((c - 0xd800) * 0x400) + (str[index + 1] - 0xdc00);
+        c = 0x10000 + ((c - 0xd800) << 10) + (str[index + 1] - 0xdc00);
         ++index;
-      } else if (c >= 0xd800 && c <= 0xdfff) {
+      } else if ((c & 0xf800) == 0xd800) {
         // unpaired surrogate
         return 0xfffd;
       }
@@ -363,15 +363,7 @@ namespace PeterO.Text {
       builder.Append("xn--");
       tmpIndex = index;
       while (tmpIndex < endIndex) {
-        int c = (int)str[tmpIndex];
-        if (c >= 0xd800 && c <= 0xdbff && tmpIndex + 1 < endIndex &&
-            str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
-          c = 0x10000 + ((c - 0xd800) * 0x400) + (str[tmpIndex + 1] - 0xdc00);
-          ++tmpIndex;
-        } else if (c >= 0xd800 && c <= 0xdfff) {
-          // unpaired surrogate
-          c = 0xfffd;
-        }
+        int c = Idna.CodePointAt(str, tmpIndex);
         ++codePointLength;
         if (c < 0x80) {
           // This is a basic (ASCII) code point
@@ -380,6 +372,7 @@ namespace PeterO.Text {
         } else if (firstIndex < 0) {
           firstIndex = tmpIndex;
         }
+        if(c>=0x10000)tmpIndex++;
         ++tmpIndex;
       }
       if (h != 0) {
@@ -396,18 +389,11 @@ namespace PeterO.Text {
         int min = 0x110000;
         tmpIndex = firstIndex;
         while (tmpIndex < endIndex) {
-          int c = (int)str[tmpIndex];
-          if (c >= 0xd800 && c <= 0xdbff && tmpIndex + 1 < endIndex &&
-              str[index + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
-            c = 0x10000 + ((c - 0xd800) * 0x400) + (str[tmpIndex + 1] - 0xdc00);
-            ++tmpIndex;
-          } else if (c >= 0xd800 && c <= 0xdfff) {
-            // unpaired surrogate
-            c = 0xfffd;
-          }
+          int c = Idna.CodePointAt(str, tmpIndex);
           if (c >= n && c < min) {
             min = c;
           }
+          if(c>=0x10000)tmpIndex++;
           ++tmpIndex;
         }
         int d = min - n;
@@ -426,15 +412,8 @@ namespace PeterO.Text {
         }
         delta += basicsBeforeFirstNonbasic;
         while (tmpIndex < endIndex) {
-          int c = (int)str[tmpIndex];
-          if (c >= 0xd800 && c <= 0xdbff && tmpIndex + 1 < endIndex &&
-              str[tmpIndex + 1] >= 0xdc00 && str[tmpIndex + 1] <= 0xdfff) {
-            c = 0x10000 + ((c - 0xd800) * 0x400) + (str[index + 1] - 0xdc00);
-            ++tmpIndex;
-          } else if (c >= 0xd800 && c <= 0xdfff) {
-            // unpaired surrogate
-            c = 0xfffd;
-          }
+          int c = Idna.CodePointAt(str, tmpIndex);
+          if(c>=0x10000)tmpIndex++;
           ++tmpIndex;
           if (c < n) {
             if (delta == Int32.MaxValue) {

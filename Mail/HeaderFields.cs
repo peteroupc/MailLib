@@ -150,19 +150,7 @@ namespace PeterO.Mail {
                     }
                   }
                 }
-                if (nonasciiLocalParts) {
-                  if (originalGroups == null) {
-                    originalGroups = this.ParseGroupLists(originalString, 0, originalString.Length);
-                  }
-                  originalGroupList = originalGroups[groupIndex];
-                  string groupText = originalGroupList;
-                  string displayNameText = str.Substring(startIndex, displayNameEnd - startIndex);
-                  string encodedText = displayNameText + " " + Rfc2047.EncodeString(groupText) + " :;";
-                  sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
-                  sb.Append(encodedText);
-                  lastIndex = endIndex;
-                  ++groupIndex;
-                } else {
+                if (!nonasciiLocalParts) {
                   int localLastIndex = startIndex;
                   bool nonasciiDomains = false;
                   StringBuilder sb2 = new StringBuilder();
@@ -190,31 +178,33 @@ namespace PeterO.Mail {
                       }
                     }
                   }
-                  if (nonasciiDomains) {
-                    // At least some of the domains could not
-                    // be converted to ASCII
-                    if (originalGroups == null) {
-                      originalGroups = this.ParseGroupLists(originalString, 0, originalString.Length);
-                    }
-                    originalGroupList = originalGroups[groupIndex];
-                    string groupText = originalGroupList;
-                    string displayNameText = str.Substring(startIndex, displayNameEnd - startIndex);
-                    string encodedText = displayNameText + " " + Rfc2047.EncodeString(groupText) + " :;";
-                    sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
-                    sb.Append(encodedText);
-                    lastIndex = endIndex;
-                  } else {
+                  nonasciiLocalParts = nonasciiDomains;
+                  if (!nonasciiLocalParts) {
                     // All of the domains could be converted to ASCII
                     sb2.Append(str.Substring(localLastIndex, endIndex - localLastIndex));
                     sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
                     sb.Append(sb2.ToString());
                     lastIndex = endIndex;
                   }
-                  ++groupIndex;
                 }
+                if (nonasciiLocalParts) {
+                  // At least some of the domains could not
+                  // be converted to ASCII
+                  if (originalGroups == null) {
+                    originalGroups = this.ParseGroupLists(originalString, 0, originalString.Length);
+                  }
+                  originalGroupList = originalGroups[groupIndex];
+                  string groupText = originalGroupList;
+                  string displayNameText = str.Substring(startIndex, displayNameEnd - startIndex);
+                  string encodedText = displayNameText + " " + Rfc2047.EncodeString(groupText) + " :;";
+                  sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
+                  sb.Append(encodedText);
+                  lastIndex = endIndex;
+                }
+                ++groupIndex;
               }
             } else if (phase == 3) {  // Mailbox downgrading
-              if (token[0] == HeaderParserUtility.TokenGroup) {
+              if (token[0] == HeaderParserUtility.TokenMailbox) {
                 int startIndex = token[1];
                 endIndex = token[2];
                 bool nonasciiLocalPart = false;
@@ -232,6 +222,44 @@ namespace PeterO.Mail {
                     }
                   }
                 }
+                if (!nonasciiLocalPart) {
+                  int localLastIndex = startIndex;
+                  bool nonasciiDomains = false;
+                  StringBuilder sb2 = new StringBuilder();
+                  foreach (int[] token2 in tokens) {
+                    if (token2[0] == HeaderParserUtility.TokenDomain) {
+                      if (token2[1] >= startIndex && token2[2] <= endIndex) {
+                        // Domain within the group
+                        string domain = HeaderParserUtility.ParseDomain(str, token2[1], token[2]);
+                        // NOTE: "domain" can include domain literals, enclosed
+                        // in brackets; they are invalid under "IsValidDomainName".
+                        if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.Length) &&
+                            Idna.IsValidDomainName(domain, false)) {
+                          domain = Idna.EncodeDomainName(domain);
+                        } else {
+                          domain = str.Substring(token2[1], token2[2] - token2[1]);
+                        }
+                        if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.Length)) {
+                          // ASCII encoding failed
+                          nonasciiDomains = true;
+                          break;
+                        }
+                        sb2.Append(str.Substring(localLastIndex, token2[1] - localLastIndex));
+                        sb2.Append(domain);
+                        localLastIndex = token2[2];
+                      }
+                    }
+                  }
+                  nonasciiLocalPart = nonasciiDomains;
+                  if (!nonasciiLocalPart) {
+                    // All of the domains could be converted to ASCII
+                    sb2.Append(str.Substring(localLastIndex, endIndex - localLastIndex));
+                    sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
+                    sb.Append(sb2.ToString());
+                    lastIndex = endIndex;
+                  }
+                }
+                // Downgrading failed
                 if (nonasciiLocalPart) {
                   sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
                   if (!hasPhrase) {
@@ -257,11 +285,8 @@ namespace PeterO.Mail {
                     sb.Append(encodedText);
                   }
                   lastIndex = endIndex;
-                  ++groupIndex;
-                } else {
-                  // TODO: Downgrade domains within the group
-                  ++groupIndex;
                 }
+                ++groupIndex;
               }
             }
           }

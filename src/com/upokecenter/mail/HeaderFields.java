@@ -160,19 +160,7 @@ private HeaderFields() {
                     }
                   }
                 }
-                if (nonasciiLocalParts) {
-                  if (originalGroups == null) {
-                    originalGroups = this.ParseGroupLists(originalString, 0, originalString.length());
-                  }
-                  originalGroupList = originalGroups.get(groupIndex);
-                  String groupText = originalGroupList;
-                  String displayNameText = str.substring(startIndex,(startIndex)+(displayNameEnd - startIndex));
-                  String encodedText = displayNameText + " " + Rfc2047.EncodeString(groupText) + " :;";
-                  sb.append(str.substring(lastIndex,(lastIndex)+(startIndex - lastIndex)));
-                  sb.append(encodedText);
-                  lastIndex = endIndex;
-                  ++groupIndex;
-                } else {
+                if (!nonasciiLocalParts) {
                   int localLastIndex = startIndex;
                   boolean nonasciiDomains = false;
                   StringBuilder sb2 = new StringBuilder();
@@ -200,31 +188,33 @@ private HeaderFields() {
                       }
                     }
                   }
-                  if (nonasciiDomains) {
-                    // At least some of the domains could not
-                    // be converted to ASCII
-                    if (originalGroups == null) {
-                      originalGroups = this.ParseGroupLists(originalString, 0, originalString.length());
-                    }
-                    originalGroupList = originalGroups.get(groupIndex);
-                    String groupText = originalGroupList;
-                    String displayNameText = str.substring(startIndex,(startIndex)+(displayNameEnd - startIndex));
-                    String encodedText = displayNameText + " " + Rfc2047.EncodeString(groupText) + " :;";
-                    sb.append(str.substring(lastIndex,(lastIndex)+(startIndex - lastIndex)));
-                    sb.append(encodedText);
-                    lastIndex = endIndex;
-                  } else {
+                  nonasciiLocalParts = nonasciiDomains;
+                  if (!nonasciiLocalParts) {
                     // All of the domains could be converted to ASCII
                     sb2.append(str.substring(localLastIndex,(localLastIndex)+(endIndex - localLastIndex)));
                     sb.append(str.substring(lastIndex,(lastIndex)+(startIndex - lastIndex)));
                     sb.append(sb2.toString());
                     lastIndex = endIndex;
                   }
-                  ++groupIndex;
                 }
+                if (nonasciiLocalParts) {
+                  // At least some of the domains could not
+                  // be converted to ASCII
+                  if (originalGroups == null) {
+                    originalGroups = this.ParseGroupLists(originalString, 0, originalString.length());
+                  }
+                  originalGroupList = originalGroups.get(groupIndex);
+                  String groupText = originalGroupList;
+                  String displayNameText = str.substring(startIndex,(startIndex)+(displayNameEnd - startIndex));
+                  String encodedText = displayNameText + " " + Rfc2047.EncodeString(groupText) + " :;";
+                  sb.append(str.substring(lastIndex,(lastIndex)+(startIndex - lastIndex)));
+                  sb.append(encodedText);
+                  lastIndex = endIndex;
+                }
+                ++groupIndex;
               }
             } else if (phase == 3) {  // Mailbox downgrading
-              if (token[0] == HeaderParserUtility.TokenGroup) {
+              if (token[0] == HeaderParserUtility.TokenMailbox) {
                 int startIndex = token[1];
                 endIndex = token[2];
                 boolean nonasciiLocalPart = false;
@@ -242,6 +232,44 @@ private HeaderFields() {
                     }
                   }
                 }
+                if (!nonasciiLocalPart) {
+                  int localLastIndex = startIndex;
+                  boolean nonasciiDomains = false;
+                  StringBuilder sb2 = new StringBuilder();
+                  for(int[] token2 : tokens) {
+                    if (token2[0] == HeaderParserUtility.TokenDomain) {
+                      if (token2[1] >= startIndex && token2[2] <= endIndex) {
+                        // Domain within the group
+                        String domain = HeaderParserUtility.ParseDomain(str, token2[1], token[2]);
+                        // NOTE: "domain" can include domain literals, enclosed
+                        // in brackets; they are invalid under "IsValidDomainName".
+                        if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.length()) &&
+                            Idna.IsValidDomainName(domain, false)) {
+                          domain = Idna.EncodeDomainName(domain);
+                        } else {
+                          domain = str.substring(token2[1],(token2[1])+(token2[2] - token2[1]));
+                        }
+                        if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.length())) {
+                          // ASCII encoding failed
+                          nonasciiDomains = true;
+                          break;
+                        }
+                        sb2.append(str.substring(localLastIndex,(localLastIndex)+(token2[1] - localLastIndex)));
+                        sb2.append(domain);
+                        localLastIndex = token2[2];
+                      }
+                    }
+                  }
+                  nonasciiLocalPart = nonasciiDomains;
+                  if (!nonasciiLocalPart) {
+                    // All of the domains could be converted to ASCII
+                    sb2.append(str.substring(localLastIndex,(localLastIndex)+(endIndex - localLastIndex)));
+                    sb.append(str.substring(lastIndex,(lastIndex)+(startIndex - lastIndex)));
+                    sb.append(sb2.toString());
+                    lastIndex = endIndex;
+                  }
+                }
+                // Downgrading failed
                 if (nonasciiLocalPart) {
                   sb.append(str.substring(lastIndex,(lastIndex)+(startIndex - lastIndex)));
                   if (!hasPhrase) {
@@ -267,11 +295,8 @@ private HeaderFields() {
                     sb.append(encodedText);
                   }
                   lastIndex = endIndex;
-                  ++groupIndex;
-                } else {
-                  // TODO: Downgrade domains within the group
-                  ++groupIndex;
                 }
+                ++groupIndex;
               }
             }
           }

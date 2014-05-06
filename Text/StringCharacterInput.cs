@@ -6,6 +6,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 using System;
+using PeterO;
 
 namespace PeterO.Text {
     /// <summary>Description of StringCharacterInput.</summary>
@@ -53,16 +54,8 @@ namespace PeterO.Text {
       if (this.index >= this.endIndex) {
         return -1;
       }
-      int c = this.str[this.index];
-      if (c >= 0xd800 && c <= 0xdbff && this.index + 1 < this.endIndex &&
-          this.str[this.index + 1] >= 0xdc00 && this.str[this.index + 1] <= 0xdfff) {
-        // Get the Unicode code point for the surrogate pair
-        c = 0x10000 + ((c - 0xd800) * 0x400) + (this.str[this.index + 1] - 0xdc00);
-        ++this.index;
-      } else if (c >= 0xd800 && c <= 0xdfff) {
-        // unpaired surrogate
-        c = 0xfffd;
-      }
+      int c = DataUtilities.CodePointAt(this.str, this.index);
+      if(c>=0x10000)this.index++;
       ++this.index;
       return c;
     }

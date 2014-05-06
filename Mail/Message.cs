@@ -533,7 +533,7 @@ namespace PeterO.Mail {
           headers.Add(this.headers[i]);
         }
       }
-      return headers.ToArray();
+      return (string[])headers.ToArray();
     }
 
     // Returns true only if:

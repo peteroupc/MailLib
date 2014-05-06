@@ -87,6 +87,7 @@
     <Compile Include="Text\IntArrayCharacterInput.cs" />
     <Compile Include="Text\NormalizationData.cs" />
     <Compile Include="Text\Normalization.cs" />
+    <Compile Include="Text\NormalizingCharacterInput.cs" />
     <Compile Include="Text\Normalizer.cs" />
     <Compile Include="Text\PartialListCharacterInput.cs" />
     <Compile Include="Text\StringCharacterInput.cs" />

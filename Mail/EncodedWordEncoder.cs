@@ -8,6 +8,8 @@ at: http://upokecenter.com/d/
 using System;
 using System.Text;
 
+using PeterO;
+
 namespace PeterO.Mail {
   internal sealed class EncodedWordEncoder {
     private StringBuilder currentWord;
@@ -115,16 +117,8 @@ namespace PeterO.Mail {
         throw new ArgumentException("str's length minus " + index + " (" + Convert.ToString((long)(str.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
       }
       for (int j = index; j < index + length; ++j) {
-        int c = str[j];
-        if (c >= 0xd800 && c <= 0xdbff && j + 1 < str.Length &&
-            str[j + 1] >= 0xdc00 && str[j + 1] <= 0xdfff) {
-          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) * 0x400) + (str[j + 1] - 0xdc00);
-          ++j;
-        } else if (c >= 0xd800 && c <= 0xdfff) {
-          // unpaired surrogate
-          c = 0xfffd;
-        }
+        int c = DataUtilities.CodePointAt(str, j);
+        if(c>=0x10000)j++;
         this.AddChar(c);
       }
       return this;

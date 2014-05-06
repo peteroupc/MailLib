@@ -1013,6 +1013,18 @@ namespace MailLibTest {
       Assert.AreEqual(
         "g: x@example.com" + sep + "x@xn--e-ufa.example;",
         HeaderFields.GetParser("to").DowngradeFieldValue("g: x@example.com, x@e\u00e1.example;"));
+      Assert.AreEqual(
+        "x <x@xn--e-ufa.example>",
+        HeaderFields.GetParser("sender").DowngradeFieldValue("x <x@e\u00e1.example>"));
+      Assert.AreEqual(
+        "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
+        HeaderFields.GetParser("sender").DowngradeFieldValue("x\u00e1 x x\u00e1 <x@example.com>"));
+      Assert.AreEqual(
+        "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
+        HeaderFields.GetParser("sender").DowngradeFieldValue("x\u00e1 x x\u00e1 <x@e\u00e1.example>"));
+      Assert.AreEqual(
+        "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
+        HeaderFields.GetParser("sender").DowngradeFieldValue("x <x\u00e1y@example.com>"));
     }
 
     private static string EncodeComment(string str) {

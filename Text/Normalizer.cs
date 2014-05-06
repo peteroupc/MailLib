@@ -6,46 +6,15 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace PeterO.Text {
   /// <summary>Implements the Unicode normalization algorithm and contains
   /// methods and functionality to test and convert Unicode strings for
   /// Unicode normalization.</summary>
-  public sealed class Normalizer : ICharacterInput
+  public sealed class Normalizer
   {
-    public static IList<int> GetChars(string str, Normalization form) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      return GetChars(new StringCharacterInput(str), form);
-    }
-
-    /// <summary>Converts a string to Unicode normalization form C.</summary>
-    /// <param name='str'>A string. Cannot be null.</param>
-    /// <returns>The normalized string. Unpaired surrogate code points
-    /// are replaced with the replacement character (U + FFFD).</returns>
-    public static string Normalize(string str) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      if (str.Length < 1000) {
-        bool allLatinOne = true;
-        for (int i = 0; i < str.Length; ++i) {
-          if ((str[i] >> 8) != 0) {
-            allLatinOne = false;
-            break;
-          }
-        }
-        if (allLatinOne) {
-          return str;
-        }
-      }
-      return Normalize(str, Normalization.NFC);
-    }
-
-    public static string Normalize(string str, Normalization form) {
+    public static string Normalize(string str, PeterO.Text.Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
@@ -63,22 +32,6 @@ namespace PeterO.Text {
       return builder.ToString();
     }
 
-    public static IList<int> GetChars(ICharacterInput str, Normalization form) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      Normalizer norm = new Normalizer(str, form);
-      int[] buffer = new int[64];
-      IList<int> ret = new List<int>(24);
-      int count = 0;
-      while ((count = norm.Read(buffer, 0, buffer.Length)) > 0) {
-        for (int i = 0; i < count; ++i) {
-          ret.Add(buffer[i]);
-        }
-      }
-      return ret;
-    }
-
     internal static int DecompToBufferInternal(int ch, bool compat, int[] buffer, int index) {
       #if DEBUG
       if (buffer == null) {
@@ -92,7 +45,7 @@ namespace PeterO.Text {
       }
       #endif
 
-      int offset = UnicodeDatabase.GetDecomposition(ch, compat, buffer, index);
+      int offset = PeterO.Text.UnicodeDatabase.GetDecomposition(ch, compat, buffer, index);
       if (buffer[index] != ch) {
         int[] copy = new int[offset - index];
         Array.Copy(buffer, index, copy, 0, copy.Length);
@@ -134,149 +87,99 @@ namespace PeterO.Text {
 
     private int lastStableIndex;
     private int endIndex;
+    private int iterEndIndex;
     private int[] buffer;
     private bool compatMode;
-    private Normalization form;
+    private PeterO.Text.Normalization form;
     private int processedIndex;
     private int flushIndex;
-    private ICharacterInput iterator;
-    private IList<int> characterList;
+    private string iterator;
     private int characterListPos;
 
-    /// <summary>Initializes a new instance of the Normalizer class using
-    /// Normalization Form C.</summary>
-    /// <param name='characterList'>An IList object.</param>
-    public Normalizer(IList<int> characterList) : this(characterList, Normalization.NFC) {
-    }
-
-    /// <summary>Initializes a new instance of the Normalizer class using
-    /// Normalization Form C.</summary>
-    /// <param name='str'>A string object.</param>
-    public Normalizer(string str) : this(str, Normalization.NFC) {
-    }
-
-    /// <summary>Initializes a new instance of the Normalizer class using
-    /// Normalization Form C.</summary>
-    /// <param name='input'>An ICharacterInput object.</param>
-    public Normalizer(ICharacterInput input) : this(input, Normalization.NFC) {
-    }
-
-    /// <summary>Initializes a new instance of the Normalizer class using
-    /// the given normalization form.</summary>
-    /// <param name='characterList'>An IList object.</param>
-    /// <param name='form'>A Normalization object.</param>
-    public Normalizer(IList<int> characterList, Normalization form) {
-      if (characterList == null) {
-        throw new ArgumentNullException("characterList");
-      }
-      this.lastStableIndex = -1;
-      this.characterList = characterList;
-      this.form = form;
-      this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
-    }
-
-    public Normalizer(string str, Normalization form) :
-      this(new StringCharacterInput(str), form) {
-    }
-
-    public Normalizer(ICharacterInput stream, Normalization form) {
-      if (stream == null) {
+    public Normalizer(string str, PeterO.Text.Normalization form) {
+      if (str == null) {
         throw new ArgumentException("stream");
       }
+      this.iterEndIndex = str.Length;
       this.lastStableIndex = -1;
-      this.iterator = stream;
+      this.iterator = str;
       this.form = form;
-      this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
+      this.compatMode = form == PeterO.Text.Normalization.NFKC || form == PeterO.Text.Normalization.NFKD;
     }
 
-    /// <summary>Returns whether this string is in Unicode normalization
-    /// form C.</summary>
-    /// <param name='str'>A string. Can be null.</param>
-    /// <returns>True if the string is in normalization form C; false otherwise,
-    /// including if the string is null or contains an unpaired surrogate
-    /// code point.</returns>
-    public static bool IsNormalized(string str) {
-      return IsNormalized(str, Normalization.NFC);
+    private Normalizer Init(string str, int index, int length, PeterO.Text.Normalization form) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      if (index < 0) {
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      }
+      if (index > str.Length) {
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)(str.Length), System.Globalization.CultureInfo.InvariantCulture));
+      }
+      if (length < 0) {
+        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      }
+      if (length > str.Length) {
+        throw new ArgumentException("length (" + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((long)(str.Length), System.Globalization.CultureInfo.InvariantCulture));
+      }
+      if (str.Length - index < length) {
+        throw new ArgumentException("str's length minus " + index + " (" + Convert.ToString((long)(str.Length-index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)length, System.Globalization.CultureInfo.InvariantCulture));
+      }
+      this.lastStableIndex = -1;
+      this.characterListPos = index;
+      this.iterator = str;
+      this.iterEndIndex = index + length;
+      this.form = form;
+      this.compatMode = form == PeterO.Text.Normalization.NFKC || form == PeterO.Text.Normalization.NFKD;
+      return this;
     }
 
-    /// <summary>Returns whether this string is in a given Unicode normalization
-    /// form.</summary>
-    /// <returns>True if the string is in the given normalization form; false otherwise,
-    /// including if the string is null or contains an unpaired surrogate
-    /// code point.</returns>
-    public static bool IsNormalized(string str, Normalization form) {
+    private static bool NormalizeAndCheckString(
+      string charList,
+      int start,
+      int length,
+      PeterO.Text.Normalization form) {
+      int i = start;
+      Normalizer norm = new Normalizer(charList, form).Init(charList, start, length, form);
+      int ch = 0;
+      while ((ch = norm.ReadChar()) >= 0) {
+        int c = charList[i];
+        if ((c & 0xfc00) == 0xd800 && i + 1 < charList.Length &&
+            charList[i + 1] >= 0xdc00 && charList[i + 1] <= 0xdfff) {
+          // Get the Unicode code point for the surrogate pair
+          c = 0x10000 + ((c - 0xd800) << 10) + (charList[i + 1] - 0xdc00);
+          ++i;
+        } else if ((c & 0xf800) == 0xd800) {
+          // unpaired surrogate
+          c = 0xfffd;
+        }
+        ++i;
+        if (c != ch) {
+          return false;
+        }
+      }
+      return i == start + length;
+    }
+
+    public static bool IsNormalized(string str, PeterO.Text.Normalization form) {
       if (str == null) {
         return false;
       }
-      int maxbasic = (form == Normalization.NFC) ? 0xff : 0x7f;
-      bool basic = true;
-      for (int i = 0; i < str.Length; ++i) {
-        // Check for bare surrogates
-        if ((str[i] & 0xf800) == 0xd800) {
-          if ((str[i] & 0xfc00) == 0xdc00 || i + 1 >= str.Length || (str[i + 1] & 0xfc00) != 0xdc00) {
-            // Not a valid surrogate pair
-            return false;
-          }
-        }
-        if (str[i] > maxbasic) {
-          basic = false;
-          break;
-        }
-      }
-      if (basic) {
-        return true;
-      }
-      return IsNormalized(new StringCharacterInput(str), form);
-    }
-
-    public static bool IsNormalized(ICharacterInput chars, Normalization form) {
-      if (chars == null) {
-        return false;
-      }
-      IList<int> list = new List<int>();
-      int ch = 0;
-      while ((ch = chars.ReadChar()) >= 0) {
-        if (ch >= 0xd800 && ch <= 0xdfff) {
-          return false;
-        }
-        list.Add(ch);
-      }
-      return IsNormalized(list, form);
-    }
-
-    private static bool NormalizeAndCheck(
-      IList<int> charList,
-      int start,
-      int length,
-      Normalization form) {
-      int i = 0;
-      foreach (int ch in Normalizer.GetChars(
-        new PartialListCharacterInput(charList, start, length),
-        form)) {
-        if (i >= length) {
-          return false;
-        }
-        if (ch != charList[start + i]) {
-          return false;
-        }
-        ++i;
-      }
-      return true;
-    }
-
-    public static bool IsNormalized(IList<int> charList, Normalization form) {
       int lastNonStable = -1;
-      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
-      if (charList == null) {
-        throw new ArgumentException("chars");
-      }
-      for (int i = 0; i < charList.Count; ++i) {
-        int c = charList[i];
-        if (c < 0 || c > 0x10ffff || ((c & 0x1ff800) == 0xd800)) {
+      int mask = (form == PeterO.Text.Normalization.NFC) ? 0xff : 0x7f;
+      for (int i = 0; i < str.Length; ++i) {
+        int c = str[i];
+        if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
+            str[i + 1] >= 0xdc00 && str[i + 1] <= 0xdfff) {
+          // Get the Unicode code point for the surrogate pair
+          c = 0x10000 + ((c - 0xd800) << 10) + (str[i + 1] - 0xdc00);
+        } else if ((c & 0xf800) == 0xd800) {
+          // unpaired surrogate
           return false;
         }
         bool isStable = false;
-        if ((c & mask) == c && (i + 1 == charList.Count || (charList[i + 1] & mask) == charList[i + 1])) {
+        if ((c & mask) == c && (i + 1 == str.Length || (str[i + 1] & mask) == str[i + 1])) {
           // Quick check for an ASCII character followed by another
           // ASCII character (or Latin-1 in NFC) or the end of string.
           // Treat the first character as stable
@@ -291,14 +194,17 @@ namespace PeterO.Text {
         } else if (lastNonStable >= 0 && isStable) {
           // We have at least one non-stable code point,
           // normalize these code points.
-          if (!NormalizeAndCheck(charList, lastNonStable, i - lastNonStable, form)) {
+          if (!NormalizeAndCheckString(str, lastNonStable, i - lastNonStable, form)) {
             return false;
           }
           lastNonStable = -1;
         }
+        if (c >= 0x10000) {
+          ++i;
+        }
       }
       if (lastNonStable >= 0) {
-        if (!NormalizeAndCheck(charList, lastNonStable, charList.Count - lastNonStable, form)) {
+        if (!NormalizeAndCheckString(str, lastNonStable, str.Length - lastNonStable, form)) {
           return false;
         }
       }
@@ -326,10 +232,20 @@ namespace PeterO.Text {
         ch = this.lastChar;
         this.ungetting = false;
         return ch;
-      } else if (this.iterator == null) {
-        ch = (this.characterListPos >= this.characterList.Count) ? -1 : this.characterList[this.characterListPos++];
+      } else if(this.characterListPos>=this.iterEndIndex){
+        ch = -1;
       } else {
-        ch = this.iterator.ReadChar();
+        ch = this.iterator[this.characterListPos];
+        if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex &&
+            this.iterator[this.characterListPos + 1] >= 0xdc00 && this.iterator[this.characterListPos + 1] <= 0xdfff) {
+          // Get the Unicode code point for the surrogate pair
+          ch = 0x10000 + ((ch - 0xd800) << 10) + (this.iterator[this.characterListPos + 1] - 0xdc00);
+          ++this.characterListPos;
+        } else if ((ch & 0xf800) == 0xd800) {
+          // unpaired surrogate
+          ch = 0xfffd;
+        }
+        ++this.characterListPos;
       }
       if (ch < 0) {
         this.endOfString = true;
@@ -374,7 +290,7 @@ namespace PeterO.Text {
           int c = this.GetNextChar();
           if (c < 0) {
             return (total == 0) ? -1 : total;
-          } else if (UnicodeDatabase.IsStableCodePoint(c, this.form)) {
+          } else if (PeterO.Text.UnicodeDatabase.IsStableCodePoint(c, this.form)) {
             chars[index] = c;
             ++total;
             ++index;
@@ -458,9 +374,9 @@ namespace PeterO.Text {
       return (total == 0) ? -1 : total;
     }
 
-    private static bool IsStableCodePoint(int cp, Normalization form) {
+    private static bool IsStableCodePoint(int cp, PeterO.Text.Normalization form) {
       // Exclude YOD and HIRIQ because of Corrigendum 2
-      return UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 && cp != 0x5d9;
+      return PeterO.Text.UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 && cp != 0x5d9;
     }
 
     private bool LoadMoreData() {
@@ -514,7 +430,7 @@ namespace PeterO.Text {
       this.flushIndex = 0;
       // Canonical reordering
       this.ReorderBuffer(this.buffer, 0, this.lastStableIndex);
-      if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
+      if (this.form == PeterO.Text.Normalization.NFC || this.form == PeterO.Text.Normalization.NFKC) {
         // Composition
         this.processedIndex = this.ComposeBuffer(this.buffer, this.lastStableIndex);
       } else {
@@ -553,11 +469,11 @@ namespace PeterO.Text {
       do {
         changed = false;
         // Console.WriteLine(ToString(buffer, index, length));
-        int lead = UnicodeDatabase.GetCombiningClass(buffer[index]);
+        int lead = PeterO.Text.UnicodeDatabase.GetCombiningClass(buffer[index]);
         int trail;
         for (i = 1; i < length; ++i) {
           int offset = index + i;
-          trail = UnicodeDatabase.GetCombiningClass(buffer[offset]);
+          trail = PeterO.Text.UnicodeDatabase.GetCombiningClass(buffer[offset]);
           if (trail != 0 && lead > trail) {
             int c = buffer[offset - 1];
             buffer[offset - 1] = buffer[offset];
@@ -596,7 +512,7 @@ namespace PeterO.Text {
       int starterPos = 0;
       int retval = length;
       int starter = array[0];
-      int last = UnicodeDatabase.GetCombiningClass(starter);
+      int last = PeterO.Text.UnicodeDatabase.GetCombiningClass(starter);
       if (last != 0) {
         last = 256;
       }
@@ -605,7 +521,7 @@ namespace PeterO.Text {
       bool composed = false;
       for (int decompPos = compPos; decompPos < endPos; ++decompPos) {
         int ch = array[decompPos];
-        int valuecc = UnicodeDatabase.GetCombiningClass(ch);
+        int valuecc = PeterO.Text.UnicodeDatabase.GetCombiningClass(ch);
         if (decompPos > compPos) {
           int lead = starter - 0x1100;
           if (0 <= lead && lead < 19) {
@@ -634,7 +550,7 @@ namespace PeterO.Text {
             }
           }
         }
-        int composite = UnicodeDatabase.GetComposedPair(starter, ch);
+        int composite = PeterO.Text.UnicodeDatabase.GetComposedPair(starter, ch);
         bool diffClass = last < valuecc;
         if (composite >= 0 && (diffClass || last == 0)) {
           array[starterPos] = composite;

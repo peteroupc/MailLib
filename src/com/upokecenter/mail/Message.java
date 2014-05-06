@@ -548,7 +548,7 @@ public void setContentDisposition(ContentDisposition value) {
           headers.add(this.headers.get(i));
         }
       }
-      return headers.toArray(new String[] { });
+      return headers.toArray(new String[]{});
     }
 
     // Returns true only if:

@@ -170,7 +170,7 @@ namespace PeterO.Mail {
           index = index2 + delimLength;
         }
       }
-      return strings.ToArray();
+      return (string[])strings.ToArray();
     }
 
     public static bool IsValidLanguageTag(string str) {
