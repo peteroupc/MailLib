@@ -43,7 +43,7 @@ private Lz4() {
             }
           }
         }
-//        System.out.println("literal=" + literalLength + ", index=" + (index));
+        System.out.println("literal=" + literalLength + ", index=" + (index));
         if (index + literalLength - 1 >= input.length) {
           throw new IllegalArgumentException("Invalid LZ4");
         }
@@ -62,7 +62,6 @@ private Lz4() {
         int offset = ((int)input[index]) & 0xff;
         offset |= (((int)input[index + 1]) & 0xff) << 8;
         index += 2;
-//        System.out.println("offset=" + offset + ", index=" + (index));
         if (offset == 0) {
           throw new IllegalArgumentException("Invalid LZ4");
         }
@@ -80,6 +79,7 @@ private Lz4() {
           }
         }
         matchLength += 4;
+       // System.out.println("match=" + matchLength + " offset=" + offset + " index=" + (index));
         int pos = ms.getPosition() - offset;
         int oldPos = ms.getPosition();
         if (pos < 0) {

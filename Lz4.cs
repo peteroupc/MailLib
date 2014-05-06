@@ -58,7 +58,7 @@ namespace PeterO {
         int offset = ((int)input[index]) & 0xff;
         offset |= (((int)input[index + 1]) & 0xff) << 8;
         index += 2;
-        if(offset == 0) {
+        if (offset == 0) {
           throw new ArgumentException("Invalid LZ4");
         }
         if (matchLength == 15) {
@@ -75,7 +75,7 @@ namespace PeterO {
           }
         }
         matchLength += 4;
-       // Console.WriteLine("match={0} offset={1} index={2}",matchLength,offset,index);
+       // Console.WriteLine("match=" + matchLength + " offset=" + offset + " index=" + (index));
         int pos = ms.Position - offset;
         int oldPos = ms.Position;
         if (pos < 0) {
