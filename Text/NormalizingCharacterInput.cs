@@ -22,47 +22,6 @@ namespace PeterO.Text {
       return GetChars(new StringCharacterInput(str), form);
     }
 
-    /// <summary>Converts a string to Unicode normalization form C.</summary>
-    /// <param name='str'>A string. Cannot be null.</param>
-    /// <returns>The normalized string. Unpaired surrogate code points
-    /// are replaced with the replacement character (U + FFFD).</returns>
-    public static string Normalize(string str) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      if (str.Length < 1000) {
-        bool allLatinOne = true;
-        for (int i = 0; i < str.Length; ++i) {
-          if ((str[i] >> 8) != 0) {
-            allLatinOne = false;
-            break;
-          }
-        }
-        if (allLatinOne) {
-          return str;
-        }
-      }
-      return Normalize(str, Normalization.NFC);
-    }
-
-    public static string Normalize(string str, Normalization form) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      NormalizingCharacterInput norm = new NormalizingCharacterInput(str, form);
-      StringBuilder builder = new StringBuilder();
-      int c = 0;
-      while ((c = norm.ReadChar()) >= 0) {
-        if (c <= 0xffff) {
-          builder.Append((char)c);
-        } else if (c <= 0x10ffff) {
-          builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-          builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
-        }
-      }
-      return builder.ToString();
-    }
-
     public static IList<int> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -77,59 +36,6 @@ namespace PeterO.Text {
         }
       }
       return ret;
-    }
-
-    internal static int DecompToBufferInternal(int ch, bool compat, int[] buffer, int index) {
-      #if DEBUG
-      if (buffer == null) {
-        throw new ArgumentNullException("buffer");
-      }
-      if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
-      }
-      if (index > buffer.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      #endif
-
-      int offset = UnicodeDatabase.GetDecomposition(ch, compat, buffer, index);
-      if (buffer[index] != ch) {
-        int[] copy = new int[offset - index];
-        Array.Copy(buffer, index, copy, 0, copy.Length);
-        offset = index;
-        foreach (int element in copy) {
-          offset = DecompToBufferInternal(element, compat, buffer, offset);
-        }
-      }
-      return offset;
-    }
-
-    private int DecompToBuffer(int ch, bool compat, int[] buffer, int index) {
-      #if DEBUG
-      if (buffer == null) {
-        throw new ArgumentNullException("buffer");
-      }
-      if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
-      }
-      if (index > buffer.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      #endif
-
-      if (ch >= 0xac00 && ch < 0xac00 + 11172) {
-        // Hangul syllable
-        int valueSIndex = ch - 0xac00;
-        int trail = 0x11a7 + (valueSIndex % 28);
-        buffer[index++] = 0x1100 + (valueSIndex / 588);
-        buffer[index++] = 0x1161 + ((valueSIndex % 588) / 28);
-        if (trail != 0x11a7) {
-          buffer[index++] = trail;
-        }
-        return index;
-      } else {
-        return DecompToBufferInternal(ch, compat, buffer, index);
-      }
     }
 
     private int lastStableIndex;
@@ -191,16 +97,6 @@ namespace PeterO.Text {
       this.iterator = stream;
       this.form = form;
       this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
-    }
-
-    /// <summary>Returns whether this string is in Unicode normalization
-    /// form C.</summary>
-    /// <param name='str'>A string. Can be null.</param>
-    /// <returns>True if the string is in normalization form C; false otherwise,
-    /// including if the string is null or contains an unpaired surrogate
-    /// code point.</returns>
-    public static bool IsNormalized(string str) {
-      return IsNormalized(str, Normalization.NFC);
     }
 
     public static bool IsNormalized(ICharacterInput chars, Normalization form) {
@@ -289,7 +185,7 @@ namespace PeterO.Text {
           // in this situation.
           isStable = true;
         } else {
-          isStable = IsStableCodePoint(c, form);
+          isStable = Normalizer.IsStableCodePoint(c, form);
         }
         if (lastNonStable < 0 && !isStable) {
           // First non-stable code point in a row
@@ -333,7 +229,7 @@ namespace PeterO.Text {
           // in this situation.
           isStable = true;
         } else {
-          isStable = IsStableCodePoint(c, form);
+          isStable = Normalizer.IsStableCodePoint(c, form);
         }
         if (lastNonStable < 0 && !isStable) {
           // First non-stable code point in a row
@@ -424,7 +320,7 @@ namespace PeterO.Text {
           int c = this.GetNextChar();
           if (c < 0) {
             return (total == 0) ? -1 : total;
-          } else if (UnicodeDatabase.IsStableCodePoint(c, this.form)) {
+          } else if (Normalizer.IsStableCodePoint(c, this.form)) {
             chars[index] = c;
             ++total;
             ++index;
@@ -458,15 +354,13 @@ namespace PeterO.Text {
         // Try to fill buffer with stable code points,
         // as an optimization
         while (total < length) {
-          // DebugUtility.log("before mark total=%d length=%d",
           // charbufpos, charbufend);
           int c = this.GetNextChar();
           if (c < 0) {
             this.endOfString = true;
             break;
           }
-          // DebugUtility.log("%04X %s",c,IsStableCodePoint(c,this.form));
-          if (IsStableCodePoint(c, this.form)) {
+          if (Normalizer.IsStableCodePoint(c, this.form)) {
             chars[index++] = c;
             ++total;
           } else {
@@ -508,11 +402,6 @@ namespace PeterO.Text {
       return (total == 0) ? -1 : total;
     }
 
-    private static bool IsStableCodePoint(int cp, Normalization form) {
-      // Exclude YOD and HIRIQ because of Corrigendum 2
-      return UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 && cp != 0x5d9;
-    }
-
     private bool LoadMoreData() {
       bool done = false;
       while (!done) {
@@ -527,7 +416,7 @@ namespace PeterO.Text {
             this.endOfString = true;
             break;
           }
-          this.endIndex = this.DecompToBuffer(c, this.compatMode, this.buffer, this.endIndex);
+          this.endIndex = Normalizer.DecompToBuffer(c, this.compatMode, this.buffer, this.endIndex);
         }
         // Check for the last stable code point if the
         // end of the string is not reached yet
@@ -563,152 +452,14 @@ namespace PeterO.Text {
       }
       this.flushIndex = 0;
       // Canonical reordering
-      this.ReorderBuffer(this.buffer, 0, this.lastStableIndex);
+      Normalizer.ReorderBuffer(this.buffer, 0, this.lastStableIndex);
       if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
         // Composition
-        this.processedIndex = this.ComposeBuffer(this.buffer, this.lastStableIndex);
+        this.processedIndex = Normalizer.ComposeBuffer(this.buffer, this.lastStableIndex);
       } else {
         this.processedIndex = this.lastStableIndex;
       }
       return true;
-    }
-
-    private void ReorderBuffer(int[] buffer, int index, int length) {
-      int i;
-      #if DEBUG
-      if (buffer == null) {
-        throw new ArgumentNullException("buffer");
-      }
-      if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
-      }
-      if (index > buffer.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
-      }
-      if (length > buffer.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      if (buffer.Length - index < length) {
-        throw new ArgumentException("buffer's length minus " + index + " (" + Convert.ToString((int)(buffer.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      #endif
-
-      if (length < 2) {
-        return;
-      }
-      bool changed;
-      do {
-        changed = false;
-        // Console.WriteLine(ToString(buffer, index, length));
-        int lead = UnicodeDatabase.GetCombiningClass(buffer[index]);
-        int trail;
-        for (i = 1; i < length; ++i) {
-          int offset = index + i;
-          trail = UnicodeDatabase.GetCombiningClass(buffer[offset]);
-          if (trail != 0 && lead > trail) {
-            int c = buffer[offset - 1];
-            buffer[offset - 1] = buffer[offset];
-            buffer[offset] = c;
-            // Console.WriteLine("lead= {0:X4} ccc=" + (lead));
-            // Console.WriteLine("trail={0:X4} ccc=" + (trail));
-            // Console.WriteLine("now "+ToString(buffer,index,length));
-            changed = true;
-            // Lead is now at trail's position
-          } else {
-            lead = trail;
-          }
-        }
-      } while (changed);
-    }
-
-    private int ComposeBuffer(int[] array, int length) {
-      #if DEBUG
-      if (array == null) {
-        throw new ArgumentNullException("array");
-      }
-      if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
-      }
-      if (length > array.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)array.Length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      if (array.Length < length) {
-        throw new ArgumentException("array's length (" + Convert.ToString((int)array.Length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
-      }
-      #endif
-
-      if (length < 2) {
-        return length;
-      }
-      int starterPos = 0;
-      int retval = length;
-      int starter = array[0];
-      int last = UnicodeDatabase.GetCombiningClass(starter);
-      if (last != 0) {
-        last = 256;
-      }
-      int compPos = 0;
-      int endPos = 0 + length;
-      bool composed = false;
-      for (int decompPos = compPos; decompPos < endPos; ++decompPos) {
-        int ch = array[decompPos];
-        int valuecc = UnicodeDatabase.GetCombiningClass(ch);
-        if (decompPos > compPos) {
-          int lead = starter - 0x1100;
-          if (0 <= lead && lead < 19) {
-            // Found Hangul L jamo
-            int vowel = ch - 0x1161;
-            if (0 <= vowel && vowel < 21 && (last < valuecc || last == 0)) {
-              starter = 0xac00 + (((lead * 21) + vowel) * 28);
-              array[starterPos] = starter;
-              array[decompPos] = 0x110000;
-              composed = true;
-              --retval;
-              continue;
-            }
-          }
-          int syllable = starter - 0xac00;
-          if (0 <= syllable && syllable < 11172 && (syllable % 28) == 0) {
-            // Found Hangul LV jamo
-            int trail = ch - 0x11a7;
-            if (0 < trail && trail < 28 && (last < valuecc || last == 0)) {
-              starter += trail;
-              array[starterPos] = starter;
-              array[decompPos] = 0x110000;
-              composed = true;
-              --retval;
-              continue;
-            }
-          }
-        }
-        int composite = UnicodeDatabase.GetComposedPair(starter, ch);
-        bool diffClass = last < valuecc;
-        if (composite >= 0 && (diffClass || last == 0)) {
-          array[starterPos] = composite;
-          starter = composite;
-          array[decompPos] = 0x110000;
-          composed = true;
-          --retval;
-          continue;
-        }
-        if (valuecc == 0) {
-          starterPos = decompPos;
-          starter = ch;
-        }
-        last = valuecc;
-      }
-      if (composed) {
-        int j = compPos;
-        for (int i = compPos; i < endPos; ++i) {
-          if (array[i] != 0x110000) {
-            array[j++] = array[i];
-          }
-        }
-      }
-      return retval;
     }
   }
 }

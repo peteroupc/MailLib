@@ -50,14 +50,14 @@ namespace PeterO.Text {
         int[] copy = new int[offset - index];
         Array.Copy(buffer, index, copy, 0, copy.Length);
         offset = index;
-        for (int i = 0;i<copy.Length; ++i) {
+        for (int i = 0; i < copy.Length; ++i) {
           offset = DecompToBufferInternal(copy[i], compat, buffer, offset);
         }
       }
       return offset;
     }
 
-    private int DecompToBuffer(int ch, bool compat, int[] buffer, int index) {
+    internal static int DecompToBuffer(int ch, bool compat, int[] buffer, int index) {
       #if DEBUG
       if (buffer == null) {
         throw new ArgumentNullException("buffer");
@@ -292,7 +292,7 @@ namespace PeterO.Text {
           int c = this.GetNextChar();
           if (c < 0) {
             return (total == 0) ? -1 : total;
-          } else if (UnicodeDatabase.IsStableCodePoint(c, this.form)) {
+          } else if (IsStableCodePoint(c, this.form)) {
             chars[index] = c;
             ++total;
             ++index;
@@ -376,7 +376,7 @@ namespace PeterO.Text {
       return (total == 0) ? -1 : total;
     }
 
-    private static bool IsStableCodePoint(int cp, Normalization form) {
+    internal static bool IsStableCodePoint(int cp, Normalization form) {
       // Exclude YOD and HIRIQ because of Corrigendum 2
       return UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 && cp != 0x5d9;
     }
@@ -395,7 +395,7 @@ namespace PeterO.Text {
             this.endOfString = true;
             break;
           }
-          this.endIndex = this.DecompToBuffer(c, this.compatMode, this.buffer, this.endIndex);
+          this.endIndex = DecompToBuffer(c, this.compatMode, this.buffer, this.endIndex);
         }
         // Check for the last stable code point if the
         // end of the string is not reached yet
@@ -431,17 +431,17 @@ namespace PeterO.Text {
       }
       this.flushIndex = 0;
       // Canonical reordering
-      this.ReorderBuffer(this.buffer, 0, this.lastStableIndex);
+      ReorderBuffer(this.buffer, 0, this.lastStableIndex);
       if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
         // Composition
-        this.processedIndex = this.ComposeBuffer(this.buffer, this.lastStableIndex);
+        this.processedIndex = ComposeBuffer(this.buffer, this.lastStableIndex);
       } else {
         this.processedIndex = this.lastStableIndex;
       }
       return true;
     }
 
-    private void ReorderBuffer(int[] buffer, int index, int length) {
+    internal static void ReorderBuffer(int[] buffer, int index, int length) {
       int i;
       #if DEBUG
       if (buffer == null) {
@@ -492,7 +492,7 @@ namespace PeterO.Text {
       } while (changed);
     }
 
-    private int ComposeBuffer(int[] array, int length) {
+    internal static int ComposeBuffer(int[] array, int length) {
       #if DEBUG
       if (array == null) {
         throw new ArgumentNullException("array");

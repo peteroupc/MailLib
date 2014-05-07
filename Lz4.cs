@@ -24,7 +24,7 @@ namespace PeterO {
         int literalLength = (b >> 4) & 15;
         int matchLength = b & 15;
         ++index;
-//        Console.WriteLine("New token, index=" + (index));
+// Console.WriteLine("New token, index=" + (index));
         // Literals
         if (literalLength == 15) {
           while (index < input.Length) {
@@ -39,13 +39,13 @@ namespace PeterO {
             }
           }
         }
-        Console.WriteLine("literal=" + literalLength + ", index=" + (index));
+        // Console.WriteLine("literal=" + literalLength + ", index=" + (index));
         if (index + literalLength - 1 >= input.Length) {
           throw new ArgumentException("Invalid LZ4");
         }
         if (literalLength > 0) {
           ms.WriteBytes(input, index, literalLength);
-//          Console.WriteLine("literal [idx="+index+", len="+literalLength+"] ");
+// Console.WriteLine("literal [idx="+index+", len="+literalLength+"] ");
           index += literalLength;
         }
         if (index == input.Length) {

@@ -940,7 +940,7 @@ public void setContentDisposition(ContentDisposition value) {
       return sb.toString();
     }
 
-    static boolean IsGoodLineLength(byte[] bytes) {
+    static boolean CanBeUnencoded(byte[] bytes, boolean checkBoundaryDelimiter) {
       if (bytes == null || bytes.length == 0) {
         return true;
       }
@@ -952,6 +952,15 @@ public void setContentDisposition(ContentDisposition value) {
         int c = ((int)bytes[index]) & 0xff;
         if (c >= 0x80) {
           // System.out.println("Non-ASCII character (0x {0:X2})",(int)c);
+          return false;
+        }
+        if (lineLength == 0 && checkBoundaryDelimiter && index + 4 < endIndex &&
+            bytes[index] == '-' &&
+            bytes[index + 1] == '-' &&
+            bytes[index + 2] == '=' &&
+            bytes[index + 3] == '_' &&
+            bytes[index + 4] == 'B') {
+          // Start of a reserved boundary delimiter
           return false;
         }
         if (c == '\r' && index + 1 < endIndex && bytes[index + 1] == '\n') {
@@ -987,6 +996,7 @@ public void setContentDisposition(ContentDisposition value) {
      * as the address (a <code>.invalid</code> address is a reserved address
      * that can never belong to anyone). </p>
      * @return The generated message.
+     * @throws MessageDataException The message can't be generated.
      */
     public String Generate() {
       return this.Generate(0);
@@ -1022,12 +1032,15 @@ public void setContentDisposition(ContentDisposition value) {
               builder.getSubType().equals("global-delivery-status")) {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
-          if (builder.getSubType().equals("rfc822") && !IsGoodLineLength(bodyToWrite)) {
+          boolean msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
+          if (builder.getSubType().equals("rfc822") && !msgCanBeUnencoded) {
             builder.SetSubType("global");
-          } else if (builder.getSubType().equals("disposition-notification") && !IsGoodLineLength(bodyToWrite)) {
+          } else if (builder.getSubType().equals("disposition-notification") && !msgCanBeUnencoded) {
             builder.SetSubType("global-disposition-notification");
-          } else if (builder.getSubType().equals("delivery-status") && !IsGoodLineLength(bodyToWrite)) {
+          } else if (builder.getSubType().equals("delivery-status") && !msgCanBeUnencoded) {
             builder.SetSubType("global-delivery-status");
+          } else if (!msgCanBeUnencoded) {
+            throw new MessageDataException("Message body can't be encoded");
           }
         }
       }

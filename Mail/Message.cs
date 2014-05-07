@@ -939,7 +939,7 @@ namespace PeterO.Mail {
             bytes[index + 1] == '-' &&
             bytes[index + 2] == '=' &&
             bytes[index + 3] == '_' &&
-            bytes[index + 4] == 'B'){
+            bytes[index + 4] == 'B') {
           // Start of a reserved boundary delimiter
           return false;
         }
@@ -977,7 +977,8 @@ namespace PeterO.Mail {
     /// address is a reserved address that can never belong to anyone). </para>
     /// </summary>
     /// <returns>The generated message.</returns>
-    /// <exception cref="MessageDataException">The message can't be generated.</exception>
+    /// <exception cref='MessageDataException'>The message can't be
+    /// generated.</exception>
     public string Generate() {
       return this.Generate(0);
     }
@@ -1012,14 +1013,14 @@ namespace PeterO.Mail {
               builder.SubType.Equals("global-delivery-status")) {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
-          bool msgCanBeUnencoded=CanBeUnencoded(bodyToWrite, depth > 0);
+          bool msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
           if (builder.SubType.Equals("rfc822") && !msgCanBeUnencoded) {
             builder.SetSubType("global");
           } else if (builder.SubType.Equals("disposition-notification") && !msgCanBeUnencoded) {
             builder.SetSubType("global-disposition-notification");
           } else if (builder.SubType.Equals("delivery-status") && !msgCanBeUnencoded) {
             builder.SetSubType("global-delivery-status");
-          } else if (!msgCanBeUnencoded){
+          } else if (!msgCanBeUnencoded) {
             throw new MessageDataException("Message body can't be encoded");
           }
         }

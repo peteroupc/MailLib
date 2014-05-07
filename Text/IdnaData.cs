@@ -196,6 +196,7 @@ namespace PeterO.Text {
       (byte)0x9a, 8, (byte)0xff, (byte)0xf7, 15, 10, 15, (byte)0xe3, 15, 0, 17, (byte)0xff,
       (byte)0xbb, 15, 94, 2, 96, 15, 81, 18, (byte)0xff, (byte)0xff, 0, 15, (byte)0xae,
       0, (byte)0x9b, 16, 0 };
+
     public static readonly byte[] BidiClasses = new byte[] { (byte)0xf0, 41, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10,
       0, 11, 0, 12, 0, 13, 0, 14, 0, 15, 0, 16, 0, 17, 0, 18, 0, 19, 0, 20, 0, 21, 0,
       22, 0, 23, 0, 24, 0, 25, 0, 0, (byte)0x80, 0, (byte)0x80, 4, 0, 4, 8, 0, 4, 8,
@@ -313,6 +314,7 @@ namespace PeterO.Text {
       (byte)0x8b, 16, 4, 8, 0, 12, 16, 0, 15, 32, 0, 13, 15, 64, 0, 45, 15, (byte)0x80,
       0, 109, 6, (byte)0x85, 17, 11, (byte)0xd0, 24, 15, 23, 0, 4, 15, 46, 0, 27, 15,
       92, 0, 73, 15, 56, 0, 37, 11, (byte)0xff, 0, 16, 9 };
+
     public static readonly byte[] JoiningTypes = new byte[] { (byte)0xf0, 23, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 0,
       (byte)0x80, 10, 0, 11, 0, 12, 0, 13, 0, 0, (byte)0x80, 14, 0, 0, (byte)0x80, 0,
       (byte)0x80, 4, 0, 119, 0, (byte)0x80, 15, 0, 0, (byte)0x80, 16, 16, 0, 6, 10,
@@ -376,6 +378,7 @@ namespace PeterO.Text {
       15, (byte)0xb2, 2, (byte)0xff, (byte)0xad, 15, 118, 2, 16, 15, 100, 30, 20, 15,
       43, 0, 24, 15, (byte)0x8f, 29, 119, 15, (byte)0xe0, 0, 77, 15, 96, 0, 77, 15,
       112, 1, 44, 16, 0 };
+
     public static readonly byte[] CombiningMarks = new byte[] { (byte)0xf0, 4, 0, 1, (byte)0xfe, (byte)0xfe, (byte)0xfe, 2, (byte)0xfe, 3, 4,
       (byte)0xfe, (byte)0xfe, 5, (byte)0xfe, (byte)0xfe, 6, (byte)0xfe, (byte)0xfe,
       (byte)0xfe, (byte)0xfe, 4, 0, 4, 8, 0, 12, 16, 0, 15, 32, 0, 13, 15, 33, 0, 14,

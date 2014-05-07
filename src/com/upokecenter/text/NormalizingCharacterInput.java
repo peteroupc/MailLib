@@ -23,49 +23,6 @@ import java.util.*;
       return GetChars(new StringCharacterInput(str), form);
     }
 
-    /**
-     * Converts a string to Unicode normalization form C.
-     * @param str A string. Cannot be null.
-     * @return The normalized string. Unpaired surrogate code points are
-     * replaced with the replacement character (U + FFFD).
-     */
-    public static String Normalize(String str) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      if (str.length() < 1000) {
-        boolean allLatinOne = true;
-        for (int i = 0; i < str.length(); ++i) {
-          if ((str.charAt(i) >> 8) != 0) {
-            allLatinOne = false;
-            break;
-          }
-        }
-        if (allLatinOne) {
-          return str;
-        }
-      }
-      return Normalize(str, Normalization.NFC);
-    }
-
-    public static String Normalize(String str, Normalization form) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      NormalizingCharacterInput norm = new NormalizingCharacterInput(str, form);
-      StringBuilder builder = new StringBuilder();
-      int c = 0;
-      while ((c = norm.ReadChar()) >= 0) {
-        if (c <= 0xffff) {
-          builder.append((char)c);
-        } else if (c <= 0x10ffff) {
-          builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-          builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
-        }
-      }
-      return builder.toString();
-    }
-
     public static List<Integer> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
         throw new NullPointerException("str");
@@ -80,37 +37,6 @@ import java.util.*;
         }
       }
       return ret;
-    }
-
-    static int DecompToBufferInternal(int ch, boolean compat, int[] buffer, int index) {
-
-      int offset = UnicodeDatabase.GetDecomposition(ch, compat, buffer, index);
-      if (buffer[index] != ch) {
-        int[] copy = new int[offset - index];
-        System.arraycopy(buffer, index, copy, 0, copy.length);
-        offset = index;
-        for(int element : copy) {
-          offset = DecompToBufferInternal(element, compat, buffer, offset);
-        }
-      }
-      return offset;
-    }
-
-    private int DecompToBuffer(int ch, boolean compat, int[] buffer, int index) {
-
-      if (ch >= 0xac00 && ch < 0xac00 + 11172) {
-        // Hangul syllable
-        int valueSIndex = ch - 0xac00;
-        int trail = 0x11a7 + (valueSIndex % 28);
-        buffer[index++] = 0x1100 + (valueSIndex / 588);
-        buffer[index++] = 0x1161 + ((valueSIndex % 588) / 28);
-        if (trail != 0x11a7) {
-          buffer[index++] = trail;
-        }
-        return index;
-      } else {
-        return DecompToBufferInternal(ch, compat, buffer, index);
-      }
     }
 
     private int lastStableIndex;
@@ -282,7 +208,7 @@ import java.util.*;
           // in this situation.
           isStable = true;
         } else {
-          isStable = IsStableCodePoint(c, form);
+          isStable = Normalizer.IsStableCodePoint(c, form);
         }
         if (lastNonStable < 0 && !isStable) {
           // First non-stable code point in a row
@@ -326,7 +252,7 @@ import java.util.*;
           // in this situation.
           isStable = true;
         } else {
-          isStable = IsStableCodePoint(c, form);
+          isStable = Normalizer.IsStableCodePoint(c, form);
         }
         if (lastNonStable < 0 && !isStable) {
           // First non-stable code point in a row
@@ -419,7 +345,7 @@ import java.util.*;
           int c = this.GetNextChar();
           if (c < 0) {
             return (total == 0) ? -1 : total;
-          } else if (UnicodeDatabase.IsStableCodePoint(c, this.form)) {
+          } else if (Normalizer.IsStableCodePoint(c, this.form)) {
             chars[index] = c;
             ++total;
             ++index;
@@ -449,15 +375,13 @@ import java.util.*;
         // Try to fill buffer with stable code points,
         // as an optimization
         while (total < length) {
-          // DebugUtility.log("before mark total=%d length=%d",
           // charbufpos, charbufend);
           int c = this.GetNextChar();
           if (c < 0) {
             this.endOfString = true;
             break;
           }
-          // DebugUtility.log("%04X %s",c,IsStableCodePoint(c,this.form));
-          if (IsStableCodePoint(c, this.form)) {
+          if (Normalizer.IsStableCodePoint(c, this.form)) {
             chars[index++] = c;
             ++total;
           } else {
@@ -492,11 +416,6 @@ import java.util.*;
       return (total == 0) ? -1 : total;
     }
 
-    private static boolean IsStableCodePoint(int cp, Normalization form) {
-      // Exclude YOD and HIRIQ because of Corrigendum 2
-      return UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 && cp != 0x5d9;
-    }
-
     private boolean LoadMoreData() {
       boolean done = false;
       while (!done) {
@@ -511,7 +430,7 @@ import java.util.*;
             this.endOfString = true;
             break;
           }
-          this.endIndex = this.DecompToBuffer(c, this.compatMode, this.buffer, this.endIndex);
+          this.endIndex = Normalizer.DecompToBuffer(c, this.compatMode, this.buffer, this.endIndex);
         }
         // Check for the last stable code point if the
         // end of the String is not reached yet
@@ -547,117 +466,13 @@ import java.util.*;
       }
       this.flushIndex = 0;
       // Canonical reordering
-      this.ReorderBuffer(this.buffer, 0, this.lastStableIndex);
+      Normalizer.ReorderBuffer(this.buffer, 0, this.lastStableIndex);
       if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
         // Composition
-        this.processedIndex = this.ComposeBuffer(this.buffer, this.lastStableIndex);
+        this.processedIndex = Normalizer.ComposeBuffer(this.buffer, this.lastStableIndex);
       } else {
         this.processedIndex = this.lastStableIndex;
       }
       return true;
-    }
-
-    private void ReorderBuffer(int[] buffer, int index, int length) {
-      int i;
-
-      if (length < 2) {
-        return;
-      }
-      boolean changed;
-      do {
-        changed = false;
-        // System.out.println(toString(buffer, index, length));
-        int lead = UnicodeDatabase.GetCombiningClass(buffer[index]);
-        int trail;
-        for (i = 1; i < length; ++i) {
-          int offset = index + i;
-          trail = UnicodeDatabase.GetCombiningClass(buffer[offset]);
-          if (trail != 0 && lead > trail) {
-            int c = buffer[offset - 1];
-            buffer[offset - 1] = buffer[offset];
-            buffer[offset] = c;
-            // System.out.println("lead= {0:X4} ccc=" + (lead));
-            // System.out.println("trail={0:X4} ccc=" + (trail));
-            // System.out.println("now "+toString(buffer,index,length));
-            changed = true;
-            // Lead is now at trail's position
-          } else {
-            lead = trail;
-          }
-        }
-      } while (changed);
-    }
-
-    private int ComposeBuffer(int[] array, int length) {
-
-      if (length < 2) {
-        return length;
-      }
-      int starterPos = 0;
-      int retval = length;
-      int starter = array[0];
-      int last = UnicodeDatabase.GetCombiningClass(starter);
-      if (last != 0) {
-        last = 256;
-      }
-      int compPos = 0;
-      int endPos = 0 + length;
-      boolean composed = false;
-      for (int decompPos = compPos; decompPos < endPos; ++decompPos) {
-        int ch = array[decompPos];
-        int valuecc = UnicodeDatabase.GetCombiningClass(ch);
-        if (decompPos > compPos) {
-          int lead = starter - 0x1100;
-          if (0 <= lead && lead < 19) {
-            // Found Hangul L jamo
-            int vowel = ch - 0x1161;
-            if (0 <= vowel && vowel < 21 && (last < valuecc || last == 0)) {
-              starter = 0xac00 + (((lead * 21) + vowel) * 28);
-              array[starterPos] = starter;
-              array[decompPos] = 0x110000;
-              composed = true;
-              --retval;
-              continue;
-            }
-          }
-          int syllable = starter - 0xac00;
-          if (0 <= syllable && syllable < 11172 && (syllable % 28) == 0) {
-            // Found Hangul LV jamo
-            int trail = ch - 0x11a7;
-            if (0 < trail && trail < 28 && (last < valuecc || last == 0)) {
-              starter += trail;
-              array[starterPos] = starter;
-              array[decompPos] = 0x110000;
-              composed = true;
-              --retval;
-              continue;
-            }
-          }
-        }
-        int composite = UnicodeDatabase.GetComposedPair(starter, ch);
-        boolean diffClass = last < valuecc;
-        if (composite >= 0 && (diffClass || last == 0)) {
-          array[starterPos] = composite;
-          starter = composite;
-          array[decompPos] = 0x110000;
-          composed = true;
-          --retval;
-          continue;
-        }
-        if (valuecc == 0) {
-          starterPos = decompPos;
-          starter = ch;
-        }
-        last = valuecc;
-      }
-      if (composed) {
-        int j = compPos;
-        for (int i = compPos; i < endPos; ++i) {
-          if (array[i] != 0x110000) {
-            array[j++] = array[i];
-          }
-        }
-      }
-      return retval;
     }
   }

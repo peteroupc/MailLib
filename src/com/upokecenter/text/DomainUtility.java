@@ -242,7 +242,7 @@ private DomainUtility() {
       for (int k = index; k < endIndex; ++k) {
         int c = str.charAt(i);
         if (c >= 0x41 && c <= 0x5a) {
-          c+=0x20;  // convert to lowercase
+          c += 0x20;  // convert to lowercase
         }
         builder.append((char)c);
       }
@@ -364,7 +364,7 @@ private DomainUtility() {
         if (str.charAt(tmpIndex) >= 0x80) {
           allBasics = false;
           break;
-        } else if (str.charAt(tmpIndex) >= 0x41 && str.charAt(tmpIndex)<= 0x5a) {
+        } else if (str.charAt(tmpIndex) >= 0x41 && str.charAt(tmpIndex) <= 0x5a) {
           // Treat as having a non-basic in case of an
           // upper-case ASCII character, since special
           // handling is required here
