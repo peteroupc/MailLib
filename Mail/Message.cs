@@ -920,7 +920,7 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    internal static bool IsGoodLineLength(byte[] bytes) {
+    internal static bool CanBeUnencoded(byte[] bytes, bool checkBoundaryDelimiter) {
       if (bytes == null || bytes.Length == 0) {
         return true;
       }
@@ -932,6 +932,15 @@ namespace PeterO.Mail {
         int c = ((int)bytes[index]) & 0xff;
         if (c >= 0x80) {
           // Console.WriteLine("Non-ASCII character (0x {0:X2})",(int)c);
+          return false;
+        }
+        if (lineLength == 0 && checkBoundaryDelimiter && index + 4 < endIndex &&
+            bytes[index] == '-' &&
+            bytes[index + 1] == '-' &&
+            bytes[index + 2] == '=' &&
+            bytes[index + 3] == '_' &&
+            bytes[index + 4] == 'B'){
+          // Start of a reserved boundary delimiter
           return false;
         }
         if (c == '\r' && index + 1 < endIndex && bytes[index + 1] == '\n') {
@@ -968,6 +977,7 @@ namespace PeterO.Mail {
     /// address is a reserved address that can never belong to anyone). </para>
     /// </summary>
     /// <returns>The generated message.</returns>
+    /// <exception cref="MessageDataException">The message can't be generated.</exception>
     public string Generate() {
       return this.Generate(0);
     }
@@ -1002,12 +1012,15 @@ namespace PeterO.Mail {
               builder.SubType.Equals("global-delivery-status")) {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
-          if (builder.SubType.Equals("rfc822") && !IsGoodLineLength(bodyToWrite)) {
+          bool msgCanBeUnencoded=CanBeUnencoded(bodyToWrite, depth > 0);
+          if (builder.SubType.Equals("rfc822") && !msgCanBeUnencoded) {
             builder.SetSubType("global");
-          } else if (builder.SubType.Equals("disposition-notification") && !IsGoodLineLength(bodyToWrite)) {
+          } else if (builder.SubType.Equals("disposition-notification") && !msgCanBeUnencoded) {
             builder.SetSubType("global-disposition-notification");
-          } else if (builder.SubType.Equals("delivery-status") && !IsGoodLineLength(bodyToWrite)) {
+          } else if (builder.SubType.Equals("delivery-status") && !msgCanBeUnencoded) {
             builder.SetSubType("global-delivery-status");
+          } else if (!msgCanBeUnencoded){
+            throw new MessageDataException("Message body can't be encoded");
           }
         }
       }
