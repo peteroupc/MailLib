@@ -6,15 +6,15 @@ There is one exception, shown below:
 
 --------------------------
 
-The following files were generated using data from the Unicode Character Database (UCD), available under the Unicode License.  (However, the script that generated these files, unicodedata.rb, is in the public domain as stated above.)  The UCD's copyright owner is Unicode, Inc. and the Unicode License is shown below or at <http://www.unicode.org/copyright.html>.
+The following files were generated using data from the Unicode Character Database (UCD).
 
 Text/NormalizationData.cs
 Text/IdnaData.cs
 src/com/upokecenter/text/NormalizationData.java
 src/com/upokecenter/text/IdnaData.java
-NormalizationData.js
-IdnaData.js
 
+In accordance with the license found at <http://www.unicode.org/copyright.html> Exhibit 1, the 
+copyright notice for the UCD is shown below.  Those files are available under that license.
 
 -------------------------
 
