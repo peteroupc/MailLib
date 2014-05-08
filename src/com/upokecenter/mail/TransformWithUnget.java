@@ -8,13 +8,13 @@ at: http://upokecenter.com/d/
  */
 
   final class TransformWithUnget implements ITransform {
-    private ITransform stream;
+    private ITransform transform;
     private int lastByte;
     private boolean unget;
 
     public TransformWithUnget (ITransform stream) {
       this.lastByte = -1;
-      this.stream = stream;
+      this.transform = stream;
     }
 
     /**
@@ -25,7 +25,7 @@ at: http://upokecenter.com/d/
       if (this.unget) {
         this.unget = false;
       } else {
-        this.lastByte = this.stream.read();
+        this.lastByte = this.transform.read();
       }
       return this.lastByte;
     }

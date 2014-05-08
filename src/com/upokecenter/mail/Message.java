@@ -802,8 +802,8 @@ public void setContentDisposition(ContentDisposition value) {
      * &quot;subject&quot;.
      * @param value The header field&apos;s value.
      * @return This instance.
-     * @throws java.lang.IllegalArgumentException The header field name is too long
-     * or contains an invalid character, or the header field's value is syntactically
+     * @java.lang.IllegalArgumentException The header field name is too long or contains
+     * an invalid character, or the header field's value is syntactically
      * invalid.
      */
     public Message SetHeader(String name, String value) {
@@ -996,7 +996,7 @@ public void setContentDisposition(ContentDisposition value) {
      * as the address (a <code>.invalid</code> address is a reserved address
      * that can never belong to anyone). </p>
      * @return The generated message.
-     * @throws MessageDataException The message can't be generated.
+     * @MessageDataException The message can't be generated.
      */
     public String Generate() {
       return this.Generate(0);

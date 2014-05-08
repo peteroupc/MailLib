@@ -194,7 +194,7 @@ at: http://upokecenter.com/d/
      * @return The domain name where each label with non-ASCII characters
      * is encoded into PunyCode. Labels where this is not possible remain
      * unchanged.
-     * @throws java.lang.NullPointerException Value is null.
+     * @java.lang.NullPointerException Value is null.
      */
     public static String EncodeDomainName(String value) {
       if (value == null) {

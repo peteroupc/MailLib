@@ -9,10 +9,10 @@ at: http://upokecenter.com/d/
 
   // A seven-bit transform used for text/plain data
   final class LiberalSevenBitTransform implements ITransform {
-    private ITransform stream;
+    private ITransform input;
 
     public LiberalSevenBitTransform (ITransform stream) {
-      this.stream = stream;
+      this.input = stream;
     }
 
     /**
@@ -20,7 +20,7 @@ at: http://upokecenter.com/d/
      * @return A 32-bit signed integer.
      */
     public int read() {
-      int ret = this.stream.read();
+      int ret = this.input.read();
       if (ret > 0x80 || ret == 0) {
         return '?';
       }

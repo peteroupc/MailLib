@@ -9,13 +9,13 @@ using System;
 
 namespace PeterO.Mail {
   internal sealed class TransformWithUnget : ITransform {
-    private ITransform stream;
+    private ITransform transform;
     private int lastByte;
     private bool unget;
 
     public TransformWithUnget(ITransform stream) {
       this.lastByte = -1;
-      this.stream = stream;
+      this.transform = stream;
     }
 
     /// <summary>Not documented yet.</summary>
@@ -24,7 +24,7 @@ namespace PeterO.Mail {
       if (this.unget) {
         this.unget = false;
       } else {
-        this.lastByte = this.stream.ReadByte();
+        this.lastByte = this.transform.ReadByte();
       }
       return this.lastByte;
     }

@@ -10,16 +10,16 @@ using System;
 namespace PeterO.Mail {
   // A seven-bit transform used for text/plain data
   internal sealed class LiberalSevenBitTransform : ITransform {
-    private ITransform stream;
+    private ITransform input;
 
     public LiberalSevenBitTransform(ITransform stream) {
-      this.stream = stream;
+      this.input = stream;
     }
 
     /// <summary>Not documented yet.</summary>
     /// <returns>A 32-bit signed integer.</returns>
     public int ReadByte() {
-      int ret = this.stream.ReadByte();
+      int ret = this.input.ReadByte();
       if (ret > 0x80 || ret == 0) {
         return '?';
       }

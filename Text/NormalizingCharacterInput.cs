@@ -135,19 +135,19 @@ namespace PeterO.Text {
     }
 
     private static bool NormalizeAndCheckString(
-      string charList,
+      string str,
       int start,
       int length,
-      PeterO.Text.Normalization form) {
+      Normalization form) {
       int i = start;
-      var norm = new NormalizingCharacterInput(charList, start, length, form);
+      var norm = new NormalizingCharacterInput(str, start, length, form);
       int ch = 0;
       while ((ch = norm.ReadChar()) >= 0) {
-        int c = charList[i];
-        if ((c & 0xfc00) == 0xd800 && i + 1 < charList.Length &&
-            charList[i + 1] >= 0xdc00 && charList[i + 1] <= 0xdfff) {
+        int c = str[i];
+        if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
+            str[i + 1] >= 0xdc00 && str[i + 1] <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (charList[i + 1] - 0xdc00);
+          c = 0x10000 + ((c - 0xd800) << 10) + (str[i + 1] - 0xdc00);
           ++i;
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate
@@ -161,12 +161,12 @@ namespace PeterO.Text {
       return i == start + length;
     }
 
-    public static bool IsNormalized(string str, PeterO.Text.Normalization form) {
+    public static bool IsNormalized(string str, Normalization form) {
       if (str == null) {
         return false;
       }
       int lastNonStable = -1;
-      int mask = (form == PeterO.Text.Normalization.NFC) ? 0xff : 0x7f;
+      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       for (int i = 0; i < str.Length; ++i) {
         int c = str[i];
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
@@ -425,7 +425,7 @@ namespace PeterO.Text {
           // NOTE: lastStableIndex begins at -1
           for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
             // Console.WriteLine("stable({0:X4})=" + (IsStableCodePoint(this.buffer[i], this.form)));
-            if (IsStableCodePoint(this.buffer[i], this.form)) {
+            if (Normalizer.IsStableCodePoint(this.buffer[i], this.form)) {
               this.lastStableIndex = i;
               haveNewStable = true;
               break;

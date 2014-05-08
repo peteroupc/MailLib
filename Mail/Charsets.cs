@@ -235,11 +235,11 @@ namespace PeterO.Mail {
       }
 
       private static int ReadUtf8(
-        ITransform stream,
+        ITransform input,
         int bytesCount,
         StringBuilder builder,
         bool replace) {
-        if (stream == null) {
+        if (input == null) {
           throw new ArgumentNullException("stream");
         }
         if (builder == null) {
@@ -252,7 +252,7 @@ namespace PeterO.Mail {
         int upper = 0xbf;
         int pointer = 0;
         while (pointer < bytesCount || bytesCount < 0) {
-          int b = stream.ReadByte();
+          int b = input.ReadByte();
           if (b < 0) {
             if (bytesNeeded != 0) {
               bytesNeeded = 0;

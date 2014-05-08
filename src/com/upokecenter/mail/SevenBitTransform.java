@@ -8,10 +8,10 @@ at: http://upokecenter.com/d/
  */
 
   final class SevenBitTransform implements ITransform {
-    private ITransform stream;
+    private ITransform transform;
 
     public SevenBitTransform (ITransform stream) {
-      this.stream = stream;
+      this.transform = stream;
     }
 
     /**
@@ -19,7 +19,7 @@ at: http://upokecenter.com/d/
      * @return A 32-bit signed integer.
      */
     public int read() {
-      int ret = this.stream.read();
+      int ret = this.transform.read();
       if (ret > 0x80 || ret == 0) {
         throw new MessageDataException("Invalid character in message body");
       }

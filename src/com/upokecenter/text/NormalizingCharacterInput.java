@@ -111,17 +111,6 @@ import java.util.*;
       this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
     }
 
-    /**
-     * Returns whether this string is in Unicode normalization form C.
-     * @param str A string. Can be null.
-     * @return True if the string is in normalization form C; false otherwise,
-     * including if the string is null or contains an unpaired surrogate
-     * code point.
-     */
-    public static boolean IsNormalized(String str) {
-      return IsNormalized(str, Normalization.NFC);
-    }
-
     public static boolean IsNormalized(ICharacterInput chars, Normalization form) {
       if (chars == null) {
         return false;
@@ -149,7 +138,7 @@ import java.util.*;
         if (i >= length) {
           return false;
         }
-        if (ch != charList.charAt(start + i)) {
+        if (ch != charList.get(start + i)) {
           return false;
         }
         ++i;
@@ -158,19 +147,19 @@ import java.util.*;
     }
 
     private static boolean NormalizeAndCheckString(
-      String charList,
+      String str,
       int start,
       int length,
-      PeterO.Text.Normalization form) {
+      Normalization form) {
       int i = start;
-      NormalizingCharacterInput norm=new NormalizingCharacterInput(charList, start, length, form);
+      NormalizingCharacterInput norm=new NormalizingCharacterInput(str, start, length, form);
       int ch = 0;
       while ((ch = norm.ReadChar()) >= 0) {
-        int c = charList.charAt(i);
-        if ((c & 0xfc00) == 0xd800 && i + 1 < charList.length() &&
-            charList.charAt(i + 1) >= 0xdc00 && charList.charAt(i + 1) <= 0xdfff) {
+        int c = str.charAt(i);
+        if ((c & 0xfc00) == 0xd800 && i + 1 < str.length() &&
+            str.charAt(i + 1) >= 0xdc00 && str.charAt(i + 1) <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (charList.charAt(i + 1) - 0xdc00);
+          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(i + 1) - 0xdc00);
           ++i;
         } else if ((c & 0xf800) == 0xd800) {
           // unpaired surrogate
@@ -184,12 +173,12 @@ import java.util.*;
       return i == start + length;
     }
 
-    public static boolean IsNormalized(String str, PeterO.Text.Normalization form) {
+    public static boolean IsNormalized(String str, Normalization form) {
       if (str == null) {
         return false;
       }
       int lastNonStable = -1;
-      int mask = (form == PeterO.Text.Normalization.NFC) ? 0xff : 0x7f;
+      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       for (int i = 0; i < str.length(); ++i) {
         int c = str.charAt(i);
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.length() &&
@@ -240,12 +229,12 @@ import java.util.*;
         throw new IllegalArgumentException("chars");
       }
       for (int i = 0; i < charList.size(); ++i) {
-        int c = charList.charAt(i);
+        int c = charList.get(i);
         if (c < 0 || c > 0x10ffff || ((c & 0x1ff800) == 0xd800)) {
           return false;
         }
         boolean isStable = false;
-        if ((c & mask) == c && (i + 1 == charList.size() || (charList.charAt(i + 1) & mask) == charList.charAt(i + 1))) {
+        if ((c & mask) == c && (i + 1 == charList.size() || (charList.get(i + 1) & mask) == charList.get(i + 1))) {
           // Quick check for an ASCII character followed by another
           // ASCII character (or Latin-1 in NFC) or the end of String.
           // Treat the first character as stable
@@ -439,7 +428,7 @@ import java.util.*;
           // NOTE: lastStableIndex begins at -1
           for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
             // System.out.println("stable({0:X4})=" + (IsStableCodePoint(this.buffer[i], this.form)));
-            if (IsStableCodePoint(this.buffer[i], this.form)) {
+            if (Normalizer.IsStableCodePoint(this.buffer[i], this.form)) {
               this.lastStableIndex = i;
               haveNewStable = true;
               break;

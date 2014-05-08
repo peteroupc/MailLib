@@ -238,11 +238,11 @@ private Charsets() {
       }
 
       private static int ReadUtf8(
-        ITransform stream,
+        ITransform input,
         int bytesCount,
         StringBuilder builder,
         boolean replace) {
-        if (stream == null) {
+        if (input == null) {
           throw new NullPointerException("stream");
         }
         if (builder == null) {
@@ -255,7 +255,7 @@ private Charsets() {
         int upper = 0xbf;
         int pointer = 0;
         while (pointer < bytesCount || bytesCount < 0) {
-          int b = stream.read();
+          int b = input.read();
           if (b < 0) {
             if (bytesNeeded != 0) {
               bytesNeeded = 0;

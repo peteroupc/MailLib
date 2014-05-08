@@ -10,16 +10,16 @@ using System.Text;
 
 namespace PeterO.Mail {
   internal sealed class SevenBitTransform : ITransform {
-    private ITransform stream;
+    private ITransform transform;
 
     public SevenBitTransform(ITransform stream) {
-      this.stream = stream;
+      this.transform = stream;
     }
 
     /// <summary>Not documented yet.</summary>
     /// <returns>A 32-bit signed integer.</returns>
     public int ReadByte() {
-      int ret = this.stream.ReadByte();
+      int ret = this.transform.ReadByte();
       if (ret > 0x80 || ret == 0) {
         throw new MessageDataException("Invalid character in message body");
       }
