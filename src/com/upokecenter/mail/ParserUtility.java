@@ -138,7 +138,7 @@ private ParserUtility() {
      * @return An array containing strings that are split by the delimiter.
      * If s is null or empty, returns an array whose sole element is the empty
      * string.
-     * @java.lang.IllegalArgumentException Delimiter is null or empty.
+     * @throws java.lang.IllegalArgumentException Delimiter is null or empty.
      */
     public static String[] SplitAt(String s, String delimiter) {
       if (delimiter == null) {

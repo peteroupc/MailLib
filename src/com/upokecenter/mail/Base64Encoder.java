@@ -180,6 +180,18 @@ at: http://upokecenter.com/d/
      * @param offset A 32-bit signed integer.
      * @param count A 32-bit signed integer. (2).
      */
+public void WriteToStringAndFinalize(StringBuilder str, byte[] data, int offset, int count) {
+      this.WriteToString(str, data, offset, count);
+      this.FinalizeEncoding(str);
+    }
+
+    /**
+     * Not documented yet.
+     * @param str A StringBuilder object.
+     * @param data A byte array.
+     * @param offset A 32-bit signed integer.
+     * @param count A 32-bit signed integer. (2).
+     */
     public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
       if (str == null) {
         throw new NullPointerException("str");

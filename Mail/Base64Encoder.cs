@@ -9,7 +9,7 @@ using System;
 using System.Text;
 
 namespace PeterO.Mail {
-  /// <summary>Encodes binary data in Base64.</summary>
+    /// <summary>Encodes binary data in Base64.</summary>
   internal sealed class Base64Encoder : IStringEncoder
   {
     private const string Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -169,10 +169,16 @@ namespace PeterO.Mail {
       this.haveCR = false;
     }
 
-    public void WriteToStringAndFinalize(StringBuilder str, byte[] data, int offset, int count) {
-      WriteToString(str,data,offset,count);
-      FinalizeEncoding(str);
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A StringBuilder object.</param>
+    /// <param name='data'>A byte array.</param>
+    /// <param name='offset'>A 32-bit signed integer.</param>
+    /// <param name='count'>A 32-bit signed integer. (2).</param>
+public void WriteToStringAndFinalize(StringBuilder str, byte[] data, int offset, int count) {
+      this.WriteToString(str, data, offset, count);
+      this.FinalizeEncoding(str);
     }
+
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A StringBuilder object.</param>
     /// <param name='data'>A byte array.</param>
