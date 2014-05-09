@@ -314,7 +314,7 @@ namespace PeterO.Mail {
             if (this.lineCharCount > this.maxLineSize) {
               throw new MessageDataException("Encoded quoted-printable line too long");
             }
-          } else if (this.checkStrictEncoding && c >= 0x7f || c < 0x20) {
+          } else if (this.checkStrictEncoding && (c >= 0x7f || c < 0x20)) {
               throw new MessageDataException("Invalid character");
           }
           return c;
