@@ -11,7 +11,7 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary>Description of Charsets.</summary>
+  /// <summary>Description of Charsets.</summary>
   internal static class Charsets
   {
     public static readonly ICharset Ascii = new AsciiEncoding();
@@ -43,133 +43,135 @@ namespace PeterO.Mail {
       if (name.Equals("windows-1252") || name.Equals("cp1252")) {
         return new SingleByteEncoding(
           new int[] { 8364,
-          129,
-          8218,
-          402,
-          8222,
-          8230,
-          8224,
-          8225,
-          710,
-          8240,
-          352,
-          8249,
-          338,
-          141,
-          381,
-          143,
-          144,
-          8216,
-          8217,
-          8220,
-          8221,
-          8226,
-          8211,
-          8212,
-          732,
-          8482,
-          353,
-          8250,
-          339,
-          157,
-          382,
-          376,
-          160,
-          161,
-          162,
-          163,
-          164,
-          165,
-          166,
-          167,
-          168,
-          169,
-          170,
-          171,
-          172,
-          173,
-          174,
-          175,
-          176,
-          177,
-          178,
-          179,
-          180,
-          181,
-          182,
-          183,
-          184,
-          185,
-          186,
-          187,
-          188,
-          189,
-          190,
-          191,
-          192,
-          193,
-          194,
-          195,
-          196,
-          197,
-          198,
-          199,
-          200,
-          201,
-          202,
-          203,
-          204,
-          205,
-          206,
-          207,
-          208,
-          209,
-          210,
-          211,
-          212,
-          213,
-          214,
-          215,
-          216,
-          217,
-          218,
-          219,
-          220,
-          221,
-          222,
-          223,
-          224,
-          225,
-          226,
-          227,
-          228,
-          229,
-          230,
-          231,
-          232,
-          233,
-          234,
-          235,
-          236,
-          237,
-          238,
-          239,
-          240,
-          241,
-          242,
-          243,
-          244,
-          245,
-          246,
-          247,
-          248,
-          249,
-          250,
-          251,
-          252,
-          253,
-          254,
-          255 });
+            129,
+            8218,
+            402,
+            8222,
+            8230,
+            8224,
+            8225,
+            710,
+            8240,
+            352,
+            8249,
+            338,
+            141,
+            381,
+            143,
+            144,
+            8216,
+            8217,
+            8220,
+            8221,
+            8226,
+            8211,
+            8212,
+            732,
+            8482,
+            353,
+            8250,
+            339,
+            157,
+            382,
+            376,
+            160,
+            161,
+            162,
+            163,
+            164,
+            165,
+            166,
+            167,
+            168,
+            169,
+            170,
+            171,
+            172,
+            173,
+            174,
+            175,
+            176,
+            177,
+            178,
+            179,
+            180,
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            188,
+            189,
+            190,
+            191,
+            192,
+            193,
+            194,
+            195,
+            196,
+            197,
+            198,
+            199,
+            200,
+            201,
+            202,
+            203,
+            204,
+            205,
+            206,
+            207,
+            208,
+            209,
+            210,
+            211,
+            212,
+            213,
+            214,
+            215,
+            216,
+            217,
+            218,
+            219,
+            220,
+            221,
+            222,
+            223,
+            224,
+            225,
+            226,
+            227,
+            228,
+            229,
+            230,
+            231,
+            232,
+            233,
+            234,
+            235,
+            236,
+            237,
+            238,
+            239,
+            240,
+            241,
+            242,
+            243,
+            244,
+            245,
+            246,
+            247,
+            248,
+            249,
+            250,
+            251,
+            252,
+            253,
+            254,
+            255 });
+      } else if (name.Equals("utf-7")) {
+        return new Utf7Encoding();
       } else if (name.Equals("iso-8859-10")) {
         return new SingleByteEncoding(new int[] { 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 260, 274, 290, 298, 296, 310, 167, 315, 272, 352, 358, 381, 173, 362, 330, 176, 261, 275, 291, 299, 297, 311, 183, 316, 273, 353, 359, 382, 8213, 363, 331, 256, 193, 194, 195, 196, 197, 198, 302, 268, 201, 280, 203, 278, 205, 206, 207, 208, 325, 332, 211, 212, 213, 214, 360, 216, 370, 218, 219, 220, 221, 222, 223, 257, 225, 226, 227, 228, 229, 230, 303, 269, 233, 281, 235, 279, 237, 238, 239, 240, 326, 333, 243, 244, 245, 246, 361, 248, 371, 250, 251, 252, 253, 254, 312 });
       } else if (name.Equals("iso-8859-13")) {
@@ -225,9 +227,9 @@ namespace PeterO.Mail {
     }
 
     private sealed class Utf8Encoding : ICharset {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='transform'>An ITransform object.</param>
-    /// <returns>A string object.</returns>
+      /// <summary>Not documented yet.</summary>
+      /// <param name='transform'>An ITransform object.</param>
+      /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         ReadUtf8(transform, -1, builder, true);
@@ -361,16 +363,272 @@ namespace PeterO.Mail {
       }
     }
 
+    private sealed class Utf7Encoding : ICharset {
+      internal static readonly int[] Alphabet = new int[] {
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
+        52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1,
+        -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+        15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
+        -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+        41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
+
+      public string GetString(ITransform transform) {
+        StringBuilder builder = new StringBuilder();
+        ReadUtf7(transform, builder, true);
+        return builder.ToString();
+      }
+      
+      private sealed class CodeUnitAppender {
+        private int surrogate;
+        private int lastByte;
+        public CodeUnitAppender(){
+          this.surrogate = -1;
+          this.lastByte = -1;
+        }
+        public void FinalizeAndReset(StringBuilder builder){
+          if(this.surrogate>=0 && lastByte>=0){
+            // Unpaired surrogate and an unpaired byte value
+            builder.Append((char)0xfffd);
+            builder.Append((char)0xfffd);
+          } else if(this.surrogate>=0 || lastByte>=0){
+            // Unpaired surrogate or byte value remains
+            builder.Append((char)0xfffd);
+          }
+          this.surrogate = -1;
+          this.lastByte=-1;
+        }
+        
+        public void AppendIncompleteByte(){
+          // Make sure lastByte isn't -1, for FinalizeAndReset
+          // purposes
+          this.lastByte=0;
+        }
+        
+        public void AppendByte(int value, StringBuilder builder){
+          if(this.lastByte>=0){
+            int codeunit=this.lastByte<<8;
+            codeunit|=(value&0xFF);
+            AppendCodeUnit(codeunit,builder);
+            this.lastByte=-1;
+          } else {
+            this.lastByte=value;
+          }
+        }
+        
+        private void AppendCodeUnit(int codeunit, StringBuilder builder){
+          if(surrogate>=0){
+            // If we have a surrogate, "codeunit"
+            // must be a valid "low surrogate" to complete the pair
+            if(codeunit>=0xdc00 && codeunit<=0xdfff){
+              // valid low surrogate
+              builder.Append((char)surrogate);
+              builder.Append((char)codeunit);
+              surrogate=-1;
+            } else if(codeunit>=0xd800 && codeunit<=0xdbff){
+              // unpaired high surrogate
+              builder.Append((char)0xfffd);
+              surrogate = codeunit;
+            } else {
+              // not a surrogate, output the first as U+FFFD
+              // and the second as is
+              builder.Append((char)0xfffd);
+              builder.Append((char)codeunit);
+              surrogate=-1;
+            }
+          } else {
+            if(codeunit>=0xdc00 && codeunit<=0xdfff){
+              // unpaired low surrogate
+              builder.Append((char)0xfffd);
+            } else if(codeunit>=0xd800 && codeunit<=0xdbff){
+              // valid low surrogate
+              surrogate = codeunit;
+            } else {
+              // not a surrogate
+              builder.Append((char)codeunit);
+            }
+          }
+        }
+        public void Reset(){
+          surrogate = -1;
+          lastByte=-1;
+        }
+      }
+
+      private static void ReadUtf7(
+        ITransform input,
+        StringBuilder builder,
+        bool replace) {
+        if (input == null) {
+          throw new ArgumentNullException("stream");
+        }
+        if (builder == null) {
+          throw new ArgumentNullException("builder");
+        }
+        int alphavalue = 0;
+        int base64value = 0;
+        int base64count = 0;
+        CodeUnitAppender appender=new CodeUnitAppender();
+        int state = 0; // 0: not in base64; 1: start of base 64; 2: continuing base64
+        while (true) {
+          int b;
+          switch(state){
+            case 0: // not in base64
+              b=input.ReadByte();
+              if (b < 0){
+                // done
+                return;
+              }
+              if (b == 0x09 || b == 0x0a || b == 0x0d) {
+                builder.Append((char)b);
+              } else if (b == 0x5C || b >= 0x7E || b < 0x20) {
+                // Illegal byte in UTF-7
+                builder.Append((char)0xfffd);
+              } else if (b == 0x2b){
+                // plus sign
+                state = 1; // change state to "start of base64"
+                base64value = 0;
+                base64count = 0;
+                appender.Reset();
+              } else {
+                builder.Append((char)b);
+              }
+              break;
+            case 1: // start of base64
+              b=input.ReadByte();
+              if(b<0){
+                // End of stream, illegal
+                state = 0;
+                builder.Append((char)0xfffd);
+                return;
+              }
+              if (b == 0x2d){
+                // hyphen, so output a plus sign
+                state = 0;
+                builder.Append('+');
+              } else if (b>=0x80){
+                // Non-ASCII byte, illegal
+                state = 0;
+                builder.Append((char)0xfffd); // for the illegal plus
+                builder.Append((char)0xfffd); // for the illegal non-ASCII byte
+              } else {
+                alphavalue = Alphabet[b];
+                if(alphavalue>=0){
+                  state = 2; // change state to "continuing base64"
+                  base64value <<= 6;
+                  base64value |= alphavalue;
+                  ++base64count;
+                } else {
+                  // Non-base64 byte (NOTE: Can't be plus or
+                  // minus at this point)
+                  state = 0;
+                  builder.Append((char)0xfffd); // for the illegal plus
+                  if (b == 0x09 || b == 0x0a || b == 0x0d) {
+                    builder.Append((char)b);
+                  } else if (b == 0x5C || b >= 0x7E || b < 0x20) {
+                    // Illegal byte in UTF-7
+                    builder.Append((char)0xfffd);
+                  } else {
+                    builder.Append((char)b);
+                  }
+                }
+              }
+              break;
+            case 2: // continuing base64
+              b=input.ReadByte();
+              if(b<0 || b>=0x80){
+                // End of base64
+                if(base64count==1){
+                  // incomplete base64 byte
+                  appender.AppendIncompleteByte();
+                } else if(base64count==2){
+                  base64value <<= 12;
+                  appender.AppendByte((base64value >> 16) & 0xff,builder);
+                  if((base64value&0xFFFF)!=0){
+                    // Redundant pad bits
+                    appender.AppendIncompleteByte();
+                  }
+                } else if(base64count==3){
+                  base64value <<= 6;
+                  appender.AppendByte((base64value >> 16) & 0xff,builder);
+                  appender.AppendByte((base64value >> 8) & 0xff,builder);
+                  if((base64value&0xFF)!=0){
+                    // Redundant pad bits
+                    appender.AppendIncompleteByte();
+                  }
+                }
+                appender.FinalizeAndReset(builder);
+                if(b>=0x80){
+                  builder.Append((char)0xfffd);
+                } else {
+                  return;
+                }
+              } else {
+                alphavalue = Alphabet[b];
+                if(alphavalue>=0){
+                  base64value <<= 6;
+                  base64value |= alphavalue;
+                  ++base64count;
+                  if(base64count == 4){
+                    // Generate UTF-16 bytes
+                    appender.AppendByte((base64value >> 16) & 0xff,builder);
+                    appender.AppendByte((base64value >> 8) & 0xff,builder);
+                    appender.AppendByte((base64value) & 0xff,builder);
+                    base64count=0;
+                  }
+                } else {
+                  state = 0;
+                  if(base64count==1){
+                    // incomplete base64 byte
+                    appender.AppendIncompleteByte();
+                  } else if(base64count==2){
+                    base64value <<= 12;
+                    appender.AppendByte((base64value >> 16) & 0xff,builder);
+                    if((base64value&0xFFFF)!=0){
+                      // Redundant pad bits
+                      appender.AppendIncompleteByte();
+                    }
+                  } else if(base64count==3){
+                    base64value <<= 6;
+                    appender.AppendByte((base64value >> 16) & 0xff,builder);
+                    appender.AppendByte((base64value >> 8) & 0xff,builder);
+                    if((base64value&0xFF)!=0){
+                      // Redundant pad bits
+                      appender.AppendIncompleteByte();
+                    }
+                  }
+                  appender.FinalizeAndReset(builder);
+                  if (b == 0x2d){
+                    // Ignore the hyphen
+                  } else if (b == 0x09 || b == 0x0a || b == 0x0d) {
+                    builder.Append((char)b);
+                  } else if (b == 0x5C || b >= 0x7E || b < 0x20) {
+                    // Illegal byte in UTF-7
+                    builder.Append((char)0xfffd);
+                  } else {
+                    builder.Append((char)b);
+                  }
+                }
+              }
+              break;
+            default:
+              throw new InvalidOperationException("Unexpected state");
+          }
+        }
+      }
+    }
+    
     private sealed class SingleByteEncoding : ICharset {
       private int[] encodingMapping;
 
-      public SingleByteEncoding(int[] map) {
-        this.encodingMapping = map;
+      public SingleByteEncoding(int[] mapping) {
+        this.encodingMapping = mapping;
       }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='transform'>An ITransform object.</param>
-    /// <returns>A string object.</returns>
+      /// <summary>Not documented yet.</summary>
+      /// <param name='transform'>An ITransform object.</param>
+      /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         while (true) {
@@ -389,9 +647,9 @@ namespace PeterO.Mail {
     }
 
     private sealed class LatinOneEncoding : ICharset {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='transform'>An ITransform object.</param>
-    /// <returns>A string object.</returns>
+      /// <summary>Not documented yet.</summary>
+      /// <param name='transform'>An ITransform object.</param>
+      /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         while (true) {
@@ -406,9 +664,9 @@ namespace PeterO.Mail {
     }
 
     private sealed class AsciiEncoding : ICharset {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='transform'>An ITransform object.</param>
-    /// <returns>A string object.</returns>
+      /// <summary>Not documented yet.</summary>
+      /// <param name='transform'>An ITransform object.</param>
+      /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         while (true) {

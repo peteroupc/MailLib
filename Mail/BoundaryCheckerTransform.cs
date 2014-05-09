@@ -20,6 +20,7 @@ namespace PeterO.Mail {
     private bool started;
     private bool readingHeaders;
     private bool hasNewBodyPart;
+    private bool endOfStream;
     private List<string> boundaries;
 
     /// <summary>Not documented yet.</summary>
@@ -61,7 +62,7 @@ namespace PeterO.Mail {
         ret &= 0xff;
         return ret;
       }
-      if (this.hasNewBodyPart) {
+      if (this.hasNewBodyPart || this.endOfStream) {
         return -1;
       }
       int c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
@@ -180,12 +181,12 @@ namespace PeterO.Mail {
             this.ungetting = true;
             break;
           }
+          //Console.Write("" + ((char)c));
           ++bytesRead;
-          // Console.Write("" + ((char)c));
           this.ResizeBuffer(bytesRead + bufferStart);
           this.buffer[bytesRead + bufferStart - 1] = (byte)c;
         }
-        // Console.WriteLine("--" + (bytesRead));
+        //Console.WriteLine("::" + (bytesRead));
         // NOTE: All boundary strings are assumed to
         // have only ASCII characters (with values
         // less than 128). Check boundaries from
@@ -194,7 +195,6 @@ namespace PeterO.Mail {
         int matchingIndex = -1;
         for (int i = this.boundaries.Count - 1; i >= 0; --i) {
           string boundary = this.boundaries[i];
-          // Console.WriteLine("Check boundary " + (boundary));
           if (!String.IsNullOrEmpty(boundary) && boundary.Length <= bytesRead) {
             bool match = true;
             for (int j = 0; j < boundary.Length; ++j) {
@@ -234,6 +234,8 @@ namespace PeterO.Mail {
               // There's nothing else significant
               // after this boundary,
               // so return now
+              this.hasNewBodyPart=false;
+              this.endOfStream=true;
               this.bufferCount = 0;
               return -1;
             }
@@ -258,6 +260,7 @@ namespace PeterO.Mail {
                   } else if (c == 0x0d) {
                     // Unget the CR, in case the next line is a boundary line
                     this.ungetting = true;
+                    continue;
                   } else if (c != '-') {
                     // Not a boundary delimiter
                     continue;
@@ -268,6 +271,7 @@ namespace PeterO.Mail {
                   } else if (c == 0x0d) {
                     // Unget the CR, in case the next line is a boundary line
                     this.ungetting = true;
+                    continue;
                   } else if (c != '-') {
                     // Not a boundary delimiter
                     continue;

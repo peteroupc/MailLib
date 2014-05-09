@@ -9,7 +9,8 @@ using System;
 
 namespace PeterO.Mail {
   internal sealed class Base64Transform : ITransform {
-    internal static readonly int[] Alphabet = new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    internal static readonly int[] Alphabet = new int[] { 
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
       52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1,
@@ -25,15 +26,18 @@ namespace PeterO.Mail {
     private int bufferIndex;
     private int bufferCount;
     private int maxLineLength;
+    private bool checkStrictEncoding;
+    private int paddingCount;
 
-    public Base64Transform(ITransform input, bool lenientLineBreaks) : this(input, lenientLineBreaks, 76) {
+    public Base64Transform(ITransform input, bool lenientLineBreaks) : this(input, lenientLineBreaks, 76, false) {
     }
 
-    public Base64Transform(ITransform input, bool lenientLineBreaks, int maxLineLength) {
+    public Base64Transform(ITransform input, bool lenientLineBreaks, int maxLineLength, bool checkStrictEncoding) {
       this.input = input;
       this.maxLineLength = maxLineLength;
       this.lenientLineBreaks = lenientLineBreaks;
       this.buffer = new byte[4];
+      this.checkStrictEncoding = checkStrictEncoding;
     }
 
     /// <summary>Not documented yet.</summary>
@@ -69,9 +73,15 @@ namespace PeterO.Mail {
             // Not supposed to happen
             throw new MessageDataException("Invalid number of base64 characters");
           } else if (count == 2) {
+            if(checkStrictEncoding && paddingCount!=2){
+              throw new MessageDataException("Invalid amount of base64 padding");
+            }
             value <<= 12;
             return (byte)((value >> 16) & 0xff);
           } else if (count == 3) {
+            if(checkStrictEncoding && paddingCount!=1){
+              throw new MessageDataException("Invalid amount of base64 padding");
+            }
             value <<= 6;
             this.ResizeBuffer(1);
             this.buffer[0] = (byte)((value >> 8) & 0xff);
@@ -88,21 +98,37 @@ namespace PeterO.Mail {
             if (this.lenientLineBreaks) {
               this.lineCharCount = 0;
               continue;
+            } else if(checkStrictEncoding){
+              throw new MessageDataException(String.Format("Invalid base64 character: 0x{0:X2} (after 0x0d)",c));
             }
           }
         } else if (c == 0x0a) {
           if (this.lenientLineBreaks) {
             this.lineCharCount = 0;
             continue;
+          } else if(checkStrictEncoding){
+            throw new MessageDataException("Invalid base64 character: 0x0A bare");
           }
         } else if (c >= 0x80) {
           // Ignore
         } else {
+          int oldc=c;
           c = Alphabet[c];
-          if (c >= 0) {
+          if (c >= 0 && paddingCount==0) {
             value <<= 6;
             value |= c;
             ++count;
+          } else if(checkStrictEncoding){
+            if(oldc=='='){
+              paddingCount++;
+              if(paddingCount>2){
+                throw new MessageDataException("Too much base64 padding");
+              }
+            } else if(paddingCount>0){
+              throw new MessageDataException(String.Format("Extra data after padding: 0x{0:X2}",oldc));
+            } else {
+              throw new MessageDataException(String.Format("Invalid base64 character: 0x{0:X2}",oldc));
+            }
           }
         }
         if (this.maxLineLength > 0) {

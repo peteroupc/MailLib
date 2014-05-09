@@ -264,8 +264,10 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets a value not documented yet.</summary>
+    /// <summary>Gets the body of this message as a Unicode string.</summary>
     /// <value>A value not documented yet.</value>
+    /// <exception cref="NotSupportedException">This message has no character encoding declared on it,
+    /// or the character encoding is not supported.</exception>
     public string BodyString {
       get {
         using (MemoryStream ms = new MemoryStream(this.body)) {
@@ -982,6 +984,19 @@ namespace PeterO.Mail {
     public string Generate() {
       return this.Generate(0);
     }
+    
+    private static string GenerateBoundary(int num){
+      StringBuilder sb=new StringBuilder();
+      string hex="0123456789ABCDEF";
+      sb.Append("=_Boundary");
+      for(int i=0;i<8;i++){
+        int b=(num>>56)&255;
+        sb.Append(hex[(b>>4)&15]);
+        sb.Append(hex[(b)&15]);
+        num<<=8;
+      }
+      return sb.ToString();
+    }
 
     private string Generate(int depth) {
       StringBuilder sb = new StringBuilder();
@@ -1002,8 +1017,7 @@ namespace PeterO.Mail {
       bool isMultipart = false;
       string boundary = String.Empty;
       if (builder.IsMultipart) {
-        boundary = "=_Boundary" +
-          Convert.ToString((int)depth, System.Globalization.CultureInfo.CurrentCulture);
+        boundary = GenerateBoundary(depth);
         builder.SetParameter("boundary", boundary);
         isMultipart = true;
       }
@@ -1154,12 +1168,13 @@ namespace PeterO.Mail {
               throw new MessageDataException("Header field still has non-Ascii: " + name + " " + value);
             }
           }
-          // TODO: Don't collapse spaces if a DQUOTE appears
-          var encoder = new WordWrapEncoder(Capitalize(name) + ":");
+          bool haveDquote = downgraded.IndexOf('"')>=0;
+          var encoder = new WordWrapEncoder(Capitalize(name) + ":", !haveDquote);
           encoder.AddString(downgraded);
           sb.Append(encoder.ToString());
         } else {
-          var encoder = new WordWrapEncoder(Capitalize(name) + ":");
+          bool haveDquote = value.IndexOf('"')>=0;
+          var encoder = new WordWrapEncoder(Capitalize(name) + ":", !haveDquote);
           encoder.AddString(value);
           sb.Append(encoder.ToString());
         }
@@ -1819,9 +1834,11 @@ namespace PeterO.Mail {
         // have lines that exceed this size, so use an unlimited line length
         // when parsing
         transform = new QuotedPrintableTransform(stream, false, -1);
+//        transform = new QuotedPrintableTransform(stream, false, 76, true);
       } else if (encoding == EncodingBase64) {
         // NOTE: Same as quoted-printable regarding line length
-        transform = new Base64Transform(stream, false, -1);
+        transform = new Base64Transform(stream, false, -1, false);
+//        transform = new Base64Transform(stream, false, 76, true);
       } else if (encoding == EncodingEightBit) {
         transform = new EightBitTransform(stream);
       } else if (encoding == EncodingBinary) {

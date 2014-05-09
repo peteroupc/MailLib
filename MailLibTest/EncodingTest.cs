@@ -61,7 +61,7 @@ namespace MailLibTest {
         QuotedPrintableTransform t = new QuotedPrintableTransform(
           new WrappedStream(ms),
           lenientLineBreaks,
-          unlimitedLineLength ? -1 : 76);
+          unlimitedLineLength ? -1 : 76, false);
         while (true) {
           int c = t.ReadByte();
           if (c < 0) {
@@ -1521,6 +1521,70 @@ namespace MailLibTest {
         hdrname.Equals("autoforwarded") || hdrname.Equals("generate-delivery-report") || hdrname.Equals("incomplete-copy") || hdrname.Equals("message-type") || hdrname.Equals("discarded-x400-ipms-extensions") || hdrname.Equals("autosubmitted") || hdrname.Equals("prevent-nondelivery-report") || hdrname.Equals("alternate-recipient") || hdrname.Equals("disclose-recipients");
     }
 
+    
+        public void TestUtf7One(string input, string expected){
+      Assert.AreEqual(expected, Charsets.GetCharset("utf-7").GetString(EncodingTest.Transform(input)));
+    }
+
+    [Test]
+    public void TestUtf7(){
+      TestUtf7One("\\","\ufffd");
+      TestUtf7One("\u0001","\ufffd");
+      TestUtf7One("\u007f","\ufffd");
+      TestUtf7One("\r\n\t '!\"#'(),$-%@[]^&=<>;*_`{}./:|?","\r\n\t '!\"#'(),$-%@[]^&=<>;*_`{}./:|?");
+      TestUtf7One("x+--","x+-");
+      TestUtf7One("x+-y","x+y");
+      // Illegal byte after plus
+      TestUtf7One("+!","\ufffd!");
+      TestUtf7One("+\n","\ufffd\n");
+      TestUtf7One("+\u007f","\ufffd\ufffd");
+      TestUtf7One("+","\ufffd");
+      // Incomplete byte
+      TestUtf7One("+D?","\ufffd?");
+      TestUtf7One("+D\u007f","\ufffd\ufffd");
+      TestUtf7One("+D","\ufffd");
+      // Only one UTF-16 byte
+      TestUtf7One("+DE?","\ufffd?");
+      TestUtf7One("+DE","\ufffd");
+      TestUtf7One("+DE\u007f","\ufffd\ufffd");
+      // UTF-16 code unit
+      TestUtf7One("+DEE?","\u0c41?");
+      TestUtf7One("+DEE","\u0c41");
+      TestUtf7One("+DEE\u007f","\u0c41\ufffd");
+      // UTF-16 code unit (redundant pad bit)
+      TestUtf7One("+DEF?","\u0c41\ufffd?");
+      TestUtf7One("+DEF","\u0c41\ufffd");
+      TestUtf7One("+DEF\u007f","\u0c41\ufffd\ufffd");
+      // High surrogate code unit
+      TestUtf7One("+2AA?","\ufffd?");
+      TestUtf7One("+2AA","\ufffd");
+      TestUtf7One("+2AA\u007f","\ufffd\ufffd");
+      // Low surrogate code unit
+      TestUtf7One("+3AA?","\ufffd?");
+      TestUtf7One("+3AA","\ufffd");
+      TestUtf7One("+3AA\u007f","\ufffd\ufffd");
+      // Surrogate pair
+      TestUtf7One("+2ADcAA?","\ud800\udc00?");
+      TestUtf7One("+2ADcAA","\ud800\udc00");
+      TestUtf7One("+2ADcAA\u007f","\ud800\udc00\ufffd");
+      // High surrogate followed by surrogate pair
+      TestUtf7One("+2ADYANwA?","\ufffd\ud800\udc00?");
+      TestUtf7One("+2ADYANwA","\ufffd\ud800\udc00");
+      TestUtf7One("+2ADYANwA\u007f","\ufffd\ud800\udc00\ufffd");
+      // Two UTF-16 code units
+      TestUtf7One("+AMAA4A?","\u00c0\u00e0?");
+      TestUtf7One("+AMAA4A","\u00c0\u00e0");
+      TestUtf7One("+AMAA4A-Next","\u00c0\u00e0Next");
+      TestUtf7One("+AMAA4A!Next","\u00c0\u00e0!Next");
+      TestUtf7One("+AMAA4A\u007f","\u00c0\u00e0\ufffd");
+      // Two UTF-16 code units (redundant pad bit)
+      TestUtf7One("+AMAA4B?","\u00c0\u00e0\ufffd?");
+      TestUtf7One("+AMAA4B","\u00c0\u00e0\ufffd");
+      TestUtf7One("+AMAA4B-Next","\u00c0\u00e0\ufffdNext");
+      TestUtf7One("+AMAA4B!Next","\u00c0\u00e0\ufffd!Next");
+      TestUtf7One("+AMAA4B\u007f","\u00c0\u00e0\ufffd\ufffd");
+    }
+
     [Test]
     public void TestReceivedHeader() {
       IHeaderFieldParser parser=HeaderFields.GetParser("received");
@@ -1570,6 +1634,7 @@ namespace MailLibTest {
 
     [Test]
     public void TestBoundaryReading() {
+      byte[] body;
       string messageStart="MIME-Version: 1.0\r\n";
       messageStart+="Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
       messageStart+="Preamble\r\n";
@@ -1579,7 +1644,8 @@ namespace MailLibTest {
       message+="Test\r\n";
       message+="--b1--\r\n";
       message+="Epilogue";
-      Message msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message, true)));
+      Message msg;
+      msg=new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message, true)));
       Assert.AreEqual("multipart",msg.ContentType.TopLevelType);
       Assert.AreEqual("b1",msg.ContentType.GetParameter("boundary"));
       Assert.AreEqual(1, msg.Parts.Count);
@@ -1618,6 +1684,64 @@ namespace MailLibTest {
       msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message, true)));
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual("Test",msg.Parts[0].BodyString);
+      // Base64 body part
+      message = messageStart;
+      message+="Content-Type: application/octet-stream\r\n";
+      message+="Content-Transfer-Encoding: base64\r\n\r\n";
+      message+="ABABXX==\r\n";
+      message+="--b1--\r\n";
+      message+="Epilogue";
+      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message, true)));
+      Assert.AreEqual("multipart",msg.ContentType.TopLevelType);
+      Assert.AreEqual("b1",msg.ContentType.GetParameter("boundary"));
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual("application",msg.Parts[0].ContentType.TopLevelType);
+      body=msg.Parts[0].GetBody();
+      Assert.AreEqual(0,body[0]);
+      Assert.AreEqual(16,body[1]);
+      Assert.AreEqual(1,body[2]);
+      Assert.AreEqual(93,body[3]);
+      Assert.AreEqual(4,body.Length);
+      // Base64 body part II
+      message = messageStart;
+      message+="Content-Type: application/octet-stream\r\n";
+      message+="Content-Transfer-Encoding: base64\r\n\r\n";
+      message+="ABABXX==\r\n\r\n";
+      message+="--b1--\r\n";
+      message+="Epilogue";
+      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message, true)));
+      Assert.AreEqual("multipart",msg.ContentType.TopLevelType);
+      Assert.AreEqual("b1",msg.ContentType.GetParameter("boundary"));
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual("application",msg.Parts[0].ContentType.TopLevelType);
+      body=msg.Parts[0].GetBody();
+      Assert.AreEqual(0,body[0]);
+      Assert.AreEqual(16,body[1]);
+      Assert.AreEqual(1,body[2]);
+      Assert.AreEqual(93,body[3]);
+      Assert.AreEqual(4,body.Length);
+      // Base64 in nested body part 
+      message = messageStart;
+      message+="Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message+="--b2\r\n";
+      message+="Content-Type: application/octet-stream\r\n";
+      message+="Content-Transfer-Encoding: base64\r\n\r\n";
+      message+="ABABXX==\r\n";
+      message+="--b2--\r\n\r\n";
+      message+="--b1--\r\n";
+      message+="Epilogue";
+      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message, true)));
+      Assert.AreEqual("multipart",msg.ContentType.TopLevelType);
+      Assert.AreEqual("b1",msg.ContentType.GetParameter("boundary"));
+      Assert.AreEqual(1, msg.Parts.Count);
+      Message part=msg.Parts[0];
+      Assert.AreEqual("application",part.Parts[0].ContentType.TopLevelType);
+      body=part.Parts[0].GetBody();
+      Assert.AreEqual(0,body[0]);
+      Assert.AreEqual(16,body[1]);
+      Assert.AreEqual(1,body[2]);
+      Assert.AreEqual(93,body[3]);
+      Assert.AreEqual(4,body.Length);
       // Nested Multipart body part II
       message = messageStart;
       message+="Content-Type: multipart/mixed; boundary=b2\r\n\r\n";

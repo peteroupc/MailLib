@@ -48,15 +48,21 @@ namespace PeterO.Mail {
     }
 
     private void AppendWord(string str) {
-      if (this.lineLength + this.lastSpaces.Length + str.Length > MaxLineLength &&
-          this.haveNonwhitespace) {
-        // Too big to fit the current line,
-        // create a new line (but only if the current
-        // line isn't all whitespace)
-        this.fullString.Append("\r\n");
-        this.lastSpaces = " ";
-        this.haveNonwhitespace = false;
-        this.lineLength = 0;
+      if (this.lineLength + this.lastSpaces.Length + str.Length > MaxLineLength) {
+        if(this.haveNonwhitespace){
+          // Too big to fit the current line,
+          // create a new line (but only if the current
+          // line isn't all whitespace)
+          this.fullString.Append("\r\n");
+          this.lastSpaces = " ";
+          this.haveNonwhitespace = false;
+          this.lineLength = 0;
+        } else {
+          // Too big to fit the current line,
+          // but the current line is all whitespace, so
+          // shorten the lastSpaces to a single space
+          this.lastSpaces = " ";
+        }
       }
       this.fullString.Append(this.lastSpaces);
       this.fullString.Append(str);
