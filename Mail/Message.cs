@@ -13,40 +13,42 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary>Represents an email message. <para><b>Thread safety:</b>
-    /// This class is mutable; its properties can be changed. None of its methods
-    /// are designed to be thread safe. Therefore, access to objects from
-    /// this class must be synchronized if multiple threads can access them
-    /// at the same time.</para>
-    /// <para>The following lists known deviations from the mail specifications
-    /// (Internet Message Format and MIME):</para>
-    /// <list type=''> <item>The content-transfer-encoding "quoted-printable"
-    /// is treated as 7bit instead if it occurs in a message or body part with
-    /// content type "multipart/*" or "message/*" (other than "message/global",
-    /// "message/global-headers", "message/global-disposition-notification",
-    /// or "message/global-delivery-status").</item>
-    /// <item>Non-UTF-8 bytes appearing in header field values are replaced
-    /// with replacement characters. Moreover, UTF-8 is parsed everywhere
-    /// in header field values, even in those parts of some structured header
-    /// fields where this appears not to be allowed.</item>
-    /// <item>The To and Cc header fields are allowed to contain only comments
-    /// and whitespace, but these "empty" header fields will be omitted when
-    /// generating.</item>
-    /// <item>There is no line length limit imposed when parsing quoted-printable
-    /// or base64 encoded bodies.</item>
-    /// <item>In non-MIME message bodies, in text/plain message bodies,
-    /// and in the prologue and epilogue of multipart messages (which will
-    /// be ignored), if the transfer encoding is absent or declared as 7bit,
-    /// any 8-bit bytes are replaced with question marks.</item>
-    /// <item>The name <code>ascii</code>
-    /// is treated as a synonym for <code>us-ascii</code>
-    /// , despite being a reserved name under RFC 2046.</item>
-    /// <item>If a sequence of encoded words (RFC 2047) decodes to a string
-    /// with a CTL character (U + 007F, or a character less than U + 0020 and not
-    /// TAB) after being converted to Unicode, the encoded words are left
-    /// un-decoded.</item>
-    /// </list>
-    /// </summary>
+  /// <summary>Represents an email message. <para><b>Thread safety:</b>
+  /// This class is mutable; its properties can be changed. None of its methods
+  /// are designed to be thread safe. Therefore, access to objects from
+  /// this class must be synchronized if multiple threads can access them
+  /// at the same time.</para>
+  /// <para>The following lists known deviations from the mail specifications
+  /// (Internet Message Format and MIME):</para>
+  /// <list type=''> <item>The content-transfer-encoding "quoted-printable"
+  /// is treated as 7bit instead if it occurs in a message or body part with
+  /// content type "multipart/*" or "message/*" (other than "message/global",
+  /// "message/global-headers", "message/global-disposition-notification",
+  /// or "message/global-delivery-status").</item>
+  /// <item>Non-UTF-8 bytes appearing in header field values are replaced
+  /// with replacement characters. Moreover, UTF-8 is parsed everywhere
+  /// in header field values, even in those parts of some structured header
+  /// fields where this appears not to be allowed.</item>
+  /// <item>The To and Cc header fields are allowed to contain only comments
+  /// and whitespace, but these "empty" header fields will be omitted when
+  /// generating.</item>
+  /// <item>There is no line length limit imposed when parsing quoted-printable
+  /// or base64 encoded bodies.</item>
+  /// <item>In non-MIME message bodies, in text/plain message bodies,
+  /// and in the prologue and epilogue of multipart messages (which will
+  /// be ignored), if the transfer encoding is absent or declared as 7bit,
+  /// any 8-bit bytes are replaced with question marks.</item>
+  /// <item>The name <code>ascii</code>
+  /// is treated as a synonym for <code>us-ascii</code>
+  /// , despite being a reserved name under RFC 2046. The name <code>cp1252</code>
+  /// is treated as a synonym for <code>windows-1252</code>, even though
+  /// it's not an IANA registered alias.</item>
+  /// <item>If a sequence of encoded words (RFC 2047) decodes to a string
+  /// with a CTL character (U + 007F, or a character less than U + 0020 and not
+  /// TAB) after being converted to Unicode, the encoded words are left
+  /// un-decoded.</item>
+  /// </list>
+  /// </summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -360,6 +362,23 @@ namespace PeterO.Mail {
         }
       }
     }
+    
+    /// <summary>
+    /// Gets a filename suggested by this message
+    /// for saving the message's body to a file.
+    /// </summary>
+    /// <value>A suggested name for the file, or the empty
+    /// string if there is no filename suggested by the content type
+    /// or content disposition.</value>
+    public string FileName {
+      get {
+        ContentDisposition disp=this.contentDisposition;
+        if(disp!=null){
+          return ContentDisposition.MakeFilename(disp.GetParameter("filename"));
+        }
+        return ContentDisposition.MakeFilename(this.contentType.GetParameter("name"));
+      }
+    }
 
     private void ProcessHeaders(bool assumeMime, bool digest) {
       bool haveContentType = false;
@@ -369,21 +388,6 @@ namespace PeterO.Mail {
       for (int i = 0; i < this.headers.Count; i += 2) {
         string name = this.headers[i];
         string value = this.headers[i + 1];
-        if (name.Equals("to") && !ParserUtility.IsNullEmptyOrSpaceTabOnly(value)) {
-          if (HeaderParser.ParseHeaderTo(value, 0, value.Length, null) != value.Length) {
-            throw new MessageDataException("Invalid To header: " + value);
-          }
-        }
-        if (name.Equals("cc") && !ParserUtility.IsNullEmptyOrSpaceTabOnly(value)) {
-          if (HeaderParser.ParseHeaderTo(value, 0, value.Length, null) != value.Length) {
-            throw new MessageDataException("Invalid Cc header: " + value);
-          }
-        }
-        if (name.Equals("bcc") && !ParserUtility.IsNullEmptyOrSpaceTabOnly(value)) {
-          if (HeaderParser.ParseHeaderBcc(value, 0, value.Length, null) != value.Length) {
-            throw new MessageDataException("Invalid Bcc header: " + value);
-          }
-        }
         if (name.Equals("content-transfer-encoding")) {
           int startIndex = HeaderParser.ParseCFWS(value, 0, value.Length, null);
           // NOTE: Actually "token", but all known transfer encoding values
@@ -972,10 +976,11 @@ namespace PeterO.Mail {
     /// generated message will always be 7-bit ASCII, and the transfer encoding
     /// will always be 7bit, quoted-printable, or base64 (the declared transfer
     /// encoding for this message will be ignored).</para>
-    /// <para> If the From header field has an invalid syntax or has no addresses,
-    /// or if the field is missing, this method will generate a synthetic From
-    /// field with the contents of the previous From field or fields as the
-    /// name, and the address <code>me@author-address.invalid</code>
+    /// <para>The following applies to the From, To, Cc, and Bcc header fields.
+    /// If the header field has an invalid syntax or has no addresses,
+    /// this method will generate a synthetic header
+    /// field with the display-name set to the contents of all of the header fields
+    /// with the same name, and the address set to <code>me@[header-name]-address.invalid</code>
     /// as the address (a <code>.invalid</code>
     /// address is a reserved address that can never belong to anyone). </para>
     /// </summary>
@@ -997,6 +1002,17 @@ namespace PeterO.Mail {
         num <<= 8;
       }
       return sb.ToString();
+    }
+    
+    private string SynthesizeField(string name){
+      string fullField = Implode(this.GetMultipleHeaders(name), ", ");
+      string value = new EncodedWordEncoder().AddString(fullField).FinalizeEncoding().ToString();
+      if (value.Length > 0) {
+        value += " <me@"+name+"address.invalid>";
+      } else {
+        value = "me@"+name+"-address.invalid";
+      }
+      return value;
     }
 
     private string Generate(int depth) {
@@ -1098,13 +1114,7 @@ namespace PeterO.Mail {
             value = GenerateAddressList(this.FromAddresses);
             if (value.Length == 0) {
               // No addresses, synthesize a From field
-              string fullField = Implode(this.GetMultipleHeaders(name), ", ");
-              value = new EncodedWordEncoder().AddString(fullField).FinalizeEncoding().ToString();
-              if (value.Length > 0) {
-                value += " <me@author-address.invalid>";
-              } else {
-                value = "me@author-address.invalid";
-              }
+              value=SynthesizeField(name);
             }
           }
           outputtedFrom = true;
@@ -1117,8 +1127,8 @@ namespace PeterO.Mail {
           if (!this.IsValidAddressingField(name)) {
             value = GenerateAddressList(this.ToAddresses);
             if (value.Length == 0) {
-              // No addresses
-              continue;
+              // No addresses, synthesize a field
+              value=SynthesizeField(name);
             }
           }
         } else if (name.Equals("cc")) {
@@ -1130,8 +1140,8 @@ namespace PeterO.Mail {
           if (!this.IsValidAddressingField(name)) {
             value = GenerateAddressList(this.CCAddresses);
             if (value.Length == 0) {
-              // No addresses
-              continue;
+              // No addresses, synthesize a field
+              value=SynthesizeField(name);
             }
           }
         } else if (name.Equals("bcc")) {
@@ -1143,11 +1153,12 @@ namespace PeterO.Mail {
           if (!this.IsValidAddressingField(name)) {
             value = GenerateAddressList(this.BccAddresses);
             if (value.Length == 0) {
-              // No addresses
-              continue;
+              // No addresses, synthesize a field
+              value=SynthesizeField(name);
             }
           }
         }
+        // TODO: Reply-To, Sender, Resent-From/-To/-Bcc/-Cc/-Sender
         string rawField = Capitalize(name) + ":" +
           (StartsWithWhitespace(value) ? String.Empty : " ") + value;
         if (CanOutputRaw(rawField)) {
@@ -1673,8 +1684,8 @@ namespace PeterO.Mail {
     private class MessageStackEntry {
       private Message message;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public Message Message {
         get {
           return this.message;
@@ -1683,8 +1694,8 @@ namespace PeterO.Mail {
 
       private string boundary;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public string Boundary {
         get {
           return this.boundary;
@@ -1835,11 +1846,11 @@ namespace PeterO.Mail {
         // have lines that exceed this size, so use an unlimited line length
         // when parsing
         transform = new QuotedPrintableTransform(stream, false, -1);
-// transform = new QuotedPrintableTransform(stream, false, 76, true);
+        // transform = new QuotedPrintableTransform(stream, false, 76, true);
       } else if (encoding == EncodingBase64) {
         // NOTE: Same as quoted-printable regarding line length
         transform = new Base64Transform(stream, false, -1, false);
-// transform = new Base64Transform(stream, false, 76, true);
+        // transform = new Base64Transform(stream, false, 76, true);
       } else if (encoding == EncodingEightBit) {
         transform = new EightBitTransform(stream);
       } else if (encoding == EncodingBinary) {

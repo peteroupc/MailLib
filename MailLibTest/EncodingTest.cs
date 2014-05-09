@@ -316,6 +316,91 @@ namespace MailLibTest {
     }
 
     [Test]
+    public void TestMakeFilename() {
+      Assert.AreEqual(
+        "hello.txt",
+        ContentDisposition.MakeFilename("=?utf-8?q?hello.txt?="));
+      Assert.AreEqual(
+        "hello.txt",
+        ContentDisposition.MakeFilename("=?utf-8?q?___hello.txt___?="));
+      Assert.AreEqual(
+        "a\u00e7\u00e3o.txt",
+        ContentDisposition.MakeFilename("=?iso-8859-1?q?a=E7=E3o.txt?="));
+      Assert.AreEqual(
+        "hello.txt",
+        ContentDisposition.MakeFilename("=?x-unknown?q?hello.txt?="));
+      Assert.AreEqual(
+        "_",
+        ContentDisposition.MakeFilename("=?x-unknown"));
+      Assert.AreEqual(
+        "my_file_name_.txt",
+        ContentDisposition.MakeFilename("my?file<name>.txt"));
+      Assert.AreEqual(
+        "my file name_.txt",
+        ContentDisposition.MakeFilename("my file\tname\".txt"));
+      Assert.AreEqual(
+        "my\ufffdfile\ufffdname\ud800\udc00.txt",
+        ContentDisposition.MakeFilename("my\ud800file\udc00name\ud800\udc00.txt"));
+      Assert.AreEqual(
+        "_..._",
+        ContentDisposition.MakeFilename("..."));
+      Assert.AreEqual(
+        "_~home",
+        ContentDisposition.MakeFilename("~home"));
+      Assert.AreEqual(
+        "_~nul",
+        ContentDisposition.MakeFilename("~nul"));
+      Assert.AreEqual(
+        "myfilename.txt._",
+        ContentDisposition.MakeFilename("myfilename.txt."));
+      Assert.AreEqual(
+        "_nul",
+        ContentDisposition.MakeFilename("nul"));
+      Assert.AreEqual(
+        "_nul",
+        ContentDisposition.MakeFilename("   nul   "));
+      Assert.AreEqual(
+        "_nul.txt",
+        ContentDisposition.MakeFilename("nul.txt"));
+      Assert.AreEqual(
+        "_con",
+        ContentDisposition.MakeFilename("con"));
+      Assert.AreEqual(
+        "_aux",
+        ContentDisposition.MakeFilename("aux"));
+      Assert.AreEqual(
+        "_lpt1device",
+        ContentDisposition.MakeFilename("lpt1device"));
+      Assert.AreEqual(
+        "my_file_name_.txt",
+        ContentDisposition.MakeFilename("my\u0001file\u007fname*.txt"));
+      Assert.AreEqual(
+        "folder_hello.txt",
+        ContentDisposition.MakeFilename("=?utf-8?q?folder\\hello.txt?="));
+      Assert.AreEqual(
+        "folder_",
+        ContentDisposition.MakeFilename("folder/"));
+      Assert.AreEqual(
+        "folder______",
+        ContentDisposition.MakeFilename("folder//////"));
+      Assert.AreEqual(
+        "fol_der_",
+        ContentDisposition.MakeFilename("fol/der/"));
+      Assert.AreEqual(
+        "fol_der______",
+        ContentDisposition.MakeFilename("fol/der//////"));
+      Assert.AreEqual(
+        "folder_hello.txt",
+        ContentDisposition.MakeFilename("folder/hello.txt"));
+      Assert.AreEqual(
+        "fol_der_hello.txt",
+        ContentDisposition.MakeFilename("fol/der/hello.txt"));
+      Assert.AreEqual(
+        "folder_hello.txt",
+        ContentDisposition.MakeFilename("=?x-unknown?q?folder\\hello.txt?="));
+    }
+    
+    [Test]
     public void TestCharset() {
       Assert.AreEqual("us-ascii", MediaType.Parse("text/plain").GetCharset());
       Assert.AreEqual("us-ascii", MediaType.Parse("TEXT/PLAIN").GetCharset());
@@ -1522,7 +1607,7 @@ namespace MailLibTest {
         hdrname.Equals("autoforwarded") || hdrname.Equals("generate-delivery-report") || hdrname.Equals("incomplete-copy") || hdrname.Equals("message-type") || hdrname.Equals("discarded-x400-ipms-extensions") || hdrname.Equals("autosubmitted") || hdrname.Equals("prevent-nondelivery-report") || hdrname.Equals("alternate-recipient") || hdrname.Equals("disclose-recipients");
     }
 
-        public void TestUtf7One(string input, string expected) {
+    public void TestUtf7One(string input, string expected) {
       Assert.AreEqual(expected, Charsets.GetCharset("utf-7").GetString(EncodingTest.Transform(input)));
     }
 
