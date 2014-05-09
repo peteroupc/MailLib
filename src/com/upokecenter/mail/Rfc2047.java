@@ -357,7 +357,7 @@ private Rfc2047() {
                 ITransform transform = base64 ?
                   (ITransform)new BEncodingStringTransform(encodedText) :
                   (ITransform)new QEncodingStringTransform(encodedText);
-                Charsets.ICharset encoding = Charsets.GetCharset(charset);
+                ICharset encoding = Charsets.GetCharset(charset);
                 if (encoding == null) {
                   // System.out.println("Unknown charset " + charset);
                   decodedWord = str.substring(startIndex - 2,(startIndex - 2)+(afterLast - (startIndex - 2)));

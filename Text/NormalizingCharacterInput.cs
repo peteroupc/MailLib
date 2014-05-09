@@ -134,80 +134,8 @@ namespace PeterO.Text {
       return true;
     }
 
-    private static bool NormalizeAndCheckString(
-      string str,
-      int start,
-      int length,
-      Normalization form) {
-      int i = start;
-      var norm = new NormalizingCharacterInput(str, start, length, form);
-      int ch = 0;
-      while ((ch = norm.ReadChar()) >= 0) {
-        int c = str[i];
-        if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
-            str[i + 1] >= 0xdc00 && str[i + 1] <= 0xdfff) {
-          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str[i + 1] - 0xdc00);
-          ++i;
-        } else if ((c & 0xf800) == 0xd800) {
-          // unpaired surrogate
-          c = 0xfffd;
-        }
-        ++i;
-        if (c != ch) {
-          return false;
-        }
-      }
-      return i == start + length;
-    }
-
     public static bool IsNormalized(string str, Normalization form) {
-      if (str == null) {
-        return false;
-      }
-      int lastNonStable = -1;
-      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
-      for (int i = 0; i < str.Length; ++i) {
-        int c = str[i];
-        if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
-            str[i + 1] >= 0xdc00 && str[i + 1] <= 0xdfff) {
-          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str[i + 1] - 0xdc00);
-        } else if ((c & 0xf800) == 0xd800) {
-          // unpaired surrogate
-          return false;
-        }
-        bool isStable = false;
-        if ((c & mask) == c && (i + 1 == str.Length || (str[i + 1] & mask) == str[i + 1])) {
-          // Quick check for an ASCII character followed by another
-          // ASCII character (or Latin-1 in NFC) or the end of string.
-          // Treat the first character as stable
-          // in this situation.
-          isStable = true;
-        } else {
-          isStable = Normalizer.IsStableCodePoint(c, form);
-        }
-        if (lastNonStable < 0 && !isStable) {
-          // First non-stable code point in a row
-          lastNonStable = i;
-        } else if (lastNonStable >= 0 && isStable) {
-          // We have at least one non-stable code point,
-          // normalize these code points.
-          if (!NormalizeAndCheckString(str, lastNonStable, i - lastNonStable, form)) {
-            return false;
-          }
-          lastNonStable = -1;
-        }
-        if (c >= 0x10000) {
-          ++i;
-        }
-      }
-      if (lastNonStable >= 0) {
-        if (!NormalizeAndCheckString(str, lastNonStable, str.Length - lastNonStable, form)) {
-          return false;
-        }
-      }
-      return true;
+      return Normalizer.IsNormalized(str, form);
     }
 
     public static bool IsNormalized(IList<int> charList, Normalization form) {

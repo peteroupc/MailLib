@@ -11,7 +11,7 @@ using System.Text;
 namespace PeterO.Text {
     /// <summary>Contains methods that implement Internationalized Domain
     /// Names in Applications (IDNA).</summary>
-  public class Idna
+  public static class Idna
   {
     private const int Unassigned = 0;
     // PValid = 1;

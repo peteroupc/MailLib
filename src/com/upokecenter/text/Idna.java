@@ -11,8 +11,9 @@ at: http://upokecenter.com/d/
      * Contains methods that implement Internationalized Domain Names
      * in Applications (IDNA).
      */
-  public class Idna
-  {
+  public final class Idna {
+private Idna() {
+}
     private static final int Unassigned = 0;
     // PValid = 1;
     private static final int Disallowed = 2;

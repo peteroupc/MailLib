@@ -723,14 +723,14 @@ import com.upokecenter.util.*;
       // NOTE: Ignored
       // String language = value.substring(firstQuote + 1,(firstQuote + 1)+(secondQuote-(firstQuote + 1)));
       String paramValue = value.substring(secondQuote + 1);
-      Charsets.ICharset cs = Charsets.GetCharset(charset);
+      ICharset cs = Charsets.GetCharset(charset);
       if (cs == null) {
         cs = Charsets.Ascii;
       }
       return DecodeRfc2231Encoding(paramValue, cs);
     }
 
-    private static Charsets.ICharset GetRfc2231Charset(String value) {
+    private static ICharset GetRfc2231Charset(String value) {
       if (value == null) {
         return Charsets.Ascii;
       }
@@ -747,14 +747,14 @@ import com.upokecenter.util.*;
       String charset = value.substring(0,firstQuote);
       // NOTE: Ignored
       // String language = value.substring(firstQuote + 1,(firstQuote + 1)+(secondQuote-(firstQuote + 1)));
-      Charsets.ICharset cs = Charsets.GetCharset(charset);
+      ICharset cs = Charsets.GetCharset(charset);
       if (cs == null) {
         cs = Charsets.Ascii;
       }
       return cs;
     }
 
-    private static String DecodeRfc2231Encoding(String value, Charsets.ICharset charset) {
+    private static String DecodeRfc2231Encoding(String value, ICharset charset) {
       return charset.GetString(new PercentEncodingStringTransform(value));
     }
 
@@ -788,7 +788,7 @@ import com.upokecenter.util.*;
           String realName = name.substring(0,asterisk);
           String realValue = (asterisk == name.length() - 3) ? DecodeRfc2231Extension(value) :
             value;
-          Charsets.ICharset charsetUsed = GetRfc2231Charset(
+          ICharset charsetUsed = GetRfc2231Charset(
             (asterisk == name.length() - 3) ? value : null);
           parameters.remove(name);
           if (realValue == null) {

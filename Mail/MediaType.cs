@@ -720,14 +720,14 @@ namespace PeterO.Mail {
       // NOTE: Ignored
       // string language = value.Substring(firstQuote + 1, secondQuote-(firstQuote + 1));
       string paramValue = value.Substring(secondQuote + 1);
-      Charsets.ICharset cs = Charsets.GetCharset(charset);
+      ICharset cs = Charsets.GetCharset(charset);
       if (cs == null) {
         cs = Charsets.Ascii;
       }
       return DecodeRfc2231Encoding(paramValue, cs);
     }
 
-    private static Charsets.ICharset GetRfc2231Charset(string value) {
+    private static ICharset GetRfc2231Charset(string value) {
       if (value == null) {
         return Charsets.Ascii;
       }
@@ -744,14 +744,14 @@ namespace PeterO.Mail {
       string charset = value.Substring(0, firstQuote);
       // NOTE: Ignored
       // string language = value.Substring(firstQuote + 1, secondQuote-(firstQuote + 1));
-      Charsets.ICharset cs = Charsets.GetCharset(charset);
+      ICharset cs = Charsets.GetCharset(charset);
       if (cs == null) {
         cs = Charsets.Ascii;
       }
       return cs;
     }
 
-    private static string DecodeRfc2231Encoding(string value, Charsets.ICharset charset) {
+    private static string DecodeRfc2231Encoding(string value, ICharset charset) {
       return charset.GetString(new PercentEncodingStringTransform(value));
     }
 
@@ -785,7 +785,7 @@ namespace PeterO.Mail {
           string realName = name.Substring(0, asterisk);
           string realValue = (asterisk == name.Length - 3) ? DecodeRfc2231Extension(value) :
             value;
-          Charsets.ICharset charsetUsed = GetRfc2231Charset(
+          ICharset charsetUsed = GetRfc2231Charset(
             (asterisk == name.Length - 3) ? value : null);
           parameters.Remove(name);
           if (realValue == null) {

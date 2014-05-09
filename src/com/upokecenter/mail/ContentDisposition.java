@@ -10,6 +10,7 @@ at: http://upokecenter.com/d/
 import java.util.*;
 
 import com.upokecenter.util.*;
+import com.upokecenter.text.*;
 
     /**
      * Description of ContentDisposition.
@@ -92,6 +93,143 @@ import com.upokecenter.util.*;
       sb.append(this.dispositionType);
       MediaType.AppendParameters(this.parameters, sb);
       return sb.toString();
+    }
+
+    private static String RemoveEncodedWordEnds(String str) {
+      StringBuilder sb = new StringBuilder();
+      int index = 0;
+      boolean inEncodedWord = false;
+      while (index<str.length()) {
+        if (!inEncodedWord && index+1<str.length() && str.charAt(index)=='=' && str.charAt(index+1)=='?') {
+          // Remove start of encoded word
+          inEncodedWord = true;
+          index+=2;
+          int qmarks = 0;
+          // skip charset and encoding
+          while (index<str.length()) {
+            if (str.charAt(index)=='?') {
+              ++qmarks;
+              ++index;
+              if (qmarks == 2) {
+ break;
+}
+            } else {
+              ++index;
+            }
+          }
+          inEncodedWord = true;
+        } else if (inEncodedWord && index+1<str.length() && str.charAt(index)=='?' && str.charAt(index+1)=='=') {
+          // End of encoded word
+          index+=2;
+          inEncodedWord = false;
+        } else {
+          // Everything else {
+ int c = DataUtilities.CodePointAt(str, index);
+}
+          if (c == 0xfffd) {
+            sb.append(0xfffd);
+            ++index;
+          } else {
+            sb.append(str.charAt(index++));
+            if (c >= 0x10000) {
+              sb.append(str.charAt(index++));
+            }
+          }
+        }
+      }
+      return sb.toString();
+    }
+
+    /**
+     * Converts a filename from the Content-Disposition header to a suitable
+     * name for saving data to a file.
+     * @param str A string representing a file name.
+     * @return A string object.
+     */
+    public static String MakeFilename(String str) {
+      if (str == null) {
+        return "";
+      }
+      str = ParserUtility.TrimSpaceAndTab(str);
+      if (str.indexOf("=?")>= 0) {
+        // May contain encoded words, which are very frequent
+        // in Content-Disposition filenames
+        str = Rfc2047.DecodeEncodedWords(str, 0, str.length(), EncodedWordContext.Unstructured);
+        if (str.indexOf("=?")>= 0) {
+          // Remove ends of encoded words that remain
+          str = RemoveEncodedWordEnds(str);
+        }
+      }
+      str = ParserUtility.TrimSpaceAndTab(str);
+      // NOTE: Even if there are directory separators (backslash
+      // and forward slash), the filename is not treated as a
+      // file system path (in accordance with sec. 2.3 or RFC
+      // 2183); as a result, the directory separators
+      // will be treated as unsuitable characters for filenames
+      // and are handled below.
+      if (str.length() == 0) {
+        return "_";
+      }
+      StringBuilder builder = new StringBuilder();
+      // Replace unsuitable characters for filenames
+      // and make sure the filename's
+      // length doesn't exceed 250
+      for (int i = 0;i<str.length() && builder.length()<250; ++i) {
+        int c = DataUtilities.CodePointAt(str, i);
+        if (c >= 0x10000) {
+ ++i;
+}
+        if (c==(int)'\t') {
+          // Replace tab with space
+          builder.append(' ');
+        } else if (c<0x20 || c=='\\' || c=='/' || c=='*' || c=='?' || c=='|' ||
+                  c==':' || c=='<' || c=='>' || c=='"' || c==0x7f) {
+          // Unsuitable character for a filename
+          builder.append('_');
+        } else {
+          if (builder.length()<249 || c<0x10000) {
+            if (c <= 0xffff) {
+              builder.append((char)c);
+            } else if (c <= 0x10ffff) {
+              builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
+              builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+            }
+          }
+        }
+      }
+      str = builder.toString();
+      str = ParserUtility.TrimSpaceAndTab(str);
+      if (str.length() == 0) {
+        return "_";
+      }
+      if (str.charAt(str.length()-1)=='.') {
+        // Ends in a dot
+        str+="_";
+      }
+      String strLower = DataUtilities.ToLowerCaseAscii(str);
+      if (strLower.equals("nul") ||
+         strLower.indexOf("nul.")==0 ||
+         strLower.equals("prn") ||
+         strLower.indexOf("prn.")==0 ||
+         strLower.equals("aux") ||
+         strLower.indexOf("aux.")==0 ||
+         strLower.equals("con") ||
+         strLower.indexOf("con.")==0 ||
+         (strLower.length()>= 4 && strLower.indexOf("lpt")==0 && strLower.charAt(3)>= '1' && strLower.charAt(3)<= '9') ||
+         (strLower.length()>= 4 && strLower.indexOf("com")==0 && strLower.charAt(3)>= '1' && strLower.charAt(3)<= '9')
+) {
+        // Reserved filenames on Windows
+        str="_"+str;
+      }
+      if (str.charAt(0)=='~') {
+        // Home folder convention
+        str="_"+str;
+      }
+      if (str.charAt(0)=='.') {
+        // Starts with period; may be hidden in some configurations
+        str="_"+str;
+      }
+      return Normalizer.Normalize(str, Normalization.NFC);
     }
 
     /**
