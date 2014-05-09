@@ -50,6 +50,7 @@
     <Compile Include='Mail\EightBitTransform.cs'/>
     <Compile Include='Mail\EncodedWordContext.cs'/>
     <Compile Include='Mail\EncodedWordEncoder.cs'/>
+    <Compile Include='Mail\ICharset.cs'/>
     <Compile Include='Mail\IdentityEncoder.cs'/>
     <Compile Include='Mail\IStringEncoder.cs'/>
     <Compile Include='Mail\MessageDataException.cs'/>
@@ -92,6 +93,9 @@
     <Compile Include='Text\PartialListCharacterInput.cs'/>
     <Compile Include='Text\StringCharacterInput.cs'/>
     <Compile Include='Text\UnicodeDatabase.cs'/>
+    
+    
+    
   </ItemGroup>
   <ItemGroup>
     <Folder Include='Mail'/>
@@ -103,5 +107,4 @@
     <Content Include='ProfilingSessions\Session20140424_120623.sdps'/>
   </ItemGroup>
   <Import Project='$(MSBuildExtensionsPath)\Microsoft\Portable\v4.0\Microsoft.Portable.CSharp.targets'/>
-  
 <Import Project='$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets'/></Project>

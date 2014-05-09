@@ -18,6 +18,9 @@ at: http://upokecenter.com/d/
       if (str == null) {
         throw new NullPointerException("str");
       }
+      if (str.length() <= 1024 && IsNormalized(str, form)) {
+        return str;
+      }
       Normalizer norm = new Normalizer(str, form);
       StringBuilder builder = new StringBuilder();
       int c = 0;

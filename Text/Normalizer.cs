@@ -18,7 +18,7 @@ namespace PeterO.Text {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
-      if(str.Length <= 1024 && IsNormalized(str, form)){
+      if (str.Length <= 1024 && IsNormalized(str, form)) {
         return str;
       }
       Normalizer norm = new Normalizer(str, form);

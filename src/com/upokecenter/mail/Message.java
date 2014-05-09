@@ -37,7 +37,9 @@ import com.upokecenter.util.*;
      * instanceof 7bit) ? (7bit)declared : null), any 8-bit bytes are replaced
      * with question marks.</li> <li>The name <code>ascii</code> is treated
      * as a synonym for <code>us-ascii</code> , despite being a reserved
-     * name under RFC 2046.</li> <li>If a sequence of encoded words (RFC
+     * name under RFC 2046. The name <code>cp1252</code> is treated as a
+     * synonym for <code>windows-1252</code> , even though it's not an
+     * IANA registered alias.</li> <li>If a sequence of encoded words (RFC
      * 2047) decodes to a string with a CTL character (U + 007F, or a character
      * less than U + 0020 and not TAB) after being converted to Unicode, the
      * encoded words are left un-decoded.</li> </ul>
@@ -373,6 +375,20 @@ public void setContentDisposition(ContentDisposition value) {
         }
       }
 
+    /**
+     * Gets a filename suggested by this message for saving the message's
+     * body to a file.
+     * @return A suggested name for the file, or the empty string if there
+     * is no filename suggested by the content type or content disposition.
+     */
+    public String getFileName() {
+        ContentDisposition disp = this.contentDisposition;
+        if (disp != null) {
+          return ContentDisposition.MakeFilename(disp.GetParameter("filename"));
+        }
+        return ContentDisposition.MakeFilename(this.contentType.GetParameter("name"));
+      }
+
     private void ProcessHeaders(boolean assumeMime, boolean digest) {
       boolean haveContentType = false;
       boolean mime = assumeMime;
@@ -381,21 +397,6 @@ public void setContentDisposition(ContentDisposition value) {
       for (int i = 0; i < this.headers.size(); i += 2) {
         String name = this.headers.get(i);
         String value = this.headers.get(i + 1);
-        if (name.equals("to") && !ParserUtility.IsNullEmptyOrSpaceTabOnly(value)) {
-          if (HeaderParser.ParseHeaderTo(value, 0, value.length(), null) != value.length()) {
-            throw new MessageDataException("Invalid To header: " + value);
-          }
-        }
-        if (name.equals("cc") && !ParserUtility.IsNullEmptyOrSpaceTabOnly(value)) {
-          if (HeaderParser.ParseHeaderTo(value, 0, value.length(), null) != value.length()) {
-            throw new MessageDataException("Invalid Cc header: " + value);
-          }
-        }
-        if (name.equals("bcc") && !ParserUtility.IsNullEmptyOrSpaceTabOnly(value)) {
-          if (HeaderParser.ParseHeaderBcc(value, 0, value.length(), null) != value.length()) {
-            throw new MessageDataException("Invalid Bcc header: " + value);
-          }
-        }
         if (name.equals("content-transfer-encoding")) {
           int startIndex = HeaderParser.ParseCFWS(value, 0, value.length(), null);
           // NOTE: Actually "token", but all known transfer encoding values
@@ -991,10 +992,11 @@ public void setContentDisposition(ContentDisposition value) {
      * Generates this message's data in text form.<p>The generated message
      * will always be 7-bit ASCII, and the transfer encoding will always
      * be 7bit, quoted-printable, or base64 (the declared transfer encoding
-     * for this message will be ignored).</p> <p> If the From header field
-     * has an invalid syntax or has no addresses, or if the field is missing,
-     * this method will generate a synthetic From field with the contents
-     * of the previous From field or fields as the name, and the address <code>me@author-address.invalid</code>
+     * for this message will be ignored).</p> <p>The following applies
+     * to the From, To, Cc, and Bcc header fields. If the header field has an
+     * invalid syntax or has no addresses, this method will generate a synthetic
+     * header field with the display-name set to the contents of all of the
+     * header fields with the same name, and the address set to <code>me@[header-name]-address.invalid</code>
      * as the address (a <code>.invalid</code> address is a reserved address
      * that can never belong to anyone). </p>
      * @return The generated message.
@@ -1015,6 +1017,17 @@ public void setContentDisposition(ContentDisposition value) {
         num <<= 8;
       }
       return sb.toString();
+    }
+
+    private String SynthesizeField(String name) {
+      String fullField = Implode(this.GetMultipleHeaders(name), ", ");
+      String value = new EncodedWordEncoder().AddString(fullField).FinalizeEncoding().toString();
+      if (value.length() > 0) {
+        value += " <me@"+name+"address.invalid>";
+      } else {
+        value = "me@"+name+"-address.invalid";
+      }
+      return value;
     }
 
     private String Generate(int depth) {
@@ -1116,13 +1129,7 @@ public void setContentDisposition(ContentDisposition value) {
             value = GenerateAddressList(this.getFromAddresses());
             if (value.length() == 0) {
               // No addresses, synthesize a From field
-              String fullField = Implode(this.GetMultipleHeaders(name), ", ");
-              value = new EncodedWordEncoder().AddString(fullField).FinalizeEncoding().toString();
-              if (value.length() > 0) {
-                value += " <me@author-address.invalid>";
-              } else {
-                value = "me@author-address.invalid";
-              }
+              value = SynthesizeField(name);
             }
           }
           outputtedFrom = true;
@@ -1135,8 +1142,8 @@ public void setContentDisposition(ContentDisposition value) {
           if (!this.IsValidAddressingField(name)) {
             value = GenerateAddressList(this.getToAddresses());
             if (value.length() == 0) {
-              // No addresses
-              continue;
+              // No addresses, synthesize a field
+              value = SynthesizeField(name);
             }
           }
         } else if (name.equals("cc")) {
@@ -1148,8 +1155,8 @@ public void setContentDisposition(ContentDisposition value) {
           if (!this.IsValidAddressingField(name)) {
             value = GenerateAddressList(this.getCCAddresses());
             if (value.length() == 0) {
-              // No addresses
-              continue;
+              // No addresses, synthesize a field
+              value = SynthesizeField(name);
             }
           }
         } else if (name.equals("bcc")) {
@@ -1161,11 +1168,12 @@ public void setContentDisposition(ContentDisposition value) {
           if (!this.IsValidAddressingField(name)) {
             value = GenerateAddressList(this.getBccAddresses());
             if (value.length() == 0) {
-              // No addresses
-              continue;
+              // No addresses, synthesize a field
+              value = SynthesizeField(name);
             }
           }
         }
+        // TODO: Reply-To, Sender, Resent-From/-To/-Bcc/-Cc/-Sender
         String rawField = Capitalize(name) + ":" +
           (StartsWithWhitespace(value) ? "" : " ") + value;
         if (CanOutputRaw(rawField)) {
@@ -1850,11 +1858,11 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         // have lines that exceed this size, so use an unlimited line length
         // when parsing
         transform = new QuotedPrintableTransform(stream, false, -1);
-// transform = new QuotedPrintableTransform(stream, false, 76, true);
+        // transform = new QuotedPrintableTransform(stream, false, 76, true);
       } else if (encoding == EncodingBase64) {
         // NOTE: Same as quoted-printable regarding line length
         transform = new Base64Transform(stream, false, -1, false);
-// transform = new Base64Transform(stream, false, 76, true);
+        // transform = new Base64Transform(stream, false, 76, true);
       } else if (encoding == EncodingEightBit) {
         transform = new EightBitTransform(stream);
       } else if (encoding == EncodingBinary) {

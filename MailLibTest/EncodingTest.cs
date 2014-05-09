@@ -399,7 +399,7 @@ namespace MailLibTest {
         "folder_hello.txt",
         ContentDisposition.MakeFilename("=?x-unknown?q?folder\\hello.txt?="));
     }
-    
+
     [Test]
     public void TestCharset() {
       Assert.AreEqual("us-ascii", MediaType.Parse("text/plain").GetCharset());
