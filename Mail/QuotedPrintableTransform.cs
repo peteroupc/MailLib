@@ -27,7 +27,7 @@ namespace PeterO.Mail {
       this.maxLineSize = maxLineSize;
       this.input = new TransformWithUnget(input);
       this.lenientLineBreaks = lenientLineBreaks;
-      this.checkStrictEncoding=checkStrictEncoding;
+      this.checkStrictEncoding = checkStrictEncoding;
     }
 
     public QuotedPrintableTransform(
@@ -37,7 +37,8 @@ namespace PeterO.Mail {
 
     public QuotedPrintableTransform(
       ITransform input,
-      bool lenientLineBreaks, int maxLineLength) : this(input, lenientLineBreaks, maxLineLength, false) {
+      bool lenientLineBreaks,
+      int maxLineLength) : this(input, lenientLineBreaks, maxLineLength, false) {
     }
 
     /// <summary>Not documented yet.</summary>
@@ -129,7 +130,7 @@ namespace PeterO.Mail {
                 this.lineCharCount = 0;
                 this.input.Unget();
                 continue;
-              } else if (!checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
+              } else if (!this.checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
                 if (this.maxLineSize >= 0) {
                   ++this.lineCharCount;
                   if (this.lineCharCount > this.maxLineSize) {
@@ -152,7 +153,7 @@ namespace PeterO.Mail {
             this.lineCharCount = 0;
             continue;
           } else {
-            if (!checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
+            if (!this.checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
@@ -174,7 +175,7 @@ namespace PeterO.Mail {
             c <<= 4;
             c |= b2 + 10 - 'a';
           } else {
-            if (!checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
+            if (!this.checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
@@ -300,7 +301,7 @@ namespace PeterO.Mail {
           if (!endsWithLineBreak) {
             return c;
           } else {
-            if(checkStrictEncoding){
+            if (this.checkStrictEncoding) {
               throw new MessageDataException("Space or tab at end of line");
             }
             this.bufferCount = 0;
@@ -313,8 +314,8 @@ namespace PeterO.Mail {
             if (this.lineCharCount > this.maxLineSize) {
               throw new MessageDataException("Encoded quoted-printable line too long");
             }
-          } else if(checkStrictEncoding && c>=0x7F || c<0x20){
-              throw new MessageDataException("Invalid character");            
+          } else if (this.checkStrictEncoding && c >= 0x7f || c < 0x20) {
+              throw new MessageDataException("Invalid character");
           }
           return c;
         }

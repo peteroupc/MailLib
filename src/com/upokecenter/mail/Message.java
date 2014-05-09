@@ -272,8 +272,10 @@ public void setSubject(String value) {
       }
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets the body of this message as a Unicode string.
+     * @return The body of this message as a Unicode string.
+     * @throws UnsupportedOperationException This message has no character encoding
+     * declared on it, or the character encoding is not supported.
      */
     public String getBodyString() {
         java.io.ByteArrayInputStream ms=null;
@@ -1002,6 +1004,19 @@ public void setContentDisposition(ContentDisposition value) {
       return this.Generate(0);
     }
 
+    private static String GenerateBoundary(int num) {
+      StringBuilder sb = new StringBuilder();
+      String hex = "0123456789ABCDEF";
+      sb.append("=_Boundary");
+      for (int i = 0; i < 8; ++i) {
+        int b = (num >> 56) & 255;
+        sb.append(hex.charAt((b >> 4) & 15));
+        sb.append(hex.charAt(b & 15));
+        num <<= 8;
+      }
+      return sb.toString();
+    }
+
     private String Generate(int depth) {
       StringBuilder sb = new StringBuilder();
       boolean haveMimeVersion = false;
@@ -1021,8 +1036,7 @@ public void setContentDisposition(ContentDisposition value) {
       boolean isMultipart = false;
       String boundary = "";
       if (builder.isMultipart()) {
-        boundary = "=_Boundary" +
-          Integer.toString((int)depth);
+        boundary = GenerateBoundary(depth);
         builder.SetParameter("boundary", boundary);
         isMultipart = true;
       }
@@ -1173,12 +1187,13 @@ public void setContentDisposition(ContentDisposition value) {
               throw new MessageDataException("Header field still has non-Ascii: " + name + " " + value);
             }
           }
-          // TODO: Don't collapse spaces if a DQUOTE appears
-          WordWrapEncoder encoder=new WordWrapEncoder(Capitalize(name) + ":");
+          boolean haveDquote = downgraded.indexOf('"') >= 0;
+          WordWrapEncoder encoder=new WordWrapEncoder(Capitalize(name) + ":", !haveDquote);
           encoder.AddString(downgraded);
           sb.append(encoder.toString());
         } else {
-          WordWrapEncoder encoder=new WordWrapEncoder(Capitalize(name) + ":");
+          boolean haveDquote = value.indexOf('"') >= 0;
+          WordWrapEncoder encoder=new WordWrapEncoder(Capitalize(name) + ":", !haveDquote);
           encoder.AddString(value);
           sb.append(encoder.toString());
         }
@@ -1835,9 +1850,11 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         // have lines that exceed this size, so use an unlimited line length
         // when parsing
         transform = new QuotedPrintableTransform(stream, false, -1);
+// transform = new QuotedPrintableTransform(stream, false, 76, true);
       } else if (encoding == EncodingBase64) {
         // NOTE: Same as quoted-printable regarding line length
-        transform = new Base64Transform(stream, false, -1);
+        transform = new Base64Transform(stream, false, -1, false);
+// transform = new Base64Transform(stream, false, 76, true);
       } else if (encoding == EncodingEightBit) {
         transform = new EightBitTransform(stream);
       } else if (encoding == EncodingBinary) {

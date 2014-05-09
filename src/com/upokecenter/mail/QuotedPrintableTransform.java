@@ -14,22 +14,31 @@ at: http://upokecenter.com/d/
     private byte[] buffer;
     private int bufferIndex;
     private int bufferCount;
-
+    private boolean checkStrictEncoding;
     private int maxLineSize;
 
     public QuotedPrintableTransform (
       ITransform input,
       boolean lenientLineBreaks,
-      int maxLineSize) {
+      int maxLineSize,
+      boolean checkStrictEncoding) {
       this.maxLineSize = maxLineSize;
       this.input = new TransformWithUnget(input);
       this.lenientLineBreaks = lenientLineBreaks;
+      this.checkStrictEncoding = checkStrictEncoding;
     }
 
     public QuotedPrintableTransform (
       ITransform input,
       boolean lenientLineBreaks) {
- this(input,lenientLineBreaks,76);
+ this(input,lenientLineBreaks,76,false);
+    }
+
+    public QuotedPrintableTransform (
+      ITransform input,
+      boolean lenientLineBreaks,
+      int maxLineLength) {
+ this(input,lenientLineBreaks,maxLineLength,false);
     }
 
     /**
@@ -125,7 +134,7 @@ at: http://upokecenter.com/d/
                 this.lineCharCount = 0;
                 this.input.Unget();
                 continue;
-              } else if (this.maxLineSize > 76 || this.maxLineSize < 0) {
+              } else if (!this.checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
                 if (this.maxLineSize >= 0) {
                   ++this.lineCharCount;
                   if (this.lineCharCount > this.maxLineSize) {
@@ -148,7 +157,7 @@ at: http://upokecenter.com/d/
             this.lineCharCount = 0;
             continue;
           } else {
-            if (this.maxLineSize > 76 || this.maxLineSize < 0) {
+            if (!this.checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
@@ -170,7 +179,7 @@ at: http://upokecenter.com/d/
             c <<= 4;
             c |= b2 + 10 - 'a';
           } else {
-            if (this.maxLineSize > 76 || this.maxLineSize < 0) {
+            if (!this.checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
@@ -296,6 +305,9 @@ at: http://upokecenter.com/d/
           if (!endsWithLineBreak) {
             return c;
           } else {
+            if (this.checkStrictEncoding) {
+              throw new MessageDataException("Space or tab at end of line");
+            }
             this.bufferCount = 0;
             continue;
           }
@@ -306,6 +318,8 @@ at: http://upokecenter.com/d/
             if (this.lineCharCount > this.maxLineSize) {
               throw new MessageDataException("Encoded quoted-printable line too long");
             }
+          } else if (this.checkStrictEncoding && c >= 0x7f || c < 0x20) {
+              throw new MessageDataException("Invalid character");
           }
           return c;
         }

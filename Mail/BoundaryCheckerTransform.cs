@@ -181,12 +181,12 @@ namespace PeterO.Mail {
             this.ungetting = true;
             break;
           }
-          //Console.Write("" + ((char)c));
+          // Console.Write("" + ((char)c));
           ++bytesRead;
           this.ResizeBuffer(bytesRead + bufferStart);
           this.buffer[bytesRead + bufferStart - 1] = (byte)c;
         }
-        //Console.WriteLine("::" + (bytesRead));
+        // Console.WriteLine("::" + (bytesRead));
         // NOTE: All boundary strings are assumed to
         // have only ASCII characters (with values
         // less than 128). Check boundaries from
@@ -234,8 +234,8 @@ namespace PeterO.Mail {
               // There's nothing else significant
               // after this boundary,
               // so return now
-              this.hasNewBodyPart=false;
-              this.endOfStream=true;
+              this.hasNewBodyPart = false;
+              this.endOfStream = true;
               this.bufferCount = 0;
               return -1;
             }

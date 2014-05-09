@@ -51,8 +51,8 @@ import java.util.*;
     private int characterListPos;
 
     /**
-     * Initializes a new instance of the Normalizer class using Normalization
-     * Form C.
+     * Initializes a new instance of the NormalizingCharacterInput class
+     * using Normalization Form C.
      * @param characterList An List object.
      */
     public NormalizingCharacterInput (List<Integer> characterList) {
@@ -60,8 +60,8 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the Normalizer class using Normalization
-     * Form C.
+     * Initializes a new instance of the NormalizingCharacterInput class
+     * using Normalization Form C.
      * @param str A string object.
      */
     public NormalizingCharacterInput (String str) {
@@ -69,8 +69,8 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the Normalizer class using Normalization
-     * Form C.
+     * Initializes a new instance of the NormalizingCharacterInput class
+     * using Normalization Form C.
      * @param input An ICharacterInput object.
      */
     public NormalizingCharacterInput (ICharacterInput input) {

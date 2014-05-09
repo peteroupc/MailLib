@@ -49,7 +49,7 @@ namespace PeterO.Mail {
 
     private void AppendWord(string str) {
       if (this.lineLength + this.lastSpaces.Length + str.Length > MaxLineLength) {
-        if(this.haveNonwhitespace){
+        if (this.haveNonwhitespace) {
           // Too big to fit the current line,
           // create a new line (but only if the current
           // line isn't all whitespace)

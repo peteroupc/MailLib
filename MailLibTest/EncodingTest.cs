@@ -61,7 +61,8 @@ namespace MailLibTest {
         QuotedPrintableTransform t = new QuotedPrintableTransform(
           new WrappedStream(ms),
           lenientLineBreaks,
-          unlimitedLineLength ? -1 : 76, false);
+          unlimitedLineLength ? -1 : 76,
+          false);
         while (true) {
           int c = t.ReadByte();
           if (c < 0) {
@@ -1521,13 +1522,12 @@ namespace MailLibTest {
         hdrname.Equals("autoforwarded") || hdrname.Equals("generate-delivery-report") || hdrname.Equals("incomplete-copy") || hdrname.Equals("message-type") || hdrname.Equals("discarded-x400-ipms-extensions") || hdrname.Equals("autosubmitted") || hdrname.Equals("prevent-nondelivery-report") || hdrname.Equals("alternate-recipient") || hdrname.Equals("disclose-recipients");
     }
 
-    
-        public void TestUtf7One(string input, string expected){
+        public void TestUtf7One(string input, string expected) {
       Assert.AreEqual(expected, Charsets.GetCharset("utf-7").GetString(EncodingTest.Transform(input)));
     }
 
     [Test]
-    public void TestUtf7(){
+    public void TestUtf7() {
       TestUtf7One("\\","\ufffd");
       TestUtf7One("\u0001","\ufffd");
       TestUtf7One("\u007f","\ufffd");
@@ -1645,7 +1645,7 @@ namespace MailLibTest {
       message+="--b1--\r\n";
       message+="Epilogue";
       Message msg;
-      msg=new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message, true)));
+      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message, true)));
       Assert.AreEqual("multipart",msg.ContentType.TopLevelType);
       Assert.AreEqual("b1",msg.ContentType.GetParameter("boundary"));
       Assert.AreEqual(1, msg.Parts.Count);
@@ -1696,12 +1696,12 @@ namespace MailLibTest {
       Assert.AreEqual("b1",msg.ContentType.GetParameter("boundary"));
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual("application",msg.Parts[0].ContentType.TopLevelType);
-      body=msg.Parts[0].GetBody();
-      Assert.AreEqual(0,body[0]);
-      Assert.AreEqual(16,body[1]);
-      Assert.AreEqual(1,body[2]);
-      Assert.AreEqual(93,body[3]);
-      Assert.AreEqual(4,body.Length);
+      body = msg.Parts[0].GetBody();
+      Assert.AreEqual(0, body[0]);
+      Assert.AreEqual(16, body[1]);
+      Assert.AreEqual(1, body[2]);
+      Assert.AreEqual(93, body[3]);
+      Assert.AreEqual(4, body.Length);
       // Base64 body part II
       message = messageStart;
       message+="Content-Type: application/octet-stream\r\n";
@@ -1714,13 +1714,13 @@ namespace MailLibTest {
       Assert.AreEqual("b1",msg.ContentType.GetParameter("boundary"));
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual("application",msg.Parts[0].ContentType.TopLevelType);
-      body=msg.Parts[0].GetBody();
-      Assert.AreEqual(0,body[0]);
-      Assert.AreEqual(16,body[1]);
-      Assert.AreEqual(1,body[2]);
-      Assert.AreEqual(93,body[3]);
-      Assert.AreEqual(4,body.Length);
-      // Base64 in nested body part 
+      body = msg.Parts[0].GetBody();
+      Assert.AreEqual(0, body[0]);
+      Assert.AreEqual(16, body[1]);
+      Assert.AreEqual(1, body[2]);
+      Assert.AreEqual(93, body[3]);
+      Assert.AreEqual(4, body.Length);
+      // Base64 in nested body part
       message = messageStart;
       message+="Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
       message+="--b2\r\n";
@@ -1734,14 +1734,14 @@ namespace MailLibTest {
       Assert.AreEqual("multipart",msg.ContentType.TopLevelType);
       Assert.AreEqual("b1",msg.ContentType.GetParameter("boundary"));
       Assert.AreEqual(1, msg.Parts.Count);
-      Message part=msg.Parts[0];
+      Message part = msg.Parts[0];
       Assert.AreEqual("application",part.Parts[0].ContentType.TopLevelType);
-      body=part.Parts[0].GetBody();
-      Assert.AreEqual(0,body[0]);
-      Assert.AreEqual(16,body[1]);
-      Assert.AreEqual(1,body[2]);
-      Assert.AreEqual(93,body[3]);
-      Assert.AreEqual(4,body.Length);
+      body = part.Parts[0].GetBody();
+      Assert.AreEqual(0, body[0]);
+      Assert.AreEqual(16, body[1]);
+      Assert.AreEqual(1, body[2]);
+      Assert.AreEqual(93, body[3]);
+      Assert.AreEqual(4, body.Length);
       // Nested Multipart body part II
       message = messageStart;
       message+="Content-Type: multipart/mixed; boundary=b2\r\n\r\n";

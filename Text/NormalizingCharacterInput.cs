@@ -49,20 +49,20 @@ namespace PeterO.Text {
     private IList<int> characterList;
     private int characterListPos;
 
-    /// <summary>Initializes a new instance of the Normalizer class using
-    /// Normalization Form C.</summary>
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class using Normalization Form C.</summary>
     /// <param name='characterList'>An IList object.</param>
     public NormalizingCharacterInput(IList<int> characterList) : this(characterList, Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the Normalizer class using
-    /// Normalization Form C.</summary>
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class using Normalization Form C.</summary>
     /// <param name='str'>A string object.</param>
     public NormalizingCharacterInput(string str) : this(str, Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the Normalizer class using
-    /// Normalization Form C.</summary>
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class using Normalization Form C.</summary>
     /// <param name='input'>An ICharacterInput object.</param>
     public NormalizingCharacterInput(ICharacterInput input) : this(input, Normalization.NFC) {
     }

@@ -171,6 +171,8 @@ private Charsets() {
           253,
           254,
           255 });
+      } else if (name.equals("utf-7")) {
+        return new Utf7Encoding();
       } else if (name.equals("iso-8859-10")) {
         return new SingleByteEncoding(new int[] { 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 260, 274, 290, 298, 296, 310, 167, 315, 272, 352, 358, 381, 173, 362, 330, 176, 261, 275, 291, 299, 297, 311, 183, 316, 273, 353, 359, 382, 8213, 363, 331, 256, 193, 194, 195, 196, 197, 198, 302, 268, 201, 280, 203, 278, 205, 206, 207, 208, 325, 332, 211, 212, 213, 214, 360, 216, 370, 218, 219, 220, 221, 222, 223, 257, 225, 226, 227, 228, 229, 230, 303, 269, 233, 281, 235, 279, 237, 238, 239, 240, 326, 333, 243, 244, 245, 246, 361, 248, 371, 250, 251, 252, 253, 254, 312 });
       } else if (name.equals("iso-8859-13")) {
@@ -364,11 +366,284 @@ private Charsets() {
       }
     }
 
+    private static final class Utf7Encoding implements ICharset {
+      static final int[] Alphabet = new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
+        52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1,
+        -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+        15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
+        -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+        41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
+
+      public String GetString(ITransform transform) {
+        StringBuilder builder = new StringBuilder();
+        ReadUtf7(transform, builder, true);
+        return builder.toString();
+      }
+
+      private static final class CodeUnitAppender {
+        private int surrogate;
+        private int lastByte;
+
+        public CodeUnitAppender () {
+          this.surrogate = -1;
+          this.lastByte = -1;
+        }
+
+    /**
+     * Not documented yet.
+     * @param builder A StringBuilder object.
+     */
+public void FinalizeAndReset(StringBuilder builder) {
+          if (this.surrogate >= 0 && this.lastByte >= 0) {
+            // Unpaired surrogate and an unpaired byte value
+            builder.append((char)0xfffd);
+            builder.append((char)0xfffd);
+          } else if (this.surrogate >= 0 || this.lastByte >= 0) {
+            // Unpaired surrogate or byte value remains
+            builder.append((char)0xfffd);
+          }
+          this.surrogate = -1;
+          this.lastByte = -1;
+        }
+
+    /**
+     * Not documented yet.
+     */
+public void AppendIncompleteByte() {
+          // Make sure lastByte isn't -1, for FinalizeAndReset
+          // purposes
+          this.lastByte = 0;
+        }
+
+    /**
+     * Not documented yet.
+     * @param value A 32-bit signed integer.
+     * @param builder A StringBuilder object.
+     */
+public void AppendByte(int value, StringBuilder builder) {
+          if (this.lastByte >= 0) {
+            int codeunit = this.lastByte << 8;
+            codeunit |= value & 0xff;
+            this.AppendCodeUnit(codeunit, builder);
+            this.lastByte = -1;
+          } else {
+            this.lastByte = value;
+          }
+        }
+
+        private void AppendCodeUnit(int codeunit, StringBuilder builder) {
+          if (this.surrogate >= 0) {
+            // If we have a surrogate, "codeunit"
+            // must be a valid "low surrogate" to complete the pair
+            if ((codeunit & 0xfc00) == 0xdc00) {
+              // valid low surrogate
+              builder.append((char)this.surrogate);
+              builder.append((char)codeunit);
+              this.surrogate = -1;
+            } else if ((codeunit & 0xfc00) == 0xd800) {
+              // unpaired high surrogate
+              builder.append((char)0xfffd);
+              this.surrogate = codeunit;
+            } else {
+              // not a surrogate, output the first as U + FFFD
+              // and the second as is
+              builder.append((char)0xfffd);
+              builder.append((char)codeunit);
+              this.surrogate = -1;
+            }
+          } else {
+            if ((codeunit & 0xfc00) == 0xdc00) {
+              // unpaired low surrogate
+              builder.append((char)0xfffd);
+            } else if ((codeunit & 0xfc00) == 0xd800) {
+              // valid low surrogate
+              this.surrogate = codeunit;
+            } else {
+              // not a surrogate
+              builder.append((char)codeunit);
+            }
+          }
+        }
+
+    /**
+     * Not documented yet.
+     */
+public void Reset() {
+          this.surrogate = -1;
+          this.lastByte = -1;
+        }
+      }
+
+      private static void ReadUtf7(
+        ITransform input,
+        StringBuilder builder,
+        boolean replace) {
+        if (input == null) {
+          throw new NullPointerException("stream");
+        }
+        if (builder == null) {
+          throw new NullPointerException("builder");
+        }
+        int alphavalue = 0;
+        int base64value = 0;
+        int base64count = 0;
+        CodeUnitAppender appender = new CodeUnitAppender();
+        int state = 0;  // 0: not in base64; 1: start of base 64; 2: continuing base64
+        while (true) {
+          int b;
+           switch (state) {
+            case 0:  // not in base64
+              b = input.read();
+              if (b < 0) {
+                // done
+                return;
+              }
+              if (b == 0x09 || b == 0x0a || b == 0x0d) {
+                builder.append((char)b);
+              } else if (b == 0x5c || b >= 0x7e || b < 0x20) {
+                // Illegal byte in UTF-7
+                builder.append((char)0xfffd);
+              } else if (b == 0x2b) {
+                // plus sign
+                state = 1;  // change state to "start of base64"
+                base64value = 0;
+                base64count = 0;
+                appender.Reset();
+              } else {
+                builder.append((char)b);
+              }
+              break;
+            case 1:  // start of base64
+              b = input.read();
+              if (b < 0) {
+                // End of stream, illegal
+                state = 0;
+                builder.append((char)0xfffd);
+                return;
+              }
+              if (b == 0x2d) {
+                // hyphen, so output a plus sign
+                state = 0;
+                builder.append('+');
+              } else if (b >= 0x80) {
+                // Non-ASCII byte, illegal
+                state = 0;
+                builder.append((char)0xfffd);  // for the illegal plus
+                builder.append((char)0xfffd);  // for the illegal non-ASCII byte
+              } else {
+                alphavalue = Alphabet[b];
+                if (alphavalue >= 0) {
+                  state = 2;  // change state to "continuing base64"
+                  base64value <<= 6;
+                  base64value |= alphavalue;
+                  ++base64count;
+                } else {
+                  // Non-base64 byte (NOTE: Can't be plus or
+                  // minus at this point)
+                  state = 0;
+                  builder.append((char)0xfffd);  // for the illegal plus
+                  if (b == 0x09 || b == 0x0a || b == 0x0d) {
+                    builder.append((char)b);
+                  } else if (b == 0x5c || b >= 0x7e || b < 0x20) {
+                    // Illegal byte in UTF-7
+                    builder.append((char)0xfffd);
+                  } else {
+                    builder.append((char)b);
+                  }
+                }
+              }
+              break;
+            case 2:  // continuing base64
+              b = input.read();
+              if (b < 0 || b >= 0x80) {
+                // End of base64
+                if (base64count == 1) {
+                  // incomplete base64 byte
+                  appender.AppendIncompleteByte();
+                } else if (base64count == 2) {
+                  base64value <<= 12;
+                  appender.AppendByte((base64value >> 16) & 0xff, builder);
+                  if ((base64value & 0xffff) != 0) {
+                    // Redundant pad bits
+                    appender.AppendIncompleteByte();
+                  }
+                } else if (base64count == 3) {
+                  base64value <<= 6;
+                  appender.AppendByte((base64value >> 16) & 0xff, builder);
+                  appender.AppendByte((base64value >> 8) & 0xff, builder);
+                  if ((base64value & 0xff) != 0) {
+                    // Redundant pad bits
+                    appender.AppendIncompleteByte();
+                  }
+                }
+                appender.FinalizeAndReset(builder);
+                if (b >= 0x80) {
+                  builder.append((char)0xfffd);
+                } else {
+                  return;
+                }
+              } else {
+                alphavalue = Alphabet[b];
+                if (alphavalue >= 0) {
+                  base64value <<= 6;
+                  base64value |= alphavalue;
+                  ++base64count;
+                  if (base64count == 4) {
+                    // Generate UTF-16 bytes
+                    appender.AppendByte((base64value >> 16) & 0xff, builder);
+                    appender.AppendByte((base64value >> 8) & 0xff, builder);
+                    appender.AppendByte((base64value) & 0xff, builder);
+                    base64count = 0;
+                  }
+                } else {
+                  state = 0;
+                  if (base64count == 1) {
+                    // incomplete base64 byte
+                    appender.AppendIncompleteByte();
+                  } else if (base64count == 2) {
+                    base64value <<= 12;
+                    appender.AppendByte((base64value >> 16) & 0xff, builder);
+                    if ((base64value & 0xffff) != 0) {
+                      // Redundant pad bits
+                      appender.AppendIncompleteByte();
+                    }
+                  } else if (base64count == 3) {
+                    base64value <<= 6;
+                    appender.AppendByte((base64value >> 16) & 0xff, builder);
+                    appender.AppendByte((base64value >> 8) & 0xff, builder);
+                    if ((base64value & 0xff) != 0) {
+                      // Redundant pad bits
+                      appender.AppendIncompleteByte();
+                    }
+                  }
+                  appender.FinalizeAndReset(builder);
+                  if (b == 0x2d) {
+                    // Ignore the hyphen
+                  } else if (b == 0x09 || b == 0x0a || b == 0x0d) {
+                    builder.append((char)b);
+                  } else if (b == 0x5c || b >= 0x7e || b < 0x20) {
+                    // Illegal byte in UTF-7
+                    builder.append((char)0xfffd);
+                  } else {
+                    builder.append((char)b);
+                  }
+                }
+              }
+              break;
+            default:
+              throw new IllegalStateException("Unexpected state");
+          }
+        }
+      }
+    }
+
     private static final class SingleByteEncoding implements ICharset {
       private int[] encodingMapping;
 
-      public SingleByteEncoding (int[] map) {
-        this.encodingMapping = map;
+      public SingleByteEncoding (int[] mapping) {
+        this.encodingMapping = mapping;
       }
 
     /**

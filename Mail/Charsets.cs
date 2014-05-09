@@ -364,8 +364,7 @@ namespace PeterO.Mail {
     }
 
     private sealed class Utf7Encoding : ICharset {
-      internal static readonly int[] Alphabet = new int[] {
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      internal static readonly int[] Alphabet = new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
         52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1,
@@ -379,80 +378,90 @@ namespace PeterO.Mail {
         ReadUtf7(transform, builder, true);
         return builder.ToString();
       }
-      
+
       private sealed class CodeUnitAppender {
         private int surrogate;
         private int lastByte;
-        public CodeUnitAppender(){
+
+        public CodeUnitAppender() {
           this.surrogate = -1;
           this.lastByte = -1;
         }
-        public void FinalizeAndReset(StringBuilder builder){
-          if(this.surrogate>=0 && lastByte>=0){
+
+        /// <summary>Not documented yet.</summary>
+        /// <param name='builder'>A StringBuilder object.</param>
+        public void FinalizeAndReset(StringBuilder builder) {
+          if (this.surrogate >= 0 && this.lastByte >= 0) {
             // Unpaired surrogate and an unpaired byte value
             builder.Append((char)0xfffd);
             builder.Append((char)0xfffd);
-          } else if(this.surrogate>=0 || lastByte>=0){
+          } else if (this.surrogate >= 0 || this.lastByte >= 0) {
             // Unpaired surrogate or byte value remains
             builder.Append((char)0xfffd);
           }
           this.surrogate = -1;
-          this.lastByte=-1;
+          this.lastByte = -1;
         }
-        
-        public void AppendIncompleteByte(){
+
+        /// <summary>Not documented yet.</summary>
+        public void AppendIncompleteByte() {
           // Make sure lastByte isn't -1, for FinalizeAndReset
           // purposes
-          this.lastByte=0;
+          this.lastByte = 0;
         }
-        
-        public void AppendByte(int value, StringBuilder builder){
-          if(this.lastByte>=0){
-            int codeunit=this.lastByte<<8;
-            codeunit|=(value&0xFF);
-            AppendCodeUnit(codeunit,builder);
-            this.lastByte=-1;
+
+        /// <summary>Not documented yet.</summary>
+        /// <param name='value'>A 32-bit signed integer.</param>
+        /// <param name='builder'>A StringBuilder object.</param>
+        public void AppendByte(int value, StringBuilder builder) {
+          if (this.lastByte >= 0) {
+            int codeunit = this.lastByte << 8;
+            codeunit |= value & 0xff;
+            this.AppendCodeUnit(codeunit, builder);
+            this.lastByte = -1;
           } else {
-            this.lastByte=value;
+            this.lastByte = value;
           }
         }
-        
-        private void AppendCodeUnit(int codeunit, StringBuilder builder){
-          if(surrogate>=0){
+
+        private void AppendCodeUnit(int codeunit, StringBuilder builder) {
+          if (this.surrogate >= 0) {
             // If we have a surrogate, "codeunit"
             // must be a valid "low surrogate" to complete the pair
-            if(codeunit>=0xdc00 && codeunit<=0xdfff){
+            if ((codeunit & 0xfc00) == 0xdc00) {
               // valid low surrogate
-              builder.Append((char)surrogate);
+              builder.Append((char)this.surrogate);
               builder.Append((char)codeunit);
-              surrogate=-1;
-            } else if(codeunit>=0xd800 && codeunit<=0xdbff){
+              this.surrogate = -1;
+            } else if ((codeunit & 0xfc00) == 0xd800) {
               // unpaired high surrogate
               builder.Append((char)0xfffd);
-              surrogate = codeunit;
+              this.surrogate = codeunit;
             } else {
-              // not a surrogate, output the first as U+FFFD
+              // not a surrogate, output the first as U + FFFD
               // and the second as is
               builder.Append((char)0xfffd);
               builder.Append((char)codeunit);
-              surrogate=-1;
+              this.surrogate = -1;
             }
           } else {
-            if(codeunit>=0xdc00 && codeunit<=0xdfff){
+            if ((codeunit & 0xfc00) == 0xdc00) {
               // unpaired low surrogate
               builder.Append((char)0xfffd);
-            } else if(codeunit>=0xd800 && codeunit<=0xdbff){
+            } else if ((codeunit & 0xfc00) == 0xd800) {
               // valid low surrogate
-              surrogate = codeunit;
+              this.surrogate = codeunit;
             } else {
               // not a surrogate
               builder.Append((char)codeunit);
             }
           }
         }
-        public void Reset(){
-          surrogate = -1;
-          lastByte=-1;
+
+        /// <summary>Not documented yet.</summary>
+        public void Reset() {
+          this.surrogate = -1;
+          this.lastByte = -1;
         }
       }
 
@@ -469,25 +478,25 @@ namespace PeterO.Mail {
         int alphavalue = 0;
         int base64value = 0;
         int base64count = 0;
-        CodeUnitAppender appender=new CodeUnitAppender();
-        int state = 0; // 0: not in base64; 1: start of base 64; 2: continuing base64
+        CodeUnitAppender appender = new CodeUnitAppender();
+        int state = 0;  // 0: not in base64; 1: start of base 64; 2: continuing base64
         while (true) {
           int b;
-          switch(state){
-            case 0: // not in base64
-              b=input.ReadByte();
-              if (b < 0){
+          switch (state) {
+            case 0:  // not in base64
+              b = input.ReadByte();
+              if (b < 0) {
                 // done
                 return;
               }
               if (b == 0x09 || b == 0x0a || b == 0x0d) {
                 builder.Append((char)b);
-              } else if (b == 0x5C || b >= 0x7E || b < 0x20) {
+              } else if (b == 0x5c || b >= 0x7e || b < 0x20) {
                 // Illegal byte in UTF-7
                 builder.Append((char)0xfffd);
-              } else if (b == 0x2b){
+              } else if (b == 0x2b) {
                 // plus sign
-                state = 1; // change state to "start of base64"
+                state = 1;  // change state to "start of base64"
                 base64value = 0;
                 base64count = 0;
                 appender.Reset();
@@ -495,27 +504,27 @@ namespace PeterO.Mail {
                 builder.Append((char)b);
               }
               break;
-            case 1: // start of base64
-              b=input.ReadByte();
-              if(b<0){
+            case 1:  // start of base64
+              b = input.ReadByte();
+              if (b < 0) {
                 // End of stream, illegal
                 state = 0;
                 builder.Append((char)0xfffd);
                 return;
               }
-              if (b == 0x2d){
+              if (b == 0x2d) {
                 // hyphen, so output a plus sign
                 state = 0;
                 builder.Append('+');
-              } else if (b>=0x80){
+              } else if (b >= 0x80) {
                 // Non-ASCII byte, illegal
                 state = 0;
-                builder.Append((char)0xfffd); // for the illegal plus
-                builder.Append((char)0xfffd); // for the illegal non-ASCII byte
+                builder.Append((char)0xfffd);  // for the illegal plus
+                builder.Append((char)0xfffd);  // for the illegal non-ASCII byte
               } else {
                 alphavalue = Alphabet[b];
-                if(alphavalue>=0){
-                  state = 2; // change state to "continuing base64"
+                if (alphavalue >= 0) {
+                  state = 2;  // change state to "continuing base64"
                   base64value <<= 6;
                   base64value |= alphavalue;
                   ++base64count;
@@ -523,10 +532,10 @@ namespace PeterO.Mail {
                   // Non-base64 byte (NOTE: Can't be plus or
                   // minus at this point)
                   state = 0;
-                  builder.Append((char)0xfffd); // for the illegal plus
+                  builder.Append((char)0xfffd);  // for the illegal plus
                   if (b == 0x09 || b == 0x0a || b == 0x0d) {
                     builder.Append((char)b);
-                  } else if (b == 0x5C || b >= 0x7E || b < 0x20) {
+                  } else if (b == 0x5c || b >= 0x7e || b < 0x20) {
                     // Illegal byte in UTF-7
                     builder.Append((char)0xfffd);
                   } else {
@@ -535,75 +544,75 @@ namespace PeterO.Mail {
                 }
               }
               break;
-            case 2: // continuing base64
-              b=input.ReadByte();
-              if(b<0 || b>=0x80){
+            case 2:  // continuing base64
+              b = input.ReadByte();
+              if (b < 0 || b >= 0x80) {
                 // End of base64
-                if(base64count==1){
+                if (base64count == 1) {
                   // incomplete base64 byte
                   appender.AppendIncompleteByte();
-                } else if(base64count==2){
+                } else if (base64count == 2) {
                   base64value <<= 12;
-                  appender.AppendByte((base64value >> 16) & 0xff,builder);
-                  if((base64value&0xFFFF)!=0){
+                  appender.AppendByte((base64value >> 16) & 0xff, builder);
+                  if ((base64value & 0xffff) != 0) {
                     // Redundant pad bits
                     appender.AppendIncompleteByte();
                   }
-                } else if(base64count==3){
+                } else if (base64count == 3) {
                   base64value <<= 6;
-                  appender.AppendByte((base64value >> 16) & 0xff,builder);
-                  appender.AppendByte((base64value >> 8) & 0xff,builder);
-                  if((base64value&0xFF)!=0){
+                  appender.AppendByte((base64value >> 16) & 0xff, builder);
+                  appender.AppendByte((base64value >> 8) & 0xff, builder);
+                  if ((base64value & 0xff) != 0) {
                     // Redundant pad bits
                     appender.AppendIncompleteByte();
                   }
                 }
                 appender.FinalizeAndReset(builder);
-                if(b>=0x80){
+                if (b >= 0x80) {
                   builder.Append((char)0xfffd);
                 } else {
                   return;
                 }
               } else {
                 alphavalue = Alphabet[b];
-                if(alphavalue>=0){
+                if (alphavalue >= 0) {
                   base64value <<= 6;
                   base64value |= alphavalue;
                   ++base64count;
-                  if(base64count == 4){
+                  if (base64count == 4) {
                     // Generate UTF-16 bytes
-                    appender.AppendByte((base64value >> 16) & 0xff,builder);
-                    appender.AppendByte((base64value >> 8) & 0xff,builder);
-                    appender.AppendByte((base64value) & 0xff,builder);
-                    base64count=0;
+                    appender.AppendByte((base64value >> 16) & 0xff, builder);
+                    appender.AppendByte((base64value >> 8) & 0xff, builder);
+                    appender.AppendByte((base64value) & 0xff, builder);
+                    base64count = 0;
                   }
                 } else {
                   state = 0;
-                  if(base64count==1){
+                  if (base64count == 1) {
                     // incomplete base64 byte
                     appender.AppendIncompleteByte();
-                  } else if(base64count==2){
+                  } else if (base64count == 2) {
                     base64value <<= 12;
-                    appender.AppendByte((base64value >> 16) & 0xff,builder);
-                    if((base64value&0xFFFF)!=0){
+                    appender.AppendByte((base64value >> 16) & 0xff, builder);
+                    if ((base64value & 0xffff) != 0) {
                       // Redundant pad bits
                       appender.AppendIncompleteByte();
                     }
-                  } else if(base64count==3){
+                  } else if (base64count == 3) {
                     base64value <<= 6;
-                    appender.AppendByte((base64value >> 16) & 0xff,builder);
-                    appender.AppendByte((base64value >> 8) & 0xff,builder);
-                    if((base64value&0xFF)!=0){
+                    appender.AppendByte((base64value >> 16) & 0xff, builder);
+                    appender.AppendByte((base64value >> 8) & 0xff, builder);
+                    if ((base64value & 0xff) != 0) {
                       // Redundant pad bits
                       appender.AppendIncompleteByte();
                     }
                   }
                   appender.FinalizeAndReset(builder);
-                  if (b == 0x2d){
+                  if (b == 0x2d) {
                     // Ignore the hyphen
                   } else if (b == 0x09 || b == 0x0a || b == 0x0d) {
                     builder.Append((char)b);
-                  } else if (b == 0x5C || b >= 0x7E || b < 0x20) {
+                  } else if (b == 0x5c || b >= 0x7e || b < 0x20) {
                     // Illegal byte in UTF-7
                     builder.Append((char)0xfffd);
                   } else {
@@ -618,7 +627,7 @@ namespace PeterO.Mail {
         }
       }
     }
-    
+
     private sealed class SingleByteEncoding : ICharset {
       private int[] encodingMapping;
 

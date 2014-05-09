@@ -24,16 +24,19 @@ at: http://upokecenter.com/d/
     private int bufferIndex;
     private int bufferCount;
     private int maxLineLength;
+    private boolean checkStrictEncoding;
+    private int paddingCount;
 
     public Base64Transform (ITransform input, boolean lenientLineBreaks) {
- this(input,lenientLineBreaks,76);
+ this(input,lenientLineBreaks,76,false);
     }
 
-    public Base64Transform (ITransform input, boolean lenientLineBreaks, int maxLineLength) {
+    public Base64Transform (ITransform input, boolean lenientLineBreaks, int maxLineLength, boolean checkStrictEncoding) {
       this.input = input;
       this.maxLineLength = maxLineLength;
       this.lenientLineBreaks = lenientLineBreaks;
       this.buffer = new byte[4];
+      this.checkStrictEncoding = checkStrictEncoding;
     }
 
     /**
@@ -73,9 +76,15 @@ at: http://upokecenter.com/d/
             // Not supposed to happen
             throw new MessageDataException("Invalid number of base64 characters");
           } else if (count == 2) {
+            if (this.checkStrictEncoding && this.paddingCount != 2) {
+              throw new MessageDataException("Invalid amount of base64 padding");
+            }
             value <<= 12;
             return (byte)((value >> 16) & 0xff);
           } else if (count == 3) {
+            if (this.checkStrictEncoding && this.paddingCount != 1) {
+              throw new MessageDataException("Invalid amount of base64 padding");
+            }
             value <<= 6;
             this.ResizeBuffer(1);
             this.buffer[0] = (byte)((value >> 8) & 0xff);
@@ -92,21 +101,37 @@ at: http://upokecenter.com/d/
             if (this.lenientLineBreaks) {
               this.lineCharCount = 0;
               continue;
+            } else if (this.checkStrictEncoding) {
+              throw new MessageDataException("Invalid base64 character");
             }
           }
         } else if (c == 0x0a) {
           if (this.lenientLineBreaks) {
             this.lineCharCount = 0;
             continue;
+          } else if (this.checkStrictEncoding) {
+            throw new MessageDataException("Invalid base64 character: 0x0A bare");
           }
         } else if (c >= 0x80) {
           // Ignore
         } else {
+          int oldc = c;
           c = Alphabet[c];
-          if (c >= 0) {
+          if (c >= 0 && this.paddingCount == 0) {
             value <<= 6;
             value |= c;
             ++count;
+          } else if (this.checkStrictEncoding) {
+            if (oldc == '=') {
+              ++this.paddingCount;
+              if (this.paddingCount > 2) {
+                throw new MessageDataException("Too much base64 padding");
+              }
+            } else if (this.paddingCount > 0) {
+              throw new MessageDataException("Extra data after padding");
+            } else {
+              throw new MessageDataException("Invalid base64 character");
+            }
           }
         }
         if (this.maxLineLength > 0) {

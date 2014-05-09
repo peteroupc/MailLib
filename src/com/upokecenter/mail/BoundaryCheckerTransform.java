@@ -19,6 +19,7 @@ import java.util.*;
     private boolean started;
     private boolean readingHeaders;
     private boolean hasNewBodyPart;
+    private boolean endOfStream;
     private ArrayList<String> boundaries;
 
     /**
@@ -66,7 +67,7 @@ import java.util.*;
         ret &= 0xff;
         return ret;
       }
-      if (this.hasNewBodyPart) {
+      if (this.hasNewBodyPart || this.endOfStream) {
         return -1;
       }
       int c = this.lastByte = this.ungetting ? this.lastByte : this.input.read(); this.ungetting = false;
@@ -178,12 +179,12 @@ import java.util.*;
             this.ungetting = true;
             break;
           }
-          ++bytesRead;
           // Console.Write("" + ((char)c));
+          ++bytesRead;
           this.ResizeBuffer(bytesRead + bufferStart);
           this.buffer[bytesRead + bufferStart - 1] = (byte)c;
         }
-        // System.out.println("--" + (bytesRead));
+        // System.out.println("::" + (bytesRead));
         // NOTE: All boundary strings are assumed to
         // have only ASCII characters (with values
         // less than 128). Check boundaries from
@@ -192,7 +193,6 @@ import java.util.*;
         int matchingIndex = -1;
         for (int i = this.boundaries.size() - 1; i >= 0; --i) {
           String boundary = this.boundaries.get(i);
-          // System.out.println("Check boundary " + (boundary));
           if (!((boundary)==null || (boundary).length()==0) && boundary.length() <= bytesRead) {
             boolean match = true;
             for (int j = 0; j < boundary.length(); ++j) {
@@ -232,6 +232,8 @@ import java.util.*;
               // There's nothing else significant
               // after this boundary,
               // so return now
+              this.hasNewBodyPart = false;
+              this.endOfStream = true;
               this.bufferCount = 0;
               return -1;
             }
@@ -256,6 +258,7 @@ import java.util.*;
                   } else if (c == 0x0d) {
                     // Unget the CR, in case the next line is a boundary line
                     this.ungetting = true;
+                    continue;
                   } else if (c != '-') {
                     // Not a boundary delimiter
                     continue;
@@ -266,6 +269,7 @@ import java.util.*;
                   } else if (c == 0x0d) {
                     // Unget the CR, in case the next line is a boundary line
                     this.ungetting = true;
+                    continue;
                   } else if (c != '-') {
                     // Not a boundary delimiter
                     continue;
