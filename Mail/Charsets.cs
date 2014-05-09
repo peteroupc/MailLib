@@ -11,7 +11,7 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-  /// <summary>Description of Charsets.</summary>
+    /// <summary>Description of Charsets.</summary>
   internal static class Charsets
   {
     public static readonly ICharset Ascii = new AsciiEncoding();
@@ -43,133 +43,133 @@ namespace PeterO.Mail {
       if (name.Equals("windows-1252") || name.Equals("cp1252")) {
         return new SingleByteEncoding(
           new int[] { 8364,
-            129,
-            8218,
-            402,
-            8222,
-            8230,
-            8224,
-            8225,
-            710,
-            8240,
-            352,
-            8249,
-            338,
-            141,
-            381,
-            143,
-            144,
-            8216,
-            8217,
-            8220,
-            8221,
-            8226,
-            8211,
-            8212,
-            732,
-            8482,
-            353,
-            8250,
-            339,
-            157,
-            382,
-            376,
-            160,
-            161,
-            162,
-            163,
-            164,
-            165,
-            166,
-            167,
-            168,
-            169,
-            170,
-            171,
-            172,
-            173,
-            174,
-            175,
-            176,
-            177,
-            178,
-            179,
-            180,
-            181,
-            182,
-            183,
-            184,
-            185,
-            186,
-            187,
-            188,
-            189,
-            190,
-            191,
-            192,
-            193,
-            194,
-            195,
-            196,
-            197,
-            198,
-            199,
-            200,
-            201,
-            202,
-            203,
-            204,
-            205,
-            206,
-            207,
-            208,
-            209,
-            210,
-            211,
-            212,
-            213,
-            214,
-            215,
-            216,
-            217,
-            218,
-            219,
-            220,
-            221,
-            222,
-            223,
-            224,
-            225,
-            226,
-            227,
-            228,
-            229,
-            230,
-            231,
-            232,
-            233,
-            234,
-            235,
-            236,
-            237,
-            238,
-            239,
-            240,
-            241,
-            242,
-            243,
-            244,
-            245,
-            246,
-            247,
-            248,
-            249,
-            250,
-            251,
-            252,
-            253,
-            254,
-            255 });
+          129,
+          8218,
+          402,
+          8222,
+          8230,
+          8224,
+          8225,
+          710,
+          8240,
+          352,
+          8249,
+          338,
+          141,
+          381,
+          143,
+          144,
+          8216,
+          8217,
+          8220,
+          8221,
+          8226,
+          8211,
+          8212,
+          732,
+          8482,
+          353,
+          8250,
+          339,
+          157,
+          382,
+          376,
+          160,
+          161,
+          162,
+          163,
+          164,
+          165,
+          166,
+          167,
+          168,
+          169,
+          170,
+          171,
+          172,
+          173,
+          174,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          212,
+          213,
+          214,
+          215,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          223,
+          224,
+          225,
+          226,
+          227,
+          228,
+          229,
+          230,
+          231,
+          232,
+          233,
+          234,
+          235,
+          236,
+          237,
+          238,
+          239,
+          240,
+          241,
+          242,
+          243,
+          244,
+          245,
+          246,
+          247,
+          248,
+          249,
+          250,
+          251,
+          252,
+          253,
+          254,
+          255 });
       } else if (name.Equals("utf-7")) {
         return new Utf7Encoding();
       } else if (name.Equals("iso-8859-10")) {
@@ -227,9 +227,9 @@ namespace PeterO.Mail {
     }
 
     private sealed class Utf8Encoding : ICharset {
-      /// <summary>Not documented yet.</summary>
-      /// <param name='transform'>An ITransform object.</param>
-      /// <returns>A string object.</returns>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='transform'>An ITransform object.</param>
+    /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         ReadUtf8(transform, -1, builder, true);
@@ -388,8 +388,8 @@ namespace PeterO.Mail {
           this.lastByte = -1;
         }
 
-        /// <summary>Not documented yet.</summary>
-        /// <param name='builder'>A StringBuilder object.</param>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='builder'>A StringBuilder object.</param>
         public void FinalizeAndReset(StringBuilder builder) {
           if (this.surrogate >= 0 && this.lastByte >= 0) {
             // Unpaired surrogate and an unpaired byte value
@@ -403,16 +403,16 @@ namespace PeterO.Mail {
           this.lastByte = -1;
         }
 
-        /// <summary>Not documented yet.</summary>
+    /// <summary>Not documented yet.</summary>
         public void AppendIncompleteByte() {
           // Make sure lastByte isn't -1, for FinalizeAndReset
           // purposes
           this.lastByte = 0;
         }
 
-        /// <summary>Not documented yet.</summary>
-        /// <param name='value'>A 32-bit signed integer.</param>
-        /// <param name='builder'>A StringBuilder object.</param>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='value'>A 32-bit signed integer.</param>
+    /// <param name='builder'>A StringBuilder object.</param>
         public void AppendByte(int value, StringBuilder builder) {
           if (this.lastByte >= 0) {
             int codeunit = this.lastByte << 8;
@@ -458,7 +458,7 @@ namespace PeterO.Mail {
           }
         }
 
-        /// <summary>Not documented yet.</summary>
+    /// <summary>Not documented yet.</summary>
         public void Reset() {
           this.surrogate = -1;
           this.lastByte = -1;
@@ -635,9 +635,9 @@ namespace PeterO.Mail {
         this.encodingMapping = mapping;
       }
 
-      /// <summary>Not documented yet.</summary>
-      /// <param name='transform'>An ITransform object.</param>
-      /// <returns>A string object.</returns>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='transform'>An ITransform object.</param>
+    /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         while (true) {
@@ -656,9 +656,9 @@ namespace PeterO.Mail {
     }
 
     private sealed class LatinOneEncoding : ICharset {
-      /// <summary>Not documented yet.</summary>
-      /// <param name='transform'>An ITransform object.</param>
-      /// <returns>A string object.</returns>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='transform'>An ITransform object.</param>
+    /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         while (true) {
@@ -673,9 +673,9 @@ namespace PeterO.Mail {
     }
 
     private sealed class AsciiEncoding : ICharset {
-      /// <summary>Not documented yet.</summary>
-      /// <param name='transform'>An ITransform object.</param>
-      /// <returns>A string object.</returns>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='transform'>An ITransform object.</param>
+    /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         while (true) {

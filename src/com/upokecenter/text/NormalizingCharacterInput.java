@@ -78,8 +78,8 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the Normalizer class using the given
-     * normalization form.
+     * Initializes a new instance of the NormalizingCharacterInput class
+     * using the given normalization form.
      * @param characterList An List object.
      * @param form A Normalization object.
      */

@@ -395,7 +395,7 @@ private Charsets() {
      * Not documented yet.
      * @param builder A StringBuilder object.
      */
-public void FinalizeAndReset(StringBuilder builder) {
+        public void FinalizeAndReset(StringBuilder builder) {
           if (this.surrogate >= 0 && this.lastByte >= 0) {
             // Unpaired surrogate and an unpaired byte value
             builder.append((char)0xfffd);
@@ -411,7 +411,7 @@ public void FinalizeAndReset(StringBuilder builder) {
     /**
      * Not documented yet.
      */
-public void AppendIncompleteByte() {
+        public void AppendIncompleteByte() {
           // Make sure lastByte isn't -1, for FinalizeAndReset
           // purposes
           this.lastByte = 0;
@@ -422,7 +422,7 @@ public void AppendIncompleteByte() {
      * @param value A 32-bit signed integer.
      * @param builder A StringBuilder object.
      */
-public void AppendByte(int value, StringBuilder builder) {
+        public void AppendByte(int value, StringBuilder builder) {
           if (this.lastByte >= 0) {
             int codeunit = this.lastByte << 8;
             codeunit |= value & 0xff;
@@ -470,7 +470,7 @@ public void AppendByte(int value, StringBuilder builder) {
     /**
      * Not documented yet.
      */
-public void Reset() {
+        public void Reset() {
           this.surrogate = -1;
           this.lastByte = -1;
         }
@@ -493,7 +493,7 @@ public void Reset() {
         int state = 0;  // 0: not in base64; 1: start of base 64; 2: continuing base64
         while (true) {
           int b;
-           switch (state) {
+          switch (state) {
             case 0:  // not in base64
               b = input.read();
               if (b < 0) {

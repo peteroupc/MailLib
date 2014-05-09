@@ -67,8 +67,8 @@ namespace PeterO.Text {
     public NormalizingCharacterInput(ICharacterInput input) : this(input, Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the Normalizer class using
-    /// the given normalization form.</summary>
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class using the given normalization form.</summary>
     /// <param name='characterList'>An IList object.</param>
     /// <param name='form'>A Normalization object.</param>
     public NormalizingCharacterInput(IList<int> characterList, Normalization form) {
