@@ -97,33 +97,31 @@ namespace PeterO.Mail {
       StringBuilder sb = new StringBuilder();
       int index = 0;
       bool inEncodedWord = false;
-      while (index<str.Length) {
-        if (!inEncodedWord && index+1<str.Length && str[index]=='=' && str[index+1]=='?') {
+      while (index < str.Length) {
+        if (!inEncodedWord && index + 1<str.Length && str[index]=='=' && str[index+1]=='?') {
           // Remove start of encoded word
           inEncodedWord = true;
-          index+=2;
+          index += 2;
           int qmarks = 0;
           // skip charset and encoding
-          while (index<str.Length) {
-            if (str[index]=='?') {
+          while (index < str.Length) {
+            if (str[index] == '?') {
               ++qmarks;
               ++index;
               if (qmarks == 2) {
- break;
-}
+                break;
+              }
             } else {
               ++index;
             }
           }
           inEncodedWord = true;
-        } else if (inEncodedWord && index+1<str.Length && str[index]=='?' && str[index+1]=='=') {
+        } else if (inEncodedWord && index + 1<str.Length && str[index]=='?' && str[index+1]=='=') {
           // End of encoded word
-          index+=2;
+          index += 2;
           inEncodedWord = false;
         } else {
-          // Everything else {
- int c = DataUtilities.CodePointAt(str, index);
-}
+          int c = DataUtilities.CodePointAt(str, index);
           if (c == 0xfffd) {
             sb.Append(0xfffd);
             ++index;
@@ -141,17 +139,22 @@ namespace PeterO.Mail {
     /// <summary>Converts a filename from the Content-Disposition header
     /// to a suitable name for saving data to a file.</summary>
     /// <param name='str'>A string representing a file name.</param>
-    /// <returns>A string object.</returns>
+    /// <returns>A string with the converted version of the file name. Among
+    /// other things, encoded words under RFC 2049 are decoded (since they
+    /// occur so frequently in Content-Disposition filenames); characters
+    /// unsuitable for use in a filename (including the directory separators
+    /// slash and backslash) are replaced with underscores; and the filename
+    /// is truncated if it would otherwise be too long.</returns>
     public static string MakeFilename(string str) {
       if (str == null) {
         return String.Empty;
       }
       str = ParserUtility.TrimSpaceAndTab(str);
-      if (str.IndexOf("=?")>= 0) {
+      if (str.IndexOf("=?") >= 0) {
         // May contain encoded words, which are very frequent
         // in Content-Disposition filenames
         str = Rfc2047.DecodeEncodedWords(str, 0, str.Length, EncodedWordContext.Unstructured);
-        if (str.IndexOf("=?")>= 0) {
+        if (str.IndexOf("=?") >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
         }
@@ -170,20 +173,20 @@ namespace PeterO.Mail {
       // Replace unsuitable characters for filenames
       // and make sure the filename's
       // length doesn't exceed 250
-      for (int i = 0;i<str.Length && builder.Length<250; ++i) {
+      for (int i = 0; i<str.Length && builder.Length<250; ++i) {
         int c = DataUtilities.CodePointAt(str, i);
         if (c >= 0x10000) {
- ++i;
-}
-        if (c==(int)'\t') {
+          ++i;
+        }
+        if (c == (int)'\t') {
           // Replace tab with space
           builder.Append(' ');
-        } else if (c<0x20 || c=='\\' || c=='/' || c=='*' || c=='?' || c=='|' ||
-                  c==':' || c=='<' || c=='>' || c=='"' || c==0x7f) {
+        } else if (c < 0x20 || c=='\\' || c=='/' || c=='*' || c=='?' || c=='|' ||
+                   c == ':' || c=='<' || c=='>' || c=='"' || c==0x7f) {
           // Unsuitable character for a filename
           builder.Append('_');
         } else {
-          if (builder.Length<249 || c<0x10000) {
+          if (builder.Length < 249 || c<0x10000) {
             if (c <= 0xffff) {
               builder.Append((char)c);
             } else if (c <= 0x10ffff) {
@@ -198,32 +201,32 @@ namespace PeterO.Mail {
       if (str.Length == 0) {
         return "_";
       }
-      if (str[str.Length-1]=='.') {
+      if (str[str.Length - 1]=='.') {
         // Ends in a dot
-        str+="_";
+        str += "_";
       }
       string strLower = DataUtilities.ToLowerCaseAscii(str);
       if (strLower.Equals("nul") ||
-         strLower.IndexOf("nul.")==0 ||
-         strLower.Equals("prn") ||
-         strLower.IndexOf("prn.")==0 ||
-         strLower.Equals("aux") ||
-         strLower.IndexOf("aux.")==0 ||
-         strLower.Equals("con") ||
-         strLower.IndexOf("con.")==0 ||
-         (strLower.Length>= 4 && strLower.IndexOf("lpt")==0 && strLower[3]>= '1' && strLower[3]<= '9') ||
-         (strLower.Length>= 4 && strLower.IndexOf("com")==0 && strLower[3]>= '1' && strLower[3]<= '9')
+          strLower.IndexOf("nul.") ==0 ||
+          strLower.Equals("prn") ||
+          strLower.IndexOf("prn.") ==0 ||
+          strLower.Equals("aux") ||
+          strLower.IndexOf("aux.") ==0 ||
+          strLower.Equals("con") ||
+          strLower.IndexOf("con.") ==0 ||
+          (strLower.Length >= 4 && strLower.IndexOf("lpt")==0 && strLower[3]>= '1' && strLower[3]<= '9') ||
+          (strLower.Length >= 4 && strLower.IndexOf("com")==0 && strLower[3]>= '1' && strLower[3]<= '9')
 ) {
         // Reserved filenames on Windows
-        str="_"+str;
+        str = "_"+str;
       }
-      if (str[0]=='~') {
+      if (str[0] == '~') {
         // Home folder convention
-        str="_"+str;
+        str = "_"+str;
       }
-      if (str[0]=='.') {
+      if (str[0] == '.') {
         // Starts with period; may be hidden in some configurations
-        str="_"+str;
+        str = "_"+str;
       }
       return Normalizer.Normalize(str, Normalization.NFC);
     }
@@ -327,7 +330,7 @@ namespace PeterO.Mail {
       dispo.parameters = new SortedMap<string, string>();
       if (!dispo.ParseDisposition(str)) {
         #if DEBUG
-        //Console.WriteLine("Unparsable: " + str);
+        // Console.WriteLine("Unparsable: " + str);
         #endif
         return defaultValue;
       }

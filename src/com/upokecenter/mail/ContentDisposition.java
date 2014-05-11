@@ -99,33 +99,31 @@ import com.upokecenter.text.*;
       StringBuilder sb = new StringBuilder();
       int index = 0;
       boolean inEncodedWord = false;
-      while (index<str.length()) {
-        if (!inEncodedWord && index+1<str.length() && str.charAt(index)=='=' && str.charAt(index+1)=='?') {
+      while (index < str.length()) {
+        if (!inEncodedWord && index + 1<str.length() && str.charAt(index)=='=' && str.charAt(index+1)=='?') {
           // Remove start of encoded word
           inEncodedWord = true;
-          index+=2;
+          index += 2;
           int qmarks = 0;
           // skip charset and encoding
-          while (index<str.length()) {
-            if (str.charAt(index)=='?') {
+          while (index < str.length()) {
+            if (str.charAt(index) == '?') {
               ++qmarks;
               ++index;
               if (qmarks == 2) {
- break;
-}
+                break;
+              }
             } else {
               ++index;
             }
           }
           inEncodedWord = true;
-        } else if (inEncodedWord && index+1<str.length() && str.charAt(index)=='?' && str.charAt(index+1)=='=') {
+        } else if (inEncodedWord && index + 1<str.length() && str.charAt(index)=='?' && str.charAt(index+1)=='=') {
           // End of encoded word
-          index+=2;
+          index += 2;
           inEncodedWord = false;
         } else {
-          // Everything else {
- int c = DataUtilities.CodePointAt(str, index);
-}
+          int c = DataUtilities.CodePointAt(str, index);
           if (c == 0xfffd) {
             sb.append(0xfffd);
             ++index;
@@ -144,18 +142,23 @@ import com.upokecenter.text.*;
      * Converts a filename from the Content-Disposition header to a suitable
      * name for saving data to a file.
      * @param str A string representing a file name.
-     * @return A string object.
+     * @return A string with the converted version of the file name. Among
+     * other things, encoded words under RFC 2049 are decoded (since they
+     * occur so frequently in Content-Disposition filenames); characters
+     * unsuitable for use in a filename (including the directory separators
+     * slash and backslash) are replaced with underscores; and the filename
+     * is truncated if it would otherwise be too long.
      */
     public static String MakeFilename(String str) {
       if (str == null) {
         return "";
       }
       str = ParserUtility.TrimSpaceAndTab(str);
-      if (str.indexOf("=?")>= 0) {
+      if (str.indexOf("=?") >= 0) {
         // May contain encoded words, which are very frequent
         // in Content-Disposition filenames
         str = Rfc2047.DecodeEncodedWords(str, 0, str.length(), EncodedWordContext.Unstructured);
-        if (str.indexOf("=?")>= 0) {
+        if (str.indexOf("=?") >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
         }
@@ -174,20 +177,20 @@ import com.upokecenter.text.*;
       // Replace unsuitable characters for filenames
       // and make sure the filename's
       // length doesn't exceed 250
-      for (int i = 0;i<str.length() && builder.length()<250; ++i) {
+      for (int i = 0; i<str.length() && builder.length()<250; ++i) {
         int c = DataUtilities.CodePointAt(str, i);
         if (c >= 0x10000) {
- ++i;
-}
-        if (c==(int)'\t') {
+          ++i;
+        }
+        if (c == (int)'\t') {
           // Replace tab with space
           builder.append(' ');
-        } else if (c<0x20 || c=='\\' || c=='/' || c=='*' || c=='?' || c=='|' ||
-                  c==':' || c=='<' || c=='>' || c=='"' || c==0x7f) {
+        } else if (c < 0x20 || c=='\\' || c=='/' || c=='*' || c=='?' || c=='|' ||
+                   c == ':' || c=='<' || c=='>' || c=='"' || c==0x7f) {
           // Unsuitable character for a filename
           builder.append('_');
         } else {
-          if (builder.length()<249 || c<0x10000) {
+          if (builder.length() < 249 || c<0x10000) {
             if (c <= 0xffff) {
               builder.append((char)c);
             } else if (c <= 0x10ffff) {
@@ -202,32 +205,32 @@ import com.upokecenter.text.*;
       if (str.length() == 0) {
         return "_";
       }
-      if (str.charAt(str.length()-1)=='.') {
+      if (str.charAt(str.length() - 1)=='.') {
         // Ends in a dot
-        str+="_";
+        str += "_";
       }
       String strLower = DataUtilities.ToLowerCaseAscii(str);
       if (strLower.equals("nul") ||
-         strLower.indexOf("nul.")==0 ||
-         strLower.equals("prn") ||
-         strLower.indexOf("prn.")==0 ||
-         strLower.equals("aux") ||
-         strLower.indexOf("aux.")==0 ||
-         strLower.equals("con") ||
-         strLower.indexOf("con.")==0 ||
-         (strLower.length()>= 4 && strLower.indexOf("lpt")==0 && strLower.charAt(3)>= '1' && strLower.charAt(3)<= '9') ||
-         (strLower.length()>= 4 && strLower.indexOf("com")==0 && strLower.charAt(3)>= '1' && strLower.charAt(3)<= '9')
+          strLower.indexOf("nul.") ==0 ||
+          strLower.equals("prn") ||
+          strLower.indexOf("prn.") ==0 ||
+          strLower.equals("aux") ||
+          strLower.indexOf("aux.") ==0 ||
+          strLower.equals("con") ||
+          strLower.indexOf("con.") ==0 ||
+          (strLower.length() >= 4 && strLower.indexOf("lpt")==0 && strLower.charAt(3)>= '1' && strLower.charAt(3)<= '9') ||
+          (strLower.length() >= 4 && strLower.indexOf("com")==0 && strLower.charAt(3)>= '1' && strLower.charAt(3)<= '9')
 ) {
         // Reserved filenames on Windows
-        str="_"+str;
+        str = "_"+str;
       }
-      if (str.charAt(0)=='~') {
+      if (str.charAt(0) == '~') {
         // Home folder convention
-        str="_"+str;
+        str = "_"+str;
       }
-      if (str.charAt(0)=='.') {
+      if (str.charAt(0) == '.') {
         // Starts with period; may be hidden in some configurations
-        str="_"+str;
+        str = "_"+str;
       }
       return Normalizer.Normalize(str, Normalization.NFC);
     }

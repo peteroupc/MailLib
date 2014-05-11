@@ -6,6 +6,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -316,6 +317,25 @@ namespace MailLibTest {
     }
 
     [Test]
+    public void TestGenerate() {
+      List<string> msgids = new List<string>();
+      // Tests whether unique Message IDs are generated for each message.
+      for (var i = 0; i < 1000; ++i) {
+        string msgtext=new Message().SetHeader("from","me@example.com").SetTextBody("Hello world.").Generate();
+        string msgid=new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(msgtext,true))).GetHeader("message-id");
+        if (msgids.Contains(msgid)) {
+          Assert.Fail(msgid);
+        }
+        msgids.Add(msgid);
+      }
+    }
+
+    [Test]
+    public void TestNewMessage() {
+      Assert.IsTrue(new Message().ContentType != null);
+    }
+
+    [Test]
     public void TestMakeFilename() {
       Assert.AreEqual(
         "hello.txt",
@@ -326,6 +346,9 @@ namespace MailLibTest {
       Assert.AreEqual(
         "a\u00e7\u00e3o.txt",
         ContentDisposition.MakeFilename("=?iso-8859-1?q?a=E7=E3o.txt?="));
+      Assert.AreEqual(
+        "a\u00e7\u00e3o.txt",
+        ContentDisposition.MakeFilename("a\u00e7\u00e3o.txt"));
       Assert.AreEqual(
         "hello.txt",
         ContentDisposition.MakeFilename("=?x-unknown?q?hello.txt?="));

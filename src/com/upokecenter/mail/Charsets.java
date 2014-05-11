@@ -565,7 +565,7 @@ private Charsets() {
                   // Generate UTF-16 bytes
                   appender.AppendByte((base64value >> 16) & 0xff, builder);
                   appender.AppendByte((base64value >> 8) & 0xff, builder);
-                  appender.AppendByte((base64value) & 0xff, builder);
+                  appender.AppendByte(base64value & 0xff, builder);
                   base64count = 0;
                 }
               } else {

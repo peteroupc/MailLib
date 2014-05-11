@@ -309,6 +309,58 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
+      this.contentType = MediaType.TextPlainUtf8;
+    }
+
+    private static Random msgidRandom = new Random();
+    private static boolean seqFirstTime = true;
+    private static int msgidSequence = 0;
+    private static Object sequenceSync = new Object();
+
+    private String GenerateMessageID() {
+      long ticks = DateTime.UtcNow.Ticks;
+      StringBuilder builder = new StringBuilder();
+      int seq = 0;
+      int rnd = 0;
+      builder.append("<");
+       synchronized(sequenceSync) {
+        if (seqFirstTime) {
+          msgidSequence = msgidRandom.nextInt(65536);
+          msgidSequence <<= 16;
+          msgidSequence |= msgidRandom.nextInt(65536);
+          seqFirstTime = false;
+        }
+        seq = (msgidSequence++);
+        rnd = msgidRandom.nextInt(65536);
+        rnd <<= 16;
+        rnd |= msgidRandom.nextInt(65536);
+      }
+      String hex = "0123456789abcdef";
+      for (int i = 0; i < 16; ++i) {
+        builder.append(hex.charAt((int)(ticks & 15)));
+        ticks >>= 4;
+      }
+      for (int i = 0; i < 8; ++i) {
+        builder.append(hex.charAt(rnd & 15));
+        builder.append(hex.charAt(seq & 15));
+        rnd >>= 4;
+        seq >>= 4;
+      }
+      List<NamedAddress> addresses = this.getFromAddresses();
+      if (addresses == null || addresses.size() == 0) {
+        builder.append("@local.invalid");
+      } else {
+        builder.append("@");
+        seq = addresses.get(0).isGroup() ? addresses.get(0).getName().hashCode() :
+          addresses.get(0).getAddress().toString().hashCode();
+        for (int i = 0; i < 8; ++i) {
+          builder.append(hex.charAt(seq & 15));
+          seq >>= 4;
+        }
+        builder.append(".local.invalid");
+      }
+      builder.append(">");
+      return builder.toString();
     }
 
     /**
@@ -676,6 +728,7 @@ public void setContentDisposition(ContentDisposition value) {
     static boolean HasTextToEscapeIgnoreEncodedWords(String s, int index, int endIndex) {
       int len = endIndex;
       int chunkLength = 0;
+
       for (int i = index; i < endIndex; ++i) {
         char c = s.charAt(i);
         if (c == 0x0d) {
@@ -844,9 +897,11 @@ public void setContentDisposition(ContentDisposition value) {
     }
 
     /**
-     * Not documented yet.
-     * @param name A string object.
-     * @return A Message object.
+     * Removes all instances of the given header field from this message.
+     * If this is a multipart message, the header field is not removed from
+     * its body part headers.
+     * @param name The name of the header field to remove.
+     * @return This instance.
      */
     public Message RemoveHeader(String name) {
       if (name == null) {
@@ -1023,9 +1078,9 @@ public void setContentDisposition(ContentDisposition value) {
       String fullField = Implode(this.GetMultipleHeaders(name), ", ");
       String value = new EncodedWordEncoder().AddString(fullField).FinalizeEncoding().toString();
       if (value.length() > 0) {
-        value += " <me@"+name+"address.invalid>";
+        value += " <me@" + name+"address.invalid>";
       } else {
-        value = "me@"+name+"-address.invalid";
+        value = "me@" + name+"-address.invalid";
       }
       return value;
     }
@@ -1038,6 +1093,7 @@ public void setContentDisposition(ContentDisposition value) {
       boolean haveContentDisp = false;
       boolean haveFrom = false;
       boolean outputtedFrom = false;
+      boolean haveMsgId = false;
       boolean haveTo = false;
       byte[] bodyToWrite = this.body;
       boolean haveCc = false;
@@ -1129,7 +1185,7 @@ public void setContentDisposition(ContentDisposition value) {
             value = GenerateAddressList(this.getFromAddresses());
             if (value.length() == 0) {
               // No addresses, synthesize a From field
-              value = SynthesizeField(name);
+              value = this.SynthesizeField(name);
             }
           }
           outputtedFrom = true;
@@ -1143,7 +1199,7 @@ public void setContentDisposition(ContentDisposition value) {
             value = GenerateAddressList(this.getToAddresses());
             if (value.length() == 0) {
               // No addresses, synthesize a field
-              value = SynthesizeField(name);
+              value = this.SynthesizeField(name);
             }
           }
         } else if (name.equals("cc")) {
@@ -1156,9 +1212,15 @@ public void setContentDisposition(ContentDisposition value) {
             value = GenerateAddressList(this.getCCAddresses());
             if (value.length() == 0) {
               // No addresses, synthesize a field
-              value = SynthesizeField(name);
+              value = this.SynthesizeField(name);
             }
           }
+        } else if (name.equals("message-id")) {
+          if (haveMsgId) {
+            // Already outputted, continue
+            continue;
+          }
+          haveMsgId = true;
         } else if (name.equals("bcc")) {
           if (haveBcc) {
             // Already outputted, continue
@@ -1169,7 +1231,7 @@ public void setContentDisposition(ContentDisposition value) {
             value = GenerateAddressList(this.getBccAddresses());
             if (value.length() == 0) {
               // No addresses, synthesize a field
-              value = SynthesizeField(name);
+              value = this.SynthesizeField(name);
             }
           }
         }
@@ -1211,6 +1273,9 @@ public void setContentDisposition(ContentDisposition value) {
         // Output a synthetic From field if it doesn't
         // exist and this isn't a body part
         sb.append("From: me@author-address.invalid\r\n");
+      }
+      if (!haveMsgId && depth == 0) {
+        sb.append("Message-ID: "+this.GenerateMessageID()+"\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
         sb.append("MIME-Version: 1.0\r\n");
@@ -1654,7 +1719,10 @@ public void setContentDisposition(ContentDisposition value) {
                 int c2 = ungetStream.read();
                 if (c2 == 0x20 || c2 == 0x09) {
                   ++lineCount;
-                  sb.append((char)c2);
+                  // Don't write SPACE as the first character of the value
+                  if (c2 != 0x20 || sb.length() != 0) {
+                    sb.append((char)c2);
+                  }
                   haveFWS = true;
                 } else {
                   ungetStream.Unget();
@@ -1683,11 +1751,13 @@ public void setContentDisposition(ContentDisposition value) {
           // we can just assume the UTF-8 encoding in these cases; in
           // case the bytes are not valid UTF-8, a replacement character
           // will be output
-          if (c <= 0xffff) {
-            sb.append((char)c);
-          } else if (c <= 0x10ffff) {
-            sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-            sb.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+          if (c != 0x20 || sb.length() != 0) {
+            if (c <= 0xffff) {
+              sb.append((char)c);
+            } else if (c <= 0x10ffff) {
+              sb.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
+              sb.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+            }
           }
         }
         String fieldValue = sb.toString();
@@ -1761,7 +1831,7 @@ ms=new java.io.ByteArrayOutputStream();
             ch = currentTransform.read();
           } catch (MessageDataException ex) {
             String valueExMessage = ex.getMessage();
-            /*
+            // /*
             ms.write(buffer,0,bufferCount);
             buffer = ms.toByteArray();
             String ss = DataUtilities.GetUtf8String(
@@ -1770,10 +1840,10 @@ ms=new java.io.ByteArrayOutputStream();
               Math.min(buffer.length, 35),
               true);
             String transferEnc = (leaf ?? this).GetHeader("content-transfer-encoding");
-            valueExMessage += " ["+ss+"] [type="+((leaf ?? this).getContentType() ?? MediaType.TextPlainAscii)+
-              "] [encoding=" + transferEnc+"]";
-            valueExMessage = valueExMessage.replace('\r',' ').replace('\n',' ').replace('\0',' ');
-             */
+            valueExMessage += " [" + ss+"] [type="+((leaf ?? this).getContentType() ?? MediaType.TextPlainAscii)+
+              "] [encoding=" + transferEnc + "]";
+            valueExMessage = valueExMessage.replace('\r', ' ').replace('\n',' ').replace('\0',' ');
+            // */
             throw new MessageDataException(valueExMessage);
           }
           if (ch < 0) {
@@ -1899,7 +1969,7 @@ ms=new java.io.ByteArrayOutputStream();
             ch = transform.read();
           } catch (MessageDataException ex) {
             String valueExMessage = ex.getMessage();
-            /*
+            // /*
             ms.write(buffer,0,bufferCount);
             buffer = ms.toByteArray();
             String ss = DataUtilities.GetUtf8String(
@@ -1907,11 +1977,11 @@ ms=new java.io.ByteArrayOutputStream();
               Math.max(buffer.length - 35, 0),
               Math.min(buffer.length, 35),
               true);
-            String transferEnc=this.GetHeader("content-transfer-encoding");
-            valueExMessage+=" ["+ss+"] [type="+(this.getContentType() ?? MediaType.TextPlainAscii)+
-              "] [encoding=" + transferEnc+"]";
-            valueExMessage = valueExMessage.replace('\r',' ').replace('\n',' ').replace('\0',' ');
-             */
+            String transferEnc = this.GetHeader("content-transfer-encoding");
+            valueExMessage += " ["+ss+"] [type="+(this.getContentType() ?? MediaType.TextPlainAscii)+
+              "] [encoding=" + transferEnc + "]";
+            valueExMessage = valueExMessage.replace('\r', ' ').replace('\n',' ').replace('\0',' ');
+            // */
             throw new MessageDataException(valueExMessage, ex);
           }
           if (ch < 0) {

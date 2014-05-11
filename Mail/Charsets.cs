@@ -28,7 +28,7 @@ namespace PeterO.Mail {
       if (name.Equals("utf-8")) {
         return Utf8;
       }
-      if (name.Equals("us-ascii") || name.Equals("ascii")) {
+      if (name.Equals("us-ascii") || name.Equals("ascii") || name.Equals("ansi_x3.4-1968")) {
         // DEVIATION: "ascii" is not an IANA-registered name,
         // but occurs quite frequently
         return Ascii;
@@ -554,7 +554,7 @@ namespace PeterO.Mail {
                   // Generate UTF-16 bytes
                   appender.AppendByte((base64value >> 16) & 0xff, builder);
                   appender.AppendByte((base64value >> 8) & 0xff, builder);
-                  appender.AppendByte((base64value) & 0xff, builder);
+                  appender.AppendByte(base64value & 0xff, builder);
                   base64count = 0;
                 }
               } else {

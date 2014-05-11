@@ -297,10 +297,63 @@ namespace PeterO.Mail {
       this.headers = new List<string>();
       this.parts = new List<Message>();
       this.body = new byte[0];
+      this.contentType = MediaType.TextPlainUtf8;
+    }
+
+    private static Random msgidRandom = new Random();
+    private static bool seqFirstTime = true;
+    private static int msgidSequence = 0;
+    private static object sequenceSync = new Object();
+
+    private string GenerateMessageID() {
+      long ticks = DateTime.UtcNow.Ticks;
+      StringBuilder builder = new StringBuilder();
+      int seq = 0;
+      int rnd = 0;
+      builder.Append("<");
+       lock (sequenceSync) {
+        if (seqFirstTime) {
+          msgidSequence = msgidRandom.Next(65536);
+          msgidSequence <<= 16;
+          msgidSequence |= msgidRandom.Next(65536);
+          seqFirstTime = false;
+        }
+        seq = unchecked(msgidSequence++);
+        rnd = msgidRandom.Next(65536);
+        rnd <<= 16;
+        rnd |= msgidRandom.Next(65536);
+      }
+      string hex = "0123456789abcdef";
+      for (int i = 0; i < 16; ++i) {
+        builder.Append(hex[(int)(ticks & 15)]);
+        ticks >>= 4;
+      }
+      for (int i = 0; i < 8; ++i) {
+        builder.Append(hex[rnd & 15]);
+        builder.Append(hex[seq & 15]);
+        rnd >>= 4;
+        seq >>= 4;
+      }
+      IList<NamedAddress> addresses = this.FromAddresses;
+      if (addresses == null || addresses.Count == 0) {
+        builder.Append("@local.invalid");
+      } else {
+        builder.Append("@");
+        seq = addresses[0].IsGroup ? addresses[0].Name.GetHashCode() :
+          addresses[0].Address.ToString().GetHashCode();
+        for (int i = 0; i < 8; ++i) {
+          builder.Append(hex[seq & 15]);
+          seq >>= 4;
+        }
+        builder.Append(".local.invalid");
+      }
+      builder.Append(">");
+      return builder.ToString();
     }
 
     /// <summary>Returns the mail message contained in this message's body.</summary>
-    /// <returns>A message object if this object's content type is "message/rfc822"
+    /// <returns>A message object if this object's content type is "message/rfc822",
+    /// "message/news",
     /// or "message/global", or null otherwise.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -310,7 +363,9 @@ namespace PeterO.Mail {
     #endif
     public Message GetBodyMessage() {
       if (this.ContentType.TopLevelType.Equals("message") &&
-          (this.ContentType.SubType.Equals("rfc822") || this.ContentType.SubType.Equals("global"))) {
+          (this.ContentType.SubType.Equals("rfc822") || 
+           this.ContentType.SubType.Equals("news") || 
+           this.ContentType.SubType.Equals("global"))) {
         using (MemoryStream ms = new MemoryStream(this.body)) {
           return new Message(ms);
         }
@@ -661,6 +716,7 @@ namespace PeterO.Mail {
     internal static bool HasTextToEscapeIgnoreEncodedWords(string s, int index, int endIndex) {
       int len = endIndex;
       int chunkLength = 0;
+
       for (int i = index; i < endIndex; ++i) {
         char c = s[i];
         if (c == 0x0d) {
@@ -826,9 +882,11 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='name'>A string object.</param>
-    /// <returns>A Message object.</returns>
+    /// <summary>Removes all instances of the given header field from this
+    /// message. If this is a multipart message, the header field is not removed
+    /// from its body part headers.</summary>
+    /// <param name='name'>The name of the header field to remove.</param>
+    /// <returns>This instance.</returns>
     public Message RemoveHeader(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -1005,9 +1063,9 @@ namespace PeterO.Mail {
       string fullField = Implode(this.GetMultipleHeaders(name), ", ");
       string value = new EncodedWordEncoder().AddString(fullField).FinalizeEncoding().ToString();
       if (value.Length > 0) {
-        value += " <me@"+name+"address.invalid>";
+        value += " <me@" + name+"address.invalid>";
       } else {
-        value = "me@"+name+"-address.invalid";
+        value = "me@" + name+"-address.invalid";
       }
       return value;
     }
@@ -1020,6 +1078,7 @@ namespace PeterO.Mail {
       bool haveContentDisp = false;
       bool haveFrom = false;
       bool outputtedFrom = false;
+      bool haveMsgId = false;
       bool haveTo = false;
       byte[] bodyToWrite = this.body;
       bool haveCc = false;
@@ -1111,7 +1170,7 @@ namespace PeterO.Mail {
             value = GenerateAddressList(this.FromAddresses);
             if (value.Length == 0) {
               // No addresses, synthesize a From field
-              value = SynthesizeField(name);
+              value = this.SynthesizeField(name);
             }
           }
           outputtedFrom = true;
@@ -1125,7 +1184,7 @@ namespace PeterO.Mail {
             value = GenerateAddressList(this.ToAddresses);
             if (value.Length == 0) {
               // No addresses, synthesize a field
-              value = SynthesizeField(name);
+              value = this.SynthesizeField(name);
             }
           }
         } else if (name.Equals("cc")) {
@@ -1138,9 +1197,15 @@ namespace PeterO.Mail {
             value = GenerateAddressList(this.CCAddresses);
             if (value.Length == 0) {
               // No addresses, synthesize a field
-              value = SynthesizeField(name);
+              value = this.SynthesizeField(name);
             }
           }
+        } else if (name.Equals("message-id")) {
+          if (haveMsgId) {
+            // Already outputted, continue
+            continue;
+          }
+          haveMsgId = true;
         } else if (name.Equals("bcc")) {
           if (haveBcc) {
             // Already outputted, continue
@@ -1151,7 +1216,7 @@ namespace PeterO.Mail {
             value = GenerateAddressList(this.BccAddresses);
             if (value.Length == 0) {
               // No addresses, synthesize a field
-              value = SynthesizeField(name);
+              value = this.SynthesizeField(name);
             }
           }
         }
@@ -1193,6 +1258,9 @@ namespace PeterO.Mail {
         // Output a synthetic From field if it doesn't
         // exist and this isn't a body part
         sb.Append("From: me@author-address.invalid\r\n");
+      }
+      if (!haveMsgId && depth == 0) {
+        sb.Append("Message-ID: "+this.GenerateMessageID()+"\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
         sb.Append("MIME-Version: 1.0\r\n");
@@ -1636,7 +1704,10 @@ namespace PeterO.Mail {
                 int c2 = ungetStream.ReadByte();
                 if (c2 == 0x20 || c2 == 0x09) {
                   ++lineCount;
-                  sb.Append((char)c2);
+                  // Don't write SPACE as the first character of the value
+                  if (c2 != 0x20 || sb.Length != 0) {
+                    sb.Append((char)c2);
+                  }
                   haveFWS = true;
                 } else {
                   ungetStream.Unget();
@@ -1665,11 +1736,13 @@ namespace PeterO.Mail {
           // we can just assume the UTF-8 encoding in these cases; in
           // case the bytes are not valid UTF-8, a replacement character
           // will be output
-          if (c <= 0xffff) {
-            sb.Append((char)c);
-          } else if (c <= 0x10ffff) {
-            sb.Append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-            sb.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+          if (c != 0x20 || sb.Length != 0) {
+            if (c <= 0xffff) {
+              sb.Append((char)c);
+            } else if (c <= 0x10ffff) {
+              sb.Append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
+              sb.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+            }
           }
         }
         string fieldValue = sb.ToString();
@@ -1745,7 +1818,7 @@ namespace PeterO.Mail {
             ch = currentTransform.ReadByte();
           } catch (MessageDataException ex) {
             string valueExMessage = ex.Message;
-            /*
+            // /*
             ms.Write(buffer, 0, bufferCount);
             buffer = ms.ToArray();
             string ss = DataUtilities.GetUtf8String(
@@ -1754,10 +1827,10 @@ namespace PeterO.Mail {
               Math.Min(buffer.Length, 35),
               true);
             string transferEnc = (leaf ?? this).GetHeader("content-transfer-encoding");
-            valueExMessage += " ["+ss+"] [type="+((leaf ?? this).ContentType ?? MediaType.TextPlainAscii)+
-              "] [encoding=" + transferEnc+"]";
-            valueExMessage = valueExMessage.Replace('\r',' ').Replace('\n',' ').Replace('\0',' ');
-             */
+            valueExMessage += " [" + ss+"] [type="+((leaf ?? this).ContentType ?? MediaType.TextPlainAscii)+
+              "] [encoding=" + transferEnc + "]";
+            valueExMessage = valueExMessage.Replace('\r', ' ').Replace('\n',' ').Replace('\0',' ');
+            // */
             throw new MessageDataException(valueExMessage);
           }
           if (ch < 0) {
@@ -1881,7 +1954,7 @@ namespace PeterO.Mail {
             ch = transform.ReadByte();
           } catch (MessageDataException ex) {
             string valueExMessage = ex.Message;
-            /*
+            // /*
             ms.Write(buffer, 0, bufferCount);
             buffer = ms.ToArray();
             string ss = DataUtilities.GetUtf8String(
@@ -1889,11 +1962,11 @@ namespace PeterO.Mail {
               Math.Max(buffer.Length - 35, 0),
               Math.Min(buffer.Length, 35),
               true);
-            string transferEnc=this.GetHeader("content-transfer-encoding");
-            valueExMessage+=" ["+ss+"] [type="+(this.ContentType ?? MediaType.TextPlainAscii)+
-              "] [encoding=" + transferEnc+"]";
-            valueExMessage = valueExMessage.Replace('\r',' ').Replace('\n',' ').Replace('\0',' ');
-             */
+            string transferEnc = this.GetHeader("content-transfer-encoding");
+            valueExMessage += " ["+ss+"] [type="+(this.ContentType ?? MediaType.TextPlainAscii)+
+              "] [encoding=" + transferEnc + "]";
+            valueExMessage = valueExMessage.Replace('\r', ' ').Replace('\n',' ').Replace('\0',' ');
+            // */
             throw new MessageDataException(valueExMessage, ex);
           }
           if (ch < 0) {
