@@ -167,6 +167,10 @@ namespace PeterO.Text {
       return i == start + length;
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='form'>A Normalization object.</param>
+    /// <returns>A Boolean object.</returns>
     public static bool IsNormalized(string str, Normalization form) {
       if (str == null) {
         return false;

@@ -752,6 +752,11 @@ namespace PeterO.Mail {
     }
 
     private static string DecodeRfc2231Encoding(string value, ICharset charset) {
+      int quote = value.IndexOf('\'');
+      if (quote >= 0) {
+        // not a valid encoded parameter
+        return null;
+      }
       return charset.GetString(new PercentEncodingStringTransform(value));
     }
 
@@ -774,6 +779,7 @@ namespace PeterO.Mail {
             continue;
           }
           parameters.Remove(name);
+          // NOTE: Overrides the name without continuations
           parameters[realName] = realValue;
           continue;
         }
@@ -804,13 +810,19 @@ namespace PeterO.Mail {
               parameters.Remove(contin);
             } else if (parameters.ContainsKey(continEncoded)) {
               // Encoded continuation
-              realValue += DecodeRfc2231Encoding(parameters[continEncoded], charsetUsed);
+              string newEnc = DecodeRfc2231Encoding(parameters[continEncoded], charsetUsed);
+              if (newEnc == null) {
+                // Contains a quote character in the encoding, so illegal
+                return false;
+              }
+              realValue += newEnc;
               parameters.Remove(continEncoded);
             } else {
               break;
             }
             ++pindex;
           }
+          // NOTE: Overrides the name without continuations
           parameters[realName] = realValue;
         }
       }

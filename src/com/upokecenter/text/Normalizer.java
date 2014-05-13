@@ -145,6 +145,12 @@ at: http://upokecenter.com/d/
       return i == start + length;
     }
 
+    /**
+     * Not documented yet.
+     * @param str A string object.
+     * @param form A Normalization object.
+     * @return A Boolean object.
+     */
     public static boolean IsNormalized(String str, Normalization form) {
       if (str == null) {
         return false;

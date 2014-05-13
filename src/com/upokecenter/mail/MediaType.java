@@ -755,6 +755,11 @@ import com.upokecenter.util.*;
     }
 
     private static String DecodeRfc2231Encoding(String value, ICharset charset) {
+      int quote = value.indexOf('\'');
+      if (quote >= 0) {
+        // not a valid encoded parameter
+        return null;
+      }
       return charset.GetString(new PercentEncodingStringTransform(value));
     }
 
@@ -777,6 +782,7 @@ import com.upokecenter.util.*;
             continue;
           }
           parameters.remove(name);
+          // NOTE: Overrides the name without continuations
           parameters.put(realName,realValue);
           continue;
         }
@@ -807,13 +813,19 @@ import com.upokecenter.util.*;
               parameters.remove(contin);
             } else if (parameters.containsKey(continEncoded)) {
               // Encoded continuation
-              realValue += DecodeRfc2231Encoding(parameters.get(continEncoded), charsetUsed);
+              String newEnc = DecodeRfc2231Encoding(parameters.get(continEncoded), charsetUsed);
+              if (newEnc == null) {
+                // Contains a quote character in the encoding, so illegal
+                return false;
+              }
+              realValue += newEnc;
               parameters.remove(continEncoded);
             } else {
               break;
             }
             ++pindex;
           }
+          // NOTE: Overrides the name without continuations
           parameters.put(realName,realValue);
         }
       }

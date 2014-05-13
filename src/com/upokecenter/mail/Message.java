@@ -35,12 +35,16 @@ import com.upokecenter.util.*;
      * bodies, and in the prologue and epilogue of multipart messages (which
      * will be ignored), if the transfer encoding is absent or ((declared
      * instanceof 7bit) ? (7bit)declared : null), any 8-bit bytes are replaced
-     * with question marks.</li> <li>The name <code>ascii</code> is treated
-     * as a synonym for <code>us-ascii</code> , despite being a reserved
-     * name under RFC 2046. The name <code>cp1252</code> is treated as a
-     * synonym for <code>windows-1252</code> , even though it's not an
-     * IANA registered alias.</li> <li>If a sequence of encoded words (RFC
-     * 2047) decodes to a string with a CTL character (U + 007F, or a character
+     * with question marks.</li> <li>In text/html message bodies, if the
+     * transfer encoding is absent or ((declared instanceof 7bit) ? (7bit)declared
+     * : null), and the charset is declared as "ascii", "us-ascii", "windows-1252",
+     * or "iso-8859-*" (all single byte encodings), the transfer encoding
+     * is treated as 8bit instead.</li> <li>The name <code>ascii</code>
+     * is treated as a synonym for <code>us-ascii</code> , despite being
+     * a reserved name under RFC 2046. The name <code>cp1252</code> is treated
+     * as a synonym for <code>windows-1252</code> , even though it's not
+     * an IANA registered alias.</li> <li>If a sequence of encoded words
+     * (RFC 2047) decodes to a string with a CTL character (U + 007F, or a character
      * less than U + 0020 and not TAB) after being converted to Unicode, the
      * encoded words are left un-decoded.</li> </ul>
      */
@@ -318,12 +322,12 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
     private static Object sequenceSync = new Object();
 
     private String GenerateMessageID() {
-      long ticks = DateTime.UtcNow.Ticks;
+      long ticks = new java.util.Date().getTime();
       StringBuilder builder = new StringBuilder();
       int seq = 0;
       int rnd = 0;
       builder.append("<");
-       synchronized(sequenceSync) {
+      synchronized(sequenceSync) {
         if (seqFirstTime) {
           msgidSequence = msgidRandom.nextInt(65536);
           msgidSequence <<= 16;
@@ -365,13 +369,15 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
 
     /**
      * Returns the mail message contained in this message's body.
-     * @return A message object if this object's content type is "message/rfc822"
-     * or "message/global", or null otherwise.
+     * @return A message object if this object's content type is "message/rfc822",
+     * "message/news", or "message/global", or null otherwise.
      */
 
     public Message GetBodyMessage() {
       if (this.getContentType().getTopLevelType().equals("message") &&
-          (this.getContentType().getSubType().equals("rfc822") || this.getContentType().getSubType().equals("global"))) {
+          (this.getContentType().getSubType().equals("rfc822") ||
+           this.getContentType().getSubType().equals("news") ||
+           this.getContentType().getSubType().equals("global"))) {
         java.io.ByteArrayInputStream ms=null;
 try {
 ms=new java.io.ByteArrayInputStream(this.body);
@@ -519,6 +525,18 @@ public void setContentDisposition(ContentDisposition value) {
       }
       if (this.transferEncoding == EncodingUnknown) {
         this.contentType = MediaType.Parse("application/octet-stream");
+      }
+      if (this.transferEncoding == EncodingSevenBit) {
+        if (this.contentType.getTypeAndSubType().equals("text/html")) {
+          String charset = this.contentType.GetCharset();
+          if (charset.equals("us-ascii") || charset.equals("ascii") ||
+              charset.equals("windows-1252") ||
+              (charset.length() > 9 && charset.substring(0,9).equals("iso-8859-"))) {
+            // DEVIATION: Be a little more liberal with text/html and
+            // single-byte charsets
+            this.transferEncoding = EncodingEightBit;
+          }
+        }
       }
       if (this.transferEncoding == EncodingQuotedPrintable ||
           this.transferEncoding == EncodingBase64 ||
@@ -1078,9 +1096,9 @@ public void setContentDisposition(ContentDisposition value) {
       String fullField = Implode(this.GetMultipleHeaders(name), ", ");
       String value = new EncodedWordEncoder().AddString(fullField).FinalizeEncoding().toString();
       if (value.length() > 0) {
-        value += " <me@" + name+"address.invalid>";
+        value += " <me@" + name + "address.invalid>";
       } else {
-        value = "me@" + name+"-address.invalid";
+        value = "me@" + name + "-address.invalid";
       }
       return value;
     }
@@ -1116,7 +1134,8 @@ public void setContentDisposition(ContentDisposition value) {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
           boolean msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
-          if (builder.getSubType().equals("rfc822") && !msgCanBeUnencoded) {
+          if ((builder.getSubType().equals("rfc822") || builder.getSubType().equals("news"))
+              && !msgCanBeUnencoded) {
             builder.SetSubType("global");
           } else if (builder.getSubType().equals("disposition-notification") && !msgCanBeUnencoded) {
             builder.SetSubType("global-disposition-notification");
@@ -1240,6 +1259,9 @@ public void setContentDisposition(ContentDisposition value) {
           (StartsWithWhitespace(value) ? "" : " ") + value;
         if (CanOutputRaw(rawField)) {
           sb.append(rawField);
+          if (rawField.indexOf(": ") < 0) {
+            throw new MessageDataException("No colon+space: " + rawField);
+          }
         } else if (HasTextToEscape(value)) {
           String downgraded = HeaderFields.GetParser(name).DowngradeFieldValue(value);
           if (HasTextToEscapeIgnoreEncodedWords(downgraded, 0, downgraded.length())) {
@@ -1258,13 +1280,19 @@ public void setContentDisposition(ContentDisposition value) {
             }
           }
           boolean haveDquote = downgraded.indexOf('"') >= 0;
-          WordWrapEncoder encoder=new WordWrapEncoder(Capitalize(name) + ":", !haveDquote);
+          WordWrapEncoder encoder=new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
           encoder.AddString(downgraded);
+          if (encoder.toString().indexOf(": ") < 0) {
+            throw new MessageDataException("No colon+space: " + encoder.toString());
+          }
           sb.append(encoder.toString());
         } else {
           boolean haveDquote = value.indexOf('"') >= 0;
-          WordWrapEncoder encoder=new WordWrapEncoder(Capitalize(name) + ":", !haveDquote);
+          WordWrapEncoder encoder=new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
           encoder.AddString(value);
+          if (encoder.toString().indexOf(": ") < 0) {
+            throw new MessageDataException("No colon+space: " + encoder.toString());
+          }
           sb.append(encoder.toString());
         }
         sb.append("\r\n");
@@ -1275,7 +1303,7 @@ public void setContentDisposition(ContentDisposition value) {
         sb.append("From: me@author-address.invalid\r\n");
       }
       if (!haveMsgId && depth == 0) {
-        sb.append("Message-ID: "+this.GenerateMessageID()+"\r\n");
+        sb.append("Message-ID: " + this.GenerateMessageID() +"\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
         sb.append("MIME-Version: 1.0\r\n");
@@ -1651,8 +1679,8 @@ public void setContentDisposition(ContentDisposition value) {
             }
             sb.append((char)c);
           } else if (!first && c == ':') {
-            if (lineCount > 998) {
-              // 998 characters includes the colon
+            if (lineCount > 997) {
+              // 998 characters includes the colon and whitespace
               throw new MessageDataException("Header field name too long");
             }
             break;
@@ -1831,19 +1859,7 @@ ms=new java.io.ByteArrayOutputStream();
             ch = currentTransform.read();
           } catch (MessageDataException ex) {
             String valueExMessage = ex.getMessage();
-            // /*
-            ms.write(buffer,0,bufferCount);
-            buffer = ms.toByteArray();
-            String ss = DataUtilities.GetUtf8String(
-              buffer,
-              Math.max(buffer.length - 35, 0),
-              Math.min(buffer.length, 35),
-              true);
-            String transferEnc = (leaf ?? this).GetHeader("content-transfer-encoding");
-            valueExMessage += " [" + ss+"] [type="+((leaf ?? this).getContentType() ?? MediaType.TextPlainAscii)+
-              "] [encoding=" + transferEnc + "]";
-            valueExMessage = valueExMessage.replace('\r', ' ').replace('\n',' ').replace('\0',' ');
-            // */
+
             throw new MessageDataException(valueExMessage);
           }
           if (ch < 0) {
@@ -1969,19 +1985,7 @@ ms=new java.io.ByteArrayOutputStream();
             ch = transform.read();
           } catch (MessageDataException ex) {
             String valueExMessage = ex.getMessage();
-            // /*
-            ms.write(buffer,0,bufferCount);
-            buffer = ms.toByteArray();
-            String ss = DataUtilities.GetUtf8String(
-              buffer,
-              Math.max(buffer.length - 35, 0),
-              Math.min(buffer.length, 35),
-              true);
-            String transferEnc = this.GetHeader("content-transfer-encoding");
-            valueExMessage += " ["+ss+"] [type="+(this.getContentType() ?? MediaType.TextPlainAscii)+
-              "] [encoding=" + transferEnc + "]";
-            valueExMessage = valueExMessage.replace('\r', ' ').replace('\n',' ').replace('\0',' ');
-            // */
+
             throw new MessageDataException(valueExMessage, ex);
           }
           if (ch < 0) {

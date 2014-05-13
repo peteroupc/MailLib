@@ -100,7 +100,7 @@ import com.upokecenter.text.*;
       int index = 0;
       boolean inEncodedWord = false;
       while (index < str.length()) {
-        if (!inEncodedWord && index + 1<str.length() && str.charAt(index)=='=' && str.charAt(index+1)=='?') {
+        if (!inEncodedWord && index + 1 < str.length() && str.charAt(index) == '=' && str.charAt(index + 1) == '?') {
           // Remove start of encoded word
           inEncodedWord = true;
           index += 2;
@@ -118,7 +118,7 @@ import com.upokecenter.text.*;
             }
           }
           inEncodedWord = true;
-        } else if (inEncodedWord && index + 1<str.length() && str.charAt(index)=='?' && str.charAt(index+1)=='=') {
+        } else if (inEncodedWord && index + 1 < str.length() && str.charAt(index) == '?' && str.charAt(index + 1) == '=') {
           // End of encoded word
           index += 2;
           inEncodedWord = false;
@@ -143,7 +143,7 @@ import com.upokecenter.text.*;
      * name for saving data to a file.
      * @param str A string representing a file name.
      * @return A string with the converted version of the file name. Among
-     * other things, encoded words under RFC 2049 are decoded (since they
+     * other things, encoded words under RFC 2047 are decoded (since they
      * occur so frequently in Content-Disposition filenames); characters
      * unsuitable for use in a filename (including the directory separators
      * slash and backslash) are replaced with underscores; and the filename
@@ -166,7 +166,7 @@ import com.upokecenter.text.*;
       str = ParserUtility.TrimSpaceAndTab(str);
       // NOTE: Even if there are directory separators (backslash
       // and forward slash), the filename is not treated as a
-      // file system path (in accordance with sec. 2.3 or RFC
+      // file system path (in accordance with sec. 2.3 of RFC
       // 2183); as a result, the directory separators
       // will be treated as unsuitable characters for filenames
       // and are handled below.
@@ -177,7 +177,7 @@ import com.upokecenter.text.*;
       // Replace unsuitable characters for filenames
       // and make sure the filename's
       // length doesn't exceed 250
-      for (int i = 0; i<str.length() && builder.length()<250; ++i) {
+      for (int i = 0; i < str.length() && builder.length() < 250; ++i) {
         int c = DataUtilities.CodePointAt(str, i);
         if (c >= 0x10000) {
           ++i;
@@ -185,12 +185,12 @@ import com.upokecenter.text.*;
         if (c == (int)'\t') {
           // Replace tab with space
           builder.append(' ');
-        } else if (c < 0x20 || c=='\\' || c=='/' || c=='*' || c=='?' || c=='|' ||
-                   c == ':' || c=='<' || c=='>' || c=='"' || c==0x7f) {
+        } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
+                   c == ':' || c == '<' || c == '>' || c == '"' || c == 0x7f) {
           // Unsuitable character for a filename
           builder.append('_');
         } else {
-          if (builder.length() < 249 || c<0x10000) {
+          if (builder.length() < 249 || c < 0x10000) {
             if (c <= 0xffff) {
               builder.append((char)c);
             } else if (c <= 0x10ffff) {
@@ -205,7 +205,7 @@ import com.upokecenter.text.*;
       if (str.length() == 0) {
         return "_";
       }
-      if (str.charAt(str.length() - 1)=='.') {
+      if (str.charAt(str.length() - 1) == '.') {
         // Ends in a dot
         str += "_";
       }
@@ -218,19 +218,18 @@ import com.upokecenter.text.*;
           strLower.indexOf("aux.") ==0 ||
           strLower.equals("con") ||
           strLower.indexOf("con.") ==0 ||
-          (strLower.length() >= 4 && strLower.indexOf("lpt")==0 && strLower.charAt(3)>= '1' && strLower.charAt(3)<= '9') ||
-          (strLower.length() >= 4 && strLower.indexOf("com")==0 && strLower.charAt(3)>= '1' && strLower.charAt(3)<= '9')
-) {
+          (strLower.length() >= 4 && strLower.indexOf("lpt") ==0 && strLower.charAt(3) >= '1' && strLower.charAt(3) <= '9') ||
+          (strLower.length() >= 4 && strLower.indexOf("com") ==0 && strLower.charAt(3) >= '1' && strLower.charAt(3) <= '9')) {
         // Reserved filenames on Windows
-        str = "_"+str;
+        str = "_" + str;
       }
       if (str.charAt(0) == '~') {
         // Home folder convention
-        str = "_"+str;
+        str = "_" + str;
       }
       if (str.charAt(0) == '.') {
         // Starts with period; may be hidden in some configurations
-        str = "_"+str;
+        str = "_" + str;
       }
       return Normalizer.Normalize(str, Normalization.NFC);
     }

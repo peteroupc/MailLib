@@ -38,6 +38,10 @@ namespace PeterO.Mail {
     /// and in the prologue and epilogue of multipart messages (which will
     /// be ignored), if the transfer encoding is absent or declared as 7bit,
     /// any 8-bit bytes are replaced with question marks.</item>
+    /// <item>In text/html message bodies, if the transfer encoding is absent
+    /// or declared as 7bit, and the charset is declared as "ascii", "us-ascii",
+    /// "windows-1252", or "iso-8859-*" (all single byte encodings), the
+    /// transfer encoding is treated as 8bit instead.</item>
     /// <item>The name <code>ascii</code>
     /// is treated as a synonym for <code>us-ascii</code>
     /// , despite being a reserved name under RFC 2046. The name <code>cp1252</code>
@@ -311,7 +315,7 @@ namespace PeterO.Mail {
       int seq = 0;
       int rnd = 0;
       builder.Append("<");
-       lock (sequenceSync) {
+      lock (sequenceSync) {
         if (seqFirstTime) {
           msgidSequence = msgidRandom.Next(65536);
           msgidSequence <<= 16;
@@ -353,8 +357,7 @@ namespace PeterO.Mail {
 
     /// <summary>Returns the mail message contained in this message's body.</summary>
     /// <returns>A message object if this object's content type is "message/rfc822",
-    /// "message/news",
-    /// or "message/global", or null otherwise.</returns>
+    /// "message/news", or "message/global", or null otherwise.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
@@ -363,8 +366,8 @@ namespace PeterO.Mail {
     #endif
     public Message GetBodyMessage() {
       if (this.ContentType.TopLevelType.Equals("message") &&
-          (this.ContentType.SubType.Equals("rfc822") || 
-           this.ContentType.SubType.Equals("news") || 
+          (this.ContentType.SubType.Equals("rfc822") ||
+           this.ContentType.SubType.Equals("news") ||
            this.ContentType.SubType.Equals("global"))) {
         using (MemoryStream ms = new MemoryStream(this.body)) {
           return new Message(ms);
@@ -510,6 +513,18 @@ namespace PeterO.Mail {
       }
       if (this.transferEncoding == EncodingUnknown) {
         this.contentType = MediaType.Parse("application/octet-stream");
+      }
+      if (this.transferEncoding == EncodingSevenBit) {
+        if (this.contentType.TypeAndSubType.Equals("text/html")) {
+          string charset = this.contentType.GetCharset();
+          if (charset.Equals("us-ascii") || charset.Equals("ascii") ||
+              charset.Equals("windows-1252") ||
+              (charset.Length > 9 && charset.Substring(0, 9).Equals("iso-8859-"))) {
+            // DEVIATION: Be a little more liberal with text/html and
+            // single-byte charsets
+            this.transferEncoding = EncodingEightBit;
+          }
+        }
       }
       if (this.transferEncoding == EncodingQuotedPrintable ||
           this.transferEncoding == EncodingBase64 ||
@@ -1063,9 +1078,9 @@ namespace PeterO.Mail {
       string fullField = Implode(this.GetMultipleHeaders(name), ", ");
       string value = new EncodedWordEncoder().AddString(fullField).FinalizeEncoding().ToString();
       if (value.Length > 0) {
-        value += " <me@" + name+"address.invalid>";
+        value += " <me@" + name + "address.invalid>";
       } else {
-        value = "me@" + name+"-address.invalid";
+        value = "me@" + name + "-address.invalid";
       }
       return value;
     }
@@ -1101,7 +1116,8 @@ namespace PeterO.Mail {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
           bool msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
-          if (builder.SubType.Equals("rfc822") && !msgCanBeUnencoded) {
+          if ((builder.SubType.Equals("rfc822") || builder.SubType.Equals("news"))
+              && !msgCanBeUnencoded) {
             builder.SetSubType("global");
           } else if (builder.SubType.Equals("disposition-notification") && !msgCanBeUnencoded) {
             builder.SetSubType("global-disposition-notification");
@@ -1225,6 +1241,9 @@ namespace PeterO.Mail {
           (StartsWithWhitespace(value) ? String.Empty : " ") + value;
         if (CanOutputRaw(rawField)) {
           sb.Append(rawField);
+          if (rawField.IndexOf(": ") < 0) {
+            throw new MessageDataException("No colon+space: " + rawField);
+          }
         } else if (HasTextToEscape(value)) {
           string downgraded = HeaderFields.GetParser(name).DowngradeFieldValue(value);
           if (HasTextToEscapeIgnoreEncodedWords(downgraded, 0, downgraded.Length)) {
@@ -1243,13 +1262,19 @@ namespace PeterO.Mail {
             }
           }
           bool haveDquote = downgraded.IndexOf('"') >= 0;
-          var encoder = new WordWrapEncoder(Capitalize(name) + ":", !haveDquote);
+          var encoder = new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
           encoder.AddString(downgraded);
+          if (encoder.ToString().IndexOf(": ") < 0) {
+            throw new MessageDataException("No colon+space: " + encoder.ToString());
+          }
           sb.Append(encoder.ToString());
         } else {
           bool haveDquote = value.IndexOf('"') >= 0;
-          var encoder = new WordWrapEncoder(Capitalize(name) + ":", !haveDquote);
+          var encoder = new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
           encoder.AddString(value);
+          if (encoder.ToString().IndexOf(": ") < 0) {
+            throw new MessageDataException("No colon+space: " + encoder.ToString());
+          }
           sb.Append(encoder.ToString());
         }
         sb.Append("\r\n");
@@ -1260,7 +1285,7 @@ namespace PeterO.Mail {
         sb.Append("From: me@author-address.invalid\r\n");
       }
       if (!haveMsgId && depth == 0) {
-        sb.Append("Message-ID: "+this.GenerateMessageID()+"\r\n");
+        sb.Append("Message-ID: " + this.GenerateMessageID() +"\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
         sb.Append("MIME-Version: 1.0\r\n");
@@ -1636,8 +1661,8 @@ namespace PeterO.Mail {
             }
             sb.Append((char)c);
           } else if (!first && c == ':') {
-            if (lineCount > 998) {
-              // 998 characters includes the colon
+            if (lineCount > 997) {
+              // 998 characters includes the colon and whitespace
               throw new MessageDataException("Header field name too long");
             }
             break;
@@ -1818,7 +1843,7 @@ namespace PeterO.Mail {
             ch = currentTransform.ReadByte();
           } catch (MessageDataException ex) {
             string valueExMessage = ex.Message;
-            // /*
+            #if DEBUG
             ms.Write(buffer, 0, bufferCount);
             buffer = ms.ToArray();
             string ss = DataUtilities.GetUtf8String(
@@ -1826,11 +1851,11 @@ namespace PeterO.Mail {
               Math.Max(buffer.Length - 35, 0),
               Math.Min(buffer.Length, 35),
               true);
-            string transferEnc = (leaf ?? this).GetHeader("content-transfer-encoding");
-            valueExMessage += " [" + ss+"] [type="+((leaf ?? this).ContentType ?? MediaType.TextPlainAscii)+
+            string transferEnc = (leaf == null ? this : leaf).GetHeader("content-transfer-encoding");
+            valueExMessage += " [" + ss + "] [type=" + ((leaf == null ? this : leaf).ContentType ?? MediaType.TextPlainAscii) +
               "] [encoding=" + transferEnc + "]";
-            valueExMessage = valueExMessage.Replace('\r', ' ').Replace('\n',' ').Replace('\0',' ');
-            // */
+            valueExMessage = valueExMessage.Replace('\r', ' ').Replace('\n', ' ').Replace('\0', ' ');
+            #endif
             throw new MessageDataException(valueExMessage);
           }
           if (ch < 0) {
@@ -1954,7 +1979,7 @@ namespace PeterO.Mail {
             ch = transform.ReadByte();
           } catch (MessageDataException ex) {
             string valueExMessage = ex.Message;
-            // /*
+            #if DEBUG
             ms.Write(buffer, 0, bufferCount);
             buffer = ms.ToArray();
             string ss = DataUtilities.GetUtf8String(
@@ -1963,10 +1988,10 @@ namespace PeterO.Mail {
               Math.Min(buffer.Length, 35),
               true);
             string transferEnc = this.GetHeader("content-transfer-encoding");
-            valueExMessage += " ["+ss+"] [type="+(this.ContentType ?? MediaType.TextPlainAscii)+
+            valueExMessage += " [" + ss + "] [type=" + (this.ContentType ?? MediaType.TextPlainAscii) +
               "] [encoding=" + transferEnc + "]";
-            valueExMessage = valueExMessage.Replace('\r', ' ').Replace('\n',' ').Replace('\0',' ');
-            // */
+            valueExMessage = valueExMessage.Replace('\r', ' ').Replace('\n', ' ').Replace('\0', ' ');
+            #endif
             throw new MessageDataException(valueExMessage, ex);
           }
           if (ch < 0) {

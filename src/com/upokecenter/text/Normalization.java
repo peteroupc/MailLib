@@ -1,26 +1,28 @@
 package com.upokecenter.text;
 
     /**
-     * Not documented yet.
+     * Represents a Unicode normalization form.
      */
   public enum Normalization {
     /**
-     * Normalization form C.
+     * Normalization form C: canonical decomposition followed by canonical
+     * composition.
      */
     NFC,
 
     /**
-     * Normalization form D.
+     * Normalization form D: canonical decomposition.
      */
     NFD,
 
     /**
-     * Normalization form KC.
+     * Normalization form KC: compatibility decomposition followed by
+     * canonical composition.
      */
     NFKC,
 
     /**
-     * Normalization form KD.
+     * Normalization form KD: compatibility decomposition.
      */
     NFKD
   }

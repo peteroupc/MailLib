@@ -322,6 +322,9 @@ namespace MailLibTest {
       // Tests whether unique Message IDs are generated for each message.
       for (var i = 0; i < 1000; ++i) {
         string msgtext=new Message().SetHeader("from","me@example.com").SetTextBody("Hello world.").Generate();
+        if (!IsGoodAsciiMessageFormat(msgtext, false)) {
+          Assert.Fail("Bad message format generated");
+        }
         string msgid=new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(msgtext,true))).GetHeader("message-id");
         if (msgids.Contains(msgid)) {
           Assert.Fail(msgid);
@@ -382,6 +385,9 @@ namespace MailLibTest {
       Assert.AreEqual(
         "_nul",
         ContentDisposition.MakeFilename("   nul   "));
+      Assert.AreEqual(
+        "ordinary",
+        ContentDisposition.MakeFilename("   ordinary   "));
       Assert.AreEqual(
         "_nul.txt",
         ContentDisposition.MakeFilename("nul.txt"));
@@ -946,11 +952,13 @@ namespace MailLibTest {
       TestMediaTypeRoundTrip("xy"+this.Repeat(" ",50)+"z");
       TestMediaTypeRoundTrip("xy"+this.Repeat(" ",80)+"z");
       TestMediaTypeRoundTrip("xy"+this.Repeat(" ",150)+"z");
+      TestMediaTypeRoundTrip("xy"+this.Repeat("\'",150)+"z");
       TestMediaTypeRoundTrip("xy"+this.Repeat("\"",150)+"z");
       TestMediaTypeRoundTrip("xy"+this.Repeat(":",20)+"z");
       TestMediaTypeRoundTrip("xy"+this.Repeat(":",150)+"z");
       TestMediaTypeRoundTrip("xy"+this.Repeat("@",20)+"z");
       TestMediaTypeRoundTrip("xy"+this.Repeat("@",150)+"z");
+      Assert.AreEqual("2",MediaType.Parse("x/y;z=1;z*=utf-8''2").GetParameter("z"));
     }
 
     private static void TestMediaTypeRoundTrip(string str) {
@@ -973,13 +981,15 @@ namespace MailLibTest {
       this.TestRfc2231Extension("text/plain; charset*0=\"a\";charset*1=b", "charset", "ab");
       this.TestRfc2231Extension("text/plain; charset*0*=utf-8''a%20b;charset*1*=c%20d", "charset", "a bc d");
       this.TestRfc2231Extension(
-        "text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
+        "text/plain; charset*0=ab;charset*1*=iso-8859-1-en-xyz",
         "charset",
-        "abiso-8859-1'en'xyz");
+        "abiso-8859-1-en-xyz");
       this.TestRfc2231Extension(
-        "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
+        "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1-en-xyz",
         "charset",
-        "a biso-8859-1'en'xyz");
+        "a biso-8859-1-en-xyz");
+      ArgumentAssert.IsNull(MediaType.Parse("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",null));
+      ArgumentAssert.IsNull(MediaType.Parse("text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",null));
       this.TestRfc2231Extension(
         "text/plain; charset*0*=utf-8''a%20b;charset*1=a%20b",
         "charset",
@@ -1222,15 +1232,26 @@ namespace MailLibTest {
         HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" (comment) <x@x.example>"));
     }
 
-    internal static bool IsGoodAsciiOnlyAndGoodLineLength(string str, bool hasMessageType) {
+    internal static bool IsGoodAsciiMessageFormat(string str, bool hasMessageType) {
       int lineLength = 0;
       int wordLength = 0;
       int index = 0;
       int endIndex = str.Length;
       bool headers = true;
+      bool colon = false;
+      bool hasNonWhitespace = false;
+      bool startsWithSpace = false;
       bool hasLongWord = false;
+      if (index == endIndex) {
+        Console.WriteLine("Message is empty");
+        return false;
+      }
       while (index<endIndex) {
         char c = str[index];
+        if (index == 0 && (c == 0x20 || c == 0x09)) {
+          Console.WriteLine("Starts with whitespace");
+          return false;
+        }
         if (c >= 0x80) {
           Console.WriteLine("Non-ASCII character (0x {0:X2})",(int)c);
           return false;
@@ -1240,14 +1261,35 @@ namespace MailLibTest {
           if (headers && lineLength == 0) {
             // Start of the body
             headers = false;
+          } else if (headers && !hasNonWhiteSpace) {
+            Console.WriteLine("Line has only whitespace");
+            return false;
           }
           lineLength = 0;
           wordLength = 0;
+          colon = false;
+          hasNonWhiteSpace = false;
           hasLongWord = false;
+          startsWithSpace = false;
+          if (index<endIndex && (str[index]==' ' || str[index]=='\t')) {
+            startsWithSpace = true;
+          }
           continue;
         } else if (c=='\r' || c=='\n') {
           Console.WriteLine("Bare CR or bare LF");
           return false;
+        }
+        if (headers && c==':' && !colon && !startsWithSpace) {
+          if (index + 1 >= endIndex) {
+            Console.WriteLine("Colon at end");
+            return false;
+          }
+          if (str[index + 1]!=0x20) {
+            string test = str.Substring(Math.Max(index + 2-30, 0), Math.Min(index + 2, 30));
+            Console.WriteLine("No space after header name and colon: (0x {0:X2}) [" + test + "] " + (index));
+            return false;
+          }
+          colon = true;
         }
         if (c=='\t'  || c==0x20) {
           ++lineLength;
@@ -1255,6 +1297,7 @@ namespace MailLibTest {
         } else {
           ++lineLength;
           ++wordLength;
+          hasNonWhiteSpace = true;
           hasLongWord|=(wordLength>77) || (lineLength == wordLength && wordLength>78);
         }
         if (c == 0) {
@@ -1531,6 +1574,70 @@ namespace MailLibTest {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
+      try {
+ new NamedAddress("Me <me@example.com>");
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new NamedAddress("Me\u00e0 <me@example.com>");
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new NamedAddress("\"Me\" <me@example.com>");
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new NamedAddress("\"Me\u00e0\" <me@example.com>");
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new Address("Me <me@example.com>");
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new Address("Me\u00e0 <me@example.com>");
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new Address("\"Me\" <me@example.com>");
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new Address("\"Me\u00e0\" <me@example.com>");
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new NamedAddress("Me <me@example.com>, Fred <fred@example.com>");
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
       Assert.IsFalse(new NamedAddress("x@example.com").IsGroup);
       Assert.AreEqual("x@example.com",new NamedAddress("x@example.com").Name);
       Assert.AreEqual("x@example.com",new NamedAddress("x@example.com").Address.ToString());

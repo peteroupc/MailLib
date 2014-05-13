@@ -84,7 +84,7 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("address");
       }
       Tokener tokener = new Tokener();
-      if (HeaderParser.ParseHeaderTo(address, 0, address.Length, tokener) != address.Length) {
+      if (HeaderParser.ParseAddress(address, 0, address.Length, tokener) != address.Length) {
         throw new ArgumentException("Address has an invalid syntax.");
       }
       NamedAddress na = HeaderParserUtility.ParseAddress(address, 0, address.Length, tokener.GetTokens());

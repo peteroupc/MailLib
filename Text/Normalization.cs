@@ -1,16 +1,18 @@
 namespace PeterO.Text {
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Represents a Unicode normalization form.</summary>
   public enum Normalization {
-    /// <summary>Normalization form C.</summary>
+    /// <summary>Normalization form C: canonical decomposition followed
+    /// by canonical composition.</summary>
     NFC,
 
-    /// <summary>Normalization form D.</summary>
+    /// <summary>Normalization form D: canonical decomposition.</summary>
     NFD,
 
-    /// <summary>Normalization form KC.</summary>
+    /// <summary>Normalization form KC: compatibility decomposition
+    /// followed by canonical composition.</summary>
     NFKC,
 
-    /// <summary>Normalization form KD.</summary>
+    /// <summary>Normalization form KD: compatibility decomposition.</summary>
     NFKD
   }
 }

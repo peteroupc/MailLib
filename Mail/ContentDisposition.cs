@@ -98,7 +98,7 @@ namespace PeterO.Mail {
       int index = 0;
       bool inEncodedWord = false;
       while (index < str.Length) {
-        if (!inEncodedWord && index + 1<str.Length && str[index]=='=' && str[index+1]=='?') {
+        if (!inEncodedWord && index + 1 < str.Length && str[index] == '=' && str[index + 1] == '?') {
           // Remove start of encoded word
           inEncodedWord = true;
           index += 2;
@@ -116,7 +116,7 @@ namespace PeterO.Mail {
             }
           }
           inEncodedWord = true;
-        } else if (inEncodedWord && index + 1<str.Length && str[index]=='?' && str[index+1]=='=') {
+        } else if (inEncodedWord && index + 1 < str.Length && str[index] == '?' && str[index + 1] == '=') {
           // End of encoded word
           index += 2;
           inEncodedWord = false;
@@ -140,7 +140,7 @@ namespace PeterO.Mail {
     /// to a suitable name for saving data to a file.</summary>
     /// <param name='str'>A string representing a file name.</param>
     /// <returns>A string with the converted version of the file name. Among
-    /// other things, encoded words under RFC 2049 are decoded (since they
+    /// other things, encoded words under RFC 2047 are decoded (since they
     /// occur so frequently in Content-Disposition filenames); characters
     /// unsuitable for use in a filename (including the directory separators
     /// slash and backslash) are replaced with underscores; and the filename
@@ -162,7 +162,7 @@ namespace PeterO.Mail {
       str = ParserUtility.TrimSpaceAndTab(str);
       // NOTE: Even if there are directory separators (backslash
       // and forward slash), the filename is not treated as a
-      // file system path (in accordance with sec. 2.3 or RFC
+      // file system path (in accordance with sec. 2.3 of RFC
       // 2183); as a result, the directory separators
       // will be treated as unsuitable characters for filenames
       // and are handled below.
@@ -173,7 +173,7 @@ namespace PeterO.Mail {
       // Replace unsuitable characters for filenames
       // and make sure the filename's
       // length doesn't exceed 250
-      for (int i = 0; i<str.Length && builder.Length<250; ++i) {
+      for (int i = 0; i < str.Length && builder.Length < 250; ++i) {
         int c = DataUtilities.CodePointAt(str, i);
         if (c >= 0x10000) {
           ++i;
@@ -181,12 +181,12 @@ namespace PeterO.Mail {
         if (c == (int)'\t') {
           // Replace tab with space
           builder.Append(' ');
-        } else if (c < 0x20 || c=='\\' || c=='/' || c=='*' || c=='?' || c=='|' ||
-                   c == ':' || c=='<' || c=='>' || c=='"' || c==0x7f) {
+        } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
+                   c == ':' || c == '<' || c == '>' || c == '"' || c == 0x7f) {
           // Unsuitable character for a filename
           builder.Append('_');
         } else {
-          if (builder.Length < 249 || c<0x10000) {
+          if (builder.Length < 249 || c < 0x10000) {
             if (c <= 0xffff) {
               builder.Append((char)c);
             } else if (c <= 0x10ffff) {
@@ -201,7 +201,7 @@ namespace PeterO.Mail {
       if (str.Length == 0) {
         return "_";
       }
-      if (str[str.Length - 1]=='.') {
+      if (str[str.Length - 1] == '.') {
         // Ends in a dot
         str += "_";
       }
@@ -214,19 +214,18 @@ namespace PeterO.Mail {
           strLower.IndexOf("aux.") ==0 ||
           strLower.Equals("con") ||
           strLower.IndexOf("con.") ==0 ||
-          (strLower.Length >= 4 && strLower.IndexOf("lpt")==0 && strLower[3]>= '1' && strLower[3]<= '9') ||
-          (strLower.Length >= 4 && strLower.IndexOf("com")==0 && strLower[3]>= '1' && strLower[3]<= '9')
-) {
+          (strLower.Length >= 4 && strLower.IndexOf("lpt") ==0 && strLower[3] >= '1' && strLower[3] <= '9') ||
+          (strLower.Length >= 4 && strLower.IndexOf("com") ==0 && strLower[3] >= '1' && strLower[3] <= '9')) {
         // Reserved filenames on Windows
-        str = "_"+str;
+        str = "_" + str;
       }
       if (str[0] == '~') {
         // Home folder convention
-        str = "_"+str;
+        str = "_" + str;
       }
       if (str[0] == '.') {
         // Starts with period; may be hidden in some configurations
-        str = "_"+str;
+        str = "_" + str;
       }
       return Normalizer.Normalize(str, Normalization.NFC);
     }

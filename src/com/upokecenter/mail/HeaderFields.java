@@ -1321,6 +1321,7 @@ private HeaderFields() {
      * @param tokener An object that receives parsed tokens.
      * @return A 32-bit signed integer.
      */
+      // TODO: Downgrade the Received header field
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderReceived(str, index, endIndex, tokener);
       }

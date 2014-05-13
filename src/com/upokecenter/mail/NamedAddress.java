@@ -87,7 +87,7 @@ import java.util.*;
         throw new NullPointerException("address");
       }
       Tokener tokener = new Tokener();
-      if (HeaderParser.ParseHeaderTo(address, 0, address.length(), tokener) != address.length()) {
+      if (HeaderParser.ParseAddress(address, 0, address.length(), tokener) != address.length()) {
         throw new IllegalArgumentException("Address has an invalid syntax.");
       }
       NamedAddress na = HeaderParserUtility.ParseAddress(address, 0, address.length(), tokener.GetTokens());
