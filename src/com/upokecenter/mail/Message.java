@@ -37,16 +37,16 @@ import com.upokecenter.util.*;
      * instanceof 7bit) ? (7bit)declared : null), any 8-bit bytes are replaced
      * with question marks.</li> <li>In text/html message bodies, if the
      * transfer encoding is absent or ((declared instanceof 7bit) ? (7bit)declared
-     * : null), and the charset is declared as "ascii", "us-ascii", "windows-1252",
-     * or "iso-8859-*" (all single byte encodings), the transfer encoding
-     * is treated as 8bit instead.</li> <li>The name <code>ascii</code>
-     * is treated as a synonym for <code>us-ascii</code> , despite being
-     * a reserved name under RFC 2046. The name <code>cp1252</code> is treated
-     * as a synonym for <code>windows-1252</code> , even though it's not
-     * an IANA registered alias.</li> <li>If a sequence of encoded words
-     * (RFC 2047) decodes to a string with a CTL character (U + 007F, or a character
-     * less than U + 0020 and not TAB) after being converted to Unicode, the
-     * encoded words are left un-decoded.</li> </ul>
+     * : null), and the charset is declared as <code>ascii</code> , <code>us-ascii</code>
+     * , "windows-1252", or "iso-8859-*" (all single byte encodings),
+     * the transfer encoding is treated as 8bit instead.</li> <li>The name
+     * <code>ascii</code> is treated as a synonym for <code>us-ascii</code>
+     * , despite being a reserved name under RFC 2046. The name <code>cp1252</code>
+     * is treated as a synonym for <code>windows-1252</code> , even though
+     * it's not an IANA registered alias.</li> <li>If a sequence of encoded
+     * words (RFC 2047) decodes to a string with a CTL character (U + 007F,
+     * or a character less than U + 0020 and not TAB) after being converted
+     * to Unicode, the encoded words are left un-decoded.</li> </ul>
      */
   public final class Message {
     private static final int EncodingSevenBit = 0;

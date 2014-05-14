@@ -440,6 +440,7 @@ namespace MailLibTest {
       Assert.AreEqual("utf-8", MediaType.Parse("text/plain; charset=UTF-8").GetCharset());
       // Note that MIME implicitly allows whitespace around the equal sign
       Assert.AreEqual("utf-8", MediaType.Parse("text/plain; charset = UTF-8").GetCharset());
+      Assert.AreEqual("utf-8", MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8").GetCharset());
       Assert.AreEqual("'utf-8'", MediaType.Parse("text/plain; charset='UTF-8'").GetCharset());
       Assert.AreEqual("utf-8", MediaType.Parse("text/plain; charset=\"UTF-8\"").GetCharset());
       Assert.AreEqual("utf-8", MediaType.Parse("text/plain; foo=\"\\\"\"; charset=\"UTF-8\"").GetCharset());
@@ -988,8 +989,8 @@ namespace MailLibTest {
         "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1-en-xyz",
         "charset",
         "a biso-8859-1-en-xyz");
-      ArgumentAssert.IsNull(MediaType.Parse("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",null));
-      ArgumentAssert.IsNull(MediaType.Parse("text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",null));
+      Assert.IsNull(MediaType.Parse("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",null));
+      Assert.IsNull(MediaType.Parse("text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",null));
       this.TestRfc2231Extension(
         "text/plain; charset*0*=utf-8''a%20b;charset*1=a%20b",
         "charset",
@@ -1239,7 +1240,7 @@ namespace MailLibTest {
       int endIndex = str.Length;
       bool headers = true;
       bool colon = false;
-      bool hasNonWhitespace = false;
+      bool hasNonWhiteSpace = false;
       bool startsWithSpace = false;
       bool hasLongWord = false;
       if (index == endIndex) {
@@ -1283,6 +1284,10 @@ namespace MailLibTest {
           if (index + 1 >= endIndex) {
             Console.WriteLine("Colon at end");
             return false;
+          }
+          if (index == 0 || str[index-1]==0x20 || str[index-1]==0x09 || str[index-1]==0x0d){
+            Console.WriteLine("End of line, whitespace, or start of message before colon");
+            return false;            
           }
           if (str[index + 1]!=0x20) {
             string test = str.Substring(Math.Max(index + 2-30, 0), Math.Min(index + 2, 30));
@@ -1575,69 +1580,69 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
- new NamedAddress("Me <me@example.com>");
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        new NamedAddress("Me <me@example.com>");
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- new NamedAddress("Me\u00e0 <me@example.com>");
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        new NamedAddress("Me\u00e0 <me@example.com>");
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- new NamedAddress("\"Me\" <me@example.com>");
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        new NamedAddress("\"Me\" <me@example.com>");
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- new NamedAddress("\"Me\u00e0\" <me@example.com>");
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        new NamedAddress("\"Me\u00e0\" <me@example.com>");
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- new Address("Me <me@example.com>");
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        new Address("Me <me@example.com>");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- new Address("Me\u00e0 <me@example.com>");
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        new Address("Me\u00e0 <me@example.com>");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- new Address("\"Me\" <me@example.com>");
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        new Address("\"Me\" <me@example.com>");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- new Address("\"Me\u00e0\" <me@example.com>");
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        new Address("\"Me\u00e0\" <me@example.com>");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- new NamedAddress("Me <me@example.com>, Fred <fred@example.com>");
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        new NamedAddress("Me <me@example.com>, Fred <fred@example.com>");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       Assert.IsFalse(new NamedAddress("x@example.com").IsGroup);
       Assert.AreEqual("x@example.com",new NamedAddress("x@example.com").Name);
       Assert.AreEqual("x@example.com",new NamedAddress("x@example.com").Address.ToString());

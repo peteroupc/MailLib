@@ -12,7 +12,7 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>Description of ContentDisposition.</summary>
+  /// <summary>Description of ContentDisposition.</summary>
   public class ContentDisposition
   {
     private string dispositionType;
@@ -152,7 +152,11 @@ namespace PeterO.Mail {
       str = ParserUtility.TrimSpaceAndTab(str);
       if (str.IndexOf("=?") >= 0) {
         // May contain encoded words, which are very frequent
-        // in Content-Disposition filenames
+        // in Content-Disposition filenames (they would appear quoted
+        // in the Content-Disposition "filename" parameter); these changes
+        // appear justified in sec. 2.3 of RFC 2183, which says that
+        // the parameter's value "should be used as a
+        // basis for the actual filename, where possible."
         str = Rfc2047.DecodeEncodedWords(str, 0, str.Length, EncodedWordContext.Unstructured);
         if (str.IndexOf("=?") >= 0) {
           // Remove ends of encoded words that remain
@@ -207,15 +211,15 @@ namespace PeterO.Mail {
       }
       string strLower = DataUtilities.ToLowerCaseAscii(str);
       if (strLower.Equals("nul") ||
-          strLower.IndexOf("nul.") ==0 ||
+          strLower.IndexOf("nul.") == 0 ||
           strLower.Equals("prn") ||
-          strLower.IndexOf("prn.") ==0 ||
+          strLower.IndexOf("prn.") == 0 ||
           strLower.Equals("aux") ||
-          strLower.IndexOf("aux.") ==0 ||
+          strLower.IndexOf("aux.") == 0 ||
           strLower.Equals("con") ||
-          strLower.IndexOf("con.") ==0 ||
-          (strLower.Length >= 4 && strLower.IndexOf("lpt") ==0 && strLower[3] >= '1' && strLower[3] <= '9') ||
-          (strLower.Length >= 4 && strLower.IndexOf("com") ==0 && strLower[3] >= '1' && strLower[3] <= '9')) {
+          strLower.IndexOf("con.") == 0 ||
+          (strLower.Length >= 4 && strLower.IndexOf("lpt") == 0 && strLower[3] >= '1' && strLower[3] <= '9') ||
+          (strLower.Length >= 4 && strLower.IndexOf("com") == 0 && strLower[3] >= '1' && strLower[3] <= '9')) {
         // Reserved filenames on Windows
         str = "_" + str;
       }

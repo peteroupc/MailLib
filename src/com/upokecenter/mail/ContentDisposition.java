@@ -211,15 +211,15 @@ import com.upokecenter.text.*;
       }
       String strLower = DataUtilities.ToLowerCaseAscii(str);
       if (strLower.equals("nul") ||
-          strLower.indexOf("nul.") ==0 ||
+          strLower.indexOf("nul.") == 0 ||
           strLower.equals("prn") ||
-          strLower.indexOf("prn.") ==0 ||
+          strLower.indexOf("prn.") == 0 ||
           strLower.equals("aux") ||
-          strLower.indexOf("aux.") ==0 ||
+          strLower.indexOf("aux.") == 0 ||
           strLower.equals("con") ||
-          strLower.indexOf("con.") ==0 ||
-          (strLower.length() >= 4 && strLower.indexOf("lpt") ==0 && strLower.charAt(3) >= '1' && strLower.charAt(3) <= '9') ||
-          (strLower.length() >= 4 && strLower.indexOf("com") ==0 && strLower.charAt(3) >= '1' && strLower.charAt(3) <= '9')) {
+          strLower.indexOf("con.") == 0 ||
+          (strLower.length() >= 4 && strLower.indexOf("lpt") == 0 && strLower.charAt(3) >= '1' && strLower.charAt(3) <= '9') ||
+          (strLower.length() >= 4 && strLower.indexOf("com") == 0 && strLower.charAt(3) >= '1' && strLower.charAt(3) <= '9')) {
         // Reserved filenames on Windows
         str = "_" + str;
       }

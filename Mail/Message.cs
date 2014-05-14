@@ -39,9 +39,10 @@ namespace PeterO.Mail {
     /// be ignored), if the transfer encoding is absent or declared as 7bit,
     /// any 8-bit bytes are replaced with question marks.</item>
     /// <item>In text/html message bodies, if the transfer encoding is absent
-    /// or declared as 7bit, and the charset is declared as "ascii", "us-ascii",
-    /// "windows-1252", or "iso-8859-*" (all single byte encodings), the
-    /// transfer encoding is treated as 8bit instead.</item>
+    /// or declared as 7bit, and the charset is declared as <code>ascii</code>
+    /// , <code>us-ascii</code>
+    /// , "windows-1252", or "iso-8859-*" (all single byte encodings),
+    /// the transfer encoding is treated as 8bit instead.</item>
     /// <item>The name <code>ascii</code>
     /// is treated as a synonym for <code>us-ascii</code>
     /// , despite being a reserved name under RFC 2046. The name <code>cp1252</code>
@@ -488,10 +489,10 @@ namespace PeterO.Mail {
         } else if (mime && name.Equals("content-type")) {
           if (haveContentType) {
             string valueExMessage = "Already have this header: " + name;
-            /*
+            #if DEBUG
             valueExMessage+="[old="+this.contentType+", new="+value+"]";
             valueExMessage = valueExMessage.Replace("\r\n"," ");
-             */
+            #endif
             throw new MessageDataException(valueExMessage);
           }
           this.contentType = MediaType.Parse(
@@ -501,10 +502,10 @@ namespace PeterO.Mail {
         } else if (mime && name.Equals("content-disposition")) {
           if (haveContentDisp) {
             string valueExMessage = "Already have this header: " + name;
-            /*
+            #if DEBUG
             valueExMessage+="[old="+this.contentType+", new="+value+"]";
             valueExMessage = valueExMessage.Replace("\r\n"," ");
-             */
+            #endif
             throw new MessageDataException(valueExMessage);
           }
           this.contentDisposition = ContentDisposition.Parse(value);

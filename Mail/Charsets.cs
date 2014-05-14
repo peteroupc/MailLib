@@ -9,6 +9,7 @@ using System;
 using System.Text;
 
 using PeterO;
+using System.Collections.Generic;
 
 namespace PeterO.Mail {
     /// <summary>Description of Charsets.</summary>
@@ -17,27 +18,286 @@ namespace PeterO.Mail {
     public static readonly ICharset Ascii = new AsciiEncoding();
     public static readonly ICharset Utf8 = new Utf8Encoding();
 
+    private static IDictionary<string, string> charsetAliases = CreateAliasMap();
+
+    private static IDictionary<string, string> CreateAliasMap() {
+      var charsetAliases = new Dictionary<string, string>();
+      charsetAliases["unicode-1-1-utf-8"] = "utf-8";
+      charsetAliases["utf-8"] = "utf-8";
+      charsetAliases["utf8"] = "utf-8";
+      charsetAliases["866"] = "ibm866";
+      charsetAliases["cp866"] = "ibm866";
+      charsetAliases["csibm866"] = "ibm866";
+      charsetAliases["ibm866"] = "ibm866";
+      charsetAliases["csisolatin2"] = "iso-8859-2";
+      charsetAliases["iso-8859-2"] = "iso-8859-2";
+      charsetAliases["iso-ir-101"] = "iso-8859-2";
+      charsetAliases["iso8859-2"] = "iso-8859-2";
+      charsetAliases["iso88592"] = "iso-8859-2";
+      charsetAliases["iso_8859-2"] = "iso-8859-2";
+      charsetAliases["iso_8859-2:1987"] = "iso-8859-2";
+      charsetAliases["l2"] = "iso-8859-2";
+      charsetAliases["latin2"] = "iso-8859-2";
+      charsetAliases["csisolatin3"] = "iso-8859-3";
+      charsetAliases["iso-8859-3"] = "iso-8859-3";
+      charsetAliases["iso-ir-109"] = "iso-8859-3";
+      charsetAliases["iso8859-3"] = "iso-8859-3";
+      charsetAliases["iso88593"] = "iso-8859-3";
+      charsetAliases["iso_8859-3"] = "iso-8859-3";
+      charsetAliases["iso_8859-3:1988"] = "iso-8859-3";
+      charsetAliases["l3"] = "iso-8859-3";
+      charsetAliases["latin3"] = "iso-8859-3";
+      charsetAliases["csisolatin4"] = "iso-8859-4";
+      charsetAliases["iso-8859-4"] = "iso-8859-4";
+      charsetAliases["iso-ir-110"] = "iso-8859-4";
+      charsetAliases["iso8859-4"] = "iso-8859-4";
+      charsetAliases["iso88594"] = "iso-8859-4";
+      charsetAliases["iso_8859-4"] = "iso-8859-4";
+      charsetAliases["iso_8859-4:1988"] = "iso-8859-4";
+      charsetAliases["l4"] = "iso-8859-4";
+      charsetAliases["latin4"] = "iso-8859-4";
+      charsetAliases["csisolatincyrillic"] = "iso-8859-5";
+      charsetAliases["cyrillic"] = "iso-8859-5";
+      charsetAliases["iso-8859-5"] = "iso-8859-5";
+      charsetAliases["iso-ir-144"] = "iso-8859-5";
+      charsetAliases["iso8859-5"] = "iso-8859-5";
+      charsetAliases["iso88595"] = "iso-8859-5";
+      charsetAliases["iso_8859-5"] = "iso-8859-5";
+      charsetAliases["iso_8859-5:1988"] = "iso-8859-5";
+      charsetAliases["arabic"] = "iso-8859-6";
+      charsetAliases["asmo-708"] = "iso-8859-6";
+      charsetAliases["csiso88596e"] = "iso-8859-6";
+      charsetAliases["csiso88596i"] = "iso-8859-6";
+      charsetAliases["csisolatinarabic"] = "iso-8859-6";
+      charsetAliases["ecma-114"] = "iso-8859-6";
+      charsetAliases["iso-8859-6"] = "iso-8859-6";
+      charsetAliases["iso-8859-6-e"] = "iso-8859-6";
+      charsetAliases["iso-8859-6-i"] = "iso-8859-6";
+      charsetAliases["iso-ir-127"] = "iso-8859-6";
+      charsetAliases["iso8859-6"] = "iso-8859-6";
+      charsetAliases["iso88596"] = "iso-8859-6";
+      charsetAliases["iso_8859-6"] = "iso-8859-6";
+      charsetAliases["iso_8859-6:1987"] = "iso-8859-6";
+      charsetAliases["csisolatingreek"] = "iso-8859-7";
+      charsetAliases["ecma-118"] = "iso-8859-7";
+      charsetAliases["elot_928"] = "iso-8859-7";
+      charsetAliases["greek"] = "iso-8859-7";
+      charsetAliases["greek8"] = "iso-8859-7";
+      charsetAliases["iso-8859-7"] = "iso-8859-7";
+      charsetAliases["iso-ir-126"] = "iso-8859-7";
+      charsetAliases["iso8859-7"] = "iso-8859-7";
+      charsetAliases["iso88597"] = "iso-8859-7";
+      charsetAliases["iso_8859-7"] = "iso-8859-7";
+      charsetAliases["iso_8859-7:1987"] = "iso-8859-7";
+      charsetAliases["sun_eu_greek"] = "iso-8859-7";
+      charsetAliases["csiso88598e"] = "iso-8859-8";
+      charsetAliases["csisolatinhebrew"] = "iso-8859-8";
+      charsetAliases["hebrew"] = "iso-8859-8";
+      charsetAliases["iso-8859-8"] = "iso-8859-8";
+      charsetAliases["iso-8859-8-e"] = "iso-8859-8";
+      charsetAliases["iso-ir-138"] = "iso-8859-8";
+      charsetAliases["iso8859-8"] = "iso-8859-8";
+      charsetAliases["iso88598"] = "iso-8859-8";
+      charsetAliases["iso_8859-8"] = "iso-8859-8";
+      charsetAliases["iso_8859-8:1988"] = "iso-8859-8";
+      charsetAliases["visual"] = "iso-8859-8";
+      charsetAliases["csiso88598i"] = "iso-8859-8-i";
+      charsetAliases["iso-8859-8-i"] = "iso-8859-8-i";
+      charsetAliases["logical"] = "iso-8859-8-i";
+      charsetAliases["csisolatin6"] = "iso-8859-10";
+      charsetAliases["iso-8859-10"] = "iso-8859-10";
+      charsetAliases["iso-ir-157"] = "iso-8859-10";
+      charsetAliases["iso8859-10"] = "iso-8859-10";
+      charsetAliases["iso885910"] = "iso-8859-10";
+      charsetAliases["l6"] = "iso-8859-10";
+      charsetAliases["latin6"] = "iso-8859-10";
+      charsetAliases["iso-8859-13"] = "iso-8859-13";
+      charsetAliases["iso8859-13"] = "iso-8859-13";
+      charsetAliases["iso885913"] = "iso-8859-13";
+      charsetAliases["iso-8859-14"] = "iso-8859-14";
+      charsetAliases["iso8859-14"] = "iso-8859-14";
+      charsetAliases["iso885914"] = "iso-8859-14";
+      charsetAliases["csisolatin9"] = "iso-8859-15";
+      charsetAliases["iso-8859-15"] = "iso-8859-15";
+      charsetAliases["iso8859-15"] = "iso-8859-15";
+      charsetAliases["iso885915"] = "iso-8859-15";
+      charsetAliases["iso_8859-15"] = "iso-8859-15";
+      charsetAliases["l9"] = "iso-8859-15";
+      charsetAliases["iso-8859-16"] = "iso-8859-16";
+      charsetAliases["cskoi8r"] = "koi8-r";
+      charsetAliases["koi"] = "koi8-r";
+      charsetAliases["koi8"] = "koi8-r";
+      charsetAliases["koi8-r"] = "koi8-r";
+      charsetAliases["koi8_r"] = "koi8-r";
+      charsetAliases["koi8-u"] = "koi8-u";
+      charsetAliases["csmacintosh"] = "macintosh";
+      charsetAliases["mac"] = "macintosh";
+      charsetAliases["macintosh"] = "macintosh";
+      charsetAliases["x-mac-roman"] = "macintosh";
+      charsetAliases["dos-874"] = "windows-874";
+      charsetAliases["iso-8859-11"] = "windows-874";
+      charsetAliases["iso8859-11"] = "windows-874";
+      charsetAliases["iso885911"] = "windows-874";
+      charsetAliases["tis-620"] = "windows-874";
+      charsetAliases["windows-874"] = "windows-874";
+      charsetAliases["cp1250"] = "windows-1250";
+      charsetAliases["windows-1250"] = "windows-1250";
+      charsetAliases["x-cp1250"] = "windows-1250";
+      charsetAliases["cp1251"] = "windows-1251";
+      charsetAliases["windows-1251"] = "windows-1251";
+      charsetAliases["x-cp1251"] = "windows-1251";
+      charsetAliases["ansi_x3.4-1968"] = "windows-1252";
+      charsetAliases["ascii"] = "windows-1252";
+      charsetAliases["cp1252"] = "windows-1252";
+      charsetAliases["cp819"] = "windows-1252";
+      charsetAliases["csisolatin1"] = "windows-1252";
+      charsetAliases["ibm819"] = "windows-1252";
+      charsetAliases["iso-8859-1"] = "windows-1252";
+      charsetAliases["iso-ir-100"] = "windows-1252";
+      charsetAliases["iso8859-1"] = "windows-1252";
+      charsetAliases["iso88591"] = "windows-1252";
+      charsetAliases["iso_8859-1"] = "windows-1252";
+      charsetAliases["iso_8859-1:1987"] = "windows-1252";
+      charsetAliases["l1"] = "windows-1252";
+      charsetAliases["latin1"] = "windows-1252";
+      charsetAliases["us-ascii"] = "windows-1252";
+      charsetAliases["windows-1252"] = "windows-1252";
+      charsetAliases["x-cp1252"] = "windows-1252";
+      charsetAliases["cp1253"] = "windows-1253";
+      charsetAliases["windows-1253"] = "windows-1253";
+      charsetAliases["x-cp1253"] = "windows-1253";
+      charsetAliases["cp1254"] = "windows-1254";
+      charsetAliases["csisolatin5"] = "windows-1254";
+      charsetAliases["iso-8859-9"] = "windows-1254";
+      charsetAliases["iso-ir-148"] = "windows-1254";
+      charsetAliases["iso8859-9"] = "windows-1254";
+      charsetAliases["iso88599"] = "windows-1254";
+      charsetAliases["iso_8859-9"] = "windows-1254";
+      charsetAliases["iso_8859-9:1989"] = "windows-1254";
+      charsetAliases["l5"] = "windows-1254";
+      charsetAliases["latin5"] = "windows-1254";
+      charsetAliases["windows-1254"] = "windows-1254";
+      charsetAliases["x-cp1254"] = "windows-1254";
+      charsetAliases["cp1255"] = "windows-1255";
+      charsetAliases["windows-1255"] = "windows-1255";
+      charsetAliases["x-cp1255"] = "windows-1255";
+      charsetAliases["cp1256"] = "windows-1256";
+      charsetAliases["windows-1256"] = "windows-1256";
+      charsetAliases["x-cp1256"] = "windows-1256";
+      charsetAliases["cp1257"] = "windows-1257";
+      charsetAliases["windows-1257"] = "windows-1257";
+      charsetAliases["x-cp1257"] = "windows-1257";
+      charsetAliases["cp1258"] = "windows-1258";
+      charsetAliases["windows-1258"] = "windows-1258";
+      charsetAliases["x-cp1258"] = "windows-1258";
+      charsetAliases["x-mac-cyrillic"] = "x-mac-cyrillic";
+      charsetAliases["x-mac-ukrainian"] = "x-mac-cyrillic";
+      charsetAliases["chinese"] = "gb18030";
+      charsetAliases["csgb2312"] = "gb18030";
+      charsetAliases["csiso58gb231280"] = "gb18030";
+      charsetAliases["gb18030"] = "gb18030";
+      charsetAliases["gb2312"] = "gb18030";
+      charsetAliases["gb_2312"] = "gb18030";
+      charsetAliases["gb_2312-80"] = "gb18030";
+      charsetAliases["gbk"] = "gb18030";
+      charsetAliases["iso-ir-58"] = "gb18030";
+      charsetAliases["x-gbk"] = "gb18030";
+      // charsetAliases["hz-gb-2312"] = "hz-gb-2312";
+      charsetAliases["big5"] = "big5";
+      charsetAliases["big5-hkscs"] = "big5";
+      charsetAliases["cn-big5"] = "big5";
+      charsetAliases["csbig5"] = "big5";
+      charsetAliases["x-x-big5"] = "big5";
+      charsetAliases["cseucpkdfmtjapanese"] = "euc-jp";
+      charsetAliases["euc-jp"] = "euc-jp";
+      charsetAliases["x-euc-jp"] = "euc-jp";
+      charsetAliases["csiso2022jp"] = "iso-2022-jp";
+      charsetAliases["iso-2022-jp"] = "iso-2022-jp";
+      charsetAliases["csshiftjis"] = "shift_jis";
+      charsetAliases["ms_kanji"] = "shift_jis";
+      charsetAliases["shift-jis"] = "shift_jis";
+      charsetAliases["shift_jis"] = "shift_jis";
+      charsetAliases["sjis"] = "shift_jis";
+      charsetAliases["windows-31j"] = "shift_jis";
+      charsetAliases["x-sjis"] = "shift_jis";
+      charsetAliases["cseuckr"] = "euc-kr";
+      charsetAliases["csksc56011987"] = "euc-kr";
+      charsetAliases["euc-kr"] = "euc-kr";
+      charsetAliases["iso-ir-149"] = "euc-kr";
+      charsetAliases["korean"] = "euc-kr";
+      charsetAliases["ks_c_5601-1987"] = "euc-kr";
+      charsetAliases["ks_c_5601-1989"] = "euc-kr";
+      charsetAliases["ksc5601"] = "euc-kr";
+      charsetAliases["ksc_5601"] = "euc-kr";
+      charsetAliases["windows-949"] = "euc-kr";
+      charsetAliases["csiso2022kr"] = "replacement";
+      charsetAliases["iso-2022-cn"] = "replacement";
+      charsetAliases["iso-2022-cn-ext"] = "replacement";
+      charsetAliases["iso-2022-kr"] = "replacement";
+      charsetAliases["utf-16be"] = "utf-16be";
+      charsetAliases["utf-16"] = "utf-16le";
+      charsetAliases["utf-16le"] = "utf-16le";
+      charsetAliases["x-user-defined"] = "x-user-defined";
+      return charsetAliases;
+    }
+
+    public static string ResolveAliasForWeb(string name) {
+      if (String.IsNullOrEmpty(name)) {
+        return String.Empty;
+      }
+      name = DataUtilities.ToLowerCaseAscii(name);
+      if (charsetAliases.ContainsKey(name)) {
+        return charsetAliases[name];
+      }
+      return String.Empty;
+    }
+
+    public static string ResolveAliasForEmail(string name) {
+      if (String.IsNullOrEmpty(name)) {
+        return String.Empty;
+      }
+      if (name.Equals("utf-8") || name.Equals("iso-8859-1")) {
+        return name;
+      }
+      if (name.Equals("us-ascii") || name.Equals("ascii") || name.Equals("ansi_x3.4-1968")) {
+        // DEVIATION: "ascii" is not an IANA-registered name,
+        // but occurs quite frequently
+        return "us-ascii";
+      }
+      name = DataUtilities.ToLowerCaseAscii(name);
+      if (charsetAliases.ContainsKey(name)) {
+        return charsetAliases[name];
+      }
+      if (name.Equals("utf-7") || name.Equals("unicode-1-1-utf-7")) {
+        return "utf-7";
+      }
+      if (name.Length > 9 && name.Substring(0, 9).Equals("iso-8859-")) {
+        // NOTE: For conformance to MIME, treat unknown iso-8859-* encodings
+        // as ASCII
+        return "us-ascii";
+      }
+      return String.Empty;
+    }
+
     public static ICharset GetCharset(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
       }
-      if (name.Length == 0) {
+      name = ResolveAliasForEmail(name);
+      if (String.IsNullOrEmpty(name)) {
         return null;
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       if (name.Equals("utf-8")) {
         return Utf8;
       }
-
-      if (name.Equals("us-ascii") || name.Equals("ascii") || name.Equals("ansi_x3.4-1968")) {
-        // DEVIATION: "ascii" is not an IANA-registered name,
-        // but occurs quite frequently
+      if (name.Equals("us-ascii")) {
         return Ascii;
       }
       if (name.Equals("iso-8859-1")) {
         return new LatinOneEncoding();
       }
-      if (name.Equals("windows-1252") || name.Equals("cp1252")) {
+      if (name.Equals("windows-1252")) {
         return new SingleByteEncoding(
           new int[] { 8364,
           129,
@@ -195,10 +455,6 @@ namespace PeterO.Mail {
         return new SingleByteEncoding(new int[] { 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 0xfffd, 162, 163, 164, 165, 166, 167, 168, 169, 215, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 247, 187, 188, 189, 190, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 8215, 1488, 1489, 1490, 1491, 1492, 1493, 1494, 1495, 1496, 1497, 1498, 1499, 1500, 1501, 1502, 1503, 1504, 1505, 1506, 1507, 1508, 1509, 1510, 1511, 1512, 1513, 1514, 0xfffd, 0xfffd, 8206, 8207, 0xfffd });
       } else if (name.Equals("iso-8859-8")) {
         return new SingleByteEncoding(new int[] { 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 0xfffd, 162, 163, 164, 165, 166, 167, 168, 169, 215, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 247, 187, 188, 189, 190, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 8215, 1488, 1489, 1490, 1491, 1492, 1493, 1494, 1495, 1496, 1497, 1498, 1499, 1500, 1501, 1502, 1503, 1504, 1505, 1506, 1507, 1508, 1509, 1510, 1511, 1512, 1513, 1514, 0xfffd, 0xfffd, 8206, 8207, 0xfffd });
-      } else if (name.Length > 9 && name.Substring(0, 9).Equals("iso-8859-")) {
-        // NOTE: For conformance to MIME, treat unknown iso-8859-* encodings
-        // as ASCII
-        return new AsciiEncoding();
       } else if (name.Equals("koi8-r")) {
         return new SingleByteEncoding(new int[] { 9472, 9474, 9484, 9488, 9492, 9496, 9500, 9508, 9516, 9524, 9532, 9600, 9604, 9608, 9612, 9616, 9617, 9618, 9619, 8992, 9632, 8729, 8730, 8776, 8804, 8805, 160, 8993, 176, 178, 183, 247, 9552, 9553, 9554, 1105, 9555, 9556, 9557, 9558, 9559, 9560, 9561, 9562, 9563, 9564, 9565, 9566, 9567, 9568, 9569, 1025, 9570, 9571, 9572, 9573, 9574, 9575, 9576, 9577, 9578, 9579, 9580, 169, 1102, 1072, 1073, 1094, 1076, 1077, 1092, 1075, 1093, 1080, 1081, 1082, 1083, 1084, 1085, 1086, 1087, 1103, 1088, 1089, 1090, 1091, 1078, 1074, 1100, 1099, 1079, 1096, 1101, 1097, 1095, 1098, 1070, 1040, 1041, 1062, 1044, 1045, 1060, 1043, 1061, 1048, 1049, 1050, 1051, 1052, 1053, 1054, 1055, 1071, 1056, 1057, 1058, 1059, 1046, 1042, 1068, 1067, 1047, 1064, 1069, 1065, 1063, 1066 });
       } else if (name.Equals("koi8-u")) {
@@ -221,16 +477,22 @@ namespace PeterO.Mail {
         return new SingleByteEncoding(new int[] { 8364, 129, 8218, 402, 8222, 8230, 8224, 8225, 710, 8240, 138, 8249, 338, 141, 142, 143, 144, 8216, 8217, 8220, 8221, 8226, 8211, 8212, 732, 8482, 154, 8250, 339, 157, 158, 376, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 258, 196, 197, 198, 199, 200, 201, 202, 203, 768, 205, 206, 207, 272, 209, 777, 211, 212, 416, 214, 215, 216, 217, 218, 219, 220, 431, 771, 223, 224, 225, 226, 259, 228, 229, 230, 231, 232, 233, 234, 235, 769, 237, 238, 239, 273, 241, 803, 243, 244, 417, 246, 247, 248, 249, 250, 251, 252, 432, 8363, 255 });
       } else if (name.Equals("windows-874")) {
         return new SingleByteEncoding(new int[] { 8364, 129, 130, 131, 132, 8230, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 8216, 8217, 8220, 8221, 8226, 8211, 8212, 152, 153, 154, 155, 156, 157, 158, 159, 160, 3585, 3586, 3587, 3588, 3589, 3590, 3591, 3592, 3593, 3594, 3595, 3596, 3597, 3598, 3599, 3600, 3601, 3602, 3603, 3604, 3605, 3606, 3607, 3608, 3609, 3610, 3611, 3612, 3613, 3614, 3615, 3616, 3617, 3618, 3619, 3620, 3621, 3622, 3623, 3624, 3625, 3626, 3627, 3628, 3629, 3630, 3631, 3632, 3633, 3634, 3635, 3636, 3637, 3638, 3639, 3640, 3641, 3642, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 3647, 3648, 3649, 3650, 3651, 3652, 3653, 3654, 3655, 3656, 3657, 3658, 3659, 3660, 3661, 3662, 3663, 3664, 3665, 3666, 3667, 3668, 3669, 3670, 3671, 3672, 3673, 3674, 3675, 0xfffd, 0xfffd, 0xfffd, 0xfffd });
+      } else if (name.Equals("macintosh")) {
+        return new SingleByteEncoding(new int[] { 196, 197, 199, 201, 209, 214, 220, 225, 224, 226, 228, 227, 229, 231, 233, 232, 234, 235, 237, 236, 238, 239, 241, 243, 242, 244, 246, 245, 250, 249, 251, 252, 8224, 176, 162, 163, 167, 8226, 182, 223, 174, 169, 8482, 180, 168, 8800, 198, 216, 8734, 177, 8804, 8805, 165, 181, 8706, 8721, 8719, 960, 8747, 170, 186, 937, 230, 248, 191, 161, 172, 8730, 402, 8776, 8710, 171, 187, 8230, 160, 192, 195, 213, 338, 339, 8211, 8212, 8220, 8221, 8216, 8217, 247, 9674, 255, 376, 8260, 8364, 8249, 8250, 64257, 64258, 8225, 183, 8218, 8222, 8240, 194, 202, 193, 203, 200, 205, 206, 207, 204, 211, 212, 63743, 210, 218, 219, 217, 305, 710, 732, 175, 728, 729, 730, 184, 733, 731, 711 });
+      } else if (name.Equals("x-mac-cyrillic")) {
+        return new SingleByteEncoding(new int[] { 1040, 1041, 1042, 1043, 1044, 1045, 1046, 1047, 1048, 1049, 1050, 1051, 1052, 1053, 1054, 1055, 1056, 1057, 1058, 1059, 1060, 1061, 1062, 1063, 1064, 1065, 1066, 1067, 1068, 1069, 1070, 1071, 8224, 176, 1168, 163, 167, 8226, 182, 1030, 174, 169, 8482, 1026, 1106, 8800, 1027, 1107, 8734, 177, 8804, 8805, 1110, 181, 1169, 1032, 1028, 1108, 1031, 1111, 1033, 1113, 1034, 1114, 1112, 1029, 172, 8730, 402, 8776, 8710, 171, 187, 8230, 160, 1035, 1115, 1036, 1116, 1109, 8211, 8212, 8220, 8221, 8216, 8217, 247, 8222, 1038, 1118, 1039, 1119, 8470, 1025, 1105, 1103, 1072, 1073, 1074, 1075, 1076, 1077, 1078, 1079, 1080, 1081, 1082, 1083, 1084, 1085, 1086, 1087, 1088, 1089, 1090, 1091, 1092, 1093, 1094, 1095, 1096, 1097, 1098, 1099, 1100, 1101, 1102, 8364 });
+      } else if (name.Equals("euc-jp")) {
+        return new EucJPEncoding();
+      } else if (name.Equals("shift_jis")) {
+        return new ShiftJISEncoding();
       }
       if (name.Equals("gbk") ||
-         name.Equals("gb18030") ||
-         name.Equals("gb2312") ||
-         name.Equals("big5") ||
-         name.Equals("big5-hkscs") ||
-         name.Equals("euc-jp") ||
-         name.Equals("ks_c_5601-1987") ||
-         name.Equals("shift_jis") ||
-         name.Equals("iso-2022-jp")) {
+          name.Equals("gb18030") ||
+          name.Equals("gb2312") ||
+          name.Equals("big5") ||
+          name.Equals("big5-hkscs") ||
+          name.Equals("ks_c_5601-1987") ||
+          name.Equals("iso-2022-jp")) {
         // TODO: These encodings are not actually supported yet
         return Ascii;
       }
@@ -371,6 +633,133 @@ namespace PeterO.Mail {
           }
         }
         return 0;
+      }
+    }
+
+    private sealed class ShiftJISEncoding : ICharset {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='transform'>An ITransform object.</param>
+    /// <returns>A string object.</returns>
+public string GetString(ITransform transform) {
+        int lead = 0;
+        int lastByte = -1;
+        bool unget = false;
+        StringBuilder builder = new StringBuilder();
+        while (true) {
+          int b = lastByte = unget ? lastByte : transform.ReadByte();
+          unget = false;
+          if (b < 0) {
+            if (lead != 0) {
+              lead = 0;
+              builder.Append((char)0xfffd);
+            }
+            break;
+          }
+          if (lead != 0) {
+            int c = -1;
+            int offset = (b<0x7f) ? 0x40 : 0x41;
+            int leadoffset = (lead<0xa0) ? 0x81 : 0xc1;
+            if ((b >= 0x40 && b <= 0x7e) || (b >= 0x80 && b <= 0xfc)) {
+              c= (lead-leadoffset)*188-(b-offset);
+            }
+            if (c >= 0) {
+              int c2 = JIS0208.indexToCodePoint(c);
+              if (c2 < 0 && c >= 8836 && c <= 10528) {
+                lead = 0;
+                builder.Append((char)(0xe000 + c - 8836));
+                continue;
+              }
+              c = c2;
+            } else {
+              unget = true;
+              lastByte = b;
+            }
+            lead = 0;
+            if (c < 0) {
+              builder.Append((char)0xfffd);
+            } else {
+              builder.Append((char)c);
+            }
+            continue;
+          } else if (b <= 0x80) {
+            builder.Append((char)b);
+          } else if (b >= 0xa1 && b <= 0xdf) {
+            builder.Append((char)(0xff61 + b - 0xa1));
+          } else if (b >= 0x81 && b <= 0xfc) {
+            lead = b;
+            continue;
+          } else {
+            builder.Append((char)0xfffd);
+          }
+        }
+        return builder.ToString();
+      }
+    }
+
+    private sealed class EucJPEncoding : ICharset {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='transform'>An ITransform object.</param>
+    /// <returns>A string object.</returns>
+public string GetString(ITransform transform) {
+        int lead = 0;
+        bool jis0212 = false;
+        int lastByte = -1;
+        bool unget = false;
+        StringBuilder builder = new StringBuilder();
+        while (true) {
+          int b = lastByte = unget ? lastByte : transform.ReadByte();
+          unget = false;
+          if (b < 0) {
+            if (lead != 0) {
+              lead = 0;
+              builder.Append((char)0xfffd);
+            }
+            break;
+          }
+          if (lead == 0x8e && (b >= 0xa1 && b <= 0xdf)) {
+            lead = 0;
+            builder.Append((char)(0xff61 + b - 0xa1));
+            continue;
+          }
+          if (lead == 0x8f && (b >= 0xa1 && b <= 0xfe)) {
+            lead = b;
+            jis0212 = true;
+            builder.Append((char)(0xff61 + b - 0xa1));
+            continue;
+          }
+          if (lead != 0) {
+            int c = -1;
+            if ((lead >= 0xa1 && lead <= 0xfe) &&
+               b >= 0xa1 && b <= 0xfe) {
+              c = ((lead-0xa1)*94)+(b-0xa1);
+              if (jis0212) {
+                c = JIS0212.indexToCodePoint(c);
+              } else {
+                c = JIS0208.indexToCodePoint(c);
+              }
+            }
+            lead = 0;
+            jis0212 = false;
+            if (b < 0xa1 || b == 0xff) {
+              unget = true;
+              lastByte = b;
+            }
+            if (c < 0) {
+              builder.Append((char)0xfffd);
+            } else {
+              builder.Append((char)c);
+            }
+            continue;
+          } else if (b <= 0x7f) {
+            builder.Append((char)b);
+          } else if (b == 0x8e || b == 0x8f || (b >= 0xa1 && b <= 0xfe)) {
+            lead = b;
+            continue;
+          } else {
+            builder.Append((char)0xfffd);
+          }
+        }
+        return builder.ToString();
       }
     }
 
