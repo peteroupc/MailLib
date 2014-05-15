@@ -48,10 +48,10 @@ namespace PeterO.Mail {
       35574, 64045, 11008, 96 };
 
     public static int codePointToIndex(int codepoint) {
-      if (codepoint < 167 || codepoint>65509) {
+      if (codepoint < 167 || codepoint > 65509) {
  return -1;
 }
-      for (int i = 0; i<indextable.Length;i+=4) {
+      for (int i = 0; i < indextable.Length; i += 4) {
         if (codepoint >= indextable[i] && codepoint <= indextable[i + 1]) {
           int startindex = indextable[i + 2];
           int length = indextable[i + 3];
@@ -66,7 +66,7 @@ namespace PeterO.Mail {
     }
 
     public static int indexToCodePoint(int index) {
-      if (index < 0 || index>11103) {
+      if (index < 0 || index > 11103) {
  return -1;
 }
       int ret = table[index];

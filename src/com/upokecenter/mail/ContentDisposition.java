@@ -125,7 +125,7 @@ import com.upokecenter.text.*;
         } else {
           int c = DataUtilities.CodePointAt(str, index);
           if (c == 0xfffd) {
-            sb.append(0xfffd);
+            sb.append((char)0xfffd);
             ++index;
           } else {
             sb.append(str.charAt(index++));
@@ -144,10 +144,11 @@ import com.upokecenter.text.*;
      * @param str A string representing a file name.
      * @return A string with the converted version of the file name. Among
      * other things, encoded words under RFC 2047 are decoded (since they
-     * occur so frequently in Content-Disposition filenames); characters
-     * unsuitable for use in a filename (including the directory separators
-     * slash and backslash) are replaced with underscores; and the filename
-     * is truncated if it would otherwise be too long.
+     * occur so frequently in Content-Disposition filenames); the value
+     * is decoded under RFC 2231 if possible; characters unsuitable for
+     * use in a filename (including the directory separators slash and backslash)
+     * are replaced with underscores; and the filename is truncated if it
+     * would otherwise be too long.
      */
     public static String MakeFilename(String str) {
       if (str == null) {
@@ -156,11 +157,29 @@ import com.upokecenter.text.*;
       str = ParserUtility.TrimSpaceAndTab(str);
       if (str.indexOf("=?") >= 0) {
         // May contain encoded words, which are very frequent
-        // in Content-Disposition filenames
+        // in Content-Disposition filenames (they would appear quoted
+        // in the Content-Disposition "filename" parameter); these changes
+        // appear justified in sec. 2.3 of RFC 2183, which says that
+        // the parameter's value "should be used as a
+        // basis for the actual filename, where possible."
         str = Rfc2047.DecodeEncodedWords(str, 0, str.length(), EncodedWordContext.Unstructured);
         if (str.indexOf("=?") >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
+        }
+      } else if (str.indexOf('\'') > 0) {
+        // Check for RFC 2231 encoding, as long as the value before the
+        // apostrophe is a recognized charset. It appears to be common,
+        // too, to use quotes around a filename parameter AND use
+        // RFC 2231 encoding, even though all the examples in that RFC
+        // show unquoted use of this encoding.
+        String charset = Charsets.ResolveAliasForEmail(str.substring(0,str.indexOf('\'')));
+        if (!((charset)==null || (charset).length()==0)) {
+          String newstr = MediaType.DecodeRfc2231Extension(str);
+          if (!((newstr)==null || (newstr).length()==0)) {
+            // Value was decoded under RFC 2231
+            str = newstr;
+          }
         }
       }
       str = ParserUtility.TrimSpaceAndTab(str);

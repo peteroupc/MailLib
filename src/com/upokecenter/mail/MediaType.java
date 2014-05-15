@@ -708,7 +708,7 @@ import com.upokecenter.util.*;
       return null;
     }
 
-    private static String DecodeRfc2231Extension(String value) {
+    static String DecodeRfc2231Extension(String value) {
       int firstQuote = value.indexOf('\'');
       if (firstQuote < 0) {
         // not a valid encoded parameter
@@ -720,8 +720,11 @@ import com.upokecenter.util.*;
         return null;
       }
       String charset = value.substring(0,firstQuote);
-      // NOTE: Ignored
-      // String language = value.substring(firstQuote + 1,(firstQuote + 1)+(secondQuote-(firstQuote + 1)));
+      String language = value.substring(firstQuote + 1,(firstQuote + 1)+(secondQuote - (firstQuote + 1)));
+      if (language.length() > 0 && !ParserUtility.IsValidLanguageTag(language)) {
+        // not a valid language tag
+        return null;
+      }
       String paramValue = value.substring(secondQuote + 1);
       ICharset cs = Charsets.GetCharset(charset);
       if (cs == null) {
@@ -745,8 +748,11 @@ import com.upokecenter.util.*;
         return Charsets.Ascii;
       }
       String charset = value.substring(0,firstQuote);
-      // NOTE: Ignored
-      // String language = value.substring(firstQuote + 1,(firstQuote + 1)+(secondQuote-(firstQuote + 1)));
+      String language = value.substring(firstQuote + 1,(firstQuote + 1)+(secondQuote - (firstQuote + 1)));
+      if (language.length() > 0 && !ParserUtility.IsValidLanguageTag(language)) {
+        // not a valid language tag
+        return null;
+      }
       ICharset cs = Charsets.GetCharset(charset);
       if (cs == null) {
         cs = Charsets.Ascii;

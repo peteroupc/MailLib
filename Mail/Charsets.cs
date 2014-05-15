@@ -6,10 +6,10 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 using PeterO;
-using System.Collections.Generic;
 
 namespace PeterO.Mail {
     /// <summary>Description of Charsets.</summary>
@@ -640,7 +640,7 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='transform'>An ITransform object.</param>
     /// <returns>A string object.</returns>
-public string GetString(ITransform transform) {
+      public string GetString(ITransform transform) {
         int lead = 0;
         int lastByte = -1;
         bool unget = false;
@@ -657,10 +657,10 @@ public string GetString(ITransform transform) {
           }
           if (lead != 0) {
             int c = -1;
-            int offset = (b<0x7f) ? 0x40 : 0x41;
-            int leadoffset = (lead<0xa0) ? 0x81 : 0xc1;
+            int offset = (b < 0x7f) ? 0x40 : 0x41;
+            int leadoffset = (lead < 0xa0) ? 0x81 : 0xc1;
             if ((b >= 0x40 && b <= 0x7e) || (b >= 0x80 && b <= 0xfc)) {
-              c= (lead-leadoffset)*188-(b-offset);
+              c = (lead - leadoffset) * 188 - (b - offset);
             }
             if (c >= 0) {
               int c2 = JIS0208.indexToCodePoint(c);
@@ -700,7 +700,7 @@ public string GetString(ITransform transform) {
     /// <summary>Not documented yet.</summary>
     /// <param name='transform'>An ITransform object.</param>
     /// <returns>A string object.</returns>
-public string GetString(ITransform transform) {
+      public string GetString(ITransform transform) {
         int lead = 0;
         bool jis0212 = false;
         int lastByte = -1;
@@ -730,8 +730,8 @@ public string GetString(ITransform transform) {
           if (lead != 0) {
             int c = -1;
             if ((lead >= 0xa1 && lead <= 0xfe) &&
-               b >= 0xa1 && b <= 0xfe) {
-              c = ((lead-0xa1)*94)+(b-0xa1);
+                b >= 0xa1 && b <= 0xfe) {
+              c = ((lead - 0xa1) * 94)+(b-0xa1);
               if (jis0212) {
                 c = JIS0212.indexToCodePoint(c);
               } else {

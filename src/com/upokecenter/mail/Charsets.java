@@ -7,8 +7,9 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
-import com.upokecenter.util.*;
 import java.util.*;
+
+import com.upokecenter.util.*;
 
     /**
      * Description of Charsets.
@@ -645,7 +646,7 @@ private Charsets() {
      * @param transform An ITransform object.
      * @return A string object.
      */
-public String GetString(ITransform transform) {
+      public String GetString(ITransform transform) {
         int lead = 0;
         int lastByte = -1;
         boolean unget = false;
@@ -662,10 +663,10 @@ public String GetString(ITransform transform) {
           }
           if (lead != 0) {
             int c = -1;
-            int offset = (b<0x7f) ? 0x40 : 0x41;
-            int leadoffset = (lead<0xa0) ? 0x81 : 0xc1;
+            int offset = (b < 0x7f) ? 0x40 : 0x41;
+            int leadoffset = (lead < 0xa0) ? 0x81 : 0xc1;
             if ((b >= 0x40 && b <= 0x7e) || (b >= 0x80 && b <= 0xfc)) {
-              c= (lead-leadoffset)*188-(b-offset);
+              c = (lead - leadoffset) * 188 - (b - offset);
             }
             if (c >= 0) {
               int c2 = JIS0208.indexToCodePoint(c);
@@ -707,7 +708,7 @@ public String GetString(ITransform transform) {
      * @param transform An ITransform object.
      * @return A string object.
      */
-public String GetString(ITransform transform) {
+      public String GetString(ITransform transform) {
         int lead = 0;
         boolean jis0212 = false;
         int lastByte = -1;
@@ -737,8 +738,8 @@ public String GetString(ITransform transform) {
           if (lead != 0) {
             int c = -1;
             if ((lead >= 0xa1 && lead <= 0xfe) &&
-               b >= 0xa1 && b <= 0xfe) {
-              c = ((lead-0xa1)*94)+(b-0xa1);
+                b >= 0xa1 && b <= 0xfe) {
+              c = ((lead - 0xa1) * 94)+(b-0xa1);
               if (jis0212) {
                 c = JIS0212.indexToCodePoint(c);
               } else {

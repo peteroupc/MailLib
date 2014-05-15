@@ -646,7 +646,7 @@ namespace PeterO.Mail {
       // -- UTF-8 assumed: --
       //
       // UTF-8 only:
-      // -- vcard, jcr-cnd
+      // -- vcard, jcr-cnd, cache-manifest
       //
       // Charset parameter defined but is "always UTF-8":
       // -- n3, turtle, vnd.debian.copyright, provenance-notation
@@ -680,7 +680,7 @@ namespace PeterO.Mail {
             sub.Equals("vnd.debian.copyright") || sub.Equals("provenance-notation") || sub.Equals("csv") ||
             sub.Equals("calendar") || sub.Equals("vnd.a") || sub.Equals("parameters") ||
             sub.Equals("prs.fallenstein.rst") || sub.Equals("vnd.esmertec.theme.descriptor") ||
-            sub.Equals("vnd.trolltech.linguist") || sub.Equals("vnd.graphviz") ||
+            sub.Equals("vnd.trolltech.linguist") || sub.Equals("vnd.graphviz") || sub.Equals("cache-manifest") ||
             sub.Equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";
         }
@@ -705,7 +705,7 @@ namespace PeterO.Mail {
       return null;
     }
 
-    private static string DecodeRfc2231Extension(string value) {
+    internal static string DecodeRfc2231Extension(string value) {
       int firstQuote = value.IndexOf('\'');
       if (firstQuote < 0) {
         // not a valid encoded parameter
@@ -717,8 +717,11 @@ namespace PeterO.Mail {
         return null;
       }
       string charset = value.Substring(0, firstQuote);
-      // NOTE: Ignored
-      // string language = value.Substring(firstQuote + 1, secondQuote-(firstQuote + 1));
+      string language = value.Substring(firstQuote + 1, secondQuote - (firstQuote + 1));
+      if (language.Length > 0 && !ParserUtility.IsValidLanguageTag(language)) {
+        // not a valid language tag
+        return null;
+      }
       string paramValue = value.Substring(secondQuote + 1);
       ICharset cs = Charsets.GetCharset(charset);
       if (cs == null) {
@@ -742,8 +745,11 @@ namespace PeterO.Mail {
         return Charsets.Ascii;
       }
       string charset = value.Substring(0, firstQuote);
-      // NOTE: Ignored
-      // string language = value.Substring(firstQuote + 1, secondQuote-(firstQuote + 1));
+      string language = value.Substring(firstQuote + 1, secondQuote - (firstQuote + 1));
+      if (language.Length > 0 && !ParserUtility.IsValidLanguageTag(language)) {
+        // not a valid language tag
+        return null;
+      }
       ICharset cs = Charsets.GetCharset(charset);
       if (cs == null) {
         cs = Charsets.Ascii;

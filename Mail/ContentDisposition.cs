@@ -12,7 +12,7 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-  /// <summary>Description of ContentDisposition.</summary>
+    /// <summary>Description of ContentDisposition.</summary>
   public class ContentDisposition
   {
     private string dispositionType;
@@ -123,7 +123,7 @@ namespace PeterO.Mail {
         } else {
           int c = DataUtilities.CodePointAt(str, index);
           if (c == 0xfffd) {
-            sb.Append(0xfffd);
+            sb.Append((char)0xfffd);
             ++index;
           } else {
             sb.Append(str[index++]);
@@ -141,10 +141,11 @@ namespace PeterO.Mail {
     /// <param name='str'>A string representing a file name.</param>
     /// <returns>A string with the converted version of the file name. Among
     /// other things, encoded words under RFC 2047 are decoded (since they
-    /// occur so frequently in Content-Disposition filenames); characters
-    /// unsuitable for use in a filename (including the directory separators
-    /// slash and backslash) are replaced with underscores; and the filename
-    /// is truncated if it would otherwise be too long.</returns>
+    /// occur so frequently in Content-Disposition filenames); the value
+    /// is decoded under RFC 2231 if possible; characters unsuitable for
+    /// use in a filename (including the directory separators slash and backslash)
+    /// are replaced with underscores; and the filename is truncated if it
+    /// would otherwise be too long.</returns>
     public static string MakeFilename(string str) {
       if (str == null) {
         return String.Empty;
@@ -161,6 +162,20 @@ namespace PeterO.Mail {
         if (str.IndexOf("=?") >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
+        }
+      } else if (str.IndexOf('\'') > 0) {
+        // Check for RFC 2231 encoding, as long as the value before the
+        // apostrophe is a recognized charset. It appears to be common,
+        // too, to use quotes around a filename parameter AND use
+        // RFC 2231 encoding, even though all the examples in that RFC
+        // show unquoted use of this encoding.
+        string charset = Charsets.ResolveAliasForEmail(str.Substring(0, str.IndexOf('\'')));
+        if (!String.IsNullOrEmpty(charset)) {
+          string newstr = MediaType.DecodeRfc2231Extension(str);
+          if (!String.IsNullOrEmpty(newstr)) {
+            // Value was decoded under RFC 2231
+            str = newstr;
+          }
         }
       }
       str = ParserUtility.TrimSpaceAndTab(str);

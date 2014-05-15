@@ -39,10 +39,10 @@ sealed class JIS0212 {
     40216, 40869, 6912, 191 };
 
   public static int codePointToIndex(int codepoint) {
-    if (codepoint < 161 || codepoint>65374) {
+    if (codepoint < 161 || codepoint > 65374) {
  return -1;
 }
-    for (int i = 0; i<indextable.Length;i+=4) {
+    for (int i = 0; i < indextable.Length; i += 4) {
       if (codepoint >= indextable[i] && codepoint <= indextable[i + 1]) {
         int startindex = indextable[i + 2];
         int length = indextable[i + 3];
@@ -57,7 +57,7 @@ sealed class JIS0212 {
   }
 
   public static int indexToCodePoint(int index) {
-    if (index < 108 || index>7210) {
+    if (index < 108 || index > 7210) {
  return -1;
 }
     int ret = table[index - 108];
