@@ -93,7 +93,7 @@ namespace PeterO.Mail {
             return '%';
           }
           return c;
-        } else if ((c < 0x20 && c!=0x09) || c >= 0x7f) {
+        } else if ((c < 0x20 && c != 0x09) || c >= 0x7f) {
           // Can't occur in parameter value percent-encoding; replace
           return '?';
         } else {

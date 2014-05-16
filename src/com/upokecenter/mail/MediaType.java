@@ -647,7 +647,7 @@ import com.upokecenter.util.*;
       // -- UTF-8 assumed: --
       //
       // UTF-8 only:
-      // -- vcard, jcr-cnd
+      // -- vcard, jcr-cnd, cache-manifest
       //
       // Charset parameter defined but is "always UTF-8":
       // -- n3, turtle, vnd.debian.copyright, provenance-notation
@@ -681,7 +681,7 @@ import com.upokecenter.util.*;
             sub.equals("vnd.debian.copyright") || sub.equals("provenance-notation") || sub.equals("csv") ||
             sub.equals("calendar") || sub.equals("vnd.a") || sub.equals("parameters") ||
             sub.equals("prs.fallenstein.rst") || sub.equals("vnd.esmertec.theme.descriptor") ||
-            sub.equals("vnd.trolltech.linguist") || sub.equals("vnd.graphviz") ||
+            sub.equals("vnd.trolltech.linguist") || sub.equals("vnd.graphviz") || sub.equals("cache-manifest") ||
             sub.equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";
         }

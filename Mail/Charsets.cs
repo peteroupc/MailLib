@@ -486,13 +486,15 @@ namespace PeterO.Mail {
       } else if (name.Equals("shift_jis")) {
         return new ShiftJISEncoding();
       }
+      if (name.Equals("iso-2022-jp")) {
+        return new Iso2022JPEncoding();
+      }
       if (name.Equals("gbk") ||
           name.Equals("gb18030") ||
           name.Equals("gb2312") ||
           name.Equals("big5") ||
           name.Equals("big5-hkscs") ||
-          name.Equals("ks_c_5601-1987") ||
-          name.Equals("iso-2022-jp")) {
+          name.Equals("ks_c_5601-1987")) {
         // TODO: These encodings are not actually supported yet
         return Ascii;
       }
@@ -636,6 +638,153 @@ namespace PeterO.Mail {
       }
     }
 
+    private sealed class Iso2022JPEncoding : ICharset {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='transform'>An ITransform object.</param>
+    /// <returns>A string object.</returns>
+      public string GetString(ITransform transform) {
+        int state = 0;
+        int lead = 0;
+        bool jis0212 = false;
+        int lastByte = -1;
+        bool unget = false;
+        StringBuilder builder = new StringBuilder();
+        bool finished = false;
+        while (!finished) {
+          int b = lastByte = unget ? lastByte : transform.ReadByte();
+          unget = false;
+          switch (state) {
+            case 0:  // ASCII
+              if (b == 0x1b) {
+                state = 1;
+              } else if (b < 0) {
+                finished = true;
+              } else if (b <= 0x7f) {
+                builder.Append((char)b);
+              } else {
+                builder.Append((char)0xfffd);
+              }
+              break;
+            case 1:  // Escape start
+              if (b == 0x24 || b == 0x28) {
+                lead = b;
+                state = 2;
+              } else {
+                if (b >= 0) {
+                  unget = true;
+                }
+                state = 0;
+                builder.Append((char)0xfffd);
+              }
+              break;
+            case 2:  // Escape middle
+              if (lead == 0x24 && (b == 0x40 || b == 0x42)) {
+                jis0212 = false;
+                state = 4;  // lead
+                lead = 0;
+              } else if (lead == 0x24 && b == 0x28) {
+                state = 3;  // escape final
+                lead = 0;
+              } else if (lead == 0x28 && (b == 0x42 || b == 0x4a)) {
+                state = 0;
+                lead = 0;
+              } else if (lead == 0x49) {
+                state = 6;
+                lead = 0;
+              } else {
+                if (b < 0) {
+                  builder.Append((char)0xfffd);
+                  state = 0;
+                  finished = true;
+                } else {
+                  builder.Append((char)0xfffd);
+                  state = 0;
+                  // Reread "lead" in ASCII state
+                  if (lead == 0x1b) {
+                    state = 1;
+                  } else if (lead <= 0x7f) {
+                    builder.Append((char)lead);
+                  } else {
+                    builder.Append((char)0xfffd);
+                  }
+                  unget = true;
+                  lastByte = b;
+                }
+              }
+              break;
+            case 3:  // Escape final
+              if (b == 0x44) {
+                jis0212 = true;
+                state = 4;
+              } else {
+                if (b < 0) {
+                  builder.Append((char)0xfffd);
+                  builder.Append((char)0x28);
+                  state = 0;
+                  finished = true;
+                } else {
+                  state = 0;
+                  builder.Append((char)0xfffd);
+                  builder.Append((char)0x24);
+                  builder.Append((char)0x28);
+                  unget = true;
+                  lastByte = b;
+                }
+              }
+              break;
+            case 4:  // Lead
+              if (b == 0x0a) {
+                state = 0;
+                builder.Append((char)0x0a);
+              } else if (b == 0x1b) {
+                state = 1;
+              } else if (b < 0) {
+                finished = true;
+              } else {
+                lead = b;
+                state = 5;
+              }
+              break;
+            case 5:  // Trail
+              state = 4;
+              if (b < 0) {
+                builder.Append((char)0xfffd);
+              } else {
+                int c = -1;
+                int p = (lead - 0x21)*94+(b-0x21);
+                if (lead >= 0x21 && lead <= 0x7e && b >= 0x21 && b <= 0x7e) {
+                  if (jis0212) {
+                    c = JIS0212.indexToCodePoint(p);
+                  } else {
+                    c = JIS0208.indexToCodePoint(p);
+                  }
+                }
+                if (c < 0) {
+                  builder.Append((char)0xfffd);
+                } else {
+                  builder.Append((char)c);
+                }
+              }
+              break;
+            case 6:  // Katakana
+              if (b == 0x1b) {
+                state = 1;
+              } else if (b >= 0x21 && b <= 0x5f) {
+                builder.Append((char)(0xff61 + b - 0x21));
+              } else if (b < 0) {
+                finished = true;
+              } else {
+                builder.Append((char)0xfffd);
+              }
+              break;
+            default:
+              throw new InvalidOperationException("Unexpected state");
+          }
+        }
+        return builder.ToString();
+      }
+    }
+
     private sealed class ShiftJISEncoding : ICharset {
     /// <summary>Not documented yet.</summary>
     /// <param name='transform'>An ITransform object.</param>
@@ -731,7 +880,7 @@ namespace PeterO.Mail {
             int c = -1;
             if ((lead >= 0xa1 && lead <= 0xfe) &&
                 b >= 0xa1 && b <= 0xfe) {
-              c = ((lead - 0xa1) * 94)+(b-0xa1);
+              c = ((lead - 0xa1) * 94) + (b - 0xa1);
               if (jis0212) {
                 c = JIS0212.indexToCodePoint(c);
               } else {

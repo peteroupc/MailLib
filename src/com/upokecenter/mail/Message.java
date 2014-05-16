@@ -35,20 +35,23 @@ import com.upokecenter.util.*;
      * bodies, and in the prologue and epilogue of multipart messages (which
      * will be ignored), if the transfer encoding is absent or ((declared
      * instanceof 7bit) ? (7bit)declared : null), any 8-bit bytes are replaced
-     * with question marks.</li> <li>In text/html message bodies, if the
-     * transfer encoding is absent or ((declared instanceof 7bit) ? (7bit)declared
-     * : null), and the charset is declared as <code>ascii</code> , <code>us-ascii</code>
-     * , "windows-1252", or "iso-8859-*" (all single byte encodings),
-     * the transfer encoding is treated as 8bit instead.</li> <li>If the
-     * first line of the message starts with the word "From" followed by a
-     * space, it is skipped.</li> <li>The name <code>ascii</code> is treated
-     * as a synonym for <code>us-ascii</code> , despite being a reserved
-     * name under RFC 2046. The name <code>cp1252</code> is treated as a
-     * synonym for <code>windows-1252</code> , even though it's not an
-     * IANA registered alias.</li> <li>If a sequence of encoded words (RFC
-     * 2047) decodes to a string with a CTL character (U + 007F, or a character
-     * less than U + 0020 and not TAB) after being converted to Unicode, the
-     * encoded words are left un-decoded.</li> </ul>
+     * with question marks.</li> <li>If the transfer encoding is absent
+     * or ((declared instanceof 7bit) ? (7bit)declared : null), and the
+     * charset is declared as <code>utf-8</code> , the transfer encoding
+     * is treated as 8bit instead.</li> <li>In text/html message bodies,
+     * if the transfer encoding is absent or ((declared instanceof 7bit)
+     * ? (7bit)declared : null), and the charset is declared as <code>ascii</code>
+     * , <code>us-ascii</code> , "windows-1252", or "iso-8859-*" (all
+     * single byte encodings), the transfer encoding is treated as 8bit
+     * instead.</li> <li>If the first line of the message starts with the
+     * word "From" followed by a space, it is skipped.</li> <li>The name
+     * <code>ascii</code> is treated as a synonym for <code>us-ascii</code>
+     * , despite being a reserved name under RFC 2046. The name <code>cp1252</code>
+     * is treated as a synonym for <code>windows-1252</code> , even though
+     * it's not an IANA registered alias.</li> <li>If a sequence of encoded
+     * words (RFC 2047) decodes to a string with a CTL character (U + 007F,
+     * or a character less than U + 0020 and not TAB) after being converted
+     * to Unicode, the encoded words are left un-decoded.</li> </ul>
      */
   public final class Message {
     private static final int EncodingSevenBit = 0;
@@ -341,15 +344,19 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         rnd <<= 16;
         rnd |= msgidRandom.nextInt(65536);
       }
+      String guid = Guid.NewGuid().toString();
       String hex = "0123456789abcdef";
       for (int i = 0; i < 16; ++i) {
         builder.append(hex.charAt((int)(ticks & 15)));
         ticks >>= 4;
       }
+      for (int i = 0; i < guid.length(); ++i) {
+        if (guid.charAt(i) != '-') {
+          builder.append(guid.charAt(i));
+        }
+      }
       for (int i = 0; i < 8; ++i) {
-        builder.append(hex.charAt(rnd & 15));
         builder.append(hex.charAt(seq & 15));
-        rnd >>= 4;
         seq >>= 4;
       }
       List<NamedAddress> addresses = this.getFromAddresses();
@@ -523,13 +530,16 @@ public void setContentDisposition(ContentDisposition value) {
         this.contentType = MediaType.Parse("application/octet-stream");
       }
       if (this.transferEncoding == EncodingSevenBit) {
-        if (this.contentType.getTypeAndSubType().equals("text/html")) {
-          String charset = this.contentType.GetCharset();
+        String charset = this.contentType.GetCharset();
+        if (charset.equals("utf-8")) {
+          // DEVIATION: Be a little more liberal with UTF-8
+          this.transferEncoding = EncodingEightBit;
+        } else if (this.contentType.getTypeAndSubType().equals("text/html")) {
           if (charset.equals("us-ascii") || charset.equals("ascii") ||
               charset.equals("windows-1252") ||
               (charset.length() > 9 && charset.substring(0,9).equals("iso-8859-"))) {
             // DEVIATION: Be a little more liberal with text/html and
-            // single-byte charsets
+            // single-byte charsets or UTF-8
             this.transferEncoding = EncodingEightBit;
           }
         }
@@ -659,22 +669,6 @@ public void setContentDisposition(ContentDisposition value) {
         return ParseUnstructuredText(s, 0, s.length()) == s.length();
       }
       return true;
-    }
-
-    /**
-     * Reads an email message from a file.
-     * @param fileName A file name.
-     * @return A Message object.
-     * @throws UnsupportedOperationException The underlying platform doesn't
-     * support reading from files.
-     * @throws java.io.IOException The file was not found or an I/O exception
-     * occurred.
-     * @throws MessageDataException The message could not be parsed.
-     */
-    private static Message ReadFromFile(String fileName) {
-       using (InputStream s = PlatformDependent.OpenFileForReading(fileName)) {
-        return new Message(s);
-      }
     }
 
     private static String Capitalize(String s) {
@@ -1283,7 +1277,8 @@ public void setContentDisposition(ContentDisposition value) {
                 name.equals("references") ||
                 name.equals("original-recipient") ||
                 name.equals("final-recipient")) {
-              // Header field still contains non-ASCII characters, convert
+              // Header field still contains invalid characters (such
+              // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field
               name = "downgraded-" + name;
               downgraded = Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTab(value));
@@ -1294,18 +1289,20 @@ public void setContentDisposition(ContentDisposition value) {
           boolean haveDquote = downgraded.indexOf('"') >= 0;
           WordWrapEncoder encoder=new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
           encoder.AddString(downgraded);
-          if (encoder.toString().indexOf(": ") < 0) {
-            throw new MessageDataException("No colon+space: " + encoder.toString());
+          String newValue = encoder.toString();
+          if (newValue.indexOf(": ") < 0) {
+            throw new MessageDataException("No colon+space: " + newValue);
           }
-          sb.append(encoder.toString());
+          sb.append(newValue);
         } else {
           boolean haveDquote = value.indexOf('"') >= 0;
           WordWrapEncoder encoder=new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
           encoder.AddString(value);
-          if (encoder.toString().indexOf(": ") < 0) {
-            throw new MessageDataException("No colon+space: " + encoder.toString());
+          String newValue = encoder.toString();
+          if (newValue.indexOf(": ") < 0) {
+            throw new MessageDataException("No colon+space: " + newValue);
           }
-          sb.append(encoder.toString());
+          sb.append(newValue);
         }
         sb.append("\r\n");
       }
