@@ -13,47 +13,52 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary>Represents an email message. <para><b>Thread safety:</b>
-    /// This class is mutable; its properties can be changed. None of its methods
-    /// are designed to be thread safe. Therefore, access to objects from
-    /// this class must be synchronized if multiple threads can access them
-    /// at the same time.</para>
-    /// <para>The following lists known deviations from the mail specifications
-    /// (Internet Message Format and MIME):</para>
-    /// <list type=''> <item>The content-transfer-encoding "quoted-printable"
-    /// is treated as 7bit instead if it occurs in a message or body part with
-    /// content type "multipart/*" or "message/*" (other than "message/global",
-    /// "message/global-headers", "message/global-disposition-notification",
-    /// or "message/global-delivery-status").</item>
-    /// <item>Non-UTF-8 bytes appearing in header field values are replaced
-    /// with replacement characters. Moreover, UTF-8 is parsed everywhere
-    /// in header field values, even in those parts of some structured header
-    /// fields where this appears not to be allowed.</item>
-    /// <item>The To and Cc header fields are allowed to contain only comments
-    /// and whitespace, but these "empty" header fields will be omitted when
-    /// generating.</item>
-    /// <item>There is no line length limit imposed when parsing quoted-printable
-    /// or base64 encoded bodies.</item>
-    /// <item>In non-MIME message bodies, in text/plain message bodies,
-    /// and in the prologue and epilogue of multipart messages (which will
-    /// be ignored), if the transfer encoding is absent or declared as 7bit,
-    /// any 8-bit bytes are replaced with question marks.</item>
-    /// <item>In text/html message bodies, if the transfer encoding is absent
-    /// or declared as 7bit, and the charset is declared as <code>ascii</code>
-    /// , <code>us-ascii</code>
-    /// , "windows-1252", or "iso-8859-*" (all single byte encodings),
-    /// the transfer encoding is treated as 8bit instead.</item>
-    /// <item>The name <code>ascii</code>
-    /// is treated as a synonym for <code>us-ascii</code>
-    /// , despite being a reserved name under RFC 2046. The name <code>cp1252</code>
-    /// is treated as a synonym for <code>windows-1252</code>
-    /// , even though it's not an IANA registered alias.</item>
-    /// <item>If a sequence of encoded words (RFC 2047) decodes to a string
-    /// with a CTL character (U + 007F, or a character less than U + 0020 and not
-    /// TAB) after being converted to Unicode, the encoded words are left
-    /// un-decoded.</item>
-    /// </list>
-    /// </summary>
+  /// <summary>Represents an email message. <para><b>Thread safety:</b>
+  /// This class is mutable; its properties can be changed. None of its methods
+  /// are designed to be thread safe. Therefore, access to objects from
+  /// this class must be synchronized if multiple threads can access them
+  /// at the same time.</para>
+  /// <para>The following lists known deviations from the mail specifications
+  /// (Internet Message Format and MIME):</para>
+  /// <list type=''> <item>The content-transfer-encoding "quoted-printable"
+  /// is treated as 7bit instead if it occurs in a message or body part with
+  /// content type "multipart/*" or "message/*" (other than "message/global",
+  /// "message/global-headers", "message/global-disposition-notification",
+  /// or "message/global-delivery-status").</item>
+  /// <item>Non-UTF-8 bytes appearing in header field values are replaced
+  /// with replacement characters. Moreover, UTF-8 is parsed everywhere
+  /// in header field values, even in those parts of some structured header
+  /// fields where this appears not to be allowed.</item>
+  /// <item>The To and Cc header fields are allowed to contain only comments
+  /// and whitespace, but these "empty" header fields will be omitted when
+  /// generating.</item>
+  /// <item>There is no line length limit imposed when parsing quoted-printable
+  /// or base64 encoded bodies.</item>
+  /// <item>In non-MIME message bodies, in text/plain message bodies,
+  /// and in the prologue and epilogue of multipart messages (which will
+  /// be ignored), if the transfer encoding is absent or declared as 7bit,
+  /// any 8-bit bytes are replaced with question marks.</item>
+  /// <item>If the transfer encoding is absent
+  /// or declared as 7bit, and the charset is declared as <code>utf-8</code>,
+  /// the transfer encoding is treated as 8bit instead.</item>
+  /// <item>In text/html message bodies, if the transfer encoding is absent
+  /// or declared as 7bit, and the charset is declared as <code>ascii</code>
+  /// , <code>us-ascii</code>
+  /// , "windows-1252", or "iso-8859-*" (all single byte encodings),
+  /// the transfer encoding is treated as 8bit instead.</item>
+  /// <item>If the first line of the message starts with the word "From"
+  /// followed by a space, it is skipped.</item>
+  /// <item>The name <code>ascii</code>
+  /// is treated as a synonym for <code>us-ascii</code>
+  /// , despite being a reserved name under RFC 2046. The name <code>cp1252</code>
+  /// is treated as a synonym for <code>windows-1252</code>
+  /// , even though it's not an IANA registered alias.</item>
+  /// <item>If a sequence of encoded words (RFC 2047) decodes to a string
+  /// with a CTL character (U + 007F, or a character less than U + 0020 and not
+  /// TAB) after being converted to Unicode, the encoded words are left
+  /// un-decoded.</item>
+  /// </list>
+  /// </summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -328,15 +333,19 @@ namespace PeterO.Mail {
         rnd <<= 16;
         rnd |= msgidRandom.Next(65536);
       }
+      string guid=Guid.NewGuid().ToString();
       string hex = "0123456789abcdef";
       for (int i = 0; i < 16; ++i) {
         builder.Append(hex[(int)(ticks & 15)]);
         ticks >>= 4;
       }
+      for (int i = 0; i < guid.Length; ++i) {
+        if(guid[i]!='-'){
+          builder.Append(guid[i]);
+        }
+      }
       for (int i = 0; i < 8; ++i) {
-        builder.Append(hex[rnd & 15]);
         builder.Append(hex[seq & 15]);
-        rnd >>= 4;
         seq >>= 4;
       }
       IList<NamedAddress> addresses = this.FromAddresses;
@@ -490,8 +499,8 @@ namespace PeterO.Mail {
           if (haveContentType) {
             string valueExMessage = "Already have this header: " + name;
             #if DEBUG
-            valueExMessage+="[old="+this.contentType+", new="+value+"]";
-            valueExMessage = valueExMessage.Replace("\r\n"," ");
+            valueExMessage += "[old=" + this.contentType + ", new="+value+"]";
+            valueExMessage = valueExMessage.Replace("\r\n", " ");
             #endif
             throw new MessageDataException(valueExMessage);
           }
@@ -503,8 +512,8 @@ namespace PeterO.Mail {
           if (haveContentDisp) {
             string valueExMessage = "Already have this header: " + name;
             #if DEBUG
-            valueExMessage+="[old="+this.contentType+", new="+value+"]";
-            valueExMessage = valueExMessage.Replace("\r\n"," ");
+            valueExMessage += "[old=" + this.contentType + ", new="+value+"]";
+            valueExMessage = valueExMessage.Replace("\r\n", " ");
             #endif
             throw new MessageDataException(valueExMessage);
           }
@@ -516,13 +525,16 @@ namespace PeterO.Mail {
         this.contentType = MediaType.Parse("application/octet-stream");
       }
       if (this.transferEncoding == EncodingSevenBit) {
-        if (this.contentType.TypeAndSubType.Equals("text/html")) {
-          string charset = this.contentType.GetCharset();
+        string charset = this.contentType.GetCharset();
+        if (charset.Equals("utf-8")) {
+          // DEVIATION: Be a little more liberal with UTF-8
+          this.transferEncoding = EncodingEightBit;
+        } else if (this.contentType.TypeAndSubType.Equals("text/html")) {
           if (charset.Equals("us-ascii") || charset.Equals("ascii") ||
               charset.Equals("windows-1252") ||
               (charset.Length > 9 && charset.Substring(0, 9).Equals("iso-8859-"))) {
             // DEVIATION: Be a little more liberal with text/html and
-            // single-byte charsets
+            // single-byte charsets or UTF-8
             this.transferEncoding = EncodingEightBit;
           }
         }
@@ -1254,7 +1266,8 @@ namespace PeterO.Mail {
                 name.Equals("references") ||
                 name.Equals("original-recipient") ||
                 name.Equals("final-recipient")) {
-              // Header field still contains non-ASCII characters, convert
+              // Header field still contains invalid characters (such
+              // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field
               name = "downgraded-" + name;
               downgraded = Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTab(value));
@@ -1265,18 +1278,20 @@ namespace PeterO.Mail {
           bool haveDquote = downgraded.IndexOf('"') >= 0;
           var encoder = new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
           encoder.AddString(downgraded);
-          if (encoder.ToString().IndexOf(": ") < 0) {
-            throw new MessageDataException("No colon+space: " + encoder.ToString());
+          string newValue=encoder.ToString();
+          if (newValue.IndexOf(": ") < 0) {
+            throw new MessageDataException("No colon+space: " + newValue);
           }
-          sb.Append(encoder.ToString());
+          sb.Append(newValue);
         } else {
           bool haveDquote = value.IndexOf('"') >= 0;
           var encoder = new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
           encoder.AddString(value);
-          if (encoder.ToString().IndexOf(": ") < 0) {
-            throw new MessageDataException("No colon+space: " + encoder.ToString());
+          string newValue=encoder.ToString();
+          if (newValue.IndexOf(": ") < 0) {
+            throw new MessageDataException("No colon+space: " + newValue);
           }
-          sb.Append(encoder.ToString());
+          sb.Append(newValue);
         }
         sb.Append("\r\n");
       }
@@ -1627,7 +1642,8 @@ namespace PeterO.Mail {
 
     private static void ReadHeaders(
       ITransform stream,
-      IList<string> headerList) {
+      IList<string> headerList,
+      bool start) {
       int lineCount = 0;
       int[] bytesRead = new int[1];
       StringBuilder sb = new StringBuilder();
@@ -1668,8 +1684,30 @@ namespace PeterO.Mail {
             }
             break;
           } else if (c == 0x20 || c == 0x09) {
-            wsp = true;
-            first = false;
+            if (start && c == 0x20 && sb.Length == 4 && sb.ToString().Equals("From")) {
+              // Mbox convention, skip the entire line
+              sb.Remove(0, sb.Length);
+              while (true) {
+                c = ungetStream.ReadByte();
+                if (c == -1) {
+                  throw new MessageDataException("Premature end before all headers were read");
+                }
+                if (c == '\r') {
+                  if (ungetStream.ReadByte() == '\n') {
+                    // End of line was reached
+                    break;
+                  } else {
+                    ungetStream.Unget();
+                  }
+                }
+              }
+              start = false;
+              wsp = false;
+              first = true;
+            } else {
+              wsp = true;
+              first = false;
+            }
           } else {
             throw new MessageDataException("Malformed header field name");
           }
@@ -1780,8 +1818,8 @@ namespace PeterO.Mail {
     private class MessageStackEntry {
       private Message message;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public Message Message {
         get {
           return this.message;
@@ -1790,8 +1828,8 @@ namespace PeterO.Mail {
 
       private string boundary;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+      /// <summary>Gets a value not documented yet.</summary>
+      /// <value>A value not documented yet.</value>
       public string Boundary {
         get {
           return this.boundary;
@@ -1887,10 +1925,10 @@ namespace PeterO.Mail {
               }
               Message parentMessage = multipartStack[multipartStack.Count - 1].Message;
               boundaryChecker.StartBodyPartHeaders();
-              ReadHeaders(stream, msg.headers);
               MediaType ctype = parentMessage.ContentType;
               bool parentIsDigest = ctype.SubType.Equals("digest") &&
                 ctype.IsMultipart;
+              ReadHeaders(stream, msg.headers, false);
               msg.ProcessHeaders(true, parentIsDigest);
               entry = new MessageStackEntry(msg);
               // Add the body part to the multipart
@@ -2012,7 +2050,7 @@ namespace PeterO.Mail {
     }
 
     private void ReadMessage(ITransform stream) {
-      ReadHeaders(stream, this.headers);
+      ReadHeaders(stream, this.headers, true);
       this.ProcessHeaders(false, false);
       if (this.contentType.IsMultipart) {
         this.ReadMultipartBody(stream);

@@ -39,14 +39,16 @@ import com.upokecenter.util.*;
      * transfer encoding is absent or ((declared instanceof 7bit) ? (7bit)declared
      * : null), and the charset is declared as <code>ascii</code> , <code>us-ascii</code>
      * , "windows-1252", or "iso-8859-*" (all single byte encodings),
-     * the transfer encoding is treated as 8bit instead.</li> <li>The name
-     * <code>ascii</code> is treated as a synonym for <code>us-ascii</code>
-     * , despite being a reserved name under RFC 2046. The name <code>cp1252</code>
-     * is treated as a synonym for <code>windows-1252</code> , even though
-     * it's not an IANA registered alias.</li> <li>If a sequence of encoded
-     * words (RFC 2047) decodes to a string with a CTL character (U + 007F,
-     * or a character less than U + 0020 and not TAB) after being converted
-     * to Unicode, the encoded words are left un-decoded.</li> </ul>
+     * the transfer encoding is treated as 8bit instead.</li> <li>If the
+     * first line of the message starts with the word "From" followed by a
+     * space, it is skipped.</li> <li>The name <code>ascii</code> is treated
+     * as a synonym for <code>us-ascii</code> , despite being a reserved
+     * name under RFC 2046. The name <code>cp1252</code> is treated as a
+     * synonym for <code>windows-1252</code> , even though it's not an
+     * IANA registered alias.</li> <li>If a sequence of encoded words (RFC
+     * 2047) decodes to a string with a CTL character (U + 007F, or a character
+     * less than U + 0020 and not TAB) after being converted to Unicode, the
+     * encoded words are left un-decoded.</li> </ul>
      */
   public final class Message {
     private static final int EncodingSevenBit = 0;
@@ -500,10 +502,7 @@ public void setContentDisposition(ContentDisposition value) {
         } else if (mime && name.equals("content-type")) {
           if (haveContentType) {
             String valueExMessage = "Already have this header: " + name;
-            /*
-            valueExMessage+="[old="+this.contentType+", new="+value+"]";
-            valueExMessage = valueExMessage.replace("\r\n"," ");
-             */
+
             throw new MessageDataException(valueExMessage);
           }
           this.contentType = MediaType.Parse(
@@ -513,10 +512,7 @@ public void setContentDisposition(ContentDisposition value) {
         } else if (mime && name.equals("content-disposition")) {
           if (haveContentDisp) {
             String valueExMessage = "Already have this header: " + name;
-            /*
-            valueExMessage+="[old="+this.contentType+", new="+value+"]";
-            valueExMessage = valueExMessage.replace("\r\n"," ");
-             */
+
             throw new MessageDataException(valueExMessage);
           }
           this.contentDisposition = ContentDisposition.Parse(value);
@@ -663,6 +659,22 @@ public void setContentDisposition(ContentDisposition value) {
         return ParseUnstructuredText(s, 0, s.length()) == s.length();
       }
       return true;
+    }
+
+    /**
+     * Reads an email message from a file.
+     * @param fileName A file name.
+     * @return A Message object.
+     * @throws UnsupportedOperationException The underlying platform doesn't
+     * support reading from files.
+     * @throws java.io.IOException The file was not found or an I/O exception
+     * occurred.
+     * @throws MessageDataException The message could not be parsed.
+     */
+    private static Message ReadFromFile(String fileName) {
+       using (InputStream s = PlatformDependent.OpenFileForReading(fileName)) {
+        return new Message(s);
+      }
     }
 
     private static String Capitalize(String s) {
@@ -1644,7 +1656,8 @@ public void setContentDisposition(ContentDisposition value) {
 
     private static void ReadHeaders(
       ITransform stream,
-      List<String> headerList) {
+      List<String> headerList,
+      boolean start) {
       int lineCount = 0;
       int[] bytesRead = new int[1];
       StringBuilder sb = new StringBuilder();
@@ -1685,8 +1698,30 @@ public void setContentDisposition(ContentDisposition value) {
             }
             break;
           } else if (c == 0x20 || c == 0x09) {
-            wsp = true;
-            first = false;
+            if (start && c == 0x20 && sb.length() == 4 && sb.toString().equals("From")) {
+              // Mbox convention, skip the entire line
+              sb.delete(0,(0)+(sb.length()));
+              while (true) {
+                c = ungetStream.read();
+                if (c == -1) {
+                  throw new MessageDataException("Premature end before all headers were read");
+                }
+                if (c == '\r') {
+                  if (ungetStream.read() == '\n') {
+                    // End of line was reached
+                    break;
+                  } else {
+                    ungetStream.Unget();
+                  }
+                }
+              }
+              start = false;
+              wsp = false;
+              first = true;
+            } else {
+              wsp = true;
+              first = false;
+            }
           } else {
             throw new MessageDataException("Malformed header field name");
           }
@@ -1886,10 +1921,10 @@ ms=new java.io.ByteArrayOutputStream();
               }
               Message parentMessage = multipartStack.get(multipartStack.size() - 1).getMessage();
               boundaryChecker.StartBodyPartHeaders();
-              ReadHeaders(stream, msg.headers);
               MediaType ctype = parentMessage.getContentType();
               boolean parentIsDigest = ctype.getSubType().equals("digest") &&
                 ctype.isMultipart();
+              ReadHeaders(stream, msg.headers, false);
               msg.ProcessHeaders(true, parentIsDigest);
               entry = new MessageStackEntry(msg);
               // Add the body part to the multipart
@@ -2008,7 +2043,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
     }
 
     private void ReadMessage(ITransform stream) {
-      ReadHeaders(stream, this.headers);
+      ReadHeaders(stream, this.headers, true);
       this.ProcessHeaders(false, false);
       if (this.contentType.isMultipart()) {
         this.ReadMultipartBody(stream);

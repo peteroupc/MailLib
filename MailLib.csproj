@@ -46,6 +46,7 @@
     <Compile Include="Mail\Charsets.cs" />
     <Compile Include="Mail\CollectionUtilities.cs" />
     <Compile Include="Mail\ContentDisposition.cs" />
+    <Compile Include="Mail\DebugUtility.cs" />
     <Compile Include="Mail\DispositionBuilder.cs" />
     <Compile Include="Mail\EightBitTransform.cs" />
     <Compile Include="Mail\EncodedWordContext.cs" />
@@ -105,6 +106,6 @@
     <Content Include="ProfilingSessions\Session20140424_090403.sdps" />
     <Content Include="ProfilingSessions\Session20140424_120623.sdps" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Portable\v4.0\Microsoft.Portable.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets" />
 </Project>

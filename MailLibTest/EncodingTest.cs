@@ -368,6 +368,21 @@ namespace MailLibTest {
         "my\ufffdfile\ufffdname\ud800\udc00.txt",
         ContentDisposition.MakeFilename("my\ud800file\udc00name\ud800\udc00.txt"));
       Assert.AreEqual(
+        "file\ufffdname",
+        ContentDisposition.MakeFilename("=?x-unknown?Q?file\ud800name?="));
+      Assert.AreEqual(
+        "file\u00bename.txt",
+        ContentDisposition.MakeFilename("utf-8''file%c2%bename.txt"));
+      Assert.AreEqual(
+        "file\u00bename.txt",
+        ContentDisposition.MakeFilename("utf-8'en'file%c2%bename.txt"));
+      Assert.AreEqual(
+        "x-unknown'en'file%c2%bename.txt",
+        ContentDisposition.MakeFilename("x-unknown'en'file%c2%bename.txt"));
+      Assert.AreEqual(
+        "file\u00bename.txt",
+        ContentDisposition.MakeFilename("utf-8'en-us'file%c2%bename.txt"));
+      Assert.AreEqual(
         "_..._",
         ContentDisposition.MakeFilename("..."));
       Assert.AreEqual(
@@ -956,6 +971,8 @@ namespace MailLibTest {
       TestMediaTypeRoundTrip("xy"+this.Repeat("\'",150)+"z");
       TestMediaTypeRoundTrip("xy"+this.Repeat("\"",150)+"z");
       TestMediaTypeRoundTrip("xy"+this.Repeat(":",20)+"z");
+      TestMediaTypeRoundTrip("xy"+this.Repeat("%",20)+"z");
+      TestMediaTypeRoundTrip("xy"+this.Repeat("%",150)+"z");
       TestMediaTypeRoundTrip("xy"+this.Repeat(":",150)+"z");
       TestMediaTypeRoundTrip("xy"+this.Repeat("@",20)+"z");
       TestMediaTypeRoundTrip("xy"+this.Repeat("@",150)+"z");
@@ -1285,9 +1302,9 @@ namespace MailLibTest {
             Console.WriteLine("Colon at end");
             return false;
           }
-          if (index == 0 || str[index-1]==0x20 || str[index-1]==0x09 || str[index-1]==0x0d){
+          if (index == 0 || str[index-1]==0x20 || str[index-1]==0x09 || str[index-1]==0x0d) {
             Console.WriteLine("End of line, whitespace, or start of message before colon");
-            return false;            
+            return false;
           }
           if (str[index + 1]!=0x20) {
             string test = str.Substring(Math.Max(index + 2-30, 0), Math.Min(index + 2, 30));
