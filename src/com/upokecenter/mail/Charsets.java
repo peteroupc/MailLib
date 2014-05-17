@@ -757,7 +757,7 @@ private Charsets() {
                 builder.append((char)0xfffd);
               } else {
                 int c = -1;
-                int p = (lead - 0x21)*94+(b-0x21);
+                int p = (lead - 0x21) * 94 + (b - 0x21);
                 if (lead >= 0x21 && lead <= 0x7e && b >= 0x21 && b <= 0x7e) {
                   if (jis0212) {
                     c = JIS0212.indexToCodePoint(p);
@@ -817,7 +817,7 @@ private Charsets() {
             int offset = (b < 0x7f) ? 0x40 : 0x41;
             int leadoffset = (lead < 0xa0) ? 0x81 : 0xc1;
             if ((b >= 0x40 && b <= 0x7e) || (b >= 0x80 && b <= 0xfc)) {
-              c = (lead - leadoffset) * 188 - (b - offset);
+              c = ((lead - leadoffset) * 188) - (b - offset);
             }
             if (c >= 0) {
               int c2 = JIS0208.indexToCodePoint(c);

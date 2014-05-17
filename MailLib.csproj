@@ -57,7 +57,7 @@
     <Compile Include="Mail\JIS0208.cs" />
     <Compile Include="Mail\JIS0212.cs" />
     <Compile Include="Mail\MessageDataException.cs" />
-    <Compile Include="Mail\HeaderFields.cs" />
+    <Compile Include="Mail\HeaderFieldParsers.cs" />
     <Compile Include="Mail\HeaderParser.cs" />
     <Compile Include="Mail\HeaderParserUtility.cs" />
     <Compile Include="Mail\IHeaderFieldParser.cs" />

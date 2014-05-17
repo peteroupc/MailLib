@@ -39,10 +39,10 @@ namespace PeterO.Mail {
     /// be ignored), if the transfer encoding is absent or declared as 7bit,
     /// any 8-bit bytes are replaced with question marks.</item>
     /// <item>If the transfer encoding is absent or declared as 7bit, and
-    /// the charset is declared as <code>utf-8</code>
+    /// the charset is declared to be <code>utf-8</code>
     /// , the transfer encoding is treated as 8bit instead.</item>
     /// <item>In text/html message bodies, if the transfer encoding is absent
-    /// or declared as 7bit, and the charset is declared as <code>ascii</code>
+    /// or declared as 7bit, and the charset is declared to be <code>ascii</code>
     /// , <code>us-ascii</code>
     /// , "windows-1252", or "iso-8859-*" (all single byte encodings),
     /// the transfer encoding is treated as 8bit instead.</item>
@@ -85,9 +85,24 @@ namespace PeterO.Mail {
     /// <value>A snapshot of the header fields of this message. The list contains
     /// an alternating set of header field names and values, in the order they
     /// were declared in the message.</value>
+    [ObsoleteAttribute("Use HeaderFields instead.")]
     public IList<string> Headers {
       get {
         return new List<string>(this.headers);
+      }
+    }
+
+    /// <summary>Gets a snapshot of the header fields of this message. For
+    /// each item in the list, the key is the header field's name and the value
+    /// is its value.</summary>
+    /// <value>A snapshot of the header fields of this message.</value>
+    public IList<KeyValuePair<string, string>> HeaderFields {
+      get {
+        var ret = new List<KeyValuePair<string, string>>();
+        for (int i = 0; i < this.headers.Count; i += 2) {
+          ret.Add(new KeyValuePair<string, string>(this.headers[i], this.headers[i + 1]));
+        }
+        return ret;
       }
     }
 
@@ -189,7 +204,7 @@ namespace PeterO.Mail {
     /// <value>A value not documented yet.</value>
     public IList<NamedAddress> FromAddresses {
       get {
-        return ParseAddresses(this.GetHeader("from"));
+        return ParseAddresses(this.GetMultipleHeaders("from"));
       }
     }
 
@@ -202,7 +217,7 @@ namespace PeterO.Mail {
             return false;
           }
           string headerValue = this.headers[i + 1];
-          if (HeaderFields.GetParser(name).Parse(headerValue, 0, headerValue.Length, null) !=
+          if (HeaderFieldParsers.GetParser(name).Parse(headerValue, 0, headerValue.Length, null) !=
               headerValue.Length) {
             return false;
           }
@@ -468,7 +483,7 @@ namespace PeterO.Mail {
           mime = true;
         }
         if (value.IndexOf("=?") >= 0) {
-          IHeaderFieldParser parser = HeaderFields.GetParser(name);
+          IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
           // Decode encoded words in the header field where possible
           value = parser.DecodeEncodedWords(value);
           this.headers[i + 1] = value;
@@ -893,9 +908,13 @@ namespace PeterO.Mail {
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       // Check characters in structured header fields
-      if (HeaderFields.GetParser(name).IsStructured()) {
+      IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
+      if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
           throw new ArgumentException("Header field value contains invalid text");
+        }
+        if (parser.Parse(value, 0, value.Length, null) != value.Length) {
+          throw new ArgumentException("Header field value is not in the correct format");
         }
       }
       // Add the header field
@@ -1078,7 +1097,7 @@ namespace PeterO.Mail {
       StringBuilder sb = new StringBuilder();
       string hex = "0123456789ABCDEF";
       sb.Append("=_Boundary");
-      for (int i = 0; i < 8; ++i) {
+      for (int i = 0; i < 4; ++i) {
         int b = (num >> 56) & 255;
         sb.Append(hex[(b >> 4) & 15]);
         sb.Append(hex[b & 15]);
@@ -1258,7 +1277,7 @@ namespace PeterO.Mail {
             throw new MessageDataException("No colon+space: " + rawField);
           }
         } else if (HasTextToEscape(value)) {
-          string downgraded = HeaderFields.GetParser(name).DowngradeFieldValue(value);
+          string downgraded = HeaderFieldParsers.GetParser(name).DowngradeFieldValue(value);
           if (HasTextToEscapeIgnoreEncodedWords(downgraded, 0, downgraded.Length)) {
             if (name.Equals("message-id") ||
                 name.Equals("resent-message-id") ||
@@ -1272,7 +1291,7 @@ namespace PeterO.Mail {
               name = "downgraded-" + name;
               downgraded = Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTab(value));
             } else {
-              throw new MessageDataException("Header field still has non-Ascii or controls: " + 
+              throw new MessageDataException("Header field still has non-Ascii or controls: " +
                                              name + " " + value);
             }
           }
@@ -1302,7 +1321,7 @@ namespace PeterO.Mail {
         sb.Append("From: me@author-address.invalid\r\n");
       }
       if (!haveMsgId && depth == 0) {
-        sb.Append("Message-ID: " + this.GenerateMessageID() +"\r\n");
+        sb.Append("Message-ID: " + this.GenerateMessageID() + "\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
         sb.Append("MIME-Version: 1.0\r\n");
@@ -1423,7 +1442,7 @@ namespace PeterO.Mail {
           // Downgrade the comments in the type part
           // NOTE: Final-recipient has the same syntax as original-recipient,
           // except for the header field name
-          typePart = HeaderFields.GetParser("original-recipient").DowngradeFieldValue(typePart);
+          typePart = HeaderFieldParsers.GetParser("original-recipient").DowngradeFieldValue(typePart);
           if (isUtf8) {
             // Downgrade the non-ASCII characters in the address
             StringBuilder builder = new StringBuilder();

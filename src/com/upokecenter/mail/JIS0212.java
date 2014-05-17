@@ -1,70 +1,77 @@
 package com.upokecenter.mail;
+/*
+Any copyright is dedicated to the Public Domain.
+http://creativecommons.org/publicdomain/zero/1.0/
+If you like this, you should donate to Peter O.
+at: http://upokecenter.com/d/
+ */
+
 // This file was generated using the index file in the WHATWG Encoding specification.
 
-final class JIS0212 {
-  private static short[] table = new short[7103];
+  final class JIS0212 {
+    private static short[] table = new short[7103];
 
-  static JIS0212() {
-    System.arraycopy(method0(), 0, table, 0, 4096);
-    System.arraycopy(method1(), 0, table, 4096, 3007);
-  }
+    static JIS0212() {
+      System.arraycopy(method0(), 0, table, 0, 4096);
+      System.arraycopy(method1(), 0, table, 4096, 3007);
+    }
 
-  private static int[] indextable = new int[] { 161, 65374, 0, 256,
-    902, 1039, 256, 256,
-    192, 1119, 512, 256,
-    204, 501, 768, 256,
-    19970, 20748, 1280, 256,
-    20722, 21687, 1536, 256,
-    21689, 22526, 1792, 256,
-    22497, 34369, 2048, 256,
-    23510, 24546, 2304, 256,
-    24552, 25492, 2560, 256,
-    25493, 26373, 2816, 256,
-    26375, 27357, 3072, 256,
-    27364, 28367, 3328, 256,
-    28395, 29435, 3584, 256,
-    29438, 30210, 3840, 256,
-    30211, 31029, 4096, 256,
-    31035, 31902, 4352, 256,
-    31904, 32968, 4608, 256,
-    32973, 33882, 4864, 256,
-    33884, 34700, 5120, 256,
-    34704, 35526, 5376, 256,
-    35528, 36624, 5632, 256,
-    36630, 37427, 5888, 256,
-    37429, 38345, 6144, 256,
-    23986, 39334, 6400, 256,
-    39344, 40215, 6656, 256,
-    40216, 40869, 6912, 191 };
+    private static int[] indextable = new int[] { 161, 65374, 0, 256,
+      902, 1039, 256, 256,
+      192, 1119, 512, 256,
+      204, 501, 768, 256,
+      19970, 20748, 1280, 256,
+      20722, 21687, 1536, 256,
+      21689, 22526, 1792, 256,
+      22497, 34369, 2048, 256,
+      23510, 24546, 2304, 256,
+      24552, 25492, 2560, 256,
+      25493, 26373, 2816, 256,
+      26375, 27357, 3072, 256,
+      27364, 28367, 3328, 256,
+      28395, 29435, 3584, 256,
+      29438, 30210, 3840, 256,
+      30211, 31029, 4096, 256,
+      31035, 31902, 4352, 256,
+      31904, 32968, 4608, 256,
+      32973, 33882, 4864, 256,
+      33884, 34700, 5120, 256,
+      34704, 35526, 5376, 256,
+      35528, 36624, 5632, 256,
+      36630, 37427, 5888, 256,
+      37429, 38345, 6144, 256,
+      23986, 39334, 6400, 256,
+      39344, 40215, 6656, 256,
+      40216, 40869, 6912, 191 };
 
-  public static int codePointToIndex(int codepoint) {
-    if (codepoint < 161 || codepoint > 65374) {
- return -1;
-}
-    for (int i = 0; i < indextable.length; i += 4) {
-      if (codepoint >= indextable[i] && codepoint <= indextable[i + 1]) {
-        int startindex = indextable[i + 2];
-        int length = indextable[i + 3];
-        for (int j = 0; j < length; ++j) {
-          if ((table[j + startindex] & 0xffff) == codepoint) {
- return j + startindex;
-}
+    public static int codePointToIndex(int codepoint) {
+      if (codepoint < 161 || codepoint > 65374) {
+        return -1;
+      }
+      for (int i = 0; i < indextable.length; i += 4) {
+        if (codepoint >= indextable[i] && codepoint <= indextable[i + 1]) {
+          int startindex = indextable[i + 2];
+          int length = indextable[i + 3];
+          for (int j = 0; j < length; ++j) {
+            if ((table[j + startindex] & 0xffff) == codepoint) {
+              return j + startindex;
+            }
+          }
         }
       }
+      return -1;
     }
-    return -1;
-  }
 
-  public static int indexToCodePoint(int index) {
-    if (index < 108 || index > 7210) {
- return -1;
-}
-    int ret = table[index - 108];
-    return (ret == 0) ? -1 : (ret & 0xffff);
-  }
+    public static int indexToCodePoint(int index) {
+      if (index < 108 || index > 7210) {
+        return -1;
+      }
+      int ret = table[index - 108];
+      return (ret == 0) ? -1 : (ret & 0xffff);
+    }
 
-  private static short[] method0() {
-    return new short[] {
+    private static short[] method0() {
+      return new short[] {
         728, 711, 184, 729, 733, 175, 731, 730, ((short)0xff5e), 900, 901, 0, 0, 0, 0, 0,
         0, 0, 0, 161, 166, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -321,11 +328,11 @@ final class JIS0212 {
         0x7550, 0x7552, 0x7557, 0x755e, 0x755f, 0x7561, 0x756f, 0x7571, 0x7579, 0x757a, 0x757b, 0x757c, 0x757d, 0x757e, 0x7581, 0x7585,
         0x7590, 0x7592, 0x7593, 0x7595, 0x7599, 0x759c, 0x75a2, 0x75a4, 0x75b4, 0x75ba, 0x75bf, 0x75c0, 0x75c1, 0x75c4, 0x75c6, 0x75cc,
         0x75ce, 0x75cf, 0x75d7, 0x75dc, 0x75df, 0x75e0, 0x75e1, 0x75e4, 0x75e7, 0x75ec, 0x75ee, 0x75ef, 0x75f1, 0x75f9, 0x7600, 0x7602
-    };
-  }
+      };
+    }
 
-  private static short[] method1() {
-    return new short[] {
+    private static short[] method1() {
+      return new short[] {
         0x7603, 0x7604, 0x7607, 0x7608, 0x760a, 0x760c, 0x760f, 0x7612, 0x7613, 0x7615, 0x7616, 0x7619, 0x761b, 0x761c, 0x761d, 0x761e,
         0x7623, 0x7625, 0x7626, 0x7629, 0x762d, 0x7632, 0x7633, 0x7635, 0x7638, 0x7639, 0x763a, 0x763c, 0x764a, 0x7640, 0x7641, 0x7643,
         0x7644, 0x7645, 0x7649, 0x764b, 0x7655, 0x7659, 0x765f, 0x7664, 0x7665, 0x766d, 0x766e, 0x766f, 0x7671, 0x7674, 0x7681, 0x7685,
@@ -514,8 +521,9 @@ final class JIS0212 {
         ((short)0x9f2f), ((short)0x9f31), ((short)0x9f32), ((short)0x9f34), ((short)0x9f37), ((short)0x9f39), ((short)0x9f3a), ((short)0x9f3c), ((short)0x9f3d), ((short)0x9f3f), ((short)0x9f41), ((short)0x9f43), ((short)0x9f44), ((short)0x9f45), ((short)0x9f46), ((short)0x9f47),
         ((short)0x9f53), ((short)0x9f55), ((short)0x9f56), ((short)0x9f57), ((short)0x9f58), ((short)0x9f5a), ((short)0x9f5d), ((short)0x9f5e), ((short)0x9f68), ((short)0x9f69), ((short)0x9f6d), ((short)0x9f6e), ((short)0x9f6f), ((short)0x9f70), ((short)0x9f71), ((short)0x9f73),
         ((short)0x9f75), ((short)0x9f7a), ((short)0x9f7d), ((short)0x9f8f), ((short)0x9f90), ((short)0x9f91), ((short)0x9f92), ((short)0x9f94), ((short)0x9f96), ((short)0x9f97), ((short)0x9f9e), ((short)0x9fa1), ((short)0x9fa2), ((short)0x9fa3), ((short)0x9fa5)
-    };
-  }
+      };
+    }
 
-  private JIS0212() {}
-}
+    private JIS0212() {
+    }
+  }

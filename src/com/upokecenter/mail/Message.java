@@ -37,10 +37,10 @@ import com.upokecenter.util.*;
      * instanceof 7bit) ? (7bit)declared : null), any 8-bit bytes are replaced
      * with question marks.</li> <li>If the transfer encoding is absent
      * or ((declared instanceof 7bit) ? (7bit)declared : null), and the
-     * charset is declared as <code>utf-8</code> , the transfer encoding
+     * charset is declared to be <code>utf-8</code> , the transfer encoding
      * is treated as 8bit instead.</li> <li>In text/html message bodies,
      * if the transfer encoding is absent or ((declared instanceof 7bit)
-     * ? (7bit)declared : null), and the charset is declared as <code>ascii</code>
+     * ? (7bit)declared : null), and the charset is declared to be <code>ascii</code>
      * , <code>us-ascii</code> , "windows-1252", or "iso-8859-*" (all
      * single byte encodings), the transfer encoding is treated as 8bit
      * instead.</li> <li>If the first line of the message starts with the
@@ -80,10 +80,27 @@ import com.upokecenter.util.*;
      * @return A snapshot of the header fields of this message. The list contains
      * an alternating set of header field names and values, in the order they
      * were declared in the message.
-     */
+     * @deprecated Use HeaderFields instead.
+ */
+@Deprecated
     public List<String> getHeaders() {
         return new ArrayList<String>(this.headers);
       }
+
+    /**
+     * Gets a snapshot of the header fields of this message. For each item
+     * in the list, the key is the header field's name and the value is its value.
+     * @return A snapshot of the header fields of this message.
+     */
+    public List<Map.Entry<String, String>> HeaderFields {
+      get {
+        ArrayList<Map.Entry<String, String>> ret=new ArrayList<Map.Entry<String, String>>();
+        for (int i = 0; i < this.headers.size(); i += 2) {
+          ret.Add(new Map.Entry<String, String>(this.headers.get(i), this.headers.get(i + 1)));
+        }
+        return ret;
+      }
+    }
 
     private byte[] body;
 
@@ -197,7 +214,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
      * @return A value not documented yet.
      */
     public List<NamedAddress> getFromAddresses() {
-        return ParseAddresses(this.GetHeader("from"));
+        return ParseAddresses(this.GetMultipleHeaders("from"));
       }
 
     private boolean IsValidAddressingField(String name) {
@@ -209,7 +226,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
             return false;
           }
           String headerValue = this.headers.get(i + 1);
-          if (HeaderFields.GetParser(name).Parse(headerValue, 0, headerValue.length(), null) !=
+          if (HeaderFieldParsers.GetParser(name).Parse(headerValue, 0, headerValue.length(), null) !=
               headerValue.length()) {
             return false;
           }
@@ -479,7 +496,7 @@ public void setContentDisposition(ContentDisposition value) {
           mime = true;
         }
         if (value.indexOf("=?") >= 0) {
-          IHeaderFieldParser parser = HeaderFields.GetParser(name);
+          IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
           // Decode encoded words in the header field where possible
           value = parser.DecodeEncodedWords(value);
           this.headers.set(i + 1,value);
@@ -903,9 +920,13 @@ public void setContentDisposition(ContentDisposition value) {
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       // Check characters in structured header fields
-      if (HeaderFields.GetParser(name).IsStructured()) {
+      IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
+      if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.length()) != value.length()) {
           throw new IllegalArgumentException("Header field value contains invalid text");
+        }
+        if (parser.Parse(value, 0, value.length(), null) != value.length()) {
+          throw new IllegalArgumentException("Header field value is not in the correct format");
         }
       }
       // Add the header field
@@ -1089,7 +1110,7 @@ public void setContentDisposition(ContentDisposition value) {
       StringBuilder sb = new StringBuilder();
       String hex = "0123456789ABCDEF";
       sb.append("=_Boundary");
-      for (int i = 0; i < 8; ++i) {
+      for (int i = 0; i < 4; ++i) {
         int b = (num >> 56) & 255;
         sb.append(hex.charAt((b >> 4) & 15));
         sb.append(hex.charAt(b & 15));
@@ -1269,7 +1290,7 @@ public void setContentDisposition(ContentDisposition value) {
             throw new MessageDataException("No colon+space: " + rawField);
           }
         } else if (HasTextToEscape(value)) {
-          String downgraded = HeaderFields.GetParser(name).DowngradeFieldValue(value);
+          String downgraded = HeaderFieldParsers.GetParser(name).DowngradeFieldValue(value);
           if (HasTextToEscapeIgnoreEncodedWords(downgraded, 0, downgraded.length())) {
             if (name.equals("message-id") ||
                 name.equals("resent-message-id") ||
@@ -1283,7 +1304,8 @@ public void setContentDisposition(ContentDisposition value) {
               name = "downgraded-" + name;
               downgraded = Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTab(value));
             } else {
-              throw new MessageDataException("Header field still has non-Ascii: " + name + " " + value);
+              throw new MessageDataException("Header field still has non-Ascii or controls: " +
+                                             name + " " + value);
             }
           }
           boolean haveDquote = downgraded.indexOf('"') >= 0;
@@ -1433,7 +1455,7 @@ public void setContentDisposition(ContentDisposition value) {
           // Downgrade the comments in the type part
           // NOTE: Final-recipient has the same syntax as original-recipient,
           // except for the header field name
-          typePart = HeaderFields.GetParser("original-recipient").DowngradeFieldValue(typePart);
+          typePart = HeaderFieldParsers.GetParser("original-recipient").DowngradeFieldValue(typePart);
           if (isUtf8) {
             // Downgrade the non-ASCII characters in the address
             StringBuilder builder = new StringBuilder();

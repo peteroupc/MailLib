@@ -13,7 +13,7 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-  internal static class HeaderFields
+  internal static class HeaderFieldParsers
   {
     private sealed class UnstructuredHeaderField : IHeaderFieldParser {
     /// <summary>Not documented yet.</summary>
@@ -370,7 +370,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderX400ContentReturn(str, index, endIndex, tokener);
@@ -382,7 +382,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDeliveryDate(str, index, endIndex, tokener);
@@ -394,7 +394,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderPriority(str, index, endIndex, tokener);
@@ -406,7 +406,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderImportance(str, index, endIndex, tokener);
@@ -418,7 +418,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderSensitivity(str, index, endIndex, tokener);
@@ -430,7 +430,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderX400ContentIdentifier(str, index, endIndex, tokener);
@@ -442,7 +442,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderX400Received(str, index, endIndex, tokener);
@@ -454,7 +454,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderX400MtsIdentifier(str, index, endIndex, tokener);
@@ -466,7 +466,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderX400Originator(str, index, endIndex, tokener);
@@ -478,7 +478,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderX400Recipients(str, index, endIndex, tokener);
@@ -490,7 +490,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderConversion(str, index, endIndex, tokener);
@@ -502,10 +502,22 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderConversionWithLoss(str, index, endIndex, tokener);
+      }
+    }
+
+    private sealed class HeaderSupersedes : StructuredHeaderField {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
+        return HeaderParser.ParseHeaderSupersedes(str, index, endIndex, tokener);
       }
     }
 
@@ -514,7 +526,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderAutoforwarded(str, index, endIndex, tokener);
@@ -526,7 +538,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderGenerateDeliveryReport(str, index, endIndex, tokener);
@@ -538,7 +550,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderIncompleteCopy(str, index, endIndex, tokener);
@@ -550,7 +562,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderPreventNondeliveryReport(str, index, endIndex, tokener);
@@ -562,7 +574,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderAlternateRecipient(str, index, endIndex, tokener);
@@ -574,10 +586,130 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDiscloseRecipients(str, index, endIndex, tokener);
+      }
+    }
+
+    private sealed class HeaderNewsgroups : StructuredHeaderField {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
+        return HeaderParser.ParseHeaderNewsgroups(str, index, endIndex, tokener);
+      }
+    }
+
+    private sealed class HeaderPath : StructuredHeaderField {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
+        return HeaderParser.ParseHeaderPath(str, index, endIndex, tokener);
+      }
+    }
+
+    private sealed class HeaderArchive : StructuredHeaderField {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
+        return HeaderParser.ParseHeaderArchive(str, index, endIndex, tokener);
+      }
+    }
+
+    private sealed class HeaderControl : StructuredHeaderField {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
+        return HeaderParser.ParseHeaderControl(str, index, endIndex, tokener);
+      }
+    }
+
+    private sealed class HeaderDistribution : StructuredHeaderField {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
+        return HeaderParser.ParseHeaderDistribution(str, index, endIndex, tokener);
+      }
+    }
+
+    private sealed class HeaderFollowupTo : StructuredHeaderField {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
+        return HeaderParser.ParseHeaderFollowupTo(str, index, endIndex, tokener);
+      }
+    }
+
+    private sealed class HeaderInjectionDate : StructuredHeaderField {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
+        return HeaderParser.ParseHeaderInjectionDate(str, index, endIndex, tokener);
+      }
+    }
+
+    private sealed class HeaderInjectionInfo : StructuredHeaderField {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
+        return HeaderParser.ParseHeaderInjectionInfo(str, index, endIndex, tokener);
+      }
+    }
+
+    private sealed class HeaderUserAgent : StructuredHeaderField {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
+        return HeaderParser.ParseHeaderUserAgent(str, index, endIndex, tokener);
+      }
+    }
+
+    private sealed class HeaderXref : StructuredHeaderField {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
+        return HeaderParser.ParseHeaderXref(str, index, endIndex, tokener);
       }
     }
 
@@ -586,7 +718,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderAcceptLanguage(str, index, endIndex, tokener);
@@ -598,7 +730,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderArchivedAt(str, index, endIndex, tokener);
@@ -610,7 +742,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderAuthenticationResults(str, index, endIndex, tokener);
@@ -622,7 +754,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderAutoSubmitted(str, index, endIndex, tokener);
@@ -634,7 +766,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderBcc(str, index, endIndex, tokener);
@@ -646,7 +778,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentBase(str, index, endIndex, tokener);
@@ -658,7 +790,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentDisposition(str, index, endIndex, tokener);
@@ -670,7 +802,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentDuration(str, index, endIndex, tokener);
@@ -682,7 +814,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentId(str, index, endIndex, tokener);
@@ -694,7 +826,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentLanguage(str, index, endIndex, tokener);
@@ -706,7 +838,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentLocation(str, index, endIndex, tokener);
@@ -718,7 +850,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentMd5(str, index, endIndex, tokener);
@@ -730,7 +862,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentTransferEncoding(str, index, endIndex, tokener);
@@ -742,7 +874,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentType(str, index, endIndex, tokener);
@@ -754,7 +886,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDate(str, index, endIndex, tokener);
@@ -766,7 +898,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDeferredDelivery(str, index, endIndex, tokener);
@@ -778,7 +910,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDispositionNotificationOptions(str, index, endIndex, tokener);
@@ -790,7 +922,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDispositionNotificationTo(str, index, endIndex, tokener);
@@ -802,7 +934,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDkimSignature(str, index, endIndex, tokener);
@@ -814,7 +946,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderEdiintFeatures(str, index, endIndex, tokener);
@@ -826,7 +958,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderEncoding(str, index, endIndex, tokener);
@@ -838,7 +970,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderEncrypted(str, index, endIndex, tokener);
@@ -850,7 +982,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderFrom(str, index, endIndex, tokener);
@@ -862,7 +994,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderInReplyTo(str, index, endIndex, tokener);
@@ -874,7 +1006,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderJabberId(str, index, endIndex, tokener);
@@ -886,7 +1018,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderKeywords(str, index, endIndex, tokener);
@@ -898,7 +1030,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderLanguage(str, index, endIndex, tokener);
@@ -910,7 +1042,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderLatestDeliveryTime(str, index, endIndex, tokener);
@@ -922,7 +1054,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderListId(str, index, endIndex, tokener);
@@ -934,7 +1066,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMessageContext(str, index, endIndex, tokener);
@@ -946,7 +1078,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMessageId(str, index, endIndex, tokener);
@@ -958,7 +1090,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMimeVersion(str, index, endIndex, tokener);
@@ -970,7 +1102,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsAcp127MessageIdentifier(str, index, endIndex, tokener);
@@ -982,7 +1114,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsCodressMessageIndicator(str, index, endIndex, tokener);
@@ -994,7 +1126,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsCopyPrecedence(str, index, endIndex, tokener);
@@ -1006,7 +1138,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsExemptedAddress(str, index, endIndex, tokener);
@@ -1018,7 +1150,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsExtendedAuthorisationInfo(str, index, endIndex, tokener);
@@ -1030,7 +1162,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsHandlingInstructions(str, index, endIndex, tokener);
@@ -1042,7 +1174,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsMessageInstructions(str, index, endIndex, tokener);
@@ -1054,7 +1186,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsMessageType(str, index, endIndex, tokener);
@@ -1066,7 +1198,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOriginatorPlad(str, index, endIndex, tokener);
@@ -1078,7 +1210,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOriginatorReference(str, index, endIndex, tokener);
@@ -1090,7 +1222,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOtherRecipientsIndicatorCc(str, index, endIndex, tokener);
@@ -1102,7 +1234,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOtherRecipientsIndicatorTo(str, index, endIndex, tokener);
@@ -1114,7 +1246,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsPrimaryPrecedence(str, index, endIndex, tokener);
@@ -1126,7 +1258,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsSubjectIndicatorCodes(str, index, endIndex, tokener);
@@ -1138,7 +1270,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMtPriority(str, index, endIndex, tokener);
@@ -1150,7 +1282,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderObsoletes(str, index, endIndex, tokener);
@@ -1162,7 +1294,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderOriginalRecipient(str, index, endIndex, tokener);
@@ -1174,9 +1306,8 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
-      // TODO: Downgrade the Received header field
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderReceived(str, index, endIndex, tokener);
       }
@@ -1187,10 +1318,22 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderReceivedSpf(str, index, endIndex, tokener);
+      }
+    }
+
+    private sealed class HeaderRequireRecipientValidSince : StructuredHeaderField {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
+        return HeaderParser.ParseHeaderRequireRecipientValidSince(str, index, endIndex, tokener);
       }
     }
 
@@ -1199,7 +1342,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderResentTo(str, index, endIndex, tokener);
@@ -1211,7 +1354,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderReturnPath(str, index, endIndex, tokener);
@@ -1223,7 +1366,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderSender(str, index, endIndex, tokener);
@@ -1235,7 +1378,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderSolicitation(str, index, endIndex, tokener);
@@ -1247,7 +1390,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderTo(str, index, endIndex, tokener);
@@ -1259,10 +1402,22 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderVbrInfo(str, index, endIndex, tokener);
+      }
+    }
+
+    private sealed class HeaderXArchivedAt : StructuredHeaderField {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+      public override int Parse(string str, int index, int endIndex, ITokener tokener) {
+        return HeaderParser.ParseHeaderXArchivedAt(str, index, endIndex, tokener);
       }
     }
 
@@ -1271,7 +1426,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderXRicevuta(str, index, endIndex, tokener);
@@ -1283,7 +1438,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderXTiporicevuta(str, index, endIndex, tokener);
@@ -1295,7 +1450,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderXTrasporto(str, index, endIndex, tokener);
@@ -1307,7 +1462,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
-    /// <param name='tokener'>An object that receives parsed tokens.</param>
+    /// <param name='tokener'>An object that collects parsed tokens.</param>
     /// <returns>A 32-bit signed integer.</returns>
       public override int Parse(string str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderXVerificasicurezza(str, index, endIndex, tokener);
@@ -1318,6 +1473,7 @@ namespace PeterO.Mail {
     private static IHeaderFieldParser unstructured = new UnstructuredHeaderField();
 
     private static IDictionary<string, IHeaderFieldParser> CreateHeaderFieldList() {
+      // NOTE: Header fields not mentioned here are treated as unstructured
       fieldMap = new Dictionary<string, IHeaderFieldParser>();
       fieldMap["content-return"] = new HeaderX400ContentReturn();
       fieldMap["x400-content-return"] = new HeaderX400ContentReturn();
@@ -1334,14 +1490,24 @@ namespace PeterO.Mail {
       fieldMap["x400-recipients"] = new HeaderX400Recipients();
       fieldMap["conversion"] = new HeaderConversion();
       fieldMap["conversion-with-loss"] = new HeaderConversionWithLoss();
+      fieldMap["supersedes"] = new HeaderSupersedes();
       fieldMap["expires"] = new HeaderDate();
       fieldMap["autoforwarded"] = new HeaderAutoforwarded();
       fieldMap["generate-delivery-report"] = new HeaderGenerateDeliveryReport();
       fieldMap["incomplete-copy"] = new HeaderIncompleteCopy();
-      fieldMap["autosubmitted"] = new HeaderAutoforwarded();
       fieldMap["prevent-nondelivery-report"] = new HeaderPreventNondeliveryReport();
       fieldMap["alternate-recipient"] = new HeaderAlternateRecipient();
       fieldMap["disclose-recipients"] = new HeaderDiscloseRecipients();
+      fieldMap["newsgroups"] = new HeaderNewsgroups();
+      fieldMap["path"] = new HeaderPath();
+      fieldMap["archive"] = new HeaderArchive();
+      fieldMap["control"] = new HeaderControl();
+      fieldMap["distribution"] = new HeaderDistribution();
+      fieldMap["followup-to"] = new HeaderFollowupTo();
+      fieldMap["injection-date"] = new HeaderInjectionDate();
+      fieldMap["injection-info"] = new HeaderInjectionInfo();
+      fieldMap["user-agent"] = new HeaderUserAgent();
+      fieldMap["xref"] = new HeaderXref();
       fieldMap["accept-language"] = new HeaderAcceptLanguage();
       fieldMap["archived-at"] = new HeaderArchivedAt();
       fieldMap["authentication-results"] = new HeaderAuthenticationResults();
@@ -1400,6 +1566,7 @@ namespace PeterO.Mail {
       fieldMap["received-spf"] = new HeaderReceivedSpf();
       fieldMap["references"] = new HeaderInReplyTo();
       fieldMap["reply-to"] = new HeaderResentTo();
+      fieldMap["require-recipient-valid-since"] = new HeaderRequireRecipientValidSince();
       fieldMap["resent-bcc"] = new HeaderBcc();
       fieldMap["resent-cc"] = new HeaderResentTo();
       fieldMap["resent-date"] = new HeaderDate();
@@ -1413,43 +1580,13 @@ namespace PeterO.Mail {
       fieldMap["solicitation"] = new HeaderSolicitation();
       fieldMap["to"] = new HeaderTo();
       fieldMap["vbr-info"] = new HeaderVbrInfo();
-      fieldMap["x-archived-at"] = new HeaderArchivedAt();
+      fieldMap["x-archived-at"] = new HeaderXArchivedAt();
       fieldMap["x-mittente"] = new HeaderSender();
       fieldMap["x-ricevuta"] = new HeaderXRicevuta();
       fieldMap["x-riferimento-message-id"] = new HeaderMessageId();
       fieldMap["x-tiporicevuta"] = new HeaderXTiporicevuta();
       fieldMap["x-trasporto"] = new HeaderXTrasporto();
       fieldMap["x-verificasicurezza"] = new HeaderXVerificasicurezza();
-      // These following header fields, defined in the
-      // Message Headers registry as of Apr. 3, 2014,
-      // are treated as unstructured.
-      // fieldMap["apparently-to"] = unstructured;
-      // fieldMap["body"] = unstructured;
-      // fieldMap["comments"] = unstructured;
-      // fieldMap["content-description"] = unstructured;
-      // fieldMap["downgraded-bcc"] = unstructured;
-      // fieldMap["downgraded-cc"] = unstructured;
-      // fieldMap["downgraded-disposition-notification-to"] = unstructured;
-      // fieldMap["downgraded-final-recipient"] = unstructured;
-      // fieldMap["downgraded-from"] = unstructured;
-      // fieldMap["downgraded-in-reply-to"] = unstructured;
-      // fieldMap["downgraded-mail-from"] = unstructured;
-      // fieldMap["downgraded-message-id"] = unstructured;
-      // fieldMap["downgraded-original-recipient"] = unstructured;
-      // fieldMap["downgraded-rcpt-to"] = unstructured;
-      // fieldMap["downgraded-references"] = unstructured;
-      // fieldMap["downgraded-reply-to"] = unstructured;
-      // fieldMap["downgraded-resent-bcc"] = unstructured;
-      // fieldMap["downgraded-resent-cc"] = unstructured;
-      // fieldMap["downgraded-resent-from"] = unstructured;
-      // fieldMap["downgraded-resent-reply-to"] = unstructured;
-      // fieldMap["downgraded-resent-sender"] = unstructured;
-      // fieldMap["downgraded-resent-to"] = unstructured;
-      // fieldMap["downgraded-return-path"] = unstructured;
-      // fieldMap["downgraded-sender"] = unstructured;
-      // fieldMap["downgraded-to"] = unstructured;
-      // fieldMap["errors-to"] = unstructured;
-      // fieldMap["subject"] = unstructured;
       return fieldMap;
     }
 

@@ -1092,7 +1092,7 @@ namespace MailLibTest {
     public void TestEncodedWordsPhrase(string expected, string input) {
       Assert.AreEqual(
         expected + " <test@example.com>",
-        HeaderFields.GetParser("from").DecodeEncodedWords(input + " <test@example.com>"));
+        HeaderFieldParsers.GetParser("from").DecodeEncodedWords(input + " <test@example.com>"));
     }
 
     public void TestEncodedWordsOne(string expected, string input) {
@@ -1100,35 +1100,35 @@ namespace MailLibTest {
       Assert.AreEqual(expected, Rfc2047.DecodeEncodedWords(input, 0, input.Length, EncodedWordContext.Unstructured));
       Assert.AreEqual(
         "(" + expected + ") en",
-        HeaderFields.GetParser("content-language").DecodeEncodedWords("(" + input + ") en"));
+        HeaderFieldParsers.GetParser("content-language").DecodeEncodedWords("(" + input + ") en"));
       Assert.AreEqual(
         " (" + expected + ") en",
-        HeaderFields.GetParser("content-language").DecodeEncodedWords(" (" + input + ") en"));
+        HeaderFieldParsers.GetParser("content-language").DecodeEncodedWords(" (" + input + ") en"));
       Assert.AreEqual(
         " " + par + "comment " + par + "cmt " + expected + ")comment) en",
-        HeaderFields.GetParser("content-language").DecodeEncodedWords(" (comment (cmt " + input + ")comment) en"));
+        HeaderFieldParsers.GetParser("content-language").DecodeEncodedWords(" (comment (cmt " + input + ")comment) en"));
       Assert.AreEqual(
         " " + par + "comment " + par + "=?bad?= " + expected + ")comment) en",
-        HeaderFields.GetParser("content-language").DecodeEncodedWords(" (comment (=?bad?= " + input + ")comment) en"));
+        HeaderFieldParsers.GetParser("content-language").DecodeEncodedWords(" (comment (=?bad?= " + input + ")comment) en"));
       Assert.AreEqual(
         " " + par + "comment " + par + String.Empty + expected + ")comment) en",
-        HeaderFields.GetParser("content-language").DecodeEncodedWords(" (comment (" + input + ")comment) en"));
+        HeaderFieldParsers.GetParser("content-language").DecodeEncodedWords(" (comment (" + input + ")comment) en"));
       Assert.AreEqual(
         " (" + expected + "()) en",
-        HeaderFields.GetParser("content-language").DecodeEncodedWords(" (" + input + "()) en"));
+        HeaderFieldParsers.GetParser("content-language").DecodeEncodedWords(" (" + input + "()) en"));
       Assert.AreEqual(
         " en (" + expected + ")",
-        HeaderFields.GetParser("content-language").DecodeEncodedWords(" en (" + input + ")"));
+        HeaderFieldParsers.GetParser("content-language").DecodeEncodedWords(" en (" + input + ")"));
       Assert.AreEqual(
         expected,
-        HeaderFields.GetParser("subject").DecodeEncodedWords(input));
+        HeaderFieldParsers.GetParser("subject").DecodeEncodedWords(input));
     }
 
     [Test]
     public void TestEncodedPhrase2() {
       Assert.AreEqual(
         "=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
-        HeaderFields.GetParser("subject").DowngradeFieldValue("(tes\u00bet) x@x.example"));
+        HeaderFieldParsers.GetParser("subject").DowngradeFieldValue("(tes\u00bet) x@x.example"));
     }
 
     [Test]
@@ -1136,37 +1136,37 @@ namespace MailLibTest {
       string sep=", ";
       Assert.AreEqual(
         "x <x@example.com>" + sep + "\"X\" <y@example.com>",
-        HeaderFields.GetParser("to").DowngradeFieldValue("x <x@example.com>, \"X\" <y@example.com>"));
+        HeaderFieldParsers.GetParser("to").DowngradeFieldValue("x <x@example.com>, \"X\" <y@example.com>"));
       Assert.AreEqual(
         "x <x@example.com>" + sep + "=?utf-8?Q?=C2=BE?= <y@example.com>",
-        HeaderFields.GetParser("to").DowngradeFieldValue("x <x@example.com>, \u00be <y@example.com>"));
+        HeaderFieldParsers.GetParser("to").DowngradeFieldValue("x <x@example.com>, \u00be <y@example.com>"));
       Assert.AreEqual(
         "x <x@example.com>" + sep + "=?utf-8?Q?=C2=BE?= <y@example.com>",
-        HeaderFields.GetParser("to").DowngradeFieldValue("x <x@example.com>, \"\u00be\" <y@example.com>"));
+        HeaderFieldParsers.GetParser("to").DowngradeFieldValue("x <x@example.com>, \"\u00be\" <y@example.com>"));
       Assert.AreEqual(
         "x <x@example.com>" + sep + "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>",
-        HeaderFields.GetParser("to").DowngradeFieldValue("x <x@example.com>, x\u00e1 x x\u00e1 <y@example.com>"));
+        HeaderFieldParsers.GetParser("to").DowngradeFieldValue("x <x@example.com>, x\u00e1 x x\u00e1 <y@example.com>"));
       Assert.AreEqual(
         "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;",
-        HeaderFields.GetParser("to").DowngradeFieldValue("g: x@example.com, x\u00e1y@example.com;"));
+        HeaderFieldParsers.GetParser("to").DowngradeFieldValue("g: x@example.com, x\u00e1y@example.com;"));
       Assert.AreEqual(
         "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;",
-        HeaderFields.GetParser("to").DowngradeFieldValue("g: x@example.com, x@\u0300.example;"));
+        HeaderFieldParsers.GetParser("to").DowngradeFieldValue("g: x@example.com, x@\u0300.example;"));
       Assert.AreEqual(
         "g: x@example.com" + sep + "x@xn--e-ufa.example;",
-        HeaderFields.GetParser("to").DowngradeFieldValue("g: x@example.com, x@e\u00e1.example;"));
+        HeaderFieldParsers.GetParser("to").DowngradeFieldValue("g: x@example.com, x@e\u00e1.example;"));
       Assert.AreEqual(
         "x <x@xn--e-ufa.example>",
-        HeaderFields.GetParser("sender").DowngradeFieldValue("x <x@e\u00e1.example>"));
+        HeaderFieldParsers.GetParser("sender").DowngradeFieldValue("x <x@e\u00e1.example>"));
       Assert.AreEqual(
         "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
-        HeaderFields.GetParser("sender").DowngradeFieldValue("x\u00e1 x x\u00e1 <x@example.com>"));
+        HeaderFieldParsers.GetParser("sender").DowngradeFieldValue("x\u00e1 x x\u00e1 <x@example.com>"));
       Assert.AreEqual(
         "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
-        HeaderFields.GetParser("sender").DowngradeFieldValue("x\u00e1 x x\u00e1 <x@e\u00e1.example>"));
+        HeaderFieldParsers.GetParser("sender").DowngradeFieldValue("x\u00e1 x x\u00e1 <x@e\u00e1.example>"));
       Assert.AreEqual(
         "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
-        HeaderFields.GetParser("sender").DowngradeFieldValue("x <x\u00e1y@example.com>"));
+        HeaderFieldParsers.GetParser("sender").DowngradeFieldValue("x <x\u00e1y@example.com>"));
     }
 
     private static string EncodeComment(string str) {
@@ -1184,70 +1184,70 @@ namespace MailLibTest {
       Assert.AreEqual("(=?utf-8?Q?x?=()=?utf-8?Q?y?=)", EncodeComment("(x()y)"));
       Assert.AreEqual("(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)", EncodeComment("(x(a\\b)y)"));
       Assert.AreEqual("()", EncodeComment("()"));
-      Assert.AreEqual("(test) x@x.example", HeaderFields.GetParser("from").DowngradeFieldValue("(test) x@x.example"));
+      Assert.AreEqual("(test) x@x.example", HeaderFieldParsers.GetParser("from").DowngradeFieldValue("(test) x@x.example"));
       Assert.AreEqual(
         "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
-        HeaderFields.GetParser("from").DowngradeFieldValue("(tes\u00bet) x@x.example"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("(tes\u00bet) x@x.example"));
       Assert.AreEqual(
         "(=?utf-8?Q?tes=C2=BEt?=) en",
-        HeaderFields.GetParser("content-language").DowngradeFieldValue("(tes\u00bet) en"));
+        HeaderFieldParsers.GetParser("content-language").DowngradeFieldValue("(tes\u00bet) en"));
       Assert.AreEqual(
         "(comment) Test <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("(comment) Test <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("(comment) Test <x@x.example>"));
       Assert.AreEqual(
         "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("(comment) Tes\u00bet <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("(comment) Tes\u00bet <x@x.example>"));
       Assert.AreEqual(
         "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("(comment) Tes\u00bet Subject <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("(comment) Tes\u00bet Subject <x@x.example>"));
       Assert.AreEqual(
         "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("(comment) Test Sub\u00beject <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("(comment) Test Sub\u00beject <x@x.example>"));
       Assert.AreEqual(
         "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet\" <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet\" <x@x.example>"));
       Assert.AreEqual(
         "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet Subject\" <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet Subject\" <x@x.example>"));
       Assert.AreEqual(
         "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("(comment) \"Test Sub\u00beject\" <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("(comment) \"Test Sub\u00beject\" <x@x.example>"));
       Assert.AreEqual(
         "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet   Subject\" <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet   Subject\" <x@x.example>"));
       Assert.AreEqual(
         "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>"));
       Assert.AreEqual(
         "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" (comment) <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" (comment) <x@x.example>"));
       Assert.AreEqual(
         "Test <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("Test <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("Test <x@x.example>"));
       Assert.AreEqual(
         "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("Tes\u00bet <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("Tes\u00bet <x@x.example>"));
       Assert.AreEqual(
         "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("Tes\u00bet Subject <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("Tes\u00bet Subject <x@x.example>"));
       Assert.AreEqual(
         "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("Test Sub\u00beject <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("Test Sub\u00beject <x@x.example>"));
       Assert.AreEqual(
         "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet\" <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("\"Tes\u00bet\" <x@x.example>"));
       Assert.AreEqual(
         "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" <x@x.example>"));
       Assert.AreEqual(
         "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("\"Test Sub\u00beject\" <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("\"Test Sub\u00beject\" <x@x.example>"));
       Assert.AreEqual(
         "=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet   Subject\" <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("\"Tes\u00bet   Subject\" <x@x.example>"));
       Assert.AreEqual(
         "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-        HeaderFields.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" (comment) <x@x.example>"));
+        HeaderFieldParsers.GetParser("from").DowngradeFieldValue("\"Tes\u00bet Subject\" (comment) <x@x.example>"));
     }
 
     internal static bool IsGoodAsciiMessageFormat(string str, bool hasMessageType) {
@@ -1824,7 +1824,7 @@ namespace MailLibTest {
 
     [Test]
     public void TestReceivedHeader() {
-      IHeaderFieldParser parser=HeaderFields.GetParser("received");
+      IHeaderFieldParser parser=HeaderFieldParsers.GetParser("received");
       string test="from x.y.example by a.b.example; Thu, 31 Dec 2012 00:00:00 -0100";
       Assert.AreEqual(test.Length, parser.Parse(test, 0, test.Length, null));
     }

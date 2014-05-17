@@ -48,10 +48,13 @@ namespace MailLibTest {
       Assert.IsTrue(Idna.IsValidDomainName("el\u00b7la",false));
       Assert.IsFalse(Idna.IsValidDomainName("-domain",false));
       Assert.IsFalse(Idna.IsValidDomainName("domain-",false));
+      Assert.IsFalse(Idna.IsValidDomainName("xn--",false));
+      Assert.IsFalse(Idna.IsValidDomainName("xn--.example",false));
+      Assert.IsFalse(Idna.IsValidDomainName("example.xn--",false));
       // Label starting with digit is valid since there are no RTL labels
       Assert.IsTrue(Idna.IsValidDomainName("1domain.example",false));
       // Label starting with digit is not valid since there are RTL labels
-      Assert.IsFalse(Idna.IsValidDomainName("1domain.\u05d0\u05d0",false));
+      Assert.IsFalse(Idna.IsValidDomainName("1domain.example.\u05d0\u05d0",false));
       Assert.IsFalse(Idna.IsValidDomainName("\u05d0\u05d0.1domain.example",false));
       Assert.IsFalse(Idna.IsValidDomainName("el\u00b7",false));
       Assert.IsFalse(Idna.IsValidDomainName("el\u00b7ma",false));
