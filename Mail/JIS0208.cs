@@ -10,12 +10,14 @@ namespace PeterO.Mail {
   using System;
 
   internal static class JIS0208 {
-    private static short[] table = new short[11104];
+    private static short[] table = CharsetTable();
 
-    static JIS0208() {
+    private static short[] CharsetTable() {
+      short[] table = new short[11104];
       Array.Copy(method0(), 0, table, 0, 4096);
       Array.Copy(method1(), 0, table, 4096, 4096);
       Array.Copy(method2(), 0, table, 8192, 2912);
+      return table;
     }
 
     private static int[] indextable = new int[] { 167, 65509, 0, 256,

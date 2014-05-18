@@ -92,15 +92,13 @@ import com.upokecenter.util.*;
      * in the list, the key is the header field's name and the value is its value.
      * @return A snapshot of the header fields of this message.
      */
-    public List<Map.Entry<String, String>> HeaderFields {
-      get {
-        ArrayList<Map.Entry<String, String>> ret=new ArrayList<Map.Entry<String, String>>();
+    public List<Map.Entry<String, String>> getHeaderFields(){
+        ArrayList<Map.Entry<String, String>> list=new ArrayList<Map.Entry<String, String>>();
         for (int i = 0; i < this.headers.size(); i += 2) {
-          ret.Add(new Map.Entry<String, String>(this.headers.get(i), this.headers.get(i + 1)));
+          list.add(new AbstractMap.SimpleImmutableEntry<String, String>(this.headers.get(i), this.headers.get(i + 1)));
         }
-        return ret;
+        return list;
       }
-    }
 
     private byte[] body;
 
@@ -361,7 +359,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         rnd <<= 16;
         rnd |= msgidRandom.nextInt(65536);
       }
-      String guid = Guid.NewGuid().toString();
+      String guid = java.util.UUID.randomUUID().toString();
       String hex = "0123456789abcdef";
       for (int i = 0; i < 16; ++i) {
         builder.append(hex.charAt((int)(ticks & 15)));
@@ -1334,7 +1332,7 @@ public void setContentDisposition(ContentDisposition value) {
         sb.append("From: me@author-address.invalid\r\n");
       }
       if (!haveMsgId && depth == 0) {
-        sb.append("Message-ID: " + this.GenerateMessageID() +"\r\n");
+        sb.append("Message-ID: " + this.GenerateMessageID() + "\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
         sb.append("MIME-Version: 1.0\r\n");

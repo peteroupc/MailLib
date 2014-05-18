@@ -9,11 +9,15 @@ at: http://upokecenter.com/d/
 // This file was generated using the index file in the WHATWG Encoding specification.
 
   final class JIS0212 {
-    private static short[] table = new short[7103];
+private JIS0212() {
+}
+    private static short[] table = CharsetTable();
 
-    static JIS0212() {
+    private static short[] CharsetTable() {
+      short[] table = new short[7103];
       System.arraycopy(method0(), 0, table, 0, 4096);
       System.arraycopy(method1(), 0, table, 4096, 3007);
+      return table;
     }
 
     private static int[] indextable = new int[] { 161, 65374, 0, 256,
@@ -522,8 +526,5 @@ at: http://upokecenter.com/d/
         ((short)0x9f53), ((short)0x9f55), ((short)0x9f56), ((short)0x9f57), ((short)0x9f58), ((short)0x9f5a), ((short)0x9f5d), ((short)0x9f5e), ((short)0x9f68), ((short)0x9f69), ((short)0x9f6d), ((short)0x9f6e), ((short)0x9f6f), ((short)0x9f70), ((short)0x9f71), ((short)0x9f73),
         ((short)0x9f75), ((short)0x9f7a), ((short)0x9f7d), ((short)0x9f8f), ((short)0x9f90), ((short)0x9f91), ((short)0x9f92), ((short)0x9f94), ((short)0x9f96), ((short)0x9f97), ((short)0x9f9e), ((short)0x9fa1), ((short)0x9fa2), ((short)0x9fa3), ((short)0x9fa5)
       };
-    }
-
-    private JIS0212() {
     }
   }

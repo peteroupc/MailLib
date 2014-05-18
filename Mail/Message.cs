@@ -98,11 +98,11 @@ namespace PeterO.Mail {
     /// <value>A snapshot of the header fields of this message.</value>
     public IList<KeyValuePair<string, string>> HeaderFields {
       get {
-        var ret = new List<KeyValuePair<string, string>>();
+        var list = new List<KeyValuePair<string, string>>();
         for (int i = 0; i < this.headers.Count; i += 2) {
-          ret.Add(new KeyValuePair<string, string>(this.headers[i], this.headers[i + 1]));
+          list.Add(new KeyValuePair<string, string>(this.headers[i], this.headers[i + 1]));
         }
-        return ret;
+        return list;
       }
     }
 

@@ -9,12 +9,14 @@ at: http://upokecenter.com/d/
 namespace PeterO.Mail {
   using System;
 
-  internal sealed class JIS0212 {
-    private static short[] table = new short[7103];
+  internal static class JIS0212 {
+    private static short[] table = CharsetTable();
 
-    static JIS0212() {
+    private static short[] CharsetTable() {
+      short[] table = new short[7103];
       Array.Copy(method0(), 0, table, 0, 4096);
       Array.Copy(method1(), 0, table, 4096, 3007);
+      return table;
     }
 
     private static int[] indextable = new int[] { 161, 65374, 0, 256,
@@ -523,9 +525,6 @@ namespace PeterO.Mail {
         unchecked((short)0x9f53), unchecked((short)0x9f55), unchecked((short)0x9f56), unchecked((short)0x9f57), unchecked((short)0x9f58), unchecked((short)0x9f5a), unchecked((short)0x9f5d), unchecked((short)0x9f5e), unchecked((short)0x9f68), unchecked((short)0x9f69), unchecked((short)0x9f6d), unchecked((short)0x9f6e), unchecked((short)0x9f6f), unchecked((short)0x9f70), unchecked((short)0x9f71), unchecked((short)0x9f73),
         unchecked((short)0x9f75), unchecked((short)0x9f7a), unchecked((short)0x9f7d), unchecked((short)0x9f8f), unchecked((short)0x9f90), unchecked((short)0x9f91), unchecked((short)0x9f92), unchecked((short)0x9f94), unchecked((short)0x9f96), unchecked((short)0x9f97), unchecked((short)0x9f9e), unchecked((short)0x9fa1), unchecked((short)0x9fa2), unchecked((short)0x9fa3), unchecked((short)0x9fa5)
       };
-    }
-
-    private JIS0212() {
     }
   }
 }
