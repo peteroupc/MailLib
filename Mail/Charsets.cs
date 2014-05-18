@@ -808,8 +808,8 @@ namespace PeterO.Mail {
             int c = -1;
             int offset = (b < 0x7f) ? 0x40 : 0x41;
             int leadoffset = (lead < 0xa0) ? 0x81 : 0xc1;
-            if ((b >= 0x40 && b <= 0x7e) || (b >= 0x80 && b <= 0xfc)) {
-              c = ((lead - leadoffset) * 188) - (b - offset);
+            if ((b >= 0x40 && b <= 0xfc) && b != 0x7f) {
+              c = ((lead - leadoffset) * 188) + (b - offset);
             }
             if (c >= 0) {
               int c2 = JIS0208.indexToCodePoint(c);

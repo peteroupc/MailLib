@@ -826,6 +826,25 @@ namespace MailLibTest {
       Assert.AreEqual("example/x",MediaType.Parse("example/x; a=b").TypeAndSubType);
       Assert.AreEqual("example/x",MediaType.Parse("example/x; a=b ").TypeAndSubType);
     }
+    
+    [Test]
+    public void TestShiftJIS(){
+      // Adapted from the public domain Gonk test cases
+      byte[] bytes;
+      ICharset charset=Charsets.GetCharset("shift_jis");
+      bytes = new byte[] { 0x82, 0x58, 0x33, 0x41, 0x61, 0x33, 0x82, 0x60,
+                         0x82, 0x81, 0x33, 0xB1, 0xAF, 0x33, 0x83, 0x41,
+                         0x83, 0x96, 0x33, 0x82, 0xA0, 0x33, 0x93, 0xFA,
+                         0x33, 0x3A, 0x3C, 0x33, 0x81, 0x80, 0x81, 0x8E,
+                         0x33, 0x31, 0x82, 0x51, 0x41, 0x61, 0x82, 0x51,
+                         0x82, 0x60, 0x82, 0x81, 0x82, 0x51, 0xB1, 0xAF,
+                         0x82, 0x51, 0x83, 0x41, 0x83, 0x96, 0x82, 0x51,
+                         0x82, 0xA0, 0x82, 0x51, 0x93, 0xFA, 0x82, 0x51,
+                         0x3A, 0x3C, 0x82, 0x51, 0x81, 0x80, 0x81, 0x8E,
+                         0x82, 0x51 };
+      var expected=("\uFF19\u0033\u0041\u0061\u0033\uFF21\uFF41\u0033\uFF71\uFF6F\u0033\u30A2\u30F6\u0033\u3042\u0033\u65E5\u0033\u003A\u003C\u0033\u00F7\u2103\u0033\u0031\uFF12\u0041\u0061\uFF12\uFF21\uFF41\uFF12\uFF71\uFF6F\uFF12\u30A2\u30F6\uFF12\u3042\uFF12\u65E5\uFF12\u003A\u003C\uFF12\u00F7\u2103\uFF12");
+      Assert.AreEqual(expected,charset.GetString(Transform(bytes)));       
+    }
 
     [Test]
     public void TestIso2022JP() {

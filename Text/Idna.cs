@@ -300,7 +300,7 @@ namespace PeterO.Text {
           continue;
         } else if (str[i] >= 0x80) {
           // Non-ASCII character
-          allLDH = true;
+          allLDH = false;
           continue;
         } else {
           return false;
