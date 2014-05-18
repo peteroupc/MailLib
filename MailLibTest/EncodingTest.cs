@@ -212,12 +212,10 @@ namespace MailLibTest {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      try {
-        new Message().SetHeader("from","\"a\r\n b\" <x@example.com");
-      } catch (Exception ex) {
-        Assert.Fail(ex.ToString());
-        throw new InvalidOperationException(String.Empty, ex);
-      }
+      Assert.Throws(typeof(ArgumentException),()=>new Message().SetHeader("from","\"a\r\n b\" <x@example.com"));
+      Assert.DoesNotThrow(()=>new Message().SetHeader("from","\"a\r\n b\" <x@example.com>"));
+      Assert.Throws(typeof(ArgumentException),()=>new Message().SetHeader("from","=?utf-8?q?=01?= <x@example.com"));
+      Assert.DoesNotThrow(()=>new Message().SetHeader("from","=?utf-8?q?=01?= <x@example.com>"));
       try {
         new Message().SetHeader("from","\"a\nb\" <x@example.com>");
         Assert.Fail("Should have failed");
@@ -230,12 +228,6 @@ namespace MailLibTest {
         new Message().SetHeader("from","\"a\0b\" <x@example.com>");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-      } catch (Exception ex) {
-        Assert.Fail(ex.ToString());
-        throw new InvalidOperationException(String.Empty, ex);
-      }
-      try {
-        new Message().SetHeader("from","=?utf-8?q?=01?= <x@example.com");
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -277,6 +269,9 @@ namespace MailLibTest {
 
     internal static ITransform Transform(string str) {
       return new WrappedStream(new MemoryStream(DataUtilities.GetUtf8Bytes(str, true)));
+    }
+    internal static ITransform Transform(byte[] bytes) {
+      return new WrappedStream(new MemoryStream(bytes));
     }
 
     internal static byte[] GetBytes(ITransform trans) {
@@ -830,6 +825,63 @@ namespace MailLibTest {
       Assert.AreEqual("example/x",MediaType.Parse("example/x ; a=b").TypeAndSubType);
       Assert.AreEqual("example/x",MediaType.Parse("example/x; a=b").TypeAndSubType);
       Assert.AreEqual("example/x",MediaType.Parse("example/x; a=b ").TypeAndSubType);
+    }
+
+    [Test]
+    public void TestIso2022JP() {
+      byte[] bytes;
+      ICharset charset=Charsets.GetCharset("iso-2022-jp");
+      bytes = new byte[] { 0x20, 0x41, 0x61, 0x5c };
+      Assert.AreEqual(" Aa\\",charset.GetString(Transform(bytes)));
+      // Illegal byte in escape middle state
+      bytes = new byte[] { 0x1b, 0x28, 0x47, 0x21, 0x41, 0x31, 0x5c };
+      Assert.AreEqual("\ufffd\u0028\u0047!A1\\",charset.GetString(Transform(bytes)));
+      // Katakana
+      bytes = new byte[] { 0x1b, 0x28, 0x49, 0x21, 0x41, 0x31, 0x5c };
+      Assert.AreEqual("\uff61\uff81\uff71\uff9c",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x1b, 0x28, 0x49, 0x20, 0x41, 0x61, 0x5c };
+      Assert.AreEqual("\ufffd\uff81\ufffd\uff9c",charset.GetString(Transform(bytes)));
+      // ASCII state via escape
+      bytes = new byte[] { 0x1b, 0x28, 0x42, 0x20, 0x41, 0x61, 0x5c };
+      Assert.AreEqual(" Aa\\",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x1b, 0x28, 0x4a, 0x20, 0x41, 0x61, 0x5c };
+      Assert.AreEqual(" Aa\\",charset.GetString(Transform(bytes)));
+      // JIS0208 state
+      bytes = new byte[] { 0x1b, 0x24, 0x40, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23 };
+      Assert.AreEqual("\u3000\u3001\u3002",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x1b, 0x24, 0x42, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23 };
+      Assert.AreEqual("\u3000\u3001\u3002",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x1b, 0x24, 0x42, 0x21, 0x21, 0x21, 0x22, 0x0a, 0x21, 0x23 };
+      Assert.AreEqual("\u3000\u3001\n!#",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x1b, 0x24, 0x42, 0x21, 0x21, 0x21, 0x22, 0x1b, 0x28, 0x42, 0x21, 0x23 };
+      Assert.AreEqual("\u3000\u3001!#",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x1b, 0x24, 0x42, 0x21, 0x21, 0x21, 0x0a, 0x21, 0x23, 0x22 };
+      Assert.AreEqual("\u3000\ufffd\u3002\ufffd",charset.GetString(Transform(bytes)));
+      // Illegal state
+      bytes = new byte[] { 0x1b, 0x24, 0x4f, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23 };
+      Assert.AreEqual("\ufffd\u0024\u004f!!!\u0022!#",charset.GetString(Transform(bytes)));
+      // JIS0212 state
+      bytes = new byte[] { 0x1b, 0x24, 0x28, 0x44, 0x22, 0x2f, 0x22, 0x30, 0x22, 0x31 };
+      Assert.AreEqual("\u02d8\u02c7\u00b8",
+                      charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x1b, 0x24, 0x28, 0x44, 0x22, 0x2f, 0x22, 0x30, 0x0a, 0x22, 0x31 };
+      Assert.AreEqual("\u02d8\u02c7\n\u00221",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x1b, 0x24, 0x28, 0x44, 0x22, 0x2f, 0x22, 0x30, 0x1b, 0x28, 0x42, 0x22, 0x31 };
+      Assert.AreEqual("\u02d8\u02c7\u00221",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x1b, 0x24, 0x28, 0x44, 0x22, 0x2f, 0x22, 0x0a, 0x22,0x31, 0x23 };
+      Assert.AreEqual("\u02d8\ufffd\u00b8\ufffd",charset.GetString(Transform(bytes)));
+      // Illegal state
+      bytes = new byte[] { 0x1b, 0x24, 0x28, 0x4f, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23 };
+      Assert.AreEqual("\ufffd\u0024\u0028\u004f!!!\u0022!#",charset.GetString(Transform(bytes)));
+      // Illegal state at end
+      bytes = new byte[] { 0x41, 0x1b };
+      Assert.AreEqual("A\ufffd",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x41, 0x1b, 0x27 };
+      Assert.AreEqual("A\ufffd'",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x41, 0x1b, 0x24 };
+      Assert.AreEqual("A\ufffd",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x41, 0x1b, 0x24, 0x28 };
+      Assert.AreEqual("A\ufffd\u0028",charset.GetString(Transform(bytes)));
     }
 
     private static void AssertUtf8Equal(byte[] expected, byte[] actual) {

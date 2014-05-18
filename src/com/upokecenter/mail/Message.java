@@ -51,7 +51,11 @@ import com.upokecenter.util.*;
      * it's not an IANA registered alias.</li> <li>If a sequence of encoded
      * words (RFC 2047) decodes to a string with a CTL character (U + 007F,
      * or a character less than U + 0020 and not TAB) after being converted
-     * to Unicode, the encoded words are left un-decoded.</li> </ul>
+     * to Unicode, the encoded words are left un-decoded.</li> <li>This
+     * implementation can decode an encoded word that uses ISO-2022-JP
+     * (the only supported encoding that uses code switching) even if the
+     * encoded word's payload ends in a different mode from ASCII mode. (Each
+     * encoded word still starts in ASCII mode, though.)</li> </ul>
      */
   public final class Message {
     private static final int EncodingSevenBit = 0;

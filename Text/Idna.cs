@@ -291,6 +291,7 @@ namespace PeterO.Text {
       if (str.Length >= 4 && (str[0] == 'x' || str[0] == 'X') && (str[0] == 'n' || str[0] == 'N') && str[2] == '-' && str[3] == '-') {
         maybeALabel = true;
       }
+      bool allLDH = true;
       for (int i = 0; i < str.Length; ++i) {
         if ((str[i] >= 'a' && str[i] <= 'z') ||
             (str[i] >= 'A' && str[i] <= 'Z') ||
@@ -299,6 +300,7 @@ namespace PeterO.Text {
           continue;
         } else if (str[i] >= 0x80) {
           // Non-ASCII character
+          allLDH = true;
           continue;
         } else {
           return false;
@@ -322,6 +324,13 @@ namespace PeterO.Text {
         // at this point, so a simple binary comparison is enough
         return astr.Equals(str);
       } else {
+        if (allLDH) {
+          if (str[0] != '-' && str[str.Length - 1] != '-' && !(str[0] >= '0' && str[0] <= '9')) {
+            // Only LDH characters, doesn't start with hyphen or digit,
+            // and doesn't end with hyphen
+            return true;
+          }
+        }
         return IsValidULabel(str, lookupRules, bidiRule);
       }
     }

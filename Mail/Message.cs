@@ -57,6 +57,10 @@ namespace PeterO.Mail {
     /// with a CTL character (U + 007F, or a character less than U + 0020 and not
     /// TAB) after being converted to Unicode, the encoded words are left
     /// un-decoded.</item>
+    /// <item>This implementation can decode an encoded word that uses ISO-2022-JP
+    /// (the only supported encoding that uses code switching) even if the
+    /// encoded word's payload ends in a different mode from ASCII mode. (Each
+    /// encoded word still starts in ASCII mode, though.)</item>
     /// </list>
     /// </summary>
   public sealed class Message {
