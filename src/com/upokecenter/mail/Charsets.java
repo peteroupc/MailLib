@@ -694,7 +694,7 @@ private Charsets() {
               } else if (lead == 0x28 && (b == 0x42 || b == 0x4a)) {
                 state = 0;
                 lead = 0;
-              } else if (lead == 0x49) {
+              } else if (lead == 0x28 && b == 0x49) {
                 state = 6;
                 lead = 0;
               } else {
@@ -816,8 +816,8 @@ private Charsets() {
             int c = -1;
             int offset = (b < 0x7f) ? 0x40 : 0x41;
             int leadoffset = (lead < 0xa0) ? 0x81 : 0xc1;
-            if ((b >= 0x40 && b <= 0x7e) || (b >= 0x80 && b <= 0xfc)) {
-              c = ((lead - leadoffset) * 188) - (b - offset);
+            if ((b >= 0x40 && b <= 0xfc) && b != 0x7f) {
+              c = ((lead - leadoffset) * 188) + (b - offset);
             }
             if (c >= 0) {
               int c2 = JIS0208.indexToCodePoint(c);
@@ -883,7 +883,6 @@ private Charsets() {
           if (lead == 0x8f && (b >= 0xa1 && b <= 0xfe)) {
             lead = b;
             jis0212 = true;
-            builder.append((char)(0xff61 + b - 0xa1));
             continue;
           }
           if (lead != 0) {

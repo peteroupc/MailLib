@@ -175,7 +175,7 @@ namespace PeterO.Text {
       if (str == null) {
         return false;
       }
-      int lastNonStable = -1;
+      int nonStableStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       for (int i = 0; i < str.Length; ++i) {
         int c = str[i];
@@ -197,23 +197,23 @@ namespace PeterO.Text {
         } else {
           isStable = IsStableCodePoint(c, form);
         }
-        if (lastNonStable < 0 && !isStable) {
+        if (nonStableStart < 0 && !isStable) {
           // First non-stable code point in a row
-          lastNonStable = i;
-        } else if (lastNonStable >= 0 && isStable) {
+          nonStableStart = i;
+        } else if (nonStableStart >= 0 && isStable) {
           // We have at least one non-stable code point,
           // normalize these code points.
-          if (!NormalizeAndCheckString(str, lastNonStable, i - lastNonStable, form)) {
+          if (!NormalizeAndCheckString(str, nonStableStart, i - nonStableStart, form)) {
             return false;
           }
-          lastNonStable = -1;
+          nonStableStart = -1;
         }
         if (c >= 0x10000) {
           ++i;
         }
       }
-      if (lastNonStable >= 0) {
-        if (!NormalizeAndCheckString(str, lastNonStable, str.Length - lastNonStable, form)) {
+      if (nonStableStart >= 0) {
+        if (!NormalizeAndCheckString(str, nonStableStart, str.Length - nonStableStart, form)) {
           return false;
         }
       }

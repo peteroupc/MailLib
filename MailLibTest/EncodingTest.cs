@@ -212,10 +212,34 @@ namespace MailLibTest {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      Assert.Throws(typeof(ArgumentException),()=>new Message().SetHeader("from","\"a\r\n b\" <x@example.com"));
-      Assert.DoesNotThrow(()=>new Message().SetHeader("from","\"a\r\n b\" <x@example.com>"));
-      Assert.Throws(typeof(ArgumentException),()=>new Message().SetHeader("from","=?utf-8?q?=01?= <x@example.com"));
-      Assert.DoesNotThrow(()=>new Message().SetHeader("from","=?utf-8?q?=01?= <x@example.com>"));
+      try {
+        new Message().SetHeader("from","\"a\r\n b\" <x@example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Message().SetHeader("from","\"a\r\n b\" <x@example.com>");
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Message().SetHeader("from","=?utf-8?q?=01?= <x@example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Message().SetHeader("from","=?utf-8?q?=01?= <x@example.com>");
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
         new Message().SetHeader("from","\"a\nb\" <x@example.com>");
         Assert.Fail("Should have failed");
@@ -826,24 +850,24 @@ namespace MailLibTest {
       Assert.AreEqual("example/x",MediaType.Parse("example/x; a=b").TypeAndSubType);
       Assert.AreEqual("example/x",MediaType.Parse("example/x; a=b ").TypeAndSubType);
     }
-    
+
     [Test]
-    public void TestShiftJIS(){
+    public void TestShiftJIS() {
       // Adapted from the public domain Gonk test cases
       byte[] bytes;
       ICharset charset=Charsets.GetCharset("shift_jis");
       bytes = new byte[] { 0x82, 0x58, 0x33, 0x41, 0x61, 0x33, 0x82, 0x60,
-                         0x82, 0x81, 0x33, 0xB1, 0xAF, 0x33, 0x83, 0x41,
-                         0x83, 0x96, 0x33, 0x82, 0xA0, 0x33, 0x93, 0xFA,
-                         0x33, 0x3A, 0x3C, 0x33, 0x81, 0x80, 0x81, 0x8E,
-                         0x33, 0x31, 0x82, 0x51, 0x41, 0x61, 0x82, 0x51,
-                         0x82, 0x60, 0x82, 0x81, 0x82, 0x51, 0xB1, 0xAF,
-                         0x82, 0x51, 0x83, 0x41, 0x83, 0x96, 0x82, 0x51,
-                         0x82, 0xA0, 0x82, 0x51, 0x93, 0xFA, 0x82, 0x51,
-                         0x3A, 0x3C, 0x82, 0x51, 0x81, 0x80, 0x81, 0x8E,
-                         0x82, 0x51 };
+        0x82, 0x81, 0x33, 0xb1, 0xaf, 0x33, 0x83, 0x41,
+        0x83, 0x96, 0x33, 0x82, 0xa0, 0x33, 0x93, 0xfa,
+        0x33, 0x3a, 0x3c, 0x33, 0x81, 0x80, 0x81, 0x8e,
+        0x33, 0x31, 0x82, 0x51, 0x41, 0x61, 0x82, 0x51,
+        0x82, 0x60, 0x82, 0x81, 0x82, 0x51, 0xb1, 0xaf,
+        0x82, 0x51, 0x83, 0x41, 0x83, 0x96, 0x82, 0x51,
+        0x82, 0xa0, 0x82, 0x51, 0x93, 0xfa, 0x82, 0x51,
+        0x3a, 0x3c, 0x82, 0x51, 0x81, 0x80, 0x81, 0x8e,
+        0x82, 0x51 };
       var expected=("\uFF19\u0033\u0041\u0061\u0033\uFF21\uFF41\u0033\uFF71\uFF6F\u0033\u30A2\u30F6\u0033\u3042\u0033\u65E5\u0033\u003A\u003C\u0033\u00F7\u2103\u0033\u0031\uFF12\u0041\u0061\uFF12\uFF21\uFF41\uFF12\uFF71\uFF6F\uFF12\u30A2\u30F6\uFF12\u3042\uFF12\u65E5\uFF12\u003A\u003C\uFF12\u00F7\u2103\uFF12");
-      Assert.AreEqual(expected,charset.GetString(Transform(bytes)));       
+      Assert.AreEqual(expected, charset.GetString(Transform(bytes)));
     }
 
     [Test]
@@ -887,7 +911,7 @@ namespace MailLibTest {
       Assert.AreEqual("\u02d8\u02c7\n\u00221",charset.GetString(Transform(bytes)));
       bytes = new byte[] { 0x1b, 0x24, 0x28, 0x44, 0x22, 0x2f, 0x22, 0x30, 0x1b, 0x28, 0x42, 0x22, 0x31 };
       Assert.AreEqual("\u02d8\u02c7\u00221",charset.GetString(Transform(bytes)));
-      bytes = new byte[] { 0x1b, 0x24, 0x28, 0x44, 0x22, 0x2f, 0x22, 0x0a, 0x22,0x31, 0x23 };
+      bytes = new byte[] { 0x1b, 0x24, 0x28, 0x44, 0x22, 0x2f, 0x22, 0x0a, 0x22, 0x31, 0x23 };
       Assert.AreEqual("\u02d8\ufffd\u00b8\ufffd",charset.GetString(Transform(bytes)));
       // Illegal state
       bytes = new byte[] { 0x1b, 0x24, 0x28, 0x4f, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23 };
@@ -1543,6 +1567,73 @@ namespace MailLibTest {
       Assert.AreEqual("my subject",new Message().SetHeader("comments","subject").SetHeader("subject","my subject").GetHeader("subject"));
     }
 
+    public static string EscapeString(string str) {
+      string hex="0123456789abcdef";
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0;i<str.Length; ++i) {
+        char c = str[i];
+        if (c == 0x09) {
+          sb.Append("\\t");
+        } else if (c == 0x0d) {
+          sb.Append("\\r");
+        } else if (c == 0x0a) {
+          sb.Append("\\n");
+        } else if (c == 0x22) {
+          sb.Append("\\\"");
+        } else if (c == 0x5c) {
+          sb.Append("\\\\");
+        } else if (c<0x20 || c >= 0x7f) {
+          sb.Append("\\u");
+          sb.Append(hex[(c >> 12) & 15]);
+          sb.Append(hex[(c >> 8) & 15]);
+          sb.Append(hex[(c >> 4) & 15]);
+          sb.Append(hex[(c) & 15]);
+        } else {
+          sb.Append(c);
+        }
+      }
+      return sb.ToString();
+    }
+
+    [Test]
+    public void TestEucJP() {
+      byte[] bytes;
+      ICharset charset=Charsets.GetCharset("euc-jp");
+      bytes = new byte[] { 0x8e };
+      Assert.AreEqual("\ufffd",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x8e, 0x21 };
+      Assert.AreEqual("\ufffd!",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x8e, 0x8e, 0xa1 };
+      Assert.AreEqual("\ufffd\uff61",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x8f };
+      Assert.AreEqual("\ufffd",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x8f, 0x21 };
+      Assert.AreEqual("\ufffd!",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x8f, 0xa1 };
+      Assert.AreEqual("\ufffd",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x8f, 0xa1, 0x21 };
+      Assert.AreEqual("\ufffd!",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x90 };
+      Assert.AreEqual("\ufffd",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x90, 0x21 };
+      Assert.AreEqual("\ufffd!",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0xa1 };
+      Assert.AreEqual("\ufffd",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0xa1, 0xa1 };
+      Assert.AreEqual("\u3000",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x90, 0xa1, 0xa1 };
+      Assert.AreEqual("\ufffd\u3000",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0x90, 0xa1, 0xa1, 0xa1 };
+      Assert.AreEqual("\ufffd\u3000\ufffd",charset.GetString(Transform(bytes)));
+      bytes = new byte[] { 0xa1, 0x21 };
+      Assert.AreEqual("\ufffd!",charset.GetString(Transform(bytes)));
+      string result;
+      bytes = new byte[] { 0x15, 0xf2, 0xbf, 0xdd, 0xd7, 0x13, 0xeb, 0xcf, 0x8e, 0xd6, 0x8f, 0xec, 0xe9, 0x8f, 0xd6, 0xe6, 0x8f, 0xd3, 0xa3, 0x8e, 0xd4, 0x66, 0x8f, 0xb9, 0xfc, 0x8e, 0xb0, 0x8f, 0xea, 0xd8, 0x29, 0x8e, 0xca, 0x8e, 0xd4, 0xc9, 0xb5, 0x1e, 0x09, 0x8e, 0xab, 0xc2, 0xc5, 0x8e, 0xa7, 0x8e, 0xb6, 0x3d, 0xe1, 0xd9, 0xb7, 0xd5, 0x7b, 0x05, 0xe6, 0xce, 0x1d, 0x8f, 0xbd, 0xbe, 0xd8, 0xae, 0x8e, 0xc3, 0x8f, 0xc1, 0xda, 0xd5, 0xbb, 0xb2, 0xa2, 0xcc, 0xd4, 0x42, 0x8e, 0xa2, 0xed, 0xd4, 0xc6, 0xe0, 0x8f, 0xe0, 0xd5, 0x8e, 0xd8, 0xb0, 0xc8, 0x8f, 0xa2, 0xb8, 0xb9, 0xf1, 0x8e, 0xb0, 0xd9, 0xc0, 0x13 };
+      result = "\u0015\u9ba8\u6bbc\u0013\u8a85\uff96\u9ea8\u81f2\u7c67\uff94f\u5aba\uff70\u9b8a)\uff8a\uff94\u8b2c\u001e\u0009\uff6b\u59a5\uff67\uff76=\u75ca\u834a"+
+      "{\u0005\u8004\u001d\u5fd1\u60bd\uff83\u6595\u5a9a\u65fa\u731bB\uff62\u8f33\u5948\u8ec1\uff98\u978d\u0384\u56fd\uff70\u62c8\u0013";
+      Assert.AreEqual(result, (charset.GetString(Transform(bytes))));
+    }
+
     [Test]
     public void TestNamedAddress() {
       Assert.AreEqual("\"Me \" <me@example.com>",new NamedAddress("Me ","me@example.com").ToString());
@@ -1734,6 +1825,71 @@ namespace MailLibTest {
       Assert.IsFalse(new NamedAddress("x@example.com").IsGroup);
       Assert.AreEqual("x@example.com",new NamedAddress("x@example.com").Name);
       Assert.AreEqual("x@example.com",new NamedAddress("x@example.com").Address.ToString());
+      Assert.AreEqual(
+        "\"(lo cal)\"@example.com",
+        new Address("\"(lo cal)\"@example.com").ToString());
+      Assert.AreEqual(
+        "local",
+        new Address("local@example.com").LocalPart);
+      Assert.AreEqual(
+        "example.com",
+        new Address("local@example.com").Domain);
+      try {
+        new Address(null,"example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Address("local",null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Address(Repeat("local",200),"example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Address("local=domain.example");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Address("local@");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Address(Repeat("local",200)+"@example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Address("lo,cal@example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
     }
 
     [Test]
@@ -1837,6 +1993,7 @@ namespace MailLibTest {
     [Test]
     public void TestUtf7() {
       TestUtf7One("\\","\ufffd");
+      TestUtf7One("~","\ufffd");
       TestUtf7One("\u0001","\ufffd");
       TestUtf7One("\u007f","\ufffd");
       TestUtf7One("\r\n\t '!\"#'(),$-%@[]^&=<>;*_`{}./:|?","\r\n\t '!\"#'(),$-%@[]^&=<>;*_`{}./:|?");

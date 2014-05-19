@@ -151,7 +151,7 @@ import java.util.*;
     }
 
     public static boolean IsNormalized(List<Integer> charList, Normalization form) {
-      int lastNonStable = -1;
+      int nonStableStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       if (charList == null) {
         throw new IllegalArgumentException("chars");
@@ -171,20 +171,20 @@ import java.util.*;
         } else {
           isStable = Normalizer.IsStableCodePoint(c, form);
         }
-        if (lastNonStable < 0 && !isStable) {
+        if (nonStableStart < 0 && !isStable) {
           // First non-stable code point in a row
-          lastNonStable = i;
-        } else if (lastNonStable >= 0 && isStable) {
+          nonStableStart = i;
+        } else if (nonStableStart >= 0 && isStable) {
           // We have at least one non-stable code point,
           // normalize these code points.
-          if (!NormalizeAndCheck(charList, lastNonStable, i - lastNonStable, form)) {
+          if (!NormalizeAndCheck(charList, nonStableStart, i - nonStableStart, form)) {
             return false;
           }
-          lastNonStable = -1;
+          nonStableStart = -1;
         }
       }
-      if (lastNonStable >= 0) {
-        if (!NormalizeAndCheck(charList, lastNonStable, charList.size() - lastNonStable, form)) {
+      if (nonStableStart >= 0) {
+        if (!NormalizeAndCheck(charList, nonStableStart, charList.size() - nonStableStart, form)) {
           return false;
         }
       }

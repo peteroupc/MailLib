@@ -294,6 +294,7 @@ private Idna() {
       if (str.length() >= 4 && (str.charAt(0) == 'x' || str.charAt(0) == 'X') && (str.charAt(0) == 'n' || str.charAt(0) == 'N') && str.charAt(2) == '-' && str.charAt(3) == '-') {
         maybeALabel = true;
       }
+      boolean allLDH = true;
       for (int i = 0; i < str.length(); ++i) {
         if ((str.charAt(i) >= 'a' && str.charAt(i) <= 'z') ||
             (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z') ||
@@ -302,6 +303,7 @@ private Idna() {
           continue;
         } else if (str.charAt(i) >= 0x80) {
           // Non-ASCII character
+          allLDH = false;
           continue;
         } else {
           return false;
@@ -325,6 +327,13 @@ private Idna() {
         // at this point, so a simple binary comparison is enough
         return astr.equals(str);
       } else {
+        if (allLDH) {
+          if (str.charAt(0) != '-' && str.charAt(str.length() - 1) != '-' && !(str.charAt(0) >= '0' && str.charAt(0) <= '9')) {
+            // Only LDH characters, doesn't start with hyphen or digit,
+            // and doesn't end with hyphen
+            return true;
+          }
+        }
         return IsValidULabel(str, lookupRules, bidiRule);
       }
     }
