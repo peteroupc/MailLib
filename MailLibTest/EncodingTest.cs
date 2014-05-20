@@ -842,6 +842,7 @@ namespace MailLibTest {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
+      Assert.Throws(typeof(ArgumentNullException),()=>new Message().SetBody(null));
       Assert.IsTrue(MediaType.Parse("text/plain").IsText);
       Assert.IsTrue(MediaType.Parse("multipart/alternative").IsMultipart);
       Assert.AreEqual("example/x",MediaType.Parse("example/x ").TypeAndSubType);

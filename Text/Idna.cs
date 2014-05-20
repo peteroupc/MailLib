@@ -325,6 +325,10 @@ namespace PeterO.Text {
         return astr.Equals(str);
       } else {
         if (allLDH) {
+          if (str.Length >= 4 && str[2] == '-' && str[3] == '-') {
+           // Contains a hyphen at the third and fourth (one-based) character positions
+            return false;
+          }
           if (str[0] != '-' && str[str.Length - 1] != '-' && !(str[0] >= '0' && str[0] <= '9')) {
             // Only LDH characters, doesn't start with hyphen or digit,
             // and doesn't end with hyphen
@@ -343,10 +347,8 @@ namespace PeterO.Text {
         // Too long
         return false;
       }
-      if (!Normalizer.IsNormalized(str, Normalization.NFC)) {
-        return false;
-      }
       if (str.Length >= 4 && str[2] == '-' && str[3] == '-') {
+        // Contains a hyphen at the third and fourth (one-based) character positions
         return false;
       }
       if (!lookupRules) {
@@ -357,6 +359,9 @@ namespace PeterO.Text {
         if (str[0] == '-' || str[str.Length - 1] == '-') {
           return false;
         }
+      }
+      if (!Normalizer.IsNormalized(str, Normalization.NFC)) {
+        return false;
       }
       int ch;
       bool first = true;

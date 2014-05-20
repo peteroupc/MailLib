@@ -48,6 +48,10 @@ namespace MailLibTest {
       Assert.IsTrue(Idna.IsValidDomainName("el\u00b7la",false));
       Assert.IsFalse(Idna.IsValidDomainName("-domain",false));
       Assert.IsFalse(Idna.IsValidDomainName("domain-",false));
+      Assert.IsTrue(Idna.IsValidDomainName("xn--e-ufa",false));
+      Assert.IsTrue(Idna.IsValidDomainName("xn--e-ufa.example",false));
+      Assert.IsFalse(Idna.IsValidDomainName("ab--e-ufa",false));
+      Assert.IsFalse(Idna.IsValidDomainName("ab--e-ufa.example",false));
       Assert.IsFalse(Idna.IsValidDomainName("xn--",false));
       Assert.IsFalse(Idna.IsValidDomainName("xn--.example",false));
       Assert.IsFalse(Idna.IsValidDomainName("example.xn--",false));

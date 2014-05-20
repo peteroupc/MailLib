@@ -112,13 +112,24 @@ namespace PeterO.Mail {
 
     private byte[] body;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets the byte array for this message's body.</summary>
     /// <returns>A byte array.</returns>
     public byte[] GetBody() {
       return this.body;
     }
 
+    /// <summary>
+    /// Sets the body of this message to the given byte array.
+    /// </summary>
+    /// <param name="bytes">A byte array.</param>
+    /// <exception cref="ArgumentNullException">"Body" is null.</exception>
+    public void SetBody(byte[] bytes) {
+      if(bytes == null) {
+        throw new ArgumentNullException("bytes");
+      }
+      this.body = bytes;
+    }
+    
     private static byte[] GetUtf8Bytes(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -319,6 +330,7 @@ namespace PeterO.Mail {
       }
       this.headers = new List<string>();
       this.parts = new List<Message>();
+      this.body = new byte[0];
       this.ReadMessage(new WrappedStream(stream));
     }
 
@@ -327,6 +339,12 @@ namespace PeterO.Mail {
       this.parts = new List<Message>();
       this.body = new byte[0];
       this.contentType = MediaType.TextPlainUtf8;
+      this.headers.Add("message-id");
+      this.headers.Add(this.GenerateMessageID());
+      this.headers.Add("from");
+      this.headers.Add("me@from-address.invalid");
+      this.headers.Add("mime-version");
+      this.headers.Add("1.0");
     }
 
     private static Random msgidRandom = new Random();
