@@ -842,7 +842,22 @@ namespace MailLibTest {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      Assert.Throws(typeof(ArgumentNullException),()=>new Message().SetBody(null));
+      try {
+ new Message().GetHeader(null);
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException) {
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new Message().SetBody(null);
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException) {
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
       Assert.IsTrue(MediaType.Parse("text/plain").IsText);
       Assert.IsTrue(MediaType.Parse("multipart/alternative").IsMultipart);
       Assert.AreEqual("example/x",MediaType.Parse("example/x ").TypeAndSubType);
@@ -1594,6 +1609,18 @@ namespace MailLibTest {
         }
       }
       return sb.ToString();
+    }
+
+    [Test]
+    public void TestContentHeadersOnlyInBodyParts() {
+      Message msg=new Message().SetTextAndHtml("Hello","Hello");
+      msg.SetHeader("x-test","test");
+      msg.Parts[0].SetHeader("x-test","test");
+      Assert.AreEqual("test",msg.GetHeader("x-test"));
+      Assert.AreEqual("test",msg.Parts[0].GetHeader("x-test"));
+      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(msg.Generate(), true)));
+      Assert.AreEqual("test",msg.GetHeader("x-test"));
+      Assert.AreEqual(null,msg.Parts[0].GetHeader("x-test"));
     }
 
     [Test]

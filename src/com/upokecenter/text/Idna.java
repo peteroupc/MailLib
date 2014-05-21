@@ -328,6 +328,10 @@ private Idna() {
         return astr.equals(str);
       } else {
         if (allLDH) {
+          if (str.length() >= 4 && str.charAt(2) == '-' && str.charAt(3) == '-') {
+           // Contains a hyphen at the third and fourth (one-based) character positions
+            return false;
+          }
           if (str.charAt(0) != '-' && str.charAt(str.length() - 1) != '-' && !(str.charAt(0) >= '0' && str.charAt(0) <= '9')) {
             // Only LDH characters, doesn't start with hyphen or digit,
             // and doesn't end with hyphen
@@ -346,10 +350,8 @@ private Idna() {
         // Too long
         return false;
       }
-      if (!Normalizer.IsNormalized(str, Normalization.NFC)) {
-        return false;
-      }
       if (str.length() >= 4 && str.charAt(2) == '-' && str.charAt(3) == '-') {
+        // Contains a hyphen at the third and fourth (one-based) character positions
         return false;
       }
       if (!lookupRules) {
@@ -360,6 +362,9 @@ private Idna() {
         if (str.charAt(0) == '-' || str.charAt(str.length() - 1) == '-') {
           return false;
         }
+      }
+      if (!Normalizer.IsNormalized(str, Normalization.NFC)) {
+        return false;
       }
       int ch;
       boolean first = true;

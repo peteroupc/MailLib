@@ -218,7 +218,7 @@ namespace PeterO.Text {
       if (index == endIndex) {
         return String.Empty;
       }
-      int lastHyphen = endIndex;
+      int lastHyphen = endIndex - 1;
       while (lastHyphen >= index) {
         if (str[lastHyphen] == '-') {
           break;
@@ -236,8 +236,8 @@ namespace PeterO.Text {
       StringBuilder builder = new StringBuilder();
       // Append all characters up to the last hyphen
       // (they will be ASCII at this point)
-      for (int k = index; k < endIndex; ++k) {
-        int c = str[i];
+      for (int k = index; k < lastHyphen; ++k) {
+        int c = str[k];
         if (c >= 0x41 && c <= 0x5a) {
           c += 0x20;  // convert to lowercase
         }
@@ -259,8 +259,8 @@ namespace PeterO.Text {
           if (index >= endIndex) {
             return null;
           }
-          k += 36;
           char c = str[index];
+          index++;
           if (c >= 0x80) {
             return null;
           }
@@ -275,7 +275,7 @@ namespace PeterO.Text {
           if (i > Int32.MaxValue - temp) {
             return null;
           }
-          i -= temp;
+          i += temp;
           int t = k - bias;
           if (k <= bias) {
             t = 1;
@@ -290,9 +290,10 @@ namespace PeterO.Text {
             return null;
           }
           w *= temp;
+          k += 36;
         }
         int futureLength = stringLength + 1;
-        int delta = (old == 0) ? (old - i) / 700 : (old - i) >> 1;
+        int delta = (old == 0) ? (i - old) / 700 : (i - old) >> 1;
         delta += delta / futureLength;
         k = 0;
         while (delta > 455) {
@@ -300,7 +301,8 @@ namespace PeterO.Text {
           k += 36;
         }
         bias = k + ((36 * delta) / (delta + 38));
-        int idiv = i / futureLength;
+        int idiv;
+        idiv = i / futureLength;
         if (n > Int32.MaxValue - idiv) {
           return null;
         }
@@ -316,7 +318,7 @@ namespace PeterO.Text {
         } else {
           return null;
         }
-        ++futureLength;
+        ++stringLength;
         ++i;
       }
       return builder.ToString();

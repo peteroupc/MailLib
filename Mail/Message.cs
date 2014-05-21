@@ -118,18 +118,16 @@ namespace PeterO.Mail {
       return this.body;
     }
 
-    /// <summary>
-    /// Sets the body of this message to the given byte array.
-    /// </summary>
-    /// <param name="bytes">A byte array.</param>
-    /// <exception cref="ArgumentNullException">"Body" is null.</exception>
+    /// <summary>Sets the body of this message to the given byte array.</summary>
+    /// <param name='bytes'>A byte array.</param>
+    /// <exception cref='System.ArgumentNullException'>Bytes is null.</exception>
     public void SetBody(byte[] bytes) {
-      if(bytes == null) {
+      if (bytes == null) {
         throw new ArgumentNullException("bytes");
       }
       this.body = bytes;
     }
-    
+
     private static byte[] GetUtf8Bytes(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -617,10 +615,14 @@ namespace PeterO.Mail {
 
     /// <summary>Gets the first instance of the header field with the specified
     /// name, comparing the field name in an ASCII case-insensitive manner.</summary>
-    /// <param name='name'>A string object.</param>
+    /// <param name='name'>The name of a header field.</param>
     /// <returns>The value of the first header field with that name, or null
     /// if there is none.</returns>
+    /// <exception cref='System.ArgumentNullException'>Name is null.</exception>
     public string GetHeader(string name) {
+      if (name == null) {
+        throw new ArgumentNullException("name");
+      }
       name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.Count; i += 2) {
         if (this.headers[i].Equals(name)) {
@@ -1206,9 +1208,6 @@ namespace PeterO.Mail {
       for (int i = 0; i < this.headers.Count; i += 2) {
         string name = this.headers[i];
         string value = this.headers[i + 1];
-        if (name.Equals("mime-version")) {
-          haveMimeVersion = true;
-        }
         if (name.Equals("content-type")) {
           if (haveContentType) {
             // Already outputted, continue
@@ -1230,6 +1229,14 @@ namespace PeterO.Mail {
           }
           haveContentEncoding = true;
           value = encodingString;
+        }
+        if (depth > 0 && (name.Length < 8 || !name.Substring(0, 8).Equals("content-"))) {
+          // don't generate header fields not starting with "Content-"
+          // in body parts
+          continue;
+        }
+        if (name.Equals("mime-version")) {
+          haveMimeVersion = true;
         } else if (name.Equals("from")) {
           if (haveFrom) {
             // Already outputted, continue

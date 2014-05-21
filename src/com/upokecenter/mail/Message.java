@@ -107,11 +107,23 @@ import com.upokecenter.util.*;
     private byte[] body;
 
     /**
-     * Gets a value not documented yet.
+     * Gets the byte array for this message's body.
      * @return A byte array.
      */
     public byte[] GetBody() {
       return this.body;
+    }
+
+    /**
+     * Sets the body of this message to the given byte array.
+     * @param bytes A byte array.
+     * @throws java.lang.NullPointerException "Body" is null.
+     */
+    public void SetBody(byte[] bytes) {
+      if (bytes == null) {
+        throw new NullPointerException("bytes");
+      }
+      this.body = bytes;
     }
 
     private static byte[] GetUtf8Bytes(String str) {
@@ -330,6 +342,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       }
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
+      this.body = new byte[0];
       this.ReadMessage(new WrappedStream(stream));
     }
 
@@ -338,6 +351,12 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
       this.contentType = MediaType.TextPlainUtf8;
+      this.headers.add("message-id");
+      this.headers.add(this.GenerateMessageID());
+      this.headers.add("from");
+      this.headers.add("me@from-address.invalid");
+      this.headers.add("mime-version");
+      this.headers.add("1.0");
     }
 
     private static Random msgidRandom = new Random();
@@ -605,11 +624,15 @@ public void setContentDisposition(ContentDisposition value) {
     /**
      * Gets the first instance of the header field with the specified name,
      * comparing the field name in an ASCII case-insensitive manner.
-     * @param name A string object.
+     * @param name The name of a header field.
      * @return The value of the first header field with that name, or null
      * if there is none.
+     * @throws java.lang.NullPointerException Name is null.
      */
     public String GetHeader(String name) {
+      if (name == null) {
+        throw new NullPointerException("name");
+      }
       name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.size(); i += 2) {
         if (this.headers.get(i).equals(name)) {
@@ -1199,9 +1222,6 @@ public void setContentDisposition(ContentDisposition value) {
       for (int i = 0; i < this.headers.size(); i += 2) {
         String name = this.headers.get(i);
         String value = this.headers.get(i + 1);
-        if (name.equals("mime-version")) {
-          haveMimeVersion = true;
-        }
         if (name.equals("content-type")) {
           if (haveContentType) {
             // Already outputted, continue
@@ -1223,6 +1243,14 @@ public void setContentDisposition(ContentDisposition value) {
           }
           haveContentEncoding = true;
           value = encodingString;
+        }
+        if (depth > 0 && name.length() < 8 && !name.substring(0,8).equals("content-")) {
+          // don't generate header fields not starting with "Content-"
+          // in body parts
+          continue;
+        }
+        if (name.equals("mime-version")) {
+          haveMimeVersion = true;
         } else if (name.equals("from")) {
           if (haveFrom) {
             // Already outputted, continue

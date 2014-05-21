@@ -288,7 +288,7 @@ namespace PeterO.Text {
         return false;
       }
       bool maybeALabel = false;
-      if (str.Length >= 4 && (str[0] == 'x' || str[0] == 'X') && (str[0] == 'n' || str[0] == 'N') && str[2] == '-' && str[3] == '-') {
+      if (str.Length >= 4 && (str[0] == 'x' || str[0] == 'X') && (str[1] == 'n' || str[1] == 'N') && str[2] == '-' && str[3] == '-') {
         maybeALabel = true;
       }
       bool allLDH = true;
