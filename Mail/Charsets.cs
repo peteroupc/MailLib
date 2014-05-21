@@ -268,6 +268,10 @@ namespace PeterO.Mail {
       if (charsetAliases.ContainsKey(name)) {
         return charsetAliases[name];
       }
+      if (name.Equals("iso-2022-jp-2")){
+        // NOTE: Treat as the same as iso-2022-jp
+        return "iso-2022-jp";
+      }
       if (name.Equals("utf-7") || name.Equals("unicode-1-1-utf-7")) {
         return "utf-7";
       }

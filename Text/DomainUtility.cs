@@ -260,7 +260,7 @@ namespace PeterO.Text {
             return null;
           }
           char c = str[index];
-          index++;
+          ++index;
           if (c >= 0x80) {
             return null;
           }

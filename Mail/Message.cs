@@ -1153,6 +1153,7 @@ namespace PeterO.Mail {
       bool haveTo = false;
       byte[] bodyToWrite = this.body;
       bool haveCc = false;
+      bool haveReplyTo = false;
       bool haveBcc = false;
       MediaTypeBuilder builder = new MediaTypeBuilder(this.ContentType);
       string contentDisp = (this.ContentDisposition == null) ? null :
@@ -1296,8 +1297,21 @@ namespace PeterO.Mail {
               value = this.SynthesizeField(name);
             }
           }
+        } else if (name.Equals("reply-to")) {
+          if (haveReplyTo) {
+            // Already outputted, continue
+            continue;
+          }
+          haveBcc = true;
+          if (!this.IsValidAddressingField(name)) {
+            value = GenerateAddressList(ParseAddresses(this.GetMultipleHeaders(name)));
+            if (value.Length == 0) {
+              // No addresses, synthesize a field
+              value = this.SynthesizeField(name);
+            }
+          }
         }
-        // TODO: Reply-To, Sender, Resent-From/-To/-Bcc/-Cc/-Sender
+        // TODO: Sender, Resent-From/-To/-Bcc/-Cc/-Sender
         string rawField = Capitalize(name) + ":" +
           (StartsWithWhitespace(value) ? String.Empty : " ") + value;
         if (CanOutputRaw(rawField)) {

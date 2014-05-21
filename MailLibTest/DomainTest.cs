@@ -43,9 +43,11 @@ namespace MailLibTest {
       Assert.AreEqual(tmp, DomainUtility.PunycodeEncode(tmp));
       // Test other aspects of Punycode
       Assert.AreEqual(
-        "xn--e-ufa",DomainUtility.PunycodeEncode("e\u00e1"));
+        "xn--e-ufa",
+        DomainUtility.PunycodeEncode("e\u00e1"));
       Assert.AreEqual(
-        "e\u00e1",DomainUtility.PunycodeDecode("xn--e-ufa",4,9));
+        "e\u00e1",
+        DomainUtility.PunycodeDecode("xn--e-ufa",4,9));
     }
 
     [Test]

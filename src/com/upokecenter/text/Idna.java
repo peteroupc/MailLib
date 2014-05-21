@@ -291,7 +291,7 @@ private Idna() {
         return false;
       }
       boolean maybeALabel = false;
-      if (str.length() >= 4 && (str.charAt(0) == 'x' || str.charAt(0) == 'X') && (str.charAt(0) == 'n' || str.charAt(0) == 'N') && str.charAt(2) == '-' && str.charAt(3) == '-') {
+      if (str.length() >= 4 && (str.charAt(0) == 'x' || str.charAt(0) == 'X') && (str.charAt(1) == 'n' || str.charAt(1) == 'N') && str.charAt(2) == '-' && str.charAt(3) == '-') {
         maybeALabel = true;
       }
       boolean allLDH = true;

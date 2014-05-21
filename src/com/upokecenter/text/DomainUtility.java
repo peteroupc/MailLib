@@ -221,7 +221,7 @@ private DomainUtility() {
       if (index == endIndex) {
         return "";
       }
-      int lastHyphen = endIndex;
+      int lastHyphen = endIndex - 1;
       while (lastHyphen >= index) {
         if (str.charAt(lastHyphen) == '-') {
           break;
@@ -239,8 +239,8 @@ private DomainUtility() {
       StringBuilder builder = new StringBuilder();
       // Append all characters up to the last hyphen
       // (they will be ASCII at this point)
-      for (int k = index; k < endIndex; ++k) {
-        int c = str.charAt(i);
+      for (int k = index; k < lastHyphen; ++k) {
+        int c = str.charAt(k);
         if (c >= 0x41 && c <= 0x5a) {
           c += 0x20;  // convert to lowercase
         }
@@ -262,8 +262,8 @@ private DomainUtility() {
           if (index >= endIndex) {
             return null;
           }
-          k += 36;
           char c = str.charAt(index);
+          ++index;
           if (c >= 0x80) {
             return null;
           }
@@ -278,7 +278,7 @@ private DomainUtility() {
           if (i > Integer.MAX_VALUE - temp) {
             return null;
           }
-          i -= temp;
+          i += temp;
           int t = k - bias;
           if (k <= bias) {
             t = 1;
@@ -293,9 +293,10 @@ private DomainUtility() {
             return null;
           }
           w *= temp;
+          k += 36;
         }
         int futureLength = stringLength + 1;
-        int delta = (old == 0) ? (old - i) / 700 : (old - i) >> 1;
+        int delta = (old == 0) ? (i - old) / 700 : (i - old) >> 1;
         delta += delta / futureLength;
         k = 0;
         while (delta > 455) {
@@ -303,7 +304,8 @@ private DomainUtility() {
           k += 36;
         }
         bias = k + ((36 * delta) / (delta + 38));
-        int idiv = i / futureLength;
+        int idiv;
+        idiv = i / futureLength;
         if (n > Integer.MAX_VALUE - idiv) {
           return null;
         }
@@ -319,7 +321,7 @@ private DomainUtility() {
         } else {
           return null;
         }
-        ++futureLength;
+        ++stringLength;
         ++i;
       }
       return builder.toString();

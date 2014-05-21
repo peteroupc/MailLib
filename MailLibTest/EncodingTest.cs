@@ -843,21 +843,21 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
- new Message().GetHeader(null);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        new Message().GetHeader(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- new Message().SetBody(null);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        new Message().SetBody(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       Assert.IsTrue(MediaType.Parse("text/plain").IsText);
       Assert.IsTrue(MediaType.Parse("multipart/alternative").IsMultipart);
       Assert.AreEqual("example/x",MediaType.Parse("example/x ").TypeAndSubType);
@@ -1658,7 +1658,7 @@ throw new InvalidOperationException(String.Empty, ex);
       string result;
       bytes = new byte[] { 0x15, 0xf2, 0xbf, 0xdd, 0xd7, 0x13, 0xeb, 0xcf, 0x8e, 0xd6, 0x8f, 0xec, 0xe9, 0x8f, 0xd6, 0xe6, 0x8f, 0xd3, 0xa3, 0x8e, 0xd4, 0x66, 0x8f, 0xb9, 0xfc, 0x8e, 0xb0, 0x8f, 0xea, 0xd8, 0x29, 0x8e, 0xca, 0x8e, 0xd4, 0xc9, 0xb5, 0x1e, 0x09, 0x8e, 0xab, 0xc2, 0xc5, 0x8e, 0xa7, 0x8e, 0xb6, 0x3d, 0xe1, 0xd9, 0xb7, 0xd5, 0x7b, 0x05, 0xe6, 0xce, 0x1d, 0x8f, 0xbd, 0xbe, 0xd8, 0xae, 0x8e, 0xc3, 0x8f, 0xc1, 0xda, 0xd5, 0xbb, 0xb2, 0xa2, 0xcc, 0xd4, 0x42, 0x8e, 0xa2, 0xed, 0xd4, 0xc6, 0xe0, 0x8f, 0xe0, 0xd5, 0x8e, 0xd8, 0xb0, 0xc8, 0x8f, 0xa2, 0xb8, 0xb9, 0xf1, 0x8e, 0xb0, 0xd9, 0xc0, 0x13 };
       result = "\u0015\u9ba8\u6bbc\u0013\u8a85\uff96\u9ea8\u81f2\u7c67\uff94f\u5aba\uff70\u9b8a)\uff8a\uff94\u8b2c\u001e\u0009\uff6b\u59a5\uff67\uff76=\u75ca\u834a"+
-      "{\u0005\u8004\u001d\u5fd1\u60bd\uff83\u6595\u5a9a\u65fa\u731bB\uff62\u8f33\u5948\u8ec1\uff98\u978d\u0384\u56fd\uff70\u62c8\u0013";
+        "{\u0005\u8004\u001d\u5fd1\u60bd\uff83\u6595\u5a9a\u65fa\u731bB\uff62\u8f33\u5948\u8ec1\uff98\u978d\u0384\u56fd\uff70\u62c8\u0013";
       Assert.AreEqual(result, (charset.GetString(Transform(bytes))));
     }
 

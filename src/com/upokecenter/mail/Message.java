@@ -117,7 +117,7 @@ import com.upokecenter.util.*;
     /**
      * Sets the body of this message to the given byte array.
      * @param bytes A byte array.
-     * @throws java.lang.NullPointerException "Body" is null.
+     * @throws java.lang.NullPointerException Bytes is null.
      */
     public void SetBody(byte[] bytes) {
       if (bytes == null) {
@@ -1244,7 +1244,7 @@ public void setContentDisposition(ContentDisposition value) {
           haveContentEncoding = true;
           value = encodingString;
         }
-        if (depth > 0 && name.length() < 8 && !name.substring(0,8).equals("content-")) {
+        if (depth > 0 && (name.length() < 8 || !name.substring(0,8).equals("content-"))) {
           // don't generate header fields not starting with "Content-"
           // in body parts
           continue;

@@ -94,6 +94,7 @@ namespace PeterO.Mail {
           // Get each relevant token sorted by starting index
           IList<int[]> tokens = tokener.GetTokens();
           int groupIndex = 0;
+          // TODO: Received field downgrading
           foreach (int[] token in tokens) {
             if (token[1] < lastIndex) {
               continue;
