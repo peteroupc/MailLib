@@ -260,10 +260,8 @@ namespace PeterO.Mail {
         // Short enough that no continuations
         // are needed
         length -= 2;
-        sb.Append("\r\n ");
         sb.Append(name + "*=utf-8''");
       } else {
-        sb.Append("\r\n ");
         sb.Append(name + "*0*=utf-8''");
       }
       bool first = true;
@@ -397,6 +395,10 @@ namespace PeterO.Mail {
     private static bool AppendSimpleParamValue(string name, string str, StringBuilder sb) {
       sb.Append(name);
       sb.Append('=');
+      if (str.Length == 0){
+        sb.Append("\"\"");
+        return true;
+      }
       bool simple = true;
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
@@ -445,12 +447,12 @@ namespace PeterO.Mail {
         if (!AppendSimpleParamValue(name, value, tmp)) {
           tmp.Length = 0;
           AppendComplexParamValue(name, value, tmp);
-          if ((sb.Length - lineIndex) + tmp.Length > (lineIndex == 0 ? 75 : 76)) {
+          if ((sb.Length - lineIndex) + tmp.Length > (lineIndex == 0 ? 76 : 75)) {
             sb.Append("\r\n ");
           }
           sb.Append(tmp);
         } else {
-          if ((sb.Length - lineIndex) + tmp.Length > (lineIndex == 0 ? 75 : 76)) {
+          if ((sb.Length - lineIndex) + tmp.Length > (lineIndex == 0 ? 76 : 75)) {
             sb.Append("\r\n ");
           }
           sb.Append(tmp);

@@ -79,19 +79,22 @@ namespace PeterO.Mail {
       int wordStart = 0;
       for (int j = 0; j < str.Length; ++j) {
         int c = str[j];
-        if (c == 0x20 || c == 0x09) {
+        if (c == 0x20 || c == 0x09 || (c == 0x0d && j + 1 < str.Length && str[j + 1] == 0x0a)) {
           int wordEnd = j;
           if (wordStart != wordEnd) {
             this.AppendWord(str.Substring(wordStart, wordEnd - wordStart));
           }
           while (j < str.Length) {
-            if (str[j] == 0x20 || str[j] == 0x09) {
+            if (c == 0x0d && j + 1 < str.Length && str[j + 1] == 0x0a) {
+              j += 2;
+            } else if (str[j] == 0x20 || str[j] == 0x09) {
               ++j;
             } else {
               break;
             }
           }
           wordStart = j;
+          // TODO: Don't use substring to extract spaces
           this.AppendSpaces(str.Substring(wordEnd, wordStart - wordEnd));
           --j;
         }

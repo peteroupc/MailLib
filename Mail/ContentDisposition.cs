@@ -201,7 +201,7 @@ namespace PeterO.Mail {
           // Replace tab with space
           builder.Append(' ');
         } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
-                   c == ':' || c == '<' || c == '>' || c == '"' || (c >= 0x7f && c<=0x9F)) {
+                   c == ':' || c == '<' || c == '>' || c == '"' || (c >= 0x7f && c <= 0x9F)) {
           // Unsuitable character for a filename (one of the characters reserved by Windows,
           // backslash, forward slash, ASCII controls, and C1 controls).
           builder.Append('_');

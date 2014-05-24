@@ -205,8 +205,9 @@ import com.upokecenter.text.*;
           // Replace tab with space
           builder.append(' ');
         } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
-                   c == ':' || c == '<' || c == '>' || c == '"' || c == 0x7f) {
-          // Unsuitable character for a filename
+                   c == ':' || c == '<' || c == '>' || c == '"' || (c >= 0x7f && c <= 0x9F)) {
+          // Unsuitable character for a filename (one of the characters reserved by Windows,
+          // backslash, forward slash, ASCII controls, and C1 controls).
           builder.append('_');
         } else {
           if (builder.length() < 249 || c < 0x10000) {

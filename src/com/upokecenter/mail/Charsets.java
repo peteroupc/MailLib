@@ -270,6 +270,10 @@ private Charsets() {
       if (charsetAliases.containsKey(name)) {
         return charsetAliases.get(name);
       }
+      if (name.equals("iso-2022-jp-2")) {
+        // NOTE: Treat as the same as iso-2022-jp
+        return "iso-2022-jp";
+      }
       if (name.equals("utf-7") || name.equals("unicode-1-1-utf-7")) {
         return "utf-7";
       }

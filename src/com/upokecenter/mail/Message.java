@@ -41,11 +41,11 @@ import com.upokecenter.util.*;
      * is treated as 8bit instead.</li> <li>In text/html message bodies,
      * if the transfer encoding is absent or ((declared instanceof 7bit)
      * ? (7bit)declared : null), and the charset is declared to be <code>ascii</code>
-     * , <code>us-ascii</code> , "windows-1252", or "iso-8859-*" (all
-     * single byte encodings), the transfer encoding is treated as 8bit
-     * instead.</li> <li>If the first line of the message starts with the
-     * word "From" followed by a space, it is skipped.</li> <li>The name
-     * <code>ascii</code> is treated as a synonym for <code>us-ascii</code>
+     * , <code>us-ascii</code> , "windows-1252", "windows-1251", or
+     * "iso-8859-*" (all single byte encodings), the transfer encoding
+     * is treated as 8bit instead.</li> <li>If the first line of the message
+     * starts with the word "From" followed by a space, it is skipped.</li>
+     * <li>The name <code>ascii</code> is treated as a synonym for <code>us-ascii</code>
      * , despite being a reserved name under RFC 2046. The name <code>cp1252</code>
      * is treated as a synonym for <code>windows-1252</code> , even though
      * it's not an IANA registered alias.</li> <li>If a sequence of encoded
@@ -575,6 +575,7 @@ public void setContentDisposition(ContentDisposition value) {
         } else if (this.contentType.getTypeAndSubType().equals("text/html")) {
           if (charset.equals("us-ascii") || charset.equals("ascii") ||
               charset.equals("windows-1252") ||
+              charset.equals("windows-1251") ||
               (charset.length() > 9 && charset.substring(0,9).equals("iso-8859-"))) {
             // DEVIATION: Be a little more liberal with text/html and
             // single-byte charsets or UTF-8
@@ -596,7 +597,9 @@ public void setContentDisposition(ContentDisposition value) {
             // as 7bit instead
             this.transferEncoding = EncodingSevenBit;
           } else {
-            throw new MessageDataException("Invalid content encoding for multipart or message");
+            String exceptText = "Invalid content encoding for multipart or message";
+
+            throw new MessageDataException(exceptText);
           }
         }
       }
@@ -1167,6 +1170,7 @@ public void setContentDisposition(ContentDisposition value) {
       boolean haveTo = false;
       byte[] bodyToWrite = this.body;
       boolean haveCc = false;
+      boolean haveReplyTo = false;
       boolean haveBcc = false;
       MediaTypeBuilder builder = new MediaTypeBuilder(this.getContentType());
       String contentDisp = (this.getContentDisposition() == null) ? null :
@@ -1310,8 +1314,21 @@ public void setContentDisposition(ContentDisposition value) {
               value = this.SynthesizeField(name);
             }
           }
+        } else if (name.equals("reply-to")) {
+          if (haveReplyTo) {
+            // Already outputted, continue
+            continue;
+          }
+          haveBcc = true;
+          if (!this.IsValidAddressingField(name)) {
+            value = GenerateAddressList(ParseAddresses(this.GetMultipleHeaders(name)));
+            if (value.length() == 0) {
+              // No addresses, synthesize a field
+              value = this.SynthesizeField(name);
+            }
+          }
         }
-        // TODO: Reply-To, Sender, Resent-From/-To/-Bcc/-Cc/-Sender
+        // TODO: Sender, Resent-From/-To/-Bcc/-Cc/-Sender
         String rawField = Capitalize(name) + ":" +
           (StartsWithWhitespace(value) ? "" : " ") + value;
         if (CanOutputRaw(rawField)) {

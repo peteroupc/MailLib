@@ -80,19 +80,22 @@ at: http://upokecenter.com/d/
       int wordStart = 0;
       for (int j = 0; j < str.length(); ++j) {
         int c = str.charAt(j);
-        if (c == 0x20 || c == 0x09) {
+        if (c == 0x20 || c == 0x09 || (c == 0x0d && j + 1 < str.length() && str.charAt(j + 1) == 0x0a)) {
           int wordEnd = j;
           if (wordStart != wordEnd) {
             this.AppendWord(str.substring(wordStart,(wordStart)+(wordEnd - wordStart)));
           }
           while (j < str.length()) {
-            if (str.charAt(j) == 0x20 || str.charAt(j) == 0x09) {
+            if (c == 0x0d && j + 1 < str.length() && str.charAt(j + 1) == 0x0a) {
+              j += 2;
+            } else if (str.charAt(j) == 0x20 || str.charAt(j) == 0x09) {
               ++j;
             } else {
               break;
             }
           }
           wordStart = j;
+          // TODO: Don't use substring to extract spaces
           this.AppendSpaces(str.substring(wordEnd,(wordEnd)+(wordStart - wordEnd)));
           --j;
         }

@@ -44,8 +44,8 @@ namespace PeterO.Mail {
     /// <item>In text/html message bodies, if the transfer encoding is absent
     /// or declared as 7bit, and the charset is declared to be <code>ascii</code>
     /// , <code>us-ascii</code>
-    /// , "windows-1252", or "iso-8859-*" (all single byte encodings),
-    /// the transfer encoding is treated as 8bit instead.</item>
+    /// , "windows-1252", "windows-1251", or "iso-8859-*" (all single
+    /// byte encodings), the transfer encoding is treated as 8bit instead.</item>
     /// <item>If the first line of the message starts with the word "From"
     /// followed by a space, it is skipped.</item>
     /// <item>The name <code>ascii</code>
@@ -567,6 +567,7 @@ namespace PeterO.Mail {
         } else if (this.contentType.TypeAndSubType.Equals("text/html")) {
           if (charset.Equals("us-ascii") || charset.Equals("ascii") ||
               charset.Equals("windows-1252") ||
+              charset.Equals("windows-1251") ||
               (charset.Length > 9 && charset.Substring(0, 9).Equals("iso-8859-"))) {
             // DEVIATION: Be a little more liberal with text/html and
             // single-byte charsets or UTF-8
@@ -588,7 +589,11 @@ namespace PeterO.Mail {
             // as 7bit instead
             this.transferEncoding = EncodingSevenBit;
           } else {
-            throw new MessageDataException("Invalid content encoding for multipart or message");
+            string exceptText = "Invalid content encoding for multipart or message";
+            #if DEBUG
+            exceptText += " [type="+this.contentType+"]";
+            #endif
+            throw new MessageDataException(exceptText);
           }
         }
       }

@@ -104,6 +104,7 @@ private HeaderFieldParsers() {
           // Get each relevant token sorted by starting index
           List<int[]> tokens = tokener.GetTokens();
           int groupIndex = 0;
+          // TODO: Received field downgrading
           for(int[] token : tokens) {
             if (token[1] < lastIndex) {
               continue;

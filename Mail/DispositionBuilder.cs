@@ -106,9 +106,6 @@ namespace PeterO.Mail {
       if (value == null) {
         throw new ArgumentNullException("value");
       }
-      if (value.Length == 0) {
-        throw new ArgumentException("value is empty.");
-      }
       if (name == null) {
         throw new ArgumentNullException("name");
       }

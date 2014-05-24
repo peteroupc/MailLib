@@ -556,7 +556,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        MediaType.TextPlainAscii.GetParameter("");
+        MediaType.TextPlainAscii.GetParameter(String.Empty);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
       } catch (Exception ex) {
@@ -615,7 +615,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        builder.SetParameter("","v");
+        builder.SetParameter(String.Empty,"v");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
       } catch (Exception ex) {
@@ -631,7 +631,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        builder.SetTopLevelType("");
+        builder.SetTopLevelType(String.Empty);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
       } catch (Exception ex) {
@@ -708,8 +708,6 @@ namespace MailLibTest {
       }
       try {
         new MediaTypeBuilder().SetParameter("x",String.Empty);
-        Assert.Fail("Should have failed");
-      } catch (ArgumentException) {
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -949,7 +947,7 @@ namespace MailLibTest {
     }
 
     private static string WrapHeader(string s) {
-      return new WordWrapEncoder("").AddString(s).ToString();
+      return new WordWrapEncoder(String.Empty).AddString(s).ToString();
     }
 
     private void TestDowngradeDSNOne(string expected, string actual) {
@@ -1091,7 +1089,13 @@ namespace MailLibTest {
     }
 
     private static void TestMediaTypeRoundTrip(string str) {
-      Assert.AreEqual(str,MediaType.Parse(new MediaTypeBuilder("x","y").SetParameter("z",str).ToString()).GetParameter("z"));
+      var mtstring=new MediaTypeBuilder("x","y").SetParameter("z",str).ToString();
+      Assert.IsFalse(mtstring.Contains("\r\n\r\n"));
+      Assert.IsFalse(mtstring.Contains("\r\n \r\n"));
+      Assert.AreEqual(str,MediaType.Parse(mtstring).GetParameter("z"));
+      var mtmessage = new Message(new MemoryStream(
+        DataUtilities.GetUtf8Bytes("MIME-Version: 1.0\r\nContent-Type: "+mtstring+"\r\n\r\n",true)));
+      Assert.IsTrue(IsGoodAsciiMessageFormat(mtmessage.Generate(), false));
     }
 
     [Test]
@@ -1667,7 +1671,7 @@ namespace MailLibTest {
       Assert.AreEqual("\"Me \" <me@example.com>",new NamedAddress("Me ","me@example.com").ToString());
       Assert.AreEqual("\" Me\" <me@example.com>",new NamedAddress(" Me","me@example.com").ToString());
       try {
-        new NamedAddress("",(string)null);
+        new NamedAddress(String.Empty,(string)null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
       } catch (Exception ex) {
@@ -1675,7 +1679,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new NamedAddress("",(Address)null);
+        new NamedAddress(String.Empty,(Address)null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
       } catch (Exception ex) {
@@ -1731,7 +1735,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new NamedAddress("");
+        new NamedAddress(String.Empty);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
       } catch (Exception ex) {
@@ -1739,7 +1743,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new Address("");
+        new Address(String.Empty);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
       } catch (Exception ex) {
