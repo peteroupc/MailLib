@@ -71,6 +71,27 @@ at: http://upokecenter.com/d/
       this.lastSpaces = "";
     }
 
+    private static String FoldSubstring(String str, int index, int length) {
+      int endIndex = index + length;
+      boolean nonSpace = false;
+      for (int i = index; i < endIndex; ++i) {
+        if (str.charAt(i) != 0x20 && str.charAt(i) != 0x09) {
+          nonSpace = true;
+          break;
+        }
+      }
+      if (!nonSpace) {
+        return str.substring(index,(index)+(length));
+      }
+      StringBuilder sb = new StringBuilder();
+      for (int i = index; i < endIndex; ++i) {
+        if (str.charAt(i) == 0x20 || str.charAt(i) == 0x09) {
+          sb.append(str.charAt(i));
+        }
+      }
+      return sb.toString();
+    }
+
     /**
      * Not documented yet.
      * @param str A string object.
@@ -95,8 +116,9 @@ at: http://upokecenter.com/d/
             }
           }
           wordStart = j;
-          // TODO: Don't use substring to extract spaces
-          this.AppendSpaces(str.substring(wordEnd,(wordEnd)+(wordStart - wordEnd)));
+          // Fold the spaces by eliminating CRLF pairs, then append
+          // what remains
+          this.AppendSpaces(FoldSubstring(str, wordEnd, wordStart - wordEnd));
           --j;
         }
       }

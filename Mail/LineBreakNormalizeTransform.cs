@@ -1,0 +1,62 @@
+/*
+Written by Peter O. in 2014.
+Any copyright is dedicated to the Public Domain.
+http://creativecommons.org/publicdomain/zero/1.0/
+If you like this, you should donate to Peter O.
+at: http://upokecenter.com/d/
+ */
+using System;
+using System.IO;
+
+namespace PeterO.Mail {
+    /// <summary>Normalizes bare CR and bare LF to CRLF.</summary>
+  public class LineBreakNormalizeTransform : ITransform
+  {
+    private Stream stream;
+    private int val;
+    private bool cr;
+    private bool supportBareLF;
+
+    /// <summary>Initializes a new instance of the LineBreakNormalizeTransform
+    /// class. .</summary>
+    /// <param name='stream'>A Stream object.</param>
+    /// <param name='supportBareLF'>Whether to convert bareLF to CRLF.
+    /// If false, the transform will require no look-ahead.</param>
+    public LineBreakNormalizeTransform(Stream stream, bool supportBareLF) {
+      this.stream = stream;
+      this.val = -1;
+      this.supportBareLF = supportBareLF;
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A 32-bit signed integer.</returns>
+public int ReadByte() {
+      try {
+        if (this.val >= 0) {
+          int ret = this.val;
+          this.val = -1;
+          return ret;
+        } else {
+          int ret = this.stream.ReadByte();
+          if (this.cr && ret == 0x0a) {
+            // Ignore LF if CR was just read
+            ret = this.stream.ReadByte();
+          }
+          this.cr = ret == 0x0d;
+          if (ret == 0x0a) {
+            this.val = 0x0a;
+            return 0x0d;
+          } else if (ret == 0x0d && this.supportBareLF) {
+            this.cr = true;
+            this.val = 0x0a;
+            return 0x0d;
+          } else {
+            return ret;
+          }
+        }
+      } catch (IOException ex) {
+        throw new MessageDataException(ex.Message, ex);
+      }
+    }
+  }
+}

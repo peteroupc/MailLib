@@ -395,7 +395,7 @@ namespace PeterO.Mail {
     private static bool AppendSimpleParamValue(string name, string str, StringBuilder sb) {
       sb.Append(name);
       sb.Append('=');
-      if (str.Length == 0){
+      if (str.Length == 0) {
         sb.Append("\"\"");
         return true;
       }

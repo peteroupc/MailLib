@@ -336,6 +336,8 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
 }
       }
 
+    private static boolean useLenientLineBreaks = true;
+
     public Message (InputStream stream) {
       if (stream == null) {
         throw new NullPointerException("stream");
@@ -343,7 +345,13 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
-      this.ReadMessage(new WrappedStream(stream));
+      ITransform transform = new WrappedStream(stream);
+      if (useLenientLineBreaks) {
+        // TODO: Might not be correct if the transfer
+        // encoding turns out to be binary
+        // transform = new LineBreakNormalizeTransform(stream);
+      }
+      this.ReadMessage(transform);
     }
 
     public Message () {
@@ -685,8 +693,16 @@ public void setContentDisposition(ContentDisposition value) {
       int len = s.length();
       int chunkLength = 0;
       boolean maybe = false;
+      boolean firstColon = true;
       for (int i = 0; i < len; ++i) {
         char c = s.charAt(i);
+        if (c == ':' && firstColon) {
+          if (i + 1 >= len || s.charAt(i + 1) != 0x20) {
+            // colon not followed by SPACE (0x20)
+            return false;
+          }
+          firstColon = false;
+        }
         if (c == 0x0d) {
           if (i + 1 >= len || s.charAt(i + 1) != 0x0a) {
             // bare CR
@@ -1865,6 +1881,8 @@ public void setContentDisposition(ContentDisposition value) {
               }
               // This ends the header field
               break;
+            } else if (c < 0) {
+              throw new MessageDataException("Premature end before all headers were read");
             } else {
               sb.append('\r');
               ungetStream.Unget();

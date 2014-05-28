@@ -129,9 +129,6 @@ public void setSubType(String value) {
       if (value == null) {
         throw new NullPointerException("value");
       }
-      if (value.length() == 0) {
-        throw new IllegalArgumentException("value is empty.");
-      }
       if (name == null) {
         throw new NullPointerException("name");
       }

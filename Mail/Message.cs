@@ -322,6 +322,8 @@ namespace PeterO.Mail {
       }
     }
 
+    private static bool useLenientLineBreaks = true;
+
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException("stream");
@@ -329,7 +331,13 @@ namespace PeterO.Mail {
       this.headers = new List<string>();
       this.parts = new List<Message>();
       this.body = new byte[0];
-      this.ReadMessage(new WrappedStream(stream));
+      ITransform transform = new WrappedStream(stream);
+      if (useLenientLineBreaks) {
+        // TODO: Might not be correct if the transfer
+        // encoding turns out to be binary
+        // transform = new LineBreakNormalizeTransform(stream);
+      }
+      this.ReadMessage(transform);
     }
 
     public Message() {
@@ -591,7 +599,7 @@ namespace PeterO.Mail {
           } else {
             string exceptText = "Invalid content encoding for multipart or message";
             #if DEBUG
-            exceptText += " [type="+this.contentType+"]";
+            exceptText += " [type=" + this.contentType + "]";
             #endif
             throw new MessageDataException(exceptText);
           }
@@ -677,8 +685,16 @@ namespace PeterO.Mail {
       int len = s.Length;
       int chunkLength = 0;
       bool maybe = false;
+      bool firstColon = true;
       for (int i = 0; i < len; ++i) {
         char c = s[i];
+        if (c == ':' && firstColon) {
+          if (i + 1 >= len || s[i + 1] != 0x20) {
+            // colon not followed by SPACE (0x20)
+            return false;
+          }
+          firstColon = false;
+        }
         if (c == 0x0d) {
           if (i + 1 >= len || s[i + 1] != 0x0a) {
             // bare CR
@@ -1853,6 +1869,8 @@ namespace PeterO.Mail {
               }
               // This ends the header field
               break;
+            } else if (c < 0) {
+              throw new MessageDataException("Premature end before all headers were read");
             } else {
               sb.Append('\r');
               ungetStream.Unget();

@@ -56,6 +56,7 @@
     <Compile Include="Mail\IStringEncoder.cs" />
     <Compile Include="Mail\JIS0208.cs" />
     <Compile Include="Mail\JIS0212.cs" />
+    <Compile Include="Mail\LineBreakNormalizeTransform.cs" />
     <Compile Include="Mail\MessageDataException.cs" />
     <Compile Include="Mail\HeaderFieldParsers.cs" />
     <Compile Include="Mail\HeaderParser.cs" />

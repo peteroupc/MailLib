@@ -358,6 +358,42 @@ namespace MailLibTest {
     }
 
     [Test]
+    public void TestPrematureEnd() {
+      try {
+        new Message(new MemoryStream(DataUtilities.GetUtf8Bytes("From: me@example.com\r\nDate",true)));
+        Assert.Fail("Should have failed");
+      } catch (MessageDataException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Message(new MemoryStream(DataUtilities.GetUtf8Bytes("From: me@example.com\r\nDate\r",true)));
+        Assert.Fail("Should have failed");
+      } catch (MessageDataException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Message(new MemoryStream(DataUtilities.GetUtf8Bytes("Received: from x",true)));
+        Assert.Fail("Should have failed");
+      } catch (MessageDataException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new Message(new MemoryStream(DataUtilities.GetUtf8Bytes("Received: from x\r",true)));
+        Assert.Fail("Should have failed");
+      } catch (MessageDataException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+    }
+
+    [Test]
     public void TestMakeFilename() {
       Assert.AreEqual(
         "hello.txt",
@@ -365,6 +401,12 @@ namespace MailLibTest {
       Assert.AreEqual(
         "hello.txt",
         ContentDisposition.MakeFilename("=?utf-8?q?___hello.txt___?="));
+      Assert.AreEqual(
+        "hello.txt",
+        ContentDisposition.MakeFilename("  =?utf-8?q?hello.txt?=  "));
+      Assert.AreEqual(
+        "hello.txt",
+        ContentDisposition.MakeFilename("  =?utf-8?q?___hello.txt___?=  "));
       Assert.AreEqual(
         "a\u00e7\u00e3o.txt",
         ContentDisposition.MakeFilename("=?iso-8859-1?q?a=E7=E3o.txt?="));
@@ -1671,7 +1713,7 @@ namespace MailLibTest {
       Assert.AreEqual("\"Me \" <me@example.com>",new NamedAddress("Me ","me@example.com").ToString());
       Assert.AreEqual("\" Me\" <me@example.com>",new NamedAddress(" Me","me@example.com").ToString());
       try {
-        new NamedAddress(String.Empty,(string)null);
+        new NamedAddress(String.Empty, (string)null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
       } catch (Exception ex) {
@@ -1679,7 +1721,7 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        new NamedAddress(String.Empty,(Address)null);
+        new NamedAddress(String.Empty, (Address)null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
       } catch (Exception ex) {

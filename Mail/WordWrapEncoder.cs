@@ -72,6 +72,27 @@ namespace PeterO.Mail {
       this.lastSpaces = String.Empty;
     }
 
+    private static string FoldSubstring(string str, int index, int length) {
+      int endIndex = index + length;
+      bool nonSpace = false;
+      for (int i = index; i < endIndex; ++i) {
+        if (str[i] != 0x20 && str[i] != 0x09) {
+          nonSpace = true;
+          break;
+        }
+      }
+      if (!nonSpace) {
+        return str.Substring(index, length);
+      }
+      StringBuilder sb = new StringBuilder();
+      for (int i = index; i < endIndex; ++i) {
+        if (str[i] == 0x20 || str[i] == 0x09) {
+          sb.Append(str[i]);
+        }
+      }
+      return sb.ToString();
+    }
+
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>A WordWrapEncoder object.</returns>
@@ -94,8 +115,9 @@ namespace PeterO.Mail {
             }
           }
           wordStart = j;
-          // TODO: Don't use substring to extract spaces
-          this.AppendSpaces(str.Substring(wordEnd, wordStart - wordEnd));
+          // Fold the spaces by eliminating CRLF pairs, then append
+          // what remains
+          this.AppendSpaces(FoldSubstring(str, wordEnd, wordStart - wordEnd));
           --j;
         }
       }

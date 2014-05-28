@@ -263,10 +263,8 @@ import com.upokecenter.util.*;
         // Short enough that no continuations
         // are needed
         length -= 2;
-        sb.append("\r\n ");
         sb.append(name + "*=utf-8''");
       } else {
-        sb.append("\r\n ");
         sb.append(name + "*0*=utf-8''");
       }
       boolean first = true;
@@ -400,6 +398,10 @@ import com.upokecenter.util.*;
     private static boolean AppendSimpleParamValue(String name, String str, StringBuilder sb) {
       sb.append(name);
       sb.append('=');
+      if (str.length() == 0) {
+        sb.append("\"\"");
+        return true;
+      }
       boolean simple = true;
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
@@ -448,12 +450,12 @@ import com.upokecenter.util.*;
         if (!AppendSimpleParamValue(name, value, tmp)) {
           tmp.setLength(0);
           AppendComplexParamValue(name, value, tmp);
-          if ((sb.length() - lineIndex) + tmp.length() > (lineIndex == 0 ? 75 : 76)) {
+          if ((sb.length() - lineIndex) + tmp.length() > (lineIndex == 0 ? 76 : 75)) {
             sb.append("\r\n ");
           }
           sb.append(tmp);
         } else {
-          if ((sb.length() - lineIndex) + tmp.length() > (lineIndex == 0 ? 75 : 76)) {
+          if ((sb.length() - lineIndex) + tmp.length() > (lineIndex == 0 ? 76 : 75)) {
             sb.append("\r\n ");
           }
           sb.append(tmp);
