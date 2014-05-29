@@ -37,7 +37,7 @@ namespace PeterO.Mail {
     /// <item>In non-MIME message bodies, in text/plain message bodies,
     /// and in the prologue and epilogue of multipart messages (which will
     /// be ignored), if the transfer encoding is absent or declared as 7bit,
-    /// any 8-bit bytes are replaced with question marks.</item>
+    /// any 8-bit bytes are replaced with the ASCII substitute character (0x1A).</item>
     /// <item>If the transfer encoding is absent or declared as 7bit, and
     /// the charset is declared to be <code>utf-8</code>
     /// , the transfer encoding is treated as 8bit instead.</item>
@@ -2078,7 +2078,7 @@ namespace PeterO.Mail {
       } else if (encoding == EncodingSevenBit) {
         if (useLiberalSevenBit) {
           // DEVIATION: Replace 8-bit bytes and null with the
-          // question mark character for text/plain messages,
+          // ASCII substitute character (0x1A) for text/plain messages,
           // non-MIME messages, and the prologue and epilogue of multipart
           // messages (which will be ignored).
           transform = new LiberalSevenBitTransform(stream);

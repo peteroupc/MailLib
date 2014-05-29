@@ -22,7 +22,9 @@ at: http://upokecenter.com/d/
     public int read() {
       int ret = this.input.read();
       if (ret > 0x80 || ret == 0) {
-        return '?';
+        // Null or outside the ASCII range; replace with
+        // 0x1a, the ASCII SUB (substitute) character
+        return 0x1a;
       }
       return ret;
     }

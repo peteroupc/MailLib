@@ -52,8 +52,9 @@ namespace PeterO.Mail {
           // End of stream
           if (count == 1) {
             // Not supposed to happen;
-            // invalid number of base64 characters
-            return -1;
+            // invalid number of base64 characters, so
+            // return the ASCII substitute character
+            return 0x1A;
           } else if (count == 2) {
             --this.inputIndex;
             value <<= 12;

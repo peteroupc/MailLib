@@ -35,27 +35,28 @@ import com.upokecenter.util.*;
      * bodies, and in the prologue and epilogue of multipart messages (which
      * will be ignored), if the transfer encoding is absent or ((declared
      * instanceof 7bit) ? (7bit)declared : null), any 8-bit bytes are replaced
-     * with question marks.</li> <li>If the transfer encoding is absent
-     * or ((declared instanceof 7bit) ? (7bit)declared : null), and the
-     * charset is declared to be <code>utf-8</code> , the transfer encoding
-     * is treated as 8bit instead.</li> <li>In text/html message bodies,
-     * if the transfer encoding is absent or ((declared instanceof 7bit)
-     * ? (7bit)declared : null), and the charset is declared to be <code>ascii</code>
-     * , <code>us-ascii</code> , "windows-1252", "windows-1251", or
-     * "iso-8859-*" (all single byte encodings), the transfer encoding
-     * is treated as 8bit instead.</li> <li>If the first line of the message
-     * starts with the word "From" followed by a space, it is skipped.</li>
-     * <li>The name <code>ascii</code> is treated as a synonym for <code>us-ascii</code>
-     * , despite being a reserved name under RFC 2046. The name <code>cp1252</code>
-     * is treated as a synonym for <code>windows-1252</code> , even though
-     * it's not an IANA registered alias.</li> <li>If a sequence of encoded
-     * words (RFC 2047) decodes to a string with a CTL character (U + 007F,
-     * or a character less than U + 0020 and not TAB) after being converted
-     * to Unicode, the encoded words are left un-decoded.</li> <li>This
-     * implementation can decode an encoded word that uses ISO-2022-JP
-     * (the only supported encoding that uses code switching) even if the
-     * encoded word's payload ends in a different mode from ASCII mode. (Each
-     * encoded word still starts in ASCII mode, though.)</li> </ul>
+     * with the ASCII substitute character (0x1A).</li> <li>If the transfer
+     * encoding is absent or ((declared instanceof 7bit) ? (7bit)declared
+     * : null), and the charset is declared to be <code>utf-8</code> , the
+     * transfer encoding is treated as 8bit instead.</li> <li>In text/html
+     * message bodies, if the transfer encoding is absent or ((declared
+     * instanceof 7bit) ? (7bit)declared : null), and the charset is declared
+     * to be <code>ascii</code> , <code>us-ascii</code> , "windows-1252",
+     * "windows-1251", or "iso-8859-*" (all single byte encodings), the
+     * transfer encoding is treated as 8bit instead.</li> <li>If the first
+     * line of the message starts with the word "From" followed by a space,
+     * it is skipped.</li> <li>The name <code>ascii</code> is treated
+     * as a synonym for <code>us-ascii</code> , despite being a reserved
+     * name under RFC 2046. The name <code>cp1252</code> is treated as a
+     * synonym for <code>windows-1252</code> , even though it's not an
+     * IANA registered alias.</li> <li>If a sequence of encoded words (RFC
+     * 2047) decodes to a string with a CTL character (U + 007F, or a character
+     * less than U + 0020 and not TAB) after being converted to Unicode, the
+     * encoded words are left un-decoded.</li> <li>This implementation
+     * can decode an encoded word that uses ISO-2022-JP (the only supported
+     * encoding that uses code switching) even if the encoded word's payload
+     * ends in a different mode from ASCII mode. (Each encoded word still
+     * starts in ASCII mode, though.)</li> </ul>
      */
   public final class Message {
     private static final int EncodingSevenBit = 0;
@@ -2075,7 +2076,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       } else if (encoding == EncodingSevenBit) {
         if (useLiberalSevenBit) {
           // DEVIATION: Replace 8-bit bytes and null with the
-          // question mark character for text/plain messages,
+          // ASCII substitute character (0x1A) for text/plain messages,
           // non-MIME messages, and the prologue and epilogue of multipart
           // messages (which will be ignored).
           transform = new LiberalSevenBitTransform(stream);

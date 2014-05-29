@@ -24,7 +24,7 @@ import java.io.*;
      * class. .
      * @param stream A InputStream object.
      * @param supportBareLF Whether to convert bareLF to CRLF. If false,
-     * the transform will require no lookahead.
+     * the transform will require no look-ahead.
      */
     public LineBreakNormalizeTransform (InputStream stream, boolean supportBareLF) {
       this.stream = stream;
