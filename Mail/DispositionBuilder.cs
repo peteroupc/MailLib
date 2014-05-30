@@ -48,7 +48,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets a value indicating whether this is a text media type.</summary>
-    /// <value>Whether this is a text media type.</value>
+    /// <value>True if this is a text media type; otherwise, false..</value>
     public bool IsText {
       get {
         return this.DispositionType.Equals("text");
@@ -57,7 +57,7 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this is a multipart media
     /// type.</summary>
-    /// <value>Whether this is a multipart media type.</value>
+    /// <value>True if this is a multipart media type; otherwise, false..</value>
     public bool IsMultipart {
       get {
         return this.DispositionType.Equals("multipart");

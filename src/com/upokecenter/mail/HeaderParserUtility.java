@@ -154,26 +154,12 @@ private HeaderParserUtility() {
       return builder.toString();
     }
 
-    /**
-     * Not documented yet.
-     * @param str A string object. (2).
-     * @param index A 32-bit signed integer.
-     * @param endIndex A 32-bit signed integer. (2).
-     * @return A string object.
-     */
     public static String ParseLocalPart(String str, int index, int endIndex) {
       // NOTE: Assumes the String matches the production "local-part"
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       return ParseDotWordAfterCFWS(str, index, endIndex);
     }
 
-    /**
-     * Not documented yet.
-     * @param str A string object. (2).
-     * @param index A 32-bit signed integer.
-     * @param endIndex A 32-bit signed integer. (2).
-     * @return A string object.
-     */
     public static String ParseDomain(String str, int index, int endIndex) {
       // NOTE: Assumes the String matches the production "domain"
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterO.Text;
 
 namespace MailLibTest {
-  [TestFixture]
+  [TestClass]
   public class NormalizationTest {
     private static string TrimSpaces(String s) {
       return s.Trim();
@@ -94,11 +94,11 @@ namespace MailLibTest {
       }
     }
 
-    [Test]
+    [TestMethod]
     public void NormTest() {
       string normTestFile="..\\..\\..\\cache\\NormalizationTest.txt";
       if (!File.Exists(normTestFile)) {
-        Assert.Ignore();
+        Assert.Inconclusive();
       }
       bool[] handled = new bool[0x110000];
       using(StreamReader reader = new StreamReader(normTestFile)) {

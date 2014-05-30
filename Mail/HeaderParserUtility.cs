@@ -87,8 +87,8 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Quotes a string according to RFC 5322 rules.</summary>
-    /// <param name='str'>A String object.</param>
     /// <returns>A string object.</returns>
+    /// <param name='str'>A String object.</param>
     public static string QuoteValue(String str) {
       StringBuilder builder = new StringBuilder();
       builder.Append('"');
@@ -152,22 +152,12 @@ namespace PeterO.Mail {
       return builder.ToString();
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object. (2).</param>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
-    /// <returns>A string object.</returns>
     public static string ParseLocalPart(string str, int index, int endIndex) {
       // NOTE: Assumes the string matches the production "local-part"
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       return ParseDotWordAfterCFWS(str, index, endIndex);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object. (2).</param>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
-    /// <returns>A string object.</returns>
     public static string ParseDomain(string str, int index, int endIndex) {
       // NOTE: Assumes the string matches the production "domain"
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);

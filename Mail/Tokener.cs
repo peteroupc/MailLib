@@ -17,8 +17,6 @@ namespace PeterO.Mail {
       return this.tokenStack.Count;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='state'>A 32-bit signed integer.</param>
     public void RestoreState(int state) {
       #if DEBUG
       if (state > this.tokenStack.Count) {
@@ -36,10 +34,6 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='token'>A 32-bit signed integer.</param>
-    /// <param name='startIndex'>A 32-bit signed integer. (2).</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (3).</param>
     public void Commit(int token, int startIndex, int endIndex) {
       // Console.WriteLine("Committing token " + token + ", size now " + (tokenStack.Count+1));
       this.tokenStack.Add(new int[] { token, startIndex, endIndex });

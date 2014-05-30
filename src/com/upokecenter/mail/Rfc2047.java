@@ -11,9 +11,6 @@ import java.util.*;
 
 import com.upokecenter.util.*;
 
-    /**
-     * Description of Rfc2047.
-     */
   final class Rfc2047 {
 private Rfc2047() {
 }
@@ -499,15 +496,6 @@ private Rfc2047() {
       return -1;
     }
 
-    /**
-     * Not documented yet.
-     * @param str A string object. (2).
-     * @param index A 32-bit signed integer.
-     * @param endIndex A 32-bit signed integer. (2).
-     * @param tokens An List object.
-     * @param withComments A Boolean object.
-     * @return A string object.
-     */
     public static String DecodePhraseText(
       String str,
       int index,

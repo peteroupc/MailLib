@@ -23,15 +23,11 @@ namespace PeterO.Mail {
       this.buffer = new byte[4];
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='size'>A 32-bit signed integer.</param>
     private void ResizeBuffer(int size) {
       this.bufferCount = size;
       this.bufferIndex = 0;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
     public int ReadByte() {
       if (this.bufferIndex < this.bufferCount) {
         int ret = this.buffer[this.bufferIndex];
@@ -54,7 +50,7 @@ namespace PeterO.Mail {
             // Not supposed to happen;
             // invalid number of base64 characters, so
             // return the ASCII substitute character
-            return 0x1A;
+            return 0x1a;
           } else if (count == 2) {
             --this.inputIndex;
             value <<= 12;

@@ -21,7 +21,7 @@ import java.io.*;
 
     /**
      * Initializes a new instance of the LineBreakNormalizeTransform
-     * class. .
+     * class.
      * @param stream A InputStream object.
      * @param supportBareLF Whether to convert bareLF to CRLF. If false,
      * the transform will require no look-ahead.

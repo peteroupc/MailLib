@@ -10,13 +10,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterO;
 using PeterO.Mail;
 using PeterO.Text;
 
 namespace MailLibTest {
-  [TestFixture]
+  [TestClass]
   public class EncodingTest
   {
     /// <summary>Note: If lenientLineBreaks is true, treats CR, LF, and
@@ -148,7 +148,7 @@ namespace MailLibTest {
       Assert.AreEqual(expected, HeaderParserUtility.ParseLocalPart(str, 0, str.Length));
     }
 
-    [Test]
+    [TestMethod]
     public void TestParseDomainAndLocalPart() {
       this.TestParseDomain("x", "x");
       this.TestParseLocalPart("x", "x");
@@ -177,13 +177,13 @@ namespace MailLibTest {
       Assert.AreEqual(expected, ww.ToString());
     }
 
-    [Test]
+    [TestMethod]
     public void TestWordWrap() {
       this.TestWordWrapOne("Subject:", this.Repeat("xxxx ", 10) + "y", "Subject: " + this.Repeat("xxxx ", 10) + "y");
       this.TestWordWrapOne("Subject:", this.Repeat("xxxx ", 10), "Subject: " + this.Repeat("xxxx ", 9) + "xxxx");
     }
 
-    [Test]
+    [TestMethod]
     public void TestHeaderFields() {
       string testString = "Joe P Customer <customer@example.com>, Jane W Customer <jane@example.com>";
       Assert.AreEqual(testString.Length,
@@ -308,7 +308,7 @@ namespace MailLibTest {
       }
     }
 
-    [Test]
+    [TestMethod]
     public void TestBase64() {
       AssertEqual(
         new byte[] { 0, 16, 1 },
@@ -330,12 +330,12 @@ namespace MailLibTest {
         GetBytes(new Base64Transform(Transform("/+/+Zz=="),true)));
     }
 
-    [Test]
+    [TestMethod]
     public void TestLz4() {
       Lz4.Decompress(NormalizationData.CombiningClasses);
     }
 
-    [Test]
+    [TestMethod]
     public void TestGenerate() {
       List<string> msgids = new List<string>();
       // Tests whether unique Message IDs are generated for each message.
@@ -352,12 +352,12 @@ namespace MailLibTest {
       }
     }
 
-    [Test]
+    [TestMethod]
     public void TestNewMessage() {
       Assert.IsTrue(new Message().ContentType != null);
     }
 
-    [Test]
+    [TestMethod]
     public void TestPrematureEnd() {
       try {
         new Message(new MemoryStream(DataUtilities.GetUtf8Bytes("From: me@example.com\r\nDate",true)));
@@ -393,7 +393,7 @@ namespace MailLibTest {
       }
     }
 
-    [Test]
+    [TestMethod]
     public void TestMakeFilename() {
       Assert.AreEqual(
         "hello.txt",
@@ -505,7 +505,7 @@ namespace MailLibTest {
         ContentDisposition.MakeFilename("=?x-unknown?q?folder\\hello.txt?="));
     }
 
-    [Test]
+    [TestMethod]
     public void TestCharset() {
       Assert.AreEqual("us-ascii", MediaType.Parse("text/plain").GetCharset());
       Assert.AreEqual("us-ascii", MediaType.Parse("TEXT/PLAIN").GetCharset());
@@ -545,7 +545,7 @@ namespace MailLibTest {
       }
     }
 
-    [Test]
+    [TestMethod]
     public void TestArgumentValidation() {
       try {
         new Base64Encoder(false, false, false, null);
@@ -620,7 +620,7 @@ namespace MailLibTest {
       Assert.IsTrue(MediaType.TextPlainAscii.GetHashCode()==MediaType.Parse("text/plain; charset=us-ascii").GetHashCode());
     }
 
-    [Test]
+    [TestMethod]
     public void TestMediaTypeBuilder() {
       MediaTypeBuilder builder;
       try {
@@ -907,7 +907,7 @@ namespace MailLibTest {
       Assert.AreEqual("example/x",MediaType.Parse("example/x; a=b ").TypeAndSubType);
     }
 
-    [Test]
+    [TestMethod]
     public void TestShiftJIS() {
       // Adapted from the public domain Gonk test cases
       byte[] bytes;
@@ -926,7 +926,7 @@ namespace MailLibTest {
       Assert.AreEqual(expected, charset.GetString(Transform(bytes)));
     }
 
-    [Test]
+    [TestMethod]
     public void TestIso2022JP() {
       byte[] bytes;
       ICharset charset=Charsets.GetCharset("iso-2022-jp");
@@ -1031,7 +1031,7 @@ namespace MailLibTest {
       AssertUtf8Equal(expectedBytes, bytes);
     }
 
-    [Test]
+    [TestMethod]
     public void TestDowngradeDSN() {
       string hexstart = "\\x" + "{";
       TestDowngradeDSNOne(
@@ -1060,7 +1060,7 @@ namespace MailLibTest {
         ("(\u00be) rfc822; x@x\u00be\uff20.example"));
     }
 
-    [Test]
+    [TestMethod]
     public void TestLanguageTags() {
       Assert.IsTrue(ParserUtility.IsValidLanguageTag("en-a-bb-x-y-z"));
       Assert.IsFalse(ParserUtility.IsValidLanguageTag("0-xx-xx"));
@@ -1106,7 +1106,7 @@ namespace MailLibTest {
       Assert.IsFalse(ParserUtility.IsValidLanguageTag("en-aaa-bbb-ccc-"));
     }
 
-    [Test]
+    [TestMethod]
     public void TestMediaTypeEncoding() {
       TestMediaTypeRoundTrip("xy"+this.Repeat("\"",20)+"z");
       this.SingleTestMediaTypeEncoding("xyz", "x/y;z=xyz");
@@ -1140,7 +1140,7 @@ namespace MailLibTest {
       Assert.IsTrue(IsGoodAsciiMessageFormat(mtmessage.Generate(), false));
     }
 
-    [Test]
+    [TestMethod]
     public void TestRfc2231Extensions() {
       this.TestRfc2231Extension("text/plain; charset=\"utf-8\"", "charset", "utf-8");
       this.TestRfc2231Extension("text/plain; charset*=us-ascii'en'utf-8", "charset", "utf-8");
@@ -1183,7 +1183,7 @@ namespace MailLibTest {
         "flowed");
     }
 
-    [Test]
+    [TestMethod]
     public void TestDecode() {
       this.TestDecodeQuotedPrintable("test", "test");
       this.TestDecodeQuotedPrintable("te \tst", "te \tst");
@@ -1281,14 +1281,14 @@ namespace MailLibTest {
         HeaderFieldParsers.GetParser("subject").DecodeEncodedWords(input));
     }
 
-    [Test]
+    [TestMethod]
     public void TestEncodedPhrase2() {
       Assert.AreEqual(
         "=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
         HeaderFieldParsers.GetParser("subject").DowngradeFieldValue("(tes\u00bet) x@x.example"));
     }
 
-    [Test]
+    [TestMethod]
     public void TestToFieldDowngrading() {
       string sep=", ";
       Assert.AreEqual(
@@ -1330,7 +1330,7 @@ namespace MailLibTest {
       return Rfc2047.EncodeComment(str, 0, str.Length);
     }
 
-    [Test]
+    [TestMethod]
     public void TestCommentsToWords() {
       Assert.AreEqual("(=?utf-8?Q?x?=)", EncodeComment("(x)"));
       Assert.AreEqual("(=?utf-8?Q?xy?=)", EncodeComment("(x\\y)"));
@@ -1507,7 +1507,7 @@ namespace MailLibTest {
       Assert.AreEqual(input.Length, HeaderParserUtility.ParseCommentStrict(input, 0, input.Length), input);
     }
 
-    [Test]
+    [TestMethod]
     public void TestPercentEncoding() {
       Assert.AreEqual(
         "test\u00be",
@@ -1538,7 +1538,7 @@ namespace MailLibTest {
         Charsets.Utf8.GetString(new PercentEncodingStringTransform("tes\r\nx")));
     }
 
-    [Test]
+    [TestMethod]
     public void TestParseCommentStrict() {
       TestParseCommentStrictCore("(y)");
       TestParseCommentStrictCore("(e\\y)");
@@ -1546,7 +1546,7 @@ namespace MailLibTest {
       TestParseCommentStrictCore("()");
       TestParseCommentStrictCore("(x)");
     }
-    [Test]
+    [TestMethod]
     public void TestEncodedWordsReservedChars() {
       // Check decoding of encoded words containing reserved characters
       // such as specials and CTLs:
@@ -1577,7 +1577,7 @@ namespace MailLibTest {
         "=?utf-8?q?me?= \"x:y\"");
     }
 
-    [Test]
+    [TestMethod]
     public void TestEncodedWords() {
       string par = "(";
       this.TestEncodedWordsPhrase("(sss) y", "(sss) =?us-ascii?q?y?=");
@@ -1624,7 +1624,7 @@ namespace MailLibTest {
       this.TestEncodedWordsPhrase("=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
     }
 
-    [Test]
+    [TestMethod]
     public void TestSetHeader() {
       Assert.AreEqual("my subject",new Message().SetHeader("comments","subject").SetHeader("subject","my subject").GetHeader("subject"));
     }
@@ -1657,7 +1657,7 @@ namespace MailLibTest {
       return sb.ToString();
     }
 
-    [Test]
+    [TestMethod]
     public void TestContentHeadersOnlyInBodyParts() {
       Message msg=new Message().SetTextAndHtml("Hello","Hello");
       msg.SetHeader("x-test","test");
@@ -1669,7 +1669,7 @@ namespace MailLibTest {
       Assert.AreEqual(null,msg.Parts[0].GetHeader("x-test"));
     }
 
-    [Test]
+    [TestMethod]
     public void TestEucJP() {
       byte[] bytes;
       ICharset charset=Charsets.GetCharset("euc-jp");
@@ -1708,7 +1708,7 @@ namespace MailLibTest {
       Assert.AreEqual(result, (charset.GetString(Transform(bytes))));
     }
 
-    [Test]
+    [TestMethod]
     public void TestNamedAddress() {
       Assert.AreEqual("\"Me \" <me@example.com>",new NamedAddress("Me ","me@example.com").ToString());
       Assert.AreEqual("\" Me\" <me@example.com>",new NamedAddress(" Me","me@example.com").ToString());
@@ -1966,14 +1966,14 @@ namespace MailLibTest {
       }
     }
 
-    [Test]
+    [TestMethod]
     public void TestMailbox() {
       var mbox="Me <@example.org,@example.net,@example.com:me@x.example>";
       var result = new NamedAddress(mbox);
       Assert.AreEqual("Me <me@x.example>",result.ToString());
     }
 
-    [Test]
+    [TestMethod]
     [Timeout(5000)]
     public void TestHeaderParsing() {
       string tmp;
@@ -2002,7 +2002,7 @@ namespace MailLibTest {
       Assert.AreEqual(tmp.Length, HeaderParser.ParseHeaderTo(tmp, 0, tmp.Length, null));
     }
 
-    [Test]
+    [TestMethod]
     public void TestEncode() {
       this.TestQuotedPrintable("test", "test");
       this.TestQuotedPrintable("te\u000cst", "te=0Cst");
@@ -2064,7 +2064,7 @@ namespace MailLibTest {
       Assert.AreEqual(expected, Charsets.GetCharset("utf-7").GetString(EncodingTest.Transform(input)));
     }
 
-    [Test]
+    [TestMethod]
     public void TestUtf7() {
       TestUtf7One("\\","\ufffd");
       TestUtf7One("~","\ufffd");
@@ -2124,7 +2124,7 @@ namespace MailLibTest {
       TestUtf7One("+AMAA4B\u007f","\u00c0\u00e0\ufffd\ufffd");
     }
 
-    [Test]
+    [TestMethod]
     public void TestReceivedHeader() {
       IHeaderFieldParser parser=HeaderFieldParsers.GetParser("received");
       string test="from x.y.example by a.b.example; Thu, 31 Dec 2012 00:00:00 -0100";
@@ -2171,7 +2171,7 @@ namespace MailLibTest {
       return false;
     }
 
-    [Test]
+    [TestMethod]
     public void TestBoundaryReading() {
       byte[] body;
       string messageStart="MIME-Version: 1.0\r\n";

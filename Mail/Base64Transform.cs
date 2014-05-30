@@ -39,15 +39,11 @@ namespace PeterO.Mail {
       this.checkStrictEncoding = checkStrictEncoding;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='size'>A 32-bit signed integer.</param>
     private void ResizeBuffer(int size) {
       this.bufferCount = size;
       this.bufferIndex = 0;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
     public int ReadByte() {
       if (this.bufferIndex < this.bufferCount) {
         int ret = this.buffer[this.bufferIndex];

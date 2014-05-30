@@ -12,7 +12,6 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary>Description of Charsets.</summary>
   internal static class Charsets
   {
     public static readonly ICharset Ascii = new AsciiEncoding();
@@ -506,9 +505,6 @@ namespace PeterO.Mail {
     }
 
     private sealed class Utf8Encoding : ICharset {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='transform'>An ITransform object.</param>
-    /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         ReadUtf8(transform, -1, builder, true);
@@ -643,9 +639,6 @@ namespace PeterO.Mail {
     }
 
     private sealed class Iso2022JPEncoding : ICharset {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='transform'>An ITransform object.</param>
-    /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         int state = 0;
         int lead = 0;
@@ -790,9 +783,6 @@ namespace PeterO.Mail {
     }
 
     private sealed class ShiftJISEncoding : ICharset {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='transform'>An ITransform object.</param>
-    /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         int lead = 0;
         int lastByte = -1;
@@ -850,9 +840,6 @@ namespace PeterO.Mail {
     }
 
     private sealed class EucJPEncoding : ICharset {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='transform'>An ITransform object.</param>
-    /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         int lead = 0;
         bool jis0212 = false;
@@ -940,8 +927,6 @@ namespace PeterO.Mail {
           this.lastByte = -1;
         }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='builder'>A StringBuilder object.</param>
         public void FinalizeAndReset(StringBuilder builder) {
           if (this.surrogate >= 0 && this.lastByte >= 0) {
             // Unpaired surrogate and an unpaired byte value
@@ -955,16 +940,12 @@ namespace PeterO.Mail {
           this.lastByte = -1;
         }
 
-    /// <summary>Not documented yet.</summary>
         public void AppendIncompleteByte() {
           // Make sure lastByte isn't -1, for FinalizeAndReset
           // purposes
           this.lastByte = 0;
         }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='value'>A 32-bit signed integer.</param>
-    /// <param name='builder'>A StringBuilder object.</param>
         public void AppendByte(int value, StringBuilder builder) {
           if (this.lastByte >= 0) {
             int codeunit = this.lastByte << 8;
@@ -1010,7 +991,6 @@ namespace PeterO.Mail {
           }
         }
 
-    /// <summary>Not documented yet.</summary>
         public void Reset() {
           this.surrogate = -1;
           this.lastByte = -1;
@@ -1162,9 +1142,6 @@ namespace PeterO.Mail {
         this.encodingMapping = mapping;
       }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='transform'>An ITransform object.</param>
-    /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         while (true) {
@@ -1183,9 +1160,6 @@ namespace PeterO.Mail {
     }
 
     private sealed class LatinOneEncoding : ICharset {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='transform'>An ITransform object.</param>
-    /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         while (true) {
@@ -1200,9 +1174,6 @@ namespace PeterO.Mail {
     }
 
     private sealed class AsciiEncoding : ICharset {
-    /// <summary>Not documented yet.</summary>
-    /// <param name='transform'>An ITransform object.</param>
-    /// <returns>A string object.</returns>
       public string GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         while (true) {

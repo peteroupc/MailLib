@@ -22,19 +22,11 @@ at: http://upokecenter.com/d/
       this.buffer = new byte[4];
     }
 
-    /**
-     * Not documented yet.
-     * @param size A 32-bit signed integer.
-     */
     private void ResizeBuffer(int size) {
       this.bufferCount = size;
       this.bufferIndex = 0;
     }
 
-    /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
     public int read() {
       if (this.bufferIndex < this.bufferCount) {
         int ret = this.buffer[this.bufferIndex];
@@ -55,8 +47,9 @@ at: http://upokecenter.com/d/
           // End of stream
           if (count == 1) {
             // Not supposed to happen;
-            // invalid number of base64 characters
-            return -1;
+            // invalid number of base64 characters, so
+            // return the ASCII substitute character
+            return 0x1a;
           } else if (count == 2) {
             --this.inputIndex;
             value <<= 12;

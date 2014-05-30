@@ -15,13 +15,6 @@ at: http://upokecenter.com/d/
     public IdentityEncoder () {
     }
 
-    /**
-     * Not documented yet.
-     * @param str A StringBuilder object.
-     * @param data A byte array.
-     * @param offset A 32-bit signed integer.
-     * @param count A 32-bit signed integer. (2).
-     */
     public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
       if (str == null) {
         throw new NullPointerException("str");
@@ -52,19 +45,10 @@ at: http://upokecenter.com/d/
       }
     }
 
-    /**
-     * Not documented yet.
-     * @param str A StringBuilder object.
-     */
     public void FinalizeEncoding(StringBuilder str) {
       // No need to finalize for identity encodings
     }
 
-    /**
-     * Not documented yet.
-     * @param str A StringBuilder object.
-     * @param b A Byte object.
-     */
     public void WriteToString(StringBuilder str, byte b) {
       str.append((char)(((int)b) & 0xff));
     }

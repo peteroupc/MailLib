@@ -47,11 +47,6 @@ import com.upokecenter.util.*;
       }
     }
 
-    /**
-     * Not documented yet.
-     * @param suffix A string object.
-     * @return An EncodedWordEncoder object.
-     */
     public EncodedWordEncoder FinalizeEncoding(String suffix) {
       if (this.currentWord.length() > 0) {
         if (this.currentWord.length() + 2 + suffix.length() > 75) {
@@ -73,19 +68,10 @@ import com.upokecenter.util.*;
       return this;
     }
 
-    /**
-     * Not documented yet.
-     * @return An EncodedWordEncoder object.
-     */
     public EncodedWordEncoder FinalizeEncoding() {
       return this.FinalizeEncoding("");
     }
 
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @return An EncodedWordEncoder object.
-     */
     public EncodedWordEncoder AddPrefix(String str) {
       if (!((str)==null || (str).length()==0)) {
         this.FinalizeEncoding();
@@ -96,13 +82,6 @@ import com.upokecenter.util.*;
       return this;
     }
 
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer.
-     * @param length A 32-bit signed integer. (2).
-     * @return An EncodedWordEncoder object.
-     */
     public EncodedWordEncoder AddString(String str, int index, int length) {
       if (str == null) {
         throw new NullPointerException("str");
@@ -132,19 +111,10 @@ import com.upokecenter.util.*;
       return this;
     }
 
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @return An EncodedWordEncoder object.
-     */
     public EncodedWordEncoder AddString(String str) {
       return this.AddString(str, 0, str.length());
     }
 
-    /**
-     * Not documented yet.
-     * @param ch A 32-bit signed integer.
-     */
     public void AddChar(int ch) {
       if (this.currentWord.length() == 0) {
         this.currentWord.append("=?utf-8?Q?");

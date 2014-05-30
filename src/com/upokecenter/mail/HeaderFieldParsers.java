@@ -16,41 +16,19 @@ import com.upokecenter.text.*;
 private HeaderFieldParsers() {
 }
     private static final class UnstructuredHeaderField implements IHeaderFieldParser {
-    /**
-     * Not documented yet.
-     * @param str A string object. (2).
-     * @return A string object.
-     */
       public String DowngradeFieldValue(String str) {
         return Rfc2047.EncodeString(str);
       }
 
-    /**
-     * Not documented yet.
-     * @param str A string object. (2).
-     * @return A string object.
-     */
       public String DecodeEncodedWords(String str) {
         // For unstructured header fields.
         return Rfc2047.DecodeEncodedWords(str, 0, str.length(), EncodedWordContext.Unstructured);
       }
 
-    /**
-     * Not documented yet.
-     * @return A Boolean object.
-     */
       public boolean IsStructured() {
         return false;
       }
 
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that receives parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return endIndex;
       }
@@ -75,11 +53,6 @@ private HeaderFieldParsers() {
         return groups;
       }
 
-    /**
-     * Not documented yet.
-     * @param str A string object. (2).
-     * @return A string object.
-     */
       public String DowngradeFieldValue(String str) {
         String originalString = str;
         List<String> originalGroups = null;
@@ -304,11 +277,6 @@ private HeaderFieldParsers() {
         return str;
       }
 
-    /**
-     * Not documented yet.
-     * @param str A string object. (2).
-     * @return A string object.
-     */
       public String DecodeEncodedWords(String str) {
 
         // For structured header fields that allow comments only wherever whitespace
@@ -366,1298 +334,558 @@ private HeaderFieldParsers() {
         return sb.toString();
       }
 
-    /**
-     * Not documented yet.
-     * @return A Boolean object.
-     */
       public boolean IsStructured() {
         return true;
       }
     }
 
     private static final class HeaderX400ContentReturn extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderX400ContentReturn(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderDeliveryDate extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDeliveryDate(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderPriority extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderPriority(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderImportance extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderImportance(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderSensitivity extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderSensitivity(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderX400ContentIdentifier extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderX400ContentIdentifier(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderX400Received extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderX400Received(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderX400MtsIdentifier extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderX400MtsIdentifier(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderX400Originator extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderX400Originator(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderX400Recipients extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderX400Recipients(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderConversion extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderConversion(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderConversionWithLoss extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderConversionWithLoss(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderSupersedes extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderSupersedes(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderAutoforwarded extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderAutoforwarded(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderGenerateDeliveryReport extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderGenerateDeliveryReport(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderIncompleteCopy extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderIncompleteCopy(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderPreventNondeliveryReport extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderPreventNondeliveryReport(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderAlternateRecipient extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderAlternateRecipient(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderDiscloseRecipients extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDiscloseRecipients(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderNewsgroups extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderNewsgroups(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderPath extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderPath(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderArchive extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderArchive(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderControl extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderControl(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderDistribution extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDistribution(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderFollowupTo extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderFollowupTo(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderInjectionDate extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderInjectionDate(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderInjectionInfo extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderInjectionInfo(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderUserAgent extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderUserAgent(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderXref extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderXref(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderAcceptLanguage extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderAcceptLanguage(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderArchivedAt extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderArchivedAt(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderAuthenticationResults extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderAuthenticationResults(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderAutoSubmitted extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderAutoSubmitted(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderBcc extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderBcc(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderContentBase extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentBase(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderContentDisposition extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentDisposition(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderContentDuration extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentDuration(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderContentId extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentId(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderContentLanguage extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentLanguage(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderContentLocation extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentLocation(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderContentMd5 extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentMd5(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderContentTransferEncoding extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentTransferEncoding(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderContentType extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderContentType(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderDate extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDate(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderDeferredDelivery extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDeferredDelivery(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderDispositionNotificationOptions extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDispositionNotificationOptions(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderDispositionNotificationTo extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDispositionNotificationTo(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderDkimSignature extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderDkimSignature(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderEdiintFeatures extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderEdiintFeatures(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderEncoding extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderEncoding(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderEncrypted extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderEncrypted(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderFrom extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderFrom(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderInReplyTo extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderInReplyTo(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderJabberId extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderJabberId(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderKeywords extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderKeywords(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderLanguage extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderLanguage(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderLatestDeliveryTime extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderLatestDeliveryTime(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderListId extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderListId(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMessageContext extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMessageContext(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMessageId extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMessageId(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMimeVersion extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMimeVersion(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsAcp127MessageIdentifier extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsAcp127MessageIdentifier(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsCodressMessageIndicator extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsCodressMessageIndicator(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsCopyPrecedence extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsCopyPrecedence(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsExemptedAddress extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsExemptedAddress(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsExtendedAuthorisationInfo extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsExtendedAuthorisationInfo(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsHandlingInstructions extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsHandlingInstructions(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsMessageInstructions extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsMessageInstructions(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsMessageType extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsMessageType(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsOriginatorPlad extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOriginatorPlad(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsOriginatorReference extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOriginatorReference(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsOtherRecipientsIndicatorCc extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOtherRecipientsIndicatorCc(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsOtherRecipientsIndicatorTo extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsOtherRecipientsIndicatorTo(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsPrimaryPrecedence extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsPrimaryPrecedence(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMmhsSubjectIndicatorCodes extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMmhsSubjectIndicatorCodes(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderMtPriority extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderMtPriority(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderObsoletes extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderObsoletes(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderOriginalRecipient extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderOriginalRecipient(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderReceived extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderReceived(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderReceivedSpf extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderReceivedSpf(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderRequireRecipientValidSince extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderRequireRecipientValidSince(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderResentTo extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderResentTo(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderReturnPath extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderReturnPath(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderSender extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderSender(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderSolicitation extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderSolicitation(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderTo extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderTo(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderVbrInfo extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderVbrInfo(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderXArchivedAt extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderXArchivedAt(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderXRicevuta extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderXRicevuta(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderXTiporicevuta extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderXTiporicevuta(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderXTrasporto extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderXTrasporto(str, index, endIndex, tokener);
       }
     }
 
     private static final class HeaderXVerificasicurezza extends StructuredHeaderField {
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param index A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     * @param tokener An object that collects parsed tokens.
-     * @return A 32-bit signed integer.
-     */
       @Override public int Parse(String str, int index, int endIndex, ITokener tokener) {
         return HeaderParser.ParseHeaderXVerificasicurezza(str, index, endIndex, tokener);
       }

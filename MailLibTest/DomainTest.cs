@@ -6,11 +6,11 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 using System;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterO.Text;
 
 namespace MailLibTest {
-  [TestFixture]
+  [TestClass]
   public class DomainTest
   {
     // Tests that all-ASCII strings remain unchanged by
@@ -50,7 +50,7 @@ namespace MailLibTest {
         DomainUtility.PunycodeDecode("xn--e-ufa",4,9));
     }
 
-    [Test]
+    [TestMethod]
     public void IdnaTest() {
       Assert.IsTrue(Idna.IsValidDomainName("el\u00b7la",false));
       Assert.IsFalse(Idna.IsValidDomainName("-domain",false));

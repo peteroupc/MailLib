@@ -93,9 +93,6 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <returns>A WordWrapEncoder object.</returns>
     public WordWrapEncoder AddString(string str) {
       int wordStart = 0;
       for (int j = 0; j < str.Length; ++j) {

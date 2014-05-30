@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 
 namespace PeterO.Mail {
-    /// <summary>Description of CollectionUtilities.</summary>
   internal static class CollectionUtilities
   {
     public static bool MapEquals<TKey, TValue>(IDictionary<TKey, TValue> mapA, IDictionary<TKey, TValue> mapB) {

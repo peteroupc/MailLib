@@ -41,8 +41,6 @@ namespace PeterO.Mail {
       int maxLineLength) : this(input, lenientLineBreaks, maxLineLength, false) {
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='size'>A 32-bit signed integer.</param>
     private void ResizeBuffer(int size) {
       if (this.buffer == null) {
         this.buffer = new byte[size + 10];
@@ -55,8 +53,6 @@ namespace PeterO.Mail {
       this.bufferIndex = 0;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
     public int ReadByte() {
       if (this.bufferIndex < this.bufferCount) {
         int ret = this.buffer[this.bufferIndex];

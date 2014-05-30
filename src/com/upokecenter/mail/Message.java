@@ -35,7 +35,7 @@ import com.upokecenter.util.*;
      * bodies, and in the prologue and epilogue of multipart messages (which
      * will be ignored), if the transfer encoding is absent or ((declared
      * instanceof 7bit) ? (7bit)declared : null), any 8-bit bytes are replaced
-     * with the ASCII substitute character (0x1A).</li> <li>If the transfer
+     * with the ASCII substitute character (0x1a).</li> <li>If the transfer
      * encoding is absent or ((declared instanceof 7bit) ? (7bit)declared
      * : null), and the charset is declared to be <code>utf-8</code> , the
      * transfer encoding is treated as 8bit instead.</li> <li>In text/html
@@ -2076,7 +2076,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       } else if (encoding == EncodingSevenBit) {
         if (useLiberalSevenBit) {
           // DEVIATION: Replace 8-bit bytes and null with the
-          // ASCII substitute character (0x1A) for text/plain messages,
+          // ASCII substitute character (0x1a) for text/plain messages,
           // non-MIME messages, and the prologue and epilogue of multipart
           // messages (which will be ignored).
           transform = new LiberalSevenBitTransform(stream);

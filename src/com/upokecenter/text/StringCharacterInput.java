@@ -9,9 +9,6 @@ at: http://upokecenter.com/d/
 
 import com.upokecenter.util.*;
 
-    /**
-     * Description of StringCharacterInput.
-     */
   class StringCharacterInput implements ICharacterInput
   {
     private String str;
@@ -50,10 +47,6 @@ import com.upokecenter.util.*;
       this.endIndex = index + length;
     }
 
-    /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
     public int ReadChar() {
       if (this.index >= this.endIndex) {
         return -1;
@@ -67,7 +60,7 @@ import com.upokecenter.util.*;
     }
 
     /**
-     * Not documented yet.
+     *
      * @param chars An array of 32-bit unsigned integers.
      * @param index A 32-bit signed integer. (2).
      * @param length A 32-bit signed integer. (3).
