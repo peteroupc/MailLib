@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 
 namespace PeterO.Text {
-    /// <summary>Not documented yet.</summary>
   internal sealed class PartialListCharacterInput : ICharacterInput {
     private int pos;
     private int endPos;
@@ -32,8 +31,6 @@ namespace PeterO.Text {
       this.endPos = start + length;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
     public int ReadChar() {
       if (this.pos < this.endPos) {
         return this.ilist[this.pos++];
@@ -41,11 +38,10 @@ namespace PeterO.Text {
       return -1;
     }
 
-    /// <summary>Not documented yet.</summary>
     /// <param name='buf'>An array of 32-bit unsigned integers.</param>
+    /// <returns>A 32-bit signed integer.</returns>
     /// <param name='offset'>A 32-bit signed integer. (2).</param>
     /// <param name='unitCount'>A 32-bit signed integer. (3).</param>
-    /// <returns>A 32-bit signed integer.</returns>
     public int Read(int[] buf, int offset, int unitCount) {
       if (buf == null) {
         throw new ArgumentNullException("buf");

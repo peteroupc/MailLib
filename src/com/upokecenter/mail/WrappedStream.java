@@ -16,10 +16,6 @@ import java.io.*;
       this.stream = stream;
     }
 
-    /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
     public int read() {
       try {
         return this.stream.read();

@@ -36,7 +36,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this represents a group
     /// of addresses rather than a single address.</summary>
-    /// <value>Whether this represents a group of addresses.</value>
+    /// <value>True if this represents a group of addresses; otherwise,
+    /// false..</value>
     public bool IsGroup {
       get {
         return this.isGroup;

@@ -49,9 +49,6 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>An EncodedWordEncoder object.</returns>
-    /// <param name='suffix'>A string object.</param>
     public EncodedWordEncoder FinalizeEncoding(string suffix) {
       if (this.currentWord.Length > 0) {
         if (this.currentWord.Length + 2 + suffix.Length > 75) {
@@ -73,15 +70,10 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>An EncodedWordEncoder object.</returns>
     public EncodedWordEncoder FinalizeEncoding() {
       return this.FinalizeEncoding(String.Empty);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <returns>An EncodedWordEncoder object.</returns>
     public EncodedWordEncoder AddPrefix(string str) {
       if (!String.IsNullOrEmpty(str)) {
         this.FinalizeEncoding();
@@ -92,11 +84,6 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <returns>An EncodedWordEncoder object.</returns>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='length'>A 32-bit signed integer. (2).</param>
     public EncodedWordEncoder AddString(string str, int index, int length) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -126,15 +113,10 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <returns>An EncodedWordEncoder object.</returns>
     public EncodedWordEncoder AddString(string str) {
       return this.AddString(str, 0, str.Length);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='ch'>A 32-bit signed integer.</param>
     public void AddChar(int ch) {
       if (this.currentWord.Length == 0) {
         this.currentWord.Append("=?utf-8?Q?");

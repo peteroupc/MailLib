@@ -3,7 +3,6 @@ using System;
 using PeterO;
 
 namespace PeterO.Text {
-    /// <summary>Not documented yet.</summary>
   internal sealed class ByteData {
     private byte[] array;
 
@@ -15,9 +14,6 @@ namespace PeterO.Text {
       this.array = array;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='cp'>A 32-bit signed integer.</param>
-    /// <returns>A Boolean object.</returns>
     public bool GetBoolean(int cp) {
       if (cp < 0) {
         throw new ArgumentException("cp (" + Convert.ToString((int)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
@@ -40,9 +36,6 @@ namespace PeterO.Text {
       }
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='cp'>A 32-bit signed integer.</param>
-    /// <returns>A Byte object.</returns>
     public byte GetByte(int cp) {
       if (cp < 0) {
         throw new ArgumentException("cp (" + Convert.ToString((int)cp, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");

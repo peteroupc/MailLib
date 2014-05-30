@@ -11,9 +11,6 @@ import java.util.*;
 
 import com.upokecenter.util.*;
 
-    /**
-     * Description of Charsets.
-     */
   final class Charsets {
 private Charsets() {
 }
@@ -508,11 +505,6 @@ private Charsets() {
     }
 
     private static final class Utf8Encoding implements ICharset {
-    /**
-     * Not documented yet.
-     * @param transform An ITransform object.
-     * @return A string object.
-     */
       public String GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         ReadUtf8(transform, -1, builder, true);
@@ -647,11 +639,6 @@ private Charsets() {
     }
 
     private static final class Iso2022JPEncoding implements ICharset {
-    /**
-     * Not documented yet.
-     * @param transform An ITransform object.
-     * @return A string object.
-     */
       public String GetString(ITransform transform) {
         int state = 0;
         int lead = 0;
@@ -796,11 +783,6 @@ private Charsets() {
     }
 
     private static final class ShiftJISEncoding implements ICharset {
-    /**
-     * Not documented yet.
-     * @param transform An ITransform object.
-     * @return A string object.
-     */
       public String GetString(ITransform transform) {
         int lead = 0;
         int lastByte = -1;
@@ -858,11 +840,6 @@ private Charsets() {
     }
 
     private static final class EucJPEncoding implements ICharset {
-    /**
-     * Not documented yet.
-     * @param transform An ITransform object.
-     * @return A string object.
-     */
       public String GetString(ITransform transform) {
         int lead = 0;
         boolean jis0212 = false;
@@ -950,10 +927,6 @@ private Charsets() {
           this.lastByte = -1;
         }
 
-    /**
-     * Not documented yet.
-     * @param builder A StringBuilder object.
-     */
         public void FinalizeAndReset(StringBuilder builder) {
           if (this.surrogate >= 0 && this.lastByte >= 0) {
             // Unpaired surrogate and an unpaired byte value
@@ -967,20 +940,12 @@ private Charsets() {
           this.lastByte = -1;
         }
 
-    /**
-     * Not documented yet.
-     */
         public void AppendIncompleteByte() {
           // Make sure lastByte isn't -1, for FinalizeAndReset
           // purposes
           this.lastByte = 0;
         }
 
-    /**
-     * Not documented yet.
-     * @param value A 32-bit signed integer.
-     * @param builder A StringBuilder object.
-     */
         public void AppendByte(int value, StringBuilder builder) {
           if (this.lastByte >= 0) {
             int codeunit = this.lastByte << 8;
@@ -1026,9 +991,6 @@ private Charsets() {
           }
         }
 
-    /**
-     * Not documented yet.
-     */
         public void Reset() {
           this.surrogate = -1;
           this.lastByte = -1;
@@ -1180,11 +1142,6 @@ private Charsets() {
         this.encodingMapping = mapping;
       }
 
-    /**
-     * Not documented yet.
-     * @param transform An ITransform object.
-     * @return A string object.
-     */
       public String GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         while (true) {
@@ -1203,11 +1160,6 @@ private Charsets() {
     }
 
     private static final class LatinOneEncoding implements ICharset {
-    /**
-     * Not documented yet.
-     * @param transform An ITransform object.
-     * @return A string object.
-     */
       public String GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         while (true) {
@@ -1222,11 +1174,6 @@ private Charsets() {
     }
 
     private static final class AsciiEncoding implements ICharset {
-    /**
-     * Not documented yet.
-     * @param transform An ITransform object.
-     * @return A string object.
-     */
       public String GetString(ITransform transform) {
         StringBuilder builder = new StringBuilder();
         while (true) {

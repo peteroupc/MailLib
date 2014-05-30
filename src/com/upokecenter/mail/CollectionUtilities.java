@@ -9,9 +9,6 @@ at: http://upokecenter.com/d/
 
 import java.util.*;
 
-    /**
-     * Description of CollectionUtilities.
-     */
   final class CollectionUtilities {
 private CollectionUtilities() {
 }

@@ -92,11 +92,6 @@ at: http://upokecenter.com/d/
       return sb.toString();
     }
 
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @return A WordWrapEncoder object.
-     */
     public WordWrapEncoder AddString(String str) {
       int wordStart = 0;
       for (int j = 0; j < str.length(); ++j) {

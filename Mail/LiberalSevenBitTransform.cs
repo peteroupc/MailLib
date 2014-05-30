@@ -16,8 +16,6 @@ namespace PeterO.Mail {
       this.input = stream;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
     public int ReadByte() {
       int ret = this.input.ReadByte();
       if (ret > 0x80 || ret == 0) {

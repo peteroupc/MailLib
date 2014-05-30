@@ -65,7 +65,7 @@ public void setSubType(String value) {
 
     /**
      * Gets a value indicating whether this is a text media type.
-     * @return Whether this is a text media type.
+     * @return True if this is a text media type; otherwise, false..
      */
     public boolean isText() {
         return this.getTopLevelType().equals("text");
@@ -73,7 +73,7 @@ public void setSubType(String value) {
 
     /**
      * Gets a value indicating whether this is a multipart media type.
-     * @return Whether this is a multipart media type.
+     * @return True if this is a multipart media type; otherwise, false..
      */
     public boolean isMultipart() {
         return this.getTopLevelType().equals("multipart");

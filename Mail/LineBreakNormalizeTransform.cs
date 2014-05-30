@@ -18,7 +18,7 @@ namespace PeterO.Mail {
     private bool supportBareLF;
 
     /// <summary>Initializes a new instance of the LineBreakNormalizeTransform
-    /// class. .</summary>
+    /// class.</summary>
     /// <param name='stream'>A Stream object.</param>
     /// <param name='supportBareLF'>Whether to convert bareLF to CRLF.
     /// If false, the transform will require no look-ahead.</param>

@@ -19,10 +19,6 @@ at: http://upokecenter.com/d/
       this.input = input;
     }
 
-    /**
-     * Not documented yet.
-     * @param size A 32-bit signed integer.
-     */
     private void ResizeBuffer(int size) {
       if (this.buffer == null) {
         this.buffer = new byte[size + 10];
@@ -35,10 +31,6 @@ at: http://upokecenter.com/d/
       this.bufferIndex = 0;
     }
 
-    /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
     public int read() {
       if (this.bufferIndex < this.bufferCount) {
         int ret = this.buffer[this.bufferIndex];
@@ -58,10 +50,12 @@ at: http://upokecenter.com/d/
           return -1;
         } else if (c == 0x0d) {
           // Can't occur in the Q-encoding; replace
-          return '?';
+          // with the ASCII substitute character
+          return 0x1a;
         } else if (c == 0x0a) {
           // Can't occur in the Q-encoding; replace
-          return '?';
+          // with the ASCII substitute character
+          return 0x1a;
         } else if (c == '=') {
           int b1 = (this.inputIndex < endIndex) ? this.input.charAt(this.inputIndex++) : -1;
           c = 0;
@@ -97,7 +91,8 @@ at: http://upokecenter.com/d/
           return c;
         } else if (c <= 0x20 || c >= 0x7f) {
           // Can't occur in the Q-encoding; replace
-          return '?';
+          // with the ASCII substitute character
+          return 0x1a;
         } else if (c == '_') {
           // Underscore, use space
           return ' ';

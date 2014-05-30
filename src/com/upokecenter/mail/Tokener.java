@@ -16,10 +16,6 @@ import java.util.*;
       return this.tokenStack.size();
     }
 
-    /**
-     * Not documented yet.
-     * @param state A 32-bit signed integer.
-     */
     public void RestoreState(int state) {
 
       // if (tokenStack.size() != state) {
@@ -30,12 +26,6 @@ import java.util.*;
       }
     }
 
-    /**
-     * Not documented yet.
-     * @param token A 32-bit signed integer.
-     * @param startIndex A 32-bit signed integer. (2).
-     * @param endIndex A 32-bit signed integer. (3).
-     */
     public void Commit(int token, int startIndex, int endIndex) {
       // System.out.println("Committing token " + token + ", size now " + (tokenStack.size()+1));
       this.tokenStack.add(new int[] { token, startIndex, endIndex });

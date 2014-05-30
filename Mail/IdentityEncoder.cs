@@ -15,11 +15,6 @@ namespace PeterO.Mail {
     public IdentityEncoder() {
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A StringBuilder object.</param>
-    /// <param name='data'>A byte array.</param>
-    /// <param name='offset'>A 32-bit signed integer.</param>
-    /// <param name='count'>A 32-bit signed integer. (2).</param>
     public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -50,15 +45,10 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A StringBuilder object.</param>
     public void FinalizeEncoding(StringBuilder str) {
       // No need to finalize for identity encodings
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A StringBuilder object.</param>
-    /// <param name='b'>A Byte object.</param>
     public void WriteToString(StringBuilder str, byte b) {
       str.Append((char)(((int)b) & 0xff));
     }

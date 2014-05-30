@@ -23,8 +23,6 @@ namespace PeterO.Mail {
     private bool endOfStream;
     private List<string> boundaries;
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='size'>A 32-bit signed integer.</param>
     private void ResizeBuffer(int size) {
       if (this.buffer == null) {
         this.buffer = new byte[size + 10];
@@ -43,14 +41,10 @@ namespace PeterO.Mail {
       this.started = true;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='boundary'>A string object.</param>
     public void PushBoundary(string boundary) {
       this.boundaries.Add(boundary);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
     public int ReadByte() {
       if (this.bufferIndex < this.bufferCount) {
         int ret = this.buffer[this.bufferIndex];
@@ -325,13 +319,10 @@ namespace PeterO.Mail {
       return includeCrLf ? 0x0d : '-';
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
     public int BoundaryCount() {
       return this.boundaries.Count;
     }
 
-    /// <summary>Not documented yet.</summary>
     public void StartBodyPartHeaders() {
       #if DEBUG
       if (!this.hasNewBodyPart) {
@@ -349,7 +340,6 @@ namespace PeterO.Mail {
       this.hasNewBodyPart = false;
     }
 
-    /// <summary>Not documented yet.</summary>
     public void EndBodyPartHeaders() {
       #if DEBUG
       if (!this.readingHeaders) {
@@ -366,7 +356,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets a value indicating whether a new body part was detected.</summary>
-    /// <value>Whether a new body part was detected.</value>
+    /// <value>True if a new body part was detected; otherwise, false..</value>
     public bool HasNewBodyPart {
       get {
         return this.hasNewBodyPart;

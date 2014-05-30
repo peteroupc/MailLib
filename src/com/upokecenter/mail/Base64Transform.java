@@ -39,19 +39,11 @@ at: http://upokecenter.com/d/
       this.checkStrictEncoding = checkStrictEncoding;
     }
 
-    /**
-     * Not documented yet.
-     * @param size A 32-bit signed integer.
-     */
     private void ResizeBuffer(int size) {
       this.bufferCount = size;
       this.bufferIndex = 0;
     }
 
-    /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
     public int read() {
       if (this.bufferIndex < this.bufferCount) {
         int ret = this.buffer[this.bufferIndex];

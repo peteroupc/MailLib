@@ -9,7 +9,6 @@ using System;
 using PeterO;
 
 namespace PeterO.Text {
-    /// <summary>Description of StringCharacterInput.</summary>
   internal class StringCharacterInput : ICharacterInput
   {
     private string str;
@@ -48,8 +47,6 @@ namespace PeterO.Text {
       this.endIndex = index + length;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
     public int ReadChar() {
       if (this.index >= this.endIndex) {
         return -1;
@@ -62,11 +59,10 @@ namespace PeterO.Text {
       return c;
     }
 
-    /// <summary>Not documented yet.</summary>
     /// <param name='chars'>An array of 32-bit unsigned integers.</param>
+    /// <returns>A 32-bit signed integer.</returns>
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='length'>A 32-bit signed integer. (3).</param>
-    /// <returns>A 32-bit signed integer.</returns>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new ArgumentNullException("chars");

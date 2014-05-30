@@ -126,11 +126,6 @@ at: http://upokecenter.com/d/
       this.haveCR = false;
     }
 
-    /**
-     * Not documented yet.
-     * @param str A StringBuilder object.
-     * @param b A Byte object.
-     */
     public void WriteToString(StringBuilder str, byte b) {
       if (str == null) {
         throw new NullPointerException("str");
@@ -138,10 +133,6 @@ at: http://upokecenter.com/d/
       this.AddByte(str, b);
     }
 
-    /**
-     * Not documented yet.
-     * @param str A StringBuilder object.
-     */
     public void FinalizeEncoding(StringBuilder str) {
       if (this.quantumCount == 2) {
         char c1 = this.alphabet.charAt((this.byte1 >> 2) & 63);
@@ -173,25 +164,11 @@ at: http://upokecenter.com/d/
       this.haveCR = false;
     }
 
-    /**
-     * Not documented yet.
-     * @param str A StringBuilder object.
-     * @param data A byte array.
-     * @param offset A 32-bit signed integer.
-     * @param count A 32-bit signed integer. (2).
-     */
 public void WriteToStringAndFinalize(StringBuilder str, byte[] data, int offset, int count) {
       this.WriteToString(str, data, offset, count);
       this.FinalizeEncoding(str);
     }
 
-    /**
-     * Not documented yet.
-     * @param str A StringBuilder object.
-     * @param data A byte array.
-     * @param offset A 32-bit signed integer.
-     * @param count A 32-bit signed integer. (2).
-     */
     public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
       if (str == null) {
         throw new NullPointerException("str");

@@ -21,8 +21,6 @@ namespace PeterO.Mail {
       this.input = input;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='size'>A 32-bit signed integer.</param>
     private void ResizeBuffer(int size) {
       if (this.buffer == null) {
         this.buffer = new byte[size + 10];
@@ -35,8 +33,6 @@ namespace PeterO.Mail {
       this.bufferIndex = 0;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
     public int ReadByte() {
       if (this.bufferIndex < this.bufferCount) {
         int ret = this.buffer[this.bufferIndex];
@@ -57,11 +53,11 @@ namespace PeterO.Mail {
         } else if (c == 0x0d) {
           // Can't occur in the Q-encoding; replace
           // with the ASCII substitute character
-          return 0x1A;
+          return 0x1a;
         } else if (c == 0x0a) {
           // Can't occur in the Q-encoding; replace
           // with the ASCII substitute character
-          return 0x1A;
+          return 0x1a;
         } else if (c == '=') {
           int b1 = (this.inputIndex < endIndex) ? this.input[this.inputIndex++] : -1;
           c = 0;
@@ -98,7 +94,7 @@ namespace PeterO.Mail {
         } else if (c <= 0x20 || c >= 0x7f) {
           // Can't occur in the Q-encoding; replace
           // with the ASCII substitute character
-          return 0x1A;
+          return 0x1a;
         } else if (c == '_') {
           // Underscore, use space
           return ' ';

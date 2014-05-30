@@ -26,24 +26,18 @@ namespace PeterO {
       }
     }
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
     public ICollection<TKey> Keys {
       get {
         return this.wrapped.Keys;
       }
     }
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
     public ICollection<TValue> Values {
       get {
         return this.wrapped.Values;
       }
     }
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
     public int Count {
       get {
         return this.wrapped.Count;
@@ -58,9 +52,6 @@ namespace PeterO {
       }
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='key'>A TKey object.</param>
-    /// <returns>A Boolean object.</returns>
     public bool ContainsKey(TKey key) {
       return this.wrapped.ContainsKey(key);
     }
@@ -72,49 +63,32 @@ namespace PeterO {
       throw new NotSupportedException();
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='key'>A TKey object.</param>
-    /// <returns>A Boolean object.</returns>
     public bool Remove(TKey key) {
       throw new NotSupportedException();
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='key'>A TKey object.</param>
-    /// <param name='value'>A TValue object.</param>
-    /// <returns>A Boolean object.</returns>
     public bool TryGetValue(TKey key, out TValue value) {
       return this.wrapped.TryGetValue(key, out value);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='item'>A KeyValuePair object.</param>
     public void Add(KeyValuePair<TKey, TValue> item) {
       throw new NotSupportedException();
     }
 
-    /// <summary>Not documented yet.</summary>
     public void Clear() {
       throw new NotSupportedException();
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='item'>A KeyValuePair object.</param>
-    /// <returns>A Boolean object.</returns>
     public bool Contains(KeyValuePair<TKey, TValue> item) {
       return this.wrapped.Contains(item);
     }
 
-    /// <summary>Not documented yet.</summary>
     /// <param name='array'>A KeyValuePair[] object.</param>
     /// <param name='arrayIndex'>A 32-bit signed integer.</param>
     public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) {
       this.wrapped.CopyTo(array, arrayIndex);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='item'>A KeyValuePair object.</param>
-    /// <returns>A Boolean object.</returns>
     public bool Remove(KeyValuePair<TKey, TValue> item) {
       throw new NotSupportedException();
     }

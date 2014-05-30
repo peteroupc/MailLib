@@ -12,7 +12,6 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary>Description of Rfc2047.</summary>
   internal static class Rfc2047
   {
     private static bool HasSuspiciousTextInComments(string str) {
@@ -530,13 +529,6 @@ namespace PeterO.Mail {
       return -1;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object. (2).</param>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
-    /// <param name='tokens'>An IList object.</param>
-    /// <returns>A string object.</returns>
-    /// <param name='withComments'>A Boolean object.</param>
     public static string DecodePhraseText(
       string str,
       int index,

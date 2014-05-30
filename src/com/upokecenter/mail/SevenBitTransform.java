@@ -14,10 +14,6 @@ at: http://upokecenter.com/d/
       this.transform = stream;
     }
 
-    /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
     public int read() {
       int ret = this.transform.read();
       if (ret > 0x80 || ret == 0) {

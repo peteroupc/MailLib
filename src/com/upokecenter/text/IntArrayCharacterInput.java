@@ -11,10 +11,6 @@ package com.upokecenter.text;
       this.ilist = ilist;
     }
 
-    /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
     public int ReadChar() {
       int[] arr = this.ilist;
       if (this.pos < this.ilist.length) {
@@ -24,7 +20,7 @@ package com.upokecenter.text;
     }
 
     /**
-     * Not documented yet.
+     *
      * @param buf An array of 32-bit unsigned integers.
      * @param offset A 32-bit signed integer. (2).
      * @param unitCount A 32-bit signed integer. (3).

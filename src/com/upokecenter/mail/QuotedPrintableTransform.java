@@ -41,10 +41,6 @@ at: http://upokecenter.com/d/
  this(input,lenientLineBreaks,maxLineLength,false);
     }
 
-    /**
-     * Not documented yet.
-     * @param size A 32-bit signed integer.
-     */
     private void ResizeBuffer(int size) {
       if (this.buffer == null) {
         this.buffer = new byte[size + 10];
@@ -57,10 +53,6 @@ at: http://upokecenter.com/d/
       this.bufferIndex = 0;
     }
 
-    /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
     public int read() {
       if (this.bufferIndex < this.bufferCount) {
         int ret = this.buffer[this.bufferIndex];

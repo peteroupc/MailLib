@@ -22,10 +22,6 @@ import java.util.*;
     private boolean endOfStream;
     private ArrayList<String> boundaries;
 
-    /**
-     * Not documented yet.
-     * @param size A 32-bit signed integer.
-     */
     private void ResizeBuffer(int size) {
       if (this.buffer == null) {
         this.buffer = new byte[size + 10];
@@ -44,18 +40,10 @@ import java.util.*;
       this.started = true;
     }
 
-    /**
-     * Not documented yet.
-     * @param boundary A string object.
-     */
     public void PushBoundary(String boundary) {
       this.boundaries.add(boundary);
     }
 
-    /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
     public int read() {
       if (this.bufferIndex < this.bufferCount) {
         int ret = this.buffer[this.bufferIndex];
@@ -323,26 +311,16 @@ import java.util.*;
       return includeCrLf ? 0x0d : '-';
     }
 
-    /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
     public int BoundaryCount() {
       return this.boundaries.size();
     }
 
-    /**
-     * Not documented yet.
-     */
     public void StartBodyPartHeaders() {
 
       this.readingHeaders = true;
       this.hasNewBodyPart = false;
     }
 
-    /**
-     * Not documented yet.
-     */
     public void EndBodyPartHeaders() {
 
       this.readingHeaders = false;
@@ -352,7 +330,7 @@ import java.util.*;
 
     /**
      * Gets a value indicating whether a new body part was detected.
-     * @return Whether a new body part was detected.
+     * @return True if a new body part was detected; otherwise, false..
      */
     public boolean getHasNewBodyPart() {
         return this.hasNewBodyPart;

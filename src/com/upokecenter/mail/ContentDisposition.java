@@ -55,7 +55,7 @@ import com.upokecenter.text.*;
 
     /**
      * Gets a value indicating whether the disposition type is inline.
-     * @return Whether the disposition type is inline.
+     * @return True if the disposition type is inline; otherwise, false..
      */
     public boolean isInline() {
         return this.dispositionType.equals("inline");
@@ -63,7 +63,7 @@ import com.upokecenter.text.*;
 
     /**
      * Gets a value indicating whether the disposition type is attachment.
-     * @return Whether the disposition type is attachment.
+     * @return True if the disposition type is attachment; otherwise, false..
      */
     public boolean isAttachment() {
         return this.dispositionType.equals("attachment");

@@ -18,8 +18,6 @@ namespace PeterO.Mail {
       this.transform = stream;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
     public int ReadByte() {
       if (this.unget) {
         this.unget = false;
@@ -29,7 +27,6 @@ namespace PeterO.Mail {
       return this.lastByte;
     }
 
-    /// <summary>Not documented yet.</summary>
     public void Unget() {
       this.unget = true;
     }

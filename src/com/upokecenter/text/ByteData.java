@@ -2,9 +2,6 @@ package com.upokecenter.text;
 
 import com.upokecenter.util.*;
 
-    /**
-     * Not documented yet.
-     */
   final class ByteData {
     private byte[] array;
 
@@ -16,11 +13,6 @@ import com.upokecenter.util.*;
       this.array = array;
     }
 
-    /**
-     * Not documented yet.
-     * @param cp A 32-bit signed integer.
-     * @return A Boolean object.
-     */
     public boolean GetBoolean(int cp) {
       if (cp < 0) {
         throw new IllegalArgumentException("cp (" + Integer.toString((int)cp) + ") is less than " + "0");
@@ -43,11 +35,6 @@ import com.upokecenter.util.*;
       }
     }
 
-    /**
-     * Not documented yet.
-     * @param cp A 32-bit signed integer.
-     * @return A Byte object.
-     */
     public byte GetByte(int cp) {
       if (cp < 0) {
         throw new IllegalArgumentException("cp (" + Integer.toString((int)cp) + ") is less than " + "0");

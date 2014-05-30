@@ -126,9 +126,6 @@ namespace PeterO.Mail {
       this.haveCR = false;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A StringBuilder object.</param>
-    /// <param name='b'>A Byte object.</param>
     public void WriteToString(StringBuilder str, byte b) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -136,8 +133,6 @@ namespace PeterO.Mail {
       this.AddByte(str, b);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A StringBuilder object.</param>
     public void FinalizeEncoding(StringBuilder str) {
       if (this.quantumCount == 2) {
         char c1 = this.alphabet[(this.byte1 >> 2) & 63];
@@ -169,21 +164,11 @@ namespace PeterO.Mail {
       this.haveCR = false;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A StringBuilder object.</param>
-    /// <param name='data'>A byte array.</param>
-    /// <param name='offset'>A 32-bit signed integer.</param>
-    /// <param name='count'>A 32-bit signed integer. (2).</param>
 public void WriteToStringAndFinalize(StringBuilder str, byte[] data, int offset, int count) {
       this.WriteToString(str, data, offset, count);
       this.FinalizeEncoding(str);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A StringBuilder object.</param>
-    /// <param name='data'>A byte array.</param>
-    /// <param name='offset'>A 32-bit signed integer.</param>
-    /// <param name='count'>A 32-bit signed integer. (2).</param>
     public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
       if (str == null) {
         throw new ArgumentNullException("str");

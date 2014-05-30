@@ -38,7 +38,8 @@ import java.util.*;
     /**
      * Gets a value indicating whether this represents a group of addresses
      * rather than a single address.
-     * @return Whether this represents a group of addresses.
+     * @return True if this represents a group of addresses; otherwise,
+     * false..
      */
     public boolean isGroup() {
         return this.isGroup;

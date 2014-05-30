@@ -37,13 +37,13 @@ namespace PeterO.Text {
 
     /// <summary>Gets the PunyCode length of a string (PunyCode is defined
     /// in RFC 3492).</summary>
-    /// <param name='str'>A string object.</param>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
     /// <returns>The PunyCode length of the encoded string. If the string
     /// contains non-ASCII characters, returns the PunyCode length plus
     /// 4 (the length of the ACE prefix). If there are only ASCII characters,
     /// returns the length of the string. Returns -1 if an overflow error occurs.</returns>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer.</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
     public static int PunycodeLength(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -193,9 +193,9 @@ namespace PeterO.Text {
     /// <param name='str'>A string to decode. Note that this doesn&apos;t
     /// include a prefix such as.<code>xn--</code>
     /// .</param>
+    /// <returns>A string object.</returns>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
-    /// <returns>A string object.</returns>
     internal static string PunycodeDecode(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");

@@ -17,10 +17,6 @@ at: http://upokecenter.com/d/
       this.transform = stream;
     }
 
-    /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
     public int read() {
       if (this.unget) {
         this.unget = false;
@@ -30,9 +26,6 @@ at: http://upokecenter.com/d/
       return this.lastByte;
     }
 
-    /**
-     * Not documented yet.
-     */
     public void Unget() {
       this.unget = true;
     }

@@ -2,9 +2,6 @@ package com.upokecenter.text;
 
 import java.util.*;
 
-    /**
-     * Not documented yet.
-     */
   final class PartialListCharacterInput implements ICharacterInput {
     private int pos;
     private int endPos;
@@ -34,10 +31,6 @@ import java.util.*;
       this.endPos = start + length;
     }
 
-    /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
     public int ReadChar() {
       if (this.pos < this.endPos) {
         return this.ilist.get(this.pos++);
@@ -46,7 +39,7 @@ import java.util.*;
     }
 
     /**
-     * Not documented yet.
+     *
      * @param buf An array of 32-bit unsigned integers.
      * @param offset A 32-bit signed integer. (2).
      * @param unitCount A 32-bit signed integer. (3).
