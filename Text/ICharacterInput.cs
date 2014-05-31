@@ -1,7 +1,7 @@
 using System;
 
 namespace PeterO.Text {
-    /// <summary>Not documented yet.</summary>
+    /// <summary>An interface for reading Unicode characters.</summary>
   public interface ICharacterInput {
     int ReadChar();
 

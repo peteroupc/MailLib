@@ -64,7 +64,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Converts this object to an immutable ContentDisposition
+    /// object.</summary>
     /// <returns>A MediaType object.</returns>
     public ContentDisposition ToDisposition() {
       return new ContentDisposition(this.type, this.parameters);
@@ -87,8 +88,9 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='name'>A string object.</param>
+    /// <summary>Removes a parameter from this content disposition.</summary>
+    /// <param name='name'>The parameter to remove. The name is compared
+    /// case insensitively.</param>
     /// <returns>This instance.</returns>
     public DispositionBuilder RemoveParameter(string name) {
       if (name == null) {
@@ -98,9 +100,10 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='name'>A string object.</param>
-    /// <param name='value'>A string object. (2).</param>
+    /// <summary>Sets a parameter of this content dispostion.</summary>
+    /// <param name='name'>Name of the parameter to set. If this name already
+    /// exists (compared case-insensitively), it will be overwritten.</param>
+    /// <param name='value'>Value of the parameter to set.</param>
     /// <returns>This instance.</returns>
     public DispositionBuilder SetParameter(string name, string value) {
       if (value == null) {

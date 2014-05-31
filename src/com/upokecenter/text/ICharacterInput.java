@@ -1,7 +1,7 @@
 package com.upokecenter.text;
 
     /**
-     * Not documented yet.
+     * An interface for reading Unicode characters.
      */
   public interface ICharacterInput {
     int ReadChar();

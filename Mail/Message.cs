@@ -40,19 +40,19 @@ namespace PeterO.Mail {
     /// any 8-bit bytes are replaced with the ASCII substitute character
     /// (0x1a).</item>
     /// <item>If the transfer encoding is absent or declared as 7bit, and
-    /// the charset is declared to be <code>utf-8</code>
+    /// the charset is declared to be <c>utf-8</c>
     /// , the transfer encoding is treated as 8bit instead.</item>
     /// <item>In text/html message bodies, if the transfer encoding is absent
-    /// or declared as 7bit, and the charset is declared to be <code>ascii</code>
-    /// , <code>us-ascii</code>
+    /// or declared as 7bit, and the charset is declared to be <c>ascii</c>
+    /// , <c>us-ascii</c>
     /// , "windows-1252", "windows-1251", or "iso-8859-*" (all single
     /// byte encodings), the transfer encoding is treated as 8bit instead.</item>
     /// <item>If the first line of the message starts with the word "From"
     /// followed by a space, it is skipped.</item>
-    /// <item>The name <code>ascii</code>
-    /// is treated as a synonym for <code>us-ascii</code>
-    /// , despite being a reserved name under RFC 2046. The name <code>cp1252</code>
-    /// is treated as a synonym for <code>windows-1252</code>
+    /// <item>The name <c>ascii</c>
+    /// is treated as a synonym for <c>us-ascii</c>
+    /// , despite being a reserved name under RFC 2046. The name <c>cp1252</c>
+    /// is treated as a synonym for <c>windows-1252</c>
     /// , even though it's not an IANA registered alias.</item>
     /// <item>If a sequence of encoded words (RFC 2047) decodes to a string
     /// with a CTL character (U + 007F, or a character less than U + 0020 and not
@@ -476,7 +476,8 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets a filename suggested by this message for saving the
-    /// message's body to a file.</summary>
+    /// message's body to a file. For more information on the algorithm, see
+    /// ContentDisposition.MakeFilename.</summary>
     /// <value>A suggested name for the file, or the empty string if there
     /// is no filename suggested by the content type or content disposition.</value>
     public string FileName {
@@ -1128,8 +1129,8 @@ namespace PeterO.Mail {
     /// If the header field has an invalid syntax or has no addresses, this
     /// method will generate a synthetic header field with the display-name
     /// set to the contents of all of the header fields with the same name, and
-    /// the address set to <code>me@[header-name]-address.invalid</code>
-    /// as the address (a <code>.invalid</code>
+    /// the address set to <c>me@[header-name]-address.invalid</c>
+    /// as the address (a <c>.invalid</c>
     /// address is a reserved address that can never belong to anyone). </para>
     /// </summary>
     /// <returns>The generated message.</returns>

@@ -83,8 +83,6 @@ namespace PeterO {
       return this.wrapped.Contains(item);
     }
 
-    /// <param name='array'>A KeyValuePair[] object.</param>
-    /// <param name='arrayIndex'>A 32-bit signed integer.</param>
     public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) {
       this.wrapped.CopyTo(array, arrayIndex);
     }
