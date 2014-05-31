@@ -59,13 +59,6 @@ import com.upokecenter.util.*;
       return c;
     }
 
-    /**
-     *
-     * @param chars An array of 32-bit unsigned integers.
-     * @param index A 32-bit signed integer. (2).
-     * @param length A 32-bit signed integer. (3).
-     * @return A 32-bit signed integer.
-     */
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new NullPointerException("chars");

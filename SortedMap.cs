@@ -113,8 +113,6 @@ namespace PeterO {
       return this.tree.Contains(item);
     }
 
-    /// <param name='array'>A KeyValuePair[] object.</param>
-    /// <param name='arrayIndex'>A 32-bit signed integer.</param>
     public void CopyTo(KeyValuePair<T1, T2>[] array, int arrayIndex) {
       this.tree.CopyTo(array, arrayIndex);
     }

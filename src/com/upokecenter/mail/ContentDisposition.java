@@ -336,9 +336,12 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param defaultValue Can be null.
+     * Creates a new content disposition object from the value of a Content-Disposition
+     * header field.
+     * @param str A string object that should be the value of a Content-Disposition
+     * header field.
+     * @param defaultValue The value to return in case the &quot;str&quot;
+     * parameter is syntactically invalid. Can be null.
      * @return A ContentDisposition object.
      */
     public static ContentDisposition Parse(String str, ContentDisposition defaultValue) {

@@ -337,9 +337,12 @@ namespace PeterO.Mail {
       return Parse(dispoValue, Attachment);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <param name='defaultValue'>Can be null.</param>
+    /// <summary>Creates a new content disposition object from the value
+    /// of a Content-Disposition header field.</summary>
+    /// <param name='str'>A string object that should be the value of a Content-Disposition
+    /// header field.</param>
+    /// <param name='defaultValue'>The value to return in case the &quot;str&quot;
+    /// parameter is syntactically invalid. Can be null.</param>
     /// <returns>A ContentDisposition object.</returns>
     public static ContentDisposition Parse(string str, ContentDisposition defaultValue) {
       if (str == null) {

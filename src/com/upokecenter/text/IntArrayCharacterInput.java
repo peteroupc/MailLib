@@ -20,7 +20,7 @@ package com.upokecenter.text;
     }
 
     /**
-     *
+     * Not documented yet.
      * @param buf An array of 32-bit unsigned integers.
      * @param offset A 32-bit signed integer. (2).
      * @param unitCount A 32-bit signed integer. (3).

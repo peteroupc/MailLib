@@ -19,6 +19,7 @@ namespace PeterO.Text {
     }
 
     /// <param name='buf'>An array of 32-bit unsigned integers.</param>
+    /// <summary>Not documented yet.</summary>
     /// <returns>A 32-bit signed integer.</returns>
     /// <param name='offset'>A 32-bit signed integer. (2).</param>
     /// <param name='unitCount'>A 32-bit signed integer. (3).</param>

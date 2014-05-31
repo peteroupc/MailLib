@@ -491,7 +491,7 @@ public void setContentDisposition(ContentDisposition value) {
 
     /**
      * Gets a filename suggested by this message for saving the message's
-     * body to a file.
+     * body to a file. For more information on the algorithm, see ContentDisposition.MakeFilename.
      * @return A suggested name for the file, or the empty string if there
      * is no filename suggested by the content type or content disposition.
      */

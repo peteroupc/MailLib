@@ -688,7 +688,8 @@ namespace PeterO {
     }
 
     /// <param name='array'>A T[] object.</param>
-    /// <param name='arrayIndex'>A 32-bit signed integer.</param>
+    /// <param name='arrayIndex'>Starting index to copy to.</param>
+    /// <summary>Copies this object's data to a new array.</summary>
     public void CopyTo(T[] array, int arrayIndex) {
       if (this.treeValue != null) {
         RBCell t = this.treeValue.leftmost();
@@ -703,7 +704,6 @@ namespace PeterO {
       }
     }
 
-    /// <returns>An IEnumerator(T) object.</returns>
     public IEnumerator<T> GetEnumerator() {
       return this.Iterator().GetEnumerator();
     }

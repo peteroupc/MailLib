@@ -191,7 +191,7 @@ namespace PeterO.Text {
 
     /// <summary>Decodes a PunyCode-encoded string.</summary>
     /// <param name='str'>A string to decode. Note that this doesn&apos;t
-    /// include a prefix such as.<code>xn--</code>
+    /// include a prefix such as.<c>xn--</c>
     /// .</param>
     /// <returns>A string object.</returns>
     /// <param name='index'>A 32-bit signed integer.</param>

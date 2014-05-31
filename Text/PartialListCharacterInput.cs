@@ -38,10 +38,6 @@ namespace PeterO.Text {
       return -1;
     }
 
-    /// <param name='buf'>An array of 32-bit unsigned integers.</param>
-    /// <returns>A 32-bit signed integer.</returns>
-    /// <param name='offset'>A 32-bit signed integer. (2).</param>
-    /// <param name='unitCount'>A 32-bit signed integer. (3).</param>
     public int Read(int[] buf, int offset, int unitCount) {
       if (buf == null) {
         throw new ArgumentNullException("buf");

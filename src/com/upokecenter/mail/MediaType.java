@@ -98,12 +98,12 @@ import com.upokecenter.util.*;
 
     enum QuotedStringRule {
     /**
-     * Not documented yet.
+     *
      */
       Http,
 
     /**
-     * Not documented yet.
+     *
      */
       Rfc5322
     }

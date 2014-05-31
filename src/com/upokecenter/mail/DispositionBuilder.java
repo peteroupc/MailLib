@@ -65,7 +65,7 @@ public void setDispositionType(String value) {
       }
 
     /**
-     * Not documented yet.
+     * Converts this object to an immutable ContentDisposition object.
      * @return A MediaType object.
      */
     public ContentDisposition ToDisposition() {
@@ -92,8 +92,8 @@ public void setDispositionType(String value) {
     }
 
     /**
-     * Not documented yet.
-     * @param name A string object.
+     * Removes a parameter from this content disposition.
+     * @param name The parameter to remove. The name is compared case insensitively.
      * @return This instance.
      */
     public DispositionBuilder RemoveParameter(String name) {
@@ -105,9 +105,10 @@ public void setDispositionType(String value) {
     }
 
     /**
-     * Not documented yet.
-     * @param name A string object.
-     * @param value A string object. (2).
+     * Sets a parameter of this content dispostion.
+     * @param name Name of the parameter to set. If this name already exists
+     * (compared case-insensitively), it will be overwritten.
+     * @param value Value of the parameter to set.
      * @return This instance.
      */
     public DispositionBuilder SetParameter(String name, String value) {
