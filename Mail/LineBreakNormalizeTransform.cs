@@ -10,7 +10,7 @@ using System.IO;
 
 namespace PeterO.Mail {
     /// <summary>Normalizes bare CR and bare LF to CRLF.</summary>
-  public class LineBreakNormalizeTransform : ITransform
+  internal class LineBreakNormalizeTransform : ITransform
   {
     private Stream stream;
     private int val;
