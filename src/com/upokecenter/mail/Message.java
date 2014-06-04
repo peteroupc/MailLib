@@ -37,26 +37,25 @@ import com.upokecenter.util.*;
      * instanceof 7bit) ? (7bit)declared : null), any 8-bit bytes are replaced
      * with the ASCII substitute character (0x1a).</li> <li>If the transfer
      * encoding is absent or ((declared instanceof 7bit) ? (7bit)declared
-     * : null), and the charset is declared to be <code>utf-8</code> , the
-     * transfer encoding is treated as 8bit instead.</li> <li>In text/html
-     * message bodies, if the transfer encoding is absent or ((declared
-     * instanceof 7bit) ? (7bit)declared : null), and the charset is declared
-     * to be <code>ascii</code> , <code>us-ascii</code> , "windows-1252",
-     * "windows-1251", or "iso-8859-*" (all single byte encodings), the
-     * transfer encoding is treated as 8bit instead.</li> <li>If the first
-     * line of the message starts with the word "From" followed by a space,
-     * it is skipped.</li> <li>The name <code>ascii</code> is treated
-     * as a synonym for <code>us-ascii</code> , despite being a reserved
-     * name under RFC 2046. The name <code>cp1252</code> is treated as a
-     * synonym for <code>windows-1252</code> , even though it's not an
-     * IANA registered alias.</li> <li>If a sequence of encoded words (RFC
-     * 2047) decodes to a string with a CTL character (U + 007F, or a character
-     * less than U + 0020 and not TAB) after being converted to Unicode, the
-     * encoded words are left un-decoded.</li> <li>This implementation
-     * can decode an encoded word that uses ISO-2022-JP (the only supported
-     * encoding that uses code switching) even if the encoded word's payload
-     * ends in a different mode from ASCII mode. (Each encoded word still
-     * starts in ASCII mode, though.)</li> </ul>
+     * : null), and the charset is declared to be <code>utf-8</code> , the transfer
+     * encoding is treated as 8bit instead.</li> <li>In text/html message
+     * bodies, if the transfer encoding is absent or ((declared instanceof
+     * 7bit) ? (7bit)declared : null), and the charset is declared to be <code>ascii</code>
+     * , <code>us-ascii</code> , "windows-1252", "windows-1251", or "iso-8859-*"
+     * (all single byte encodings), the transfer encoding is treated as
+     * 8bit instead.</li> <li>If the first line of the message starts with
+     * the word "From" followed by a space, it is skipped.</li> <li>The name
+     * <code>ascii</code> is treated as a synonym for <code>us-ascii</code> , despite
+     * being a reserved name under RFC 2046. The name <code>cp1252</code> is treated
+     * as a synonym for <code>windows-1252</code> , even though it's not an IANA
+     * registered alias.</li> <li>If a sequence of encoded words (RFC 2047)
+     * decodes to a string with a CTL character (U + 007F, or a character less
+     * than U + 0020 and not TAB) after being converted to Unicode, the encoded
+     * words are left un-decoded.</li> <li>This implementation can decode
+     * an encoded word that uses ISO-2022-JP (the only supported encoding
+     * that uses code switching) even if the encoded word's payload ends
+     * in a different mode from ASCII mode. (Each encoded word still starts
+     * in ASCII mode, though.)</li> </ul>
      */
   public final class Message {
     private static final int EncodingSevenBit = 0;
@@ -1142,8 +1141,8 @@ public void setContentDisposition(ContentDisposition value) {
      * invalid syntax or has no addresses, this method will generate a synthetic
      * header field with the display-name set to the contents of all of the
      * header fields with the same name, and the address set to <code>me@[header-name]-address.invalid</code>
-     * as the address (a <code>.invalid</code> address is a reserved address
-     * that can never belong to anyone). </p>
+     * as the address (a <code>.invalid</code> address is a reserved address that
+     * can never belong to anyone). </p>
      * @return The generated message.
      * @throws MessageDataException The message can't be generated.
      */
