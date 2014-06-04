@@ -19,13 +19,6 @@ package com.upokecenter.text;
       return -1;
     }
 
-    /**
-     * Not documented yet.
-     * @param buf An array of 32-bit unsigned integers.
-     * @param offset A 32-bit signed integer. (2).
-     * @param unitCount A 32-bit signed integer. (3).
-     * @return A 32-bit signed integer.
-     */
     public int Read(int[] buf, int offset, int unitCount) {
       if (buf == null) {
         throw new NullPointerException("buf");
