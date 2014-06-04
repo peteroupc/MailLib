@@ -8,8 +8,13 @@ at: http://upokecenter.com/d/
  */
 
     /**
-     * Contains methods that implement Internationalized Domain Names
-     * in Applications (IDNA).
+     * <p>Contains methods that implement Internationalized Domain Names
+     * in Applications (IDNA).</p> <p>NOTICE: While this class's source
+     * code is in the public domain, the class uses two internal classes,
+     * called NormalizationData and IdnaData, that include data derived
+     * from the Unicode Character Database. See the documentation for the
+     * Normalizer class for the permission notice for the Unicode Character
+     * Database.</p>
      */
   public final class Idna {
 private Idna() {

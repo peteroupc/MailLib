@@ -10,9 +10,16 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace PeterO.Text {
-    /// <summary>Implements the Unicode normalization algorithm and contains
-    /// methods and functionality to test and convert Unicode strings for
-    /// Unicode normalization.</summary>
+    /// <summary><para>Implements the Unicode normalization algorithm
+    /// and contains methods and functionality to test and convert Unicode
+    /// strings for Unicode normalization. This is similar to the Normalizer
+    /// class, except it implements the ICharacterInput interface.</para>
+    /// <para>NOTICE: While this class's source code is in the public domain,
+    /// the class uses an internal class, called NormalizationData, that
+    /// includes data derived from the Unicode Character Database. See the
+    /// documentation for the Normalizer class for the permission notice
+    /// for the Unicode Character Database.</para>
+    /// </summary>
   public sealed class NormalizingCharacterInput : ICharacterInput
   {
     public static IList<int> GetChars(string str, Normalization form) {

@@ -10,9 +10,15 @@ at: http://upokecenter.com/d/
 import java.util.*;
 
     /**
-     * Implements the Unicode normalization algorithm and contains methods
-     * and functionality to test and convert Unicode strings for Unicode
-     * normalization.
+     * <p>Implements the Unicode normalization algorithm and contains
+     * methods and functionality to test and convert Unicode strings for
+     * Unicode normalization. This is similar to the Normalizer class,
+     * except it implements the ICharacterInput interface.</p> <p>NOTICE:
+     * While this class's source code is in the public domain, the class uses
+     * an class, called NormalizationData, that includes data
+     * derived from the Unicode Character Database. See the documentation
+     * for the Normalizer class for the permission notice for the Unicode
+     * Character Database.</p>
      */
   public final class NormalizingCharacterInput implements ICharacterInput
   {
