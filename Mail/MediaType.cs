@@ -98,10 +98,10 @@ namespace PeterO.Mail {
     }
 
     internal enum QuotedStringRule {
-    /// <summary/>
+    /// <summary>Not documented yet.</summary>
       Http,
 
-    /// <summary/>
+    /// <summary>Not documented yet.</summary>
       Rfc5322
     }
 

@@ -338,19 +338,19 @@ import com.upokecenter.text.*;
     /**
      * Creates a new content disposition object from the value of a Content-Disposition
      * header field.
-     * @param str A string object that should be the value of a Content-Disposition
-     * header field.
-     * @param defaultValue The value to return in case the &quot;str&quot;
-     * parameter is syntactically invalid. Can be null.
+     * @param dispositionValue A string object that should be the value
+     * of a Content-Disposition header field.
+     * @param defaultValue The value to return in case the disposition value
+     * is syntactically invalid. Can be null.
      * @return A ContentDisposition object.
      */
-    public static ContentDisposition Parse(String str, ContentDisposition defaultValue) {
-      if (str == null) {
+    public static ContentDisposition Parse(String dispositionValue, ContentDisposition defaultValue) {
+      if (dispositionValue == null) {
         throw new NullPointerException("str");
       }
       ContentDisposition dispo = new ContentDisposition();
       dispo.parameters = new TreeMap<String, String>();
-      if (!dispo.ParseDisposition(str)) {
+      if (!dispo.ParseDisposition(dispositionValue)) {
 
         return defaultValue;
       }

@@ -100,7 +100,7 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Sets a parameter of this content dispostion.</summary>
+    /// <summary>Sets a parameter of this content disposition.</summary>
     /// <param name='name'>Name of the parameter to set. If this name already
     /// exists (compared case-insensitively), it will be overwritten.</param>
     /// <param name='value'>Value of the parameter to set.</param>

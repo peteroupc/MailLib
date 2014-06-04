@@ -105,7 +105,7 @@ public void setDispositionType(String value) {
     }
 
     /**
-     * Sets a parameter of this content dispostion.
+     * Sets a parameter of this content disposition.
      * @param name Name of the parameter to set. If this name already exists
      * (compared case-insensitively), it will be overwritten.
      * @param value Value of the parameter to set.
