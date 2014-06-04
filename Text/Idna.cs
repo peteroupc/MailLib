@@ -12,8 +12,9 @@ namespace PeterO.Text {
     /// <summary><para>Contains methods that implement Internationalized
     /// Domain Names in Applications (IDNA).</para>
     /// <para>NOTICE: While this class's source code is in the public domain,
-    /// the class uses two internal classes, called NormalizationData and
-    /// IdnaData, that include data derived from the Unicode Character Database.
+    /// the class uses two internal classes, called <c>NormalizationData</c>
+    /// and <c>IdnaData</c>
+    /// , that include data derived from the Unicode Character Database.
     /// See the documentation for the Normalizer class for the permission
     /// notice for the Unicode Character Database.</para>
     /// </summary>

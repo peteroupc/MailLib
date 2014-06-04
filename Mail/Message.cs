@@ -14,10 +14,10 @@ using PeterO;
 
 namespace PeterO.Mail {
     /// <summary>Represents an email message. <para><b>Thread safety:</b>
-    /// This class is mutable; its properties can be changed. None of its methods
-    /// are designed to be thread safe. Therefore, access to objects from
-    /// this class must be synchronized if multiple threads can access them
-    /// at the same time.</para>
+    /// This class is mutable; its properties can be changed. None of its instance
+    /// methods are designed to be thread safe. Therefore, access to objects
+    /// from this class must be synchronized if multiple threads can access
+    /// them at the same time.</para>
     /// <para>The following lists known deviations from the mail specifications
     /// (Internet Message Format and MIME):</para>
     /// <list type=''> <item>The content-transfer-encoding "quoted-printable"
@@ -363,7 +363,6 @@ namespace PeterO.Mail {
       long ticks = DateTime.UtcNow.Ticks;
       StringBuilder builder = new StringBuilder();
       int seq = 0;
-      int rnd = 0;
       builder.Append("<");
       lock (sequenceSync) {
         if (seqFirstTime) {
@@ -373,9 +372,6 @@ namespace PeterO.Mail {
           seqFirstTime = false;
         }
         seq = unchecked(msgidSequence++);
-        rnd = msgidRandom.Next(65536);
-        rnd <<= 16;
-        rnd |= msgidRandom.Next(65536);
       }
       string guid = Guid.NewGuid().ToString();
       string hex = "0123456789abcdef";
