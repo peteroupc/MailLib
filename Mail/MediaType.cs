@@ -590,10 +590,9 @@ namespace PeterO.Mail {
     /// <summary>Returns the charset parameter, converted to ASCII lower-case,
     /// if it exists, or <c>"us-ascii"</c>
     /// if the media type is ill-formed (RFC2045 sec. 5.2), or if the media
-    /// type is "text/plain" and doesn't have a charset parameter (see RFC2046
-    /// and RFC3023, respectively), or the default charset, if any, for the
-    /// media type if the charset parameter is absent. Returns an empty string
-    /// in all other cases.</summary>
+    /// type is "text/plain" and doesn't have a charset parameter (see RFC2046),
+    /// or the default charset, if any, for the media type if the charset parameter
+    /// is absent. Returns an empty string in all other cases.</summary>
     /// <returns>A string object.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(

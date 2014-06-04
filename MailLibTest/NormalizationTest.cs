@@ -15,14 +15,14 @@ namespace MailLibTest {
 
     public static int[] GetCodePoints(String cp) {
       String[] cpArray=TrimSpaces(cp).Split(' ');
-      int[] ret = new int[cpArray.Length];
+      int[] retArray = new int[cpArray.Length];
       int index = 0;
       foreach(String v in cpArray) {
         int hex = Int32.Parse(TrimSpaces(v), System.Globalization.NumberStyles.AllowHexSpecifier,
                               System.Globalization.CultureInfo.InvariantCulture);
-        ret[index++]=hex;
+        retArray[index++]=hex;
       }
-      return ret;
+      return retArray;
     }
 
     public static String ToString(int[] array) {
@@ -67,12 +67,12 @@ namespace MailLibTest {
     }
 
     public static int[] ToIntArray(IList<int> list) {
-      int[] ret = new int[list.Count];
+      int[] retArray = new int[list.Count];
       int index = 0;
       foreach(int v in list) {
-        ret[index++]=v;
+        retArray[index++]=v;
       }
-      return ret;
+      return retArray;
     }
     public static void AssertEqual(int expected, int actual, String msg) {
       if (expected != actual) {
@@ -158,7 +158,7 @@ namespace MailLibTest {
           }
         }
       }
-      int[] cptemp = new int[1];
+      char[] cptemp = new char[2];
       // Individual code points that don't appear in Part 1 of the
       // test will normalize to themselves in all four normalization forms
       for (int i = 0;i<handled.Length; ++i) {
@@ -167,36 +167,28 @@ namespace MailLibTest {
           continue;
         }
         if (!handled[i]) {
-          cptemp[0]=i;
+          if (i >= 0x10000) {
+            cptemp[0]=((char)((((i - 0x10000) >> 10) & 0x3ff) + 0xd800));
+            cptemp[1]=((char)(((i - 0x10000) & 0x3ff) + 0xdc00));
+          } else {
+            cptemp[0] = (char)i;
+          }
+          string cpstr = new String(cptemp, 0, (i >= 0x10000 ? 2 : 1));
           string imsg=""+i;
-          ICharacterInput ci = new IntArrayCharacterInput(cptemp);
-          NormalizingCharacterInput norm;
-          norm = new NormalizingCharacterInput(ci, Normalization.NFC);
-          AssertEqual(i, norm.ReadChar(), imsg);
-          AssertEqual(-1, norm.ReadChar(), imsg);
-          ci = new IntArrayCharacterInput(cptemp);
-          norm = new NormalizingCharacterInput(ci, Normalization.NFD);
-          AssertEqual(i, norm.ReadChar(), imsg);
-          AssertEqual(-1, norm.ReadChar(), imsg);
-          ci = new IntArrayCharacterInput(cptemp);
-          norm = new NormalizingCharacterInput(ci, Normalization.NFKC);
-          AssertEqual(i, norm.ReadChar(), imsg);
-          AssertEqual(-1, norm.ReadChar(), imsg);
-          ci = new IntArrayCharacterInput(cptemp);
-          norm = new NormalizingCharacterInput(ci, Normalization.NFKD);
-          AssertEqual(i, norm.ReadChar(), imsg);
-          AssertEqual(-1, norm.ReadChar(), imsg);
-          string cps = ToCodePointString(cptemp);
-          if (!PeterO.Text.Normalizer.IsNormalized(cps, Normalization.NFC)) {
+          Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr, Normalization.NFC));
+          Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr, Normalization.NFD));
+          Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr, Normalization.NFKC));
+          Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr, Normalization.NFKD));
+          if (!PeterO.Text.Normalizer.IsNormalized(cpstr, Normalization.NFC)) {
             Assert.Fail(imsg);
           }
-          if (!PeterO.Text.Normalizer.IsNormalized(cps, Normalization.NFD)) {
+          if (!PeterO.Text.Normalizer.IsNormalized(cpstr, Normalization.NFD)) {
             Assert.Fail(imsg);
           }
-          if (!PeterO.Text.Normalizer.IsNormalized(cps, Normalization.NFKC)) {
+          if (!PeterO.Text.Normalizer.IsNormalized(cpstr, Normalization.NFKC)) {
             Assert.Fail(imsg);
           }
-          if (!PeterO.Text.Normalizer.IsNormalized(cps, Normalization.NFKD)) {
+          if (!PeterO.Text.Normalizer.IsNormalized(cpstr, Normalization.NFKD)) {
             Assert.Fail(imsg);
           }
         }

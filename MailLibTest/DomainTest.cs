@@ -18,36 +18,33 @@ namespace MailLibTest {
     public void TestPunycode() {
       string tmp;
       tmp="ascii";
-      Assert.AreEqual(tmp, DomainUtility.PunycodeEncode(tmp));
+      Assert.AreEqual(tmp, Idna.EncodeDomainName(tmp));
       tmp="-ascii-1-";
-      Assert.AreEqual(tmp, DomainUtility.PunycodeEncode(tmp));
+      Assert.AreEqual(tmp, Idna.EncodeDomainName(tmp));
       tmp="-ascii-1";
-      Assert.AreEqual(tmp, DomainUtility.PunycodeEncode(tmp));
+      Assert.AreEqual(tmp, Idna.EncodeDomainName(tmp));
       tmp="ascii-1-";
-      Assert.AreEqual(tmp, DomainUtility.PunycodeEncode(tmp));
+      Assert.AreEqual(tmp, Idna.EncodeDomainName(tmp));
       tmp="1ascii-1";
-      Assert.AreEqual(tmp, DomainUtility.PunycodeEncode(tmp));
+      Assert.AreEqual(tmp, Idna.EncodeDomainName(tmp));
       tmp="2ascii-1-";
-      Assert.AreEqual(tmp, DomainUtility.PunycodeEncode(tmp));
+      Assert.AreEqual(tmp, Idna.EncodeDomainName(tmp));
       tmp="as.cii";
-      Assert.AreEqual(tmp, DomainUtility.PunycodeEncode(tmp));
+      Assert.AreEqual(tmp, Idna.EncodeDomainName(tmp));
       tmp="as&cii";
-      Assert.AreEqual(tmp, DomainUtility.PunycodeEncode(tmp));
+      Assert.AreEqual(tmp, Idna.EncodeDomainName(tmp));
       tmp="as`cii";
-      Assert.AreEqual(tmp, DomainUtility.PunycodeEncode(tmp));
+      Assert.AreEqual(tmp, Idna.EncodeDomainName(tmp));
       tmp="\rascii";
-      Assert.AreEqual(tmp, DomainUtility.PunycodeEncode(tmp));
+      Assert.AreEqual(tmp, Idna.EncodeDomainName(tmp));
       tmp="\nascii";
-      Assert.AreEqual(tmp, DomainUtility.PunycodeEncode(tmp));
+      Assert.AreEqual(tmp, Idna.EncodeDomainName(tmp));
       tmp="\u007fascii";
-      Assert.AreEqual(tmp, DomainUtility.PunycodeEncode(tmp));
+      Assert.AreEqual(tmp, Idna.EncodeDomainName(tmp));
       // Test other aspects of Punycode
       Assert.AreEqual(
         "xn--e-ufa",
-        DomainUtility.PunycodeEncode("e\u00e1"));
-      Assert.AreEqual(
-        "e\u00e1",
-        DomainUtility.PunycodeDecode("xn--e-ufa",4,9));
+        Idna.EncodeDomainName("e\u00e1"));
     }
 
     [TestMethod]

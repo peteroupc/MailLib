@@ -5,7 +5,6 @@ import java.io.*;
 
 import org.junit.Assert;
 import org.junit.Test;
-import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 import com.upokecenter.text.*;
 
@@ -39,11 +38,11 @@ import com.upokecenter.text.*;
     }
 
     private static void TestMediaTypeRoundTrip(String str) {
-      MediaTypeBuilder mtstring=new MediaTypeBuilder("x", "y").SetParameter("z", str).toString();
-      if(mtstring.Contains("\r\n\r\n"))Assert.fail();
-      if(mtstring.Contains("\r\n \r\n"))Assert.fail();
+      String mtstring = new MediaTypeBuilder("x", "y").SetParameter("z", str).toString();
+      if(mtstring.contains("\r\n\r\n"))Assert.fail();
+      if(mtstring.contains("\r\n \r\n"))Assert.fail();
       Assert.assertEquals(str, MediaType.Parse(mtstring).GetParameter("z"));
-      Message mtmessage=new Message(new java.io.ByteArrayInputStream(
+      Message mtmessage = new Message(new java.io.ByteArrayInputStream(
         DataUtilities.GetUtf8Bytes("MIME-Version: 1.0\r\nContent-Type: " + mtstring + "\r\n\r\n", true)));
       if(!(EncodingTest.IsGoodAsciiMessageFormat(mtmessage.Generate(), false)))Assert.fail();
     }
@@ -52,7 +51,7 @@ import com.upokecenter.text.*;
     public void TestGenerate() {
       ArrayList<String> msgids = new ArrayList<String>();
       // Tests whether unique Message IDs are generated for each message.
-      for (var i = 0; i < 1000; ++i) {
+      for (int i = 0; i < 1000; ++i) {
         String msgtext = new Message().SetHeader("from", "me@example.com").SetTextBody("Hello world.").Generate();
         if (!EncodingTest.IsGoodAsciiMessageFormat(msgtext, false)) {
           Assert.fail("Bad message format generated");
@@ -240,7 +239,7 @@ import com.upokecenter.text.*;
     }
 
     public void TestRfc2231Extension(String mtype, String param, String expected) {
-      var mt = MediaType.Parse(mtype);
+      MediaType mt = MediaType.Parse(mtype);
       Assert.assertEquals(expected, mt.GetParameter(param));
     }
 
@@ -291,15 +290,15 @@ import com.upokecenter.text.*;
       MediaType mt = new MediaTypeBuilder("x", "y").SetParameter("z", value).ToMediaType();
       String topLevel = mt.getTopLevelType();
       String sub = mt.getSubType();
-      var mtstring = "MIME-Version: 1.0\r\nContent-Type: " + mt.toString() +
+      String mtstring = "MIME-Version: 1.0\r\nContent-Type: " + mt.toString() +
         "\r\nContent-Transfer-Encoding: base64\r\n\r\n";
       java.io.ByteArrayInputStream ms=null;
 try {
 ms=new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(mtstring, true));
 
         Message msg=new Message(ms);
-        Assert.assertEquals(topLevel, msg.getContentType().TopLevelType);
-        Assert.assertEquals(sub, msg.getContentType().SubType);
+        Assert.assertEquals(topLevel, msg.getContentType().getTopLevelType());
+        Assert.assertEquals(sub, msg.getContentType().getSubType());
         Assert.assertEquals(mt.toString(),value,msg.getContentType().GetParameter("z"));
 }
 finally {
@@ -615,28 +614,28 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
 
     @Test
     public void TestMailbox() {
-      var mbox = "Me <@example.org,@example.net,@example.com:me@x.example>";
+      String mbox = "Me <@example.org,@example.net,@example.com:me@x.example>";
       NamedAddress result=new NamedAddress(mbox);
       Assert.assertEquals("Me <me@x.example>", result.toString());
     }
 
     static boolean HasNestedMessageType(Message message) {
-      if (message.getContentType().TopLevelType.equals("message")) {
-        if (message.getContentType().SubType.equals("global")) {
+      if (message.getContentType().getTopLevelType().equals("message")) {
+        if (message.getContentType().getSubType().equals("global")) {
           return false;
         }
-        if (message.getContentType().SubType.equals("global-headers")) {
+        if (message.getContentType().getSubType().equals("global-headers")) {
           return false;
         }
-        if (message.getContentType().SubType.equals("global-delivery-status")) {
+        if (message.getContentType().getSubType().equals("global-delivery-status")) {
           return false;
         }
-        if (message.getContentType().SubType.equals("global-disposition-notification")) {
+        if (message.getContentType().getSubType().equals("global-disposition-notification")) {
           return false;
         }
         return true;
       }
-      for(Object part : message.getParts()) {
+      for(Message part : message.getParts()) {
         if (HasNestedMessageType(part)) {
           return true;
         }
@@ -658,10 +657,10 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       message += "Epilogue";
       Message msg;
       msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message, true)));
-      Assert.assertEquals("multipart", msg.getContentType().TopLevelType);
+      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
       Assert.assertEquals("b1", msg.getContentType().GetParameter("boundary"));
       Assert.assertEquals(1, msg.getParts().size());
-      Assert.assertEquals("text", msg.getParts().get(0).getContentType().TopLevelType);
+      Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
       Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
       // Nested Multipart body part
       message = messageStart;
@@ -704,10 +703,10 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message, true)));
-      Assert.assertEquals("multipart", msg.getContentType().TopLevelType);
+      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
       Assert.assertEquals("b1", msg.getContentType().GetParameter("boundary"));
       Assert.assertEquals(1, msg.getParts().size());
-      Assert.assertEquals("application", msg.getParts().get(0).getContentType().TopLevelType);
+      Assert.assertEquals("application", msg.getParts().get(0).getContentType().getTopLevelType());
       body = msg.getParts().get(0).GetBody();
       Assert.assertEquals(0, body[0]);
       Assert.assertEquals(16, body[1]);
@@ -722,10 +721,10 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message, true)));
-      Assert.assertEquals("multipart", msg.getContentType().TopLevelType);
+      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
       Assert.assertEquals("b1", msg.getContentType().GetParameter("boundary"));
       Assert.assertEquals(1, msg.getParts().size());
-      Assert.assertEquals("application", msg.getParts().get(0).getContentType().TopLevelType);
+      Assert.assertEquals("application", msg.getParts().get(0).getContentType().getTopLevelType());
       body = msg.getParts().get(0).GetBody();
       Assert.assertEquals(0, body[0]);
       Assert.assertEquals(16, body[1]);
@@ -743,11 +742,11 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message, true)));
-      Assert.assertEquals("multipart", msg.getContentType().TopLevelType);
+      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
       Assert.assertEquals("b1", msg.getContentType().GetParameter("boundary"));
       Assert.assertEquals(1, msg.getParts().size());
       Message part = msg.getParts().get(0);
-      Assert.assertEquals("application", part.getParts().get(0).getContentType().TopLevelType);
+      Assert.assertEquals("application", part.getParts().get(0).getContentType().getTopLevelType());
       body = part.getParts().get(0).GetBody();
       Assert.assertEquals(0, body[0]);
       Assert.assertEquals(16, body[1]);

@@ -19,17 +19,12 @@ namespace PeterO.Mail {
 
     /// <summary>Initializes a new instance of the LineBreakNormalizeTransform
     /// class.</summary>
-    /// <param name='stream'>A Stream object.</param>
-    /// <param name='supportBareLF'>Whether to convert bareLF to CRLF.
-    /// If false, the transform will require no look-ahead.</param>
     public LineBreakNormalizeTransform(Stream stream, bool supportBareLF) {
       this.stream = stream;
       this.val = -1;
       this.supportBareLF = supportBareLF;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
 public int ReadByte() {
       try {
         if (this.val >= 0) {

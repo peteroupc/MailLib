@@ -12,7 +12,7 @@ import java.io.*;
     /**
      * Normalizes bare CR and bare LF to CRLF.
      */
-  public class LineBreakNormalizeTransform implements ITransform
+  class LineBreakNormalizeTransform implements ITransform
   {
     private InputStream stream;
     private int val;
@@ -22,9 +22,6 @@ import java.io.*;
     /**
      * Initializes a new instance of the LineBreakNormalizeTransform
      * class.
-     * @param stream A InputStream object.
-     * @param supportBareLF Whether to convert bareLF to CRLF. If false,
-     * the transform will require no look-ahead.
      */
     public LineBreakNormalizeTransform (InputStream stream, boolean supportBareLF) {
       this.stream = stream;
@@ -32,10 +29,6 @@ import java.io.*;
       this.supportBareLF = supportBareLF;
     }
 
-    /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
-     */
 public int read() {
       try {
         if (this.val >= 0) {

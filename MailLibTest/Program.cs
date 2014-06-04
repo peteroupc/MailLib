@@ -12,7 +12,6 @@ namespace MailLibTest {
   {
     public static void Main(string[] args) {
       new NormalizationTest().NormTest();
-      //new EncodingTest().TestMessage();
     }
   }
 }
