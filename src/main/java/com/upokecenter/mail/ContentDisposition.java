@@ -86,8 +86,10 @@ import com.upokecenter.text.*;
     private TreeMap<String, String> parameters;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a list of parameter names associated with this object and their
+     * values.
+     * @return A list of parameter names associated with this object and
+     * their values. The names will be sorted.
      */
     public Map<String, String> getParameters() {
         return java.util.Collections.unmodifiableMap(this.parameters);
@@ -157,7 +159,8 @@ import com.upokecenter.text.*;
      * is decoded under RFC 2231 if possible; characters unsuitable for
      * use in a filename (including the directory separators slash and backslash)
      * are replaced with underscores; and the filename is truncated if it
-     * would otherwise be too long.
+     * would otherwise be too long. Returns an empty string if {@code str}
+     * is null.
      */
     public static String MakeFilename(String str) {
       if (str == null) {
@@ -329,12 +332,12 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Not documented yet.
+     * The content disposition value "attachment".
      */
     public static final ContentDisposition Attachment = Build("attachment");
 
     /**
-     * Not documented yet.
+     * The content disposition value "inline".
      */
     public static final ContentDisposition Inline = Build("inline");
 
@@ -359,6 +362,7 @@ import com.upokecenter.text.*;
      * @param defaultValue The value to return in case the disposition value
      * is syntactically invalid. Can be null.
      * @return A ContentDisposition object.
+     * @throws java.lang.NullPointerException The parameter "str" is null.
      */
     public static ContentDisposition Parse(String dispositionValue, ContentDisposition defaultValue) {
       if (dispositionValue == null) {

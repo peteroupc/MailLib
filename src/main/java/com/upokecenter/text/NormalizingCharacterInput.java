@@ -27,6 +27,8 @@ import java.util.*;
      * @param str A string object.
      * @param form A Normalization object.
      * @return An List(int) object.
+     * @throws java.lang.NullPointerException The parameter {@code str}
+     * is null.
      */
     public static List<Integer> GetChars(String str, Normalization form) {
       if (str == null) {
@@ -40,6 +42,8 @@ import java.util.*;
      * @param str An ICharacterInput object.
      * @param form A Normalization object.
      * @return An List(int) object.
+     * @throws java.lang.NullPointerException The parameter {@code str}
+     * is null.
      */
     public static List<Integer> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
@@ -289,6 +293,8 @@ import java.util.*;
      * @param index A 32-bit signed integer. (2).
      * @param length A 32-bit signed integer. (3).
      * @return A 32-bit signed integer.
+     * @throws java.lang.NullPointerException The parameter {@code chars}
+     * or "this.buffer" is null.
      */
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {

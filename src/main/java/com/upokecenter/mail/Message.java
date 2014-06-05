@@ -169,6 +169,8 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
      * characters.
      * @param str A string object.
      * @return This instance.
+     * @throws java.lang.NullPointerException The parameter {@code str}
+     * is null.
      */
     public Message SetTextBody(String str) {
       if (str == null) {
@@ -186,6 +188,8 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
      * replacement characters.
      * @param str A string object.
      * @return This instance.
+     * @throws java.lang.NullPointerException The parameter {@code str}
+     * is null.
      */
     public Message SetHtmlBody(String str) {
       if (str == null) {
@@ -204,6 +208,8 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
      * @param text A string object.
      * @param html A string object. (2).
      * @return This instance.
+     * @throws java.lang.NullPointerException The parameter {@code text}
+     * or {@code html} is null.
      */
     public Message SetTextAndHtml(String text, String html) {
       if (text == null) {
@@ -226,8 +232,8 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
     }
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a list of addresses found in the From header field or fields.
+     * @return A list of addresses found in the From header field or fields.
      */
     public List<NamedAddress> getFromAddresses() {
         return ParseAddresses(this.GetMultipleHeaders("from"));
@@ -297,8 +303,8 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       }
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a list of addresses found in the BCC header field or fields.
+     * @return A list of addresses found in the BCC header field or fields.
      */
     public List<NamedAddress> getBccAddresses() {
         return ParseAddresses(this.GetMultipleHeaders("bcc"));
@@ -341,8 +347,9 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
     private static boolean useLenientLineBreaks = true;
 
     /**
-     * Initializes a new instance of the Message class.
-     * @param stream A InputStream object.
+     * Initializes a new instance of the Message class. Reads from the given
+     * InputStream object to initialize the message.
+     * @param stream A readable data stream.
      */
     public Message (InputStream stream) {
       if (stream == null) {
@@ -361,7 +368,8 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
     }
 
     /**
-     * Initializes a new instance of the Message class.
+     * Initializes a new instance of the Message class The message will be
+     * plain text and have an artificial From address.
      */
     public Message () {
       this.headers = new ArrayList<String>();
@@ -458,6 +466,8 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
     /**
      * Gets this message's media type.
      * @return This message's media type.
+     * @throws java.lang.NullPointerException This value is being set and
+     * "value" is null.
      */
     public MediaType getContentType() {
         return this.contentType;
@@ -951,6 +961,8 @@ public void setContentDisposition(ContentDisposition value) {
      * @throws java.lang.IllegalArgumentException The header field name is too long
      * or contains an invalid character, or the header field's value is syntactically
      * invalid.
+     * @throws java.lang.NullPointerException The parameter {@code name}
+     * or {@code value} is null.
      */
     public Message SetHeader(String name, String value) {
       if (name == null) {
@@ -996,6 +1008,8 @@ public void setContentDisposition(ContentDisposition value) {
      * its body part headers.
      * @param name The name of the header field to remove.
      * @return This instance.
+     * @throws java.lang.NullPointerException The parameter {@code name}
+     * is null.
      */
     public Message RemoveHeader(String name) {
       if (name == null) {

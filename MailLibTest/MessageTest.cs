@@ -266,7 +266,6 @@ namespace MailLibTest {
       Assert.IsTrue(DataUtilities.CodePointCompare("a\ud7ff\udc00", "a\ud800\udc00") < 0);
     }
 
-
     public void TestRfc2231Extension(string mtype, string param, string expected) {
       MediaType mt = MediaType.Parse(mtype);
       Assert.AreEqual(expected, mt.GetParameter(param));

@@ -139,6 +139,8 @@ private ParserUtility() {
      * If s is null or empty, returns an array whose sole element is the empty
      * string.
      * @throws java.lang.IllegalArgumentException Delimiter is null or empty.
+     * @throws java.lang.NullPointerException The parameter {@code delimiter}
+     * is null.
      */
     public static String[] SplitAt(String s, String delimiter) {
       if (delimiter == null) {

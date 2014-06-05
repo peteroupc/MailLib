@@ -50,9 +50,12 @@ namespace PeterO.Text {
   public sealed class Normalizer
   {
     /// <summary>Converts a string to the given Unicode normalization form.</summary>
-    /// <returns>The parameter "str" converted to the given normalization form.</returns>
+    /// <returns>The parameter <paramref name='str'/> converted to the
+    /// given normalization form.</returns>
     /// <param name='str'>An arbitrary string.</param>
     /// <param name='form'>The Unicode normalization form to convert to.</param>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     public static string Normalize(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -314,6 +317,8 @@ namespace PeterO.Text {
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='length'>A 32-bit signed integer. (3).</param>
     /// <returns>A 32-bit signed integer.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='chars'/> or "this.buffer" is null.</exception>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new ArgumentNullException("chars");
