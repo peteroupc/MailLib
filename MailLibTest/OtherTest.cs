@@ -8,7 +8,8 @@ at: http://upokecenter.com/d/
 using System;
 
 namespace MailLibTest {
-  public class OtherTest {
 
+/// </summary>
+public class OtherTest {
   }
 }
