@@ -31,7 +31,7 @@ namespace PeterO.Mail {
       if (other == null) {
         return false;
       }
-      return this.dispositionType == other.dispositionType &&
+      return this.dispositionType.Equals(other.dispositionType) &&
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 

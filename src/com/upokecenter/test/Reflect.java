@@ -16,6 +16,18 @@ public final class Reflect {
 	public static Object construct(Class<?> clazz, Object... args){
 		Constructor<?> con=null;
 		if(clazz==null)return null;
+		for(Constructor<?> c : clazz.getDeclaredConstructors()){
+			int paramLength=c.getParameterTypes().length;
+			if((paramLength==args.length || (c.isVarArgs() && paramLength>=args.length+1))){
+				if(con==null) {
+					con=c;
+				} else
+					return null; // ambiguous
+			}
+		}
+		if(con!=null){
+			return newInstance(con,args);
+		}
 		for(Constructor<?> c : clazz.getConstructors()){
 			int paramLength=c.getParameterTypes().length;
 			if((paramLength==args.length || (c.isVarArgs() && paramLength>=args.length+1))){
@@ -25,6 +37,7 @@ public final class Reflect {
 					return null; // ambiguous
 			}
 		}
+		if(con==null)return null;
 		return newInstance(con,args);
 	}
 	public static Object construct(String className, Object... args){
@@ -36,6 +49,7 @@ public final class Reflect {
 		if(clazz==null)return null;
 		try {
 			Constructor<?> con=clazz.getConstructor(parameterTypes);
+			if(con==null)return null;
 			return newInstance(con,args);
 		} catch (NoSuchMethodException e) {
 			return null;
@@ -79,6 +93,11 @@ public final class Reflect {
 		if(field==null)
 			return false;
 		try {
+			try {
+				field.setAccessible(true);
+			} catch(SecurityException e){
+				// Not fatal if the field is public
+			}
 			Object ret=field.get(obj);
 			if(retvalue!=null && retvalue.length>0){
 				retvalue[0]=ret;
@@ -127,6 +146,17 @@ public final class Reflect {
 	public static Method getStaticMethod(Class<?> clazz, String name){
 		if(clazz==null)return null;
 		Method con=null;
+		for(Method c : clazz.getDeclaredMethods()){
+			if(c.getName().equals(name)){
+				if(con==null) {
+					con=c;
+				} else
+					return null; // ambiguous
+			}
+		}
+		if(con!=null){
+			return con;
+		}
 		for(Method c : clazz.getMethods()){
 			if(c.getName().equals(name)){
 				if(con==null) {
@@ -140,6 +170,19 @@ public final class Reflect {
 	private static Method getStaticMethod(Class<?> clazz, String name, int argCount){
 		if(clazz==null)return null;
 		Method con=null;
+		for(Method c : clazz.getDeclaredMethods()){
+			int paramLength=c.getParameterTypes().length;
+			if((paramLength==argCount || (c.isVarArgs() && paramLength>=argCount+1)) &&
+					c.getName().equals(name)){
+				if(con==null) {
+					con=c;
+				} else
+					return null; // ambiguous
+			}
+		}
+		if(con!=null){
+			return con;
+		}
 		for(Method c : clazz.getMethods()){
 			int paramLength=c.getParameterTypes().length;
 			if((paramLength==argCount || (c.isVarArgs() && paramLength>=argCount+1)) &&
@@ -201,16 +244,20 @@ public final class Reflect {
 		if(retvalue!=null && retvalue.length>0){
 			retvalue[0]=null;
 		}
-		if(method==null)
+		if(method==null){
 			return false;
+		}
 		try {
+			try {
+				method.setAccessible(true);
+			} catch(SecurityException e){
+				// Not fatal if the method is public
+			}
 			Object ret=method.invoke(obj,args);
 			if(retvalue!=null && retvalue.length>0){
 				retvalue[0]=ret;
 			}
 			return true;
-		} catch (IllegalArgumentException e) {
-			return false;
 		} catch (IllegalAccessException e) {
 			return false;
 		} catch (InvocationTargetException e) {
@@ -219,15 +266,19 @@ public final class Reflect {
 				throw (Error)cause;
 			else if(cause instanceof RuntimeException)
 				throw (RuntimeException)cause;
-			return false;
+			else
+				throw new RuntimeException(cause);
 		}
 	}
 	private static Object newInstance(Constructor<?> con, Object... args){
 		if(con==null)return null;
 		try {
+			try {
+				con.setAccessible(true);
+			} catch(SecurityException e){
+				// Not fatal if the constructor is public
+			}
 			return con.newInstance(args);
-		} catch (IllegalArgumentException e) {
-			return null;
 		} catch (InstantiationException e) {
 			return null;
 		} catch (IllegalAccessException e) {
@@ -238,7 +289,8 @@ public final class Reflect {
 				throw (Error)cause;
 			else if(cause instanceof RuntimeException)
 				throw (RuntimeException)cause;
-			return null;
+			else
+				throw new RuntimeException(cause);
 		}
 	}
 
@@ -249,7 +301,11 @@ public final class Reflect {
 			if (typeCache.containsKey(type)) {
 				return typeCache.get(type);
 			}
-			return getClassForName(type);
+			Class<?> ret = getClassForName(type);
+			if(ret != null){
+				typeCache.put(type, ret);
+			}
+			return ret;
 		}
 	}
 

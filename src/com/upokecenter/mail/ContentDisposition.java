@@ -32,7 +32,7 @@ import com.upokecenter.text.*;
       if (other == null) {
         return false;
       }
-      return this.dispositionType == other.dispositionType &&
+      return this.dispositionType.equals(other.dispositionType) &&
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 

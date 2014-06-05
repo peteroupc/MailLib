@@ -14,10 +14,10 @@ import com.upokecenter.util.*;
 
     /**
      * Represents an email message. <p><b>Thread safety:</b> This class
-     * is mutable; its properties can be changed. None of its methods are
-     * designed to be thread safe. Therefore, access to objects from this
-     * class must be synchronized if multiple threads can access them at
-     * the same time.</p> <p>The following lists known deviations from
+     * is mutable; its properties can be changed. None of its instance methods
+     * are designed to be thread safe. Therefore, access to objects from
+     * this class must be synchronized if multiple threads can access them
+     * at the same time.</p> <p>The following lists known deviations from
      * the mail specifications (Internet Message Format and MIME):</p>
      * <ul> <li>The content-transfer-encoding "quoted-printable" is
      * treated as 7bit instead if it occurs in a message or body part with content
@@ -376,7 +376,6 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       long ticks = new java.util.Date().getTime();
       StringBuilder builder = new StringBuilder();
       int seq = 0;
-      int rnd = 0;
       builder.append("<");
       synchronized(sequenceSync) {
         if (seqFirstTime) {
@@ -386,9 +385,6 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
           seqFirstTime = false;
         }
         seq = (msgidSequence++);
-        rnd = msgidRandom.nextInt(65536);
-        rnd <<= 16;
-        rnd |= msgidRandom.nextInt(65536);
       }
       String guid = java.util.UUID.randomUUID().toString();
       String hex = "0123456789abcdef";

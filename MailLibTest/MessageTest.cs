@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -9,7 +9,7 @@ using PeterO.Text;
 
 namespace MailLibTest {
   [TestClass]
-  class MessageTest {
+  public class MessageTest {
     [TestMethod]
     public void TestMediaTypeEncodingSingle() {
       this.SingleTestMediaTypeEncoding("xyz", "x/y;z=xyz");
@@ -783,7 +783,7 @@ namespace MailLibTest {
       try {
         MediaType.Parse(null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentException) {
+      } catch (ArgumentNullException) {
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -791,7 +791,7 @@ namespace MailLibTest {
       Assert.AreEqual("application", new MediaTypeBuilder().TopLevelType);
       Assert.AreEqual("text", new MediaTypeBuilder(MediaType.TextPlainAscii).TopLevelType);
       Assert.AreEqual("plain", new MediaTypeBuilder(MediaType.TextPlainAscii).SubType);
-      Assert.IsTrue(MediaType.TextPlainAscii.Equals(MediaType.Parse("text/plain; charset=us-ascii")));
+      Assert.AreEqual(MediaType.TextPlainAscii, MediaType.Parse("text/plain; charset=us-ascii"));
       Assert.IsTrue(MediaType.TextPlainAscii.GetHashCode() == MediaType.Parse("text/plain; charset=us-ascii").GetHashCode());
     }
     [TestMethod]

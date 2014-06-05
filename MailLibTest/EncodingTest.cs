@@ -243,6 +243,9 @@ namespace MailLibTest {
           unlimitedLineLength ? -1 : 76,
           false);
         object readByteMethod = Reflect.GetMethod(t, "ReadByte");
+        if (readByteMethod == null) {
+         readByteMethod=Reflect.GetMethod(t, "read");
+        }
         while (true) {
           int c = (int)Reflect.InvokeMethod(t, readByteMethod);
           if (c < 0) {
@@ -250,7 +253,7 @@ namespace MailLibTest {
           }
           outputStream.WriteByte((byte)c);
         }
-      } catch(IOException ex){
+      } catch(IOException ex) {
         Assert.Fail(ex.Message);
       }
     }
@@ -358,15 +361,16 @@ namespace MailLibTest {
     [TestMethod]
     public void TestHeaderFields() {
       string testString = "Joe P Customer <customer@example.com>, Jane W Customer <jane@example.com>";
-      if(testString.Length!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseMailboxList", testString, 0, testString.Length, null))
-        Assert.Fail(testString);
+      if (testString.Length!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseMailboxList", testString, 0, testString.Length, null)) {
+ Assert.Fail(testString);
+}
     }
 
     [TestMethod]
     public void TestPunycodeDecode() {
       Assert.AreEqual(
   "e\u00e1",
-  Reflect.InvokeStatic("PeterO.Text.DomainUtility", "PunycodeDecode", "xn--e-ufa", 4, 9));
+  Reflect.InvokeStatic(typeof(Idna).Namespace + ".DomainUtility", "PunycodeDecode", "xn--e-ufa", 4, 9));
     }
 
     [TestMethod]
@@ -406,6 +410,9 @@ namespace MailLibTest {
 
     internal static byte[] GetBytes(object trans) {
       object readByteMethod = Reflect.GetMethod(trans, "ReadByte");
+      if (readByteMethod == null) {
+        readByteMethod=Reflect.GetMethod(trans, "read");
+      }
       using (var ms = new MemoryStream()) {
         int c = 0;
         while ((c = (int)Reflect.InvokeMethod(trans, readByteMethod)) >= 0) {
@@ -1077,33 +1084,42 @@ namespace MailLibTest {
     public void TestHeaderParsing() {
       string tmp;
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>;";
-      if(tmp.Length!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null))
-        Assert.Fail(tmp);
+      if (tmp.Length!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+ Assert.Fail(tmp);
+}
       // just a local part in address
-      if(0!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderFrom", "\"Me\" <1234>", 0, 11, null))
-        Assert.Fail(tmp);
+      if (0!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderFrom", "\"Me\" <1234>", 0, 11, null)) {
+ Assert.Fail(tmp);
+}
       tmp = "<x@x.invalid>";
-      if(tmp.Length!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null))
-        Assert.Fail(tmp);
+      if (tmp.Length!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+ Assert.Fail(tmp);
+}
       tmp = "<x y@x.invalid>";  // local part is not a dot-atom
-      if(0!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null))
-        Assert.Fail(tmp);
+      if (0!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+ Assert.Fail(tmp);
+}
       tmp = " <x@x.invalid>";
-      if(tmp.Length!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null))
-        Assert.Fail(tmp);
+      if (tmp.Length!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+ Assert.Fail(tmp);
+}
       // Group syntax
       tmp = "G:;";
-      if(tmp.Length!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null))
-        Assert.Fail(tmp);
+      if (tmp.Length!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+ Assert.Fail(tmp);
+}
       tmp = "G:a <x@x.example>;";
-      if(tmp.Length!= (int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null))
-        Assert.Fail(tmp);
+      if (tmp.Length!= (int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+ Assert.Fail(tmp);
+}
       tmp = " A Xxxxx: ;";
-      if(tmp.Length!= (int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null))
-        Assert.Fail(tmp);
+      if (tmp.Length!= (int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+ Assert.Fail(tmp);
+}
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>, y@y.example, Ww <z@z.invalid>;";
-      if(tmp.Length!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null))
-        Assert.Fail(tmp);
+      if (tmp.Length!=(int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+ Assert.Fail(tmp);
+}
     }
 
     [TestMethod]
@@ -1131,7 +1147,7 @@ namespace MailLibTest {
     public void TestReceivedHeader() {
       object parser = Reflect.InvokeStatic(MailNamespace() + ".HeaderFieldParsers", "GetParser", "received");
       string test = "from x.y.example by a.b.example; Thu, 31 Dec 2012 00:00:00 -0100";
-      if(test.Length!=(int)Reflect.Invoke(parser, "Parse", test, 0, test.Length, null)){
+      if (test.Length!=(int)Reflect.Invoke(parser, "Parse", test, 0, test.Length, null)) {
         Assert.Fail(test);
       }
     }

@@ -72,7 +72,7 @@ namespace PeterO.Mail {
               throw new MessageDataException("Invalid amount of base64 padding");
             }
             value <<= 12;
-            return (byte)((value >> 16) & 0xff);
+            return (int)((value >> 16) & 0xff);
           } else if (count == 3) {
             if (this.checkStrictEncoding && this.paddingCount != 1) {
               throw new MessageDataException("Invalid amount of base64 padding");
@@ -80,7 +80,7 @@ namespace PeterO.Mail {
             value <<= 6;
             this.ResizeBuffer(1);
             this.buffer[0] = (byte)((value >> 8) & 0xff);
-            return (byte)((value >> 16) & 0xff);
+            return (int)((value >> 16) & 0xff);
           }
           return -1;
         } else if (c == 0x0d) {
@@ -136,7 +136,7 @@ namespace PeterO.Mail {
       this.ResizeBuffer(2);
       this.buffer[0] = (byte)((value >> 8) & 0xff);
       this.buffer[1] = (byte)(value & 0xff);
-      return (byte)((value >> 16) & 0xff);
+      return (int)((value >> 16) & 0xff);
     }
   }
 }

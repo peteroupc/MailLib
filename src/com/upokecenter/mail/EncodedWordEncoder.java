@@ -128,17 +128,17 @@ import com.upokecenter.util.*;
       } else if (ch < 0x80) {
         this.PrepareToAppend(3);
         this.currentWord.append('=');
-        this.currentWord.append(hex.charAt(ch >> 4));
+        this.currentWord.append(hex.charAt((ch >> 4) & 15));
         this.currentWord.append(hex.charAt(ch & 15));
       } else if (ch < 0x800) {
         int w = (byte)(0xc0 | ((ch >> 6) & 0x1f));
         int x = (byte)(0x80 | (ch & 0x3f));
         this.PrepareToAppend(6);
         this.currentWord.append('=');
-        this.currentWord.append(hex.charAt(w >> 4));
+        this.currentWord.append(hex.charAt((w >> 4) & 15));
         this.currentWord.append(hex.charAt(w & 15));
         this.currentWord.append('=');
-        this.currentWord.append(hex.charAt(x >> 4));
+        this.currentWord.append(hex.charAt((x >> 4) & 15));
         this.currentWord.append(hex.charAt(x & 15));
       } else if (ch < 0x10000) {
         this.PrepareToAppend(9);
@@ -146,13 +146,13 @@ import com.upokecenter.util.*;
         int x = (byte)(0x80 | ((ch >> 6) & 0x3f));
         int y = (byte)(0x80 | (ch & 0x3f));
         this.currentWord.append('=');
-        this.currentWord.append(hex.charAt(w >> 4));
+        this.currentWord.append(hex.charAt((w >> 4) & 15));
         this.currentWord.append(hex.charAt(w & 15));
         this.currentWord.append('=');
-        this.currentWord.append(hex.charAt(x >> 4));
+        this.currentWord.append(hex.charAt((x >> 4) & 15));
         this.currentWord.append(hex.charAt(x & 15));
         this.currentWord.append('=');
-        this.currentWord.append(hex.charAt(y >> 4));
+        this.currentWord.append(hex.charAt((y >> 4) & 15));
         this.currentWord.append(hex.charAt(y & 15));
       } else {
         this.PrepareToAppend(12);
@@ -161,16 +161,16 @@ import com.upokecenter.util.*;
         int y = (byte)(0x80 | ((ch >> 6) & 0x3f));
         int z = (byte)(0x80 | (ch & 0x3f));
         this.currentWord.append('=');
-        this.currentWord.append(hex.charAt(w >> 4));
+        this.currentWord.append(hex.charAt((w >> 4) & 15));
         this.currentWord.append(hex.charAt(w & 15));
         this.currentWord.append('=');
-        this.currentWord.append(hex.charAt(x >> 4));
+        this.currentWord.append(hex.charAt((x >> 4) & 15));
         this.currentWord.append(hex.charAt(x & 15));
         this.currentWord.append('=');
-        this.currentWord.append(hex.charAt(y >> 4));
+        this.currentWord.append(hex.charAt((y >> 4) & 15));
         this.currentWord.append(hex.charAt(y & 15));
         this.currentWord.append('=');
-        this.currentWord.append(hex.charAt(z >> 4));
+        this.currentWord.append(hex.charAt((z >> 4) & 15));
         this.currentWord.append(hex.charAt(z & 15));
       }
     }

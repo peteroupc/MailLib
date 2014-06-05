@@ -31,7 +31,8 @@ namespace PeterO.Mail {
       if (other == null) {
         return false;
       }
-      return this.topLevelType == other.topLevelType && this.subType == other.subType &&
+      return this.topLevelType.Equals(other.topLevelType) &&
+        this.subType.Equals(other.subType) &&
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
@@ -308,7 +309,7 @@ namespace PeterO.Mail {
           }
           first = false;
           sb.Append('%');
-          sb.Append(hex[c >> 4]);
+          sb.Append(hex[(c >> 4) & 15]);
           sb.Append(hex[c & 15]);
         } else if (c < 0x800) {
           length += 6;
@@ -327,10 +328,10 @@ namespace PeterO.Mail {
           int w = (byte)(0xc0 | ((c >> 6) & 0x1f));
           int x = (byte)(0x80 | (c & 0x3f));
           sb.Append('%');
-          sb.Append(hex[w >> 4]);
+          sb.Append(hex[(w >> 4) & 15]);
           sb.Append(hex[w & 15]);
           sb.Append('%');
-          sb.Append(hex[x >> 4]);
+          sb.Append(hex[(x >> 4) & 15]);
           sb.Append(hex[x & 15]);
         } else if (c < 0x10000) {
           length += 9;
@@ -350,13 +351,13 @@ namespace PeterO.Mail {
           int x = (byte)(0x80 | ((c >> 6) & 0x3f));
           int y = (byte)(0x80 | (c & 0x3f));
           sb.Append('%');
-          sb.Append(hex[w >> 4]);
+          sb.Append(hex[(w >> 4) & 15]);
           sb.Append(hex[w & 15]);
           sb.Append('%');
-          sb.Append(hex[x >> 4]);
+          sb.Append(hex[(x >> 4) & 15]);
           sb.Append(hex[x & 15]);
           sb.Append('%');
-          sb.Append(hex[y >> 4]);
+          sb.Append(hex[(y >> 4) & 15]);
           sb.Append(hex[y & 15]);
         } else {
           length += 12;
@@ -377,16 +378,16 @@ namespace PeterO.Mail {
           int y = (byte)(0x80 | ((c >> 6) & 0x3f));
           int z = (byte)(0x80 | (c & 0x3f));
           sb.Append('%');
-          sb.Append(hex[w >> 4]);
+          sb.Append(hex[(w >> 4) & 15]);
           sb.Append(hex[w & 15]);
           sb.Append('%');
-          sb.Append(hex[x >> 4]);
+          sb.Append(hex[(x >> 4) & 15]);
           sb.Append(hex[x & 15]);
           sb.Append('%');
-          sb.Append(hex[y >> 4]);
+          sb.Append(hex[(y >> 4) & 15]);
           sb.Append(hex[y & 15]);
           sb.Append('%');
-          sb.Append(hex[z >> 4]);
+          sb.Append(hex[(z >> 4) & 15]);
           sb.Append(hex[z & 15]);
         }
       }

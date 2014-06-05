@@ -242,6 +242,9 @@ import com.upokecenter.text.*;
           unlimitedLineLength ? -1 : 76,
           false);
         Object readByteMethod = Reflect.GetMethod(t, "ReadByte");
+        if (readByteMethod == null) {
+         readByteMethod=Reflect.GetMethod(t, "read");
+        }
         while (true) {
           int c = (Integer)Reflect.InvokeMethod(t, readByteMethod);
           if (c < 0) {
@@ -384,7 +387,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
     public void TestPunycodeDecode() {
       Assert.assertEquals(
   "e\u00e1",
-  Reflect.InvokeStatic("PeterO.Text.DomainUtility", "PunycodeDecode", "xn--e-ufa", 4, 9));
+  Reflect.InvokeStatic(Idna.class.getPackage().getName() + ".DomainUtility", "PunycodeDecode", "xn--e-ufa", 4, 9));
     }
 
     @Test
@@ -424,6 +427,9 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
 
     static byte[] GetBytes(Object trans) {
       Object readByteMethod = Reflect.GetMethod(trans, "ReadByte");
+      if (readByteMethod == null) {
+        readByteMethod=Reflect.GetMethod(trans, "read");
+      }
       java.io.ByteArrayOutputStream ms=null;
 try {
 ms=new java.io.ByteArrayOutputStream();
