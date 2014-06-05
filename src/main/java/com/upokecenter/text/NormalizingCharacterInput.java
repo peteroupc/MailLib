@@ -26,7 +26,7 @@ import java.util.*;
      * Not documented yet.
      * @param str A string object.
      * @param form A Normalization object.
-     * @return An List(int) object.
+     * @return A list of Unicode characters.
      * @throws java.lang.NullPointerException The parameter {@code str}
      * is null.
      */
@@ -41,7 +41,7 @@ import java.util.*;
      * Not documented yet.
      * @param str An ICharacterInput object.
      * @param form A Normalization object.
-     * @return An List(int) object.
+     * @return A list of Unicode characters.
      * @throws java.lang.NullPointerException The parameter {@code str}
      * is null.
      */

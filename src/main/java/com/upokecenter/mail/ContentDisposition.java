@@ -362,11 +362,12 @@ import com.upokecenter.text.*;
      * @param defaultValue The value to return in case the disposition value
      * is syntactically invalid. Can be null.
      * @return A ContentDisposition object.
-     * @throws java.lang.NullPointerException The parameter "str" is null.
+     * @throws java.lang.NullPointerException The parameter {@code dispositionValue}
+     * is null.
      */
     public static ContentDisposition Parse(String dispositionValue, ContentDisposition defaultValue) {
       if (dispositionValue == null) {
-        throw new NullPointerException("str");
+        throw new NullPointerException("dispositionValue");
       }
       ContentDisposition dispo = new ContentDisposition();
       dispo.parameters = new TreeMap<String, String>();

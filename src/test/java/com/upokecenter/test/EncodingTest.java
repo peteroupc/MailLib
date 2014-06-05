@@ -1,4 +1,4 @@
-package com.upokecenter.util;
+package com.upokecenter.test; import com.upokecenter.util.*;
 /*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
@@ -143,13 +143,6 @@ import com.upokecenter.text.*;
         ++index;
       }
       return true;
-    }
-
-    static boolean IsRareMixerHeader(String hdrname) {
-      return hdrname.equals("content-identifier") || hdrname.equals("x400-content-identifier") || hdrname.equals("x400-content-return") || hdrname.equals("x400-content-type") || hdrname.equals("x400-mts-identifier") || hdrname.equals("x400-originator") || hdrname.equals("x400-received") || hdrname.equals("x400-recipients") || hdrname.equals("x400-trace") || hdrname.equals("original-encoded-information-types") || hdrname.equals("conversion") || hdrname.equals("conversion-with-loss") || hdrname.equals("dl-expansion-history") || hdrname.equals("originator-return-address") ||
-        hdrname.equals("discarded-x400-mts-extensions") || hdrname.equals("supersedes") || hdrname.equals("expires") ||
-        hdrname.equals("content-return") ||
-        hdrname.equals("autoforwarded") || hdrname.equals("generate-delivery-report") || hdrname.equals("incomplete-copy") || hdrname.equals("message-type") || hdrname.equals("discarded-x400-ipms-extensions") || hdrname.equals("autosubmitted") || hdrname.equals("prevent-nondelivery-report") || hdrname.equals("alternate-recipient") || hdrname.equals("disclose-recipients");
     }
 
     static String ToBase16(byte[] bytes) {
