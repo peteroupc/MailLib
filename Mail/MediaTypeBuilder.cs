@@ -51,6 +51,8 @@ namespace PeterO.Mail {
 
     /// <summary>Initializes a new instance of the MediaTypeBuilder class.</summary>
     /// <param name='mt'>A MediaType object.</param>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='mt'/> is null.</exception>
     public MediaTypeBuilder(MediaType mt) {
       if (mt == null) {
         throw new ArgumentNullException("mt");
@@ -86,7 +88,7 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Converts this builder to an immutable media type object.</summary>
     /// <returns>A MediaType object.</returns>
     public MediaType ToMediaType() {
       return new MediaType(this.type, this.subtype, this.parameters);
@@ -111,8 +113,9 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='name'>A string object.</param>
+    /// <summary>Removes a parameter from this builder object.</summary>
+    /// <param name='name'>Name of the parameter to remove. The name is compared
+    /// case-insensitively.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='name'/> is null.</exception>
@@ -125,7 +128,8 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='name'>A string object.</param>
+    /// <param name='name'>Name of the parameter to set. The name is compared
+    /// case-insensitively.</param>
     /// <param name='value'>A string object. (2).</param>
     /// <returns>This instance.</returns>
     /// <exception cref='System.ArgumentNullException'>The parameter

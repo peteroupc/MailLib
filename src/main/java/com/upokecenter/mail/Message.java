@@ -13,16 +13,19 @@ import java.io.*;
 import com.upokecenter.util.*;
 
     /**
-     * Represents an email message. <p><b>Thread safety:</b> This class
-     * is mutable; its properties can be changed. None of its instance methods
-     * are designed to be thread safe. Therefore, access to objects from
-     * this class must be synchronized if multiple threads can access them
-     * at the same time.</p> <p>The following lists known deviations from
-     * the mail specifications (Internet Message Format and MIME):</p>
-     * <ul> <li>The content-transfer-encoding "quoted-printable" is
-     * treated as 7bit instead if it occurs in a message or body part with content
-     * type "multipart/*" or "message/*" (other than "message/global",
-     * "message/global-headers", "message/global-disposition-notification",
+     * <p>Represents an email message, and contains methods and properties
+     * for accessing and modifying email message data. This class implements
+     * the Internet Message Format (RFC 5322) and Multipurpose Internet
+     * Mail Extensions (MIME; RFC 2045-2047, RFC 2049). </p> <p><b>Thread
+     * safety:</b> This class is mutable; its properties can be changed.
+     * None of its instance methods are designed to be thread safe. Therefore,
+     * access to objects from this class must be synchronized if multiple
+     * threads can access them at the same time.</p> <p>The following lists
+     * known deviations from the mail specifications (Internet Message
+     * Format and MIME):</p> <ul> <li>The content-transfer-encoding
+     * "quoted-printable" is treated as 7bit instead if it occurs in a message
+     * or body part with content type "multipart/*" or "message/*" (other
+     * than "message/global", "message/global-headers", "message/global-disposition-notification",
      * or "message/global-delivery-status").</li> <li>Non-UTF-8 bytes
      * appearing in header field values are replaced with replacement characters.
      * Moreover, UTF-8 is parsed everywhere in header field values, even
@@ -350,6 +353,8 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
      * Initializes a new instance of the Message class. Reads from the given
      * InputStream object to initialize the message.
      * @param stream A readable data stream.
+     * @throws java.lang.NullPointerException The parameter {@code stream}
+     * is null.
      */
     public Message (InputStream stream) {
       if (stream == null) {
@@ -487,7 +492,9 @@ public void setContentType(MediaType value) {
       }
 
     /**
-     * Gets this message's content disposition.
+     * Gets this message's content disposition. The content disposition
+     * specifies how a user agent should handle or otherwise display this
+     * message.
      * @return This message's content disposition, or null if none is specified.
      */
     public ContentDisposition getContentDisposition() {

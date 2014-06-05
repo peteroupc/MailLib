@@ -41,6 +41,8 @@ namespace PeterO.Mail {
     /// <summary>Initializes a new instance of the DispositionBuilder
     /// class.</summary>
     /// <param name='mt'>A ContentDisposition object.</param>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='mt'/> is null.</exception>
     public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
         throw new ArgumentNullException("mt");
@@ -81,7 +83,7 @@ namespace PeterO.Mail {
       return new ContentDisposition(this.type, this.parameters);
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Sets the disposition type, such as "inline".</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='System.ArgumentNullException'>The parameter

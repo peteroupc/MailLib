@@ -92,7 +92,9 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Initializes a new instance of the Address class.</summary>
-    /// <param name='addressValue'>A string object.</param>
+    /// <param name='addressValue'>An email address.</param>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='addressValue'/> is null.</exception>
     public Address(string addressValue) {
       if (addressValue == null) {
         throw new ArgumentNullException("addressValue");

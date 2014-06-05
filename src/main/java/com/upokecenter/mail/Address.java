@@ -92,7 +92,9 @@ import com.upokecenter.text.*;
 
     /**
      * Initializes a new instance of the Address class.
-     * @param addressValue A string object.
+     * @param addressValue An email address.
+     * @throws java.lang.NullPointerException The parameter {@code addressValue}
+     * is null.
      */
     public Address (String addressValue) {
       if (addressValue == null) {
