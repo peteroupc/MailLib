@@ -30,7 +30,8 @@ import com.upokecenter.util.*;
       if (other == null) {
         return false;
       }
-      return this.topLevelType == other.topLevelType && this.subType == other.subType &&
+      return this.topLevelType.equals(other.topLevelType) &&
+        this.subType.equals(other.subType) &&
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
@@ -311,7 +312,7 @@ import com.upokecenter.util.*;
           }
           first = false;
           sb.append('%');
-          sb.append(hex.charAt(c >> 4));
+          sb.append(hex.charAt((c >> 4) & 15));
           sb.append(hex.charAt(c & 15));
         } else if (c < 0x800) {
           length += 6;
@@ -330,10 +331,10 @@ import com.upokecenter.util.*;
           int w = (byte)(0xc0 | ((c >> 6) & 0x1f));
           int x = (byte)(0x80 | (c & 0x3f));
           sb.append('%');
-          sb.append(hex.charAt(w >> 4));
+          sb.append(hex.charAt((w >> 4) & 15));
           sb.append(hex.charAt(w & 15));
           sb.append('%');
-          sb.append(hex.charAt(x >> 4));
+          sb.append(hex.charAt((x >> 4) & 15));
           sb.append(hex.charAt(x & 15));
         } else if (c < 0x10000) {
           length += 9;
@@ -353,13 +354,13 @@ import com.upokecenter.util.*;
           int x = (byte)(0x80 | ((c >> 6) & 0x3f));
           int y = (byte)(0x80 | (c & 0x3f));
           sb.append('%');
-          sb.append(hex.charAt(w >> 4));
+          sb.append(hex.charAt((w >> 4) & 15));
           sb.append(hex.charAt(w & 15));
           sb.append('%');
-          sb.append(hex.charAt(x >> 4));
+          sb.append(hex.charAt((x >> 4) & 15));
           sb.append(hex.charAt(x & 15));
           sb.append('%');
-          sb.append(hex.charAt(y >> 4));
+          sb.append(hex.charAt((y >> 4) & 15));
           sb.append(hex.charAt(y & 15));
         } else {
           length += 12;
@@ -380,16 +381,16 @@ import com.upokecenter.util.*;
           int y = (byte)(0x80 | ((c >> 6) & 0x3f));
           int z = (byte)(0x80 | (c & 0x3f));
           sb.append('%');
-          sb.append(hex.charAt(w >> 4));
+          sb.append(hex.charAt((w >> 4) & 15));
           sb.append(hex.charAt(w & 15));
           sb.append('%');
-          sb.append(hex.charAt(x >> 4));
+          sb.append(hex.charAt((x >> 4) & 15));
           sb.append(hex.charAt(x & 15));
           sb.append('%');
-          sb.append(hex.charAt(y >> 4));
+          sb.append(hex.charAt((y >> 4) & 15));
           sb.append(hex.charAt(y & 15));
           sb.append('%');
-          sb.append(hex.charAt(z >> 4));
+          sb.append(hex.charAt((z >> 4) & 15));
           sb.append(hex.charAt(z & 15));
         }
       }

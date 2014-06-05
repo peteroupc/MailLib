@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.upokecenter.mail.*;
 import com.upokecenter.text.*;
 
-  class MessageTest {
+  public class MessageTest {
     @Test
     public void TestMediaTypeEncodingSingle() {
       this.SingleTestMediaTypeEncoding("xyz", "x/y;z=xyz");
@@ -788,7 +788,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       try {
         MediaType.Parse(null);
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
+      } catch (NullPointerException ex) {
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -796,7 +796,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       Assert.assertEquals("application", new MediaTypeBuilder().getTopLevelType());
       Assert.assertEquals("text", new MediaTypeBuilder(MediaType.TextPlainAscii).getTopLevelType());
       Assert.assertEquals("plain", new MediaTypeBuilder(MediaType.TextPlainAscii).getSubType());
-      if(!(MediaType.TextPlainAscii.equals(MediaType.Parse("text/plain; charset=us-ascii"))))Assert.fail();
+      Assert.assertEquals(MediaType.TextPlainAscii, MediaType.Parse("text/plain; charset=us-ascii"));
       if(!(MediaType.TextPlainAscii.hashCode() == MediaType.Parse("text/plain; charset=us-ascii").hashCode()))Assert.fail();
     }
     @Test
