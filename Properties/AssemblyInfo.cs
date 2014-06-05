@@ -19,4 +19,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("MailLib")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("0.6.0")]
+[assembly: AssemblyVersion("0.6.1")]

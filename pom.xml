@@ -3,7 +3,7 @@
   <groupId>com.upokecenter</groupId>
   <artifactId>maillib</artifactId>
   <packaging>jar</packaging>
-  <version>0.7.0</version>
+  <version>0.6.1-SNAPSHOT</version>
   <name>MailLib</name>
   <profiles>
     <profile>
@@ -103,6 +103,10 @@
       <id>ossrh</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
   </distributionManagement>
   <dependencies>
     <dependency>
