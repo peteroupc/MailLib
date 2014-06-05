@@ -26,6 +26,10 @@ namespace PeterO.Mail {
     }
 
     #region Equals and GetHashCode implementation
+    /// <summary>Determines whether this object and another object are
+    /// equal.</summary>
+    /// <returns>True if the objects are equal; otherwise, false.</returns>
+    /// <param name='obj'>An arbitrary object.</param>
     public override bool Equals(object obj) {
       MediaType other = obj as MediaType;
       if (other == null) {
@@ -1044,6 +1048,8 @@ namespace PeterO.Mail {
       "CA2104",
       Justification="This instance is immutable")]
     #endif
+    /// <summary>Specifies the media type "text/plain" and the charset
+    /// "US-ASCII".</summary>
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder("text", "plain").SetParameter("charset", "us-ascii").ToMediaType();
 
@@ -1053,6 +1059,8 @@ namespace PeterO.Mail {
       "CA2104",
       Justification="This instance is immutable")]
     #endif
+    /// <summary>Specifies the media type "text/plain" and the charset
+    /// "utf-8".</summary>
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder("text", "plain").SetParameter("charset", "utf-8").ToMediaType();
 
@@ -1062,6 +1070,7 @@ namespace PeterO.Mail {
       "CA2104",
       Justification="This instance is immutable")]
     #endif
+    /// <summary>Specifies the media type "message/rfc822".</summary>
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 

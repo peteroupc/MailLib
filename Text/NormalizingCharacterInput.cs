@@ -22,6 +22,10 @@ namespace PeterO.Text {
     /// </summary>
   public sealed class NormalizingCharacterInput : ICharacterInput
   {
+    /// <summary>Not documented yet.</summary>
+    /// <returns>An IList(int) object.</returns>
+    /// <param name='str'>A string object.</param>
+    /// <param name='form'>A Normalization object.</param>
     public static IList<int> GetChars(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -29,6 +33,10 @@ namespace PeterO.Text {
       return GetChars(new StringCharacterInput(str), form);
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <returns>An IList(int) object.</returns>
+    /// <param name='str'>An ICharacterInput object.</param>
+    /// <param name='form'>A Normalization object.</param>
     public static IList<int> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -88,14 +96,28 @@ namespace PeterO.Text {
       this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
     }
 
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer.</param>
+    /// <param name='length'>A 32-bit signed integer. (2).</param>
+    /// <param name='form'>A Normalization object.</param>
     public NormalizingCharacterInput(string str, int index, int length, Normalization form) :
       this(new StringCharacterInput(str, index, length), form) {
     }
 
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='form'>A Normalization object.</param>
     public NormalizingCharacterInput(string str, Normalization form) :
       this(new StringCharacterInput(str), form) {
     }
 
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class.</summary>
+    /// <param name='stream'>An ICharacterInput object.</param>
+    /// <param name='form'>A Normalization object.</param>
     public NormalizingCharacterInput(ICharacterInput stream, Normalization form) {
       if (stream == null) {
         throw new ArgumentException("stream");
@@ -106,6 +128,10 @@ namespace PeterO.Text {
       this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A Boolean object.</returns>
+    /// <param name='chars'>An ICharacterInput object.</param>
+    /// <param name='form'>A Normalization object.</param>
     public static bool IsNormalized(ICharacterInput chars, Normalization form) {
       if (chars == null) {
         return false;
@@ -141,10 +167,18 @@ namespace PeterO.Text {
       return true;
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A Boolean object.</returns>
+    /// <param name='str'>A string object.</param>
+    /// <param name='form'>A Normalization object.</param>
     public static bool IsNormalized(string str, Normalization form) {
       return Normalizer.IsNormalized(str, form);
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A Boolean object.</returns>
+    /// <param name='charList'>An IList object.</param>
+    /// <param name='form'>A Normalization object.</param>
     public static bool IsNormalized(IList<int> charList, Normalization form) {
       int nonStableStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
@@ -188,6 +222,8 @@ namespace PeterO.Text {
 
     private int[] readbuffer = new int[1];
 
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A 32-bit signed integer.</returns>
     public int ReadChar() {
       int r = this.Read(this.readbuffer, 0, 1);
       return r == 1 ? this.readbuffer[0] : -1;

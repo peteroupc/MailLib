@@ -16,8 +16,10 @@ namespace PeterO.Mail {
   public class Address {
     private string localPart;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets the local part of this email address (the part before
+    /// the "@" sign).</summary>
+    /// <value>The local part of this email address (the part before the &quot;@&quot;
+    /// sign).</value>
     public string LocalPart {
       get {
         return this.localPart;
@@ -79,14 +81,18 @@ namespace PeterO.Mail {
 
     private string domain;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets the domain of this email address (the part after the
+    /// "@" sign).</summary>
+    /// <value>The domain of this email address (the part after the &quot;@&quot;
+    /// sign).</value>
     public string Domain {
       get {
         return this.domain;
       }
     }
 
+    /// <summary>Initializes a new instance of the Address class.</summary>
+    /// <param name='addressValue'>A string object.</param>
     public Address(string addressValue) {
       if (addressValue == null) {
         throw new ArgumentNullException("addressValue");

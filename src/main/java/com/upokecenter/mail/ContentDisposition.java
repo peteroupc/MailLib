@@ -13,20 +13,29 @@ import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
     /**
-     * Description of ContentDisposition.
+     * Specifies how a message body should be displayed or handled by a mail
+     * user agent. <p>This type is immutable; its contents can't be changed
+     * after it's created.</p>
      */
   public class ContentDisposition
   {
     private String dispositionType;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a string containing this object's disposition type, such as
+     * "inline" or "attachment".
+     * @return A string containing this object's disposition type, such
+     * as "inline" or "attachment".
      */
     public String getDispositionType() {
         return this.dispositionType;
       }
 
+    /**
+     * Determines whether this object and another object are equal.
+     * @param obj An arbitrary object.
+     * @return True if the objects are equal; otherwise, false.
+     */
     @Override public boolean equals(Object obj) {
       ContentDisposition other = ((obj instanceof ContentDisposition) ? (ContentDisposition)obj : null);
       if (other == null) {
@@ -255,9 +264,15 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Not documented yet.
-     * @param name A string object. (2).
-     * @return A string object.
+     * Gets a parameter from this disposition object.
+     * @param name The name of the parameter to get. The name will be matched
+     * case-insensitively. Can&apos;t be null.
+     * @return The value of the parameter, or null if the parameter does not
+     * exist.
+     * @throws java.lang.NullPointerException The parameter {@code name}
+     * is null.
+     * @throws java.lang.IllegalArgumentException The parameter {@code name} is
+     * empty.
      */
     public String GetParameter(String name) {
       if (name == null) {
@@ -273,11 +288,6 @@ import com.upokecenter.text.*;
       return null;
     }
 
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @return A Boolean object.
-     */
     private boolean ParseDisposition(String str) {
       boolean httpRules = false;
       int index = 0;
@@ -318,8 +328,14 @@ import com.upokecenter.text.*;
       return dispo;
     }
 
+    /**
+     * Not documented yet.
+     */
     public static final ContentDisposition Attachment = Build("attachment");
 
+    /**
+     * Not documented yet.
+     */
     public static final ContentDisposition Inline = Build("inline");
 
     private ContentDisposition() {

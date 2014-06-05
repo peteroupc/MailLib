@@ -17,8 +17,10 @@ namespace PeterO.Mail {
     private string type;
     private IDictionary<string, string> parameters;
 
-    /// <summary>Gets or sets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets or sets this value's disposition type, such value,
+    /// such as "inline" or "attachment".</summary>
+    /// <value>This value&apos;s disposition type, such value, such as
+    /// &quot;inline&quot; or &quot;attachment&quot;.</value>
     public string DispositionType {
       get {
         return this.type;
@@ -29,11 +31,16 @@ namespace PeterO.Mail {
       }
     }
 
+    /// <summary>Initializes a new instance of the DispositionBuilder
+    /// class.</summary>
     public DispositionBuilder() {
       this.parameters = new Dictionary<string, string>();
       this.type = "attachment";
     }
 
+    /// <summary>Initializes a new instance of the DispositionBuilder
+    /// class.</summary>
+    /// <param name='mt'>A ContentDisposition object.</param>
     public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
         throw new ArgumentNullException("mt");
@@ -42,6 +49,9 @@ namespace PeterO.Mail {
       this.type = mt.DispositionType;
     }
 
+    /// <summary>Initializes a new instance of the DispositionBuilder
+    /// class.</summary>
+    /// <param name='type'>A string object.</param>
     public DispositionBuilder(string type) {
       this.parameters = new Dictionary<string, string>();
       this.SetDispositionType(type);

@@ -42,12 +42,19 @@ public void setSubType(String value) {
         this.SetSubType(value);
       }
 
+    /**
+     * Initializes a new instance of the MediaTypeBuilder class.
+     */
     public MediaTypeBuilder () {
       this.parameters = new HashMap<String, String>();
       this.type = "application";
       this.subtype = "octet-stream";
     }
 
+    /**
+     * Initializes a new instance of the MediaTypeBuilder class.
+     * @param mt A MediaType object.
+     */
     public MediaTypeBuilder (MediaType mt) {
       if (mt == null) {
         throw new NullPointerException("mt");
@@ -57,6 +64,11 @@ public void setSubType(String value) {
       this.subtype = mt.getSubType();
     }
 
+    /**
+     * Initializes a new instance of the MediaTypeBuilder class.
+     * @param type A string object.
+     * @param subtype A string object. (2).
+     */
     public MediaTypeBuilder (String type, String subtype) {
       this.parameters = new HashMap<String, String>();
       this.SetTopLevelType(type);

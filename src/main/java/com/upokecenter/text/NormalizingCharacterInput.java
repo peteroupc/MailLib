@@ -22,6 +22,12 @@ import java.util.*;
      */
   public final class NormalizingCharacterInput implements ICharacterInput
   {
+    /**
+     * Not documented yet.
+     * @param str A string object.
+     * @param form A Normalization object.
+     * @return An List(int) object.
+     */
     public static List<Integer> GetChars(String str, Normalization form) {
       if (str == null) {
         throw new NullPointerException("str");
@@ -29,6 +35,12 @@ import java.util.*;
       return GetChars(new StringCharacterInput(str), form);
     }
 
+    /**
+     * Not documented yet.
+     * @param str An ICharacterInput object.
+     * @param form A Normalization object.
+     * @return An List(int) object.
+     */
     public static List<Integer> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
         throw new NullPointerException("str");
@@ -99,14 +111,31 @@ import java.util.*;
       this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
     }
 
+    /**
+     * Initializes a new instance of the NormalizingCharacterInput class.
+     * @param str A string object.
+     * @param index A 32-bit signed integer.
+     * @param length A 32-bit signed integer. (2).
+     * @param form A Normalization object.
+     */
     public NormalizingCharacterInput (String str, int index, int length, Normalization form) {
  this(new StringCharacterInput(str, index, length),form);
     }
 
+    /**
+     * Initializes a new instance of the NormalizingCharacterInput class.
+     * @param str A string object.
+     * @param form A Normalization object.
+     */
     public NormalizingCharacterInput (String str, Normalization form) {
  this(new StringCharacterInput(str),form);
     }
 
+    /**
+     * Initializes a new instance of the NormalizingCharacterInput class.
+     * @param stream An ICharacterInput object.
+     * @param form A Normalization object.
+     */
     public NormalizingCharacterInput (ICharacterInput stream, Normalization form) {
       if (stream == null) {
         throw new IllegalArgumentException("stream");
@@ -117,6 +146,12 @@ import java.util.*;
       this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
     }
 
+    /**
+     * Not documented yet.
+     * @param chars An ICharacterInput object.
+     * @param form A Normalization object.
+     * @return A Boolean object.
+     */
     public static boolean IsNormalized(ICharacterInput chars, Normalization form) {
       if (chars == null) {
         return false;
@@ -152,10 +187,22 @@ import java.util.*;
       return true;
     }
 
+    /**
+     * Not documented yet.
+     * @param str A string object.
+     * @param form A Normalization object.
+     * @return A Boolean object.
+     */
     public static boolean IsNormalized(String str, Normalization form) {
       return Normalizer.IsNormalized(str, form);
     }
 
+    /**
+     * Not documented yet.
+     * @param charList An List object.
+     * @param form A Normalization object.
+     * @return A Boolean object.
+     */
     public static boolean IsNormalized(List<Integer> charList, Normalization form) {
       int nonStableStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
@@ -199,6 +246,10 @@ import java.util.*;
 
     private int[] readbuffer = new int[1];
 
+    /**
+     * Not documented yet.
+     * @return A 32-bit signed integer.
+     */
     public int ReadChar() {
       int r = this.Read(this.readbuffer, 0, 1);
       return r == 1 ? this.readbuffer[0] : -1;

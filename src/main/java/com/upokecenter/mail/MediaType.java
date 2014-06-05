@@ -25,6 +25,11 @@ import com.upokecenter.util.*;
         return this.topLevelType;
       }
 
+    /**
+     * Determines whether this object and another object are equal.
+     * @param obj An arbitrary object.
+     * @return True if the objects are equal; otherwise, false.
+     */
     @Override public boolean equals(Object obj) {
       MediaType other = ((obj instanceof MediaType) ? (MediaType)obj : null);
       if (other == null) {
@@ -1044,12 +1049,21 @@ import com.upokecenter.util.*;
       return ParseParameters(str, index, endIndex, httpRules, this.parameters);
     }
 
+    /**
+     * Specifies the media type "text/plain" and the charset "US-ASCII".
+     */
     public static final MediaType TextPlainAscii =
       new MediaTypeBuilder("text", "plain").SetParameter("charset", "us-ascii").ToMediaType();
 
+    /**
+     * Specifies the media type "text/plain" and the charset "utf-8".
+     */
     public static final MediaType TextPlainUtf8 =
       new MediaTypeBuilder("text", "plain").SetParameter("charset", "utf-8").ToMediaType();
 
+    /**
+     * Specifies the media type "message/rfc822".
+     */
     public static final MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 

@@ -17,8 +17,9 @@ import com.upokecenter.text.*;
     private String localPart;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets the local part of this email address (the part before the "@" sign).
+     * @return The local part of this email address (the part before the "@"
+     * sign).
      */
     public String getLocalPart() {
         return this.localPart;
@@ -82,13 +83,17 @@ import com.upokecenter.text.*;
     private String domain;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets the domain of this email address (the part after the "@" sign).
+     * @return The domain of this email address (the part after the "@" sign).
      */
     public String getDomain() {
         return this.domain;
       }
 
+    /**
+     * Initializes a new instance of the Address class.
+     * @param addressValue A string object.
+     */
     public Address (String addressValue) {
       if (addressValue == null) {
         throw new NullPointerException("addressValue");

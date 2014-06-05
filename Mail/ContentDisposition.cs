@@ -12,13 +12,18 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>Description of ContentDisposition.</summary>
+    /// <summary>Specifies how a message body should be displayed or handled
+    /// by a mail user agent. <para>This type is immutable; its contents can't
+    /// be changed after it's created.</para>
+    /// </summary>
   public class ContentDisposition
   {
     private string dispositionType;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets a string containing this object's disposition type,
+    /// such as "inline" or "attachment".</summary>
+    /// <value>A string containing this object&apos;s disposition type,
+    /// such as &quot;inline&quot; or &quot;attachment&quot;.</value>
     public string DispositionType {
       get {
         return this.dispositionType;
@@ -26,6 +31,10 @@ namespace PeterO.Mail {
     }
 
     #region Equals and GetHashCode implementation
+    /// <summary>Determines whether this object and another object are
+    /// equal.</summary>
+    /// <returns>True if the objects are equal; otherwise, false.</returns>
+    /// <param name='obj'>An arbitrary object.</param>
     public override bool Equals(object obj) {
       ContentDisposition other = obj as ContentDisposition;
       if (other == null) {
@@ -250,9 +259,15 @@ namespace PeterO.Mail {
       return Normalizer.Normalize(str, Normalization.NFC);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='name'>A string object. (2).</param>
-    /// <returns>A string object.</returns>
+    /// <summary>Gets a parameter from this disposition object.</summary>
+    /// <param name='name'>The name of the parameter to get. The name will
+    /// be matched case-insensitively. Can&apos;t be null.</param>
+    /// <returns>The value of the parameter, or null if the parameter does
+    /// not exist.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='name'/> is null.</exception>
+    /// <exception cref='System.ArgumentException'>The parameter <paramref
+    /// name='name'/> is empty.</exception>
     public string GetParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -267,9 +282,6 @@ namespace PeterO.Mail {
       return null;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <returns>A Boolean object.</returns>
     private bool ParseDisposition(string str) {
       bool httpRules = false;
       int index = 0;
@@ -316,6 +328,7 @@ namespace PeterO.Mail {
       "CA2104",
       Justification="This instance is immutable")]
     #endif
+    /// <summary>Not documented yet.</summary>
     public static readonly ContentDisposition Attachment = Build("attachment");
 
     #if CODE_ANALYSIS
@@ -324,6 +337,7 @@ namespace PeterO.Mail {
       "CA2104",
       Justification="This instance is immutable")]
     #endif
+    /// <summary>Not documented yet.</summary>
     public static readonly ContentDisposition Inline = Build("inline");
 
     private ContentDisposition() {

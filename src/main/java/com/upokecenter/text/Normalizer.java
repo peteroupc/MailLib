@@ -46,6 +46,12 @@ at: http://upokecenter.com/d/
      */
   public final class Normalizer
   {
+    /**
+     * Not documented yet.
+     * @param str A string object. (2).
+     * @param form A Normalization object.
+     * @return A string object.
+     */
     public static String Normalize(String str, Normalization form) {
       if (str == null) {
         throw new NullPointerException("str");
@@ -109,6 +115,11 @@ at: http://upokecenter.com/d/
     private String iterator;
     private int characterListPos;
 
+    /**
+     * Initializes a new instance of the Normalizer class.
+     * @param str A string object.
+     * @param form A Normalization object.
+     */
     public Normalizer (String str, Normalization form) {
       if (str == null) {
         throw new IllegalArgumentException("stream");
@@ -234,6 +245,10 @@ at: http://upokecenter.com/d/
 
     private int[] readbuffer;
 
+    /**
+     * Not documented yet.
+     * @return A 32-bit signed integer.
+     */
     public int ReadChar() {
       int r = this.Read(this.readbuffer, 0, 1);
       return r == 1 ? this.readbuffer[0] : -1;
