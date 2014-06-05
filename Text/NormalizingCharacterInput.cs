@@ -23,7 +23,7 @@ namespace PeterO.Text {
   public sealed class NormalizingCharacterInput : ICharacterInput
   {
     /// <summary>Not documented yet.</summary>
-    /// <returns>An IList(int) object.</returns>
+    /// <returns>A list of Unicode characters.</returns>
     /// <param name='str'>A string object.</param>
     /// <param name='form'>A Normalization object.</param>
     /// <exception cref='System.ArgumentNullException'>The parameter
@@ -36,7 +36,7 @@ namespace PeterO.Text {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <returns>An IList(int) object.</returns>
+    /// <returns>A list of Unicode characters.</returns>
     /// <param name='str'>An ICharacterInput object.</param>
     /// <param name='form'>A Normalization object.</param>
     /// <exception cref='System.ArgumentNullException'>The parameter
