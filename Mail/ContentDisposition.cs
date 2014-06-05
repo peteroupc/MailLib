@@ -85,8 +85,10 @@ namespace PeterO.Mail {
 
     private SortedMap<string, string> parameters;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets a list of parameter names associated
+    /// with this object and their values.</summary>
+    /// <value>A list of parameter names associated
+    /// with this object and their values.  The names will be sorted.</value>
     public IDictionary<string, string> Parameters {
       get {
         return new ReadOnlyMap<string, string>(this.parameters);
@@ -154,7 +156,7 @@ namespace PeterO.Mail {
     /// is decoded under RFC 2231 if possible; characters unsuitable for
     /// use in a filename (including the directory separators slash and backslash)
     /// are replaced with underscores; and the filename is truncated if it
-    /// would otherwise be too long.</returns>
+    /// would otherwise be too long.  Returns an empty string if "str" is null.</returns>
     public static string MakeFilename(string str) {
       if (str == null) {
         return String.Empty;
@@ -328,7 +330,7 @@ namespace PeterO.Mail {
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Not documented yet.</summary>
+    /// <summary>The content disposition value "attachment".</summary>
     public static readonly ContentDisposition Attachment = Build("attachment");
 
     #if CODE_ANALYSIS
@@ -337,7 +339,7 @@ namespace PeterO.Mail {
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Not documented yet.</summary>
+    /// <summary>The content disposition value "inline".</summary>
     public static readonly ContentDisposition Inline = Build("inline");
 
     private ContentDisposition() {

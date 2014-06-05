@@ -238,7 +238,34 @@ namespace MailLibTest {
       Assert.AreEqual("utf-8", MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"").GetCharset());
       Assert.AreEqual("utf-8", MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"").GetCharset());
       Assert.AreEqual("utf-8", MediaType.Parse("text/plain; charset=\"UTF-\\8\"").GetCharset());
+      Assert.AreEqual("us-ascii", MediaType.Parse("nana").GetCharset());
+      Assert.AreEqual("", MediaType.Parse("text/xxx").GetCharset());
+      Assert.AreEqual("utf-8", MediaType.Parse("text/xxx;charset=UTF-8").GetCharset());
+      Assert.AreEqual("utf-8", MediaType.Parse("text/xxx;charset=utf-8").GetCharset());
+      Assert.AreEqual("", MediaType.Parse("text/xxx;chabset=utf-8").GetCharset());
+      Assert.AreEqual("utf-8", MediaType.Parse("text/xml;charset=utf-8").GetCharset());
+      Assert.AreEqual("utf-8", MediaType.Parse("text/plain;charset=utf-8").GetCharset());
+      Assert.AreEqual("us-ascii", MediaType.Parse("text/plain;chabset=utf-8").GetCharset());
+      Assert.AreEqual("utf-8", MediaType.Parse("image/xml;charset=utf-8").GetCharset());
+      Assert.AreEqual("", MediaType.Parse("image/xml;chabset=utf-8").GetCharset());
+      Assert.AreEqual("utf-8", MediaType.Parse("image/plain;charset=utf-8").GetCharset());
+      Assert.AreEqual("", MediaType.Parse("image/plain;chabset=utf-8").GetCharset());
     }
+
+    [TestMethod]
+    public void TestCodePointCompare() {
+      Assert.IsTrue(DataUtilities.CodePointCompare("abc", "def") < 0);
+      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800\udc00", "a\ud900\udc00") < 0);
+      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800\udc00", "a\ud800\udc00") == 0);
+      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800", "a\ud800") == 0);
+      Assert.IsTrue(DataUtilities.CodePointCompare("a\udc00", "a\udc00") == 0);
+      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800\udc00", "a\ud800\udd00") < 0);
+      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800\ufffd", "a\ud800\udc00") < 0);
+      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800\ud7ff", "a\ud800\udc00") < 0);
+      Assert.IsTrue(DataUtilities.CodePointCompare("a\ufffd\udc00", "a\ud800\udc00") < 0);
+      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud7ff\udc00", "a\ud800\udc00") < 0);
+    }
+
 
     public void TestRfc2231Extension(string mtype, string param, string expected) {
       MediaType mt = MediaType.Parse(mtype);

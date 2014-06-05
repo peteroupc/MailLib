@@ -115,6 +115,9 @@ namespace PeterO.Mail {
     /// exists (compared case-insensitively), it will be overwritten.</param>
     /// <param name='value'>Value of the parameter to set.</param>
     /// <returns>This instance.</returns>
+    /// <exception cref="ArgumentNullException">Either "value" or "name" is null.</exception>
+    /// <exception cref="ArgumentException">The parameter "name" is empty,
+    /// or it isn't a well-formed parameter name.</exception>
     public DispositionBuilder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException("value");
