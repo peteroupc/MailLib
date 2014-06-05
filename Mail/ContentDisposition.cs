@@ -362,10 +362,10 @@ namespace PeterO.Mail {
     /// value is syntactically invalid. Can be null.</param>
     /// <returns>A ContentDisposition object.</returns>
     /// <exception cref='System.ArgumentNullException'>The parameter
-    /// "str" is null.</exception>
+    /// <paramref name='dispositionValue'/> is null.</exception>
     public static ContentDisposition Parse(string dispositionValue, ContentDisposition defaultValue) {
       if (dispositionValue == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException("dispositionValue");
       }
       ContentDisposition dispo = new ContentDisposition();
       dispo.parameters = new SortedMap<string, string>();

@@ -1,25 +1,14 @@
-﻿/*
- * Created by SharpDevelop.
- * User: Peter
- * Date: 4/26/2014
- * Time: 8:43 PM
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
+/*
+Written by Peter O. in 2014.
+Any copyright is dedicated to the Public Domain.
+http://creativecommons.org/publicdomain/zero/1.0/
+If you like this, you should donate to Peter O.
+at: http://upokecenter.com/d/
  */
 using System;
-using NUnit.Framework;
 
-namespace MailLibTest
-{
-  /// <summary>
-  /// Description of OtherTest.
-  /// </summary>
-  ///
-  [TestFixture]
-  public class OtherTest
-  {
-    [Test]
-    public void TestMessage() {
-    }
+namespace MailLibTest {
+  public class OtherTest {
+
   }
 }
