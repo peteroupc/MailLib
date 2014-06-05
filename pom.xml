@@ -3,7 +3,7 @@
   <groupId>com.upokecenter</groupId>
   <artifactId>maillib</artifactId>
   <packaging>jar</packaging>
-  <version>0.6.1-SNAPSHOT</version>
+  <version>0.6.1</version>
   <name>MailLib</name>
   <profiles>
     <profile>
@@ -79,7 +79,7 @@
     <connection>scm:git:https://github.com/peteroupc/MailLib</connection>
     <developerConnection>scm:git:https://github.com/peteroupc/MailLib.git</developerConnection>
     <url>https://github.com/peteroupc/MailLib</url>
-    <tag>HEAD</tag>
+    <tag>v0.6.1</tag>
   </scm>
   <developers>
     <developer>
