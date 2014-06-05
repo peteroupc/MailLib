@@ -216,8 +216,8 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets a list of addresses found in the From header field or fields.</summary>
+    /// <value>A list of addresses found in the From header field or fields.</value>
     public IList<NamedAddress> FromAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("from"));
@@ -287,8 +287,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets a list of addresses found in the BCC header field or fields.</summary>
+    /// <value>A list of addresses found in the BCC header field or fields.</value>
     public IList<NamedAddress> BccAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("bcc"));
@@ -437,6 +437,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets or sets this message's media type.</summary>
     /// <value>This message&apos;s media type.</value>
+    /// <exception cref="ArgumentNullException">This value is being
+    /// set and "value" is null.</exception>
     public MediaType ContentType {
       get {
         return this.contentType;

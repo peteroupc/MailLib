@@ -49,10 +49,10 @@ namespace PeterO.Text {
     /// </summary>
   public sealed class Normalizer
   {
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A string object.</returns>
-    /// <param name='str'>A string object. (2).</param>
-    /// <param name='form'>A Normalization object.</param>
+    /// <summary>Converts a string to the given Unicode normalization form.</summary>
+    /// <returns>The parameter "str" converted to the given normalization form.</returns>
+    /// <param name='str'>An arbitrary string.</param>
+    /// <param name='form'>The Unicode normalization form to convert to.</param>
     public static string Normalize(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
