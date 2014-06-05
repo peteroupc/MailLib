@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>PeterO.MailLib</id>
+    <version>$version$</version>
+    <title>MailLib</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/peteroupc/MailLib/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/peteroupc/MailLib</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+    A parser and generator of Internet email messages as a Portable Class Library.
+    </description>
+    <releaseNotes>First release as a NuGet package.</releaseNotes>
+    <copyright>Written by Peter O. in 2013-2014.  Any copyright is released to the Public Domain.
+    (This applies to all the source code except the normalization and IDNA data.  See https://github.com/peteroupc/MailLib/LICENSE.md for details.)</copyright>
+    <tags>email mail mime parser</tags>
+  </metadata>
+</package>

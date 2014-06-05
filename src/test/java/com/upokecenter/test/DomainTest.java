@@ -1,4 +1,4 @@
-package com.upokecenter.util;
+package com.upokecenter.test; import com.upokecenter.util.*;
 /*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.

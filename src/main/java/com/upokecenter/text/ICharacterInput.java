@@ -13,6 +13,9 @@ package com.upokecenter.text;
 
     /**
      * Reads a sequence of Unicode code points from a data source.
+     * @param chars Output buffer.
+     * @param index Index in the output buffer to start writing to.
+     * @param length Maximum number of code points to write.
      * @return The number of Unicode code points read, or 0 if the end of the
      * source is reached.
      */

@@ -52,7 +52,6 @@
     <Compile Include="EncodingTest.cs" />
     <Compile Include="MessageTest.cs" />
     <Compile Include="NormalizationTest.cs" />
-    <Compile Include="OtherTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflect.cs" />

@@ -10,18 +10,13 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MailLib")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A parser and generator of Internet email messages as a Portable Class Library.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: CLSCompliant(true)]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyCopyright("Written by Peter O. in 2014. Any copyright is dedicated to the Public Domain. <http://creativecommons.org/publicdomain/zero/1.0/>")]
+[assembly: AssemblyCompany("Peter Occil")]
+[assembly: AssemblyCopyright("Written by Peter O. in 2013-2014. Any copyright is released to the Public Domain. <http://creativecommons.org/publicdomain/zero/1.0/> " +
+ "(This applies to all the source code except the normalization and IDNA data. See <https://github.com/peteroupc/MailLib/LICENSE.md> for details.)")]
 [assembly: AssemblyProduct("MailLib")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-// The assembly version has following format :
-//
-// Major.Minor.Build.Revision
-//
-// You can specify all the values or you can use the default the Revision and
-// Build Numbers by using the '*' as shown below:
-[assembly: AssemblyVersion("0.6.0.*")]
+[assembly: AssemblyVersion("0.6.0")]

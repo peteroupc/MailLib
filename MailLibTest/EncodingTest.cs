@@ -146,13 +146,6 @@ namespace MailLibTest {
       return true;
     }
 
-    internal static bool IsRareMixerHeader(string hdrname) {
-      return hdrname.Equals("content-identifier") || hdrname.Equals("x400-content-identifier") || hdrname.Equals("x400-content-return") || hdrname.Equals("x400-content-type") || hdrname.Equals("x400-mts-identifier") || hdrname.Equals("x400-originator") || hdrname.Equals("x400-received") || hdrname.Equals("x400-recipients") || hdrname.Equals("x400-trace") || hdrname.Equals("original-encoded-information-types") || hdrname.Equals("conversion") || hdrname.Equals("conversion-with-loss") || hdrname.Equals("dl-expansion-history") || hdrname.Equals("originator-return-address") ||
-        hdrname.Equals("discarded-x400-mts-extensions") || hdrname.Equals("supersedes") || hdrname.Equals("expires") ||
-        hdrname.Equals("content-return") ||
-        hdrname.Equals("autoforwarded") || hdrname.Equals("generate-delivery-report") || hdrname.Equals("incomplete-copy") || hdrname.Equals("message-type") || hdrname.Equals("discarded-x400-ipms-extensions") || hdrname.Equals("autosubmitted") || hdrname.Equals("prevent-nondelivery-report") || hdrname.Equals("alternate-recipient") || hdrname.Equals("disclose-recipients");
-    }
-
     internal static string ToBase16(byte[] bytes) {
       StringBuilder sb = new StringBuilder();
       string hex = "0123456789ABCDEF";
