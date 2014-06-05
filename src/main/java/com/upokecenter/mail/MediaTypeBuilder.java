@@ -54,6 +54,8 @@ public void setSubType(String value) {
     /**
      * Initializes a new instance of the MediaTypeBuilder class.
      * @param mt A MediaType object.
+     * @throws java.lang.NullPointerException The parameter {@code mt}
+     * is null.
      */
     public MediaTypeBuilder (MediaType mt) {
       if (mt == null) {
@@ -92,7 +94,7 @@ public void setSubType(String value) {
       }
 
     /**
-     * Not documented yet.
+     * Converts this builder to an immutable media type object.
      * @return A MediaType object.
      */
     public MediaType ToMediaType() {
@@ -121,8 +123,8 @@ public void setSubType(String value) {
     }
 
     /**
-     * Not documented yet.
-     * @param name A string object.
+     * Removes a parameter from this builder object.
+     * @param name Name of the parameter to remove. The name is compared case-insensitively.
      * @return This instance.
      * @throws java.lang.NullPointerException The parameter {@code name}
      * is null.
@@ -137,7 +139,7 @@ public void setSubType(String value) {
 
     /**
      * Not documented yet.
-     * @param name A string object.
+     * @param name Name of the parameter to set. The name is compared case-insensitively.
      * @param value A string object. (2).
      * @return This instance.
      * @throws java.lang.NullPointerException The parameter {@code value}

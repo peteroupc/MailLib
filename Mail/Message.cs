@@ -13,7 +13,11 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary>Represents an email message. <para><b>Thread safety:</b>
+    /// <summary><para>Represents an email message, and contains methods
+    /// and properties for accessing and modifying email message data. This
+    /// class implements the Internet Message Format (RFC 5322) and Multipurpose
+    /// Internet Mail Extensions (MIME; RFC 2045-2047, RFC 2049). </para>
+    /// <para><b>Thread safety:</b>
     /// This class is mutable; its properties can be changed. None of its instance
     /// methods are designed to be thread safe. Therefore, access to objects
     /// from this class must be synchronized if multiple threads can access
@@ -335,9 +339,11 @@ namespace PeterO.Mail {
 
     private static bool useLenientLineBreaks = true;
 
-    /// <summary>Initializes a new instance of the Message class.
-    /// Reads from the given Stream object to initialize the message.</summary>
+    /// <summary>Initializes a new instance of the Message class. Reads
+    /// from the given Stream object to initialize the message.</summary>
     /// <param name='stream'>A readable data stream.</param>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='stream'/> is null.</exception>
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException("stream");
@@ -354,9 +360,8 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <summary>Initializes a new instance of the Message class
-    /// The message will be plain text and have an artificial From
-    /// address.</summary>
+    /// <summary>Initializes a new instance of the Message class The message
+    /// will be plain text and have an artificial From address.</summary>
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();
@@ -470,7 +475,9 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets or sets this message's content disposition.</summary>
+    /// <summary>Gets or sets this message's content disposition. The content
+    /// disposition specifies how a user agent should handle or otherwise
+    /// display this message.</summary>
     /// <value>This message&apos;s content disposition, or null if none
     /// is specified.</value>
     public ContentDisposition ContentDisposition {

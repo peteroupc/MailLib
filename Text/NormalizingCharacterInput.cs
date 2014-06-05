@@ -90,6 +90,8 @@ namespace PeterO.Text {
     /// class using the given normalization form.</summary>
     /// <param name='characterList'>An IList object.</param>
     /// <param name='form'>A Normalization object.</param>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='characterList'/> is null.</exception>
     public NormalizingCharacterInput(IList<int> characterList, Normalization form) {
       if (characterList == null) {
         throw new ArgumentNullException("characterList");
@@ -101,7 +103,7 @@ namespace PeterO.Text {
     }
 
     /// <summary>Initializes a new instance of the NormalizingCharacterInput
-    /// class.</summary>
+    /// class. Uses a portion of a string as the input.</summary>
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='length'>A 32-bit signed integer. (2).</param>
@@ -122,9 +124,11 @@ namespace PeterO.Text {
     /// class.</summary>
     /// <param name='stream'>An ICharacterInput object.</param>
     /// <param name='form'>A Normalization object.</param>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='stream'/> is null.</exception>
     public NormalizingCharacterInput(ICharacterInput stream, Normalization form) {
       if (stream == null) {
-        throw new ArgumentException("stream");
+        throw new ArgumentNullException("stream");
       }
       this.lastStableIndex = -1;
       this.iterator = stream;
@@ -171,23 +175,29 @@ namespace PeterO.Text {
       return true;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A Boolean object.</returns>
-    /// <param name='str'>A string object.</param>
+    /// <summary>Determines whether the given string is in the given Unicode
+    /// normalization form.</summary>
+    /// <returns>True if the given string is in the given Unicode normalization
+    /// form; otherwise, false.</returns>
+    /// <param name='str'>An arbitrary string.</param>
     /// <param name='form'>A Normalization object.</param>
     public static bool IsNormalized(string str, Normalization form) {
       return Normalizer.IsNormalized(str, form);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A Boolean object.</returns>
+    /// <summary>Determines whether the given list of characters is in the
+    /// given Unicode normalization form.</summary>
+    /// <returns>True if the given list of characters is in the given Unicode
+    /// normalization form; otherwise, false.</returns>
     /// <param name='charList'>An IList object.</param>
     /// <param name='form'>A Normalization object.</param>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// "chars" is null.</exception>
     public static bool IsNormalized(IList<int> charList, Normalization form) {
       int nonStableStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       if (charList == null) {
-        throw new ArgumentException("chars");
+        throw new ArgumentNullException("chars");
       }
       for (int i = 0; i < charList.Count; ++i) {
         int c = charList[i];

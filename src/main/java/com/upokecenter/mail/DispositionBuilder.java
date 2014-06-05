@@ -43,6 +43,8 @@ public void setDispositionType(String value) {
     /**
      * Initializes a new instance of the DispositionBuilder class.
      * @param mt A ContentDisposition object.
+     * @throws java.lang.NullPointerException The parameter {@code mt}
+     * is null.
      */
     public DispositionBuilder (ContentDisposition mt) {
       if (mt == null) {
@@ -86,7 +88,7 @@ public void setDispositionType(String value) {
     }
 
     /**
-     * Not documented yet.
+     * Sets the disposition type, such as "inline".
      * @param str A string object.
      * @return This instance.
      * @throws java.lang.NullPointerException The parameter {@code str}

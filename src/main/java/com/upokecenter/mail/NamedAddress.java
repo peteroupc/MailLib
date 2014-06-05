@@ -86,6 +86,8 @@ import java.util.*;
     /**
      * Initializes a new instance of the NamedAddress class.
      * @param address A string object.
+     * @throws java.lang.NullPointerException The parameter {@code address}
+     * is null.
      */
     public NamedAddress (String address) {
       if (address == null) {
@@ -105,9 +107,12 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the NamedAddress class.
+     * Initializes a new instance of the NamedAddress class using the given
+     * display name and email address.
      * @param displayName A string object.
      * @param address A string object. (2).
+     * @throws java.lang.NullPointerException The parameter {@code address}
+     * is null.
      */
     public NamedAddress (String displayName, String address) {
       if (((displayName)==null || (displayName).length()==0)) {
@@ -124,7 +129,9 @@ import java.util.*;
     /**
      * Initializes a new instance of the NamedAddress class.
      * @param displayName A string object.
-     * @param address An Address object.
+     * @param address An email address.
+     * @throws java.lang.NullPointerException The parameter {@code address}
+     * is null.
      */
     public NamedAddress (String displayName, Address address) {
       if (address == null) {
@@ -139,10 +146,13 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the NamedAddress class.
+     * Initializes a new instance of the NamedAddress class using the given
+     * name and an email address made up of its local part and domain.
      * @param displayName A string object.
      * @param localPart A string object. (2).
      * @param domain A string object. (3).
+     * @throws java.lang.NullPointerException The parameter {@code localPart}
+     * or {@code domain} is null.
      */
     public NamedAddress (String displayName, String localPart, String domain) {
       if (localPart == null) {
@@ -163,6 +173,8 @@ import java.util.*;
      * Initializes a new instance of the NamedAddress class.
      * @param groupName A string object.
      * @param mailboxes An List object.
+     * @throws java.lang.NullPointerException The parameter {@code groupName}
+     * or {@code mailboxes} is null.
      */
     public NamedAddress (String groupName, List<NamedAddress> mailboxes) {
       if (groupName == null) {
@@ -187,8 +199,10 @@ import java.util.*;
     private List<NamedAddress> groupAddresses;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a list of address that make up the group, if this object represents
+     * a group, or an empty list otherwise.
+     * @return A list of address that make up the group, if this object represents
+     * a group, or an empty list otherwise.
      */
     public List<NamedAddress> getGroupAddresses() {
         return java.util.Collections.unmodifiableList(this.groupAddresses);

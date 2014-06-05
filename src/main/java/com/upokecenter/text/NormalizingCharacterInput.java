@@ -104,6 +104,8 @@ import java.util.*;
      * using the given normalization form.
      * @param characterList An List object.
      * @param form A Normalization object.
+     * @throws java.lang.NullPointerException The parameter {@code characterList}
+     * is null.
      */
     public NormalizingCharacterInput (List<Integer> characterList, Normalization form) {
       if (characterList == null) {
@@ -117,6 +119,7 @@ import java.util.*;
 
     /**
      * Initializes a new instance of the NormalizingCharacterInput class.
+     * Uses a portion of a string as the input.
      * @param str A string object.
      * @param index A 32-bit signed integer.
      * @param length A 32-bit signed integer. (2).
@@ -139,10 +142,12 @@ import java.util.*;
      * Initializes a new instance of the NormalizingCharacterInput class.
      * @param stream An ICharacterInput object.
      * @param form A Normalization object.
+     * @throws java.lang.NullPointerException The parameter {@code stream}
+     * is null.
      */
     public NormalizingCharacterInput (ICharacterInput stream, Normalization form) {
       if (stream == null) {
-        throw new IllegalArgumentException("stream");
+        throw new NullPointerException("stream");
       }
       this.lastStableIndex = -1;
       this.iterator = stream;
@@ -192,26 +197,32 @@ import java.util.*;
     }
 
     /**
-     * Not documented yet.
-     * @param str A string object.
+     * Determines whether the given string is in the given Unicode normalization
+     * form.
+     * @param str An arbitrary string.
      * @param form A Normalization object.
-     * @return A Boolean object.
+     * @return True if the given string is in the given Unicode normalization
+     * form; otherwise, false.
      */
     public static boolean IsNormalized(String str, Normalization form) {
       return Normalizer.IsNormalized(str, form);
     }
 
     /**
-     * Not documented yet.
+     * Determines whether the given list of characters is in the given Unicode
+     * normalization form.
      * @param charList An List object.
      * @param form A Normalization object.
-     * @return A Boolean object.
+     * @return True if the given list of characters is in the given Unicode
+     * normalization form; otherwise, false.
+     * @throws java.lang.NullPointerException The parameter "chars" is
+     * null.
      */
     public static boolean IsNormalized(List<Integer> charList, Normalization form) {
       int nonStableStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       if (charList == null) {
-        throw new IllegalArgumentException("chars");
+        throw new NullPointerException("chars");
       }
       for (int i = 0; i < charList.size(); ++i) {
         int c = charList.get(i);

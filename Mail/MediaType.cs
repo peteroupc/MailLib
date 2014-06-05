@@ -13,7 +13,15 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary>Specifies what kind of data a message body is.</summary>
+    /// <summary><para>Specifies what kind of data a message body is.</para>
+    /// <para>A media type consists of a top-level type (the general category
+    /// of the data), a subtype (the specific type), and an optional list of
+    /// parameters. For example, the media type <c>text/plain; charset
+    /// = utf-8</c>
+    /// is a text media type ("text"), namely, a plain text type ("plain"),
+    /// and the parameters say that that the data uses the character set UTF-8,
+    /// a form of Unicode ("charset=utf-8"). </para>
+    /// </summary>
   public sealed class MediaType {
     private string topLevelType;
 
@@ -69,7 +77,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets a value indicating whether this is a text media type.</summary>
+    /// <summary>Gets a value indicating whether this is a text media type
+    /// ("text/*").</summary>
     /// <value>True if this is a text media type; otherwise, false..</value>
     public bool IsText {
       get {
@@ -94,8 +103,10 @@ namespace PeterO.Mail {
 
     private SortedMap<string, string> parameters;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets a sorted list of the parameters contained in this media
+    /// type object.</summary>
+    /// <value>A sorted list of the parameters contained in this media type
+    /// object.</value>
     public IDictionary<string, string> Parameters {
       get {
         return new ReadOnlyMap<string, string>(this.parameters);
@@ -103,10 +114,10 @@ namespace PeterO.Mail {
     }
 
     internal enum QuotedStringRule {
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Use HTTP rules for quoted strings.</summary>
       Http,
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Use Internet Message Format rules for quoted strings.</summary>
       Rfc5322
     }
 
@@ -694,9 +705,12 @@ namespace PeterO.Mail {
       return String.Empty;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='name'>A string object. (2).</param>
-    /// <returns>A string object.</returns>
+    /// <summary>Gets the value of a parameter in this media type, such as
+    /// "charset".</summary>
+    /// <param name='name'>Name of the parameter to get. The name is compared
+    /// case-insensitively.</param>
+    /// <returns>The value of the parameter as a string, or null if the parameter
+    /// doesn't exist.</returns>
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='name'/> is null.</exception>
     public string GetParameter(string name) {
@@ -851,8 +865,10 @@ namespace PeterO.Mail {
       return true;
     }
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets the top level type and subtype of this media type, separated
+    /// by a slash; for example, "text/plain".</summary>
+    /// <value>The top level type and subtype of this media type, separated
+    /// by a slash; for example, &quot;text/plain&quot;.</value>
     public string TypeAndSubType {
       get {
         return this.TopLevelType + "/" + this.SubType;
@@ -1002,11 +1018,6 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <returns>A Boolean object.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> is null.</exception>
     private bool ParseMediaType(string str) {
       bool httpRules = false;
       int index = 0;
@@ -1089,9 +1100,11 @@ namespace PeterO.Mail {
       return Parse(mediaTypeValue, TextPlainAscii);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <param name='defaultValue'>Can be null.</param>
+    /// <summary>Parses a media type string and returns a media type object,
+    /// or the default value if the string is invalid.</summary>
+    /// <param name='str'>A string object representing a media type.</param>
+    /// <param name='defaultValue'>The media type to return if the string
+    /// is syntactically invalid. Can be null.</param>
     /// <returns>A MediaType object.</returns>
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='str'/> is null.</exception>

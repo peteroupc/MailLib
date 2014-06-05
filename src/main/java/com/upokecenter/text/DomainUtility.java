@@ -197,6 +197,7 @@ private DomainUtility() {
      * Decodes a PunyCode-encoded string.
      * @param str A string to decode. Note that this doesn&apos;t include
      * a prefix such as.<code>xn--</code> .
+     * @param str A string object. (2).
      * @param index A 32-bit signed integer.
      * @param endIndex A 32-bit signed integer. (2).
      * @return A string object.

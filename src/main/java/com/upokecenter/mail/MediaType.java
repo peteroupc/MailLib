@@ -12,7 +12,13 @@ import java.util.*;
 import com.upokecenter.util.*;
 
     /**
-     * Specifies what kind of data a message body is.
+     * <p>Specifies what kind of data a message body is.</p> <p>A media type
+     * consists of a top-level type (the general category of the data), a
+     * subtype (the specific type), and an optional list of parameters.
+     * For example, the media type <code>text/plain; charset = utf-8</code> is
+     * a text media type ("text"), namely, a plain text type ("plain"), and
+     * the parameters say that that the data uses the character set UTF-8,
+     * a form of Unicode ("charset=utf-8"). </p>
      */
   public final class MediaType {
     private String topLevelType;
@@ -71,7 +77,7 @@ import com.upokecenter.util.*;
       }
 
     /**
-     * Gets a value indicating whether this is a text media type.
+     * Gets a value indicating whether this is a text media type ("text/*").
      * @return True if this is a text media type; otherwise, false..
      */
     public boolean isText() {
@@ -95,8 +101,9 @@ import com.upokecenter.util.*;
     private TreeMap<String, String> parameters;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a sorted list of the parameters contained in this media type object.
+     * @return A sorted list of the parameters contained in this media type
+     * object.
      */
     public Map<String, String> getParameters() {
         return java.util.Collections.unmodifiableMap(this.parameters);
@@ -104,12 +111,12 @@ import com.upokecenter.util.*;
 
     enum QuotedStringRule {
     /**
-     * Not documented yet.
+     * Use HTTP rules for quoted strings.
      */
       Http,
 
     /**
-     * Not documented yet.
+     * Use Internet Message Format rules for quoted strings.
      */
       Rfc5322
     }
@@ -698,9 +705,10 @@ import com.upokecenter.util.*;
     }
 
     /**
-     * Not documented yet.
-     * @param name A string object. (2).
-     * @return A string object.
+     * Gets the value of a parameter in this media type, such as "charset".
+     * @param name Name of the parameter to get. The name is compared case-insensitively.
+     * @return The value of the parameter as a string, or null if the parameter
+     * doesn't exist.
      * @throws java.lang.NullPointerException The parameter {@code name}
      * is null.
      */
@@ -857,8 +865,10 @@ import com.upokecenter.util.*;
     }
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets the top level type and subtype of this media type, separated by
+     * a slash; for example, "text/plain".
+     * @return The top level type and subtype of this media type, separated
+     * by a slash; for example, "text/plain".
      */
     public String getTypeAndSubType() {
         return this.getTopLevelType() + "/" + this.getSubType();
@@ -1007,13 +1017,6 @@ import com.upokecenter.util.*;
       }
     }
 
-    /**
-     * Not documented yet.
-     * @param str A string object.
-     * @return A Boolean object.
-     * @throws java.lang.NullPointerException The parameter {@code str}
-     * is null.
-     */
     private boolean ParseMediaType(String str) {
       boolean httpRules = false;
       int index = 0;
@@ -1085,9 +1088,11 @@ import com.upokecenter.util.*;
     }
 
     /**
-     * Not documented yet.
-     * @param str A string object.
-     * @param defaultValue Can be null.
+     * Parses a media type string and returns a media type object, or the default
+     * value if the string is invalid.
+     * @param str A string object representing a media type.
+     * @param defaultValue The media type to return if the string is syntactically
+     * invalid. Can be null.
      * @return A MediaType object.
      * @throws java.lang.NullPointerException The parameter {@code str}
      * is null.
