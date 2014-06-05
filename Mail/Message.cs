@@ -76,8 +76,10 @@ namespace PeterO.Mail {
 
     private IList<Message> parts;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets a list of all the parts of this message. This list is
+    /// editable. This will only be used if the message is a multipart message.</summary>
+    /// <value>A list of all the parts of this message. This list is editable.
+    /// This will only be used if the message is a multipart message.</value>
     public IList<Message> Parts {
       get {
         return this.parts;
@@ -325,6 +327,8 @@ namespace PeterO.Mail {
 
     private static bool useLenientLineBreaks = true;
 
+    /// <summary>Initializes a new instance of the Message class.</summary>
+    /// <param name='stream'>A Stream object.</param>
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException("stream");
@@ -341,6 +345,7 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
+    /// <summary>Initializes a new instance of the Message class.</summary>
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();
@@ -1902,8 +1907,8 @@ namespace PeterO.Mail {
     private class MessageStackEntry {
       private Message message;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets an internal value.</summary>
+    /// <value>An internal value.</value>
       public Message Message {
         get {
           return this.message;
@@ -1912,8 +1917,8 @@ namespace PeterO.Mail {
 
       private string boundary;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets an internal value.</summary>
+    /// <value>An internal value.</value>
       public string Boundary {
         get {
           return this.boundary;

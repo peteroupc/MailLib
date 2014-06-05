@@ -80,6 +80,8 @@ namespace PeterO.Mail {
       }
     }
 
+    /// <summary>Initializes a new instance of the NamedAddress class.</summary>
+    /// <param name='address'>A string object.</param>
     public NamedAddress(string address) {
       if (address == null) {
         throw new ArgumentNullException("address");
@@ -97,6 +99,9 @@ namespace PeterO.Mail {
       this.groupAddresses = na.groupAddresses;
     }
 
+    /// <summary>Initializes a new instance of the NamedAddress class.</summary>
+    /// <param name='displayName'>A string object.</param>
+    /// <param name='address'>A string object. (2).</param>
     public NamedAddress(string displayName, string address) {
       if (String.IsNullOrEmpty(displayName)) {
         displayName = address;
@@ -109,6 +114,9 @@ namespace PeterO.Mail {
       this.address = new Address(address);
     }
 
+    /// <summary>Initializes a new instance of the NamedAddress class.</summary>
+    /// <param name='displayName'>A string object.</param>
+    /// <param name='address'>An Address object.</param>
     public NamedAddress(string displayName, Address address) {
       if (address == null) {
         throw new ArgumentNullException("address");
@@ -121,6 +129,10 @@ namespace PeterO.Mail {
       this.address = address;
     }
 
+    /// <summary>Initializes a new instance of the NamedAddress class.</summary>
+    /// <param name='displayName'>A string object.</param>
+    /// <param name='localPart'>A string object. (2).</param>
+    /// <param name='domain'>A string object. (3).</param>
     public NamedAddress(string displayName, string localPart, string domain) {
       if (localPart == null) {
         throw new ArgumentNullException("localPart");
@@ -136,6 +148,9 @@ namespace PeterO.Mail {
       this.name = displayName;
     }
 
+    /// <summary>Initializes a new instance of the NamedAddress class.</summary>
+    /// <param name='groupName'>A string object.</param>
+    /// <param name='mailboxes'>An IList object.</param>
     public NamedAddress(string groupName, IList<NamedAddress> mailboxes) {
       if (groupName == null) {
         throw new ArgumentNullException("groupName");

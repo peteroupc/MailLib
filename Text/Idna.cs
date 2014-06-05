@@ -236,6 +236,10 @@ namespace PeterO.Text {
       return builder.ToString();
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A Boolean object.</returns>
+    /// <param name='str'>A string object.</param>
+    /// <param name='lookupRules'>A Boolean object. (2).</param>
     public static bool IsValidDomainName(string str, bool lookupRules) {
       if (String.IsNullOrEmpty(str)) {
         return false;

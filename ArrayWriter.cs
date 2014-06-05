@@ -15,9 +15,12 @@ namespace PeterO {
     private int retvalMax;
     private byte[] retval;
 
+    /// <summary>Initializes a new instance of the ArrayWriter class.</summary>
     public ArrayWriter() : this(16) {
     }
 
+    /// <summary>Initializes a new instance of the ArrayWriter class.</summary>
+    /// <param name='initialSize'>A 32-bit signed integer.</param>
     public ArrayWriter(int initialSize) {
       this.retval = new byte[initialSize];
     }
@@ -55,6 +58,8 @@ namespace PeterO {
       }
     }
 
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A byte array.</returns>
     public byte[] ToArray() {
       byte[] ret = new byte[this.retvalMax];
       Array.Copy(this.retval, 0, ret, 0, this.retvalMax);

@@ -63,19 +63,19 @@ private DataUtilities() {
         throw new NullPointerException("bytes");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is less than " + "0");
+        throw new IllegalArgumentException("offset (" + Long.toString((long)offset) + ") is less than " + "0");
       }
       if (offset > bytes.length) {
-        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is more than " + Integer.toString((int)bytes.length));
+        throw new IllegalArgumentException("offset (" + Long.toString((long)offset) + ") is more than " + Long.toString((long)bytes.length));
       }
       if (bytesCount < 0) {
-        throw new IllegalArgumentException("bytesCount (" + Integer.toString((int)bytesCount) + ") is less than " + "0");
+        throw new IllegalArgumentException("bytesCount (" + Long.toString((long)bytesCount) + ") is less than " + "0");
       }
       if (bytesCount > bytes.length) {
-        throw new IllegalArgumentException("bytesCount (" + Integer.toString((int)bytesCount) + ") is more than " + Integer.toString((int)bytes.length));
+        throw new IllegalArgumentException("bytesCount (" + Long.toString((long)bytesCount) + ") is more than " + Long.toString((long)bytes.length));
       }
       if (bytes.length - offset < bytesCount) {
-        throw new IllegalArgumentException("bytes's length minus " + offset + " (" + Integer.toString((int)(bytes.length - offset)) + ") is less than " + Integer.toString((int)bytesCount));
+        throw new IllegalArgumentException("bytes's length minus " + offset + " (" + Long.toString((long)(bytes.length - offset)) + ") is less than " + Long.toString((long)bytesCount));
       }
       StringBuilder b = new StringBuilder();
       if (ReadUtf8FromBytes(bytes, offset, bytesCount, b, replace) != 0) {
@@ -274,6 +274,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
           str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
         // Get the Unicode code point for the surrogate pair
         c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
+        ++index;
       } else if ((c & 0xf800) == 0xd800) {
         // unpaired surrogate
         if (surrogateBehavior == 0) {
@@ -331,7 +332,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
      * Both strings are equal or null. Less than 0: a is null and b isn't; or
      * the first code point that's different is less in A than in B; or b starts
      * with a and is longer than a. Greater than 0: b is null and a isn't; or the
-     * first code point that' s different is greater in A than in B; or a starts
+     * first code point that's different is greater in A than in B; or a starts
      * with b and is longer than b.
      */
     public static int CodePointCompare(String strA, String strB) {
@@ -387,6 +388,26 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       return (strA.length() < strB.length()) ? -1 : 1;
     }
 
+    /**
+     * Writes a portion of a string in UTF-8 encoding to a data stream.
+     * @param str A string to write.
+     * @param offset The zero-based index where the string portion to write
+     * begins.
+     * @param length The length of the string portion to write.
+     * @param stream A writable data stream.
+     * @param replace If true, replaces unpaired surrogate code points
+     * with the replacement character (U + FFFD). If false, stops processing
+     * when an unpaired surrogate code point is seen.
+     * @return 0 if the entire string portion was written; or -1 if the string
+     * portion contains an unpaired surrogate code point and {@code replace}
+     * is false.
+     * @throws java.lang.NullPointerException The parameter {@code str}
+     * is null or {@code stream} is null.
+     * @throws java.lang.IllegalArgumentException The parameter {@code offset}
+     * is less than 0, {@code length} is less than 0, or {@code offset} plus
+     * {@code length} is greater than the string's length.
+     * @throws java.io.IOException An I/O error occurred.
+     */
     public static int WriteUtf8(String str, int offset, int length, OutputStream stream, boolean replace) throws IOException {
       return WriteUtf8(str, offset, length, stream, replace, false);
     }
@@ -421,19 +442,19 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new NullPointerException("str");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is less than " + "0");
+        throw new IllegalArgumentException("offset (" + Long.toString((long)offset) + ") is less than " + "0");
       }
       if (offset > str.length()) {
-        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("offset (" + Long.toString((long)offset) + ") is more than " + Long.toString((long)str.length()));
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is less than " + "0");
+        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is less than " + "0");
       }
       if (length > str.length()) {
-        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("length (" + Long.toString((long)length) + ") is more than " + Long.toString((long)str.length()));
       }
       if (str.length() - offset < length) {
-        throw new IllegalArgumentException("str.length() minus offset (" + Integer.toString((int)str.length() - offset) + ") is less than " + Integer.toString((int)length));
+        throw new IllegalArgumentException("str.length() minus offset (" + Long.toString((long)str.length() - offset) + ") is less than " + Long.toString((long)length));
       }
       byte[] bytes;
       int retval = 0;
@@ -568,19 +589,19 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new NullPointerException("data");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is less than " + "0");
+        throw new IllegalArgumentException("offset (" + Long.toString((long)offset) + ") is less than " + "0");
       }
       if (offset > data.length) {
-        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is more than " + Integer.toString((int)data.length));
+        throw new IllegalArgumentException("offset (" + Long.toString((long)offset) + ") is more than " + Long.toString((long)data.length));
       }
       if (bytesCount < 0) {
-        throw new IllegalArgumentException("bytesCount (" + Integer.toString((int)bytesCount) + ") is less than " + "0");
+        throw new IllegalArgumentException("bytesCount (" + Long.toString((long)bytesCount) + ") is less than " + "0");
       }
       if (bytesCount > data.length) {
-        throw new IllegalArgumentException("bytesCount (" + Integer.toString((int)bytesCount) + ") is more than " + Integer.toString((int)data.length));
+        throw new IllegalArgumentException("bytesCount (" + Long.toString((long)bytesCount) + ") is more than " + Long.toString((long)data.length));
       }
       if (data.length - offset < bytesCount) {
-        throw new IllegalArgumentException("data.length minus offset (" + Integer.toString((int)data.length - offset) + ") is less than " + Integer.toString((int)bytesCount));
+        throw new IllegalArgumentException("data.length minus offset (" + Long.toString((long)data.length - offset) + ") is less than " + Long.toString((long)bytesCount));
       }
       if (builder == null) {
         throw new NullPointerException("builder");

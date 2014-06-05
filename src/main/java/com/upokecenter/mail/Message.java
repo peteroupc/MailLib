@@ -70,8 +70,10 @@ import com.upokecenter.util.*;
     private List<Message> parts;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets a list of all the parts of this message. This list is editable.
+     * This will only be used if the message is a multipart message.
+     * @return A list of all the parts of this message. This list is editable.
+     * This will only be used if the message is a multipart message.
      */
     public List<Message> getParts() {
         return this.parts;
@@ -338,6 +340,10 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
 
     private static boolean useLenientLineBreaks = true;
 
+    /**
+     * Initializes a new instance of the Message class.
+     * @param stream A InputStream object.
+     */
     public Message (InputStream stream) {
       if (stream == null) {
         throw new NullPointerException("stream");
@@ -354,6 +360,9 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       this.ReadMessage(transform);
     }
 
+    /**
+     * Initializes a new instance of the Message class.
+     */
     public Message () {
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
@@ -1913,8 +1922,8 @@ public void setContentDisposition(ContentDisposition value) {
       private Message message;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets an internal value.
+     * @return An internal value.
      */
       public Message getMessage() {
           return this.message;
@@ -1923,8 +1932,8 @@ public void setContentDisposition(ContentDisposition value) {
       private String boundary;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets an internal value.
+     * @return An internal value.
      */
       public String getBoundary() {
           return this.boundary;

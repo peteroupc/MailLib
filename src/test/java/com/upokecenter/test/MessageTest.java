@@ -1,10 +1,11 @@
-package com.upokecenter.test; import com.upokecenter.util.*;
+package com.upokecenter.util;
 
 import java.util.*;
 import java.io.*;
 
 import org.junit.Assert;
 import org.junit.Test;
+import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 import com.upokecenter.text.*;
 

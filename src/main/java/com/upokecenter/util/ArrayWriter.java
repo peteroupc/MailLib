@@ -16,10 +16,17 @@ at: http://upokecenter.com/d/
     private int retvalMax;
     private byte[] retval;
 
+    /**
+     * Initializes a new instance of the ArrayWriter class.
+     */
     public ArrayWriter () {
  this(16);
     }
 
+    /**
+     * Initializes a new instance of the ArrayWriter class.
+     * @param initialSize A 32-bit signed integer.
+     */
     public ArrayWriter (int initialSize) {
       this.retval = new byte[initialSize];
     }
@@ -58,6 +65,10 @@ public void setPosition(int value) {
         this.retvalPos = value;
       }
 
+    /**
+     * Not documented yet.
+     * @return A byte array.
+     */
     public byte[] ToArray() {
       byte[] ret = new byte[this.retvalMax];
       System.arraycopy(this.retval, 0, ret, 0, this.retvalMax);

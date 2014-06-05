@@ -237,6 +237,12 @@ private Idna() {
       return builder.toString();
     }
 
+    /**
+     * Not documented yet.
+     * @param str A string object.
+     * @param lookupRules A Boolean object. (2).
+     * @return A Boolean object.
+     */
     public static boolean IsValidDomainName(String str, boolean lookupRules) {
       if (((str)==null || (str).length()==0)) {
         return false;

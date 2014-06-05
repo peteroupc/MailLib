@@ -83,6 +83,10 @@ import java.util.*;
       }
     }
 
+    /**
+     * Initializes a new instance of the NamedAddress class.
+     * @param address A string object.
+     */
     public NamedAddress (String address) {
       if (address == null) {
         throw new NullPointerException("address");
@@ -100,6 +104,11 @@ import java.util.*;
       this.groupAddresses = na.groupAddresses;
     }
 
+    /**
+     * Initializes a new instance of the NamedAddress class.
+     * @param displayName A string object.
+     * @param address A string object. (2).
+     */
     public NamedAddress (String displayName, String address) {
       if (((displayName)==null || (displayName).length()==0)) {
         displayName = address;
@@ -112,6 +121,11 @@ import java.util.*;
       this.address = new Address(address);
     }
 
+    /**
+     * Initializes a new instance of the NamedAddress class.
+     * @param displayName A string object.
+     * @param address An Address object.
+     */
     public NamedAddress (String displayName, Address address) {
       if (address == null) {
         throw new NullPointerException("address");
@@ -124,6 +138,12 @@ import java.util.*;
       this.address = address;
     }
 
+    /**
+     * Initializes a new instance of the NamedAddress class.
+     * @param displayName A string object.
+     * @param localPart A string object. (2).
+     * @param domain A string object. (3).
+     */
     public NamedAddress (String displayName, String localPart, String domain) {
       if (localPart == null) {
         throw new NullPointerException("localPart");
@@ -139,6 +159,11 @@ import java.util.*;
       this.name = displayName;
     }
 
+    /**
+     * Initializes a new instance of the NamedAddress class.
+     * @param groupName A string object.
+     * @param mailboxes An List object.
+     */
     public NamedAddress (String groupName, List<NamedAddress> mailboxes) {
       if (groupName == null) {
         throw new NullPointerException("groupName");

@@ -20,8 +20,10 @@ import com.upokecenter.util.*;
     private Map<String, String> parameters;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets this value's disposition type, such value, such as "inline"
+     * or "attachment".
+     * @return This value's disposition type, such value, such as "inline"
+     * or "attachment".
      */
     public String getDispositionType() {
         return this.type;
@@ -30,11 +32,18 @@ public void setDispositionType(String value) {
         this.SetDispositionType(value);
       }
 
+    /**
+     * Initializes a new instance of the DispositionBuilder class.
+     */
     public DispositionBuilder () {
       this.parameters = new HashMap<String, String>();
       this.type = "attachment";
     }
 
+    /**
+     * Initializes a new instance of the DispositionBuilder class.
+     * @param mt A ContentDisposition object.
+     */
     public DispositionBuilder (ContentDisposition mt) {
       if (mt == null) {
         throw new NullPointerException("mt");
@@ -43,6 +52,10 @@ public void setDispositionType(String value) {
       this.type = mt.getDispositionType();
     }
 
+    /**
+     * Initializes a new instance of the DispositionBuilder class.
+     * @param type A string object.
+     */
     public DispositionBuilder (String type) {
       this.parameters = new HashMap<String, String>();
       this.SetDispositionType(type);

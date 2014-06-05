@@ -12,13 +12,25 @@ at: http://upokecenter.com/d/
      */
   public class MessageDataException extends RuntimeException {
 private static final long serialVersionUID=1L;
+    /**
+     * Initializes a new instance of the MessageDataException class.
+     */
     public MessageDataException () {
     }
 
+    /**
+     * Initializes a new instance of the MessageDataException class.
+     * @param message A string object.
+     */
     public MessageDataException (String message) {
  super(message);
     }
 
+    /**
+     * Initializes a new instance of the MessageDataException class.
+     * @param message A string object.
+     * @param innerException An Exception object.
+     */
     public MessageDataException (String message, Throwable innerException) {
  super(message,innerException);
     }

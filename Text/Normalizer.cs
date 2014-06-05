@@ -49,6 +49,10 @@ namespace PeterO.Text {
     /// </summary>
   public sealed class Normalizer
   {
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A string object.</returns>
+    /// <param name='str'>A string object. (2).</param>
+    /// <param name='form'>A Normalization object.</param>
     public static string Normalize(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -134,6 +138,9 @@ namespace PeterO.Text {
     private string iterator;
     private int characterListPos;
 
+    /// <summary>Initializes a new instance of the Normalizer class.</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='form'>A Normalization object.</param>
     public Normalizer(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentException("stream");
@@ -257,6 +264,8 @@ namespace PeterO.Text {
 
     private int[] readbuffer;
 
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A 32-bit signed integer.</returns>
     public int ReadChar() {
       int r = this.Read(this.readbuffer, 0, 1);
       return r == 1 ? this.readbuffer[0] : -1;
