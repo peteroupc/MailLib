@@ -1,7 +1,7 @@
 package com.upokecenter.text;
 
     /**
-     * An interface for reading Unicode characters.
+     * An interface for reading Unicode characters from a data source.
      */
   public interface ICharacterInput {
     /**
@@ -12,7 +12,9 @@ package com.upokecenter.text;
     int ReadChar();
 
     /**
-     * Reads a sequence of Unicode characters from a data source.
+     * Reads a sequence of Unicode code points from a data source.
+     * @return The number of Unicode code points read, or 0 if the end of the
+     * source is reached.
      */
     int Read(int[] chars, int index, int length);
   }

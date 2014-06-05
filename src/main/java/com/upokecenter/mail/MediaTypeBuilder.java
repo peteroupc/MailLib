@@ -103,6 +103,8 @@ public void setSubType(String value) {
      * Not documented yet.
      * @param str A string object.
      * @return This instance.
+     * @throws java.lang.NullPointerException The parameter {@code str}
+     * is null.
      */
     public MediaTypeBuilder SetTopLevelType(String str) {
       if (str == null) {
@@ -122,6 +124,8 @@ public void setSubType(String value) {
      * Not documented yet.
      * @param name A string object.
      * @return This instance.
+     * @throws java.lang.NullPointerException The parameter {@code name}
+     * is null.
      */
     public MediaTypeBuilder RemoveParameter(String name) {
       if (name == null) {
@@ -136,6 +140,8 @@ public void setSubType(String value) {
      * @param name A string object.
      * @param value A string object. (2).
      * @return This instance.
+     * @throws java.lang.NullPointerException The parameter {@code value}
+     * or {@code name} is null.
      */
     public MediaTypeBuilder SetParameter(String name, String value) {
       if (value == null) {
@@ -158,6 +164,8 @@ public void setSubType(String value) {
      * Not documented yet.
      * @param str A string object.
      * @return This instance.
+     * @throws java.lang.NullPointerException The parameter {@code str}
+     * is null.
      */
     public MediaTypeBuilder SetSubType(String str) {
       if (str == null) {

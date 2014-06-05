@@ -138,6 +138,8 @@ namespace PeterO.Mail {
     /// begins and ends.</param>
     /// <exception cref='System.ArgumentException'>Delimiter is null
     /// or empty.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='delimiter'/> is null.</exception>
     public static string[] SplitAt(string s, string delimiter) {
       if (delimiter == null) {
         throw new ArgumentNullException("delimiter");

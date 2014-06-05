@@ -45,6 +45,8 @@ private DomainUtility() {
      * non-ASCII characters, returns the PunyCode length plus 4 (the length
      * of the ACE prefix). If there are only ASCII characters, returns the
      * length of the string. Returns -1 if an overflow error occurs.
+     * @throws java.lang.NullPointerException The parameter {@code str}
+     * is null.
      */
     public static int PunycodeLength(String str, int index, int endIndex) {
       if (str == null) {
@@ -198,6 +200,8 @@ private DomainUtility() {
      * @param index A 32-bit signed integer.
      * @param endIndex A 32-bit signed integer. (2).
      * @return A string object.
+     * @throws java.lang.NullPointerException The parameter {@code str}
+     * is null.
      */
     static String PunycodeDecode(String str, int index, int endIndex) {
       if (str == null) {

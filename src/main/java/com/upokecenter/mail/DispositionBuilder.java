@@ -89,6 +89,8 @@ public void setDispositionType(String value) {
      * Not documented yet.
      * @param str A string object.
      * @return This instance.
+     * @throws java.lang.NullPointerException The parameter {@code str}
+     * is null.
      */
     public DispositionBuilder SetDispositionType(String str) {
       if (str == null) {
@@ -108,6 +110,8 @@ public void setDispositionType(String value) {
      * Removes a parameter from this content disposition.
      * @param name The parameter to remove. The name is compared case insensitively.
      * @return This instance.
+     * @throws java.lang.NullPointerException The parameter {@code name}
+     * is null.
      */
     public DispositionBuilder RemoveParameter(String name) {
       if (name == null) {
@@ -123,6 +127,10 @@ public void setDispositionType(String value) {
      * (compared case-insensitively), it will be overwritten.
      * @param value Value of the parameter to set.
      * @return This instance.
+     * @throws java.lang.NullPointerException Either {@code value} or
+     * {@code name} is null.
+     * @throws java.lang.IllegalArgumentException The parameter {@code name} is
+     * empty, or it isn't a well-formed parameter name.
      */
     public DispositionBuilder SetParameter(String name, String value) {
       if (value == null) {

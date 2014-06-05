@@ -71,6 +71,8 @@ namespace PeterO {
     /// <param name='offset'>A 32-bit signed integer. (2).</param>
     /// <param name='length'>A 32-bit signed integer. (3).</param>
     /// <returns>A 32-bit signed integer.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='src'/> is null.</exception>
     public int ReadBytes(byte[] src, int offset, int length) {
       if (src == null) {
         throw new ArgumentNullException("src");
@@ -101,6 +103,8 @@ namespace PeterO {
     /// <param name='src'>A byte array.</param>
     /// <param name='offset'>A 32-bit signed integer.</param>
     /// <param name='length'>A 32-bit signed integer. (2).</param>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='src'/> is null.</exception>
     public void WriteBytes(byte[] src, int offset, int length) {
       if (src == null) {
         throw new ArgumentNullException("src");

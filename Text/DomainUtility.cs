@@ -41,6 +41,8 @@ namespace PeterO.Text {
     /// contains non-ASCII characters, returns the PunyCode length plus
     /// 4 (the length of the ACE prefix). If there are only ASCII characters,
     /// returns the length of the string. Returns -1 if an overflow error occurs.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
@@ -194,6 +196,8 @@ namespace PeterO.Text {
     /// include a prefix such as.<c>xn--</c>
     /// .</param>
     /// <returns>A string object.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
     internal static string PunycodeDecode(string str, int index, int endIndex) {

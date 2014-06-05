@@ -22,6 +22,8 @@ import java.io.*;
     /**
      * Initializes a new instance of the LineBreakNormalizeTransform
      * class.
+     * @param stream A InputStream object.
+     * @param supportBareLF A Boolean object.
      */
     public LineBreakNormalizeTransform (InputStream stream, boolean supportBareLF) {
       this.stream = stream;

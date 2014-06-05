@@ -165,6 +165,8 @@ namespace PeterO.Mail {
     /// with replacement characters.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     public Message SetTextBody(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -180,6 +182,8 @@ namespace PeterO.Mail {
     /// with replacement characters.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     public Message SetHtmlBody(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -196,6 +200,8 @@ namespace PeterO.Mail {
     /// <param name='text'>A string object.</param>
     /// <param name='html'>A string object. (2).</param>
     /// <returns>This instance.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='text'/> or <paramref name='html'/> is null.</exception>
     public Message SetTextAndHtml(string text, string html) {
       if (text == null) {
         throw new ArgumentNullException("text");
@@ -216,7 +222,8 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Gets a list of addresses found in the From header field or fields.</summary>
+    /// <summary>Gets a list of addresses found in the From header field or
+    /// fields.</summary>
     /// <value>A list of addresses found in the From header field or fields.</value>
     public IList<NamedAddress> FromAddresses {
       get {
@@ -287,7 +294,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets a list of addresses found in the BCC header field or fields.</summary>
+    /// <summary>Gets a list of addresses found in the BCC header field or
+    /// fields.</summary>
     /// <value>A list of addresses found in the BCC header field or fields.</value>
     public IList<NamedAddress> BccAddresses {
       get {
@@ -327,8 +335,9 @@ namespace PeterO.Mail {
 
     private static bool useLenientLineBreaks = true;
 
-    /// <summary>Initializes a new instance of the Message class.</summary>
-    /// <param name='stream'>A Stream object.</param>
+    /// <summary>Initializes a new instance of the Message class.
+    /// Reads from the given Stream object to initialize the message.</summary>
+    /// <param name='stream'>A readable data stream.</param>
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException("stream");
@@ -345,7 +354,9 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <summary>Initializes a new instance of the Message class.</summary>
+    /// <summary>Initializes a new instance of the Message class
+    /// The message will be plain text and have an artificial From
+    /// address.</summary>
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();
@@ -437,8 +448,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets or sets this message's media type.</summary>
     /// <value>This message&apos;s media type.</value>
-    /// <exception cref="ArgumentNullException">This value is being
-    /// set and "value" is null.</exception>
+    /// <exception cref='System.ArgumentNullException'>This value
+    /// is being set and "value" is null.</exception>
     public MediaType ContentType {
       get {
         return this.contentType;
@@ -941,6 +952,8 @@ namespace PeterO.Mail {
     /// <exception cref='System.ArgumentException'>The header field
     /// name is too long or contains an invalid character, or the header field's
     /// value is syntactically invalid.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='name'/> or <paramref name='value'/> is null.</exception>
     public Message SetHeader(string name, string value) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -984,6 +997,8 @@ namespace PeterO.Mail {
     /// from its body part headers.</summary>
     /// <param name='name'>The name of the header field to remove.</param>
     /// <returns>This instance.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='name'/> is null.</exception>
     public Message RemoveHeader(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");

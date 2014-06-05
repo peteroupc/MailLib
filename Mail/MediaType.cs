@@ -697,6 +697,8 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='name'>A string object. (2).</param>
     /// <returns>A string object.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='name'/> is null.</exception>
     public string GetParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -1003,6 +1005,8 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>A Boolean object.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     private bool ParseMediaType(string str) {
       bool httpRules = false;
       int index = 0;
@@ -1089,6 +1093,8 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object.</param>
     /// <param name='defaultValue'>Can be null.</param>
     /// <returns>A MediaType object.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {
         throw new ArgumentNullException("str");

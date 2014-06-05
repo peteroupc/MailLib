@@ -26,6 +26,8 @@ namespace PeterO.Text {
     /// <returns>An IList(int) object.</returns>
     /// <param name='str'>A string object.</param>
     /// <param name='form'>A Normalization object.</param>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     public static IList<int> GetChars(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -37,6 +39,8 @@ namespace PeterO.Text {
     /// <returns>An IList(int) object.</returns>
     /// <param name='str'>An ICharacterInput object.</param>
     /// <param name='form'>A Normalization object.</param>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     public static IList<int> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -262,6 +266,8 @@ namespace PeterO.Text {
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='length'>A 32-bit signed integer. (3).</param>
     /// <returns>A 32-bit signed integer.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='chars'/> or "this.buffer" is null.</exception>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new ArgumentNullException("chars");

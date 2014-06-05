@@ -47,10 +47,13 @@ at: http://upokecenter.com/d/
   public final class Normalizer
   {
     /**
-     * Not documented yet.
-     * @param str A string object. (2).
-     * @param form A Normalization object.
-     * @return A string object.
+     * Converts a string to the given Unicode normalization form.
+     * @param str An arbitrary string.
+     * @param form The Unicode normalization form to convert to.
+     * @return The parameter {@code str} converted to the given normalization
+     * form.
+     * @throws java.lang.NullPointerException The parameter {@code str}
+     * is null.
      */
     public static String Normalize(String str, Normalization form) {
       if (str == null) {
@@ -298,6 +301,8 @@ at: http://upokecenter.com/d/
      * @param index A 32-bit signed integer. (2).
      * @param length A 32-bit signed integer. (3).
      * @return A 32-bit signed integer.
+     * @throws java.lang.NullPointerException The parameter {@code chars}
+     * or "this.buffer" is null.
      */
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {

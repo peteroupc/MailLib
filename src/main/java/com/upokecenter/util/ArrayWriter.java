@@ -81,6 +81,8 @@ public void setPosition(int value) {
      * @param offset A 32-bit signed integer. (2).
      * @param length A 32-bit signed integer. (3).
      * @return A 32-bit signed integer.
+     * @throws java.lang.NullPointerException The parameter {@code src}
+     * is null.
      */
     public int ReadBytes(byte[] src, int offset, int length) {
       if (src == null) {
@@ -113,6 +115,8 @@ public void setPosition(int value) {
      * @param src A byte array.
      * @param offset A 32-bit signed integer.
      * @param length A 32-bit signed integer. (2).
+     * @throws java.lang.NullPointerException The parameter {@code src}
+     * is null.
      */
     public void WriteBytes(byte[] src, int offset, int length) {
       if (src == null) {

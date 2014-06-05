@@ -701,6 +701,8 @@ import com.upokecenter.util.*;
      * Not documented yet.
      * @param name A string object. (2).
      * @return A string object.
+     * @throws java.lang.NullPointerException The parameter {@code name}
+     * is null.
      */
     public String GetParameter(String name) {
       if (name == null) {
@@ -1009,6 +1011,8 @@ import com.upokecenter.util.*;
      * Not documented yet.
      * @param str A string object.
      * @return A Boolean object.
+     * @throws java.lang.NullPointerException The parameter {@code str}
+     * is null.
      */
     private boolean ParseMediaType(String str) {
       boolean httpRules = false;
@@ -1085,6 +1089,8 @@ import com.upokecenter.util.*;
      * @param str A string object.
      * @param defaultValue Can be null.
      * @return A MediaType object.
+     * @throws java.lang.NullPointerException The parameter {@code str}
+     * is null.
      */
     public static MediaType Parse(String str, MediaType defaultValue) {
       if (str == null) {

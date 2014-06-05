@@ -95,6 +95,8 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     public MediaTypeBuilder SetTopLevelType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -112,6 +114,8 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='name'>A string object.</param>
     /// <returns>This instance.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='name'/> is null.</exception>
     public MediaTypeBuilder RemoveParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -124,6 +128,8 @@ namespace PeterO.Mail {
     /// <param name='name'>A string object.</param>
     /// <param name='value'>A string object. (2).</param>
     /// <returns>This instance.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='value'/> or <paramref name='name'/> is null.</exception>
     public MediaTypeBuilder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException("value");
@@ -144,6 +150,8 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     public MediaTypeBuilder SetSubType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");

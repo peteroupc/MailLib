@@ -84,6 +84,8 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     public DispositionBuilder SetDispositionType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -102,6 +104,8 @@ namespace PeterO.Mail {
     /// <param name='name'>The parameter to remove. The name is compared
     /// case insensitively.</param>
     /// <returns>This instance.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='name'/> is null.</exception>
     public DispositionBuilder RemoveParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -115,9 +119,10 @@ namespace PeterO.Mail {
     /// exists (compared case-insensitively), it will be overwritten.</param>
     /// <param name='value'>Value of the parameter to set.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentNullException">Either "value" or "name" is null.</exception>
-    /// <exception cref="ArgumentException">The parameter "name" is empty,
-    /// or it isn't a well-formed parameter name.</exception>
+    /// <exception cref='System.ArgumentNullException'>Either <paramref
+    /// name='value'/> or <paramref name='name'/> is null.</exception>
+    /// <exception cref='System.ArgumentException'>The parameter <paramref
+    /// name='name'/> is empty, or it isn't a well-formed parameter name.</exception>
     public DispositionBuilder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException("value");
