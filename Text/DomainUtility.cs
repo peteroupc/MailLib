@@ -198,7 +198,6 @@ namespace PeterO.Text {
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='str'/> is null.</exception>
     /// <returns>A string object.</returns>
-    /// <param name='str'>A string object. (2).</param>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
     internal static string PunycodeDecode(string str, int index, int endIndex) {

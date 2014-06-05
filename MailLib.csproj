@@ -34,6 +34,12 @@
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\MailLib.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DocumentationFile>bin\Release\MailLib.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="ArrayWriter.cs" />
     <Compile Include="DataUtilities.cs" />
@@ -98,10 +104,7 @@
     <Compile Include="Text\StringCharacterInput.cs" />
     <Compile Include="Text\UnicodeDatabase.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mail" />
-    <Folder Include="Text" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="ProfilingSessions\Session20140423_233256.sdps" />
     <Content Include="ProfilingSessions\Session20140424_090403.sdps" />
