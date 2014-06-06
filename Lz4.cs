@@ -9,7 +9,7 @@ using System;
 
 namespace PeterO {
     /// <summary>Implements the LZ4 algorithm (see "LZ4 Format Description"
-    /// by Y. Collet for more information).</summary>
+    /// by Y Collet for more information).</summary>
   public static class Lz4
   {
     /// <summary>Decompresses a byte array compressed using the LZ4 format.</summary>
