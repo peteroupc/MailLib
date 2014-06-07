@@ -39,6 +39,11 @@ namespace MailLibTest {
       Assert.AreEqual("2", MediaType.Parse("x/y;z=1;z*=utf-8''2").GetParameter("z"));
     }
 
+    private static Message MessageFromString(string str) {
+      return new Message(new MemoryStream(
+        DataUtilities.GetUtf8Bytes(str, true)));
+    }
+
     private static void TestMediaTypeRoundTrip(string str) {
       string mtstring = new MediaTypeBuilder("x", "y").SetParameter("z", str).ToString();
       Assert.IsFalse(mtstring.Contains("\r\n\r\n"));
@@ -64,6 +69,34 @@ namespace MailLibTest {
         }
         msgids.Add(msgid);
       }
+    }
+
+    [TestMethod]
+    public void TestContentTypeDefaults() {
+      string start = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
+      string msg;
+      msg = start + "Content-Type: text/html\r\n\r\n";
+      Assert.AreEqual(MediaType.Parse("text/html"), MessageFromString(msg).ContentType);
+      msg = start + "Content-Type: text/\r\n\r\n";
+      Assert.AreEqual(MediaType.TextPlainAscii, MessageFromString(msg).ContentType);
+      msg = start + "Content-Type: /html\r\n\r\n";
+      Assert.AreEqual(MediaType.TextPlainAscii, MessageFromString(msg).ContentType);
+      // All header fields are syntactically valid
+      msg = start + "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\n\r\n";
+      Assert.AreEqual(MediaType.ApplicationOctetStream, MessageFromString(msg).ContentType);
+      msg = start + "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: text/html\r\n\r\n";
+      Assert.AreEqual(MediaType.ApplicationOctetStream, MessageFromString(msg).ContentType);
+      // First header field is syntactically invalid
+      msg = start + "Content-Type: /plain;charset=utf-8\r\nContent-Type: image/jpeg\r\n\r\n";
+      Assert.AreEqual(MediaType.TextPlainAscii, MessageFromString(msg).ContentType);
+      // Second header field is syntactically invalid
+      msg = start + "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image\r\n\r\n";
+      Assert.AreEqual(MediaType.TextPlainAscii, MessageFromString(msg).ContentType);
+      msg = start + "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image\r\nContent-Type: text/html\r\n\r\n";
+      Assert.AreEqual(MediaType.TextPlainAscii, MessageFromString(msg).ContentType);
+      // Third header field is syntactically invalid
+      msg = start + "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: audio\r\n\r\n";
+      Assert.AreEqual(MediaType.TextPlainAscii, MessageFromString(msg).ContentType);
     }
 
     [TestMethod]

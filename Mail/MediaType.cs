@@ -132,7 +132,9 @@ namespace PeterO.Mail {
       int i2;
       if (rule == QuotedStringRule.Http) {
         char c = s[index];
-        if (c < 0x100 && c >= 0x21 && c != '\\' && c != '"') {
+        // NOTE: Space and tab were handled earlier;
+        // bytes higher than 0x7f are part of obs-text
+        if (c < 0x100 && c >= 0x21 && c!=0x7F && c != '\\' && c != '"') {
           return index + 1;
         }
         i2 = skipQuotedPair(s, index, endIndex);
@@ -227,9 +229,12 @@ namespace PeterO.Mail {
       while (index < endIndex) {
         int i2 = index;
         if (rule == QuotedStringRule.Http) {
-          i2 = skipLws(str, index, endIndex);
-          if (i2 != index) {
-            builder.Append(' ');
+          if (str[index] == ' ' || str[index] == '\t') {
+            if (builder != null) {
+              builder.Append(str[index]);
+            }
+            ++index;
+            continue;
           }
         } else if (rule == QuotedStringRule.Rfc5322) {
           // Skip tabs, spaces, and folding whitespace
@@ -875,15 +880,8 @@ namespace PeterO.Mail {
       }
     }
 
-    internal static int skipLws(string s, int index, int endIndex) {
-      // While HTTP usually only allows CRLF, it also allows
-      // us to be tolerant here
+    internal static int skipOws(string s, int index, int endIndex) {
       int i2 = index;
-      if (i2 + 1 < endIndex && s[i2] == 0x0d && s[i2] == 0x0a) {
-        i2 += 2;
-      } else if (i2 < endIndex && (s[i2] == 0x0d || s[i2] == 0x0a)) {
-        ++index;
-      }
       while (i2 < endIndex) {
         if (s[i2] == 0x09 || s[i2] == 0x20) {
           ++index;
@@ -904,7 +902,7 @@ namespace PeterO.Mail {
         // HTTP currently uses skipLws, though that may change
         // to skipWsp in a future revision of HTTP
         if (httpRules) {
-          index = skipLws(str, index, endIndex);
+          index = skipOws(str, index, endIndex);
         } else {
           index = HeaderParser.ParseCFWS(
             str,
@@ -924,7 +922,7 @@ namespace PeterO.Mail {
         }
         ++index;
         if (httpRules) {
-          index = skipLws(str, index, endIndex);
+          index = skipOws(str, index, endIndex);
         } else {
           index = HeaderParser.ParseCFWS(
             str,
@@ -1026,7 +1024,7 @@ namespace PeterO.Mail {
       }
       int endIndex = str.Length;
       if (httpRules) {
-        index = skipLws(str, index, endIndex);
+        index = skipOws(str, index, endIndex);
       } else {
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       }
@@ -1089,6 +1087,10 @@ namespace PeterO.Mail {
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
+    /// <summary>Specifies the media type "application/octet-stream".</summary>
+    public static readonly MediaType ApplicationOctetStream =
+      new MediaTypeBuilder("application", "octet-stream").ToMediaType();
+    
     private MediaType() {
     }
 

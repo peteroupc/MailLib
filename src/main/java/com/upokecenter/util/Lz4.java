@@ -8,8 +8,8 @@ at: http://upokecenter.com/d/
  */
 
     /**
-     * Implements the LZ4 algorithm (see "LZ4 Format Description" by Y.
-     * Collet for more information).
+     * Implements the LZ4 algorithm (see "LZ4 Format Description" by Y Collet
+     * for more information).
      */
   public final class Lz4 {
 private Lz4() {

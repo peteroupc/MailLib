@@ -132,7 +132,9 @@ import com.upokecenter.util.*;
       int i2;
       if (rule == QuotedStringRule.Http) {
         char c = s.charAt(index);
-        if (c < 0x100 && c >= 0x21 && c != '\\' && c != '"') {
+        // NOTE: Space and tab were handled earlier;
+        // bytes higher than 0x7f are part of obs-text
+        if (c < 0x100 && c >= 0x21 && c!=0x7F && c != '\\' && c != '"') {
           return index + 1;
         }
         i2 = skipQuotedPair(s, index, endIndex);
@@ -227,9 +229,12 @@ import com.upokecenter.util.*;
       while (index < endIndex) {
         int i2 = index;
         if (rule == QuotedStringRule.Http) {
-          i2 = skipLws(str, index, endIndex);
-          if (i2 != index) {
-            builder.append(' ');
+          if (str.charAt(index) == ' ' || str.charAt(index) == '\t') {
+            if (builder != null) {
+              builder.append(str.charAt(index));
+            }
+            ++index;
+            continue;
           }
         } else if (rule == QuotedStringRule.Rfc5322) {
           // Skip tabs, spaces, and folding whitespace
@@ -874,15 +879,10 @@ import com.upokecenter.util.*;
         return this.getTopLevelType() + "/" + this.getSubType();
       }
 
-    static int skipLws(String s, int index, int endIndex) {
+    static int skipOws(String s, int index, int endIndex) {
       // While HTTP usually only allows CRLF, it also allows
       // us to be tolerant here
       int i2 = index;
-      if (i2 + 1 < endIndex && s.charAt(i2) == 0x0d && s.charAt(i2) == 0x0a) {
-        i2 += 2;
-      } else if (i2 < endIndex && (s.charAt(i2) == 0x0d || s.charAt(i2) == 0x0a)) {
-        ++index;
-      }
       while (i2 < endIndex) {
         if (s.charAt(i2) == 0x09 || s.charAt(i2) == 0x20) {
           ++index;
@@ -903,7 +903,7 @@ import com.upokecenter.util.*;
         // HTTP currently uses skipLws, though that may change
         // to skipWsp in a future revision of HTTP
         if (httpRules) {
-          index = skipLws(str, index, endIndex);
+          index = skipOws(str, index, endIndex);
         } else {
           index = HeaderParser.ParseCFWS(
             str,
@@ -923,7 +923,7 @@ import com.upokecenter.util.*;
         }
         ++index;
         if (httpRules) {
-          index = skipLws(str, index, endIndex);
+          index = skipOws(str, index, endIndex);
         } else {
           index = HeaderParser.ParseCFWS(
             str,
@@ -1025,7 +1025,7 @@ import com.upokecenter.util.*;
       }
       int endIndex = str.length();
       if (httpRules) {
-        index = skipLws(str, index, endIndex);
+        index = skipOws(str, index, endIndex);
       } else {
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       }

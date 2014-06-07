@@ -293,7 +293,7 @@ namespace PeterO.Mail {
       }
       int endIndex = str.Length;
       if (httpRules) {
-        index = MediaType.skipLws(str, index, endIndex);
+        index = MediaType.skipOws(str, index, endIndex);
       } else {
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       }
