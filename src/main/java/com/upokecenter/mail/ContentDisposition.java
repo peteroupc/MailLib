@@ -299,7 +299,7 @@ import com.upokecenter.text.*;
       }
       int endIndex = str.length();
       if (httpRules) {
-        index = MediaType.skipLws(str, index, endIndex);
+        index = MediaType.skipOws(str, index, endIndex);
       } else {
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       }

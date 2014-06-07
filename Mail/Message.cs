@@ -29,6 +29,9 @@ namespace PeterO.Mail {
     /// content type "multipart/*" or "message/*" (other than "message/global",
     /// "message/global-headers", "message/global-disposition-notification",
     /// or "message/global-delivery-status").</item>
+    /// <item>If a message has two or more Content-Type header fields, it is treated
+    /// as having a content type of "application/octet-stream", unless one or more
+    /// of the header fields is syntactically invalid.</item>
     /// <item>Non-UTF-8 bytes appearing in header field values are replaced
     /// with replacement characters. Moreover, UTF-8 is parsed everywhere
     /// in header field values, even in those parts of some structured header
@@ -541,6 +544,7 @@ namespace PeterO.Mail {
         }
       }
       this.contentType = digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
+      bool haveInvalid = false;
       for (int i = 0; i < this.headers.Count; i += 2) {
         string name = this.headers[i];
         string value = this.headers[i + 1];
@@ -563,17 +567,31 @@ namespace PeterO.Mail {
           }
         } else if (mime && name.Equals("content-type")) {
           if (haveContentType) {
+            // DEVIATION: If there is already a content type,
+            // treat content type as application/octet-stream
+            if (haveInvalid || MediaType.Parse(value, null) == null) {
+              this.contentType = MediaType.TextPlainAscii;
+              haveInvalid = true;
+            } else {
+              this.contentType = MediaType.ApplicationOctetStream;
+            }
+            /*
             string valueExMessage = "Already have this header: " + name;
             #if DEBUG
             valueExMessage += "[old=" + this.contentType + ", new=" + value + "]";
             valueExMessage = valueExMessage.Replace("\r\n", " ");
             #endif
             throw new MessageDataException(valueExMessage);
+            */
+          } else {
+            this.contentType = MediaType.Parse(
+              value,null);
+            if(this.contentType == null){
+            this.contentType =  digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
+              haveInvalid = true;
+            }
+            haveContentType = true;
           }
-          this.contentType = MediaType.Parse(
-            value,
-            digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii);
-          haveContentType = true;
         } else if (mime && name.Equals("content-disposition")) {
           if (haveContentDisp) {
             string valueExMessage = "Already have this header: " + name;
@@ -1382,8 +1400,12 @@ namespace PeterO.Mail {
               name = "downgraded-" + name;
               downgraded = Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTab(value));
             } else {
+              #if DEBUG
               throw new MessageDataException("Header field still has non-Ascii or controls: " +
                                              name + " " + value);
+              #else
+ throw new MessageDataException("Header field still has non-Ascii or controls");
+              #endif
             }
           }
           bool haveDquote = downgraded.IndexOf('"') >= 0;

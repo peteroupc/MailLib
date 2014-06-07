@@ -1393,8 +1393,7 @@ public void setContentDisposition(ContentDisposition value) {
               name = "downgraded-" + name;
               downgraded = Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTab(value));
             } else {
-              throw new MessageDataException("Header field still has non-Ascii or controls: " +
-                                             name + " " + value);
+
             }
           }
           boolean haveDquote = downgraded.indexOf('"') >= 0;
