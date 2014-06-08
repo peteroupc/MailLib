@@ -10,6 +10,8 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * The content-transfer-encoding "quoted-printable" is treated as 7bit instead if it occurs in a message or body part with content type "multipart/*" or "message/*" (other than "message/global", "message/global-headers", "message/global-disposition-notification", or "message/global-delivery-status").
 
+ * If a message has two or more Content-Type header fields, it is treated as having a content type of "application/octet-stream", unless one or more of the header fields is syntactically invalid.
+
  * Non-UTF-8 bytes appearing in header field values are replaced with replacement characters. Moreover, UTF-8 is parsed everywhere in header field values, even in those parts of some structured header fields where this appears not to be allowed.
 
  * The To and Cc header fields are allowed to contain only comments and whitespace, but these "empty" header fields will be omitted when generating.

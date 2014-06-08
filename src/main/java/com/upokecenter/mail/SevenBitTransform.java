@@ -17,7 +17,7 @@ at: http://upokecenter.com/d/
     public int read() {
       int ret = this.transform.read();
       if (ret > 0x80 || ret == 0) {
-        throw new MessageDataException("Invalid character in message body");
+          throw new MessageDataException("Invalid character in message body");
       }
       return ret;
     }

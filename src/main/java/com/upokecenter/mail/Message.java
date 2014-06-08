@@ -13,55 +13,7 @@ import java.io.*;
 import com.upokecenter.util.*;
 
     /**
-     * <p>Represents an email message, and contains methods and properties
-     * for accessing and modifying email message data. This class implements
-     * the Internet Message Format (RFC 5322) and Multipurpose Internet
-     * Mail Extensions (MIME; RFC 2045-2047, RFC 2049). </p> <p><b>Thread
-     * safety:</b> This class is mutable; its properties can be changed.
-     * None of its instance methods are designed to be thread safe. Therefore,
-     * access to objects from this class must be synchronized if multiple
-     * threads can access them at the same time.</p> <p>The following lists
-     * known deviations from the mail specifications (Internet Message
-     * Format and MIME):</p> <ul> <li>The content-transfer-encoding
-     * "quoted-printable" is treated as 7bit instead if it occurs in a message
-     * or body part with content type "multipart/*" or "message/*" (other
-     * than "message/global", "message/global-headers", "message/global-disposition-notification",
-     * or "message/global-delivery-status").</li> <li>If a message
-     * has two or more Content-Type header fields, it is treated as having
-     * a content type of "application/octet-stream", unless one or more
-     * of the header fields is syntactically invalid.</li> <li>Non-UTF-8
-     * bytes appearing in header field values are replaced with replacement
-     * characters. Moreover, UTF-8 is parsed everywhere in header field
-     * values, even in those parts of some structured header fields where
-     * this appears not to be allowed.</li> <li>The To and Cc header fields
-     * are allowed to contain only comments and whitespace, but these "empty"
-     * header fields will be omitted when generating.</li> <li>There is
-     * no line length limit imposed when parsing quoted-printable or base64
-     * encoded bodies.</li> <li>In non-MIME message bodies, in text/plain
-     * message bodies, and in the prologue and epilogue of multipart messages
-     * (which will be ignored), if the transfer encoding is absent or ((declared
-     * instanceof 7bit) ? (7bit)declared : null), any 8-bit bytes are replaced
-     * with the ASCII substitute character (0x1a).</li> <li>If the transfer
-     * encoding is absent or ((declared instanceof 7bit) ? (7bit)declared
-     * : null), and the charset is declared to be <code>utf-8</code> , the transfer
-     * encoding is treated as 8bit instead.</li> <li>In text/html message
-     * bodies, if the transfer encoding is absent or ((declared instanceof
-     * 7bit) ? (7bit)declared : null), and the charset is declared to be <code>ascii</code>
-     * , <code>us-ascii</code> , "windows-1252", "windows-1251", or "iso-8859-*"
-     * (all single byte encodings), the transfer encoding is treated as
-     * 8bit instead.</li> <li>If the first line of the message starts with
-     * the word "From" followed by a space, it is skipped.</li> <li>The name
-     * <code>ascii</code> is treated as a synonym for <code>us-ascii</code> , despite
-     * being a reserved name under RFC 2046. The name <code>cp1252</code> is treated
-     * as a synonym for <code>windows-1252</code> , even though it's not an IANA
-     * registered alias.</li> <li>If a sequence of encoded words (RFC 2047)
-     * decodes to a string with a CTL character (U + 007F, or a character less
-     * than U + 0020 and not TAB) after being converted to Unicode, the encoded
-     * words are left un-decoded.</li> <li>This implementation can decode
-     * an encoded word that uses ISO-2022-JP (the only supported encoding
-     * that uses code switching) even if the encoded word's payload ends
-     * in a different mode from ASCII mode. (Each encoded word still starts
-     * in ASCII mode, though.)</li> </ul>
+     * Not documented yet.
      */
   public final class Message {
     private static final int EncodingSevenBit = 0;
@@ -86,22 +38,9 @@ import com.upokecenter.util.*;
       }
 
     /**
-     * Gets a snapshot of the header fields of this message. The list contains
-     * an alternating set of header field names and values, in the order they
-     * were declared in the message.
-     * @return A snapshot of the header fields of this message. The list contains
-     * an alternating set of header field names and values, in the order they
-     * were declared in the message.
-     * @deprecated Use HeaderFields instead.
- */
-@Deprecated
-    public List<String> getHeaders() {
-        return new ArrayList<String>(this.headers);
-      }
-
-    /**
-     * Gets a snapshot of the header fields of this message. For each item
-     * in the list, the key is the header field's name and the value is its value.
+     * Gets a snapshot of the header fields of this message, in the order they
+     * were added. For each item in the list, the key is the header field's
+     * name and the value is its value.
      * @return A snapshot of the header fields of this message.
      */
     public List<Map.Entry<String, String>> getHeaderFields(){
@@ -111,6 +50,109 @@ import com.upokecenter.util.*;
         }
         return list;
       }
+
+    /**
+     * Not documented yet.
+     * @param index A 32-bit signed integer.
+     * @return A Map.Entry(string, string) object.
+     */
+    public Map.Entry<String, String> GetHeader(int index) {
+      if (index < 0) {
+        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is less than " + "0");
+      }
+      if ((index) >= (this.headers.size() / 2)) {
+        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
+      }
+      return new AbstractMap.SimpleImmutableEntry<String, String>(this.headers.get(index), this.headers.get(index + 1));
+    }
+
+    /**
+     *
+     * @param index A 32-bit signed integer.
+     * @return A Message object.
+     */
+    public Message RemoveHeader(int index) {
+      if (index < 0) {
+        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is less than " + "0");
+      }
+      if ((index) >= (this.headers.size() / 2)) {
+        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
+      }
+      this.headers.remove(index * 2);
+      this.headers.remove(index * 2);
+      return this;
+    }
+
+    /**
+     *
+     * @param header A Map.Entry object.
+     * @return A Message object.
+     */
+    public Message AddHeader(Map.Entry<String, String> header) {
+      return AddHeader(header.getKey(), header.getValue());
+    }
+
+    /**
+     *
+     * @param name A string object.
+     * @param value A string object. (2).
+     * @return A Message object.
+     */
+    public Message AddHeader(String name, String value) {
+      name = ValidateHeaderField(name, value);
+      this.headers.add(name);
+      this.headers.add(value);
+      return this;
+    }
+
+    /**
+     *
+     * @param index A 32-bit signed integer.
+     * @param header A Map.Entry object.
+     * @return A Message object.
+     */
+    public Message SetHeader(int index, Map.Entry<String, String> header) {
+      return SetHeader(index, header.getKey(), header.getValue());
+    }
+
+    /**
+     *
+     * @param index A 32-bit signed integer.
+     * @param name A string object.
+     * @param value A string object. (2).
+     * @return A Message object.
+     */
+    public Message SetHeader(int index, String name, String value) {
+      if (index < 0) {
+        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is less than " + "0");
+      }
+      if ((index) >= (this.headers.size() / 2)) {
+        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
+      }
+      name = ValidateHeaderField(name, value);
+      this.headers.set(index * 2,name);
+      this.headers.set(index * 2 + 1,value);
+      return this;
+    }
+
+    /**
+     *
+     * @param index A 32-bit signed integer.
+     * @param value A string object.
+     * @return A Message object.
+     */
+    public Message SetHeader(int index, String value) {
+      if (index < 0) {
+        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is less than " + "0");
+      }
+      if ((index) >= (this.headers.size() / 2)) {
+        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
+      }
+      String name = ValidateHeaderField(this.headers.get(index * 2), value);
+      this.headers.set(index * 2,name);
+      this.headers.set(index * 2 + 1,value);
+      return this;
+    }
 
     private byte[] body;
 
@@ -588,17 +630,12 @@ public void setContentDisposition(ContentDisposition value) {
             } else {
               this.contentType = MediaType.ApplicationOctetStream;
             }
-            /*
-            String valueExMessage = "Already have this header: " + name;
-
-            throw new MessageDataException(valueExMessage);
-            */
           } else {
             this.contentType = MediaType.Parse(
               value,
               null);
             if (this.contentType == null) {
-            this.contentType = digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
+              this.contentType = digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
               haveInvalid = true;
             }
             haveContentType = true;
@@ -919,7 +956,8 @@ public void setContentDisposition(ContentDisposition value) {
                   } while (false);
                   if (indexTemp4 != index) {
                     index = indexTemp4;
-                  } else { break;
+                  } else {
+                    break;
                   }
                 } while (false);
                 if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) == 9))) {
@@ -935,7 +973,8 @@ public void setContentDisposition(ContentDisposition value) {
               } while (false);
               if (indexTemp3 != index) {
                 index = indexTemp3;
-              } else { break;
+              } else {
+                break;
               }
             } while (false);
             do {
@@ -977,6 +1016,35 @@ public void setContentDisposition(ContentDisposition value) {
       return indexTemp;
     }
 
+    private static String ValidateHeaderField(String name, String value) {
+      if (name == null) {
+        throw new NullPointerException("name");
+      }
+      if (value == null) {
+        throw new NullPointerException("value");
+      }
+      if (name.length() > 997) {
+        throw new IllegalArgumentException("Header field name too long");
+      }
+      name = DataUtilities.ToLowerCaseAscii(name);
+      for (int i = 0; i < name.length(); ++i) {
+        if (name.charAt(i) <= 0x20 || name.charAt(i) == ':' || name.charAt(i) >= 0x7f) {
+          throw new IllegalArgumentException("Header field name contains an invalid character");
+        }
+      }
+      // Check characters in structured header fields
+      IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
+      if (parser.IsStructured()) {
+        if (ParseUnstructuredText(value, 0, value.length()) != value.length()) {
+          throw new IllegalArgumentException("Header field value contains invalid text");
+        }
+        if (parser.Parse(value, 0, value.length(), null) != value.length()) {
+          throw new IllegalArgumentException("Header field value is not in the correct format");
+        }
+      }
+      return name;
+    }
+
     /**
      * Sets the value of this message's header field. If a header field with
      * the same name exists, its value is replaced.
@@ -991,31 +1059,7 @@ public void setContentDisposition(ContentDisposition value) {
      * or {@code value} is null.
      */
     public Message SetHeader(String name, String value) {
-      if (name == null) {
-        throw new NullPointerException("name");
-      }
-      if (value == null) {
-        throw new NullPointerException("value");
-      }
-      if (name.length() > 997) {
-        throw new IllegalArgumentException("Header field name too long");
-      }
-      for (int i = 0; i < name.length(); ++i) {
-        if (name.charAt(i) <= 0x20 || name.charAt(i) == ':' || name.charAt(i) >= 0x7f) {
-          throw new IllegalArgumentException("Header field name contains an invalid character");
-        }
-      }
-      name = DataUtilities.ToLowerCaseAscii(name);
-      // Check characters in structured header fields
-      IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
-      if (parser.IsStructured()) {
-        if (ParseUnstructuredText(value, 0, value.length()) != value.length()) {
-          throw new IllegalArgumentException("Header field value contains invalid text");
-        }
-        if (parser.Parse(value, 0, value.length(), null) != value.length()) {
-          throw new IllegalArgumentException("Header field value is not in the correct format");
-        }
-      }
+      name = ValidateHeaderField(name, value);
       // Add the header field
       for (int i = 0; i < this.headers.size(); i += 2) {
         if (this.headers.get(i).equals(name)) {
@@ -1997,7 +2041,7 @@ public void setContentDisposition(ContentDisposition value) {
     private void ReadMultipartBody(ITransform stream) {
       int baseTransferEncoding = this.transferEncoding;
       BoundaryCheckerTransform boundaryChecker = new BoundaryCheckerTransform(stream);
-      // Be liberal on the prologue and epilogue of multipart
+      // Be liberal on the preamble and epilogue of multipart
       // messages, as they will be ignored.
       ITransform currentTransform = MakeTransferEncoding(
         boundaryChecker,
@@ -2120,7 +2164,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         if (useLiberalSevenBit) {
           // DEVIATION: Replace 8-bit bytes and null with the
           // ASCII substitute character (0x1a) for text/plain messages,
-          // non-MIME messages, and the prologue and epilogue of multipart
+          // non-MIME messages, and the preamble and epilogue of multipart
           // messages (which will be ignored).
           transform = new LiberalSevenBitTransform(stream);
         } else {

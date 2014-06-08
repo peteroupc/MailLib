@@ -1,6 +1,6 @@
 ﻿ * [PeterO.ArrayWriter](PeterO.ArrayWriter.md) - A lightweight version of MemoryStream, since it doesn't             derive from Stream and doesn't use IO exceptions.
  * [PeterO.DataUtilities](PeterO.DataUtilities.md) - Contains methods useful for reading and writing strings.
- * [PeterO.Lz4](PeterO.Lz4.md) - Implements the LZ4 algorithm (see "LZ4 Format Description"             by Y.
+ * [PeterO.Lz4](PeterO.Lz4.md) - Implements the LZ4 algorithm (see "LZ4 Format Description"             by Y Collet for more information).
  * [PeterO.Mail.Address](PeterO.Mail.Address.md) - Represents an email address.
  * [PeterO.Mail.ContentDisposition](PeterO.Mail.ContentDisposition.md) - Specifies how a message body should be displayed or handled             by a mail user agent.
  * [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) - Description of DispositionBuilder.

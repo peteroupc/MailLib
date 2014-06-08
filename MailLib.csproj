@@ -41,9 +41,10 @@
     <DocumentationFile>bin\Release\MailLib.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ArrayWriter.cs" />
+    <Compile Include="Mail\ArrayWriter.cs" />
+    <Compile Include="Text\ArrayWriter.cs" />
     <Compile Include="DataUtilities.cs" />
-    <Compile Include="Lz4.cs" />
+    <Compile Include="Text\Lz4.cs" />
     <Compile Include="Mail\Address.cs" />
     <Compile Include="Mail\Base64Encoder.cs" />
     <Compile Include="Mail\Base64Transform.cs" />

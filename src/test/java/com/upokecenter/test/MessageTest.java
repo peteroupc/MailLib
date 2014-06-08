@@ -74,6 +74,8 @@ import com.upokecenter.text.*;
     public void TestContentTypeDefaults() {
       String start = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
       String msg;
+      msg = start + "\r\n\r\n";
+      Assert.assertEquals(MediaType.TextPlainAscii, MessageFromString(msg).getContentType());
       msg = start + "Content-Type: text/html\r\n\r\n";
       Assert.assertEquals(MediaType.Parse("text/html"), MessageFromString(msg).getContentType());
       msg = start + "Content-Type: text/\r\n\r\n";
@@ -666,6 +668,235 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         new Address("lo,cal@example.com");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
+    @Test
+    public void TestHeaderManip() {
+      Assert.assertEquals("comment", MessageFromString("From: Me <me@example.com>").AddHeader("x-comment", "comment").GetHeader("x-comment"));
+      Assert.assertEquals("comment", MessageFromString("From: Me <me@example.com>").AddHeader(new AbstractMap.SimpleImmutableEntry<String, String>("x-comment", "comment")).GetHeader("x-comment"));
+      Assert.assertEquals("from", MessageFromString("From: Me <me@example.com>").SetHeader(0, "comment").GetHeader(0).getKey());
+      Assert.assertEquals("comment", MessageFromString("From: Me <me@example.com>").SetHeader(0, "comment").GetHeader(0).getValue());
+      Assert.assertEquals("x-comment", MessageFromString("From: Me <me@example.com>").SetHeader(0, "x-comment", "comment").GetHeader(0).getKey());
+      Assert.assertEquals("comment", MessageFromString("From: Me <me@example.com>").SetHeader(0, "x-comment", "comment").GetHeader(0).getValue());
+      Message msg=MessageFromString("From: Me <me@example.com>");
+      try {
+ msg.SetHeader(0, (String)null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetHeader(0, null, null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.AddHeader(null, null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetHeader(-1, "me@example.com");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetHeader(-1, "To", "me@example.com");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.GetHeader(-1);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.RemoveHeader(-1);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    }
+
+    @Test
+    public void TestMessageTests() {
+      var multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
+      String msg;
+      msg = multipart + "Content-Type: 8bit\r\n--b\r\n\r\n\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      msg = "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: 8bit\r\n--b\r\n\r\n\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      msg = "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nA";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      msg = multipart + "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      msg = multipart + "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: 7bit\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
+    public void MessageDoubtfulCases() {
+      // The following tests currently fail, since I
+      // don't know the best way to handle these cases
+      // without being too lenient
+      var multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
+      String msg;
+      // Multipart message with base64
+      msg = multipart + "Content-Type: base64\r\n--b\r\n\r\n\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      // Message top-level-type with base64
+      msg = "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: base64\r\n--b\r\n\r\n\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      // Truncated top-level multipart message
+      msg = multipart + "\r\n--b\r\nContent-Type: text/plain\r\n\r\nHello World";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      // Truncated top-level multipart message
+      msg = multipart + "\r\n--b\r\nContent-Type: text/html\r\n\r\n<b>Hello World</b>";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      // Truncated top-level multipart message
+      msg = multipart + "\r\n--b\r\nContent-Type: text/html\r\n";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      // Message/rfc822 without a content-transfer-encoding;
+      // so a 7-bit encoding is assumed;
+      // From header field contains non-ASCII characters, so
+      // would be illegal in a 7-bit encoding
+      msg = multipart + "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\nX\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      // Message/rfc822 without content-transfer-encoding base64;
+      // which is not allowed for this media type
+      msg = multipart + "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: base64\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nXX==\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      // Text/Rfc822-headers without a content-transfer-encoding;
+      // so a 7-bit encoding is assumed;
+      // From header field contains non-ASCII characters, so
+      // would be illegal in a 7-bit encoding
+      msg = multipart + "\r\n--b\r\nContent-Type: text/rfc822-headers\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      // Text/html without a content-transfer-encoding and an empty
+      // charset, so a 7-bit encoding is assumed;
+      // Body contains non-ASCII characters, so
+      // would be illegal in a 7-bit encoding
+      msg = "Mime-Version: 1.0\r\nContent-Type: text/html; charset=\"\"\r\n\r\n\ufffd";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      // Text/html with an explicit Content-Transfer-Encoding of 7bit;
+      // Body contains non-ASCII characters, so
+      // would be illegal in a 7-bit encoding
+      msg = "Mime-Version: 1.0\r\nContent-Type: text/html\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\ufffd";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      // Text/html without a content-transfer-encoding,
+      // so a 7-bit encoding is assumed;
+      // Body contains non-ASCII characters, so
+      // would be illegal in a 7-bit encoding
+      msg = "Mime-Version: 1.0\r\nContent-Type: text/html\r\n\r\n\ufffd";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      // Base64 body with only one encoded octet;
+      // should the incomplete decoded byte be ignored
+      // or included?
+      msg = "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\nA";
+      try {
+        MessageFromString(msg);
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);

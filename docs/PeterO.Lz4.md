@@ -2,7 +2,7 @@
 
     public static class Lz4
 
-Implements the LZ4 algorithm (see "LZ4 Format Description" by Y. Collet for more information).
+Implements the LZ4 algorithm (see "LZ4 Format Description" by Y Collet for more information).
 
 ### Decompress
 
