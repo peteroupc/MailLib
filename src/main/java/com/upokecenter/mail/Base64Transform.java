@@ -27,11 +27,16 @@ at: http://upokecenter.com/d/
     private boolean checkStrictEncoding;
     private int paddingCount;
 
-    public Base64Transform (ITransform input, boolean lenientLineBreaks) {
+    public Base64Transform (ITransform input,
+      boolean lenientLineBreaks) {
  this(input,lenientLineBreaks,76,false);
     }
 
-    public Base64Transform (ITransform input, boolean lenientLineBreaks, int maxLineLength, boolean checkStrictEncoding) {
+    public Base64Transform (ITransform input,
+      boolean lenientLineBreaks,
+      int maxLineLength,
+      boolean checkStrictEncoding
+) {
       this.input = input;
       this.maxLineLength = maxLineLength;
       this.lenientLineBreaks = lenientLineBreaks;

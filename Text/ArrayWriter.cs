@@ -7,10 +7,10 @@ at: http://upokecenter.com/d/
  */
 using System;
 
-namespace PeterO {
+namespace PeterO.Text {
     /// <summary>A lightweight version of MemoryStream, since it doesn't
     /// derive from Stream and doesn't use IO exceptions.</summary>
-  public sealed class ArrayWriter {
+  internal sealed class ArrayWriter {
     private int retvalPos;
     private int retvalMax;
     private byte[] retval;
@@ -25,8 +25,6 @@ namespace PeterO {
       this.retval = new byte[initialSize];
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='length'>A 32-bit signed integer.</param>
     public void SetLength(int length) {
       if (length < 0) {
         throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
@@ -40,8 +38,6 @@ namespace PeterO {
       }
     }
 
-    /// <summary>Gets or sets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
     public int Position {
       get {
         return this.retvalPos;
@@ -58,7 +54,6 @@ namespace PeterO {
       }
     }
 
-    /// <summary>Not documented yet.</summary>
     /// <returns>A byte array.</returns>
     public byte[] ToArray() {
       byte[] ret = new byte[this.retvalMax];
@@ -66,13 +61,13 @@ namespace PeterO {
       return ret;
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <param name='src'>A byte array.</param>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='src'/> is null.</exception>
+    /// <returns>A 32-bit signed integer.</returns>
     /// <param name='src'>A byte array.</param>
     /// <param name='offset'>A 32-bit signed integer. (2).</param>
     /// <param name='length'>A 32-bit signed integer. (3).</param>
-    /// <returns>A 32-bit signed integer.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='src'/> is null.</exception>
     public int ReadBytes(byte[] src, int offset, int length) {
       if (src == null) {
         throw new ArgumentNullException("src");
@@ -99,12 +94,12 @@ namespace PeterO {
       return maxLength;
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <param name='src'>A byte array.</param>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='src'/> is null.</exception>
     /// <param name='src'>A byte array.</param>
     /// <param name='offset'>A 32-bit signed integer.</param>
     /// <param name='length'>A 32-bit signed integer. (2).</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='src'/> is null.</exception>
     public void WriteBytes(byte[] src, int offset, int length) {
       if (src == null) {
         throw new ArgumentNullException("src");

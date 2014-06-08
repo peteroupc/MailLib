@@ -13,64 +13,7 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary><para>Represents an email message, and contains methods
-    /// and properties for accessing and modifying email message data. This
-    /// class implements the Internet Message Format (RFC 5322) and Multipurpose
-    /// Internet Mail Extensions (MIME; RFC 2045-2047, RFC 2049). </para>
-    /// <para><b>Thread safety:</b>
-    /// This class is mutable; its properties can be changed. None of its instance
-    /// methods are designed to be thread safe. Therefore, access to objects
-    /// from this class must be synchronized if multiple threads can access
-    /// them at the same time.</para>
-    /// <para>The following lists known deviations from the mail specifications
-    /// (Internet Message Format and MIME):</para>
-    /// <list type=''> <item>The content-transfer-encoding "quoted-printable"
-    /// is treated as 7bit instead if it occurs in a message or body part with
-    /// content type "multipart/*" or "message/*" (other than "message/global",
-    /// "message/global-headers", "message/global-disposition-notification",
-    /// or "message/global-delivery-status").</item>
-    /// <item>If a message has two or more Content-Type header fields, it
-    /// is treated as having a content type of "application/octet-stream",
-    /// unless one or more of the header fields is syntactically invalid.</item>
-    /// <item>Non-UTF-8 bytes appearing in header field values are replaced
-    /// with replacement characters. Moreover, UTF-8 is parsed everywhere
-    /// in header field values, even in those parts of some structured header
-    /// fields where this appears not to be allowed.</item>
-    /// <item>The To and Cc header fields are allowed to contain only comments
-    /// and whitespace, but these "empty" header fields will be omitted when
-    /// generating.</item>
-    /// <item>There is no line length limit imposed when parsing quoted-printable
-    /// or base64 encoded bodies.</item>
-    /// <item>In non-MIME message bodies, in text/plain message bodies,
-    /// and in the prologue and epilogue of multipart messages (which will
-    /// be ignored), if the transfer encoding is absent or declared as 7bit,
-    /// any 8-bit bytes are replaced with the ASCII substitute character
-    /// (0x1a).</item>
-    /// <item>If the transfer encoding is absent or declared as 7bit, and
-    /// the charset is declared to be <c>utf-8</c>
-    /// , the transfer encoding is treated as 8bit instead.</item>
-    /// <item>In text/html message bodies, if the transfer encoding is absent
-    /// or declared as 7bit, and the charset is declared to be <c>ascii</c>
-    /// , <c>us-ascii</c>
-    /// , "windows-1252", "windows-1251", or "iso-8859-*" (all single
-    /// byte encodings), the transfer encoding is treated as 8bit instead.</item>
-    /// <item>If the first line of the message starts with the word "From"
-    /// followed by a space, it is skipped.</item>
-    /// <item>The name <c>ascii</c>
-    /// is treated as a synonym for <c>us-ascii</c>
-    /// , despite being a reserved name under RFC 2046. The name <c>cp1252</c>
-    /// is treated as a synonym for <c>windows-1252</c>
-    /// , even though it's not an IANA registered alias.</item>
-    /// <item>If a sequence of encoded words (RFC 2047) decodes to a string
-    /// with a CTL character (U + 007F, or a character less than U + 0020 and not
-    /// TAB) after being converted to Unicode, the encoded words are left
-    /// un-decoded.</item>
-    /// <item>This implementation can decode an encoded word that uses ISO-2022-JP
-    /// (the only supported encoding that uses code switching) even if the
-    /// encoded word's payload ends in a different mode from ASCII mode. (Each
-    /// encoded word still starts in ASCII mode, though.)</item>
-    /// </list>
-    /// </summary>
+    /// <summary>Not documented yet.</summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -93,22 +36,9 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets a snapshot of the header fields of this message. The
-    /// list contains an alternating set of header field names and values,
-    /// in the order they were declared in the message.</summary>
-    /// <value>A snapshot of the header fields of this message. The list contains
-    /// an alternating set of header field names and values, in the order they
-    /// were declared in the message.</value>
-    [ObsoleteAttribute("Use HeaderFields instead.")]
-    public IList<string> Headers {
-      get {
-        return new List<string>(this.headers);
-      }
-    }
-
-    /// <summary>Gets a snapshot of the header fields of this message. For
-    /// each item in the list, the key is the header field's name and the value
-    /// is its value.</summary>
+    /// <summary>Gets a snapshot of the header fields of this message, in
+    /// the order they were added. For each item in the list, the key is the header
+    /// field's name and the value is its value.</summary>
     /// <value>A snapshot of the header fields of this message.</value>
     public IList<KeyValuePair<string, string>> HeaderFields {
       get {
@@ -118,6 +48,89 @@ namespace PeterO.Mail {
         }
         return list;
       }
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A KeyValuePair(string, string) object.</returns>
+    /// <param name='index'>A 32-bit signed integer.</param>
+    public KeyValuePair<string, string> GetHeader(int index) {
+      if (index < 0) {
+        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      }
+      if ((index) >= (this.headers.Count / 2)) {
+        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is not less than " + Convert.ToString((long)(this.headers.Count / 2), System.Globalization.CultureInfo.InvariantCulture));
+      }
+      return new KeyValuePair<string, string>(this.headers[index], this.headers[index + 1]);
+    }
+
+    /// <returns>A Message object.</returns>
+    /// <param name='index'>A 32-bit signed integer.</param>
+    public Message RemoveHeader(int index) {
+      if (index < 0) {
+        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      }
+      if ((index) >= (this.headers.Count / 2)) {
+        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is not less than " + Convert.ToString((long)(this.headers.Count / 2), System.Globalization.CultureInfo.InvariantCulture));
+      }
+      this.headers.RemoveAt(index * 2);
+      this.headers.RemoveAt(index * 2);
+      return this;
+    }
+
+    /// <returns>A Message object.</returns>
+    /// <param name='header'>A KeyValuePair object.</param>
+    public Message AddHeader(KeyValuePair<string, string> header) {
+      return AddHeader(header.Key, header.Value);
+    }
+
+    /// <returns>A Message object.</returns>
+    /// <param name='name'>A string object.</param>
+    /// <param name='value'>A string object. (2).</param>
+    public Message AddHeader(string name, string value) {
+      name = ValidateHeaderField(name, value);
+      this.headers.Add(name);
+      this.headers.Add(value);
+      return this;
+    }
+
+    /// <returns>A Message object.</returns>
+    /// <param name='index'>A 32-bit signed integer.</param>
+    /// <param name='header'>A KeyValuePair object.</param>
+    public Message SetHeader(int index, KeyValuePair<string, string> header) {
+      return SetHeader(index, header.Key, header.Value);
+    }
+
+    /// <returns>A Message object.</returns>
+    /// <param name='index'>A 32-bit signed integer.</param>
+    /// <param name='name'>A string object.</param>
+    /// <param name='value'>A string object. (2).</param>
+    public Message SetHeader(int index, string name, string value) {
+      if (index < 0) {
+        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      }
+      if ((index) >= (this.headers.Count / 2)) {
+        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is not less than " + Convert.ToString((long)(this.headers.Count / 2), System.Globalization.CultureInfo.InvariantCulture));
+      }
+      name = ValidateHeaderField(name, value);
+      this.headers[index * 2] = name;
+      this.headers[index * 2 + 1] = value;
+      return this;
+    }
+
+    /// <returns>A Message object.</returns>
+    /// <param name='index'>A 32-bit signed integer.</param>
+    /// <param name='value'>A string object.</param>
+    public Message SetHeader(int index, string value) {
+      if (index < 0) {
+        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      }
+      if ((index) >= (this.headers.Count / 2)) {
+        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is not less than " + Convert.ToString((long)(this.headers.Count / 2), System.Globalization.CultureInfo.InvariantCulture));
+      }
+      string name = ValidateHeaderField(this.headers[index * 2], value);
+      this.headers[index * 2] = name;
+      this.headers[index * 2 + 1] = value;
+      return this;
     }
 
     private byte[] body;
@@ -432,12 +445,12 @@ namespace PeterO.Mail {
     /// <summary>Returns the mail message contained in this message's body.</summary>
     /// <returns>A message object if this object's content type is "message/rfc822",
     /// "message/news", or "message/global", or null otherwise.</returns>
-    #if CODE_ANALYSIS
+#if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
       "CA1024",
       Justification="This method may throw MessageDataException among other things - making it too heavyweight to be a property.")]
-    #endif
+#endif
     public Message GetBodyMessage() {
       if (this.ContentType.TopLevelType.Equals("message") &&
           (this.ContentType.SubType.Equals("rfc822") ||
@@ -580,7 +593,7 @@ namespace PeterO.Mail {
               value,
               null);
             if (this.contentType == null) {
-            this.contentType = digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
+              this.contentType = digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
               haveInvalid = true;
             }
             haveContentType = true;
@@ -588,10 +601,10 @@ namespace PeterO.Mail {
         } else if (mime && name.Equals("content-disposition")) {
           if (haveContentDisp) {
             string valueExMessage = "Already have this header: " + name;
-            #if DEBUG
+#if DEBUG
             valueExMessage += "[old=" + this.contentType + ", new=" + value + "]";
             valueExMessage = valueExMessage.Replace("\r\n", " ");
-            #endif
+#endif
             throw new MessageDataException(valueExMessage);
           }
           this.contentDisposition = ContentDisposition.Parse(value);
@@ -632,9 +645,9 @@ namespace PeterO.Mail {
             this.transferEncoding = EncodingSevenBit;
           } else {
             string exceptText = "Invalid content encoding for multipart or message";
-            #if DEBUG
+#if DEBUG
             exceptText += " [type=" + this.contentType + "]";
-            #endif
+#endif
             throw new MessageDataException(exceptText);
           }
         }
@@ -903,7 +916,8 @@ namespace PeterO.Mail {
                   } while (false);
                   if (indexTemp4 != index) {
                     index = indexTemp4;
-                  } else { break;
+                  } else {
+                    break;
                   }
                 } while (false);
                 if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
@@ -919,7 +933,8 @@ namespace PeterO.Mail {
               } while (false);
               if (indexTemp3 != index) {
                 index = indexTemp3;
-              } else { break;
+              } else {
+                break;
               }
             } while (false);
             do {
@@ -961,6 +976,35 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
+    private static string ValidateHeaderField(string name, string value) {
+      if (name == null) {
+        throw new ArgumentNullException("name");
+      }
+      if (value == null) {
+        throw new ArgumentNullException("value");
+      }
+      if (name.Length > 997) {
+        throw new ArgumentException("Header field name too long");
+      }
+      name = DataUtilities.ToLowerCaseAscii(name);
+      for (int i = 0; i < name.Length; ++i) {
+        if (name[i] <= 0x20 || name[i] == ':' || name[i] >= 0x7f) {
+          throw new ArgumentException("Header field name contains an invalid character");
+        }
+      }
+      // Check characters in structured header fields
+      IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
+      if (parser.IsStructured()) {
+        if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
+          throw new ArgumentException("Header field value contains invalid text");
+        }
+        if (parser.Parse(value, 0, value.Length, null) != value.Length) {
+          throw new ArgumentException("Header field value is not in the correct format");
+        }
+      }
+      return name;
+    }
+
     /// <summary>Sets the value of this message's header field. If a header
     /// field with the same name exists, its value is replaced.</summary>
     /// <param name='name'>The name of a header field, such as &quot;from&quot;
@@ -973,31 +1017,7 @@ namespace PeterO.Mail {
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='name'/> or <paramref name='value'/> is null.</exception>
     public Message SetHeader(string name, string value) {
-      if (name == null) {
-        throw new ArgumentNullException("name");
-      }
-      if (value == null) {
-        throw new ArgumentNullException("value");
-      }
-      if (name.Length > 997) {
-        throw new ArgumentException("Header field name too long");
-      }
-      for (int i = 0; i < name.Length; ++i) {
-        if (name[i] <= 0x20 || name[i] == ':' || name[i] >= 0x7f) {
-          throw new ArgumentException("Header field name contains an invalid character");
-        }
-      }
-      name = DataUtilities.ToLowerCaseAscii(name);
-      // Check characters in structured header fields
-      IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
-      if (parser.IsStructured()) {
-        if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
-          throw new ArgumentException("Header field value contains invalid text");
-        }
-        if (parser.Parse(value, 0, value.Length, null) != value.Length) {
-          throw new ArgumentException("Header field value is not in the correct format");
-        }
-      }
+      name = ValidateHeaderField(name, value);
       // Add the header field
       for (int i = 0; i < this.headers.Count; i += 2) {
         if (this.headers[i].Equals(name)) {
@@ -1393,12 +1413,12 @@ namespace PeterO.Mail {
               name = "downgraded-" + name;
               downgraded = Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTab(value));
             } else {
-              #if DEBUG
+#if DEBUG
               throw new MessageDataException("Header field still has non-Ascii or controls: " +
                                              name + " " + value);
-              #else
+#else
  // throw new MessageDataException("Header field still has non-Ascii or controls");
-              #endif
+#endif
             }
           }
           bool haveDquote = downgraded.IndexOf('"') >= 0;
@@ -1965,11 +1985,11 @@ namespace PeterO.Mail {
       }
 
       public MessageStackEntry(Message msg) {
-        #if DEBUG
+#if DEBUG
         if (msg == null) {
           throw new ArgumentNullException("msg");
         }
-        #endif
+#endif
 
         this.message = msg;
         MediaType mediaType = msg.ContentType;
@@ -1988,7 +2008,7 @@ namespace PeterO.Mail {
     private void ReadMultipartBody(ITransform stream) {
       int baseTransferEncoding = this.transferEncoding;
       BoundaryCheckerTransform boundaryChecker = new BoundaryCheckerTransform(stream);
-      // Be liberal on the prologue and epilogue of multipart
+      // Be liberal on the preamble and epilogue of multipart
       // messages, as they will be ignored.
       ITransform currentTransform = MakeTransferEncoding(
         boundaryChecker,
@@ -2010,7 +2030,7 @@ namespace PeterO.Mail {
             ch = currentTransform.ReadByte();
           } catch (MessageDataException ex) {
             string valueExMessage = ex.Message;
-            #if DEBUG
+#if DEBUG
             ms.Write(buffer, 0, bufferCount);
             buffer = ms.ToArray();
             string ss = DataUtilities.GetUtf8String(
@@ -2023,7 +2043,7 @@ namespace PeterO.Mail {
             valueExMessage += " [" + ss + "] [type=" + ((leaf == null ? this : leaf).ContentType ?? MediaType.TextPlainAscii) +
               "] [encoding=" + transferEnc + "]";
             valueExMessage = valueExMessage.Replace('\r', ' ').Replace('\n', ' ').Replace('\0', ' ');
-            #endif
+#endif
             throw new MessageDataException(valueExMessage);
           }
           if (ch < 0) {
@@ -2031,11 +2051,11 @@ namespace PeterO.Mail {
               Message msg = new Message();
               int stackCount = boundaryChecker.BoundaryCount();
               // Pop entries if needed to match the stack
-              #if DEBUG
+#if DEBUG
               if (multipartStack.Count < stackCount) {
                 throw new ArgumentException("multipartStack.Count (" + Convert.ToString((int)multipartStack.Count, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)stackCount, System.Globalization.CultureInfo.InvariantCulture));
               }
-              #endif
+#endif
               if (leaf != null) {
                 if (bufferCount > 0) {
                   ms.Write(buffer, 0, bufferCount);
@@ -2122,7 +2142,7 @@ namespace PeterO.Mail {
         if (useLiberalSevenBit) {
           // DEVIATION: Replace 8-bit bytes and null with the
           // ASCII substitute character (0x1a) for text/plain messages,
-          // non-MIME messages, and the prologue and epilogue of multipart
+          // non-MIME messages, and the preamble and epilogue of multipart
           // messages (which will be ignored).
           transform = new LiberalSevenBitTransform(stream);
         } else {
@@ -2147,7 +2167,7 @@ namespace PeterO.Mail {
             ch = transform.ReadByte();
           } catch (MessageDataException ex) {
             string valueExMessage = ex.Message;
-            #if DEBUG
+#if DEBUG
             ms.Write(buffer, 0, bufferCount);
             buffer = ms.ToArray();
             string ss = DataUtilities.GetUtf8String(
@@ -2160,7 +2180,7 @@ namespace PeterO.Mail {
             valueExMessage += " [" + ss + "] [type=" + (this.ContentType ?? MediaType.TextPlainAscii) +
               "] [encoding=" + transferEnc + "]";
             valueExMessage = valueExMessage.Replace('\r', ' ').Replace('\n', ' ').Replace('\0', ' ');
-            #endif
+#endif
             throw new MessageDataException(valueExMessage, ex);
           }
           if (ch < 0) {

@@ -91,6 +91,12 @@ Specifies the media type "text/plain" and the charset "utf-8".
 
 Specifies the media type "message/rfc822".
 
+### ApplicationOctetStream
+
+    public static readonly PeterO.Mail.MediaType ApplicationOctetStream;
+
+Specifies the media type "application/octet-stream".
+
 ### Parse
 
     public static PeterO.Mail.MediaType Parse(
