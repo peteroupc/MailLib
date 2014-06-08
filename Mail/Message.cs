@@ -13,7 +13,7 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <summary>Not documented yet.</summary>
+  /// <summary>Not documented yet.</summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -65,7 +65,7 @@ namespace PeterO.Mail {
 
     /// <returns>A Message object.</returns>
     /// <param name='index'>A 32-bit signed integer.</param>
- /// <summary>Not documented yet.</summary>
+    /// <summary>Not documented yet.</summary>
     public Message RemoveHeader(int index) {
       if (index < 0) {
         throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
@@ -80,7 +80,7 @@ namespace PeterO.Mail {
 
     /// <returns>A Message object.</returns>
     /// <param name='header'>A KeyValuePair object.</param>
- /// <summary>Not documented yet.</summary>
+    /// <summary>Not documented yet.</summary>
     public Message AddHeader(KeyValuePair<string, string> header) {
       return this.AddHeader(header.Key, header.Value);
     }
@@ -88,7 +88,7 @@ namespace PeterO.Mail {
     /// <returns>A Message object.</returns>
     /// <param name='name'>A string object.</param>
     /// <param name='value'>A string object. (2).</param>
- /// <summary>Not documented yet.</summary>
+    /// <summary>Not documented yet.</summary>
     public Message AddHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
       this.headers.Add(name);
@@ -99,7 +99,7 @@ namespace PeterO.Mail {
     /// <returns>A Message object.</returns>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='header'>A KeyValuePair object.</param>
- /// <summary>Not documented yet.</summary>
+    /// <summary>Not documented yet.</summary>
     public Message SetHeader(int index, KeyValuePair<string, string> header) {
       return this.SetHeader(index, header.Key, header.Value);
     }
@@ -108,7 +108,7 @@ namespace PeterO.Mail {
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='name'>A string object.</param>
     /// <param name='value'>A string object. (2).</param>
- /// <summary>Not documented yet.</summary>
+    /// <summary>Not documented yet.</summary>
     public Message SetHeader(int index, string name, string value) {
       if (index < 0) {
         throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
@@ -125,7 +125,7 @@ namespace PeterO.Mail {
     /// <returns>A Message object.</returns>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='value'>A string object.</param>
- /// <summary>Not documented yet.</summary>
+    /// <summary>Not documented yet.</summary>
     public Message SetHeader(int index, string value) {
       if (index < 0) {
         throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
@@ -713,6 +713,7 @@ namespace PeterO.Mail {
           sb.Append(delim);
         }
         sb.Append(s);
+        first = false;
       }
       return sb.ToString();
     }
@@ -722,7 +723,7 @@ namespace PeterO.Mail {
       name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.Count; i += 2) {
         if (this.headers[i].Equals(name)) {
-          headers.Add(this.headers[i]);
+          headers.Add(this.headers[i + 1]);
         }
       }
       return (string[])headers.ToArray();
@@ -1226,20 +1227,30 @@ namespace PeterO.Mail {
       return value;
     }
 
+    private static IDictionary<string, int> HeaderIndices = new Dictionary<string, int>() {
+      { "to", 0 },
+      { "cc", 1 },
+      { "bcc", 2 },
+      { "from", 3 },
+      { "reply-to", 4 },
+      { "resent-to", 5 },
+      { "resent-cc", 6 },
+      { "resent-bcc", 7 },
+      { "resent-from", 8 },
+      { "sender", 9 },
+      { "resent-sender", 10 }
+    };
+
     private string Generate(int depth) {
       StringBuilder sb = new StringBuilder();
       bool haveMimeVersion = false;
       bool haveContentEncoding = false;
       bool haveContentType = false;
       bool haveContentDisp = false;
-      bool haveFrom = false;
       bool outputtedFrom = false;
       bool haveMsgId = false;
-      bool haveTo = false;
+      bool[] haveHeaders = new bool[11];
       byte[] bodyToWrite = this.body;
-      bool haveCc = false;
-      bool haveReplyTo = false;
-      bool haveBcc = false;
       MediaTypeBuilder builder = new MediaTypeBuilder(this.ContentType);
       string contentDisp = (this.ContentDisposition == null) ? null :
         this.ContentDisposition.ToString();
@@ -1323,80 +1334,32 @@ namespace PeterO.Mail {
         }
         if (name.Equals("mime-version")) {
           haveMimeVersion = true;
-        } else if (name.Equals("from")) {
-          if (haveFrom) {
-            // Already outputted, continue
-            continue;
-          }
-          haveFrom = true;
-          if (!this.IsValidAddressingField(name)) {
-            value = GenerateAddressList(this.FromAddresses);
-            if (value.Length == 0) {
-              // No addresses, synthesize a From field
-              value = this.SynthesizeField(name);
-            }
-          }
-          outputtedFrom = true;
-        } else if (name.Equals("to")) {
-          if (haveTo) {
-            // Already outputted, continue
-            continue;
-          }
-          haveTo = true;
-          if (!this.IsValidAddressingField(name)) {
-            value = GenerateAddressList(this.ToAddresses);
-            if (value.Length == 0) {
-              // No addresses, synthesize a field
-              value = this.SynthesizeField(name);
-            }
-          }
-        } else if (name.Equals("cc")) {
-          if (haveCc) {
-            // Already outputted, continue
-            continue;
-          }
-          haveCc = true;
-          if (!this.IsValidAddressingField(name)) {
-            value = GenerateAddressList(this.CCAddresses);
-            if (value.Length == 0) {
-              // No addresses, synthesize a field
-              value = this.SynthesizeField(name);
-            }
-          }
         } else if (name.Equals("message-id")) {
           if (haveMsgId) {
             // Already outputted, continue
             continue;
           }
           haveMsgId = true;
-        } else if (name.Equals("bcc")) {
-          if (haveBcc) {
-            // Already outputted, continue
-            continue;
-          }
-          haveBcc = true;
-          if (!this.IsValidAddressingField(name)) {
-            value = GenerateAddressList(this.BccAddresses);
-            if (value.Length == 0) {
-              // No addresses, synthesize a field
-              value = this.SynthesizeField(name);
-            }
-          }
-        } else if (name.Equals("reply-to")) {
-          if (haveReplyTo) {
-            // Already outputted, continue
-            continue;
-          }
-          haveBcc = true;
-          if (!this.IsValidAddressingField(name)) {
-            value = GenerateAddressList(ParseAddresses(this.GetMultipleHeaders(name)));
-            if (value.Length == 0) {
-              // No addresses, synthesize a field
-              value = this.SynthesizeField(name);
+        } else {
+          if (HeaderIndices.ContainsKey(name)) {
+            int headerIndex = HeaderIndices[name];
+            if (headerIndex < 8) {
+              // TODO: Handle Sender, Resent-From, Resent-Sender
+              if (haveHeaders[headerIndex]) {
+                // Already outputted, continue
+                continue;
+              }
+              haveHeaders[headerIndex] = true;
+              if (!this.IsValidAddressingField(name)) {
+                value = GenerateAddressList(ParseAddresses(this.GetMultipleHeaders(name)));
+                if (value.Length == 0) {
+                  // No addresses, synthesize a field
+                  value = this.SynthesizeField(name);
+                }
+              }
             }
           }
         }
-        // TODO: Sender, Resent-From/-To/-Bcc/-Cc/-Sender
         string rawField = Capitalize(name) + ":" +
           (StartsWithWhitespace(value) ? String.Empty : " ") + value;
         if (CanOutputRaw(rawField)) {
@@ -1972,8 +1935,8 @@ namespace PeterO.Mail {
     private class MessageStackEntry {
       private Message message;
 
-    /// <summary>Gets an internal value.</summary>
-    /// <value>An internal value.</value>
+      /// <summary>Gets an internal value.</summary>
+      /// <value>An internal value.</value>
       public Message Message {
         get {
           return this.message;
@@ -1982,8 +1945,8 @@ namespace PeterO.Mail {
 
       private string boundary;
 
-    /// <summary>Gets an internal value.</summary>
-    /// <value>An internal value.</value>
+      /// <summary>Gets an internal value.</summary>
+      /// <value>An internal value.</value>
       public string Boundary {
         get {
           return this.boundary;
