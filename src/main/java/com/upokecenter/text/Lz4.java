@@ -1,4 +1,4 @@
-package com.upokecenter.util;
+package com.upokecenter.text;
 /*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.

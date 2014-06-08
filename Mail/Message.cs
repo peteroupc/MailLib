@@ -55,22 +55,23 @@ namespace PeterO.Mail {
     /// <param name='index'>A 32-bit signed integer.</param>
     public KeyValuePair<string, string> GetHeader(int index) {
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
-      if ((index) >= (this.headers.Count / 2)) {
-        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is not less than " + Convert.ToString((long)(this.headers.Count / 2), System.Globalization.CultureInfo.InvariantCulture));
+      if (index >= (this.headers.Count / 2)) {
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is not less than " + Convert.ToString((long)(this.headers.Count / 2), System.Globalization.CultureInfo.InvariantCulture));
       }
       return new KeyValuePair<string, string>(this.headers[index], this.headers[index + 1]);
     }
 
     /// <returns>A Message object.</returns>
     /// <param name='index'>A 32-bit signed integer.</param>
+ /// <summary>Not documented yet.</summary>
     public Message RemoveHeader(int index) {
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
-      if ((index) >= (this.headers.Count / 2)) {
-        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is not less than " + Convert.ToString((long)(this.headers.Count / 2), System.Globalization.CultureInfo.InvariantCulture));
+      if (index >= (this.headers.Count / 2)) {
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is not less than " + Convert.ToString((long)(this.headers.Count / 2), System.Globalization.CultureInfo.InvariantCulture));
       }
       this.headers.RemoveAt(index * 2);
       this.headers.RemoveAt(index * 2);
@@ -79,13 +80,15 @@ namespace PeterO.Mail {
 
     /// <returns>A Message object.</returns>
     /// <param name='header'>A KeyValuePair object.</param>
+ /// <summary>Not documented yet.</summary>
     public Message AddHeader(KeyValuePair<string, string> header) {
-      return AddHeader(header.Key, header.Value);
+      return this.AddHeader(header.Key, header.Value);
     }
 
     /// <returns>A Message object.</returns>
     /// <param name='name'>A string object.</param>
     /// <param name='value'>A string object. (2).</param>
+ /// <summary>Not documented yet.</summary>
     public Message AddHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
       this.headers.Add(name);
@@ -96,40 +99,43 @@ namespace PeterO.Mail {
     /// <returns>A Message object.</returns>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='header'>A KeyValuePair object.</param>
+ /// <summary>Not documented yet.</summary>
     public Message SetHeader(int index, KeyValuePair<string, string> header) {
-      return SetHeader(index, header.Key, header.Value);
+      return this.SetHeader(index, header.Key, header.Value);
     }
 
     /// <returns>A Message object.</returns>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='name'>A string object.</param>
     /// <param name='value'>A string object. (2).</param>
+ /// <summary>Not documented yet.</summary>
     public Message SetHeader(int index, string name, string value) {
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
-      if ((index) >= (this.headers.Count / 2)) {
-        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is not less than " + Convert.ToString((long)(this.headers.Count / 2), System.Globalization.CultureInfo.InvariantCulture));
+      if (index >= (this.headers.Count / 2)) {
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is not less than " + Convert.ToString((long)(this.headers.Count / 2), System.Globalization.CultureInfo.InvariantCulture));
       }
       name = ValidateHeaderField(name, value);
       this.headers[index * 2] = name;
-      this.headers[index * 2 + 1] = value;
+      this.headers[(index * 2) + 1] = value;
       return this;
     }
 
     /// <returns>A Message object.</returns>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='value'>A string object.</param>
+ /// <summary>Not documented yet.</summary>
     public Message SetHeader(int index, string value) {
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
       }
-      if ((index) >= (this.headers.Count / 2)) {
-        throw new ArgumentException("index (" + Convert.ToString((long)(index), System.Globalization.CultureInfo.InvariantCulture) + ") is not less than " + Convert.ToString((long)(this.headers.Count / 2), System.Globalization.CultureInfo.InvariantCulture));
+      if (index >= (this.headers.Count / 2)) {
+        throw new ArgumentException("index (" + Convert.ToString((long)index, System.Globalization.CultureInfo.InvariantCulture) + ") is not less than " + Convert.ToString((long)(this.headers.Count / 2), System.Globalization.CultureInfo.InvariantCulture));
       }
       string name = ValidateHeaderField(this.headers[index * 2], value);
       this.headers[index * 2] = name;
-      this.headers[index * 2 + 1] = value;
+      this.headers[(index * 2) + 1] = value;
       return this;
     }
 

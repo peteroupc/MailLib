@@ -671,83 +671,97 @@ namespace MailLibTest {
 
     [TestMethod]
     public void TestHeaderManip() {
-      Assert.AreEqual("comment", MessageFromString("From: Me <me@example.com>").AddHeader("x-comment", "comment").GetHeader("x-comment"));
-      Assert.AreEqual("comment", MessageFromString("From: Me <me@example.com>").AddHeader(new KeyValuePair<string, string>("x-comment", "comment")).GetHeader("x-comment"));
-      Assert.AreEqual("from", MessageFromString("From: Me <me@example.com>").SetHeader(0, "comment").GetHeader(0).Key);
-      Assert.AreEqual("comment", MessageFromString("From: Me <me@example.com>").SetHeader(0, "comment").GetHeader(0).Value);
-      Assert.AreEqual("x-comment", MessageFromString("From: Me <me@example.com>").SetHeader(0, "x-comment", "comment").GetHeader(0).Key);
-      Assert.AreEqual("comment", MessageFromString("From: Me <me@example.com>").SetHeader(0, "x-comment", "comment").GetHeader(0).Value);
-      Message msg=MessageFromString("From: Me <me@example.com>");
+      Assert.AreEqual("comment", MessageFromString("From: Me <me@example.com>\r\n\r\n").AddHeader("x-comment", "comment").GetHeader("x-comment"));
+      Assert.AreEqual("comment", MessageFromString("From: Me <me@example.com>\r\n\r\n").AddHeader(new KeyValuePair<string, string>("x-comment", "comment")).GetHeader("x-comment"));
+      Assert.AreEqual("from", MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0, "you@example.com").GetHeader(0).Key);
+      Assert.AreEqual("you@example.com", MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0, "you@example.com").GetHeader(0).Value);
+      Assert.AreEqual("x-comment", MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0, "x-comment", "comment").GetHeader(0).Key);
+      Assert.AreEqual("comment", MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0, "x-comment", "comment").GetHeader(0).Value);
+      Message msg = MessageFromString("From: Me <me@example.com>\r\n\r\n");
       try {
- msg.SetHeader(0, (string)null);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader(0, (string)null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetHeader(0, null, null);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader(0, null, null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.AddHeader(null, null);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.AddHeader(null, null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetHeader(-1, "me@example.com");
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader(-1, "me@example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetHeader(-1, "To", "me@example.com");
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader(-1, "To", "me@example.com");
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.GetHeader(-1);
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.GetHeader(-1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.RemoveHeader(-1);
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.RemoveHeader(-1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
     }
 
     [TestMethod]
     public void TestMessageTests() {
       var multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
       string msg;
-      msg = multipart + "Content-Type: 8bit\r\n--b\r\n\r\n\r\n--b--";
+      msg = multipart + "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\nContent-Description: description\r\n\r\n\r\n--b--";
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      msg = "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: 8bit\r\n--b\r\n\r\n\r\n--b--";
+      msg = multipart + "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\n\r\n\r\n\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      msg = multipart + "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\n\r\n\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      msg = "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: 8bit\r\n\r\n--b\r\n\r\n\r\n--b--";
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
@@ -784,7 +798,7 @@ throw new InvalidOperationException(String.Empty, ex);
       var multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
       string msg;
       // Multipart message with base64
-      msg = multipart + "Content-Type: base64\r\n--b\r\n\r\n\r\n--b--";
+      msg = multipart + "Content-Transfer-Encoding: base64\r\n\r\n--b\r\n\r\n\r\n--b--";
       try {
         MessageFromString(msg);
       } catch (Exception ex) {

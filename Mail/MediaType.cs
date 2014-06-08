@@ -20,7 +20,11 @@ namespace PeterO.Mail {
     /// = utf-8</c>
     /// is a text media type ("text"), namely, a plain text type ("plain"),
     /// and the parameters say that that the data uses the character set UTF-8,
-    /// a form of Unicode ("charset=utf-8"). </para>
+    /// a form of Unicode ("charset=utf-8"). Other top-level types include
+    /// "audio", "video", and "application".</para>
+    /// <para>This type is immutable, meaning its values can't be changed
+    /// once it's created. To create a changeable media type object, use the
+    /// MediaTypeBuilder class.</para>
     /// </summary>
   public sealed class MediaType {
     private string topLevelType;
@@ -105,8 +109,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a sorted list of the parameters contained in this media
     /// type object.</summary>
-    /// <value>A sorted list of the parameters contained in this media type
-    /// object.</value>
+    /// <value>A list of the parameters contained in this media type object,
+    /// sorted by name.</value>
     public IDictionary<string, string> Parameters {
       get {
         return new ReadOnlyMap<string, string>(this.parameters);
@@ -134,7 +138,7 @@ namespace PeterO.Mail {
         char c = s[index];
         // NOTE: Space and tab were handled earlier;
         // bytes higher than 0x7f are part of obs-text
-        if (c < 0x100 && c >= 0x21 && c!=0x7F && c != '\\' && c != '"') {
+        if (c < 0x100 && c >= 0x21 && c != 0x7F && c != '\\' && c != '"') {
           return index + 1;
         }
         i2 = skipQuotedPair(s, index, endIndex);
@@ -1062,7 +1066,7 @@ namespace PeterO.Mail {
       Justification="This instance is immutable")]
     #endif
     /// <summary>Specifies the media type "text/plain" and the charset
-    /// "US-ASCII".</summary>
+    /// "US-ASCII", used for plain text data.</summary>
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder("text", "plain").SetParameter("charset", "us-ascii").ToMediaType();
 
@@ -1073,7 +1077,7 @@ namespace PeterO.Mail {
       Justification="This instance is immutable")]
     #endif
     /// <summary>Specifies the media type "text/plain" and the charset
-    /// "utf-8".</summary>
+    /// "utf-8", used for Unicode plain text data.</summary>
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder("text", "plain").SetParameter("charset", "utf-8").ToMediaType();
 
@@ -1083,11 +1087,13 @@ namespace PeterO.Mail {
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "message/rfc822".</summary>
+    /// <summary>Specifies the media type "message/rfc822", used for Internet
+    /// mail messages.</summary>
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
-    /// <summary>Specifies the media type "application/octet-stream".</summary>
+    /// <summary>Specifies the media type "application/octet-stream",
+    /// used for arbitrary binary data.</summary>
     public static readonly MediaType ApplicationOctetStream =
       new MediaTypeBuilder("application", "octet-stream").ToMediaType();
 

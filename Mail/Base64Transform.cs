@@ -28,15 +28,16 @@ namespace PeterO.Mail {
     private bool checkStrictEncoding;
     private int paddingCount;
 
-    public Base64Transform(ITransform input,
-      bool lenientLineBreaks) : this(input, lenientLineBreaks, 76, false) {
+    public Base64Transform(
+ITransform input,
+bool lenientLineBreaks) : this(input, lenientLineBreaks, 76, false) {
     }
 
-    public Base64Transform(ITransform input,
-      bool lenientLineBreaks,
-      int maxLineLength,
-      bool checkStrictEncoding
-) {
+    public Base64Transform(
+ITransform input,
+bool lenientLineBreaks,
+int maxLineLength,
+bool checkStrictEncoding) {
       this.input = input;
       this.maxLineLength = maxLineLength;
       this.lenientLineBreaks = lenientLineBreaks;
