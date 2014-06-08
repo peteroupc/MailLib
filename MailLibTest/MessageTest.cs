@@ -1250,6 +1250,43 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
     }
+
+    [TestMethod]
+    public void TestMessageMergeFields() {
+      string msg;
+      msg = "From: x1@example.com\r\nFrom: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("from");
+      Assert.AreEqual("x1@example.com, x2@example.com", msg);
+      msg = "To: x1@example.com\r\nTo: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("to");
+      Assert.AreEqual("x1@example.com, x2@example.com", msg);
+      msg = "Cc: x1@example.com\r\nCc: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("cc");
+      Assert.AreEqual("x1@example.com, x2@example.com", msg);
+      msg = "Bcc: x1@example.com\r\nBcc: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("bcc");
+      Assert.AreEqual("x1@example.com, x2@example.com", msg);
+      msg = "Reply-To: x1@example.com\r\nReply-To: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("reply-to");
+      Assert.AreEqual("x1@example.com, x2@example.com", msg);
+      msg = "Resent-To: x1@example.com\r\nResent-To: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("resent-to");
+      Assert.AreEqual("x1@example.com, x2@example.com", msg);
+      msg = "Resent-Cc: x1@example.com\r\nResent-Cc: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("resent-cc");
+      Assert.AreEqual("x1@example.com, x2@example.com", msg);
+      msg = "Resent-Bcc: x1@example.com\r\nResent-Bcc: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("resent-bcc");
+      Assert.AreEqual("x1@example.com, x2@example.com", msg);
+      // Invalid header fields
+      msg = "From: x1@example.com\r\nFrom: x2.example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("from");
+      Assert.AreEqual("x1@example.com", msg);
+      msg = "From: x1.example.com\r\nFrom: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("from");
+      Assert.AreEqual("x2@example.com", msg);
+    }
+
     [TestMethod]
     public void TestMessageArgumentValidation() {
       try {
