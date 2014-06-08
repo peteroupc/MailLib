@@ -29,9 +29,9 @@ namespace PeterO.Mail {
     /// content type "multipart/*" or "message/*" (other than "message/global",
     /// "message/global-headers", "message/global-disposition-notification",
     /// or "message/global-delivery-status").</item>
-    /// <item>If a message has two or more Content-Type header fields, it is treated
-    /// as having a content type of "application/octet-stream", unless one or more
-    /// of the header fields is syntactically invalid.</item>
+    /// <item>If a message has two or more Content-Type header fields, it
+    /// is treated as having a content type of "application/octet-stream",
+    /// unless one or more of the header fields is syntactically invalid.</item>
     /// <item>Non-UTF-8 bytes appearing in header field values are replaced
     /// with replacement characters. Moreover, UTF-8 is parsed everywhere
     /// in header field values, even in those parts of some structured header
@@ -575,19 +575,12 @@ namespace PeterO.Mail {
             } else {
               this.contentType = MediaType.ApplicationOctetStream;
             }
-            /*
-            string valueExMessage = "Already have this header: " + name;
-            #if DEBUG
-            valueExMessage += "[old=" + this.contentType + ", new=" + value + "]";
-            valueExMessage = valueExMessage.Replace("\r\n", " ");
-            #endif
-            throw new MessageDataException(valueExMessage);
-            */
           } else {
             this.contentType = MediaType.Parse(
-              value,null);
-            if(this.contentType == null){
-            this.contentType =  digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
+              value,
+              null);
+            if (this.contentType == null) {
+            this.contentType = digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
               haveInvalid = true;
             }
             haveContentType = true;
@@ -1404,7 +1397,7 @@ namespace PeterO.Mail {
               throw new MessageDataException("Header field still has non-Ascii or controls: " +
                                              name + " " + value);
               #else
- throw new MessageDataException("Header field still has non-Ascii or controls");
+ // throw new MessageDataException("Header field still has non-Ascii or controls");
               #endif
             }
           }
@@ -2025,6 +2018,7 @@ namespace PeterO.Mail {
               Math.Max(buffer.Length - 35, 0),
               Math.Min(buffer.Length, 35),
               true);
+            ss = String.Empty;
             string transferEnc = (leaf == null ? this : leaf).GetHeader("content-transfer-encoding");
             valueExMessage += " [" + ss + "] [type=" + ((leaf == null ? this : leaf).ContentType ?? MediaType.TextPlainAscii) +
               "] [encoding=" + transferEnc + "]";
@@ -2161,6 +2155,7 @@ namespace PeterO.Mail {
               Math.Max(buffer.Length - 35, 0),
               Math.Min(buffer.Length, 35),
               true);
+            ss = String.Empty;
             string transferEnc = this.GetHeader("content-transfer-encoding");
             valueExMessage += " [" + ss + "] [type=" + (this.ContentType ?? MediaType.TextPlainAscii) +
               "] [encoding=" + transferEnc + "]";

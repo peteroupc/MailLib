@@ -26,17 +26,20 @@ import com.upokecenter.util.*;
      * "quoted-printable" is treated as 7bit instead if it occurs in a message
      * or body part with content type "multipart/*" or "message/*" (other
      * than "message/global", "message/global-headers", "message/global-disposition-notification",
-     * or "message/global-delivery-status").</li> <li>Non-UTF-8 bytes
-     * appearing in header field values are replaced with replacement characters.
-     * Moreover, UTF-8 is parsed everywhere in header field values, even
-     * in those parts of some structured header fields where this appears
-     * not to be allowed.</li> <li>The To and Cc header fields are allowed
-     * to contain only comments and whitespace, but these "empty" header
-     * fields will be omitted when generating.</li> <li>There is no line
-     * length limit imposed when parsing quoted-printable or base64 encoded
-     * bodies.</li> <li>In non-MIME message bodies, in text/plain message
-     * bodies, and in the prologue and epilogue of multipart messages (which
-     * will be ignored), if the transfer encoding is absent or ((declared
+     * or "message/global-delivery-status").</li> <li>If a message
+     * has two or more Content-Type header fields, it is treated as having
+     * a content type of "application/octet-stream", unless one or more
+     * of the header fields is syntactically invalid.</li> <li>Non-UTF-8
+     * bytes appearing in header field values are replaced with replacement
+     * characters. Moreover, UTF-8 is parsed everywhere in header field
+     * values, even in those parts of some structured header fields where
+     * this appears not to be allowed.</li> <li>The To and Cc header fields
+     * are allowed to contain only comments and whitespace, but these "empty"
+     * header fields will be omitted when generating.</li> <li>There is
+     * no line length limit imposed when parsing quoted-printable or base64
+     * encoded bodies.</li> <li>In non-MIME message bodies, in text/plain
+     * message bodies, and in the prologue and epilogue of multipart messages
+     * (which will be ignored), if the transfer encoding is absent or ((declared
      * instanceof 7bit) ? (7bit)declared : null), any 8-bit bytes are replaced
      * with the ASCII substitute character (0x1a).</li> <li>If the transfer
      * encoding is absent or ((declared instanceof 7bit) ? (7bit)declared
@@ -554,6 +557,7 @@ public void setContentDisposition(ContentDisposition value) {
         }
       }
       this.contentType = digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
+      boolean haveInvalid = false;
       for (int i = 0; i < this.headers.size(); i += 2) {
         String name = this.headers.get(i);
         String value = this.headers.get(i + 1);
@@ -576,14 +580,29 @@ public void setContentDisposition(ContentDisposition value) {
           }
         } else if (mime && name.equals("content-type")) {
           if (haveContentType) {
+            // DEVIATION: If there is already a content type,
+            // treat content type as application/octet-stream
+            if (haveInvalid || MediaType.Parse(value, null) == null) {
+              this.contentType = MediaType.TextPlainAscii;
+              haveInvalid = true;
+            } else {
+              this.contentType = MediaType.ApplicationOctetStream;
+            }
+            /*
             String valueExMessage = "Already have this header: " + name;
 
             throw new MessageDataException(valueExMessage);
+            */
+          } else {
+            this.contentType = MediaType.Parse(
+              value,
+              null);
+            if (this.contentType == null) {
+            this.contentType = digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
+              haveInvalid = true;
+            }
+            haveContentType = true;
           }
-          this.contentType = MediaType.Parse(
-            value,
-            digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii);
-          haveContentType = true;
         } else if (mime && name.equals("content-disposition")) {
           if (haveContentDisp) {
             String valueExMessage = "Already have this header: " + name;

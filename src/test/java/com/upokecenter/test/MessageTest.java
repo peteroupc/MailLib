@@ -38,6 +38,11 @@ import com.upokecenter.text.*;
       Assert.assertEquals("2", MediaType.Parse("x/y;z=1;z*=utf-8''2").GetParameter("z"));
     }
 
+    private static Message MessageFromString(String str) {
+      return new Message(new java.io.ByteArrayInputStream(
+        DataUtilities.GetUtf8Bytes(str, true)));
+    }
+
     private static void TestMediaTypeRoundTrip(String str) {
       String mtstring = new MediaTypeBuilder("x", "y").SetParameter("z", str).toString();
       if(mtstring.contains("\r\n\r\n"))Assert.fail();
@@ -63,6 +68,34 @@ import com.upokecenter.text.*;
         }
         msgids.add(msgid);
       }
+    }
+
+    @Test
+    public void TestContentTypeDefaults() {
+      String start = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
+      String msg;
+      msg = start + "Content-Type: text/html\r\n\r\n";
+      Assert.assertEquals(MediaType.Parse("text/html"), MessageFromString(msg).getContentType());
+      msg = start + "Content-Type: text/\r\n\r\n";
+      Assert.assertEquals(MediaType.TextPlainAscii, MessageFromString(msg).getContentType());
+      msg = start + "Content-Type: /html\r\n\r\n";
+      Assert.assertEquals(MediaType.TextPlainAscii, MessageFromString(msg).getContentType());
+      // All header fields are syntactically valid
+      msg = start + "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\n\r\n";
+      Assert.assertEquals(MediaType.ApplicationOctetStream, MessageFromString(msg).getContentType());
+      msg = start + "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: text/html\r\n\r\n";
+      Assert.assertEquals(MediaType.ApplicationOctetStream, MessageFromString(msg).getContentType());
+      // First header field is syntactically invalid
+      msg = start + "Content-Type: /plain;charset=utf-8\r\nContent-Type: image/jpeg\r\n\r\n";
+      Assert.assertEquals(MediaType.TextPlainAscii, MessageFromString(msg).getContentType());
+      // Second header field is syntactically invalid
+      msg = start + "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image\r\n\r\n";
+      Assert.assertEquals(MediaType.TextPlainAscii, MessageFromString(msg).getContentType());
+      msg = start + "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image\r\nContent-Type: text/html\r\n\r\n";
+      Assert.assertEquals(MediaType.TextPlainAscii, MessageFromString(msg).getContentType());
+      // Third header field is syntactically invalid
+      msg = start + "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: audio\r\n\r\n";
+      Assert.assertEquals(MediaType.TextPlainAscii, MessageFromString(msg).getContentType());
     }
 
     @Test
