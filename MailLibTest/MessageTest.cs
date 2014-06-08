@@ -668,6 +668,114 @@ namespace MailLibTest {
     }
 
     [TestMethod]
+    public void TestMessageTests() {
+      var multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
+      string msg;
+      msg = "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nA";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      msg = multipart + "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      msg = multipart + "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: 7bit\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+    }
+
+    public void MessageDoubtfulCases() {
+      // The following tests currently fail, since I
+      // don't know the best way to handle these cases
+      // without being too lenient
+      var multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
+      string msg;
+      // Message/rfc822 without a content-transfer-encoding;
+      // so a 7-bit encoding is assumed;
+      // From header field contains non-ASCII characters, so
+      // would be illegal in a 7-bit encoding
+      msg = multipart + "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\nX\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      // Message/rfc822 without content-transfer-encoding base64;
+      // which is not allowed for this media type
+      msg = multipart + "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: base64\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nXX==\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      // Text/Rfc822-headers without a content-transfer-encoding;
+      // so a 7-bit encoding is assumed;
+      // From header field contains non-ASCII characters, so
+      // would be illegal in a 7-bit encoding
+      msg = multipart + "\r\n--b\r\nContent-Type: text/rfc822-headers\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      // Text/html without a content-transfer-encoding and an empty
+      // charset, so a 7-bit encoding is assumed;
+      // Body contains non-ASCII characters, so
+      // would be illegal in a 7-bit encoding
+      msg = "Mime-Version: 1.0\r\nContent-Type: text/html; charset=\"\"\r\n\r\n\ufffd";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      // Text/html with an explicit Content-Transfer-Encoding of 7bit;
+      // Body contains non-ASCII characters, so
+      // would be illegal in a 7-bit encoding
+      msg = "Mime-Version: 1.0\r\nContent-Type: text/html\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\ufffd";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      // Text/html without a content-transfer-encoding,
+      // so a 7-bit encoding is assumed;
+      // Body contains non-ASCII characters, so
+      // would be illegal in a 7-bit encoding
+      msg = "Mime-Version: 1.0\r\nContent-Type: text/html\r\n\r\n\ufffd";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      // Base64 body with only one encoded octet;
+      // should the incomplete decoded byte be ignored
+      // or included?
+      msg = "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\nA";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+    }
+
+    [TestMethod]
     public void TestMailbox() {
       string mbox = "Me <@example.org,@example.net,@example.com:me@x.example>";
       var result = new NamedAddress(mbox);

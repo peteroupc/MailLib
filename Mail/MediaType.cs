@@ -1090,7 +1090,7 @@ namespace PeterO.Mail {
     /// <summary>Specifies the media type "application/octet-stream".</summary>
     public static readonly MediaType ApplicationOctetStream =
       new MediaTypeBuilder("application", "octet-stream").ToMediaType();
-    
+
     private MediaType() {
     }
 

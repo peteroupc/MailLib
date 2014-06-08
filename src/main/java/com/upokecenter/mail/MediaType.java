@@ -880,8 +880,6 @@ import com.upokecenter.util.*;
       }
 
     static int skipOws(String s, int index, int endIndex) {
-      // While HTTP usually only allows CRLF, it also allows
-      // us to be tolerant here
       int i2 = index;
       while (i2 < endIndex) {
         if (s.charAt(i2) == 0x09 || s.charAt(i2) == 0x20) {
@@ -1073,6 +1071,12 @@ import com.upokecenter.util.*;
      */
     public static final MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
+
+    /**
+     * Specifies the media type "application/octet-stream".
+     */
+    public static final MediaType ApplicationOctetStream =
+      new MediaTypeBuilder("application", "octet-stream").ToMediaType();
 
     private MediaType() {
     }
