@@ -16,17 +16,10 @@ at: http://upokecenter.com/d/
     private int retvalMax;
     private byte[] retval;
 
-    /**
-     * Initializes a new instance of the ArrayWriter class.
-     */
     public ArrayWriter () {
  this(16);
     }
 
-    /**
-     * Initializes a new instance of the ArrayWriter class.
-     * @param initialSize A 32-bit signed integer.
-     */
     public ArrayWriter (int initialSize) {
       this.retval = new byte[initialSize];
     }
@@ -57,26 +50,12 @@ public void setPosition(int value) {
         this.retvalPos = value;
       }
 
-    /**
-     *
-     * @return A byte array.
-     */
     public byte[] ToArray() {
       byte[] ret = new byte[this.retvalMax];
       System.arraycopy(this.retval, 0, ret, 0, this.retvalMax);
       return ret;
     }
 
-    /**
-     *
-     * @param src A byte array.
-     * @param src A byte array.
-     * @param offset A 32-bit signed integer. (2).
-     * @param length A 32-bit signed integer. (3).
-     * @return A 32-bit signed integer.
-     * @throws java.lang.NullPointerException The parameter {@code src}
-     * is null.
-     */
     public int ReadBytes(byte[] src, int offset, int length) {
       if (src == null) {
         throw new NullPointerException("src");
@@ -103,15 +82,6 @@ public void setPosition(int value) {
       return maxLength;
     }
 
-    /**
-     *
-     * @param src A byte array.
-     * @param src A byte array.
-     * @param offset A 32-bit signed integer.
-     * @param length A 32-bit signed integer. (2).
-     * @throws java.lang.NullPointerException The parameter {@code src}
-     * is null.
-     */
     public void WriteBytes(byte[] src, int offset, int length) {
       if (src == null) {
         throw new NullPointerException("src");

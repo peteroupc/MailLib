@@ -7,7 +7,7 @@ at: http://upokecenter.com/d/
  */
 using System;
 
-namespace PeterO {
+namespace PeterO.Text {
     /// <summary>Implements the LZ4 algorithm (see "LZ4 Format Description"
     /// by Y Collet for more information).</summary>
   internal static class Lz4

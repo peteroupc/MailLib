@@ -18,7 +18,10 @@ import com.upokecenter.util.*;
      * For example, the media type <code>text/plain; charset = utf-8</code> is
      * a text media type ("text"), namely, a plain text type ("plain"), and
      * the parameters say that that the data uses the character set UTF-8,
-     * a form of Unicode ("charset=utf-8"). </p>
+     * a form of Unicode ("charset=utf-8"). Other top-level types include
+     * "audio", "video", and "application".</p> <p>This type is immutable,
+     * meaning its values can't be changed once it's created. To create a
+     * changeable media type object, use the MediaTypeBuilder class.</p>
      */
   public final class MediaType {
     private String topLevelType;
@@ -102,8 +105,8 @@ import com.upokecenter.util.*;
 
     /**
      * Gets a sorted list of the parameters contained in this media type object.
-     * @return A sorted list of the parameters contained in this media type
-     * object.
+     * @return A list of the parameters contained in this media type object,
+     * sorted by name.
      */
     public Map<String, String> getParameters() {
         return java.util.Collections.unmodifiableMap(this.parameters);
@@ -134,7 +137,7 @@ import com.upokecenter.util.*;
         char c = s.charAt(index);
         // NOTE: Space and tab were handled earlier;
         // bytes higher than 0x7f are part of obs-text
-        if (c < 0x100 && c >= 0x21 && c!=0x7F && c != '\\' && c != '"') {
+        if (c < 0x100 && c >= 0x21 && c != 0x7F && c != '\\' && c != '"') {
           return index + 1;
         }
         i2 = skipQuotedPair(s, index, endIndex);
@@ -1055,25 +1058,29 @@ import com.upokecenter.util.*;
     }
 
     /**
-     * Specifies the media type "text/plain" and the charset "US-ASCII".
+     * Specifies the media type "text/plain" and the charset "US-ASCII",
+     * used for plain text data.
      */
     public static final MediaType TextPlainAscii =
       new MediaTypeBuilder("text", "plain").SetParameter("charset", "us-ascii").ToMediaType();
 
     /**
-     * Specifies the media type "text/plain" and the charset "utf-8".
+     * Specifies the media type "text/plain" and the charset "utf-8", used
+     * for Unicode plain text data.
      */
     public static final MediaType TextPlainUtf8 =
       new MediaTypeBuilder("text", "plain").SetParameter("charset", "utf-8").ToMediaType();
 
     /**
-     * Specifies the media type "message/rfc822".
+     * Specifies the media type "message/rfc822", used for Internet mail
+     * messages.
      */
     public static final MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
     /**
-     * Specifies the media type "application/octet-stream".
+     * Specifies the media type "application/octet-stream", used for
+     * arbitrary binary data.
      */
     public static final MediaType ApplicationOctetStream =
       new MediaTypeBuilder("application", "octet-stream").ToMediaType();

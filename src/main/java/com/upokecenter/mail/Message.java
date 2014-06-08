@@ -58,25 +58,25 @@ import com.upokecenter.util.*;
      */
     public Map.Entry<String, String> GetHeader(int index) {
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is less than " + "0");
+        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
       }
-      if ((index) >= (this.headers.size() / 2)) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
+      if (index >= (this.headers.size() / 2)) {
+        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
       }
       return new AbstractMap.SimpleImmutableEntry<String, String>(this.headers.get(index), this.headers.get(index + 1));
     }
 
     /**
-     *
+     * Not documented yet.
      * @param index A 32-bit signed integer.
      * @return A Message object.
      */
     public Message RemoveHeader(int index) {
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is less than " + "0");
+        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
       }
-      if ((index) >= (this.headers.size() / 2)) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
+      if (index >= (this.headers.size() / 2)) {
+        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
       }
       this.headers.remove(index * 2);
       this.headers.remove(index * 2);
@@ -84,16 +84,16 @@ import com.upokecenter.util.*;
     }
 
     /**
-     *
+     * Not documented yet.
      * @param header A Map.Entry object.
      * @return A Message object.
      */
     public Message AddHeader(Map.Entry<String, String> header) {
-      return AddHeader(header.getKey(), header.getValue());
+      return this.AddHeader(header.getKey(), header.getValue());
     }
 
     /**
-     *
+     * Not documented yet.
      * @param name A string object.
      * @param value A string object. (2).
      * @return A Message object.
@@ -106,17 +106,17 @@ import com.upokecenter.util.*;
     }
 
     /**
-     *
+     * Not documented yet.
      * @param index A 32-bit signed integer.
      * @param header A Map.Entry object.
      * @return A Message object.
      */
     public Message SetHeader(int index, Map.Entry<String, String> header) {
-      return SetHeader(index, header.getKey(), header.getValue());
+      return this.SetHeader(index, header.getKey(), header.getValue());
     }
 
     /**
-     *
+     * Not documented yet.
      * @param index A 32-bit signed integer.
      * @param name A string object.
      * @param value A string object. (2).
@@ -124,33 +124,33 @@ import com.upokecenter.util.*;
      */
     public Message SetHeader(int index, String name, String value) {
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is less than " + "0");
+        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
       }
-      if ((index) >= (this.headers.size() / 2)) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
+      if (index >= (this.headers.size() / 2)) {
+        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
       }
       name = ValidateHeaderField(name, value);
       this.headers.set(index * 2,name);
-      this.headers.set(index * 2 + 1,value);
+      this.headers.set((index * 2) + 1,value);
       return this;
     }
 
     /**
-     *
+     * Not documented yet.
      * @param index A 32-bit signed integer.
      * @param value A string object.
      * @return A Message object.
      */
     public Message SetHeader(int index, String value) {
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is less than " + "0");
+        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
       }
-      if ((index) >= (this.headers.size() / 2)) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)(index)) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
+      if (index >= (this.headers.size() / 2)) {
+        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
       }
       String name = ValidateHeaderField(this.headers.get(index * 2), value);
       this.headers.set(index * 2,name);
-      this.headers.set(index * 2 + 1,value);
+      this.headers.set((index * 2) + 1,value);
       return this;
     }
 

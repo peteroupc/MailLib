@@ -9,12 +9,13 @@ at: http://upokecenter.com/d/
 
     /**
      * <p>Contains methods that implement Internationalized Domain Names
-     * in Applications (IDNA).</p> <p>NOTICE: While this class's source
-     * code is in the public domain, the class uses two internal classes,
-     * called <code>NormalizationData</code> and <code>IdnaData</code> , that include
-     * data derived from the Unicode Character Database. See the documentation
-     * for the Normalizer class for the permission notice for the Unicode
-     * Character Database.</p>
+     * in Applications (IDNA). IDNA enables using a wider range of letters,
+     * numbers, and certain other characters in domain names.</p> <p>NOTICE:
+     * While this class's source code is in the public domain, the class uses
+     * two internal classes, called <code>NormalizationData</code> and <code>IdnaData</code>
+     * , that include data derived from the Unicode Character Database.
+     * See the documentation for the Normalizer class for the permission
+     * notice for the Unicode Character Database.</p>
      */
   public final class Idna {
 private Idna() {

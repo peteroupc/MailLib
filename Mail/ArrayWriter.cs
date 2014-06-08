@@ -15,12 +15,9 @@ namespace PeterO.Mail {
     private int retvalMax;
     private byte[] retval;
 
-    /// <summary>Initializes a new instance of the ArrayWriter class.</summary>
     public ArrayWriter() : this(16) {
     }
 
-    /// <summary>Initializes a new instance of the ArrayWriter class.</summary>
-    /// <param name='initialSize'>A 32-bit signed integer.</param>
     public ArrayWriter(int initialSize) {
       this.retval = new byte[initialSize];
     }
@@ -54,20 +51,12 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <returns>A byte array.</returns>
     public byte[] ToArray() {
       byte[] ret = new byte[this.retvalMax];
       Array.Copy(this.retval, 0, ret, 0, this.retvalMax);
       return ret;
     }
 
-    /// <param name='src'>A byte array.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='src'/> is null.</exception>
-    /// <returns>A 32-bit signed integer.</returns>
-    /// <param name='src'>A byte array.</param>
-    /// <param name='offset'>A 32-bit signed integer. (2).</param>
-    /// <param name='length'>A 32-bit signed integer. (3).</param>
     public int ReadBytes(byte[] src, int offset, int length) {
       if (src == null) {
         throw new ArgumentNullException("src");
@@ -94,12 +83,6 @@ namespace PeterO.Mail {
       return maxLength;
     }
 
-    /// <param name='src'>A byte array.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='src'/> is null.</exception>
-    /// <param name='src'>A byte array.</param>
-    /// <param name='offset'>A 32-bit signed integer.</param>
-    /// <param name='length'>A 32-bit signed integer. (2).</param>
     public void WriteBytes(byte[] src, int offset, int length) {
       if (src == null) {
         throw new ArgumentNullException("src");

@@ -58,7 +58,7 @@ public void setPosition(int value) {
       }
 
     /**
-     *
+     * Not documented yet.
      * @return A byte array.
      */
     public byte[] ToArray() {
@@ -68,7 +68,7 @@ public void setPosition(int value) {
     }
 
     /**
-     *
+     * Not documented yet.
      * @param src A byte array.
      * @param src A byte array.
      * @param offset A 32-bit signed integer. (2).
@@ -104,7 +104,7 @@ public void setPosition(int value) {
     }
 
     /**
-     *
+     * Not documented yet.
      * @param src A byte array.
      * @param src A byte array.
      * @param offset A 32-bit signed integer.
