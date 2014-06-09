@@ -55,7 +55,6 @@ namespace PeterO.Text {
     }
 
     /// <returns>A byte array.</returns>
- /// <summary>Not documented yet.</summary>
     public byte[] ToArray() {
       byte[] ret = new byte[this.retvalMax];
       Array.Copy(this.retval, 0, ret, 0, this.retvalMax);
@@ -64,12 +63,13 @@ namespace PeterO.Text {
 
     /// <param name='src'>A byte array.</param>
     /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='src'/> is null.</exception>
-    /// <returns>A 32-bit signed integer.</returns>
+    /// "src" is null.</exception>
     /// <param name='src'>A byte array.</param>
+    /// <returns>A 32-bit signed integer.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='src'/> is null.</exception>
     /// <param name='offset'>A 32-bit signed integer. (2).</param>
     /// <param name='length'>A 32-bit signed integer. (3).</param>
- /// <summary>Not documented yet.</summary>
     public int ReadBytes(byte[] src, int offset, int length) {
       if (src == null) {
         throw new ArgumentNullException("src");
@@ -99,10 +99,6 @@ namespace PeterO.Text {
     /// <param name='src'>A byte array.</param>
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='src'/> is null.</exception>
-    /// <param name='src'>A byte array.</param>
-    /// <param name='offset'>A 32-bit signed integer.</param>
-    /// <param name='length'>A 32-bit signed integer. (2).</param>
- /// <summary>Not documented yet.</summary>
     public void WriteBytes(byte[] src, int offset, int length) {
       if (src == null) {
         throw new ArgumentNullException("src");

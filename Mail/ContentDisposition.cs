@@ -310,7 +310,7 @@ namespace PeterO.Mail {
           return true;
         }
         if (i3 < endIndex && str[i3] != ';') {
-          // not followed by ";", so not a media type
+          // not followed by ";", so not a content disposition
           return false;
         }
       }
@@ -346,9 +346,10 @@ namespace PeterO.Mail {
     private ContentDisposition() {
     }
 
-    /// <summary>Parses a media type string and returns a media type object.</summary>
-    /// <returns>A media type object, or "Attachment" if <paramref name='dispoValue'/>
-    /// is empty or syntactically invalid.</returns>
+    /// <summary>Parses a content disposition string and returns a content
+    /// disposition object.</summary>
+    /// <returns>A content disposition object, or "Attachment" if <paramref
+    /// name='dispoValue'/> is empty or syntactically invalid.</returns>
     /// <param name='dispoValue'>A string object.</param>
     public static ContentDisposition Parse(string dispoValue) {
       return Parse(dispoValue, Attachment);

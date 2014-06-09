@@ -676,83 +676,97 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
 
     @Test
     public void TestHeaderManip() {
-      Assert.assertEquals("comment", MessageFromString("From: Me <me@example.com>").AddHeader("x-comment", "comment").GetHeader("x-comment"));
-      Assert.assertEquals("comment", MessageFromString("From: Me <me@example.com>").AddHeader(new AbstractMap.SimpleImmutableEntry<String, String>("x-comment", "comment")).GetHeader("x-comment"));
-      Assert.assertEquals("from", MessageFromString("From: Me <me@example.com>").SetHeader(0, "comment").GetHeader(0).getKey());
-      Assert.assertEquals("comment", MessageFromString("From: Me <me@example.com>").SetHeader(0, "comment").GetHeader(0).getValue());
-      Assert.assertEquals("x-comment", MessageFromString("From: Me <me@example.com>").SetHeader(0, "x-comment", "comment").GetHeader(0).getKey());
-      Assert.assertEquals("comment", MessageFromString("From: Me <me@example.com>").SetHeader(0, "x-comment", "comment").GetHeader(0).getValue());
-      Message msg=MessageFromString("From: Me <me@example.com>");
+      Assert.assertEquals("comment", MessageFromString("From: Me <me@example.com>\r\n\r\n").AddHeader("x-comment", "comment").GetHeader("x-comment"));
+      Assert.assertEquals("comment", MessageFromString("From: Me <me@example.com>\r\n\r\n").AddHeader(new AbstractMap.SimpleImmutableEntry<String, String>("x-comment", "comment")).GetHeader("x-comment"));
+      Assert.assertEquals("from", MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0, "you@example.com").GetHeader(0).getKey());
+      Assert.assertEquals("you@example.com", MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0, "you@example.com").GetHeader(0).getValue());
+      Assert.assertEquals("x-comment", MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0, "x-comment", "comment").GetHeader(0).getKey());
+      Assert.assertEquals("comment", MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0, "x-comment", "comment").GetHeader(0).getValue());
+      Message msg = MessageFromString("From: Me <me@example.com>\r\n\r\n");
       try {
- msg.SetHeader(0, (String)null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        msg.SetHeader(0, (String)null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- msg.SetHeader(0, null, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        msg.SetHeader(0, null, null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- msg.AddHeader(null, null);
-Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        msg.AddHeader(null, null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- msg.SetHeader(-1, "me@example.com");
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        msg.SetHeader(-1, "me@example.com");
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- msg.SetHeader(-1, "To", "me@example.com");
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        msg.SetHeader(-1, "To", "me@example.com");
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- msg.GetHeader(-1);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        msg.GetHeader(-1);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
       try {
- msg.RemoveHeader(-1);
-Assert.fail("Should have failed");
-} catch (IllegalArgumentException ex) {
-} catch (Exception ex) {
- Assert.fail(ex.toString());
-throw new IllegalStateException("", ex);
-}
+        msg.RemoveHeader(-1);
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
 
     @Test
     public void TestMessageTests() {
       var multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
       String msg;
-      msg = multipart + "Content-Type: 8bit\r\n--b\r\n\r\n\r\n--b--";
+      msg = multipart + "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\nContent-Description: description\r\n\r\n\r\n--b--";
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      msg = "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: 8bit\r\n--b\r\n\r\n\r\n--b--";
+      msg = multipart + "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\n\r\n\r\n\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      msg = multipart + "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\n\r\n\r\n--b--";
+      try {
+        MessageFromString(msg);
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      msg = "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: 8bit\r\n\r\n--b\r\n\r\n\r\n--b--";
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
@@ -789,7 +803,7 @@ throw new IllegalStateException("", ex);
       var multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
       String msg;
       // Multipart message with base64
-      msg = multipart + "Content-Type: base64\r\n--b\r\n\r\n\r\n--b--";
+      msg = multipart + "Content-Transfer-Encoding: base64\r\n\r\n--b\r\n\r\n\r\n--b--";
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
@@ -1241,6 +1255,43 @@ throw new IllegalStateException("", ex);
         throw new IllegalStateException("", ex);
       }
     }
+
+    @Test
+    public void TestMessageMergeFields() {
+      String msg;
+      msg = "From: x1@example.com\r\nFrom: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("from");
+      Assert.assertEquals(msg,"x1@example.com,x2@example.com");
+      msg = "To: x1@example.com\r\nTo: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("to");
+      Assert.assertEquals(msg,"x1@example.com,x2@example.com");
+      msg = "Cc: x1@example.com\r\nCc: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("cc");
+      Assert.assertEquals(msg,"x1@example.com,x2@example.com");
+      msg = "Bcc: x1@example.com\r\nBcc: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("bcc");
+      Assert.assertEquals(msg,"x1@example.com,x2@example.com");
+      msg = "Reply-To: x1@example.com\r\nReply-To: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("reply-to");
+      Assert.assertEquals(msg,"x1@example.com,x2@example.com");
+      msg = "Resent-To: x1@example.com\r\nResent-To: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("resent-to");
+      Assert.assertEquals(msg,"x1@example.com,x2@example.com");
+      msg = "Resent-Cc: x1@example.com\r\nResent-Cc: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("resent-cc");
+      Assert.assertEquals(msg,"x1@example.com,x2@example.com");
+      msg = "Resent-Bcc: x1@example.com\r\nResent-Bcc: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("resent-bcc");
+      Assert.assertEquals(msg,"x1@example.com,x2@example.com");
+      // Invalid header fields
+      msg = "From: x1@example.com\r\nFrom: x2.example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("from");
+      Assert.assertEquals("x1@example.com", msg);
+      msg = "From: x1.example.com\r\nFrom: x2@example.com\r\n\r\n";
+      msg = MessageFromString(MessageFromString(msg).Generate()).GetHeader("from");
+      Assert.assertEquals("x2@example.com", msg);
+    }
+
     @Test
     public void TestMessageArgumentValidation() {
       try {

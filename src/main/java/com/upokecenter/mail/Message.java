@@ -13,7 +13,53 @@ import java.io.*;
 import com.upokecenter.util.*;
 
     /**
-     * Not documented yet.
+     * <p>Represents an email message, and contains methods and properties
+     * for accessing and modifying email message data. This class implements
+     * the Internet Message Format (RFC 5322) and Multipurpose Internet
+     * Mail Extensions (MIME; RFC 2045-2047, RFC 2049). </p> <p><b>Thread
+     * safety:</b> This class is mutable; its properties can be changed.
+     * None of its instance methods are designed to be thread safe. Therefore,
+     * access to objects from this class must be synchronized if multiple
+     * threads can access them at the same time.</p> <p>The following lists
+     * known deviations from the mail specifications (Internet Message
+     * Format and MIME):</p> <ul> <li>The content-transfer-encoding
+     * "quoted-printable" is treated as 7bit instead if it occurs in a message
+     * or body part with content type "multipart/*" or "message/*" (other
+     * than "message/global", "message/global-headers", "message/global-disposition-notification",
+     * or "message/global-delivery-status").</li> <li>If a message
+     * has two or more Content-Type header fields, it is treated as having
+     * a content type of "application/octet-stream", unless one or more
+     * of the header fields is syntactically invalid.</li> <li>Non-UTF-8
+     * bytes appearing in header field values are replaced with replacement
+     * characters. Moreover, UTF-8 is parsed everywhere in header field
+     * values, even in those parts of some structured header fields where
+     * this appears not to be allowed.</li> <li>The To and Cc header fields
+     * are allowed to contain only comments and whitespace, but these "empty"
+     * header fields will be omitted when generating.</li> <li>There is
+     * no line length limit imposed when parsing quoted-printable or base64
+     * encoded bodies.</li> <li>In the following cases, if the transfer
+     * encoding is absent or ((declared instanceof 7bit) ? (7bit)declared
+     * : null), 8-bit bytes are still allowed:</li> <li>(a) The preamble
+     * and epilogue of multipart messages, which will be ignored.</li>
+     * <li>(b) If the charset is declared to be <code>utf-8</code> .</li> <li>(c)
+     * If the content type is "text/html" and the charset is declared to be
+     * <code>ascii</code> , <code>us-ascii</code> , "windows-1252", "windows-1251",
+     * or "iso-8859-*" (all single byte encodings).</li> <li>(d) In non-MIME
+     * message bodies and in text/plain message bodies. Any 8-bit bytes
+     * are replaced with the ASCII substitute character (0x1a).</li> <li>If
+     * the first line of the message starts with the word "From" followed
+     * by a space, it is skipped.</li> <li>The name <code>ascii</code> is treated
+     * as a synonym for <code>us-ascii</code> , despite being a reserved name under
+     * RFC 2046. The name <code>cp1252</code> is treated as a synonym for <code>windows-1252</code>
+     * , even though it's not an IANA registered alias.</li> <li>The following
+     * deviations involve encoded words under RFC 2047:</li> <li>(a) If
+     * a sequence of encoded words decodes to a string with a CTL character
+     * (U + 007F, or a character less than U + 0020 and not TAB) after being converted
+     * to Unicode, the encoded words are left un-decoded.</li> <li>(b)
+     * This implementation can decode an encoded word that uses ISO-2022-JP
+     * (the only supported encoding that uses code switching) even if the
+     * encoded word's payload ends in a different mode from ASCII mode. (Each
+     * encoded word still starts in ASCII mode, though.)</li> </ul>
      */
   public final class Message {
     private static final int EncodingSevenBit = 0;
@@ -746,6 +792,7 @@ public void setContentDisposition(ContentDisposition value) {
           sb.append(delim);
         }
         sb.append(s);
+        first = false;
       }
       return sb.toString();
     }
@@ -755,7 +802,7 @@ public void setContentDisposition(ContentDisposition value) {
       name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.size(); i += 2) {
         if (this.headers.get(i).equals(name)) {
-          headers.add(this.headers.get(i));
+          headers.add(this.headers.get(i + 1));
         }
       }
       return headers.toArray(new String[]{});
@@ -1263,20 +1310,30 @@ public void setContentDisposition(ContentDisposition value) {
       return value;
     }
 
+    private static Map<String, int> HeaderIndices = new HashMap<String, int>() {
+      { "to", 0 },
+      { "cc", 1 },
+      { "bcc", 2 },
+      { "from", 3 },
+      { "reply-to", 4 },
+      { "resent-to", 5 },
+      { "resent-cc", 6 },
+      { "resent-bcc", 7 },
+      { "resent-from", 8 },
+      { "sender", 9 },
+      { "resent-sender", 10 }
+    };
+
     private String Generate(int depth) {
       StringBuilder sb = new StringBuilder();
       boolean haveMimeVersion = false;
       boolean haveContentEncoding = false;
       boolean haveContentType = false;
       boolean haveContentDisp = false;
-      boolean haveFrom = false;
       boolean outputtedFrom = false;
       boolean haveMsgId = false;
-      boolean haveTo = false;
+      boolean[] haveHeaders = new boolean[11];
       byte[] bodyToWrite = this.body;
-      boolean haveCc = false;
-      boolean haveReplyTo = false;
-      boolean haveBcc = false;
       MediaTypeBuilder builder = new MediaTypeBuilder(this.getContentType());
       String contentDisp = (this.getContentDisposition() == null) ? null :
         this.getContentDisposition().toString();
@@ -1360,80 +1417,32 @@ public void setContentDisposition(ContentDisposition value) {
         }
         if (name.equals("mime-version")) {
           haveMimeVersion = true;
-        } else if (name.equals("from")) {
-          if (haveFrom) {
-            // Already outputted, continue
-            continue;
-          }
-          haveFrom = true;
-          if (!this.IsValidAddressingField(name)) {
-            value = GenerateAddressList(this.getFromAddresses());
-            if (value.length() == 0) {
-              // No addresses, synthesize a From field
-              value = this.SynthesizeField(name);
-            }
-          }
-          outputtedFrom = true;
-        } else if (name.equals("to")) {
-          if (haveTo) {
-            // Already outputted, continue
-            continue;
-          }
-          haveTo = true;
-          if (!this.IsValidAddressingField(name)) {
-            value = GenerateAddressList(this.getToAddresses());
-            if (value.length() == 0) {
-              // No addresses, synthesize a field
-              value = this.SynthesizeField(name);
-            }
-          }
-        } else if (name.equals("cc")) {
-          if (haveCc) {
-            // Already outputted, continue
-            continue;
-          }
-          haveCc = true;
-          if (!this.IsValidAddressingField(name)) {
-            value = GenerateAddressList(this.getCCAddresses());
-            if (value.length() == 0) {
-              // No addresses, synthesize a field
-              value = this.SynthesizeField(name);
-            }
-          }
         } else if (name.equals("message-id")) {
           if (haveMsgId) {
             // Already outputted, continue
             continue;
           }
           haveMsgId = true;
-        } else if (name.equals("bcc")) {
-          if (haveBcc) {
-            // Already outputted, continue
-            continue;
-          }
-          haveBcc = true;
-          if (!this.IsValidAddressingField(name)) {
-            value = GenerateAddressList(this.getBccAddresses());
-            if (value.length() == 0) {
-              // No addresses, synthesize a field
-              value = this.SynthesizeField(name);
-            }
-          }
-        } else if (name.equals("reply-to")) {
-          if (haveReplyTo) {
-            // Already outputted, continue
-            continue;
-          }
-          haveBcc = true;
-          if (!this.IsValidAddressingField(name)) {
-            value = GenerateAddressList(ParseAddresses(this.GetMultipleHeaders(name)));
-            if (value.length() == 0) {
-              // No addresses, synthesize a field
-              value = this.SynthesizeField(name);
+        } else {
+          if (HeaderIndices.containsKey(name)) {
+            int headerIndex = HeaderIndices.get(name);
+            if (headerIndex < 8) {
+              // TODO: Handle Sender, Resent-From, Resent-Sender
+              if (haveHeaders[headerIndex]) {
+                // Already outputted, continue
+                continue;
+              }
+              haveHeaders[headerIndex] = true;
+              if (!this.IsValidAddressingField(name)) {
+                value = GenerateAddressList(ParseAddresses(this.GetMultipleHeaders(name)));
+                if (value.length() == 0) {
+                  // No addresses, synthesize a field
+                  value = this.SynthesizeField(name);
+                }
+              }
             }
           }
         }
-        // TODO: Sender, Resent-From/-To/-Bcc/-Cc/-Sender
         String rawField = Capitalize(name) + ":" +
           (StartsWithWhitespace(value) ? "" : " ") + value;
         if (CanOutputRaw(rawField)) {

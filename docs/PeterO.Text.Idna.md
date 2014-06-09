@@ -2,7 +2,7 @@
 
     public static class Idna
 
-Contains methods that implement Internationalized Domain Names in Applications (IDNA).
+Contains methods that implement Internationalized Domain Names in Applications (IDNA). IDNA enables using a wider range of letters, numbers, and certain other characters in domain names.
 
 NOTICE: While this class's source code is in the public domain, the class uses two internal classes, called  `NormalizationData` and  `IdnaData` , that include data derived from the Unicode Character Database. See the documentation for the Normalizer class for the permission notice for the Unicode Character Database.
 

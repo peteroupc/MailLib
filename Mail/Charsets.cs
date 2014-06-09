@@ -982,7 +982,7 @@ namespace PeterO.Mail {
               // unpaired low surrogate
               builder.Append((char)0xfffd);
             } else if ((codeunit & 0xfc00) == 0xd800) {
-              // valid low surrogate
+              // valid high surrogate
               this.surrogate = codeunit;
             } else {
               // not a surrogate

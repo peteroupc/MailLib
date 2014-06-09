@@ -58,7 +58,7 @@ public void setPosition(int value) {
       }
 
     /**
-     * Not documented yet.
+     *
      * @return A byte array.
      */
     public byte[] ToArray() {
@@ -68,12 +68,13 @@ public void setPosition(int value) {
     }
 
     /**
-     * Not documented yet.
+     *
      * @param src A byte array.
      * @param src A byte array.
      * @param offset A 32-bit signed integer. (2).
      * @param length A 32-bit signed integer. (3).
      * @return A 32-bit signed integer.
+     * @throws java.lang.NullPointerException The parameter "src" is null.
      * @throws java.lang.NullPointerException The parameter {@code src}
      * is null.
      */
@@ -104,11 +105,8 @@ public void setPosition(int value) {
     }
 
     /**
-     * Not documented yet.
+     *
      * @param src A byte array.
-     * @param src A byte array.
-     * @param offset A 32-bit signed integer.
-     * @param length A 32-bit signed integer. (2).
      * @throws java.lang.NullPointerException The parameter {@code src}
      * is null.
      */

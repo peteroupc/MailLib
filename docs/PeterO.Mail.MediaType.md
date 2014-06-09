@@ -5,7 +5,9 @@
 Specifies what kind of data a message body is.
 
 A media type consists of a top-level type (the general category of the data), a subtype (the specific type), and an optional list of parameters. For example, the media type  `text/plain; charset
-            = utf-8` is a text media type ("text"), namely, a plain text type ("plain"), and the parameters say that that the data uses the character set UTF-8, a form of Unicode ("charset=utf-8"). 
+            = utf-8` is a text media type ("text"), namely, a plain text type ("plain"), and the parameters say that that the data uses the character set UTF-8, a form of Unicode ("charset=utf-8"). Other top-level types include "audio", "video", and "application".
+
+This type is immutable, meaning its values can't be changed once it's created. To create a changeable media type object, use the MediaTypeBuilder class.
 
 ### Equals
 
@@ -77,25 +79,25 @@ The parameter <i>name</i>
 
     public static readonly PeterO.Mail.MediaType TextPlainAscii;
 
-Specifies the media type "text/plain" and the charset "US-ASCII".
+Specifies the media type "text/plain" and the charset "US-ASCII", used for plain text data.
 
 ### TextPlainUtf8
 
     public static readonly PeterO.Mail.MediaType TextPlainUtf8;
 
-Specifies the media type "text/plain" and the charset "utf-8".
+Specifies the media type "text/plain" and the charset "utf-8", used for Unicode plain text data.
 
 ### MessageRfc822
 
     public static readonly PeterO.Mail.MediaType MessageRfc822;
 
-Specifies the media type "message/rfc822".
+Specifies the media type "message/rfc822", used for Internet mail messages.
 
 ### ApplicationOctetStream
 
     public static readonly PeterO.Mail.MediaType ApplicationOctetStream;
 
-Specifies the media type "application/octet-stream".
+Specifies the media type "application/octet-stream", used for arbitrary binary data.
 
 ### Parse
 
@@ -185,7 +187,7 @@ Gets a sorted list of the parameters contained in this media type object.
 
 <b>Returns:</b>
 
-A sorted list of the parameters contained in this media type object.
+A list of the parameters contained in this media type object, sorted by name.
 
 ### TypeAndSubType
 
