@@ -982,7 +982,7 @@ private Charsets() {
               // unpaired low surrogate
               builder.append((char)0xfffd);
             } else if ((codeunit & 0xfc00) == 0xd800) {
-              // valid low surrogate
+              // valid high surrogate
               this.surrogate = codeunit;
             } else {
               // not a surrogate

@@ -97,7 +97,7 @@ The content disposition value "inline".
     public static PeterO.Mail.ContentDisposition Parse(
         string dispoValue);
 
-Parses a media type string and returns a media type object.
+Parses a content disposition string and returns a content disposition object.
 
 <b>Parameters:</b>
 
@@ -105,8 +105,8 @@ Parses a media type string and returns a media type object.
 
 <b>Returns:</b>
 
-A media type object, or "Attachment" if  <i>dispoValue</i>
-is empty or syntactically invalid.
+A content disposition object, or "Attachment" if  <i>dispoValue</i>
+ is empty or syntactically invalid.
 
 ### Parse
 

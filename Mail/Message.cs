@@ -13,7 +13,66 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-  /// <summary>Not documented yet.</summary>
+    /// <summary><para>Represents an email message, and contains methods
+    /// and properties for accessing and modifying email message data. This
+    /// class implements the Internet Message Format (RFC 5322) and Multipurpose
+    /// Internet Mail Extensions (MIME; RFC 2045-2047, RFC 2049). </para>
+    /// <para><b>Thread safety:</b>
+    /// This class is mutable; its properties can be changed. None of its instance
+    /// methods are designed to be thread safe. Therefore, access to objects
+    /// from this class must be synchronized if multiple threads can access
+    /// them at the same time.</para>
+    /// <para>The following lists known deviations from the mail specifications
+    /// (Internet Message Format and MIME):</para>
+    /// <list type=''> <item>The content-transfer-encoding "quoted-printable"
+    /// is treated as 7bit instead if it occurs in a message or body part with
+    /// content type "multipart/*" or "message/*" (other than "message/global",
+    /// "message/global-headers", "message/global-disposition-notification",
+    /// or "message/global-delivery-status").</item>
+    /// <item>If a message has two or more Content-Type header fields, it
+    /// is treated as having a content type of "application/octet-stream",
+    /// unless one or more of the header fields is syntactically invalid.</item>
+    /// <item>Non-UTF-8 bytes appearing in header field values are replaced
+    /// with replacement characters. Moreover, UTF-8 is parsed everywhere
+    /// in header field values, even in those parts of some structured header
+    /// fields where this appears not to be allowed.</item>
+    /// <item>The To and Cc header fields are allowed to contain only comments
+    /// and whitespace, but these "empty" header fields will be omitted when
+    /// generating.</item>
+    /// <item>There is no line length limit imposed when parsing quoted-printable
+    /// or base64 encoded bodies.</item>
+    /// <item>In the following cases, if the transfer encoding is absent
+    /// or declared as 7bit, 8-bit bytes are still allowed:</item>
+    /// <item>(a) The preamble and epilogue of multipart messages, which
+    /// will be ignored.</item>
+    /// <item>(b) If the charset is declared to be <c>utf-8</c>
+    /// .</item>
+    /// <item>(c) If the content type is "text/html" and the charset is declared
+    /// to be <c>ascii</c>
+    /// , <c>us-ascii</c>
+    /// , "windows-1252", "windows-1251", or "iso-8859-*" (all single
+    /// byte encodings).</item>
+    /// <item>(d) In non-MIME message bodies and in text/plain message bodies.
+    /// Any 8-bit bytes are replaced with the ASCII substitute character
+    /// (0x1a).</item>
+    /// <item>If the first line of the message starts with the word "From"
+    /// followed by a space, it is skipped.</item>
+    /// <item>The name <c>ascii</c>
+    /// is treated as a synonym for <c>us-ascii</c>
+    /// , despite being a reserved name under RFC 2046. The name <c>cp1252</c>
+    /// is treated as a synonym for <c>windows-1252</c>
+    /// , even though it's not an IANA registered alias.</item>
+    /// <item>The following deviations involve encoded words under RFC
+    /// 2047:</item>
+    /// <item>(a) If a sequence of encoded words decodes to a string with a
+    /// CTL character (U + 007F, or a character less than U + 0020 and not TAB)
+    /// after being converted to Unicode, the encoded words are left un-decoded.</item>
+    /// <item>(b) This implementation can decode an encoded word that uses
+    /// ISO-2022-JP (the only supported encoding that uses code switching)
+    /// even if the encoded word's payload ends in a different mode from ASCII
+    /// mode. (Each encoded word still starts in ASCII mode, though.)</item>
+    /// </list>
+    /// </summary>
   public sealed class Message {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
@@ -1935,8 +1994,8 @@ namespace PeterO.Mail {
     private class MessageStackEntry {
       private Message message;
 
-      /// <summary>Gets an internal value.</summary>
-      /// <value>An internal value.</value>
+    /// <summary>Gets an internal value.</summary>
+    /// <value>An internal value.</value>
       public Message Message {
         get {
           return this.message;
@@ -1945,8 +2004,8 @@ namespace PeterO.Mail {
 
       private string boundary;
 
-      /// <summary>Gets an internal value.</summary>
-      /// <value>An internal value.</value>
+    /// <summary>Gets an internal value.</summary>
+    /// <value>An internal value.</value>
       public string Boundary {
         get {
           return this.boundary;

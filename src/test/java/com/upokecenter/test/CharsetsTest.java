@@ -190,6 +190,10 @@ import com.upokecenter.text.*;
       TestUtf7One("+2ADYANwA?", "\ufffd\ud800\udc00?");
       TestUtf7One("+2ADYANwA", "\ufffd\ud800\udc00");
       TestUtf7One("+2ADYANwA\u007f", "\ufffd\ud800\udc00\ufffd");
+      // High surrogate followed by non-surrogate
+      TestUtf7One("+2AAAwA?", "\ufffd\u00c0?");
+      TestUtf7One("+2AAAwA", "\ufffd\u00c0");
+      TestUtf7One("+2AAAwA\u007f", "\ufffd\u00c0\ufffd");
       // Two UTF-16 code units
       TestUtf7One("+AMAA4A?", "\u00c0\u00e0?");
       TestUtf7One("+AMAA4A", "\u00c0\u00e0");

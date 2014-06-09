@@ -2,35 +2,127 @@
 
     public sealed class Message
 
-Represents an email message, and contains methods and properties for accessing and modifying email message data. This class implements the Internet Message Format (RFC 5322) and Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC 2049). 
+Not documented yet.
 
-Thread safety:This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
+### GetHeader
 
-The following lists known deviations from the mail specifications (Internet Message Format and MIME):
+    public System.Collections.Generic.KeyValuePair GetHeader(
+        int index);
 
- * The content-transfer-encoding "quoted-printable" is treated as 7bit instead if it occurs in a message or body part with content type "multipart/*" or "message/*" (other than "message/global", "message/global-headers", "message/global-disposition-notification", or "message/global-delivery-status").
+Not documented yet.
 
- * If a message has two or more Content-Type header fields, it is treated as having a content type of "application/octet-stream", unless one or more of the header fields is syntactically invalid.
+<b>Parameters:</b>
 
- * Non-UTF-8 bytes appearing in header field values are replaced with replacement characters. Moreover, UTF-8 is parsed everywhere in header field values, even in those parts of some structured header fields where this appears not to be allowed.
+ * <i>index</i>: A 32-bit signed integer.
 
- * The To and Cc header fields are allowed to contain only comments and whitespace, but these "empty" header fields will be omitted when generating.
+<b>Returns:</b>
 
- * There is no line length limit imposed when parsing quoted-printable or base64 encoded bodies.
+A KeyValuePair(string, string) object.
 
- * In non-MIME message bodies, in text/plain message bodies, and in the prologue and epilogue of multipart messages (which will be ignored), if the transfer encoding is absent or declared as 7bit, any 8-bit bytes are replaced with the ASCII substitute character (0x1a).
+### RemoveHeader
 
- * If the transfer encoding is absent or declared as 7bit, and the charset is declared to be  `utf-8` , the transfer encoding is treated as 8bit instead.
+    public PeterO.Mail.Message RemoveHeader(
+        int index);
 
- * In text/html message bodies, if the transfer encoding is absent or declared as 7bit, and the charset is declared to be  `ascii` ,  `us-ascii` , "windows-1252", "windows-1251", or "iso-8859-*" (all single byte encodings), the transfer encoding is treated as 8bit instead.
+Not documented yet.
 
- * If the first line of the message starts with the word "From" followed by a space, it is skipped.
+<b>Parameters:</b>
 
- * The name  `ascii` is treated as a synonym for  `us-ascii` , despite being a reserved name under RFC 2046. The name  `cp1252` is treated as a synonym for  `windows-1252` , even though it's not an IANA registered alias.
+ * <i>index</i>: A 32-bit signed integer.
 
- * If a sequence of encoded words (RFC 2047) decodes to a string with a CTL character (U + 007F, or a character less than U + 0020 and not TAB) after being converted to Unicode, the encoded words are left un-decoded.
+<b>Returns:</b>
 
- * This implementation can decode an encoded word that uses ISO-2022-JP (the only supported encoding that uses code switching) even if the encoded word's payload ends in a different mode from ASCII mode. (Each encoded word still starts in ASCII mode, though.)
+A Message object.
+
+### AddHeader
+
+    public PeterO.Mail.Message AddHeader(
+        System.Collections.Generic.KeyValuePair header);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>header</i>: A KeyValuePair object.
+
+<b>Returns:</b>
+
+A Message object.
+
+### AddHeader
+
+    public PeterO.Mail.Message AddHeader(
+        string name,
+        string value);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>name</i>: A string object.
+
+ * <i>value</i>: A string object. (2).
+
+<b>Returns:</b>
+
+A Message object.
+
+### SetHeader
+
+    public PeterO.Mail.Message SetHeader(
+        int index,
+        System.Collections.Generic.KeyValuePair header);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>index</i>: A 32-bit signed integer.
+
+ * <i>header</i>: A KeyValuePair object.
+
+<b>Returns:</b>
+
+A Message object.
+
+### SetHeader
+
+    public PeterO.Mail.Message SetHeader(
+        int index,
+        string name,
+        string value);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>index</i>: A 32-bit signed integer.
+
+ * <i>name</i>: A string object.
+
+ * <i>value</i>: A string object. (2).
+
+<b>Returns:</b>
+
+A Message object.
+
+### SetHeader
+
+    public PeterO.Mail.Message SetHeader(
+        int index,
+        string value);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>index</i>: A 32-bit signed integer.
+
+ * <i>value</i>: A string object.
+
+<b>Returns:</b>
+
+A Message object.
 
 ### GetBody
 
@@ -248,23 +340,11 @@ Gets a list of all the parts of this message. This list is editable. This will o
 
 A list of all the parts of this message. This list is editable. This will only be used if the message is a multipart message.
 
-### Headers
-
-    public System.Collections.Generic.IList Headers { get; }
-
-<b>Deprecated.</b> Use HeaderFields instead.
-
-Gets a snapshot of the header fields of this message. The list contains an alternating set of header field names and values, in the order they were declared in the message.
-
-<b>Returns:</b>
-
-A snapshot of the header fields of this message. The list contains an alternating set of header field names and values, in the order they were declared in the message.
-
 ### HeaderFields
 
     public System.Collections.Generic.IList HeaderFields { get; }
 
-Gets a snapshot of the header fields of this message. For each item in the list, the key is the header field's name and the value is its value.
+Gets a snapshot of the header fields of this message, in the order they were added. For each item in the list, the key is the header field's name and the value is its value.
 
 <b>Returns:</b>
 
