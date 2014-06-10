@@ -1286,7 +1286,7 @@ namespace PeterO.Mail {
       return value;
     }
 
-    private static IDictionary<string, int> HeaderIndices = new Dictionary<string, int>() {
+    private static IDictionary<string, int> valueHeaderIndices = new Dictionary<string, int>() {
       { "to", 0 },
       { "cc", 1 },
       { "bcc", 2 },
@@ -1400,8 +1400,8 @@ namespace PeterO.Mail {
           }
           haveMsgId = true;
         } else {
-          if (HeaderIndices.ContainsKey(name)) {
-            int headerIndex = HeaderIndices[name];
+          if (valueHeaderIndices.ContainsKey(name)) {
+            int headerIndex = valueHeaderIndices[name];
             if (headerIndex < 8) {
               // TODO: Handle Sender, Resent-From, Resent-Sender
               if (haveHeaders[headerIndex]) {

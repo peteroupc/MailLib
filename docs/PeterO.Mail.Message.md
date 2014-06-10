@@ -2,7 +2,41 @@
 
     public sealed class Message
 
-Not documented yet.
+Represents an email message, and contains methods and properties for accessing and modifying email message data. This class implements the Internet Message Format (RFC 5322) and Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC 2049). 
+
+Thread safety:This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
+
+The following lists known deviations from the mail specifications (Internet Message Format and MIME):
+
+ * The content-transfer-encoding "quoted-printable" is treated as 7bit instead if it occurs in a message or body part with content type "multipart/*" or "message/*" (other than "message/global", "message/global-headers", "message/global-disposition-notification", or "message/global-delivery-status").
+
+ * If a message has two or more Content-Type header fields, it is treated as having a content type of "application/octet-stream", unless one or more of the header fields is syntactically invalid.
+
+ * Non-UTF-8 bytes appearing in header field values are replaced with replacement characters. Moreover, UTF-8 is parsed everywhere in header field values, even in those parts of some structured header fields where this appears not to be allowed.
+
+ * The To and Cc header fields are allowed to contain only comments and whitespace, but these "empty" header fields will be omitted when generating.
+
+ * There is no line length limit imposed when parsing quoted-printable or base64 encoded bodies.
+
+ * In the following cases, if the transfer encoding is absent or declared as 7bit, 8-bit bytes are still allowed:
+
+ * (a) The preamble and epilogue of multipart messages, which will be ignored.
+
+ * (b) If the charset is declared to be  `utf-8` .
+
+ * (c) If the content type is "text/html" and the charset is declared to be  `ascii` ,  `us-ascii` , "windows-1252", "windows-1251", or "iso-8859-*" (all single byte encodings).
+
+ * (d) In non-MIME message bodies and in text/plain message bodies. Any 8-bit bytes are replaced with the ASCII substitute character (0x1a).
+
+ * If the first line of the message starts with the word "From" followed by a space, it is skipped.
+
+ * The name  `ascii` is treated as a synonym for  `us-ascii` , despite being a reserved name under RFC 2046. The name  `cp1252` is treated as a synonym for  `windows-1252` , even though it's not an IANA registered alias.
+
+ * The following deviations involve encoded words under RFC 2047:
+
+ * (a) If a sequence of encoded words decodes to a string with a CTL character (U + 007F, or a character less than U + 0020 and not TAB) after being converted to Unicode, the encoded words are left un-decoded.
+
+ * (b) This implementation can decode an encoded word that uses ISO-2022-JP (the only supported encoding that uses code switching) even if the encoded word's payload ends in a different mode from ASCII mode. (Each encoded word still starts in ASCII mode, though.)
 
 ### GetHeader
 

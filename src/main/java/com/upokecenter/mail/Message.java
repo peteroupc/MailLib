@@ -1310,7 +1310,7 @@ public void setContentDisposition(ContentDisposition value) {
       return value;
     }
 
-    private static Map<String, int> HeaderIndices = new HashMap<String, int>() {
+    private static Map<String, int> valueHeaderIndices = new HashMap<String, int>() {
       { "to", 0 },
       { "cc", 1 },
       { "bcc", 2 },
@@ -1424,8 +1424,8 @@ public void setContentDisposition(ContentDisposition value) {
           }
           haveMsgId = true;
         } else {
-          if (HeaderIndices.containsKey(name)) {
-            int headerIndex = HeaderIndices.get(name);
+          if (valueHeaderIndices.containsKey(name)) {
+            int headerIndex = valueHeaderIndices.get(name);
             if (headerIndex < 8) {
               // TODO: Handle Sender, Resent-From, Resent-Sender
               if (haveHeaders[headerIndex]) {

@@ -5,7 +5,8 @@
  * [PeterO.Mail.MediaType](PeterO.Mail.MediaType.md) - 
 Specifies what kind of data a message body is.
  * [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) - A mutable media type object.
- * [PeterO.Mail.Message](PeterO.Mail.Message.md) - Not documented yet.
+ * [PeterO.Mail.Message](PeterO.Mail.Message.md) - 
+Represents an email message, and contains methods             and properties for accessing and modifying email message data.
  * [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) - Exception thrown when a message has invalid syntax.
  * [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) - Represents an email address and a name for that address.
  * [PeterO.Text.ICharacterInput](PeterO.Text.ICharacterInput.md) - An interface for reading Unicode characters from a data             source.
