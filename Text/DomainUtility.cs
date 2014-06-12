@@ -35,10 +35,10 @@ namespace PeterO.Text {
       return c;
     }
 
-    /// <summary>Gets the PunyCode length of a string (PunyCode is defined
+    /// <summary>Gets the Punycode length of a string (Punycode is defined
     /// in RFC 3492).</summary>
-    /// <returns>The PunyCode length of the encoded string. If the string
-    /// contains non-ASCII characters, returns the PunyCode length plus
+    /// <returns>The Punycode length of the encoded string. If the string
+    /// contains non-ASCII characters, returns the Punycode length plus
     /// 4 (the length of the ACE prefix). If there are only ASCII characters,
     /// returns the length of the string. Returns -1 if an overflow error occurs.</returns>
     /// <exception cref='System.ArgumentNullException'>The parameter
@@ -191,7 +191,7 @@ namespace PeterO.Text {
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1 };
 
-    /// <summary>Decodes a PunyCode-encoded string.</summary>
+    /// <summary>Decodes a Punycode-encoded string.</summary>
     /// <param name='str'>A string to decode. Note that this doesn&apos;t
     /// include a prefix such as.<c>xn--</c>
     /// .</param>

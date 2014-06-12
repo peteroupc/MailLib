@@ -245,7 +245,7 @@ import com.upokecenter.text.*;
           }
           outputStream.write((byte)c);
         }
-      } catch(IOException ex) {
+      } catch (IOException ex) {
         Assert.fail(ex.getMessage());
       }
     }
