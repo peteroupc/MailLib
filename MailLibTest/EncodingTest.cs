@@ -246,7 +246,7 @@ namespace MailLibTest {
           }
           outputStream.WriteByte((byte)c);
         }
-      } catch(IOException ex) {
+      } catch (IOException ex) {
         Assert.Fail(ex.Message);
       }
     }

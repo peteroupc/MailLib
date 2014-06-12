@@ -196,10 +196,10 @@ namespace PeterO.Text {
       return false;
     }
 
-    /// <summary>Tries to encode each label of a domain name into PunyCode.</summary>
+    /// <summary>Tries to encode each label of a domain name into Punycode.</summary>
     /// <param name='value'>A domain name.</param>
     /// <returns>The domain name where each label with non-ASCII characters
-    /// is encoded into PunyCode. Labels where this is not possible remain
+    /// is encoded into Punycode. Labels where this is not possible remain
     /// unchanged.</returns>
     /// <exception cref='System.ArgumentNullException'>Value is null.</exception>
     public static string EncodeDomainName(string value) {

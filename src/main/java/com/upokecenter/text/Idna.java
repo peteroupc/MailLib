@@ -196,10 +196,10 @@ private Idna() {
     }
 
     /**
-     * Tries to encode each label of a domain name into PunyCode.
+     * Tries to encode each label of a domain name into Punycode.
      * @param value A domain name.
      * @return The domain name where each label with non-ASCII characters
-     * is encoded into PunyCode. Labels where this is not possible remain
+     * is encoded into Punycode. Labels where this is not possible remain
      * unchanged.
      * @throws java.lang.NullPointerException Value is null.
      */

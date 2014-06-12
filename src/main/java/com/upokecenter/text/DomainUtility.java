@@ -37,12 +37,12 @@ private DomainUtility() {
     }
 
     /**
-     * Gets the PunyCode length of a string (PunyCode is defined in RFC 3492).
+     * Gets the Punycode length of a string (Punycode is defined in RFC 3492).
      * @param str A string object.
      * @param index A 32-bit signed integer.
      * @param endIndex A 32-bit signed integer. (2).
-     * @return The PunyCode length of the encoded string. If the string contains
-     * non-ASCII characters, returns the PunyCode length plus 4 (the length
+     * @return The Punycode length of the encoded string. If the string contains
+     * non-ASCII characters, returns the Punycode length plus 4 (the length
      * of the ACE prefix). If there are only ASCII characters, returns the
      * length of the string. Returns -1 if an overflow error occurs.
      * @throws java.lang.NullPointerException The parameter {@code str}
@@ -194,7 +194,7 @@ private DomainUtility() {
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1 };
 
     /**
-     * Decodes a PunyCode-encoded string.
+     * Decodes a Punycode-encoded string.
      * @param str A string to decode. Note that this doesn&apos;t include
      * a prefix such as.<code>xn--</code> .
      * @param index A 32-bit signed integer.
