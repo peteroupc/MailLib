@@ -193,7 +193,7 @@ namespace PeterO.Text {
 
     /// <summary>Decodes a Punycode-encoded string.</summary>
     /// <param name='str'>A string to decode. Note that this doesn&apos;t
-    /// include a prefix such as.<c>xn--</c>
+    /// include a prefix such as. <c>xn--</c>
     /// .</param>
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='str'/> is null.</exception>

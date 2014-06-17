@@ -16,13 +16,13 @@ import com.upokecenter.util.*;
      * <p>Represents an email message, and contains methods and properties
      * for accessing and modifying email message data. This class implements
      * the Internet Message Format (RFC 5322) and Multipurpose Internet
-     * Mail Extensions (MIME; RFC 2045-2047, RFC 2049). </p> <p><b>Thread
+     * Mail Extensions (MIME; RFC 2045-2047, RFC 2049).</p> <p><b>Thread
      * safety:</b> This class is mutable; its properties can be changed.
      * None of its instance methods are designed to be thread safe. Therefore,
      * access to objects from this class must be synchronized if multiple
      * threads can access them at the same time.</p> <p>The following lists
      * known deviations from the mail specifications (Internet Message
-     * Format and MIME):</p> <ul> <li>The content-transfer-encoding
+     * Format and MIME):</p> <ul><li>The content-transfer-encoding
      * "quoted-printable" is treated as 7bit instead if it occurs in a message
      * or body part with content type "multipart/*" or "message/*" (other
      * than "message/global", "message/global-headers", "message/global-disposition-notification",
@@ -1269,7 +1269,7 @@ public void setContentDisposition(ContentDisposition value) {
     }
 
     /**
-     * Generates this message's data in text form.<p>The generated message
+     * Generates this message's data in text form. <p>The generated message
      * will always be 7-bit ASCII, and the transfer encoding will always
      * be 7bit, quoted-printable, or base64 (the declared transfer encoding
      * for this message will be ignored).</p> <p>The following applies
@@ -1278,7 +1278,7 @@ public void setContentDisposition(ContentDisposition value) {
      * header field with the display-name set to the contents of all of the
      * header fields with the same name, and the address set to <code>me@[header-name]-address.invalid</code>
      * as the address (a <code>.invalid</code> address is a reserved address that
-     * can never belong to anyone). </p>
+     * can never belong to anyone).</p>
      * @return The generated message.
      * @throws MessageDataException The message can't be generated.
      */

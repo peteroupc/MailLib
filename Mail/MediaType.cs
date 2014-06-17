@@ -18,13 +18,14 @@ namespace PeterO.Mail {
     /// of the data), a subtype (the specific type), and an optional list of
     /// parameters. For example, the media type <c>text/plain; charset
     /// = utf-8</c>
-    /// is a text media type ("text"), namely, a plain text type ("plain"),
-    /// and the parameters say that that the data uses the character set UTF-8,
-    /// a form of Unicode ("charset=utf-8"). Other top-level types include
-    /// "audio", "video", and "application".</para>
-    /// <para>This type is immutable, meaning its values can't be changed
-    /// once it's created. To create a changeable media type object, use the
-    /// MediaTypeBuilder class.</para>
+    /// is a text media type ("text"), namely, a plain text type
+    /// ("plain"), and the parameters say that that the data uses the character
+    /// set UTF-8, a form of Unicode ("charset=utf-8"). Other top-level
+    /// types include "audio", "video", and "application".</para>
+    /// <para>This
+    /// type is immutable, meaning its values can't be changed once it's created.
+    /// To create a changeable media type object, use the MediaTypeBuilder
+    /// class.</para>
     /// </summary>
   public sealed class MediaType {
     private string topLevelType;
@@ -614,10 +615,11 @@ namespace PeterO.Mail {
 
     /// <summary>Returns the charset parameter, converted to ASCII lower-case,
     /// if it exists, or <c>"us-ascii"</c>
-    /// if the media type is ill-formed (RFC2045 sec. 5.2), or if the media
-    /// type is "text/plain" and doesn't have a charset parameter (see RFC2046),
-    /// or the default charset, if any, for the media type if the charset parameter
-    /// is absent. Returns an empty string in all other cases.</summary>
+    /// if the media type is ill-formed
+    /// (RFC2045 sec. 5.2), or if the media type is "text/plain" and doesn't
+    /// have a charset parameter (see RFC2046), or the default charset, if
+    /// any, for the media type if the charset parameter is absent. Returns
+    /// an empty string in all other cases.</summary>
     /// <returns>A string object.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(

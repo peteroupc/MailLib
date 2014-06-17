@@ -17,7 +17,7 @@ at: http://upokecenter.com/d/
      * notice for the Unicode Character Database is given here:</p> <p>COPYRIGHT
      * AND PERMISSION NOTICE</p> <p>Copyright (c) 1991-2014 Unicode,
      * Inc. All rights reserved. Distributed under the Terms of Use in http://www.unicode.org/copyright.html.</p>
-     * <p> Permission is hereby granted, free of charge, to any person obtaining
+     * <p>Permission is hereby granted, free of charge, to any person obtaining
      * a copy of the Unicode data files and any associated documentation
      * (the "Data Files") or Unicode software and any associated documentation
      * (the "Software") to deal in the Data Files or Software without restriction,

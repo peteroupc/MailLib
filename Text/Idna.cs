@@ -15,9 +15,9 @@ namespace PeterO.Text {
     /// <para>NOTICE: While this class's source code is in the public domain,
     /// the class uses two internal classes, called <c>NormalizationData</c>
     /// and <c>IdnaData</c>
-    /// , that include data derived from the Unicode Character Database.
-    /// See the documentation for the Normalizer class for the permission
-    /// notice for the Unicode Character Database.</para>
+    ///  , that include data derived from the Unicode
+    /// Character Database. See the documentation for the Normalizer class
+    /// for the permission notice for the Unicode Character Database.</para>
     /// </summary>
   public static class Idna
   {
