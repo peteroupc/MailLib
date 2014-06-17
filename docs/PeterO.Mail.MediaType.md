@@ -5,7 +5,7 @@
 Specifies what kind of data a message body is.
 
 A media type consists of a top-level type (the general category of the data), a subtype (the specific type), and an optional list of parameters. For example, the media type  `text/plain; charset
-            = utf-8` is a text media type ("text"), namely, a plain text type ("plain"), and the parameters say that that the data uses the character set UTF-8, a form of Unicode ("charset=utf-8"). Other top-level types include "audio", "video", and "application".
+            = utf-8` is a text media type ("text"), namely, a plain text type "plain"), and the parameters say that that the data uses the character et UTF-8, a form of Unicode ("charset=utf-8"). Other top-level ypes include "audio", "video", and "application".
 
 This type is immutable, meaning its values can't be changed once it's created. To create a changeable media type object, use the MediaTypeBuilder class.
 
@@ -48,7 +48,7 @@ A string representation of this object.
 
     public string GetCharset();
 
-Returns the charset parameter, converted to ASCII lower-case, if it exists, or  `"us-ascii"` if the media type is ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain" and doesn't have a charset parameter (see RFC2046), or the default charset, if any, for the media type if the charset parameter is absent. Returns an empty string in all other cases.
+Returns the charset parameter, converted to ASCII lower-case, if it exists, or  `"us-ascii"` if the media type is ill-formed RFC2045 sec. 5.2), or if the media type is "text/plain" and doesn't ave a charset parameter (see RFC2046), or the default charset, if ny, for the media type if the charset parameter is absent. Returns n empty string in all other cases.
 
 <b>Returns:</b>
 

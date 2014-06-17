@@ -48,8 +48,8 @@ namespace PeterO.Mail {
     /// <param name='x'>An integer array.</param>
     /// <param name='y'>An integer array. (2).</param>
     /// <returns>Zero if both values are equal; a negative number if <paramref
-    /// name='x'/> is less than <paramref name='y'/>, or a positive number
-    /// if <paramref name='x'/> is greater than <paramref name='y'/>.</returns>
+    /// name='x'/> is less than <paramref name='y'/> , or a positive number
+    /// if <paramref name='x'/> is greater than <paramref name='y'/> .</returns>
     public int Compare(int[] x, int[] y) {
       // Sort by their start indexes
       if (x[1] == y[1]) {

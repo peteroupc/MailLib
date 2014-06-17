@@ -2,9 +2,9 @@
 
     public sealed class Message
 
-Represents an email message, and contains methods and properties for accessing and modifying email message data. This class implements the Internet Message Format (RFC 5322) and Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC 2049). 
+Represents an email message, and contains methods and properties for accessing and modifying email message data. This class implements the Internet Message Format (RFC 5322) and Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC 2049).
 
-Thread safety:This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
+Thread safety:This class is mutable; its properties an be changed. None of its instance methods are designed to be thread afe. Therefore, access to objects from this class must be synchronized f multiple threads can access them at the same time.
 
 The following lists known deviations from the mail specifications (Internet Message Format and MIME):
 
@@ -24,13 +24,13 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * (b) If the charset is declared to be  `utf-8` .
 
- * (c) If the content type is "text/html" and the charset is declared to be  `ascii` ,  `us-ascii` , "windows-1252", "windows-1251", or "iso-8859-*" (all single byte encodings).
+ * (c) If the content type is "text/html" and the charset is declared to be  `ascii` ,  `us-ascii` , "windows-1252", "windows-1251", or "iso-8859-*" all single byte encodings).
 
  * (d) In non-MIME message bodies and in text/plain message bodies. Any 8-bit bytes are replaced with the ASCII substitute character (0x1a).
 
  * If the first line of the message starts with the word "From" followed by a space, it is skipped.
 
- * The name  `ascii` is treated as a synonym for  `us-ascii` , despite being a reserved name under RFC 2046. The name  `cp1252` is treated as a synonym for  `windows-1252` , even though it's not an IANA registered alias.
+ * The name  `ascii` is treated s a synonym for  `us-ascii` , despite being a reserved name under FC 2046. The name  `cp1252` is treated as a synonym for  `windows-1252` , even though it's not an IANA registered alias.
 
  * The following deviations involve encoded words under RFC 2047:
 
@@ -351,9 +351,9 @@ The parameter <i>name</i>
 
     public string Generate();
 
-Generates this message's data in text form.The generated message will always be 7-bit ASCII, and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
+Generates this message's data in text form. The generated message will always be 7-bit ASCII, and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
 
-The following applies to the From, To, Cc, and Bcc header fields. If the header field has an invalid syntax or has no addresses, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to  `me@[header-name]-address.invalid` as the address (a  `.invalid` address is a reserved address that can never belong to anyone). 
+The following applies to the From, To, Cc, and Bcc header fields. If the header field has an invalid syntax or has no addresses, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to `me@[header-name]-address.invalid` as the address (a  `.invalid` address is a reserved address that can never belong to anyone).
 
 <b>Returns:</b>
 
