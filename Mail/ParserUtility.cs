@@ -27,7 +27,7 @@ namespace PeterO.Mail {
         throw new ArgumentException("strStartPos (" + Convert.ToString((int)strStartPos, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       int endpos = suffix.Length + strStartPos;
-      return (endpos <= str.Length) && str.Substring(strStartPos, (endpos) - strStartPos).Equals(suffix);
+      return (endpos <= str.Length) && str.Substring(strStartPos, endpos - strStartPos).Equals(suffix);
     }
 
     public static bool StartsWith(string str, string prefix) {
@@ -64,12 +64,11 @@ namespace PeterO.Mail {
       if (string.IsNullOrEmpty(s)) {
         return s;
       }
-      const int startIndex = 0;
       int index = s.Length - 1;
       while (index >= 0) {
         char c = s[index];
         if (c != 0x09 && c != 0x20) {
-          return s.Substring(startIndex, index - startIndex + 1);
+          return s.Substring(0, index + 1);
         }
         --index;
       }
@@ -133,7 +132,7 @@ namespace PeterO.Mail {
         throw new ArgumentException("delimiter is empty.");
       }
       if (string.IsNullOrEmpty(s)) {
-        return new [] { String.Empty };
+        return new[] { String.Empty };
       }
       int index = 0;
       bool first = true;
@@ -143,16 +142,15 @@ namespace PeterO.Mail {
         int index2 = s.IndexOf(delimiter, index, StringComparison.Ordinal);
         if (index2 < 0) {
           if (first) {
-            return new [] { s };
+            return new[] { s };
           }
+          strings = strings ?? (new List<string>());
           strings.Add(s.Substring(index));
           break;
         } else {
-          if (first) {
-            strings = new List<string>();
-            first = false;
-          }
+          first = false;
           string newstr = s.Substring(index, (index2)-index);
+          strings = strings ?? (new List<string>());
           strings.Add(newstr);
           index = index2 + delimLength;
         }
@@ -205,7 +203,7 @@ namespace PeterO.Mail {
             return true;
           }
           // More complex cases
-          string[] splitString = SplitAt(str.Substring(startIndex, (endIndex) - startIndex), "-");
+          string[] splitString = SplitAt(str.Substring(startIndex, endIndex - startIndex), "-");
           if (splitString.Length == 0) {
             return false;
           }
@@ -247,9 +245,7 @@ namespace PeterO.Mail {
             string curString = splitString[splitIndex];
             len = lengthIfAllAlphaNum(curString);
             if (len >= 5 && len <= 8) {
-              if (variants == null) {
-                variants = new List<string>();
-              }
+              variants = variants ?? (new List<string>());
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
               } else {
@@ -257,9 +253,7 @@ namespace PeterO.Mail {
               }
               ++splitIndex;
             } else if (len == 4 && (curString[0] >= '0' && curString[0] <= '9')) {
-              if (variants == null) {
-                variants = new List<string>();
-              }
+              variants = variants ?? (new List<string>());
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
               } else {
@@ -279,9 +273,7 @@ namespace PeterO.Mail {
             int curIndex = splitIndex;
             if (lengthIfAllAlphaNum(curString) == 1 &&
                       !curString.Equals("x")) {
-              if (variants == null) {
-                variants = new List<string>();
-              }
+              variants = variants ?? (new List<string>());
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
               } else {
@@ -369,9 +361,8 @@ namespace PeterO.Mail {
           str.Equals("i-mingo") || str.Equals("i-pwn") ||
           str.Equals("i-tao") || str.Equals("i-tay") ||
           str.Equals("i-tsu");
-        } else {
-          return false;
         }
+        return false;
       }
       return false;
     }

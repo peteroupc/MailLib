@@ -167,9 +167,7 @@ private HeaderFieldParsers() {
                 if (nonasciiLocalParts) {
                   // At least some of the domains could not
                   // be converted to ASCII
-                  if (originalGroups == null) {
-                    originalGroups = this.ParseGroupLists(originalString, 0, originalString.length());
-                  }
+                   originalGroups = (originalGroups == null) ? (this.ParseGroupLists(originalString, 0, originalString.length())) : originalGroups;
                   originalGroupList = originalGroups.get(groupIndex);
                   String groupText = originalGroupList;
                   String displayNameText = str.substring(startIndex,(startIndex)+(displayNameEnd - startIndex));
@@ -882,7 +880,7 @@ private HeaderFieldParsers() {
     }
 
     private static Map<String, IHeaderFieldParser> fieldMap = CreateHeaderFieldList();
-    private static final IHeaderFieldParser unstructured = new UnstructuredHeaderField();
+    private static final IHeaderFieldParser Unstructured = new UnstructuredHeaderField();
 
     private static Map<String, IHeaderFieldParser> CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
@@ -1007,6 +1005,6 @@ private HeaderFieldParsers() {
         throw new NullPointerException("name");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
-      return fieldMap.containsKey(name) ? fieldMap.get(name) : unstructured;
+      return fieldMap.containsKey(name) ? fieldMap.get(name) : Unstructured;
     }
   }

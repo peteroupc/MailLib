@@ -70,7 +70,7 @@ namespace MailLibTest {
           return false;
         }
         if (c >= 0x80) {
-          Console.WriteLine("Non-ASCII character (0x" + ToBase16(new [] { (byte)c }) + ")");
+          Console.WriteLine("Non-ASCII character (0x" + ToBase16(new[] { (byte)c }) + ")");
           return false;
         }
         if (c == '\r' && index + 1 < endIndex && str[index + 1] == '\n') {
@@ -121,11 +121,11 @@ namespace MailLibTest {
           hasLongWord |= (wordLength > 77) || (lineLength == wordLength && wordLength > 78);
         }
         if (c == 0) {
-          Console.WriteLine("CTL in message (0x" + ToBase16(new [] { (byte)c }) + ")");
+          Console.WriteLine("CTL in message (0x" + ToBase16(new[] { (byte)c }) + ")");
           return false;
         }
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
-          Console.WriteLine("CTL in header (0x" + ToBase16(new [] { (byte)c }) + ")");
+          Console.WriteLine("CTL in header (0x" + ToBase16(new[] { (byte)c }) + ")");
           return false;
         }
         int maxLineLength = 998;
@@ -234,9 +234,7 @@ namespace MailLibTest {
           unlimitedLineLength ? -1 : 76,
           false);
         object readByteMethod = Reflect.GetMethod(t, "ReadByte");
-        if (readByteMethod == null) {
-         readByteMethod=Reflect.GetMethod(t, "read");
-        }
+        readByteMethod = readByteMethod ?? (Reflect.GetMethod(t, "read"));
         while (true) {
           var c = (int)Reflect.InvokeMethod(t, readByteMethod);
           if (c < 0) {
@@ -294,15 +292,15 @@ namespace MailLibTest {
     }
 
     public void TestQuotedPrintable(string input, string a, string b, string c) {
-      this.TestQuotedPrintable(input, 0, a);
-      this.TestQuotedPrintable(input, 1, b);
-      this.TestQuotedPrintable(input, 2, c);
+      TestQuotedPrintable(input, 0, a);
+      TestQuotedPrintable(input, 1, b);
+      TestQuotedPrintable(input, 2, c);
     }
 
     public void TestQuotedPrintable(string input, string a) {
-      this.TestQuotedPrintable(input, 0, a);
-      this.TestQuotedPrintable(input, 1, a);
-      this.TestQuotedPrintable(input, 2, a);
+      TestQuotedPrintable(input, 0, a);
+      TestQuotedPrintable(input, 1, a);
+      TestQuotedPrintable(input, 2, a);
     }
 
     private void TestParseDomain(string str, string expected) {
@@ -317,24 +315,24 @@ namespace MailLibTest {
 
     [TestMethod]
     public void TestParseDomainAndLocalPart() {
-      this.TestParseDomain("x", "x");
-      this.TestParseLocalPart("x", "x");
-      this.TestParseLocalPart("\"" + "\"", String.Empty);
-      this.TestParseDomain("x.example", "x.example");
-      this.TestParseLocalPart("x.example", "x.example");
-      this.TestParseLocalPart("x.example\ud800\udc00.example.com", "x.example\ud800\udc00.example.com");
-      this.TestParseDomain("x.example\ud800\udc00.example.com", "x.example\ud800\udc00.example.com");
-      this.TestParseDomain("x.example.com", "x.example.com");
-      this.TestParseLocalPart("x.example.com", "x.example.com");
-      this.TestParseLocalPart("\"(not a comment)\"", "(not a comment)");
-      this.TestParseLocalPart("(comment1) x (comment2)", "x");
-      this.TestParseLocalPart("(comment1) example (comment2) . (comment3) com", "example.com");
-      this.TestParseDomain("(comment1) x (comment2)", "x");
-      this.TestParseDomain("(comment1) example (comment2) . (comment3) com", "example.com");
-      this.TestParseDomain("(comment1) [x] (comment2)", "[x]");
-      this.TestParseDomain("(comment1) [a.b.c.d] (comment2)", "[a.b.c.d]");
-      this.TestParseDomain("[]", "[]");
-      this.TestParseDomain("[a .\r\n b. c.d ]", "[a.b.c.d]");
+      TestParseDomain("x", "x");
+      TestParseLocalPart("x", "x");
+      TestParseLocalPart("\"" + "\"", String.Empty);
+      TestParseDomain("x.example", "x.example");
+      TestParseLocalPart("x.example", "x.example");
+      TestParseLocalPart("x.example\ud800\udc00.example.com", "x.example\ud800\udc00.example.com");
+      TestParseDomain("x.example\ud800\udc00.example.com", "x.example\ud800\udc00.example.com");
+      TestParseDomain("x.example.com", "x.example.com");
+      TestParseLocalPart("x.example.com", "x.example.com");
+      TestParseLocalPart("\"(not a comment)\"", "(not a comment)");
+      TestParseLocalPart("(comment1) x (comment2)", "x");
+      TestParseLocalPart("(comment1) example (comment2) . (comment3) com", "example.com");
+      TestParseDomain("(comment1) x (comment2)", "x");
+      TestParseDomain("(comment1) example (comment2) . (comment3) com", "example.com");
+      TestParseDomain("(comment1) [x] (comment2)", "[x]");
+      TestParseDomain("(comment1) [a.b.c.d] (comment2)", "[a.b.c.d]");
+      TestParseDomain("[]", "[]");
+      TestParseDomain("[a .\r\n b. c.d ]", "[a.b.c.d]");
     }
 
     public static void TestWordWrapOne(string firstWord, string nextWords, string expected) {
@@ -345,8 +343,8 @@ namespace MailLibTest {
 
     [TestMethod]
     public void TestWordWrap() {
-      this.TestWordWrapOne("Subject:", Repeat("xxxx ", 10) + "y", "Subject: " + Repeat("xxxx ", 10) + "y");
-      this.TestWordWrapOne("Subject:", Repeat("xxxx ", 10), "Subject: " + Repeat("xxxx ", 9) + "xxxx");
+      TestWordWrapOne("Subject:", Repeat("xxxx ", 10) + "y", "Subject: " + Repeat("xxxx ", 10) + "y");
+      TestWordWrapOne("Subject:", Repeat("xxxx ", 10), "Subject: " + Repeat("xxxx ", 9) + "xxxx");
     }
 
     [TestMethod]
@@ -401,9 +399,7 @@ namespace MailLibTest {
 
     internal static byte[] GetBytes(object trans) {
       object readByteMethod = Reflect.GetMethod(trans, "ReadByte");
-      if (readByteMethod == null) {
-        readByteMethod=Reflect.GetMethod(trans, "read");
-      }
+      readByteMethod = readByteMethod ?? (Reflect.GetMethod(trans, "read"));
       using (var ms = new MemoryStream()) {
         int c = 0;
         while ((c = (int)Reflect.InvokeMethod(trans, readByteMethod)) >= 0) {
@@ -736,65 +732,65 @@ namespace MailLibTest {
 
     [TestMethod]
     public void TestDecode() {
-      this.TestDecodeQuotedPrintable("test", "test");
-      this.TestDecodeQuotedPrintable("te \tst", "te \tst");
-      this.TestDecodeQuotedPrintable("te=20", "te ");
-      this.TestDecodeQuotedPrintable("te=09", "te\t");
-      this.TestDecodeQuotedPrintable("te ", "te");
-      this.TestDecodeQuotedPrintable("te\t", "te");
-      this.TestDecodeQuotedPrintable("te=61st", "teast");
-      this.TestDecodeQuotedPrintable("te=3dst", "te=st");
-      this.TestDecodeQuotedPrintable("te=c2=a0st", "te\u00a0st");
-      this.TestDecodeQuotedPrintable("te=3Dst", "te=st");
-      this.TestDecodeQuotedPrintable("te=0D=0Ast", "te\r\nst");
-      this.TestDecodeQuotedPrintable("te=0Dst", "te\rst");
-      this.TestDecodeQuotedPrintable("te=0Ast", "te\nst");
-      this.TestDecodeQuotedPrintable("te=C2=A0st", "te\u00a0st");
-      this.TestDecodeQuotedPrintable("te=3st", "te=3st");
-      this.TestDecodeQuotedPrintable("te==C2=A0st", "te=\u00a0st");
-      this.TestDecodeQuotedPrintable(Repeat("a", 100), Repeat("a", 100));
-      this.TestDecodeQuotedPrintable("te\r\nst", "te\r\nst");
-      this.TestDecodeQuotedPrintable("te\rst", "te\r\nst");
-      this.TestDecodeQuotedPrintable("te\nst", "te\r\nst");
-      this.TestDecodeQuotedPrintable("te=\r\nst", "test");
-      this.TestDecodeQuotedPrintable("te=\rst", "test");
-      this.TestDecodeQuotedPrintable("te=\nst", "test");
-      this.TestDecodeQuotedPrintable("te=\r", "te");
-      this.TestDecodeQuotedPrintable("te=\n", "te");
-      this.TestDecodeQuotedPrintable("te=xy", "te=xy");
-      this.TestDecodeQuotedPrintable("te\u000cst", "test");
-      this.TestDecodeQuotedPrintable("te\u007fst", "test");
-      this.TestDecodeQuotedPrintable("te\u00a0st", "test");
-      this.TestDecodeQuotedPrintable("te==20", "te= ");
-      this.TestDecodeQuotedPrintable("te===20", "te== ");
-      this.TestDecodeQuotedPrintable("te==xy", "te==xy");
+      TestDecodeQuotedPrintable("test", "test");
+      TestDecodeQuotedPrintable("te \tst", "te \tst");
+      TestDecodeQuotedPrintable("te=20", "te ");
+      TestDecodeQuotedPrintable("te=09", "te\t");
+      TestDecodeQuotedPrintable("te ", "te");
+      TestDecodeQuotedPrintable("te\t", "te");
+      TestDecodeQuotedPrintable("te=61st", "teast");
+      TestDecodeQuotedPrintable("te=3dst", "te=st");
+      TestDecodeQuotedPrintable("te=c2=a0st", "te\u00a0st");
+      TestDecodeQuotedPrintable("te=3Dst", "te=st");
+      TestDecodeQuotedPrintable("te=0D=0Ast", "te\r\nst");
+      TestDecodeQuotedPrintable("te=0Dst", "te\rst");
+      TestDecodeQuotedPrintable("te=0Ast", "te\nst");
+      TestDecodeQuotedPrintable("te=C2=A0st", "te\u00a0st");
+      TestDecodeQuotedPrintable("te=3st", "te=3st");
+      TestDecodeQuotedPrintable("te==C2=A0st", "te=\u00a0st");
+      TestDecodeQuotedPrintable(Repeat("a", 100), Repeat("a", 100));
+      TestDecodeQuotedPrintable("te\r\nst", "te\r\nst");
+      TestDecodeQuotedPrintable("te\rst", "te\r\nst");
+      TestDecodeQuotedPrintable("te\nst", "te\r\nst");
+      TestDecodeQuotedPrintable("te=\r\nst", "test");
+      TestDecodeQuotedPrintable("te=\rst", "test");
+      TestDecodeQuotedPrintable("te=\nst", "test");
+      TestDecodeQuotedPrintable("te=\r", "te");
+      TestDecodeQuotedPrintable("te=\n", "te");
+      TestDecodeQuotedPrintable("te=xy", "te=xy");
+      TestDecodeQuotedPrintable("te\u000cst", "test");
+      TestDecodeQuotedPrintable("te\u007fst", "test");
+      TestDecodeQuotedPrintable("te\u00a0st", "test");
+      TestDecodeQuotedPrintable("te==20", "te= ");
+      TestDecodeQuotedPrintable("te===20", "te== ");
+      TestDecodeQuotedPrintable("te==xy", "te==xy");
       // here, the first '=' starts a malformed sequence, so is
       // output as is; the second '=' starts a soft line break,
       // so is ignored
-      this.TestDecodeQuotedPrintable("te==", "te=");
-      this.TestDecodeQuotedPrintable("te==\r\nst", "te=st");
-      this.TestDecodeQuotedPrintable("te=3", "te=3");
-      this.TestDecodeQuotedPrintable("te \r\n", "te\r\n");
-      this.TestDecodeQuotedPrintable("te \r\nst", "te\r\nst");
-      this.TestDecodeQuotedPrintable("te w\r\nst", "te w\r\nst");
-      this.TestDecodeQuotedPrintable("te =\r\nst", "te st");
-      this.TestDecodeQuotedPrintable("te \t\r\nst", "te\r\nst");
-      this.TestDecodeQuotedPrintable("te\t \r\nst", "te\r\nst");
-      this.TestDecodeQuotedPrintable("te \nst", "te\r\nst");
-      this.TestDecodeQuotedPrintable("te \t\nst", "te\r\nst");
-      this.TestDecodeQuotedPrintable("te\t \nst", "te\r\nst");
-      this.TestFailQuotedPrintableNonLenient("te\rst");
-      this.TestFailQuotedPrintableNonLenient("te\nst");
-      this.TestFailQuotedPrintableNonLenient("te=\rst");
-      this.TestFailQuotedPrintableNonLenient("te=\nst");
-      this.TestFailQuotedPrintableNonLenient("te=\r");
-      this.TestFailQuotedPrintableNonLenient("te=\n");
-      this.TestFailQuotedPrintableNonLenient("te \rst");
-      this.TestFailQuotedPrintableNonLenient("te \nst");
-      this.TestFailQuotedPrintableNonLenient(Repeat("a", 77));
-      this.TestFailQuotedPrintableNonLenient(Repeat("=7F", 26));
-      this.TestFailQuotedPrintableNonLenient("aa\r\n" + Repeat("a", 77));
-      this.TestFailQuotedPrintableNonLenient("aa\r\n" + Repeat("=7F", 26));
+      TestDecodeQuotedPrintable("te==", "te=");
+      TestDecodeQuotedPrintable("te==\r\nst", "te=st");
+      TestDecodeQuotedPrintable("te=3", "te=3");
+      TestDecodeQuotedPrintable("te \r\n", "te\r\n");
+      TestDecodeQuotedPrintable("te \r\nst", "te\r\nst");
+      TestDecodeQuotedPrintable("te w\r\nst", "te w\r\nst");
+      TestDecodeQuotedPrintable("te =\r\nst", "te st");
+      TestDecodeQuotedPrintable("te \t\r\nst", "te\r\nst");
+      TestDecodeQuotedPrintable("te\t \r\nst", "te\r\nst");
+      TestDecodeQuotedPrintable("te \nst", "te\r\nst");
+      TestDecodeQuotedPrintable("te \t\nst", "te\r\nst");
+      TestDecodeQuotedPrintable("te\t \nst", "te\r\nst");
+      TestFailQuotedPrintableNonLenient("te\rst");
+      TestFailQuotedPrintableNonLenient("te\nst");
+      TestFailQuotedPrintableNonLenient("te=\rst");
+      TestFailQuotedPrintableNonLenient("te=\nst");
+      TestFailQuotedPrintableNonLenient("te=\r");
+      TestFailQuotedPrintableNonLenient("te=\n");
+      TestFailQuotedPrintableNonLenient("te \rst");
+      TestFailQuotedPrintableNonLenient("te \nst");
+      TestFailQuotedPrintableNonLenient(Repeat("a", 77));
+      TestFailQuotedPrintableNonLenient(Repeat("=7F", 26));
+      TestFailQuotedPrintableNonLenient("aa\r\n" + Repeat("a", 77));
+      TestFailQuotedPrintableNonLenient("aa\r\n" + Repeat("=7F", 26));
     }
 
     public static void TestEncodedWordsPhrase(string expected, string input) {
@@ -989,28 +985,28 @@ namespace MailLibTest {
       // Check decoding of encoded words containing reserved characters
       // such as specials and CTLs:
       // U + 007F, should not be directly representable
-      this.TestEncodedWordsPhrase("=?utf-8?q?x_=7F?=", "=?utf-8?q?x_=7F?=");
+      TestEncodedWordsPhrase("=?utf-8?q?x_=7F?=", "=?utf-8?q?x_=7F?=");
       // U + 0001, should not be directly representable
-      this.TestEncodedWordsPhrase("=?utf-8?q?x_=01?=", "=?utf-8?q?x_=01?=");
+      TestEncodedWordsPhrase("=?utf-8?q?x_=01?=", "=?utf-8?q?x_=01?=");
       // CR and LF, should not be directly representable
-      this.TestEncodedWordsPhrase("=?utf-8?q?x_=0D=0A?=", "=?utf-8?q?x_=0D=0A?=");
+      TestEncodedWordsPhrase("=?utf-8?q?x_=0D=0A?=", "=?utf-8?q?x_=0D=0A?=");
       // Parentheses
-      this.TestEncodedWordsPhrase("\"x (y)\"", "=?utf-8?q?x_=28y=29?=");
+      TestEncodedWordsPhrase("\"x (y)\"", "=?utf-8?q?x_=28y=29?=");
       // Colons and angle brackets
-      this.TestEncodedWordsPhrase("\"x <y:z>\"", "=?utf-8?q?x_=3Cy=3Az=3E?=");
+      TestEncodedWordsPhrase("\"x <y:z>\"", "=?utf-8?q?x_=3Cy=3Az=3E?=");
       // Encoded word lookalikes
-      this.TestEncodedWordsPhrase(
+      TestEncodedWordsPhrase(
         "\"=?utf-8?q?xyz?=\"",
         "=?utf-8?q?=3D=3Futf-8=3Fq=3Fxyz=3F=3D?=");
-      this.TestEncodedWordsPhrase(
+      TestEncodedWordsPhrase(
         "\"=?utf-8?q?xyz?=\"",
         "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
       // Already quoted material
-      this.TestEncodedWordsPhrase(
+      TestEncodedWordsPhrase(
         "me (x) \"x:y\"",
         "=?utf-8?q?me?= (x) \"x:y\"");
       // Already quoted material with a special
-      this.TestEncodedWordsPhrase(
+      TestEncodedWordsPhrase(
         "me \"x:y\"",
         "=?utf-8?q?me?= \"x:y\"");
     }
@@ -1018,48 +1014,48 @@ namespace MailLibTest {
     [TestMethod]
     public void TestEncodedWords() {
       string par = "(";
-      this.TestEncodedWordsPhrase("(sss) y", "(sss) =?us-ascii?q?y?=");
-      this.TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
-      this.TestEncodedWordsPhrase("=?bad1?= =?bad2?= =?bad3?=", "=?bad1?= =?bad2?= =?bad3?=");
+      TestEncodedWordsPhrase("(sss) y", "(sss) =?us-ascii?q?y?=");
+      TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
+      TestEncodedWordsPhrase("=?bad1?= =?bad2?= =?bad3?=", "=?bad1?= =?bad2?= =?bad3?=");
       // quoted because one word was decoded
-      this.TestEncodedWordsPhrase("\"y =?bad2?= =?bad3?=\"", "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
+      TestEncodedWordsPhrase("\"y =?bad2?= =?bad3?=\"", "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
       // quoted because one word was decoded
-      this.TestEncodedWordsPhrase("\"=?bad1?= y =?bad3?=\"", "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
-      this.TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
-      this.TestEncodedWordsPhrase(" xy", " =?us-ascii?q?x?= =?us-ascii?q?y?=");
-      this.TestEncodedWordsPhrase("xy (sss)", "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
-      this.TestEncodedWordsPhrase("x (sss) y", "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
-      this.TestEncodedWordsPhrase("x (z) y", "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
-      this.TestEncodedWordsPhrase(
+      TestEncodedWordsPhrase("\"=?bad1?= y =?bad3?=\"", "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
+      TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
+      TestEncodedWordsPhrase(" xy", " =?us-ascii?q?x?= =?us-ascii?q?y?=");
+      TestEncodedWordsPhrase("xy (sss)", "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
+      TestEncodedWordsPhrase("x (sss) y", "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
+      TestEncodedWordsPhrase("x (z) y", "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+      TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + par + "sss)=?us-ascii?q?y?=",
         "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
-      this.TestEncodedWordsPhrase(
+      TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + par + "z)=?us-ascii?q?y?=",
         "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
-      this.TestEncodedWordsPhrase(
+      TestEncodedWordsPhrase(
         "=?us-ascii?q?x?=" + par + "z) y",
         "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
-      this.TestEncodedWordsOne("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
-      this.TestEncodedWordsOne("abcde abcde", "abcde abcde");
-      this.TestEncodedWordsOne("abcde", "abcde");
-      this.TestEncodedWordsOne("abcde", "=?utf-8?Q?abcde?=");
-      this.TestEncodedWordsOne("=?utf-8?Q?abcde?=extra", "=?utf-8?Q?abcde?=extra");
-      this.TestEncodedWordsOne("abcde ", "=?utf-8?Q?abcde?= ");
-      this.TestEncodedWordsOne(" abcde", " =?utf-8?Q?abcde?=");
-      this.TestEncodedWordsOne(" abcde", " =?utf-8?Q?abcde?=");
-      this.TestEncodedWordsOne("ab\u00a0de", "=?utf-8?Q?ab=C2=A0de?=");
-      this.TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
-      this.TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
-      this.TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
-      this.TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
-      this.TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
-      this.TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
-      this.TestEncodedWordsOne("abc de", "=?utf-8?Q?abc=20de?=");
-      this.TestEncodedWordsOne("abc de", "=?utf-8?Q?abc_de?=");
-      this.TestEncodedWordsOne("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
-      this.TestEncodedWordsOne("=?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?=");
-      this.TestEncodedWordsOne("=?utf-8?Q?" + Repeat("x", 200) + "?=", "=?utf-8?Q?" + Repeat("x", 200) + "?=");
-      this.TestEncodedWordsPhrase("=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
+      TestEncodedWordsOne("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
+      TestEncodedWordsOne("abcde abcde", "abcde abcde");
+      TestEncodedWordsOne("abcde", "abcde");
+      TestEncodedWordsOne("abcde", "=?utf-8?Q?abcde?=");
+      TestEncodedWordsOne("=?utf-8?Q?abcde?=extra", "=?utf-8?Q?abcde?=extra");
+      TestEncodedWordsOne("abcde ", "=?utf-8?Q?abcde?= ");
+      TestEncodedWordsOne(" abcde", " =?utf-8?Q?abcde?=");
+      TestEncodedWordsOne(" abcde", " =?utf-8?Q?abcde?=");
+      TestEncodedWordsOne("ab\u00a0de", "=?utf-8?Q?ab=C2=A0de?=");
+      TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
+      TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
+      TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
+      TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
+      TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
+      TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
+      TestEncodedWordsOne("abc de", "=?utf-8?Q?abc=20de?=");
+      TestEncodedWordsOne("abc de", "=?utf-8?Q?abc_de?=");
+      TestEncodedWordsOne("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
+      TestEncodedWordsOne("=?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?=");
+      TestEncodedWordsOne("=?utf-8?Q?" + Repeat("x", 200) + "?=", "=?utf-8?Q?" + Repeat("x", 200) + "?=");
+      TestEncodedWordsPhrase("=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
     }
 
     [TestMethod]
@@ -1115,23 +1111,23 @@ namespace MailLibTest {
 
     [TestMethod]
     public void TestEncode() {
-      this.TestQuotedPrintable("test", "test");
-      this.TestQuotedPrintable("te\u000cst", "te=0Cst");
-      this.TestQuotedPrintable("te\u007Fst", "te=7Fst");
-      this.TestQuotedPrintable("te ", "te=20");
-      this.TestQuotedPrintable("te\t", "te=09");
-      this.TestQuotedPrintable("te st", "te st");
-      this.TestQuotedPrintable("te=st", "te=3Dst");
-      this.TestQuotedPrintable("te\r\nst", "te=0D=0Ast", "te\r\nst", "te\r\nst");
-      this.TestQuotedPrintable("te\rst", "te=0Dst", "te=0Dst", "te\r\nst");
-      this.TestQuotedPrintable("te\nst", "te=0Ast", "te=0Ast", "te\r\nst");
-      this.TestQuotedPrintable("te " + " " + "\r\nst", "te " + " " + "=0D=0Ast", "te =20\r\nst", "te =20\r\nst");
-      this.TestQuotedPrintable("te \r\nst", "te =0D=0Ast", "te=20\r\nst", "te=20\r\nst");
-      this.TestQuotedPrintable("te \t\r\nst", "te =09=0D=0Ast", "te =09\r\nst", "te =09\r\nst");
-      this.TestQuotedPrintable("te\t\r\nst", "te=09=0D=0Ast", "te=09\r\nst", "te=09\r\nst");
-      this.TestQuotedPrintable(Repeat("a", 75), Repeat("a", 75));
-      this.TestQuotedPrintable(Repeat("a", 76), Repeat("a", 75) + "=\r\na");
-      this.TestQuotedPrintable(Repeat("\u000c", 30), Repeat("=0C", 25) + "=\r\n" + Repeat("=0C", 5));
+      TestQuotedPrintable("test", "test");
+      TestQuotedPrintable("te\u000cst", "te=0Cst");
+      TestQuotedPrintable("te\u007Fst", "te=7Fst");
+      TestQuotedPrintable("te ", "te=20");
+      TestQuotedPrintable("te\t", "te=09");
+      TestQuotedPrintable("te st", "te st");
+      TestQuotedPrintable("te=st", "te=3Dst");
+      TestQuotedPrintable("te\r\nst", "te=0D=0Ast", "te\r\nst", "te\r\nst");
+      TestQuotedPrintable("te\rst", "te=0Dst", "te=0Dst", "te\r\nst");
+      TestQuotedPrintable("te\nst", "te=0Ast", "te=0Ast", "te\r\nst");
+      TestQuotedPrintable("te " + " " + "\r\nst", "te " + " " + "=0D=0Ast", "te =20\r\nst", "te =20\r\nst");
+      TestQuotedPrintable("te \r\nst", "te =0D=0Ast", "te=20\r\nst", "te=20\r\nst");
+      TestQuotedPrintable("te \t\r\nst", "te =09=0D=0Ast", "te =09\r\nst", "te =09\r\nst");
+      TestQuotedPrintable("te\t\r\nst", "te=09=0D=0Ast", "te=09\r\nst", "te=09\r\nst");
+      TestQuotedPrintable(Repeat("a", 75), Repeat("a", 75));
+      TestQuotedPrintable(Repeat("a", 76), Repeat("a", 75) + "=\r\na");
+      TestQuotedPrintable(Repeat("\u000c", 30), Repeat("=0C", 25) + "=\r\n" + Repeat("=0C", 5));
     }
 
     [TestMethod]

@@ -271,12 +271,12 @@ import com.upokecenter.util.*;
       int contin = 0;
       String hex = "0123456789ABCDEF";
       length += name.length() + 12;
-      int maxLength = 76;
-      if (sb.length() + name.length() + 9 + (str.length() * 3) <= maxLength) {
+      int MaxLength = 76;
+      if (sb.length() + name.length() + 9 + (str.length() * 3) <= MaxLength) {
         // Very short
         length = sb.length() + name.length() + 9;
         sb.append(name + "*=utf-8''");
-      } else if (length + (str.length() * 3) <= maxLength) {
+      } else if (length + (str.length() * 3) <= MaxLength) {
         // Short enough that no continuations
         // are needed
         length -= 2;
@@ -300,7 +300,7 @@ import com.upokecenter.util.*;
         ++index;
         if (c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=*%'".indexOf((char)c) < 0) {
           ++length;
-          if (!first && length + 1 > maxLength) {
+          if (!first && length + 1 > MaxLength) {
             sb.append(";\r\n ");
             first = true;
             ++contin;
@@ -315,7 +315,7 @@ import com.upokecenter.util.*;
           sb.append((char)c);
         } else if (c < 0x80) {
           length += 3;
-          if (!first && length + 1 > maxLength) {
+          if (!first && length + 1 > MaxLength) {
             sb.append(";\r\n ");
             first = true;
             ++contin;
@@ -332,7 +332,7 @@ import com.upokecenter.util.*;
           sb.append(hex.charAt(c & 15));
         } else if (c < 0x800) {
           length += 6;
-          if (!first && length + 1 > maxLength) {
+          if (!first && length + 1 > MaxLength) {
             sb.append(";\r\n ");
             first = true;
             ++contin;
@@ -354,7 +354,7 @@ import com.upokecenter.util.*;
           sb.append(hex.charAt(x & 15));
         } else if (c < 0x10000) {
           length += 9;
-          if (!first && length + 1 > maxLength) {
+          if (!first && length + 1 > MaxLength) {
             sb.append(";\r\n ");
             first = true;
             ++contin;
@@ -380,7 +380,7 @@ import com.upokecenter.util.*;
           sb.append(hex.charAt(y & 15));
         } else {
           length += 12;
-          if (!first && length + 1 > maxLength) {
+          if (!first && length + 1 > MaxLength) {
             sb.append(";\r\n ");
             first = true;
             ++contin;
@@ -746,9 +746,7 @@ import com.upokecenter.util.*;
       }
       String paramValue = value.substring(secondQuote + 1);
       ICharset cs = Charsets.GetCharset(charset);
-      if (cs == null) {
-        cs = Charsets.Ascii;
-      }
+      cs = (cs == null) ? (Charsets.Ascii) : cs;
       return DecodeRfc2231Encoding(paramValue, cs);
     }
 
@@ -773,19 +771,14 @@ import com.upokecenter.util.*;
         return null;
       }
       ICharset cs = Charsets.GetCharset(charset);
-      if (cs == null) {
-        cs = Charsets.Ascii;
-      }
-      return cs;
+      return (cs == null) ? Charsets.Ascii : cs;
     }
 
     private static String DecodeRfc2231Encoding(String value, ICharset charset) {
+      // a value without a quote
+      // mark is not a valid encoded parameter
       int quote = value.indexOf('\'');
-      if (quote >= 0) {
-        // not a valid encoded parameter
-        return null;
-      }
-      return charset.GetString(new PercentEncodingStringTransform(value));
+      return (quote >= 0) ? null : charset.GetString(new PercentEncodingStringTransform(value));
     }
 
     private static boolean ExpandRfc2231Extensions(Map<String, String> parameters) {
@@ -807,6 +800,7 @@ import com.upokecenter.util.*;
             continue;
           }
           parameters.remove(name);
+          realValue = (realValue == null) ? (value) : realValue;
           // NOTE: Overrides the name without continuations
           parameters.put(realName,realValue);
           continue;
@@ -822,9 +816,6 @@ import com.upokecenter.util.*;
           ICharset charsetUsed = GetRfc2231Charset(
             (asterisk == name.length() - 3) ? value : null);
           parameters.remove(name);
-          if (realValue == null) {
-            realValue = value;
-          }
           int pindex = 1;
           // search for name*1 or name*1*, then name*2 or name*2*,
           // and so on
@@ -1006,7 +997,7 @@ import com.upokecenter.util.*;
     }
 
     private boolean ParseMediaType(String str) {
-      boolean httpRules = false;
+      boolean HttpRules = false;
       int index = 0;
       if (str == null) {
         throw new NullPointerException("str");
@@ -1037,7 +1028,7 @@ import com.upokecenter.util.*;
         }
       }
       index = i2;
-      return ParseParameters(str, index, endIndex, httpRules, this.parameters);
+      return ParseParameters(str, index, endIndex, HttpRules, this.parameters);
     }
 
     /**

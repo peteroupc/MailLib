@@ -55,12 +55,12 @@ import java.util.*;
         builder.append(HeaderParserUtility.QuoteValueIfNeeded(this.name));
         builder.append(": ");
         boolean first = true;
-        for(NamedAddress address : this.groupAddresses) {
+        for(NamedAddress groupAddress : this.groupAddresses) {
           if (!first) {
             builder.append(", ");
           }
           first = false;
-          builder.append(address.toString());
+          builder.append(groupAddress.toString());
         }
         builder.append(";");
         return builder.toString();

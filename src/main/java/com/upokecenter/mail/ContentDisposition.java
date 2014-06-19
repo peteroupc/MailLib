@@ -289,14 +289,14 @@ import com.upokecenter.text.*;
     }
 
     private boolean ParseDisposition(String str) {
-      boolean httpRules = false;
+      boolean HttpRules = false;
       int index = 0;
       if (str == null) {
         throw new NullPointerException("str");
       }
       int endIndex = str.length();
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      int i = MediaType.SkipMimeToken(str, index, endIndex, null, httpRules);
+      int i = MediaType.SkipMimeToken(str, index, endIndex, null, HttpRules);
       if (i == index) {
         return false;
       }
@@ -314,7 +314,7 @@ import com.upokecenter.text.*;
         }
       }
       index = i;
-      return MediaType.ParseParameters(str, index, endIndex, httpRules, this.parameters);
+      return MediaType.ParseParameters(str, index, endIndex, HttpRules, this.parameters);
     }
 
     private static ContentDisposition Build(String name) {
@@ -365,10 +365,6 @@ import com.upokecenter.text.*;
       }
       ContentDisposition dispo = new ContentDisposition();
       dispo.parameters = new TreeMap<String, String>();
-      if (!dispo.ParseDisposition(dispositionValue)) {
-
-        return defaultValue;
-      }
-      return dispo;
+      return (!dispo.ParseDisposition(dispositionValue)) ? defaultValue : dispo;
     }
   }

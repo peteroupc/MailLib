@@ -59,7 +59,8 @@ namespace PeterO.Mail {
           // Can't occur in the Q-encoding; replace
           // with the ASCII substitute character
           return 0x1a;
-        } else if (c == '=') {
+        }
+        if (c == '=') {
           int b1 = (this.inputIndex < endIndex) ? this.input[this.inputIndex++] : -1;
           c = 0;
           if (b1 >= '0' && b1 <= '9') {
@@ -92,11 +93,13 @@ namespace PeterO.Mail {
             return '=';
           }
           return c;
-        } else if (c <= 0x20 || c >= 0x7f) {
+        }
+        if (c <= 0x20 || c >= 0x7f) {
           // Can't occur in the Q-encoding; replace
           // with the ASCII substitute character
           return 0x1a;
-        } else if (c == '_') {
+        }
+        if (c == '_') {
           // Underscore, use space
           return ' ';
         } else {

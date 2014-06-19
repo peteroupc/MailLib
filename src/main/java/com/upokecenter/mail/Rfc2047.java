@@ -457,11 +457,8 @@ private Rfc2047() {
         return false;
       }
       int cws = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      if (cws == index) {
-        // No linear whitespace
-        return false;
-      }
-      return true;
+      // now return true if linear whitespace follows
+      return cws == index;
     }
 
     private static boolean PrecededByStartOrLinearWhitespace(String str, int index) {

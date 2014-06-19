@@ -291,10 +291,10 @@ namespace PeterO.Mail {
       }
       #if DEBUG
       if (localPart == null) {
-        throw new ArgumentNullException("localPart");
+        throw new ArgumentException("localPart is null");
       }
       if (domain == null) {
-        throw new ArgumentNullException("domain");
+        throw new ArgumentException("domain is null");
       }
       #endif
 

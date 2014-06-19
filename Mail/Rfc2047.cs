@@ -490,11 +490,7 @@ namespace PeterO.Mail {
         return false;
       }
       int cws = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      if (cws == index) {
-        // No linear whitespace
-        return false;
-      }
-      return true;
+      return cws != index;
     }
 
     private static bool PrecededByStartOrLinearWhitespace(string str, int index) {

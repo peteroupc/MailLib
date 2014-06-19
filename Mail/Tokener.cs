@@ -35,7 +35,7 @@ namespace PeterO.Mail {
 
     public void Commit(int token, int startIndex, int endIndex) {
       // Console.WriteLine("Committing token " + token + ", size now " + (tokenStack.Count+1));
-      this.tokenStack.Add(new [] { token, startIndex, endIndex });
+      this.tokenStack.Add(new[] { token, startIndex, endIndex });
     }
 
     public IList<int[]> GetTokens() {

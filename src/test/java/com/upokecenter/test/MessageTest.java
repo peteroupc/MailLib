@@ -10,12 +10,12 @@ import com.upokecenter.mail.*;
   public class MessageTest {
     @Test
     public void TestMediaTypeEncodingSingle() {
-      this.SingleTestMediaTypeEncoding("xyz", "x/y;z=xyz");
-      this.SingleTestMediaTypeEncoding("xy z", "x/y;z=\"xy z\"");
-      this.SingleTestMediaTypeEncoding("xy\u00a0z", "x/y;z*=utf-8''xy%C2%A0z");
-      this.SingleTestMediaTypeEncoding("xy\ufffdz", "x/y;z*=utf-8''xy%C2z");
-      this.SingleTestMediaTypeEncoding("xy" + EncodingTest.Repeat("\ufffc", 50) + "z", "x/y;z*=utf-8''xy" + EncodingTest.Repeat("%EF%BF%BD", 50) + "z");
-      this.SingleTestMediaTypeEncoding("xy" + EncodingTest.Repeat("\u00a0", 50) + "z", "x/y;z*=utf-8''xy" + EncodingTest.Repeat("%C2%A0", 50) + "z");
+      SingleTestMediaTypeEncoding("xyz", "x/y;z=xyz");
+      SingleTestMediaTypeEncoding("xy z", "x/y;z=\"xy z\"");
+      SingleTestMediaTypeEncoding("xy\u00a0z", "x/y;z*=utf-8''xy%C2%A0z");
+      SingleTestMediaTypeEncoding("xy\ufffdz", "x/y;z*=utf-8''xy%C2z");
+      SingleTestMediaTypeEncoding("xy" + EncodingTest.Repeat("\ufffc", 50) + "z", "x/y;z*=utf-8''xy" + EncodingTest.Repeat("%EF%BF%BD", 50) + "z");
+      SingleTestMediaTypeEncoding("xy" + EncodingTest.Repeat("\u00a0", 50) + "z", "x/y;z*=utf-8''xy" + EncodingTest.Repeat("%C2%A0", 50) + "z");
     }
 
     @Test
@@ -106,7 +106,7 @@ import com.upokecenter.mail.*;
     @Test
     public void TestPrematureEnd() {
       try {
-        new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes("From: me@example.com\r\nDate", true)));
+        Assert.assertEquals(null, new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes("From: me@example.com\r\nDate", true))));
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
       } catch (Exception ex) {
@@ -114,7 +114,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes("From: me@example.com\r\nDate\r", true)));
+        Assert.assertEquals(null, new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes("From: me@example.com\r\nDate\r", true))));
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
       } catch (Exception ex) {
@@ -122,7 +122,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes("Received: from x", true)));
+        Assert.assertEquals(null, new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes("Received: from x", true))));
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
       } catch (Exception ex) {
@@ -130,7 +130,7 @@ import com.upokecenter.mail.*;
         throw new IllegalStateException("", ex);
       }
       try {
-        new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes("Received: from x\r", true)));
+        Assert.assertEquals(null, new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes("Received: from x\r", true))));
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
       } catch (Exception ex) {
@@ -305,42 +305,42 @@ import com.upokecenter.mail.*;
 
     @Test
     public void TestRfc2231Extensions() {
-      this.TestRfc2231Extension("text/plain; charset=\"utf-8\"", "charset", "utf-8");
-      this.TestRfc2231Extension("text/plain; charset*=us-ascii'en'utf-8", "charset", "utf-8");
-      this.TestRfc2231Extension("text/plain; charset*=us-ascii''utf-8", "charset", "utf-8");
-      this.TestRfc2231Extension("text/plain; charset*='en'utf-8", "charset", "utf-8");
-      this.TestRfc2231Extension("text/plain; charset*=''utf-8", "charset", "utf-8");
-      this.TestRfc2231Extension("text/plain; charset*0=a;charset*1=b", "charset", "ab");
-      this.TestRfc2231Extension("text/plain; charset*=utf-8''a%20b", "charset", "a b");
-      this.TestRfc2231Extension("text/plain; charset*=iso-8859-1''a%a0b", "charset", "a\u00a0b");
-      this.TestRfc2231Extension("text/plain; charset*=utf-8''a%c2%a0b", "charset", "a\u00a0b");
-      this.TestRfc2231Extension("text/plain; charset*=iso-8859-1''a%a0b", "charset", "a\u00a0b");
-      this.TestRfc2231Extension("text/plain; charset*=utf-8''a%c2%a0b", "charset", "a\u00a0b");
-      this.TestRfc2231Extension("text/plain; charset*0=\"a\";charset*1=b", "charset", "ab");
-      this.TestRfc2231Extension("text/plain; charset*0*=utf-8''a%20b;charset*1*=c%20d", "charset", "a bc d");
-      this.TestRfc2231Extension(
+      TestRfc2231Extension("text/plain; charset=\"utf-8\"", "charset", "utf-8");
+      TestRfc2231Extension("text/plain; charset*=us-ascii'en'utf-8", "charset", "utf-8");
+      TestRfc2231Extension("text/plain; charset*=us-ascii''utf-8", "charset", "utf-8");
+      TestRfc2231Extension("text/plain; charset*='en'utf-8", "charset", "utf-8");
+      TestRfc2231Extension("text/plain; charset*=''utf-8", "charset", "utf-8");
+      TestRfc2231Extension("text/plain; charset*0=a;charset*1=b", "charset", "ab");
+      TestRfc2231Extension("text/plain; charset*=utf-8''a%20b", "charset", "a b");
+      TestRfc2231Extension("text/plain; charset*=iso-8859-1''a%a0b", "charset", "a\u00a0b");
+      TestRfc2231Extension("text/plain; charset*=utf-8''a%c2%a0b", "charset", "a\u00a0b");
+      TestRfc2231Extension("text/plain; charset*=iso-8859-1''a%a0b", "charset", "a\u00a0b");
+      TestRfc2231Extension("text/plain; charset*=utf-8''a%c2%a0b", "charset", "a\u00a0b");
+      TestRfc2231Extension("text/plain; charset*0=\"a\";charset*1=b", "charset", "ab");
+      TestRfc2231Extension("text/plain; charset*0*=utf-8''a%20b;charset*1*=c%20d", "charset", "a bc d");
+      TestRfc2231Extension(
         "text/plain; charset*0=ab;charset*1*=iso-8859-1-en-xyz",
         "charset",
         "abiso-8859-1-en-xyz");
-      this.TestRfc2231Extension(
+      TestRfc2231Extension(
         "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1-en-xyz",
         "charset",
         "a biso-8859-1-en-xyz");
       if((MediaType.Parse("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz", null))!=null)Assert.fail();
       if((MediaType.Parse("text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz", null))!=null)Assert.fail();
-      this.TestRfc2231Extension(
+      TestRfc2231Extension(
         "text/plain; charset*0*=utf-8''a%20b;charset*1=a%20b",
         "charset",
         "a ba%20b");
-      this.TestRfc2231Extension(
+      TestRfc2231Extension(
         "text/plain\r\n (; charset=x;y=\");ChaRseT*=''a%41b-c(\")",
         "charset",
         "aAb-c");
-      this.TestRfc2231Extension(
+      TestRfc2231Extension(
         "text/plain;\r\n chARSet (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
         "charset",
         "abc");
-      this.TestRfc2231Extension(
+      TestRfc2231Extension(
         "text/plain;\r\n charsET (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
         "format",
         "flowed");
@@ -359,6 +359,7 @@ ms=new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(mtstring, true));
         Message msg = new Message(ms);
         Assert.assertEquals(topLevel, msg.getContentType().getTopLevelType());
         Assert.assertEquals(sub, msg.getContentType().getSubType());
+        Assert.assertEquals(mt.toString(),expected,mt.toString());
         Assert.assertEquals(mt.toString(),value,msg.getContentType().GetParameter("z"));
 }
 finally {
@@ -443,7 +444,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       Assert.assertEquals("\"Me \" <me@example.com>", new NamedAddress("Me ", "me@example.com").toString());
       Assert.assertEquals("\" Me\" <me@example.com>", new NamedAddress(" Me", "me@example.com").toString());
       try {
-        new NamedAddress("", (String)null);
+        Assert.assertEquals(null, new NamedAddress("", (String)null));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
       } catch (Exception ex) {
@@ -451,7 +452,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("", (Address)null);
+        Assert.assertEquals(null, new NamedAddress("", (Address)null));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
       } catch (Exception ex) {
@@ -459,7 +460,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("x at example.com");
+        Assert.assertEquals(null, new NamedAddress("x at example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -467,7 +468,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("x");
+        Assert.assertEquals(null, new NamedAddress("x"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -475,7 +476,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("x@");
+        Assert.assertEquals(null, new NamedAddress("x@"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -483,7 +484,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("@example.com");
+        Assert.assertEquals(null, new NamedAddress("@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -491,7 +492,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("example.com");
+        Assert.assertEquals(null, new NamedAddress("example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -499,7 +500,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new Address((String)null);
+        Assert.assertEquals(null, new Address((String)null));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
       } catch (Exception ex) {
@@ -507,7 +508,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("");
+        Assert.assertEquals(null, new NamedAddress(""));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -515,7 +516,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new Address("");
+        Assert.assertEquals(null, new Address(""));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -523,7 +524,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("a b@example.com");
+        Assert.assertEquals(null, new NamedAddress("a b@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -531,7 +532,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new Address("a b@example.com");
+        Assert.assertEquals(null, new Address("a b@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -539,7 +540,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("ab.example.com");
+        Assert.assertEquals(null, new NamedAddress("ab.example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -547,7 +548,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new Address("ab@exa mple.example");
+        Assert.assertEquals(null, new Address("ab@exa mple.example"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -555,7 +556,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new Address("ab@example.com addr");
+        Assert.assertEquals(null, new Address("ab@example.com addr"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -563,31 +564,31 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("Me <me@example.com>");
+        Assert.assertEquals(null, new NamedAddress("Me <me@example.com>"));
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("Me\u00e0 <me@example.com>");
+        Assert.assertEquals(null, new NamedAddress("Me\u00e0 <me@example.com>"));
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("\"Me\" <me@example.com>");
+        Assert.assertEquals(null, new NamedAddress("\"Me\" <me@example.com>"));
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("\"Me\u00e0\" <me@example.com>");
+        Assert.assertEquals(null, new NamedAddress("\"Me\u00e0\" <me@example.com>"));
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       try {
-        new Address("Me <me@example.com>");
+        Assert.assertEquals(null, new Address("Me <me@example.com>"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -595,7 +596,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new Address("Me\u00e0 <me@example.com>");
+        Assert.assertEquals(null, new Address("Me\u00e0 <me@example.com>"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -603,7 +604,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new Address("\"Me\" <me@example.com>");
+        Assert.assertEquals(null, new Address("\"Me\" <me@example.com>"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -611,7 +612,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new Address("\"Me\u00e0\" <me@example.com>");
+        Assert.assertEquals(null, new Address("\"Me\u00e0\" <me@example.com>"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -619,7 +620,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new NamedAddress("Me <me@example.com>, Fred <fred@example.com>");
+        Assert.assertEquals(null, new NamedAddress("Me <me@example.com>, Fred <fred@example.com>"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -639,7 +640,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         "example.com",
         new Address("local@example.com").getDomain());
       try {
-        new Address("local=domain.example");
+        Assert.assertEquals(null, new Address("local=domain.example"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -647,7 +648,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new Address("local@");
+        Assert.assertEquals(null, new Address("local@"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -655,7 +656,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new Address(EncodingTest.Repeat("local", 200) + "@example.com");
+        Assert.assertEquals(null, new Address(EncodingTest.Repeat("local", 200) + "@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -663,7 +664,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         throw new IllegalStateException("", ex);
       }
       try {
-        new Address("lo,cal@example.com");
+        Assert.assertEquals(null, new Address("lo,cal@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -851,7 +852,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      // Message/rfc822 without content-transfer-encoding base64;
+      // Message/rfc822 with content-transfer-encoding base64;
       // which is not allowed for this media type
       msg = multipart + "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: base64\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nXX==\r\n--b--";
       try {
@@ -924,7 +925,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
 
     static boolean HasNestedMessageType(Message message) {
       if (message.getContentType().getTopLevelType().equals("message")) {
-        return (message.getContentType().getSubType().equals("global")) ? (false) : ((!message.getContentType().getSubType().equals("global-headers")) && ((message.getContentType().getSubType().equals("global-delivery-status")) ? (false) : ((message.getContentType().getSubType().equals("global-disposition-notification")) ? (false) : (true))));
+        return (!message.getContentType().getSubType().equals("global")) && ((!message.getContentType().getSubType().equals("global-headers")) && ((message.getContentType().getSubType().equals("global-delivery-status")) ||                                                                                                                               (message.getContentType().getSubType().equals("global-disposition-notification"))));
       }
       for(Message part : message.getParts()) {
         if (HasNestedMessageType(part)) {
@@ -1094,7 +1095,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
     public void TestMediaTypeBuilder() {
       MediaTypeBuilder builder;
       try {
-        new MediaTypeBuilder(null);
+        Assert.assertEquals(null, new MediaTypeBuilder(null));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
       } catch (Exception ex) {

@@ -12,7 +12,7 @@ at: http://upokecenter.com/d/
      */
   final class QuotedPrintableEncoder implements IStringEncoder
   {
-    private static final String valueHexAlphabet = "0123456789ABCDEF";
+    private static final String HexAlphabet = "0123456789ABCDEF";
     private int lineCount;
     private int lineBreakMode;
     private boolean unlimitedLineLength;
@@ -164,8 +164,8 @@ at: http://upokecenter.com/d/
         } else {
           this.IncrementLineCount(str, 3);
           buf[0] = '=';
-          buf[1] = valueHexAlphabet.charAt((data[i] >> 4) & 15);
-          buf[2] = valueHexAlphabet.charAt(data[i] & 15);
+          buf[1] = HexAlphabet.charAt((data[i] >> 4) & 15);
+          buf[2] = HexAlphabet.charAt(data[i] & 15);
           str.append(buf,0,(0)+(3));
         }
       }

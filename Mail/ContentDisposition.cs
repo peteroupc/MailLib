@@ -36,7 +36,7 @@ namespace PeterO.Mail {
     /// <param name='obj'>An arbitrary object.</param>
     /// <returns>True if the objects are equal; otherwise, false.</returns>
     public override bool Equals(object obj) {
-      ContentDisposition other = obj as ContentDisposition;
+      var other = obj as ContentDisposition;
       if (other == null) {
         return false;
       }
@@ -283,14 +283,14 @@ namespace PeterO.Mail {
     }
 
     private bool ParseDisposition(string str) {
-      const bool httpRules = false;
+      const bool HttpRules = false;
       int index = 0;
       if (str == null) {
         throw new ArgumentNullException("str");
       }
       int endIndex = str.Length;
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      int i = MediaType.SkipMimeToken(str, index, endIndex, null, httpRules);
+      int i = MediaType.SkipMimeToken(str, index, endIndex, null, HttpRules);
       if (i == index) {
         return false;
       }
@@ -308,7 +308,7 @@ namespace PeterO.Mail {
         }
       }
       index = i;
-      return MediaType.ParseParameters(str, index, endIndex, httpRules, this.parameters);
+      return MediaType.ParseParameters(str, index, endIndex, HttpRules, this.parameters);
     }
 
     private static ContentDisposition Build(string name) {
@@ -363,13 +363,7 @@ namespace PeterO.Mail {
       }
       var dispo = new ContentDisposition();
       dispo.parameters = new SortedMap<string, string>();
-      if (!dispo.ParseDisposition(dispositionValue)) {
-        #if DEBUG
-        // Console.WriteLine("Unparsable: " + str);
-        #endif
-        return defaultValue;
-      }
-      return dispo;
+      return (!dispo.ParseDisposition(dispositionValue)) ? defaultValue : dispo;
     }
   }
 }

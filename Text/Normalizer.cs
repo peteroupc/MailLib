@@ -159,7 +159,7 @@ namespace PeterO.Text {
       this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
     }
 
-    private Normalizer Init(string str, int index, int length, Normalization form) {
+    private Normalizer Init(string str, int index, int length, Normalization formLocal) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
@@ -183,8 +183,8 @@ namespace PeterO.Text {
       this.characterListPos = index;
       this.iterator = str;
       this.iterEndIndex = index + length;
-      this.form = form;
-      this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
+      this.form = formLocal;
+      this.compatMode = formLocal == Normalization.NFKC || formLocal == Normalization.NFKD;
       return this;
     }
 
@@ -579,13 +579,12 @@ namespace PeterO.Text {
       if (last != 0) {
         last = 256;
       }
-      const int compPos = 0;
       int endPos = 0 + length;
       bool composed = false;
-      for (int decompPos = compPos; decompPos < endPos; ++decompPos) {
+      for (int decompPos = 0; decompPos < endPos; ++decompPos) {
         int ch = array[decompPos];
         int valuecc = UnicodeDatabase.GetCombiningClass(ch);
-        if (decompPos > compPos) {
+        if (decompPos > 0) {
           int lead = starter - 0x1100;
           if (0 <= lead && lead < 19) {
             // Found Hangul L jamo
@@ -630,8 +629,8 @@ namespace PeterO.Text {
         last = valuecc;
       }
       if (composed) {
-        int j = compPos;
-        for (int i = compPos; i < endPos; ++i) {
+        int j = 0;
+        for (int i = 0; i < endPos; ++i) {
           if (array[i] != 0x110000) {
             array[j++] = array[i];
           }

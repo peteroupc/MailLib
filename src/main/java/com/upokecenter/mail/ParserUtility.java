@@ -28,7 +28,7 @@ private ParserUtility() {
         throw new IllegalArgumentException("strStartPos (" + Integer.toString((int)strStartPos) + ") is more than " + Integer.toString((int)str.length()));
       }
       int endpos = suffix.length() + strStartPos;
-      return (endpos <= str.length()) && str.substring(strStartPos,(strStartPos)+((endpos) - strStartPos)).equals(suffix);
+      return (endpos <= str.length()) && str.substring(strStartPos,(strStartPos)+(endpos - strStartPos)).equals(suffix);
     }
 
     public static boolean StartsWith(String str, String prefix) {
@@ -65,12 +65,11 @@ private ParserUtility() {
       if (((s)==null || (s).length()==0)) {
         return s;
       }
-      int startIndex = 0;
       int index = s.length() - 1;
       while (index >= 0) {
         char c = s.charAt(index);
         if (c != 0x09 && c != 0x20) {
-          return s.substring(startIndex,(startIndex)+(index - startIndex + 1));
+          return s.substring(0,index + 1);
         }
         --index;
       }
@@ -145,16 +144,19 @@ private ParserUtility() {
         int index2 = s.indexOf(delimiter,index);
         if (index2 < 0) {
           if (first) {
-            return new String[] { s };
+            return new[] { s };
+          }
+          if (strings == null) {
+            strings = new ArrayList<String>();
           }
           strings.add(s.substring(index));
           break;
         } else {
-          if (first) {
-            strings = new ArrayList<String>();
-            first = false;
-          }
+          first = false;
           String newstr = s.substring(index,(index)+((index2)-index));
+          if (strings == null) {
+            strings = new ArrayList<String>();
+          }
           strings.add(newstr);
           index = index2 + delimLength;
         }
@@ -207,7 +209,7 @@ private ParserUtility() {
             return true;
           }
           // More complex cases
-          String[] splitString = SplitAt(str.substring(startIndex,(startIndex)+((endIndex) - startIndex)), "-");
+          String[] splitString = SplitAt(str.substring(startIndex,(startIndex)+(endIndex - startIndex)), "-");
           if (splitString.length == 0) {
             return false;
           }
@@ -249,9 +251,7 @@ private ParserUtility() {
             String curString = splitString[splitIndex];
             len = lengthIfAllAlphaNum(curString);
             if (len >= 5 && len <= 8) {
-              if (variants == null) {
-                variants = new ArrayList<String>();
-              }
+              variants = (variants == null) ? ((new ArrayList<String>())) : variants;
               if (!variants.contains(curString)) {
                 variants.add(curString);
               } else {
@@ -259,9 +259,7 @@ private ParserUtility() {
               }
               ++splitIndex;
             } else if (len == 4 && (curString.charAt(0) >= '0' && curString.charAt(0) <= '9')) {
-              if (variants == null) {
-                variants = new ArrayList<String>();
-              }
+              variants = (variants == null) ? ((new ArrayList<String>())) : variants;
               if (!variants.contains(curString)) {
                 variants.add(curString);
               } else {
@@ -281,9 +279,6 @@ private ParserUtility() {
             int curIndex = splitIndex;
             if (lengthIfAllAlphaNum(curString) == 1 &&
                       !curString.equals("x")) {
-              if (variants == null) {
-                variants = new ArrayList<String>();
-              }
               if (!variants.contains(curString)) {
                 variants.add(curString);
               } else {
@@ -371,9 +366,8 @@ private ParserUtility() {
           str.equals("i-mingo") || str.equals("i-pwn") ||
           str.equals("i-tao") || str.equals("i-tay") ||
           str.equals("i-tsu");
-        } else {
-          return false;
         }
+        return false;
       }
       return false;
     }

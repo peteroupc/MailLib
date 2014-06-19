@@ -52,12 +52,12 @@ namespace PeterO.Mail {
         builder.Append(HeaderParserUtility.QuoteValueIfNeeded(this.name));
         builder.Append(": ");
         bool first = true;
-        foreach (NamedAddress address in this.groupAddresses) {
+        foreach (NamedAddress groupAddress in this.groupAddresses) {
           if (!first) {
             builder.Append(", ");
           }
           first = false;
-          builder.Append(address.ToString());
+          builder.Append(groupAddress.ToString());
         }
         builder.Append(";");
         return builder.ToString();

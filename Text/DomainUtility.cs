@@ -185,16 +185,6 @@ namespace PeterO.Text {
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1 };
 
-    /// <summary>Decodes a Punycode-encoded string.</summary>
-    /// <param name='str'>A string to decode. Note that this doesn&apos;t
-    /// include a prefix such as. <c>xn--</c>
-    /// .</param>
-    /// <param name='str'>A string object. (2).</param>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
-    /// <returns>A string object.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> is null.</exception>
     internal static string PunycodeDecode(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -323,7 +313,7 @@ namespace PeterO.Text {
       return builder.ToString();
     }
 
-    private const string valuePunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private const string PunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
 
     internal static string PunycodeEncode(string str) {
       return PunycodeEncodePortion(str, 0, str.Length);
@@ -458,12 +448,12 @@ namespace PeterO.Text {
                 break;
               }
               int digit = t + ((q - t) % (36 - t));
-              builder.Append(valuePunycodeAlphabet[digit]);
+              builder.Append(PunycodeAlphabet[digit]);
               q -= t;
               q /= 36 - t;
               k += 36;
             }
-            builder.Append(valuePunycodeAlphabet[q]);
+            builder.Append(PunycodeAlphabet[q]);
             delta = (h == b) ? delta / 700 : delta >> 1;
             delta += delta / (h + 1);
             k = 0;

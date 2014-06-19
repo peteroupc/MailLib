@@ -14,9 +14,7 @@ namespace PeterO.Text {
 
     public static int GetCombiningClass(int cp) {
       lock (classesSyncRoot) {
-        if (classes == null) {
-          classes = ByteData.Decompress(NormalizationData.CombiningClasses);
-        }
+        classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
       }
       return ((int)classes.GetByte(cp)) & 0xff;
     }
@@ -26,9 +24,7 @@ namespace PeterO.Text {
 
     public static int GetIdnaCategory(int cp) {
       lock (idnaCatSyncRoot) {
-        if (idnaCat == null) {
-          idnaCat = ByteData.Decompress(IdnaData.IdnaCategories);
-        }
+        idnaCat = idnaCat ?? ByteData.Decompress(IdnaData.IdnaCategories);
       }
       return ((int)idnaCat.GetByte(cp)) & 0xff;
     }
@@ -55,27 +51,19 @@ namespace PeterO.Text {
     public static bool IsStableCodePoint(int cp, Normalization form) {
       lock (stableSyncRoot) {
         if (form == Normalization.NFC) {
-          if (stablenfc == null) {
-            stablenfc = ByteData.Decompress(NormalizationData.StableNFC);
-          }
+          stablenfc = stablenfc ?? ByteData.Decompress(NormalizationData.StableNFC);
           return stablenfc.GetBoolean(cp);
         }
         if (form == Normalization.NFD) {
-          if (stablenfd == null) {
-            stablenfd = ByteData.Decompress(NormalizationData.StableNFD);
-          }
+          stablenfd = stablenfd ?? ByteData.Decompress(NormalizationData.StableNFD);
           return stablenfd.GetBoolean(cp);
         }
         if (form == Normalization.NFKC) {
-          if (stablenfkc == null) {
-            stablenfkc = ByteData.Decompress(NormalizationData.StableNFKC);
-          }
+          stablenfkc = stablenfkc ?? ByteData.Decompress(NormalizationData.StableNFKC);
           return stablenfkc.GetBoolean(cp);
         }
         if (form == Normalization.NFKD) {
-          if (stablenfkd == null) {
-            stablenfkd = ByteData.Decompress(NormalizationData.StableNFKD);
-          }
+          stablenfkd = stablenfkd ?? ByteData.Decompress(NormalizationData.StableNFKD);
           return stablenfkd.GetBoolean(cp);
         }
         return false;

@@ -14,11 +14,11 @@ private JIS0208() {
     private static short[] table = CharsetTable();
 
     private static short[] CharsetTable() {
-      short[] table = new short[11104];
-      System.arraycopy(method0(), 0, table, 0, 4096);
-      System.arraycopy(method1(), 0, table, 4096, 4096);
-      System.arraycopy(method2(), 0, table, 8192, 2912);
-      return table;
+      short[] tableVar = new short[11104];
+      System.arraycopy(method0(), 0, tableVar, 0, 4096);
+      System.arraycopy(method1(), 0, tableVar, 4096, 4096);
+      System.arraycopy(method2(), 0, tableVar, 8192, 2912);
+      return tableVar;
     }
 
     private static int[] indextable = { 167, 65509, 0, 256,
