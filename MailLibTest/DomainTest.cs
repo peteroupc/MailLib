@@ -1,4 +1,4 @@
-/*
+﻿/*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
@@ -15,7 +15,7 @@ namespace MailLibTest {
   {
     // Tests that all-ASCII strings remain unchanged by
     // PunycodeEncode.
-    public void TestPunycode() {
+    public static void TestPunycode() {
       string tmp;
       tmp="ascii";
       Assert.AreEqual(tmp, Idna.EncodeDomainName(tmp));

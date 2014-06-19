@@ -7,7 +7,6 @@ at: http://upokecenter.com/d/
  */
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PeterO.Text {
     /// <summary><para>Implements the Unicode normalization algorithm
@@ -23,9 +22,9 @@ namespace PeterO.Text {
   public sealed class NormalizingCharacterInput : ICharacterInput
   {
     /// <summary>Not documented yet.</summary>
-    /// <returns>A list of Unicode characters.</returns>
     /// <param name='str'>A string object.</param>
     /// <param name='form'>A Normalization object.</param>
+    /// <returns>A list of Unicode characters.</returns>
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='str'/> is null.</exception>
     public static IList<int> GetChars(string str, Normalization form) {
@@ -36,17 +35,17 @@ namespace PeterO.Text {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <returns>A list of Unicode characters.</returns>
     /// <param name='str'>An ICharacterInput object.</param>
     /// <param name='form'>A Normalization object.</param>
+    /// <returns>A list of Unicode characters.</returns>
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='str'/> is null.</exception>
     public static IList<int> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
-      NormalizingCharacterInput norm = new NormalizingCharacterInput(str, form);
-      int[] buffer = new int[64];
+      var norm = new NormalizingCharacterInput(str, form);
+      var buffer = new int[64];
       IList<int> ret = new List<int>(24);
       int count = 0;
       while ((count = norm.Read(buffer, 0, buffer.Length)) > 0) {
@@ -137,9 +136,9 @@ namespace PeterO.Text {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <returns>A Boolean object.</returns>
     /// <param name='chars'>An ICharacterInput object.</param>
     /// <param name='form'>A Normalization object.</param>
+    /// <returns>A Boolean object.</returns>
     public static bool IsNormalized(ICharacterInput chars, Normalization form) {
       if (chars == null) {
         return false;
@@ -177,27 +176,27 @@ namespace PeterO.Text {
 
     /// <summary>Determines whether the given string is in the given Unicode
     /// normalization form.</summary>
-    /// <returns>True if the given string is in the given Unicode normalization
-    /// form; otherwise, false.</returns>
     /// <param name='str'>An arbitrary string.</param>
     /// <param name='form'>A Normalization object.</param>
+    /// <returns>True if the given string is in the given Unicode normalization
+    /// form; otherwise, false.</returns>
     public static bool IsNormalized(string str, Normalization form) {
       return Normalizer.IsNormalized(str, form);
     }
 
     /// <summary>Determines whether the given list of characters is in the
     /// given Unicode normalization form.</summary>
-    /// <returns>True if the given list of characters is in the given Unicode
-    /// normalization form; otherwise, false.</returns>
     /// <param name='charList'>An IList object.</param>
     /// <param name='form'>A Normalization object.</param>
+    /// <returns>True if the given list of characters is in the given Unicode
+    /// normalization form; otherwise, false.</returns>
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// "chars" is null.</exception>
     public static bool IsNormalized(IList<int> charList, Normalization form) {
       int nonStableStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       if (charList == null) {
-        throw new ArgumentNullException("chars");
+        throw new ArgumentNullException("charList");
       }
       for (int i = 0; i < charList.Count; ++i) {
         int c = charList[i];
@@ -243,9 +242,9 @@ namespace PeterO.Text {
       return r == 1 ? this.readbuffer[0] : -1;
     }
 
-    private bool endOfString = false;
+    private bool endOfString;
     private int lastChar = -1;
-    private bool ungetting = false;
+    private bool ungetting;
 
     private void Unget() {
       this.ungetting = true;
@@ -257,11 +256,8 @@ namespace PeterO.Text {
         ch = this.lastChar;
         this.ungetting = false;
         return ch;
-      } else if (this.iterator == null) {
-        ch = (this.characterListPos >= this.characterList.Count) ? -1 : this.characterList[this.characterListPos++];
-      } else {
-        ch = this.iterator.ReadChar();
       }
+      ch = (this.iterator == null) ? ((this.characterListPos >= this.characterList.Count) ? -1 : this.characterList[this.characterListPos++]) : this.iterator.ReadChar();
       if (ch < 0) {
         this.endOfString = true;
       } else if (ch > 0x10ffff || ((ch & 0x1ff800) == 0xd800)) {
@@ -307,7 +303,8 @@ namespace PeterO.Text {
           int c = this.GetNextChar();
           if (c < 0) {
             return (total == 0) ? -1 : total;
-          } else if (Normalizer.IsStableCodePoint(c, this.form)) {
+          }
+          if (Normalizer.IsStableCodePoint(c, this.form)) {
             chars[index] = c;
             ++total;
             ++index;
@@ -422,7 +419,7 @@ namespace PeterO.Text {
             // No stable code point was found (or last stable
             // code point is at beginning of buffer), increase
             // the buffer size
-            int[] newBuffer = new int[(this.buffer.Length + 4) * 2];
+            var newBuffer = new int[(this.buffer.Length + 4) * 2];
             Array.Copy(this.buffer, 0, newBuffer, 0, this.buffer.Length);
             this.buffer = newBuffer;
             continue;

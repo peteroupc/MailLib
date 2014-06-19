@@ -14,7 +14,7 @@ import com.upokecenter.text.*;
      * Represents an email address.
      */
   public class Address {
-    private String localPart;
+    private final String localPart;
 
     /**
      * Gets the local part of this email address (the part before the "@" sign).
@@ -80,7 +80,7 @@ import com.upokecenter.text.*;
       }
     }
 
-    private String domain;
+    private final String domain;
 
     /**
      * Gets the domain of this email address (the part after the "@" sign).

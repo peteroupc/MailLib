@@ -102,17 +102,15 @@ private Rfc2047() {
           while (index < endIndex) {
             if (str.charAt(index) == '(' || str.charAt(index) == ')') {
               break;
-            } else {
-              ++index;
             }
+            ++index;
           }
           if (parenEnd == index) {
             encoder.FinalizeEncoding(str.substring(parenStart,(parenStart)+(parenEnd - parenStart)));
             break;
-          } else {
-            encoder.AddPrefix(str.substring(parenStart,(parenStart)+(parenEnd - parenStart)));
-            encoder.AddString(str, parenEnd, index - parenEnd);
           }
+          encoder.AddPrefix(str.substring(parenStart,(parenStart)+(parenEnd - parenStart)));
+          encoder.AddString(str, parenEnd, index - parenEnd);
         }
         return encoder.toString();
       }
@@ -124,7 +122,8 @@ private Rfc2047() {
           if (str.charAt(index) == ')') {
             // End of the comment
             break;
-          } else if (str.charAt(index) == '\r' && index + 2 < endIndex &&
+          }
+          if (str.charAt(index) == '\r' && index + 2 < endIndex &&
                      str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(index + 2) == 0x09)) {
             // Folding whitespace
             builder.append(str.charAt(index + 2));
@@ -133,7 +132,8 @@ private Rfc2047() {
             // Quoted pair
             int cp = DataUtilities.CodePointAt(str, index + 1);
             if (cp <= 0xffff) {
-              { builder.append((char)cp);
+              {
+                builder.append((char)cp);
               }
             } else if (cp <= 0x10ffff) {
               builder.append((char)((((cp - 0x10000) >> 10) & 0x3ff) + 0xd800));
@@ -173,8 +173,9 @@ private Rfc2047() {
         while (index < endIndex) {
           if (str.charAt(index) == '(' || str.charAt(index) == ')') {
             break;
-          } else if (str.charAt(index) == '\r' && index + 2 < endIndex &&
-                     str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(index + 2) == 0x09)) {
+          }
+          if (str.charAt(index) == '\r' && index + 2 < endIndex &&
+              str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(index + 2) == 0x09)) {
             // Folding whitespace
             builder.append(str.charAt(index + 2));
             index += 3;
@@ -197,10 +198,9 @@ private Rfc2047() {
         if (builder.length() == 0) {
           encoder.FinalizeEncoding(str.substring(parenStart,(parenStart)+(parenEnd - parenStart)));
           break;
-        } else {
-          encoder.AddPrefix(str.substring(parenStart,(parenStart)+(parenEnd - parenStart)));
-          encoder.AddString(builder.toString());
         }
+        encoder.AddPrefix(str.substring(parenStart,(parenStart)+(parenEnd - parenStart)));
+        encoder.AddString(builder.toString());
       }
       return encoder.toString();
     }
@@ -346,10 +346,9 @@ private Rfc2047() {
                 if (!ParserUtility.IsValidLanguageTag(language)) {
                   acceptedEncodedWord = false;
                 }
-              } else if (asterisk == 0) {
-                // Impossible, a charset can't start with an asterisk
-                acceptedEncodedWord = false;
-              }
+              } else {
+ acceptedEncodedWord &= asterisk != 0;
+}
               if (acceptedEncodedWord) {
                 ITransform transform = base64 ?
                   (ITransform)new BEncodingStringTransform(encodedText) :
@@ -367,9 +366,9 @@ private Rfc2047() {
                   // word could even encode ASCII control characters and specials)
                   if (context == EncodedWordContext.Phrase && HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
-                  } else if (context == EncodedWordContext.Comment && HasSuspiciousTextInComments(decodedWord)) {
-                    hasSuspiciousText = true;
-                  }
+                  } else {
+ hasSuspiciousText |= context == EncodedWordContext.Comment && HasSuspiciousTextInComments(decodedWord);
+}
                   wordsWereDecoded = true;
                 }
               } else {
@@ -400,14 +399,14 @@ private Rfc2047() {
         while (index < endIndex) {
           char c = str.charAt(index);
           if (c == 0x0d && index + 2 < endIndex && str.charAt(index + 1) == 0x0a &&
-              (str.charAt(index + 2) == 0x09 || str.charAt(index + 2) == 0x20)) {
+                   (str.charAt(index + 2) == 0x09 || str.charAt(index + 2) == 0x20)) {
             index += 2;  // skip the CRLF
             break;
-          } else if (c == 0x09 || c == 0x20) {
-            break;
-          } else {
-            ++index;
           }
+          if (c == 0x09 || c == 0x20) {
+            break;
+          }
+          ++index;
         }
         whitespaceStart = index;
         // Read to nonwhitespace
@@ -466,13 +465,7 @@ private Rfc2047() {
     }
 
     private static boolean PrecededByStartOrLinearWhitespace(String str, int index) {
-      if (index == 0) {
-        return true;
-      }
-      if (index - 1 >= 0 && (str.charAt(index - 1) == 0x09 || str.charAt(index - 1) == 0x20)) {
-        return true;
-      }
-      return false;
+      return (index == 0) || (index - 1 >= 0 && (str.charAt(index - 1) == 0x09 || str.charAt(index - 1) == 0x20));
     }
 
     private static int IndexOfNextPossibleEncodedWord(String str, int index, int endIndex) {
@@ -590,11 +583,7 @@ private Rfc2047() {
           // tokenIndex is now just after the end quote
           hasCFWS = HeaderParser.ParseCFWS(str, tokenIndex, endIndex, null) != tokenIndex;
         }
-        if (hasCFWS) {
-          // Add a space character if CFWS follows the atom or
-          // quoted String and if additional words follow
-          appendSpace = true;
-        }
+        appendSpace |= hasCFWS;
       }
       if (withComments) {
         builder.append(str.substring(lastIndex,(lastIndex)+(endIndex - lastIndex)));
@@ -647,10 +636,9 @@ private Rfc2047() {
             builder.append(' ');
           }
           break;
-        } else {
-          if (index2 != index) {
-            builderPhrase.append(' ');
-          }
+        }
+        if (index2 != index) {
+          builderPhrase.append(' ');
         }
         index = index2;
       }

@@ -2,12 +2,10 @@ package com.upokecenter.test; import com.upokecenter.util.*;
 
 import java.util.*;
 import java.io.*;
-
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
-import com.upokecenter.text.*;
 
   public class MessageTest {
     @Test
@@ -300,7 +298,7 @@ import com.upokecenter.text.*;
       if(!(DataUtilities.CodePointCompare("a\ud7ff\udc00", "a\ud800\udc00") < 0))Assert.fail();
     }
 
-    public void TestRfc2231Extension(String mtype, String param, String expected) {
+    public static void TestRfc2231Extension(String mtype, String param, String expected) {
       MediaType mt = MediaType.Parse(mtype);
       Assert.assertEquals(expected, mt.GetParameter(param));
     }
@@ -348,17 +346,17 @@ import com.upokecenter.text.*;
         "flowed");
     }
 
-    public void SingleTestMediaTypeEncoding(String value, String expected) {
+    public static void SingleTestMediaTypeEncoding(String value, String expected) {
       MediaType mt = new MediaTypeBuilder("x", "y").SetParameter("z", value).ToMediaType();
       String topLevel = mt.getTopLevelType();
       String sub = mt.getSubType();
-      String mtstring = "MIME-Version: 1.0\r\nContent-Type: " + mt.toString() +
+      String mtstring = "MIME-Version: 1.0\r\nContent-Type: " + mt +
         "\r\nContent-Transfer-Encoding: base64\r\n\r\n";
       java.io.ByteArrayInputStream ms=null;
 try {
 ms=new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(mtstring, true));
 
-        Message msg=new Message(ms);
+        Message msg = new Message(ms);
         Assert.assertEquals(topLevel, msg.getContentType().getTopLevelType());
         Assert.assertEquals(sub, msg.getContentType().getSubType());
         Assert.assertEquals(mt.toString(),value,msg.getContentType().GetParameter("z"));
@@ -743,7 +741,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
 
     @Test
     public void TestMessageTests() {
-      var multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
+      String multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
       String msg;
       msg = multipart + "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\nContent-Description: description\r\n\r\n\r\n--b--";
       try {
@@ -796,11 +794,11 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       }
     }
 
-    public void MessageDoubtfulCases() {
+    public static void MessageDoubtfulCases() {
       // The following tests currently fail, since I
       // don't know the best way to handle these cases
       // without being too lenient
-      var multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
+      String multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
       String msg;
       // Multipart message with base64
       msg = multipart + "Content-Transfer-Encoding: base64\r\n\r\n--b\r\n\r\n\r\n--b--";
@@ -920,25 +918,13 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
     @Test
     public void TestMailbox() {
       String mbox = "Me <@example.org,@example.net,@example.com:me@x.example>";
-      NamedAddress result=new NamedAddress(mbox);
+      NamedAddress result = new NamedAddress(mbox);
       Assert.assertEquals("Me <me@x.example>", result.toString());
     }
 
     static boolean HasNestedMessageType(Message message) {
       if (message.getContentType().getTopLevelType().equals("message")) {
-        if (message.getContentType().getSubType().equals("global")) {
-          return false;
-        }
-        if (message.getContentType().getSubType().equals("global-headers")) {
-          return false;
-        }
-        if (message.getContentType().getSubType().equals("global-delivery-status")) {
-          return false;
-        }
-        if (message.getContentType().getSubType().equals("global-disposition-notification")) {
-          return false;
-        }
-        return true;
+        return (message.getContentType().getSubType().equals("global")) ? (false) : ((!message.getContentType().getSubType().equals("global-headers")) && ((message.getContentType().getSubType().equals("global-delivery-status")) ? (false) : ((message.getContentType().getSubType().equals("global-disposition-notification")) ? (false) : (true))));
       }
       for(Message part : message.getParts()) {
         if (HasNestedMessageType(part)) {

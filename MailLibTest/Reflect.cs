@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace MailLibTest {
     /// <summary>Utility methods for accessing internal APIs via reflection.</summary>
@@ -39,7 +38,7 @@ namespace MailLibTest {
       return obj.GetType().GetMethod(name, BindingFlags.Instance | BindingFlags.Public |
         BindingFlags.NonPublic | BindingFlags.InvokeMethod);
     }
-    private static object GetMethodExtended(Type type, string name, bool staticMethod, int parameterCount) {
+    private static object GetMethodExtended(IReflect type, string name, bool staticMethod, int parameterCount) {
       bool haveMethodName = false;
       BindingFlags flags = (staticMethod ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
       foreach (var method in type.GetMethods(flags)) {
@@ -50,10 +49,7 @@ namespace MailLibTest {
           }
         }
       }
-      if (haveMethodName) {
-        return type.GetMethod(name, flags);
-      }
-      return null;
+      return (haveMethodName) ? (type.GetMethod(name, flags)) : (null);
     }
     public static object InvokeMethod(object obj, object method, params object[] parameters) {
       try {

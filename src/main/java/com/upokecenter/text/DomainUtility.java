@@ -150,13 +150,7 @@ private DomainUtility() {
             int k = 36;
             while (true) {
               int t;
-              if (k <= bias) {
-                t = 1;
-              } else if (k >= bias + 26) {
-                t = 26;
-              } else {
-                t = k - bias;
-              }
+              t = (k <= bias) ? 1 : ((k >= bias + 26) ? 26 : (k - bias));
               if (q < t) {
                 break;
               }
@@ -184,7 +178,7 @@ private DomainUtility() {
       return outputLength;
     }
 
-    private static int[] valueDigitValues = new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    private static int[] valueDigitValues = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1, -1,
@@ -197,6 +191,7 @@ private DomainUtility() {
      * Decodes a Punycode-encoded string.
      * @param str A string to decode. Note that this doesn&apos;t include
      * a prefix such as. <code>xn--</code> .
+     * @param str A string object. (2).
      * @param index A 32-bit signed integer.
      * @param endIndex A 32-bit signed integer. (2).
      * @return A string object.
@@ -331,7 +326,7 @@ private DomainUtility() {
       return builder.toString();
     }
 
-    private static String valuePunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private static final String valuePunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
 
     static String PunycodeEncode(String str) {
       return PunycodeEncodePortion(str, 0, str.length());
@@ -370,7 +365,8 @@ private DomainUtility() {
         if (str.charAt(tmpIndex) >= 0x80) {
           allBasics = false;
           break;
-        } else if (str.charAt(tmpIndex) >= 0x41 && str.charAt(tmpIndex) <= 0x5a) {
+        }
+        if (str.charAt(tmpIndex) >= 0x41 && str.charAt(tmpIndex) <= 0x5a) {
           // Treat as having a non-basic in case of an
           // upper-case ASCII character, since special
           // handling is required here
@@ -460,13 +456,7 @@ private DomainUtility() {
             int k = 36;
             while (true) {
               int t;
-              if (k <= bias) {
-                t = 1;
-              } else if (k >= bias + 26) {
-                t = 26;
-              } else {
-                t = k - bias;
-              }
+              t = (k <= bias) ? 1 : ((k >= bias + 26) ? 26 : (k - bias));
               if (q < t) {
                 break;
               }

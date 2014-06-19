@@ -12,7 +12,7 @@ at: http://upokecenter.com/d/
      */
   final class QuotedPrintableEncoder implements IStringEncoder
   {
-    private static String valueHexAlphabet = "0123456789ABCDEF";
+    private static final String valueHexAlphabet = "0123456789ABCDEF";
     private int lineCount;
     private int lineBreakMode;
     private boolean unlimitedLineLength;
@@ -72,7 +72,7 @@ at: http://upokecenter.com/d/
       if (str == null) {
         throw new NullPointerException("str");
       }
-      this.WriteToString(str, new byte[] {  b  }, 0, 1);
+      this.WriteToString(str, new byte[] { b  }, 0, 1);
     }
 
     public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {

@@ -5,8 +5,10 @@ package com.upokecenter.text;
  http://www.unicode.org/copyright.html Exhibit 1). */
 // Character data required for IDNA2008 (RFC 5890-5894)
 
-  class IdnaData {
-    public static final byte[] IdnaCategories = new byte[] {  (byte)0xf0, 41, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10,
+  final class IdnaData {
+private IdnaData() {
+}
+    public static final byte[] IdnaCategories = {  (byte)0xf0, 41, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10,
       0, 11, 0, 12, 0, 13, 0, 14, 0, 15, 0, 16, 0, 17, 0, 18, 0, 2, (byte)0x80, 2, (byte)0x80,
       19, 0, 20, 0, 21, 0, 22, 0, 23, 0, 1, (byte)0x80, 1, (byte)0x80, 4, 0, 4, 8, 0,
       4, 8, 0, 31, 24, 26, 0, 6, 15, 24, 0, 5, 15, 32, 0, 13, 17, 25, 82, 0, 127, 26,
@@ -180,7 +182,7 @@ package com.upokecenter.text;
       9, (byte)0xff, (byte)0xed, 15, (byte)0xe4, 1, 12, 15, (byte)0xa2, 30, 111, 15,
       0, 30, (byte)0xa2, 15, (byte)0xad, 15, (byte)0x88, 9, (byte)0xff, 0, 16, 0  };
     // 0 = Other; 1 = Greek; 2 = Hebrew; 3 = Han/Hiragana/Katakana
-    public static final byte[] IdnaRelevantScripts = new byte[] {  (byte)0xa0, 0, (byte)0x80, 0, 0, 1, 0, 0, (byte)0x80, 0, (byte)0x80, 4, 0, 4,
+    public static final byte[] IdnaRelevantScripts = {  (byte)0xa0, 0, (byte)0x80, 0, 0, 1, 0, 0, (byte)0x80, 0, (byte)0x80, 4, 0, 4,
       8, 0, 2, 6, 0, 89, 2, 0, 3, 0, 4, 28, 0, (byte)0xa0, 5, 0, 6, 0, 7, 0, 3, (byte)0x80,
       3, (byte)0x80, 4, 0, 4, 8, 0, 4, 8, 0, 31, 8, 26, 0, 6, 15, 24, 0, 5, 15, 32,
       0, 13, 23, 9, 126, 0, 31, 10, (byte)0xa6, 0, 4, 15, 22, 0, 3, 15, 32, 0, 13, (byte)0x9f,
@@ -214,7 +216,7 @@ package com.upokecenter.text;
       8, (byte)0xff, (byte)0xf7, 15, 10, 17, (byte)0xe3, 15, 0, 19, (byte)0xff, (byte)0xbb,
       15, 94, 2, 96, 15, 81, 20, (byte)0xff, (byte)0xff, 101, 15, 73, 0, 54, 16, 0  };
 
-    public static final byte[] BidiClasses = new byte[] {  (byte)0xf0, 41, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10,
+    public static final byte[] BidiClasses = {  (byte)0xf0, 41, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10,
       0, 11, 0, 12, 0, 13, 0, 14, 0, 15, 0, 16, 0, 17, 0, 18, 0, 19, 0, 20, 0, 21, 0,
       22, 0, 23, 0, 24, 0, 25, 0, 0, (byte)0x80, 0, (byte)0x80, 4, 0, 4, 8, 0, 4, 8,
       0, 31, 26, 26, 0, 6, 15, 24, 0, 5, 15, 38, 0, 19, 127, 27, 0, 28, 0, 29, 0, 30,
@@ -343,7 +345,7 @@ package com.upokecenter.text;
       15, 64, 0, 45, 15, (byte)0x80, 0, 109, 6, (byte)0x85, 21, 4, 8, 0, 12, 16, 0,
       15, 32, 0, 13, 15, 64, 0, 45, 15, 112, 0, 93, 11, (byte)0xff, 0, 16, 9  };
 
-    public static final byte[] JoiningTypes = new byte[] {  (byte)0xf0, 23, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 0,
+    public static final byte[] JoiningTypes = {  (byte)0xf0, 23, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 0,
       (byte)0x80, 10, 0, 11, 0, 12, 0, 13, 0, 0, (byte)0x80, 14, 0, 0, (byte)0x80, 0,
       (byte)0x80, 4, 0, 119, 0, (byte)0x80, 15, 0, 0, (byte)0x80, 16, 16, 0, 6, 10,
       0, 15, 20, 0, 1, 15, 40, 0, 21, 15, 36, 0, 17, 95, 17, 0, 18, 0, 19, 122, 0, 60,
@@ -419,7 +421,7 @@ package com.upokecenter.text;
       21, 15, 112, 28, 13, 15, 0, 29, 109, 15, (byte)0xf0, 0, 77, 15, 112, 0, 93, 15,
       112, 1, 12, 16, 0  };
 
-    public static final byte[] CombiningMarks = new byte[] {  (byte)0xf0, 5, 0, 1, (byte)0xfe, (byte)0xfe, (byte)0xfe, 2, (byte)0xfe, 3, 4,
+    public static final byte[] CombiningMarks = {  (byte)0xf0, 5, 0, 1, (byte)0xfe, (byte)0xfe, (byte)0xfe, 2, (byte)0xfe, 3, 4,
       (byte)0xfe, (byte)0xfe, 5, (byte)0xfe, 6, 7, 8, (byte)0xfe, (byte)0xfe, (byte)0xfe,
       (byte)0xfe, 4, 0, 4, 8, 0, 12, 16, 0, 15, 32, 0, 13, 15, 32, 0, 13, 31, 9, 24,
       0, 4, 64, 0, 0, 0, 0, 4, 0, 4, 8, 0, 12, 16, 0, 15, 32, 0, 13, 15, 32, 0, 13,

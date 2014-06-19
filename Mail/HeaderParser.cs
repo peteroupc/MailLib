@@ -10,20 +10,20 @@ namespace PeterO.Mail {
         int tx2 = ParseLocalPart(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         if (index < endIndex && (str[index] == 64)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         tx2 = ParseDomain(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -67,7 +67,8 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 44)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             indexTemp2 = index;
             index = indexStart2;
@@ -75,17 +76,18 @@ namespace PeterO.Mail {
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
         }
         int tx2 = ParseAddress(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -102,16 +104,19 @@ namespace PeterO.Mail {
               do {
                 int indexTemp4 = ParseAddress(str, index, endIndex, tokener);
                 if (indexTemp4 != index) {
-                  indexTemp3 = indexTemp4; break;
+                  indexTemp3 = indexTemp4;
+                  break;
                 }
                 indexTemp4 = ParseCFWS(str, index, endIndex, tokener);
                 if (indexTemp4 != index) {
-                  indexTemp3 = indexTemp4; break;
+                  indexTemp3 = indexTemp4;
+                  break;
                 }
               } while (false);
               if (indexTemp3 != index) {
                 index = indexTemp3;
-              } else { break;
+              } else {
+                break;
               }
             } while (false);
             indexTemp2 = index;
@@ -120,7 +125,8 @@ namespace PeterO.Mail {
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -142,19 +148,21 @@ namespace PeterO.Mail {
         if (index < endIndex && (str[index] == 60)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         index = ParseObsRoute(str, index, endIndex, tokener);
         int tx2 = ParseAddrSpec(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         if (index < endIndex && (str[index] == 62)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         index = ParseCFWS(str, index, endIndex, tokener);
         indexTemp = index;
@@ -254,10 +262,10 @@ namespace PeterO.Mail {
               index = ParseFWS(str, index, endIndex, tokener);
               int tx4 = HeaderParserUtility.ParseCommentLax(str, index, endIndex, tokener);
               if (tx4 == index) {
-                index = indexStart3; break;
-              } else {
-                index = tx4;
+                index = indexStart3;
+                break;
               }
+              index = tx4;
               indexTemp3 = index;
               index = indexStart3;
             } while (false);
@@ -284,12 +292,13 @@ namespace PeterO.Mail {
         }
         for (int i = 0;; ++i) {
           indexTemp2 = ParseFWS(str, index, endIndex, tokener);
-          if (indexTemp2 == index) { if (i < 1) {
+          if (indexTemp2 == index) {
+            if (i < 1) {
               indexTemp = indexStart;
-            } break;
-          } else {
-            index = indexTemp2;
+            }
+            break;
           }
+          index = indexTemp2;
         }
         index = indexStart;
         if (indexTemp2 != indexStart) {
@@ -310,9 +319,8 @@ namespace PeterO.Mail {
         int tx2 = ParseDomainName(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -326,17 +334,18 @@ namespace PeterO.Mail {
             }
             int tx3 = ParseDomainName(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -378,20 +387,20 @@ namespace PeterO.Mail {
         int tx2 = ParseDay(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         if (index + 2 < endIndex && (((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 89) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 76) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 71) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 80) || ((str[index] & ~32) == 79 && (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 86) || ((str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67))) {
           index += 3;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         tx2 = ParseYear(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -412,34 +421,35 @@ namespace PeterO.Mail {
             int tx3 = ParseDayOfWeek(str, index, endIndex, tokener);
             if (tx3 == index) {
               break;
-            } else {
-              index = tx3;
             }
+            index = tx3;
             if (index < endIndex && (str[index] == 44)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
-          } else { break;
+          } else {
+            break;
           }
         } while (false);
         int tx2 = ParseDate(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         tx2 = ParseTime(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         index = ParseCFWS(str, index, endIndex, tokener);
         indexTemp = index;
       } while (false);
@@ -679,13 +689,13 @@ namespace PeterO.Mail {
               int tx4 = ParseLabel(str, index, endIndex, tokener);
               if (tx4 == index) {
                 break;
-              } else {
-                index = tx4;
               }
+              index = tx4;
               if (index < endIndex && (str[index] == 46)) {
                 ++index;
               } else {
-                index = indexStart3; break;
+                index = indexStart3;
+                break;
               }
               indexTemp3 = index;
               index = indexStart3;
@@ -840,10 +850,10 @@ namespace PeterO.Mail {
             }
             int tx3 = ParseDiagIdentity(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
@@ -873,24 +883,27 @@ namespace PeterO.Mail {
             ++index;
           }
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         if (index + 8 < endIndex && (str[index] == 61) && (((str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 81 && (str[index + 4] & ~32) == 85 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 69 && (str[index + 8] & ~32) == 68) || ((str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 80 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 73 && (str[index + 5] & ~32) == 79 && (str[index + 6] & ~32) == 78 && (str[index + 7] & ~32) == 65 && (str[index + 8] & ~32) == 76))) {
           index += 9;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         if (index < endIndex && (str[index] == 44)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         int tx2 = ParseValue(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -904,17 +917,18 @@ namespace PeterO.Mail {
             }
             int tx3 = ParseValue(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -979,9 +993,8 @@ namespace PeterO.Mail {
           int tx3 = ParseAtom(str, index, endIndex, tokener);
           if (tx3 == index) {
             break;
-          } else {
-            index = tx3;
           }
+          index = tx3;
           while (true) {
             int indexTemp3;
             int state3 = (tokener != null) ? tokener.GetState() : 0;
@@ -995,17 +1008,18 @@ namespace PeterO.Mail {
               }
               int tx4 = ParseAtom(str, index, endIndex, tokener);
               if (tx4 == index) {
-                index = indexStart3; break;
-              } else {
-                index = tx4;
+                index = indexStart3;
+                break;
               }
+              index = tx4;
               indexTemp3 = index;
               index = indexStart3;
             } while (false);
             if (indexTemp3 != index) {
               index = indexTemp3;
             } else if (tokener != null) {
-              tokener.RestoreState(state3); break;
+              tokener.RestoreState(state3);
+              break;
             } else {
               break;
             }
@@ -1050,10 +1064,10 @@ namespace PeterO.Mail {
             index = ParseFWS(str, index, endIndex, tokener);
             int tx3 = ParseDtext(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
@@ -1191,10 +1205,10 @@ namespace PeterO.Mail {
         index = ParseCFWS(str, index, endIndex, tokener);
         int tx2 = ParseDotAtomText(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         index = ParseCFWS(str, index, endIndex, tokener);
         indexTemp = index;
       } while (false);
@@ -1412,19 +1426,20 @@ namespace PeterO.Mail {
         int tx2 = ParseDisplayName(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         if (index < endIndex && (str[index] == 58)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         index = ParseGroupList(str, index, endIndex, tokener);
         if (index < endIndex && (str[index] == 59)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         index = ParseCFWS(str, index, endIndex, tokener);
         indexTemp = index;
@@ -1463,10 +1478,10 @@ namespace PeterO.Mail {
               index = ParseFWS(str, index, endIndex, tokener);
               int tx4 = HeaderParserUtility.ParseCommentLax(str, index, endIndex, tokener);
               if (tx4 == index) {
-                index = indexStart3; break;
-              } else {
-                index = tx4;
+                index = indexStart3;
+                break;
               }
+              index = tx4;
               indexTemp3 = index;
               index = indexStart3;
             } while (false);
@@ -1493,12 +1508,13 @@ namespace PeterO.Mail {
         }
         for (int i = 0;; ++i) {
           indexTemp2 = ParseFWS(str, index, endIndex, tokener);
-          if (indexTemp2 == index) { if (i < 1) {
+          if (indexTemp2 == index) {
+            if (i < 1) {
               indexTemp = indexStart;
-            } break;
-          } else {
-            index = indexTemp2;
+            }
+            break;
           }
+          index = indexTemp2;
         }
         index = indexStart;
         if (indexTemp2 != indexStart) {
@@ -1524,10 +1540,10 @@ namespace PeterO.Mail {
           index = ParseCFWS(str, index, endIndex, tokener);
           int tx3 = ParseLanguageQ(str, index, endIndex, tokener);
           if (tx3 == index) {
-            index = indexStart2; break;
-          } else {
-            index = tx3;
+            index = indexStart2;
+            break;
           }
+          index = tx3;
           while (true) {
             int indexTemp3;
             int state3 = (tokener != null) ? tokener.GetState() : 0;
@@ -1542,17 +1558,18 @@ namespace PeterO.Mail {
               index = ParseCFWS(str, index, endIndex, tokener);
               int tx4 = ParseLanguageQ(str, index, endIndex, tokener);
               if (tx4 == index) {
-                index = indexStart3; break;
-              } else {
-                index = tx4;
+                index = indexStart3;
+                break;
               }
+              index = tx4;
               indexTemp3 = index;
               index = indexStart3;
             } while (false);
             if (indexTemp3 != index) {
               index = indexTemp3;
             } else if (tokener != null) {
-              tokener.RestoreState(state3); break;
+              tokener.RestoreState(state3);
+              break;
             } else {
               break;
             }
@@ -1616,15 +1633,16 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 59)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = ParseCFWS(str, index, endIndex, tokener);
             int tx3 = ParseParameter(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
@@ -1701,10 +1719,10 @@ namespace PeterO.Mail {
         index = ParseCFWS(str, index, endIndex, tokener);
         int tx2 = ParseAuthservId(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         do {
           int indexTemp2 = index;
           do {
@@ -1712,21 +1730,21 @@ namespace PeterO.Mail {
             int tx3 = ParseCFWS(str, index, endIndex, tokener);
             if (tx3 == index) {
               break;
-            } else {
-              index = tx3;
             }
+            index = tx3;
             tx3 = ParseAuthresVersion(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
-          } else { break;
+          } else {
+            break;
           }
         } while (false);
         do {
@@ -1734,27 +1752,31 @@ namespace PeterO.Mail {
           do {
             int indexTemp3 = ParseNoResult(str, index, endIndex, tokener);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
             int indexStart2 = index;
             for (int i2 = 0;; ++i2) {
               indexTemp3 = ParseResinfo(str, index, endIndex, tokener);
-              if (indexTemp3 == index) { if (i2 < 1) {
+              if (indexTemp3 == index) {
+                if (i2 < 1) {
                   indexTemp2 = indexStart2;
-                } break;
-              } else {
-                index = indexTemp3;
+                }
+                break;
               }
+              index = indexTemp3;
             }
             index = indexStart2;
             if (indexTemp3 != indexStart2) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
-            index = indexStart; break;
+            index = indexStart;
+            break;
           }
         } while (false);
         if (index == indexStart) {
@@ -1885,10 +1907,10 @@ namespace PeterO.Mail {
             }
             int tx3 = ParseParameter(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
@@ -1947,10 +1969,10 @@ namespace PeterO.Mail {
         index = ParseCFWS(str, index, endIndex, tokener);
         int tx2 = ParseLanguageList(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -2033,21 +2055,22 @@ namespace PeterO.Mail {
         index = ParseCFWS(str, index, endIndex, tokener);
         int tx2 = ParseRestrictedName(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         if (index < endIndex && (str[index] == 47)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         tx2 = ParseRestrictedName(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -2058,22 +2081,24 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 59)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = ParseCFWS(str, index, endIndex, tokener);
             int tx3 = ParseParameter(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -2175,22 +2200,24 @@ namespace PeterO.Mail {
           index = ParseCFWS(str, index, endIndex, tokener);
           int tx3 = ParseDayOfWeek(str, index, endIndex, tokener);
           if (tx3 == index) {
-            index = indexStart2; break;
-          } else {
-            index = tx3;
+            index = indexStart2;
+            break;
           }
+          index = tx3;
           index = ParseCFWS(str, index, endIndex, tokener);
           if (index + 2 < endIndex && (((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 89) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 76) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 71) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 80) || ((str[index] & ~32) == 79 && (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 86) || ((str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67))) {
             index += 3;
           } else {
-            index = indexStart2; break;
+            index = indexStart2;
+            break;
           }
           index = ParseCFWS(str, index, endIndex, tokener);
           for (int i2 = 0; i2 < 2; ++i2) {
             if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
               ++index;
             } else if (i2 < 1) {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             } else {
               break;
             }
@@ -2202,24 +2229,28 @@ namespace PeterO.Mail {
           if (index + 2 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57)) && (str[index + 2] == 58)) {
             index += 3;
           } else {
-            index = indexStart2; break;
+            index = indexStart2;
+            break;
           }
           if (index + 2 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57)) && (str[index + 2] == 58)) {
             index += 3;
           } else {
-            index = indexStart2; break;
+            index = indexStart2;
+            break;
           }
           if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
             index += 2;
           } else {
-            index = indexStart2; break;
+            index = indexStart2;
+            break;
           }
           index = ParseCFWS(str, index, endIndex, tokener);
           for (int i2 = 0;; ++i2) {
             if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
               ++index;
             } else if (i2 < 4) {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             } else {
               break;
             }
@@ -2256,10 +2287,10 @@ namespace PeterO.Mail {
         index = ParseCFWS(str, index, endIndex, tokener);
         int tx2 = ParseDispNotParam(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -2273,17 +2304,18 @@ namespace PeterO.Mail {
             }
             int tx3 = ParseDispNotParam(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -2311,10 +2343,10 @@ namespace PeterO.Mail {
         }
         int tx2 = ParseDistName(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -2325,22 +2357,24 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 44)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = ParseFWS(str, index, endIndex, tokener);
             int tx3 = ParseDistName(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -2431,9 +2465,8 @@ namespace PeterO.Mail {
             int tx3 = ParseEncodingCount(str, index, endIndex, tokener);
             if (tx3 == index) {
               break;
-            } else {
-              index = tx3;
             }
+            index = tx3;
             for (int i2 = 0;; ++i2) {
               int indexTemp3 = ParseEncodingKeyword(str, index, endIndex, tokener);
               if (indexTemp3 != index) {
@@ -2441,7 +2474,8 @@ namespace PeterO.Mail {
               } else {
                 if (i2 < 1) {
                   index = indexStart2;
-                } break;
+                }
+                break;
               }
             }
             if (index == indexStart2) {
@@ -2451,7 +2485,8 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 44)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = ParseCFWS(str, index, endIndex, tokener);
             indexTemp2 = index;
@@ -2495,9 +2530,8 @@ namespace PeterO.Mail {
         int tx2 = ParseWord(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         do {
           int indexTemp2 = index;
           do {
@@ -2509,16 +2543,17 @@ namespace PeterO.Mail {
             }
             int tx3 = ParseWord(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
-          } else { break;
+          } else {
+            break;
           }
         } while (false);
         indexTemp = index;
@@ -2644,10 +2679,10 @@ namespace PeterO.Mail {
         index = ParseCFWS(str, index, endIndex, tokener);
         int tx2 = ParsePathIdentity(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         index = ParseCFWS(str, index, endIndex, tokener);
         while (true) {
           int indexTemp2;
@@ -2663,17 +2698,18 @@ namespace PeterO.Mail {
             index = ParseCFWS(str, index, endIndex, tokener);
             int tx3 = ParseParameter(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -2702,10 +2738,10 @@ namespace PeterO.Mail {
         }
         int tx2 = ParsePathxmpp(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
           ++index;
         }
@@ -2725,9 +2761,8 @@ namespace PeterO.Mail {
         int tx2 = ParsePhrase(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -2741,17 +2776,18 @@ namespace PeterO.Mail {
             }
             int tx3 = ParsePhrase(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -2793,14 +2829,15 @@ namespace PeterO.Mail {
                 }
                 int tx4 = ParseLanguageDescription(str, index, endIndex, tokener);
                 if (tx4 == index) {
-                  index = indexStart3; break;
-                } else {
-                  index = tx4;
+                  index = indexStart3;
+                  break;
                 }
+                index = tx4;
                 if (index < endIndex && (str[index] == 41)) {
                   ++index;
                 } else {
-                  index = indexStart3; break;
+                  index = indexStart3;
+                  break;
                 }
                 indexTemp3 = index;
                 index = indexStart3;
@@ -2874,7 +2911,8 @@ namespace PeterO.Mail {
               } else {
                 if (i2 < 1) {
                   index = indexStart2;
-                } break;
+                }
+                break;
               }
             }
             if (index == indexStart2) {
@@ -2884,15 +2922,16 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 46)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = ParseFWS(str, index, endIndex, tokener);
             int tx3 = ParseDotAtomText(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             index = ParseFWS(str, index, endIndex, tokener);
             indexTemp2 = index;
             index = indexStart2;
@@ -3020,10 +3059,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParseNonnegInteger(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         index = ParseFWS(str, index, endIndex, tokener);
         indexTemp = index;
       } while (false);
@@ -3041,10 +3080,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParsePrecedence(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3061,10 +3100,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParseAddressList(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         index = ParseFWS(str, index, endIndex, tokener);
         indexTemp = index;
       } while (false);
@@ -3082,10 +3121,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParseDateTime(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3102,10 +3141,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParseMilitaryStringSequence(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         index = ParseFWS(str, index, endIndex, tokener);
         indexTemp = index;
       } while (false);
@@ -3123,10 +3162,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParseMilitaryStringSequence(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         index = ParseFWS(str, index, endIndex, tokener);
         indexTemp = index;
       } while (false);
@@ -3200,10 +3239,10 @@ namespace PeterO.Mail {
             index = ParseFWS(str, index, endIndex, tokener);
             int tx3 = ParseMessageTypeParam(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             index = ParseFWS(str, index, endIndex, tokener);
             indexTemp2 = index;
             index = indexStart2;
@@ -3285,10 +3324,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParseDesignator(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -3299,22 +3338,24 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 59)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = ParseFWS(str, index, endIndex, tokener);
             int tx3 = ParseDesignator(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -3336,10 +3377,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParseDesignator(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -3350,22 +3391,24 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 59)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = ParseFWS(str, index, endIndex, tokener);
             int tx3 = ParseDesignator(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -3387,10 +3430,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParsePrecedence(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3407,10 +3450,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParseSicSequence(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         index = ParseFWS(str, index, endIndex, tokener);
         indexTemp = index;
       } while (false);
@@ -3500,10 +3543,10 @@ namespace PeterO.Mail {
         }
         int tx2 = ParseNewsgroupList(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3520,9 +3563,8 @@ namespace PeterO.Mail {
         int tx2 = ParseMsgId(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -3536,17 +3578,18 @@ namespace PeterO.Mail {
             }
             int tx3 = ParseMsgId(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -3567,15 +3610,16 @@ namespace PeterO.Mail {
         index = ParseCFWS(str, index, endIndex, tokener);
         int tx2 = ParseAtom(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         index = ParseCFWS(str, index, endIndex, tokener);
         if (index < endIndex && (str[index] == 59)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         while (true) {
           int indexTemp2 = ParseText(str, index, endIndex, tokener);
@@ -3648,38 +3692,43 @@ namespace PeterO.Mail {
             int indexStart2 = index;
             for (int i2 = 0;; ++i2) {
               indexTemp3 = ParseReceivedToken(str, index, endIndex, tokener);
-              if (indexTemp3 == index) { if (i2 < 1) {
+              if (indexTemp3 == index) {
+                if (i2 < 1) {
                   indexTemp2 = indexStart2;
-                } break;
-              } else {
-                index = indexTemp3;
+                }
+                break;
               }
+              index = indexTemp3;
             }
             index = indexStart2;
             if (indexTemp3 != indexStart2) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
             indexTemp3 = ParseCFWS(str, index, endIndex, tokener);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
-          } else { break;
+          } else {
+            break;
           }
         } while (false);
         if (index < endIndex && (str[index] == 59)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         int tx2 = ParseDateTime(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3748,9 +3797,8 @@ namespace PeterO.Mail {
             int tx3 = HeaderParserUtility.ParseCommentLax(str, index, endIndex, tokener);
             if (tx3 == index) {
               break;
-            } else {
-              index = tx3;
             }
+            index = tx3;
             for (int i2 = 0;; ++i2) {
               int indexTemp3 = ParseFWS(str, index, endIndex, tokener);
               if (indexTemp3 != index) {
@@ -3758,7 +3806,8 @@ namespace PeterO.Mail {
               } else {
                 if (i2 < 1) {
                   index = indexStart2;
-                } break;
+                }
+                break;
               }
             }
             if (index == indexStart2) {
@@ -3789,20 +3838,20 @@ namespace PeterO.Mail {
         int tx2 = ParseAddrSpec(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         if (index < endIndex && (str[index] == 59)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         tx2 = ParseDateTime(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3855,10 +3904,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParseSolicitationKeywords(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3880,29 +3929,32 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 60)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             int tx3 = ParseIdLeft(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             if (index < endIndex && (str[index] == 64)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             tx3 = ParseIdRight(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             if (index < endIndex && (str[index] == 62)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = ParseCFWS(str, index, endIndex, tokener);
             indexTemp2 = index;
@@ -4134,10 +4186,10 @@ namespace PeterO.Mail {
         }
         int tx2 = ParsePathIdentity(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         for (int i = 0;; ++i) {
           int indexTemp2 = index;
           do {
@@ -4149,7 +4201,8 @@ namespace PeterO.Mail {
               } else {
                 if (i2 < 1) {
                   index = indexStart2;
-                } break;
+                }
+                break;
               }
             }
             if (index == indexStart2) {
@@ -4157,14 +4210,15 @@ namespace PeterO.Mail {
             }
             int tx3 = ParseNewsgroupName(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             if (index < endIndex && (str[index] == 58)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             if (index < endIndex && ((str[index] >= 33 && str[index] <= 39) || (str[index] >= 41 && str[index] <= 58) || (str[index] >= 60 && str[index] <= 126))) {
               ++index;
@@ -4172,7 +4226,8 @@ namespace PeterO.Mail {
                 ++index;
               }
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             indexTemp2 = index;
             index = indexStart2;
@@ -4182,7 +4237,8 @@ namespace PeterO.Mail {
           } else {
             if (i < 1) {
               index = indexStart;
-            } break;
+            }
+            break;
           }
         }
         if (index == indexStart) {
@@ -4252,9 +4308,8 @@ namespace PeterO.Mail {
         int tx2 = ParseKeyValuePair(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -4269,17 +4324,18 @@ namespace PeterO.Mail {
             index = ParseCFWS(str, index, endIndex, tokener);
             int tx3 = ParseKeyValuePair(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -4303,31 +4359,34 @@ namespace PeterO.Mail {
         int tx2 = ParseKey(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         index = ParseCFWS(str, index, endIndex, tokener);
         if (index < endIndex && (str[index] == 61)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         do {
           int indexTemp2 = index;
           do {
             int indexTemp3 = ParseDotAtom(str, index, endIndex, tokener);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
             indexTemp3 = ParseQuotedString(str, index, endIndex, tokener);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
-            index = indexStart; break;
+            index = indexStart;
+            break;
           }
         } while (false);
         if (index == indexStart) {
@@ -4387,9 +4446,8 @@ namespace PeterO.Mail {
         int tx2 = ParseLanguageTag(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         index = ParseCFWS(str, index, endIndex, tokener);
         while (true) {
           int indexTemp2;
@@ -4405,10 +4463,10 @@ namespace PeterO.Mail {
             index = ParseCFWS(str, index, endIndex, tokener);
             int tx3 = ParseLanguageTag(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             index = ParseCFWS(str, index, endIndex, tokener);
             indexTemp2 = index;
             index = indexStart2;
@@ -4416,7 +4474,8 @@ namespace PeterO.Mail {
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -4437,9 +4496,8 @@ namespace PeterO.Mail {
         int tx2 = ParseLanguageRange(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         do {
           int indexTemp2 = index;
           do {
@@ -4453,20 +4511,22 @@ namespace PeterO.Mail {
             if (index + 1 < endIndex && (str[index] & ~32) == 81 && str[index + 1] == 61) {
               index += 2;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             int tx3 = ParseQvalue(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
-          } else { break;
+          } else {
+            break;
           }
         } while (false);
         index = ParseCFWS(str, index, endIndex, tokener);
@@ -4605,9 +4665,8 @@ namespace PeterO.Mail {
         int tx2 = ParseWord(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -4621,17 +4680,18 @@ namespace PeterO.Mail {
             }
             int tx3 = ParseWord(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -4772,7 +4832,8 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 44)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             indexTemp2 = index;
             index = indexStart2;
@@ -4780,17 +4841,18 @@ namespace PeterO.Mail {
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
         }
         int tx2 = ParseMailbox(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -4807,16 +4869,19 @@ namespace PeterO.Mail {
               do {
                 int indexTemp4 = ParseMailbox(str, index, endIndex, tokener);
                 if (indexTemp4 != index) {
-                  indexTemp3 = indexTemp4; break;
+                  indexTemp3 = indexTemp4;
+                  break;
                 }
                 indexTemp4 = ParseCFWS(str, index, endIndex, tokener);
                 if (indexTemp4 != index) {
-                  indexTemp3 = indexTemp4; break;
+                  indexTemp3 = indexTemp4;
+                  break;
                 }
               } while (false);
               if (indexTemp3 != index) {
                 index = indexTemp3;
-              } else { break;
+              } else {
+                break;
               }
             } while (false);
             indexTemp2 = index;
@@ -4825,7 +4890,8 @@ namespace PeterO.Mail {
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -4851,10 +4917,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParseTypeString(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -4876,10 +4942,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParseDomainName(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -4902,15 +4968,16 @@ namespace PeterO.Mail {
         if (index < endIndex && (str[index] == 61)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParseQuotedMilitaryString(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -4940,15 +5007,16 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 47)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = ParseCFWS(str, index, endIndex, tokener);
             int tx3 = ParseMethodVersion(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
@@ -4995,23 +5063,24 @@ namespace PeterO.Mail {
         index = ParseCFWS(str, index, endIndex, tokener);
         int tx2 = ParseMethod(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         index = ParseCFWS(str, index, endIndex, tokener);
         if (index < endIndex && (str[index] == 61)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         index = ParseCFWS(str, index, endIndex, tokener);
         tx2 = ParseResult(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -5150,29 +5219,32 @@ namespace PeterO.Mail {
         if (index < endIndex && (str[index] == 60)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         int tx2 = ParseIdLeft(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         if (index < endIndex && (str[index] == 64)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         tx2 = ParseIdRight(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         if (index < endIndex && (str[index] == 62)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         index = ParseCFWS(str, index, endIndex, tokener);
         indexTemp = index;
@@ -5196,10 +5268,10 @@ namespace PeterO.Mail {
         index = ParseFWS(str, index, endIndex, tokener);
         int tx2 = ParseCertifierList(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -5216,10 +5288,10 @@ namespace PeterO.Mail {
         index = ParseDisplayName(str, index, endIndex, tokener);
         int tx2 = ParseAngleAddr(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -5238,10 +5310,10 @@ namespace PeterO.Mail {
         }
         int tx2 = ParseNewsgroupName(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -5252,22 +5324,24 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 44)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = ParseFWS(str, index, endIndex, tokener);
             int tx3 = ParseNewsgroupName(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -5462,10 +5536,10 @@ namespace PeterO.Mail {
         index = ParseCFWS(str, index, endIndex, tokener);
         int tx2 = ParseObsLanguageQ(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -5480,17 +5554,18 @@ namespace PeterO.Mail {
             index = ParseCFWS(str, index, endIndex, tokener);
             int tx3 = ParseObsLanguageQ(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -5516,16 +5591,19 @@ namespace PeterO.Mail {
           do {
             int indexTemp3 = ParseCFWS(str, index, endIndex, tokener);
             if (indexTemp3 != index) {
-              indexTemp2 = indexTemp3; break;
+              indexTemp2 = indexTemp3;
+              break;
             }
             if (index < endIndex && (str[index] == 44)) {
-              ++indexTemp2; break;
+              ++indexTemp2;
+              break;
             }
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -5533,14 +5611,15 @@ namespace PeterO.Mail {
         if (index < endIndex && (str[index] == 64)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         int tx2 = ParseDomain(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         while (true) {
           int indexTemp2;
           int state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -5564,16 +5643,17 @@ namespace PeterO.Mail {
                 }
                 int tx4 = ParseDomain(str, index, endIndex, tokener);
                 if (tx4 == index) {
-                  index = indexStart3; break;
-                } else {
-                  index = tx4;
+                  index = indexStart3;
+                  break;
                 }
+                index = tx4;
                 indexTemp3 = index;
                 index = indexStart3;
               } while (false);
               if (indexTemp3 != index) {
                 index = indexTemp3;
-              } else { break;
+              } else {
+                break;
               }
             } while (false);
             indexTemp2 = index;
@@ -5582,7 +5662,8 @@ namespace PeterO.Mail {
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -5641,9 +5722,8 @@ namespace PeterO.Mail {
         int tx2 = ParseLanguageRange(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         do {
           int indexTemp2 = index;
           do {
@@ -5652,32 +5732,36 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 59)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = ParseCFWS(str, index, endIndex, tokener);
             if (index < endIndex && ((str[index] == 81) || (str[index] == 113))) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = ParseCFWS(str, index, endIndex, tokener);
             if (index < endIndex && (str[index] == 61)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             int tx3 = ParseQvalue(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
-          } else { break;
+          } else {
+            break;
           }
         } while (false);
         index = ParseCFWS(str, index, endIndex, tokener);
@@ -5697,13 +5781,13 @@ namespace PeterO.Mail {
         int tx2 = ParseObsDomainList(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         if (index < endIndex && (str[index] == 58)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         indexTemp = index;
       } while (false);
@@ -5749,12 +5833,13 @@ namespace PeterO.Mail {
                   int indexStart4 = index;
                   for (int i4 = 0;; ++i4) {
                     indexTemp5 = ParseFWS(str, index, endIndex, tokener);
-                    if (indexTemp5 == index) { if (i4 < 1) {
+                    if (indexTemp5 == index) {
+                      if (i4 < 1) {
                         indexTemp4 = indexStart4;
-                      } break;
-                    } else {
-                      index = indexTemp5;
+                      }
+                      break;
                     }
+                    index = indexTemp5;
                   }
                   index = indexStart4;
                   if (indexTemp5 != indexStart4) {
@@ -5823,15 +5908,16 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] == 59)) {
               ++index;
             } else {
-              index = indexStart2; break;
+              index = indexStart2;
+              break;
             }
             index = ParseCFWS(str, index, endIndex, tokener);
             int tx3 = ParseParameter(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
@@ -5999,14 +6085,15 @@ namespace PeterO.Mail {
                   }
                   int tx5 = ParseOtherSections(str, index, endIndex, tokener);
                   if (tx5 == index) {
-                    index = indexStart4; break;
-                  } else {
-                    index = tx5;
+                    index = indexStart4;
+                    break;
                   }
+                  index = tx5;
                   if (index < endIndex && (str[index] == 42)) {
                     ++index;
                   } else {
-                    index = indexStart4; break;
+                    index = indexStart4;
+                    break;
                   }
                   indexTemp4 = index;
                   index = indexStart4;
@@ -6128,13 +6215,13 @@ namespace PeterO.Mail {
               int tx4 = ParseLabel(str, index, endIndex, tokener);
               if (tx4 == index) {
                 break;
-              } else {
-                index = tx4;
               }
+              index = tx4;
               if (index < endIndex && (str[index] == 46)) {
                 ++index;
               } else {
-                index = indexStart3; break;
+                index = indexStart3;
+                break;
               }
               indexTemp3 = index;
               index = indexStart3;
@@ -6273,9 +6360,8 @@ namespace PeterO.Mail {
             int tx3 = ParsePathIdentity(str, index, endIndex, tokener);
             if (tx3 == index) {
               break;
-            } else {
-              index = tx3;
             }
+            index = tx3;
             index = ParseFWS(str, index, endIndex, tokener);
             do {
               int indexTemp3 = index;
@@ -6288,19 +6374,20 @@ namespace PeterO.Mail {
                   int tx5 = ParseDiagOther(str, index, endIndex, tokener);
                   if (tx5 == index) {
                     break;
-                  } else {
-                    index = tx5;
                   }
+                  index = tx5;
                   if (index < endIndex && (str[index] == 33)) {
                     ++index;
                   } else {
-                    index = indexStart4; break;
+                    index = indexStart4;
+                    break;
                   }
                   indexTemp4 = index;
                   index = indexStart4;
                 } while (false);
                 if (indexTemp4 != index) {
-                  indexTemp3 = indexTemp4; break;
+                  indexTemp3 = indexTemp4;
+                  break;
                 }
                 if (tokener != null) {
                   tokener.RestoreState(state4);
@@ -6312,34 +6399,38 @@ namespace PeterO.Mail {
                   int tx5 = ParseDiagDeprecated(str, index, endIndex, tokener);
                   if (tx5 == index) {
                     break;
-                  } else {
-                    index = tx5;
                   }
+                  index = tx5;
                   if (index < endIndex && (str[index] == 33)) {
                     ++index;
                   } else {
-                    index = indexStart4; break;
+                    index = indexStart4;
+                    break;
                   }
                   indexTemp4 = index;
                   index = indexStart4;
                 } while (false);
                 if (indexTemp4 != index) {
-                  indexTemp3 = indexTemp4; break;
+                  indexTemp3 = indexTemp4;
+                  break;
                 }
                 if (tokener != null) {
                   tokener.RestoreState(state4);
                 }
                 if (index + 1 < endIndex && str[index] == 33 && str[index + 1] == 33) {
-                  indexTemp3 += 2; break;
+                  indexTemp3 += 2;
+                  break;
                 }
                 if (index < endIndex && (str[index] == 33)) {
-                  ++indexTemp3; break;
+                  ++indexTemp3;
+                  break;
                 }
               } while (false);
               if (indexTemp3 != index) {
                 index = indexTemp3;
               } else {
-                index = indexStart2; break;
+                index = indexStart2;
+                break;
               }
             } while (false);
             if (index == indexStart2) {
@@ -6443,9 +6534,8 @@ namespace PeterO.Mail {
         int tx2 = ParsePhraseWord(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         while (true) {
           int indexTemp2 = ParsePhraseWordOrDot(str, index, endIndex, tokener);
           if (indexTemp2 != index) {
@@ -6524,12 +6614,13 @@ namespace PeterO.Mail {
         int indexTemp2 = index;
         for (int i = 0;; ++i) {
           indexTemp2 = ParseAtext(str, index, endIndex, tokener);
-          if (indexTemp2 == index) { if (i < 1) {
+          if (indexTemp2 == index) {
+            if (i < 1) {
               indexTemp = indexStart;
-            } break;
-          } else {
-            index = indexTemp2;
+            }
+            break;
           }
+          index = indexTemp2;
         }
         index = indexStart;
         if (indexTemp2 != indexStart) {
@@ -6562,10 +6653,10 @@ namespace PeterO.Mail {
           index = ParseCFWS(str, index, endIndex, tokener);
           int tx3 = ParsePhraseAtom(str, index, endIndex, tokener);
           if (tx3 == index) {
-            index = indexStart2; break;
-          } else {
-            index = tx3;
+            index = indexStart2;
+            break;
           }
+          index = tx3;
           index = ParseCFWS(str, index, endIndex, tokener);
           indexTemp2 = index;
           index = indexStart2;
@@ -6600,10 +6691,10 @@ namespace PeterO.Mail {
           index = ParseCFWS(str, index, endIndex, tokener);
           int tx3 = ParsePhraseAtomOrDot(str, index, endIndex, tokener);
           if (tx3 == index) {
-            index = indexStart2; break;
-          } else {
-            index = tx3;
+            index = indexStart2;
+            break;
           }
+          index = tx3;
           index = ParseCFWS(str, index, endIndex, tokener);
           indexTemp2 = index;
           index = indexStart2;
@@ -6746,34 +6837,35 @@ namespace PeterO.Mail {
         int tx2 = ParsePtype(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         index = ParseCFWS(str, index, endIndex, tokener);
         if (index < endIndex && (str[index] == 46)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         index = ParseCFWS(str, index, endIndex, tokener);
         tx2 = ParseProperty(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         index = ParseCFWS(str, index, endIndex, tokener);
         if (index < endIndex && (str[index] == 61)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         tx2 = ParsePvalue(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -6856,22 +6948,24 @@ namespace PeterO.Mail {
                   if (index < endIndex && (str[index] == 64)) {
                     ++index;
                   } else {
-                    index = indexStart4; break;
+                    index = indexStart4;
+                    break;
                   }
                   indexTemp4 = index;
                   index = indexStart4;
                 } while (false);
                 if (indexTemp4 != index) {
                   index = indexTemp4;
-                } else { break;
+                } else {
+                  break;
                 }
               } while (false);
               int tx4 = ParseDomainName(str, index, endIndex, tokener);
               if (tx4 == index) {
-                index = indexStart3; break;
-              } else {
-                index = tx4;
+                index = indexStart3;
+                break;
               }
+              index = tx4;
               indexTemp3 = index;
               index = indexStart3;
             } while (false);
@@ -7019,10 +7113,10 @@ namespace PeterO.Mail {
             index = ParseFWS(str, index, endIndex, tokener);
             int tx3 = ParseQcontent(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
@@ -7155,15 +7249,16 @@ namespace PeterO.Mail {
         if (index < endIndex && (str[index] == 61)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         index = ParseCFWS(str, index, endIndex, tokener);
         int tx2 = ParseValue(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -7244,22 +7339,22 @@ namespace PeterO.Mail {
         int tx2 = ParseRegularParameterName(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         index = ParseCFWS(str, index, endIndex, tokener);
         if (index < endIndex && (str[index] == 61)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         index = ParseCFWS(str, index, endIndex, tokener);
         tx2 = ParseValue(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -7331,14 +7426,15 @@ namespace PeterO.Mail {
         if (index < endIndex && (str[index] == 59)) {
           ++index;
         } else {
-          index = indexStart; break;
+          index = indexStart;
+          break;
         }
         int tx2 = ParseMethodspec(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         do {
           int indexTemp2 = index;
           do {
@@ -7346,21 +7442,21 @@ namespace PeterO.Mail {
             int tx3 = ParseCFWS(str, index, endIndex, tokener);
             if (tx3 == index) {
               break;
-            } else {
-              index = tx3;
             }
+            index = tx3;
             tx3 = ParseReasonspec(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
-          } else { break;
+          } else {
+            break;
           }
         } while (false);
         while (true) {
@@ -7372,22 +7468,22 @@ namespace PeterO.Mail {
             int tx3 = ParseCFWS(str, index, endIndex, tokener);
             if (tx3 == index) {
               break;
-            } else {
-              index = tx3;
             }
+            index = tx3;
             tx3 = ParsePropspec(str, index, endIndex, tokener);
             if (tx3 == index) {
-              index = indexStart2; break;
-            } else {
-              index = tx3;
+              index = indexStart2;
+              break;
             }
+            index = tx3;
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else if (tokener != null) {
-            tokener.RestoreState(state2); break;
+            tokener.RestoreState(state2);
+            break;
           } else {
             break;
           }
@@ -7612,15 +7708,14 @@ namespace PeterO.Mail {
         int tx2 = ParseTimeOfDay(str, index, endIndex, tokener);
         if (tx2 == index) {
           break;
-        } else {
-          index = tx2;
         }
+        index = tx2;
         tx2 = ParseZone(str, index, endIndex, tokener);
         if (tx2 == index) {
-          index = indexStart; break;
-        } else {
-          index = tx2;
+          index = indexStart;
+          break;
         }
+        index = tx2;
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {

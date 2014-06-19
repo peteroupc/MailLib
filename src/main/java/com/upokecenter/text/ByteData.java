@@ -1,7 +1,5 @@
 package com.upokecenter.text;
 
-import com.upokecenter.util.*;
-
   final class ByteData {
     private byte[] array;
 
@@ -46,10 +44,9 @@ import com.upokecenter.util.*;
       int x = this.array[index + 1];
       if ((x & 0x80) != 0) {  // Indicates a default value.
         return this.array[index];
-      } else {
-        x = (x << 8) | (((int)this.array[index]) & 0xff);  // Indicates an array block.
-        index = 0x1100 + (x << 9) + (cp & 511);
-        return this.array[index];
       }
+      x = (x << 8) | (((int)this.array[index]) & 0xff);  // Indicates an array block.
+      index = 0x1100 + (x << 9) + (cp & 511);
+      return this.array[index];
     }
   }

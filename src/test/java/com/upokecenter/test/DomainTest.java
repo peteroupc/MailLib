@@ -15,7 +15,7 @@ import com.upokecenter.text.*;
   {
     // Tests that all-ASCII strings remain unchanged by
     // PunycodeEncode.
-    public void TestPunycode() {
+    public static void TestPunycode() {
       String tmp;
       tmp="ascii";
       Assert.assertEquals(tmp, Idna.EncodeDomainName(tmp));

@@ -9,7 +9,7 @@ using System;
 
 namespace PeterO.Text {
   internal static class UnicodeDatabase {
-    private static ByteData classes = null;
+    private static ByteData classes;
     private static Object classesSyncRoot = new Object();
 
     public static int GetCombiningClass(int cp) {
@@ -21,7 +21,7 @@ namespace PeterO.Text {
       return ((int)classes.GetByte(cp)) & 0xff;
     }
 
-    private static ByteData idnaCat = null;
+    private static ByteData idnaCat;
     private static Object idnaCatSyncRoot = new Object();
 
     public static int GetIdnaCategory(int cp) {
@@ -33,7 +33,7 @@ namespace PeterO.Text {
       return ((int)idnaCat.GetByte(cp)) & 0xff;
     }
 
-    private static ByteData combmark = null;
+    private static ByteData combmark;
     private static Object valueCmSyncRoot = new Object();
 
     public static bool IsCombiningMark(int cp) {
@@ -46,10 +46,10 @@ namespace PeterO.Text {
       }
     }
 
-    private static ByteData stablenfc = null;
-    private static ByteData stablenfd = null;
-    private static ByteData stablenfkc = null;
-    private static ByteData stablenfkd = null;
+    private static ByteData stablenfc;
+    private static ByteData stablenfd;
+    private static ByteData stablenfkc;
+    private static ByteData stablenfkd;
     private static Object stableSyncRoot = new Object();
 
     public static bool IsStableCodePoint(int cp, Normalization form) {
@@ -82,7 +82,7 @@ namespace PeterO.Text {
       }
     }
 
-    private static int[] decomps = null;
+    private static int[] decomps;
 
     public static int GetDecomposition(int cp, bool compat, int[] buffer, int offset) {
       if (cp < 0x80) {
@@ -119,7 +119,8 @@ namespace PeterO.Text {
             buffer[offset] &= 0x1fffff;
           }
           return offset + size;
-        } else if (decomps[realIndex] < cp) {
+        }
+        if (decomps[realIndex] < cp) {
           left = index + 1;
         } else {
           right = index - 1;
@@ -130,7 +131,7 @@ namespace PeterO.Text {
     }
 
     private static int pairsLength;
-    private static int[] pairs = null;
+    private static int[] pairs;
     private static Object pairsSyncRoot = new Object();
 
     private static void EnsurePairs() {
@@ -155,7 +156,8 @@ namespace PeterO.Text {
         if (pairs[realIndex] == first) {
           if (pairs[realIndex + 1] == second) {
             return pairs[realIndex + 2];
-          } else if (pairs[realIndex + 1] < second) {
+          }
+          if (pairs[realIndex + 1] < second) {
             left = index + 1;
           } else {
             right = index - 1;

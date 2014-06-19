@@ -6,7 +6,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -24,7 +23,7 @@ namespace MailLibTest {
 
     public static string EscapeString(string str) {
       string hex = "0123456789abcdef";
-      StringBuilder sb = new StringBuilder();
+      var sb = new StringBuilder();
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
         if (c == 0x09) {
@@ -71,7 +70,7 @@ namespace MailLibTest {
           return false;
         }
         if (c >= 0x80) {
-          Console.WriteLine("Non-ASCII character (0x" + ToBase16(new byte[] { (byte)c }) + ")");
+          Console.WriteLine("Non-ASCII character (0x" + ToBase16(new [] { (byte)c }) + ")");
           return false;
         }
         if (c == '\r' && index + 1 < endIndex && str[index + 1] == '\n') {
@@ -89,11 +88,10 @@ namespace MailLibTest {
           hasNonWhiteSpace = false;
           hasLongWord = false;
           startsWithSpace = false;
-          if (index < endIndex && (str[index] == ' ' || str[index] == '\t')) {
-            startsWithSpace = true;
-          }
+          startsWithSpace |= index < endIndex && (str[index] == ' ' || str[index] == '\t');
           continue;
-        } else if (c == '\r' || c == '\n') {
+        }
+        if (c == '\r' || c == '\n') {
           Console.WriteLine("Bare CR or bare LF");
           return false;
         }
@@ -123,11 +121,11 @@ namespace MailLibTest {
           hasLongWord |= (wordLength > 77) || (lineLength == wordLength && wordLength > 78);
         }
         if (c == 0) {
-          Console.WriteLine("CTL in message (0x" + ToBase16(new byte[] { (byte)c }) + ")");
+          Console.WriteLine("CTL in message (0x" + ToBase16(new [] { (byte)c }) + ")");
           return false;
         }
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
-          Console.WriteLine("CTL in header (0x" + ToBase16(new byte[] { (byte)c }) + ")");
+          Console.WriteLine("CTL in header (0x" + ToBase16(new [] { (byte)c }) + ")");
           return false;
         }
         int maxLineLength = 998;
@@ -147,7 +145,7 @@ namespace MailLibTest {
     }
 
     internal static string ToBase16(byte[] bytes) {
-      StringBuilder sb = new StringBuilder();
+      var sb = new StringBuilder();
       string hex = "0123456789ABCDEF";
       for (int i = 0; i < bytes.Length; ++i) {
         sb.Append(hex[(bytes[i] >> 4) & 15]);
@@ -157,7 +155,7 @@ namespace MailLibTest {
     }
 
     public static String ToString(byte[] array) {
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       bool first = true;
       builder.Append("[");
       foreach (byte v in array) {
@@ -191,7 +189,7 @@ namespace MailLibTest {
     }
 
     public static string Repeat(string s, int count) {
-      StringBuilder sb = new StringBuilder();
+      var sb = new StringBuilder();
       for (int i = 0; i < count; ++i) {
         sb.Append(s);
       }
@@ -228,7 +226,7 @@ namespace MailLibTest {
       if (data.Length - offset < count) {
         throw new ArgumentException("data's length minus " + offset + " (" + Convert.ToString((long)(data.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)count, System.Globalization.CultureInfo.InvariantCulture));
       }
-      MemoryStream ms = new MemoryStream(data, offset, count);
+      var ms = new MemoryStream(data, offset, count);
       try {
         object t = Reflect.Construct(MailNamespace() + ".QuotedPrintableTransform",
           Reflect.Construct(MailNamespace() + ".WrappedStream", ms),
@@ -240,7 +238,7 @@ namespace MailLibTest {
          readByteMethod=Reflect.GetMethod(t, "read");
         }
         while (true) {
-          int c = (int)Reflect.InvokeMethod(t, readByteMethod);
+          var c = (int)Reflect.InvokeMethod(t, readByteMethod);
           if (c < 0) {
             return;
           }
@@ -251,17 +249,17 @@ namespace MailLibTest {
       }
     }
 
-    public void TestDecodeQuotedPrintable(string input, string expectedOutput) {
+    public static void TestDecodeQuotedPrintable(string input, string expectedOutput) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
-      using (MemoryStream ms = new MemoryStream()) {
+      using (var ms = new MemoryStream()) {
         ReadQuotedPrintable(ms, bytes, 0, bytes.Length, true, true);
         Assert.AreEqual(expectedOutput, DataUtilities.GetUtf8String(ms.ToArray(), true));
       }
     }
 
-    public void TestFailQuotedPrintable(string input) {
+    public static void TestFailQuotedPrintable(string input) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
-      using (MemoryStream ms = new MemoryStream()) {
+      using (var ms = new MemoryStream()) {
         try {
           ReadQuotedPrintable(ms, bytes, 0, bytes.Length, true, true);
           Assert.Fail("Should have failed");
@@ -273,9 +271,9 @@ namespace MailLibTest {
       }
     }
 
-    public void TestFailQuotedPrintableNonLenient(string input) {
+    public static void TestFailQuotedPrintableNonLenient(string input) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
-      using (MemoryStream ms = new MemoryStream()) {
+      using (var ms = new MemoryStream()) {
         try {
           ReadQuotedPrintable(ms, bytes, 0, bytes.Length, false, false);
           Assert.Fail("Should have failed");
@@ -287,9 +285,9 @@ namespace MailLibTest {
       }
     }
 
-    public void TestQuotedPrintable(string input, int mode, string expectedOutput) {
+    public static void TestQuotedPrintable(string input, int mode, string expectedOutput) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
-      StringBuilder sb = new StringBuilder();
+      var sb = new StringBuilder();
       object enc = Reflect.Construct(MailNamespace() + ".QuotedPrintableEncoder", mode, false);
       Reflect.Invoke(enc, "WriteToString", sb, bytes, 0, bytes.Length);
       Assert.AreEqual(expectedOutput, sb.ToString());
@@ -339,7 +337,7 @@ namespace MailLibTest {
       this.TestParseDomain("[a .\r\n b. c.d ]", "[a.b.c.d]");
     }
 
-    public void TestWordWrapOne(string firstWord, string nextWords, string expected) {
+    public static void TestWordWrapOne(string firstWord, string nextWords, string expected) {
       object ww = Reflect.Construct(MailNamespace() + ".WordWrapEncoder", firstWord);
       Reflect.Invoke(ww, "AddString", nextWords);
       Assert.AreEqual(expected, ww.ToString());
@@ -628,7 +626,7 @@ namespace MailLibTest {
       string expectedDSN;
       byte[] bytes;
       byte[] expectedBytes;
-      bool encap = (expected.StartsWith("=?"));
+      bool encap = (expected.StartsWith("=?", StringComparison.Ordinal));
       dsn = "X-Ignore: X\r\n\r\nOriginal-Recipient: " + actual + "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
       if (encap)
         expectedDSN = "X-Ignore: X\r\n\r\n" + WrapHeader("Downgraded-Original-Recipient: " + expected) +
@@ -799,13 +797,13 @@ namespace MailLibTest {
       this.TestFailQuotedPrintableNonLenient("aa\r\n" + Repeat("=7F", 26));
     }
 
-    public void TestEncodedWordsPhrase(string expected, string input) {
+    public static void TestEncodedWordsPhrase(string expected, string input) {
       Assert.AreEqual(
         expected + " <test@example.com>",
         DecodeHeaderField("from", input + " <test@example.com>"));
     }
 
-    public void TestEncodedWordsOne(string expected, string input) {
+    public static void TestEncodedWordsOne(string expected, string input) {
       string par = "(";
       Assert.AreEqual(expected, Reflect.InvokeStatic(MailNamespace() + ".Rfc2047", "DecodeEncodedWords", input, 0, input.Length, Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext", "Unstructured")));
       Assert.AreEqual(

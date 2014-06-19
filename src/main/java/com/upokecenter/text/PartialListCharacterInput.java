@@ -32,10 +32,7 @@ import java.util.*;
     }
 
     public int ReadChar() {
-      if (this.pos < this.endPos) {
-        return this.ilist.get(this.pos++);
-      }
-      return -1;
+      return (this.pos < this.endPos) ? this.ilist.get(this.pos++) : (-1);
     }
 
     public int Read(int[] buf, int offset, int unitCount) {

@@ -1,4 +1,4 @@
-/*
+﻿/*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
@@ -6,15 +6,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PeterO;
-using PeterO.Mail;
-using PeterO.Text;
-
 namespace MailLibTest {
   [TestClass]
   public class CharsetsTest {
@@ -141,7 +133,7 @@ namespace MailLibTest {
       Assert.AreEqual(result, (CharsetGetString(charset, EncodingTest.Transform(bytes))));
     }
 
-    public void TestUtf7One(string input, string expected) {
+    public static void TestUtf7One(string input, string expected) {
       Assert.AreEqual(expected, CharsetGetString(GetCharset("utf-7"), EncodingTest.Transform(input)));
     }
 

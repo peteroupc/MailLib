@@ -12,10 +12,7 @@ namespace PeterO.Text {
 
     public int ReadChar() {
       int[] arr = this.ilist;
-      if (this.pos < this.ilist.Length) {
-        return arr[this.pos++];
-      }
-      return -1;
+      return (this.pos < this.ilist.Length) ? arr[this.pos++] : (-1);
     }
 
     public int Read(int[] buf, int offset, int unitCount) {

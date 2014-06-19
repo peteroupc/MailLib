@@ -15,7 +15,7 @@ namespace MailLibTest {
 
     public static int[] GetCodePoints(String cp) {
       String[] cpArray=TrimSpaces(cp).Split(' ');
-      int[] retArray = new int[cpArray.Length];
+      var retArray = new int[cpArray.Length];
       int index = 0;
       foreach(String v in cpArray) {
         int hex = Int32.Parse(TrimSpaces(v), System.Globalization.NumberStyles.AllowHexSpecifier,
@@ -26,7 +26,7 @@ namespace MailLibTest {
     }
 
     public static String ToString(int[] array) {
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       bool first = true;
       builder.Append("[");
       foreach(int v in array) {
@@ -41,7 +41,7 @@ namespace MailLibTest {
     }
 
     public static String ToCodePointString(int[] array) {
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       foreach(int v in array) {
         if (v <= 0xffff) {
           builder.Append((char)v);
@@ -54,7 +54,7 @@ namespace MailLibTest {
     }
 
     public static int[] NormalizerGetChars(int[] cp, Normalization form) {
-      string ret = PeterO.Text.Normalizer.Normalize(ToCodePointString(cp), form);
+      string ret = Normalizer.Normalize(ToCodePointString(cp), form);
       IList<int> list = new List<int>();
       for (int i = 0;i<ret.Length; ++i) {
         int c = PeterO.DataUtilities.CodePointAt(ret, i);
@@ -67,7 +67,7 @@ namespace MailLibTest {
     }
 
     public static int[] ToIntArray(IList<int> list) {
-      int[] retArray = new int[list.Count];
+      var retArray = new int[list.Count];
       int index = 0;
       foreach(int v in list) {
         retArray[index++]=v;
@@ -100,8 +100,8 @@ namespace MailLibTest {
       if (!File.Exists(normTestFile)) {
         Assert.Inconclusive();
       }
-      bool[] handled = new bool[0x110000];
-      using(StreamReader reader = new StreamReader(normTestFile)) {
+      var handled = new bool[0x110000];
+      using(var reader = new StreamReader(normTestFile)) {
         bool part1 = false;
         while (true) {
           String line = reader.ReadLine();
@@ -109,16 +109,12 @@ namespace MailLibTest {
             break;
           }
           line = TrimSpaces(line);
-          int hash=line.IndexOf("#");
+          int hash = line.IndexOf("#", StringComparison.Ordinal);
           if (hash >= 0) {
             line = TrimSpaces(line.Substring(0, hash));
           }
-          if (line.StartsWith("@")) {
-            if (line.Equals("@Part1")) {
-              part1 = true;
-            } else {
-              part1 = false;
-            }
+          if (line.StartsWith("@", StringComparison.Ordinal)) {
+            part1 = (line.Equals("@Part1"));
             continue;
           }
           line = TrimSpaces(line);
@@ -158,7 +154,7 @@ namespace MailLibTest {
           }
         }
       }
-      char[] cptemp = new char[2];
+      var cptemp = new char[2];
       // Individual code points that don't appear in Part 1 of the
       // test will normalize to themselves in all four normalization forms
       for (int i = 0;i<handled.Length; ++i) {
@@ -179,16 +175,16 @@ namespace MailLibTest {
           Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr, Normalization.NFD));
           Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr, Normalization.NFKC));
           Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr, Normalization.NFKD));
-          if (!PeterO.Text.Normalizer.IsNormalized(cpstr, Normalization.NFC)) {
+          if (!Normalizer.IsNormalized(cpstr, Normalization.NFC)) {
             Assert.Fail(imsg);
           }
-          if (!PeterO.Text.Normalizer.IsNormalized(cpstr, Normalization.NFD)) {
+          if (!Normalizer.IsNormalized(cpstr, Normalization.NFD)) {
             Assert.Fail(imsg);
           }
-          if (!PeterO.Text.Normalizer.IsNormalized(cpstr, Normalization.NFKC)) {
+          if (!Normalizer.IsNormalized(cpstr, Normalization.NFKC)) {
             Assert.Fail(imsg);
           }
-          if (!PeterO.Text.Normalizer.IsNormalized(cpstr, Normalization.NFKD)) {
+          if (!Normalizer.IsNormalized(cpstr, Normalization.NFKD)) {
             Assert.Fail(imsg);
           }
         }

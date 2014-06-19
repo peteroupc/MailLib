@@ -50,11 +50,13 @@ at: http://upokecenter.com/d/
             // invalid number of base64 characters, so
             // return the ASCII substitute character
             return 0x1a;
-          } else if (count == 2) {
+          }
+          if (count == 2) {
             --this.inputIndex;
             value <<= 12;
             return (byte)((value >> 16) & 0xff);
-          } else if (count == 3) {
+          }
+          if (count == 3) {
             --this.inputIndex;
             value <<= 6;
             this.ResizeBuffer(1);
@@ -62,7 +64,8 @@ at: http://upokecenter.com/d/
             return (byte)((value >> 16) & 0xff);
           }
           return -1;
-        } else if (c >= 0x80) {
+        }
+        if (c >= 0x80) {
           // ignore this character
         } else {
           c = alphabet[c];

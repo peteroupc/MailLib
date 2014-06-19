@@ -1,4 +1,4 @@
-/*
+﻿/*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
@@ -16,7 +16,7 @@ namespace PeterO.Mail {
     private StringBuilder fullString;
     private int spaceCount;
 
-    private static string hex = "0123456789ABCDEF";
+    private const string hex = "0123456789ABCDEF";
 
     // Doesn't add a space to the beginning of
     // the output

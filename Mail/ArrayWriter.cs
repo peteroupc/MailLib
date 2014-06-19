@@ -52,7 +52,7 @@ namespace PeterO.Mail {
     }
 
     public byte[] ToArray() {
-      byte[] ret = new byte[this.retvalMax];
+      var ret = new byte[this.retvalMax];
       Array.Copy(this.retval, 0, ret, 0, this.retvalMax);
       return ret;
     }
@@ -105,7 +105,7 @@ namespace PeterO.Mail {
       if (this.retval.Length - this.retvalPos < length) {
         // Array too small, make it grow
         int newLength = Math.Max(this.retvalPos + length + 1000, this.retval.Length * 2);
-        byte[] newArray = new byte[newLength];
+        var newArray = new byte[newLength];
         Array.Copy(this.retval, 0, newArray, 0, this.retvalPos);
         this.retval = newArray;
       }

@@ -20,7 +20,7 @@ private JIS0212() {
       return table;
     }
 
-    private static int[] indextable = new int[] { 161, 65374, 0, 256,
+    private static int[] indextable = { 161, 65374, 0, 256,
       902, 1039, 256, 256,
       192, 1119, 512, 256,
       204, 501, 768, 256,

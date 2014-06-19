@@ -41,8 +41,8 @@ namespace PeterO.Mail {
     #region Equals and GetHashCode implementation
     /// <summary>Determines whether this object and another object are
     /// equal.</summary>
-    /// <returns>True if the objects are equal; otherwise, false.</returns>
     /// <param name='obj'>An arbitrary object.</param>
+    /// <returns>True if the objects are equal; otherwise, false.</returns>
     public override bool Equals(object obj) {
       MediaType other = obj as MediaType;
       if (other == null) {
@@ -143,11 +143,9 @@ namespace PeterO.Mail {
           return index + 1;
         }
         i2 = skipQuotedPair(s, index, endIndex);
-        if (index != i2) {
-          return i2;
-        }
         return i2;
-      } else if (rule == QuotedStringRule.Rfc5322) {
+      }
+      if (rule == QuotedStringRule.Rfc5322) {
         i2 = index;
         // qtext (RFC5322 sec. 3.2.1)
         if (i2 < endIndex) {
@@ -173,13 +171,9 @@ namespace PeterO.Mail {
         }
         index = i2;
         i2 = HeaderParser.ParseQuotedPair(s, index, endIndex, null);
-        if (index != i2) {
-          return i2;
-        }
         return i2;
-      } else {
-        throw new ArgumentException(rule.ToString());
       }
+      throw new ArgumentException(rule.ToString());
     }
 
     // quoted-pair (RFC5322 sec. 3.2.1)
@@ -189,9 +183,11 @@ namespace PeterO.Mail {
         // Non-ASCII (allowed in internationalized email headers under RFC6532)
         if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && s[index + 2] >= 0xdc00 && s[index + 2] <= 0xdfff) {
           return index + 3;
-        } else if ((c & 0xf800) == 0xd800) {
+        }
+        if ((c & 0xf800) == 0xd800) {
           return index;
-        } else if (c >= 0x80) {
+        }
+        if (c >= 0x80) {
           return index + 2;
         }
         if (c == 0x20 || c == 0x09 || (c >= 0x21 && c <= 0x7e)) {
@@ -277,7 +273,7 @@ namespace PeterO.Mail {
       int contin = 0;
       string hex = "0123456789ABCDEF";
       length += name.Length + 12;
-      int maxLength = 76;
+      const int maxLength = 76;
       if (sb.Length + name.Length + 9 + (str.Length * 3) <= maxLength) {
         // Very short
         length = sb.Length + name.Length + 9;
@@ -311,7 +307,7 @@ namespace PeterO.Mail {
             first = true;
             ++contin;
             string continString = name + "*" +
-              Convert.ToString((int)contin, System.Globalization.CultureInfo.InvariantCulture) +
+              Convert.ToString((int)contin, CultureInfo.InvariantCulture) +
               "*=";
             sb.Append(continString);
             length = 1 + continString.Length;
@@ -326,7 +322,7 @@ namespace PeterO.Mail {
             first = true;
             ++contin;
             string continString = name + "*" +
-              Convert.ToString((int)contin, System.Globalization.CultureInfo.InvariantCulture) +
+              Convert.ToString((int)contin, CultureInfo.InvariantCulture) +
               "*=";
             sb.Append(continString);
             length = 1 + continString.Length;
@@ -343,7 +339,7 @@ namespace PeterO.Mail {
             first = true;
             ++contin;
             string continString = name + "*" +
-              Convert.ToString((int)contin, System.Globalization.CultureInfo.InvariantCulture) +
+              Convert.ToString((int)contin, CultureInfo.InvariantCulture) +
               "*=";
             sb.Append(continString);
             length = 1 + continString.Length;
@@ -365,7 +361,7 @@ namespace PeterO.Mail {
             first = true;
             ++contin;
             string continString = name + "*" +
-              Convert.ToString((int)contin, System.Globalization.CultureInfo.InvariantCulture) +
+              Convert.ToString((int)contin, CultureInfo.InvariantCulture) +
               "*=";
             sb.Append(continString);
             length = 1 + continString.Length;
@@ -391,7 +387,7 @@ namespace PeterO.Mail {
             first = true;
             ++contin;
             string continString = name + "*" +
-              Convert.ToString((int)contin, System.Globalization.CultureInfo.InvariantCulture) +
+              Convert.ToString((int)contin, CultureInfo.InvariantCulture) +
               "*=";
             sb.Append(continString);
             length = 1 + continString.Length;
@@ -463,7 +459,7 @@ namespace PeterO.Mail {
     }
 
     internal static void AppendParameters(IDictionary<string, string> parameters, StringBuilder sb) {
-      StringBuilder tmp = new StringBuilder();
+      var tmp = new StringBuilder();
       foreach (string key in parameters.Keys) {
         int lineIndex = LastLineStart(sb);
         string name = key;
@@ -489,7 +485,7 @@ namespace PeterO.Mail {
     /// <summary>Converts this object to a text string.</summary>
     /// <returns>A string representation of this object.</returns>
     public override string ToString() {
-      StringBuilder sb = new StringBuilder();
+      var sb = new StringBuilder();
       sb.Append(this.topLevelType);
       sb.Append('/');
       sb.Append(this.subType);
@@ -732,10 +728,7 @@ namespace PeterO.Mail {
         throw new ArgumentException("name is empty.");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
-      if (this.parameters.ContainsKey(name)) {
-        return this.parameters[name];
-      }
-      return null;
+      return this.parameters.ContainsKey(name) ? this.parameters[name] : null;
     }
 
     internal static string DecodeRfc2231Extension(string value) {
@@ -918,10 +911,7 @@ namespace PeterO.Mail {
         }
         if (index >= endIndex) {
           // No more parameters
-          if (!httpRules) {
-            return ExpandRfc2231Extensions(parameters);
-          }
-          return true;
+          return httpRules || ExpandRfc2231Extensions(parameters);
         }
         if (str[index] != ';') {
           return false;
@@ -936,7 +926,7 @@ namespace PeterO.Mail {
             endIndex,
             null);
         }
-        StringBuilder builder = new StringBuilder();
+        var builder = new StringBuilder();
         // NOTE: RFC6838 restricts the format of parameter names to the same
         // syntax as types and subtypes, but this syntax is incompatible with
         // the RFC2231 format
@@ -983,10 +973,7 @@ namespace PeterO.Mail {
         }
         if (index >= endIndex) {
           // No more parameters
-          if (!httpRules) {
-            return ExpandRfc2231Extensions(parameters);
-          }
-          return true;
+          return httpRules || ExpandRfc2231Extensions(parameters);
         }
         builder.Remove(0, builder.Length);
         int qs;
@@ -1023,17 +1010,13 @@ namespace PeterO.Mail {
     }
 
     private bool ParseMediaType(string str) {
-      bool httpRules = false;
+      const bool httpRules = false;
       int index = 0;
       if (str == null) {
         throw new ArgumentNullException("str");
       }
       int endIndex = str.Length;
-      if (httpRules) {
-        index = skipOws(str, index, endIndex);
-      } else {
-        index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      }
+      index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       int i = skipMimeTypeSubtype(str, index, endIndex, null);
       if (i == index || i >= endIndex || str[i] != '/') {
         return false;
@@ -1103,9 +1086,9 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Parses a media type string and returns a media type object.</summary>
+    /// <param name='mediaTypeValue'>A string object.</param>
     /// <returns>A media type object, or text/plain if <paramref name='mediaTypeValue'/>
     /// is empty or syntactically invalid.</returns>
-    /// <param name='mediaTypeValue'>A string object.</param>
     public static MediaType Parse(string mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);
     }
@@ -1122,7 +1105,7 @@ namespace PeterO.Mail {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
-      MediaType mt = new MediaType();
+      var mt = new MediaType();
       mt.parameters = new SortedMap<string, string>();
       if (!mt.ParseMediaType(str)) {
         #if DEBUG

@@ -56,15 +56,15 @@ private Idna() {
       }
       int c = str.charAt(index - 1);
       if ((c & 0xfc00) == 0xdc00 && index - 2 >= 0 &&
-          str.charAt(index - 2) >= 0xd800 && str.charAt(index - 2) <= 0xdbff) {
+             str.charAt(index - 2) >= 0xd800 && str.charAt(index - 2) <= 0xdbff) {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((str.charAt(index - 2) - 0xd800) << 10) + (c - 0xdc00);
-      } else if ((c & 0xf800) == 0xd800) {
+      }
+      if ((c & 0xf800) == 0xd800) {
         // unpaired surrogate
         return 0xfffd;
-      } else {
-        return c;
       }
+      return c;
     }
 
     static int CodePointAt(String str, int index) {
@@ -81,11 +81,9 @@ private Idna() {
       if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
           str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
         // Get the Unicode code point for the surrogate pair
-        c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
-      } else if ((c & 0xf800) == 0xd800) {
-        return 0xfffd;
+        return 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
       }
-      return c;
+      return ((c & 0xf800) == 0xd800) ? 0xfffd : c;
     }
 
     static int GetBidiClass(int ch) {
@@ -172,7 +170,8 @@ private Idna() {
         index += (ch >= 0x10000) ? 2 : 1;
         if (JoiningTypeRightOrDual(ch)) {
           return true;
-        } else if (!JoiningTypeTransparent(ch)) {
+        }
+        if (!JoiningTypeTransparent(ch)) {
           return false;
         }
       }
@@ -263,10 +262,7 @@ private Idna() {
           lastIndex = i + 1;
         }
       }
-      if (str.length() == lastIndex) {
-        return false;
-      }
-      return IsValidLabel(str.substring(lastIndex,(lastIndex)+(str.length() - lastIndex)), lookupRules, bidiRule);
+      return (str.length() != lastIndex) && IsValidLabel(str.substring(lastIndex,(lastIndex)+(str.length() - lastIndex)), lookupRules, bidiRule);
     }
 
     private static String ToLowerCaseAscii(String str) {
@@ -302,24 +298,21 @@ private Idna() {
       if (((str)==null || (str).length()==0)) {
         return false;
       }
-      boolean maybeALabel = false;
-      if (str.length() >= 4 && (str.charAt(0) == 'x' || str.charAt(0) == 'X') && (str.charAt(1) == 'n' || str.charAt(1) == 'N') && str.charAt(2) == '-' && str.charAt(3) == '-') {
-        maybeALabel = true;
-      }
+      boolean maybeALabel = false || str.length() >= 4 && (str.charAt(0) == 'x' || str.charAt(0) == 'X') && (str.charAt(1) == 'n' || str.charAt(1) == 'N') && str.charAt(2) == '-' && str.charAt(3) == '-';
       boolean allLDH = true;
       for (int i = 0; i < str.length(); ++i) {
         if ((str.charAt(i) >= 'a' && str.charAt(i) <= 'z') ||
-            (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z') ||
-            (str.charAt(i) >= '0' && str.charAt(i) <= '9') || str.charAt(i) == '-') {
+                (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z') ||
+                (str.charAt(i) >= '0' && str.charAt(i) <= '9') || str.charAt(i) == '-') {
           // LDH character
           continue;
-        } else if (str.charAt(i) >= 0x80) {
+        }
+        if (str.charAt(i) >= 0x80) {
           // Non-ASCII character
           allLDH = false;
           continue;
-        } else {
-          return false;
         }
+        return false;
       }
       if (maybeALabel) {
         str = ToLowerCaseAscii(str);
@@ -338,20 +331,19 @@ private Idna() {
         // NOTE: "astr" and "str" will contain only ASCII characters
         // at this point, so a simple binary comparison is enough
         return astr.equals(str);
-      } else {
-        if (allLDH) {
-          if (str.length() >= 4 && str.charAt(2) == '-' && str.charAt(3) == '-') {
-           // Contains a hyphen at the third and fourth (one-based) character positions
-            return false;
-          }
-          if (str.charAt(0) != '-' && str.charAt(str.length() - 1) != '-' && !(str.charAt(0) >= '0' && str.charAt(0) <= '9')) {
-            // Only LDH characters, doesn't start with hyphen or digit,
-            // and doesn't end with hyphen
-            return true;
-          }
-        }
-        return IsValidULabel(str, lookupRules, bidiRule);
       }
+      if (allLDH) {
+        if (str.length() >= 4 && str.charAt(2) == '-' && str.charAt(3) == '-') {
+          // Contains a hyphen at the third and fourth (one-based) character positions
+          return false;
+        }
+        if (str.charAt(0) != '-' && str.charAt(str.length() - 1) != '-' && !(str.charAt(0) >= '0' && str.charAt(0) <= '9')) {
+          // Only LDH characters, doesn't start with hyphen or digit,
+          // and doesn't end with hyphen
+          return true;
+        }
+      }
+      return IsValidULabel(str, lookupRules, bidiRule);
     }
 
     private static boolean IsValidULabel(String str, boolean lookupRules, boolean bidiRule) {
@@ -406,9 +398,7 @@ private Idna() {
             }
           }
         }
-        if (category == ContextO || category == ContextJ) {
-          haveContextual = true;
-        }
+        haveContextual |= category == ContextO || category == ContextJ;
         first = false;
       }
       if (haveContextual) {
@@ -513,7 +503,8 @@ private Idna() {
           if (bidiClass == BidiClassEN) {
             found = true;
             break;
-          } else if (bidiClass != BidiClassNSM) {
+          }
+          if (bidiClass != BidiClassNSM) {
             return false;
           }
         }
@@ -548,16 +539,16 @@ private Idna() {
               haveEN = false;
             }
             continue;
-          } else if (bidiClass == BidiClassES ||
-                     bidiClass == BidiClassCS ||
-                     bidiClass == BidiClassET ||
-                     bidiClass == BidiClassON ||
-                     bidiClass == BidiClassBN ||
-                     bidiClass == BidiClassNSM) {
-            continue;
-          } else {
-            return false;
           }
+          if (bidiClass == BidiClassES ||
+                   bidiClass == BidiClassCS ||
+                   bidiClass == BidiClassET ||
+                   bidiClass == BidiClassON ||
+                   bidiClass == BidiClassBN ||
+                   bidiClass == BidiClassNSM) {
+            continue;
+          }
+          return false;
         }
       }
       int aceLength = DomainUtility.PunycodeLength(str, 0, str.length());

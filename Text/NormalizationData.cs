@@ -5,11 +5,11 @@
 using System;
 
 namespace PeterO.Text {
-  internal class NormalizationData {
+  internal static class NormalizationData {
     public static readonly int[] ComposedPairs = GetComposedPairs();
 
     private static int[] GetComposedPairs0() {
-      return new int[] { 60, 824, 8814, 61, 824, 8800, 62, 824, 8815, 65, 768, 192, 65, 769, 193, 65, 770,
+      return new [] { 60, 824, 8814, 61, 824, 8800, 62, 824, 8815, 65, 768, 192, 65, 769, 193, 65, 770,
       194, 65, 771, 195, 65, 772, 256, 65, 774, 258, 65, 775, 550, 65, 776, 196, 65,
       777, 7842, 65, 778, 197, 65, 780, 461, 65, 783, 512, 65, 785, 514, 65, 803, 7840,
       65, 805, 7680, 65, 808, 260, 66, 775, 7682, 66, 803, 7684, 66, 817, 7686, 67,
@@ -203,12 +203,12 @@ namespace PeterO.Text {
     }
 
     private static int[] GetComposedPairs() {
-      int[] ret = new int[2820];
+      var ret = new int[2820];
       Array.Copy(GetComposedPairs0(), 0, ret, 0, 2820);
       return ret;
     }
 
-    public static readonly byte[] CombiningClasses = new byte[] { (byte)0xf0, 23, 0, (byte)0x80, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0,
+    public static readonly byte[] CombiningClasses = { (byte)0xf0, 23, 0, (byte)0x80, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0,
       8, 0, 0, (byte)0x80, 9, 0, 10, 0, 11, 0, 12, 0, 0, (byte)0x80, 13, 0, 0, (byte)0x80,
       0, (byte)0x80, 4, 0, 119, 0, (byte)0x80, 14, 0, 0, (byte)0x80, 15, 16, 0, 6, 10,
       0, 15, 20, 0, 1, 15, 40, 0, 21, 15, 36, 0, 17, 95, 16, 0, 17, 0, 18, 122, 0, 60,
@@ -284,7 +284,7 @@ namespace PeterO.Text {
     public static readonly int[] DecompMappings = GetDecompMappings();
 
     private static int[] GetDecompMappings0() {
-      return new int[] { 5721, 160, 12582944, 168, 41943040, 170, 12583009, 175, 41943042, 178, 12582962,
+      return new [] { 5721, 160, 12582944, 168, 41943040, 170, 12583009, 175, 41943042, 178, 12582962,
       179, 12582963, 180, 41943044, 181, 12583868, 184, 41943046, 185, 12582961, 186,
       12583023, 188, 58720264, 189, 58720267, 190, 58720270, 192, 33554432, 193, 33554434,
       194, 33554436, 195, 33554438, 196, 33554440, 197, 33554442, 199, 33554444, 200,
@@ -681,7 +681,7 @@ namespace PeterO.Text {
     }
 
     private static int[] GetDecompMappings1() {
-      return new int[] { 12604244, 12976, 12605724, 12977, 41943844, 12978, 41943846, 12979, 41943848,
+      return new [] { 12604244, 12976, 12605724, 12977, 41943844, 12978, 41943846, 12979, 41943848,
       12980, 41943850, 12981, 41943852, 12982, 41943854, 12983, 41943856, 12984, 41943858,
       12985, 41943860, 12986, 41943862, 12987, 41943864, 12988, 41943866, 12989, 41943868,
       12990, 41943870, 12991, 41943872, 12992, 41943874, 12993, 41943876, 12994, 41943878,
@@ -1087,7 +1087,7 @@ namespace PeterO.Text {
     }
 
     private static int[] GetDecompMappings2() {
-      return new int[] { 12583023, 119901, 12583024, 119902, 12583025, 119903, 12583026, 119904, 12583027,
+      return new [] { 12583023, 119901, 12583024, 119902, 12583025, 119903, 12583026, 119904, 12583027,
       119905, 12583028, 119906, 12583029, 119907, 12583030, 119908, 12583031, 119909,
       12583032, 119910, 12583033, 119911, 12583034, 119912, 12582977, 119913, 12582978,
       119914, 12582979, 119915, 12582980, 119916, 12582981, 119917, 12582982, 119918,
@@ -1494,7 +1494,7 @@ namespace PeterO.Text {
     }
 
     private static int[] GetDecompMappings3() {
-      return new int[] { 769, 1030, 776, 1050, 769, 1048, 768, 1059, 774, 1048, 774, 1080, 774, 1077, 768,
+      return new [] { 769, 1030, 776, 1050, 769, 1048, 768, 1059, 774, 1048, 774, 1080, 774, 1077, 768,
       1077, 776, 1075, 769, 1110, 776, 1082, 769, 1080, 768, 1091, 774, 1140, 783, 1141,
       783, 1046, 774, 1078, 774, 1040, 774, 1072, 774, 1040, 776, 1072, 776, 1045, 774,
       1077, 774, 1240, 776, 1241, 776, 1046, 776, 1078, 776, 1047, 776, 1079, 776, 1048,
@@ -1599,7 +1599,7 @@ namespace PeterO.Text {
     }
 
     private static int[] GetDecompMappings() {
-      int[] ret = new int[13493];
+      var ret = new int[13493];
       Array.Copy(GetDecompMappings0(), 0, ret, 0, 4000);
       Array.Copy(GetDecompMappings1(), 0, ret, 4000, 4000);
       Array.Copy(GetDecompMappings2(), 0, ret, 8000, 4000);
@@ -1610,7 +1610,7 @@ namespace PeterO.Text {
     public static readonly int[] CompatDecompMappings = GetCompatDecompMappings();
 
     private static int[] GetCompatDecompMappings() {
-      return new int[] { 32, 776, 32, 772, 32, 769, 32, 807, 49, 8260, 52, 49, 8260, 50, 51, 8260, 52,
+      return new [] { 32, 776, 32, 772, 32, 769, 32, 807, 49, 8260, 52, 49, 8260, 50, 51, 8260, 52,
       73, 74, 105, 106, 76, 183, 108, 183, 700, 110, 68, 381, 68, 382, 100, 382, 76,
       74, 76, 106, 108, 106, 78, 74, 78, 106, 110, 106, 68, 90, 68, 122, 100, 122, 32,
       774, 32, 775, 32, 778, 32, 808, 32, 771, 32, 779, 32, 837, 32, 769, 1381, 1410,
@@ -1813,7 +1813,7 @@ namespace PeterO.Text {
       21213, 12309, 12308, 25943, 12309 };
     }
 
-    public static readonly byte[] StableNFC = new byte[] { (byte)0xf0, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, (byte)0xff, (byte)0xff, 9, (byte)0xff,
+    public static readonly byte[] StableNFC = { (byte)0xf0, 13, 0, 1, 2, 3, 4, 5, 6, 7, 8, (byte)0xff, (byte)0xff, 9, (byte)0xff,
       10, 11, 12, 13, 14, 15, 16, 17, 18, (byte)0xff, 19, (byte)0xff, (byte)0xff, (byte)0xff,
       (byte)0xff, 4, 0, 4, 8, 0, 12, 16, 0, 15, 32, 0, 13, 15, 52, 0, 33, 64, 0, 0,
       0, 0, 4, 0, 64, 0, 0, 0, (byte)0x80, 16, 0, (byte)0xf0, 0, (byte)0x92, 106, 66,
@@ -2073,7 +2073,7 @@ namespace PeterO.Text {
       0, 6, 10, 0, 15, 20, 0, 1, 15, 27, 0, 8, 31, (byte)0xc0, (byte)0xff, 0, (byte)0xa8,
       16, (byte)0xff };
 
-    public static readonly byte[] StableNFD = new byte[] { (byte)0xf3, 9, 0, 1, (byte)0xff, (byte)0xff, (byte)0xff, 2, 3, 4, 5, (byte)0xff,
+    public static readonly byte[] StableNFD = { (byte)0xf3, 9, 0, 1, (byte)0xff, (byte)0xff, (byte)0xff, 2, 3, 4, 5, (byte)0xff,
       (byte)0xff, 6, (byte)0xff, 7, 8, 9, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
       (byte)0xff, (byte)0xff, (byte)0xff, 10, 8, 0, 3, 7, 0, 10, 14, 0, 15, 28, 0, 9,
       15, 56, 0, 37, 15, 24, 0, 5, (byte)0xf0, 9, 64, 0, (byte)0x81, (byte)0xc1, 64,
@@ -2142,7 +2142,7 @@ namespace PeterO.Text {
       (byte)0xff, (byte)0xff, (byte)0xd8, 15, 79, 28, 48, 15, 126, 23, 103, 15, 66,
       0, 47, 16, (byte)0xff };
 
-    public static readonly byte[] StableNFKC = new byte[] { (byte)0xf3, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, (byte)0xff, (byte)0xff, 9, (byte)0xff,
+    public static readonly byte[] StableNFKC = { (byte)0xf3, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, (byte)0xff, (byte)0xff, 9, (byte)0xff,
       10, 11, 12, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
       (byte)0xff, 13, 8, 0, 3, 7, 0, 10, 14, 0, 15, 28, 0, 9, 15, 56, 0, 37, 0, 4, 0,
       64, 0, 0, 0, 0, 4, 0, 64, 0, 0, 0, (byte)0x80, 16, 0, (byte)0xf0, 0, (byte)0x92,
@@ -2291,7 +2291,7 @@ namespace PeterO.Text {
       11, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xa0, 15, (byte)0x85,
       23, 25, 15, (byte)0x9c, 23, 7, 15, (byte)0xff, 0, (byte)0xa6, 16, (byte)0xff };
 
-    public static readonly byte[] StableNFKD = new byte[] { (byte)0xf3, 9, 0, 1, (byte)0xff, (byte)0xff, (byte)0xff, 2, 3, 4, 5, (byte)0xff,
+    public static readonly byte[] StableNFKD = { (byte)0xf3, 9, 0, 1, (byte)0xff, (byte)0xff, (byte)0xff, 2, 3, 4, 5, (byte)0xff,
       (byte)0xff, 6, (byte)0xff, 7, 8, 9, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
       (byte)0xff, (byte)0xff, (byte)0xff, 10, 8, 0, 3, 7, 0, 10, 14, 0, 15, 28, 0, 9,
       15, 56, 0, 37, 15, 20, 0, 1, (byte)0xf0, 13, (byte)0xfe, 122, (byte)0xc3, (byte)0x88,

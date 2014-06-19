@@ -27,7 +27,7 @@ namespace PeterO.Mail {
       this.supportBareLF = supportBareLF;
     }
 
-public int ReadByte() {
+    public int ReadByte() {
       try {
         if (this.val >= 0) {
           int ret = this.val;
@@ -43,13 +43,13 @@ public int ReadByte() {
           if (ret == 0x0a) {
             this.val = 0x0a;
             return 0x0d;
-          } else if (ret == 0x0d && this.supportBareLF) {
+          }
+          if (ret == 0x0d && this.supportBareLF) {
             this.cr = true;
             this.val = 0x0a;
             return 0x0d;
-          } else {
-            return ret;
           }
+          return ret;
         }
       } catch (IOException ex) {
         throw new MessageDataException(ex.Message, ex);

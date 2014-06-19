@@ -14,7 +14,7 @@ import com.upokecenter.util.*;
     private StringBuilder fullString;
     private int spaceCount;
 
-    private static String hex = "0123456789ABCDEF";
+    private static final String hex = "0123456789ABCDEF";
 
     // Doesn't add a space to the beginning of
     // the output

@@ -32,10 +32,7 @@ namespace PeterO.Text {
     }
 
     public int ReadChar() {
-      if (this.pos < this.endPos) {
-        return this.ilist[this.pos++];
-      }
-      return -1;
+      return (this.pos < this.endPos) ? this.ilist[this.pos++] : (-1);
     }
 
     public int Read(int[] buf, int offset, int unitCount) {

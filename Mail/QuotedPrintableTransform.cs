@@ -6,7 +6,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 using System;
-using System.Text;
 
 namespace PeterO.Mail {
   internal sealed class QuotedPrintableTransform : ITransform {
@@ -45,7 +44,7 @@ namespace PeterO.Mail {
       if (this.buffer == null) {
         this.buffer = new byte[size + 10];
       } else if (size > this.buffer.Length) {
-        byte[] newbuffer = new byte[size + 10];
+        var newbuffer = new byte[size + 10];
         Array.Copy(this.buffer, newbuffer, this.buffer.Length);
         this.buffer = newbuffer;
       }
@@ -69,7 +68,8 @@ namespace PeterO.Mail {
         if (c < 0) {
           // End of stream
           return -1;
-        } else if (c == 0x0d) {  // CR
+        }
+        if (c == 0x0d) {  // CR
           c = this.input.ReadByte();
           if (c == 0x0a) {
             // CRLF
@@ -77,18 +77,18 @@ namespace PeterO.Mail {
             this.buffer[0] = 0x0a;
             this.lineCharCount = 0;
             return 0x0d;
-          } else {
-            this.input.Unget();
-            if (!this.lenientLineBreaks) {
-              throw new MessageDataException("Expected LF after CR");
-            }
-            // CR, so write CRLF
-            this.ResizeBuffer(1);
-            this.buffer[0] = 0x0a;
-            this.lineCharCount = 0;
-            return 0x0d;
           }
-        } else if (c == 0x0a) {  // LF
+          this.input.Unget();
+          if (!this.lenientLineBreaks) {
+            throw new MessageDataException("Expected LF after CR");
+          }
+          // CR, so write CRLF
+          this.ResizeBuffer(1);
+          this.buffer[0] = 0x0a;
+          this.lineCharCount = 0;
+          return 0x0d;
+        }
+        if (c == 0x0a) {  // LF
           if (!this.lenientLineBreaks) {
             throw new MessageDataException("Expected LF after CR");
           }
@@ -121,26 +121,25 @@ namespace PeterO.Mail {
               // Soft line break
               this.lineCharCount = 0;
               continue;
-            } else {
-              if (this.lenientLineBreaks) {
-                this.lineCharCount = 0;
-                this.input.Unget();
-                continue;
-              } else if (!this.checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
-                if (this.maxLineSize >= 0) {
-                  ++this.lineCharCount;
-                  if (this.lineCharCount > this.maxLineSize) {
-                    throw new MessageDataException("Encoded quoted-printable line too long");
-                  }
-                }
-                this.input.Unget();
-                this.ResizeBuffer(1);
-                this.buffer[0] = (byte)'\r';
-                return '=';
-              } else {
-                throw new MessageDataException("CR not followed by LF in quoted-printable");
-              }
             }
+            if (this.lenientLineBreaks) {
+              this.lineCharCount = 0;
+              this.input.Unget();
+              continue;
+            }
+            if (!this.checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
+              if (this.maxLineSize >= 0) {
+                ++this.lineCharCount;
+                if (this.lineCharCount > this.maxLineSize) {
+                  throw new MessageDataException("Encoded quoted-printable line too long");
+                }
+              }
+              this.input.Unget();
+              this.ResizeBuffer(1);
+              this.buffer[0] = (byte)'\r';
+              return '=';
+            }
+            throw new MessageDataException("CR not followed by LF in quoted-printable");
           } else if (b1 == -1) {
             // Equals sign at end, ignore
             return -1;
@@ -155,9 +154,8 @@ namespace PeterO.Mail {
               // to be treated some other way
               this.input.Unget();
               return '=';
-            } else {
-              throw new MessageDataException("Invalid hex character in quoted-printable");
             }
+            throw new MessageDataException("Invalid hex character in quoted-printable");
           }
           int b2 = this.input.ReadByte();
           // At this point, only a hex character is expected
@@ -185,9 +183,8 @@ namespace PeterO.Mail {
               this.ResizeBuffer(1);
               this.buffer[0] = (byte)b1;
               return '=';
-            } else {
-              throw new MessageDataException("Invalid hex character in quoted-printable");
             }
+            throw new MessageDataException("Invalid hex character in quoted-printable");
           }
           if (this.maxLineSize >= 0) {
             this.lineCharCount += 2;
@@ -245,12 +242,14 @@ namespace PeterO.Mail {
               this.input.Unget();
               endsWithLineBreak = true;
               break;
-            } else if (c2 == '\r' && this.lenientLineBreaks) {
+            }
+            if (c2 == '\r' && this.lenientLineBreaks) {
               // CR with lenient line breaks
               this.input.Unget();
               endsWithLineBreak = true;
               break;
-            } else if (c2 == '\r') {
+            }
+            if (c2 == '\r') {
               // CR, may or may not be a line break
               c2 = this.input.ReadByte();
               // Add the CR to the
@@ -264,17 +263,16 @@ namespace PeterO.Mail {
                 this.buffer[spaceCount] = (byte)'\n';
                 endsWithLineBreak = true;
                 break;
-              } else {
-                if (!this.lenientLineBreaks) {
-                  throw new MessageDataException("Expected LF after CR");
-                }
-                this.input.Unget();  // it's something else
-                ++this.lineCharCount;
-                if (this.maxLineSize >= 0 && this.lineCharCount > this.maxLineSize) {
-                  throw new MessageDataException("Encoded quoted-printable line too long");
-                }
-                break;
               }
+              if (!this.lenientLineBreaks) {
+                throw new MessageDataException("Expected LF after CR");
+              }
+              this.input.Unget();  // it's something else
+              ++this.lineCharCount;
+              if (this.maxLineSize >= 0 && this.lineCharCount > this.maxLineSize) {
+                throw new MessageDataException("Encoded quoted-printable line too long");
+              }
+              break;
             } else if (c2 != ' ' && c2 != '\t') {
               // Not a space or tab
               this.input.Unget();
@@ -296,13 +294,12 @@ namespace PeterO.Mail {
           // Ignore space/tab runs if the line ends in that run
           if (!endsWithLineBreak) {
             return c;
-          } else {
-            if (this.checkStrictEncoding) {
-              throw new MessageDataException("Space or tab at end of line");
-            }
-            this.bufferCount = 0;
-            continue;
           }
+          if (this.checkStrictEncoding) {
+            throw new MessageDataException("Space or tab at end of line");
+          }
+          this.bufferCount = 0;
+          continue;
         } else {
           // Any other character
           if (this.maxLineSize >= 0) {
@@ -311,7 +308,7 @@ namespace PeterO.Mail {
               throw new MessageDataException("Encoded quoted-printable line too long");
             }
           } else if (this.checkStrictEncoding && (c >= 0x7f || c < 0x20)) {
-              throw new MessageDataException("Invalid character");
+            throw new MessageDataException("Invalid character");
           }
           return c;
         }
