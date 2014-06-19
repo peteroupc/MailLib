@@ -141,11 +141,9 @@ import com.upokecenter.util.*;
           return index + 1;
         }
         i2 = skipQuotedPair(s, index, endIndex);
-        if (index != i2) {
-          return i2;
-        }
         return i2;
-      } else if (rule == QuotedStringRule.Rfc5322) {
+      }
+      if (rule == QuotedStringRule.Rfc5322) {
         i2 = index;
         // qtext (RFC5322 sec. 3.2.1)
         if (i2 < endIndex) {
@@ -171,13 +169,9 @@ import com.upokecenter.util.*;
         }
         index = i2;
         i2 = HeaderParser.ParseQuotedPair(s, index, endIndex, null);
-        if (index != i2) {
-          return i2;
-        }
         return i2;
-      } else {
-        throw new IllegalArgumentException(rule.toString());
       }
+      throw new IllegalArgumentException(rule.toString());
     }
 
     // quoted-pair (RFC5322 sec. 3.2.1)
@@ -187,9 +181,11 @@ import com.upokecenter.util.*;
         // Non-ASCII (allowed in internationalized email headers under RFC6532)
         if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && s.charAt(index + 2) >= 0xdc00 && s.charAt(index + 2) <= 0xdfff) {
           return index + 3;
-        } else if ((c & 0xf800) == 0xd800) {
+        }
+        if ((c & 0xf800) == 0xd800) {
           return index;
-        } else if (c >= 0x80) {
+        }
+        if (c >= 0x80) {
           return index + 2;
         }
         if (c == 0x20 || c == 0x09 || (c >= 0x21 && c <= 0x7e)) {
@@ -728,10 +724,7 @@ import com.upokecenter.util.*;
         throw new IllegalArgumentException("name is empty.");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
-      if (this.parameters.containsKey(name)) {
-        return this.parameters.get(name);
-      }
-      return null;
+      return this.parameters.containsKey(name) ? this.parameters.get(name) : null;
     }
 
     static String DecodeRfc2231Extension(String value) {
@@ -914,10 +907,7 @@ import com.upokecenter.util.*;
         }
         if (index >= endIndex) {
           // No more parameters
-          if (!httpRules) {
-            return ExpandRfc2231Extensions(parameters);
-          }
-          return true;
+          return httpRules || ExpandRfc2231Extensions(parameters);
         }
         if (str.charAt(index) != ';') {
           return false;
@@ -979,10 +969,7 @@ import com.upokecenter.util.*;
         }
         if (index >= endIndex) {
           // No more parameters
-          if (!httpRules) {
-            return ExpandRfc2231Extensions(parameters);
-          }
-          return true;
+          return httpRules || ExpandRfc2231Extensions(parameters);
         }
         builder.delete(0,(0)+(builder.length()));
         int qs;
@@ -1025,11 +1012,7 @@ import com.upokecenter.util.*;
         throw new NullPointerException("str");
       }
       int endIndex = str.length();
-      if (httpRules) {
-        index = skipOws(str, index, endIndex);
-      } else {
-        index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      }
+      index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       int i = skipMimeTypeSubtype(str, index, endIndex, null);
       if (i == index || i >= endIndex || str.charAt(i) != '/') {
         return false;

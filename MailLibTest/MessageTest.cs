@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterO;
 using PeterO.Mail;
-using PeterO.Text;
-
 namespace MailLibTest {
   [TestClass]
   public class MessageTest {
@@ -49,7 +45,7 @@ namespace MailLibTest {
       Assert.IsFalse(mtstring.Contains("\r\n\r\n"));
       Assert.IsFalse(mtstring.Contains("\r\n \r\n"));
       Assert.AreEqual(str, MediaType.Parse(mtstring).GetParameter("z"));
-      Message mtmessage = new Message(new MemoryStream(
+      var mtmessage = new Message(new MemoryStream(
         DataUtilities.GetUtf8Bytes("MIME-Version: 1.0\r\nContent-Type: " + mtstring + "\r\n\r\n", true)));
       Assert.IsTrue(EncodingTest.IsGoodAsciiMessageFormat(mtmessage.Generate(), false));
     }
@@ -301,7 +297,7 @@ namespace MailLibTest {
       Assert.IsTrue(DataUtilities.CodePointCompare("a\ud7ff\udc00", "a\ud800\udc00") < 0);
     }
 
-    public void TestRfc2231Extension(string mtype, string param, string expected) {
+    public static void TestRfc2231Extension(string mtype, string param, string expected) {
       MediaType mt = MediaType.Parse(mtype);
       Assert.AreEqual(expected, mt.GetParameter(param));
     }
@@ -349,13 +345,13 @@ namespace MailLibTest {
         "flowed");
     }
 
-    public void SingleTestMediaTypeEncoding(string value, string expected) {
+    public static void SingleTestMediaTypeEncoding(string value, string expected) {
       MediaType mt = new MediaTypeBuilder("x", "y").SetParameter("z", value).ToMediaType();
       string topLevel = mt.TopLevelType;
       string sub = mt.SubType;
-      string mtstring = "MIME-Version: 1.0\r\nContent-Type: " + mt.ToString() +
+      string mtstring = "MIME-Version: 1.0\r\nContent-Type: " + mt +
         "\r\nContent-Transfer-Encoding: base64\r\n\r\n";
-      using (MemoryStream ms = new MemoryStream(DataUtilities.GetUtf8Bytes(mtstring, true))) {
+      using (var ms = new MemoryStream(DataUtilities.GetUtf8Bytes(mtstring, true))) {
         var msg = new Message(ms);
         Assert.AreEqual(topLevel, msg.ContentType.TopLevelType);
         Assert.AreEqual(sub, msg.ContentType.SubType);
@@ -791,7 +787,7 @@ namespace MailLibTest {
       }
     }
 
-    public void MessageDoubtfulCases() {
+    public static void MessageDoubtfulCases() {
       // The following tests currently fail, since I
       // don't know the best way to handle these cases
       // without being too lenient
@@ -921,19 +917,7 @@ namespace MailLibTest {
 
     internal static bool HasNestedMessageType(Message message) {
       if (message.ContentType.TopLevelType.Equals("message")) {
-        if (message.ContentType.SubType.Equals("global")) {
-          return false;
-        }
-        if (message.ContentType.SubType.Equals("global-headers")) {
-          return false;
-        }
-        if (message.ContentType.SubType.Equals("global-delivery-status")) {
-          return false;
-        }
-        if (message.ContentType.SubType.Equals("global-disposition-notification")) {
-          return false;
-        }
-        return true;
+        return (message.ContentType.SubType.Equals("global")) ? (false) : ((!message.ContentType.SubType.Equals("global-headers")) && ((message.ContentType.SubType.Equals("global-delivery-status")) ? (false) : ((message.ContentType.SubType.Equals("global-disposition-notification")) ? (false) : (true))));
       }
       foreach (Message part in message.Parts) {
         if (HasNestedMessageType(part)) {
@@ -1323,7 +1307,7 @@ namespace MailLibTest {
     }
     [TestMethod]
     public void TestContentHeadersOnlyInBodyParts() {
-      Message msg = new Message().SetTextAndHtml("Hello", "Hello");
+      var msg = new Message().SetTextAndHtml("Hello", "Hello");
       msg.SetHeader("x-test", "test");
       msg.Parts[0].SetHeader("x-test", "test");
       Assert.AreEqual("test", msg.GetHeader("x-test"));

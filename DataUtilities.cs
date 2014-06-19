@@ -14,7 +14,7 @@ namespace PeterO {
     /// It is designed to have no dependencies other than the basic runtime
     /// class library.</summary>
   public static class DataUtilities {
-    private static int valueStreamedStringBufferLength = 4096;
+    private const int StreamedStringBufferLength = 4096;
 
     /// <summary>Generates a text string from a UTF-8 byte array.</summary>
     /// <param name='bytes'>A byte array containing text encoded in UTF-8.</param>
@@ -30,7 +30,7 @@ namespace PeterO {
       if (bytes == null) {
         throw new ArgumentNullException("bytes");
       }
-      StringBuilder b = new StringBuilder();
+      var b = new StringBuilder();
       if (ReadUtf8FromBytes(bytes, 0, bytes.Length, b, replace) != 0) {
         throw new ArgumentException("Invalid UTF-8");
       }
@@ -72,7 +72,7 @@ namespace PeterO {
       if (bytes.Length - offset < bytesCount) {
         throw new ArgumentException("bytes's length minus " + offset + " (" + Convert.ToString((long)(bytes.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((long)bytesCount, System.Globalization.CultureInfo.InvariantCulture));
       }
-      StringBuilder b = new StringBuilder();
+      var b = new StringBuilder();
       if (ReadUtf8FromBytes(bytes, offset, bytesCount, b, replace) != 0) {
         throw new ArgumentException("Invalid UTF-8");
       }
@@ -98,7 +98,7 @@ namespace PeterO {
         throw new ArgumentNullException("str");
       }
       try {
-        using (MemoryStream ms = new MemoryStream()) {
+        using (var ms = new MemoryStream()) {
           if (WriteUtf8(str, ms, replace) != 0) {
             throw new ArgumentException("Unpaired surrogate code point");
           }
@@ -111,15 +111,15 @@ namespace PeterO {
 
     /// <summary>Calculates the number of bytes needed to encode a string
     /// in UTF-8.</summary>
+    /// <param name='str'>A String object.</param>
+    /// <param name='replace'>If true, treats unpaired surrogate code
+    /// points as having 3 UTF-8 bytes (the UTF-8 length of the replacement
+    /// character U + FFFD).</param>
     /// <returns>The number of bytes needed to encode the given string in
     /// UTF-8, or -1 if the string contains an unpaired surrogate code point
     /// and <paramref name='replace'/> is false.</returns>
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='str'/> is null.</exception>
-    /// <param name='str'>A String object.</param>
-    /// <param name='replace'>If true, treats unpaired surrogate code
-    /// points as having 3 UTF-8 bytes (the UTF-8 length of the replacement
-    /// character U + FFFD).</param>
     public static long GetUtf8Length(String str, bool replace) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -196,21 +196,15 @@ namespace PeterO {
       }
       int c = str[index - 1];
       if ((c & 0xfc00) == 0xdc00 && index - 2 >= 0 &&
-          str[index - 2] >= 0xd800 && str[index - 2] <= 0xdbff) {
+             str[index - 2] >= 0xd800 && str[index - 2] <= 0xdbff) {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((str[index - 2] - 0xd800) << 10) + (c - 0xdc00);
-      } else if ((c & 0xf800) == 0xd800) {
-        // unpaired surrogate
-        if (surrogateBehavior == 0) {
-          return 0xfffd;
-        }
-        if (surrogateBehavior == 1) {
-          return c;
-        }
-        return -1;
-      } else {
-        return c;
       }
+      if ((c & 0xf800) == 0xd800) {
+        // unpaired surrogate
+        return (surrogateBehavior == 0) ? 0xfffd : ((surrogateBehavior == 1) ? c : (-1));
+      }
+      return c;
     }
 
     /// <summary>Gets the Unicode code point at the given index of the string.</summary>
@@ -257,13 +251,7 @@ namespace PeterO {
         ++index;
       } else if ((c & 0xf800) == 0xd800) {
         // unpaired surrogate
-        if (surrogateBehavior == 0) {
-          return 0xfffd;
-        }
-        if (surrogateBehavior == 1) {
-          return c;
-        }
-        return -1;
+        return (surrogateBehavior == 0) ? 0xfffd : ((surrogateBehavior == 1) ? c : (-1));
       }
       return c;
     }
@@ -278,7 +266,7 @@ namespace PeterO {
         return null;
       }
       int len = str.Length;
-      char c = (char)0;
+      var c = (char)0;
       bool hasUpperCase = false;
       for (int i = 0; i < len; ++i) {
         c = str[i];
@@ -290,7 +278,7 @@ namespace PeterO {
       if (!hasUpperCase) {
         return str;
       }
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       for (int i = 0; i < len; ++i) {
         c = str[i];
         if (c >= 'A' && c <= 'Z') {
@@ -304,14 +292,14 @@ namespace PeterO {
 
     /// <summary>Compares two strings in Unicode code point order. Unpaired
     /// surrogates are treated as individual code points.</summary>
+    /// <param name='strA'>The first string. Can be null.</param>
+    /// <param name='strB'>The second string. Can be null.</param>
     /// <returns>A value indicating which string is " less" or " greater"
     /// . 0: Both strings are equal or null. Less than 0: a is null and b isn't;
     /// or the first code point that's different is less in A than in B; or b starts
     /// with a and is longer than a. Greater than 0: b is null and a isn't; or the
     /// first code point that's different is greater in A than in B; or a starts
     /// with b and is longer than b.</returns>
-    /// <param name='strA'>The first string. Can be null.</param>
-    /// <param name='strB'>The second string. Can be null.</param>
     public static int CodePointCompare(String strA, String strB) {
       if (strA == null) {
         return (strB == null) ? 0 : -1;
@@ -359,10 +347,7 @@ namespace PeterO {
           return ca - cb;
         }
       }
-      if (strA.Length == strB.Length) {
-        return 0;
-      }
-      return (strA.Length < strB.Length) ? -1 : 1;
+      return (strA.Length == strB.Length) ? 0 : ((strA.Length < strB.Length) ? -1 : 1);
     }
 
     /// <summary>Writes a portion of a string in UTF-8 encoding to a data stream.</summary>
@@ -436,7 +421,7 @@ namespace PeterO {
       }
       byte[] bytes;
       int retval = 0;
-      bytes = new byte[valueStreamedStringBufferLength];
+      bytes = new byte[StreamedStringBufferLength];
       int byteIndex = 0;
       int endIndex = offset + length;
       for (int index = offset; index < endIndex; ++index) {
@@ -445,7 +430,7 @@ namespace PeterO {
           if (lenientLineBreaks) {
             if (c == 0x0d && (index + 1 >= endIndex || str[index + 1] != 0x0a)) {
               // bare CR, convert to CRLF
-              if (byteIndex + 2 > valueStreamedStringBufferLength) {
+              if (byteIndex + 2 > StreamedStringBufferLength) {
                 // Write bytes retrieved so far
                 stream.Write(bytes, 0, byteIndex);
                 byteIndex = 0;
@@ -453,9 +438,10 @@ namespace PeterO {
               bytes[byteIndex++] = 0x0d;
               bytes[byteIndex++] = 0x0a;
               continue;
-            } else if (c == 0x0a) {
+            }
+            if (c == 0x0a) {
               // bare LF, convert to CRLF
-              if (byteIndex + 2 > valueStreamedStringBufferLength) {
+              if (byteIndex + 2 > StreamedStringBufferLength) {
                 // Write bytes retrieved so far
                 stream.Write(bytes, 0, byteIndex);
                 byteIndex = 0;
@@ -465,14 +451,14 @@ namespace PeterO {
               continue;
             }
           }
-          if (byteIndex >= valueStreamedStringBufferLength) {
+          if (byteIndex >= StreamedStringBufferLength) {
             // Write bytes retrieved so far
             stream.Write(bytes, 0, byteIndex);
             byteIndex = 0;
           }
           bytes[byteIndex++] = (byte)c;
         } else if (c <= 0x7ff) {
-          if (byteIndex + 2 > valueStreamedStringBufferLength) {
+          if (byteIndex + 2 > StreamedStringBufferLength) {
             // Write bytes retrieved so far
             stream.Write(bytes, 0, byteIndex);
             byteIndex = 0;
@@ -494,7 +480,7 @@ namespace PeterO {
             c = 0xfffd;
           }
           if (c <= 0xffff) {
-            if (byteIndex + 3 > valueStreamedStringBufferLength) {
+            if (byteIndex + 3 > StreamedStringBufferLength) {
               // Write bytes retrieved so far
               stream.Write(bytes, 0, byteIndex);
               byteIndex = 0;
@@ -503,7 +489,7 @@ namespace PeterO {
             bytes[byteIndex++] = (byte)(0x80 | ((c >> 6) & 0x3f));
             bytes[byteIndex++] = (byte)(0x80 | (c & 0x3f));
           } else {
-            if (byteIndex + 4 > valueStreamedStringBufferLength) {
+            if (byteIndex + 4 > StreamedStringBufferLength) {
               // Write bytes retrieved so far
               stream.Write(bytes, 0, byteIndex);
               byteIndex = 0;
@@ -618,7 +604,8 @@ namespace PeterO {
             }
           }
           continue;
-        } else if (b < lower || b > upper) {
+        }
+        if (b < lower || b > upper) {
           cp = bytesNeeded = bytesSeen = 0;
           lower = 0x80;
           upper = 0xbf;
@@ -626,9 +613,8 @@ namespace PeterO {
             --pointer;
             builder.Append((char)0xfffd);
             continue;
-          } else {
-            return -1;
           }
+          return -1;
         } else {
           lower = 0x80;
           upper = 0xbf;
@@ -665,11 +651,11 @@ namespace PeterO {
     /// <summary>Reads a string in UTF-8 encoding from a data stream in full
     /// and returns that string. Replaces invalid encoding with the replacement
     /// character (U + FFFD).</summary>
+    /// <param name='stream'>A readable data stream.</param>
     /// <returns>The string read.</returns>
     /// <exception cref='System.IO.IOException'>An I/O error occurred.</exception>
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='stream'/> is null.</exception>
-    /// <param name='stream'>A readable data stream.</param>
     public static string ReadUtf8ToString(
       Stream stream) {
       return ReadUtf8ToString(stream, -1, true);
@@ -693,7 +679,7 @@ namespace PeterO {
       Stream stream,
       int bytesCount,
       bool replace) {
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       int retval = DataUtilities.ReadUtf8(stream, bytesCount, builder, replace);
       if (retval == -1) {
         throw new IOException("Unpaired surrogate code point found.", new DecoderFallbackException());
@@ -749,12 +735,11 @@ namespace PeterO {
               break;  // end of stream
             }
             return -1;
-          } else {
-            if (bytesCount >= 0) {
-              return -2;
-            }
-            break;  // end of stream
           }
+          if (bytesCount >= 0) {
+            return -2;
+          }
+          break;  // end of stream
         }
         if (bytesCount > 0) {
           ++pointer;
@@ -783,7 +768,8 @@ namespace PeterO {
             }
           }
           continue;
-        } else if (b < lower || b > upper) {
+        }
+        if (b < lower || b > upper) {
           cp = bytesNeeded = bytesSeen = 0;
           lower = 0x80;
           upper = 0xbf;
@@ -809,9 +795,8 @@ namespace PeterO {
               builder.Append((char)0xfffd);
             }
             continue;
-          } else {
-            return -1;
           }
+          return -1;
         } else {
           lower = 0x80;
           upper = 0xbf;

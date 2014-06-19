@@ -55,7 +55,7 @@ namespace PeterO.Text {
     }
 
     public byte[] ToArray() {
-      byte[] ret = new byte[this.retvalMax];
+      var ret = new byte[this.retvalMax];
       Array.Copy(this.retval, 0, ret, 0, this.retvalMax);
       return ret;
     }
@@ -86,12 +86,6 @@ namespace PeterO.Text {
       return maxLength;
     }
 
-    /// <param name='src'>A byte array.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='src'/> is null.</exception>
-    /// <param name='offset'>A 32-bit signed integer.</param>
-    /// <param name='length'>A 32-bit signed integer. (2).</param>
- /// <summary>Not documented yet.</summary>
     public void WriteBytes(byte[] src, int offset, int length) {
       if (src == null) {
         throw new ArgumentNullException("src");
@@ -114,7 +108,7 @@ namespace PeterO.Text {
       if (this.retval.Length - this.retvalPos < length) {
         // Array too small, make it grow
         int newLength = Math.Max(this.retvalPos + length + 1000, this.retval.Length * 2);
-        byte[] newArray = new byte[newLength];
+        var newArray = new byte[newLength];
         Array.Copy(this.retval, 0, newArray, 0, this.retvalPos);
         this.retval = newArray;
       }

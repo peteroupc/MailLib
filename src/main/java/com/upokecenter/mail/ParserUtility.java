@@ -28,10 +28,7 @@ private ParserUtility() {
         throw new IllegalArgumentException("strStartPos (" + Integer.toString((int)strStartPos) + ") is more than " + Integer.toString((int)str.length()));
       }
       int endpos = suffix.length() + strStartPos;
-      if (endpos > str.length()) {
-        return false;
-      }
-      return str.substring(strStartPos,(strStartPos)+((endpos)-strStartPos)).equals(suffix);
+      return (endpos <= str.length()) && str.substring(strStartPos,(strStartPos)+((endpos) - strStartPos)).equals(suffix);
     }
 
     public static boolean StartsWith(String str, String prefix) {
@@ -41,21 +38,15 @@ private ParserUtility() {
       if (prefix == null) {
         throw new NullPointerException("prefix");
       }
-      if (prefix.length() < str.length()) {
-        return false;
-      }
-      return str.substring(0,prefix.length()).equals(prefix);
+      return (prefix.length() >= str.length()) && str.substring(0,prefix.length()).equals(prefix);
     }
 
     public static String TrimSpaceAndTab(String s) {
-      if (s == null || s.length() == 0) {
-        return s;
-      }
-      return TrimSpaceAndTabLeft(TrimSpaceAndTabRight(s));
+      return ((s)==null || (s).length()==0) ? s : TrimSpaceAndTabLeft(TrimSpaceAndTabRight(s));
     }
 
     public static String TrimSpaceAndTabLeft(String s) {
-      if (s == null || s.length() == 0) {
+      if (((s)==null || (s).length()==0)) {
         return s;
       }
       int index = 0;
@@ -67,17 +58,11 @@ private ParserUtility() {
         }
         ++index;
       }
-      if (index == valueSLength) {
-        return "";
-      } else if (index == 0) {
-        return s;
-      } else {
-        return s.substring(index);
-      }
+      return (index == valueSLength) ? "" : ((index == 0) ? s : s.substring(index));
     }
 
     public static String TrimSpaceAndTabRight(String s) {
-      if (s == null || s.length() == 0) {
+      if (((s)==null || (s).length()==0)) {
         return s;
       }
       int startIndex = 0;
@@ -149,7 +134,7 @@ private ParserUtility() {
       if (delimiter.length() == 0) {
         throw new IllegalArgumentException("delimiter is empty.");
       }
-      if (s == null || s.length() == 0) {
+      if (((s)==null || (s).length()==0)) {
         return new String[] { "" };
       }
       int index = 0;
@@ -218,11 +203,11 @@ private ParserUtility() {
           }
           // match grandfathered language tags
           if (str.equals("sgn-be-fr") || str.equals("sgn-be-nl") || str.equals("sgn-ch-de") ||
-              str.equals("en-gb-oed")) {
+                   str.equals("en-gb-oed")) {
             return true;
           }
           // More complex cases
-          String[] splitString = SplitAt(str.substring(startIndex,(startIndex)+((endIndex)-startIndex)), "-");
+          String[] splitString = SplitAt(str.substring(startIndex,(startIndex)+((endIndex) - startIndex)), "-");
           if (splitString.length == 0) {
             return false;
           }
@@ -295,7 +280,7 @@ private ParserUtility() {
             String curString = splitString[splitIndex];
             int curIndex = splitIndex;
             if (lengthIfAllAlphaNum(curString) == 1 &&
-                !curString.equals("x")) {
+                      !curString.equals("x")) {
               if (variants == null) {
                 variants = new ArrayList<String>();
               }
@@ -346,7 +331,8 @@ private ParserUtility() {
           }
           // check if all the tokens were used
           return splitIndex == splitLength;
-        } else if (c2 == '-' && (c1 == 'x' || c1 == 'X')) {
+        }
+        if (c2 == '-' && (c1 == 'x' || c1 == 'X')) {
           // private use
           ++index;
           while (index < endIndex) {
@@ -374,22 +360,22 @@ private ParserUtility() {
             }
           }
           return true;
-        } else if (c2 == '-' && (c1 == 'i' || c1 == 'I')) {
+        }
+        if (c2 == '-' && (c1 == 'i' || c1 == 'I')) {
           // grandfathered language tags
           str = DataUtilities.ToLowerCaseAscii(str);
           return str.equals("i-ami") || str.equals("i-bnn") ||
-            str.equals("i-default") || str.equals("i-enochian") ||
-            str.equals("i-hak") || str.equals("i-klingon") ||
-            str.equals("i-lux") || str.equals("i-navajo") ||
-            str.equals("i-mingo") || str.equals("i-pwn") ||
-            str.equals("i-tao") || str.equals("i-tay") ||
-            str.equals("i-tsu");
+          str.equals("i-default") || str.equals("i-enochian") ||
+          str.equals("i-hak") || str.equals("i-klingon") ||
+          str.equals("i-lux") || str.equals("i-navajo") ||
+          str.equals("i-mingo") || str.equals("i-pwn") ||
+          str.equals("i-tao") || str.equals("i-tay") ||
+          str.equals("i-tsu");
         } else {
           return false;
         }
-      } else {
-        return false;
       }
+      return false;
     }
 
     private static int lengthIfAllAlpha(String str) {

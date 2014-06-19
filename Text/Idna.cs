@@ -15,7 +15,7 @@ namespace PeterO.Text {
     /// <para>NOTICE: While this class's source code is in the public domain,
     /// the class uses two internal classes, called <c>NormalizationData</c>
     /// and <c>IdnaData</c>
-    ///  , that include data derived from the Unicode
+    /// , that include data derived from the Unicode
     /// Character Database. See the documentation for the Normalizer class
     /// for the permission notice for the Unicode Character Database.</para>
     /// </summary>
@@ -57,15 +57,15 @@ namespace PeterO.Text {
       }
       int c = str[index - 1];
       if ((c & 0xfc00) == 0xdc00 && index - 2 >= 0 &&
-          str[index - 2] >= 0xd800 && str[index - 2] <= 0xdbff) {
+             str[index - 2] >= 0xd800 && str[index - 2] <= 0xdbff) {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((str[index - 2] - 0xd800) << 10) + (c - 0xdc00);
-      } else if ((c & 0xf800) == 0xd800) {
+      }
+      if ((c & 0xf800) == 0xd800) {
         // unpaired surrogate
         return 0xfffd;
-      } else {
-        return c;
       }
+      return c;
     }
 
     internal static int CodePointAt(string str, int index) {
@@ -82,11 +82,9 @@ namespace PeterO.Text {
       if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length &&
           str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
         // Get the Unicode code point for the surrogate pair
-        c = 0x10000 + ((c - 0xd800) << 10) + (str[index + 1] - 0xdc00);
-      } else if ((c & 0xf800) == 0xd800) {
-        return 0xfffd;
+        return 0x10000 + ((c - 0xd800) << 10) + (str[index + 1] - 0xdc00);
       }
-      return c;
+      return ((c & 0xf800) == 0xd800) ? 0xfffd : c;
     }
 
     internal static int GetBidiClass(int ch) {
@@ -173,7 +171,8 @@ namespace PeterO.Text {
         index += (ch >= 0x10000) ? 2 : 1;
         if (JoiningTypeRightOrDual(ch)) {
           return true;
-        } else if (!JoiningTypeTransparent(ch)) {
+        }
+        if (!JoiningTypeTransparent(ch)) {
           return false;
         }
       }
@@ -209,7 +208,7 @@ namespace PeterO.Text {
       if (value.Length == 0) {
         return String.Empty;
       }
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       string retval = null;
       int lastIndex = 0;
       for (int i = 0; i < value.Length; ++i) {
@@ -238,9 +237,9 @@ namespace PeterO.Text {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <returns>A Boolean object.</returns>
     /// <param name='str'>A string object.</param>
     /// <param name='lookupRules'>A Boolean object. (2).</param>
+    /// <returns>A Boolean object.</returns>
     public static bool IsValidDomainName(string str, bool lookupRules) {
       if (String.IsNullOrEmpty(str)) {
         return false;
@@ -260,10 +259,7 @@ namespace PeterO.Text {
           lastIndex = i + 1;
         }
       }
-      if (str.Length == lastIndex) {
-        return false;
-      }
-      return IsValidLabel(str.Substring(lastIndex, str.Length - lastIndex), lookupRules, bidiRule);
+      return (str.Length != lastIndex) && IsValidLabel(str.Substring(lastIndex, str.Length - lastIndex), lookupRules, bidiRule);
     }
 
     private static string ToLowerCaseAscii(string str) {
@@ -271,7 +267,7 @@ namespace PeterO.Text {
         return null;
       }
       int len = str.Length;
-      char c = (char)0;
+      var c = (char)0;
       bool hasUpperCase = false;
       for (int i = 0; i < len; ++i) {
         c = str[i];
@@ -283,7 +279,7 @@ namespace PeterO.Text {
       if (!hasUpperCase) {
         return str;
       }
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       for (int i = 0; i < len; ++i) {
         c = str[i];
         if (c >= 'A' && c <= 'Z') {
@@ -299,24 +295,21 @@ namespace PeterO.Text {
       if (String.IsNullOrEmpty(str)) {
         return false;
       }
-      bool maybeALabel = false;
-      if (str.Length >= 4 && (str[0] == 'x' || str[0] == 'X') && (str[1] == 'n' || str[1] == 'N') && str[2] == '-' && str[3] == '-') {
-        maybeALabel = true;
-      }
+      bool maybeALabel = false || str.Length >= 4 && (str[0] == 'x' || str[0] == 'X') && (str[1] == 'n' || str[1] == 'N') && str[2] == '-' && str[3] == '-';
       bool allLDH = true;
       for (int i = 0; i < str.Length; ++i) {
         if ((str[i] >= 'a' && str[i] <= 'z') ||
-            (str[i] >= 'A' && str[i] <= 'Z') ||
-            (str[i] >= '0' && str[i] <= '9') || str[i] == '-') {
+                (str[i] >= 'A' && str[i] <= 'Z') ||
+                (str[i] >= '0' && str[i] <= '9') || str[i] == '-') {
           // LDH character
           continue;
-        } else if (str[i] >= 0x80) {
+        }
+        if (str[i] >= 0x80) {
           // Non-ASCII character
           allLDH = false;
           continue;
-        } else {
-          return false;
         }
+        return false;
       }
       if (maybeALabel) {
         str = ToLowerCaseAscii(str);
@@ -335,20 +328,19 @@ namespace PeterO.Text {
         // NOTE: "astr" and "str" will contain only ASCII characters
         // at this point, so a simple binary comparison is enough
         return astr.Equals(str);
-      } else {
-        if (allLDH) {
-          if (str.Length >= 4 && str[2] == '-' && str[3] == '-') {
-           // Contains a hyphen at the third and fourth (one-based) character positions
-            return false;
-          }
-          if (str[0] != '-' && str[str.Length - 1] != '-' && !(str[0] >= '0' && str[0] <= '9')) {
-            // Only LDH characters, doesn't start with hyphen or digit,
-            // and doesn't end with hyphen
-            return true;
-          }
-        }
-        return IsValidULabel(str, lookupRules, bidiRule);
       }
+      if (allLDH) {
+        if (str.Length >= 4 && str[2] == '-' && str[3] == '-') {
+          // Contains a hyphen at the third and fourth (one-based) character positions
+          return false;
+        }
+        if (str[0] != '-' && str[str.Length - 1] != '-' && !(str[0] >= '0' && str[0] <= '9')) {
+          // Only LDH characters, doesn't start with hyphen or digit,
+          // and doesn't end with hyphen
+          return true;
+        }
+      }
+      return IsValidULabel(str, lookupRules, bidiRule);
     }
 
     private static bool IsValidULabel(string str, bool lookupRules, bool bidiRule) {
@@ -403,9 +395,7 @@ namespace PeterO.Text {
             }
           }
         }
-        if (category == ContextO || category == ContextJ) {
-          haveContextual = true;
-        }
+        haveContextual |= category == ContextO || category == ContextJ;
         first = false;
       }
       if (haveContextual) {
@@ -510,7 +500,8 @@ namespace PeterO.Text {
           if (bidiClass == BidiClassEN) {
             found = true;
             break;
-          } else if (bidiClass != BidiClassNSM) {
+          }
+          if (bidiClass != BidiClassNSM) {
             return false;
           }
         }
@@ -545,16 +536,16 @@ namespace PeterO.Text {
               haveEN = false;
             }
             continue;
-          } else if (bidiClass == BidiClassES ||
-                     bidiClass == BidiClassCS ||
-                     bidiClass == BidiClassET ||
-                     bidiClass == BidiClassON ||
-                     bidiClass == BidiClassBN ||
-                     bidiClass == BidiClassNSM) {
-            continue;
-          } else {
-            return false;
           }
+          if (bidiClass == BidiClassES ||
+                   bidiClass == BidiClassCS ||
+                   bidiClass == BidiClassET ||
+                   bidiClass == BidiClassON ||
+                   bidiClass == BidiClassBN ||
+                   bidiClass == BidiClassNSM) {
+            continue;
+          }
+          return false;
         }
       }
       int aceLength = DomainUtility.PunycodeLength(str, 0, str.Length);

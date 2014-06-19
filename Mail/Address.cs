@@ -1,4 +1,4 @@
-/*
+﻿/*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
@@ -14,7 +14,7 @@ using PeterO.Text;
 namespace PeterO.Mail {
     /// <summary>Represents an email address.</summary>
   public class Address {
-    private string localPart;
+    private readonly string localPart;
 
     /// <summary>Gets the local part of this email address (the part before
     /// the "@" sign).</summary>
@@ -33,7 +33,7 @@ namespace PeterO.Mail {
           HeaderParser.ParseDotAtomText(this.localPart, 0, this.localPart.Length, null) == this.localPart.Length) {
         return this.localPart + "@" + this.domain;
       } else {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.Append('"');
         for (int i = 0; i < this.localPart.Length; ++i) {
           char c = this.localPart[i];
@@ -79,7 +79,7 @@ namespace PeterO.Mail {
       }
     }
 
-    private string domain;
+    private readonly string domain;
 
     /// <summary>Gets the domain of this email address (the part after the
     /// "@" sign).</summary>

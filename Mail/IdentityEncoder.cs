@@ -12,9 +12,6 @@ namespace PeterO.Mail {
     /// <summary>An IdentityEncoder.</summary>
   internal sealed class IdentityEncoder : IStringEncoder
   {
-    public IdentityEncoder() {
-    }
-
     public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
       if (str == null) {
         throw new ArgumentNullException("str");

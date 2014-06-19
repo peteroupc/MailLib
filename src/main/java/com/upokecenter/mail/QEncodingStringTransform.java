@@ -48,11 +48,13 @@ at: http://upokecenter.com/d/
         if (c < 0) {
           // End of stream
           return -1;
-        } else if (c == 0x0d) {
+        }
+        if (c == 0x0d) {
           // Can't occur in the Q-encoding; replace
           // with the ASCII substitute character
           return 0x1a;
-        } else if (c == 0x0a) {
+        }
+        if (c == 0x0a) {
           // Can't occur in the Q-encoding; replace
           // with the ASCII substitute character
           return 0x1a;

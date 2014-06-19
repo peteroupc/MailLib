@@ -54,10 +54,10 @@ namespace PeterO.Text {
   public sealed class Normalizer
   {
     /// <summary>Converts a string to the given Unicode normalization form.</summary>
-    /// <returns>The parameter <paramref name='str'/> converted to the
-    /// given normalization form.</returns>
     /// <param name='str'>An arbitrary string.</param>
     /// <param name='form'>The Unicode normalization form to convert to.</param>
+    /// <returns>The parameter <paramref name='str'/> converted to the
+    /// given normalization form.</returns>
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='str'/> is null.</exception>
     public static string Normalize(string str, Normalization form) {
@@ -67,8 +67,8 @@ namespace PeterO.Text {
       if (str.Length <= 1024 && IsNormalized(str, form)) {
         return str;
       }
-      Normalizer norm = new Normalizer(str, form);
-      StringBuilder builder = new StringBuilder();
+      var norm = new Normalizer(str, form);
+      var builder = new StringBuilder();
       int c = 0;
       while ((c = norm.ReadChar()) >= 0) {
         if (c <= 0xffff) {
@@ -96,7 +96,7 @@ namespace PeterO.Text {
 
       int offset = UnicodeDatabase.GetDecomposition(ch, compat, buffer, index);
       if (buffer[index] != ch) {
-        int[] copy = new int[offset - index];
+        var copy = new int[offset - index];
         Array.Copy(buffer, index, copy, 0, copy.Length);
         offset = index;
         for (int i = 0; i < copy.Length; ++i) {
@@ -129,9 +129,8 @@ namespace PeterO.Text {
           buffer[index++] = trail;
         }
         return index;
-      } else {
-        return DecompToBufferInternal(ch, compat, buffer, index);
       }
+      return DecompToBufferInternal(ch, compat, buffer, index);
     }
 
     private int lastStableIndex;
@@ -195,7 +194,7 @@ namespace PeterO.Text {
       int length,
       Normalization form) {
       int i = start;
-      Normalizer norm = new Normalizer(charList, form).Init(charList, start, length, form);
+      var norm = new Normalizer(charList, form).Init(charList, start, length, form);
       int ch = 0;
       while ((ch = norm.ReadChar()) >= 0) {
         int c = charList[i];
@@ -278,9 +277,9 @@ namespace PeterO.Text {
       return r == 1 ? this.readbuffer[0] : -1;
     }
 
-    private bool endOfString = false;
+    private bool endOfString;
     private int lastChar = -1;
-    private bool ungetting = false;
+    private bool ungetting;
 
     private void Unget() {
       this.ungetting = true;
@@ -292,12 +291,13 @@ namespace PeterO.Text {
         ch = this.lastChar;
         this.ungetting = false;
         return ch;
-      } else if (this.characterListPos >= this.iterEndIndex) {
+      }
+      if (this.characterListPos >= this.iterEndIndex) {
         ch = -1;
       } else {
         ch = this.iterator[this.characterListPos];
         if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex &&
-            this.iterator[this.characterListPos + 1] >= 0xdc00 && this.iterator[this.characterListPos + 1] <= 0xdfff) {
+                this.iterator[this.characterListPos + 1] >= 0xdc00 && this.iterator[this.characterListPos + 1] <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
           ch = 0x10000 + ((ch - 0xd800) << 10) + (this.iterator[this.characterListPos + 1] - 0xdc00);
           ++this.characterListPos;
@@ -352,7 +352,8 @@ namespace PeterO.Text {
           int c = this.GetNextChar();
           if (c < 0) {
             return (total == 0) ? -1 : total;
-          } else if (IsStableCodePoint(c, this.form)) {
+          }
+          if (IsStableCodePoint(c, this.form)) {
             chars[index] = c;
             ++total;
             ++index;
@@ -474,7 +475,7 @@ namespace PeterO.Text {
             // No stable code point was found (or last stable
             // code point is at beginning of buffer), increase
             // the buffer size
-            int[] newBuffer = new int[(this.buffer.Length + 4) * 2];
+            var newBuffer = new int[(this.buffer.Length + 4) * 2];
             Array.Copy(this.buffer, 0, newBuffer, 0, this.buffer.Length);
             this.buffer = newBuffer;
             continue;
@@ -578,7 +579,7 @@ namespace PeterO.Text {
       if (last != 0) {
         last = 256;
       }
-      int compPos = 0;
+      const int compPos = 0;
       int endPos = 0 + length;
       bool composed = false;
       for (int decompPos = compPos; decompPos < endPos; ++decompPos) {

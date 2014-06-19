@@ -12,7 +12,7 @@ namespace PeterO.Mail {
     /// <summary>Encodes binary data into Quoted Printable.</summary>
   internal sealed class QuotedPrintableEncoder : IStringEncoder
   {
-    private static string valueHexAlphabet = "0123456789ABCDEF";
+    private const string valueHexAlphabet = "0123456789ABCDEF";
     private int lineCount;
     private int lineBreakMode;
     private bool unlimitedLineLength;
@@ -72,7 +72,7 @@ namespace PeterO.Mail {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
-      this.WriteToString(str, new byte[] { b }, 0, 1);
+      this.WriteToString(str, new [] { b }, 0, 1);
     }
 
     public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
@@ -99,7 +99,7 @@ namespace PeterO.Mail {
       }
       int length = offset + count;
       int i = offset;
-      char[] buf = new char[4];
+      var buf = new char[4];
       for (i = offset; i < length; ++i) {
         if (data[i] == 0xd) {
           if (this.lineBreakMode == 0) {

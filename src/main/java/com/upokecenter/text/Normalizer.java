@@ -102,9 +102,8 @@ at: http://upokecenter.com/d/
           buffer[index++] = trail;
         }
         return index;
-      } else {
-        return DecompToBufferInternal(ch, compat, buffer, index);
       }
+      return DecompToBufferInternal(ch, compat, buffer, index);
     }
 
     private int lastStableIndex;
@@ -257,9 +256,9 @@ at: http://upokecenter.com/d/
       return r == 1 ? this.readbuffer[0] : -1;
     }
 
-    private boolean endOfString = false;
+    private boolean endOfString;
     private int lastChar = -1;
-    private boolean ungetting = false;
+    private boolean ungetting;
 
     private void Unget() {
       this.ungetting = true;
@@ -271,12 +270,13 @@ at: http://upokecenter.com/d/
         ch = this.lastChar;
         this.ungetting = false;
         return ch;
-      } else if (this.characterListPos >= this.iterEndIndex) {
+      }
+      if (this.characterListPos >= this.iterEndIndex) {
         ch = -1;
       } else {
         ch = this.iterator.charAt(this.characterListPos);
         if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex &&
-            this.iterator.charAt(this.characterListPos + 1) >= 0xdc00 && this.iterator.charAt(this.characterListPos + 1) <= 0xdfff) {
+                this.iterator.charAt(this.characterListPos + 1) >= 0xdc00 && this.iterator.charAt(this.characterListPos + 1) <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
           ch = 0x10000 + ((ch - 0xd800) << 10) + (this.iterator.charAt(this.characterListPos + 1) - 0xdc00);
           ++this.characterListPos;
@@ -333,7 +333,8 @@ at: http://upokecenter.com/d/
           int c = this.GetNextChar();
           if (c < 0) {
             return (total == 0) ? -1 : total;
-          } else if (IsStableCodePoint(c, this.form)) {
+          }
+          if (IsStableCodePoint(c, this.form)) {
             chars[index] = c;
             ++total;
             ++index;

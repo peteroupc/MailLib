@@ -7,7 +7,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
-import java.util.*;
 import java.io.*;
 
 import org.junit.Assert;
@@ -70,7 +69,7 @@ import com.upokecenter.text.*;
           return false;
         }
         if (c >= 0x80) {
-          System.out.println("Non-ASCII character (0x" + ToBase16(new byte[] {  (byte)c  }) + ")");
+          System.out.println("Non-ASCII character (0x" + ToBase16(new byte[] { (byte)c  }) + ")");
           return false;
         }
         if (c == '\r' && index + 1 < endIndex && str.charAt(index + 1) == '\n') {
@@ -88,11 +87,10 @@ import com.upokecenter.text.*;
           hasNonWhiteSpace = false;
           hasLongWord = false;
           startsWithSpace = false;
-          if (index < endIndex && (str.charAt(index) == ' ' || str.charAt(index) == '\t')) {
-            startsWithSpace = true;
-          }
+          startsWithSpace |= index < endIndex && (str.charAt(index) == ' ' || str.charAt(index) == '\t');
           continue;
-        } else if (c == '\r' || c == '\n') {
+        }
+        if (c == '\r' || c == '\n') {
           System.out.println("Bare CR or bare LF");
           return false;
         }
@@ -122,11 +120,11 @@ import com.upokecenter.text.*;
           hasLongWord |= (wordLength > 77) || (lineLength == wordLength && wordLength > 78);
         }
         if (c == 0) {
-          System.out.println("CTL in message (0x" + ToBase16(new byte[] {  (byte)c  }) + ")");
+          System.out.println("CTL in message (0x" + ToBase16(new byte[] { (byte)c  }) + ")");
           return false;
         }
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
-          System.out.println("CTL in header (0x" + ToBase16(new byte[] {  (byte)c  }) + ")");
+          System.out.println("CTL in header (0x" + ToBase16(new byte[] { (byte)c  }) + ")");
           return false;
         }
         int maxLineLength = 998;
@@ -250,7 +248,7 @@ import com.upokecenter.text.*;
       }
     }
 
-    public void TestDecodeQuotedPrintable(String input, String expectedOutput) {
+    public static void TestDecodeQuotedPrintable(String input, String expectedOutput) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
       java.io.ByteArrayOutputStream ms=null;
 try {
@@ -264,7 +262,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
 }
     }
 
-    public void TestFailQuotedPrintable(String input) {
+    public static void TestFailQuotedPrintable(String input) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
       java.io.ByteArrayOutputStream ms=null;
 try {
@@ -284,7 +282,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
 }
     }
 
-    public void TestFailQuotedPrintableNonLenient(String input) {
+    public static void TestFailQuotedPrintableNonLenient(String input) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
       java.io.ByteArrayOutputStream ms=null;
 try {
@@ -304,7 +302,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
 }
     }
 
-    public void TestQuotedPrintable(String input, int mode, String expectedOutput) {
+    public static void TestQuotedPrintable(String input, int mode, String expectedOutput) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
       StringBuilder sb = new StringBuilder();
       Object enc = Reflect.Construct(MailNamespace() + ".QuotedPrintableEncoder", mode, false);
@@ -356,7 +354,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       this.TestParseDomain("[a .\r\n b. c.d ]", "[a.b.c.d]");
     }
 
-    public void TestWordWrapOne(String firstWord, String nextWords, String expected) {
+    public static void TestWordWrapOne(String firstWord, String nextWords, String expected) {
       Object ww = Reflect.Construct(MailNamespace() + ".WordWrapEncoder", firstWord);
       Reflect.Invoke(ww, "AddString", nextWords);
       Assert.assertEquals(expected, ww.toString());
@@ -822,13 +820,13 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       this.TestFailQuotedPrintableNonLenient("aa\r\n" + Repeat("=7F", 26));
     }
 
-    public void TestEncodedWordsPhrase(String expected, String input) {
+    public static void TestEncodedWordsPhrase(String expected, String input) {
       Assert.assertEquals(
         expected + " <test@example.com>",
         DecodeHeaderField("from", input + " <test@example.com>"));
     }
 
-    public void TestEncodedWordsOne(String expected, String input) {
+    public static void TestEncodedWordsOne(String expected, String input) {
       String par = "(";
       Assert.assertEquals(expected, Reflect.InvokeStatic(MailNamespace() + ".Rfc2047", "DecodeEncodedWords", input, 0, input.length(), Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext", "Unstructured")));
       Assert.assertEquals(

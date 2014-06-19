@@ -20,224 +20,224 @@ private Charsets() {
     private static Map<String, String> charsetAliases = CreateAliasMap();
 
     private static Map<String, String> CreateAliasMap() {
-      HashMap<String, String> charsetAliases=new HashMap<String, String>();
-      charsetAliases.put("unicode-1-1-utf-8","utf-8");
-      charsetAliases.put("utf-8","utf-8");
-      charsetAliases.put("utf8","utf-8");
-      charsetAliases.put("866","ibm866");
-      charsetAliases.put("cp866","ibm866");
-      charsetAliases.put("csibm866","ibm866");
-      charsetAliases.put("ibm866","ibm866");
-      charsetAliases.put("csisolatin2","iso-8859-2");
-      charsetAliases.put("iso-8859-2","iso-8859-2");
-      charsetAliases.put("iso-ir-101","iso-8859-2");
-      charsetAliases.put("iso8859-2","iso-8859-2");
-      charsetAliases.put("iso88592","iso-8859-2");
-      charsetAliases.put("iso_8859-2","iso-8859-2");
-      charsetAliases.put("iso_8859-2:1987","iso-8859-2");
-      charsetAliases.put("l2","iso-8859-2");
-      charsetAliases.put("latin2","iso-8859-2");
-      charsetAliases.put("csisolatin3","iso-8859-3");
-      charsetAliases.put("iso-8859-3","iso-8859-3");
-      charsetAliases.put("iso-ir-109","iso-8859-3");
-      charsetAliases.put("iso8859-3","iso-8859-3");
-      charsetAliases.put("iso88593","iso-8859-3");
-      charsetAliases.put("iso_8859-3","iso-8859-3");
-      charsetAliases.put("iso_8859-3:1988","iso-8859-3");
-      charsetAliases.put("l3","iso-8859-3");
-      charsetAliases.put("latin3","iso-8859-3");
-      charsetAliases.put("csisolatin4","iso-8859-4");
-      charsetAliases.put("iso-8859-4","iso-8859-4");
-      charsetAliases.put("iso-ir-110","iso-8859-4");
-      charsetAliases.put("iso8859-4","iso-8859-4");
-      charsetAliases.put("iso88594","iso-8859-4");
-      charsetAliases.put("iso_8859-4","iso-8859-4");
-      charsetAliases.put("iso_8859-4:1988","iso-8859-4");
-      charsetAliases.put("l4","iso-8859-4");
-      charsetAliases.put("latin4","iso-8859-4");
-      charsetAliases.put("csisolatincyrillic","iso-8859-5");
-      charsetAliases.put("cyrillic","iso-8859-5");
-      charsetAliases.put("iso-8859-5","iso-8859-5");
-      charsetAliases.put("iso-ir-144","iso-8859-5");
-      charsetAliases.put("iso8859-5","iso-8859-5");
-      charsetAliases.put("iso88595","iso-8859-5");
-      charsetAliases.put("iso_8859-5","iso-8859-5");
-      charsetAliases.put("iso_8859-5:1988","iso-8859-5");
-      charsetAliases.put("arabic","iso-8859-6");
-      charsetAliases.put("asmo-708","iso-8859-6");
-      charsetAliases.put("csiso88596e","iso-8859-6");
-      charsetAliases.put("csiso88596i","iso-8859-6");
-      charsetAliases.put("csisolatinarabic","iso-8859-6");
-      charsetAliases.put("ecma-114","iso-8859-6");
-      charsetAliases.put("iso-8859-6","iso-8859-6");
-      charsetAliases.put("iso-8859-6-e","iso-8859-6");
-      charsetAliases.put("iso-8859-6-i","iso-8859-6");
-      charsetAliases.put("iso-ir-127","iso-8859-6");
-      charsetAliases.put("iso8859-6","iso-8859-6");
-      charsetAliases.put("iso88596","iso-8859-6");
-      charsetAliases.put("iso_8859-6","iso-8859-6");
-      charsetAliases.put("iso_8859-6:1987","iso-8859-6");
-      charsetAliases.put("csisolatingreek","iso-8859-7");
-      charsetAliases.put("ecma-118","iso-8859-7");
-      charsetAliases.put("elot_928","iso-8859-7");
-      charsetAliases.put("greek","iso-8859-7");
-      charsetAliases.put("greek8","iso-8859-7");
-      charsetAliases.put("iso-8859-7","iso-8859-7");
-      charsetAliases.put("iso-ir-126","iso-8859-7");
-      charsetAliases.put("iso8859-7","iso-8859-7");
-      charsetAliases.put("iso88597","iso-8859-7");
-      charsetAliases.put("iso_8859-7","iso-8859-7");
-      charsetAliases.put("iso_8859-7:1987","iso-8859-7");
-      charsetAliases.put("sun_eu_greek","iso-8859-7");
-      charsetAliases.put("csiso88598e","iso-8859-8");
-      charsetAliases.put("csisolatinhebrew","iso-8859-8");
-      charsetAliases.put("hebrew","iso-8859-8");
-      charsetAliases.put("iso-8859-8","iso-8859-8");
-      charsetAliases.put("iso-8859-8-e","iso-8859-8");
-      charsetAliases.put("iso-ir-138","iso-8859-8");
-      charsetAliases.put("iso8859-8","iso-8859-8");
-      charsetAliases.put("iso88598","iso-8859-8");
-      charsetAliases.put("iso_8859-8","iso-8859-8");
-      charsetAliases.put("iso_8859-8:1988","iso-8859-8");
-      charsetAliases.put("visual","iso-8859-8");
-      charsetAliases.put("csiso88598i","iso-8859-8-i");
-      charsetAliases.put("iso-8859-8-i","iso-8859-8-i");
-      charsetAliases.put("logical","iso-8859-8-i");
-      charsetAliases.put("csisolatin6","iso-8859-10");
-      charsetAliases.put("iso-8859-10","iso-8859-10");
-      charsetAliases.put("iso-ir-157","iso-8859-10");
-      charsetAliases.put("iso8859-10","iso-8859-10");
-      charsetAliases.put("iso885910","iso-8859-10");
-      charsetAliases.put("l6","iso-8859-10");
-      charsetAliases.put("latin6","iso-8859-10");
-      charsetAliases.put("iso-8859-13","iso-8859-13");
-      charsetAliases.put("iso8859-13","iso-8859-13");
-      charsetAliases.put("iso885913","iso-8859-13");
-      charsetAliases.put("iso-8859-14","iso-8859-14");
-      charsetAliases.put("iso8859-14","iso-8859-14");
-      charsetAliases.put("iso885914","iso-8859-14");
-      charsetAliases.put("csisolatin9","iso-8859-15");
-      charsetAliases.put("iso-8859-15","iso-8859-15");
-      charsetAliases.put("iso8859-15","iso-8859-15");
-      charsetAliases.put("iso885915","iso-8859-15");
-      charsetAliases.put("iso_8859-15","iso-8859-15");
-      charsetAliases.put("l9","iso-8859-15");
-      charsetAliases.put("iso-8859-16","iso-8859-16");
-      charsetAliases.put("cskoi8r","koi8-r");
-      charsetAliases.put("koi","koi8-r");
-      charsetAliases.put("koi8","koi8-r");
-      charsetAliases.put("koi8-r","koi8-r");
-      charsetAliases.put("koi8_r","koi8-r");
-      charsetAliases.put("koi8-u","koi8-u");
-      charsetAliases.put("csmacintosh","macintosh");
-      charsetAliases.put("mac","macintosh");
-      charsetAliases.put("macintosh","macintosh");
-      charsetAliases.put("x-mac-roman","macintosh");
-      charsetAliases.put("dos-874","windows-874");
-      charsetAliases.put("iso-8859-11","windows-874");
-      charsetAliases.put("iso8859-11","windows-874");
-      charsetAliases.put("iso885911","windows-874");
-      charsetAliases.put("tis-620","windows-874");
-      charsetAliases.put("windows-874","windows-874");
-      charsetAliases.put("cp1250","windows-1250");
-      charsetAliases.put("windows-1250","windows-1250");
-      charsetAliases.put("x-cp1250","windows-1250");
-      charsetAliases.put("cp1251","windows-1251");
-      charsetAliases.put("windows-1251","windows-1251");
-      charsetAliases.put("x-cp1251","windows-1251");
-      charsetAliases.put("ansi_x3.4-1968","windows-1252");
-      charsetAliases.put("ascii","windows-1252");
-      charsetAliases.put("cp1252","windows-1252");
-      charsetAliases.put("cp819","windows-1252");
-      charsetAliases.put("csisolatin1","windows-1252");
-      charsetAliases.put("ibm819","windows-1252");
-      charsetAliases.put("iso-8859-1","windows-1252");
-      charsetAliases.put("iso-ir-100","windows-1252");
-      charsetAliases.put("iso8859-1","windows-1252");
-      charsetAliases.put("iso88591","windows-1252");
-      charsetAliases.put("iso_8859-1","windows-1252");
-      charsetAliases.put("iso_8859-1:1987","windows-1252");
-      charsetAliases.put("l1","windows-1252");
-      charsetAliases.put("latin1","windows-1252");
-      charsetAliases.put("us-ascii","windows-1252");
-      charsetAliases.put("windows-1252","windows-1252");
-      charsetAliases.put("x-cp1252","windows-1252");
-      charsetAliases.put("cp1253","windows-1253");
-      charsetAliases.put("windows-1253","windows-1253");
-      charsetAliases.put("x-cp1253","windows-1253");
-      charsetAliases.put("cp1254","windows-1254");
-      charsetAliases.put("csisolatin5","windows-1254");
-      charsetAliases.put("iso-8859-9","windows-1254");
-      charsetAliases.put("iso-ir-148","windows-1254");
-      charsetAliases.put("iso8859-9","windows-1254");
-      charsetAliases.put("iso88599","windows-1254");
-      charsetAliases.put("iso_8859-9","windows-1254");
-      charsetAliases.put("iso_8859-9:1989","windows-1254");
-      charsetAliases.put("l5","windows-1254");
-      charsetAliases.put("latin5","windows-1254");
-      charsetAliases.put("windows-1254","windows-1254");
-      charsetAliases.put("x-cp1254","windows-1254");
-      charsetAliases.put("cp1255","windows-1255");
-      charsetAliases.put("windows-1255","windows-1255");
-      charsetAliases.put("x-cp1255","windows-1255");
-      charsetAliases.put("cp1256","windows-1256");
-      charsetAliases.put("windows-1256","windows-1256");
-      charsetAliases.put("x-cp1256","windows-1256");
-      charsetAliases.put("cp1257","windows-1257");
-      charsetAliases.put("windows-1257","windows-1257");
-      charsetAliases.put("x-cp1257","windows-1257");
-      charsetAliases.put("cp1258","windows-1258");
-      charsetAliases.put("windows-1258","windows-1258");
-      charsetAliases.put("x-cp1258","windows-1258");
-      charsetAliases.put("x-mac-cyrillic","x-mac-cyrillic");
-      charsetAliases.put("x-mac-ukrainian","x-mac-cyrillic");
-      charsetAliases.put("chinese","gb18030");
-      charsetAliases.put("csgb2312","gb18030");
-      charsetAliases.put("csiso58gb231280","gb18030");
-      charsetAliases.put("gb18030","gb18030");
-      charsetAliases.put("gb2312","gb18030");
-      charsetAliases.put("gb_2312","gb18030");
-      charsetAliases.put("gb_2312-80","gb18030");
-      charsetAliases.put("gbk","gb18030");
-      charsetAliases.put("iso-ir-58","gb18030");
-      charsetAliases.put("x-gbk","gb18030");
+      HashMap<String, String> aliases = new HashMap<String, String>();
+      aliases.put("unicode-1-1-utf-8","utf-8");
+      aliases.put("utf-8","utf-8");
+      aliases.put("utf8","utf-8");
+      aliases.put("866","ibm866");
+      aliases.put("cp866","ibm866");
+      aliases.put("csibm866","ibm866");
+      aliases.put("ibm866","ibm866");
+      aliases.put("csisolatin2","iso-8859-2");
+      aliases.put("iso-8859-2","iso-8859-2");
+      aliases.put("iso-ir-101","iso-8859-2");
+      aliases.put("iso8859-2","iso-8859-2");
+      aliases.put("iso88592","iso-8859-2");
+      aliases.put("iso_8859-2","iso-8859-2");
+      aliases.put("iso_8859-2:1987","iso-8859-2");
+      aliases.put("l2","iso-8859-2");
+      aliases.put("latin2","iso-8859-2");
+      aliases.put("csisolatin3","iso-8859-3");
+      aliases.put("iso-8859-3","iso-8859-3");
+      aliases.put("iso-ir-109","iso-8859-3");
+      aliases.put("iso8859-3","iso-8859-3");
+      aliases.put("iso88593","iso-8859-3");
+      aliases.put("iso_8859-3","iso-8859-3");
+      aliases.put("iso_8859-3:1988","iso-8859-3");
+      aliases.put("l3","iso-8859-3");
+      aliases.put("latin3","iso-8859-3");
+      aliases.put("csisolatin4","iso-8859-4");
+      aliases.put("iso-8859-4","iso-8859-4");
+      aliases.put("iso-ir-110","iso-8859-4");
+      aliases.put("iso8859-4","iso-8859-4");
+      aliases.put("iso88594","iso-8859-4");
+      aliases.put("iso_8859-4","iso-8859-4");
+      aliases.put("iso_8859-4:1988","iso-8859-4");
+      aliases.put("l4","iso-8859-4");
+      aliases.put("latin4","iso-8859-4");
+      aliases.put("csisolatincyrillic","iso-8859-5");
+      aliases.put("cyrillic","iso-8859-5");
+      aliases.put("iso-8859-5","iso-8859-5");
+      aliases.put("iso-ir-144","iso-8859-5");
+      aliases.put("iso8859-5","iso-8859-5");
+      aliases.put("iso88595","iso-8859-5");
+      aliases.put("iso_8859-5","iso-8859-5");
+      aliases.put("iso_8859-5:1988","iso-8859-5");
+      aliases.put("arabic","iso-8859-6");
+      aliases.put("asmo-708","iso-8859-6");
+      aliases.put("csiso88596e","iso-8859-6");
+      aliases.put("csiso88596i","iso-8859-6");
+      aliases.put("csisolatinarabic","iso-8859-6");
+      aliases.put("ecma-114","iso-8859-6");
+      aliases.put("iso-8859-6","iso-8859-6");
+      aliases.put("iso-8859-6-e","iso-8859-6");
+      aliases.put("iso-8859-6-i","iso-8859-6");
+      aliases.put("iso-ir-127","iso-8859-6");
+      aliases.put("iso8859-6","iso-8859-6");
+      aliases.put("iso88596","iso-8859-6");
+      aliases.put("iso_8859-6","iso-8859-6");
+      aliases.put("iso_8859-6:1987","iso-8859-6");
+      aliases.put("csisolatingreek","iso-8859-7");
+      aliases.put("ecma-118","iso-8859-7");
+      aliases.put("elot_928","iso-8859-7");
+      aliases.put("greek","iso-8859-7");
+      aliases.put("greek8","iso-8859-7");
+      aliases.put("iso-8859-7","iso-8859-7");
+      aliases.put("iso-ir-126","iso-8859-7");
+      aliases.put("iso8859-7","iso-8859-7");
+      aliases.put("iso88597","iso-8859-7");
+      aliases.put("iso_8859-7","iso-8859-7");
+      aliases.put("iso_8859-7:1987","iso-8859-7");
+      aliases.put("sun_eu_greek","iso-8859-7");
+      aliases.put("csiso88598e","iso-8859-8");
+      aliases.put("csisolatinhebrew","iso-8859-8");
+      aliases.put("hebrew","iso-8859-8");
+      aliases.put("iso-8859-8","iso-8859-8");
+      aliases.put("iso-8859-8-e","iso-8859-8");
+      aliases.put("iso-ir-138","iso-8859-8");
+      aliases.put("iso8859-8","iso-8859-8");
+      aliases.put("iso88598","iso-8859-8");
+      aliases.put("iso_8859-8","iso-8859-8");
+      aliases.put("iso_8859-8:1988","iso-8859-8");
+      aliases.put("visual","iso-8859-8");
+      aliases.put("csiso88598i","iso-8859-8-i");
+      aliases.put("iso-8859-8-i","iso-8859-8-i");
+      aliases.put("logical","iso-8859-8-i");
+      aliases.put("csisolatin6","iso-8859-10");
+      aliases.put("iso-8859-10","iso-8859-10");
+      aliases.put("iso-ir-157","iso-8859-10");
+      aliases.put("iso8859-10","iso-8859-10");
+      aliases.put("iso885910","iso-8859-10");
+      aliases.put("l6","iso-8859-10");
+      aliases.put("latin6","iso-8859-10");
+      aliases.put("iso-8859-13","iso-8859-13");
+      aliases.put("iso8859-13","iso-8859-13");
+      aliases.put("iso885913","iso-8859-13");
+      aliases.put("iso-8859-14","iso-8859-14");
+      aliases.put("iso8859-14","iso-8859-14");
+      aliases.put("iso885914","iso-8859-14");
+      aliases.put("csisolatin9","iso-8859-15");
+      aliases.put("iso-8859-15","iso-8859-15");
+      aliases.put("iso8859-15","iso-8859-15");
+      aliases.put("iso885915","iso-8859-15");
+      aliases.put("iso_8859-15","iso-8859-15");
+      aliases.put("l9","iso-8859-15");
+      aliases.put("iso-8859-16","iso-8859-16");
+      aliases.put("cskoi8r","koi8-r");
+      aliases.put("koi","koi8-r");
+      aliases.put("koi8","koi8-r");
+      aliases.put("koi8-r","koi8-r");
+      aliases.put("koi8_r","koi8-r");
+      aliases.put("koi8-u","koi8-u");
+      aliases.put("csmacintosh","macintosh");
+      aliases.put("mac","macintosh");
+      aliases.put("macintosh","macintosh");
+      aliases.put("x-mac-roman","macintosh");
+      aliases.put("dos-874","windows-874");
+      aliases.put("iso-8859-11","windows-874");
+      aliases.put("iso8859-11","windows-874");
+      aliases.put("iso885911","windows-874");
+      aliases.put("tis-620","windows-874");
+      aliases.put("windows-874","windows-874");
+      aliases.put("cp1250","windows-1250");
+      aliases.put("windows-1250","windows-1250");
+      aliases.put("x-cp1250","windows-1250");
+      aliases.put("cp1251","windows-1251");
+      aliases.put("windows-1251","windows-1251");
+      aliases.put("x-cp1251","windows-1251");
+      aliases.put("ansi_x3.4-1968","windows-1252");
+      aliases.put("ascii","windows-1252");
+      aliases.put("cp1252","windows-1252");
+      aliases.put("cp819","windows-1252");
+      aliases.put("csisolatin1","windows-1252");
+      aliases.put("ibm819","windows-1252");
+      aliases.put("iso-8859-1","windows-1252");
+      aliases.put("iso-ir-100","windows-1252");
+      aliases.put("iso8859-1","windows-1252");
+      aliases.put("iso88591","windows-1252");
+      aliases.put("iso_8859-1","windows-1252");
+      aliases.put("iso_8859-1:1987","windows-1252");
+      aliases.put("l1","windows-1252");
+      aliases.put("latin1","windows-1252");
+      aliases.put("us-ascii","windows-1252");
+      aliases.put("windows-1252","windows-1252");
+      aliases.put("x-cp1252","windows-1252");
+      aliases.put("cp1253","windows-1253");
+      aliases.put("windows-1253","windows-1253");
+      aliases.put("x-cp1253","windows-1253");
+      aliases.put("cp1254","windows-1254");
+      aliases.put("csisolatin5","windows-1254");
+      aliases.put("iso-8859-9","windows-1254");
+      aliases.put("iso-ir-148","windows-1254");
+      aliases.put("iso8859-9","windows-1254");
+      aliases.put("iso88599","windows-1254");
+      aliases.put("iso_8859-9","windows-1254");
+      aliases.put("iso_8859-9:1989","windows-1254");
+      aliases.put("l5","windows-1254");
+      aliases.put("latin5","windows-1254");
+      aliases.put("windows-1254","windows-1254");
+      aliases.put("x-cp1254","windows-1254");
+      aliases.put("cp1255","windows-1255");
+      aliases.put("windows-1255","windows-1255");
+      aliases.put("x-cp1255","windows-1255");
+      aliases.put("cp1256","windows-1256");
+      aliases.put("windows-1256","windows-1256");
+      aliases.put("x-cp1256","windows-1256");
+      aliases.put("cp1257","windows-1257");
+      aliases.put("windows-1257","windows-1257");
+      aliases.put("x-cp1257","windows-1257");
+      aliases.put("cp1258","windows-1258");
+      aliases.put("windows-1258","windows-1258");
+      aliases.put("x-cp1258","windows-1258");
+      aliases.put("x-mac-cyrillic","x-mac-cyrillic");
+      aliases.put("x-mac-ukrainian","x-mac-cyrillic");
+      aliases.put("chinese","gb18030");
+      aliases.put("csgb2312","gb18030");
+      aliases.put("csiso58gb231280","gb18030");
+      aliases.put("gb18030","gb18030");
+      aliases.put("gb2312","gb18030");
+      aliases.put("gb_2312","gb18030");
+      aliases.put("gb_2312-80","gb18030");
+      aliases.put("gbk","gb18030");
+      aliases.put("iso-ir-58","gb18030");
+      aliases.put("x-gbk","gb18030");
       // charsetAliases.put("hz-gb-2312","hz-gb-2312");
-      charsetAliases.put("big5","big5");
-      charsetAliases.put("big5-hkscs","big5");
-      charsetAliases.put("cn-big5","big5");
-      charsetAliases.put("csbig5","big5");
-      charsetAliases.put("x-x-big5","big5");
-      charsetAliases.put("cseucpkdfmtjapanese","euc-jp");
-      charsetAliases.put("euc-jp","euc-jp");
-      charsetAliases.put("x-euc-jp","euc-jp");
-      charsetAliases.put("csiso2022jp","iso-2022-jp");
-      charsetAliases.put("iso-2022-jp","iso-2022-jp");
-      charsetAliases.put("csshiftjis","shift_jis");
-      charsetAliases.put("ms_kanji","shift_jis");
-      charsetAliases.put("shift-jis","shift_jis");
-      charsetAliases.put("shift_jis","shift_jis");
-      charsetAliases.put("sjis","shift_jis");
-      charsetAliases.put("windows-31j","shift_jis");
-      charsetAliases.put("x-sjis","shift_jis");
-      charsetAliases.put("cseuckr","euc-kr");
-      charsetAliases.put("csksc56011987","euc-kr");
-      charsetAliases.put("euc-kr","euc-kr");
-      charsetAliases.put("iso-ir-149","euc-kr");
-      charsetAliases.put("korean","euc-kr");
-      charsetAliases.put("ks_c_5601-1987","euc-kr");
-      charsetAliases.put("ks_c_5601-1989","euc-kr");
-      charsetAliases.put("ksc5601","euc-kr");
-      charsetAliases.put("ksc_5601","euc-kr");
-      charsetAliases.put("windows-949","euc-kr");
-      charsetAliases.put("csiso2022kr","replacement");
-      charsetAliases.put("iso-2022-cn","replacement");
-      charsetAliases.put("iso-2022-cn-ext","replacement");
-      charsetAliases.put("iso-2022-kr","replacement");
-      charsetAliases.put("utf-16be","utf-16be");
-      charsetAliases.put("utf-16","utf-16le");
-      charsetAliases.put("utf-16le","utf-16le");
-      charsetAliases.put("x-user-defined","x-user-defined");
-      return charsetAliases;
+      aliases.put("big5","big5");
+      aliases.put("big5-hkscs","big5");
+      aliases.put("cn-big5","big5");
+      aliases.put("csbig5","big5");
+      aliases.put("x-x-big5","big5");
+      aliases.put("cseucpkdfmtjapanese","euc-jp");
+      aliases.put("euc-jp","euc-jp");
+      aliases.put("x-euc-jp","euc-jp");
+      aliases.put("csiso2022jp","iso-2022-jp");
+      aliases.put("iso-2022-jp","iso-2022-jp");
+      aliases.put("csshiftjis","shift_jis");
+      aliases.put("ms_kanji","shift_jis");
+      aliases.put("shift-jis","shift_jis");
+      aliases.put("shift_jis","shift_jis");
+      aliases.put("sjis","shift_jis");
+      aliases.put("windows-31j","shift_jis");
+      aliases.put("x-sjis","shift_jis");
+      aliases.put("cseuckr","euc-kr");
+      aliases.put("csksc56011987","euc-kr");
+      aliases.put("euc-kr","euc-kr");
+      aliases.put("iso-ir-149","euc-kr");
+      aliases.put("korean","euc-kr");
+      aliases.put("ks_c_5601-1987","euc-kr");
+      aliases.put("ks_c_5601-1989","euc-kr");
+      aliases.put("ksc5601","euc-kr");
+      aliases.put("ksc_5601","euc-kr");
+      aliases.put("windows-949","euc-kr");
+      aliases.put("csiso2022kr","replacement");
+      aliases.put("iso-2022-cn","replacement");
+      aliases.put("iso-2022-cn-ext","replacement");
+      aliases.put("iso-2022-kr","replacement");
+      aliases.put("utf-16be","utf-16be");
+      aliases.put("utf-16","utf-16le");
+      aliases.put("utf-16le","utf-16le");
+      aliases.put("x-user-defined","x-user-defined");
+      return aliases;
     }
 
     public static String ResolveAliasForWeb(String name) {
@@ -245,10 +245,7 @@ private Charsets() {
         return "";
       }
       name = DataUtilities.ToLowerCaseAscii(name);
-      if (charsetAliases.containsKey(name)) {
-        return charsetAliases.get(name);
-      }
-      return "";
+      return charsetAliases.containsKey(name) ? charsetAliases.get(name) : "";
     }
 
     public static String ResolveAliasForEmail(String name) {
@@ -430,11 +427,14 @@ private Charsets() {
           253,
           254,
           255 });
-      } else if (name.equals("utf-7") || name.equals("unicode-1-1-utf-7")) {
+      }
+      if (name.equals("utf-7") || name.equals("unicode-1-1-utf-7")) {
         return new Utf7Encoding();
-      } else if (name.equals("iso-8859-10")) {
+      }
+      if (name.equals("iso-8859-10")) {
         return new SingleByteEncoding(new int[] { 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 260, 274, 290, 298, 296, 310, 167, 315, 272, 352, 358, 381, 173, 362, 330, 176, 261, 275, 291, 299, 297, 311, 183, 316, 273, 353, 359, 382, 8213, 363, 331, 256, 193, 194, 195, 196, 197, 198, 302, 268, 201, 280, 203, 278, 205, 206, 207, 208, 325, 332, 211, 212, 213, 214, 360, 216, 370, 218, 219, 220, 221, 222, 223, 257, 225, 226, 227, 228, 229, 230, 303, 269, 233, 281, 235, 279, 237, 238, 239, 240, 326, 333, 243, 244, 245, 246, 361, 248, 371, 250, 251, 252, 253, 254, 312 });
-      } else if (name.equals("iso-8859-13")) {
+      }
+      if (name.equals("iso-8859-13")) {
         return new SingleByteEncoding(new int[] { 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 8221, 162, 163, 164, 8222, 166, 167, 216, 169, 342, 171, 172, 173, 174, 198, 176, 177, 178, 179, 8220, 181, 182, 183, 248, 185, 343, 187, 188, 189, 190, 230, 260, 302, 256, 262, 196, 197, 280, 274, 268, 201, 377, 278, 290, 310, 298, 315, 352, 323, 325, 211, 332, 213, 214, 215, 370, 321, 346, 362, 220, 379, 381, 223, 261, 303, 257, 263, 228, 229, 281, 275, 269, 233, 378, 279, 291, 311, 299, 316, 353, 324, 326, 243, 333, 245, 246, 247, 371, 322, 347, 363, 252, 380, 382, 8217 });
       } else if (name.equals("iso-8859-14")) {
         return new SingleByteEncoding(new int[] { 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 7682, 7683, 163, 266, 267, 7690, 167, 7808, 169, 7810, 7691, 7922, 173, 174, 376, 7710, 7711, 288, 289, 7744, 7745, 182, 7766, 7809, 7767, 7811, 7776, 7923, 7812, 7813, 7777, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 372, 209, 210, 211, 212, 213, 214, 7786, 216, 217, 218, 219, 220, 221, 374, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 373, 241, 242, 243, 244, 245, 246, 7787, 248, 249, 250, 251, 252, 253, 375, 255 });
@@ -493,11 +493,11 @@ private Charsets() {
         return new Iso2022JPEncoding();
       }
       if (name.equals("gbk") ||
-          name.equals("gb18030") ||
-          name.equals("gb2312") ||
-          name.equals("big5") ||
-          name.equals("big5-hkscs") ||
-          name.equals("ks_c_5601-1987")) {
+             name.equals("gb18030") ||
+             name.equals("gb2312") ||
+             name.equals("big5") ||
+             name.equals("big5-hkscs") ||
+             name.equals("ks_c_5601-1987")) {
         // TODO: These encodings are not actually supported yet
         return Ascii;
       }
@@ -517,7 +517,7 @@ private Charsets() {
         StringBuilder builder,
         boolean replace) {
         if (input == null) {
-          throw new NullPointerException("stream");
+          throw new NullPointerException("input");
         }
         if (builder == null) {
           throw new NullPointerException("builder");
@@ -541,12 +541,11 @@ private Charsets() {
                 break;  // end of stream
               }
               return -1;
-            } else {
-              if (bytesCount >= 0) {
-                return -2;
-              }
-              break;  // end of stream
             }
+            if (bytesCount >= 0) {
+              return -2;
+            }
+            break;  // end of stream
           }
           if (bytesCount > 0) {
             ++pointer;
@@ -575,7 +574,8 @@ private Charsets() {
               }
             }
             continue;
-          } else if (b < lower || b > upper) {
+          }
+          if (b < lower || b > upper) {
             cp = bytesNeeded = bytesSeen = 0;
             lower = 0x80;
             upper = 0xbf;
@@ -601,9 +601,8 @@ private Charsets() {
                 builder.append((char)0xfffd);
               }
               continue;
-            } else {
-              return -1;
             }
+            return -1;
           } else {
             lower = 0x80;
             upper = 0xbf;
@@ -667,9 +666,7 @@ private Charsets() {
                 lead = b;
                 state = 2;
               } else {
-                if (b >= 0) {
-                  unget = true;
-                }
+                unget |= b >= 0;
                 state = 0;
                 builder.append((char)0xfffd);
               }
@@ -750,11 +747,7 @@ private Charsets() {
                 int c = -1;
                 int p = (lead - 0x21) * 94 + (b - 0x21);
                 if (lead >= 0x21 && lead <= 0x7e && b >= 0x21 && b <= 0x7e) {
-                  if (jis0212) {
-                    c = JIS0212.indexToCodePoint(p);
-                  } else {
-                    c = JIS0208.indexToCodePoint(p);
-                  }
+                  c = (jis0212) ? (JIS0212.indexToCodePoint(p)) : (JIS0208.indexToCodePoint(p));
                 }
                 if (c < 0) {
                   builder.append((char)0xfffd);
@@ -824,7 +817,8 @@ private Charsets() {
               builder.append((char)c);
             }
             continue;
-          } else if (b <= 0x80) {
+          }
+          if (b <= 0x80) {
             builder.append((char)b);
           } else if (b >= 0xa1 && b <= 0xdf) {
             builder.append((char)(0xff61 + b - 0xa1));
@@ -869,13 +863,9 @@ private Charsets() {
           if (lead != 0) {
             int c = -1;
             if ((lead >= 0xa1 && lead <= 0xfe) &&
-                b >= 0xa1 && b <= 0xfe) {
+                      b >= 0xa1 && b <= 0xfe) {
               c = ((lead - 0xa1) * 94) + (b - 0xa1);
-              if (jis0212) {
-                c = JIS0212.indexToCodePoint(c);
-              } else {
-                c = JIS0208.indexToCodePoint(c);
-              }
+              c = jis0212 ? JIS0212.indexToCodePoint(c) : JIS0208.indexToCodePoint(c);
             }
             lead = 0;
             jis0212 = false;
@@ -889,7 +879,8 @@ private Charsets() {
               builder.append((char)c);
             }
             continue;
-          } else if (b <= 0x7f) {
+          }
+          if (b <= 0x7f) {
             builder.append((char)b);
           } else if (b == 0x8e || b == 0x8f || (b >= 0xa1 && b <= 0xfe)) {
             lead = b;
@@ -903,7 +894,7 @@ private Charsets() {
     }
 
     private static final class Utf7Encoding implements ICharset {
-      static final int[] Alphabet = new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      static final int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
         52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1,
@@ -1002,7 +993,7 @@ private Charsets() {
         StringBuilder builder,
         boolean replace) {
         if (input == null) {
-          throw new NullPointerException("stream");
+          throw new NullPointerException("input");
         }
         if (builder == null) {
           throw new NullPointerException("builder");
@@ -1116,7 +1107,8 @@ private Charsets() {
                 if (b < 0) {
                   // End of stream
                   return;
-                } else if (b == 0x2d) {
+                }
+                if (b == 0x2d) {
                   // Ignore the hyphen
                 } else if (b == 0x09 || b == 0x0a || b == 0x0d) {
                   builder.append((char)b);

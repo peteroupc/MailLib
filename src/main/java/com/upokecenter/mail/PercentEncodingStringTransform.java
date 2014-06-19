@@ -48,10 +48,12 @@ at: http://upokecenter.com/d/
         if (c < 0) {
           // End of stream
           return -1;
-        } else if (c == 0x0d) {
+        }
+        if (c == 0x0d) {
           // Can't occur in parameter value percent-encoding; replace
           return '?';
-        } else if (c == 0x0a) {
+        }
+        if (c == 0x0a) {
           // Can't occur in parameter value percent-encoding; replace
           return '?';
         } else if (c == '%') {

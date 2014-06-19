@@ -89,14 +89,6 @@ public void setPosition(int value) {
       return maxLength;
     }
 
-    /**
-     * Not documented yet.
-     * @param src A byte array.
-     * @param offset A 32-bit signed integer.
-     * @param length A 32-bit signed integer. (2).
-     * @throws java.lang.NullPointerException The parameter {@code src}
-     * is null.
-     */
     public void WriteBytes(byte[] src, int offset, int length) {
       if (src == null) {
         throw new NullPointerException("src");

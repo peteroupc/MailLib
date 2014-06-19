@@ -12,9 +12,6 @@ at: http://upokecenter.com/d/
      */
   final class IdentityEncoder implements IStringEncoder
   {
-    public IdentityEncoder () {
-    }
-
     public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
       if (str == null) {
         throw new NullPointerException("str");

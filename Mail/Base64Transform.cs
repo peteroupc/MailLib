@@ -9,7 +9,7 @@ using System;
 
 namespace PeterO.Mail {
   internal sealed class Base64Transform : ITransform {
-    internal static readonly int[] Alphabet = new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    internal static readonly int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
       52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1,
@@ -73,13 +73,15 @@ bool checkStrictEncoding) {
           if (count == 1) {
             // Not supposed to happen
             throw new MessageDataException("Invalid number of base64 characters");
-          } else if (count == 2) {
+          }
+          if (count == 2) {
             if (this.checkStrictEncoding && this.paddingCount != 2) {
               throw new MessageDataException("Invalid amount of base64 padding");
             }
             value <<= 12;
             return (int)((value >> 16) & 0xff);
-          } else if (count == 3) {
+          }
+          if (count == 3) {
             if (this.checkStrictEncoding && this.paddingCount != 1) {
               throw new MessageDataException("Invalid amount of base64 padding");
             }
@@ -89,25 +91,27 @@ bool checkStrictEncoding) {
             return (int)((value >> 16) & 0xff);
           }
           return -1;
-        } else if (c == 0x0d) {
+        }
+        if (c == 0x0d) {
           c = lastByte = ungetting ? lastByte : this.input.ReadByte();
           if (c == 0x0a) {
             this.lineCharCount = 0;
             continue;
-          } else {
-            ungetting = true;
-            if (this.lenientLineBreaks) {
-              this.lineCharCount = 0;
-              continue;
-            } else if (this.checkStrictEncoding) {
-              throw new MessageDataException("Invalid base64 character");
-            }
+          }
+          ungetting = true;
+          if (this.lenientLineBreaks) {
+            this.lineCharCount = 0;
+            continue;
+          }
+          if (this.checkStrictEncoding) {
+            throw new MessageDataException("Invalid base64 character");
           }
         } else if (c == 0x0a) {
           if (this.lenientLineBreaks) {
             this.lineCharCount = 0;
             continue;
-          } else if (this.checkStrictEncoding) {
+          }
+          if (this.checkStrictEncoding) {
             throw new MessageDataException("Invalid base64 character: 0x0A bare");
           }
         } else if (c >= 0x80) {

@@ -58,7 +58,8 @@ import java.util.*;
       if (this.hasNewBodyPart || this.endOfStream) {
         return -1;
       }
-      int c = this.lastByte = this.ungetting ? this.lastByte : this.input.read(); this.ungetting = false;
+      int c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+      this.ungetting = false;
       if (this.readingHeaders) {
         return c;
       }
@@ -69,52 +70,58 @@ import java.util.*;
       if (c == '-' && this.started) {
         // Check for a boundary
         this.started = false;
-        c = this.lastByte = this.ungetting ? this.lastByte : this.input.read(); this.ungetting = false;
+        c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+        this.ungetting = false;
         if (c == '-') {
           // Possible boundary candidate
           return this.CheckBoundaries(false);
-        } else {
-          this.ungetting = true;
-          return '-';
         }
-      } else {
-        this.started = false;
+        this.ungetting = true;
+        return '-';
       }
+      this.started = false;
       if (c == 0x0d) {
-        c = this.lastByte = this.ungetting ? this.lastByte : this.input.read(); this.ungetting = false;
+        c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+        this.ungetting = false;
         if (c == 0x0a) {
           // Line break was read
-          c = this.lastByte = this.ungetting ? this.lastByte : this.input.read(); this.ungetting = false;
+          c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+          this.ungetting = false;
           if (c == -1) {
             this.ResizeBuffer(1);
             this.buffer[0] = 0x0a;
             return 0x0d;
-          } else if (c == 0x0d) {
+          }
+          if (c == 0x0d) {
             // Unget the CR, in case the next line is a boundary line
             this.ungetting = true;
             this.ResizeBuffer(1);
             this.buffer[0] = 0x0a;
             return 0x0d;
-          } else if (c != '-') {
+          }
+          if (c != '-') {
             this.ResizeBuffer(2);
             this.buffer[0] = 0x0a;
             this.buffer[1] = (byte)c;
             return 0x0d;
           }
-          c = this.lastByte = this.ungetting ? this.lastByte : this.input.read(); this.ungetting = false;
+          c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+          this.ungetting = false;
           if (c == -1) {
             this.ResizeBuffer(2);
             this.buffer[0] = 0x0a;
             this.buffer[1] = (byte)'-';
             return 0x0d;
-          } else if (c == 0x0d) {
+          }
+          if (c == 0x0d) {
             // Unget the CR, in case the next line is a boundary line
             this.ungetting = true;
             this.ResizeBuffer(2);
             this.buffer[0] = 0x0a;
             this.buffer[1] = (byte)'-';
             return 0x0d;
-          } else if (c != '-') {
+          }
+          if (c != '-') {
             this.ResizeBuffer(3);
             this.buffer[0] = 0x0a;
             this.buffer[1] = (byte)'-';
@@ -123,13 +130,11 @@ import java.util.*;
           }
           // Possible boundary candidate
           return this.CheckBoundaries(true);
-        } else {
-          this.ungetting = true;
-          return 0x0d;
         }
-      } else {
-        return c;
+        this.ungetting = true;
+        return 0x0d;
       }
+      return c;
     }
 
     private int CheckBoundaries(boolean includeCrLf) {
@@ -184,9 +189,7 @@ import java.util.*;
           if (!((boundary)==null || (boundary).length()==0) && boundary.length() <= bytesRead) {
             boolean match = true;
             for (int j = 0; j < boundary.length(); ++j) {
-              if ((boundary.charAt(j) & 0xff) != (int)(this.buffer[j + bufferStart] & 0xff)) {
-                match = false;
-              }
+              match &= (boundary.charAt(j) & 0xff) == (int)(this.buffer[j + bufferStart] & 0xff);
             }
             if (match) {
               matchingBoundary = boundary;
@@ -204,10 +207,7 @@ import java.util.*;
           }
           // Boundary line found
           if (matchingBoundary.length() + 1 < bytesRead) {
-            if (this.buffer[matchingBoundary.length() + bufferStart] == '-' &&
-                this.buffer[matchingBoundary.length() + 1 + bufferStart] == '-') {
-              closingDelim = true;
-            }
+            closingDelim |= this.buffer[matchingBoundary.length() + bufferStart] == '-' && this.buffer[matchingBoundary.length() + 1 + bufferStart] == '-';
           }
           // Clear the buffer, the boundary line
           // isn't part of any body data
@@ -229,45 +229,54 @@ import java.util.*;
             // part, the rest of the data before the next boundary
             // is insignificant
             while (true) {
-              c = this.lastByte = this.ungetting ? this.lastByte : this.input.read(); this.ungetting = false;
+              c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+              this.ungetting = false;
               if (c == -1) {
                 // The body higher up didn't end yet
                 throw new MessageDataException("Premature end of message");
-              } else if (c == 0x0d) {
-                c = this.lastByte = this.ungetting ? this.lastByte : this.input.read(); this.ungetting = false;
+              }
+              if (c == 0x0d) {
+                c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+                this.ungetting = false;
                 if (c == -1) {
                   // The body higher up didn't end yet
                   throw new MessageDataException("Premature end of message");
-                } else if (c == 0x0a) {
+                }
+                if (c == 0x0a) {
                   // Start of new body part
-                  c = this.lastByte = this.ungetting ? this.lastByte : this.input.read(); this.ungetting = false;
+                  c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+                  this.ungetting = false;
                   if (c == -1) {
                     throw new MessageDataException("Premature end of message");
-                  } else if (c == 0x0d) {
+                  }
+                  if (c == 0x0d) {
                     // Unget the CR, in case the next line is a boundary line
                     this.ungetting = true;
                     continue;
-                  } else if (c != '-') {
+                  }
+                  if (c != '-') {
                     // Not a boundary delimiter
                     continue;
                   }
-                  c = this.lastByte = this.ungetting ? this.lastByte : this.input.read(); this.ungetting = false;
+                  c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+                  this.ungetting = false;
                   if (c == -1) {
                     throw new MessageDataException("Premature end of message");
-                  } else if (c == 0x0d) {
+                  }
+                  if (c == 0x0d) {
                     // Unget the CR, in case the next line is a boundary line
                     this.ungetting = true;
                     continue;
-                  } else if (c != '-') {
+                  }
+                  if (c != '-') {
                     // Not a boundary delimiter
                     continue;
                   }
                   // Found the next boundary delimiter
                   done = false;
                   break;
-                } else {
-                  this.ungetting = true;
                 }
+                this.ungetting = true;
               }
             }
             if (!done) {
@@ -279,21 +288,24 @@ import java.util.*;
             // next line will start the headers of the
             // next body part).
             while (true) {
-              c = this.lastByte = this.ungetting ? this.lastByte : this.input.read(); this.ungetting = false;
+              c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+              this.ungetting = false;
               if (c == -1) {
                 throw new MessageDataException("Premature end of message");
-              } else if (c == 0x0d) {
-                c = this.lastByte = this.ungetting ? this.lastByte : this.input.read(); this.ungetting = false;
+              }
+              if (c == 0x0d) {
+                c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+                this.ungetting = false;
                 if (c == -1) {
                   throw new MessageDataException("Premature end of message");
-                } else if (c == 0x0a) {
+                }
+                if (c == 0x0a) {
                   // Start of new body part
                   this.hasNewBodyPart = true;
                   this.bufferCount = 0;
                   return -1;
-                } else {
-                  this.ungetting = true;
                 }
+                this.ungetting = true;
               }
             }
           }

@@ -84,7 +84,7 @@ namespace PeterO.Mail {
       if (!nonSpace) {
         return str.Substring(index, length);
       }
-      StringBuilder sb = new StringBuilder();
+      var sb = new StringBuilder();
       for (int i = index; i < endIndex; ++i) {
         if (str[i] == 0x20 || str[i] == 0x09) {
           sb.Append(str[i]);

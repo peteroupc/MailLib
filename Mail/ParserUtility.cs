@@ -27,10 +27,7 @@ namespace PeterO.Mail {
         throw new ArgumentException("strStartPos (" + Convert.ToString((int)strStartPos, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
       }
       int endpos = suffix.Length + strStartPos;
-      if (endpos > str.Length) {
-        return false;
-      }
-      return str.Substring(strStartPos, (endpos)-strStartPos).Equals(suffix);
+      return (endpos <= str.Length) && str.Substring(strStartPos, (endpos) - strStartPos).Equals(suffix);
     }
 
     public static bool StartsWith(string str, string prefix) {
@@ -40,21 +37,15 @@ namespace PeterO.Mail {
       if (prefix == null) {
         throw new ArgumentNullException("prefix");
       }
-      if (prefix.Length < str.Length) {
-        return false;
-      }
-      return str.Substring(0, prefix.Length).Equals(prefix);
+      return (prefix.Length >= str.Length) && str.Substring(0, prefix.Length).Equals(prefix);
     }
 
     public static string TrimSpaceAndTab(string s) {
-      if (s == null || s.Length == 0) {
-        return s;
-      }
-      return TrimSpaceAndTabLeft(TrimSpaceAndTabRight(s));
+      return string.IsNullOrEmpty(s) ? s : TrimSpaceAndTabLeft(TrimSpaceAndTabRight(s));
     }
 
     public static string TrimSpaceAndTabLeft(string s) {
-      if (s == null || s.Length == 0) {
+      if (string.IsNullOrEmpty(s)) {
         return s;
       }
       int index = 0;
@@ -66,20 +57,14 @@ namespace PeterO.Mail {
         }
         ++index;
       }
-      if (index == valueSLength) {
-        return String.Empty;
-      } else if (index == 0) {
-        return s;
-      } else {
-        return s.Substring(index);
-      }
+      return (index == valueSLength) ? String.Empty : ((index == 0) ? s : s.Substring(index));
     }
 
     public static string TrimSpaceAndTabRight(string s) {
-      if (s == null || s.Length == 0) {
+      if (string.IsNullOrEmpty(s)) {
         return s;
       }
-      int startIndex = 0;
+      const int startIndex = 0;
       int index = s.Length - 1;
       while (index >= 0) {
         char c = s[index];
@@ -130,12 +115,12 @@ namespace PeterO.Mail {
     /// <summary>Splits a string by a delimiter. If the string ends with the
     /// delimiter, the result will end with an empty string. If the string
     /// begins with the delimiter, the result will start with an empty string.</summary>
-    /// <returns>An array containing strings that are split by the delimiter.
-    /// If s is null or empty, returns an array whose sole element is the empty
-    /// string.</returns>
     /// <param name='s'>A string to split.</param>
     /// <param name='delimiter'>A string to signal where each substring
     /// begins and ends.</param>
+    /// <returns>An array containing strings that are split by the delimiter.
+    /// If s is null or empty, returns an array whose sole element is the empty
+    /// string.</returns>
     /// <exception cref='System.ArgumentException'>Delimiter is null
     /// or empty.</exception>
     /// <exception cref='System.ArgumentNullException'>The parameter
@@ -147,8 +132,8 @@ namespace PeterO.Mail {
       if (delimiter.Length == 0) {
         throw new ArgumentException("delimiter is empty.");
       }
-      if (s == null || s.Length == 0) {
-        return new string[] { String.Empty };
+      if (string.IsNullOrEmpty(s)) {
+        return new [] { String.Empty };
       }
       int index = 0;
       bool first = true;
@@ -158,7 +143,7 @@ namespace PeterO.Mail {
         int index2 = s.IndexOf(delimiter, index, StringComparison.Ordinal);
         if (index2 < 0) {
           if (first) {
-            return new string[] { s };
+            return new [] { s };
           }
           strings.Add(s.Substring(index));
           break;
@@ -216,11 +201,11 @@ namespace PeterO.Mail {
           }
           // match grandfathered language tags
           if (str.Equals("sgn-be-fr") || str.Equals("sgn-be-nl") || str.Equals("sgn-ch-de") ||
-              str.Equals("en-gb-oed")) {
+                   str.Equals("en-gb-oed")) {
             return true;
           }
           // More complex cases
-          string[] splitString = SplitAt(str.Substring(startIndex, (endIndex)-startIndex), "-");
+          string[] splitString = SplitAt(str.Substring(startIndex, (endIndex) - startIndex), "-");
           if (splitString.Length == 0) {
             return false;
           }
@@ -293,7 +278,7 @@ namespace PeterO.Mail {
             string curString = splitString[splitIndex];
             int curIndex = splitIndex;
             if (lengthIfAllAlphaNum(curString) == 1 &&
-                !curString.Equals("x")) {
+                      !curString.Equals("x")) {
               if (variants == null) {
                 variants = new List<string>();
               }
@@ -344,7 +329,8 @@ namespace PeterO.Mail {
           }
           // check if all the tokens were used
           return splitIndex == splitLength;
-        } else if (c2 == '-' && (c1 == 'x' || c1 == 'X')) {
+        }
+        if (c2 == '-' && (c1 == 'x' || c1 == 'X')) {
           // private use
           ++index;
           while (index < endIndex) {
@@ -372,22 +358,22 @@ namespace PeterO.Mail {
             }
           }
           return true;
-        } else if (c2 == '-' && (c1 == 'i' || c1 == 'I')) {
+        }
+        if (c2 == '-' && (c1 == 'i' || c1 == 'I')) {
           // grandfathered language tags
           str = DataUtilities.ToLowerCaseAscii(str);
           return str.Equals("i-ami") || str.Equals("i-bnn") ||
-            str.Equals("i-default") || str.Equals("i-enochian") ||
-            str.Equals("i-hak") || str.Equals("i-klingon") ||
-            str.Equals("i-lux") || str.Equals("i-navajo") ||
-            str.Equals("i-mingo") || str.Equals("i-pwn") ||
-            str.Equals("i-tao") || str.Equals("i-tay") ||
-            str.Equals("i-tsu");
+          str.Equals("i-default") || str.Equals("i-enochian") ||
+          str.Equals("i-hak") || str.Equals("i-klingon") ||
+          str.Equals("i-lux") || str.Equals("i-navajo") ||
+          str.Equals("i-mingo") || str.Equals("i-pwn") ||
+          str.Equals("i-tao") || str.Equals("i-tay") ||
+          str.Equals("i-tsu");
         } else {
           return false;
         }
-      } else {
-        return false;
       }
+      return false;
     }
 
     private static int lengthIfAllAlpha(string str) {

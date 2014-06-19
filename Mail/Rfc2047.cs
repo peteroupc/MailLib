@@ -118,21 +118,19 @@ namespace PeterO.Mail {
           while (index < endIndex) {
             if (str[index] == '(' || str[index] == ')') {
               break;
-            } else {
-              ++index;
             }
+            ++index;
           }
           if (parenEnd == index) {
             encoder.FinalizeEncoding(str.Substring(parenStart, parenEnd - parenStart));
             break;
-          } else {
-            encoder.AddPrefix(str.Substring(parenStart, parenEnd - parenStart));
-            encoder.AddString(str, parenEnd, index - parenEnd);
           }
+          encoder.AddPrefix(str.Substring(parenStart, parenEnd - parenStart));
+          encoder.AddString(str, parenEnd, index - parenEnd);
         }
         return encoder.ToString();
       }
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       // escapes, but no nested comments
       if (nextComment < 0) {
         ++index;  // skip the first parenthesis
@@ -140,7 +138,8 @@ namespace PeterO.Mail {
           if (str[index] == ')') {
             // End of the comment
             break;
-          } else if (str[index] == '\r' && index + 2 < endIndex &&
+          }
+          if (str[index] == '\r' && index + 2 < endIndex &&
                      str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] == 0x09)) {
             // Folding whitespace
             builder.Append(str[index + 2]);
@@ -149,7 +148,8 @@ namespace PeterO.Mail {
             // Quoted pair
             int cp = DataUtilities.CodePointAt(str, index + 1);
             if (cp <= 0xffff) {
-              { builder.Append((char)cp);
+              {
+                builder.Append((char)cp);
               }
             } else if (cp <= 0x10ffff) {
               builder.Append((char)((((cp - 0x10000) >> 10) & 0x3ff) + 0xd800));
@@ -189,8 +189,9 @@ namespace PeterO.Mail {
         while (index < endIndex) {
           if (str[index] == '(' || str[index] == ')') {
             break;
-          } else if (str[index] == '\r' && index + 2 < endIndex &&
-                     str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] == 0x09)) {
+          }
+          if (str[index] == '\r' && index + 2 < endIndex &&
+              str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] == 0x09)) {
             // Folding whitespace
             builder.Append(str[index + 2]);
             index += 3;
@@ -213,10 +214,9 @@ namespace PeterO.Mail {
         if (builder.Length == 0) {
           encoder.FinalizeEncoding(str.Substring(parenStart, parenEnd - parenStart));
           break;
-        } else {
-          encoder.AddPrefix(str.Substring(parenStart, parenEnd - parenStart));
-          encoder.AddString(builder.ToString());
         }
+        encoder.AddPrefix(str.Substring(parenStart, parenEnd - parenStart));
+        encoder.AddString(builder.ToString());
       }
       return encoder.ToString();
     }
@@ -281,7 +281,7 @@ namespace PeterO.Mail {
         return str.Substring(index, endIndex - index);
       }
       int start = index;
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       bool hasSuspiciousText = false;
       bool lastWordWasEncodedWord = false;
       int whitespaceStart = -1;
@@ -379,10 +379,9 @@ namespace PeterO.Mail {
                 if (!ParserUtility.IsValidLanguageTag(language)) {
                   acceptedEncodedWord = false;
                 }
-              } else if (asterisk == 0) {
-                // Impossible, a charset can't start with an asterisk
-                acceptedEncodedWord = false;
-              }
+              } else {
+ acceptedEncodedWord &= asterisk != 0;
+}
               if (acceptedEncodedWord) {
                 ITransform transform = base64 ?
                   (ITransform)new BEncodingStringTransform(encodedText) :
@@ -400,9 +399,9 @@ namespace PeterO.Mail {
                   // word could even encode ASCII control characters and specials)
                   if (context == EncodedWordContext.Phrase && HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
-                  } else if (context == EncodedWordContext.Comment && HasSuspiciousTextInComments(decodedWord)) {
-                    hasSuspiciousText = true;
-                  }
+                  } else {
+ hasSuspiciousText |= context == EncodedWordContext.Comment && HasSuspiciousTextInComments(decodedWord);
+}
                   wordsWereDecoded = true;
                 }
               } else {
@@ -433,14 +432,14 @@ namespace PeterO.Mail {
         while (index < endIndex) {
           char c = str[index];
           if (c == 0x0d && index + 2 < endIndex && str[index + 1] == 0x0a &&
-              (str[index + 2] == 0x09 || str[index + 2] == 0x20)) {
+                   (str[index + 2] == 0x09 || str[index + 2] == 0x20)) {
             index += 2;  // skip the CRLF
             break;
-          } else if (c == 0x09 || c == 0x20) {
-            break;
-          } else {
-            ++index;
           }
+          if (c == 0x09 || c == 0x20) {
+            break;
+          }
+          ++index;
         }
         whitespaceStart = index;
         // Read to nonwhitespace
@@ -462,8 +461,8 @@ namespace PeterO.Mail {
         lastWordWasEncodedWord = acceptedEncodedWord;
       }
       string retval = builder.ToString();
-      if (wordsWereDecoded && (hasSuspiciousText || (retval.IndexOf("=?") >= 0 &&
-                                                     retval.IndexOf("?=") >= 0))) {
+      if (wordsWereDecoded && (hasSuspiciousText || (retval.IndexOf("=?", StringComparison.Ordinal) >= 0 &&
+                                                     retval.IndexOf("?=", StringComparison.Ordinal) >= 0))) {
         if (context == EncodedWordContext.Comment) {
           string wrappedComment = "(" + retval + ")";
           if (HeaderParserUtility.ParseCommentStrict(wrappedComment, 0, wrappedComment.Length) != wrappedComment.Length) {
@@ -499,13 +498,7 @@ namespace PeterO.Mail {
     }
 
     private static bool PrecededByStartOrLinearWhitespace(string str, int index) {
-      if (index == 0) {
-        return true;
-      }
-      if (index - 1 >= 0 && (str[index - 1] == 0x09 || str[index - 1] == 0x20)) {
-        return true;
-      }
-      return false;
+      return (index == 0) || (index - 1 >= 0 && (str[index - 1] == 0x09 || str[index - 1] == 0x20));
     }
 
     private static int IndexOfNextPossibleEncodedWord(string str, int index, int endIndex) {
@@ -539,13 +532,13 @@ namespace PeterO.Mail {
       // and assumes that endIndex is the end of all CFWS
       // found after the phrase.
       if (withComments) {
-        int io = str.IndexOf("=?", index);
+        int io = str.IndexOf("=?", index, StringComparison.Ordinal);
         if (io < 0 || io >= endIndex) {
           // No encoded words found in the given area
           return str.Substring(index, endIndex - index);
         }
       }
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       int lastIndex = index;
       bool appendSpace = false;
       // Get each relevant token sorted by starting index
@@ -623,11 +616,7 @@ namespace PeterO.Mail {
           // tokenIndex is now just after the end quote
           hasCFWS = HeaderParser.ParseCFWS(str, tokenIndex, endIndex, null) != tokenIndex;
         }
-        if (hasCFWS) {
-          // Add a space character if CFWS follows the atom or
-          // quoted string and if additional words follow
-          appendSpace = true;
-        }
+        appendSpace |= hasCFWS;
       }
       if (withComments) {
         builder.Append(str.Substring(lastIndex, endIndex - lastIndex));
@@ -655,8 +644,8 @@ namespace PeterO.Mail {
         // Append the linear whitespace
         builder.Append(str.Substring(index, index2 - index));
       }
-      EncodedWordEncoder encoder = new EncodedWordEncoder();
-      StringBuilder builderPhrase = new StringBuilder();
+      var encoder = new EncodedWordEncoder();
+      var builderPhrase = new StringBuilder();
       index = index2;
       while (index < endIndex) {
         if (str[index] == '"') {
@@ -680,10 +669,9 @@ namespace PeterO.Mail {
             builder.Append(' ');
           }
           break;
-        } else {
-          if (index2 != index) {
-            builderPhrase.Append(' ');
-          }
+        }
+        if (index2 != index) {
+          builderPhrase.Append(' ');
         }
         index = index2;
       }
@@ -731,7 +719,7 @@ namespace PeterO.Mail {
         return str.Substring(index, endIndex - index);
       }
       int lastIndex = index;
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       foreach (int[] token in tokens) {
         if (!(token[1] >= lastIndex &&
               token[1] >= index && token[1] <= endIndex &&

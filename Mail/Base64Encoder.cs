@@ -109,7 +109,8 @@ namespace PeterO.Mail {
           this.AddByteInternal(str, (byte)0x0d);
           this.AddByteInternal(str, (byte)0x0a);
           return;
-        } else if (b == 0x0a && !this.haveCR) {
+        }
+        if (b == 0x0a && !this.haveCR) {
           // bare LF
           if (this.haveCR) {
             // Do nothing, this is an LF that follows CR

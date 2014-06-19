@@ -90,7 +90,7 @@ import com.upokecenter.util.*;
      * @return A snapshot of the header fields of this message.
      */
     public List<Map.Entry<String, String>> getHeaderFields(){
-        ArrayList<Map.Entry<String, String>> list=new ArrayList<Map.Entry<String, String>>();
+        ArrayList<Map.Entry<String, String>> list = new ArrayList<Map.Entry<String, String>>();
         for (int i = 0; i < this.headers.size(); i += 2) {
           list.add(new AbstractMap.SimpleImmutableEntry<String, String>(this.headers.get(i), this.headers.get(i + 1)));
         }
@@ -318,10 +318,10 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       Message textMessage = new Message().SetTextBody(text);
       Message htmlMessage = new Message().SetHtmlBody(html);
       this.contentType = MediaType.Parse("multipart/alternative; boundary=\"=_boundary\"");
-      List<Message> parts = this.getParts();
-      parts.clear();
-      parts.add(textMessage);
-      parts.add(htmlMessage);
+      List<Message> messageParts = this.getParts();
+      messageParts.clear();
+      messageParts.add(textMessage);
+      messageParts.add(htmlMessage);
       return this;
     }
 
@@ -357,16 +357,13 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       if (value == null) {
         return new ArrayList<NamedAddress>();
       }
-      if (HeaderParser.ParseHeaderTo(value, 0, value.length(), tokener) != value.length()) {
-        // Invalid syntax
-        return new ArrayList<NamedAddress>();
-      }
-      return HeaderParserUtility.ParseAddressList(value, 0, value.length(), tokener.GetTokens());
+      // Check for valid syntax
+      return (HeaderParser.ParseHeaderTo(value, 0, value.length(), tokener) != value.length()) ? (new ArrayList<NamedAddress>()) : HeaderParserUtility.ParseAddressList(value, 0, value.length(), tokener.GetTokens());
     }
 
     static List<NamedAddress> ParseAddresses(String[] values) {
       Tokener tokener = new Tokener();
-      ArrayList<NamedAddress> list=new ArrayList<NamedAddress>();
+      ArrayList<NamedAddress> list = new ArrayList<NamedAddress>();
       for(String addressValue : values) {
         if (addressValue == null) {
           continue;
@@ -438,7 +435,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
 }
       }
 
-    private static boolean useLenientLineBreaks = true;
+    private static final boolean useLenientLineBreaks = true;
 
     /**
      * Initializes a new instance of the Message class. Reads from the given
@@ -455,11 +452,11 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
       ITransform transform = new WrappedStream(stream);
-      if (useLenientLineBreaks) {
+      // if (useLenientLineBreaks) {
         // TODO: Might not be correct if the transfer
         // encoding turns out to be binary
         // transform = new LineBreakNormalizeTransform(stream);
-      }
+      // }
       this.ReadMessage(transform);
     }
 
@@ -480,9 +477,9 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       this.headers.add("1.0");
     }
 
-    private static Random msgidRandom = new Random();
+    private static java.util.Random msgidRandom = new java.util.Random();
     private static boolean seqFirstTime = true;
-    private static int msgidSequence = 0;
+    private static int msgidSequence;
     private static Object sequenceSync = new Object();
 
     private String GenerateMessageID() {
@@ -609,10 +606,7 @@ public void setContentDisposition(ContentDisposition value) {
      */
     public String getFileName() {
         ContentDisposition disp = this.contentDisposition;
-        if (disp != null) {
-          return ContentDisposition.MakeFilename(disp.GetParameter("filename"));
-        }
-        return ContentDisposition.MakeFilename(this.contentType.GetParameter("name"));
+        return (disp != null) ? ContentDisposition.MakeFilename(disp.GetParameter("filename")) : ContentDisposition.MakeFilename(this.contentType.GetParameter("name"));
       }
 
     private void ProcessHeaders(boolean assumeMime, boolean digest) {
@@ -628,15 +622,9 @@ public void setContentDisposition(ContentDisposition value) {
           // NOTE: Actually "token", but all known transfer encoding values
           // fit the same syntax as the stricter one for top-level types and subtypes
           int endIndex = MediaType.skipMimeTypeSubtype(value, startIndex, value.length(), null);
-          if (HeaderParser.ParseCFWS(value, endIndex, value.length(), null) == value.length()) {
-            transferEncodingValue = value.substring(startIndex,(startIndex)+(endIndex - startIndex));
-          } else {
-            transferEncodingValue = "";
-          }
+          transferEncodingValue = (HeaderParser.ParseCFWS(value, endIndex, value.length(), null) == value.length()) ? value.substring(startIndex,(startIndex)+(endIndex - startIndex)) : "";
         }
-        if (name.equals("mime-version")) {
-          mime = true;
-        }
+        mime |= name.equals("mime-version");
         if (value.indexOf("=?") >= 0) {
           IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
           // Decode encoded words in the header field where possible
@@ -798,14 +786,14 @@ public void setContentDisposition(ContentDisposition value) {
     }
 
     private String[] GetMultipleHeaders(String name) {
-      ArrayList<String> headers=new ArrayList<String>();
+      ArrayList<String> headerList = new ArrayList<String>();
       name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.size(); i += 2) {
         if (this.headers.get(i).equals(name)) {
-          headers.add(this.headers.get(i + 1));
+          headerList.add(this.headers.get(i + 1));
         }
       }
-      return headers.toArray(new String[]{});
+      return headerList.toArray(new String[]{});
     }
 
     // Returns true only if:
@@ -832,7 +820,8 @@ public void setContentDisposition(ContentDisposition value) {
           if (i + 1 >= len || s.charAt(i + 1) != 0x0a) {
             // bare CR
             return false;
-          } else if (i + 2 >= len || (s.charAt(i + 2) != 0x09 && s.charAt(i + 2) != 0x20)) {
+          }
+          if (i + 2 >= len || (s.charAt(i + 2) != 0x09 && s.charAt(i + 2) != 0x20)) {
             // CRLF not followed by whitespace
             return false;
           }
@@ -851,10 +840,7 @@ public void setContentDisposition(ContentDisposition value) {
           return false;
         }
       }
-      if (maybe) {
-        return ParseUnstructuredText(s, 0, s.length()) == s.length();
-      }
-      return true;
+      return (!maybe) || (ParseUnstructuredText(s, 0, s.length()) == s.length());
     }
 
     private static String Capitalize(String s) {
@@ -866,20 +852,10 @@ public void setContentDisposition(ContentDisposition value) {
         } else {
           builder.append(s.charAt(i));
         }
-        if (s.charAt(i) == '-') {
-          afterHyphen = true;
-        } else {
-          afterHyphen = false;
-        }
+        afterHyphen = s.charAt(i) == '-';
       }
       String ret = builder.toString();
-      if (ret.equals("Mime-Version")) {
-        return "MIME-Version";
-      }
-      if (ret.equals("Message-Id")) {
-        return "Message-ID";
-      }
-      return ret;
+      return ret.equals("Mime-Version") ? "MIME-Version" : (ret.equals("Message-Id") ? "Message-ID" : (ret));
     }
 
     /**
@@ -907,14 +883,16 @@ public void setContentDisposition(ContentDisposition value) {
             // bare CR
             // System.out.println("bare CR");
             return true;
-          } else if (i + 2 >= len || (s.charAt(i + 2) != 0x09 && s.charAt(i + 2) != 0x20)) {
+          }
+          if (i + 2 >= len || (s.charAt(i + 2) != 0x09 && s.charAt(i + 2) != 0x20)) {
             // CRLF not followed by whitespace
             return true;
           }
           chunkLength = 0;
           ++i;
           continue;
-        } else if (c == 0x0a) {
+        }
+        if (c == 0x0a) {
           // bare LF
           return true;
         }
@@ -946,14 +924,16 @@ public void setContentDisposition(ContentDisposition value) {
             // bare CR
             // System.out.println("bare CR");
             return true;
-          } else if (i + 2 >= len || (s.charAt(i + 2) != 0x09 && s.charAt(i + 2) != 0x20)) {
+          }
+          if (i + 2 >= len || (s.charAt(i + 2) != 0x09 && s.charAt(i + 2) != 0x20)) {
             // CRLF not followed by whitespace
             return true;
           }
           chunkLength = 0;
           ++i;
           continue;
-        } else if (c == 0x0a) {
+        }
+        if (c == 0x0a) {
           // bare LF
           return true;
         }
@@ -1156,7 +1136,7 @@ public void setContentDisposition(ContentDisposition value) {
       int highBytes = 0;
       int ctlBytes = 0;
       int lineLength = 0;
-      boolean allTextBytes = isBodyPart ? false : true;
+      boolean allTextBytes = !isBodyPart;
       for (int i = 0; i < lengthCheck; ++i) {
         if ((body[i] & 0x80) != 0) {
           ++highBytes;
@@ -1165,8 +1145,8 @@ public void setContentDisposition(ContentDisposition value) {
           allTextBytes = false;
           ++ctlBytes;
         } else if (body[i] == 0x7f ||
-                   (body[i] < 0x20 && body[i] != 0x0d &&
-                    body[i] != 0x0a && body[i] != 0x09)) {
+                       (body[i] < 0x20 && body[i] != 0x0d &&
+                       body[i] != 0x0a && body[i] != 0x09)) {
           allTextBytes = false;
           ++ctlBytes;
         } else if (body[i] == (byte)'\r') {
@@ -1181,35 +1161,15 @@ public void setContentDisposition(ContentDisposition value) {
             lineLength = 0;
             continue;
           }
-        } else if (body[i] == (byte)'\n') {
-          // bare LF
-          allTextBytes = false;
-        }
-        if (lineLength == 0 && i + 2 < body.length &&
-            body[i] == '.' && body[i + 1] == '\r' && body[i + 2] == '\n') {
-          // See RFC2049 sec. 3
-          allTextBytes = false;
-        }
-        if (lineLength == 0 && i + 4 < body.length &&
-            body[i] == 'F' && body[i + 1] == 'r' && body[i + 2] == 'o' &&
-            body[i + 3] == 'm' && body[i + 4] == ' ') {
-          // See RFC2049 sec. 3
-          allTextBytes = false;
-        }
+        } else {
+ allTextBytes &= body[i] != (byte)'\n';
+}
+        allTextBytes &= lineLength != 0 || i + 2 >= body.length || body[i] != '.' || body[i + 1] != '\r' || body[i + 2] != '\n';
+        allTextBytes &= lineLength != 0 || i + 4 >= body.length || body[i] != 'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3] != 'm' || body[i + 4] != ' ';
         ++lineLength;
-        if (lineLength > 78) {
-          allTextBytes = false;
-        }
+        allTextBytes &= lineLength <= 78;
       }
-      if (lengthCheck == body.length && allTextBytes) {
-        return EncodingSevenBit;
-      } if (highBytes > (lengthCheck / 3)) {
-        return EncodingBase64;
-      } if (ctlBytes > 10) {
-        return EncodingBase64;
-      } else {
-        return EncodingQuotedPrintable;
-      }
+      return (lengthCheck == body.length && allTextBytes) ? EncodingSevenBit : ((highBytes > (lengthCheck / 3)) ? EncodingBase64 : ((ctlBytes > 10) ? EncodingBase64 : EncodingQuotedPrintable));
     }
 
     static String GenerateAddressList(List<NamedAddress> list) {
@@ -1238,11 +1198,11 @@ public void setContentDisposition(ContentDisposition value) {
           return false;
         }
         if (lineLength == 0 && checkBoundaryDelimiter && index + 4 < endIndex &&
-            bytes[index] == '-' &&
-            bytes[index + 1] == '-' &&
-            bytes[index + 2] == '=' &&
-            bytes[index + 3] == '_' &&
-            bytes[index + 4] == 'B') {
+                bytes[index] == '-' &&
+                bytes[index + 1] == '-' &&
+                bytes[index + 2] == '=' &&
+                bytes[index + 3] == '_' &&
+                bytes[index + 4] == 'B') {
           // Start of a reserved boundary delimiter
           return false;
         }
@@ -1254,7 +1214,8 @@ public void setContentDisposition(ContentDisposition value) {
           }
           lineLength = 0;
           continue;
-        } else if (c == '\r' || c == '\n') {
+        }
+        if (c == '\r' || c == '\n') {
           // System.out.println("Bare CR or bare LF");
           return false;
         }
@@ -1310,19 +1271,23 @@ public void setContentDisposition(ContentDisposition value) {
       return value;
     }
 
-    private static Map<String, int> valueHeaderIndices = new HashMap<String, int>() {
-      { "to", 0 },
-      { "cc", 1 },
-      { "bcc", 2 },
-      { "from", 3 },
-      { "reply-to", 4 },
-      { "resent-to", 5 },
-      { "resent-cc", 6 },
-      { "resent-bcc", 7 },
-      { "resent-from", 8 },
-      { "sender", 9 },
-      { "resent-sender", 10 }
-    };
+    private static Map<String, Integer> MakeHeaderIndices() {
+      HashMap<String, Integer> dict = new HashMap<String, Integer>();
+      dict.put("to",0);
+      dict.put("cc",1);
+      dict.put("bcc",2);
+      dict.put("from",3);
+      dict.put("reply-to",4);
+      dict.put("resent-to",5);
+      dict.put("resent-cc",6);
+      dict.put("resent-bcc",7);
+      dict.put("from",8);
+      dict.put("sender",9);
+      dict.put("resent-sender",10);
+      return dict;
+    }
+
+    private static Map<String, Integer> valueHeaderIndices = MakeHeaderIndices();
 
     private String Generate(int depth) {
       StringBuilder sb = new StringBuilder();
@@ -1330,14 +1295,13 @@ public void setContentDisposition(ContentDisposition value) {
       boolean haveContentEncoding = false;
       boolean haveContentType = false;
       boolean haveContentDisp = false;
-      boolean outputtedFrom = false;
       boolean haveMsgId = false;
       boolean[] haveHeaders = new boolean[11];
       byte[] bodyToWrite = this.body;
       MediaTypeBuilder builder = new MediaTypeBuilder(this.getContentType());
       String contentDisp = (this.getContentDisposition() == null) ? null :
         this.getContentDisposition().toString();
-      int transferEncoding = 0;
+      int transferEnc = 0;
       boolean isMultipart = false;
       String boundary = "";
       if (builder.isMultipart()) {
@@ -1366,22 +1330,18 @@ public void setContentDisposition(ContentDisposition value) {
       }
       String topLevel = builder.getTopLevelType();
       if (topLevel.equals("message") || topLevel.equals("multipart")) {
-        if (topLevel.equals("multipart") || (
+        transferEnc = (topLevel.equals("multipart") || (
           !builder.getSubType().equals("global") &&
           !builder.getSubType().equals("global-headers") &&
           !builder.getSubType().equals("global-disposition-notification") &&
-          !builder.getSubType().equals("global-delivery-status"))) {
-          transferEncoding = EncodingSevenBit;
-        } else {
-          transferEncoding = TransferEncodingToUse(bodyToWrite, depth > 0);
-        }
+          !builder.getSubType().equals("global-delivery-status"))) ? EncodingSevenBit : TransferEncodingToUse(bodyToWrite, depth > 0);
       } else {
-        transferEncoding = TransferEncodingToUse(bodyToWrite, depth > 0);
+        transferEnc = TransferEncodingToUse(bodyToWrite, depth > 0);
       }
       String encodingString = "7bit";
-      if (transferEncoding == EncodingBase64) {
+      if (transferEnc == EncodingBase64) {
         encodingString = "base64";
-      } else if (transferEncoding == EncodingQuotedPrintable) {
+      } else if (transferEnc == EncodingQuotedPrintable) {
         encodingString = "quoted-printable";
       }
       // Write the header fields
@@ -1469,7 +1429,7 @@ public void setContentDisposition(ContentDisposition value) {
             }
           }
           boolean haveDquote = downgraded.indexOf('"') >= 0;
-          WordWrapEncoder encoder=new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
+          WordWrapEncoder encoder = new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
           encoder.AddString(downgraded);
           String newValue = encoder.toString();
           if (newValue.indexOf(": ") < 0) {
@@ -1478,7 +1438,7 @@ public void setContentDisposition(ContentDisposition value) {
           sb.append(newValue);
         } else {
           boolean haveDquote = value.indexOf('"') >= 0;
-          WordWrapEncoder encoder=new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
+          WordWrapEncoder encoder = new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
           encoder.AddString(value);
           String newValue = encoder.toString();
           if (newValue.indexOf(": ") < 0) {
@@ -1488,7 +1448,7 @@ public void setContentDisposition(ContentDisposition value) {
         }
         sb.append("\r\n");
       }
-      if (!outputtedFrom && depth == 0) {
+      if (true && depth == 0) {
         // Output a synthetic From field if it doesn't
         // exist and this isn't a body part
         sb.append("From: me@author-address.invalid\r\n");
@@ -1500,15 +1460,15 @@ public void setContentDisposition(ContentDisposition value) {
         sb.append("MIME-Version: 1.0\r\n");
       }
       if (!haveContentType) {
-        sb.append("Content-Type: " + builder.toString() + "\r\n");
+        sb.append("Content-Type: " + builder + "\r\n");
       }
       if (!haveContentEncoding) {
         sb.append("Content-Transfer-Encoding: " + encodingString + "\r\n");
       }
       IStringEncoder bodyEncoder = null;
-      switch (transferEncoding) {
+      switch (transferEnc) {
         case EncodingBase64:
-          bodyEncoder = new Base64Encoder(true, builder.isText() ? true : false, false);
+          bodyEncoder = new Base64Encoder(true, builder.isText(), false);
           break;
         case EncodingQuotedPrintable:
           bodyEncoder = new QuotedPrintableEncoder(builder.isText() ? 2 : 0, false);
@@ -1553,11 +1513,13 @@ public void setContentDisposition(ContentDisposition value) {
             return 0xfffd;
           }
           return -1;
-        } else if (bytesNeeded == 0) {
+        }
+        if (bytesNeeded == 0) {
           if ((b & 0x7f) == b) {
             bytesRead[0] = read;
             return b;
-          } else if (b >= 0xc2 && b <= 0xdf) {
+          }
+          if (b >= 0xc2 && b <= 0xdf) {
             bytesNeeded = 1;
             cp = (b - 0xc0) << 6;
           } else if (b >= 0xe0 && b <= 0xef) {
@@ -1575,7 +1537,8 @@ public void setContentDisposition(ContentDisposition value) {
             return 0xfffd;
           }
           continue;
-        } else if (b < lower || b > upper) {
+        }
+        if (b < lower || b > upper) {
           stream.Unget();
           return 0xfffd;
         } else {
@@ -1604,11 +1567,11 @@ public void setContentDisposition(ContentDisposition value) {
         int typeEnd = atomText;
         String origValue = headerValue;
         boolean isUtf8 = typeEnd - index == 5 &&
-          (headerValue.charAt(index) & ~0x20) == 'U' &&
-          (headerValue.charAt(index + 1) & ~0x20) == 'T' &&
-          (headerValue.charAt(index + 2) & ~0x20) == 'F' &&
-          headerValue.charAt(index + 3) == '-' &&
-          headerValue.charAt(index + 4) == '8';
+                          (headerValue.charAt(index) & ~0x20) == 'U' &&
+                          (headerValue.charAt(index + 1) & ~0x20) == 'T' &&
+                          (headerValue.charAt(index + 2) & ~0x20) == 'F' &&
+                          headerValue.charAt(index + 3) == '-' &&
+                          headerValue.charAt(index + 4) == '8';
         atomText = HeaderParser.ParseCFWS(headerValue, atomText, headerValue.length(), null);
         if (index < headerValue.length() && headerValue.charAt(atomText) == ';') {
           String typePart = headerValue.substring(0,atomText + 1);
@@ -1638,7 +1601,7 @@ public void setContentDisposition(ContentDisposition value) {
                 builder.append('}');
               }
             }
-            headerValue = typePart + builder.toString();
+            headerValue = typePart + builder;
           } else {
             headerValue = typePart + headerValue.substring(atomText + 1);
           }
@@ -1654,12 +1617,11 @@ public void setContentDisposition(ContentDisposition value) {
           status[0] = 1;  // Downgraded
         }
         return headerValue;
-      } else {
-        if (status != null) {
-          status[0] = 0;  // Unchanged
-        }
-        return headerValue;
       }
+      if (status != null) {
+        status[0] = 0;  // Unchanged
+      }
+      return headerValue;
     }
 
     // Parse the delivery status byte array to downgrade
@@ -1707,9 +1669,9 @@ public void setContentDisposition(ContentDisposition value) {
             sb.append((char)c);
           } else if (!first && c == ':') {
             break;
-          } else if (c == 0x20 || c == 0x09) {
-            first = false;
-          }
+          } else {
+ first &= c != 0x20 && c != 0x09;
+}
           if (c != 0x20 && c != 0x09) {
             headerNameEnd = index;
           }
@@ -1788,10 +1750,9 @@ public void setContentDisposition(ContentDisposition value) {
               // (the last two characters will be CRLF)
               headerValueEnd = index - 2;
               break;
-            } else {
-              --index;
-              // ++lineCount;
             }
+            --index;
+            // ++lineCount;
           }
           // ++lineCount;
         }
@@ -1835,7 +1796,7 @@ public void setContentDisposition(ContentDisposition value) {
 
     private static void ReadHeaders(
       ITransform stream,
-      List<String> headerList,
+      Collection<String> headerList,
       boolean start) {
       int lineCount = 0;
       int[] bytesRead = new int[1];
@@ -1857,9 +1818,8 @@ public void setContentDisposition(ContentDisposition value) {
             if (ungetStream.read() == '\n') {
               endOfHeaders = true;
               break;
-            } else {
-              throw new MessageDataException("CR not followed by LF");
             }
+            throw new MessageDataException("CR not followed by LF");
           }
           if ((c >= 0x21 && c <= 57) || (c >= 59 && c <= 0x7e)) {
             if (wsp) {
@@ -1889,9 +1849,8 @@ public void setContentDisposition(ContentDisposition value) {
                   if (ungetStream.read() == '\n') {
                     // End of line was reached
                     break;
-                  } else {
-                    ungetStream.Unget();
                   }
+                  ungetStream.Unget();
                 }
               }
               start = false;
@@ -1978,13 +1937,13 @@ public void setContentDisposition(ContentDisposition value) {
               }
               // This ends the header field
               break;
-            } else if (c < 0) {
-              throw new MessageDataException("Premature end before all headers were read");
-            } else {
-              sb.append('\r');
-              ungetStream.Unget();
-              ++lineCount;
             }
+            if (c < 0) {
+              throw new MessageDataException("Premature end before all headers were read");
+            }
+            sb.append('\r');
+            ungetStream.Unget();
+            ++lineCount;
           }
           lineCount += bytesRead[0];
           // NOTE: Header field line limit not enforced here, only
@@ -2011,7 +1970,7 @@ public void setContentDisposition(ContentDisposition value) {
     }
 
     private static class MessageStackEntry {
-      private Message message;
+      private final Message message;
 
     /**
      * Gets an internal value.
@@ -2021,7 +1980,7 @@ public void setContentDisposition(ContentDisposition value) {
           return this.message;
         }
 
-      private String boundary;
+      private final String boundary;
 
     /**
      * Gets an internal value.
@@ -2034,16 +1993,18 @@ public void setContentDisposition(ContentDisposition value) {
       public MessageStackEntry (Message msg) {
 
         this.message = msg;
+        String newBoundary = "";
         MediaType mediaType = msg.getContentType();
         if (mediaType.isMultipart()) {
-          this.boundary = mediaType.GetParameter("boundary");
-          if (this.boundary == null) {
+          newBoundary = mediaType.GetParameter("boundary");
+          if (newBoundary == null) {
             throw new MessageDataException("Multipart message has no boundary defined");
           }
-          if (!IsWellFormedBoundary(this.boundary)) {
-            throw new MessageDataException("Multipart message has an invalid boundary defined: " + this.boundary);
+          if (!IsWellFormedBoundary(newBoundary)) {
+            throw new MessageDataException("Multipart message has an invalid boundary defined: " + newBoundary);
           }
         }
+        this.boundary = newBoundary;
       }
     }
 
@@ -2114,11 +2075,7 @@ ms=new java.io.ByteArrayOutputStream();
               multipartStack.add(entry);
               ms.reset();
               ctype = msg.getContentType();
-              if (ctype.isMultipart()) {
-                leaf = null;
-              } else {
-                leaf = msg;
-              }
+              leaf = ctype.isMultipart() ? null : msg;
               boundaryChecker.PushBoundary(entry.getBoundary());
               boundaryChecker.EndBodyPartHeaders();
               currentTransform = MakeTransferEncoding(
@@ -2170,15 +2127,13 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       } else if (encoding == EncodingBinary) {
         transform = stream;
       } else if (encoding == EncodingSevenBit) {
-        if (useLiberalSevenBit) {
           // DEVIATION: Replace 8-bit bytes and null with the
           // ASCII substitute character (0x1a) for text/plain messages,
           // non-MIME messages, and the preamble and epilogue of multipart
           // messages (which will be ignored).
-          transform = new LiberalSevenBitTransform(stream);
-        } else {
-          transform = new SevenBitTransform(stream);
-        }
+          transform = useLiberalSevenBit ?
+            ((ITransform)new LiberalSevenBitTransform(stream)) :
+            ((ITransform)new SevenBitTransform(stream));
       }
       return transform;
     }

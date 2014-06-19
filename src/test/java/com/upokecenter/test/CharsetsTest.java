@@ -7,14 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 
-import java.util.*;
-import java.io.*;
-
 import org.junit.Assert;
 import org.junit.Test;
-import com.upokecenter.util.*;
-import com.upokecenter.mail.*;
-import com.upokecenter.text.*;
 
   public class CharsetsTest {
     static Object GetCharset(String name) {
@@ -140,7 +134,7 @@ import com.upokecenter.text.*;
       Assert.assertEquals(result, (CharsetGetString(charset, EncodingTest.Transform(bytes))));
     }
 
-    public void TestUtf7One(String input, String expected) {
+    public static void TestUtf7One(String input, String expected) {
       Assert.assertEquals(expected, CharsetGetString(GetCharset("utf-7"), EncodingTest.Transform(input)));
     }
 

@@ -22,7 +22,7 @@ private Lz4() {
     public static byte[] Decompress(byte[] input) {
       int index = 0;
       byte[] copy = new byte[16];
-      ArrayWriter ms=new ArrayWriter(8 + (input.length * 3 / 2));
+      ArrayWriter ms = new ArrayWriter(8 + (input.length * 3 / 2));
       while (index < input.length) {
         int b = input[index];
         int literalLength = (b >> 4) & 15;

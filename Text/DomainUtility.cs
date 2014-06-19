@@ -37,15 +37,15 @@ namespace PeterO.Text {
 
     /// <summary>Gets the Punycode length of a string (Punycode is defined
     /// in RFC 3492).</summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='index'>A 32-bit signed integer.</param>
+    /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
     /// <returns>The Punycode length of the encoded string. If the string
     /// contains non-ASCII characters, returns the Punycode length plus
     /// 4 (the length of the ACE prefix). If there are only ASCII characters,
     /// returns the length of the string. Returns -1 if an overflow error occurs.</returns>
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='str'/> is null.</exception>
-    /// <param name='str'>A string object.</param>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
     public static int PunycodeLength(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -148,13 +148,7 @@ namespace PeterO.Text {
             int k = 36;
             while (true) {
               int t;
-              if (k <= bias) {
-                t = 1;
-              } else if (k >= bias + 26) {
-                t = 26;
-              } else {
-                t = k - bias;
-              }
+              t = (k <= bias) ? 1 : ((k >= bias + 26) ? 26 : (k - bias));
               if (q < t) {
                 break;
               }
@@ -182,7 +176,7 @@ namespace PeterO.Text {
       return outputLength;
     }
 
-    private static int[] valueDigitValues = new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    private static int[] valueDigitValues = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1, -1,
@@ -195,11 +189,12 @@ namespace PeterO.Text {
     /// <param name='str'>A string to decode. Note that this doesn&apos;t
     /// include a prefix such as. <c>xn--</c>
     /// .</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> is null.</exception>
-    /// <returns>A string object.</returns>
+    /// <param name='str'>A string object. (2).</param>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
+    /// <returns>A string object.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
     internal static string PunycodeDecode(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -237,7 +232,7 @@ namespace PeterO.Text {
           }
         }
       }
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       // Append all characters up to the last hyphen
       // (they will be ASCII at this point)
       for (int k = index; k < lastHyphen; ++k) {
@@ -254,7 +249,7 @@ namespace PeterO.Text {
       int n = 128;
       int bias = 72;
       int stringLength = builder.Length;
-      char[] chararr = new char[2];
+      var chararr = new char[2];
       while (index < endIndex) {
         int old = index;
         int w = 1;
@@ -328,7 +323,7 @@ namespace PeterO.Text {
       return builder.ToString();
     }
 
-    private static string valuePunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private const string valuePunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
 
     internal static string PunycodeEncode(string str) {
       return PunycodeEncodePortion(str, 0, str.Length);
@@ -367,7 +362,8 @@ namespace PeterO.Text {
         if (str[tmpIndex] >= 0x80) {
           allBasics = false;
           break;
-        } else if (str[tmpIndex] >= 0x41 && str[tmpIndex] <= 0x5a) {
+        }
+        if (str[tmpIndex] >= 0x41 && str[tmpIndex] <= 0x5a) {
           // Treat as having a non-basic in case of an
           // upper-case ASCII character, since special
           // handling is required here
@@ -379,7 +375,7 @@ namespace PeterO.Text {
       if (allBasics) {
         return str.Substring(index, endIndex - index);
       }
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       builder.Append("xn--");
       tmpIndex = index;
       while (tmpIndex < endIndex) {
@@ -457,13 +453,7 @@ namespace PeterO.Text {
             int k = 36;
             while (true) {
               int t;
-              if (k <= bias) {
-                t = 1;
-              } else if (k >= bias + 26) {
-                t = 26;
-              } else {
-                t = k - bias;
-              }
+              t = (k <= bias) ? 1 : ((k >= bias + 26) ? 26 : (k - bias));
               if (q < t) {
                 break;
               }

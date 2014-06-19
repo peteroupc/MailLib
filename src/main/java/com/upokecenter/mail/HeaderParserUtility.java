@@ -64,10 +64,7 @@ private HeaderParserUtility() {
     }
 
     public static String QuoteValueIfNeeded(String str) {
-      if (!ShouldQuote(str)) {
-        return str;
-      }
-      return QuoteValue(str);
+      return (!ShouldQuote(str)) ? str : QuoteValue(str);
     }
 
     public static String ParseGroupList(String str, int index, int endIndex) {
@@ -191,10 +188,9 @@ private HeaderParserUtility() {
         }
         builder.append(']');
         return builder.toString();
-      } else {
-        // It's a dot-atom
-        return ParseDotAtomAfterCFWS(str, index, endIndex);
       }
+      // It's a dot-atom
+      return ParseDotAtomAfterCFWS(str, index, endIndex);
     }
 
     public static List<NamedAddress> ParseAddressList(String str, int index, int endIndex, List<int[]> tokens) {
@@ -226,7 +222,8 @@ private HeaderParserUtility() {
           int tokenKind = tokens.get(i)[0];
           if (tokenKind == TokenGroup) {
             return ParseGroup(str, tokenIndex, tokenEnd, tokens);
-          } else if (tokenKind == TokenMailbox) {
+          }
+          if (tokenKind == TokenMailbox) {
             return ParseMailbox(str, tokenIndex, tokenEnd, tokens);
           }
         }

@@ -64,22 +64,21 @@ import java.util.*;
         }
         builder.append(";");
         return builder.toString();
-      } else if (((this.name)==null || (this.name).length()==0)) {
+      }
+      if (((this.name)==null || (this.name).length()==0)) {
         return this.address.toString();
       } else {
         String addressString = this.address.toString();
         if (addressString.equals(this.name)) {
           return addressString;
-        } else {
-          if (addressString.length() > 990) {
-            // Give some space to ease line wrapping
-            return HeaderParserUtility.QuoteValueIfNeeded(this.name) +
-              " < " + addressString + " >";
-          } else {
-            return HeaderParserUtility.QuoteValueIfNeeded(this.name) +
-              " <" + addressString + ">";
-          }
         }
+        if (addressString.length() > 990) {
+          // Give some space to ease line wrapping
+          return HeaderParserUtility.QuoteValueIfNeeded(this.name) +
+          " < " + addressString + " >";
+        }
+        return HeaderParserUtility.QuoteValueIfNeeded(this.name) +
+        " <" + addressString + ">";
       }
     }
 

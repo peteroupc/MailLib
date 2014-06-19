@@ -17,7 +17,7 @@ namespace PeterO.Text {
     /// <returns>Decompressed output byte array.</returns>
     public static byte[] Decompress(byte[] input) {
       int index = 0;
-      byte[] copy = new byte[16];
+      var copy = new byte[16];
       var ms = new ArrayWriter(8 + (input.Length * 3 / 2));
       while (index < input.Length) {
         int b = input[index];

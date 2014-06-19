@@ -13,10 +13,7 @@ package com.upokecenter.text;
 
     public int ReadChar() {
       int[] arr = this.ilist;
-      if (this.pos < this.ilist.length) {
-        return arr[this.pos++];
-      }
-      return -1;
+      return (this.pos < this.ilist.length) ? arr[this.pos++] : (-1);
     }
 
     public int Read(int[] buf, int offset, int unitCount) {

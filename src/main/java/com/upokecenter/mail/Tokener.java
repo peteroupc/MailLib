@@ -28,7 +28,7 @@ import java.util.*;
 
     public void Commit(int token, int startIndex, int endIndex) {
       // System.out.println("Committing token " + token + ", size now " + (tokenStack.size()+1));
-      this.tokenStack.add(new int[] { token, startIndex, endIndex });
+      this.tokenStack.add(new int[] {token, startIndex, endIndex });
     }
 
     public List<int[]> GetTokens() {
@@ -50,7 +50,7 @@ import java.util.*;
         // Sort by their token numbers
         // NOTE: Some parsers rely on the ordering
         // of token numbers, particularly if one token
-        // contains another.  In this case, the containing
+        // contains another. In this case, the containing
         // token has a lower number than the contained
         // token.
         return (x[0] == y[0]) ? 0 : ((x[0] < y[0]) ? -1 : 1);

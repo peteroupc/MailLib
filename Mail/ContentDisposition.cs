@@ -33,8 +33,8 @@ namespace PeterO.Mail {
     #region Equals and GetHashCode implementation
     /// <summary>Determines whether this object and another object are
     /// equal.</summary>
-    /// <returns>True if the objects are equal; otherwise, false.</returns>
     /// <param name='obj'>An arbitrary object.</param>
+    /// <returns>True if the objects are equal; otherwise, false.</returns>
     public override bool Equals(object obj) {
       ContentDisposition other = obj as ContentDisposition;
       if (other == null) {
@@ -98,14 +98,14 @@ namespace PeterO.Mail {
     /// <summary>Converts this object to a text string.</summary>
     /// <returns>A string representation of this object.</returns>
     public override string ToString() {
-      StringBuilder sb = new StringBuilder();
+      var sb = new StringBuilder();
       sb.Append(this.dispositionType);
       MediaType.AppendParameters(this.parameters, sb);
       return sb.ToString();
     }
 
     private static string RemoveEncodedWordEnds(string str) {
-      StringBuilder sb = new StringBuilder();
+      var sb = new StringBuilder();
       int index = 0;
       bool inEncodedWord = false;
       while (index < str.Length) {
@@ -163,7 +163,7 @@ namespace PeterO.Mail {
         return String.Empty;
       }
       str = ParserUtility.TrimSpaceAndTab(str);
-      if (str.IndexOf("=?") >= 0) {
+      if (str.IndexOf("=?", StringComparison.Ordinal) >= 0) {
         // May contain encoded words, which are very frequent
         // in Content-Disposition filenames (they would appear quoted
         // in the Content-Disposition "filename" parameter); these changes
@@ -171,7 +171,7 @@ namespace PeterO.Mail {
         // the parameter's value "should be used as a
         // basis for the actual filename, where possible."
         str = Rfc2047.DecodeEncodedWords(str, 0, str.Length, EncodedWordContext.Unstructured);
-        if (str.IndexOf("=?") >= 0) {
+        if (str.IndexOf("=?", StringComparison.Ordinal) >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
         }
@@ -200,7 +200,7 @@ namespace PeterO.Mail {
       if (str.Length == 0) {
         return "_";
       }
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       // Replace unsuitable characters for filenames
       // and make sure the filename's
       // length doesn't exceed 250
@@ -239,15 +239,15 @@ namespace PeterO.Mail {
       }
       string strLower = DataUtilities.ToLowerCaseAscii(str);
       if (strLower.Equals("nul") ||
-          strLower.IndexOf("nul.") == 0 ||
+          strLower.IndexOf("nul.", StringComparison.Ordinal) == 0 ||
           strLower.Equals("prn") ||
-          strLower.IndexOf("prn.") == 0 ||
+          strLower.IndexOf("prn.", StringComparison.Ordinal) == 0 ||
           strLower.Equals("aux") ||
-          strLower.IndexOf("aux.") == 0 ||
+          strLower.IndexOf("aux.", StringComparison.Ordinal) == 0 ||
           strLower.Equals("con") ||
-          strLower.IndexOf("con.") == 0 ||
-          (strLower.Length >= 4 && strLower.IndexOf("lpt") == 0 && strLower[3] >= '1' && strLower[3] <= '9') ||
-          (strLower.Length >= 4 && strLower.IndexOf("com") == 0 && strLower[3] >= '1' && strLower[3] <= '9')) {
+          strLower.IndexOf("con.", StringComparison.Ordinal) == 0 ||
+          (strLower.Length >= 4 && strLower.IndexOf("lpt", StringComparison.Ordinal) == 0 && strLower[3] >= '1' && strLower[3] <= '9') ||
+          (strLower.Length >= 4 && strLower.IndexOf("com", StringComparison.Ordinal) == 0 && strLower[3] >= '1' && strLower[3] <= '9')) {
         // Reserved filenames on Windows
         str = "_" + str;
       }
@@ -279,24 +279,17 @@ namespace PeterO.Mail {
         throw new ArgumentException("name is empty.");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
-      if (this.parameters.ContainsKey(name)) {
-        return this.parameters[name];
-      }
-      return null;
+      return this.parameters.ContainsKey(name) ? this.parameters[name] : null;
     }
 
     private bool ParseDisposition(string str) {
-      bool httpRules = false;
+      const bool httpRules = false;
       int index = 0;
       if (str == null) {
         throw new ArgumentNullException("str");
       }
       int endIndex = str.Length;
-      if (httpRules) {
-        index = MediaType.skipOws(str, index, endIndex);
-      } else {
-        index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      }
+      index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       int i = MediaType.SkipMimeToken(str, index, endIndex, null, httpRules);
       if (i == index) {
         return false;
@@ -319,7 +312,7 @@ namespace PeterO.Mail {
     }
 
     private static ContentDisposition Build(string name) {
-      ContentDisposition dispo = new ContentDisposition();
+      var dispo = new ContentDisposition();
       dispo.parameters = new SortedMap<string, string>();
       dispo.dispositionType = name;
       return dispo;
@@ -348,9 +341,9 @@ namespace PeterO.Mail {
 
     /// <summary>Parses a content disposition string and returns a content
     /// disposition object.</summary>
+    /// <param name='dispoValue'>A string object.</param>
     /// <returns>A content disposition object, or "Attachment" if <paramref
     /// name='dispoValue'/> is empty or syntactically invalid.</returns>
-    /// <param name='dispoValue'>A string object.</param>
     public static ContentDisposition Parse(string dispoValue) {
       return Parse(dispoValue, Attachment);
     }
@@ -368,7 +361,7 @@ namespace PeterO.Mail {
       if (dispositionValue == null) {
         throw new ArgumentNullException("dispositionValue");
       }
-      ContentDisposition dispo = new ContentDisposition();
+      var dispo = new ContentDisposition();
       dispo.parameters = new SortedMap<string, string>();
       if (!dispo.ParseDisposition(dispositionValue)) {
         #if DEBUG

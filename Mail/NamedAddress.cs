@@ -48,7 +48,7 @@ namespace PeterO.Mail {
     /// <returns>A string representation of this object.</returns>
     public override string ToString() {
       if (this.isGroup) {
-        StringBuilder builder = new StringBuilder();
+        var builder = new StringBuilder();
         builder.Append(HeaderParserUtility.QuoteValueIfNeeded(this.name));
         builder.Append(": ");
         bool first = true;
@@ -61,22 +61,21 @@ namespace PeterO.Mail {
         }
         builder.Append(";");
         return builder.ToString();
-      } else if (String.IsNullOrEmpty(this.name)) {
+      }
+      if (String.IsNullOrEmpty(this.name)) {
         return this.address.ToString();
       } else {
         string addressString = this.address.ToString();
         if (addressString.Equals(this.name)) {
           return addressString;
-        } else {
-          if (addressString.Length > 990) {
-            // Give some space to ease line wrapping
-            return HeaderParserUtility.QuoteValueIfNeeded(this.name) +
-              " < " + addressString + " >";
-          } else {
-            return HeaderParserUtility.QuoteValueIfNeeded(this.name) +
-              " <" + addressString + ">";
-          }
         }
+        if (addressString.Length > 990) {
+          // Give some space to ease line wrapping
+          return HeaderParserUtility.QuoteValueIfNeeded(this.name) +
+          " < " + addressString + " >";
+        }
+        return HeaderParserUtility.QuoteValueIfNeeded(this.name) +
+        " <" + addressString + ">";
       }
     }
 
@@ -88,7 +87,7 @@ namespace PeterO.Mail {
       if (address == null) {
         throw new ArgumentNullException("address");
       }
-      Tokener tokener = new Tokener();
+      var tokener = new Tokener();
       if (HeaderParser.ParseAddress(address, 0, address.Length, tokener) != address.Length) {
         throw new ArgumentException("Address has an invalid syntax.");
       }

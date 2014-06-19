@@ -285,10 +285,7 @@ import com.upokecenter.text.*;
         throw new IllegalArgumentException("name is empty.");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
-      if (this.parameters.containsKey(name)) {
-        return this.parameters.get(name);
-      }
-      return null;
+      return this.parameters.containsKey(name) ? this.parameters.get(name) : null;
     }
 
     private boolean ParseDisposition(String str) {
@@ -298,11 +295,7 @@ import com.upokecenter.text.*;
         throw new NullPointerException("str");
       }
       int endIndex = str.length();
-      if (httpRules) {
-        index = MediaType.skipOws(str, index, endIndex);
-      } else {
-        index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      }
+      index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       int i = MediaType.SkipMimeToken(str, index, endIndex, null, httpRules);
       if (i == index) {
         return false;

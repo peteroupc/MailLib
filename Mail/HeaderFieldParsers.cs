@@ -39,7 +39,7 @@ namespace PeterO.Mail {
 
       private IList<string> ParseGroupLists(string str, int index, int endIndex) {
         var groups = new List<string>();
-        Tokener tokener = new Tokener();
+        var tokener = new Tokener();
         this.Parse(str, index, endIndex, tokener);
         foreach (int[] token in tokener.GetTokens()) {
           if (token[0] == HeaderParserUtility.TokenGroup) {
@@ -65,8 +65,8 @@ namespace PeterO.Mail {
             // No text needs to be encoded
             return str;
           }
-          StringBuilder sb = new StringBuilder();
-          Tokener tokener = new Tokener();
+          var sb = new StringBuilder();
+          var tokener = new Tokener();
           int endIndex = this.Parse(str, 0, str.Length, tokener);
           if (endIndex != str.Length) {
             // The header field is syntactically invalid,
@@ -134,7 +134,7 @@ namespace PeterO.Mail {
                 if (!nonasciiLocalParts) {
                   int localLastIndex = startIndex;
                   bool nonasciiDomains = false;
-                  StringBuilder sb2 = new StringBuilder();
+                  var sb2 = new StringBuilder();
                   foreach (int[] token2 in tokens) {
                     if (token2[0] == HeaderParserUtility.TokenDomain) {
                       if (token2[1] >= startIndex && token2[2] <= endIndex) {
@@ -142,12 +142,8 @@ namespace PeterO.Mail {
                         string domain = HeaderParserUtility.ParseDomain(str, token2[1], token[2]);
                         // NOTE: "domain" can include domain literals, enclosed
                         // in brackets; they are invalid under "IsValidDomainName".
-                        if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.Length) &&
-                            Idna.IsValidDomainName(domain, false)) {
-                          domain = Idna.EncodeDomainName(domain);
-                        } else {
-                          domain = str.Substring(token2[1], token2[2] - token2[1]);
-                        }
+                        domain = (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.Length) &&
+                            Idna.IsValidDomainName(domain, false)) ? Idna.EncodeDomainName(domain) : str.Substring(token2[1], token2[2] - token2[1]);
                         if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.Length)) {
                           // ASCII encoding failed
                           nonasciiDomains = true;
@@ -191,9 +187,7 @@ namespace PeterO.Mail {
                 bool nonasciiLocalPart = false;
                 bool hasPhrase = false;
                 foreach (int[] token2 in tokens) {
-                  if (token2[0] == HeaderParserUtility.TokenPhrase) {
-                    hasPhrase = true;
-                  }
+                  hasPhrase |= token2[0] == HeaderParserUtility.TokenPhrase;
                   if (token2[0] == HeaderParserUtility.TokenLocalPart) {
                     if (token2[1] >= startIndex && token2[2] <= endIndex) {
                       if (Message.HasTextToEscapeIgnoreEncodedWords(str, token2[1], token2[2])) {
@@ -206,7 +200,7 @@ namespace PeterO.Mail {
                 if (!nonasciiLocalPart) {
                   int localLastIndex = startIndex;
                   bool nonasciiDomains = false;
-                  StringBuilder sb2 = new StringBuilder();
+                  var sb2 = new StringBuilder();
                   foreach (int[] token2 in tokens) {
                     if (token2[0] == HeaderParserUtility.TokenDomain) {
                       if (token2[1] >= startIndex && token2[2] <= endIndex) {
@@ -214,12 +208,8 @@ namespace PeterO.Mail {
                         string domain = HeaderParserUtility.ParseDomain(str, token2[1], token[2]);
                         // NOTE: "domain" can include domain literals, enclosed
                         // in brackets; they are invalid under "IsValidDomainName".
-                        if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.Length) &&
-                            Idna.IsValidDomainName(domain, false)) {
-                          domain = Idna.EncodeDomainName(domain);
-                        } else {
-                          domain = str.Substring(token2[1], token2[2] - token2[1]);
-                        }
+                        domain = (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.Length) &&
+                            Idna.IsValidDomainName(domain, false)) ? Idna.EncodeDomainName(domain) : str.Substring(token2[1], token2[2] - token2[1]);
                         if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.Length)) {
                           // ASCII encoding failed
                           nonasciiDomains = true;
@@ -290,12 +280,12 @@ namespace PeterO.Mail {
           // too short for encoded words
           return str;
         }
-        if (str.IndexOf("=?") < 0) {
+        if (str.IndexOf("=?", StringComparison.Ordinal) < 0) {
           // No encoded words
           return str;
         }
-        StringBuilder sb = new StringBuilder();
-        Tokener tokener = new Tokener();
+        var sb = new StringBuilder();
+        var tokener = new Tokener();
         int endIndex = this.Parse(str, 0, str.Length, tokener);
         if (endIndex != str.Length) {
           // The header field is syntactically invalid,
@@ -897,7 +887,7 @@ namespace PeterO.Mail {
     }
 
     private static IDictionary<string, IHeaderFieldParser> fieldMap = CreateHeaderFieldList();
-    private static IHeaderFieldParser unstructured = new UnstructuredHeaderField();
+    private static readonly IHeaderFieldParser unstructured = new UnstructuredHeaderField();
 
     private static IDictionary<string, IHeaderFieldParser> CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
@@ -1022,10 +1012,7 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("name");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
-      if (fieldMap.ContainsKey(name)) {
-        return fieldMap[name];
-      }
-      return unstructured;
+      return fieldMap.ContainsKey(name) ? fieldMap[name] : unstructured;
     }
   }
 }

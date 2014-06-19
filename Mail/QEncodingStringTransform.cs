@@ -6,7 +6,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.com/d/
  */
 using System;
-using System.Text;
 
 namespace PeterO.Mail {
   internal sealed class QEncodingStringTransform : ITransform {
@@ -25,7 +24,7 @@ namespace PeterO.Mail {
       if (this.buffer == null) {
         this.buffer = new byte[size + 10];
       } else if (size > this.buffer.Length) {
-        byte[] newbuffer = new byte[size + 10];
+        var newbuffer = new byte[size + 10];
         Array.Copy(this.buffer, newbuffer, this.buffer.Length);
         this.buffer = newbuffer;
       }
@@ -50,11 +49,13 @@ namespace PeterO.Mail {
         if (c < 0) {
           // End of stream
           return -1;
-        } else if (c == 0x0d) {
+        }
+        if (c == 0x0d) {
           // Can't occur in the Q-encoding; replace
           // with the ASCII substitute character
           return 0x1a;
-        } else if (c == 0x0a) {
+        }
+        if (c == 0x0a) {
           // Can't occur in the Q-encoding; replace
           // with the ASCII substitute character
           return 0x1a;

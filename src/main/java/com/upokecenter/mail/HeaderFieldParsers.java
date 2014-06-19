@@ -38,7 +38,7 @@ private HeaderFieldParsers() {
       public abstract int Parse(String str, int index, int endIndex, ITokener tokener);
 
       private List<String> ParseGroupLists(String str, int index, int endIndex) {
-        ArrayList<String> groups=new ArrayList<String>();
+        ArrayList<String> groups = new ArrayList<String>();
         Tokener tokener = new Tokener();
         this.Parse(str, index, endIndex, tokener);
         for(int[] token : tokener.GetTokens()) {
@@ -142,12 +142,8 @@ private HeaderFieldParsers() {
                         String domain = HeaderParserUtility.ParseDomain(str, token2[1], token[2]);
                         // NOTE: "domain" can include domain literals, enclosed
                         // in brackets; they are invalid under "IsValidDomainName".
-                        if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.length()) &&
-                            Idna.IsValidDomainName(domain, false)) {
-                          domain = Idna.EncodeDomainName(domain);
-                        } else {
-                          domain = str.substring(token2[1],(token2[1])+(token2[2] - token2[1]));
-                        }
+                        domain = (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.length()) &&
+                            Idna.IsValidDomainName(domain, false)) ? Idna.EncodeDomainName(domain) : str.substring(token2[1],(token2[1])+(token2[2] - token2[1]));
                         if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.length())) {
                           // ASCII encoding failed
                           nonasciiDomains = true;
@@ -191,9 +187,7 @@ private HeaderFieldParsers() {
                 boolean nonasciiLocalPart = false;
                 boolean hasPhrase = false;
                 for(int[] token2 : tokens) {
-                  if (token2[0] == HeaderParserUtility.TokenPhrase) {
-                    hasPhrase = true;
-                  }
+                  hasPhrase |= token2[0] == HeaderParserUtility.TokenPhrase;
                   if (token2[0] == HeaderParserUtility.TokenLocalPart) {
                     if (token2[1] >= startIndex && token2[2] <= endIndex) {
                       if (Message.HasTextToEscapeIgnoreEncodedWords(str, token2[1], token2[2])) {
@@ -214,12 +208,8 @@ private HeaderFieldParsers() {
                         String domain = HeaderParserUtility.ParseDomain(str, token2[1], token[2]);
                         // NOTE: "domain" can include domain literals, enclosed
                         // in brackets; they are invalid under "IsValidDomainName".
-                        if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.length()) &&
-                            Idna.IsValidDomainName(domain, false)) {
-                          domain = Idna.EncodeDomainName(domain);
-                        } else {
-                          domain = str.substring(token2[1],(token2[1])+(token2[2] - token2[1]));
-                        }
+                        domain = (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.length()) &&
+                            Idna.IsValidDomainName(domain, false)) ? Idna.EncodeDomainName(domain) : str.substring(token2[1],(token2[1])+(token2[2] - token2[1]));
                         if (Message.HasTextToEscapeIgnoreEncodedWords(domain, 0, domain.length())) {
                           // ASCII encoding failed
                           nonasciiDomains = true;
@@ -892,7 +882,7 @@ private HeaderFieldParsers() {
     }
 
     private static Map<String, IHeaderFieldParser> fieldMap = CreateHeaderFieldList();
-    private static IHeaderFieldParser unstructured = new UnstructuredHeaderField();
+    private static final IHeaderFieldParser unstructured = new UnstructuredHeaderField();
 
     private static Map<String, IHeaderFieldParser> CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
@@ -1017,9 +1007,6 @@ private HeaderFieldParsers() {
         throw new NullPointerException("name");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
-      if (fieldMap.containsKey(name)) {
-        return fieldMap.get(name);
-      }
-      return unstructured;
+      return fieldMap.containsKey(name) ? fieldMap.get(name) : unstructured;
     }
   }

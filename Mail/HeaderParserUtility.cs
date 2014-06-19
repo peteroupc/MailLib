@@ -64,10 +64,7 @@ namespace PeterO.Mail {
     }
 
     public static string QuoteValueIfNeeded(String str) {
-      if (!ShouldQuote(str)) {
-        return str;
-      }
-      return QuoteValue(str);
+      return (!ShouldQuote(str)) ? str : QuoteValue(str);
     }
 
     public static string ParseGroupList(string str, int index, int endIndex) {
@@ -87,10 +84,10 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Quotes a string according to RFC 5322 rules.</summary>
-    /// <returns>A string object.</returns>
     /// <param name='str'>A String object.</param>
+    /// <returns>A string object.</returns>
     public static string QuoteValue(String str) {
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       builder.Append('"');
       for (int i = 0; i < str.Length; ++i) {
         if (str[i] == '\\' || str[i] == '"') {
@@ -107,7 +104,7 @@ namespace PeterO.Mail {
     private static string ParseDotAtomAfterCFWS(string str, int index, int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a dot-atom
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       while (index < endIndex) {
         int start = index;
         index = HeaderParser.ParsePhraseAtom(str, index, endIndex, null);
@@ -128,7 +125,7 @@ namespace PeterO.Mail {
     private static string ParseDotWordAfterCFWS(string str, int index, int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a word separated by dots
-      StringBuilder builder = new StringBuilder();
+      var builder = new StringBuilder();
       while (index < endIndex) {
         int start = index;
         index = HeaderParser.ParsePhraseAtom(str, index, endIndex, null);
@@ -164,7 +161,7 @@ namespace PeterO.Mail {
       if (index < endIndex && str[index] == '[') {
         // It's a domain literal
         ++index;
-        StringBuilder builder = new StringBuilder();
+        var builder = new StringBuilder();
         builder.Append('[');
         while (index < endIndex) {
           index = HeaderParser.ParseFWS(str, index, endIndex, null);
@@ -189,10 +186,9 @@ namespace PeterO.Mail {
         }
         builder.Append(']');
         return builder.ToString();
-      } else {
-        // It's a dot-atom
-        return ParseDotAtomAfterCFWS(str, index, endIndex);
       }
+      // It's a dot-atom
+      return ParseDotAtomAfterCFWS(str, index, endIndex);
     }
 
     public static IList<NamedAddress> ParseAddressList(string str, int index, int endIndex, IList<int[]> tokens) {
@@ -224,7 +220,8 @@ namespace PeterO.Mail {
           int tokenKind = tokens[i][0];
           if (tokenKind == TokenGroup) {
             return ParseGroup(str, tokenIndex, tokenEnd, tokens);
-          } else if (tokenKind == TokenMailbox) {
+          }
+          if (tokenKind == TokenMailbox) {
             return ParseMailbox(str, tokenIndex, tokenEnd, tokens);
           }
         }

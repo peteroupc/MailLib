@@ -222,7 +222,7 @@ import java.util.*;
       int nonStableStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       if (charList == null) {
-        throw new NullPointerException("chars");
+        throw new NullPointerException("charList");
       }
       for (int i = 0; i < charList.size(); ++i) {
         int c = charList.get(i);
@@ -270,9 +270,9 @@ import java.util.*;
       return r == 1 ? this.readbuffer[0] : -1;
     }
 
-    private boolean endOfString = false;
+    private boolean endOfString;
     private int lastChar = -1;
-    private boolean ungetting = false;
+    private boolean ungetting;
 
     private void Unget() {
       this.ungetting = true;
@@ -284,11 +284,8 @@ import java.util.*;
         ch = this.lastChar;
         this.ungetting = false;
         return ch;
-      } else if (this.iterator == null) {
-        ch = (this.characterListPos >= this.characterList.size()) ? -1 : this.characterList.get(this.characterListPos++);
-      } else {
-        ch = this.iterator.ReadChar();
       }
+      ch = (this.iterator == null) ? ((this.characterListPos >= this.characterList.size()) ? -1 : this.characterList.get(this.characterListPos++)) : this.iterator.ReadChar();
       if (ch < 0) {
         this.endOfString = true;
       } else if (ch > 0x10ffff || ((ch & 0x1ff800) == 0xd800)) {
@@ -336,7 +333,8 @@ import java.util.*;
           int c = this.GetNextChar();
           if (c < 0) {
             return (total == 0) ? -1 : total;
-          } else if (Normalizer.IsStableCodePoint(c, this.form)) {
+          }
+          if (Normalizer.IsStableCodePoint(c, this.form)) {
             chars[index] = c;
             ++total;
             ++index;
