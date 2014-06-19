@@ -13,10 +13,10 @@ namespace PeterO.Mail {
     private static short[] table = CharsetTable();
 
     private static short[] CharsetTable() {
-      var table = new short[7103];
-      Array.Copy(method0(), 0, table, 0, 4096);
-      Array.Copy(method1(), 0, table, 4096, 3007);
-      return table;
+      var tableVar = new short[7103];
+      Array.Copy(method0(), 0, tableVar, 0, 4096);
+      Array.Copy(method1(), 0, tableVar, 4096, 3007);
+      return tableVar;
     }
 
     private static int[] indextable = { 161, 65374, 0, 256,

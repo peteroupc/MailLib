@@ -12,11 +12,11 @@ using PeterO;
 
 namespace PeterO.Mail {
   internal sealed class EncodedWordEncoder {
+    private const string HexChars = "0123456789ABCDEF";
+
     private StringBuilder currentWord;
     private StringBuilder fullString;
     private int spaceCount;
-
-    private const string hex = "0123456789ABCDEF";
 
     // Doesn't add a space to the beginning of
     // the output
@@ -130,32 +130,32 @@ namespace PeterO.Mail {
       } else if (ch < 0x80) {
         this.PrepareToAppend(3);
         this.currentWord.Append('=');
-        this.currentWord.Append(hex[(ch >> 4) & 15]);
-        this.currentWord.Append(hex[ch & 15]);
+        this.currentWord.Append(HexChars[(ch >> 4) & 15]);
+        this.currentWord.Append(HexChars[ch & 15]);
       } else if (ch < 0x800) {
         int w = (byte)(0xc0 | ((ch >> 6) & 0x1f));
         int x = (byte)(0x80 | (ch & 0x3f));
         this.PrepareToAppend(6);
         this.currentWord.Append('=');
-        this.currentWord.Append(hex[(w >> 4) & 15]);
-        this.currentWord.Append(hex[w & 15]);
+        this.currentWord.Append(HexChars[(w >> 4) & 15]);
+        this.currentWord.Append(HexChars[w & 15]);
         this.currentWord.Append('=');
-        this.currentWord.Append(hex[(x >> 4) & 15]);
-        this.currentWord.Append(hex[x & 15]);
+        this.currentWord.Append(HexChars[(x >> 4) & 15]);
+        this.currentWord.Append(HexChars[x & 15]);
       } else if (ch < 0x10000) {
         this.PrepareToAppend(9);
         int w = (byte)(0xe0 | ((ch >> 12) & 0x0f));
         int x = (byte)(0x80 | ((ch >> 6) & 0x3f));
         int y = (byte)(0x80 | (ch & 0x3f));
         this.currentWord.Append('=');
-        this.currentWord.Append(hex[(w >> 4) & 15]);
-        this.currentWord.Append(hex[w & 15]);
+        this.currentWord.Append(HexChars[(w >> 4) & 15]);
+        this.currentWord.Append(HexChars[w & 15]);
         this.currentWord.Append('=');
-        this.currentWord.Append(hex[(x >> 4) & 15]);
-        this.currentWord.Append(hex[x & 15]);
+        this.currentWord.Append(HexChars[(x >> 4) & 15]);
+        this.currentWord.Append(HexChars[x & 15]);
         this.currentWord.Append('=');
-        this.currentWord.Append(hex[(y >> 4) & 15]);
-        this.currentWord.Append(hex[y & 15]);
+        this.currentWord.Append(HexChars[(y >> 4) & 15]);
+        this.currentWord.Append(HexChars[y & 15]);
       } else {
         this.PrepareToAppend(12);
         int w = (byte)(0xf0 | ((ch >> 18) & 0x07));
@@ -163,17 +163,17 @@ namespace PeterO.Mail {
         int y = (byte)(0x80 | ((ch >> 6) & 0x3f));
         int z = (byte)(0x80 | (ch & 0x3f));
         this.currentWord.Append('=');
-        this.currentWord.Append(hex[(w >> 4) & 15]);
-        this.currentWord.Append(hex[w & 15]);
+        this.currentWord.Append(HexChars[(w >> 4) & 15]);
+        this.currentWord.Append(HexChars[w & 15]);
         this.currentWord.Append('=');
-        this.currentWord.Append(hex[(x >> 4) & 15]);
-        this.currentWord.Append(hex[x & 15]);
+        this.currentWord.Append(HexChars[(x >> 4) & 15]);
+        this.currentWord.Append(HexChars[x & 15]);
         this.currentWord.Append('=');
-        this.currentWord.Append(hex[(y >> 4) & 15]);
-        this.currentWord.Append(hex[y & 15]);
+        this.currentWord.Append(HexChars[(y >> 4) & 15]);
+        this.currentWord.Append(HexChars[y & 15]);
         this.currentWord.Append('=');
-        this.currentWord.Append(hex[(z >> 4) & 15]);
-        this.currentWord.Append(hex[z & 15]);
+        this.currentWord.Append(HexChars[(z >> 4) & 15]);
+        this.currentWord.Append(HexChars[z & 15]);
       }
     }
 

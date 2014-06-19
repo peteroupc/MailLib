@@ -89,6 +89,7 @@ namespace PeterO.Mail {
     private const int EncodingBinary = 4;
     private const int EncodingQuotedPrintable = 1;
     private const int EncodingBase64 = 2;
+    private const bool UseLenientLineBreaks = true;
 
     private IList<string> headers;
 
@@ -423,8 +424,6 @@ namespace PeterO.Mail {
         }
       }
     }
-
-    private const bool useLenientLineBreaks = true;
 
     /// <summary>Initializes a new instance of the Message class. Reads
     /// from the given Stream object to initialize the message.</summary>
@@ -844,7 +843,7 @@ namespace PeterO.Mail {
         afterHyphen = s[i] == '-';
       }
       string ret = builder.ToString();
-      return ret.Equals("Mime-Version") ? "MIME-Version" : (ret.Equals("Message-Id") ? "Message-ID" : (ret));
+      return ret.Equals("Mime-Version") ? "MIME-Version" : (ret.Equals("Message-Id") ? "Message-ID" : ret);
     }
 
     /// <summary>Returns true if the string has: * non-ASCII characters
@@ -1532,17 +1531,16 @@ namespace PeterO.Mail {
         if (b < lower || b > upper) {
           stream.Unget();
           return 0xfffd;
-        } else {
-          lower = 0x80;
-          upper = 0xbf;
-          ++bytesSeen;
-          cp += (b - 0x80) << (6 * (bytesNeeded - bytesSeen));
-          if (bytesSeen != bytesNeeded) {
-            continue;
-          }
-          bytesRead[0] = read;
-          return cp;
         }
+        lower = 0x80;
+        upper = 0xbf;
+        ++bytesSeen;
+        cp += (b - 0x80) << (6 * (bytesNeeded - bytesSeen));
+        if (bytesSeen != bytesNeeded) {
+          continue;
+        }
+        bytesRead[0] = read;
+        return cp;
       }
     }
 

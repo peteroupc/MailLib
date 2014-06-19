@@ -98,7 +98,8 @@ at: http://upokecenter.com/d/
           this.buffer[0] = 0x0a;
           this.lineCharCount = 0;
           return 0x0d;
-        } else if (c == '=') { // Equals
+        }
+        if (c == '=') { // Equals
           if (this.maxLineSize >= 0) {
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
@@ -194,7 +195,8 @@ at: http://upokecenter.com/d/
             }
           }
           return c;
-        } else if (c != '\t' && (c < 0x20 || c >= 0x7f)) {
+        }
+        if (c != '\t' && (c < 0x20 || c >= 0x7f)) {
           // Invalid character
           if (this.maxLineSize < 0) {
             // Ignore the character
@@ -274,20 +276,20 @@ at: http://upokecenter.com/d/
                 throw new MessageDataException("Encoded quoted-printable line too long");
               }
               break;
-            } else if (c2 != ' ' && c2 != '\t') {
+            }
+            if (c2 != ' ' && c2 != '\t') {
               // Not a space or tab
               this.input.Unget();
               break;
-            } else {
-              // An additional space or tab
-              this.ResizeBuffer(spaceCount);
-              this.buffer[spaceCount - 1] = (byte)c2;
-              ++spaceCount;
-              if (this.maxLineSize >= 0) {
-                ++this.lineCharCount;
-                if (this.lineCharCount > this.maxLineSize) {
-                  throw new MessageDataException("Encoded quoted-printable line too long");
-                }
+            }
+            // An additional space or tab
+            this.ResizeBuffer(spaceCount);
+            this.buffer[spaceCount - 1] = (byte)c2;
+            ++spaceCount;
+            if (this.maxLineSize >= 0) {
+              ++this.lineCharCount;
+              if (this.lineCharCount > this.maxLineSize) {
+                throw new MessageDataException("Encoded quoted-printable line too long");
               }
             }
             c2 = this.input.read();

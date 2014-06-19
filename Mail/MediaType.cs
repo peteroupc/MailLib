@@ -44,7 +44,7 @@ namespace PeterO.Mail {
     /// <param name='obj'>An arbitrary object.</param>
     /// <returns>True if the objects are equal; otherwise, false.</returns>
     public override bool Equals(object obj) {
-      MediaType other = obj as MediaType;
+      var other = obj as MediaType;
       if (other == null) {
         return false;
       }
@@ -273,12 +273,12 @@ namespace PeterO.Mail {
       int contin = 0;
       string hex = "0123456789ABCDEF";
       length += name.Length + 12;
-      const int maxLength = 76;
-      if (sb.Length + name.Length + 9 + (str.Length * 3) <= maxLength) {
+      const int MaxLength = 76;
+      if (sb.Length + name.Length + 9 + (str.Length * 3) <= MaxLength) {
         // Very short
         length = sb.Length + name.Length + 9;
         sb.Append(name + "*=utf-8''");
-      } else if (length + (str.Length * 3) <= maxLength) {
+      } else if (length + (str.Length * 3) <= MaxLength) {
         // Short enough that no continuations
         // are needed
         length -= 2;
@@ -302,7 +302,7 @@ namespace PeterO.Mail {
         ++index;
         if (c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=*%'".IndexOf((char)c) < 0) {
           ++length;
-          if (!first && length + 1 > maxLength) {
+          if (!first && length + 1 > MaxLength) {
             sb.Append(";\r\n ");
             first = true;
             ++contin;
@@ -317,7 +317,7 @@ namespace PeterO.Mail {
           sb.Append((char)c);
         } else if (c < 0x80) {
           length += 3;
-          if (!first && length + 1 > maxLength) {
+          if (!first && length + 1 > MaxLength) {
             sb.Append(";\r\n ");
             first = true;
             ++contin;
@@ -334,7 +334,7 @@ namespace PeterO.Mail {
           sb.Append(hex[c & 15]);
         } else if (c < 0x800) {
           length += 6;
-          if (!first && length + 1 > maxLength) {
+          if (!first && length + 1 > MaxLength) {
             sb.Append(";\r\n ");
             first = true;
             ++contin;
@@ -356,7 +356,7 @@ namespace PeterO.Mail {
           sb.Append(hex[x & 15]);
         } else if (c < 0x10000) {
           length += 9;
-          if (!first && length + 1 > maxLength) {
+          if (!first && length + 1 > MaxLength) {
             sb.Append(";\r\n ");
             first = true;
             ++contin;
@@ -382,7 +382,7 @@ namespace PeterO.Mail {
           sb.Append(hex[y & 15]);
         } else {
           length += 12;
-          if (!first && length + 1 > maxLength) {
+          if (!first && length + 1 > MaxLength) {
             sb.Append(";\r\n ");
             first = true;
             ++contin;
@@ -750,9 +750,7 @@ namespace PeterO.Mail {
       }
       string paramValue = value.Substring(secondQuote + 1);
       ICharset cs = Charsets.GetCharset(charset);
-      if (cs == null) {
-        cs = Charsets.Ascii;
-      }
+      cs = cs ?? Charsets.Ascii;
       return DecodeRfc2231Encoding(paramValue, cs);
     }
 
@@ -777,19 +775,14 @@ namespace PeterO.Mail {
         return null;
       }
       ICharset cs = Charsets.GetCharset(charset);
-      if (cs == null) {
-        cs = Charsets.Ascii;
-      }
-      return cs;
+      return (cs == null) ? Charsets.Ascii : cs;
     }
 
     private static string DecodeRfc2231Encoding(string value, ICharset charset) {
+      // a value without a quote
+      // mark is not a valid encoded parameter
       int quote = value.IndexOf('\'');
-      if (quote >= 0) {
-        // not a valid encoded parameter
-        return null;
-      }
-      return charset.GetString(new PercentEncodingStringTransform(value));
+      return (quote >= 0) ? null : charset.GetString(new PercentEncodingStringTransform(value));
     }
 
     private static bool ExpandRfc2231Extensions(IDictionary<string, string> parameters) {
@@ -811,6 +804,7 @@ namespace PeterO.Mail {
             continue;
           }
           parameters.Remove(name);
+          realValue = realValue ?? value;
           // NOTE: Overrides the name without continuations
           parameters[realName] = realValue;
           continue;
@@ -826,9 +820,6 @@ namespace PeterO.Mail {
           ICharset charsetUsed = GetRfc2231Charset(
             (asterisk == name.Length - 3) ? value : null);
           parameters.Remove(name);
-          if (realValue == null) {
-            realValue = value;
-          }
           int pindex = 1;
           // search for name*1 or name*1*, then name*2 or name*2*,
           // and so on
@@ -1010,7 +1001,7 @@ namespace PeterO.Mail {
     }
 
     private bool ParseMediaType(string str) {
-      const bool httpRules = false;
+      const bool HttpRules = false;
       int index = 0;
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -1041,7 +1032,7 @@ namespace PeterO.Mail {
         }
       }
       index = i2;
-      return ParseParameters(str, index, endIndex, httpRules, this.parameters);
+      return ParseParameters(str, index, endIndex, HttpRules, this.parameters);
     }
 
     #if CODE_ANALYSIS

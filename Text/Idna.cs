@@ -61,11 +61,7 @@ namespace PeterO.Text {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((str[index - 2] - 0xd800) << 10) + (c - 0xdc00);
       }
-      if ((c & 0xf800) == 0xd800) {
-        // unpaired surrogate
-        return 0xfffd;
-      }
-      return c;
+      return ((c & 0xf800) == 0xd800) ? 0xfffd : c;
     }
 
     internal static int CodePointAt(string str, int index) {
@@ -90,9 +86,7 @@ namespace PeterO.Text {
     internal static int GetBidiClass(int ch) {
       ByteData table = null;
       lock (bidiClassesSync) {
-        if (bidiClasses == null) {
-          bidiClasses = ByteData.Decompress(IdnaData.BidiClasses);
-        }
+        bidiClasses = bidiClasses ?? ByteData.Decompress(IdnaData.BidiClasses);
         table = bidiClasses;
       }
       return table.GetByte(ch);
@@ -101,9 +95,7 @@ namespace PeterO.Text {
     private static int GetJoiningType(int ch) {
       ByteData table = null;
       lock (joiningTypesSync) {
-        if (joiningTypes == null) {
-          joiningTypes = ByteData.Decompress(IdnaData.JoiningTypes);
-        }
+        joiningTypes = joiningTypes ?? ByteData.Decompress(IdnaData.JoiningTypes);
         table = joiningTypes;
       }
       return table.GetByte(ch);
@@ -112,9 +104,7 @@ namespace PeterO.Text {
     private static int GetScript(int ch) {
       ByteData table = null;
       lock (scriptsSync) {
-        if (scripts == null) {
-          scripts = ByteData.Decompress(IdnaData.IdnaRelevantScripts);
-        }
+        scripts = scripts ?? ByteData.Decompress(IdnaData.IdnaRelevantScripts);
         table = scripts;
       }
       return table.GetByte(ch);
@@ -295,7 +285,8 @@ namespace PeterO.Text {
       if (String.IsNullOrEmpty(str)) {
         return false;
       }
-      bool maybeALabel = false || str.Length >= 4 && (str[0] == 'x' || str[0] == 'X') && (str[1] == 'n' || str[1] == 'N') && str[2] == '-' && str[3] == '-';
+      bool maybeALabel = str.Length >= 4 && (str[0] == 'x' || str[0] == 'X') &&
+        (str[1] == 'n' || str[1] == 'N') && str[2] == '-' && str[3] == '-';
       bool allLDH = true;
       for (int i = 0; i < str.Length; ++i) {
         if ((str[i] >= 'a' && str[i] <= 'z') ||
@@ -322,12 +313,10 @@ namespace PeterO.Text {
           return false;
         }
         string astr = DomainUtility.PunycodeEncodePortion(ustr, 0, ustr.Length);
-        if (astr == null) {
-          return false;
-        }
         // NOTE: "astr" and "str" will contain only ASCII characters
-        // at this point, so a simple binary comparison is enough
-        return astr.Equals(str);
+        // at this point, so a simple null check and
+        // binary comparison are enough
+        return (astr != null) && astr.Equals(str);
       }
       if (allLDH) {
         if (str.Length >= 4 && str[2] == '-' && str[3] == '-') {

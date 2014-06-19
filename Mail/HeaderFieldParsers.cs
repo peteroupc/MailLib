@@ -167,9 +167,7 @@ namespace PeterO.Mail {
                 if (nonasciiLocalParts) {
                   // At least some of the domains could not
                   // be converted to ASCII
-                  if (originalGroups == null) {
-                    originalGroups = this.ParseGroupLists(originalString, 0, originalString.Length);
-                  }
+                   originalGroups = originalGroups ?? this.ParseGroupLists(originalString, 0, originalString.Length);
                   originalGroupList = originalGroups[groupIndex];
                   string groupText = originalGroupList;
                   string displayNameText = str.Substring(startIndex, displayNameEnd - startIndex);
@@ -887,7 +885,7 @@ namespace PeterO.Mail {
     }
 
     private static IDictionary<string, IHeaderFieldParser> fieldMap = CreateHeaderFieldList();
-    private static readonly IHeaderFieldParser unstructured = new UnstructuredHeaderField();
+    private static readonly IHeaderFieldParser Unstructured = new UnstructuredHeaderField();
 
     private static IDictionary<string, IHeaderFieldParser> CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
@@ -1012,7 +1010,7 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("name");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
-      return fieldMap.ContainsKey(name) ? fieldMap[name] : unstructured;
+      return fieldMap.ContainsKey(name) ? fieldMap[name] : Unstructured;
     }
   }
 }

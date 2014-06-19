@@ -68,6 +68,7 @@ import com.upokecenter.util.*;
     private static final int EncodingBinary = 4;
     private static final int EncodingQuotedPrintable = 1;
     private static final int EncodingBase64 = 2;
+    private static final boolean UseLenientLineBreaks = true;
 
     private List<String> headers;
 
@@ -434,8 +435,6 @@ finally {
 try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
 }
       }
-
-    private static final boolean useLenientLineBreaks = true;
 
     /**
      * Initializes a new instance of the Message class. Reads from the given
@@ -855,7 +854,7 @@ public void setContentDisposition(ContentDisposition value) {
         afterHyphen = s.charAt(i) == '-';
       }
       String ret = builder.toString();
-      return ret.equals("Mime-Version") ? "MIME-Version" : (ret.equals("Message-Id") ? "Message-ID" : (ret));
+      return ret.equals("Mime-Version") ? "MIME-Version" : (ret.equals("Message-Id") ? "Message-ID" : ret);
     }
 
     /**
@@ -1541,17 +1540,16 @@ public void setContentDisposition(ContentDisposition value) {
         if (b < lower || b > upper) {
           stream.Unget();
           return 0xfffd;
-        } else {
-          lower = 0x80;
-          upper = 0xbf;
-          ++bytesSeen;
-          cp += (b - 0x80) << (6 * (bytesNeeded - bytesSeen));
-          if (bytesSeen != bytesNeeded) {
-            continue;
-          }
-          bytesRead[0] = read;
-          return cp;
         }
+        lower = 0x80;
+        upper = 0xbf;
+        ++bytesSeen;
+        cp += (b - 0x80) << (6 * (bytesNeeded - bytesSeen));
+        if (bytesSeen != bytesNeeded) {
+          continue;
+        }
+        bytesRead[0] = read;
+        return cp;
       }
     }
 

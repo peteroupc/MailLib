@@ -60,11 +60,7 @@ private Idna() {
         // Get the Unicode code point for the surrogate pair
         return 0x10000 + ((str.charAt(index - 2) - 0xd800) << 10) + (c - 0xdc00);
       }
-      if ((c & 0xf800) == 0xd800) {
-        // unpaired surrogate
-        return 0xfffd;
-      }
-      return c;
+      return ((c & 0xf800) == 0xd800) ? 0xfffd : c;
     }
 
     static int CodePointAt(String str, int index) {
@@ -89,9 +85,7 @@ private Idna() {
     static int GetBidiClass(int ch) {
       ByteData table = null;
       synchronized(bidiClassesSync) {
-        if (bidiClasses == null) {
-          bidiClasses = ByteData.Decompress(IdnaData.BidiClasses);
-        }
+        bidiClasses = (bidiClasses == null) ? (ByteData.Decompress(IdnaData.BidiClasses)) : bidiClasses;
         table = bidiClasses;
       }
       return table.GetByte(ch);
@@ -100,9 +94,7 @@ private Idna() {
     private static int GetJoiningType(int ch) {
       ByteData table = null;
       synchronized(joiningTypesSync) {
-        if (joiningTypes == null) {
-          joiningTypes = ByteData.Decompress(IdnaData.JoiningTypes);
-        }
+        joiningTypes = (joiningTypes == null) ? (ByteData.Decompress(IdnaData.JoiningTypes)) : joiningTypes;
         table = joiningTypes;
       }
       return table.GetByte(ch);
@@ -111,9 +103,7 @@ private Idna() {
     private static int GetScript(int ch) {
       ByteData table = null;
       synchronized(scriptsSync) {
-        if (scripts == null) {
-          scripts = ByteData.Decompress(IdnaData.IdnaRelevantScripts);
-        }
+        scripts = (scripts == null) ? (ByteData.Decompress(IdnaData.IdnaRelevantScripts)) : scripts;
         table = scripts;
       }
       return table.GetByte(ch);
@@ -298,7 +288,8 @@ private Idna() {
       if (((str)==null || (str).length()==0)) {
         return false;
       }
-      boolean maybeALabel = false || str.length() >= 4 && (str.charAt(0) == 'x' || str.charAt(0) == 'X') && (str.charAt(1) == 'n' || str.charAt(1) == 'N') && str.charAt(2) == '-' && str.charAt(3) == '-';
+      boolean maybeALabel = str.length() >= 4 && (str.charAt(0) == 'x' || str.charAt(0) == 'X') &&
+        (str.charAt(1) == 'n' || str.charAt(1) == 'N') && str.charAt(2) == '-' && str.charAt(3) == '-';
       boolean allLDH = true;
       for (int i = 0; i < str.length(); ++i) {
         if ((str.charAt(i) >= 'a' && str.charAt(i) <= 'z') ||
@@ -325,12 +316,10 @@ private Idna() {
           return false;
         }
         String astr = DomainUtility.PunycodeEncodePortion(ustr, 0, ustr.length());
-        if (astr == null) {
-          return false;
-        }
         // NOTE: "astr" and "str" will contain only ASCII characters
-        // at this point, so a simple binary comparison is enough
-        return astr.equals(str);
+        // at this point, so a simple null check and
+        // binary comparison are enough
+        return (astr != null) && astr.equals(str);
       }
       if (allLDH) {
         if (str.length() >= 4 && str.charAt(2) == '-' && str.charAt(3) == '-') {

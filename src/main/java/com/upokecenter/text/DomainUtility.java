@@ -188,9 +188,9 @@ private DomainUtility() {
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1 };
 
     /**
-     * Decodes a Punycode-encoded string.
+     * Decodes a string encoded with Punycode.
      * @param str A string to decode. Note that this doesn&apos;t include
-     * a prefix such as. <code>xn--</code> .
+     * a prefix such as XN.
      * @param str A string object. (2).
      * @param index A 32-bit signed integer.
      * @param endIndex A 32-bit signed integer. (2).
@@ -326,7 +326,7 @@ private DomainUtility() {
       return builder.toString();
     }
 
-    private static final String valuePunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private static final String PunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
 
     static String PunycodeEncode(String str) {
       return PunycodeEncodePortion(str, 0, str.length());
@@ -461,12 +461,12 @@ private DomainUtility() {
                 break;
               }
               int digit = t + ((q - t) % (36 - t));
-              builder.append(valuePunycodeAlphabet.charAt(digit));
+              builder.append(PunycodeAlphabet.charAt(digit));
               q -= t;
               q /= 36 - t;
               k += 36;
             }
-            builder.append(valuePunycodeAlphabet.charAt(q));
+            builder.append(PunycodeAlphabet.charAt(q));
             delta = (h == b) ? delta / 700 : delta >> 1;
             delta += delta / (h + 1);
             k = 0;
