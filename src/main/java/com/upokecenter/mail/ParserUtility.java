@@ -41,35 +41,35 @@ private ParserUtility() {
       return (prefix.length() >= str.length()) && str.substring(0,prefix.length()).equals(prefix);
     }
 
-    public static String TrimSpaceAndTab(String s) {
-      return ((s)==null || (s).length()==0) ? s : TrimSpaceAndTabLeft(TrimSpaceAndTabRight(s));
+    public static String TrimSpaceAndTab(String str) {
+      return ((str)==null || (str).length()==0) ? str : TrimSpaceAndTabLeft(TrimSpaceAndTabRight(str));
     }
 
-    public static String TrimSpaceAndTabLeft(String s) {
-      if (((s)==null || (s).length()==0)) {
-        return s;
+    public static String TrimSpaceAndTabLeft(String str) {
+      if (((str)==null || (str).length()==0)) {
+        return str;
       }
       int index = 0;
-      int valueSLength = s.length();
+      int valueSLength = str.length();
       while (index < valueSLength) {
-        char c = s.charAt(index);
+        char c = str.charAt(index);
         if (c != 0x09 && c != 0x20) {
           break;
         }
         ++index;
       }
-      return (index == valueSLength) ? "" : ((index == 0) ? s : s.substring(index));
+      return (index == valueSLength) ? "" : ((index == 0) ? str : str.substring(index));
     }
 
-    public static String TrimSpaceAndTabRight(String s) {
-      if (((s)==null || (s).length()==0)) {
-        return s;
+    public static String TrimSpaceAndTabRight(String str) {
+      if (((str)==null || (str).length()==0)) {
+        return str;
       }
-      int index = s.length() - 1;
+      int index = str.length() - 1;
       while (index >= 0) {
-        char c = s.charAt(index);
+        char c = str.charAt(index);
         if (c != 0x09 && c != 0x20) {
-          return s.substring(0,index + 1);
+          return str.substring(0,index + 1);
         }
         --index;
       }
@@ -116,24 +116,24 @@ private ParserUtility() {
      * Splits a string by a delimiter. If the string ends with the delimiter,
      * the result will end with an empty string. If the string begins with
      * the delimiter, the result will start with an empty string.
-     * @param s A string to split.
+     * @param str A string to split.
      * @param delimiter A string to signal where each substring begins and
      * ends.
      * @return An array containing strings that are split by the delimiter.
-     * If s is null or empty, returns an array whose sole element is the empty
+     * If str is null or empty, returns an array whose sole element is the empty
      * string.
      * @throws java.lang.IllegalArgumentException Delimiter is null or empty.
      * @throws java.lang.NullPointerException The parameter {@code delimiter}
      * is null.
      */
-    public static String[] SplitAt(String s, String delimiter) {
+    public static String[] SplitAt(String str, String delimiter) {
       if (delimiter == null) {
         throw new NullPointerException("delimiter");
       }
       if (delimiter.length() == 0) {
         throw new IllegalArgumentException("delimiter is empty.");
       }
-      if (((s)==null || (s).length()==0)) {
+      if (((str)==null || (str).length()==0)) {
         return new String[] { "" };
       }
       int index = 0;
@@ -141,17 +141,19 @@ private ParserUtility() {
       ArrayList<String> strings = null;
       int delimLength = delimiter.length();
       while (true) {
-        int index2 = s.indexOf(delimiter,index);
+        int index2 = str.indexOf(delimiter,index);
         if (index2 < 0) {
           if (first) {
-            return new[] { s };
+            String[] strret = new String[1];
+            strret[0] = str;
+            return strret;
           }
           strings = (strings == null) ? ((new ArrayList<String>())) : strings;
-          strings.add(s.substring(index));
+          strings.add(str.substring(index));
           break;
         } else {
           first = false;
-          String newstr = s.substring(index,(index)+((index2)-index));
+          String newstr = str.substring(index,(index)+((index2)-index));
           strings = (strings == null) ? ((new ArrayList<String>())) : strings;
           strings.add(newstr);
           index = index2 + delimLength;
