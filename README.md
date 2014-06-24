@@ -25,7 +25,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
     <dependency>
       <groupId>com.upokecenter</groupId>
       <artifactId>maillib</artifactId>
-      <version>0.6.1</version>
+      <version>0.7.0</version>
     </dependency>
 
 In other Java-based environments, the library can be referred to by its
@@ -34,6 +34,20 @@ group ID (`com.upokecenter`), artifact ID (`maillib`), and version, as given abo
 Source Code
 ---------
 Source code is available in the [project page](https://github.com/MailLib/CBOR).
+
+Release Notes
+---------
+Version 0.7.0:
+
+- More header fields that can be merged are merged when generating messages from Message objects.
+- The Unicode data for normalization and IDNA was updated to version 7.0.
+
+Version 0.6.1:
+
+- First release as an artifact and a NuGet package.
+
+The [commit history](https://github.com/peteroupc/MailLIb/commits/master) 
+contains details on code changes in previous versions.
 
 About
 -----------
