@@ -187,17 +187,6 @@ private DomainUtility() {
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
       15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1 };
 
-    /**
-     * Decodes a string encoded with Punycode.
-     * @param str A string to decode. Note that this doesn&apos;t include
-     * a prefix such as XN.
-     * @param str A string object. (2).
-     * @param index A 32-bit signed integer.
-     * @param endIndex A 32-bit signed integer. (2).
-     * @return A string object.
-     * @throws java.lang.NullPointerException The parameter {@code str}
-     * is null.
-     */
     static String PunycodeDecode(String str, int index, int endIndex) {
       if (str == null) {
         throw new NullPointerException("str");

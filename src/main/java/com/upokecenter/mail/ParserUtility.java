@@ -146,17 +146,13 @@ private ParserUtility() {
           if (first) {
             return new[] { s };
           }
-          if (strings == null) {
-            strings = new ArrayList<String>();
-          }
+          strings = (strings == null) ? ((new ArrayList<String>())) : strings;
           strings.add(s.substring(index));
           break;
         } else {
           first = false;
           String newstr = s.substring(index,(index)+((index2)-index));
-          if (strings == null) {
-            strings = new ArrayList<String>();
-          }
+          strings = (strings == null) ? ((new ArrayList<String>())) : strings;
           strings.add(newstr);
           index = index2 + delimLength;
         }
@@ -279,6 +275,7 @@ private ParserUtility() {
             int curIndex = splitIndex;
             if (lengthIfAllAlphaNum(curString) == 1 &&
                       !curString.equals("x")) {
+              variants = (variants == null) ? ((new ArrayList<String>())) : variants;
               if (!variants.contains(curString)) {
                 variants.add(curString);
               } else {
