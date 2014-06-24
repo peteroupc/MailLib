@@ -40,35 +40,35 @@ namespace PeterO.Mail {
       return (prefix.Length >= str.Length) && str.Substring(0, prefix.Length).Equals(prefix);
     }
 
-    public static string TrimSpaceAndTab(string s) {
-      return string.IsNullOrEmpty(s) ? s : TrimSpaceAndTabLeft(TrimSpaceAndTabRight(s));
+    public static string TrimSpaceAndTab(string str) {
+      return string.IsNullOrEmpty(str) ? str : TrimSpaceAndTabLeft(TrimSpaceAndTabRight(str));
     }
 
-    public static string TrimSpaceAndTabLeft(string s) {
-      if (string.IsNullOrEmpty(s)) {
-        return s;
+    public static string TrimSpaceAndTabLeft(string str) {
+      if (string.IsNullOrEmpty(str)) {
+        return str;
       }
       int index = 0;
-      int valueSLength = s.Length;
+      int valueSLength = str.Length;
       while (index < valueSLength) {
-        char c = s[index];
+        char c = str[index];
         if (c != 0x09 && c != 0x20) {
           break;
         }
         ++index;
       }
-      return (index == valueSLength) ? String.Empty : ((index == 0) ? s : s.Substring(index));
+      return (index == valueSLength) ? String.Empty : ((index == 0) ? str : str.Substring(index));
     }
 
-    public static string TrimSpaceAndTabRight(string s) {
-      if (string.IsNullOrEmpty(s)) {
-        return s;
+    public static string TrimSpaceAndTabRight(string str) {
+      if (string.IsNullOrEmpty(str)) {
+        return str;
       }
-      int index = s.Length - 1;
+      int index = str.Length - 1;
       while (index >= 0) {
-        char c = s[index];
+        char c = str[index];
         if (c != 0x09 && c != 0x20) {
-          return s.Substring(0, index + 1);
+          return str.Substring(0, index + 1);
         }
         --index;
       }
@@ -114,24 +114,24 @@ namespace PeterO.Mail {
     /// <summary>Splits a string by a delimiter. If the string ends with the
     /// delimiter, the result will end with an empty string. If the string
     /// begins with the delimiter, the result will start with an empty string.</summary>
-    /// <param name='s'>A string to split.</param>
+    /// <param name='str'>A string to split.</param>
     /// <param name='delimiter'>A string to signal where each substring
     /// begins and ends.</param>
     /// <returns>An array containing strings that are split by the delimiter.
-    /// If s is null or empty, returns an array whose sole element is the empty
+    /// If str is null or empty, returns an array whose sole element is the empty
     /// string.</returns>
     /// <exception cref='System.ArgumentException'>Delimiter is null
     /// or empty.</exception>
     /// <exception cref='System.ArgumentNullException'>The parameter
     /// <paramref name='delimiter'/> is null.</exception>
-    public static string[] SplitAt(string s, string delimiter) {
+    public static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
         throw new ArgumentNullException("delimiter");
       }
       if (delimiter.Length == 0) {
         throw new ArgumentException("delimiter is empty.");
       }
-      if (string.IsNullOrEmpty(s)) {
+      if (string.IsNullOrEmpty(str)) {
         return new[] { String.Empty };
       }
       int index = 0;
@@ -139,17 +139,19 @@ namespace PeterO.Mail {
       List<string> strings = null;
       int delimLength = delimiter.Length;
       while (true) {
-        int index2 = s.IndexOf(delimiter, index, StringComparison.Ordinal);
+        int index2 = str.IndexOf(delimiter, index, StringComparison.Ordinal);
         if (index2 < 0) {
           if (first) {
-            return new[] { s };
+            string[] strret = new string[1];
+            strret[0] = str;
+            return strret;
           }
           strings = strings ?? (new List<string>());
-          strings.Add(s.Substring(index));
+          strings.Add(str.Substring(index));
           break;
         } else {
           first = false;
-          string newstr = s.Substring(index, (index2)-index);
+          string newstr = str.Substring(index, (index2)-index);
           strings = strings ?? (new List<string>());
           strings.Add(newstr);
           index = index2 + delimLength;

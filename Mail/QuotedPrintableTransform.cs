@@ -41,7 +41,8 @@ namespace PeterO.Mail {
     }
 
     private void ResizeBuffer(int size) {
-      this.buffer = this.buffer ?? (new byte[size + 10]); else if (size > this.buffer.Length) {
+      this.buffer = this.buffer ?? (new byte[size + 10]);
+      if (size > this.buffer.Length) {
         var newbuffer = new byte[size + 10];
         Array.Copy(this.buffer, newbuffer, this.buffer.Length);
         this.buffer = newbuffer;
