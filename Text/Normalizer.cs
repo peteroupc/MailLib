@@ -445,9 +445,7 @@ namespace PeterO.Text {
     private bool LoadMoreData() {
       bool done = false;
       while (!done) {
-        if (this.buffer == null) {
-          this.buffer = new int[32];
-        }
+        this.buffer = this.buffer ?? (new int[32]);
         // Fill buffer with decompositions until the buffer is full
         // or the end of the string is reached.
         while (this.endIndex + 18 <= this.buffer.Length) {

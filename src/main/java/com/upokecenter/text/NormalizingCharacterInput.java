@@ -408,9 +408,7 @@ import java.util.*;
     private boolean LoadMoreData() {
       boolean done = false;
       while (!done) {
-        if (this.buffer == null) {
-          this.buffer = new int[32];
-        }
+        this.buffer = (this.buffer == null) ? ((new int[32])) : this.buffer;
         // Fill buffer with decompositions until the buffer is full
         // or the end of the String is reached.
         while (this.endIndex + 18 <= this.buffer.length) {

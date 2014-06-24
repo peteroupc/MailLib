@@ -15,9 +15,7 @@ private UnicodeDatabase() {
 
     public static int GetCombiningClass(int cp) {
       synchronized(classesSyncRoot) {
-        if (classes == null) {
-          classes = ByteData.Decompress(NormalizationData.CombiningClasses);
-        }
+        classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningClasses)) : classes;
       }
       return ((int)classes.GetByte(cp)) & 0xff;
     }
@@ -27,9 +25,7 @@ private UnicodeDatabase() {
 
     public static int GetIdnaCategory(int cp) {
       synchronized(idnaCatSyncRoot) {
-        if (idnaCat == null) {
-          idnaCat = ByteData.Decompress(IdnaData.IdnaCategories);
-        }
+        idnaCat = (idnaCat == null) ? (ByteData.Decompress(IdnaData.IdnaCategories)) : idnaCat;
       }
       return ((int)idnaCat.GetByte(cp)) & 0xff;
     }
@@ -56,27 +52,19 @@ private UnicodeDatabase() {
     public static boolean IsStableCodePoint(int cp, Normalization form) {
       synchronized(stableSyncRoot) {
         if (form == Normalization.NFC) {
-          if (stablenfc == null) {
-            stablenfc = ByteData.Decompress(NormalizationData.StableNFC);
-          }
+          stablenfc = (stablenfc == null) ? (ByteData.Decompress(NormalizationData.StableNFC)) : stablenfc;
           return stablenfc.GetBoolean(cp);
         }
         if (form == Normalization.NFD) {
-          if (stablenfd == null) {
-            stablenfd = ByteData.Decompress(NormalizationData.StableNFD);
-          }
+          stablenfd = (stablenfd == null) ? (ByteData.Decompress(NormalizationData.StableNFD)) : stablenfd;
           return stablenfd.GetBoolean(cp);
         }
         if (form == Normalization.NFKC) {
-          if (stablenfkc == null) {
-            stablenfkc = ByteData.Decompress(NormalizationData.StableNFKC);
-          }
+          stablenfkc = (stablenfkc == null) ? (ByteData.Decompress(NormalizationData.StableNFKC)) : stablenfkc;
           return stablenfkc.GetBoolean(cp);
         }
         if (form == Normalization.NFKD) {
-          if (stablenfkd == null) {
-            stablenfkd = ByteData.Decompress(NormalizationData.StableNFKD);
-          }
+          stablenfkd = (stablenfkd == null) ? (ByteData.Decompress(NormalizationData.StableNFKD)) : stablenfkd;
           return stablenfkd.GetBoolean(cp);
         }
         return false;

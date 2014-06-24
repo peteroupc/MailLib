@@ -563,19 +563,25 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        if ((new NamedAddress("Me\u00e0 <me@example.com>"))==null)Assert.Fail();
+        if ((new NamedAddress("Me\u00e0 <me@example.com>"))==null) {
+ Assert.Fail();
+}
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        if ((new NamedAddress("\"Me\" <me@example.com>"))==null)Assert.Fail();
+        if ((new NamedAddress("\"Me\" <me@example.com>"))==null) {
+ Assert.Fail();
+}
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        if ((new NamedAddress("\"Me\u00e0\" <me@example.com>"))==null)Assert.Fail();
+        if ((new NamedAddress("\"Me\u00e0\" <me@example.com>"))==null) {
+ Assert.Fail();
+}
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);

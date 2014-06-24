@@ -20,9 +20,7 @@ at: http://upokecenter.com/d/
     }
 
     private void ResizeBuffer(int size) {
-      if (this.buffer == null) {
-        this.buffer = new byte[size + 10];
-      } else if (size > this.buffer.length) {
+      this.buffer = (this.buffer == null) ? ((new byte[size + 10])) : this.buffer; else if (size > this.buffer.length) {
         byte[] newbuffer = new byte[size + 10];
         System.arraycopy(this.buffer, 0, newbuffer, 0, this.buffer.length);
         this.buffer = newbuffer;
