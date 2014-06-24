@@ -18,4 +18,4 @@ using System.Reflection;
 [assembly: AssemblyProduct("MailLib")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("0.7.0")]
+[assembly: AssemblyVersion("0.8.0")]
