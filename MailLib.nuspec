@@ -12,7 +12,12 @@
     <description>
     A parser and generator of Internet email messages as a Portable Class Library.
     </description>
-    <releaseNotes>First release as a NuGet package.</releaseNotes>
+    <releaseNotes>
+    Version 0.7.0:
+- More header fields that can be merged are merged when generating messages from Message objects.
+- The Unicode data for normalization and IDNA was updated to version 7.0.
+   See the project page for release notes on previous versions: https://github.com/peteroupc/MailLib
+    </releaseNotes>
     <copyright>Written by Peter O. in 2013-2014.  Any copyright is released to the Public Domain.
     (This applies to all the source code except the normalization and IDNA data.  See https://github.com/peteroupc/MailLib/LICENSE.md for details.)</copyright>
     <tags>email mail mime parser</tags>
