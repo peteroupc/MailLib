@@ -20,8 +20,7 @@ import java.io.*;
     private boolean supportBareLF;
 
     /**
-     * Initializes a new instance of the LineBreakNormalizeTransform
-     * class.
+     * Initializes a new instance of the LineBreakNormalizeTransform class.
      * @param stream A InputStream object.
      * @param supportBareLF A Boolean object.
      */

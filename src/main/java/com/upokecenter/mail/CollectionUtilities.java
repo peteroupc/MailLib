@@ -12,7 +12,8 @@ import java.util.*;
   final class CollectionUtilities {
 private CollectionUtilities() {
 }
-    public static <TKey, TValue> boolean MapEquals(Map<TKey, TValue> mapA, Map<TKey, TValue> mapB) {
+    public static <TKey, TValue> boolean MapEquals(Map<TKey, TValue>
+      mapA, Map<TKey, TValue> mapB) {
       if (mapA == null) {
         return mapB == null;
       }
@@ -22,14 +23,14 @@ private CollectionUtilities() {
       if (mapA.size() != mapB.size()) {
         return false;
       }
-      for(Map.Entry<TKey, TValue> kvp : mapA.entrySet()) {
+      for (Map.Entry<TKey, TValue> kvp : mapA.entrySet()) {
         TValue valueB = null;
         boolean hasKey;
-valueB=mapB.get(kvp.getKey());
-hasKey=(valueB==null) ? mapB.containsKey(kvp.getKey()) : true;
+valueB = mapB.get(kvp.getKey());
+hasKey=(valueB == null) ? mapB.containsKey(kvp.getKey()) : true;
         if (hasKey) {
           TValue valueA = kvp.getValue();
-          if (!(((valueA)==null) ? ((valueB)==null) : (valueA).equals(valueB))) {
+          if (!(((valueA) == null) ? ((valueB) == null) : (valueA).equals(valueB))) {
             return false;
           }
         } else {

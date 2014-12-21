@@ -57,7 +57,8 @@ import java.util.*;
       if (this.hasNewBodyPart || this.endOfStream) {
         return -1;
       }
-      int c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+int c = this.lastByte = this.ungetting ? this.lastByte :
+        this.input.read();
       this.ungetting = false;
       if (this.readingHeaders) {
         return c;
@@ -69,7 +70,8 @@ import java.util.*;
       if (c == '-' && this.started) {
         // Check for a boundary
         this.started = false;
-        c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+          this.input.read();
         this.ungetting = false;
         if (c == '-') {
           // Possible boundary candidate
@@ -80,11 +82,13 @@ import java.util.*;
       }
       this.started = false;
       if (c == 0x0d) {
-        c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+          this.input.read();
         this.ungetting = false;
         if (c == 0x0a) {
           // Line break was read
-          c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+            this.input.read();
           this.ungetting = false;
           if (c == -1) {
             this.ResizeBuffer(1);
@@ -104,7 +108,8 @@ import java.util.*;
             this.buffer[1] = (byte)c;
             return 0x0d;
           }
-          c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+            this.input.read();
           this.ungetting = false;
           if (c == -1) {
             this.ResizeBuffer(2);
@@ -166,7 +171,8 @@ import java.util.*;
         int c;
         int bytesRead = 0;
         for (int i = 0; i < 72; ++i) {
-          c = this.lastByte = this.ungetting ? this.lastByte : this.input.read(); this.ungetting = false;
+          c = this.lastByte = this.ungetting ? this.lastByte :
+            this.input.read(); this.ungetting = false;
           if (c < 0 || c >= 0x80 || c == 0x0d) {
             this.ungetting = true;
             break;
@@ -176,7 +182,7 @@ import java.util.*;
           this.ResizeBuffer(bytesRead + bufferStart);
           this.buffer[bytesRead + bufferStart - 1] = (byte)c;
         }
-        // System.out.println("::" + (bytesRead));
+        // System.out.println("::" + bytesRead);
         // NOTE: All boundary strings are assumed to
         // have only ASCII characters (with values
         // less than 128). Check boundaries from
@@ -185,10 +191,11 @@ import java.util.*;
         int matchingIndex = -1;
         for (int i = this.boundaries.size() - 1; i >= 0; --i) {
           String boundary = this.boundaries.get(i);
-          if (!((boundary)==null || (boundary).length()==0) && boundary.length() <= bytesRead) {
+          if (!((boundary) == null || (boundary).length() == 0) && boundary.length() <= bytesRead) {
             boolean match = true;
             for (int j = 0; j < boundary.length(); ++j) {
-              match &= (boundary.charAt(j) & 0xff) == (int)(this.buffer[j + bufferStart] & 0xff);
+   match &= (boundary.charAt(j) & 0xff) == (int)(this.buffer[j + bufferStart] &
+                0xff);
             }
             if (match) {
               matchingBoundary = boundary;
@@ -206,7 +213,9 @@ import java.util.*;
           }
           // Boundary line found
           if (matchingBoundary.length() + 1 < bytesRead) {
-            closingDelim |= this.buffer[matchingBoundary.length() + bufferStart] == '-' && this.buffer[matchingBoundary.length() + 1 + bufferStart] == '-';
+            closingDelim |= this.buffer[matchingBoundary.length() +
+              bufferStart] == '-' && this.buffer[matchingBoundary.length() + 1+
+              bufferStart] == '-' ;
           }
           // Clear the buffer, the boundary line
           // isn't part of any body data
@@ -228,14 +237,16 @@ import java.util.*;
             // part, the rest of the data before the next boundary
             // is insignificant
             while (true) {
-              c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+                this.input.read();
               this.ungetting = false;
               if (c == -1) {
                 // The body higher up didn't end yet
                 throw new MessageDataException("Premature end of message");
               }
               if (c == 0x0d) {
-                c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+                  this.input.read();
                 this.ungetting = false;
                 if (c == -1) {
                   // The body higher up didn't end yet
@@ -243,7 +254,8 @@ import java.util.*;
                 }
                 if (c == 0x0a) {
                   // Start of new body part
-                  c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+                    this.input.read();
                   this.ungetting = false;
                   if (c == -1) {
                     throw new MessageDataException("Premature end of message");
@@ -257,7 +269,8 @@ import java.util.*;
                     // Not a boundary delimiter
                     continue;
                   }
-                  c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+                    this.input.read();
                   this.ungetting = false;
                   if (c == -1) {
                     throw new MessageDataException("Premature end of message");
@@ -287,13 +300,15 @@ import java.util.*;
             // next line will start the headers of the
             // next body part).
             while (true) {
-              c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+                this.input.read();
               this.ungetting = false;
               if (c == -1) {
                 throw new MessageDataException("Premature end of message");
               }
               if (c == 0x0d) {
-                c = this.lastByte = this.ungetting ? this.lastByte : this.input.read();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+                  this.input.read();
                 this.ungetting = false;
                 if (c == -1) {
                   throw new MessageDataException("Premature end of message");
@@ -327,13 +342,11 @@ import java.util.*;
     }
 
     public void StartBodyPartHeaders() {
-
       this.readingHeaders = true;
       this.hasNewBodyPart = false;
     }
 
     public void EndBodyPartHeaders() {
-
       this.readingHeaders = false;
       this.hasNewBodyPart = false;
       this.started = true;  // in case a boundary delimiter immediately starts
@@ -343,7 +356,7 @@ import java.util.*;
      * Gets a value indicating whether a new body part was detected.
      * @return True if a new body part was detected; otherwise, false..
      */
-    public boolean getHasNewBodyPart() {
+    public final boolean getHasNewBodyPart() {
         return this.hasNewBodyPart;
       }
   }

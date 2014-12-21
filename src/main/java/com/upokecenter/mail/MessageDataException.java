@@ -11,7 +11,7 @@ at: http://upokecenter.com/d/
      * Exception thrown when a message has invalid syntax.
      */
   public class MessageDataException extends RuntimeException {
-private static final long serialVersionUID=1L;
+private static final long serialVersionUID = 1L;
     /**
      * Initializes a new instance of the MessageDataException class.
      */
@@ -32,6 +32,6 @@ private static final long serialVersionUID=1L;
      * @param innerException An Exception object.
      */
     public MessageDataException (String message, Throwable innerException) {
- super(message,innerException);
+ super(message, innerException);
     }
   }

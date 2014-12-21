@@ -13,21 +13,21 @@ import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
     /**
-     * Specifies how a message body should be displayed or handled by a mail
-     * user agent. <p>This type is immutable; its contents can't be changed
-     * after it's created.</p>
+     * Specifies how a message body should be displayed or handled by a mail user
+     * agent. <p>This type is immutable; its contents can't be changed after
+     * it's created.</p>
      */
   public class ContentDisposition
   {
     private String dispositionType;
 
     /**
-     * Gets a string containing this object's disposition type, such as
-     * "inline" or "attachment".
-     * @return A string containing this object's disposition type, such
-     * as "inline" or "attachment".
+     * Gets a string containing this object's disposition type, such as "inline" or
+     * "attachment".
+     * @return A string containing this object's disposition type, such as "inline"
+     * or "attachment".
      */
-    public String getDispositionType() {
+    public final String getDispositionType() {
         return this.dispositionType;
       }
 
@@ -66,7 +66,7 @@ import com.upokecenter.text.*;
      * Gets a value indicating whether the disposition type is inline.
      * @return True if the disposition type is inline; otherwise, false..
      */
-    public boolean isInline() {
+    public final boolean isInline() {
         return this.dispositionType.equals("inline");
       }
 
@@ -74,11 +74,12 @@ import com.upokecenter.text.*;
      * Gets a value indicating whether the disposition type is attachment.
      * @return True if the disposition type is attachment; otherwise, false..
      */
-    public boolean isAttachment() {
+    public final boolean isAttachment() {
         return this.dispositionType.equals("attachment");
       }
 
-    ContentDisposition(String type, Map<String, String> parameters) {
+    ContentDisposition(String type, Map<String, String>
+      parameters) {
       this.dispositionType = type;
       this.parameters = new TreeMap<String, String>(parameters);
     }
@@ -86,12 +87,11 @@ import com.upokecenter.text.*;
     private TreeMap<String, String> parameters;
 
     /**
-     * Gets a list of parameter names associated with this object and their
-     * values.
-     * @return A list of parameter names associated with this object and
-     * their values. The names will be sorted.
+     * Gets a list of parameter names associated with this object and their values.
+     * @return A list of parameter names associated with this object and their
+     * values. The names will be sorted.
      */
-    public Map<String, String> getParameters() {
+    public final Map<String, String> getParameters() {
         return java.util.Collections.unmodifiableMap(this.parameters);
       }
 
@@ -111,7 +111,8 @@ import com.upokecenter.text.*;
       int index = 0;
       boolean inEncodedWord = false;
       while (index < str.length()) {
-        if (!inEncodedWord && index + 1 < str.length() && str.charAt(index) == '=' && str.charAt(index + 1) == '?') {
+        if (!inEncodedWord && index + 1 < str.length() && str.charAt(index) == '=' &&
+          str.charAt(index + 1) == '?') {
           // Remove start of encoded word
           inEncodedWord = true;
           index += 2;
@@ -129,7 +130,8 @@ import com.upokecenter.text.*;
             }
           }
           inEncodedWord = true;
-        } else if (inEncodedWord && index + 1 < str.length() && str.charAt(index) == '?' && str.charAt(index + 1) == '=') {
+        } else if (inEncodedWord && index + 1 < str.length() && str.charAt(index) ==
+          '?' && str.charAt(index + 1) == '=') {
           // End of encoded word
           index += 2;
           inEncodedWord = false;
@@ -150,17 +152,17 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Converts a filename from the Content-Disposition header to a suitable
-     * name for saving data to a file.
+     * Converts a filename from the Content-Disposition header to a suitable name
+     * for saving data to a file.
      * @param str A string representing a file name.
-     * @return A string with the converted version of the file name. Among
-     * other things, encoded words under RFC 2047 are decoded (since they
-     * occur so frequently in Content-Disposition filenames); the value
-     * is decoded under RFC 2231 if possible; characters unsuitable for
-     * use in a filename (including the directory separators slash and backslash)
-     * are replaced with underscores; and the filename is truncated if it
-     * would otherwise be too long. Returns an empty string if {@code str}
-     * is null.
+     * @return A string with the converted version of the file name. Among other
+     * things, encoded words under RFC 2047 are decoded (since they occur so
+     * frequently in Content-Disposition filenames); the value is decoded
+     * under RFC 2231 if possible; characters unsuitable for use in a
+     * filename (including the directory separators slash and backslash) are
+     * replaced with underscores; and the filename is truncated if it would
+     * otherwise be too long. Returns an empty string if {@code str} is
+     * null.
      */
     public static String MakeFilename(String str) {
       if (str == null) {
@@ -174,7 +176,8 @@ import com.upokecenter.text.*;
         // appear justified in sec. 2.3 of RFC 2183, which says that
         // the parameter's value "should be used as a
         // basis for the actual filename, where possible."
-        str = Rfc2047.DecodeEncodedWords(str, 0, str.length(), EncodedWordContext.Unstructured);
+        str = Rfc2047.DecodeEncodedWords(str, 0, str.length(),
+          EncodedWordContext.Unstructured);
         if (str.indexOf("=?") >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
@@ -186,9 +189,9 @@ import com.upokecenter.text.*;
         // RFC 2231 encoding, even though all the examples in that RFC
         // show unquoted use of this encoding.
         String charset = Charsets.ResolveAliasForEmail(str.substring(0,str.indexOf('\'')));
-        if (!((charset)==null || (charset).length()==0)) {
+        if (!((charset) == null || (charset).length() == 0)) {
           String newstr = MediaType.DecodeRfc2231Extension(str);
-          if (!((newstr)==null || (newstr).length()==0)) {
+          if (!((newstr) == null || (newstr).length() == 0)) {
             // Value was decoded under RFC 2231
             str = newstr;
           }
@@ -216,10 +219,18 @@ import com.upokecenter.text.*;
         if (c == (int)'\t') {
           // Replace tab with space
           builder.append(' ');
-        } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
-                   c == ':' || c == '<' || c == '>' || c == '"' || (c >= 0x7f && c <= 0x9F)) {
-          // Unsuitable character for a filename (one of the characters reserved by Windows,
+        } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' || c == '?'||
+          c == '|' ||
+    c == ':' || c == '<' || c == '>' || c == '"' || (c >= 0x7f && c <=
+                     0x9f)) {
+          // Unsuitable character for a filename (one of the characters
+          // reserved by Windows,
           // backslash, forward slash, ASCII controls, and C1 controls).
+          builder.append('_');
+        } else if (c == '%') {
+          // Treat percent ((character instanceof unsuitable) ? (unsuitable)character : null), even though it can occur
+          // in a Windows filename, since it's used in MS-DOS and Windows
+          // in environment variable placeholders
           builder.append('_');
         } else {
           if (builder.length() < 249 || c < 0x10000) {
@@ -242,16 +253,14 @@ import com.upokecenter.text.*;
         str += "_";
       }
       String strLower = DataUtilities.ToLowerCaseAscii(str);
-      if (strLower.equals("nul") ||
-          strLower.indexOf("nul.") == 0 ||
-          strLower.equals("prn") ||
-          strLower.indexOf("prn.") == 0 ||
-          strLower.equals("aux") ||
-          strLower.indexOf("aux.") == 0 ||
-          strLower.equals("con") ||
-          strLower.indexOf("con.") == 0 ||
-          (strLower.length() >= 4 && strLower.indexOf("lpt") == 0 && strLower.charAt(3) >= '1' && strLower.charAt(3) <= '9') ||
-          (strLower.length() >= 4 && strLower.indexOf("com") == 0 && strLower.charAt(3) >= '1' && strLower.charAt(3) <= '9')) {
+      if (strLower.equals("nul") || strLower.indexOf("nul.") == 0 ||
+          strLower.equals("prn") || strLower.indexOf("prn.") == 0 ||
+          strLower.equals("aux") || strLower.indexOf("aux.") == 0 ||
+          strLower.equals("con") || strLower.indexOf("con.") == 0 ||
+          (strLower.length() >= 4 && strLower.indexOf("lpt") == 0 && strLower.charAt(3) >= '1' &&
+       strLower.charAt(3) <= '9') || (strLower.length() >= 4 &&
+              strLower.indexOf("com") == 0 && strLower.charAt(3) >= '1' &&
+            strLower.charAt(3) <= '9')) {
         // Reserved filenames on Windows
         str = "_" + str;
       }
@@ -270,12 +279,9 @@ import com.upokecenter.text.*;
      * Gets a parameter from this disposition object.
      * @param name The name of the parameter to get. The name will be matched
      * case-insensitively. Can&apos;t be null.
-     * @return The value of the parameter, or null if the parameter does not
-     * exist.
-     * @throws java.lang.NullPointerException The parameter {@code name}
-     * is null.
-     * @throws java.lang.IllegalArgumentException The parameter {@code name} is
-     * empty.
+     * @return The value of the parameter, or null if the parameter does not exist.
+     * @throws NullPointerException The parameter {@code name} is null.
+     * @throws IllegalArgumentException The parameter {@code name} is empty.
      */
     public String GetParameter(String name) {
       if (name == null) {
@@ -300,7 +306,8 @@ import com.upokecenter.text.*;
       if (i == index) {
         return false;
       }
-      this.dispositionType = DataUtilities.ToLowerCaseAscii(str.substring(index,(index)+(i - index)));
+      this.dispositionType =
+        DataUtilities.ToLowerCaseAscii(str.substring(index, (index)+(i - index)));
       if (i < endIndex) {
         // if not at end
         int i3 = HeaderParser.ParseCFWS(str, i, endIndex, null);
@@ -314,7 +321,8 @@ import com.upokecenter.text.*;
         }
       }
       index = i;
-      return MediaType.ParseParameters(str, index, endIndex, HttpRules, this.parameters);
+      return MediaType.ParseParameters(str, index, endIndex, HttpRules,
+        this.parameters);
     }
 
     private static ContentDisposition Build(String name) {
@@ -341,25 +349,26 @@ import com.upokecenter.text.*;
      * Parses a content disposition string and returns a content disposition
      * object.
      * @param dispoValue A string object.
-     * @return A content disposition object, or "Attachment" if {@code
-     * dispoValue} is empty or syntactically invalid.
+     * @return A content disposition object, or "Attachment" if {@code dispoValue}
+     * is empty or syntactically invalid.
      */
     public static ContentDisposition Parse(String dispoValue) {
       return Parse(dispoValue, Attachment);
     }
 
     /**
-     * Creates a new content disposition object from the value of a Content-Disposition
-     * header field.
-     * @param dispositionValue A string object that should be the value
-     * of a Content-Disposition header field.
-     * @param defaultValue The value to return in case the disposition value
-     * is syntactically invalid. Can be null.
+     * Creates a new content disposition object from the value of a
+     * Content-Disposition header field.
+     * @param dispositionValue A string object that should be the value of a
+     * Content-Disposition header field.
+     * @param defaultValue The value to return in case the disposition value is
+     * syntactically invalid. Can be null.
      * @return A ContentDisposition object.
-     * @throws java.lang.NullPointerException The parameter {@code dispositionValue}
-     * is null.
+     * @throws NullPointerException The parameter {@code dispositionValue} is
+     * null.
      */
-    public static ContentDisposition Parse(String dispositionValue, ContentDisposition defaultValue) {
+    public static ContentDisposition Parse(String dispositionValue,
+      ContentDisposition defaultValue) {
       if (dispositionValue == null) {
         throw new NullPointerException("dispositionValue");
       }

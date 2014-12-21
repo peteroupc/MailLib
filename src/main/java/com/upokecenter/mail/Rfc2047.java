@@ -17,7 +17,8 @@ private Rfc2047() {
     private static boolean HasSuspiciousTextInComments(String str) {
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
-        if ((c < 0x20 && c != '\t') || c == '(' || c == ')' || c == '\\' || c == 0x7f) {
+        if ((c < 0x20 && c != '\t') || c == '(' || c == ')' || c == '\\' ||
+          c == 0x7f) {
           return true;
         }
       }
@@ -38,8 +39,10 @@ private Rfc2047() {
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
         // Has specials, or CTLs other than tab
-        if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29 || c == 0x3c || c == 0x3e ||
-            c == 0x5b || c == 0x5d || c == 0x3a || c == 0x3b || c == 0x40 || c == 0x5c || c == 0x2c || c == 0x2e || c == '"') {
+        if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29||
+          c == 0x3c || c == 0x3e || c == 0x5b || c == 0x5d || c == 0x3a || c
+            == 0x3b || c == 0x40 ||
+              c == 0x5c || c == 0x2c || c == 0x2e || c == '"') {
           return true;
         }
       }
@@ -49,9 +52,9 @@ private Rfc2047() {
     public static String EncodeComment(String str, int index, int endIndex) {
       // NOTE: Assumes that the comment is syntactically valid
 
-      int length = endIndex - index;
+int length = endIndex - index;
       if (length < 2 || str.charAt(index) != '(' || str.charAt(endIndex - 1) != ')') {
-        return str.substring(index,(index)+(length));
+        return str.substring(index, (index)+(length));
       }
       EncodedWordEncoder encoder;
       int nextComment = str.indexOf('(',index + 1);
@@ -106,10 +109,11 @@ private Rfc2047() {
             ++index;
           }
           if (parenEnd == index) {
-            encoder.FinalizeEncoding(str.substring(parenStart,(parenStart)+(parenEnd - parenStart)));
+    encoder.FinalizeEncoding(str.substring(parenStart, (parenStart)+(parenEnd -
+              parenStart)));
             break;
           }
-          encoder.AddPrefix(str.substring(parenStart,(parenStart)+(parenEnd - parenStart)));
+          encoder.AddPrefix(str.substring(parenStart, (parenStart)+(parenEnd - parenStart)));
           encoder.AddString(str, parenEnd, index - parenEnd);
         }
         return encoder.toString();
@@ -117,14 +121,14 @@ private Rfc2047() {
       StringBuilder builder = new StringBuilder();
       // escapes, but no nested comments
       if (nextComment < 0) {
-        ++index;  // skip the first parenthesis
-        while (index < endIndex) {
+        ++index;  // skip the first parenthesis while (index < endIndex) {
           if (str.charAt(index) == ')') {
             // End of the comment
             break;
           }
           if (str.charAt(index) == '\r' && index + 2 < endIndex &&
-                     str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(index + 2) == 0x09)) {
+str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(index + 2) ==
+                       0x09)) {
             // Folding whitespace
             builder.append(str.charAt(index + 2));
             index += 3;
@@ -169,13 +173,14 @@ private Rfc2047() {
         }
         // Get the next run of non-parentheses
         int parenEnd = index;
-        builder.delete(0,(0)+(builder.length()));
+        builder.delete(0, (0)+(builder.length()));
         while (index < endIndex) {
           if (str.charAt(index) == '(' || str.charAt(index) == ')') {
             break;
           }
           if (str.charAt(index) == '\r' && index + 2 < endIndex &&
-              str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(index + 2) == 0x09)) {
+str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(index + 2) ==
+                0x09)) {
             // Folding whitespace
             builder.append(str.charAt(index + 2));
             index += 3;
@@ -196,20 +201,23 @@ private Rfc2047() {
           }
         }
         if (builder.length() == 0) {
-          encoder.FinalizeEncoding(str.substring(parenStart,(parenStart)+(parenEnd - parenStart)));
+    encoder.FinalizeEncoding(str.substring(parenStart, (parenStart)+(parenEnd -
+            parenStart)));
           break;
         }
-        encoder.AddPrefix(str.substring(parenStart,(parenStart)+(parenEnd - parenStart)));
+        encoder.AddPrefix(str.substring(parenStart, (parenStart)+(parenEnd - parenStart)));
         encoder.AddString(builder.toString());
       }
       return encoder.toString();
     }
 
-    private static int SkipCharsetOrEncoding(String str, int index, int endIndex) {
+private static int SkipCharsetOrEncoding(String str, int index, int
+      endIndex) {
       int i = index;
       while (i < endIndex) {
         char c = str.charAt(i);
-        if (c <= 0x20 || c >= 0x7F || ((c & 0x7F) == c && "()<>@,;:\\\"/[]?=.".indexOf(c) >= 0)) {
+        if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
+          "()<>@,;:\\\"/[]?=." .indexOf(c) >= 0)) {
           break;
         }
         ++i;
@@ -217,7 +225,8 @@ private Rfc2047() {
       return i;
     }
 
-    private static int SkipEncodedText(String str, int index, int endIndex, boolean inComments) {
+    private static int SkipEncodedText(String str, int index, int endIndex,
+      boolean inComments) {
       int i = index;
       while (i < endIndex) {
         char c = str.charAt(i);
@@ -232,20 +241,17 @@ private Rfc2047() {
       return i;
     }
 
-    public static String DecodeEncodedWords(
-      String str,
-      int index,
-      int endIndex,
+    public static String DecodeEncodedWords(String str,
+      int index, int endIndex,
       EncodedWordContext context) {
-
       if (endIndex - index < 9) {
         // Too short for encoded words to appear
-        return str.substring(index,(index)+(endIndex - index));
+        return str.substring(index, (index)+(endIndex - index));
       }
       if (str.indexOf('=') < 0) {
         // Contains no equal sign, and therefore no
         // encoded words
-        return str.substring(index,(index)+(endIndex - index));
+        return str.substring(index, (index)+(endIndex - index));
       }
       int start = index;
       StringBuilder builder = new StringBuilder();
@@ -261,7 +267,8 @@ private Rfc2047() {
         int startIndex = 0;
         boolean havePossibleEncodedWord = false;
         boolean startParen = false;
-        if (index + 1 < endIndex && str.charAt(index) == '=' && str.charAt(index + 1) == '?') {
+      if (index + 1 < endIndex && str.charAt(index) == '=' && str.charAt(index + 1) == '?'
+) {
           startIndex = index + 2;
           index += 2;
           havePossibleEncodedWord = true;
@@ -282,7 +289,8 @@ private Rfc2047() {
             // Check for a run of printable ASCII characters (except space)
             // with length up to 75 (also exclude '(' and ')' if the context
             // is a comment)
-            if (c >= 0x21 && c < 0x7e && (context != EncodedWordContext.Comment || (c != '(' && c != ')'))) {
+            if (c >= 0x21 && c < 0x7e && (context !=
+              EncodedWordContext.Comment || (c != '(' && c != ')'))) {
               ++charCount;
               if (charCount > 75) {
                 maybeWord = false;
@@ -296,7 +304,8 @@ private Rfc2047() {
           }
           if (maybeWord) {
             // May be an encoded word
-            // System.out.println("maybe "+str.substring(startIndex-2,(startIndex-2)+(afterLast-(startIndex-2))));
+            // System.out.println("maybe "
+            //+str.substring(startIndex-2, (startIndex-2)+(afterLast-(startIndex-2))));
             index = startIndex;
             int i2;
             // Parse charset
@@ -315,19 +324,18 @@ private Rfc2047() {
               if (i2 != index && i2 < endIndex && str.charAt(i2) == '?') {
                 // check for supported encoding (B or Q)
                 char encodingChar = str.charAt(index);
-                if (i2 - index == 1 && (encodingChar == 'b' || encodingChar == 'B' ||
-                                        encodingChar == 'q' || encodingChar == 'Q')) {
+          if (i2 - index == 1 && (encodingChar == 'b' || encodingChar == 'B'||
+                encodingChar == 'q' || encodingChar == 'Q'
+)) {
                   // Parse encoded text
                   base64 = encodingChar == 'b' || encodingChar == 'B';
                   index = i2 + 1;
                   encodedTextStart = index;
-                  i2 = SkipEncodedText(
-                    str,
-                    index,
-                    afterLast,
+                i2 = SkipEncodedText(str,
+                index, afterLast,
                     context == EncodedWordContext.Comment);
-                  if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 + 1) == '=' &&
-                      i2 + 2 == afterLast) {
+if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 + 1) == '='&&
+                i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
                     i2 += 2;
                   }
@@ -335,14 +343,16 @@ private Rfc2047() {
               }
             }
             if (acceptedEncodedWord) {
-              String charset = str.substring(startIndex,(startIndex)+(charsetEnd - startIndex));
+           String charset = str.substring(startIndex, (startIndex)+(charsetEnd -
+                startIndex));
               String encodedText = str.substring(
-                encodedTextStart,(
+                encodedTextStart, (
                 encodedTextStart)+((afterLast - 2) - encodedTextStart));
               int asterisk = charset.indexOf('*');
               if (asterisk >= 1) {
-                charset = str.substring(0,asterisk);
-                String language = str.substring(asterisk + 1,(asterisk + 1)+(str.length() - (asterisk + 1)));
+                charset = str.substring(0, asterisk);
+    String language = str.substring(asterisk + 1, (asterisk + 1)+(str.length() - (asterisk +
+                  1)));
                 if (!ParserUtility.IsValidLanguageTag(language)) {
                   acceptedEncodedWord = false;
                 }
@@ -356,26 +366,34 @@ private Rfc2047() {
                 ICharset encoding = Charsets.GetCharset(charset);
                 if (encoding == null) {
                   // System.out.println("Unknown charset " + charset);
-                  decodedWord = str.substring(startIndex - 2,(startIndex - 2)+(afterLast - (startIndex - 2)));
+     decodedWord = str.substring(startIndex - 2, (startIndex - 2)+(afterLast - (startIndex -
+                    2)));
                   acceptedEncodedWord = false;
                 } else {
-                  // System.out.println("Encoded " + (base64 ? "B" : "Q") + " to: " + (encoding.GetString(transform)));
+                  // System.out.println("Encoded " + (base64 ? "B" : "Q") +
+                  //" to: " + (encoding.GetString(transform)));
                   decodedWord = encoding.GetString(transform);
                   // Check for text in the decoded String
-                  // that could render the comment syntactically invalid (the encoded
-                  // word could even encode ASCII control characters and specials)
-                  if (context == EncodedWordContext.Phrase && HasSuspiciousTextInStructured(decodedWord)) {
+                  // that could render the comment syntactically invalid
+                  //(the encoded
+                  // word could even encode ASCII control characters and
+                  //specials)
+                  if (context == EncodedWordContext.Phrase &&
+                    HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
                   } else {
- hasSuspiciousText |= context == EncodedWordContext.Comment && HasSuspiciousTextInComments(decodedWord);
+ hasSuspiciousText |= context == EncodedWordContext.Comment &&
+   HasSuspiciousTextInComments(decodedWord);
 }
                   wordsWereDecoded = true;
                 }
               } else {
-                decodedWord = str.substring(startIndex - 2,(startIndex - 2)+(afterLast - (startIndex - 2)));
+     decodedWord = str.substring(startIndex - 2, (startIndex - 2)+(afterLast - (startIndex -
+                  2)));
               }
             } else {
-              decodedWord = str.substring(startIndex - 2,(startIndex - 2)+(afterLast - (startIndex - 2)));
+     decodedWord = str.substring(startIndex - 2, (startIndex - 2)+(afterLast - (startIndex -
+                2)));
             }
             index = afterLast;
           }
@@ -384,7 +402,8 @@ private Rfc2047() {
             (!acceptedEncodedWord || !lastWordWasEncodedWord)) {
           // Append whitespace as long as it doesn't occur between two
           // encoded words
-          builder.append(str.substring(whitespaceStart,(whitespaceStart)+(whitespaceEnd - whitespaceStart)));
+          builder.append(str.substring(whitespaceStart, (whitespaceStart)+(whitespaceEnd -
+            whitespaceStart)));
         }
         if (startParen) {
           builder.append('(');
@@ -393,15 +412,15 @@ private Rfc2047() {
           builder.append(decodedWord);
         }
         // System.out.println(builder);
-        // System.out.println("" + index + " " + endIndex + " [" + (index<endIndex ? str.charAt(index) : '~') + "]");
+        // System.out.println("" + index + " " + endIndex + " [" +
+        //(index<endIndex ? str.charAt(index) : '~') + "]");
         // Read to whitespace
         int oldIndex = index;
         while (index < endIndex) {
           char c = str.charAt(index);
           if (c == 0x0d && index + 2 < endIndex && str.charAt(index + 1) == 0x0a &&
                    (str.charAt(index + 2) == 0x09 || str.charAt(index + 2) == 0x20)) {
-            index += 2;  // skip the CRLF
-            break;
+            index += 2;  // skip the CRLF break;
           }
           if (c == 0x09 || c == 0x20) {
             break;
@@ -420,27 +439,27 @@ private Rfc2047() {
         if (oldIndex != index) {
           // Append nonwhitespace only, unless this is the end
           if (index == endIndex) {
-            builder.append(str.substring(oldIndex,(oldIndex)+(index - oldIndex)));
+            builder.append(str.substring(oldIndex, (oldIndex)+(index - oldIndex)));
           } else {
-            builder.append(str.substring(oldIndex,(oldIndex)+(whitespaceStart - oldIndex)));
+            builder.append(str.substring(oldIndex, (oldIndex)+(whitespaceStart - oldIndex)));
           }
         }
         lastWordWasEncodedWord = acceptedEncodedWord;
       }
       String retval = builder.toString();
-      if (wordsWereDecoded && (hasSuspiciousText || (retval.indexOf("=?") >= 0 &&
-                                                     retval.indexOf("?=") >= 0))) {
+      if (wordsWereDecoded && (hasSuspiciousText || (retval.indexOf("=?") >= 0 && retval.indexOf("?=") >= 0))) {
         if (context == EncodedWordContext.Comment) {
           String wrappedComment = "(" + retval + ")";
-          if (HeaderParserUtility.ParseCommentStrict(wrappedComment, 0, wrappedComment.length()) != wrappedComment.length()) {
+          if (HeaderParserUtility.ParseCommentStrict(wrappedComment, 0,
+            wrappedComment.length()) != wrappedComment.length()) {
             // Comment is syntactically invalid after decoding, so
             // don't decode any of the encoded words
-            return str.substring(start,(start)+(endIndex - start));
+            return str.substring(start, (start)+(endIndex - start));
           }
         }
         if (context == EncodedWordContext.Phrase) {
           if (HasAsciiCtl(retval)) {
-            return str.substring(start,(start)+(endIndex - start));
+            return str.substring(start, (start)+(endIndex - start));
           }
           retval = HeaderParserUtility.QuoteValue(retval);
         }
@@ -449,7 +468,8 @@ private Rfc2047() {
       return retval;
     }
 
-    private static boolean FollowedByEndOrLinearWhitespace(String str, int index, int endIndex) {
+    private static boolean FollowedByEndOrLinearWhitespace(String str, int
+      index, int endIndex) {
       if (index == endIndex) {
         return true;
       }
@@ -460,11 +480,14 @@ private Rfc2047() {
       return cws != index;
     }
 
-    private static boolean PrecededByStartOrLinearWhitespace(String str, int index) {
-      return (index == 0) || (index - 1 >= 0 && (str.charAt(index - 1) == 0x09 || str.charAt(index - 1) == 0x20));
+ private static boolean PrecededByStartOrLinearWhitespace(String str, int
+      index) {
+      return (index == 0) || (index - 1 >= 0 && (str.charAt(index - 1) == 0x09 ||
+        str.charAt(index - 1) == 0x20));
     }
 
-    private static int IndexOfNextPossibleEncodedWord(String str, int index, int endIndex) {
+    private static int IndexOfNextPossibleEncodedWord(String str, int index,
+      int endIndex) {
       int cws = HeaderParser.ParseCFWS(str, index, endIndex, null);
       if (cws == index) {
         // No linear whitespace
@@ -485,12 +508,9 @@ private Rfc2047() {
       return -1;
     }
 
-    public static String DecodePhraseText(
-      String str,
-      int index,
-      int endIndex,
-      List<int[]> tokens,
-      boolean withComments) {
+    public static String DecodePhraseText(String str,
+      int index, int endIndex,
+      List<int[]> tokens, boolean withComments) {
       // Assumes the value matches the production "phrase",
       // and assumes that endIndex is the end of all CFWS
       // found after the phrase.
@@ -498,25 +518,25 @@ private Rfc2047() {
         int io = str.indexOf("=?",index);
         if (io < 0 || io >= endIndex) {
           // No encoded words found in the given area
-          return str.substring(index,(index)+(endIndex - index));
+          return str.substring(index, (index)+(endIndex - index));
         }
       }
       StringBuilder builder = new StringBuilder();
       int lastIndex = index;
       boolean appendSpace = false;
       // Get each relevant token sorted by starting index
-      for(int[] token : tokens) {
+      for (int[] token : tokens) {
         boolean hasCFWS = false;
-        if (!(token[1] >= lastIndex &&
-              token[1] >= index && token[1] <= endIndex &&
-              token[2] >= index && token[2] <= endIndex)) {
+    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex&&
+          token[2] >= index && token[2] <= endIndex)) {
           continue;
         }
         if (token[0] == HeaderParserUtility.TokenComment && withComments) {
           // This is a comment token
           int startIndex = token[1];
-          builder.append(str.substring(lastIndex,(lastIndex)+(startIndex + 1 - lastIndex)));
-          String newComment = Rfc2047.DecodeEncodedWords(str, startIndex + 1, token[2] - 1, EncodedWordContext.Comment);
+          builder.append(str.substring(lastIndex, (lastIndex)+(startIndex + 1 - lastIndex)));
+          String newComment = Rfc2047.DecodeEncodedWords(str, startIndex +
+            1, token[2] - 1, EncodedWordContext.Comment);
           builder.append(newComment);
           lastIndex = token[2] - 1;
         } else if (token[0] == HeaderParserUtility.TokenPhraseAtom ||
@@ -537,13 +557,16 @@ private Rfc2047() {
                 break;
               }
               // Find the end of the atom
-              wordEnd = HeaderParser.ParsePhraseAtom(str, wordEnd, endIndex, null);
+          wordEnd = HeaderParser.ParsePhraseAtom(str, wordEnd, endIndex,
+                null);
               if (!FollowedByEndOrLinearWhitespace(str, wordEnd, endIndex)) {
-                // The encoded word is not followed by whitespace, so it's not valid
+                // The encoded word is not followed by whitespace, so it's
+                //not valid
                 wordEnd = previousWord;
                 break;
               }
-              int nextWord = IndexOfNextPossibleEncodedWord(str, wordEnd, endIndex);
+         int nextWord = IndexOfNextPossibleEncodedWord(str, wordEnd,
+                endIndex);
               if (nextWord < 0) {
                 // The next word isn't an encoded word
                 break;
@@ -553,7 +576,7 @@ private Rfc2047() {
             }
           }
           if (withComments) {
-            builder.append(str.substring(lastIndex,(lastIndex)+(wordStart - lastIndex)));
+            builder.append(str.substring(lastIndex, (lastIndex)+(wordStart - lastIndex)));
           } else {
             if (appendSpace) {
               builder.append(' ');
@@ -562,12 +585,14 @@ private Rfc2047() {
           }
           if (wordStart == wordEnd) {
             wordEnd = token[2];
-            builder.append(str.substring(wordStart,(wordStart)+(wordEnd - wordStart)));
+            builder.append(str.substring(wordStart, (wordStart)+(wordEnd - wordStart)));
           } else {
-            String replacement = Rfc2047.DecodeEncodedWords(str, wordStart, wordEnd, EncodedWordContext.Phrase);
+            String replacement = Rfc2047.DecodeEncodedWords(str, wordStart,
+              wordEnd, EncodedWordContext.Phrase);
             builder.append(replacement);
           }
-          hasCFWS = HeaderParser.ParseCFWS(str, wordEnd, endIndex, null) != wordEnd;
+     hasCFWS = HeaderParser.ParseCFWS(str, wordEnd, endIndex, null) !=
+            wordEnd;
           lastIndex = wordEnd;
         } else if (token[0] == HeaderParserUtility.TokenQuotedString &&
                    !withComments) {
@@ -575,20 +600,24 @@ private Rfc2047() {
             builder.append(' ');
             appendSpace = false;
           }
-          int tokenIndex = MediaType.skipQuotedString(str, token[1], token[2], builder);
+ int tokenIndex = MediaType.skipQuotedString(str, token[1], token[2],
+            builder);
           // tokenIndex is now just after the end quote
-          hasCFWS = HeaderParser.ParseCFWS(str, tokenIndex, endIndex, null) != tokenIndex;
+          hasCFWS = HeaderParser.ParseCFWS(str, tokenIndex, endIndex, null)!=
+            tokenIndex;
         }
         appendSpace |= hasCFWS;
       }
       if (withComments) {
-        builder.append(str.substring(lastIndex,(lastIndex)+(endIndex - lastIndex)));
+        builder.append(str.substring(lastIndex, (lastIndex)+(endIndex - lastIndex)));
       }
       return builder.toString();
     }
 
     private static void EncodePhraseTextInternal(
-      String str, int index, int endIndex, List<int[]> tokens, StringBuilder builder) {
+      String str, int index,
+      int endIndex, List<int[]> tokens,
+      StringBuilder builder) {
       // Assumes the value matches the production "phrase"
       // and that there are no comments in the value
       if (index == endIndex) {
@@ -597,7 +626,7 @@ private Rfc2047() {
       int index2 = HeaderParser.ParseCFWS(str, index, endIndex, null);
       if (index2 == endIndex) {
         // Just linear whitespace
-        builder.append(str.substring(index,(index)+(endIndex - index)));
+        builder.append(str.substring(index, (index)+(endIndex - index)));
         return;
       }
       if (!PrecededByStartOrLinearWhitespace(str, index2)) {
@@ -605,7 +634,7 @@ private Rfc2047() {
         builder.append(' ');
       } else {
         // Append the linear whitespace
-        builder.append(str.substring(index,(index)+(index2 - index)));
+        builder.append(str.substring(index, (index)+(index2 - index)));
       }
       EncodedWordEncoder encoder = new EncodedWordEncoder();
       StringBuilder builderPhrase = new StringBuilder();
@@ -613,11 +642,13 @@ private Rfc2047() {
       while (index < endIndex) {
         if (str.charAt(index) == '"') {
           // Quoted String
-          index = MediaType.skipQuotedString(str, index, endIndex, builderPhrase);
+       index = MediaType.skipQuotedString(str, index, endIndex,
+            builderPhrase);
         } else {
           // Atom
-          index2 = HeaderParser.ParsePhraseAtomOrDot(str, index, endIndex, null);
-          builderPhrase.append(str.substring(index,(index)+(index2 - index)));
+        index2 = HeaderParser.ParsePhraseAtomOrDot(str, index, endIndex,
+            null);
+          builderPhrase.append(str.substring(index, (index)+(index2 - index)));
           index = index2;
         }
         index2 = HeaderParser.ParseFWS(str, index, endIndex, null);
@@ -626,8 +657,9 @@ private Rfc2047() {
           encoder.FinalizeEncoding();
           builder.append(encoder.toString());
           if (index2 != index) {
-            builder.append(str.substring(index,(index)+(index2 - index)));
-          } else if (!FollowedByEndOrLinearWhitespace(str, endIndex, str.length())) {
+            builder.append(str.substring(index, (index)+(index2 - index)));
+      } else if (!FollowedByEndOrLinearWhitespace(str, endIndex,
+            str.length())) {
             // Add a space if no linear whitespace follows
             builder.append(' ');
           }
@@ -652,25 +684,31 @@ private Rfc2047() {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is less than " + "0");
+      throw new IllegalArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("index (" + index + ") is more than " +
+          str.length());
       }
       if (endIndex < 0) {
-        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + "0");
+throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
+          "0");
       }
       if (endIndex > str.length()) {
-        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("endIndex (" + endIndex +
+          ") is more than " + str.length());
       }
       if (str.length() - index < endIndex) {
-        throw new IllegalArgumentException("str's length minus " + index + " (" + Integer.toString((int)(str.length() - index)) + ") is less than " + Integer.toString((int)endIndex));
+        throw new IllegalArgumentException("str's length minus " + index + " (" +
+          (str.length() - index) + ") is less than " + endIndex);
       }
       return new EncodedWordEncoder().AddString(
-        str.substring(index,(index)+(endIndex))).FinalizeEncoding().toString();
+        str.substring(index, (index)+(endIndex))).FinalizeEncoding().toString();
     }
 
-    public static String EncodePhraseText(String str, int index, int endIndex, List<int[]> tokens) {
+    public static String EncodePhraseText(String str, int index, int
+      endIndex, List<int[]> tokens) {
       // Assumes the value matches the production "phrase",
       // and assumes that endIndex is the end of all whitespace
       // found after the phrase. Doesn't encode text within comments.
@@ -679,21 +717,20 @@ private Rfc2047() {
       }
       if (!Message.HasTextToEscape(str, index, endIndex)) {
         // No need to use encoded words
-        return str.substring(index,(index)+(endIndex - index));
+        return str.substring(index, (index)+(endIndex - index));
       }
       int lastIndex = index;
       StringBuilder builder = new StringBuilder();
-      for(int[] token : tokens) {
-        if (!(token[1] >= lastIndex &&
-              token[1] >= index && token[1] <= endIndex &&
-              token[2] >= index && token[2] <= endIndex)) {
+      for (int[] token : tokens) {
+    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex&&
+          token[2] >= index && token[2] <= endIndex)) {
           continue;
         }
         if (token[0] == HeaderParserUtility.TokenComment) {
           // Process this piece of the phrase
           EncodePhraseTextInternal(str, lastIndex, token[1], tokens, builder);
           // Append the comment
-          builder.append(str.substring(token[1],(token[1])+(token[2] - token[1])));
+          builder.append(str.substring(token[1], (token[1])+(token[2] - token[1])));
           lastIndex = token[2];
         }
       }

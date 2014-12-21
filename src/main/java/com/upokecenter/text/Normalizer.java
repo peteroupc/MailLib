@@ -8,41 +8,43 @@ at: http://upokecenter.com/d/
  */
 
     /**
-     * <p>Implements the Unicode normalization algorithm and contains
-     * methods and functionality to test and convert Unicode strings for
-     * Unicode normalization.</p> <p>NOTICE: While this class's source
-     * code is in the public domain, the class uses an class, called
+     * <p>Implements the Unicode normalization algorithm and contains methods and
+     * functionality to test and convert Unicode strings for Unicode
+     * normalization.</p> <p>NOTICE: While this class's source code is in
+     * the public domain, the class uses an class, called
      * NormalizationData, that includes data derived from the Unicode
      * Character Database. In case doing so is required, the permission
-     * notice for the Unicode Character Database is given here:</p> <p>COPYRIGHT
-     * AND PERMISSION NOTICE</p> <p>Copyright (c) 1991-2014 Unicode,
-     * Inc. All rights reserved. Distributed under the Terms of Use in http://www.unicode.org/copyright.html.</p>
-     * <p>Permission is hereby granted, free of charge, to any person obtaining
-     * a copy of the Unicode data files and any associated documentation
-     * (the "Data Files") or Unicode software and any associated documentation
-     * (the "Software") to deal in the Data Files or Software without restriction,
-     * including without limitation the rights to use, copy, modify, merge,
-     * publish, distribute, and/or sell copies of the Data Files or Software,
-     * and to permit persons to whom the Data Files or Software are furnished
-     * to do so, provided that (a) this copyright and permission notice appear
-     * with all copies of the Data Files or Software, (b) this copyright and
-     * permission notice appear in associated documentation, and (c) there
-     * is clear notice in each modified Data File or in the Software as well
-     * as in the documentation associated with the Data File(s) or Software
-     * that the data or software has been modified.</p> <p>THE DATA FILES
-     * AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-     * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+     * notice for the Unicode Character Database is given here:</p>
+     * <p>COPYRIGHT AND PERMISSION NOTICE</p> <p>Copyright (c) 1991-2014
+     * Unicode, Inc. All rights reserved. Distributed under the Terms of Use
+     * in http://www.unicode.org/copyright.html.</p> <p>Permission is hereby
+     * granted, free of charge, to any person obtaining a copy of the
+     * Unicode data files and any associated documentation (the "Data
+     * Files") or Unicode software and any associated documentation (the
+     * "Software") to deal in the Data Files or Software without
+     * restriction, including without limitation the rights to use, copy,
+     * modify, merge, publish, distribute, and/or sell copies of the Data
+     * Files or Software, and to permit persons to whom the Data Files or
+     * Software are furnished to do so, provided that (a) this copyright and
+     * permission notice appear with all copies of the Data Files or
+     * Software, (b) this copyright and permission notice appear in
+     * associated documentation, and (c) there is clear notice in each
+     * modified Data File or in the Software as well as in the documentation
+     * associated with the Data File(s) or Software that the data or
+     * software has been modified.</p> <p>THE DATA FILES AND SOFTWARE ARE
+     * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+     * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
      * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY
-     * RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED
-     * IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
-     * DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA
-     * OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-     * TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-     * OF THE DATA FILES OR SOFTWARE.</p> <p>Except as contained in this
-     * notice, the name of a copyright holder shall not be used in advertising
-     * or otherwise to promote the sale, use or other dealings in these Data
-     * Files or Software without prior written authorization of the copyright
-     * holder.</p>
+     * RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN
+     * THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR
+     * CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
+     * OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE
+     * OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE
+     * USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.</p> <p>Except as
+     * contained in this notice, the name of a copyright holder shall not be
+     * used in advertising or otherwise to promote the sale, use or other
+     * dealings in these Data Files or Software without prior written
+     * authorization of the copyright holder.</p>
      */
   public final class Normalizer
   {
@@ -50,10 +52,8 @@ at: http://upokecenter.com/d/
      * Converts a string to the given Unicode normalization form.
      * @param str An arbitrary string.
      * @param form The Unicode normalization form to convert to.
-     * @return The parameter {@code str} converted to the given normalization
-     * form.
-     * @throws java.lang.NullPointerException The parameter {@code str}
-     * is null.
+     * @return The parameter {@code str} converted to the given normalization form.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static String Normalize(String str, Normalization form) {
       if (str == null) {
@@ -76,9 +76,10 @@ at: http://upokecenter.com/d/
       return builder.toString();
     }
 
-    static int DecompToBufferInternal(int ch, boolean compat, int[] buffer, int index) {
-
-      int offset = UnicodeDatabase.GetDecomposition(ch, compat, buffer, index);
+    static int DecompToBufferInternal(int ch, boolean compat, int[]
+      buffer, int index) {
+int offset = UnicodeDatabase.GetDecomposition(ch, compat,
+        buffer, index);
       if (buffer[index] != ch) {
         int[] copy = new int[offset - index];
         System.arraycopy(buffer, index, copy, 0, copy.length);
@@ -90,8 +91,8 @@ at: http://upokecenter.com/d/
       return offset;
     }
 
-    static int DecompToBuffer(int ch, boolean compat, int[] buffer, int index) {
-
+    static int DecompToBuffer(int ch, boolean compat, int[] buffer,
+      int index) {
       if (ch >= 0xac00 && ch < 0xac00 + 11172) {
         // Hangul syllable
         int valueSIndex = ch - 0xac00;
@@ -131,27 +132,34 @@ at: http://upokecenter.com/d/
       this.lastStableIndex = -1;
       this.iterator = str;
       this.form = form;
-      this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
+    this.compatMode = form == Normalization.NFKC || form ==
+        Normalization.NFKD;
     }
 
-    private Normalizer Init(String str, int index, int length, Normalization formLocal) {
+    private Normalizer Init(String str, int index, int length, Normalization
+      formLocal) {
       if (str == null) {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + index + ") is less than " + "0");
+      throw new IllegalArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + index + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("index (" + index + ") is more than " +
+          str.length());
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is less than " + "0");
+    throw new IllegalArgumentException("length (" + length + ") is less than " +
+          "0");
       }
       if (length > str.length()) {
-        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("length (" + length + ") is more than " +
+          str.length());
       }
       if (str.length() - index < length) {
-        throw new IllegalArgumentException("str's length minus " + index + " (" + Integer.toString((int)(str.length() - index)) + ") is less than " + Integer.toString((int)length));
+        throw new IllegalArgumentException("str's length minus " + index + " (" +
+          (str.length() - index) + ") is less than " + length);
       }
       this.readbuffer = new int[1];
       this.lastStableIndex = -1;
@@ -159,7 +167,8 @@ at: http://upokecenter.com/d/
       this.iterator = str;
       this.iterEndIndex = index + length;
       this.form = formLocal;
-      this.compatMode = formLocal == Normalization.NFKC || formLocal == Normalization.NFKD;
+      this.compatMode = formLocal == Normalization.NFKC || formLocal ==
+        Normalization.NFKD;
       return this;
     }
 
@@ -169,7 +178,8 @@ at: http://upokecenter.com/d/
       int length,
       Normalization form) {
       int i = start;
-      Normalizer norm = new Normalizer(charList, form).Init(charList, start, length, form);
+ Normalizer norm = new Normalizer(charList, form).Init(charList, start, length,
+        form);
       int ch = 0;
       while ((ch = norm.ReadChar()) >= 0) {
         int c = charList.charAt(i);
@@ -213,7 +223,8 @@ at: http://upokecenter.com/d/
           return false;
         }
         boolean isStable = false;
-        if ((c & mask) == c && (i + 1 == str.length() || (str.charAt(i + 1) & mask) == str.charAt(i + 1))) {
+        if ((c & mask) == c && (i + 1 == str.length() || (str.charAt(i + 1) & mask)
+          == str.charAt(i + 1))) {
           // Quick check for an ASCII character followed by another
           // ASCII character (or Latin-1 in NFC) or the end of String.
           // Treat the first character as stable
@@ -228,7 +239,8 @@ at: http://upokecenter.com/d/
         } else if (nonStableStart >= 0 && isStable) {
           // We have at least one non-stable code point,
           // normalize these code points.
-          if (!NormalizeAndCheckString(str, nonStableStart, i - nonStableStart, form)) {
+ if (!NormalizeAndCheckString(str, nonStableStart, i - nonStableStart,
+            form)) {
             return false;
           }
           nonStableStart = -1;
@@ -238,7 +250,8 @@ at: http://upokecenter.com/d/
         }
       }
       if (nonStableStart >= 0) {
-        if (!NormalizeAndCheckString(str, nonStableStart, str.length() - nonStableStart, form)) {
+        if (!NormalizeAndCheckString(str, nonStableStart, str.length() -
+          nonStableStart, form)) {
           return false;
         }
       }
@@ -275,10 +288,12 @@ at: http://upokecenter.com/d/
         ch = -1;
       } else {
         ch = this.iterator.charAt(this.characterListPos);
-        if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex &&
-                this.iterator.charAt(this.characterListPos + 1) >= 0xdc00 && this.iterator.charAt(this.characterListPos + 1) <= 0xdfff) {
+if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex&&
+          this.iterator.charAt(this.characterListPos + 1) >= 0xdc00 &&
+                  this.iterator.charAt(this.characterListPos + 1) <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          ch = 0x10000 + ((ch - 0xd800) << 10) + (this.iterator.charAt(this.characterListPos + 1) - 0xdc00);
+          ch = 0x10000 + ((ch - 0xd800) << 10) +
+            (this.iterator.charAt(this.characterListPos + 1) - 0xdc00);
           ++this.characterListPos;
         } else if ((ch & 0xf800) == 0xd800) {
           // unpaired surrogate
@@ -301,27 +316,32 @@ at: http://upokecenter.com/d/
      * @param index A 32-bit signed integer. (2).
      * @param length A 32-bit signed integer. (3).
      * @return A 32-bit signed integer.
-     * @throws java.lang.NullPointerException The parameter {@code chars}
-     * or "this.buffer" is null.
+     * @throws NullPointerException The parameter {@code chars} or "this.buffer"
+     * is null.
      */
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new NullPointerException("chars");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + index + ") is less than " + "0");
+      throw new IllegalArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > chars.length) {
-        throw new IllegalArgumentException("index (" + index + ") is more than " + chars.length);
+        throw new IllegalArgumentException("index (" + index + ") is more than " +
+          chars.length);
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is less than " + "0");
+    throw new IllegalArgumentException("length (" + length + ") is less than " +
+          "0");
       }
       if (length > chars.length) {
-        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is more than " + chars.length);
+        throw new IllegalArgumentException("length (" + length + ") is more than "+
+          chars.length);
       }
       if (chars.length - index < length) {
-        throw new IllegalArgumentException("chars's length minus " + index + " (" + Integer.toString((int)(chars.length - index)) + ") is less than " + Integer.toString((int)length));
+        throw new IllegalArgumentException("chars's length minus " + index + " (" +
+          (chars.length - index) + ") is less than " + length);
       }
       if (length == 0) {
         return 0;
@@ -348,13 +368,13 @@ at: http://upokecenter.com/d/
         }
       }
       do {
-        // System.out.println("indexes=" + this.processedIndex + " " + this.flushIndex + ", length=" + length + " total=" + (total));
+        // System.out.println("indexes=" + this.processedIndex + " " +
+        //this.flushIndex + ", length=" + length + " total=" + total);
         count = Math.min(this.processedIndex - this.flushIndex, length - total);
         if (count < 0) {
           count = 0;
         }
         if (count != 0) {
-
           // Fill buffer with processed code points
           System.arraycopy(this.buffer, this.flushIndex, chars, index, count);
         }
@@ -386,7 +406,8 @@ at: http://upokecenter.com/d/
             // Move unprocessed data to the beginning of
             // the buffer
 
-            System.arraycopy(this.buffer, this.lastStableIndex, this.buffer, 0, this.buffer.length - this.lastStableIndex);
+            System.arraycopy(this.buffer, this.lastStableIndex, this.buffer, 0,
+              this.buffer.length - this.lastStableIndex);
             // System.out.println("endIndex=" + (this.endIndex));
             this.endIndex -= this.lastStableIndex;
             this.lastStableIndex = 0;
@@ -399,7 +420,8 @@ at: http://upokecenter.com/d/
         }
       } while (total < length);
       // Fill buffer with processed code points
-      count = Math.max(0, Math.min(this.processedIndex - this.flushIndex, length - total));
+      count = Math.max(0, Math.min(this.processedIndex - this.flushIndex,
+        length - total));
       System.arraycopy(this.buffer, this.flushIndex, chars, index, count);
       index += count;
       total += count;
@@ -409,7 +431,8 @@ at: http://upokecenter.com/d/
 
     static boolean IsStableCodePoint(int cp, Normalization form) {
       // Exclude YOD and HIRIQ because of Corrigendum 2
-      return UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 && cp != 0x5d9;
+      return UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 &&
+        cp != 0x5d9;
     }
 
     private boolean LoadMoreData() {
@@ -424,7 +447,8 @@ at: http://upokecenter.com/d/
             this.endOfString = true;
             break;
           }
-          this.endIndex = DecompToBuffer(c, this.compatMode, this.buffer, this.endIndex);
+this.endIndex = DecompToBuffer(c, this.compatMode, this.buffer,
+            this.endIndex);
         }
         // Check for the last stable code point if the
         // end of the String is not reached yet
@@ -432,7 +456,8 @@ at: http://upokecenter.com/d/
           boolean haveNewStable = false;
           // NOTE: lastStableIndex begins at -1
           for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
-            // System.out.println("stable({0:X4})=" + (IsStableCodePoint(this.buffer[i], this.form)));
+            // System.out.println("stable({0:X4})=" +
+            //(IsStableCodePoint(this.buffer[i], this.form)));
             if (IsStableCodePoint(this.buffer[i], this.form)) {
               this.lastStableIndex = i;
               haveNewStable = true;
@@ -489,8 +514,8 @@ at: http://upokecenter.com/d/
             int c = buffer[offset - 1];
             buffer[offset - 1] = buffer[offset];
             buffer[offset] = c;
-            // System.out.println("lead= {0:X4} ccc=" + (lead));
-            // System.out.println("trail={0:X4} ccc=" + (trail));
+            // System.out.println("lead= {0:X4} ccc=" + lead);
+            // System.out.println("trail={0:X4} ccc=" + trail);
             // System.out.println("now "+toString(buffer,index,length));
             changed = true;
             // Lead is now at trail's position
@@ -502,7 +527,6 @@ at: http://upokecenter.com/d/
     }
 
     static int ComposeBuffer(int[] array, int length) {
-
       if (length < 2) {
         return length;
       }

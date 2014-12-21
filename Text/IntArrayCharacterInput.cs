@@ -1,7 +1,8 @@
 using System;
 
 namespace PeterO.Text {
-    /// <summary>A character input with an integer array as the backing store.</summary>
+    /// <summary>A character input with an integer array as the backing
+    /// store.</summary>
   internal sealed class IntArrayCharacterInput : ICharacterInput {
     private int pos;
     private int[] ilist;
@@ -20,19 +21,24 @@ namespace PeterO.Text {
         throw new ArgumentNullException("buf");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("offset (" + offset + ") is less than " +
+          "0");
       }
       if (offset > buf.Length) {
-        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buf.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("offset (" + offset + ") is more than " +
+          buf.Length);
       }
       if (unitCount < 0) {
-        throw new ArgumentException("unitCount (" + Convert.ToString((int)unitCount, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("unitCount (" + unitCount +
+          ") is less than " + "0");
       }
       if (unitCount > buf.Length) {
-        throw new ArgumentException("unitCount (" + Convert.ToString((int)unitCount, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buf.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("unitCount (" + unitCount +
+          ") is more than " + buf.Length);
       }
       if (buf.Length - offset < unitCount) {
-        throw new ArgumentException("buf's length minus " + offset + " (" + Convert.ToString((int)(buf.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)unitCount, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("buf's length minus " + offset + " (" +
+          (buf.Length - offset) + ") is less than " + unitCount);
       }
       if (unitCount == 0) {
         return 0;

@@ -16,7 +16,7 @@ at: http://upokecenter.com/d/
     private boolean haveNonwhitespace;
 
     public WordWrapEncoder (String c) {
- this(c,true);
+ this(c, true);
     }
 
     public WordWrapEncoder (String c, boolean collapseSpaces) {
@@ -38,7 +38,8 @@ at: http://upokecenter.com/d/
     }
 
     private void AppendSpaces(String str) {
-      if (this.lineLength + this.lastSpaces.length() + str.length() > MaxLineLength) {
+   if (this.lineLength + this.lastSpaces.length() + str.length() >
+        MaxLineLength) {
         // Too big to fit the current line
         this.lastSpaces = " ";
       } else {
@@ -47,7 +48,8 @@ at: http://upokecenter.com/d/
     }
 
     private void AppendWord(String str) {
-      if (this.lineLength + this.lastSpaces.length() + str.length() > MaxLineLength) {
+   if (this.lineLength + this.lastSpaces.length() + str.length() >
+        MaxLineLength) {
         if (this.haveNonwhitespace) {
           // Too big to fit the current line,
           // create a new line (but only if the current
@@ -81,7 +83,7 @@ at: http://upokecenter.com/d/
         }
       }
       if (!nonSpace) {
-        return str.substring(index,(index)+(length));
+        return str.substring(index, (index)+(length));
       }
       StringBuilder sb = new StringBuilder();
       for (int i = index; i < endIndex; ++i) {
@@ -96,10 +98,11 @@ at: http://upokecenter.com/d/
       int wordStart = 0;
       for (int j = 0; j < str.length(); ++j) {
         int c = str.charAt(j);
-        if (c == 0x20 || c == 0x09 || (c == 0x0d && j + 1 < str.length() && str.charAt(j + 1) == 0x0a)) {
+        if (c == 0x20 || c == 0x09 || (c == 0x0d && j + 1 < str.length() &&
+          str.charAt(j + 1) == 0x0a)) {
           int wordEnd = j;
           if (wordStart != wordEnd) {
-            this.AppendWord(str.substring(wordStart,(wordStart)+(wordEnd - wordStart)));
+            this.AppendWord(str.substring(wordStart, (wordStart)+(wordEnd - wordStart)));
           }
           while (j < str.length()) {
             if (c == 0x0d && j + 1 < str.length() && str.charAt(j + 1) == 0x0a) {
@@ -118,7 +121,7 @@ at: http://upokecenter.com/d/
         }
       }
       if (wordStart != str.length()) {
-        this.AppendWord(str.substring(wordStart,(wordStart)+(str.length() - wordStart)));
+        this.AppendWord(str.substring(wordStart, (wordStart)+(str.length() - wordStart)));
       }
       return this;
     }

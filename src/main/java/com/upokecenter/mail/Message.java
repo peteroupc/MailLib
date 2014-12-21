@@ -13,53 +13,55 @@ import java.io.*;
 import com.upokecenter.util.*;
 
     /**
-     * <p>Represents an email message, and contains methods and properties
-     * for accessing and modifying email message data. This class implements
-     * the Internet Message Format (RFC 5322) and Multipurpose Internet
-     * Mail Extensions (MIME; RFC 2045-2047, RFC 2049).</p> <p><b>Thread
+     * <p>Represents an email message, and contains methods and properties for
+     * accessing and modifying email message data. This class implements the
+     * Internet Message Format (RFC 5322) and Multipurpose Internet Mail
+     * Extensions (MIME; RFC 2045-2047, RFC 2049).</p> <p><b>Thread
      * safety:</b> This class is mutable; its properties can be changed.
-     * None of its instance methods are designed to be thread safe. Therefore,
-     * access to objects from this class must be synchronized if multiple
-     * threads can access them at the same time.</p> <p>The following lists
-     * known deviations from the mail specifications (Internet Message
-     * Format and MIME):</p> <ul><li>The content-transfer-encoding
-     * "quoted-printable" is treated as 7bit instead if it occurs in a message
-     * or body part with content type "multipart/*" or "message/*" (other
-     * than "message/global", "message/global-headers", "message/global-disposition-notification",
-     * or "message/global-delivery-status").</li> <li>If a message
-     * has two or more Content-Type header fields, it is treated as having
-     * a content type of "application/octet-stream", unless one or more
-     * of the header fields is syntactically invalid.</li> <li>Non-UTF-8
-     * bytes appearing in header field values are replaced with replacement
-     * characters. Moreover, UTF-8 is parsed everywhere in header field
-     * values, even in those parts of some structured header fields where
-     * this appears not to be allowed.</li> <li>The To and Cc header fields
-     * are allowed to contain only comments and whitespace, but these "empty"
-     * header fields will be omitted when generating.</li> <li>There is
-     * no line length limit imposed when parsing quoted-printable or base64
-     * encoded bodies.</li> <li>In the following cases, if the transfer
-     * encoding is absent or ((declared instanceof 7bit) ? (7bit)declared
-     * : null), 8-bit bytes are still allowed:</li> <li>(a) The preamble
-     * and epilogue of multipart messages, which will be ignored.</li>
-     * <li>(b) If the charset is declared to be <code>utf-8</code> .</li> <li>(c)
-     * If the content type is "text/html" and the charset is declared to be
-     * <code>ascii</code> , <code>us-ascii</code> , "windows-1252", "windows-1251",
-     * or "iso-8859-*" (all single byte encodings).</li> <li>(d) In non-MIME
-     * message bodies and in text/plain message bodies. Any 8-bit bytes
-     * are replaced with the ASCII substitute character (0x1a).</li> <li>If
-     * the first line of the message starts with the word "From" followed
-     * by a space, it is skipped.</li> <li>The name <code>ascii</code> is treated
-     * as a synonym for <code>us-ascii</code> , despite being a reserved name under
-     * RFC 2046. The name <code>cp1252</code> is treated as a synonym for <code>windows-1252</code>
-     * , even though it's not an IANA registered alias.</li> <li>The following
-     * deviations involve encoded words under RFC 2047:</li> <li>(a) If
-     * a sequence of encoded words decodes to a string with a CTL character
-     * (U + 007F, or a character less than U + 0020 and not TAB) after being converted
-     * to Unicode, the encoded words are left un-decoded.</li> <li>(b)
-     * This implementation can decode an encoded word that uses ISO-2022-JP
-     * (the only supported encoding that uses code switching) even if the
-     * encoded word's payload ends in a different mode from ASCII mode. (Each
-     * encoded word still starts in ASCII mode, though.)</li> </ul>
+     * None of its instance methods are designed to be thread safe.
+     * Therefore, access to objects from this class must be synchronized if
+     * multiple threads can access them at the same time.</p> <p>The
+     * following lists known deviations from the mail specifications
+     * (Internet Message Format and MIME):</p> <ul><li>The
+     * content-transfer-encoding "quoted-printable" is treated as 7bit
+     * instead if it occurs in a message or body part with content type
+     * "multipart/*" or "message/*" (other than "message/global",
+     * "message/global-headers" , "message/global-disposition-notification",
+     * or "message/global-delivery-status").</li> <li>If a message has two
+     * or more Content-Type header fields, it is treated as having a content
+     * type of "application/octet-stream", unless one or more of the header
+     * fields is syntactically invalid.</li> <li>Non-UTF-8 bytes appearing
+     * in header field values are replaced with replacement characters.
+     * Moreover, UTF-8 is parsed everywhere in header field values, even in
+     * those parts of some structured header fields where this appears not
+     * to be allowed.</li> <li>The To and Cc header fields are allowed to
+     * contain only comments and whitespace, but these "empty" header fields
+     * will be omitted when generating.</li> <li>There is no line length
+     * limit imposed when parsing quoted-printable or base64 encoded
+     * bodies.</li> <li>In the following cases, if the transfer encoding is
+     * absent or ((declared instanceof 7bit) ? (7bit)declared : null), 8-bit
+     * bytes are still allowed:</li> <li>(a) The preamble and epilogue of
+     * multipart messages, which will be ignored.</li> <li>(b) If the
+     * charset is declared to be <code>utf-8</code> .</li> <li>(c) If the content
+     * type is "text/html" and the charset is declared to be <code>ascii</code> ,
+     * <code>us-ascii</code> , "windows-1252", "windows-1251", or "iso-8859-*"
+     * (all single byte encodings).</li> <li>(d) In non-MIME message bodies
+     * and in text/plain message bodies. Any 8-bit bytes are replaced with
+     * the ASCII substitute character (0x1a).</li> <li>If the first line of
+     * the message starts with the word "From" followed by a space, it is
+     * skipped.</li> <li>The name <code>ascii</code> is treated as a synonym for
+     * <code>us-ascii</code> , despite being a reserved name under RFC 2046. The
+     * name <code>cp1252</code> is treated as a synonym for <code>windows-1252</code> ,
+     * even though it's not an IANA registered alias.</li> <li>The following
+     * deviations involve encoded words under RFC 2047:</li> <li>(a) If a
+     * sequence of encoded words decodes to a string with a CTL character (U
+     * + 007F, or a character less than U + 0020 and not TAB) after being
+     * converted to Unicode, the encoded words are left un-decoded.</li>
+     * <li>(b) This implementation can decode an encoded word that uses
+     * ISO-2022-JP (the only supported encoding that uses code switching)
+     * even if the encoded word's payload ends in a different mode from
+     * ASCII mode. (Each encoded word still starts in ASCII mode,
+     * though.)</li> </ul>
      */
   public final class Message {
     private static final int EncodingSevenBit = 0;
@@ -75,25 +77,26 @@ import com.upokecenter.util.*;
     private List<Message> parts;
 
     /**
-     * Gets a list of all the parts of this message. This list is editable.
-     * This will only be used if the message is a multipart message.
-     * @return A list of all the parts of this message. This list is editable.
-     * This will only be used if the message is a multipart message.
+     * Gets a list of all the parts of this message. This list is editable. This
+     * will only be used if the message is a multipart message.
+     * @return A list of all the parts of this message. This list is editable. This
+     * will only be used if the message is a multipart message.
      */
-    public List<Message> getParts() {
+    public final List<Message> getParts() {
         return this.parts;
       }
 
     /**
-     * Gets a snapshot of the header fields of this message, in the order they
-     * were added. For each item in the list, the key is the header field's
-     * name and the value is its value.
+     * Gets a snapshot of the header fields of this message, in the order they were
+     * added. For each item in the list, the key is the header field's name
+     * and the value is its value.
      * @return A snapshot of the header fields of this message.
      */
-    public List<Map.Entry<String, String>> getHeaderFields(){
+    public final List<Map.Entry<String, String>> getHeaderFields() {
         ArrayList<Map.Entry<String, String>> list = new ArrayList<Map.Entry<String, String>>();
         for (int i = 0; i < this.headers.size(); i += 2) {
-          list.add(new AbstractMap.SimpleImmutableEntry<String, String>(this.headers.get(i), this.headers.get(i + 1)));
+          list.add(new AbstractMap.SimpleImmutableEntry<String, String>(this.headers.get(i),
+            this.headers.get(i + 1)));
         }
         return list;
       }
@@ -105,12 +108,16 @@ import com.upokecenter.util.*;
      */
     public Map.Entry<String, String> GetHeader(int index) {
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
+      throw new IllegalArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index >= (this.headers.size() / 2)) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
+        throw new IllegalArgumentException("index (" + index +
+          ") is not less than " + (this.headers.size()
+          / 2));
       }
-      return new AbstractMap.SimpleImmutableEntry<String, String>(this.headers.get(index), this.headers.get(index + 1));
+      return new AbstractMap.SimpleImmutableEntry<String, String>(this.headers.get(index),
+        this.headers.get(index + 1));
     }
 
     /**
@@ -120,10 +127,13 @@ import com.upokecenter.util.*;
      */
     public Message RemoveHeader(int index) {
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
+      throw new IllegalArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index >= (this.headers.size() / 2)) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
+        throw new IllegalArgumentException("index (" + index +
+          ") is not less than " + (this.headers.size()
+          / 2));
       }
       this.headers.remove(index * 2);
       this.headers.remove(index * 2);
@@ -171,14 +181,17 @@ import com.upokecenter.util.*;
      */
     public Message SetHeader(int index, String name, String value) {
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
+      throw new IllegalArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index >= (this.headers.size() / 2)) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
+        throw new IllegalArgumentException("index (" + index +
+          ") is not less than " + (this.headers.size()
+          / 2));
       }
       name = ValidateHeaderField(name, value);
-      this.headers.set(index * 2,name);
-      this.headers.set((index * 2) + 1,value);
+      this.headers.set(index * 2, name);
+      this.headers.set((index * 2) + 1, value);
       return this;
     }
 
@@ -190,14 +203,17 @@ import com.upokecenter.util.*;
      */
     public Message SetHeader(int index, String value) {
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is less than " + "0");
+      throw new IllegalArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index >= (this.headers.size() / 2)) {
-        throw new IllegalArgumentException("index (" + Long.toString((long)index) + ") is not less than " + Long.toString((long)(this.headers.size() / 2)));
+        throw new IllegalArgumentException("index (" + index +
+          ") is not less than " + (this.headers.size()
+          / 2));
       }
       String name = ValidateHeaderField(this.headers.get(index * 2), value);
-      this.headers.set(index * 2,name);
-      this.headers.set((index * 2) + 1,value);
+      this.headers.set(index * 2, name);
+      this.headers.set((index * 2) + 1, value);
       return this;
     }
 
@@ -214,7 +230,7 @@ import com.upokecenter.util.*;
     /**
      * Sets the body of this message to the given byte array.
      * @param bytes A byte array.
-     * @throws java.lang.NullPointerException Bytes is null.
+     * @throws NullPointerException Bytes is null.
      */
     public void SetBody(byte[] bytes) {
       if (bytes == null) {
@@ -228,17 +244,18 @@ import com.upokecenter.util.*;
         throw new NullPointerException("str");
       }
       try {
-        java.io.ByteArrayOutputStream ms=null;
+        java.io.ByteArrayOutputStream ms = null;
 try {
-ms=new java.io.ByteArrayOutputStream();
+ms = new java.io.ByteArrayOutputStream();
 
-          if (DataUtilities.WriteUtf8(str, 0, str.length(), ms, true, true) != 0) {
+        if (DataUtilities.WriteUtf8(str, 0, str.length(), ms, true, true) !=
+            0) {
             throw new IllegalArgumentException("Unpaired surrogate code point");
           }
           return ms.toByteArray();
 }
 finally {
-try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
       } catch (IOException ex) {
         throw new IllegalArgumentException("I/O error occurred", ex);
@@ -260,51 +277,51 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
     /**
      * Sets the body of this message to the specified plain text string. The
      * character sequences CR, LF, and CR/LF will be converted to CR/LF line
-     * breaks. Unpaired surrogate code points will be replaced with replacement
-     * characters.
+     * breaks. Unpaired surrogate code points will be replaced with
+     * replacement characters.
      * @param str A string object.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code str}
-     * is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public Message SetTextBody(String str) {
       if (str == null) {
         throw new NullPointerException("str");
       }
       this.body = GetUtf8Bytes(str);
-      this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii : MediaType.TextPlainUtf8;
+      this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii:
+        MediaType.TextPlainUtf8;
       return this;
     }
 
     /**
-     * Sets the body of this message to the specified string in HTML format.
-     * The character sequences CR, LF, and CR/LF will be converted to CR/LF
-     * line breaks. Unpaired surrogate code points will be replaced with
+     * Sets the body of this message to the specified string in HTML format. The
+     * character sequences CR, LF, and CR/LF will be converted to CR/LF line
+     * breaks. Unpaired surrogate code points will be replaced with
      * replacement characters.
      * @param str A string object.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code str}
-     * is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public Message SetHtmlBody(String str) {
       if (str == null) {
         throw new NullPointerException("str");
       }
       this.body = GetUtf8Bytes(str);
-      this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii : MediaType.TextPlainUtf8;
+      this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii:
+        MediaType.TextPlainUtf8;
       return this;
     }
 
     /**
-     * Sets the body of this message to a multipart body with plain text and
-     * HTML versions of the same message. The character sequences CR, LF,
-     * and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate
-     * code points will be replaced with replacement characters.
+     * Sets the body of this message to a multipart body with plain text and HTML
+     * versions of the same message. The character sequences CR, LF, and
+     * CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code
+     * points will be replaced with replacement characters.
      * @param text A string object.
      * @param html A string object. (2).
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code text}
-     * or {@code html} is null.
+     * @throws NullPointerException The parameter {@code text} or {@code html} is
+     * null.
      */
     public Message SetTextAndHtml(String text, String html) {
       if (text == null) {
@@ -318,7 +335,8 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       // this case, the HTML version)
       Message textMessage = new Message().SetTextBody(text);
       Message htmlMessage = new Message().SetHtmlBody(html);
-      this.contentType = MediaType.Parse("multipart/alternative; boundary=\"=_boundary\"");
+      this.contentType =
+        MediaType.Parse("multipart/alternative; boundary=\"=_boundary\"");
       List<Message> messageParts = this.getParts();
       messageParts.clear();
       messageParts.add(textMessage);
@@ -330,7 +348,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
      * Gets a list of addresses found in the From header field or fields.
      * @return A list of addresses found in the From header field or fields.
      */
-    public List<NamedAddress> getFromAddresses() {
+    public final List<NamedAddress> getFromAddresses() {
         return ParseAddresses(this.GetMultipleHeaders("from"));
       }
 
@@ -343,8 +361,8 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
             return false;
           }
           String headerValue = this.headers.get(i + 1);
-          if (HeaderFieldParsers.GetParser(name).Parse(headerValue, 0, headerValue.length(), null) !=
-              headerValue.length()) {
+          if (HeaderFieldParsers.GetParser(name).Parse(headerValue, 0,
+            headerValue.length(), null) != headerValue.length()) {
             return false;
           }
           have = true;
@@ -359,21 +377,26 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
         return new ArrayList<NamedAddress>();
       }
       // Check for valid syntax
-      return (HeaderParser.ParseHeaderTo(value, 0, value.length(), tokener) != value.length()) ? (new ArrayList<NamedAddress>()) : HeaderParserUtility.ParseAddressList(value, 0, value.length(), tokener.GetTokens());
+      return (HeaderParser.ParseHeaderTo(value, 0, value.length(), tokener) !=
+        value.length()) ? (new ArrayList<NamedAddress>()) :
+        HeaderParserUtility.ParseAddressList(value, 0, value.length(),
+        tokener.GetTokens());
     }
 
     static List<NamedAddress> ParseAddresses(String[] values) {
       Tokener tokener = new Tokener();
       ArrayList<NamedAddress> list = new ArrayList<NamedAddress>();
-      for(String addressValue : values) {
+      for (String addressValue : values) {
         if (addressValue == null) {
           continue;
         }
-        if (HeaderParser.ParseHeaderTo(addressValue, 0, addressValue.length(), tokener) != addressValue.length()) {
+        if (HeaderParser.ParseHeaderTo(addressValue, 0, addressValue.length(),
+          tokener) != addressValue.length()) {
           // Invalid syntax
           continue;
         }
-        list.addAll(HeaderParserUtility.ParseAddressList(addressValue, 0, addressValue.length(), tokener.GetTokens()));
+        list.addAll(HeaderParserUtility.ParseAddressList(addressValue, 0,
+          addressValue.length(), tokener.GetTokens()));
       }
       return list;
     }
@@ -382,7 +405,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
      * Gets a list of addresses found in the To header field or fields.
      * @return A list of addresses found in the To header field or fields.
      */
-    public List<NamedAddress> getToAddresses() {
+    public final List<NamedAddress> getToAddresses() {
         return ParseAddresses(this.GetMultipleHeaders("to"));
       }
 
@@ -390,7 +413,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
      * Gets a list of addresses found in the CC header field or fields.
      * @return A list of addresses found in the CC header field or fields.
      */
-    public List<NamedAddress> getCCAddresses() {
+    public final List<NamedAddress> getCCAddresses() {
         return ParseAddresses(this.GetMultipleHeaders("cc"));
       }
 
@@ -398,7 +421,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
      * Gets a list of addresses found in the BCC header field or fields.
      * @return A list of addresses found in the BCC header field or fields.
      */
-    public List<NamedAddress> getBccAddresses() {
+    public final List<NamedAddress> getBccAddresses() {
         return ParseAddresses(this.GetMultipleHeaders("bcc"));
       }
 
@@ -406,10 +429,10 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
      * Gets this message's subject.
      * @return This message's subject.
      */
-    public String getSubject() {
+    public final String getSubject() {
         return this.GetHeader("subject");
       }
-public void setSubject(String value) {
+public final void setSubject(String value) {
         this.SetHeader("subject", value);
       }
 
@@ -419,29 +442,29 @@ public void setSubject(String value) {
      * @throws UnsupportedOperationException This message has no character encoding
      * declared on it, or the character encoding is not supported.
      */
-    public String getBodyString() {
-        java.io.ByteArrayInputStream ms=null;
+    public final String getBodyString() {
+        java.io.ByteArrayInputStream ms = null;
 try {
-ms=new java.io.ByteArrayInputStream(this.body);
+ms = new java.io.ByteArrayInputStream(this.body);
 
           ICharset charset = Charsets.GetCharset(this.getContentType().GetCharset());
           if (charset == null) {
-            throw new UnsupportedOperationException("Not in a supported character set.");
+          throw new
+              UnsupportedOperationException("Not in a supported character set.");
           }
           ITransform transform = new WrappedStream(ms);
           return charset.GetString(transform);
 }
 finally {
-try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
       }
 
     /**
-     * Initializes a new instance of the Message class. Reads from the given
-     * InputStream object to initialize the message.
+     * Initializes a new instance of the Message class. Reads from the given InputStream
+     * object to initialize the message.
      * @param stream A readable data stream.
-     * @throws java.lang.NullPointerException The parameter {@code stream}
-     * is null.
+     * @throws NullPointerException The parameter {@code stream} is null.
      */
     public Message (InputStream stream) {
       if (stream == null) {
@@ -460,8 +483,8 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
     }
 
     /**
-     * Initializes a new instance of the Message class The message will be
-     * plain text and have an artificial From address.
+     * Initializes a new instance of the Message class The message will be plain
+     * text and have an artificial From address.
      */
     public Message () {
       this.headers = new ArrayList<String>();
@@ -486,7 +509,7 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       StringBuilder builder = new StringBuilder();
       int seq = 0;
       builder.append("<");
-      synchronized(sequenceSync) {
+      synchronized (sequenceSync) {
         if (seqFirstTime) {
           msgidSequence = msgidRandom.nextInt(65536);
           msgidSequence <<= 16;
@@ -538,14 +561,14 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
           (this.getContentType().getSubType().equals("rfc822") ||
            this.getContentType().getSubType().equals("news") ||
            this.getContentType().getSubType().equals("global"))) {
-        java.io.ByteArrayInputStream ms=null;
+        java.io.ByteArrayInputStream ms = null;
 try {
-ms=new java.io.ByteArrayInputStream(this.body);
+ms = new java.io.ByteArrayInputStream(this.body);
 
           return new Message(ms);
 }
 finally {
-try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
       }
       return null;
@@ -558,13 +581,12 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
     /**
      * Gets this message's media type.
      * @return This message's media type.
-     * @throws java.lang.NullPointerException This value is being set and
-     * "value" is null.
+     * @throws NullPointerException This value is being set and "value" is null.
      */
-    public MediaType getContentType() {
+    public final MediaType getContentType() {
         return this.contentType;
       }
-public void setContentType(MediaType value) {
+public final void setContentType(MediaType value) {
         if (value == null) {
           throw new NullPointerException("value");
         }
@@ -579,33 +601,35 @@ public void setContentType(MediaType value) {
       }
 
     /**
-     * Gets this message's content disposition. The content disposition
-     * specifies how a user agent should handle or otherwise display this
-     * message.
+     * Gets this message's content disposition. The content disposition specifies
+     * how a user agent should handle or otherwise display this message.
      * @return This message's content disposition, or null if none is specified.
      */
-    public ContentDisposition getContentDisposition() {
+    public final ContentDisposition getContentDisposition() {
         return this.contentDisposition;
       }
-public void setContentDisposition(ContentDisposition value) {
+public final void setContentDisposition(ContentDisposition value) {
         if (value == null) {
           this.contentDisposition = null;
           this.RemoveHeader("content-disposition");
         } else if (!value.equals(this.contentDisposition)) {
           this.contentDisposition = value;
-          this.SetHeader("content-disposition", this.contentDisposition.toString());
+     this.SetHeader("content-disposition" , this.contentDisposition.toString());
         }
       }
 
     /**
-     * Gets a filename suggested by this message for saving the message's
-     * body to a file. For more information on the algorithm, see ContentDisposition.MakeFilename.
-     * @return A suggested name for the file, or the empty string if there
-     * is no filename suggested by the content type or content disposition.
+     * Gets a filename suggested by this message for saving the message's body to a
+     * file. For more information on the algorithm, see
+     * ContentDisposition.MakeFilename.
+     * @return A suggested name for the file, or the empty string if there is no
+     * filename suggested by the content type or content disposition.
      */
-    public String getFileName() {
+    public final String getFileName() {
         ContentDisposition disp = this.contentDisposition;
-        return (disp != null) ? ContentDisposition.MakeFilename(disp.GetParameter("filename")) : ContentDisposition.MakeFilename(this.contentType.GetParameter("name"));
+        return (disp != null) ?
+          ContentDisposition.MakeFilename(disp.GetParameter("filename")) :
+  ContentDisposition.MakeFilename(this.contentType.GetParameter("name"));
       }
 
     private void ProcessHeaders(boolean assumeMime, boolean digest) {
@@ -619,26 +643,32 @@ public void setContentDisposition(ContentDisposition value) {
         if (name.equals("content-transfer-encoding")) {
           int startIndex = HeaderParser.ParseCFWS(value, 0, value.length(), null);
           // NOTE: Actually "token", but all known transfer encoding values
-          // fit the same syntax as the stricter one for top-level types and subtypes
-          int endIndex = MediaType.skipMimeTypeSubtype(value, startIndex, value.length(), null);
-          transferEncodingValue = (HeaderParser.ParseCFWS(value, endIndex, value.length(), null) == value.length()) ? value.substring(startIndex,(startIndex)+(endIndex - startIndex)) : "";
+          // fit the same syntax as the stricter one for top-level types and
+          //subtypes
+          int endIndex = MediaType.skipMimeTypeSubtype(value, startIndex,
+            value.length(), null);
+          transferEncodingValue = (HeaderParser.ParseCFWS(value, endIndex,
+            value.length(), null) == value.length()) ?
+              value.substring(startIndex, (startIndex)+(endIndex - startIndex)) :
+            "";
         }
         mime |= name.equals("mime-version");
         if (value.indexOf("=?") >= 0) {
           IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
           // Decode encoded words in the header field where possible
           value = parser.DecodeEncodedWords(value);
-          this.headers.set(i + 1,value);
+          this.headers.set(i + 1, value);
         }
       }
-      this.contentType = digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
+this.contentType = digest ? MediaType.MessageRfc822 :
+        MediaType.TextPlainAscii;
       boolean haveInvalid = false;
       for (int i = 0; i < this.headers.size(); i += 2) {
         String name = this.headers.get(i);
         String value = this.headers.get(i + 1);
         if (mime && name.equals("content-transfer-encoding")) {
           value = DataUtilities.ToLowerCaseAscii(transferEncodingValue);
-          this.headers.set(i + 1,value);
+          this.headers.set(i + 1, value);
           if (value.equals("7bit")) {
             this.transferEncoding = EncodingSevenBit;
           } else if (value.equals("8bit")) {
@@ -664,11 +694,11 @@ public void setContentDisposition(ContentDisposition value) {
               this.contentType = MediaType.ApplicationOctetStream;
             }
           } else {
-            this.contentType = MediaType.Parse(
-              value,
+            this.contentType = MediaType.Parse(value,
               null);
             if (this.contentType == null) {
-              this.contentType = digest ? MediaType.MessageRfc822 : MediaType.TextPlainAscii;
+this.contentType = digest ? MediaType.MessageRfc822 :
+                MediaType.TextPlainAscii;
               haveInvalid = true;
             }
             haveContentType = true;
@@ -693,9 +723,10 @@ public void setContentDisposition(ContentDisposition value) {
           this.transferEncoding = EncodingEightBit;
         } else if (this.contentType.getTypeAndSubType().equals("text/html")) {
           if (charset.equals("us-ascii") || charset.equals("ascii") ||
-              charset.equals("windows-1252") ||
-              charset.equals("windows-1251") ||
-              (charset.length() > 9 && charset.substring(0,9).equals("iso-8859-"))) {
+            charset.equals("windows-1252") || charset.equals("windows-1251"
+) ||
+         (charset.length() > 9 && charset.substring(0,9).equals("iso-8859-"
+))) {
             // DEVIATION: Be a little more liberal with text/html and
             // single-byte charsets or UTF-8
             this.transferEncoding = EncodingEightBit;
@@ -706,17 +737,19 @@ public void setContentDisposition(ContentDisposition value) {
           this.transferEncoding == EncodingBase64 ||
           this.transferEncoding == EncodingUnknown) {
         if (this.contentType.isMultipart() ||
-            (this.contentType.getTopLevelType().equals("message") &&
+          (this.contentType.getTopLevelType().equals("message") &&
              !this.contentType.getSubType().equals("global") &&
              !this.contentType.getSubType().equals("global-headers") &&
-             !this.contentType.getSubType().equals("global-disposition-notification") &&
+         !this.contentType.getSubType().equals("global-disposition-notification"
+) &&
              !this.contentType.getSubType().equals("global-delivery-status"))) {
           if (this.transferEncoding == EncodingQuotedPrintable) {
             // DEVIATION: Treat quoted-printable for multipart and message
             // as 7bit instead
             this.transferEncoding = EncodingSevenBit;
           } else {
-            String exceptText = "Invalid content encoding for multipart or message";
+       String exceptText =
+              "Invalid content encoding for multipart or message" ;
 
             throw new MessageDataException(exceptText);
           }
@@ -735,8 +768,8 @@ public void setContentDisposition(ContentDisposition value) {
           return false;
         }
         if (!(
-          (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
-          c == 0x20 || c == 0x2c || "'()-./+_:=?".indexOf(c) >= 0)) {
+  (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <=
+            '9') || c == 0x20 || c == 0x2c || "'()-./+_:=?".indexOf(c) >= 0)) {
           return false;
         }
       }
@@ -747,9 +780,9 @@ public void setContentDisposition(ContentDisposition value) {
      * Gets the first instance of the header field with the specified name,
      * comparing the field name in an ASCII case-insensitive manner.
      * @param name The name of a header field.
-     * @return The value of the first header field with that name, or null
-     * if there is none.
-     * @throws java.lang.NullPointerException Name is null.
+     * @return The value of the first header field with that name, or null if there
+     * is none.
+     * @throws NullPointerException Name is null.
      */
     public String GetHeader(String name) {
       if (name == null) {
@@ -774,7 +807,7 @@ public void setContentDisposition(ContentDisposition value) {
       }
       StringBuilder sb = new StringBuilder();
       boolean first = true;
-      for(String s : strings) {
+      for (String s : strings) {
         if (!first) {
           sb.append(delim);
         }
@@ -792,7 +825,7 @@ public void setContentDisposition(ContentDisposition value) {
           headerList.add(this.headers.get(i + 1));
         }
       }
-      return headerList.toArray(new String[]{});
+      return headerList.toArray(new String[] { });
     }
 
     // Returns true only if:
@@ -854,13 +887,15 @@ public void setContentDisposition(ContentDisposition value) {
         afterHyphen = s.charAt(i) == '-';
       }
       String ret = builder.toString();
-      return ret.equals("Mime-Version") ? "MIME-Version" : (ret.equals("Message-Id") ? "Message-ID" : ret);
+      return ret.equals("Mime-Version") ? "MIME-Version" :
+        (ret.equals("Message-Id") ? "Message-ID" : ret);
     }
 
     /**
-     * Returns true if the string has: * non-ASCII characters * "=?" * CTLs
-     * other than tab, or * a word longer than 75 characters. Can return false
-     * even if the string has: * CRLF followed by a line with just whitespace.
+     * Returns true if the string has: * non-ASCII characters * "=?" * CTLs other
+     * than tab, or * a word longer than 75 characters. Can return false
+     * even if the string has: * CRLF followed by a line with just
+     * whitespace.
      * @param s A string object.
      * @return A Boolean object.
      */
@@ -912,7 +947,8 @@ public void setContentDisposition(ContentDisposition value) {
       return false;
     }
 
-    static boolean HasTextToEscapeIgnoreEncodedWords(String s, int index, int endIndex) {
+    static boolean HasTextToEscapeIgnoreEncodedWords(String s, int
+      index, int endIndex) {
       int len = endIndex;
       int chunkLength = 0;
 
@@ -953,7 +989,8 @@ public void setContentDisposition(ContentDisposition value) {
       return false;
     }
 
-    static int ParseUnstructuredText(String str, int index, int endIndex) {
+    static int ParseUnstructuredText(String str, int index, int
+      endIndex) {
       int indexTemp = index;
       do {
         while (true) {
@@ -969,10 +1006,12 @@ public void setContentDisposition(ContentDisposition value) {
                   indexTemp4 = index;
                   do {
                     int indexStart4 = index;
-                    while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) == 9))) {
+        while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
+                      9))) {
                       ++index;
                     }
-                    if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1) == 10) {
+        if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1) ==
+                      10) {
                       index += 2;
                     } else {
                       index = indexStart4; break;
@@ -986,9 +1025,11 @@ public void setContentDisposition(ContentDisposition value) {
                     break;
                   }
                 } while (false);
-                if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) == 9))) {
+           if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
+                  9))) {
                   ++index;
-                  while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) == 9))) {
+        while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
+                    9))) {
                     ++index;
                   }
                 } else {
@@ -1006,13 +1047,17 @@ public void setContentDisposition(ContentDisposition value) {
             do {
               int indexTemp3 = index;
               do {
-                if (index < endIndex && ((str.charAt(index) >= 128 && str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
+                if (index < endIndex && ((str.charAt(index) >= 128 && str.charAt(index) <=
+                  55295) || (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
                   ++indexTemp3; break;
                 }
-                if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+                if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
+                  str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
+                  str.charAt(index + 1) <= 57343))) {
                   indexTemp3 += 2; break;
                 }
-                if (index < endIndex && (str.charAt(index) >= 33 && str.charAt(index) <= 126)) {
+             if (index < endIndex && (str.charAt(index) >= 33 && str.charAt(index) <=
+                  126)) {
                   ++indexTemp3; break;
                 }
               } while (false);
@@ -1055,41 +1100,43 @@ public void setContentDisposition(ContentDisposition value) {
       name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < name.length(); ++i) {
         if (name.charAt(i) <= 0x20 || name.charAt(i) == ':' || name.charAt(i) >= 0x7f) {
-          throw new IllegalArgumentException("Header field name contains an invalid character");
+throw new
+  IllegalArgumentException("Header field name contains an invalid character");
         }
       }
       // Check characters in structured header fields
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.length()) != value.length()) {
-          throw new IllegalArgumentException("Header field value contains invalid text");
+       throw new IllegalArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.length(), null) != value.length()) {
-          throw new IllegalArgumentException("Header field value is not in the correct format");
+throw new
+  IllegalArgumentException("Header field value is not in the correct format");
         }
       }
       return name;
     }
 
     /**
-     * Sets the value of this message's header field. If a header field with
-     * the same name exists, its value is replaced.
+     * Sets the value of this message's header field. If a header field with the
+     * same name exists, its value is replaced.
      * @param name The name of a header field, such as &quot;from&quot; or
      * &quot;subject&quot;.
      * @param value The header field&apos;s value.
      * @return This instance.
-     * @throws java.lang.IllegalArgumentException The header field name is too long
-     * or contains an invalid character, or the header field's value is syntactically
+     * @throws IllegalArgumentException The header field name is too long or contains an
+     * invalid character, or the header field's value is syntactically
      * invalid.
-     * @throws java.lang.NullPointerException The parameter {@code name}
-     * or {@code value} is null.
+     * @throws NullPointerException The parameter {@code name} or {@code value} is
+     * null.
      */
     public Message SetHeader(String name, String value) {
       name = ValidateHeaderField(name, value);
       // Add the header field
       for (int i = 0; i < this.headers.size(); i += 2) {
         if (this.headers.get(i).equals(name)) {
-          this.headers.set(i + 1,value);
+          this.headers.set(i + 1, value);
           return this;
         }
       }
@@ -1099,13 +1146,12 @@ public void setContentDisposition(ContentDisposition value) {
     }
 
     /**
-     * Removes all instances of the given header field from this message.
-     * If this is a multipart message, the header field is not removed from
-     * its body part headers.
+     * Removes all instances of the given header field from this message. If this
+     * is a multipart message, the header field is not removed from its body
+     * part headers.
      * @param name The name of the header field to remove.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code name}
-     * is null.
+     * @throws NullPointerException The parameter {@code name} is null.
      */
     public Message RemoveHeader(String name) {
       if (name == null) {
@@ -1124,7 +1170,8 @@ public void setContentDisposition(ContentDisposition value) {
     }
 
     private static boolean StartsWithWhitespace(String str) {
-      return str.length() > 0 && (str.charAt(0) == ' ' || str.charAt(0) == 0x09 || str.charAt(0) == '\r');
+  return str.length() > 0 && (str.charAt(0) == ' ' || str.charAt(0) == 0x09 || str.charAt(0) ==
+        '\r');
     }
 
     private static int TransferEncodingToUse(byte[] body, boolean isBodyPart) {
@@ -1144,15 +1191,16 @@ public void setContentDisposition(ContentDisposition value) {
           allTextBytes = false;
           ++ctlBytes;
         } else if (body[i] == 0x7f ||
-                       (body[i] < 0x20 && body[i] != 0x0d &&
-                       body[i] != 0x0a && body[i] != 0x09)) {
+   (body[i] < 0x20 && body[i] != 0x0d && body[i] != 0x0a && body[i] !=
+                  0x09)) {
           allTextBytes = false;
           ++ctlBytes;
         } else if (body[i] == (byte)'\r') {
           if (i + 1 >= body.length || body[i + 1] != (byte)'\n') {
             // bare CR
             allTextBytes = false;
-          } else if (i > 0 && (body[i - 1] == (byte)' ' || body[i - 1] == (byte)'\t')) {
+ } else if (i > 0 && (body[i - 1] == (byte)' ' || body[i - 1] == (byte)'\t'
+)) {
             // Space followed immediately by CRLF
             allTextBytes = false;
           } else {
@@ -1163,12 +1211,17 @@ public void setContentDisposition(ContentDisposition value) {
         } else {
  allTextBytes &= body[i] != (byte)'\n';
 }
-        allTextBytes &= lineLength != 0 || i + 2 >= body.length || body[i] != '.' || body[i + 1] != '\r' || body[i + 2] != '\n';
-        allTextBytes &= lineLength != 0 || i + 4 >= body.length || body[i] != 'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3] != 'm' || body[i + 4] != ' ';
+        allTextBytes &= lineLength != 0 || i + 2 >= body.length || body[i]!=
+          '.' || body[i + 1] != '\r' || body[i + 2] != '\n' ;
+        allTextBytes &= lineLength != 0 || i + 4 >= body.length || body[i]!=
+          'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3]!=
+          'm' || body[i + 4] != ' ' ;
         ++lineLength;
         allTextBytes &= lineLength <= 78;
       }
-      return (lengthCheck == body.length && allTextBytes) ? EncodingSevenBit : ((highBytes > (lengthCheck / 3)) ? EncodingBase64 : ((ctlBytes > 10) ? EncodingBase64 : EncodingQuotedPrintable));
+      return (lengthCheck == body.length && allTextBytes) ? EncodingSevenBit:
+        ((highBytes > (lengthCheck / 3)) ? EncodingBase64 : ((ctlBytes >
+        10) ? EncodingBase64 : EncodingQuotedPrintable));
     }
 
     static String GenerateAddressList(List<NamedAddress> list) {
@@ -1182,7 +1235,8 @@ public void setContentDisposition(ContentDisposition value) {
       return sb.toString();
     }
 
-    static boolean CanBeUnencoded(byte[] bytes, boolean checkBoundaryDelimiter) {
+    static boolean CanBeUnencoded(byte[] bytes, boolean
+      checkBoundaryDelimiter) {
       if (bytes == null || bytes.length == 0) {
         return true;
       }
@@ -1197,10 +1251,8 @@ public void setContentDisposition(ContentDisposition value) {
           return false;
         }
         if (lineLength == 0 && checkBoundaryDelimiter && index + 4 < endIndex &&
-                bytes[index] == '-' &&
-                bytes[index + 1] == '-' &&
-                bytes[index + 2] == '=' &&
-                bytes[index + 3] == '_' &&
+                bytes[index] == '-' && bytes[index + 1] == '-' &&
+                bytes[index + 2] == '=' && bytes[index + 3] == '_' &&
                 bytes[index + 4] == 'B') {
           // Start of a reserved boundary delimiter
           return false;
@@ -1220,7 +1272,8 @@ public void setContentDisposition(ContentDisposition value) {
         }
         ++lineLength;
         if (lineLength > 78) {
-          // System.out.println("Line length exceeded (" + maxLineLength + " " + (str.substring(index-78,(index-78)+(78))) + ")");
+          // System.out.println("Line length exceeded (" + maxLineLength +
+          //" " + (str.substring(index-78,(index-78)+(78))) + ")");
           return false;
         }
         ++index;
@@ -1229,16 +1282,17 @@ public void setContentDisposition(ContentDisposition value) {
     }
 
     /**
-     * Generates this message's data in text form. <p>The generated message
-     * will always be 7-bit ASCII, and the transfer encoding will always
-     * be 7bit, quoted-printable, or base64 (the declared transfer encoding
-     * for this message will be ignored).</p> <p>The following applies
-     * to the From, To, Cc, and Bcc header fields. If the header field has an
-     * invalid syntax or has no addresses, this method will generate a synthetic
+     * Generates this message's data in text form. <p>The generated message will
+     * always be 7-bit ASCII, and the transfer encoding will always be 7bit,
+     * quoted-printable, or base64 (the declared transfer encoding for this
+     * message will be ignored).</p> <p>The following applies to the From,
+     * To, Cc, and Bcc header fields. If the header field has an invalid
+     * syntax or has no addresses, this method will generate a synthetic
      * header field with the display-name set to the contents of all of the
-     * header fields with the same name, and the address set to <code>me@[header-name]-address.invalid</code>
-     * as the address (a <code>.invalid</code> address is a reserved address that
-     * can never belong to anyone).</p>
+     * header fields with the same name, and the address set to
+     * <code>me@[header-name]-address.invalid</code> as the address (a
+     * <code>.invalid</code> address is a reserved address that can never belong
+     * to anyone).</p>
      * @return The generated message.
      * @throws MessageDataException The message can't be generated.
      */
@@ -1261,7 +1315,8 @@ public void setContentDisposition(ContentDisposition value) {
 
     private String SynthesizeField(String name) {
       String fullField = Implode(this.GetMultipleHeaders(name), ", ");
-      String value = new EncodedWordEncoder().AddString(fullField).FinalizeEncoding().toString();
+      String value = new
+  EncodedWordEncoder().AddString(fullField).FinalizeEncoding().toString();
       if (value.length() > 0) {
         value += " <me@" + name + "address.invalid>";
       } else {
@@ -1286,7 +1341,8 @@ public void setContentDisposition(ContentDisposition value) {
       return dict;
     }
 
-    private static Map<String, Integer> valueHeaderIndices = MakeHeaderIndices();
+    private static Map<String, Integer> valueHeaderIndices =
+      MakeHeaderIndices();
 
     private String Generate(int depth) {
       StringBuilder sb = new StringBuilder();
@@ -1315,12 +1371,15 @@ public void setContentDisposition(ContentDisposition value) {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
           boolean msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
-          if ((builder.getSubType().equals("rfc822") || builder.getSubType().equals("news"))
-              && !msgCanBeUnencoded) {
+     if ((builder.getSubType().equals("rfc822") || builder.getSubType().equals("news"
+))&&
+              !msgCanBeUnencoded) {
             builder.SetSubType("global");
-          } else if (builder.getSubType().equals("disposition-notification") && !msgCanBeUnencoded) {
+          } else if (builder.getSubType().equals("disposition-notification") &&
+            !msgCanBeUnencoded) {
             builder.SetSubType("global-disposition-notification");
-          } else if (builder.getSubType().equals("delivery-status") && !msgCanBeUnencoded) {
+  } else if (builder.getSubType().equals("delivery-status") &&
+            !msgCanBeUnencoded) {
             builder.SetSubType("global-delivery-status");
           } else if (!msgCanBeUnencoded) {
             throw new MessageDataException("Message body can't be encoded");
@@ -1331,9 +1390,11 @@ public void setContentDisposition(ContentDisposition value) {
       if (topLevel.equals("message") || topLevel.equals("multipart")) {
         transferEnc = (topLevel.equals("multipart") || (
           !builder.getSubType().equals("global") &&
-          !builder.getSubType().equals("global-headers") &&
+            !builder.getSubType().equals("global-headers") &&
           !builder.getSubType().equals("global-disposition-notification") &&
-          !builder.getSubType().equals("global-delivery-status"))) ? EncodingSevenBit : TransferEncodingToUse(bodyToWrite, depth > 0);
+          !builder.getSubType().equals("global-delivery-status"))) ?
+            EncodingSevenBit : TransferEncodingToUse(bodyToWrite, depth >
+            0);
       } else {
         transferEnc = TransferEncodingToUse(bodyToWrite, depth > 0);
       }
@@ -1393,7 +1454,8 @@ public void setContentDisposition(ContentDisposition value) {
               }
               haveHeaders[headerIndex] = true;
               if (!this.IsValidAddressingField(name)) {
-                value = GenerateAddressList(ParseAddresses(this.GetMultipleHeaders(name)));
+    value =
+  GenerateAddressList(ParseAddresses(this.GetMultipleHeaders(name)));
                 if (value.length() == 0) {
                   // No addresses, synthesize a field
                   value = this.SynthesizeField(name);
@@ -1410,25 +1472,27 @@ public void setContentDisposition(ContentDisposition value) {
             throw new MessageDataException("No colon+space: " + rawField);
           }
         } else if (HasTextToEscape(value)) {
-          String downgraded = HeaderFieldParsers.GetParser(name).DowngradeFieldValue(value);
-          if (HasTextToEscapeIgnoreEncodedWords(downgraded, 0, downgraded.length())) {
+          String downgraded =
+            HeaderFieldParsers.GetParser(name).DowngradeFieldValue(value);
+     if (HasTextToEscapeIgnoreEncodedWords(downgraded, 0,
+            downgraded.length())) {
             if (name.equals("message-id") ||
-                name.equals("resent-message-id") ||
-                name.equals("in-reply-to") ||
-                name.equals("references") ||
-                name.equals("original-recipient") ||
+              name.equals("resent-message-id") || name.equals("in-reply-to"
+) ||
+              name.equals("references") || name.equals("original-recipient"
+) ||
                 name.equals("final-recipient")) {
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field
               name = "downgraded-" + name;
-              downgraded = Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTab(value));
+       downgraded = Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTab(value));
             } else {
-
             }
           }
           boolean haveDquote = downgraded.indexOf('"') >= 0;
-          WordWrapEncoder encoder = new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
+       WordWrapEncoder encoder = new WordWrapEncoder(Capitalize(name) + ": ",
+            !haveDquote);
           encoder.AddString(downgraded);
           String newValue = encoder.toString();
           if (newValue.indexOf(": ") < 0) {
@@ -1437,7 +1501,8 @@ public void setContentDisposition(ContentDisposition value) {
           sb.append(newValue);
         } else {
           boolean haveDquote = value.indexOf('"') >= 0;
-          WordWrapEncoder encoder = new WordWrapEncoder(Capitalize(name) + ": ", !haveDquote);
+       WordWrapEncoder encoder = new WordWrapEncoder(Capitalize(name) + ": ",
+            !haveDquote);
           encoder.AddString(value);
           String newValue = encoder.toString();
           if (newValue.indexOf(": ") < 0) {
@@ -1470,10 +1535,10 @@ public void setContentDisposition(ContentDisposition value) {
           bodyEncoder = new Base64Encoder(true, builder.isText(), false);
           break;
         case EncodingQuotedPrintable:
-          bodyEncoder = new QuotedPrintableEncoder(builder.isText() ? 2 : 0, false);
+       bodyEncoder = new QuotedPrintableEncoder(builder.isText() ? 2 : 0,
+            false);
           break;
-        default:
-          bodyEncoder = new IdentityEncoder();
+        default: bodyEncoder = new IdentityEncoder();
           break;
       }
       // Write the body
@@ -1482,7 +1547,7 @@ public void setContentDisposition(ContentDisposition value) {
         bodyEncoder.WriteToString(sb, bodyToWrite, 0, bodyToWrite.length);
         bodyEncoder.FinalizeEncoding(sb);
       } else {
-        for(Message part : this.getParts()) {
+        for (Message part : this.getParts()) {
           sb.append("\r\n--" + boundary + "\r\n");
           sb.append(part.Generate(depth + 1));
         }
@@ -1491,7 +1556,8 @@ public void setContentDisposition(ContentDisposition value) {
       return sb.toString();
     }
 
-    private static int ReadUtf8Char(TransformWithUnget stream, int[] bytesRead) {
+  private static int ReadUtf8Char(TransformWithUnget stream, int[]
+      bytesRead) {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
@@ -1557,26 +1623,30 @@ public void setContentDisposition(ContentDisposition value) {
       return DowngradeRecipientHeaderValue(headerValue, null);
     }
 
-    static String DowngradeRecipientHeaderValue(String headerValue, int[] status) {
+    static String DowngradeRecipientHeaderValue(String headerValue,
+      int[] status) {
       int index;
-      if (HasTextToEscapeIgnoreEncodedWords(headerValue, 0, headerValue.length())) {
-        index = HeaderParser.ParseCFWS(headerValue, 0, headerValue.length(), null);
-        int atomText = HeaderParser.ParsePhraseAtom(headerValue, index, headerValue.length(), null);
+   if (HasTextToEscapeIgnoreEncodedWords(headerValue, 0,
+        headerValue.length())) {
+      index = HeaderParser.ParseCFWS(headerValue, 0, headerValue.length(),
+          null);
+        int atomText = HeaderParser.ParsePhraseAtom(headerValue, index,
+          headerValue.length(), null);
         int typeEnd = atomText;
         String origValue = headerValue;
         boolean isUtf8 = typeEnd - index == 5 &&
-                          (headerValue.charAt(index) & ~0x20) == 'U' &&
-                          (headerValue.charAt(index + 1) & ~0x20) == 'T' &&
-                          (headerValue.charAt(index + 2) & ~0x20) == 'F' &&
-                          headerValue.charAt(index + 3) == '-' &&
-                          headerValue.charAt(index + 4) == '8';
-        atomText = HeaderParser.ParseCFWS(headerValue, atomText, headerValue.length(), null);
+                (headerValue.charAt(index) & ~0x20) == 'U' && (headerValue.charAt(index +
+                1) & ~0x20) == 'T' && (headerValue.charAt(index + 2) & ~0x20) == 'F' &&
+                headerValue.charAt(index + 3) == '-' && headerValue.charAt(index + 4) == '8';
+        atomText = HeaderParser.ParseCFWS(headerValue, atomText,
+          headerValue.length(), null);
         if (index < headerValue.length() && headerValue.charAt(atomText) == ';') {
-          String typePart = headerValue.substring(0,atomText + 1);
+          String typePart = headerValue.substring(0, atomText + 1);
           // Downgrade the comments in the type part
           // NOTE: Final-recipient has the same syntax as original-recipient,
           // except for the header field name
-          typePart = HeaderFieldParsers.GetParser("original-recipient").DowngradeFieldValue(typePart);
+          typePart = HeaderFieldParsers.GetParser("original-recipient"
+).DowngradeFieldValue(typePart);
           if (isUtf8) {
             // Downgrade the non-ASCII characters in the address
             StringBuilder builder = new StringBuilder();
@@ -1604,16 +1674,17 @@ public void setContentDisposition(ContentDisposition value) {
             headerValue = typePart + headerValue.substring(atomText + 1);
           }
         }
-        if (HasTextToEscapeIgnoreEncodedWords(headerValue, 0, headerValue.length())) {
+   if (HasTextToEscapeIgnoreEncodedWords(headerValue, 0,
+          headerValue.length())) {
           // Encapsulate the header field in encoded words
           if (status != null) {
             status[0] = 2;  // Encapsulated
           }
-          return Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTabLeft(origValue));
+     return
+  Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTabLeft(origValue));
         }
         if (status != null) {
-          status[0] = 1;  // Downgraded
-        }
+          status[0] = 1;  // Downgraded }
         return headerValue;
       }
       if (status != null) {
@@ -1632,7 +1703,7 @@ public void setContentDisposition(ContentDisposition value) {
       int lastIndex = -1;
       ArrayWriter writer = null;
       while (index < endIndex) {
-        sb.delete(0,(0)+(sb.length()));
+        sb.delete(0, (0)+(sb.length()));
         boolean first = true;
         int headerNameStart = index;
         int headerNameEnd = index;
@@ -1680,9 +1751,11 @@ public void setContentDisposition(ContentDisposition value) {
         int headerValueStart = index;
         int headerValueEnd = index;
         String origFieldName =
-          DataUtilities.GetUtf8String(bytes, headerNameStart, headerValueStart - headerNameStart, true);
+          DataUtilities.GetUtf8String(bytes, headerNameStart,
+            headerValueStart - headerNameStart, true);
         String fieldName = DataUtilities.ToLowerCaseAscii(
-          DataUtilities.GetUtf8String(bytes, headerNameStart, headerNameEnd - headerNameStart, true));
+          DataUtilities.GetUtf8String(bytes, headerNameStart, headerNameEnd
+            - headerNameStart, true));
         boolean origRecipient = fieldName.equals("original-recipient");
         boolean finalRecipient = fieldName.equals("final-recipient");
         // Read the header field value using UTF-8 characters
@@ -1773,13 +1846,15 @@ public void setContentDisposition(ContentDisposition value) {
             WordWrapEncoder encoder = null;
             if (status[0] == 2) {
               encoder = new WordWrapEncoder((origRecipient ?
-                                             "Downgraded-Original-Recipient" :
-                                             "Downgraded-Final-Recipient") + ":");
+              "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient"
+) +
+                              ":");
             } else {
               encoder = new WordWrapEncoder(origFieldName);
             }
             encoder.AddString(headerValue);
-            byte[] newBytes = DataUtilities.GetUtf8Bytes(encoder.toString(), true);
+        byte[] newBytes = DataUtilities.GetUtf8Bytes(encoder.toString(),
+              true);
             writer.WriteBytes(newBytes, 0, newBytes.length);
             lastIndex = headerValueEnd;
           }
@@ -1792,16 +1867,14 @@ public void setContentDisposition(ContentDisposition value) {
       return bytes;
     }
 
-    private static void ReadHeaders(
-      ITransform stream,
-      Collection<String> headerList,
-      boolean start) {
+    private static void ReadHeaders(ITransform stream,
+      Collection<String> headerList, boolean start) {
       int lineCount = 0;
       int[] bytesRead = new int[1];
       StringBuilder sb = new StringBuilder();
       TransformWithUnget ungetStream = new TransformWithUnget(stream);
       while (true) {
-        sb.delete(0,(0)+(sb.length()));
+        sb.delete(0, (0)+(sb.length()));
         boolean first = true;
         boolean endOfHeaders = false;
         boolean wsp = false;
@@ -1809,7 +1882,8 @@ public void setContentDisposition(ContentDisposition value) {
         while (true) {
           int c = ungetStream.read();
           if (c == -1) {
-            throw new MessageDataException("Premature end before all headers were read");
+  throw new
+  MessageDataException("Premature end before all headers were read");
           }
           ++lineCount;
           if (first && c == '\r') {
@@ -1821,7 +1895,8 @@ public void setContentDisposition(ContentDisposition value) {
           }
           if ((c >= 0x21 && c <= 57) || (c >= 59 && c <= 0x7e)) {
             if (wsp) {
-              throw new MessageDataException("Whitespace within header field name");
+         throw new
+                MessageDataException("Whitespace within header field name");
             }
             first = false;
             if (c >= 'A' && c <= 'Z') {
@@ -1835,13 +1910,15 @@ public void setContentDisposition(ContentDisposition value) {
             }
             break;
           } else if (c == 0x20 || c == 0x09) {
-            if (start && c == 0x20 && sb.length() == 4 && sb.toString().equals("From")) {
+    if (start && c == 0x20 && sb.length() == 4 && sb.toString().equals("From"
+)) {
               // Mbox convention, skip the entire line
-              sb.delete(0,(0)+(sb.length()));
+              sb.delete(0, (0)+(sb.length()));
               while (true) {
                 c = ungetStream.read();
                 if (c == -1) {
-                  throw new MessageDataException("Premature end before all headers were read");
+  throw new
+  MessageDataException("Premature end before all headers were read");
                 }
                 if (c == '\r') {
                   if (ungetStream.read() == '\n') {
@@ -1869,7 +1946,7 @@ public void setContentDisposition(ContentDisposition value) {
           throw new MessageDataException("Empty header field name");
         }
         String fieldName = sb.toString();
-        sb.delete(0,(0)+(sb.length()));
+        sb.delete(0, (0)+(sb.length()));
         // Read the header field value using UTF-8 characters
         // rather than bytes (DEVIATION: RFC 6532 allows UTF-8
         // in header field values, but not everywhere in these values,
@@ -1877,7 +1954,8 @@ public void setContentDisposition(ContentDisposition value) {
         while (true) {
           int c = ReadUtf8Char(ungetStream, bytesRead);
           if (c == -1) {
-            throw new MessageDataException("Premature end before all headers were read");
+  throw new
+  MessageDataException("Premature end before all headers were read");
           }
           if (c == '\r') {
             // We're only looking for the single-byte LF, so
@@ -1937,7 +2015,8 @@ public void setContentDisposition(ContentDisposition value) {
               break;
             }
             if (c < 0) {
-              throw new MessageDataException("Premature end before all headers were read");
+  throw new
+  MessageDataException("Premature end before all headers were read");
             }
             sb.append('\r');
             ungetStream.Unget();
@@ -1947,7 +2026,8 @@ public void setContentDisposition(ContentDisposition value) {
           // NOTE: Header field line limit not enforced here, only
           // in the header field name; it's impossible to generate
           // a conforming message if the name is too long
-          // NOTE: Some emails still have 8-bit bytes in an unencoded subject line
+          // NOTE: Some emails still have 8-bit bytes in an unencoded
+          //subject line
           // or other unstructured header field; however, since RFC6532,
           // we can just assume the UTF-8 encoding in these cases; in
           // case the bytes are not valid UTF-8, a replacement character
@@ -1974,7 +2054,7 @@ public void setContentDisposition(ContentDisposition value) {
      * Gets an internal value.
      * @return An internal value.
      */
-      public Message getMessage() {
+      public final Message getMessage() {
           return this.message;
         }
 
@@ -1984,22 +2064,24 @@ public void setContentDisposition(ContentDisposition value) {
      * Gets an internal value.
      * @return An internal value.
      */
-      public String getBoundary() {
+      public final String getBoundary() {
           return this.boundary;
         }
 
       public MessageStackEntry (Message msg) {
-
         this.message = msg;
         String newBoundary = "";
         MediaType mediaType = msg.getContentType();
         if (mediaType.isMultipart()) {
           newBoundary = mediaType.GetParameter("boundary");
           if (newBoundary == null) {
-            throw new MessageDataException("Multipart message has no boundary defined");
+   throw new
+  MessageDataException("Multipart message has no boundary defined");
           }
           if (!IsWellFormedBoundary(newBoundary)) {
-            throw new MessageDataException("Multipart message has an invalid boundary defined: " + newBoundary);
+            throw new
+  MessageDataException("Multipart message has an invalid boundary defined: "+
+              newBoundary);
           }
         }
         this.boundary = newBoundary;
@@ -2024,9 +2106,9 @@ public void setContentDisposition(ContentDisposition value) {
       int bufferCount = 0;
       int bufferLength = buffer.length;
       this.body = new byte[0];
-      java.io.ByteArrayOutputStream ms=null;
+      java.io.ByteArrayOutputStream ms = null;
 try {
-ms=new java.io.ByteArrayOutputStream();
+ms = new java.io.ByteArrayOutputStream();
 
         while (true) {
           int ch = 0;
@@ -2045,7 +2127,7 @@ ms=new java.io.ByteArrayOutputStream();
 
               if (leaf != null) {
                 if (bufferCount > 0) {
-                  ms.write(buffer,0,bufferCount);
+                  ms.write(buffer, 0, bufferCount);
                 }
                 leaf.body = ms.toByteArray();
                 // Clear for the next body
@@ -2059,7 +2141,8 @@ ms=new java.io.ByteArrayOutputStream();
               while (multipartStack.size() > stackCount) {
                 multipartStack.remove(stackCount);
               }
-              Message parentMessage = multipartStack.get(multipartStack.size() - 1).getMessage();
+      Message parentMessage = multipartStack.get(multipartStack.size() -
+                1).getMessage();
               boundaryChecker.StartBodyPartHeaders();
               MediaType ctype = parentMessage.getContentType();
               boolean parentIsDigest = ctype.getSubType().equals("digest") &&
@@ -2084,7 +2167,7 @@ ms=new java.io.ByteArrayOutputStream();
               // All body parts were read
               if (leaf != null) {
                 if (bufferCount > 0) {
-                  ms.write(buffer,0,bufferCount);
+                  ms.write(buffer, 0, bufferCount);
                   bufferCount = 0;
                 }
                 leaf.body = ms.toByteArray();
@@ -2094,14 +2177,14 @@ ms=new java.io.ByteArrayOutputStream();
           } else {
             buffer[bufferCount++] = (byte)ch;
             if (bufferCount >= bufferLength) {
-              ms.write(buffer,0,bufferCount);
+              ms.write(buffer, 0, bufferCount);
               bufferCount = 0;
             }
           }
         }
 }
 finally {
-try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
     }
 
@@ -2144,9 +2227,9 @@ try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
       byte[] buffer = new byte[8192];
       int bufferCount = 0;
       int bufferLength = buffer.length;
-      java.io.ByteArrayOutputStream ms=null;
+      java.io.ByteArrayOutputStream ms = null;
 try {
-ms=new java.io.ByteArrayOutputStream();
+ms = new java.io.ByteArrayOutputStream();
 
         while (true) {
           int ch = 0;
@@ -2162,17 +2245,17 @@ ms=new java.io.ByteArrayOutputStream();
           }
           buffer[bufferCount++] = (byte)ch;
           if (bufferCount >= bufferLength) {
-            ms.write(buffer,0,bufferCount);
+            ms.write(buffer, 0, bufferCount);
             bufferCount = 0;
           }
         }
         if (bufferCount > 0) {
-          ms.write(buffer,0,bufferCount);
+          ms.write(buffer, 0, bufferCount);
         }
         this.body = ms.toByteArray();
 }
 finally {
-try { if(ms!=null)ms.close(); } catch (java.io.IOException ex){}
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
     }
 

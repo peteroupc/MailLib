@@ -57,7 +57,8 @@ namespace PeterO.Mail {
       if (this.hasNewBodyPart || this.endOfStream) {
         return -1;
       }
-      int c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte();
+int c = this.lastByte = this.ungetting ? this.lastByte :
+        this.input.ReadByte();
       this.ungetting = false;
       if (this.readingHeaders) {
         return c;
@@ -69,7 +70,8 @@ namespace PeterO.Mail {
       if (c == '-' && this.started) {
         // Check for a boundary
         this.started = false;
-        c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+          this.input.ReadByte();
         this.ungetting = false;
         if (c == '-') {
           // Possible boundary candidate
@@ -80,11 +82,13 @@ namespace PeterO.Mail {
       }
       this.started = false;
       if (c == 0x0d) {
-        c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+          this.input.ReadByte();
         this.ungetting = false;
         if (c == 0x0a) {
           // Line break was read
-          c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+            this.input.ReadByte();
           this.ungetting = false;
           if (c == -1) {
             this.ResizeBuffer(1);
@@ -104,7 +108,8 @@ namespace PeterO.Mail {
             this.buffer[1] = (byte)c;
             return 0x0d;
           }
-          c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+            this.input.ReadByte();
           this.ungetting = false;
           if (c == -1) {
             this.ResizeBuffer(2);
@@ -142,10 +147,9 @@ namespace PeterO.Mail {
       // check boundaries here in order to find out
       // whether to emit the CRLF before the "--".
       #if DEBUG
-      if (this.bufferCount != 0) {
-        throw new ArgumentException("this.bufferCount (" + Convert.ToString(
-          (int)this.bufferCount,
-          System.Globalization.CultureInfo.InvariantCulture) + ") is not equal to " + "0");
+if (this.bufferCount != 0) {
+        throw new ArgumentException("this.bufferCount (" + this.bufferCount+
+          ") is not equal to " + "0");
       }
       #endif
 
@@ -173,7 +177,8 @@ namespace PeterO.Mail {
         int c;
         int bytesRead = 0;
         for (int i = 0; i < 72; ++i) {
-          c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte(); this.ungetting = false;
+          c = this.lastByte = this.ungetting ? this.lastByte :
+            this.input.ReadByte(); this.ungetting = false;
           if (c < 0 || c >= 0x80 || c == 0x0d) {
             this.ungetting = true;
             break;
@@ -183,7 +188,7 @@ namespace PeterO.Mail {
           this.ResizeBuffer(bytesRead + bufferStart);
           this.buffer[bytesRead + bufferStart - 1] = (byte)c;
         }
-        // Console.WriteLine("::" + (bytesRead));
+        // Console.WriteLine("::" + bytesRead);
         // NOTE: All boundary strings are assumed to
         // have only ASCII characters (with values
         // less than 128). Check boundaries from
@@ -195,7 +200,8 @@ namespace PeterO.Mail {
           if (!String.IsNullOrEmpty(boundary) && boundary.Length <= bytesRead) {
             bool match = true;
             for (int j = 0; j < boundary.Length; ++j) {
-              match &= (boundary[j] & 0xff) == (int)(this.buffer[j + bufferStart] & 0xff);
+   match &= (boundary[j] & 0xff) == (int)(this.buffer[j + bufferStart] &
+                0xff);
             }
             if (match) {
               matchingBoundary = boundary;
@@ -213,7 +219,9 @@ namespace PeterO.Mail {
           }
           // Boundary line found
           if (matchingBoundary.Length + 1 < bytesRead) {
-            closingDelim |= this.buffer[matchingBoundary.Length + bufferStart] == '-' && this.buffer[matchingBoundary.Length + 1 + bufferStart] == '-';
+            closingDelim |= this.buffer[matchingBoundary.Length +
+              bufferStart] == '-' && this.buffer[matchingBoundary.Length + 1+
+              bufferStart] == '-' ;
           }
           // Clear the buffer, the boundary line
           // isn't part of any body data
@@ -235,14 +243,16 @@ namespace PeterO.Mail {
             // part, the rest of the data before the next boundary
             // is insignificant
             while (true) {
-              c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+                this.input.ReadByte();
               this.ungetting = false;
               if (c == -1) {
                 // The body higher up didn't end yet
                 throw new MessageDataException("Premature end of message");
               }
               if (c == 0x0d) {
-                c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+                  this.input.ReadByte();
                 this.ungetting = false;
                 if (c == -1) {
                   // The body higher up didn't end yet
@@ -250,7 +260,8 @@ namespace PeterO.Mail {
                 }
                 if (c == 0x0a) {
                   // Start of new body part
-                  c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+                    this.input.ReadByte();
                   this.ungetting = false;
                   if (c == -1) {
                     throw new MessageDataException("Premature end of message");
@@ -264,7 +275,8 @@ namespace PeterO.Mail {
                     // Not a boundary delimiter
                     continue;
                   }
-                  c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+                    this.input.ReadByte();
                   this.ungetting = false;
                   if (c == -1) {
                     throw new MessageDataException("Premature end of message");
@@ -294,13 +306,15 @@ namespace PeterO.Mail {
             // next line will start the headers of the
             // next body part).
             while (true) {
-              c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+                this.input.ReadByte();
               this.ungetting = false;
               if (c == -1) {
                 throw new MessageDataException("Premature end of message");
               }
               if (c == 0x0d) {
-                c = this.lastByte = this.ungetting ? this.lastByte : this.input.ReadByte();
+    c = this.lastByte = this.ungetting ? this.lastByte :
+                  this.input.ReadByte();
                 this.ungetting = false;
                 if (c == -1) {
                   throw new MessageDataException("Premature end of message");
@@ -342,7 +356,8 @@ namespace PeterO.Mail {
         throw new ArgumentException("doesn't satisfy !this.hasNewBodyPart");
       }
       if (!this.bufferCount.Equals(0)) {
-        throw new ArgumentException("this.bufferCount (" + Convert.ToString((int)this.bufferCount, System.Globalization.CultureInfo.InvariantCulture) + ") is not equal to " + "0");
+        throw new ArgumentException("this.bufferCount (" + this.bufferCount+
+          ") is not equal to " + "0");
       }
       #endif
 
@@ -356,7 +371,8 @@ namespace PeterO.Mail {
         throw new ArgumentException("doesn't satisfy this.readingHeaders");
       }
       if (!this.bufferCount.Equals(0)) {
-        throw new ArgumentException("this.bufferCount (" + Convert.ToString((int)this.bufferCount, System.Globalization.CultureInfo.InvariantCulture) + ") is not equal to " + "0");
+        throw new ArgumentException("this.bufferCount (" + this.bufferCount+
+          ") is not equal to " + "0");
       }
       #endif
 
@@ -365,7 +381,8 @@ namespace PeterO.Mail {
       this.started = true;  // in case a boundary delimiter immediately starts
     }
 
-    /// <summary>Gets a value indicating whether a new body part was detected.</summary>
+    /// <summary>Gets a value indicating whether a new body part was
+    /// detected.</summary>
     /// <value>True if a new body part was detected; otherwise, false..</value>
     public bool HasNewBodyPart {
       get {

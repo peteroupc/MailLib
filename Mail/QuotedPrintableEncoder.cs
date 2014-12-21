@@ -75,7 +75,8 @@ namespace PeterO.Mail {
       this.WriteToString(str, new[] { b }, 0, 1);
     }
 
-    public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
+    public void WriteToString(StringBuilder str, byte[] data, int offset,
+      int count) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
@@ -83,19 +84,24 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("data");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("offset (" + offset + ") is less than " +
+          "0");
       }
       if (offset > data.Length) {
-        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)data.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("offset (" + offset + ") is more than " +
+          data.Length);
       }
       if (count < 0) {
-        throw new ArgumentException("count (" + Convert.ToString((int)count, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      throw new ArgumentException("count (" + count + ") is less than " +
+          "0");
       }
       if (count > data.Length) {
-        throw new ArgumentException("count (" + Convert.ToString((int)count, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)data.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("count (" + count + ") is more than " +
+          data.Length);
       }
       if (data.Length - offset < count) {
-        throw new ArgumentException("data's length minus " + offset + " (" + Convert.ToString((int)(data.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)count, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("data's length minus " + offset + " (" +
+          (data.Length - offset) + ") is less than " + count);
       }
       int length = offset + count;
       int i = offset;
@@ -125,9 +131,12 @@ namespace PeterO.Mail {
           }
         } else if (data[i] == 9) {
           this.IncrementAndAppend(str, "=09");
-        } else if (this.lineCount == 0 && data[i] == (byte)'.' && i + 1 < length && (data[i] == '\r' || data[i] == '\n')) {
+        } else if (this.lineCount == 0 && data[i] == (byte)'.' && i + 1 <
+          length && (data[i] == '\r' || data[i] == '\n')) {
           this.IncrementAndAppend(str, "=2E");
-        } else if (this.lineCount == 0 && i + 4 < length && data[i] == (byte)'F' && data[i + 1] == (byte)'r' && data[i + 2] == (byte)'o' && data[i + 3] == (byte)'m' && data[i + 4] == (byte)' ') {
+        } else if (this.lineCount == 0 && i + 4 < length && data[i] ==
+          (byte)'F' && data[i + 1] == (byte)'r' && data[i + 2] == (byte)'o'&&
+          data[i + 3] == (byte)'m' && data[i + 4] == (byte)' ') {
           // See page 7-8 of RFC 2049
           this.IncrementAndAppend(str, "=46rom ");
           i += 4;
@@ -157,8 +166,8 @@ namespace PeterO.Mail {
         } else if (data[i] == (byte)'=') {
           this.IncrementAndAppend(str, "=3D");
         } else if ((data[i] >= 'A' && data[i] <= 'Z') ||
-                   (data[i] >= '0' && data[i] <= '9') ||
-                   (data[i] >= 'a' && data[i] <= 'z') ||
+    (data[i] >= '0' && data[i] <= '9') || (data[i] >= 'a' && data[i] <= 'z'
+) ||
                    "()'+-.,/?:".IndexOf((char)data[i]) >= 0) {
           this.IncrementAndAppendChar(str, (char)data[i]);
         } else {

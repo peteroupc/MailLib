@@ -8,8 +8,8 @@ at: http://upokecenter.com/d/
 using System;
 
 namespace PeterO.Mail {
-    /// <summary>A lightweight version of MemoryStream, since it doesn't
-    /// derive from Stream and doesn't use IO exceptions.</summary>
+    /// <summary>A lightweight version of MemoryStream, since it doesn't derive from
+    /// Stream and doesn't use IO exceptions.</summary>
   internal sealed class ArrayWriter {
     private int retvalPos;
     private int retvalMax;
@@ -24,10 +24,12 @@ namespace PeterO.Mail {
 
     public void SetLength(int length) {
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("length (" + length + ") is less than " +
+          "0");
       }
       if (length > this.retvalMax) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)this.retvalMax, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + length + ") is more than "+
+          (this.retvalMax));
       }
       this.retvalMax = length;
       if (this.retvalPos > this.retvalMax) {
@@ -42,10 +44,12 @@ namespace PeterO.Mail {
 
       set {
         if (value < 0) {
-          throw new ArgumentException("value (" + Convert.ToString((int)value, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      throw new ArgumentException("value (" + value + ") is less than " +
+            "0");
         }
         if (value > this.retvalMax) {
-          throw new ArgumentException("value (" + Convert.ToString((int)value, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)this.retvalMax, System.Globalization.CultureInfo.InvariantCulture));
+          throw new ArgumentException("value (" + value + ") is more than "+
+            (this.retvalMax));
         }
         this.retvalPos = value;
       }
@@ -62,19 +66,24 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("src");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("offset (" + offset + ") is less than " +
+          "0");
       }
       if (offset > src.Length) {
-        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)src.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("offset (" + offset + ") is more than " +
+          src.Length);
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("length (" + length + ") is less than " +
+          "0");
       }
       if (length > src.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)src.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + length + ") is more than " +
+          src.Length);
       }
       if (src.Length - offset < length) {
-        throw new ArgumentException("src's length minus " + offset + " (" + Convert.ToString((int)(src.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("src's length minus " + offset + " (" +
+          (src.Length - offset) + ") is less than " + length);
       }
       int maxLength = Math.Min(length, this.retvalMax - this.retvalPos);
       Array.Copy(this.retval, this.retvalPos, src, offset, maxLength);
@@ -88,23 +97,29 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("src");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("offset (" + offset + ") is less than " +
+          "0");
       }
       if (offset > src.Length) {
-        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)src.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("offset (" + offset + ") is more than " +
+          src.Length);
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("length (" + length + ") is less than " +
+          "0");
       }
       if (length > src.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)src.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + length + ") is more than " +
+          src.Length);
       }
       if (src.Length - offset < length) {
-        throw new ArgumentException("src's length minus " + offset + " (" + Convert.ToString((int)(src.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("src's length minus " + offset + " (" +
+          (src.Length - offset) + ") is less than " + length);
       }
       if (this.retval.Length - this.retvalPos < length) {
         // Array too small, make it grow
-        int newLength = Math.Max(this.retvalPos + length + 1000, this.retval.Length * 2);
+        int newLength = Math.Max(this.retvalPos + length + 1000,
+          this.retval.Length * 2);
         var newArray = new byte[newLength];
         Array.Copy(this.retval, 0, newArray, 0, this.retvalPos);
         this.retval = newArray;

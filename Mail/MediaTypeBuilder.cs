@@ -51,8 +51,8 @@ namespace PeterO.Mail {
 
     /// <summary>Initializes a new instance of the MediaTypeBuilder class.</summary>
     /// <param name='mt'>A MediaType object.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='mt'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref name='mt'/>
+    /// is null.</exception>
     public MediaTypeBuilder(MediaType mt) {
       if (mt == null) {
         throw new ArgumentNullException("mt");
@@ -71,7 +71,8 @@ namespace PeterO.Mail {
       this.SetSubType(subtype);
     }
 
-    /// <summary>Gets a value indicating whether this is a text media type.</summary>
+    /// <summary>Gets a value indicating whether this is a text media
+    /// type.</summary>
     /// <value>True if this is a text media type; otherwise, false..</value>
     public bool IsText {
       get {
@@ -97,8 +98,8 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
+    /// is null.</exception>
     public MediaTypeBuilder SetTopLevelType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -106,7 +107,8 @@ namespace PeterO.Mail {
       if (str.Length == 0) {
         throw new ArgumentException("str is empty.");
       }
-      if (MediaType.skipMimeTypeSubtype(str, 0, str.Length, null) != str.Length) {
+   if (MediaType.skipMimeTypeSubtype(str, 0, str.Length, null) !=
+        str.Length) {
         throw new ArgumentException("Not a well-formed top level type: " + str);
       }
       this.type = DataUtilities.ToLowerCaseAscii(str);
@@ -117,8 +119,8 @@ namespace PeterO.Mail {
     /// <param name='name'>Name of the parameter to remove. The name is compared
     /// case-insensitively.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='name'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> is null.</exception>
     public MediaTypeBuilder RemoveParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -132,8 +134,8 @@ namespace PeterO.Mail {
     /// case-insensitively.</param>
     /// <param name='value'>A string object. (2).</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='value'/> or <paramref name='name'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='value'/> or <paramref name='name'/> is null.</exception>
     public MediaTypeBuilder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException("value");
@@ -144,8 +146,10 @@ namespace PeterO.Mail {
       if (name.Length == 0) {
         throw new ArgumentException("name is empty.");
       }
-      if (MediaType.skipMimeTypeSubtype(name, 0, name.Length, null) != name.Length) {
-        throw new ArgumentException("Not a well-formed parameter name: " + name);
+if (MediaType.skipMimeTypeSubtype(name, 0, name.Length, null) !=
+        name.Length) {
+      throw new ArgumentException("Not a well-formed parameter name: " +
+          name);
       }
       this.parameters[DataUtilities.ToLowerCaseAscii(name)] = value;
       return this;
@@ -154,8 +158,8 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
+    /// is null.</exception>
     public MediaTypeBuilder SetSubType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -163,7 +167,8 @@ namespace PeterO.Mail {
       if (str.Length == 0) {
         throw new ArgumentException("str is empty.");
       }
-      if (MediaType.skipMimeTypeSubtype(str, 0, str.Length, null) != str.Length) {
+   if (MediaType.skipMimeTypeSubtype(str, 0, str.Length, null) !=
+        str.Length) {
         throw new ArgumentException("Not a well-formed subtype: " + str);
       }
       this.subtype = DataUtilities.ToLowerCaseAscii(str);

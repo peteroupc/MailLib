@@ -9,57 +9,54 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-    /// <summary><para>Implements the Unicode normalization algorithm
-    /// and contains methods and functionality to test and convert Unicode
-    /// strings for Unicode normalization.</para>
-    /// <para>NOTICE: While
-    /// this class's source code is in the public domain, the class uses an
-    /// internal class, called NormalizationData, that includes data derived
-    /// from the Unicode Character Database. In case doing so is required,
-    /// the permission notice for the Unicode Character Database is given
-    /// here:</para>
+    /// <summary><para>Implements the Unicode normalization algorithm and contains
+    /// methods and functionality to test and convert Unicode strings for Unicode
+    /// normalization.</para>
+    /// <para>NOTICE: While this class's source code is in the
+    /// public domain, the class uses an internal class, called NormalizationData,
+    /// that includes data derived from the Unicode Character Database. In case
+    /// doing so is required, the permission notice for the Unicode Character
+    /// Database is given here:</para>
     /// <para>COPYRIGHT AND PERMISSION NOTICE</para>
-    /// <para>Copyright
-    /// (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under
-    /// the Terms of Use in http://www.unicode.org/copyright.html.</para>
-    /// <para>Permission is hereby granted, free of charge, to any person
-    /// obtaining a copy of the Unicode data files and any associated documentation
-    /// (the "Data Files") or Unicode software and any associated documentation
-    /// (the "Software") to deal in the Data Files or Software without restriction,
+    /// <para>Copyright (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed
+    /// under the Terms of Use in http://www.unicode.org/copyright.html.</para>
+    /// <para>Permission is hereby granted, free of charge, to any person obtaining
+    /// a copy of the Unicode data files and any associated documentation (the "Data
+    /// Files") or Unicode software and any associated documentation (the
+    /// "Software") to deal in the Data Files or Software without restriction,
     /// including without limitation the rights to use, copy, modify, merge,
-    /// publish, distribute, and/or sell copies of the Data Files or Software,
-    /// and to permit persons to whom the Data Files or Software are furnished
-    /// to do so, provided that (a) this copyright and permission notice appear
-    /// with all copies of the Data Files or Software, (b) this copyright and
-    /// permission notice appear in associated documentation, and (c) there
-    /// is clear notice in each modified Data File or in the Software as well
-    /// as in the documentation associated with the Data File(s) or Software
-    /// that the data or software has been modified.</para>
-    /// <para>THE DATA
-    /// FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-    /// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-    /// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
-    /// OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS
-    /// INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT
-    /// OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM
-    /// LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE
-    /// OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE
-    /// USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.</para>
-    /// <para>Except
-    /// as contained in this notice, the name of a copyright holder shall not
-    /// be used in advertising or otherwise to promote the sale, use or other
-    /// dealings in these Data Files or Software without prior written authorization
-    /// of the copyright holder.</para>
+    /// publish, distribute, and/or sell copies of the Data Files or Software, and
+    /// to permit persons to whom the Data Files or Software are furnished to do so,
+    /// provided that (a) this copyright and permission notice appear with all
+    /// copies of the Data Files or Software, (b) this copyright and permission
+    /// notice appear in associated documentation, and (c) there is clear notice in
+    /// each modified Data File or in the Software as well as in the documentation
+    /// associated with the Data File(s) or Software that the data or software has
+    /// been modified.</para>
+    /// <para>THE DATA FILES AND SOFTWARE ARE PROVIDED "AS
+    /// IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+    /// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    /// PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE
+    /// COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM,
+    /// OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER
+    /// RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+    /// CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+    /// CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.</para>
+    /// <para>Except as contained in this notice, the name of a copyright holder
+    /// shall not be used in advertising or otherwise to promote the sale, use or
+    /// other dealings in these Data Files or Software without prior written
+    /// authorization of the copyright holder.</para>
     /// </summary>
   public sealed class Normalizer
   {
-    /// <summary>Converts a string to the given Unicode normalization form.</summary>
+    /// <summary>Converts a string to the given Unicode normalization
+    /// form.</summary>
     /// <param name='str'>An arbitrary string.</param>
     /// <param name='form'>The Unicode normalization form to convert to.</param>
-    /// <returns>The parameter <paramref name='str'/> converted to the
-    /// given normalization form.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> is null.</exception>
+    /// <returns>The parameter <paramref name='str'/> converted to the given
+    /// normalization form.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
+    /// is null.</exception>
     public static string Normalize(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -81,20 +78,23 @@ namespace PeterO.Text {
       return builder.ToString();
     }
 
-    internal static int DecompToBufferInternal(int ch, bool compat, int[] buffer, int index) {
+    internal static int DecompToBufferInternal(int ch, bool compat, int[]
+      buffer, int index) {
       #if DEBUG
       if (buffer == null) {
         throw new ArgumentNullException("buffer");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + index + ") is less than " + "0");
+      throw new ArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > buffer.Length) {
-        throw new ArgumentException("index (" + index + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + index + ") is more than " +
+          buffer.Length);
       }
       #endif
-
-      int offset = UnicodeDatabase.GetDecomposition(ch, compat, buffer, index);
+int offset = UnicodeDatabase.GetDecomposition(ch, compat,
+        buffer, index);
       if (buffer[index] != ch) {
         var copy = new int[offset - index];
         Array.Copy(buffer, index, copy, 0, copy.Length);
@@ -106,16 +106,19 @@ namespace PeterO.Text {
       return offset;
     }
 
-    internal static int DecompToBuffer(int ch, bool compat, int[] buffer, int index) {
+    internal static int DecompToBuffer(int ch, bool compat, int[] buffer,
+      int index) {
       #if DEBUG
       if (buffer == null) {
         throw new ArgumentNullException("buffer");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + index + ") is less than " + "0");
+      throw new ArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > buffer.Length) {
-        throw new ArgumentException("index (" + index + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + index + ") is more than " +
+          buffer.Length);
       }
       #endif
 
@@ -156,27 +159,34 @@ namespace PeterO.Text {
       this.lastStableIndex = -1;
       this.iterator = str;
       this.form = form;
-      this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
+    this.compatMode = form == Normalization.NFKC || form ==
+        Normalization.NFKD;
     }
 
-    private Normalizer Init(string str, int index, int length, Normalization formLocal) {
+    private Normalizer Init(string str, int index, int length, Normalization
+      formLocal) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + index + ") is less than " + "0");
+      throw new ArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > str.Length) {
-        throw new ArgumentException("index (" + index + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + index + ") is more than " +
+          str.Length);
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("length (" + length + ") is less than " +
+          "0");
       }
       if (length > str.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + length + ") is more than " +
+          str.Length);
       }
       if (str.Length - index < length) {
-        throw new ArgumentException("str's length minus " + index + " (" + Convert.ToString((int)(str.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("str's length minus " + index + " (" +
+          (str.Length - index) + ") is less than " + length);
       }
       this.readbuffer = new int[1];
       this.lastStableIndex = -1;
@@ -184,7 +194,8 @@ namespace PeterO.Text {
       this.iterator = str;
       this.iterEndIndex = index + length;
       this.form = formLocal;
-      this.compatMode = formLocal == Normalization.NFKC || formLocal == Normalization.NFKD;
+      this.compatMode = formLocal == Normalization.NFKC || formLocal ==
+        Normalization.NFKD;
       return this;
     }
 
@@ -194,7 +205,8 @@ namespace PeterO.Text {
       int length,
       Normalization form) {
       int i = start;
-      var norm = new Normalizer(charList, form).Init(charList, start, length, form);
+ var norm = new Normalizer(charList, form).Init(charList, start, length,
+        form);
       int ch = 0;
       while ((ch = norm.ReadChar()) >= 0) {
         int c = charList[i];
@@ -236,7 +248,8 @@ namespace PeterO.Text {
           return false;
         }
         bool isStable = false;
-        if ((c & mask) == c && (i + 1 == str.Length || (str[i + 1] & mask) == str[i + 1])) {
+        if ((c & mask) == c && (i + 1 == str.Length || (str[i + 1] & mask)
+          == str[i + 1])) {
           // Quick check for an ASCII character followed by another
           // ASCII character (or Latin-1 in NFC) or the end of string.
           // Treat the first character as stable
@@ -251,7 +264,8 @@ namespace PeterO.Text {
         } else if (nonStableStart >= 0 && isStable) {
           // We have at least one non-stable code point,
           // normalize these code points.
-          if (!NormalizeAndCheckString(str, nonStableStart, i - nonStableStart, form)) {
+ if (!NormalizeAndCheckString(str, nonStableStart, i - nonStableStart,
+            form)) {
             return false;
           }
           nonStableStart = -1;
@@ -261,7 +275,8 @@ namespace PeterO.Text {
         }
       }
       if (nonStableStart >= 0) {
-        if (!NormalizeAndCheckString(str, nonStableStart, str.Length - nonStableStart, form)) {
+        if (!NormalizeAndCheckString(str, nonStableStart, str.Length -
+          nonStableStart, form)) {
           return false;
         }
       }
@@ -296,10 +311,12 @@ namespace PeterO.Text {
         ch = -1;
       } else {
         ch = this.iterator[this.characterListPos];
-        if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex &&
-                this.iterator[this.characterListPos + 1] >= 0xdc00 && this.iterator[this.characterListPos + 1] <= 0xdfff) {
+if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex&&
+          this.iterator[this.characterListPos + 1] >= 0xdc00 &&
+                  this.iterator[this.characterListPos + 1] <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          ch = 0x10000 + ((ch - 0xd800) << 10) + (this.iterator[this.characterListPos + 1] - 0xdc00);
+          ch = 0x10000 + ((ch - 0xd800) << 10) +
+            (this.iterator[this.characterListPos + 1] - 0xdc00);
           ++this.characterListPos;
         } else if ((ch & 0xf800) == 0xd800) {
           // unpaired surrogate
@@ -321,26 +338,31 @@ namespace PeterO.Text {
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='length'>A 32-bit signed integer. (3).</param>
     /// <returns>A 32-bit signed integer.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='chars'/> or "this.buffer" is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='chars'/> or "this.buffer" is null.</exception>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new ArgumentNullException("chars");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + index + ") is less than " + "0");
+      throw new ArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > chars.Length) {
-        throw new ArgumentException("index (" + index + ") is more than " + chars.Length);
+        throw new ArgumentException("index (" + index + ") is more than " +
+          chars.Length);
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("length (" + length + ") is less than " +
+          "0");
       }
       if (length > chars.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + chars.Length);
+        throw new ArgumentException("length (" + length + ") is more than "+
+          chars.Length);
       }
       if (chars.Length - index < length) {
-        throw new ArgumentException("chars's length minus " + index + " (" + Convert.ToString((int)(chars.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("chars's length minus " + index + " (" +
+          (chars.Length - index) + ") is less than " + length);
       }
       if (length == 0) {
         return 0;
@@ -367,14 +389,15 @@ namespace PeterO.Text {
         }
       }
       do {
-        // Console.WriteLine("indexes=" + this.processedIndex + " " + this.flushIndex + ", length=" + length + " total=" + (total));
+        // Console.WriteLine("indexes=" + this.processedIndex + " " +
+        //this.flushIndex + ", length=" + length + " total=" + total);
         count = Math.Min(this.processedIndex - this.flushIndex, length - total);
         if (count < 0) {
           count = 0;
         }
         if (count != 0) {
           #if DEBUG
-          if (this.buffer == null) {
+if (this.buffer == null) {
             throw new ArgumentException("buffer is null");
           }
           #endif
@@ -416,7 +439,8 @@ namespace PeterO.Text {
               throw new ArgumentException("endIndex less than lastStableIndex");
             }
             #endif
-            Array.Copy(this.buffer, this.lastStableIndex, this.buffer, 0, this.buffer.Length - this.lastStableIndex);
+            Array.Copy(this.buffer, this.lastStableIndex, this.buffer, 0,
+              this.buffer.Length - this.lastStableIndex);
             // Console.WriteLine("endIndex=" + (this.endIndex));
             this.endIndex -= this.lastStableIndex;
             this.lastStableIndex = 0;
@@ -429,7 +453,8 @@ namespace PeterO.Text {
         }
       } while (total < length);
       // Fill buffer with processed code points
-      count = Math.Max(0, Math.Min(this.processedIndex - this.flushIndex, length - total));
+      count = Math.Max(0, Math.Min(this.processedIndex - this.flushIndex,
+        length - total));
       Array.Copy(this.buffer, this.flushIndex, chars, index, count);
       index += count;
       total += count;
@@ -439,7 +464,8 @@ namespace PeterO.Text {
 
     internal static bool IsStableCodePoint(int cp, Normalization form) {
       // Exclude YOD and HIRIQ because of Corrigendum 2
-      return UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 && cp != 0x5d9;
+      return UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 &&
+        cp != 0x5d9;
     }
 
     private bool LoadMoreData() {
@@ -454,7 +480,8 @@ namespace PeterO.Text {
             this.endOfString = true;
             break;
           }
-          this.endIndex = DecompToBuffer(c, this.compatMode, this.buffer, this.endIndex);
+this.endIndex = DecompToBuffer(c, this.compatMode, this.buffer,
+            this.endIndex);
         }
         // Check for the last stable code point if the
         // end of the string is not reached yet
@@ -462,7 +489,8 @@ namespace PeterO.Text {
           bool haveNewStable = false;
           // NOTE: lastStableIndex begins at -1
           for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
-            // Console.WriteLine("stable({0:X4})=" + (IsStableCodePoint(this.buffer[i], this.form)));
+            // Console.WriteLine("stable({0:X4})=" +
+            //(IsStableCodePoint(this.buffer[i], this.form)));
             if (IsStableCodePoint(this.buffer[i], this.form)) {
               this.lastStableIndex = i;
               haveNewStable = true;
@@ -507,19 +535,26 @@ namespace PeterO.Text {
         throw new ArgumentNullException("buffer");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + index + ") is less than " + "0");
+      throw new ArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > buffer.Length) {
-        throw new ArgumentException("index (" + index + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + index + ") is more than " +
+          buffer.Length);
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("length (" + length + ") is less than " +
+          "0");
       }
       if (length > buffer.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)buffer.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + length + ") is more than " +
+          buffer.Length);
       }
       if (buffer.Length - index < length) {
-        throw new ArgumentException("buffer's length minus " + index + " (" + Convert.ToString((int)(buffer.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("buffer's length minus " + index + " ("+
+          Convert.ToString((int)(buffer.Length - index),
+          System.Globalization.CultureInfo.InvariantCulture) +
+          ") is less than " + length);
       }
       #endif
 
@@ -539,8 +574,8 @@ namespace PeterO.Text {
             int c = buffer[offset - 1];
             buffer[offset - 1] = buffer[offset];
             buffer[offset] = c;
-            // Console.WriteLine("lead= {0:X4} ccc=" + (lead));
-            // Console.WriteLine("trail={0:X4} ccc=" + (trail));
+            // Console.WriteLine("lead= {0:X4} ccc=" + lead);
+            // Console.WriteLine("trail={0:X4} ccc=" + trail);
             // Console.WriteLine("now "+ToString(buffer,index,length));
             changed = true;
             // Lead is now at trail's position
@@ -553,17 +588,20 @@ namespace PeterO.Text {
 
     internal static int ComposeBuffer(int[] array, int length) {
       #if DEBUG
-      if (array == null) {
+if (array == null) {
         throw new ArgumentNullException("array");
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("length (" + length + ") is less than " +
+          "0");
       }
       if (length > array.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)array.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + length + ") is more than " +
+          array.Length);
       }
       if (array.Length < length) {
-        throw new ArgumentException("array's length (" + Convert.ToString((int)array.Length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("array's length (" + array.Length +
+          ") is less than " + length);
       }
       #endif
 

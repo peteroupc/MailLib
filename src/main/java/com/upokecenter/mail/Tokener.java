@@ -17,9 +17,9 @@ import java.util.*;
     }
 
     public void RestoreState(int state) {
-
       // if (tokenStack.size() != state) {
-      // System.out.println("Rolling back from " + tokenStack.size() + " to " + (state));
+      // System.out.println("Rolling back from " + tokenStack.size() + " to "
+      //+ state);
       // }
       while (state < this.tokenStack.size()) {
         this.tokenStack.remove(state);
@@ -27,8 +27,9 @@ import java.util.*;
     }
 
     public void Commit(int token, int startIndex, int endIndex) {
-      // System.out.println("Committing token " + token + ", size now " + (tokenStack.size()+1));
-      this.tokenStack.add(new int[] {token, startIndex, endIndex });
+      // System.out.println("Committing token " + token + ", size now " +
+      //(tokenStack.size() + 1));
+      this.tokenStack.add(new int[] { token, startIndex, endIndex });
     }
 
     public List<int[]> GetTokens() {
@@ -40,8 +41,8 @@ import java.util.*;
      * Compares one integer array with another.
      * @param x An integer array.
      * @param y An integer array. (2).
-     * @return Zero if both values are equal; a negative number if {@code
-     * x} is less than {@code y} , or a positive number if {@code x} is greater
+     * @return Zero if both values are equal; a negative number if {@code x} is
+     * less than {@code y} , or a positive number if {@code x} is greater
      * than {@code y} .
      */
     public int compare(int[] x, int[] y) {

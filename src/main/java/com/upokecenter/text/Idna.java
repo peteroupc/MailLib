@@ -8,14 +8,14 @@ at: http://upokecenter.com/d/
  */
 
     /**
-     * <p>Contains methods that implement Internationalized Domain Names
-     * in Applications (IDNA). IDNA enables using a wider range of letters,
+     * <p>Contains methods that implement Internationalized Domain Names in
+     * Applications (IDNA). IDNA enables using a wider range of letters,
      * numbers, and certain other characters in domain names.</p> <p>NOTICE:
-     * While this class's source code is in the public domain, the class uses
-     * two internal classes, called <code>NormalizationData</code> and <code>IdnaData</code>
-     * , that include data derived from the Unicode Character Database.
-     * See the documentation for the Normalizer class for the permission
-     * notice for the Unicode Character Database.</p>
+     * While this class's source code is in the public domain, the class
+     * uses two internal classes, called <code>NormalizationData</code> and
+     * <code>IdnaData</code> , that include data derived from the Unicode
+     * Character Database. See the documentation for the Normalizer class
+     * for the permission notice for the Unicode Character Database.</p>
      */
   public final class Idna {
 private Idna() {
@@ -84,7 +84,7 @@ private Idna() {
 
     static int GetBidiClass(int ch) {
       ByteData table = null;
-      synchronized(bidiClassesSync) {
+      synchronized (bidiClassesSync) {
         bidiClasses = (bidiClasses == null) ? (ByteData.Decompress(IdnaData.BidiClasses)) : bidiClasses;
         table = bidiClasses;
       }
@@ -93,8 +93,8 @@ private Idna() {
 
     private static int GetJoiningType(int ch) {
       ByteData table = null;
-      synchronized(joiningTypesSync) {
-        joiningTypes = (joiningTypes == null) ? (ByteData.Decompress(IdnaData.JoiningTypes)) : joiningTypes;
+      synchronized (joiningTypesSync) {
+     joiningTypes = (joiningTypes == null) ? (ByteData.Decompress(IdnaData.JoiningTypes)) : joiningTypes;
         table = joiningTypes;
       }
       return table.GetByte(ch);
@@ -102,7 +102,7 @@ private Idna() {
 
     private static int GetScript(int ch) {
       ByteData table = null;
-      synchronized(scriptsSync) {
+      synchronized (scriptsSync) {
         scripts = (scripts == null) ? (ByteData.Decompress(IdnaData.IdnaRelevantScripts)) : scripts;
         table = scripts;
       }
@@ -176,7 +176,8 @@ private Idna() {
             ++i;
           }
           int bidiClass = GetBidiClass(c);
-          if (bidiClass == BidiClassAL || bidiClass == BidiClassAN || bidiClass == BidiClassR) {
+          if (bidiClass == BidiClassAL || bidiClass == BidiClassAN ||
+            bidiClass == BidiClassR) {
             return true;
           }
         }
@@ -187,10 +188,10 @@ private Idna() {
     /**
      * Tries to encode each label of a domain name into Punycode.
      * @param value A domain name.
-     * @return The domain name where each label with non-ASCII characters
-     * is encoded into Punycode. Labels where this is not possible remain
+     * @return The domain name where each label with non-ASCII characters is
+     * encoded into Punycode. Labels where this is not possible remain
      * unchanged.
-     * @throws java.lang.NullPointerException Value is null.
+     * @throws NullPointerException Value is null.
      */
     public static String EncodeDomainName(String value) {
       if (value == null) {
@@ -209,7 +210,7 @@ private Idna() {
             retval = DomainUtility.PunycodeEncodePortion(value, lastIndex, i);
             if (retval == null) {
               // Append the unmodified domain plus the dot
-              builder.append(value.substring(lastIndex,(lastIndex)+((i + 1) - lastIndex)));
+              builder.append(value.substring(lastIndex, (lastIndex)+((i + 1) - lastIndex)));
             } else {
               builder.append(retval);
               builder.append('.');
@@ -218,9 +219,10 @@ private Idna() {
           lastIndex = i + 1;
         }
       }
-      retval = DomainUtility.PunycodeEncodePortion(value, lastIndex, value.length());
+  retval = DomainUtility.PunycodeEncodePortion(value, lastIndex,
+        value.length());
       if (retval == null) {
-        builder.append(value.substring(lastIndex,(lastIndex)+(value.length() - lastIndex)));
+        builder.append(value.substring(lastIndex, (lastIndex)+(value.length() - lastIndex)));
       } else {
         builder.append(retval);
       }
@@ -234,7 +236,7 @@ private Idna() {
      * @return A Boolean object.
      */
     public static boolean IsValidDomainName(String str, boolean lookupRules) {
-      if (((str)==null || (str).length()==0)) {
+      if (((str) == null || (str).length() == 0)) {
         return false;
       }
       boolean bidiRule = HasRtlCharacters(str);
@@ -246,13 +248,16 @@ private Idna() {
             // Empty label
             return false;
           }
-          if (!IsValidLabel(str.substring(lastIndex,(lastIndex)+(i - lastIndex)), lookupRules, bidiRule)) {
+          if (!IsValidLabel(str.substring(lastIndex, (lastIndex)+(i - lastIndex)),
+            lookupRules, bidiRule)) {
             return false;
           }
           lastIndex = i + 1;
         }
       }
-      return (str.length() != lastIndex) && IsValidLabel(str.substring(lastIndex,(lastIndex)+(str.length() - lastIndex)), lookupRules, bidiRule);
+      return (str.length() != lastIndex) &&
+        IsValidLabel(str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)),
+        lookupRules, bidiRule);
     }
 
     private static String ToLowerCaseAscii(String str) {
@@ -284,16 +289,17 @@ private Idna() {
       return builder.toString();
     }
 
-    private static boolean IsValidLabel(String str, boolean lookupRules, boolean bidiRule) {
-      if (((str)==null || (str).length()==0)) {
+private static boolean IsValidLabel(String str, boolean lookupRules, boolean
+      bidiRule) {
+      if (((str) == null || (str).length() == 0)) {
         return false;
       }
       boolean maybeALabel = str.length() >= 4 && (str.charAt(0) == 'x' || str.charAt(0) == 'X') &&
         (str.charAt(1) == 'n' || str.charAt(1) == 'N') && str.charAt(2) == '-' && str.charAt(3) == '-';
       boolean allLDH = true;
       for (int i = 0; i < str.length(); ++i) {
-        if ((str.charAt(i) >= 'a' && str.charAt(i) <= 'z') ||
-                (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z') ||
+    if ((str.charAt(i) >= 'a' && str.charAt(i) <= 'z') || (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z'
+) ||
                 (str.charAt(i) >= '0' && str.charAt(i) <= '9') || str.charAt(i) == '-') {
           // LDH character
           continue;
@@ -323,10 +329,12 @@ private Idna() {
       }
       if (allLDH) {
         if (str.length() >= 4 && str.charAt(2) == '-' && str.charAt(3) == '-') {
-          // Contains a hyphen at the third and fourth (one-based) character positions
+          // Contains a hyphen at the third and fourth (one-based) character
+          //positions
           return false;
         }
-        if (str.charAt(0) != '-' && str.charAt(str.length() - 1) != '-' && !(str.charAt(0) >= '0' && str.charAt(0) <= '9')) {
+        if (str.charAt(0) != '-' && str.charAt(str.length() - 1) != '-' && !(str.charAt(0) >= '0'&&
+          str.charAt(0) <= '9')) {
           // Only LDH characters, doesn't start with hyphen or digit,
           // and doesn't end with hyphen
           return true;
@@ -335,8 +343,9 @@ private Idna() {
       return IsValidULabel(str, lookupRules, bidiRule);
     }
 
-    private static boolean IsValidULabel(String str, boolean lookupRules, boolean bidiRule) {
-      if (((str)==null || (str).length()==0)) {
+    private static boolean IsValidULabel(String str, boolean lookupRules, boolean
+      bidiRule) {
+      if (((str) == null || (str).length() == 0)) {
         return false;
       }
       if (str.length() > 63 && !lookupRules) {
@@ -344,7 +353,8 @@ private Idna() {
         return false;
       }
       if (str.length() >= 4 && str.charAt(2) == '-' && str.charAt(3) == '-') {
-        // Contains a hyphen at the third and fourth (one-based) character positions
+        // Contains a hyphen at the third and fourth (one-based) character
+        //positions
         return false;
       }
       if (!lookupRules) {
@@ -419,8 +429,7 @@ private Idna() {
             // NOTE: Test done here even under lookup rules,
             // even though it's a CONTEXTO character
             if (!(i - 1 >= 0 && i + 1 < str.length() &&
-                  lastChar == 0x6c &&
-                  str.charAt(i + 1) == 0x6c)) {
+                lastChar == 0x6c && str.charAt(i + 1) == 0x6c)) {
               // Dot must come between two l's
               return false;
             }
@@ -481,7 +490,8 @@ private Idna() {
             --i;
           }
           bidiClass = GetBidiClass(c);
-          if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL || bidiClass == BidiClassAN)) {
+          if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
+            bidiClass == BidiClassAN)) {
             found = true;
             break;
           }
@@ -508,7 +518,8 @@ private Idna() {
             ++i;
           }
           bidiClass = GetBidiClass(c);
-          if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL || bidiClass == BidiClassAN)) {
+          if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
+            bidiClass == BidiClassAN)) {
             if (bidiClass == BidiClassAN) {
               if (haveEN) {
                 return false;
@@ -530,10 +541,8 @@ private Idna() {
             continue;
           }
           if (bidiClass == BidiClassES ||
-                   bidiClass == BidiClassCS ||
-                   bidiClass == BidiClassET ||
-                   bidiClass == BidiClassON ||
-                   bidiClass == BidiClassBN ||
+                bidiClass == BidiClassCS || bidiClass == BidiClassET ||
+                bidiClass == BidiClassON || bidiClass == BidiClassBN ||
                    bidiClass == BidiClassNSM) {
             continue;
           }

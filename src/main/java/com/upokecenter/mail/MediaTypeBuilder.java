@@ -24,10 +24,10 @@ import com.upokecenter.util.*;
      * Gets this value's top-level type.
      * @return This value's top-level type.
      */
-    public String getTopLevelType() {
+    public final String getTopLevelType() {
         return this.type;
       }
-public void setTopLevelType(String value) {
+public final void setTopLevelType(String value) {
         this.SetTopLevelType(value);
       }
 
@@ -35,10 +35,10 @@ public void setTopLevelType(String value) {
      * Gets this value's subtype.
      * @return This value's subtype.
      */
-    public String getSubType() {
+    public final String getSubType() {
         return this.subtype;
       }
-public void setSubType(String value) {
+public final void setSubType(String value) {
         this.SetSubType(value);
       }
 
@@ -54,8 +54,7 @@ public void setSubType(String value) {
     /**
      * Initializes a new instance of the MediaTypeBuilder class.
      * @param mt A MediaType object.
-     * @throws java.lang.NullPointerException The parameter {@code mt}
-     * is null.
+     * @throws NullPointerException The parameter {@code mt} is null.
      */
     public MediaTypeBuilder (MediaType mt) {
       if (mt == null) {
@@ -81,7 +80,7 @@ public void setSubType(String value) {
      * Gets a value indicating whether this is a text media type.
      * @return True if this is a text media type; otherwise, false..
      */
-    public boolean isText() {
+    public final boolean isText() {
         return this.getTopLevelType().equals("text");
       }
 
@@ -89,7 +88,7 @@ public void setSubType(String value) {
      * Gets a value indicating whether this is a multipart media type.
      * @return True if this is a multipart media type; otherwise, false..
      */
-    public boolean isMultipart() {
+    public final boolean isMultipart() {
         return this.getTopLevelType().equals("multipart");
       }
 
@@ -105,8 +104,7 @@ public void setSubType(String value) {
      * Not documented yet.
      * @param str A string object.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code str}
-     * is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public MediaTypeBuilder SetTopLevelType(String str) {
       if (str == null) {
@@ -115,7 +113,8 @@ public void setSubType(String value) {
       if (str.length() == 0) {
         throw new IllegalArgumentException("str is empty.");
       }
-      if (MediaType.skipMimeTypeSubtype(str, 0, str.length(), null) != str.length()) {
+   if (MediaType.skipMimeTypeSubtype(str, 0, str.length(), null) !=
+        str.length()) {
         throw new IllegalArgumentException("Not a well-formed top level type: " + str);
       }
       this.type = DataUtilities.ToLowerCaseAscii(str);
@@ -124,10 +123,10 @@ public void setSubType(String value) {
 
     /**
      * Removes a parameter from this builder object.
-     * @param name Name of the parameter to remove. The name is compared case-insensitively.
+     * @param name Name of the parameter to remove. The name is compared
+     * case-insensitively.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code name}
-     * is null.
+     * @throws NullPointerException The parameter {@code name} is null.
      */
     public MediaTypeBuilder RemoveParameter(String name) {
       if (name == null) {
@@ -139,11 +138,12 @@ public void setSubType(String value) {
 
     /**
      * Not documented yet.
-     * @param name Name of the parameter to set. The name is compared case-insensitively.
+     * @param name Name of the parameter to set. The name is compared
+     * case-insensitively.
      * @param value A string object. (2).
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code value}
-     * or {@code name} is null.
+     * @throws NullPointerException The parameter {@code value} or {@code name} is
+     * null.
      */
     public MediaTypeBuilder SetParameter(String name, String value) {
       if (value == null) {
@@ -155,10 +155,12 @@ public void setSubType(String value) {
       if (name.length() == 0) {
         throw new IllegalArgumentException("name is empty.");
       }
-      if (MediaType.skipMimeTypeSubtype(name, 0, name.length(), null) != name.length()) {
-        throw new IllegalArgumentException("Not a well-formed parameter name: " + name);
+if (MediaType.skipMimeTypeSubtype(name, 0, name.length(), null) !=
+        name.length()) {
+      throw new IllegalArgumentException("Not a well-formed parameter name: " +
+          name);
       }
-      this.parameters.put(DataUtilities.ToLowerCaseAscii(name),value);
+      this.parameters.put(DataUtilities.ToLowerCaseAscii(name), value);
       return this;
     }
 
@@ -166,8 +168,7 @@ public void setSubType(String value) {
      * Not documented yet.
      * @param str A string object.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code str}
-     * is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public MediaTypeBuilder SetSubType(String str) {
       if (str == null) {
@@ -176,7 +177,8 @@ public void setSubType(String value) {
       if (str.length() == 0) {
         throw new IllegalArgumentException("str is empty.");
       }
-      if (MediaType.skipMimeTypeSubtype(str, 0, str.length(), null) != str.length()) {
+   if (MediaType.skipMimeTypeSubtype(str, 0, str.length(), null) !=
+        str.length()) {
         throw new IllegalArgumentException("Not a well-formed subtype: " + str);
       }
       this.subtype = DataUtilities.ToLowerCaseAscii(str);

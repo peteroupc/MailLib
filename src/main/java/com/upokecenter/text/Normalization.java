@@ -16,8 +16,8 @@ package com.upokecenter.text;
     NFD,
 
     /**
-     * Normalization form KC: compatibility decomposition followed by
-     * canonical composition.
+     * Normalization form KC: compatibility decomposition followed by canonical
+     * composition.
      */
     NFKC,
 

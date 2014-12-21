@@ -2,7 +2,8 @@ using System;
 
 namespace PeterO.Mail {
   internal static class HeaderParser {
-    public static int ParseAddrSpec(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseAddrSpec(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -32,7 +33,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseAddress(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseAddress(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -52,7 +54,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseAddressList(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseAddressList(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -139,7 +142,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseAngleAddr(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseAngleAddr(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -176,22 +180,35 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseAtext(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseAtext(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 33) || (str[index] == 35) || (str[index] == 36) || (str[index] == 37) || (str[index] == 38) || (str[index] == 39) || (str[index] == 42) || (str[index] == 43) || (str[index] == 45) || (str[index] == 47) || (str[index] == 61) || (str[index] == 63) || (str[index] == 94) || (str[index] == 95) || (str[index] == 96) || (str[index] == 123) || (str[index] == 124) || (str[index] == 125) || (str[index] == 126) || (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] == 33) || (str[index] == 35) ||
+          (str[index] == 36) || (str[index] == 37) || (str[index] == 38) ||
+          (str[index] == 39) || (str[index] == 42) || (str[index] == 43) ||
+          (str[index] == 45) || (str[index] == 47) || (str[index] == 61) ||
+          (str[index] == 63) || (str[index] == 94) || (str[index] == 95) ||
+          (str[index] == 96) || (str[index] == 123) || (str[index] == 124)||
+          (str[index] == 125) || (str[index] == 126) || (str[index] >=
+          128 && str[index] <= 55295) || (str[index] >= 57344 && str[index]
+          <= 65535))) {
           ++indexTemp; break;
         }
-        if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+        if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
+          56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
           indexTemp += 2; break;
         }
       } while (false);
       return indexTemp;
     }
 
-    public static int ParseAtom(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseAtom(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -219,7 +236,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseAuthresVersion(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseAuthresVersion(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -241,11 +259,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseAuthservId(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseAuthservId(string str, int index, int endIndex,
+      ITokener tokener) {
       return ParseValue(str, index, endIndex, tokener);
     }
 
-    public static int ParseCFWS(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseCFWS(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -260,7 +280,8 @@ namespace PeterO.Mail {
             do {
               int indexStart3 = index;
               index = ParseFWS(str, index, endIndex, tokener);
-              int tx4 = HeaderParserUtility.ParseCommentLax(str, index, endIndex, tokener);
+  int tx4 = HeaderParserUtility.ParseCommentLax(str, index, endIndex,
+                tokener);
               if (tx4 == index) {
                 index = indexStart3;
                 break;
@@ -311,7 +332,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseCertifierList(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseCertifierList(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -361,14 +383,23 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseCharset(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseCharset(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] == 43) || (str[index] == 45) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
+          str[index] <= 36) || (str[index] == 38) || (str[index] == 43) ||
+          (str[index] == 45) || (str[index] >= 48 && str[index] <= 57) ||
+          (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 &&
+          str[index] <= 126))) {
           ++index;
-          while (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] == 43) || (str[index] == 45) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
+          while (index < endIndex && ((str[index] == 33) || (str[index] >=
+            35 && str[index] <= 36) || (str[index] == 38) || (str[index] ==
+            43) || (str[index] == 45) || (str[index] >= 48 && str[index] <=
+            57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >=
+            94 && str[index] <= 126))) {
             ++index;
           }
         } else {
@@ -379,7 +410,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDate(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDate(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -389,7 +421,23 @@ namespace PeterO.Mail {
           break;
         }
         index = tx2;
-        if (index + 2 < endIndex && (((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 89) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 76) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 71) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 80) || ((str[index] & ~32) == 79 && (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 86) || ((str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67))) {
+        if (index + 2 < endIndex && (((str[index] & ~32) == 74 && (str[index+
+          1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32)
+            == 66) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32)
+          == 65 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) ==
+          65 && (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) ==
+          82) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65&&
+          (str[index + 2] & ~32) == 89) || ((str[index] & ~32) == 74 &&
+          (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 78) ||
+          ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 &&
+          (str[index + 2] & ~32) == 76) || ((str[index] & ~32) == 65 &&
+          (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 71) ||
+          ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 69 &&
+          (str[index + 2] & ~32) == 80) || ((str[index] & ~32) == 79 &&
+          (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) == 84) ||
+          ((str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 &&
+          (str[index + 2] & ~32) == 86) || ((str[index] & ~32) == 68 &&
+          (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67))) {
           index += 3;
         } else {
           index = indexStart;
@@ -409,7 +457,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDateTime(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDateTime(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -459,7 +508,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDay(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDay(string str, int index, int endIndex, ITokener
+      tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -486,13 +536,23 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDayOfWeek(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDayOfWeek(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index + 2 < endIndex && (((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 84 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 69) || ((str[index] & ~32) == 87 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 68) || ((str[index] & ~32) == 84 && (str[index + 1] & ~32) == 72 && (str[index + 2] & ~32) == 85) || ((str[index] & ~32) == 70 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 78))) {
+        if (index + 2 < endIndex && (((str[index] & ~32) == 77 && (str[index+
+          1] & ~32) == 79 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 84 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32)
+            == 69) || ((str[index] & ~32) == 87 && (str[index + 1] & ~32)
+          == 69 && (str[index + 2] & ~32) == 68) || ((str[index] & ~32) ==
+          84 && (str[index + 1] & ~32) == 72 && (str[index + 2] & ~32) ==
+          85) || ((str[index] & ~32) == 70 && (str[index + 1] & ~32) == 82&&
+          (str[index + 2] & ~32) == 73) || ((str[index] & ~32) == 83 &&
+          (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 84) ||
+          ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 85 &&
+          (str[index + 2] & ~32) == 78))) {
           index += 3;
         } else {
           index = indexStart; break;
@@ -506,11 +566,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDesignator(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDesignator(string str, int index, int endIndex,
+      ITokener tokener) {
       return ParseMilitaryString(str, index, endIndex, tokener);
     }
 
-    public static int ParseDiagDeprecated(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDiagDeprecated(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -526,7 +588,8 @@ namespace PeterO.Mail {
             int indexTemp3 = index;
             do {
               int indexStart3 = index;
-              if (index + 1 < endIndex && str[index] == 50 && str[index + 1] == 53) {
+        if (index + 1 < endIndex && str[index] == 50 && str[index + 1] ==
+                53) {
                 index += 2;
               } else {
                 break;
@@ -545,7 +608,8 @@ namespace PeterO.Mail {
             indexTemp3 = index;
             do {
               int indexStart3 = index;
-              if (index + 1 < endIndex && (str[index] == 50) && (str[index + 1] >= 48 && str[index + 1] <= 52)) {
+              if (index + 1 < endIndex && (str[index] == 50) && (str[index +
+                1] >= 48 && str[index + 1] <= 52)) {
                 index += 2;
               } else {
                 break;
@@ -561,10 +625,13 @@ namespace PeterO.Mail {
             if (indexTemp3 != index) {
               indexTemp2 = indexTemp3; break;
             }
-            if (index + 2 < endIndex && ((str[index] == 49) && ((str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 2] >= 48 && str[index + 2] <= 57)))) {
+            if (index + 2 < endIndex && ((str[index] == 49) && ((str[index +
+              1] >= 48 && str[index + 1] <= 57) || (str[index + 2] >= 48 &&
+              str[index + 2] <= 57)))) {
               indexTemp2 += 3; break;
             }
-            if (index + 1 < endIndex && ((str[index] >= 49 && str[index] <= 57) && (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+            if (index + 1 < endIndex && ((str[index] >= 49 && str[index] <=
+              57) && (str[index + 1] >= 48 && str[index + 1] <= 57))) {
               indexTemp2 += 2; break;
             }
             if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
@@ -595,12 +662,14 @@ namespace PeterO.Mail {
                 int indexTemp4 = index;
                 do {
                   int indexStart4 = index;
-                  if (index + 1 < endIndex && str[index] == 50 && str[index + 1] == 53) {
+        if (index + 1 < endIndex && str[index] == 50 && str[index + 1] ==
+                    53) {
                     index += 2;
                   } else {
                     break;
                   }
-                  if (index < endIndex && (str[index] >= 48 && str[index] <= 53)) {
+              if (index < endIndex && (str[index] >= 48 && str[index] <=
+                    53)) {
                     ++index;
                   } else {
                     index = indexStart4; break;
@@ -614,12 +683,14 @@ namespace PeterO.Mail {
                 indexTemp4 = index;
                 do {
                   int indexStart4 = index;
-                  if (index + 1 < endIndex && (str[index] == 50) && (str[index + 1] >= 48 && str[index + 1] <= 52)) {
+                  if (index + 1 < endIndex && (str[index] == 50) &&
+                    (str[index + 1] >= 48 && str[index + 1] <= 52)) {
                     index += 2;
                   } else {
                     break;
                   }
-                  if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
+              if (index < endIndex && (str[index] >= 48 && str[index] <=
+                    57)) {
                     ++index;
                   } else {
                     index = indexStart4; break;
@@ -630,13 +701,17 @@ namespace PeterO.Mail {
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
-                if (index + 2 < endIndex && ((str[index] == 49) && ((str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 2] >= 48 && str[index + 2] <= 57)))) {
+                if (index + 2 < endIndex && ((str[index] == 49) &&
+                  ((str[index + 1] >= 48 && str[index + 1] <= 57) ||
+                  (str[index + 2] >= 48 && str[index + 2] <= 57)))) {
                   indexTemp3 += 3; break;
                 }
-                if (index + 1 < endIndex && ((str[index] >= 49 && str[index] <= 57) && (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+                if (index + 1 < endIndex && ((str[index] >= 49 && str[index]
+                  <= 57) && (str[index + 1] >= 48 && str[index + 1] <= 57))) {
                   indexTemp3 += 2; break;
                 }
-                if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
+              if (index < endIndex && (str[index] >= 48 && str[index] <=
+                  57)) {
                   ++indexTemp3; break;
                 }
               } while (false);
@@ -672,7 +747,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDiagIdentity(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDiagIdentity(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -717,7 +793,8 @@ namespace PeterO.Mail {
               int indexTemp4 = index;
               do {
                 int indexStart4 = index;
-                if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+                if (index < endIndex && ((str[index] >= 65 && str[index] <=
+                  90) || (str[index] >= 97 && str[index] <= 122))) {
                   ++index;
                 } else {
                   break;
@@ -725,10 +802,15 @@ namespace PeterO.Mail {
                 for (int i4 = 0;; ++i4) {
                   int indexTemp5 = index;
                   do {
-                    if (index + 1 < endIndex && ((str[index] == 45) && ((str[index + 1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) || (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
+                    if (index + 1 < endIndex && ((str[index] == 45) &&
+                      ((str[index + 1] >= 65 && str[index + 1] <= 90) ||
+                      (str[index + 1] >= 97 && str[index + 1] <= 122) ||
+                      (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
                       indexTemp5 += 2; break;
                     }
-                    if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57))) {
+                    if (index < endIndex && ((str[index] >= 65 && str[index]
+                      <= 90) || (str[index] >= 97 && str[index] <= 122) ||
+                      (str[index] >= 48 && str[index] <= 57))) {
                       ++indexTemp5; break;
                     }
                   } while (false);
@@ -752,15 +834,18 @@ namespace PeterO.Mail {
               indexTemp4 = index;
               do {
                 int indexStart4 = index;
-                if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
+              if (index < endIndex && (str[index] >= 48 && str[index] <=
+                  57)) {
                   ++index;
                 } else {
                   break;
                 }
-                while (index < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index] == 45))) {
+                while (index < endIndex && ((str[index] >= 48 && str[index]
+                  <= 57) || (str[index] == 45))) {
                   ++index;
                 }
-                if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+                if (index < endIndex && ((str[index] >= 65 && str[index] <=
+                  90) || (str[index] >= 97 && str[index] <= 122))) {
                   ++index;
                 } else {
                   index = indexStart4; break;
@@ -768,10 +853,15 @@ namespace PeterO.Mail {
                 while (true) {
                   int indexTemp5 = index;
                   do {
-                    if (index + 1 < endIndex && ((str[index] == 45) && ((str[index + 1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) || (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
+                    if (index + 1 < endIndex && ((str[index] == 45) &&
+                      ((str[index + 1] >= 65 && str[index + 1] <= 90) ||
+                      (str[index + 1] >= 97 && str[index + 1] <= 122) ||
+                      (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
                       indexTemp5 += 2; break;
                     }
-                    if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57))) {
+                    if (index < endIndex && ((str[index] >= 65 && str[index]
+                      <= 90) || (str[index] >= 97 && str[index] <= 122) ||
+                      (str[index] >= 48 && str[index] <= 57))) {
                       ++indexTemp5; break;
                     }
                   } while (false);
@@ -806,9 +896,14 @@ namespace PeterO.Mail {
         if (tokener != null) {
           tokener.RestoreState(state2);
         }
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45) || (str[index] == 95))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] == 45) || (str[index] == 95))) {
           ++indexTemp;
-          while (indexTemp < endIndex && ((str[indexTemp] >= 65 && str[indexTemp] <= 90) || (str[indexTemp] >= 97 && str[indexTemp] <= 122) || (str[indexTemp] >= 48 && str[indexTemp] <= 57) || (str[indexTemp] == 45) || (str[indexTemp] == 95))) {
+          while (indexTemp < endIndex && ((str[indexTemp] >= 65 &&
+            str[indexTemp] <= 90) || (str[indexTemp] >= 97 && str[indexTemp]
+            <= 122) || (str[indexTemp] >= 48 && str[indexTemp] <= 57) ||
+            (str[indexTemp] == 45) || (str[indexTemp] == 95))) {
             ++indexTemp;
           }
           break;
@@ -821,7 +916,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDiagOther(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDiagOther(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -831,9 +927,11 @@ namespace PeterO.Mail {
         } else {
           break;
         }
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122))) {
           ++index;
-          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+            (str[index] >= 97 && str[index] <= 122))) {
             ++index;
           }
         } else {
@@ -871,22 +969,38 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDispNotParam(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDispNotParam(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] == 43) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
+          str[index] <= 36) || (str[index] == 38) || (str[index] == 43) ||
+          (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 94 && str[index] <= 126))) {
           ++index;
-          while (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] == 43) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
+          while (index < endIndex && ((str[index] == 33) || (str[index] >=
+            35 && str[index] <= 36) || (str[index] == 38) || (str[index] ==
+            43) || (str[index] >= 45 && str[index] <= 46) || (str[index] >=
+            48 && str[index] <= 57) || (str[index] >= 65 && str[index] <=
+            90) || (str[index] >= 94 && str[index] <= 126))) {
             ++index;
           }
         } else {
           index = indexStart;
           break;
         }
-        if (index + 8 < endIndex && (str[index] == 61) && (((str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 81 && (str[index + 4] & ~32) == 85 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 69 && (str[index + 8] & ~32) == 68) || ((str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 80 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 73 && (str[index + 5] & ~32) == 79 && (str[index + 6] & ~32) == 78 && (str[index + 7] & ~32) == 65 && (str[index + 8] & ~32) == 76))) {
+        if (index + 8 < endIndex && (str[index] == 61) && (((str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32)
+          == 81 && (str[index + 4] & ~32) == 85 && (str[index + 5] & ~32) == 73&&
+          (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 69 &&
+          (str[index + 8] & ~32) == 68) || ((str[index + 1] & ~32) == 79 &&
+          (str[index + 2] & ~32) == 80 && (str[index + 3] & ~32) == 84 &&
+          (str[index + 4] & ~32) == 73 && (str[index + 5] & ~32) == 79 &&
+          (str[index + 6] & ~32) == 78 && (str[index + 7] & ~32) == 65 &&
+          (str[index + 8] & ~32) == 76))) {
           index += 9;
         } else {
           index = indexStart;
@@ -941,19 +1055,22 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDisplayName(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDisplayName(string str, int index, int endIndex,
+      ITokener tokener) {
       return ParsePhrase(str, index, endIndex, tokener);
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseDistName(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDistName(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122))) {
           ++indexTemp; break;
         }
         int indexTemp2 = index;
@@ -964,7 +1081,10 @@ namespace PeterO.Mail {
           } else {
             break;
           }
-          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 43) || (str[index] == 45) || (str[index] == 95))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+            (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+            str[index] <= 57) || (str[index] == 43) || (str[index] == 45)||
+            (str[index] == 95))) {
             ++index;
           }
           indexTemp2 = index;
@@ -977,7 +1097,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDomain(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDomain(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1044,7 +1165,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDomainLiteral(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDomainLiteral(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1094,12 +1216,15 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDomainName(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDomainName(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57))) {
           ++index;
         } else {
           break;
@@ -1109,7 +1234,10 @@ namespace PeterO.Mail {
           int indexTemp2 = index;
           do {
             int indexStart2 = index;
-            if (index + 1 < endIndex && (str[index] == 46) && ((str[index + 1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+            if (index + 1 < endIndex && (str[index] == 46) && ((str[index +
+              1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 &&
+              str[index + 1] <= 122) || (str[index + 1] >= 48 && str[index +
+              1] <= 57))) {
               index += 2;
             } else {
               break;
@@ -1137,7 +1265,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDomainNoCfws(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDomainNoCfws(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1157,15 +1286,19 @@ namespace PeterO.Mail {
           while (true) {
             int indexTemp3 = index;
             do {
-              if (index < endIndex && ((str[index] >= 33 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
+              if (index < endIndex && ((str[index] >= 33 && str[index] <=
+                90) || (str[index] >= 94 && str[index] <= 126))) {
                 ++indexTemp3; break;
               }
               int indexTemp4 = index;
               do {
-                if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                if (index < endIndex && ((str[index] >= 128 && str[index] <=
+                  55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                   ++indexTemp4; break;
                 }
-                if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+                if (index + 1 < endIndex && ((str[index] >= 55296 &&
+                  str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                  str[index + 1] <= 57343))) {
                   indexTemp4 += 2; break;
                 }
               } while (false);
@@ -1197,7 +1330,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDotAtom(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDotAtom(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1218,7 +1352,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDotAtomText(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDotAtomText(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1279,22 +1414,28 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseDtext(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseDtext(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] >= 33 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 1 && str[index] <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) || (str[index] == 127))) {
+        if (index < endIndex && ((str[index] >= 33 && str[index] <= 90) ||
+          (str[index] >= 94 && str[index] <= 126) || (str[index] >= 1 &&
+          str[index] <= 8) || (str[index] >= 11 && str[index] <= 12) ||
+          (str[index] >= 14 && str[index] <= 31) || (str[index] == 127))) {
           ++indexTemp; break;
         }
         int indexTemp2 = ParseQuotedPair(str, index, endIndex, tokener);
         if (indexTemp2 != index) {
           indexTemp = indexTemp2; break;
         }
-        if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+        if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295)||
+          (str[index] >= 57344 && str[index] <= 65535))) {
           ++indexTemp; break;
         }
-        if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+        if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
+          56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
           indexTemp += 2; break;
         }
       } while (false);
@@ -1304,7 +1445,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseEncodingCount(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseEncodingCount(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1327,20 +1469,26 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseEncodingKeyword(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseEncodingKeyword(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122))) {
           ++index;
         } else {
           index = indexStart; break;
         }
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] == 45))) {
           ++index;
-          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+            (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+            str[index] <= 57) || (str[index] == 45))) {
             ++index;
           }
         } else {
@@ -1358,9 +1506,10 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseFWS(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseFWS(string str, int index, int endIndex, ITokener
+      tokener) {
       int indexStart = index;
       int indexTemp = index;
       do {
@@ -1368,7 +1517,8 @@ namespace PeterO.Mail {
           int indexTemp2 = index;
           do {
             int indexStart2 = index;
-            if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
+        if (index + 1 < endIndex && str[index] == 13 && str[index + 1] ==
+              10) {
               index += 2;
             }
             if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
@@ -1395,15 +1545,20 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseGeneralKeyword(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseGeneralKeyword(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] == 45))) {
           ++index;
-          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+            (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+            str[index] <= 57) || (str[index] == 45))) {
             ++index;
           }
         } else {
@@ -1418,7 +1573,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseGroup(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseGroup(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1454,7 +1610,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseGroupList(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseGroupList(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1476,7 +1633,8 @@ namespace PeterO.Mail {
             do {
               int indexStart3 = index;
               index = ParseFWS(str, index, endIndex, tokener);
-              int tx4 = HeaderParserUtility.ParseCommentLax(str, index, endIndex, tokener);
+  int tx4 = HeaderParserUtility.ParseCommentLax(str, index, endIndex,
+                tokener);
               if (tx4 == index) {
                 index = indexStart3;
                 break;
@@ -1527,7 +1685,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderAcceptLanguage(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderAcceptLanguage(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1594,11 +1753,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderAlternateRecipient(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderAlternateRecipient(string str, int index,
+      int endIndex, ITokener tokener) {
       return ParseMixerKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderArchive(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderArchive(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1607,10 +1768,12 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            if (index + 1 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79) {
+            if (index + 1 < endIndex && (str[index] & ~32) == 78 &&
+              (str[index + 1] & ~32) == 79) {
               indexTemp2 += 2; break;
             }
-            if (index + 2 < endIndex && (str[index] & ~32) == 89 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 83) {
+            if (index + 2 < endIndex && (str[index] & ~32) == 89 &&
+              (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 83) {
               indexTemp2 += 3; break;
             }
           } while (false);
@@ -1663,7 +1826,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderArchivedAt(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderArchivedAt(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1681,7 +1845,9 @@ namespace PeterO.Mail {
           do {
             int indexStart2 = index;
             index = ParseFWS(str, index, endIndex, tokener);
-            if (index < endIndex && ((str[index] >= 33 && str[index] <= 59) || (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
+            if (index < endIndex && ((str[index] >= 33 && str[index] <= 59)||
+              (str[index] == 61) || (str[index] >= 63 && str[index] <=
+              126))) {
               ++index;
             } else {
               index = indexStart2; break;
@@ -1711,7 +1877,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderAuthenticationResults(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderAuthenticationResults(string str, int
+      index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1791,15 +1958,26 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderAutoSubmitted(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderAutoSubmitted(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
+          str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) ||
+          (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 &&
+          str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) ||
+          (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 &&
+          str[index] <= 39) || (str[index] == 63))) {
           ++index;
-          while (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
+          while (index < endIndex && ((str[index] == 33) || (str[index] >=
+            35 && str[index] <= 36) || (str[index] >= 45 && str[index] <=
+            46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >=
+            65 && str[index] <= 90) || (str[index] >= 94 && str[index] <=
+            126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >=
+            38 && str[index] <= 39) || (str[index] == 63))) {
             ++index;
           }
         } else {
@@ -1822,11 +2000,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderAutoforwarded(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderAutoforwarded(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseMixerKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderBcc(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderBcc(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1856,15 +2036,19 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderContentBase(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderContentBase(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index < endIndex && ((str[index] >= 33 && str[index] <= 59) || (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
+        if (index < endIndex && ((str[index] >= 33 && str[index] <= 59) ||
+          (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
           ++index;
-          while (index < endIndex && ((str[index] >= 33 && str[index] <= 59) || (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
+          while (index < endIndex && ((str[index] >= 33 && str[index] <= 59)||
+            (str[index] == 61) || (str[index] >= 63 && str[index] <=
+            126))) {
             ++index;
           }
         } else {
@@ -1879,15 +2063,26 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderContentDisposition(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderContentDisposition(string str, int index,
+      int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
+          str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) ||
+          (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 &&
+          str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) ||
+          (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 &&
+          str[index] <= 39) || (str[index] == 63))) {
           ++index;
-          while (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
+          while (index < endIndex && ((str[index] == 33) || (str[index] >=
+            35 && str[index] <= 36) || (str[index] >= 45 && str[index] <=
+            46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >=
+            65 && str[index] <= 90) || (str[index] >= 94 && str[index] <=
+            126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >=
+            38 && str[index] <= 39) || (str[index] == 63))) {
             ++index;
           }
         } else {
@@ -1930,7 +2125,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderContentDuration(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderContentDuration(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1957,11 +2153,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderContentId(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderContentId(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseMsgId(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderContentLanguage(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderContentLanguage(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -1981,15 +2179,19 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderContentLocation(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderContentLocation(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index < endIndex && ((str[index] >= 33 && str[index] <= 59) || (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
+        if (index < endIndex && ((str[index] >= 33 && str[index] <= 59) ||
+          (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
           ++index;
-          while (index < endIndex && ((str[index] >= 33 && str[index] <= 59) || (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
+          while (index < endIndex && ((str[index] >= 33 && str[index] <= 59)||
+            (str[index] == 61) || (str[index] >= 63 && str[index] <=
+            126))) {
             ++index;
           }
         } else {
@@ -2004,13 +2206,16 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderContentMd5(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderContentMd5(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 47 && str[index] <= 57) || (str[index] == 43) || (str[index] == 61))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 47 &&
+          str[index] <= 57) || (str[index] == 43) || (str[index] == 61))) {
           ++index;
         } else {
           index = indexStart; break;
@@ -2024,15 +2229,20 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderContentTransferEncoding(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderContentTransferEncoding(string str, int
+      index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] == 45))) {
           ++index;
-          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+            (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+            str[index] <= 57) || (str[index] == 45))) {
             ++index;
           }
         } else {
@@ -2047,7 +2257,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderContentType(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderContentType(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2114,18 +2325,29 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseHeaderControl(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderControl(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int indexTemp = index;
       do {
         while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
           ++index;
         }
-        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
+          str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) ||
+          (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 &&
+          str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) ||
+          (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 &&
+          str[index] <= 39) || (str[index] == 63))) {
           ++index;
-          while (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
+          while (index < endIndex && ((str[index] == 33) || (str[index] >=
+            35 && str[index] <= 36) || (str[index] >= 45 && str[index] <=
+            46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >=
+            65 && str[index] <= 90) || (str[index] >= 94 && str[index] <=
+            126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >=
+            38 && str[index] <= 39) || (str[index] == 63))) {
             ++index;
           }
         } else {
@@ -2137,7 +2359,8 @@ namespace PeterO.Mail {
             int indexStart2 = index;
             if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
               ++index;
-              while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+        while (index < endIndex && ((str[index] == 32) || (str[index] ==
+                9))) {
                 ++index;
               }
             } else {
@@ -2145,7 +2368,8 @@ namespace PeterO.Mail {
             }
             if (index < endIndex && (str[index] >= 33 && str[index] <= 126)) {
               ++index;
-              while (index < endIndex && (str[index] >= 33 && str[index] <= 126)) {
+          while (index < endIndex && (str[index] >= 33 && str[index] <=
+                126)) {
                 ++index;
               }
             } else {
@@ -2168,23 +2392,28 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderConversion(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderConversion(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseMixerKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderConversionWithLoss(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderConversionWithLoss(string str, int index,
+      int endIndex, ITokener tokener) {
       return ParseMixerKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderDate(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderDate(string str, int index, int endIndex,
+      ITokener tokener) {
       return ParseDateTime(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderDeferredDelivery(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderDeferredDelivery(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseDateTime(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderDeliveryDate(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderDeliveryDate(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2205,7 +2434,25 @@ namespace PeterO.Mail {
           }
           index = tx3;
           index = ParseCFWS(str, index, endIndex, tokener);
-          if (index + 2 < endIndex && (((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 89) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 76) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 71) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 80) || ((str[index] & ~32) == 79 && (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 86) || ((str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67))) {
+          if (index + 2 < endIndex && (((str[index] & ~32) == 74 &&
+            (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) ||
+            ((str[index] & ~32) == 70 && (str[index + 1] & ~32) == 69 &&
+            (str[index + 2] & ~32) == 66) || ((str[index] & ~32) == 77 &&
+            (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 82) ||
+            ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 80 &&
+            (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 77 &&
+            (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 89) ||
+            ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 &&
+            (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 74 &&
+            (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 76) ||
+            ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 85 &&
+            (str[index + 2] & ~32) == 71) || ((str[index] & ~32) == 83 &&
+            (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 80) ||
+            ((str[index] & ~32) == 79 && (str[index + 1] & ~32) == 67 &&
+            (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 78 &&
+            (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 86) ||
+            ((str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 &&
+            (str[index + 2] & ~32) == 67))) {
             index += 3;
           } else {
             index = indexStart2;
@@ -2226,19 +2473,24 @@ namespace PeterO.Mail {
             break;
           }
           index = ParseCFWS(str, index, endIndex, tokener);
-          if (index + 2 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57)) && (str[index + 2] == 58)) {
+          if (index + 2 < endIndex && ((str[index] >= 48 && str[index] <=
+            57) || (str[index + 1] >= 48 && str[index + 1] <= 57)) &&
+            (str[index + 2] == 58)) {
             index += 3;
           } else {
             index = indexStart2;
             break;
           }
-          if (index + 2 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57)) && (str[index + 2] == 58)) {
+          if (index + 2 < endIndex && ((str[index] >= 48 && str[index] <=
+            57) || (str[index + 1] >= 48 && str[index + 1] <= 57)) &&
+            (str[index + 2] == 58)) {
             index += 3;
           } else {
             index = indexStart2;
             break;
           }
-          if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+          if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <=
+            57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
             index += 2;
           } else {
             index = indexStart2;
@@ -2275,11 +2527,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderDiscloseRecipients(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderDiscloseRecipients(string str, int index,
+      int endIndex, ITokener tokener) {
       return ParseMixerKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderDispositionNotificationOptions(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderDispositionNotificationOptions(string str,
+      int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2329,11 +2583,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderDispositionNotificationTo(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderDispositionNotificationTo(string str, int
+      index, int endIndex, ITokener tokener) {
       return ParseMailboxList(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderDistribution(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderDistribution(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2390,25 +2646,31 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderDkimSignature(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderDkimSignature(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseNoEncodedWords(str, index, endIndex, tokener);
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseHeaderEdiintFeatures(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderEdiintFeatures(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int indexTemp = index;
       do {
         if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
           ++index;
         }
-        if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] == 45))) {
+        if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
+          (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 &&
+          str[index] <= 122) || (str[index] == 45))) {
           ++index;
-          while (index < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] == 45))) {
+          while (index < endIndex && ((str[index] >= 48 && str[index] <= 57)||
+            (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97&&
+            str[index] <= 122) || (str[index] == 45))) {
             ++index;
           }
         } else {
@@ -2429,9 +2691,13 @@ namespace PeterO.Mail {
             if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
               ++index;
             }
-            if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] == 45))) {
+            if (index < endIndex && ((str[index] >= 48 && str[index] <= 57)||
+              (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97&&
+              str[index] <= 122) || (str[index] == 45))) {
               ++index;
-              while (index < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] == 45))) {
+              while (index < endIndex && ((str[index] >= 48 && str[index] <=
+                57) || (str[index] >= 65 && str[index] <= 90) || (str[index]
+                >= 97 && str[index] <= 122) || (str[index] == 45))) {
                 ++index;
               }
             } else {
@@ -2451,7 +2717,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderEncoding(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderEncoding(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2468,7 +2735,8 @@ namespace PeterO.Mail {
             }
             index = tx3;
             for (int i2 = 0;; ++i2) {
-              int indexTemp3 = ParseEncodingKeyword(str, index, endIndex, tokener);
+          int indexTemp3 = ParseEncodingKeyword(str, index, endIndex,
+                tokener);
               if (indexTemp3 != index) {
                 index = indexTemp3;
               } else {
@@ -2522,7 +2790,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderEncrypted(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderEncrypted(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2564,7 +2833,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderFollowupTo(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderFollowupTo(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2576,15 +2846,20 @@ namespace PeterO.Mail {
         indexTemp2 = index;
         do {
           int indexStart2 = index;
-          while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+        while (index < endIndex && ((str[index] == 32) || (str[index] ==
+            9))) {
             ++index;
           }
-          if (index + 5 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82) {
+          if (index + 5 < endIndex && (str[index] & ~32) == 80 && (str[index+
+            1] & ~32) == 79 && (str[index + 2] & ~32) == 83 && (str[index+
+            3] & ~32) == 84 && (str[index + 4] & ~32) == 69 && (str[index+
+            5] & ~32) == 82) {
             index += 6;
           } else {
             index = indexStart2; break;
           }
-          while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+        while (index < endIndex && ((str[index] == 32) || (str[index] ==
+            9))) {
             ++index;
           }
           indexTemp2 = index;
@@ -2600,7 +2875,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderFrom(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderFrom(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2620,15 +2896,18 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderGenerateDeliveryReport(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderGenerateDeliveryReport(string str, int
+      index, int endIndex, ITokener tokener) {
       return ParseFWS(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderImportance(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderImportance(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseMixerKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderInReplyTo(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderInReplyTo(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2663,15 +2942,18 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderIncompleteCopy(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderIncompleteCopy(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseFWS(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderInjectionDate(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderInjectionDate(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseDateTime(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderInjectionInfo(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderInjectionInfo(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2723,7 +3005,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderJabberId(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderJabberId(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2753,7 +3036,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderKeywords(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderKeywords(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2800,7 +3084,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderLanguage(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderLanguage(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2810,12 +3095,16 @@ namespace PeterO.Mail {
           int indexTemp2 = index;
           do {
             int indexStart2 = index;
-            if (index + 1 < endIndex && (((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122)) && ((str[index + 1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122)))) {
+            if (index + 1 < endIndex && (((str[index] >= 65 && str[index] <=
+              90) || (str[index] >= 97 && str[index] <= 122)) && ((str[index+
+              1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97&&
+              str[index + 1] <= 122)))) {
               index += 2;
             } else {
               break;
             }
-            while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+            while (index < endIndex && ((str[index] >= 65 && str[index] <=
+              90) || (str[index] >= 97 && str[index] <= 122))) {
               ++index;
             }
             do {
@@ -2827,7 +3116,8 @@ namespace PeterO.Mail {
                 } else {
                   break;
                 }
-                int tx4 = ParseLanguageDescription(str, index, endIndex, tokener);
+             int tx4 = ParseLanguageDescription(str, index, endIndex,
+                  tokener);
                 if (tx4 == index) {
                   index = indexStart3;
                   break;
@@ -2868,11 +3158,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderLatestDeliveryTime(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderLatestDeliveryTime(string str, int index,
+      int endIndex, ITokener tokener) {
       return ParseDateTime(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderListId(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderListId(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -2958,15 +3250,20 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMessageContext(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMessageContext(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] == 45))) {
           ++index;
-          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+            (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+            str[index] <= 57) || (str[index] == 45))) {
             ++index;
           }
         } else {
@@ -2981,11 +3278,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMessageId(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMessageId(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseMsgId(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderMimeVersion(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMimeVersion(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3023,7 +3322,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsAcp127MessageIdentifier(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsAcp127MessageIdentifier(string str, int
+      index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3051,7 +3351,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsCodressMessageIndicator(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsCodressMessageIndicator(string str, int
+      index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3072,7 +3373,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsCopyPrecedence(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsCopyPrecedence(string str, int index,
+      int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3092,7 +3394,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsExemptedAddress(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsExemptedAddress(string str, int index,
+      int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3113,7 +3416,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsExtendedAuthorisationInfo(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsExtendedAuthorisationInfo(string str,
+      int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3133,7 +3437,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsHandlingInstructions(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsHandlingInstructions(string str, int
+      index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3154,7 +3459,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsMessageInstructions(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsMessageInstructions(string str, int
+      index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3175,7 +3481,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsMessageType(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsMessageType(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3195,7 +3502,8 @@ namespace PeterO.Mail {
               } else {
                 break;
               }
-              while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
+           while (index < endIndex && (str[index] >= 48 && str[index] <=
+                57)) {
                 ++index;
               }
               indexTemp3 = index;
@@ -3204,16 +3512,32 @@ namespace PeterO.Mail {
             if (indexTemp3 != index) {
               indexTemp2 = indexTemp3; break;
             }
-            if (index + 7 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 88 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 && (str[index + 4] & ~32) == 67 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32) == 83 && (str[index + 7] & ~32) == 69) {
+            if (index + 7 < endIndex && (str[index] & ~32) == 69 &&
+              (str[index + 1] & ~32) == 88 && (str[index + 2] & ~32) == 69&&
+              (str[index + 3] & ~32) == 82 && (str[index + 4] & ~32) ==
+              67 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32)
+              == 83 && (str[index + 7] & ~32) == 69) {
               indexTemp2 += 8; break;
             }
-            if (index + 8 < endIndex && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 && (str[index + 4] & ~32) == 65 && (str[index + 5] & ~32) == 84 && (str[index + 6] & ~32) == 73 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) == 78) {
+            if (index + 8 < endIndex && (str[index] & ~32) == 79 &&
+              (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 69&&
+              (str[index + 3] & ~32) == 82 && (str[index + 4] & ~32) ==
+              65 && (str[index + 5] & ~32) == 84 && (str[index + 6] & ~32)
+       == 73 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) ==
+                78) {
               indexTemp2 += 9; break;
             }
-            if (index + 6 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 79 && (str[index + 3] & ~32) == 74 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 67 && (str[index + 6] & ~32) == 84) {
+            if (index + 6 < endIndex && (str[index] & ~32) == 80 &&
+              (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 79&&
+              (str[index + 3] & ~32) == 74 && (str[index + 4] & ~32) ==
+              69 && (str[index + 5] & ~32) == 67 && (str[index + 6] & ~32)
+              == 84) {
               indexTemp2 += 7; break;
             }
-            if (index + 4 < endIndex && (str[index] & ~32) == 68 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76 && (str[index + 4] & ~32) == 76) {
+            if (index + 4 < endIndex && (str[index] & ~32) == 68 &&
+              (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73&&
+              (str[index + 3] & ~32) == 76 && (str[index + 4] & ~32) ==
+              76) {
               indexTemp2 += 5; break;
             }
           } while (false);
@@ -3260,7 +3584,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsOriginatorPlad(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsOriginatorPlad(string str, int index,
+      int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3288,7 +3613,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsOriginatorReference(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsOriginatorReference(string str, int
+      index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3316,7 +3642,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsOtherRecipientsIndicatorCc(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsOtherRecipientsIndicatorCc(string str,
+      int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3369,7 +3696,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsOtherRecipientsIndicatorTo(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsOtherRecipientsIndicatorTo(string str,
+      int index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3422,7 +3750,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsPrimaryPrecedence(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsPrimaryPrecedence(string str, int
+      index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3442,7 +3771,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMmhsSubjectIndicatorCodes(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMmhsSubjectIndicatorCodes(string str, int
+      index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3463,7 +3793,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderMtPriority(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderMtPriority(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3533,7 +3864,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderNewsgroups(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderNewsgroups(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3555,7 +3887,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderObsoletes(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderObsoletes(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3602,7 +3935,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderOriginalRecipient(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderOriginalRecipient(string str, int index,
+      int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3637,7 +3971,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderPath(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderPath(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3653,9 +3988,14 @@ namespace PeterO.Mail {
             break;
           }
         }
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45) || (str[index] == 95))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] == 45) || (str[index] == 95))) {
           ++index;
-          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45) || (str[index] == 95))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+            (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+            str[index] <= 57) || (str[index] == 45) || (str[index] ==
+            95))) {
             ++index;
           }
         } else {
@@ -3672,15 +4012,18 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderPreventNondeliveryReport(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderPreventNondeliveryReport(string str, int
+      index, int endIndex, ITokener tokener) {
       return ParseFWS(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderPriority(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderPriority(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseMixerKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderReceived(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderReceived(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3737,7 +4080,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderReceivedSpf(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderReceivedSpf(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3746,25 +4090,49 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            if (index + 3 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 83) {
+            if (index + 3 < endIndex && (str[index] & ~32) == 80 &&
+              (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 83&&
+              (str[index + 3] & ~32) == 83) {
               indexTemp2 += 4; break;
             }
-            if (index + 3 < endIndex && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76) {
+            if (index + 3 < endIndex && (str[index] & ~32) == 70 &&
+              (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 73&&
+              (str[index + 3] & ~32) == 76) {
               indexTemp2 += 4; break;
             }
-            if (index + 7 < endIndex && (str[index] & ~32) == 83 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 70 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32) == 73 && (str[index + 7] & ~32) == 76) {
+            if (index + 7 < endIndex && (str[index] & ~32) == 83 &&
+              (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 70&&
+              (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) ==
+              70 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32)
+              == 73 && (str[index + 7] & ~32) == 76) {
               indexTemp2 += 8; break;
             }
-            if (index + 6 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32) == 76) {
+            if (index + 6 < endIndex && (str[index] & ~32) == 78 &&
+              (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 85&&
+              (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) ==
+              82 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32)
+              == 76) {
               indexTemp2 += 7; break;
             }
-            if (index + 3 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) == 69) {
+            if (index + 3 < endIndex && (str[index] & ~32) == 78 &&
+              (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78&&
+              (str[index + 3] & ~32) == 69) {
               indexTemp2 += 4; break;
             }
-            if (index + 8 < endIndex && (str[index] & ~32) == 84 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 80 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) == 82) {
+            if (index + 8 < endIndex && (str[index] & ~32) == 84 &&
+              (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 77&&
+              (str[index + 3] & ~32) == 80 && (str[index + 4] & ~32) ==
+              69 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32)
+       == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) ==
+                82) {
               indexTemp2 += 9; break;
             }
-            if (index + 8 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 82 && (str[index + 3] & ~32) == 77 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) == 82) {
+            if (index + 8 < endIndex && (str[index] & ~32) == 80 &&
+              (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 82&&
+              (str[index + 3] & ~32) == 77 && (str[index + 4] & ~32) ==
+              69 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32)
+       == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) ==
+                82) {
               indexTemp2 += 9; break;
             }
           } while (false);
@@ -3794,7 +4162,8 @@ namespace PeterO.Mail {
           int indexTemp2 = index;
           do {
             int indexStart2 = index;
-            int tx3 = HeaderParserUtility.ParseCommentLax(str, index, endIndex, tokener);
+  int tx3 = HeaderParserUtility.ParseCommentLax(str, index, endIndex,
+              tokener);
             if (tx3 == index) {
               break;
             }
@@ -3830,7 +4199,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderRequireRecipientValidSince(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderRequireRecipientValidSince(string str, int
+      index, int endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3860,15 +4230,18 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderResentTo(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderResentTo(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseStrictHeaderTo(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderReturnPath(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderReturnPath(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParsePath(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderSender(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderSender(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3892,11 +4265,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderSensitivity(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderSensitivity(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseMixerKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderSolicitation(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderSolicitation(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3916,7 +4291,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderSupersedes(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderSupersedes(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3979,11 +4355,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderTo(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderTo(string str, int index, int endIndex,
+      ITokener tokener) {
       return ParseLaxHeaderTo(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderUserAgent(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderUserAgent(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -3993,9 +4371,20 @@ namespace PeterO.Mail {
           do {
             int indexStart2 = index;
             index = ParseCFWS(str, index, endIndex, tokener);
-            if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
+            if (index < endIndex && ((str[index] == 33) || (str[index] >= 35&&
+              str[index] <= 36) || (str[index] >= 45 && str[index] <= 46)||
+              (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65&&
+              str[index] <= 90) || (str[index] >= 94 && str[index] <=
+              126) || (str[index] >= 42 && str[index] <= 43) || (str[index]
+              >= 38 && str[index] <= 39) || (str[index] == 63))) {
               ++index;
-              while (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
+              while (index < endIndex && ((str[index] == 33) || (str[index]
+                >= 35 && str[index] <= 36) || (str[index] >= 45 &&
+                str[index] <= 46) || (str[index] >= 48 && str[index] <= 57)||
+                (str[index] >= 65 && str[index] <= 90) || (str[index] >=
+                94 && str[index] <= 126) || (str[index] >= 42 && str[index]
+                <= 43) || (str[index] >= 38 && str[index] <= 39) ||
+                (str[index] == 63))) {
                 ++index;
               }
             } else {
@@ -4012,9 +4401,21 @@ namespace PeterO.Mail {
                   index = indexStart3; break;
                 }
                 index = ParseCFWS(str, index, endIndex, tokener);
-                if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
+                if (index < endIndex && ((str[index] == 33) || (str[index]
+                  >= 35 && str[index] <= 36) || (str[index] >= 45 &&
+                  str[index] <= 46) || (str[index] >= 48 && str[index] <=
+                  57) || (str[index] >= 65 && str[index] <= 90) ||
+                  (str[index] >= 94 && str[index] <= 126) || (str[index] >=
+                  42 && str[index] <= 43) || (str[index] >= 38 && str[index]
+                  <= 39) || (str[index] == 63))) {
                   ++index;
-                  while (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
+                  while (index < endIndex && ((str[index] == 33) ||
+                    (str[index] >= 35 && str[index] <= 36) || (str[index] >=
+                    45 && str[index] <= 46) || (str[index] >= 48 &&
+                    str[index] <= 57) || (str[index] >= 65 && str[index] <=
+                    90) || (str[index] >= 94 && str[index] <= 126) ||
+                    (str[index] >= 42 && str[index] <= 43) || (str[index] >=
+                    38 && str[index] <= 39) || (str[index] == 63))) {
                     ++index;
                   }
                 } else {
@@ -4051,7 +4452,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderVbrInfo(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderVbrInfo(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -4114,39 +4516,49 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderX400ContentIdentifier(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderX400ContentIdentifier(string str, int
+      index, int endIndex, ITokener tokener) {
       return ParseNoEncodedWords(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderX400ContentReturn(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderX400ContentReturn(string str, int index,
+      int endIndex, ITokener tokener) {
       return ParseMixerKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderX400MtsIdentifier(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderX400MtsIdentifier(string str, int index,
+      int endIndex, ITokener tokener) {
       return ParseNoEncodedWords(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderX400Originator(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderX400Originator(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseMailbox(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderX400Received(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderX400Received(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseNoEncodedWords(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderX400Recipients(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderX400Recipients(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseMailboxList(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderXArchivedAt(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderXArchivedAt(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseFWS(str, index, endIndex, tokener);
-        if (index < endIndex && ((str[index] >= 33 && str[index] <= 59) || (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
+        if (index < endIndex && ((str[index] >= 33 && str[index] <= 59) ||
+          (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
           ++index;
-          while (index < endIndex && ((str[index] >= 33 && str[index] <= 59) || (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
+          while (index < endIndex && ((str[index] >= 33 && str[index] <= 59)||
+            (str[index] == 61) || (str[index] >= 63 && str[index] <=
+            126))) {
             ++index;
           }
         } else {
@@ -4160,23 +4572,28 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseHeaderXRicevuta(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderXRicevuta(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseGeneralKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderXTiporicevuta(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderXTiporicevuta(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseGeneralKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderXTrasporto(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderXTrasporto(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseGeneralKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderXVerificasicurezza(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderXVerificasicurezza(string str, int index,
+      int endIndex, ITokener tokener) {
       return ParseGeneralKeyword(str, index, endIndex, tokener);
     }
 
-    public static int ParseHeaderXref(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseHeaderXref(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -4220,9 +4637,13 @@ namespace PeterO.Mail {
               index = indexStart2;
               break;
             }
-            if (index < endIndex && ((str[index] >= 33 && str[index] <= 39) || (str[index] >= 41 && str[index] <= 58) || (str[index] >= 60 && str[index] <= 126))) {
+            if (index < endIndex && ((str[index] >= 33 && str[index] <= 39)||
+              (str[index] >= 41 && str[index] <= 58) || (str[index] >= 60&&
+              str[index] <= 126))) {
               ++index;
-              while (index < endIndex && ((str[index] >= 33 && str[index] <= 39) || (str[index] >= 41 && str[index] <= 58) || (str[index] >= 60 && str[index] <= 126))) {
+              while (index < endIndex && ((str[index] >= 33 && str[index] <=
+                39) || (str[index] >= 41 && str[index] <= 58) || (str[index]
+                >= 60 && str[index] <= 126))) {
                 ++index;
               }
             } else {
@@ -4255,11 +4676,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseIdLeft(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseIdLeft(string str, int index, int endIndex,
+      ITokener tokener) {
       return ParseLocalPart(str, index, endIndex, tokener);
     }
 
-    public static int ParseIdRight(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseIdRight(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -4282,17 +4705,22 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseKey(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseKey(string str, int index, int endIndex, ITokener
+      tokener) {
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122))) {
           ++index;
         } else {
           break;
         }
-        while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 95) || (str[index] >= 45 && str[index] <= 46))) {
+        while (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] == 95) || (str[index] >= 45 &&
+          str[index] <= 46))) {
           ++index;
         }
         indexTemp = index;
@@ -4300,7 +4728,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseKeyValueList(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseKeyValueList(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -4351,7 +4780,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseKeyValuePair(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseKeyValuePair(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -4403,12 +4833,15 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseLabel(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseLabel(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57))) {
           ++index;
         } else {
           break;
@@ -4416,10 +4849,15 @@ namespace PeterO.Mail {
         while (true) {
           int indexTemp2 = index;
           do {
-            if (index + 1 < endIndex && ((str[index] == 45) && ((str[index + 1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) || (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
+            if (index + 1 < endIndex && ((str[index] == 45) && ((str[index +
+              1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 &&
+              str[index + 1] <= 122) || (str[index + 1] >= 48 && str[index +
+              1] <= 57)))) {
               indexTemp2 += 2; break;
             }
-            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+              (str[index] >= 97 && str[index] <= 122) || (str[index] >=
+              48 && str[index] <= 57))) {
               ++indexTemp2; break;
             }
           } while (false);
@@ -4434,11 +4872,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseLanguageDescription(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseLanguageDescription(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParsePrintablestring(str, index, endIndex, tokener);
     }
 
-    public static int ParseLanguageList(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseLanguageList(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -4488,7 +4928,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseLanguageQ(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseLanguageQ(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -4508,7 +4949,8 @@ namespace PeterO.Mail {
               break;
             }
             index = ParseCFWS(str, index, endIndex, tokener);
-            if (index + 1 < endIndex && (str[index] & ~32) == 81 && str[index + 1] == 61) {
+if (index + 1 < endIndex && (str[index] & ~32) == 81 && str[index + 1] ==
+              61) {
               index += 2;
             } else {
               index = indexStart2;
@@ -4541,16 +4983,18 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseLanguageRange(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseLanguageRange(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexTemp = index;
       do {
         int indexTemp2 = index;
         do {
           int indexStart2 = index;
           for (int i2 = 0; i2 < 8; ++i2) {
-            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+              (str[index] >= 97 && str[index] <= 122))) {
               ++index;
             } else if (i2 < 1) {
               index = indexStart2; break;
@@ -4561,7 +5005,10 @@ namespace PeterO.Mail {
           if (index == indexStart2) {
             break;
           }
-          while (index + 1 < endIndex && ((str[index] == 45) && ((str[index + 1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) || (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
+          while (index + 1 < endIndex && ((str[index] == 45) && ((str[index+
+            1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 &&
+            str[index + 1] <= 122) || (str[index + 1] >= 48 && str[index +
+            1] <= 57)))) {
             index += 2;
           }
           indexTemp2 = index;
@@ -4580,17 +5027,21 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseLanguageTag(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseLanguageTag(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122))) {
           ++index;
         } else {
           break;
         }
-        while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45))) {
+        while (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] == 45))) {
           ++index;
         }
         indexTemp = index;
@@ -4598,7 +5049,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseLaxHeaderTo(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseLaxHeaderTo(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -4631,18 +5083,24 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseLdhStr(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseLdhStr(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
         while (true) {
           int indexTemp2 = index;
           do {
-            if (index + 1 < endIndex && ((str[index] == 45) && ((str[index + 1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) || (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
+            if (index + 1 < endIndex && ((str[index] == 45) && ((str[index +
+              1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 &&
+              str[index + 1] <= 122) || (str[index + 1] >= 48 && str[index +
+              1] <= 57)))) {
               indexTemp2 += 2; break;
             }
-            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+              (str[index] >= 97 && str[index] <= 122) || (str[index] >=
+              48 && str[index] <= 57))) {
               ++indexTemp2; break;
             }
           } while (false);
@@ -4657,7 +5115,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseLocalPart(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseLocalPart(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -4708,7 +5167,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseLocalPartNoCfws(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseLocalPartNoCfws(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -4728,10 +5188,13 @@ namespace PeterO.Mail {
           while (true) {
             int indexTemp3 = index;
             do {
-              if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+           if (index < endIndex && ((str[index] == 32) || (str[index] ==
+                9))) {
                 ++indexTemp3; break;
               }
-              if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 91) || (str[index] >= 93 && str[index] <= 126))) {
+              if (index < endIndex && ((str[index] == 33) || (str[index] >=
+                35 && str[index] <= 91) || (str[index] >= 93 && str[index]
+                <= 126))) {
                 ++indexTemp3; break;
               }
               int indexTemp4 = index;
@@ -4743,10 +5206,14 @@ namespace PeterO.Mail {
                 do {
                   int indexTemp5 = index;
                   do {
-                    if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                    if (index < endIndex && ((str[index] >= 128 &&
+                      str[index] <= 55295) || (str[index] >= 57344 &&
+                      str[index] <= 65535))) {
                       ++indexTemp5; break;
                     }
-                    if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+                    if (index + 1 < endIndex && ((str[index] >= 55296 &&
+                      str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                      str[index + 1] <= 57343))) {
                       indexTemp5 += 2; break;
                     }
                   } while (false);
@@ -4765,7 +5232,9 @@ namespace PeterO.Mail {
               if (indexTemp4 != index) {
                 indexTemp3 = indexTemp4; break;
               }
-              if (index + 1 < endIndex && ((str[index] == 92) && ((str[index + 1] >= 32 && str[index + 1] <= 126) || (str[index + 1] == 9)))) {
+              if (index + 1 < endIndex && ((str[index] == 92) && ((str[index+
+                1] >= 32 && str[index + 1] <= 126) || (str[index + 1] ==
+                9)))) {
                 indexTemp3 += 2; break;
               }
             } while (false);
@@ -4793,7 +5262,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseMailbox(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseMailbox(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -4817,7 +5287,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseMailboxList(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseMailboxList(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -4904,12 +5375,14 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseMcElement(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseMcElement(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 67 && str[index + 2] == 61) {
+        if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index +
+          1] & ~32) == 67 && str[index + 2] == 61) {
           index += 3;
         } else {
           break;
@@ -4929,12 +5402,14 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseMdElement(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseMdElement(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 68 && str[index + 2] == 61) {
+        if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index +
+          1] & ~32) == 68 && str[index + 2] == 61) {
           index += 3;
         } else {
           break;
@@ -4954,12 +5429,16 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseMessageTypeParam(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseMessageTypeParam(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        if (index + 9 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 78 && (str[index + 4] & ~32) == 84 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32) == 70 && (str[index + 7] & ~32) == 73 && (str[index + 8] & ~32) == 69 && (str[index + 9] & ~32) == 82) {
+        if (index + 9 < endIndex && (str[index] & ~32) == 73 && (str[index +
+          1] & ~32) == 68 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 78 && (str[index + 4] & ~32) == 84 && (str[index + 5] & ~32)
+            == 73 && (str[index + 6] & ~32) == 70 && (str[index + 7] & ~32) ==
+            73 && (str[index + 8] & ~32) == 69 && (str[index + 9] & ~32) == 82) {
           index += 10;
         } else {
           break;
@@ -4986,7 +5465,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseMethod(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseMethod(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5033,7 +5513,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseMethodVersion(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseMethodVersion(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5055,7 +5536,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseMethodspec(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseMethodspec(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5092,9 +5574,10 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseMilitaryString(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseMilitaryString(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int indexTemp = index;
       do {
@@ -5104,7 +5587,10 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] >= 40 && str[index] <= 41)) {
               ++indexTemp2; break;
             }
-            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) || (str[index] == 39) || (str[index] >= 43 && str[index] <= 58) || (str[index] == 61) || (str[index] == 63))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+              (str[index] >= 97 && str[index] <= 122) || (str[index] ==
+              32) || (str[index] == 39) || (str[index] >= 43 && str[index]
+              <= 58) || (str[index] == 61) || (str[index] == 63))) {
               ++indexTemp2; break;
             }
           } while (false);
@@ -5124,7 +5610,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseMilitaryStringSequence(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseMilitaryStringSequence(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5187,15 +5674,20 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseMixerKeyword(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseMixerKeyword(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseFWS(str, index, endIndex, tokener);
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] == 45))) {
           ++index;
-          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+            (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+            str[index] <= 57) || (str[index] == 45))) {
             ++index;
           }
         } else {
@@ -5210,7 +5702,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseMsgId(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseMsgId(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5255,12 +5748,14 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseMvElement(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseMvElement(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 86 && str[index + 2] == 61) {
+        if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index +
+          1] & ~32) == 86 && str[index + 2] == 61) {
           index += 3;
         } else {
           break;
@@ -5280,7 +5775,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseNameAddr(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseNameAddr(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5300,7 +5796,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseNewsgroupList(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseNewsgroupList(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5360,14 +5857,21 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseNewsgroupName(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseNewsgroupName(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 43) || (str[index] == 45) || (str[index] == 95))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] == 43) || (str[index] == 45) ||
+          (str[index] == 95))) {
           ++index;
-          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 43) || (str[index] == 45) || (str[index] == 95))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+            (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+            str[index] <= 57) || (str[index] == 43) || (str[index] == 45)||
+            (str[index] == 95))) {
             ++index;
           }
         } else {
@@ -5382,9 +5886,15 @@ namespace PeterO.Mail {
             } else {
               break;
             }
-            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 43) || (str[index] == 45) || (str[index] == 95))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+              (str[index] >= 97 && str[index] <= 122) || (str[index] >=
+              48 && str[index] <= 57) || (str[index] == 43) || (str[index]
+              == 45) || (str[index] == 95))) {
               ++index;
-              while (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 43) || (str[index] == 45) || (str[index] == 95))) {
+              while (index < endIndex && ((str[index] >= 65 && str[index] <=
+                90) || (str[index] >= 97 && str[index] <= 122) ||
+                (str[index] >= 48 && str[index] <= 57) || (str[index] == 43)||
+                (str[index] == 45) || (str[index] == 95))) {
                 ++index;
               }
             } else {
@@ -5404,11 +5914,13 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseNoEncodedWords(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseNoEncodedWords(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseObsUnstruct(str, index, endIndex, tokener);
     }
 
-    public static int ParseNoFoldLiteral(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseNoFoldLiteral(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5439,7 +5951,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseNoResult(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseNoResult(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5451,7 +5964,8 @@ namespace PeterO.Mail {
           index = indexStart; break;
         }
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index + 3 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) == 69) {
+        if (index + 3 < endIndex && (str[index] & ~32) == 78 && (str[index +
+          1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) == 69) {
           index += 4;
         } else {
           index = indexStart; break;
@@ -5467,21 +5981,32 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseNodeid(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseNodeid(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
         while (true) {
           int indexTemp2 = index;
           do {
-            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 45 && str[index] <= 46) || (str[index] == 95) || (str[index] == 126))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+              (str[index] >= 97 && str[index] <= 122) || (str[index] >=
+              48 && str[index] <= 57) || (str[index] >= 45 && str[index] <=
+              46) || (str[index] == 95) || (str[index] == 126))) {
               ++indexTemp2; break;
             }
-            if (index + 2 < endIndex && ((str[index] == 37) && (((str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70) || (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index + 2] <= 70) || (str[index + 2] >= 97 && str[index + 2] <= 102))))) {
+            if (index + 2 < endIndex && ((str[index] == 37) && (((str[index+
+              1] >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65&&
+              str[index + 1] <= 70) || (str[index + 1] >= 97 && str[index+
+              1] <= 102)) && ((str[index + 2] >= 48 && str[index + 2] <=
+              57) || (str[index + 2] >= 65 && str[index + 2] <= 70) ||
+              (str[index + 2] >= 97 && str[index + 2] <= 102))))) {
               indexTemp2 += 3; break;
             }
-            if (index < endIndex && ((str[index] == 33) || (str[index] == 36) || (str[index] >= 40 && str[index] <= 44) || (str[index] == 59) || (str[index] == 61))) {
+            if (index < endIndex && ((str[index] == 33) || (str[index] ==
+              36) || (str[index] >= 40 && str[index] <= 44) || (str[index]
+              == 59) || (str[index] == 61))) {
               ++indexTemp2; break;
             }
           } while (false);
@@ -5499,9 +6024,10 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseNonnegInteger(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseNonnegInteger(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexTemp = index;
       do {
         if (index < endIndex && (str[index] == 48)) {
@@ -5528,7 +6054,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseObsAcceptLanguage(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseObsAcceptLanguage(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5579,7 +6106,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseObsDomainList(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseObsDomainList(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5676,7 +6204,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseObsGroupList(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseObsGroupList(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5714,7 +6243,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseObsLanguageQ(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseObsLanguageQ(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5736,7 +6266,8 @@ namespace PeterO.Mail {
               break;
             }
             index = ParseCFWS(str, index, endIndex, tokener);
-            if (index < endIndex && ((str[index] == 81) || (str[index] == 113))) {
+         if (index < endIndex && ((str[index] == 81) || (str[index] ==
+              113))) {
               ++index;
             } else {
               index = indexStart2;
@@ -5773,7 +6304,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseObsRoute(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseObsRoute(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5797,7 +6329,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseObsUnstruct(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseObsUnstruct(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5820,10 +6353,18 @@ namespace PeterO.Mail {
                 do {
                   int indexTemp5 = index;
                   do {
-                    if (index < endIndex && ((str[index] == 0) || (str[index] >= 1 && str[index] <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) || (str[index] == 127) || (str[index] >= 33 && str[index] <= 126) || (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                    if (index < endIndex && ((str[index] == 0) ||
+                      (str[index] >= 1 && str[index] <= 8) || (str[index] >=
+                      11 && str[index] <= 12) || (str[index] >= 14 &&
+                      str[index] <= 31) || (str[index] == 127) ||
+                      (str[index] >= 33 && str[index] <= 126) || (str[index]
+                      >= 128 && str[index] <= 55295) || (str[index] >= 57344&&
+                      str[index] <= 65535))) {
                       ++indexTemp5; break;
                     }
-                    if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+                    if (index + 1 < endIndex && ((str[index] >= 55296 &&
+                      str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                      str[index + 1] <= 57343))) {
                       indexTemp5 += 2; break;
                     }
                   } while (false);
@@ -5893,7 +6434,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseOptParameterList(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseOptParameterList(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5940,12 +6482,14 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseOtherSections(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseOtherSections(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index + 1 < endIndex && (str[index] == 42) && (str[index + 1] >= 49 && str[index + 1] <= 57)) {
+        if (index + 1 < endIndex && (str[index] == 42) && (str[index + 1] >=
+          49 && str[index + 1] <= 57)) {
           index += 2;
         } else {
           break;
@@ -5958,7 +6502,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseParameter(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseParameter(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -5967,7 +6512,8 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            int indexTemp3 = ParseRegularParameter(str, index, endIndex, tokener);
+         int indexTemp3 = ParseRegularParameter(str, index, endIndex,
+              tokener);
             if (indexTemp3 != index) {
               indexTemp2 = indexTemp3; break;
             }
@@ -5979,15 +6525,26 @@ namespace PeterO.Mail {
                 int indexTemp4 = index;
                 do {
                   int indexStart4 = index;
-                  if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] == 43) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
+                  if (index < endIndex && ((str[index] == 33) || (str[index]
+                    >= 35 && str[index] <= 36) || (str[index] == 38) ||
+                    (str[index] == 43) || (str[index] >= 45 && str[index] <=
+                    46) || (str[index] >= 48 && str[index] <= 57) ||
+                    (str[index] >= 65 && str[index] <= 90) || (str[index] >=
+                    94 && str[index] <= 126))) {
                     ++index;
-                    while (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] == 43) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
+                    while (index < endIndex && ((str[index] == 33) ||
+                      (str[index] >= 35 && str[index] <= 36) || (str[index]
+                      == 38) || (str[index] == 43) || (str[index] >= 45 &&
+                      str[index] <= 46) || (str[index] >= 48 && str[index]
+                      <= 57) || (str[index] >= 65 && str[index] <= 90) ||
+                      (str[index] >= 94 && str[index] <= 126))) {
                       ++index;
                     }
                   } else {
                     break;
                   }
-                  if (index + 1 < endIndex && str[index] == 42 && str[index + 1] == 48) {
+        if (index + 1 < endIndex && str[index] == 42 && str[index + 1] ==
+                    48) {
                     index += 2;
                   }
                   if (index < endIndex && (str[index] == 42)) {
@@ -6033,10 +6590,22 @@ namespace PeterO.Mail {
                   while (true) {
                     int indexTemp5 = index;
                     do {
-                      if (index + 2 < endIndex && ((str[index] == 37) && (((str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70) || (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index + 2] <= 70) || (str[index + 2] >= 97 && str[index + 2] <= 102))))) {
+                      if (index + 2 < endIndex && ((str[index] == 37) &&
+                        (((str[index + 1] >= 48 && str[index + 1] <= 57) ||
+                        (str[index + 1] >= 65 && str[index + 1] <= 70) ||
+                        (str[index + 1] >= 97 && str[index + 1] <= 102)) &&
+                        ((str[index + 2] >= 48 && str[index + 2] <= 57) ||
+                        (str[index + 2] >= 65 && str[index + 2] <= 70) ||
+                        (str[index + 2] >= 97 && str[index + 2] <= 102))))) {
                         indexTemp5 += 3; break;
                       }
-                      if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] == 43) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
+                      if (index < endIndex && ((str[index] == 33) ||
+                        (str[index] >= 35 && str[index] <= 36) ||
+                        (str[index] == 38) || (str[index] == 43) ||
+                        (str[index] >= 45 && str[index] <= 46) ||
+                        (str[index] >= 48 && str[index] <= 57) ||
+                        (str[index] >= 65 && str[index] <= 90) ||
+                        (str[index] >= 94 && str[index] <= 126))) {
                         ++indexTemp5; break;
                       }
                     } while (false);
@@ -6075,9 +6644,19 @@ namespace PeterO.Mail {
                 int indexTemp4 = index;
                 do {
                   int indexStart4 = index;
-                  if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] == 43) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
+                  if (index < endIndex && ((str[index] == 33) || (str[index]
+                    >= 35 && str[index] <= 36) || (str[index] == 38) ||
+                    (str[index] == 43) || (str[index] >= 45 && str[index] <=
+                    46) || (str[index] >= 48 && str[index] <= 57) ||
+                    (str[index] >= 65 && str[index] <= 90) || (str[index] >=
+                    94 && str[index] <= 126))) {
                     ++index;
-                    while (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] == 43) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
+                    while (index < endIndex && ((str[index] == 33) ||
+                      (str[index] >= 35 && str[index] <= 36) || (str[index]
+                      == 38) || (str[index] == 43) || (str[index] >= 45 &&
+                      str[index] <= 46) || (str[index] >= 48 && str[index]
+                      <= 57) || (str[index] >= 65 && str[index] <= 90) ||
+                      (str[index] >= 94 && str[index] <= 126))) {
                       ++index;
                     }
                   } else {
@@ -6115,10 +6694,21 @@ namespace PeterO.Mail {
               while (true) {
                 int indexTemp4 = index;
                 do {
-                  if (index + 2 < endIndex && ((str[index] == 37) && (((str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70) || (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index + 2] <= 70) || (str[index + 2] >= 97 && str[index + 2] <= 102))))) {
+                  if (index + 2 < endIndex && ((str[index] == 37) &&
+                    (((str[index + 1] >= 48 && str[index + 1] <= 57) ||
+                    (str[index + 1] >= 65 && str[index + 1] <= 70) ||
+                    (str[index + 1] >= 97 && str[index + 1] <= 102)) &&
+                    ((str[index + 2] >= 48 && str[index + 2] <= 57) ||
+                    (str[index + 2] >= 65 && str[index + 2] <= 70) ||
+                    (str[index + 2] >= 97 && str[index + 2] <= 102))))) {
                     indexTemp4 += 3; break;
                   }
-                  if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] == 43) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
+                  if (index < endIndex && ((str[index] == 33) || (str[index]
+                    >= 35 && str[index] <= 36) || (str[index] == 38) ||
+                    (str[index] == 43) || (str[index] >= 45 && str[index] <=
+                    46) || (str[index] >= 48 && str[index] <= 57) ||
+                    (str[index] >= 65 && str[index] <= 90) || (str[index] >=
+                    94 && str[index] <= 126))) {
                     ++indexTemp4; break;
                   }
                 } while (false);
@@ -6156,7 +6746,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParsePath(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePath(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -6198,7 +6789,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParsePathIdentity(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePathIdentity(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -6243,7 +6835,8 @@ namespace PeterO.Mail {
               int indexTemp4 = index;
               do {
                 int indexStart4 = index;
-                if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+                if (index < endIndex && ((str[index] >= 65 && str[index] <=
+                  90) || (str[index] >= 97 && str[index] <= 122))) {
                   ++index;
                 } else {
                   break;
@@ -6251,10 +6844,15 @@ namespace PeterO.Mail {
                 for (int i4 = 0;; ++i4) {
                   int indexTemp5 = index;
                   do {
-                    if (index + 1 < endIndex && ((str[index] == 45) && ((str[index + 1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) || (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
+                    if (index + 1 < endIndex && ((str[index] == 45) &&
+                      ((str[index + 1] >= 65 && str[index + 1] <= 90) ||
+                      (str[index + 1] >= 97 && str[index + 1] <= 122) ||
+                      (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
                       indexTemp5 += 2; break;
                     }
-                    if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57))) {
+                    if (index < endIndex && ((str[index] >= 65 && str[index]
+                      <= 90) || (str[index] >= 97 && str[index] <= 122) ||
+                      (str[index] >= 48 && str[index] <= 57))) {
                       ++indexTemp5; break;
                     }
                   } while (false);
@@ -6278,15 +6876,18 @@ namespace PeterO.Mail {
               indexTemp4 = index;
               do {
                 int indexStart4 = index;
-                if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
+              if (index < endIndex && (str[index] >= 48 && str[index] <=
+                  57)) {
                   ++index;
                 } else {
                   break;
                 }
-                while (index < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index] == 45))) {
+                while (index < endIndex && ((str[index] >= 48 && str[index]
+                  <= 57) || (str[index] == 45))) {
                   ++index;
                 }
-                if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+                if (index < endIndex && ((str[index] >= 65 && str[index] <=
+                  90) || (str[index] >= 97 && str[index] <= 122))) {
                   ++index;
                 } else {
                   index = indexStart4; break;
@@ -6294,10 +6895,15 @@ namespace PeterO.Mail {
                 while (true) {
                   int indexTemp5 = index;
                   do {
-                    if (index + 1 < endIndex && ((str[index] == 45) && ((str[index + 1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) || (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
+                    if (index + 1 < endIndex && ((str[index] == 45) &&
+                      ((str[index + 1] >= 65 && str[index + 1] <= 90) ||
+                      (str[index + 1] >= 97 && str[index + 1] <= 122) ||
+                      (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
                       indexTemp5 += 2; break;
                     }
-                    if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57))) {
+                    if (index < endIndex && ((str[index] >= 65 && str[index]
+                      <= 90) || (str[index] >= 97 && str[index] <= 122) ||
+                      (str[index] >= 48 && str[index] <= 57))) {
                       ++indexTemp5; break;
                     }
                   } while (false);
@@ -6332,9 +6938,14 @@ namespace PeterO.Mail {
         if (tokener != null) {
           tokener.RestoreState(state2);
         }
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 45) || (str[index] == 95))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] == 45) || (str[index] == 95))) {
           ++indexTemp;
-          while (indexTemp < endIndex && ((str[indexTemp] >= 65 && str[indexTemp] <= 90) || (str[indexTemp] >= 97 && str[indexTemp] <= 122) || (str[indexTemp] >= 48 && str[indexTemp] <= 57) || (str[indexTemp] == 45) || (str[indexTemp] == 95))) {
+          while (indexTemp < endIndex && ((str[indexTemp] >= 65 &&
+            str[indexTemp] <= 90) || (str[indexTemp] >= 97 && str[indexTemp]
+            <= 122) || (str[indexTemp] >= 48 && str[indexTemp] <= 57) ||
+            (str[indexTemp] == 45) || (str[indexTemp] == 95))) {
             ++indexTemp;
           }
           break;
@@ -6346,7 +6957,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParsePathList(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePathList(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -6417,7 +7029,8 @@ namespace PeterO.Mail {
                 if (tokener != null) {
                   tokener.RestoreState(state4);
                 }
-                if (index + 1 < endIndex && str[index] == 33 && str[index + 1] == 33) {
+        if (index + 1 < endIndex && str[index] == 33 && str[index + 1] ==
+                  33) {
                   indexTemp3 += 2;
                   break;
                 }
@@ -6455,7 +7068,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParsePathxmpp(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePathxmpp(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -6526,7 +7140,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParsePhrase(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePhrase(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -6556,7 +7171,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParsePhraseAtom(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePhraseAtom(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -6564,18 +7180,30 @@ namespace PeterO.Mail {
         for (int i = 0;; ++i) {
           int indexTemp2 = index;
           do {
-            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+              (str[index] >= 97 && str[index] <= 122))) {
               ++indexTemp2; break;
             }
-            if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index] == 33) || (str[index] == 35) || (str[index] == 36) || (str[index] == 37) || (str[index] == 38) || (str[index] == 39) || (str[index] == 42) || (str[index] == 43) || (str[index] == 45) || (str[index] == 47) || (str[index] == 61) || (str[index] == 63) || (str[index] == 94) || (str[index] == 95) || (str[index] == 96) || (str[index] == 123) || (str[index] == 124) || (str[index] == 125) || (str[index] == 126))) {
+            if (index < endIndex && ((str[index] >= 48 && str[index] <= 57)||
+              (str[index] == 33) || (str[index] == 35) || (str[index] ==
+              36) || (str[index] == 37) || (str[index] == 38) || (str[index]
+              == 39) || (str[index] == 42) || (str[index] == 43) ||
+              (str[index] == 45) || (str[index] == 47) || (str[index] == 61)||
+              (str[index] == 63) || (str[index] == 94) || (str[index] ==
+              95) || (str[index] == 96) || (str[index] == 123) ||
+              (str[index] == 124) || (str[index] == 125) || (str[index] ==
+              126))) {
               ++indexTemp2; break;
             }
             int indexTemp3 = index;
             do {
-              if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+              if (index < endIndex && ((str[index] >= 128 && str[index] <=
+                55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                 ++indexTemp3; break;
               }
-              if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+              if (index + 1 < endIndex && ((str[index] >= 55296 &&
+                str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                str[index + 1] <= 57343))) {
                 indexTemp3 += 2; break;
               }
             } while (false);
@@ -6606,7 +7234,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParsePhraseAtomOrDot(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePhraseAtomOrDot(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -6640,7 +7269,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParsePhraseWord(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePhraseWord(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -6678,7 +7308,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParsePhraseWordOrDot(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePhraseWordOrDot(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -6716,7 +7347,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParsePrecedence(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePrecedence(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -6735,7 +7367,8 @@ namespace PeterO.Mail {
               } else {
                 break;
               }
-              while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
+           while (index < endIndex && (str[index] >= 48 && str[index] <=
+                57)) {
                 ++index;
               }
               indexTemp3 = index;
@@ -6744,22 +7377,46 @@ namespace PeterO.Mail {
             if (indexTemp3 != index) {
               indexTemp2 = indexTemp3; break;
             }
-            if (index + 7 < endIndex && (str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) == 69 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32) == 69 && (str[index + 7] & ~32) == 68) {
+            if (index + 7 < endIndex && (str[index] & ~32) == 68 &&
+              (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 70&&
+              (str[index + 3] & ~32) == 69 && (str[index + 4] & ~32) ==
+              82 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32)
+              == 69 && (str[index + 7] & ~32) == 68) {
               indexTemp2 += 8; break;
             }
-            if (index + 6 < endIndex && (str[index] & ~32) == 82 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 73 && (str[index + 5] & ~32) == 78 && (str[index + 6] & ~32) == 69) {
+            if (index + 6 < endIndex && (str[index] & ~32) == 82 &&
+              (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 85&&
+              (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) ==
+              73 && (str[index + 5] & ~32) == 78 && (str[index + 6] & ~32)
+              == 69) {
               indexTemp2 += 7; break;
             }
-            if (index + 7 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 79 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32) == 84 && (str[index + 7] & ~32) == 89) {
+            if (index + 7 < endIndex && (str[index] & ~32) == 80 &&
+              (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73&&
+              (str[index + 3] & ~32) == 79 && (str[index + 4] & ~32) ==
+              82 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32)
+              == 84 && (str[index + 7] & ~32) == 89) {
               indexTemp2 += 8; break;
             }
-            if (index + 8 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 69 && (str[index + 4] & ~32) == 68 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32) == 65 && (str[index + 7] & ~32) == 84 && (str[index + 8] & ~32) == 69) {
+            if (index + 8 < endIndex && (str[index] & ~32) == 73 &&
+              (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 77&&
+              (str[index + 3] & ~32) == 69 && (str[index + 4] & ~32) ==
+              68 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32)
+       == 65 && (str[index + 7] & ~32) == 84 && (str[index + 8] & ~32) ==
+                69) {
               indexTemp2 += 9; break;
             }
-            if (index + 4 < endIndex && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 76 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 83 && (str[index + 4] & ~32) == 72) {
+            if (index + 4 < endIndex && (str[index] & ~32) == 70 &&
+              (str[index + 1] & ~32) == 76 && (str[index + 2] & ~32) == 65&&
+              (str[index + 3] & ~32) == 83 && (str[index + 4] & ~32) ==
+              72) {
               indexTemp2 += 5; break;
             }
-            if (index + 7 < endIndex && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 86 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32) == 68 && (str[index + 7] & ~32) == 69) {
+            if (index + 7 < endIndex && (str[index] & ~32) == 79 &&
+              (str[index + 1] & ~32) == 86 && (str[index + 2] & ~32) == 69&&
+              (str[index + 3] & ~32) == 82 && (str[index + 4] & ~32) ==
+              82 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32)
+              == 68 && (str[index + 7] & ~32) == 69) {
               indexTemp2 += 8; break;
             }
           } while (false);
@@ -6784,9 +7441,10 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParsePrintablestring(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePrintablestring(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexTemp = index;
       do {
         while (true) {
@@ -6795,7 +7453,10 @@ namespace PeterO.Mail {
             if (index < endIndex && (str[index] >= 40 && str[index] <= 41)) {
               ++indexTemp2; break;
             }
-            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) || (str[index] == 39) || (str[index] >= 43 && str[index] <= 58) || (str[index] == 61) || (str[index] == 63))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+              (str[index] >= 97 && str[index] <= 122) || (str[index] ==
+              32) || (str[index] == 39) || (str[index] >= 43 && str[index]
+              <= 58) || (str[index] == 61) || (str[index] == 63))) {
               ++indexTemp2; break;
             }
           } while (false);
@@ -6813,15 +7474,21 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseProperty(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseProperty(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index + 7 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76 && (str[index + 4] & ~32) == 70 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32) == 79 && (str[index + 7] & ~32) == 77) {
+        if (index + 7 < endIndex && (str[index] & ~32) == 77 && (str[index +
+          1] & ~32) == 65 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76 && (str[index + 4] & ~32) == 70 && (str[index + 5] & ~32)
+            == 82 && (str[index + 6] & ~32) == 79 && (str[index + 7] & ~32) ==
+            77) {
           indexTemp += 8; break;
         }
-        if (index + 5 < endIndex && (str[index] & ~32) == 82 && (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) == 80 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 84 && (str[index + 5] & ~32) == 79) {
+        if (index + 5 < endIndex && (str[index] & ~32) == 82 && (str[index +
+          1] & ~32) == 67 && (str[index + 2] & ~32) == 80 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 84 && (str[index + 5] & ~32)
+            == 79) {
           indexTemp += 6; break;
         }
         // Unlimited production in choice
@@ -6829,7 +7496,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParsePropspec(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePropspec(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -6877,15 +7545,19 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParsePsChar(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePsChar(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
         if (index < endIndex && (str[index] >= 40 && str[index] <= 41)) {
           ++indexTemp; break;
         }
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) || (str[index] == 39) || (str[index] >= 43 && str[index] <= 58) || (str[index] == 61) || (str[index] == 63))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
+          (str[index] == 39) || (str[index] >= 43 && str[index] <= 58) ||
+          (str[index] == 61) || (str[index] == 63))) {
           ++indexTemp; break;
         }
       } while (false);
@@ -6895,28 +7567,36 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParsePtype(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePtype(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index + 3 < endIndex && (str[index] & ~32) == 83 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 84 && (str[index + 3] & ~32) == 80) {
+        if (index + 3 < endIndex && (str[index] & ~32) == 83 && (str[index +
+          1] & ~32) == 77 && (str[index + 2] & ~32) == 84 && (str[index + 3] & ~32) == 80) {
           indexTemp += 4; break;
         }
-        if (index + 5 < endIndex && (str[index] & ~32) == 72 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 68 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82) {
+        if (index + 5 < endIndex && (str[index] & ~32) == 72 && (str[index +
+          1] & ~32) == 69 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 68 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32)
+            == 82) {
           indexTemp += 6; break;
         }
-        if (index + 3 < endIndex && (str[index] & ~32) == 66 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 68 && (str[index + 3] & ~32) == 89) {
+        if (index + 3 < endIndex && (str[index] & ~32) == 66 && (str[index +
+          1] & ~32) == 79 && (str[index + 2] & ~32) == 68 && (str[index + 3] & ~32) == 89) {
           indexTemp += 4; break;
         }
-        if (index + 5 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 76 && (str[index + 3] & ~32) == 73 && (str[index + 4] & ~32) == 67 && (str[index + 5] & ~32) == 89) {
+        if (index + 5 < endIndex && (str[index] & ~32) == 80 && (str[index +
+          1] & ~32) == 79 && (str[index + 2] & ~32) == 76 && (str[index + 3] & ~32) == 73 && (str[index + 4] & ~32) == 67 && (str[index + 5] & ~32)
+            == 89) {
           indexTemp += 6; break;
         }
       } while (false);
       return indexTemp;
     }
 
-    public static int ParsePvalue(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParsePvalue(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -6925,9 +7605,22 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
+            if (index < endIndex && ((str[index] == 33) || (str[index] >= 35&&
+              str[index] <= 36) || (str[index] >= 45 && str[index] <= 46)||
+              (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65&&
+              str[index] <= 90) || (str[index] >= 94 && str[index] <=
+              126) || (str[index] >= 42 && str[index] <= 43) || (str[index]
+              >= 38 && str[index] <= 39) || (str[index] == 63))) {
               ++indexTemp2;
-              while (indexTemp2 < endIndex && ((str[indexTemp2] == 33) || (str[indexTemp2] >= 35 && str[indexTemp2] <= 36) || (str[indexTemp2] >= 45 && str[indexTemp2] <= 46) || (str[indexTemp2] >= 48 && str[indexTemp2] <= 57) || (str[indexTemp2] >= 65 && str[indexTemp2] <= 90) || (str[indexTemp2] >= 94 && str[indexTemp2] <= 126) || (str[indexTemp2] >= 42 && str[indexTemp2] <= 43) || (str[indexTemp2] >= 38 && str[indexTemp2] <= 39) || (str[indexTemp2] == 63))) {
+              while (indexTemp2 < endIndex && ((str[indexTemp2] == 33) ||
+                (str[indexTemp2] >= 35 && str[indexTemp2] <= 36) ||
+                (str[indexTemp2] >= 45 && str[indexTemp2] <= 46) ||
+                (str[indexTemp2] >= 48 && str[indexTemp2] <= 57) ||
+                (str[indexTemp2] >= 65 && str[indexTemp2] <= 90) ||
+                (str[indexTemp2] >= 94 && str[indexTemp2] <= 126) ||
+                (str[indexTemp2] >= 42 && str[indexTemp2] <= 43) ||
+                (str[indexTemp2] >= 38 && str[indexTemp2] <= 39) ||
+                (str[indexTemp2] == 63))) {
                 ++indexTemp2;
               }
               break;
@@ -6994,15 +7687,22 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseQcontent(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseQcontent(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 91) || (str[index] >= 93 && str[index] <= 126) || (str[index] >= 1 && str[index] <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) || (str[index] == 127) || (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
+          str[index] <= 91) || (str[index] >= 93 && str[index] <= 126) ||
+          (str[index] >= 1 && str[index] <= 8) || (str[index] >= 11 &&
+          str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) ||
+          (str[index] == 127) || (str[index] >= 128 && str[index] <= 55295)||
+          (str[index] >= 57344 && str[index] <= 65535))) {
           ++indexTemp; break;
         }
-        if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+        if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
+          56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
           indexTemp += 2; break;
         }
         int indexTemp2 = ParseQuotedPair(str, index, endIndex, tokener);
@@ -7016,7 +7716,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseQuotedMilitaryString(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseQuotedMilitaryString(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -7055,9 +7756,10 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseQuotedPair(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseQuotedPair(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int indexTemp = index;
       do {
@@ -7069,13 +7771,21 @@ namespace PeterO.Mail {
         do {
           int indexTemp2 = index;
           do {
-            if (index < endIndex && ((str[index] >= 33 && str[index] <= 126) || (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+            if (index < endIndex && ((str[index] >= 33 && str[index] <= 126)||
+              (str[index] >= 128 && str[index] <= 55295) || (str[index]
+              >= 57344 && str[index] <= 65535))) {
               ++indexTemp2; break;
             }
-            if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+            if (index + 1 < endIndex && ((str[index] >= 55296 && str[index]
+              <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <=
+              57343))) {
               indexTemp2 += 2; break;
             }
-            if (index < endIndex && ((str[index] == 32) || (str[index] == 9) || (str[index] == 0) || (str[index] >= 1 && str[index] <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) || (str[index] == 127) || (str[index] == 10) || (str[index] == 13))) {
+            if (index < endIndex && ((str[index] == 32) || (str[index] == 9)||
+              (str[index] == 0) || (str[index] >= 1 && str[index] <= 8)||
+              (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14&&
+              str[index] <= 31) || (str[index] == 127) || (str[index] ==
+              10) || (str[index] == 13))) {
               ++indexTemp2; break;
             }
           } while (false);
@@ -7093,7 +7803,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseQuotedString(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseQuotedString(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -7150,9 +7861,10 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseQvalue(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseQvalue(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
         int indexTemp2 = index;
@@ -7173,7 +7885,8 @@ namespace PeterO.Mail {
                 break;
               }
               for (int i3 = 0; i3 < 3; ++i3) {
-                if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
+              if (index < endIndex && (str[index] >= 48 && str[index] <=
+                  57)) {
                   ++index;
                 } else {
                   break;
@@ -7235,12 +7948,15 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseReasonspec(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseReasonspec(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        if (index + 5 < endIndex && (str[index] & ~32) == 82 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 83 && (str[index + 4] & ~32) == 79 && (str[index + 5] & ~32) == 78) {
+        if (index + 5 < endIndex && (str[index] & ~32) == 82 && (str[index +
+          1] & ~32) == 69 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 83 && (str[index + 4] & ~32) == 79 && (str[index + 5] & ~32)
+            == 78) {
           index += 6;
         } else {
           break;
@@ -7267,7 +7983,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseReceivedToken(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseReceivedToken(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -7302,21 +8019,32 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseRegName(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseRegName(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
         while (true) {
           int indexTemp2 = index;
           do {
-            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 45 && str[index] <= 46) || (str[index] == 95) || (str[index] == 126))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+              (str[index] >= 97 && str[index] <= 122) || (str[index] >=
+              48 && str[index] <= 57) || (str[index] >= 45 && str[index] <=
+              46) || (str[index] == 95) || (str[index] == 126))) {
               ++indexTemp2; break;
             }
-            if (index + 2 < endIndex && ((str[index] == 37) && (((str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70) || (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index + 2] <= 70) || (str[index + 2] >= 97 && str[index + 2] <= 102))))) {
+            if (index + 2 < endIndex && ((str[index] == 37) && (((str[index+
+              1] >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65&&
+              str[index + 1] <= 70) || (str[index + 1] >= 97 && str[index+
+              1] <= 102)) && ((str[index + 2] >= 48 && str[index + 2] <=
+              57) || (str[index + 2] >= 65 && str[index + 2] <= 70) ||
+              (str[index + 2] >= 97 && str[index + 2] <= 102))))) {
               indexTemp2 += 3; break;
             }
-            if (index < endIndex && ((str[index] == 33) || (str[index] == 36) || (str[index] >= 38 && str[index] <= 44) || (str[index] == 59) || (str[index] == 61))) {
+            if (index < endIndex && ((str[index] == 33) || (str[index] ==
+              36) || (str[index] >= 38 && str[index] <= 44) || (str[index]
+              == 59) || (str[index] == 61))) {
               ++indexTemp2; break;
             }
           } while (false);
@@ -7331,7 +8059,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseRegularParameter(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseRegularParameter(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -7363,14 +8092,23 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseRegularParameterName(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseRegularParameterName(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] == 43) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
+          str[index] <= 36) || (str[index] == 38) || (str[index] == 43) ||
+          (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 &&
+          str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 94 && str[index] <= 126))) {
           ++index;
-          while (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] == 43) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126))) {
+          while (index < endIndex && ((str[index] == 33) || (str[index] >=
+            35 && str[index] <= 36) || (str[index] == 38) || (str[index] ==
+            43) || (str[index] >= 45 && str[index] <= 46) || (str[index] >=
+            48 && str[index] <= 57) || (str[index] >= 65 && str[index] <=
+            90) || (str[index] >= 94 && str[index] <= 126))) {
             ++index;
           }
         } else {
@@ -7388,21 +8126,32 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseResid(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseResid(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
         while (true) {
           int indexTemp2 = index;
           do {
-            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 45 && str[index] <= 46) || (str[index] == 95) || (str[index] == 126))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+              (str[index] >= 97 && str[index] <= 122) || (str[index] >=
+              48 && str[index] <= 57) || (str[index] >= 45 && str[index] <=
+              46) || (str[index] == 95) || (str[index] == 126))) {
               ++indexTemp2; break;
             }
-            if (index < endIndex && ((str[index] == 33) || (str[index] == 36) || (str[index] >= 38 && str[index] <= 44) || (str[index] >= 58 && str[index] <= 59) || (str[index] == 61))) {
+            if (index < endIndex && ((str[index] == 33) || (str[index] ==
+              36) || (str[index] >= 38 && str[index] <= 44) || (str[index]
+              >= 58 && str[index] <= 59) || (str[index] == 61))) {
               ++indexTemp2; break;
             }
-            if (index + 2 < endIndex && ((str[index] == 37) && (((str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70) || (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index + 2] <= 70) || (str[index + 2] >= 97 && str[index + 2] <= 102))))) {
+            if (index + 2 < endIndex && ((str[index] == 37) && (((str[index+
+              1] >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65&&
+              str[index + 1] <= 70) || (str[index + 1] >= 97 && str[index+
+              1] <= 102)) && ((str[index + 2] >= 48 && str[index + 2] <=
+              57) || (str[index + 2] >= 65 && str[index + 2] <= 70) ||
+              (str[index + 2] >= 97 && str[index + 2] <= 102))))) {
               indexTemp2 += 3; break;
             }
           } while (false);
@@ -7417,7 +8166,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseResinfo(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseResinfo(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -7499,18 +8249,26 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseRestrictedName(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseRestrictedName(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57))) {
           ++index;
         } else {
           break;
         }
         for (int i = 0; i < 126; ++i) {
-          if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 57) || (str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] == 38) || (str[index] >= 94 && str[index] <= 95) || (str[index] >= 45 && str[index] <= 46) || (str[index] == 43))) {
+          if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+            (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+            str[index] <= 57) || (str[index] == 33) || (str[index] >= 35 &&
+            str[index] <= 36) || (str[index] == 38) || (str[index] >= 94 &&
+            str[index] <= 95) || (str[index] >= 45 && str[index] <= 46) ||
+            (str[index] == 43))) {
             ++index;
           } else {
             break;
@@ -7524,37 +8282,53 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseResult(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseResult(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index + 3 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 83) {
+        if (index + 3 < endIndex && (str[index] & ~32) == 80 && (str[index +
+          1] & ~32) == 65 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 83) {
           indexTemp += 4; break;
         }
-        if (index + 3 < endIndex && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76) {
+        if (index + 3 < endIndex && (str[index] & ~32) == 70 && (str[index +
+          1] & ~32) == 65 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76) {
           indexTemp += 4; break;
         }
-        if (index + 7 < endIndex && (str[index] & ~32) == 83 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 70 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32) == 73 && (str[index + 7] & ~32) == 76) {
+        if (index + 7 < endIndex && (str[index] & ~32) == 83 && (str[index +
+          1] & ~32) == 79 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 70 && (str[index + 5] & ~32)
+            == 65 && (str[index + 6] & ~32) == 73 && (str[index + 7] & ~32) ==
+            76) {
           indexTemp += 8; break;
         }
-        if (index + 6 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32) == 76) {
+        if (index + 6 < endIndex && (str[index] & ~32) == 78 && (str[index +
+          1] & ~32) == 69 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32)
+            == 65 && (str[index + 6] & ~32) == 76) {
           indexTemp += 7; break;
         }
-        if (index + 3 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) == 69) {
+        if (index + 3 < endIndex && (str[index] & ~32) == 78 && (str[index +
+          1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) == 69) {
           indexTemp += 4; break;
         }
-        if (index + 8 < endIndex && (str[index] & ~32) == 84 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 80 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) == 82) {
+        if (index + 8 < endIndex && (str[index] & ~32) == 84 && (str[index +
+          1] & ~32) == 69 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 80 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32)
+            == 82 && (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) ==
+            79 && (str[index + 8] & ~32) == 82) {
           indexTemp += 9; break;
         }
-        if (index + 8 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 82 && (str[index + 3] & ~32) == 77 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) == 82) {
+        if (index + 8 < endIndex && (str[index] & ~32) == 80 && (str[index +
+          1] & ~32) == 69 && (str[index + 2] & ~32) == 82 && (str[index + 3] & ~32) == 77 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32)
+            == 82 && (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) ==
+            79 && (str[index + 8] & ~32) == 82) {
           indexTemp += 9; break;
         }
       } while (false);
       return indexTemp;
     }
 
-    public static int ParseSection(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseSection(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -7573,7 +8347,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseSicSequence(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseSicSequence(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -7639,29 +8414,39 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseSolicitationKeywords(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseSolicitationKeywords(string str, int index, int
+      endIndex, ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122))) {
           ++index;
         } else {
           break;
         }
-        while (index < endIndex && ((str[index] >= 45 && str[index] <= 46) || (str[index] == 95) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 58))) {
+        while (index < endIndex && ((str[index] >= 45 && str[index] <= 46)||
+          (str[index] == 95) || (str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 58))) {
           ++index;
         }
         while (true) {
           int indexTemp2 = index;
           do {
             int indexStart2 = index;
-            if (index + 1 < endIndex && (str[index] == 44) && ((str[index + 1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122))) {
+            if (index + 1 < endIndex && (str[index] == 44) && ((str[index +
+              1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97 &&
+              str[index + 1] <= 122))) {
               index += 2;
             } else {
               break;
             }
-            while (index < endIndex && ((str[index] >= 45 && str[index] <= 46) || (str[index] == 95) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index] <= 58))) {
+            while (index < endIndex && ((str[index] >= 45 && str[index] <=
+              46) || (str[index] == 95) || (str[index] >= 65 && str[index]
+              <= 90) || (str[index] >= 97 && str[index] <= 122) ||
+              (str[index] >= 48 && str[index] <= 58))) {
               ++index;
             }
             indexTemp2 = index;
@@ -7678,29 +8463,36 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseStrictHeaderTo(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseStrictHeaderTo(string str, int index, int
+      endIndex, ITokener tokener) {
       return ParseAddressList(str, index, endIndex, tokener);
     }
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseText(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseText(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] >= 1 && str[index] <= 9) || (str[index] == 11) || (str[index] == 12) || (str[index] >= 14 && str[index] <= 127) || (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+        if (index < endIndex && ((str[index] >= 1 && str[index] <= 9) ||
+          (str[index] == 11) || (str[index] == 12) || (str[index] >= 14 &&
+          str[index] <= 127) || (str[index] >= 128 && str[index] <= 55295)||
+          (str[index] >= 57344 && str[index] <= 65535))) {
           ++indexTemp; break;
         }
-        if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+        if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
+          56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
           indexTemp += 2; break;
         }
       } while (false);
       return indexTemp;
     }
 
-    public static int ParseTime(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseTime(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -7724,13 +8516,15 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseTimeOfDay(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseTimeOfDay(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+        if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57)||
+          (str[index + 1] >= 48 && str[index + 1] <= 57))) {
           index += 2;
         } else {
           index = indexStart; break;
@@ -7742,7 +8536,8 @@ namespace PeterO.Mail {
           index = indexStart; break;
         }
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+        if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57)||
+          (str[index + 1] >= 48 && str[index + 1] <= 57))) {
           index += 2;
         } else {
           index = indexStart; break;
@@ -7758,7 +8553,8 @@ namespace PeterO.Mail {
               index = indexStart2; break;
             }
             index = ParseCFWS(str, index, endIndex, tokener);
-            if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+            if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <=
+              57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
               index += 2;
             } else {
               index = indexStart2; break;
@@ -7782,32 +8578,53 @@ namespace PeterO.Mail {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Usage",
       "CA1801",
-      Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+      Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
     #endif
-    public static int ParseTypeString(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseTypeString(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexTemp = index;
       do {
-        if (index + 2 < endIndex && (str[index] & ~32) == 65 && (str[index + 1] & ~32) == 76 && (str[index + 2] & ~32) == 76) {
+        if (index + 2 < endIndex && (str[index] & ~32) == 65 && (str[index +
+          1] & ~32) == 76 && (str[index + 2] & ~32) == 76) {
           indexTemp += 3; break;
         }
-        if (index + 3 < endIndex && (str[index] & ~32) == 76 && (str[index + 1] & ~32) == 73 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 84) {
+        if (index + 3 < endIndex && (str[index] & ~32) == 76 && (str[index +
+          1] & ~32) == 73 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 84) {
           indexTemp += 4; break;
         }
-        if (index + 10 < endIndex && (str[index] & ~32) == 84 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 78 && (str[index + 4] & ~32) == 83 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32) == 67 && (str[index + 7] & ~32) == 84 && (str[index + 8] & ~32) == 73 && (str[index + 9] & ~32) == 79 && (str[index + 10] & ~32) == 78) {
+        if (index + 10 < endIndex && (str[index] & ~32) == 84 && (str[index+
+          1] & ~32) == 82 && (str[index + 2] & ~32) == 65 && (str[index +
+          3] & ~32) == 78 && (str[index + 4] & ~32) == 83 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32) == 67 && (str[index + 7] & ~32)
+            == 84 && (str[index + 8] & ~32) == 73 && (str[index + 9] & ~32) ==
+            79 && (str[index + 10] & ~32) == 78) {
           indexTemp += 11; break;
         }
       } while (false);
       return indexTemp;
     }
 
-    public static int ParseValue(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseValue(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 && str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
+          str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) ||
+          (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 &&
+          str[index] <= 90) || (str[index] >= 94 && str[index] <= 126) ||
+          (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38 &&
+          str[index] <= 39) || (str[index] == 63))) {
           ++indexTemp;
-          while (indexTemp < endIndex && ((str[indexTemp] == 33) || (str[indexTemp] >= 35 && str[indexTemp] <= 36) || (str[indexTemp] >= 45 && str[indexTemp] <= 46) || (str[indexTemp] >= 48 && str[indexTemp] <= 57) || (str[indexTemp] >= 65 && str[indexTemp] <= 90) || (str[indexTemp] >= 94 && str[indexTemp] <= 126) || (str[indexTemp] >= 42 && str[indexTemp] <= 43) || (str[indexTemp] >= 38 && str[indexTemp] <= 39) || (str[indexTemp] == 63))) {
+          while (indexTemp < endIndex && ((str[indexTemp] == 33) ||
+            (str[indexTemp] >= 35 && str[indexTemp] <= 36) ||
+            (str[indexTemp] >= 45 && str[indexTemp] <= 46) ||
+            (str[indexTemp] >= 48 && str[indexTemp] <= 57) ||
+            (str[indexTemp] >= 65 && str[indexTemp] <= 90) ||
+            (str[indexTemp] >= 94 && str[indexTemp] <= 126) ||
+            (str[indexTemp] >= 42 && str[indexTemp] <= 43) ||
+            (str[indexTemp] >= 38 && str[indexTemp] <= 39) ||
+            (str[indexTemp] == 63))) {
             ++indexTemp;
           }
           break;
@@ -7823,7 +8640,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseWord(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseWord(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -7843,13 +8661,15 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseYear(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseYear(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+        if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57)||
+          (str[index + 1] >= 48 && str[index + 1] <= 57))) {
           index += 2;
         } else {
           index = indexStart; break;
@@ -7866,7 +8686,8 @@ namespace PeterO.Mail {
       return indexTemp;
     }
 
-    public static int ParseZone(string str, int index, int endIndex, ITokener tokener) {
+    public static int ParseZone(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
@@ -7894,7 +8715,10 @@ namespace PeterO.Mail {
           } else {
             index = indexStart2; break;
           }
-          if (index + 3 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index + 3] >= 48 && str[index + 3] <= 57))) {
+          if (index + 3 < endIndex && ((str[index] >= 48 && str[index] <=
+            57) || (str[index + 1] >= 48 && str[index + 1] <= 57) ||
+            (str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index +
+            3] >= 48 && str[index + 3] <= 57))) {
             index += 4;
           } else {
             index = indexStart2; break;
@@ -7916,37 +8740,59 @@ namespace PeterO.Mail {
           do {
             int indexTemp3 = index;
             do {
-              if (index + 1 < endIndex && (str[index] & ~32) == 85 && (str[index + 1] & ~32) == 84) {
+              if (index + 1 < endIndex && (str[index] & ~32) == 85 &&
+                (str[index + 1] & ~32) == 84) {
                 indexTemp3 += 2; break;
               }
-              if (index + 2 < endIndex && (str[index] & ~32) == 71 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 84) {
+              if (index + 2 < endIndex && (str[index] & ~32) == 71 &&
+                (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) ==
+                84) {
                 indexTemp3 += 3; break;
               }
-              if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+              if (index + 2 < endIndex && (str[index] & ~32) == 69 &&
+                (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) ==
+                84) {
                 indexTemp3 += 3; break;
               }
-              if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+              if (index + 2 < endIndex && (str[index] & ~32) == 69 &&
+                (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) ==
+                84) {
                 indexTemp3 += 3; break;
               }
-              if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+              if (index + 2 < endIndex && (str[index] & ~32) == 67 &&
+                (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) ==
+                84) {
                 indexTemp3 += 3; break;
               }
-              if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+              if (index + 2 < endIndex && (str[index] & ~32) == 67 &&
+                (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) ==
+                84) {
                 indexTemp3 += 3; break;
               }
-              if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+              if (index + 2 < endIndex && (str[index] & ~32) == 77 &&
+                (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) ==
+                84) {
                 indexTemp3 += 3; break;
               }
-              if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+              if (index + 2 < endIndex && (str[index] & ~32) == 77 &&
+                (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) ==
+                84) {
                 indexTemp3 += 3; break;
               }
-              if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+              if (index + 2 < endIndex && (str[index] & ~32) == 80 &&
+                (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) ==
+                84) {
                 indexTemp3 += 3; break;
               }
-              if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+              if (index + 2 < endIndex && (str[index] & ~32) == 80 &&
+                (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) ==
+                84) {
                 indexTemp3 += 3; break;
               }
-              if (index < endIndex && ((str[index] >= 65 && str[index] <= 73) || (str[index] >= 75 && str[index] <= 90) || (str[index] >= 97 && str[index] <= 105) || (str[index] >= 107 && str[index] <= 122))) {
+              if (index < endIndex && ((str[index] >= 65 && str[index] <=
+                73) || (str[index] >= 75 && str[index] <= 90) || (str[index]
+                >= 97 && str[index] <= 105) || (str[index] >= 107 &&
+                str[index] <= 122))) {
                 ++indexTemp3; break;
               }
             } while (false);

@@ -9,15 +9,17 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-    /// <summary><para>Contains methods that implement Internationalized
-    /// Domain Names in Applications (IDNA). IDNA enables using a wider range
-    /// of letters, numbers, and certain other characters in domain names.</para>
-    /// <para>NOTICE: While this class's source code is in the public domain,
-    /// the class uses two internal classes, called <c>NormalizationData</c>
+    /// <summary><para>Contains methods that implement Internationalized Domain
+    /// Names in Applications (IDNA). IDNA enables using a wider range of letters,
+    /// numbers, and certain other characters in domain names.</para>
+    /// <para>NOTICE:
+    /// While this class's source code is in the public domain, the class uses two
+    /// internal classes, called <c>NormalizationData</c>
     /// and <c>IdnaData</c>
-    /// , that include data derived from the Unicode
-    /// Character Database. See the documentation for the Normalizer class
-    /// for the permission notice for the Unicode Character Database.</para>
+    /// , that
+    /// include data derived from the Unicode Character Database. See the
+    /// documentation for the Normalizer class for the permission notice for the
+    /// Unicode Character Database.</para>
     /// </summary>
   public static class Idna
   {
@@ -95,7 +97,7 @@ namespace PeterO.Text {
     private static int GetJoiningType(int ch) {
       ByteData table = null;
       lock (joiningTypesSync) {
-        joiningTypes = joiningTypes ?? ByteData.Decompress(IdnaData.JoiningTypes);
+     joiningTypes = joiningTypes ?? ByteData.Decompress(IdnaData.JoiningTypes);
         table = joiningTypes;
       }
       return table.GetByte(ch);
@@ -177,7 +179,8 @@ namespace PeterO.Text {
             ++i;
           }
           int bidiClass = GetBidiClass(c);
-          if (bidiClass == BidiClassAL || bidiClass == BidiClassAN || bidiClass == BidiClassR) {
+          if (bidiClass == BidiClassAL || bidiClass == BidiClassAN ||
+            bidiClass == BidiClassR) {
             return true;
           }
         }
@@ -185,12 +188,13 @@ namespace PeterO.Text {
       return false;
     }
 
-    /// <summary>Tries to encode each label of a domain name into Punycode.</summary>
+    /// <summary>Tries to encode each label of a domain name into
+    /// Punycode.</summary>
     /// <param name='value'>A domain name.</param>
-    /// <returns>The domain name where each label with non-ASCII characters
-    /// is encoded into Punycode. Labels where this is not possible remain
+    /// <returns>The domain name where each label with non-ASCII characters is
+    /// encoded into Punycode. Labels where this is not possible remain
     /// unchanged.</returns>
-    /// <exception cref='System.ArgumentNullException'>Value is null.</exception>
+    /// <exception cref='ArgumentNullException'>Value is null.</exception>
     public static string EncodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException("value");
@@ -217,7 +221,8 @@ namespace PeterO.Text {
           lastIndex = i + 1;
         }
       }
-      retval = DomainUtility.PunycodeEncodePortion(value, lastIndex, value.Length);
+  retval = DomainUtility.PunycodeEncodePortion(value, lastIndex,
+        value.Length);
       if (retval == null) {
         builder.Append(value.Substring(lastIndex, value.Length - lastIndex));
       } else {
@@ -243,13 +248,16 @@ namespace PeterO.Text {
             // Empty label
             return false;
           }
-          if (!IsValidLabel(str.Substring(lastIndex, i - lastIndex), lookupRules, bidiRule)) {
+          if (!IsValidLabel(str.Substring(lastIndex, i - lastIndex),
+            lookupRules, bidiRule)) {
             return false;
           }
           lastIndex = i + 1;
         }
       }
-      return (str.Length != lastIndex) && IsValidLabel(str.Substring(lastIndex, str.Length - lastIndex), lookupRules, bidiRule);
+      return (str.Length != lastIndex) &&
+        IsValidLabel(str.Substring(lastIndex, str.Length - lastIndex),
+        lookupRules, bidiRule);
     }
 
     private static string ToLowerCaseAscii(string str) {
@@ -281,7 +289,8 @@ namespace PeterO.Text {
       return builder.ToString();
     }
 
-    private static bool IsValidLabel(string str, bool lookupRules, bool bidiRule) {
+private static bool IsValidLabel(string str, bool lookupRules, bool
+      bidiRule) {
       if (String.IsNullOrEmpty(str)) {
         return false;
       }
@@ -289,8 +298,8 @@ namespace PeterO.Text {
         (str[1] == 'n' || str[1] == 'N') && str[2] == '-' && str[3] == '-';
       bool allLDH = true;
       for (int i = 0; i < str.Length; ++i) {
-        if ((str[i] >= 'a' && str[i] <= 'z') ||
-                (str[i] >= 'A' && str[i] <= 'Z') ||
+    if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'
+) ||
                 (str[i] >= '0' && str[i] <= '9') || str[i] == '-') {
           // LDH character
           continue;
@@ -320,10 +329,12 @@ namespace PeterO.Text {
       }
       if (allLDH) {
         if (str.Length >= 4 && str[2] == '-' && str[3] == '-') {
-          // Contains a hyphen at the third and fourth (one-based) character positions
+          // Contains a hyphen at the third and fourth (one-based) character
+          //positions
           return false;
         }
-        if (str[0] != '-' && str[str.Length - 1] != '-' && !(str[0] >= '0' && str[0] <= '9')) {
+        if (str[0] != '-' && str[str.Length - 1] != '-' && !(str[0] >= '0'&&
+          str[0] <= '9')) {
           // Only LDH characters, doesn't start with hyphen or digit,
           // and doesn't end with hyphen
           return true;
@@ -332,7 +343,8 @@ namespace PeterO.Text {
       return IsValidULabel(str, lookupRules, bidiRule);
     }
 
-    private static bool IsValidULabel(string str, bool lookupRules, bool bidiRule) {
+    private static bool IsValidULabel(string str, bool lookupRules, bool
+      bidiRule) {
       if (String.IsNullOrEmpty(str)) {
         return false;
       }
@@ -341,7 +353,8 @@ namespace PeterO.Text {
         return false;
       }
       if (str.Length >= 4 && str[2] == '-' && str[3] == '-') {
-        // Contains a hyphen at the third and fourth (one-based) character positions
+        // Contains a hyphen at the third and fourth (one-based) character
+        //positions
         return false;
       }
       if (!lookupRules) {
@@ -416,8 +429,7 @@ namespace PeterO.Text {
             // NOTE: Test done here even under lookup rules,
             // even though it's a CONTEXTO character
             if (!(i - 1 >= 0 && i + 1 < str.Length &&
-                  lastChar == 0x6c &&
-                  str[i + 1] == 0x6c)) {
+                lastChar == 0x6c && str[i + 1] == 0x6c)) {
               // Dot must come between two l's
               return false;
             }
@@ -478,7 +490,8 @@ namespace PeterO.Text {
             --i;
           }
           bidiClass = GetBidiClass(c);
-          if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL || bidiClass == BidiClassAN)) {
+          if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
+            bidiClass == BidiClassAN)) {
             found = true;
             break;
           }
@@ -505,7 +518,8 @@ namespace PeterO.Text {
             ++i;
           }
           bidiClass = GetBidiClass(c);
-          if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL || bidiClass == BidiClassAN)) {
+          if (rtl && (bidiClass == BidiClassR || bidiClass == BidiClassAL ||
+            bidiClass == BidiClassAN)) {
             if (bidiClass == BidiClassAN) {
               if (haveEN) {
                 return false;
@@ -527,10 +541,8 @@ namespace PeterO.Text {
             continue;
           }
           if (bidiClass == BidiClassES ||
-                   bidiClass == BidiClassCS ||
-                   bidiClass == BidiClassET ||
-                   bidiClass == BidiClassON ||
-                   bidiClass == BidiClassBN ||
+                bidiClass == BidiClassCS || bidiClass == BidiClassET ||
+                bidiClass == BidiClassON || bidiClass == BidiClassBN ||
                    bidiClass == BidiClassNSM) {
             continue;
           }
