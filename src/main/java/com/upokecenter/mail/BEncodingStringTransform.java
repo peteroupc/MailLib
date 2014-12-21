@@ -42,7 +42,8 @@ at: http://upokecenter.com/d/
       int count = 0;
       int[] alphabet = Base64Transform.Alphabet;
       while (count < 4) {
-        int c = (this.inputIndex < this.input.length()) ? this.input.charAt(this.inputIndex++) : -1;
+        int c = (this.inputIndex < this.input.length()) ?
+          this.input.charAt(this.inputIndex++) : -1;
         if (c < 0) {
           // End of stream
           if (count == 1) {

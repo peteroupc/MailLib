@@ -14,8 +14,8 @@ private UnicodeDatabase() {
     private static Object classesSyncRoot = new Object();
 
     public static int GetCombiningClass(int cp) {
-      synchronized(classesSyncRoot) {
-        classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningClasses)) : classes;
+      synchronized (classesSyncRoot) {
+  classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningClasses)) : classes;
       }
       return ((int)classes.GetByte(cp)) & 0xff;
     }
@@ -24,7 +24,7 @@ private UnicodeDatabase() {
     private static Object idnaCatSyncRoot = new Object();
 
     public static int GetIdnaCategory(int cp) {
-      synchronized(idnaCatSyncRoot) {
+      synchronized (idnaCatSyncRoot) {
         idnaCat = (idnaCat == null) ? (ByteData.Decompress(IdnaData.IdnaCategories)) : idnaCat;
       }
       return ((int)idnaCat.GetByte(cp)) & 0xff;
@@ -34,11 +34,8 @@ private UnicodeDatabase() {
     private static Object valueCmSyncRoot = new Object();
 
     public static boolean IsCombiningMark(int cp) {
-      synchronized(valueCmSyncRoot) {
-        if (combmark == null) {
-          combmark = ByteData.Decompress(
-            IdnaData.CombiningMarks);
-        }
+      synchronized (valueCmSyncRoot) {
+        combmark = (combmark == null) ? ((ByteData.Decompress(IdnaData.CombiningMarks))) : combmark;
         return combmark.GetBoolean(cp);
       }
     }
@@ -50,21 +47,21 @@ private UnicodeDatabase() {
     private static Object stableSyncRoot = new Object();
 
     public static boolean IsStableCodePoint(int cp, Normalization form) {
-      synchronized(stableSyncRoot) {
+      synchronized (stableSyncRoot) {
         if (form == Normalization.NFC) {
-          stablenfc = (stablenfc == null) ? (ByteData.Decompress(NormalizationData.StableNFC)) : stablenfc;
+     stablenfc = (stablenfc == null) ? (ByteData.Decompress(NormalizationData.StableNFC)) : stablenfc;
           return stablenfc.GetBoolean(cp);
         }
         if (form == Normalization.NFD) {
-          stablenfd = (stablenfd == null) ? (ByteData.Decompress(NormalizationData.StableNFD)) : stablenfd;
+     stablenfd = (stablenfd == null) ? (ByteData.Decompress(NormalizationData.StableNFD)) : stablenfd;
           return stablenfd.GetBoolean(cp);
         }
         if (form == Normalization.NFKC) {
-          stablenfkc = (stablenfkc == null) ? (ByteData.Decompress(NormalizationData.StableNFKC)) : stablenfkc;
+  stablenfkc = (stablenfkc == null) ? (ByteData.Decompress(NormalizationData.StableNFKC)) : stablenfkc;
           return stablenfkc.GetBoolean(cp);
         }
         if (form == Normalization.NFKD) {
-          stablenfkd = (stablenfkd == null) ? (ByteData.Decompress(NormalizationData.StableNFKD)) : stablenfkd;
+  stablenfkd = (stablenfkd == null) ? (ByteData.Decompress(NormalizationData.StableNFKD)) : stablenfkd;
           return stablenfkd.GetBoolean(cp);
         }
         return false;
@@ -73,7 +70,8 @@ private UnicodeDatabase() {
 
     private static int[] decomps;
 
-    public static int GetDecomposition(int cp, boolean compat, int[] buffer, int offset) {
+    public static int GetDecomposition(int cp, boolean compat, int[] buffer,
+      int offset) {
       if (cp < 0x80) {
         // ASCII characters have no decomposition
         buffer[offset++] = cp;
@@ -100,7 +98,8 @@ private UnicodeDatabase() {
           if (size > 0) {
             if ((data & (1 << 23)) > 0) {
               realIndex = data & 0x1fffff;
-              System.arraycopy(NormalizationData.CompatDecompMappings, realIndex, buffer, offset, size);
+              System.arraycopy(NormalizationData.CompatDecompMappings, realIndex,
+                buffer, offset, size);
             } else {
               realIndex = 1 + (decomps[0] << 1) + (data & 0x1fffff);
               System.arraycopy(decomps, realIndex, buffer, offset, size);
@@ -124,7 +123,7 @@ private UnicodeDatabase() {
     private static Object pairsSyncRoot = new Object();
 
     private static void EnsurePairs() {
-      synchronized(pairsSyncRoot) {
+      synchronized (pairsSyncRoot) {
         if (pairs == null) {
           pairs = NormalizationData.ComposedPairs;
           pairsLength = pairs.length / 3;

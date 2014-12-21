@@ -9,8 +9,9 @@ using System;
 
 namespace PeterO.Mail {
   internal sealed class Base64Transform : ITransform {
-    internal static readonly int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    internal static readonly int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
       52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1,
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
@@ -72,18 +73,18 @@ bool checkStrictEncoding) {
           // End of stream
           if (count == 1) {
             // Not supposed to happen
-            throw new MessageDataException("Invalid number of base64 characters");
+         throw new MessageDataException("Invalid number of base64 characters");
           }
           if (count == 2) {
             if (this.checkStrictEncoding && this.paddingCount != 2) {
-              throw new MessageDataException("Invalid amount of base64 padding");
+            throw new MessageDataException("Invalid amount of base64 padding");
             }
             value <<= 12;
             return (int)((value >> 16) & 0xff);
           }
           if (count == 3) {
             if (this.checkStrictEncoding && this.paddingCount != 1) {
-              throw new MessageDataException("Invalid amount of base64 padding");
+            throw new MessageDataException("Invalid amount of base64 padding");
             }
             value <<= 6;
             this.ResizeBuffer(1);
@@ -112,7 +113,8 @@ bool checkStrictEncoding) {
             continue;
           }
           if (this.checkStrictEncoding) {
-            throw new MessageDataException("Invalid base64 character: 0x0A bare");
+         throw new
+              MessageDataException("Invalid base64 character: 0x0A bare");
           }
         } else if (c >= 0x80) {
           // Ignore

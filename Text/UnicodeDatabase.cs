@@ -14,7 +14,7 @@ namespace PeterO.Text {
 
     public static int GetCombiningClass(int cp) {
       lock (classesSyncRoot) {
-        classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
+  classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
       }
       return ((int)classes.GetByte(cp)) & 0xff;
     }
@@ -34,10 +34,7 @@ namespace PeterO.Text {
 
     public static bool IsCombiningMark(int cp) {
       lock (valueCmSyncRoot) {
-        if (combmark == null) {
-          combmark = ByteData.Decompress(
-            IdnaData.CombiningMarks);
-        }
+        combmark = combmark ?? (ByteData.Decompress(IdnaData.CombiningMarks));
         return combmark.GetBoolean(cp);
       }
     }
@@ -51,19 +48,19 @@ namespace PeterO.Text {
     public static bool IsStableCodePoint(int cp, Normalization form) {
       lock (stableSyncRoot) {
         if (form == Normalization.NFC) {
-          stablenfc = stablenfc ?? ByteData.Decompress(NormalizationData.StableNFC);
+     stablenfc = stablenfc ?? ByteData.Decompress(NormalizationData.StableNFC);
           return stablenfc.GetBoolean(cp);
         }
         if (form == Normalization.NFD) {
-          stablenfd = stablenfd ?? ByteData.Decompress(NormalizationData.StableNFD);
+     stablenfd = stablenfd ?? ByteData.Decompress(NormalizationData.StableNFD);
           return stablenfd.GetBoolean(cp);
         }
         if (form == Normalization.NFKC) {
-          stablenfkc = stablenfkc ?? ByteData.Decompress(NormalizationData.StableNFKC);
+  stablenfkc = stablenfkc ?? ByteData.Decompress(NormalizationData.StableNFKC);
           return stablenfkc.GetBoolean(cp);
         }
         if (form == Normalization.NFKD) {
-          stablenfkd = stablenfkd ?? ByteData.Decompress(NormalizationData.StableNFKD);
+  stablenfkd = stablenfkd ?? ByteData.Decompress(NormalizationData.StableNFKD);
           return stablenfkd.GetBoolean(cp);
         }
         return false;
@@ -72,7 +69,8 @@ namespace PeterO.Text {
 
     private static int[] decomps;
 
-    public static int GetDecomposition(int cp, bool compat, int[] buffer, int offset) {
+    public static int GetDecomposition(int cp, bool compat, int[] buffer,
+      int offset) {
       if (cp < 0x80) {
         // ASCII characters have no decomposition
         buffer[offset++] = cp;
@@ -99,7 +97,8 @@ namespace PeterO.Text {
           if (size > 0) {
             if ((data & (1 << 23)) > 0) {
               realIndex = data & 0x1fffff;
-              Array.Copy(NormalizationData.CompatDecompMappings, realIndex, buffer, offset, size);
+              Array.Copy(NormalizationData.CompatDecompMappings, realIndex,
+                buffer, offset, size);
             } else {
               realIndex = 1 + (decomps[0] << 1) + (data & 0x1fffff);
               Array.Copy(decomps, realIndex, buffer, offset, size);

@@ -47,7 +47,8 @@ namespace PeterO.Mail {
         if ((str[i] == '\r') && i + 1 < str.Length &&
             (str[i + 1] == '\n')) {
           // CRLF
-          if (i == 0 && i + 2 < str.Length && (str[i + 1] == ' ' || str[i + 1] == '\t')) {
+          if (i == 0 && i + 2 < str.Length && (str[i + 1] == ' ' || str[i +
+            1] == '\t')) {
             // CRLF followed by space or tab at beginning
             return true;
           }
@@ -55,8 +56,10 @@ namespace PeterO.Mail {
         }
         char c = str[i];
         // Has specials, or CTLs other than tab
-        if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29 || c == 0x3c || c == 0x3e ||
-            c == 0x5b || c == 0x5d || c == 0x3a || c == 0x3b || c == 0x40 || c == 0x5c || c == 0x2c || c == 0x2e || c == '"') {
+        if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29||
+          c == 0x3c || c == 0x3e || c == 0x5b || c == 0x5d || c == 0x3a || c
+            == 0x3b || c == 0x40 ||
+              c == 0x5c || c == 0x2c || c == 0x2e || c == '"') {
           return true;
         }
       }
@@ -101,7 +104,8 @@ namespace PeterO.Mail {
       return builder.ToString();
     }
 
-    private static string ParseDotAtomAfterCFWS(string str, int index, int endIndex) {
+    private static string ParseDotAtomAfterCFWS(string str, int index, int
+      endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a dot-atom
       var builder = new StringBuilder();
@@ -122,7 +126,8 @@ namespace PeterO.Mail {
       return builder.ToString();
     }
 
-    private static string ParseDotWordAfterCFWS(string str, int index, int endIndex) {
+    private static string ParseDotWordAfterCFWS(string str, int index, int
+      endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a word separated by dots
       var builder = new StringBuilder();
@@ -175,7 +180,8 @@ namespace PeterO.Mail {
             int startQuote = index;
             index = HeaderParser.ParseQuotedPair(str, index, endIndex, null);
             if (index == startQuote) {
-              builder.Append(str.Substring(startQuote + 1, index - (startQuote + 1)));
+       builder.Append(str.Substring(startQuote + 1, index - (startQuote +
+                1)));
             } else {
               ++index;
             }
@@ -191,7 +197,8 @@ namespace PeterO.Mail {
       return ParseDotAtomAfterCFWS(str, index, endIndex);
     }
 
-    public static IList<NamedAddress> ParseAddressList(string str, int index, int endIndex, IList<int[]> tokens) {
+    public static IList<NamedAddress> ParseAddressList(string str, int
+      index, int endIndex, IList<int[]> tokens) {
       int lastIndex = index;
       IList<NamedAddress> addresses = new List<NamedAddress>();
       for (int i = 0; i < tokens.Count; ++i) {
@@ -211,7 +218,8 @@ namespace PeterO.Mail {
       return addresses;
     }
 
-    public static NamedAddress ParseAddress(string str, int index, int endIndex, IList<int[]> tokens) {
+    public static NamedAddress ParseAddress(string str, int index, int
+      endIndex, IList<int[]> tokens) {
       int lastIndex = index;
       for (int i = 0; i < tokens.Count; ++i) {
         int tokenIndex = tokens[i][1];
@@ -229,7 +237,8 @@ namespace PeterO.Mail {
       return null;
     }
 
-    public static NamedAddress ParseGroup(string str, int index, int endIndex, IList<int[]> tokens) {
+    public static NamedAddress ParseGroup(string str, int index, int
+      endIndex, IList<int[]> tokens) {
       string displayName = null;
       bool haveDisplayName = false;
       IList<NamedAddress> mailboxes = new List<NamedAddress>();
@@ -263,7 +272,8 @@ namespace PeterO.Mail {
       return new NamedAddress(displayName, mailboxes);
     }
 
-    public static NamedAddress ParseMailbox(string str, int index, int endIndex, IList<int[]> tokens) {
+    public static NamedAddress ParseMailbox(string str, int index, int
+      endIndex, IList<int[]> tokens) {
       string displayName = null;
       string localPart = null;
       string domain = null;
@@ -302,7 +312,8 @@ namespace PeterO.Mail {
     }
 
     // Parses a comment using the obsolete syntax.
-    internal static int ParseCommentLax(string str, int index, int endIndex, ITokener tokener) {
+    internal static int ParseCommentLax(string str, int index, int endIndex,
+      ITokener tokener) {
       int indexStart = index;
       int depth = 0;
       if (index < endIndex && (str[index] == 40)) {
@@ -322,21 +333,30 @@ namespace PeterO.Mail {
             do {
               int indexTemp3 = index;
               do {
-                if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                if (index < endIndex && ((str[index] >= 128 && str[index] <=
+                  55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                   ++indexTemp3; break;
                 }
-                if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+                if (index + 1 < endIndex && ((str[index] >= 55296 &&
+                  str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                  str[index + 1] <= 57343))) {
                   indexTemp3 += 2; break;
                 }
                 int indexTemp4;
-                indexTemp4 = HeaderParser.ParseQuotedPair(str, index, endIndex, tokener);
+      indexTemp4 = HeaderParser.ParseQuotedPair(str, index, endIndex,
+                  tokener);
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
-                if (index < endIndex && ((str[index] >= 1 && str[index] <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) || (str[index] == 127))) {
+                if (index < endIndex && ((str[index] >= 1 && str[index] <=
+                  8) || (str[index] >= 11 && str[index] <= 12) ||
+                  (str[index] >= 14 && str[index] <= 31) || (str[index] ==
+                  127))) {
                   ++indexTemp3; break;
                 }
-                if (index < endIndex && ((str[index] >= 93 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 91) || (str[index] >= 33 && str[index] <= 39))) {
+                if (index < endIndex && ((str[index] >= 93 && str[index] <=
+                  126) || (str[index] >= 42 && str[index] <= 91) ||
+                  (str[index] >= 33 && str[index] <= 39))) {
                   ++indexTemp3; break;
                 }
               } while (false);
@@ -385,7 +405,8 @@ namespace PeterO.Mail {
     }
 
     // Parses a comment without using the obsolete syntax.
-    internal static int ParseCommentStrict(string str, int index, int endIndex) {
+  internal static int ParseCommentStrict(string str, int index, int
+      endIndex) {
       if (index < endIndex && (str[index] == 40)) {
         ++index;
       } else {
@@ -408,10 +429,12 @@ namespace PeterO.Mail {
                   indexTemp4 = index;
                   do {
                     int indexStart4 = index;
-                    while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+        while (index < endIndex && ((str[index] == 32) || (str[index] ==
+                      9))) {
                       ++index;
                     }
-                    if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
+        if (index + 1 < endIndex && str[index] == 13 && str[index + 1] ==
+                      10) {
                       index += 2;
                     } else {
                       index = indexStart4; break;
@@ -424,9 +447,11 @@ namespace PeterO.Mail {
                   } else { break;
                   }
                 } while (false);
-                if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+           if (index < endIndex && ((str[index] == 32) || (str[index] ==
+                  9))) {
                   ++index;
-                  while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+        while (index < endIndex && ((str[index] == 32) || (str[index] ==
+                    9))) {
                     ++index;
                   }
                 } else {
@@ -443,10 +468,13 @@ namespace PeterO.Mail {
             do {
               int indexTemp3 = index;
               do {
-                if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                if (index < endIndex && ((str[index] >= 128 && str[index] <=
+                  55295) || (str[index] >= 57344 && str[index] <= 65535))) {
                   ++indexTemp3; break;
                 }
-                if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+                if (index + 1 < endIndex && ((str[index] >= 55296 &&
+                  str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                  str[index + 1] <= 57343))) {
                   indexTemp3 += 2; break;
                 }
                 int indexTemp4;
@@ -462,13 +490,19 @@ namespace PeterO.Mail {
                     int indexTemp5;
                     indexTemp5 = index;
                     do {
-                      if (index < endIndex && ((str[index] == 32) || (str[index] == 9) || (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 && str[index] <= 65535))) {
+                      if (index < endIndex && ((str[index] == 32) ||
+                        (str[index] == 9) || (str[index] >= 128 &&
+                        str[index] <= 55295) || (str[index] >= 57344 &&
+                        str[index] <= 65535))) {
                         ++indexTemp5; break;
                       }
-                      if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+                      if (index + 1 < endIndex && ((str[index] >= 55296 &&
+                        str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                        str[index + 1] <= 57343))) {
                         indexTemp5 += 2; break;
                       }
-                      if (index < endIndex && (str[index] >= 33 && str[index] <= 126)) {
+             if (index < endIndex && (str[index] >= 33 && str[index] <=
+                        126)) {
                         ++indexTemp5; break;
                       }
                     } while (false);
@@ -487,7 +521,9 @@ namespace PeterO.Mail {
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
-                if (index < endIndex && ((str[index] >= 93 && str[index] <= 126) || (str[index] >= 42 && str[index] <= 91) || (str[index] >= 33 && str[index] <= 39))) {
+                if (index < endIndex && ((str[index] >= 93 && str[index] <=
+                  126) || (str[index] >= 42 && str[index] <= 91) ||
+                  (str[index] >= 33 && str[index] <= 39))) {
                   ++indexTemp3; break;
                 }
               } while (false);
@@ -517,10 +553,12 @@ namespace PeterO.Mail {
               int indexTemp3 = index;
               do {
                 int indexStart3 = index;
-                while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+        while (index < endIndex && ((str[index] == 32) || (str[index] ==
+                  9))) {
                   ++index;
                 }
-                if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
+        if (index + 1 < endIndex && str[index] == 13 && str[index + 1] ==
+                  10) {
                   index += 2;
                 } else {
                   index = indexStart3; break;
@@ -535,7 +573,8 @@ namespace PeterO.Mail {
             } while (false);
             if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
               ++index;
-              while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
+        while (index < endIndex && ((str[index] == 32) || (str[index] ==
+                9))) {
                 ++index;
               }
             } else {

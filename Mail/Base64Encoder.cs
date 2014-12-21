@@ -12,7 +12,8 @@ namespace PeterO.Mail {
     /// <summary>Encodes binary data in Base64.</summary>
   internal sealed class Base64Encoder : IStringEncoder
   {
-    private const string Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    private const string Base64Classic =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" ;
 
     private int lineCount;
     private int quantumCount;
@@ -25,16 +26,19 @@ namespace PeterO.Mail {
     private string alphabet;
     private char[] charBuffer;
 
-    public Base64Encoder(bool padding, bool lenientLineBreaks, bool unlimitedLineLength) :
-      this(padding, lenientLineBreaks, unlimitedLineLength, Base64Classic) {
+    public Base64Encoder(bool padding, bool lenientLineBreaks, bool
+      unlimitedLineLength) : this(padding, lenientLineBreaks,
+        unlimitedLineLength, Base64Classic) {
     }
 
-    public Base64Encoder(bool padding, bool lenientLineBreaks, bool unlimitedLineLength, string alphabet) {
+    public Base64Encoder(bool padding, bool lenientLineBreaks, bool
+      unlimitedLineLength, string alphabet) {
       if (alphabet == null) {
         throw new ArgumentNullException("alphabet");
       }
       if (alphabet.Length != 64) {
-        throw new ArgumentException("alphabet.Length (" + alphabet.Length + ") is not equal to 64");
+        throw new ArgumentException("alphabet.Length (" + alphabet.Length +
+          ") is not equal to 64");
       }
       this.charBuffer = new char[8];
       this.padding = padding;
@@ -56,7 +60,8 @@ namespace PeterO.Mail {
       sb.Append(c);
     }
 
-    private void LineAwareAppendFour(StringBuilder sb, char c1, char c2, char c3, char c4) {
+    private void LineAwareAppendFour(StringBuilder sb, char c1, char c2,
+      char c3, char c4) {
       int charCount = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= 76) {
@@ -83,10 +88,9 @@ namespace PeterO.Mail {
     private void AddByteInternal(StringBuilder str, byte b) {
       int ib = ((int)b) & 0xff;
       if (this.quantumCount == 2) {
-        this.LineAwareAppendFour(
-          str,
-          this.alphabet[(this.byte1 >> 2) & 63],
-          this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)],
+        this.LineAwareAppendFour(str,
+          this.alphabet[(this.byte1 >> 2) & 63], this.alphabet[((this.byte1&
+            3) << 4) + ((this.byte2 >> 4) & 15)],
           this.alphabet[((this.byte2 & 15) << 2) + ((ib >> 6) & 3)],
           this.alphabet[ib & 63]);
         this.byte1 = -1;
@@ -137,7 +141,8 @@ namespace PeterO.Mail {
     public void FinalizeEncoding(StringBuilder str) {
       if (this.quantumCount == 2) {
         char c1 = this.alphabet[(this.byte1 >> 2) & 63];
-        char c2 = this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)];
+   char c2 = this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) &
+          15)];
         char c3 = this.alphabet[((this.byte2 & 15) << 2)];
         if (this.padding) {
           this.LineAwareAppendFour(str, c1, c2, c3, '=');
@@ -165,12 +170,14 @@ namespace PeterO.Mail {
       this.haveCR = false;
     }
 
-public void WriteToStringAndFinalize(StringBuilder str, byte[] data, int offset, int count) {
+public void WriteToStringAndFinalize(StringBuilder str, byte[] data, int
+  offset, int count) {
       this.WriteToString(str, data, offset, count);
       this.FinalizeEncoding(str);
     }
 
-    public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
+    public void WriteToString(StringBuilder str, byte[] data, int offset,
+      int count) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
@@ -178,19 +185,24 @@ public void WriteToStringAndFinalize(StringBuilder str, byte[] data, int offset,
         throw new ArgumentNullException("data");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("offset (" + offset + ") is less than " +
+          "0");
       }
       if (offset > data.Length) {
-        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)data.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("offset (" + offset + ") is more than " +
+          data.Length);
       }
       if (count < 0) {
-        throw new ArgumentException("count (" + Convert.ToString((int)count, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      throw new ArgumentException("count (" + count + ") is less than " +
+          "0");
       }
       if (count > data.Length) {
-        throw new ArgumentException("count (" + Convert.ToString((int)count, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)data.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("count (" + count + ") is more than " +
+          data.Length);
       }
       if (data.Length - offset < count) {
-        throw new ArgumentException("data's length minus " + offset + " (" + Convert.ToString((int)(data.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)count, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("data's length minus " + offset + " (" +
+          (data.Length - offset) + ") is less than " + count);
       }
       for (int i = 0; i < count; ++i) {
         this.AddByte(str, data[offset + i]);

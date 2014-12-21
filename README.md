@@ -1,6 +1,10 @@
 MailLib
 =======
 
+If you like this software, consider donating to me at this link: http://upokecenter.com/d/
+
+----
+
 A portable library in C# and Java for parsing Internet mail messages.
 
 Documentation

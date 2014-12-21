@@ -35,35 +35,40 @@ namespace PeterO.Text {
       return c;
     }
 
-    /// <summary>Gets the Punycode length of a string (Punycode is defined
-    /// in RFC 3492).</summary>
+    /// <summary>Gets the Punycode length of a string (Punycode is defined in RFC
+    /// 3492).</summary>
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
-    /// <returns>The Punycode length of the encoded string. If the string
-    /// contains non-ASCII characters, returns the Punycode length plus
-    /// 4 (the length of the ACE prefix). If there are only ASCII characters,
-    /// returns the length of the string. Returns -1 if an overflow error occurs.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> is null.</exception>
+    /// <returns>The Punycode length of the encoded string. If the string contains
+    /// non-ASCII characters, returns the Punycode length plus 4 (the length of the
+    /// ACE prefix). If there are only ASCII characters, returns the length of the
+    /// string. Returns -1 if an overflow error occurs.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
+    /// is null.</exception>
     public static int PunycodeLength(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      throw new ArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > str.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + index + ") is more than " +
+          str.Length);
       }
       if (endIndex < 0) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
+          "0");
       }
       if (endIndex > str.Length) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("endIndex (" + endIndex +
+          ") is more than " + str.Length);
       }
       if (endIndex < index) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("endIndex (" + endIndex +
+          ") is less than " + index);
       }
       int n = 128;
       int delta = 0;
@@ -176,8 +181,9 @@ namespace PeterO.Text {
       return outputLength;
     }
 
-    private static int[] valueDigitValues = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    private static int[] valueDigitValues = { -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1, -1,
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
@@ -190,19 +196,24 @@ namespace PeterO.Text {
         throw new ArgumentNullException("str");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      throw new ArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > str.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + index + ") is more than " +
+          str.Length);
       }
       if (endIndex < 0) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
+          "0");
       }
       if (endIndex > str.Length) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("endIndex (" + endIndex +
+          ") is more than " + str.Length);
       }
       if (endIndex < index) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("endIndex (" + endIndex +
+          ") is less than " + index);
       }
       if (index == endIndex) {
         return String.Empty;
@@ -228,8 +239,7 @@ namespace PeterO.Text {
       for (int k = index; k < lastHyphen; ++k) {
         int c = str[k];
         if (c >= 0x41 && c <= 0x5a) {
-          c += 0x20;  // convert to lowercase
-        }
+          c += 0x20;  // convert to lowercase }
         builder.Append((char)c);
       }
       if (lastHyphen >= index) {
@@ -313,30 +323,37 @@ namespace PeterO.Text {
       return builder.ToString();
     }
 
-    private const string PunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+private const string PunycodeAlphabet =
+      "abcdefghijklmnopqrstuvwxyz0123456789" ;
 
     internal static string PunycodeEncode(string str) {
       return PunycodeEncodePortion(str, 0, str.Length);
     }
 
-    internal static string PunycodeEncodePortion(string str, int index, int endIndex) {
+    internal static string PunycodeEncodePortion(string str, int index, int
+      endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      throw new ArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > str.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + index + ") is more than " +
+          str.Length);
       }
       if (endIndex < 0) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
+          "0");
       }
       if (endIndex > str.Length) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("endIndex (" + endIndex +
+          ") is more than " + str.Length);
       }
       if (endIndex < index) {
-        throw new ArgumentException("endIndex (" + Convert.ToString((int)endIndex, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("endIndex (" + endIndex +
+          ") is less than " + index);
       }
       int n = 128;
       int delta = 0;

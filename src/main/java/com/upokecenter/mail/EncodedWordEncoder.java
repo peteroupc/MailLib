@@ -41,7 +41,7 @@ import com.upokecenter.util.*;
         }
         this.fullString.append(this.currentWord);
         this.fullString.append("?=");
-        this.currentWord.delete(0,(0)+(this.currentWord.length()));
+        this.currentWord.delete(0, (0)+(this.currentWord.length()));
         this.currentWord.append("=?utf-8?Q?");
         this.spaceCount = 1;
       }
@@ -63,7 +63,7 @@ import com.upokecenter.util.*;
           this.fullString.append(suffix);
         }
         this.spaceCount = 1;
-        this.currentWord.delete(0,(0)+(this.currentWord.length()));
+        this.currentWord.delete(0, (0)+(this.currentWord.length()));
       }
       return this;
     }
@@ -73,7 +73,7 @@ import com.upokecenter.util.*;
     }
 
     public EncodedWordEncoder AddPrefix(String str) {
-      if (!((str)==null || (str).length()==0)) {
+      if (!((str) == null || (str).length() == 0)) {
         this.FinalizeEncoding();
         this.currentWord.append(str);
         this.currentWord.append("=?utf-8?Q?");
@@ -87,19 +87,24 @@ import com.upokecenter.util.*;
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is less than " + "0");
+      throw new IllegalArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("index (" + index + ") is more than " +
+          str.length());
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is less than " + "0");
+    throw new IllegalArgumentException("length (" + length + ") is less than " +
+          "0");
       }
       if (length > str.length()) {
-        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("length (" + length + ") is more than " +
+          str.length());
       }
       if (str.length() - index < length) {
-        throw new IllegalArgumentException("str's length minus " + index + " (" + Integer.toString((int)(str.length() - index)) + ") is less than " + Integer.toString((int)length));
+        throw new IllegalArgumentException("str's length minus " + index + " (" +
+          (str.length() - index) + ") is less than " + length);
       }
       for (int j = index; j < index + length; ++j) {
         int c = DataUtilities.CodePointAt(str, j);

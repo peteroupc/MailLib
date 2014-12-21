@@ -14,18 +14,18 @@ using PeterO;
 
 namespace PeterO.Mail {
     /// <summary><para>Specifies what kind of data a message body is.</para>
-    /// <para>A media type consists of a top-level type (the general category
-    /// of the data), a subtype (the specific type), and an optional list of
-    /// parameters. For example, the media type <c>text/plain; charset
-    /// = utf-8</c>
-    /// is a text media type ("text"), namely, a plain text type
-    /// ("plain"), and the parameters say that that the data uses the character
-    /// set UTF-8, a form of Unicode ("charset=utf-8"). Other top-level
-    /// types include "audio", "video", and "application".</para>
-    /// <para>This
-    /// type is immutable, meaning its values can't be changed once it's created.
-    /// To create a changeable media type object, use the MediaTypeBuilder
-    /// class.</para>
+    /// <para>A
+    /// media type consists of a top-level type (the general category of the data),
+    /// a subtype (the specific type), and an optional list of parameters. For
+    /// example, the media type <c>text/plain; charset = utf-8</c>
+    /// is a text media
+    /// type ("text"), namely, a plain text type ("plain"), and the parameters say
+    /// that that the data uses the character set UTF-8, a form of Unicode
+    /// ("charset=utf-8"). Other top-level types include "audio", "video", and
+    /// "application".</para>
+    /// <para>This type is immutable, meaning its values can't
+    /// be changed once it' s created. To create a changeable media type object, use
+    /// the MediaTypeBuilder class.</para>
     /// </summary>
   public sealed class MediaType {
     private string topLevelType;
@@ -50,7 +50,7 @@ namespace PeterO.Mail {
       }
       return this.topLevelType.Equals(other.topLevelType) &&
         this.subType.Equals(other.subType) &&
-        CollectionUtilities.MapEquals(this.parameters, other.parameters);
+          CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
     /// <summary>Returns the hash code for this instance.</summary>
@@ -100,7 +100,8 @@ namespace PeterO.Mail {
       }
     }
 
-    internal MediaType(string type, string subtype, IDictionary<string, string> parameters) {
+    internal MediaType(string type, string subtype, IDictionary<string,
+      string> parameters) {
       this.topLevelType = type;
       this.subType = subtype;
       this.parameters = new SortedMap<string, string>(parameters);
@@ -108,10 +109,10 @@ namespace PeterO.Mail {
 
     private SortedMap<string, string> parameters;
 
-    /// <summary>Gets a sorted list of the parameters contained in this media
-    /// type object.</summary>
-    /// <value>A list of the parameters contained in this media type object,
-    /// sorted by name.</value>
+    /// <summary>Gets a sorted list of the parameters contained in this media type
+    /// object.</summary>
+    /// <value>A list of the parameters contained in this media type object, sorted
+    /// by name.</value>
     public IDictionary<string, string> Parameters {
       get {
         return new ReadOnlyMap<string, string>(this.parameters);
@@ -150,8 +151,10 @@ namespace PeterO.Mail {
         // qtext (RFC5322 sec. 3.2.1)
         if (i2 < endIndex) {
           char c = s[i2];
-          // Non-ASCII (allowed in internationalized email headers under RFC6532)
-          if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && s[i2 + 1] >= 0xdc00 && s[i2 + 1] <= 0xdfff) {
+          // Non-ASCII (allowed in internationalized email headers under
+          //RFC6532)
+          if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && s[i2 + 1] >=
+            0xdc00 && s[i2 + 1] <= 0xdfff) {
             i2 += 2;
           } else if ((c & 0xf800) == 0xd800) {
             // unchanged; it's a bare surrogate
@@ -162,7 +165,8 @@ namespace PeterO.Mail {
             ++i2;
           }
           // obs-qtext (same as obs-ctext)
-          if ((c < 0x20 && c != 0x00 && c != 0x09 && c != 0x0a && c != 0x0d) || c == 0x7f) {
+          if ((c < 0x20 && c != 0x00 && c != 0x09 && c != 0x0a && c != 0x0d)||
+            c == 0x7f) {
             ++i2;
           }
         }
@@ -181,7 +185,8 @@ namespace PeterO.Mail {
       if (index + 1 < endIndex && s[index] == '\\') {
         char c = s[index + 1];
         // Non-ASCII (allowed in internationalized email headers under RFC6532)
-        if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && s[index + 2] >= 0xdc00 && s[index + 2] <= 0xdfff) {
+        if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && s[index + 2]
+          >= 0xdc00 && s[index + 2] <= 0xdfff) {
           return index + 3;
         }
         if ((c & 0xf800) == 0xd800) {
@@ -202,18 +207,15 @@ namespace PeterO.Mail {
     }
 
     // quoted-string (RFC5322 sec. 3.2.4)
-    internal static int skipQuotedString(
-      string s,
-      int index,
-      int endIndex,
+    internal static int skipQuotedString(string s,
+      int index, int endIndex,
       StringBuilder builder) {
-      return skipQuotedString(s, index, endIndex, builder, QuotedStringRule.Rfc5322);
+return skipQuotedString(s, index, endIndex, builder,
+        QuotedStringRule.Rfc5322);
     }
 
-    private static int skipQuotedString(
-      string str,
-      int index,
-      int endIndex,
+    private static int skipQuotedString(string str,
+      int index, int endIndex,
       StringBuilder builder,  // receives the unescaped version of the _string
       QuotedStringRule rule) {
       int startIndex = index;
@@ -268,7 +270,8 @@ namespace PeterO.Mail {
       return startIndex;  // not a valid quoted-string
     }
 
-    private static void AppendComplexParamValue(string name, string str, StringBuilder sb) {
+    private static void AppendComplexParamValue(string name, string str,
+      StringBuilder sb) {
       int length = 1;
       int contin = 0;
       string hex = "0123456789ABCDEF";
@@ -300,15 +303,15 @@ namespace PeterO.Mail {
           c = 0xfffd;
         }
         ++index;
-        if (c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=*%'".IndexOf((char)c) < 0) {
+      if (c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=*%'" .IndexOf((char)c) <
+          0) {
           ++length;
           if (!first && length + 1 > MaxLength) {
             sb.Append(";\r\n ");
             first = true;
             ++contin;
-            string continString = name + "*" +
-              Convert.ToString((int)contin, CultureInfo.InvariantCulture) +
-              "*=";
+            string continString = name + "*" + Convert.ToString((int)contin,
+              CultureInfo.InvariantCulture) + "*=";
             sb.Append(continString);
             length = 1 + continString.Length;
             ++length;
@@ -386,9 +389,8 @@ namespace PeterO.Mail {
             sb.Append(";\r\n ");
             first = true;
             ++contin;
-            string continString = name + "*" +
-              Convert.ToString((int)contin, CultureInfo.InvariantCulture) +
-              "*=";
+            string continString = name + "*" + Convert.ToString((int)contin,
+              CultureInfo.InvariantCulture) + "*=";
             sb.Append(continString);
             length = 1 + continString.Length;
             length += 12;
@@ -414,7 +416,8 @@ namespace PeterO.Mail {
       }
     }
 
-    private static bool AppendSimpleParamValue(string name, string str, StringBuilder sb) {
+    private static bool AppendSimpleParamValue(string name, string str,
+      StringBuilder sb) {
       sb.Append(name);
       sb.Append('=');
       if (str.Length == 0) {
@@ -458,7 +461,8 @@ namespace PeterO.Mail {
       return 0;
     }
 
-    internal static void AppendParameters(IDictionary<string, string> parameters, StringBuilder sb) {
+    internal static void AppendParameters(IDictionary<string, string>
+      parameters, StringBuilder sb) {
       var tmp = new StringBuilder();
       foreach (string key in parameters.Keys) {
         int lineIndex = LastLineStart(sb);
@@ -469,12 +473,14 @@ namespace PeterO.Mail {
         if (!AppendSimpleParamValue(name, value, tmp)) {
           tmp.Length = 0;
           AppendComplexParamValue(name, value, tmp);
-          if ((sb.Length - lineIndex) + tmp.Length > (lineIndex == 0 ? 76 : 75)) {
+       if ((sb.Length - lineIndex) + tmp.Length > (lineIndex == 0 ? 76 :
+            75)) {
             sb.Append("\r\n ");
           }
           sb.Append(tmp);
         } else {
-          if ((sb.Length - lineIndex) + tmp.Length > (lineIndex == 0 ? 76 : 75)) {
+       if ((sb.Length - lineIndex) + tmp.Length > (lineIndex == 0 ? 76 :
+            75)) {
             sb.Append("\r\n ");
           }
           sb.Append(tmp);
@@ -493,16 +499,14 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    internal static int SkipMimeToken(
-      string str,
-      int index,
-      int endIndex,
-      StringBuilder builder,
-      bool httpRules) {
+    internal static int SkipMimeToken(string str,
+      int index, int endIndex,
+      StringBuilder builder, bool httpRules) {
       int i = index;
       while (i < endIndex) {
         char c = str[i];
-        if (c <= 0x20 || c >= 0x7F || (c == (c & 0x7F) && "()<>@,;:\\\"/[]?=".IndexOf(c) >= 0)) {
+        if (c <= 0x20 || c >= 0x7f || (c == (c & 0x7f) &&
+          "()<>@,;:\\\"/[]?=" .IndexOf(c) >= 0)) {
           break;
         }
         if (httpRules && (c == '{' || c == '}')) {
@@ -528,7 +532,8 @@ namespace PeterO.Mail {
       int i = index;
       while (i < endIndex) {
         char c = str[i];
-        if (c <= 0x20 || c >= 0x7f || ((c & 0x7F) == c && "()<>@,;:\\\"/[]?='%*".IndexOf(c) >= 0)) {
+        if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
+          "()<>@,;:\\\"/[]?='%*" .IndexOf(c) >= 0)) {
           break;
         }
         if (builder != null) {
@@ -550,7 +555,8 @@ namespace PeterO.Mail {
         }
         return i;
       }
-      if (i + 1 < endIndex && str[i] == '*' && str[i + 1] >= '1' && str[i + 1] <= '9') {
+      if (i + 1 < endIndex && str[i] == '*' && str[i + 1] >= '1' && str[i +
+        1] <= '9') {
         // other-sections
         if (builder != null) {
           builder.Append('*');
@@ -580,19 +586,22 @@ namespace PeterO.Mail {
       return i;
     }
 
-    internal static int skipMimeTypeSubtype(string str, int index, int endIndex, StringBuilder builder) {
+    internal static int skipMimeTypeSubtype(string str, int index, int
+      endIndex, StringBuilder builder) {
       int i = index;
       int count = 0;
       while (i < endIndex) {
         char c = str[i];
         // See RFC6838
-        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) {
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0'&&
+          c <= '9')) {
           if (builder != null) {
             builder.Append(c);
           }
           ++i;
           ++count;
-        } else if (count > 0 && (c == (c & 0x7F) && "!#$&-^_.+".IndexOf(c) >= 0)) {
+    } else if (count > 0 && (c == (c & 0x7F) && "!#$&-^_.+" .IndexOf(c) >=
+          0)) {
           if (builder != null) {
             builder.Append(c);
           }
@@ -609,24 +618,27 @@ namespace PeterO.Mail {
       return i;
     }
 
-    /// <summary>Returns the charset parameter, converted to ASCII lower-case,
-    /// if it exists, or <c>"us-ascii"</c>
-    /// if the media type is ill-formed
-    /// (RFC2045 sec. 5.2), or if the media type is "text/plain" and doesn't
-    /// have a charset parameter (see RFC2046), or the default charset, if
-    /// any, for the media type if the charset parameter is absent. Returns
-    /// an empty string in all other cases.</summary>
+    /// <summary>Returns the charset parameter, converted to ASCII lower-case, if it
+    /// exists, or <c>"us-ascii"</c>
+    /// if the media type is ill-formed (RFC2045 sec.
+    /// 5.2), or if the media type is "text/plain" and doesn't have a charset
+    /// parameter (see RFC2046), or the default charset, if any, for the media type
+    /// if the charset parameter is absent. Returns an empty string in all other
+    /// cases.</summary>
     /// <returns>A string object.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Microsoft.Design",
-      "CA1024",
-      Justification="This method has different semantics from GetParameter(\"charset\").")]
+      "Microsoft.Design", "CA1024",
+Justification="This method has different semantics from
+        GetParameter(\"charset\").")]
     #endif
     public string GetCharset() {
-      // NOTE: RFC6657 changed the rules for the default charset in text media types,
-      // so that there is no default charset for as yet undefined media types. However,
-      // media types defined before this RFC are grandfathered from the rule: those
+      // NOTE: RFC6657 changed the rules for the default charset in text
+      //media types,
+      // so that there is no default charset for as yet undefined media
+      //types. However,
+      // media types defined before this RFC are grandfathered from the
+      //rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of Apr. 17,
       // 2014, are listed below:
@@ -634,13 +646,15 @@ namespace PeterO.Mail {
       // -- No default charset assumed: --
       //
       // RTP payload types; these are usually unsuitable for MIME,
-      // and don't permit a charset parameter, so a default charset is irrelevant:
+      // and don't permit a charset parameter, so a default charset is
+      //irrelevant:
       // -- 1d-interleaved-parityfec, fwdred, red, parityfec, encaprtp,
       // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback
       //
       // These media types don't define a charset parameter:
       // -- dns, grammar-ref-list, mizar, vnd-latex-z, vnd.motorola.reflex,
-      // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript, vnd.dvb.subtitle,
+      // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript,
+      //vnd.dvb.subtitle,
       // vnd.fly, rtf, rfc822-headers
       //
       // Special procedure defined for charset detection:
@@ -692,20 +706,26 @@ namespace PeterO.Mail {
       if (this.IsText) {
         string sub = this.SubType;
         // Media types that assume a default of US-ASCII
-        if (sub.Equals("plain") || sub.Equals("sgml") || sub.Equals("troff") || sub.Equals("directory") ||
-            sub.Equals("css") || sub.Equals("richtext") || sub.Equals("enriched") ||
-            sub.Equals("tab-separated-values") || sub.Equals("vnd.in3d.spot") || sub.Equals("vnd.abc") ||
-            sub.Equals("vnd.wap.wmlscript") || sub.Equals("vnd.curl") || sub.Equals("vnd.fmi.flexstor") ||
-            sub.Equals("uri-list")) {
+        if (sub.Equals("plain") || sub.Equals("sgml") ||
+          sub.Equals("troff") || sub.Equals("directory") ||
+       sub.Equals("css") || sub.Equals("richtext") ||
+              sub.Equals("enriched") || sub.Equals("tab-separated-values") ||
+              sub.Equals("vnd.in3d.spot") || sub.Equals("vnd.abc") ||
+            sub.Equals("vnd.wap.wmlscript") || sub.Equals("vnd.curl") ||
+              sub.Equals("vnd.fmi.flexstor") || sub.Equals("uri-list")) {
           return "us-ascii";
         }
         // Media types that assume a default of UTF-8
-        if (sub.Equals("vcard") || sub.Equals("jcr-cnd") || sub.Equals("n3") || sub.Equals("turtle") ||
-            sub.Equals("vnd.debian.copyright") || sub.Equals("provenance-notation") || sub.Equals("csv") ||
-            sub.Equals("calendar") || sub.Equals("vnd.a") || sub.Equals("parameters") ||
-            sub.Equals("prs.fallenstein.rst") || sub.Equals("vnd.esmertec.theme.descriptor") ||
-            sub.Equals("vnd.trolltech.linguist") || sub.Equals("vnd.graphviz") || sub.Equals("cache-manifest") ||
-            sub.Equals("vnd.sun.j2me.app-descriptor")) {
+        if (sub.Equals("vcard") || sub.Equals("jcr-cnd") ||
+          sub.Equals("n3") || sub.Equals("turtle") ||
+            sub.Equals("vnd.debian.copyright") ||
+              sub.Equals("provenance-notation") || sub.Equals("csv") ||
+   sub.Equals("calendar") || sub.Equals("vnd.a") ||
+              sub.Equals("parameters") || sub.Equals("prs.fallenstein.rst") ||
+              sub.Equals("vnd.esmertec.theme.descriptor") ||
+            sub.Equals("vnd.trolltech.linguist") ||
+              sub.Equals("vnd.graphviz") || sub.Equals("cache-manifest")||
+              sub.Equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";
         }
       }
@@ -718,8 +738,8 @@ namespace PeterO.Mail {
     /// case-insensitively.</param>
     /// <returns>The value of the parameter as a string, or null if the parameter
     /// doesn't exist.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='name'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> is null.</exception>
     public string GetParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -743,7 +763,8 @@ namespace PeterO.Mail {
         return null;
       }
       string charset = value.Substring(0, firstQuote);
-      string language = value.Substring(firstQuote + 1, secondQuote - (firstQuote + 1));
+      string language = value.Substring(firstQuote + 1, secondQuote -
+        (firstQuote + 1));
       if (language.Length > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
         return null;
@@ -769,7 +790,8 @@ namespace PeterO.Mail {
         return Charsets.Ascii;
       }
       string charset = value.Substring(0, firstQuote);
-      string language = value.Substring(firstQuote + 1, secondQuote - (firstQuote + 1));
+      string language = value.Substring(firstQuote + 1, secondQuote -
+        (firstQuote + 1));
       if (language.Length > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
         return null;
@@ -778,14 +800,17 @@ namespace PeterO.Mail {
       return (cs == null) ? Charsets.Ascii : cs;
     }
 
-    private static string DecodeRfc2231Encoding(string value, ICharset charset) {
+  private static string DecodeRfc2231Encoding(string value, ICharset
+      charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.IndexOf('\'');
-      return (quote >= 0) ? null : charset.GetString(new PercentEncodingStringTransform(value));
+      return (quote >= 0) ? null : charset.GetString(new
+        PercentEncodingStringTransform(value));
     }
 
-    private static bool ExpandRfc2231Extensions(IDictionary<string, string> parameters) {
+    private static bool ExpandRfc2231Extensions(IDictionary<string, string>
+      parameters) {
       if (parameters.Count == 0) {
         return true;
       }
@@ -810,13 +835,12 @@ namespace PeterO.Mail {
           continue;
         }
         // name*0 or name*0*
-        if (asterisk > 0 &&
-            ((asterisk == name.Length - 2 && name[asterisk + 1] == '0') ||
-             (asterisk == name.Length - 3 && name[asterisk + 1] == '0' &&
-              name[asterisk + 2] == '*'))) {
+        if (asterisk > 0 && ((asterisk == name.Length - 2 && name[asterisk +
+     1] == '0') || (asterisk == name.Length - 3 && name[asterisk + 1] ==
+            '0' && name[asterisk + 2] == '*'))) {
           string realName = name.Substring(0, asterisk);
-          string realValue = (asterisk == name.Length - 3) ? DecodeRfc2231Extension(value) :
-            value;
+          string realValue = (asterisk == name.Length - 3) ?
+            DecodeRfc2231Extension(value) : value;
           ICharset charsetUsed = GetRfc2231Charset(
             (asterisk == name.Length - 3) ? value : null);
           parameters.Remove(name);
@@ -824,8 +848,8 @@ namespace PeterO.Mail {
           // search for name*1 or name*1*, then name*2 or name*2*,
           // and so on
           while (true) {
-            string contin = realName + "*" +
-              Convert.ToString((int)pindex, CultureInfo.InvariantCulture);
+            string contin = realName + "*" + Convert.ToString((int)pindex,
+              CultureInfo.InvariantCulture);
             string continEncoded = contin + "*";
             if (parameters.ContainsKey(contin)) {
               // Unencoded continuation
@@ -833,7 +857,8 @@ namespace PeterO.Mail {
               parameters.Remove(contin);
             } else if (parameters.ContainsKey(continEncoded)) {
               // Encoded continuation
-              string newEnc = DecodeRfc2231Encoding(parameters[continEncoded], charsetUsed);
+ string newEnc = DecodeRfc2231Encoding(parameters[continEncoded],
+                charsetUsed);
               if (newEnc == null) {
                 // Contains a quote character in the encoding, so illegal
                 return false;
@@ -862,8 +887,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets the top level type and subtype of this media type, separated
     /// by a slash; for example, "text/plain".</summary>
-    /// <value>The top level type and subtype of this media type, separated
-    /// by a slash; for example, &quot;text/plain&quot;.</value>
+    /// <value>The top level type and subtype of this media type, separated by a
+    /// slash; for example, &quot;text/plain&quot;.</value>
     public string TypeAndSubType {
       get {
         return this.TopLevelType + "/" + this.SubType;
@@ -881,12 +906,9 @@ namespace PeterO.Mail {
       return index;
     }
 
-    internal static bool ParseParameters(
-      string str,
-      int index,
-      int endIndex,
-      bool httpRules,
-      IDictionary<string, string> parameters) {
+    internal static bool ParseParameters(string str,
+      int index, int endIndex,
+      bool httpRules, IDictionary<string, string> parameters) {
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipLws, though that may change
@@ -911,10 +933,8 @@ namespace PeterO.Mail {
         if (httpRules) {
           index = skipOws(str, index, endIndex);
         } else {
-          index = HeaderParser.ParseCFWS(
-            str,
-            index,
-            endIndex,
+          index = HeaderParser.ParseCFWS(str,
+            index, endIndex,
             null);
         }
         var builder = new StringBuilder();
@@ -933,13 +953,12 @@ namespace PeterO.Mail {
         string attribute = builder.ToString();
         index = afteratt;
         if (!httpRules) {
-          // NOTE: MIME implicitly doesn't restrict whether whitespace can appear
+          // NOTE: MIME implicitly doesn't restrict whether whitespace can
+          //appear
           // around the equal sign separating an attribute and value, while
           // HTTP explicitly forbids such whitespace
-          index = HeaderParser.ParseCFWS(
-            str,
-            index,
-            endIndex,
+          index = HeaderParser.ParseCFWS(str,
+            index, endIndex,
             null);
         }
         if (index >= endIndex) {
@@ -956,10 +975,8 @@ namespace PeterO.Mail {
         ++index;
         if (!httpRules) {
           // See note above on whitespace around the equal sign
-          index = HeaderParser.ParseCFWS(
-            str,
-            index,
-            endIndex,
+          index = HeaderParser.ParseCFWS(str,
+            index, endIndex,
             null);
         }
         if (index >= endIndex) {
@@ -968,7 +985,8 @@ namespace PeterO.Mail {
         }
         builder.Remove(0, builder.Length);
         int qs;
-        // If the attribute name ends with '*' the value may not be a quoted string
+        // If the attribute name ends with '*' the value may not be a quoted
+        //string
         if (attribute[attribute.Length - 1] != '*') {
           // try getting the value quoted
           qs = skipQuotedString(
@@ -1012,7 +1030,8 @@ namespace PeterO.Mail {
       if (i == index || i >= endIndex || str[i] != '/') {
         return false;
       }
-      this.topLevelType = DataUtilities.ToLowerCaseAscii(str.Substring(index, i - index));
+      this.topLevelType =
+        DataUtilities.ToLowerCaseAscii(str.Substring(index, i - index));
       ++i;
       int i2 = skipMimeTypeSubtype(str, i, endIndex, null);
       if (i == i2) {
@@ -1041,10 +1060,11 @@ namespace PeterO.Mail {
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "text/plain" and the charset
-    /// "US-ASCII", used for plain text data.</summary>
+    /// <summary>Specifies the media type "text/plain" and the charset "US-ASCII",
+    /// used for plain text data.</summary>
     public static readonly MediaType TextPlainAscii =
-      new MediaTypeBuilder("text", "plain").SetParameter("charset", "us-ascii").ToMediaType();
+      new MediaTypeBuilder("text" , "plain").SetParameter("charset",
+        "us-ascii").ToMediaType();
 
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -1052,10 +1072,11 @@ namespace PeterO.Mail {
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "text/plain" and the charset
-    /// "utf-8", used for Unicode plain text data.</summary>
+    /// <summary>Specifies the media type "text/plain" and the charset "utf-8", used
+    /// for Unicode plain text data.</summary>
     public static readonly MediaType TextPlainUtf8 =
-      new MediaTypeBuilder("text", "plain").SetParameter("charset", "utf-8").ToMediaType();
+      new MediaTypeBuilder("text" , "plain").SetParameter("charset",
+        "utf-8").ToMediaType();
 
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -1063,35 +1084,36 @@ namespace PeterO.Mail {
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "message/rfc822", used for Internet
-    /// mail messages.</summary>
+    /// <summary>Specifies the media type "message/rfc822" , used for Internet mail
+    /// messages.</summary>
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
-    /// <summary>Specifies the media type "application/octet-stream",
-    /// used for arbitrary binary data.</summary>
+    /// <summary>Specifies the media type "application/octet-stream", used for
+    /// arbitrary binary data.</summary>
     public static readonly MediaType ApplicationOctetStream =
       new MediaTypeBuilder("application", "octet-stream").ToMediaType();
 
     private MediaType() {
     }
 
-    /// <summary>Parses a media type string and returns a media type object.</summary>
+    /// <summary>Parses a media type string and returns a media type
+    /// object.</summary>
     /// <param name='mediaTypeValue'>A string object.</param>
-    /// <returns>A media type object, or text/plain if <paramref name='mediaTypeValue'/>
-    /// is empty or syntactically invalid.</returns>
+    /// <returns>A media type object, or text/plain if <paramref
+    /// name='mediaTypeValue'/> is empty or syntactically invalid.</returns>
     public static MediaType Parse(string mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);
     }
 
-    /// <summary>Parses a media type string and returns a media type object,
-    /// or the default value if the string is invalid.</summary>
+    /// <summary>Parses a media type string and returns a media type object, or the
+    /// default value if the string is invalid.</summary>
     /// <param name='str'>A string object representing a media type.</param>
-    /// <param name='defaultValue'>The media type to return if the string
-    /// is syntactically invalid. Can be null.</param>
+    /// <param name='defaultValue'>The media type to return if the string is
+    /// syntactically invalid. Can be null.</param>
     /// <returns>A MediaType object.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
+    /// is null.</exception>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -1102,7 +1124,7 @@ namespace PeterO.Mail {
         #if DEBUG
         // Console.WriteLine("Unparsable: " + str);
         #endif
-        return defaultValue;
+return defaultValue;
       }
       return mt;
     }

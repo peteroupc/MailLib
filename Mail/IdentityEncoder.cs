@@ -12,7 +12,8 @@ namespace PeterO.Mail {
     /// <summary>An IdentityEncoder.</summary>
   internal sealed class IdentityEncoder : IStringEncoder
   {
-    public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
+    public void WriteToString(StringBuilder str, byte[] data, int offset,
+      int count) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
@@ -20,19 +21,24 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("data");
       }
       if (offset < 0) {
-        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("offset (" + offset + ") is less than " +
+          "0");
       }
       if (offset > data.Length) {
-        throw new ArgumentException("offset (" + Convert.ToString((int)offset, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)data.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("offset (" + offset + ") is more than " +
+          data.Length);
       }
       if (count < 0) {
-        throw new ArgumentException("count (" + Convert.ToString((int)count, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      throw new ArgumentException("count (" + count + ") is less than " +
+          "0");
       }
       if (count > data.Length) {
-        throw new ArgumentException("count (" + Convert.ToString((int)count, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)data.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("count (" + count + ") is more than " +
+          data.Length);
       }
       if (data.Length - offset < count) {
-        throw new ArgumentException("data's length minus " + offset + " (" + Convert.ToString((int)(data.Length - offset), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)count, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("data's length minus " + offset + " (" +
+          (data.Length - offset) + ") is less than " + count);
       }
       if (count == 0) {
         return;

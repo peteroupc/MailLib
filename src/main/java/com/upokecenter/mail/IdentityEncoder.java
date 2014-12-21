@@ -12,7 +12,8 @@ at: http://upokecenter.com/d/
      */
   final class IdentityEncoder implements IStringEncoder
   {
-    public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
+    public void WriteToString(StringBuilder str, byte[] data, int offset,
+      int count) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -20,19 +21,24 @@ at: http://upokecenter.com/d/
         throw new NullPointerException("data");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is less than " + "0");
+    throw new IllegalArgumentException("offset (" + offset + ") is less than " +
+          "0");
       }
       if (offset > data.length) {
-        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is more than " + Integer.toString((int)data.length));
+        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
+          data.length);
       }
       if (count < 0) {
-        throw new IllegalArgumentException("count (" + Integer.toString((int)count) + ") is less than " + "0");
+      throw new IllegalArgumentException("count (" + count + ") is less than " +
+          "0");
       }
       if (count > data.length) {
-        throw new IllegalArgumentException("count (" + Integer.toString((int)count) + ") is more than " + Integer.toString((int)data.length));
+        throw new IllegalArgumentException("count (" + count + ") is more than " +
+          data.length);
       }
       if (data.length - offset < count) {
-        throw new IllegalArgumentException("data's length minus " + offset + " (" + Integer.toString((int)(data.length - offset)) + ") is less than " + Integer.toString((int)count));
+        throw new IllegalArgumentException("data's length minus " + offset + " (" +
+          (data.length - offset) + ") is less than " + count);
       }
       if (count == 0) {
         return;

@@ -12,7 +12,8 @@ at: http://upokecenter.com/d/
      */
   final class Base64Encoder implements IStringEncoder
   {
-    private static final String Base64Classic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    private static final String Base64Classic =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" ;
 
     private int lineCount;
     private int quantumCount;
@@ -25,16 +26,19 @@ at: http://upokecenter.com/d/
     private String alphabet;
     private char[] charBuffer;
 
-    public Base64Encoder (boolean padding, boolean lenientLineBreaks, boolean unlimitedLineLength) {
- this(padding,lenientLineBreaks,unlimitedLineLength,Base64Classic);
+    public Base64Encoder (boolean padding, boolean lenientLineBreaks, boolean
+      unlimitedLineLength) {
+ this(padding, lenientLineBreaks, unlimitedLineLength, Base64Classic);
     }
 
-    public Base64Encoder (boolean padding, boolean lenientLineBreaks, boolean unlimitedLineLength, String alphabet) {
+    public Base64Encoder (boolean padding, boolean lenientLineBreaks, boolean
+      unlimitedLineLength, String alphabet) {
       if (alphabet == null) {
         throw new NullPointerException("alphabet");
       }
       if (alphabet.length() != 64) {
-        throw new IllegalArgumentException("alphabet.length() (" + alphabet.length() + ") is not equal to 64");
+        throw new IllegalArgumentException("alphabet.length() (" + alphabet.length() +
+          ") is not equal to 64");
       }
       this.charBuffer = new char[8];
       this.padding = padding;
@@ -56,7 +60,8 @@ at: http://upokecenter.com/d/
       sb.append(c);
     }
 
-    private void LineAwareAppendFour(StringBuilder sb, char c1, char c2, char c3, char c4) {
+    private void LineAwareAppendFour(StringBuilder sb, char c1, char c2,
+      char c3, char c4) {
       int charCount = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= 76) {
@@ -77,16 +82,15 @@ at: http://upokecenter.com/d/
       this.charBuffer[charCount++] = c2;
       this.charBuffer[charCount++] = c3;
       this.charBuffer[charCount++] = c4;
-      sb.append(this.charBuffer,0,(0)+(charCount));
+      sb.append(this.charBuffer, 0, (0)+(charCount));
     }
 
     private void AddByteInternal(StringBuilder str, byte b) {
       int ib = ((int)b) & 0xff;
       if (this.quantumCount == 2) {
-        this.LineAwareAppendFour(
-          str,
-          this.alphabet.charAt((this.byte1 >> 2) & 63),
-          this.alphabet.charAt(((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)),
+        this.LineAwareAppendFour(str,
+          this.alphabet.charAt((this.byte1 >> 2) & 63), this.alphabet.charAt(((this.byte1&
+            3) << 4) + ((this.byte2 >> 4) & 15)),
           this.alphabet.charAt(((this.byte2 & 15) << 2) + ((ib >> 6) & 3)),
           this.alphabet.charAt(ib & 63));
         this.byte1 = -1;
@@ -137,7 +141,8 @@ at: http://upokecenter.com/d/
     public void FinalizeEncoding(StringBuilder str) {
       if (this.quantumCount == 2) {
         char c1 = this.alphabet.charAt((this.byte1 >> 2) & 63);
-        char c2 = this.alphabet.charAt(((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15));
+   char c2 = this.alphabet.charAt(((this.byte1 & 3) << 4) + ((this.byte2 >> 4) &
+          15));
         char c3 = this.alphabet.charAt(((this.byte2 & 15) << 2));
         if (this.padding) {
           this.LineAwareAppendFour(str, c1, c2, c3, '=');
@@ -165,12 +170,14 @@ at: http://upokecenter.com/d/
       this.haveCR = false;
     }
 
-public void WriteToStringAndFinalize(StringBuilder str, byte[] data, int offset, int count) {
+public void WriteToStringAndFinalize(StringBuilder str, byte[] data, int
+  offset, int count) {
       this.WriteToString(str, data, offset, count);
       this.FinalizeEncoding(str);
     }
 
-    public void WriteToString(StringBuilder str, byte[] data, int offset, int count) {
+    public void WriteToString(StringBuilder str, byte[] data, int offset,
+      int count) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -178,19 +185,24 @@ public void WriteToStringAndFinalize(StringBuilder str, byte[] data, int offset,
         throw new NullPointerException("data");
       }
       if (offset < 0) {
-        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is less than " + "0");
+    throw new IllegalArgumentException("offset (" + offset + ") is less than " +
+          "0");
       }
       if (offset > data.length) {
-        throw new IllegalArgumentException("offset (" + Integer.toString((int)offset) + ") is more than " + Integer.toString((int)data.length));
+        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
+          data.length);
       }
       if (count < 0) {
-        throw new IllegalArgumentException("count (" + Integer.toString((int)count) + ") is less than " + "0");
+      throw new IllegalArgumentException("count (" + count + ") is less than " +
+          "0");
       }
       if (count > data.length) {
-        throw new IllegalArgumentException("count (" + Integer.toString((int)count) + ") is more than " + Integer.toString((int)data.length));
+        throw new IllegalArgumentException("count (" + count + ") is more than " +
+          data.length);
       }
       if (data.length - offset < count) {
-        throw new IllegalArgumentException("data's length minus " + offset + " (" + Integer.toString((int)(data.length - offset)) + ") is less than " + Integer.toString((int)count));
+        throw new IllegalArgumentException("data's length minus " + offset + " (" +
+          (data.length - offset) + ") is less than " + count);
       }
       for (int i = 0; i < count; ++i) {
         this.AddByte(str, data[offset + i]);

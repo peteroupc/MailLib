@@ -43,7 +43,8 @@ namespace PeterO.Mail {
       int count = 0;
       int[] alphabet = Base64Transform.Alphabet;
       while (count < 4) {
-        int c = (this.inputIndex < this.input.Length) ? this.input[this.inputIndex++] : -1;
+        int c = (this.inputIndex < this.input.Length) ?
+          this.input[this.inputIndex++] : -1;
         if (c < 0) {
           // End of stream
           if (count == 1) {

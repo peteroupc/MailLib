@@ -1,4 +1,4 @@
-﻿/*
+/*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
@@ -89,19 +89,24 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("str");
       }
       if (index < 0) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      throw new ArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > str.Length) {
-        throw new ArgumentException("index (" + Convert.ToString((int)index, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("index (" + index + ") is more than " +
+          str.Length);
       }
       if (length < 0) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+    throw new ArgumentException("length (" + length + ") is less than " +
+          "0");
       }
       if (length > str.Length) {
-        throw new ArgumentException("length (" + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("length (" + length + ") is more than " +
+          str.Length);
       }
       if (str.Length - index < length) {
-        throw new ArgumentException("str's length minus " + index + " (" + Convert.ToString((int)(str.Length - index), System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + Convert.ToString((int)length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("str's length minus " + index + " (" +
+          (str.Length - index) + ") is less than " + length);
       }
       for (int j = index; j < index + length; ++j) {
         int c = DataUtilities.CodePointAt(str, j);

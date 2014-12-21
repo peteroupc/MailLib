@@ -39,7 +39,8 @@ namespace PeterO.Mail {
     }
 
     private void AppendSpaces(string str) {
-      if (this.lineLength + this.lastSpaces.Length + str.Length > MaxLineLength) {
+   if (this.lineLength + this.lastSpaces.Length + str.Length >
+        MaxLineLength) {
         // Too big to fit the current line
         this.lastSpaces = " ";
       } else {
@@ -48,7 +49,8 @@ namespace PeterO.Mail {
     }
 
     private void AppendWord(string str) {
-      if (this.lineLength + this.lastSpaces.Length + str.Length > MaxLineLength) {
+   if (this.lineLength + this.lastSpaces.Length + str.Length >
+        MaxLineLength) {
         if (this.haveNonwhitespace) {
           // Too big to fit the current line,
           // create a new line (but only if the current
@@ -97,7 +99,8 @@ namespace PeterO.Mail {
       int wordStart = 0;
       for (int j = 0; j < str.Length; ++j) {
         int c = str[j];
-        if (c == 0x20 || c == 0x09 || (c == 0x0d && j + 1 < str.Length && str[j + 1] == 0x0a)) {
+        if (c == 0x20 || c == 0x09 || (c == 0x0d && j + 1 < str.Length &&
+          str[j + 1] == 0x0a)) {
           int wordEnd = j;
           if (wordStart != wordEnd) {
             this.AppendWord(str.Substring(wordStart, wordEnd - wordStart));

@@ -34,8 +34,8 @@ namespace PeterO.Mail {
 
     private bool isGroup;
 
-    /// <summary>Gets a value indicating whether this represents a group
-    /// of addresses rather than a single address.</summary>
+    /// <summary>Gets a value indicating whether this represents a group of
+    /// addresses rather than a single address.</summary>
     /// <value>True if this represents a group of addresses; otherwise,
     /// false..</value>
     public bool IsGroup {
@@ -81,17 +81,19 @@ namespace PeterO.Mail {
 
     /// <summary>Initializes a new instance of the NamedAddress class.</summary>
     /// <param name='address'>A string object.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='address'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='address'/> is null.</exception>
     public NamedAddress(string address) {
       if (address == null) {
         throw new ArgumentNullException("address");
       }
       var tokener = new Tokener();
-      if (HeaderParser.ParseAddress(address, 0, address.Length, tokener) != address.Length) {
+      if (HeaderParser.ParseAddress(address, 0, address.Length, tokener) !=
+        address.Length) {
         throw new ArgumentException("Address has an invalid syntax.");
       }
-      NamedAddress na = HeaderParserUtility.ParseAddress(address, 0, address.Length, tokener.GetTokens());
+      NamedAddress na = HeaderParserUtility.ParseAddress(address, 0,
+        address.Length, tokener.GetTokens());
       if (na == null) {
         throw new ArgumentException("Address has an invalid syntax.");
       }
@@ -100,12 +102,12 @@ namespace PeterO.Mail {
       this.groupAddresses = na.groupAddresses;
     }
 
-    /// <summary>Initializes a new instance of the NamedAddress class using
-    /// the given display name and email address.</summary>
+    /// <summary>Initializes a new instance of the NamedAddress class using the
+    /// given display name and email address.</summary>
     /// <param name='displayName'>A string object.</param>
     /// <param name='address'>A string object. (2).</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='address'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='address'/> is null.</exception>
     public NamedAddress(string displayName, string address) {
       if (String.IsNullOrEmpty(displayName)) {
         displayName = address;
@@ -121,8 +123,8 @@ namespace PeterO.Mail {
     /// <summary>Initializes a new instance of the NamedAddress class.</summary>
     /// <param name='displayName'>A string object.</param>
     /// <param name='address'>An email address.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='address'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='address'/> is null.</exception>
     public NamedAddress(string displayName, Address address) {
       if (address == null) {
         throw new ArgumentNullException("address");
@@ -135,14 +137,14 @@ namespace PeterO.Mail {
       this.address = address;
     }
 
-    /// <summary>Initializes a new instance of the NamedAddress class using
-    /// the given name and an email address made up of its local part and domain.</summary>
+    /// <summary>Initializes a new instance of the NamedAddress class using the
+    /// given name and an email address made up of its local part and
+    /// domain.</summary>
     /// <param name='displayName'>A string object.</param>
     /// <param name='localPart'>A string object. (2).</param>
     /// <param name='domain'>A string object. (3).</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='localPart'/> or <paramref name='domain'/> is
-    /// null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='localPart'/> or <paramref name='domain'/> is null.</exception>
     public NamedAddress(string displayName, string localPart, string domain) {
       if (localPart == null) {
         throw new ArgumentNullException("localPart");
@@ -161,9 +163,8 @@ namespace PeterO.Mail {
     /// <summary>Initializes a new instance of the NamedAddress class.</summary>
     /// <param name='groupName'>A string object.</param>
     /// <param name='mailboxes'>An IList object.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='groupName'/> or <paramref name='mailboxes'/>
-    /// is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='groupName'/> or <paramref name='mailboxes'/> is null.</exception>
     public NamedAddress(string groupName, IList<NamedAddress> mailboxes) {
       if (groupName == null) {
         throw new ArgumentNullException("groupName");
@@ -188,11 +189,13 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a list of address that make up the group, if this object
     /// represents a group, or an empty list otherwise.</summary>
-    /// <value>A list of address that make up the group, if this object represents
-    /// a group, or an empty list otherwise.</value>
+    /// <value>A list of address that make up the group, if this object represents a
+    /// group, or an empty list otherwise.</value>
     public IList<NamedAddress> GroupAddresses {
       get {
-        return new System.Collections.ObjectModel.ReadOnlyCollection<NamedAddress>(this.groupAddresses);
+        return new
+
+  System.Collections.ObjectModel.ReadOnlyCollection<NamedAddress>(this.groupAddresses);
       }
     }
   }

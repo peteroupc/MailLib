@@ -18,8 +18,9 @@ namespace MailLibTest {
       var retArray = new int[cpArray.Length];
       int index = 0;
       foreach(String v in cpArray) {
-        int hex = Int32.Parse(TrimSpaces(v), System.Globalization.NumberStyles.AllowHexSpecifier,
-                              System.Globalization.CultureInfo.InvariantCulture);
+        int hex = Int32.Parse(TrimSpaces(v),
+          System.Globalization.NumberStyles.AllowHexSpecifier,
+  System.Globalization.CultureInfo.InvariantCulture);
         retArray[index++]=hex;
       }
       return retArray;
@@ -33,7 +34,8 @@ namespace MailLibTest {
         if (!first) {
           builder.Append(", ");
         }
-        builder.Append(Convert.ToString(v, System.Globalization.CultureInfo.InvariantCulture));
+        builder.Append(Convert.ToString(v,
+          System.Globalization.CultureInfo.InvariantCulture));
         first = false;
       }
       builder.Append("]");
@@ -82,14 +84,13 @@ namespace MailLibTest {
     public static void AssertEqual(int[] expected, int[] actual, String msg) {
       if (expected.Length != actual.Length) {
         Assert.Fail(
-          "\nexpected: "+ToString(expected)+"\n"+
-          "\nwas:      "+ToString(actual)+"\n"+msg);
+          "\nexpected: " +ToString(expected)+"\n" + "\nwas:      "
+            +ToString(actual)+"\n" +msg);
       }
       for (int i = 0;i<expected.Length; ++i) {
         if (expected[i]!=actual[i]) {
-          Assert.Fail(
-            "\nexpected: "+ToString(expected)+"\n"+
-            "\nwas:      "+ToString(actual)+"\n"+msg);
+          Assert.Fail("\nexpected: " +ToString(expected)+"\n" + "\nwas:      "
+              +ToString(actual)+"\n" +msg);
         }
       }
     }
@@ -130,26 +131,33 @@ namespace MailLibTest {
           int[] actual;
           int[] ci = cps;
           actual = NormalizerGetChars(ci, Normalization.NFC);
-          if (!NormalizingCharacterInput.IsNormalized(expected, Normalization.NFC)) {
+    if (!NormalizingCharacterInput.IsNormalized(expected,
+            Normalization.NFC)) {
             Assert.Fail(line);
           }
           AssertEqual(expected, actual, line);
           ci = cps;
           actual = NormalizerGetChars(ci, Normalization.NFD);
           AssertEqual(GetCodePoints(columns[2]), actual, line);
-          if (!NormalizingCharacterInput.IsNormalized(GetCodePoints(columns[2]), Normalization.NFD)) {
+          if
+  (!NormalizingCharacterInput.IsNormalized(GetCodePoints(columns[2]),
+            Normalization.NFD)) {
             Assert.Fail(line);
           }
           ci = cps;
           actual = NormalizerGetChars(ci, Normalization.NFKC);
           AssertEqual(GetCodePoints(columns[3]), actual, line);
-          if (!NormalizingCharacterInput.IsNormalized(GetCodePoints(columns[3]), Normalization.NFKC)) {
+          if
+  (!NormalizingCharacterInput.IsNormalized(GetCodePoints(columns[3]),
+            Normalization.NFKC)) {
             Assert.Fail(line);
           }
           ci = cps;
           actual = NormalizerGetChars(ci, Normalization.NFKD);
           AssertEqual(GetCodePoints(columns[4]), actual, line);
-          if (!NormalizingCharacterInput.IsNormalized(GetCodePoints(columns[4]), Normalization.NFKD)) {
+          if
+  (!NormalizingCharacterInput.IsNormalized(GetCodePoints(columns[4]),
+            Normalization.NFKD)) {
             Assert.Fail(line);
           }
         }
@@ -171,10 +179,14 @@ namespace MailLibTest {
           }
           string cpstr = new String(cptemp, 0, (i >= 0x10000 ? 2 : 1));
           string imsg=""+i;
-          Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr, Normalization.NFC));
-          Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr, Normalization.NFD));
-          Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr, Normalization.NFKC));
-          Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr, Normalization.NFKD));
+        Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr,
+            Normalization.NFC));
+        Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr,
+            Normalization.NFD));
+       Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr,
+            Normalization.NFKC));
+       Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr,
+            Normalization.NFKD));
           if (!Normalizer.IsNormalized(cpstr, Normalization.NFC)) {
             Assert.Fail(imsg);
           }
@@ -190,8 +202,10 @@ namespace MailLibTest {
         }
       }
       // Additional normalization tests
-      Assert.IsFalse(NormalizingCharacterInput.IsNormalized("x\u0300\u0323yz",Normalization.NFC));
-      Assert.IsFalse(NormalizingCharacterInput.IsNormalized("x\u0300\u0323",Normalization.NFC));
+  Assert.IsFalse(NormalizingCharacterInput.IsNormalized("x\u0300\u0323yz"
+        , Normalization.NFC));
+      Assert.IsFalse(NormalizingCharacterInput.IsNormalized("x\u0300\u0323"
+        , Normalization.NFC));
     }
   }
 }

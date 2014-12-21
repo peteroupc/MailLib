@@ -22,13 +22,16 @@ private ParserUtility() {
         throw new NullPointerException("suffix");
       }
       if (strStartPos < 0) {
-        throw new IllegalArgumentException("strStartPos (" + Integer.toString((int)strStartPos) + ") is less than " + "0");
+        throw new IllegalArgumentException("strStartPos (" + strStartPos +
+          ") is less than " + "0");
       }
       if (strStartPos > str.length()) {
-        throw new IllegalArgumentException("strStartPos (" + Integer.toString((int)strStartPos) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("strStartPos (" + strStartPos +
+          ") is more than " + str.length());
       }
       int endpos = suffix.length() + strStartPos;
-      return (endpos <= str.length()) && str.substring(strStartPos,(strStartPos)+(endpos - strStartPos)).equals(suffix);
+      return (endpos <= str.length()) && str.substring(strStartPos, (strStartPos)+(endpos -
+        strStartPos)).equals(suffix);
     }
 
     public static boolean StartsWith(String str, String prefix) {
@@ -38,15 +41,16 @@ private ParserUtility() {
       if (prefix == null) {
         throw new NullPointerException("prefix");
       }
-      return (prefix.length() >= str.length()) && str.substring(0,prefix.length()).equals(prefix);
+      return (prefix.length() >= str.length()) && str.substring(0, prefix.length()).equals(prefix);
     }
 
     public static String TrimSpaceAndTab(String str) {
-      return ((str)==null || (str).length()==0) ? str : TrimSpaceAndTabLeft(TrimSpaceAndTabRight(str));
+      return ((str) == null || (str).length() == 0) ? str :
+        TrimSpaceAndTabLeft(TrimSpaceAndTabRight(str));
     }
 
     public static String TrimSpaceAndTabLeft(String str) {
-      if (((str)==null || (str).length()==0)) {
+      if (((str) == null || (str).length() == 0)) {
         return str;
       }
       int index = 0;
@@ -58,18 +62,19 @@ private ParserUtility() {
         }
         ++index;
       }
-      return (index == valueSLength) ? "" : ((index == 0) ? str : str.substring(index));
+      return (index == valueSLength) ? "" : ((index == 0) ? str :
+        str.substring(index));
     }
 
     public static String TrimSpaceAndTabRight(String str) {
-      if (((str)==null || (str).length()==0)) {
+      if (((str) == null || (str).length() == 0)) {
         return str;
       }
       int index = str.length() - 1;
       while (index >= 0) {
         char c = str.charAt(index);
         if (c != 0x09 && c != 0x20) {
-          return str.substring(0,index + 1);
+          return str.substring(0, index + 1);
         }
         --index;
       }
@@ -77,10 +82,12 @@ private ParserUtility() {
     }
 
     public static boolean IsNullEmptyOrSpaceTabOnly(String str) {
-      return ((str)==null || (str).length()==0) || SkipSpaceAndTab(str, 0, str.length()) == str.length();
+      return ((str) == null || (str).length() == 0) || SkipSpaceAndTab(str, 0,
+        str.length()) == str.length();
     }
 
-    public static int ParseFWSLax(String str, int index, int endIndex, StringBuilder sb) {
+    public static int ParseFWSLax(String str, int index, int endIndex,
+      StringBuilder sb) {
       while (index < endIndex) {
         int tmp = index;
         // Skip CRLF
@@ -113,18 +120,16 @@ private ParserUtility() {
     }
 
     /**
-     * Splits a string by a delimiter. If the string ends with the delimiter,
-     * the result will end with an empty string. If the string begins with
-     * the delimiter, the result will start with an empty string.
+     * Splits a string by a delimiter. If the string ends with the delimiter, the
+     * result will end with an empty string. If the string begins with the
+     * delimiter, the result will start with an empty string.
      * @param str A string to split.
-     * @param delimiter A string to signal where each substring begins and
-     * ends.
-     * @return An array containing strings that are split by the delimiter.
-     * If str is null or empty, returns an array whose sole element is the empty
+     * @param delimiter A string to signal where each substring begins and ends.
+     * @return An array containing strings that are split by the delimiter. If str
+     * is null or empty, returns an array whose sole element is the empty
      * string.
-     * @throws java.lang.IllegalArgumentException Delimiter is null or empty.
-     * @throws java.lang.NullPointerException The parameter {@code delimiter}
-     * is null.
+     * @throws IllegalArgumentException Delimiter is null or empty.
+     * @throws NullPointerException The parameter {@code delimiter} is null.
      */
     public static String[] SplitAt(String str, String delimiter) {
       if (delimiter == null) {
@@ -133,7 +138,7 @@ private ParserUtility() {
       if (delimiter.length() == 0) {
         throw new IllegalArgumentException("delimiter is empty.");
       }
-      if (((str)==null || (str).length()==0)) {
+      if (((str) == null || (str).length() == 0)) {
         return new String[] { "" };
       }
       int index = 0;
@@ -141,7 +146,7 @@ private ParserUtility() {
       ArrayList<String> strings = null;
       int delimLength = delimiter.length();
       while (true) {
-        int index2 = str.indexOf(delimiter,index);
+        int index2 = str.indexOf(delimiter, index);
         if (index2 < 0) {
           if (first) {
             String[] strret = new String[1];
@@ -153,17 +158,17 @@ private ParserUtility() {
           break;
         } else {
           first = false;
-          String newstr = str.substring(index,(index)+((index2)-index));
+          String newstr = str.substring(index, (index)+((index2)-index));
           strings = (strings == null) ? ((new ArrayList<String>())) : strings;
           strings.add(newstr);
           index = index2 + delimLength;
         }
       }
-      return strings.toArray(new String[]{});
+      return strings.toArray(new String[] { });
     }
 
     public static boolean IsValidLanguageTag(String str) {
-      if (((str)==null || (str).length()==0)) {
+      if (((str) == null || (str).length() == 0)) {
         return false;
       }
       int index = 0;
@@ -172,11 +177,11 @@ private ParserUtility() {
       if (index + 1 < endIndex) {
         char c1 = str.charAt(index);
         char c2 = str.charAt(index + 1);
-        if (((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z')) && ((c2 >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
+        if (((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z')) && ((c2
+          >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
           index += 2;
           if (index == endIndex) {
-            return true;  // case AA
-          }
+            return true;  // case AA }
           index += 2;
           // convert the language tag to lower case
           // to simplify handling
@@ -197,17 +202,17 @@ private ParserUtility() {
               c1 = str.charAt(index);
               c2 = str.charAt(index);
               if ((c1 >= 'a' && c1 <= 'z') && (c2 >= 'a' && c2 <= 'z')) {
-                return true;  // case AA-BB or AAA-BB
-              }
+                return true;  // case AA-BB or AAA-BB }
             }
           }
           // match grandfathered language tags
-          if (str.equals("sgn-be-fr") || str.equals("sgn-be-nl") || str.equals("sgn-ch-de") ||
-                   str.equals("en-gb-oed")) {
+          if (str.equals("sgn-be-fr") || str.equals("sgn-be-nl") ||
+            str.equals("sgn-ch-de") || str.equals("en-gb-oed")) {
             return true;
           }
           // More complex cases
-          String[] splitString = SplitAt(str.substring(startIndex,(startIndex)+(endIndex - startIndex)), "-");
+          String[] splitString = SplitAt(str.substring(startIndex, (startIndex)+(endIndex
+            - startIndex)), "-");
           if (splitString.length == 0) {
             return false;
           }
@@ -221,7 +226,8 @@ private ParserUtility() {
             ++splitIndex;
             // skip optional extended language subtags
             for (int i = 0; i < 3; ++i) {
-              if (splitIndex < splitLength && lengthIfAllAlpha(splitString[splitIndex]) == 3) {
+              if (splitIndex < splitLength &&
+                lengthIfAllAlpha(splitString[splitIndex]) == 3) {
                 if (i >= 1) {
                   // point 4 in section 2.2.2 renders two or
                   // more extended language subtags invalid
@@ -234,13 +240,16 @@ private ParserUtility() {
             }
           }
           // optional script
-          if (splitIndex < splitLength && lengthIfAllAlpha(splitString[splitIndex]) == 4) {
+          if (splitIndex < splitLength &&
+            lengthIfAllAlpha(splitString[splitIndex]) == 4) {
             ++splitIndex;
           }
           // optional region
-          if (splitIndex < splitLength && lengthIfAllAlpha(splitString[splitIndex]) == 2) {
+          if (splitIndex < splitLength &&
+            lengthIfAllAlpha(splitString[splitIndex]) == 2) {
             ++splitIndex;
-          } else if (splitIndex < splitLength && lengthIfAllDigit(splitString[splitIndex]) == 3) {
+          } else if (splitIndex < splitLength &&
+            lengthIfAllDigit(splitString[splitIndex]) == 3) {
             ++splitIndex;
           }
           // variant, any number
@@ -253,16 +262,17 @@ private ParserUtility() {
               if (!variants.contains(curString)) {
                 variants.add(curString);
               } else {
-                return false;  // variant already exists; see point 5 in section 2.2.5
-              }
+         return false;  // variant already exists; see point 5 in section
+                2.2.5 }
               ++splitIndex;
-            } else if (len == 4 && (curString.charAt(0) >= '0' && curString.charAt(0) <= '9')) {
+         } else if (len == 4 && (curString.charAt(0) >= '0' && curString.charAt(0) <= '9'
+)) {
               variants = (variants == null) ? ((new ArrayList<String>())) : variants;
               if (!variants.contains(curString)) {
                 variants.add(curString);
               } else {
-                return false;  // variant already exists; see point 5 in section 2.2.5
-              }
+         return false;  // variant already exists; see point 5 in section
+                2.2.5 }
               ++splitIndex;
             } else {
               break;
@@ -337,7 +347,8 @@ private ParserUtility() {
             ++index;
             while (index < endIndex) {
               c1 = str.charAt(index);
-              if ((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') || (c1 >= '0' && c1 <= '9')) {
+              if ((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') ||
+                (c1 >= '0' && c1 <= '9')) {
                 ++count;
                 if (count > 8) {
                   return false;
@@ -386,7 +397,8 @@ private ParserUtility() {
       int len = (str == null) ? 0 : str.length();
       for (int i = 0; i < len; ++i) {
         char c1 = str.charAt(i);
-        if (!((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') || (c1 >= '0' && c1 <= '9'))) {
+        if (!((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') || (c1
+          >= '0' && c1 <= '9'))) {
           return 0;
         }
       }

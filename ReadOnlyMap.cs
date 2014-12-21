@@ -44,7 +44,8 @@ namespace PeterO {
       }
     }
 
-    /// <summary>Gets a value indicating whether this dictionary is read-only.</summary>
+    /// <summary>Gets a value indicating whether this dictionary is
+    /// read-only.</summary>
     /// <value>Always true.</value>
     public bool IsReadOnly {
       get {
@@ -95,7 +96,8 @@ namespace PeterO {
       return this.wrapped.GetEnumerator();
     }
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+System.Collections.IEnumerator
+      System.Collections.IEnumerable.GetEnumerator() {
       return this.wrapped.GetEnumerator();
     }
   }

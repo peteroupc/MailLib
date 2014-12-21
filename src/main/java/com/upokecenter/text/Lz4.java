@@ -8,8 +8,8 @@ at: http://upokecenter.com/d/
  */
 
     /**
-     * Implements the LZ4 algorithm (see "LZ4 Format Description" by Y Collet
-     * for more information).
+     * Implements the LZ4 algorithm (see "LZ4 Format Description" by Y Collet for
+     * more information).
      */
   final class Lz4 {
 private Lz4() {
@@ -28,7 +28,7 @@ private Lz4() {
         int literalLength = (b >> 4) & 15;
         int matchLength = b & 15;
         ++index;
-// System.out.println("New token, index=" + (index));
+// System.out.println("New token, index=" + index);
         // Literals
         if (literalLength == 15) {
           while (index < input.length) {
@@ -43,7 +43,7 @@ private Lz4() {
             }
           }
         }
-        // System.out.println("literal=" + literalLength + ", index=" + (index));
+        // System.out.println("literal=" + literalLength + ", index=" + index);
         if (index + literalLength - 1 >= input.length) {
           throw new IllegalArgumentException("Invalid LZ4");
         }
@@ -79,7 +79,8 @@ private Lz4() {
           }
         }
         matchLength += 4;
-       // System.out.println("match=" + matchLength + " offset=" + offset + " index=" + (index));
+       // System.out.println("match=" + matchLength + " offset=" + offset +
+       //" index=" + index);
         int pos = ms.getPosition() - offset;
         int oldPos = ms.getPosition();
         if (pos < 0) {

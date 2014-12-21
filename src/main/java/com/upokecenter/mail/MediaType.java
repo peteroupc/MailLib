@@ -14,13 +14,13 @@ import com.upokecenter.util.*;
     /**
      * <p>Specifies what kind of data a message body is.</p> <p>A media type
      * consists of a top-level type (the general category of the data), a
-     * subtype (the specific type), and an optional list of parameters.
-     * For example, the media type <code>text/plain; charset = utf-8</code> is
-     * a text media type ("text"), namely, a plain text type ("plain"), and
-     * the parameters say that that the data uses the character set UTF-8,
-     * a form of Unicode ("charset=utf-8"). Other top-level types include
+     * subtype (the specific type), and an optional list of parameters. For
+     * example, the media type <code>text/plain; charset = utf-8</code> is a text
+     * media type ("text"), namely, a plain text type ("plain"), and the
+     * parameters say that that the data uses the character set UTF-8, a
+     * form of Unicode ("charset=utf-8"). Other top-level types include
      * "audio", "video", and "application".</p> <p>This type is immutable,
-     * meaning its values can't be changed once it's created. To create a
+     * meaning its values can't be changed once it' s created. To create a
      * changeable media type object, use the MediaTypeBuilder class.</p>
      */
   public final class MediaType {
@@ -30,7 +30,7 @@ import com.upokecenter.util.*;
      * Gets a value not documented yet.
      * @return A value not documented yet.
      */
-    public String getTopLevelType() {
+    public final String getTopLevelType() {
         return this.topLevelType;
       }
 
@@ -46,7 +46,7 @@ import com.upokecenter.util.*;
       }
       return this.topLevelType.equals(other.topLevelType) &&
         this.subType.equals(other.subType) &&
-        CollectionUtilities.MapEquals(this.parameters, other.parameters);
+          CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
     /**
@@ -75,7 +75,7 @@ import com.upokecenter.util.*;
      * Gets this media type's subtype.
      * @return This media type's subtype.
      */
-    public String getSubType() {
+    public final String getSubType() {
         return this.subType;
       }
 
@@ -83,7 +83,7 @@ import com.upokecenter.util.*;
      * Gets a value indicating whether this is a text media type ("text/*").
      * @return True if this is a text media type; otherwise, false..
      */
-    public boolean isText() {
+    public final boolean isText() {
         return this.getTopLevelType().equals("text");
       }
 
@@ -91,11 +91,12 @@ import com.upokecenter.util.*;
      * Gets a value indicating whether this is a multipart media type.
      * @return True if this is a multipart media type; otherwise, false..
      */
-    public boolean isMultipart() {
+    public final boolean isMultipart() {
         return this.getTopLevelType().equals("multipart");
       }
 
-    MediaType(String type, String subtype, Map<String, String> parameters) {
+    MediaType(String type, String subtype, Map<String,
+      String> parameters) {
       this.topLevelType = type;
       this.subType = subtype;
       this.parameters = new TreeMap<String, String>(parameters);
@@ -105,10 +106,10 @@ import com.upokecenter.util.*;
 
     /**
      * Gets a sorted list of the parameters contained in this media type object.
-     * @return A list of the parameters contained in this media type object,
-     * sorted by name.
+     * @return A list of the parameters contained in this media type object, sorted
+     * by name.
      */
-    public Map<String, String> getParameters() {
+    public final Map<String, String> getParameters() {
         return java.util.Collections.unmodifiableMap(this.parameters);
       }
 
@@ -148,8 +149,10 @@ import com.upokecenter.util.*;
         // qtext (RFC5322 sec. 3.2.1)
         if (i2 < endIndex) {
           char c = s.charAt(i2);
-          // Non-ASCII (allowed in internationalized email headers under RFC6532)
-          if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && s.charAt(i2 + 1) >= 0xdc00 && s.charAt(i2 + 1) <= 0xdfff) {
+          // Non-ASCII (allowed in internationalized email headers under
+          //RFC6532)
+          if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && s.charAt(i2 + 1) >=
+            0xdc00 && s.charAt(i2 + 1) <= 0xdfff) {
             i2 += 2;
           } else if ((c & 0xf800) == 0xd800) {
             // unchanged; it's a bare surrogate
@@ -160,7 +163,8 @@ import com.upokecenter.util.*;
             ++i2;
           }
           // obs-qtext (same as obs-ctext)
-          if ((c < 0x20 && c != 0x00 && c != 0x09 && c != 0x0a && c != 0x0d) || c == 0x7f) {
+          if ((c < 0x20 && c != 0x00 && c != 0x09 && c != 0x0a && c != 0x0d)||
+            c == 0x7f) {
             ++i2;
           }
         }
@@ -179,7 +183,8 @@ import com.upokecenter.util.*;
       if (index + 1 < endIndex && s.charAt(index) == '\\') {
         char c = s.charAt(index + 1);
         // Non-ASCII (allowed in internationalized email headers under RFC6532)
-        if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && s.charAt(index + 2) >= 0xdc00 && s.charAt(index + 2) <= 0xdfff) {
+        if ((c & 0xfc00) == 0xd800 && index + 2 < endIndex && s.charAt(index + 2)
+          >= 0xdc00 && s.charAt(index + 2) <= 0xdfff) {
           return index + 3;
         }
         if ((c & 0xf800) == 0xd800) {
@@ -200,18 +205,15 @@ import com.upokecenter.util.*;
     }
 
     // quoted-String (RFC5322 sec. 3.2.4)
-    static int skipQuotedString(
-      String s,
-      int index,
-      int endIndex,
+    static int skipQuotedString(String s,
+      int index, int endIndex,
       StringBuilder builder) {
-      return skipQuotedString(s, index, endIndex, builder, QuotedStringRule.Rfc5322);
+return skipQuotedString(s, index, endIndex, builder,
+        QuotedStringRule.Rfc5322);
     }
 
-    private static int skipQuotedString(
-      String str,
-      int index,
-      int endIndex,
+    private static int skipQuotedString(String str,
+      int index, int endIndex,
       StringBuilder builder,  // receives the unescaped version of the _string
       QuotedStringRule rule) {
       int startIndex = index;
@@ -250,7 +252,7 @@ import com.upokecenter.util.*;
         index = skipQtextOrQuotedPair(str, index, endIndex, rule);
         if (index == oldIndex) {
           if (builder != null) {
-            builder.delete(valueBLength,(valueBLength)+((builder.length())-valueBLength));
+            builder.delete(valueBLength, (valueBLength)+((builder.length())-valueBLength));
           }
           return startIndex;
         }
@@ -261,12 +263,13 @@ import com.upokecenter.util.*;
         }
       }
       if (builder != null) {
-        builder.delete(valueBLength,(valueBLength)+((builder.length())-valueBLength));
+        builder.delete(valueBLength, (valueBLength)+((builder.length())-valueBLength));
       }
       return startIndex;  // not a valid quoted-String
     }
 
-    private static void AppendComplexParamValue(String name, String str, StringBuilder sb) {
+    private static void AppendComplexParamValue(String name, String str,
+      StringBuilder sb) {
       int length = 1;
       int contin = 0;
       String hex = "0123456789ABCDEF";
@@ -298,15 +301,14 @@ import com.upokecenter.util.*;
           c = 0xfffd;
         }
         ++index;
-        if (c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=*%'".indexOf((char)c) < 0) {
+      if (c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=*%'" .indexOf((char)c) <
+          0) {
           ++length;
           if (!first && length + 1 > MaxLength) {
             sb.append(";\r\n ");
             first = true;
             ++contin;
-            String continString = name + "*" +
-              Integer.toString((int)contin) +
-              "*=";
+            String continString = name + "*" + Integer.toString((int)contin) + "*=";
             sb.append(continString);
             length = 1 + continString.length();
             ++length;
@@ -384,9 +386,7 @@ import com.upokecenter.util.*;
             sb.append(";\r\n ");
             first = true;
             ++contin;
-            String continString = name + "*" +
-              Integer.toString((int)contin) +
-              "*=";
+            String continString = name + "*" + Integer.toString((int)contin) + "*=";
             sb.append(continString);
             length = 1 + continString.length();
             length += 12;
@@ -412,7 +412,8 @@ import com.upokecenter.util.*;
       }
     }
 
-    private static boolean AppendSimpleParamValue(String name, String str, StringBuilder sb) {
+    private static boolean AppendSimpleParamValue(String name, String str,
+      StringBuilder sb) {
       sb.append(name);
       sb.append('=');
       if (str.length() == 0) {
@@ -456,9 +457,10 @@ import com.upokecenter.util.*;
       return 0;
     }
 
-    static void AppendParameters(Map<String, String> parameters, StringBuilder sb) {
+    static void AppendParameters(Map<String, String>
+      parameters, StringBuilder sb) {
       StringBuilder tmp = new StringBuilder();
-      for(String key : parameters.keySet()) {
+      for (String key : parameters.keySet()) {
         int lineIndex = LastLineStart(sb);
         String name = key;
         String value = parameters.get(key);
@@ -467,12 +469,14 @@ import com.upokecenter.util.*;
         if (!AppendSimpleParamValue(name, value, tmp)) {
           tmp.setLength(0);
           AppendComplexParamValue(name, value, tmp);
-          if ((sb.length() - lineIndex) + tmp.length() > (lineIndex == 0 ? 76 : 75)) {
+       if ((sb.length() - lineIndex) + tmp.length() > (lineIndex == 0 ? 76 :
+            75)) {
             sb.append("\r\n ");
           }
           sb.append(tmp);
         } else {
-          if ((sb.length() - lineIndex) + tmp.length() > (lineIndex == 0 ? 76 : 75)) {
+       if ((sb.length() - lineIndex) + tmp.length() > (lineIndex == 0 ? 76 :
+            75)) {
             sb.append("\r\n ");
           }
           sb.append(tmp);
@@ -493,16 +497,14 @@ import com.upokecenter.util.*;
       return sb.toString();
     }
 
-    static int SkipMimeToken(
-      String str,
-      int index,
-      int endIndex,
-      StringBuilder builder,
-      boolean httpRules) {
+    static int SkipMimeToken(String str,
+      int index, int endIndex,
+      StringBuilder builder, boolean httpRules) {
       int i = index;
       while (i < endIndex) {
         char c = str.charAt(i);
-        if (c <= 0x20 || c >= 0x7F || (c == (c & 0x7F) && "()<>@,;:\\\"/[]?=".indexOf(c) >= 0)) {
+        if (c <= 0x20 || c >= 0x7f || (c == (c & 0x7f) &&
+          "()<>@,;:\\\"/[]?=" .indexOf(c) >= 0)) {
           break;
         }
         if (httpRules && (c == '{' || c == '}')) {
@@ -528,7 +530,8 @@ import com.upokecenter.util.*;
       int i = index;
       while (i < endIndex) {
         char c = str.charAt(i);
-        if (c <= 0x20 || c >= 0x7f || ((c & 0x7F) == c && "()<>@,;:\\\"/[]?='%*".indexOf(c) >= 0)) {
+        if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
+          "()<>@,;:\\\"/[]?='%*" .indexOf(c) >= 0)) {
           break;
         }
         if (builder != null) {
@@ -550,7 +553,8 @@ import com.upokecenter.util.*;
         }
         return i;
       }
-      if (i + 1 < endIndex && str.charAt(i) == '*' && str.charAt(i + 1) >= '1' && str.charAt(i + 1) <= '9') {
+      if (i + 1 < endIndex && str.charAt(i) == '*' && str.charAt(i + 1) >= '1' && str.charAt(i +
+        1) <= '9') {
         // other-sections
         if (builder != null) {
           builder.append('*');
@@ -580,19 +584,22 @@ import com.upokecenter.util.*;
       return i;
     }
 
-    static int skipMimeTypeSubtype(String str, int index, int endIndex, StringBuilder builder) {
+    static int skipMimeTypeSubtype(String str, int index, int
+      endIndex, StringBuilder builder) {
       int i = index;
       int count = 0;
       while (i < endIndex) {
         char c = str.charAt(i);
         // See RFC6838
-        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) {
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0'&&
+          c <= '9')) {
           if (builder != null) {
             builder.append(c);
           }
           ++i;
           ++count;
-        } else if (count > 0 && (c == (c & 0x7F) && "!#$&-^_.+".indexOf(c) >= 0)) {
+    } else if (count > 0 && (c == (c & 0x7F) && "!#$&-^_.+" .indexOf(c) >=
+          0)) {
           if (builder != null) {
             builder.append(c);
           }
@@ -610,19 +617,22 @@ import com.upokecenter.util.*;
     }
 
     /**
-     * Returns the charset parameter, converted to ASCII lower-case, if
-     * it exists, or <code>"us-ascii"</code> if the media type is ill-formed (RFC2045
-     * sec. 5.2), or if the media type is "text/plain" and doesn't have a charset
-     * parameter (see RFC2046), or the default charset, if any, for the media
-     * type if the charset parameter is absent. Returns an empty string in
-     * all other cases.
+     * Returns the charset parameter, converted to ASCII lower-case, if it exists,
+     * or <code>"us-ascii"</code> if the media type is ill-formed (RFC2045 sec.
+     * 5.2), or if the media type is "text/plain" and doesn't have a charset
+     * parameter (see RFC2046), or the default charset, if any, for the
+     * media type if the charset parameter is absent. Returns an empty
+     * string in all other cases.
      * @return A string object.
      */
 
     public String GetCharset() {
-      // NOTE: RFC6657 changed the rules for the default charset in text media types,
-      // so that there is no default charset for as yet undefined media types. However,
-      // media types defined before this RFC are grandfathered from the rule: those
+      // NOTE: RFC6657 changed the rules for the default charset in text
+      //media types,
+      // so that there is no default charset for as yet undefined media
+      //types. However,
+      // media types defined before this RFC are grandfathered from the
+      //rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of Apr. 17,
       // 2014, are listed below:
@@ -630,13 +640,15 @@ import com.upokecenter.util.*;
       // -- No default charset assumed: --
       //
       // RTP payload types; these are usually unsuitable for MIME,
-      // and don't permit a charset parameter, so a default charset is irrelevant:
+      // and don't permit a charset parameter, so a default charset is
+      //irrelevant:
       // -- 1d-interleaved-parityfec, fwdred, red, parityfec, encaprtp,
       // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback
       //
       // These media types don't define a charset parameter:
       // -- dns, grammar-ref-list, mizar, vnd-latex-z, vnd.motorola.reflex,
-      // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript, vnd.dvb.subtitle,
+      // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript,
+      //vnd.dvb.subtitle,
       // vnd.fly, rtf, rfc822-headers
       //
       // Special procedure defined for charset detection:
@@ -688,20 +700,26 @@ import com.upokecenter.util.*;
       if (this.isText()) {
         String sub = this.getSubType();
         // Media types that assume a default of US-ASCII
-        if (sub.equals("plain") || sub.equals("sgml") || sub.equals("troff") || sub.equals("directory") ||
-            sub.equals("css") || sub.equals("richtext") || sub.equals("enriched") ||
-            sub.equals("tab-separated-values") || sub.equals("vnd.in3d.spot") || sub.equals("vnd.abc") ||
-            sub.equals("vnd.wap.wmlscript") || sub.equals("vnd.curl") || sub.equals("vnd.fmi.flexstor") ||
-            sub.equals("uri-list")) {
+        if (sub.equals("plain") || sub.equals("sgml") ||
+          sub.equals("troff") || sub.equals("directory") ||
+       sub.equals("css") || sub.equals("richtext") ||
+              sub.equals("enriched") || sub.equals("tab-separated-values") ||
+              sub.equals("vnd.in3d.spot") || sub.equals("vnd.abc") ||
+            sub.equals("vnd.wap.wmlscript") || sub.equals("vnd.curl") ||
+              sub.equals("vnd.fmi.flexstor") || sub.equals("uri-list")) {
           return "us-ascii";
         }
         // Media types that assume a default of UTF-8
-        if (sub.equals("vcard") || sub.equals("jcr-cnd") || sub.equals("n3") || sub.equals("turtle") ||
-            sub.equals("vnd.debian.copyright") || sub.equals("provenance-notation") || sub.equals("csv") ||
-            sub.equals("calendar") || sub.equals("vnd.a") || sub.equals("parameters") ||
-            sub.equals("prs.fallenstein.rst") || sub.equals("vnd.esmertec.theme.descriptor") ||
-            sub.equals("vnd.trolltech.linguist") || sub.equals("vnd.graphviz") || sub.equals("cache-manifest") ||
-            sub.equals("vnd.sun.j2me.app-descriptor")) {
+        if (sub.equals("vcard") || sub.equals("jcr-cnd") ||
+          sub.equals("n3") || sub.equals("turtle") ||
+            sub.equals("vnd.debian.copyright") ||
+              sub.equals("provenance-notation") || sub.equals("csv") ||
+   sub.equals("calendar") || sub.equals("vnd.a") ||
+              sub.equals("parameters") || sub.equals("prs.fallenstein.rst") ||
+              sub.equals("vnd.esmertec.theme.descriptor") ||
+            sub.equals("vnd.trolltech.linguist") ||
+              sub.equals("vnd.graphviz") || sub.equals("cache-manifest")||
+              sub.equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";
         }
       }
@@ -710,11 +728,11 @@ import com.upokecenter.util.*;
 
     /**
      * Gets the value of a parameter in this media type, such as "charset".
-     * @param name Name of the parameter to get. The name is compared case-insensitively.
+     * @param name Name of the parameter to get. The name is compared
+     * case-insensitively.
      * @return The value of the parameter as a string, or null if the parameter
      * doesn't exist.
-     * @throws java.lang.NullPointerException The parameter {@code name}
-     * is null.
+     * @throws NullPointerException The parameter {@code name} is null.
      */
     public String GetParameter(String name) {
       if (name == null) {
@@ -738,8 +756,9 @@ import com.upokecenter.util.*;
         // not a valid encoded parameter
         return null;
       }
-      String charset = value.substring(0,firstQuote);
-      String language = value.substring(firstQuote + 1,(firstQuote + 1)+(secondQuote - (firstQuote + 1)));
+      String charset = value.substring(0, firstQuote);
+      String language = value.substring(firstQuote + 1, (firstQuote + 1)+(secondQuote -
+        (firstQuote + 1)));
       if (language.length() > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
         return null;
@@ -764,8 +783,9 @@ import com.upokecenter.util.*;
         // not a valid encoded parameter
         return Charsets.Ascii;
       }
-      String charset = value.substring(0,firstQuote);
-      String language = value.substring(firstQuote + 1,(firstQuote + 1)+(secondQuote - (firstQuote + 1)));
+      String charset = value.substring(0, firstQuote);
+      String language = value.substring(firstQuote + 1, (firstQuote + 1)+(secondQuote -
+        (firstQuote + 1)));
       if (language.length() > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
         return null;
@@ -774,19 +794,22 @@ import com.upokecenter.util.*;
       return (cs == null) ? Charsets.Ascii : cs;
     }
 
-    private static String DecodeRfc2231Encoding(String value, ICharset charset) {
+  private static String DecodeRfc2231Encoding(String value, ICharset
+      charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.indexOf('\'');
-      return (quote >= 0) ? null : charset.GetString(new PercentEncodingStringTransform(value));
+      return (quote >= 0) ? null : charset.GetString(new
+        PercentEncodingStringTransform(value));
     }
 
-    private static boolean ExpandRfc2231Extensions(Map<String, String> parameters) {
+    private static boolean ExpandRfc2231Extensions(Map<String, String>
+      parameters) {
       if (parameters.size() == 0) {
         return true;
       }
       List<String> keyList = new ArrayList<String>(parameters.keySet());
-      for(String name : keyList) {
+      for (String name : keyList) {
         if (!parameters.containsKey(name)) {
           continue;
         }
@@ -794,7 +817,7 @@ import com.upokecenter.util.*;
         int asterisk = name.indexOf('*');
         if (asterisk == name.length() - 1 && asterisk > 0) {
           // name*="value" (except when the parameter is just "*")
-          String realName = name.substring(0,name.length() - 1);
+          String realName = name.substring(0, name.length() - 1);
           String realValue = DecodeRfc2231Extension(value);
           if (realValue == null) {
             continue;
@@ -802,17 +825,16 @@ import com.upokecenter.util.*;
           parameters.remove(name);
           realValue = (realValue == null) ? (value) : realValue;
           // NOTE: Overrides the name without continuations
-          parameters.put(realName,realValue);
+          parameters.put(realName, realValue);
           continue;
         }
         // name*0 or name*0*
-        if (asterisk > 0 &&
-            ((asterisk == name.length() - 2 && name.charAt(asterisk + 1) == '0') ||
-             (asterisk == name.length() - 3 && name.charAt(asterisk + 1) == '0' &&
-              name.charAt(asterisk + 2) == '*'))) {
-          String realName = name.substring(0,asterisk);
-          String realValue = (asterisk == name.length() - 3) ? DecodeRfc2231Extension(value) :
-            value;
+        if (asterisk > 0 && ((asterisk == name.length() - 2 && name.charAt(asterisk +
+     1) == '0') || (asterisk == name.length() - 3 && name.charAt(asterisk + 1) ==
+            '0' && name.charAt(asterisk + 2) == '*'))) {
+          String realName = name.substring(0, asterisk);
+          String realValue = (asterisk == name.length() - 3) ?
+            DecodeRfc2231Extension(value) : value;
           ICharset charsetUsed = GetRfc2231Charset(
             (asterisk == name.length() - 3) ? value : null);
           parameters.remove(name);
@@ -820,8 +842,7 @@ import com.upokecenter.util.*;
           // search for name*1 or name*1*, then name*2 or name*2*,
           // and so on
           while (true) {
-            String contin = realName + "*" +
-              Integer.toString((int)pindex);
+            String contin = realName + "*" + Integer.toString((int)pindex);
             String continEncoded = contin + "*";
             if (parameters.containsKey(contin)) {
               // Unencoded continuation
@@ -829,7 +850,8 @@ import com.upokecenter.util.*;
               parameters.remove(contin);
             } else if (parameters.containsKey(continEncoded)) {
               // Encoded continuation
-              String newEnc = DecodeRfc2231Encoding(parameters.get(continEncoded), charsetUsed);
+ String newEnc = DecodeRfc2231Encoding(parameters.get(continEncoded),
+                charsetUsed);
               if (newEnc == null) {
                 // Contains a quote character in the encoding, so illegal
                 return false;
@@ -842,10 +864,10 @@ import com.upokecenter.util.*;
             ++pindex;
           }
           // NOTE: Overrides the name without continuations
-          parameters.put(realName,realValue);
+          parameters.put(realName, realValue);
         }
       }
-      for(String name : parameters.keySet()) {
+      for (String name : parameters.keySet()) {
         // Check parameter names using stricter format
         // in RFC6838
         if (skipMimeTypeSubtype(name, 0, name.length(), null) != name.length()) {
@@ -857,12 +879,12 @@ import com.upokecenter.util.*;
     }
 
     /**
-     * Gets the top level type and subtype of this media type, separated by
-     * a slash; for example, "text/plain".
-     * @return The top level type and subtype of this media type, separated
-     * by a slash; for example, "text/plain".
+     * Gets the top level type and subtype of this media type, separated by a
+     * slash; for example, "text/plain".
+     * @return The top level type and subtype of this media type, separated by a
+     * slash; for example, "text/plain".
      */
-    public String getTypeAndSubType() {
+    public final String getTypeAndSubType() {
         return this.getTopLevelType() + "/" + this.getSubType();
       }
 
@@ -877,12 +899,9 @@ import com.upokecenter.util.*;
       return index;
     }
 
-    static boolean ParseParameters(
-      String str,
-      int index,
-      int endIndex,
-      boolean httpRules,
-      Map<String, String> parameters) {
+    static boolean ParseParameters(String str,
+      int index, int endIndex,
+      boolean httpRules, Map<String, String> parameters) {
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipLws, though that may change
@@ -907,10 +926,8 @@ import com.upokecenter.util.*;
         if (httpRules) {
           index = skipOws(str, index, endIndex);
         } else {
-          index = HeaderParser.ParseCFWS(
-            str,
-            index,
-            endIndex,
+          index = HeaderParser.ParseCFWS(str,
+            index, endIndex,
             null);
         }
         StringBuilder builder = new StringBuilder();
@@ -929,13 +946,12 @@ import com.upokecenter.util.*;
         String attribute = builder.toString();
         index = afteratt;
         if (!httpRules) {
-          // NOTE: MIME implicitly doesn't restrict whether whitespace can appear
+          // NOTE: MIME implicitly doesn't restrict whether whitespace can
+          //appear
           // around the equal sign separating an attribute and value, while
           // HTTP explicitly forbids such whitespace
-          index = HeaderParser.ParseCFWS(
-            str,
-            index,
-            endIndex,
+          index = HeaderParser.ParseCFWS(str,
+            index, endIndex,
             null);
         }
         if (index >= endIndex) {
@@ -952,19 +968,18 @@ import com.upokecenter.util.*;
         ++index;
         if (!httpRules) {
           // See note above on whitespace around the equal sign
-          index = HeaderParser.ParseCFWS(
-            str,
-            index,
-            endIndex,
+          index = HeaderParser.ParseCFWS(str,
+            index, endIndex,
             null);
         }
         if (index >= endIndex) {
           // No more parameters
           return httpRules || ExpandRfc2231Extensions(parameters);
         }
-        builder.delete(0,(0)+(builder.length()));
+        builder.delete(0, (0)+(builder.length()));
         int qs;
-        // If the attribute name ends with '*' the value may not be a quoted String
+        // If the attribute name ends with '*' the value may not be a quoted
+        //String
         if (attribute.charAt(attribute.length() - 1) != '*') {
           // try getting the value quoted
           qs = skipQuotedString(
@@ -977,17 +992,17 @@ import com.upokecenter.util.*;
             qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
           }
           if (qs != index) {
-            parameters.put(attribute,builder.toString());
+            parameters.put(attribute, builder.toString());
             index = qs;
             continue;
           }
-          builder.delete(0,(0)+(builder.length()));
+          builder.delete(0, (0)+(builder.length()));
         }
         // try getting the value unquoted
         // Note we don't use getAtom
         qs = SkipMimeToken(str, index, endIndex, builder, httpRules);
         if (qs != index) {
-          parameters.put(attribute,builder.toString());
+          parameters.put(attribute, builder.toString());
           index = qs;
           continue;
         }
@@ -1008,13 +1023,14 @@ import com.upokecenter.util.*;
       if (i == index || i >= endIndex || str.charAt(i) != '/') {
         return false;
       }
-      this.topLevelType = DataUtilities.ToLowerCaseAscii(str.substring(index,(index)+(i - index)));
+      this.topLevelType =
+        DataUtilities.ToLowerCaseAscii(str.substring(index, (index)+(i - index)));
       ++i;
       int i2 = skipMimeTypeSubtype(str, i, endIndex, null);
       if (i == i2) {
         return false;
       }
-      this.subType = DataUtilities.ToLowerCaseAscii(str.substring(i,(i)+(i2 - i)));
+      this.subType = DataUtilities.ToLowerCaseAscii(str.substring(i, (i)+(i2 - i)));
       if (i2 < endIndex) {
         // if not at end
         int i3 = HeaderParser.ParseCFWS(str, i2, endIndex, null);
@@ -1032,29 +1048,30 @@ import com.upokecenter.util.*;
     }
 
     /**
-     * Specifies the media type "text/plain" and the charset "US-ASCII",
-     * used for plain text data.
+     * Specifies the media type "text/plain" and the charset "US-ASCII", used for
+     * plain text data.
      */
     public static final MediaType TextPlainAscii =
-      new MediaTypeBuilder("text", "plain").SetParameter("charset", "us-ascii").ToMediaType();
+      new MediaTypeBuilder("text" , "plain").SetParameter("charset",
+        "us-ascii").ToMediaType();
 
     /**
-     * Specifies the media type "text/plain" and the charset "utf-8", used
-     * for Unicode plain text data.
+     * Specifies the media type "text/plain" and the charset "utf-8", used for
+     * Unicode plain text data.
      */
     public static final MediaType TextPlainUtf8 =
-      new MediaTypeBuilder("text", "plain").SetParameter("charset", "utf-8").ToMediaType();
+      new MediaTypeBuilder("text" , "plain").SetParameter("charset",
+        "utf-8").ToMediaType();
 
     /**
-     * Specifies the media type "message/rfc822", used for Internet mail
-     * messages.
+     * Specifies the media type "message/rfc822" , used for Internet mail messages.
      */
     public static final MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
     /**
-     * Specifies the media type "application/octet-stream", used for
-     * arbitrary binary data.
+     * Specifies the media type "application/octet-stream", used for arbitrary
+     * binary data.
      */
     public static final MediaType ApplicationOctetStream =
       new MediaTypeBuilder("application", "octet-stream").ToMediaType();
@@ -1065,8 +1082,8 @@ import com.upokecenter.util.*;
     /**
      * Parses a media type string and returns a media type object.
      * @param mediaTypeValue A string object.
-     * @return A media type object, or text/plain if {@code mediaTypeValue}
-     * is empty or syntactically invalid.
+     * @return A media type object, or text/plain if {@code mediaTypeValue} is
+     * empty or syntactically invalid.
      */
     public static MediaType Parse(String mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);
@@ -1079,8 +1096,7 @@ import com.upokecenter.util.*;
      * @param defaultValue The media type to return if the string is syntactically
      * invalid. Can be null.
      * @return A MediaType object.
-     * @throws java.lang.NullPointerException The parameter {@code str}
-     * is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static MediaType Parse(String str, MediaType defaultValue) {
       if (str == null) {
@@ -1089,8 +1105,7 @@ import com.upokecenter.util.*;
       MediaType mt = new MediaType();
       mt.parameters = new TreeMap<String, String>();
       if (!mt.ParseMediaType(str)) {
-
-        return defaultValue;
+return defaultValue;
       }
       return mt;
     }

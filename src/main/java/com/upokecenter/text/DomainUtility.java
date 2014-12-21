@@ -45,27 +45,31 @@ private DomainUtility() {
      * non-ASCII characters, returns the Punycode length plus 4 (the length
      * of the ACE prefix). If there are only ASCII characters, returns the
      * length of the string. Returns -1 if an overflow error occurs.
-     * @throws java.lang.NullPointerException The parameter {@code str}
-     * is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static int PunycodeLength(String str, int index, int endIndex) {
       if (str == null) {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is less than " + "0");
+      throw new IllegalArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("index (" + index + ") is more than " +
+          str.length());
       }
       if (endIndex < 0) {
-        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + "0");
+throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
+          "0");
       }
       if (endIndex > str.length()) {
-        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("endIndex (" + endIndex +
+          ") is more than " + str.length());
       }
       if (endIndex < index) {
-        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + Integer.toString((int)index));
+        throw new IllegalArgumentException("endIndex (" + endIndex +
+          ") is less than " + index);
       }
       int n = 128;
       int delta = 0;
@@ -178,8 +182,9 @@ private DomainUtility() {
       return outputLength;
     }
 
-    private static int[] valueDigitValues = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    private static int[] valueDigitValues = { -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
       26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1, -1,
       -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
@@ -192,19 +197,24 @@ private DomainUtility() {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is less than " + "0");
+      throw new IllegalArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("index (" + index + ") is more than " +
+          str.length());
       }
       if (endIndex < 0) {
-        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + "0");
+throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
+          "0");
       }
       if (endIndex > str.length()) {
-        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("endIndex (" + endIndex +
+          ") is more than " + str.length());
       }
       if (endIndex < index) {
-        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + Integer.toString((int)index));
+        throw new IllegalArgumentException("endIndex (" + endIndex +
+          ") is less than " + index);
       }
       if (index == endIndex) {
         return "";
@@ -230,8 +240,7 @@ private DomainUtility() {
       for (int k = index; k < lastHyphen; ++k) {
         int c = str.charAt(k);
         if (c >= 0x41 && c <= 0x5a) {
-          c += 0x20;  // convert to lowercase
-        }
+          c += 0x20;  // convert to lowercase }
         builder.append((char)c);
       }
       if (lastHyphen >= index) {
@@ -315,30 +324,37 @@ private DomainUtility() {
       return builder.toString();
     }
 
-    private static final String PunycodeAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+private static final String PunycodeAlphabet =
+      "abcdefghijklmnopqrstuvwxyz0123456789" ;
 
     static String PunycodeEncode(String str) {
       return PunycodeEncodePortion(str, 0, str.length());
     }
 
-    static String PunycodeEncodePortion(String str, int index, int endIndex) {
+    static String PunycodeEncodePortion(String str, int index, int
+      endIndex) {
       if (str == null) {
         throw new NullPointerException("str");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is less than " + "0");
+      throw new IllegalArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("index (" + index + ") is more than " +
+          str.length());
       }
       if (endIndex < 0) {
-        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + "0");
+throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
+          "0");
       }
       if (endIndex > str.length()) {
-        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is more than " + Integer.toString((int)str.length()));
+        throw new IllegalArgumentException("endIndex (" + endIndex +
+          ") is more than " + str.length());
       }
       if (endIndex < index) {
-        throw new IllegalArgumentException("endIndex (" + Integer.toString((int)endIndex) + ") is less than " + Integer.toString((int)index));
+        throw new IllegalArgumentException("endIndex (" + endIndex +
+          ") is less than " + index);
       }
       int n = 128;
       int delta = 0;
@@ -365,7 +381,7 @@ private DomainUtility() {
         ++tmpIndex;
       }
       if (allBasics) {
-        return str.substring(index,(index)+(endIndex - index));
+        return str.substring(index, (index)+(endIndex - index));
       }
       StringBuilder builder = new StringBuilder();
       builder.append("xn--");

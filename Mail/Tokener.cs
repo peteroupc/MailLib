@@ -19,14 +19,17 @@ namespace PeterO.Mail {
     public void RestoreState(int state) {
       #if DEBUG
       if (state > this.tokenStack.Count) {
-        throw new ArgumentException("state (" + Convert.ToString((int)state, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)this.tokenStack.Count, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("state (" + state + ") is more than " +
+          (this.tokenStack.Count));
       }
       if (state < 0) {
-        throw new ArgumentException("state (" + Convert.ToString((int)state, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+      throw new ArgumentException("state (" + state + ") is less than " +
+          "0");
       }
       #endif
       // if (tokenStack.Count != state) {
-      // Console.WriteLine("Rolling back from " + tokenStack.Count + " to " + (state));
+      // Console.WriteLine("Rolling back from " + tokenStack.Count + " to "
+      //+ state);
       // }
       while (state < this.tokenStack.Count) {
         this.tokenStack.RemoveAt(state);
@@ -34,7 +37,8 @@ namespace PeterO.Mail {
     }
 
     public void Commit(int token, int startIndex, int endIndex) {
-      // Console.WriteLine("Committing token " + token + ", size now " + (tokenStack.Count+1));
+      // Console.WriteLine("Committing token " + token + ", size now " +
+      //(tokenStack.Count + 1));
       this.tokenStack.Add(new[] { token, startIndex, endIndex });
     }
 
@@ -47,8 +51,8 @@ namespace PeterO.Mail {
     /// <param name='x'>An integer array.</param>
     /// <param name='y'>An integer array. (2).</param>
     /// <returns>Zero if both values are equal; a negative number if <paramref
-    /// name='x'/> is less than <paramref name='y'/> , or a positive number
-    /// if <paramref name='x'/> is greater than <paramref name='y'/> .</returns>
+    /// name='x'/> is less than <paramref name='y'/> , or a positive number if
+    /// <paramref name='x'/> is greater than <paramref name='y'/> .</returns>
     public int Compare(int[] x, int[] y) {
       // Sort by their start indexes
       if (x[1] == y[1]) {

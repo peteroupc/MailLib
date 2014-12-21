@@ -21,13 +21,16 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("suffix");
       }
       if (strStartPos < 0) {
-        throw new ArgumentException("strStartPos (" + Convert.ToString((int)strStartPos, System.Globalization.CultureInfo.InvariantCulture) + ") is less than " + "0");
+        throw new ArgumentException("strStartPos (" + strStartPos +
+          ") is less than " + "0");
       }
       if (strStartPos > str.Length) {
-        throw new ArgumentException("strStartPos (" + Convert.ToString((int)strStartPos, System.Globalization.CultureInfo.InvariantCulture) + ") is more than " + Convert.ToString((int)str.Length, System.Globalization.CultureInfo.InvariantCulture));
+        throw new ArgumentException("strStartPos (" + strStartPos +
+          ") is more than " + str.Length);
       }
       int endpos = suffix.Length + strStartPos;
-      return (endpos <= str.Length) && str.Substring(strStartPos, endpos - strStartPos).Equals(suffix);
+      return (endpos <= str.Length) && str.Substring(strStartPos, endpos -
+        strStartPos).Equals(suffix);
     }
 
     public static bool StartsWith(string str, string prefix) {
@@ -37,11 +40,13 @@ namespace PeterO.Mail {
       if (prefix == null) {
         throw new ArgumentNullException("prefix");
       }
-      return (prefix.Length >= str.Length) && str.Substring(0, prefix.Length).Equals(prefix);
+      return (prefix.Length >= str.Length) && str.Substring(0,
+        prefix.Length).Equals(prefix);
     }
 
     public static string TrimSpaceAndTab(string str) {
-      return string.IsNullOrEmpty(str) ? str : TrimSpaceAndTabLeft(TrimSpaceAndTabRight(str));
+      return string.IsNullOrEmpty(str) ? str :
+        TrimSpaceAndTabLeft(TrimSpaceAndTabRight(str));
     }
 
     public static string TrimSpaceAndTabLeft(string str) {
@@ -57,7 +62,8 @@ namespace PeterO.Mail {
         }
         ++index;
       }
-      return (index == valueSLength) ? String.Empty : ((index == 0) ? str : str.Substring(index));
+      return (index == valueSLength) ? String.Empty : ((index == 0) ? str :
+        str.Substring(index));
     }
 
     public static string TrimSpaceAndTabRight(string str) {
@@ -76,10 +82,12 @@ namespace PeterO.Mail {
     }
 
     public static bool IsNullEmptyOrSpaceTabOnly(string str) {
-      return String.IsNullOrEmpty(str) || SkipSpaceAndTab(str, 0, str.Length) == str.Length;
+      return String.IsNullOrEmpty(str) || SkipSpaceAndTab(str, 0,
+        str.Length) == str.Length;
     }
 
-    public static int ParseFWSLax(string str, int index, int endIndex, StringBuilder sb) {
+    public static int ParseFWSLax(string str, int index, int endIndex,
+      StringBuilder sb) {
       while (index < endIndex) {
         int tmp = index;
         // Skip CRLF
@@ -112,18 +120,17 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Splits a string by a delimiter. If the string ends with the
-    /// delimiter, the result will end with an empty string. If the string
-    /// begins with the delimiter, the result will start with an empty string.</summary>
+    /// delimiter, the result will end with an empty string. If the string begins
+    /// with the delimiter, the result will start with an empty string.</summary>
     /// <param name='str'>A string to split.</param>
-    /// <param name='delimiter'>A string to signal where each substring
-    /// begins and ends.</param>
-    /// <returns>An array containing strings that are split by the delimiter.
-    /// If str is null or empty, returns an array whose sole element is the empty
+    /// <param name='delimiter'>A string to signal where each substring begins and
+    /// ends.</param>
+    /// <returns>An array containing strings that are split by the delimiter. If str
+    /// is null or empty, returns an array whose sole element is the empty
     /// string.</returns>
-    /// <exception cref='System.ArgumentException'>Delimiter is null
-    /// or empty.</exception>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='delimiter'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Delimiter is null or empty.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='delimiter'/> is null.</exception>
     public static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
         throw new ArgumentNullException("delimiter");
@@ -142,7 +149,7 @@ namespace PeterO.Mail {
         int index2 = str.IndexOf(delimiter, index, StringComparison.Ordinal);
         if (index2 < 0) {
           if (first) {
-            string[] strret = new string[1];
+            var strret = new string[1];
             strret[0] = str;
             return strret;
           }
@@ -170,11 +177,11 @@ namespace PeterO.Mail {
       if (index + 1 < endIndex) {
         char c1 = str[index];
         char c2 = str[index + 1];
-        if (((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z')) && ((c2 >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
+        if (((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z')) && ((c2
+          >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
           index += 2;
           if (index == endIndex) {
-            return true;  // case AA
-          }
+            return true;  // case AA }
           index += 2;
           // convert the language tag to lower case
           // to simplify handling
@@ -195,17 +202,17 @@ namespace PeterO.Mail {
               c1 = str[index];
               c2 = str[index];
               if ((c1 >= 'a' && c1 <= 'z') && (c2 >= 'a' && c2 <= 'z')) {
-                return true;  // case AA-BB or AAA-BB
-              }
+                return true;  // case AA-BB or AAA-BB }
             }
           }
           // match grandfathered language tags
-          if (str.Equals("sgn-be-fr") || str.Equals("sgn-be-nl") || str.Equals("sgn-ch-de") ||
-                   str.Equals("en-gb-oed")) {
+          if (str.Equals("sgn-be-fr") || str.Equals("sgn-be-nl") ||
+            str.Equals("sgn-ch-de") || str.Equals("en-gb-oed")) {
             return true;
           }
           // More complex cases
-          string[] splitString = SplitAt(str.Substring(startIndex, endIndex - startIndex), "-");
+          string[] splitString = SplitAt(str.Substring(startIndex, endIndex
+            - startIndex), "-");
           if (splitString.Length == 0) {
             return false;
           }
@@ -219,7 +226,8 @@ namespace PeterO.Mail {
             ++splitIndex;
             // skip optional extended language subtags
             for (int i = 0; i < 3; ++i) {
-              if (splitIndex < splitLength && lengthIfAllAlpha(splitString[splitIndex]) == 3) {
+              if (splitIndex < splitLength &&
+                lengthIfAllAlpha(splitString[splitIndex]) == 3) {
                 if (i >= 1) {
                   // point 4 in section 2.2.2 renders two or
                   // more extended language subtags invalid
@@ -232,13 +240,16 @@ namespace PeterO.Mail {
             }
           }
           // optional script
-          if (splitIndex < splitLength && lengthIfAllAlpha(splitString[splitIndex]) == 4) {
+          if (splitIndex < splitLength &&
+            lengthIfAllAlpha(splitString[splitIndex]) == 4) {
             ++splitIndex;
           }
           // optional region
-          if (splitIndex < splitLength && lengthIfAllAlpha(splitString[splitIndex]) == 2) {
+          if (splitIndex < splitLength &&
+            lengthIfAllAlpha(splitString[splitIndex]) == 2) {
             ++splitIndex;
-          } else if (splitIndex < splitLength && lengthIfAllDigit(splitString[splitIndex]) == 3) {
+          } else if (splitIndex < splitLength &&
+            lengthIfAllDigit(splitString[splitIndex]) == 3) {
             ++splitIndex;
           }
           // variant, any number
@@ -251,16 +262,17 @@ namespace PeterO.Mail {
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
               } else {
-                return false;  // variant already exists; see point 5 in section 2.2.5
-              }
+         return false;  // variant already exists; see point 5 in section
+                2.2.5 }
               ++splitIndex;
-            } else if (len == 4 && (curString[0] >= '0' && curString[0] <= '9')) {
+         } else if (len == 4 && (curString[0] >= '0' && curString[0] <= '9'
+)) {
               variants = variants ?? (new List<string>());
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
               } else {
-                return false;  // variant already exists; see point 5 in section 2.2.5
-              }
+         return false;  // variant already exists; see point 5 in section
+                2.2.5 }
               ++splitIndex;
             } else {
               break;
@@ -335,7 +347,8 @@ namespace PeterO.Mail {
             ++index;
             while (index < endIndex) {
               c1 = str[index];
-              if ((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') || (c1 >= '0' && c1 <= '9')) {
+              if ((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') ||
+                (c1 >= '0' && c1 <= '9')) {
                 ++count;
                 if (count > 8) {
                   return false;
@@ -384,7 +397,8 @@ namespace PeterO.Mail {
       int len = (str == null) ? 0 : str.Length;
       for (int i = 0; i < len; ++i) {
         char c1 = str[i];
-        if (!((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') || (c1 >= '0' && c1 <= '9'))) {
+        if (!((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') || (c1
+          >= '0' && c1 <= '9'))) {
           return 0;
         }
       }

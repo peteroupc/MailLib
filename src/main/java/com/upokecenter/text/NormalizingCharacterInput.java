@@ -10,15 +10,15 @@ at: http://upokecenter.com/d/
 import java.util.*;
 
     /**
-     * <p>Implements the Unicode normalization algorithm and contains
-     * methods and functionality to test and convert Unicode strings for
-     * Unicode normalization. This is similar to the Normalizer class,
-     * except it implements the ICharacterInput interface.</p> <p>NOTICE:
-     * While this class's source code is in the public domain, the class uses
-     * an class, called NormalizationData, that includes data
-     * derived from the Unicode Character Database. See the documentation
-     * for the Normalizer class for the permission notice for the Unicode
-     * Character Database.</p>
+     * <p>Implements the Unicode normalization algorithm and contains methods and
+     * functionality to test and convert Unicode strings for Unicode
+     * normalization. This is similar to the Normalizer class, except it
+     * implements the ICharacterInput interface.</p> <p>NOTICE: While this
+     * class's source code is in the public domain, the class uses an
+     * class, called NormalizationData, that includes data derived
+     * from the Unicode Character Database. See the documentation for the
+     * Normalizer class for the permission notice for the Unicode Character
+     * Database.</p>
      */
   public final class NormalizingCharacterInput implements ICharacterInput
   {
@@ -27,8 +27,7 @@ import java.util.*;
      * @param str A string object.
      * @param form A Normalization object.
      * @return A list of Unicode characters.
-     * @throws java.lang.NullPointerException The parameter {@code str}
-     * is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static List<Integer> GetChars(String str, Normalization form) {
       if (str == null) {
@@ -42,8 +41,7 @@ import java.util.*;
      * @param str An ICharacterInput object.
      * @param form A Normalization object.
      * @return A list of Unicode characters.
-     * @throws java.lang.NullPointerException The parameter {@code str}
-     * is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static List<Integer> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
@@ -73,60 +71,63 @@ import java.util.*;
     private int characterListPos;
 
     /**
-     * Initializes a new instance of the NormalizingCharacterInput class
-     * using Normalization Form C.
+     * Initializes a new instance of the NormalizingCharacterInput class using
+     * Normalization Form C.
      * @param characterList An List object.
      */
     public NormalizingCharacterInput (List<Integer> characterList) {
- this(characterList,Normalization.NFC);
+ this(characterList, Normalization.NFC);
     }
 
     /**
-     * Initializes a new instance of the NormalizingCharacterInput class
-     * using Normalization Form C.
+     * Initializes a new instance of the NormalizingCharacterInput class using
+     * Normalization Form C.
      * @param str A string object.
      */
-    public NormalizingCharacterInput (String str) {
- this(str,Normalization.NFC);
+  public NormalizingCharacterInput (String str) {
+ this(str, Normalization.NFC);
     }
 
     /**
-     * Initializes a new instance of the NormalizingCharacterInput class
-     * using Normalization Form C.
+     * Initializes a new instance of the NormalizingCharacterInput class using
+     * Normalization Form C.
      * @param input An ICharacterInput object.
      */
     public NormalizingCharacterInput (ICharacterInput input) {
- this(input,Normalization.NFC);
+ this(input, Normalization.NFC);
     }
 
     /**
-     * Initializes a new instance of the NormalizingCharacterInput class
-     * using the given normalization form.
+     * Initializes a new instance of the NormalizingCharacterInput class using the
+     * given normalization form.
      * @param characterList An List object.
      * @param form A Normalization object.
-     * @throws java.lang.NullPointerException The parameter {@code characterList}
-     * is null.
+     * @throws NullPointerException The parameter {@code characterList} is null.
      */
-    public NormalizingCharacterInput (List<Integer> characterList, Normalization form) {
+    public NormalizingCharacterInput (List<Integer> characterList, Normalization
+      form) {
       if (characterList == null) {
         throw new NullPointerException("characterList");
       }
       this.lastStableIndex = -1;
       this.characterList = characterList;
       this.form = form;
-      this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
+    this.compatMode = form == Normalization.NFKC || form ==
+        Normalization.NFKD;
     }
 
     /**
-     * Initializes a new instance of the NormalizingCharacterInput class.
-     * Uses a portion of a string as the input.
+     * Initializes a new instance of the NormalizingCharacterInput class. Uses a
+     * portion of a string as the input.
      * @param str A string object.
      * @param index A 32-bit signed integer.
      * @param length A 32-bit signed integer. (2).
      * @param form A Normalization object.
      */
-    public NormalizingCharacterInput (String str, int index, int length, Normalization form) {
- this(new StringCharacterInput(str, index, length),form);
+    public NormalizingCharacterInput (String str, int index, int length,
+      Normalization form) {
+ this(new StringCharacterInput(str, index,
+        length), form);
     }
 
     /**
@@ -135,24 +136,25 @@ import java.util.*;
      * @param form A Normalization object.
      */
     public NormalizingCharacterInput (String str, Normalization form) {
- this(new StringCharacterInput(str),form);
+ this(new StringCharacterInput(str), form);
     }
 
     /**
      * Initializes a new instance of the NormalizingCharacterInput class.
      * @param stream An ICharacterInput object.
      * @param form A Normalization object.
-     * @throws java.lang.NullPointerException The parameter {@code stream}
-     * is null.
+     * @throws NullPointerException The parameter {@code stream} is null.
      */
-    public NormalizingCharacterInput (ICharacterInput stream, Normalization form) {
+ public NormalizingCharacterInput (ICharacterInput stream, Normalization
+      form) {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
       this.lastStableIndex = -1;
       this.iterator = stream;
       this.form = form;
-      this.compatMode = form == Normalization.NFKC || form == Normalization.NFKD;
+    this.compatMode = form == Normalization.NFKC || form ==
+        Normalization.NFKD;
     }
 
     /**
@@ -176,13 +178,11 @@ import java.util.*;
       return IsNormalized(list, form);
     }
 
-    private static boolean NormalizeAndCheck(
-      List<Integer> charList,
-      int start,
-      int length,
+    private static boolean NormalizeAndCheck(List<Integer> charList,
+      int start, int length,
       Normalization form) {
       int i = 0;
-      for(int ch : NormalizingCharacterInput.GetChars(
+      for (int ch : NormalizingCharacterInput.GetChars(
         new PartialListCharacterInput(charList, start, length),
         form)) {
         if (i >= length) {
@@ -201,8 +201,8 @@ import java.util.*;
      * form.
      * @param str An arbitrary string.
      * @param form A Normalization object.
-     * @return True if the given string is in the given Unicode normalization
-     * form; otherwise, false.
+     * @return True if the given string is in the given Unicode normalization form;
+     * otherwise, false.
      */
     public static boolean IsNormalized(String str, Normalization form) {
       return Normalizer.IsNormalized(str, form);
@@ -215,8 +215,7 @@ import java.util.*;
      * @param form A Normalization object.
      * @return True if the given list of characters is in the given Unicode
      * normalization form; otherwise, false.
-     * @throws java.lang.NullPointerException The parameter "chars" is
-     * null.
+     * @throws NullPointerException The parameter "chars" is null.
      */
     public static boolean IsNormalized(List<Integer> charList, Normalization form) {
       int nonStableStart = -1;
@@ -230,7 +229,8 @@ import java.util.*;
           return false;
         }
         boolean isStable = false;
-        if ((c & mask) == c && (i + 1 == charList.size() || (charList.get(i + 1) & mask) == charList.get(i + 1))) {
+        if ((c & mask) == c && (i + 1 == charList.size() || (charList.get(i + 1)&
+          mask) == charList.get(i + 1))) {
           // Quick check for an ASCII character followed by another
           // ASCII character (or Latin-1 in NFC) or the end of String.
           // Treat the first character as stable
@@ -245,14 +245,16 @@ import java.util.*;
         } else if (nonStableStart >= 0 && isStable) {
           // We have at least one non-stable code point,
           // normalize these code points.
-          if (!NormalizeAndCheck(charList, nonStableStart, i - nonStableStart, form)) {
+  if (!NormalizeAndCheck(charList, nonStableStart, i - nonStableStart,
+            form)) {
             return false;
           }
           nonStableStart = -1;
         }
       }
       if (nonStableStart >= 0) {
-        if (!NormalizeAndCheck(charList, nonStableStart, charList.size() - nonStableStart, form)) {
+        if (!NormalizeAndCheck(charList, nonStableStart, charList.size() -
+          nonStableStart, form)) {
           return false;
         }
       }
@@ -285,7 +287,10 @@ import java.util.*;
         this.ungetting = false;
         return ch;
       }
-      ch = (this.iterator == null) ? ((this.characterListPos >= this.characterList.size()) ? -1 : this.characterList.get(this.characterListPos++)) : this.iterator.ReadChar();
+      ch = (this.iterator == null) ? ((this.characterListPos >=
+this.characterList.size()) ? -1 :
+          this.characterList.get(this.characterListPos++)) :
+        this.iterator.ReadChar();
       if (ch < 0) {
         this.endOfString = true;
       } else if (ch > 0x10ffff || ((ch & 0x1ff800) == 0xd800)) {
@@ -301,27 +306,32 @@ import java.util.*;
      * @param index A 32-bit signed integer. (2).
      * @param length A 32-bit signed integer. (3).
      * @return A 32-bit signed integer.
-     * @throws java.lang.NullPointerException The parameter {@code chars}
-     * or "this.buffer" is null.
+     * @throws NullPointerException The parameter {@code chars} or "this.buffer"
+     * is null.
      */
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new NullPointerException("chars");
       }
       if (index < 0) {
-        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is less than " + "0");
+      throw new IllegalArgumentException("index (" + index + ") is less than " +
+          "0");
       }
       if (index > chars.length) {
-        throw new IllegalArgumentException("index (" + Integer.toString((int)index) + ") is more than " + Integer.toString((int)chars.length));
+        throw new IllegalArgumentException("index (" + index + ") is more than " +
+          chars.length);
       }
       if (length < 0) {
-        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is less than " + "0");
+    throw new IllegalArgumentException("length (" + length + ") is less than " +
+          "0");
       }
       if (length > chars.length) {
-        throw new IllegalArgumentException("length (" + Integer.toString((int)length) + ") is more than " + Integer.toString((int)chars.length));
+        throw new IllegalArgumentException("length (" + length + ") is more than " +
+          chars.length);
       }
       if (chars.length - index < length) {
-        throw new IllegalArgumentException("chars's length minus " + index + " (" + Integer.toString((int)(chars.length - index)) + ") is less than " + Integer.toString((int)length));
+        throw new IllegalArgumentException("chars's length minus " + index + " (" +
+          (chars.length - index) + ") is less than " + length);
       }
       if (length == 0) {
         return 0;
@@ -348,13 +358,13 @@ import java.util.*;
         }
       }
       do {
-        // System.out.println("indexes=" + this.processedIndex + " " + this.flushIndex + ", length=" + length + " total=" + (total));
+        // System.out.println("indexes=" + this.processedIndex + " " +
+        //this.flushIndex + ", length=" + length + " total=" + total);
         count = Math.min(this.processedIndex - this.flushIndex, length - total);
         if (count < 0) {
           count = 0;
         }
         if (count != 0) {
-
           // Fill buffer with processed code points
           System.arraycopy(this.buffer, this.flushIndex, chars, index, count);
         }
@@ -384,7 +394,8 @@ import java.util.*;
             // Move unprocessed data to the beginning of
             // the buffer
 
-            System.arraycopy(this.buffer, this.lastStableIndex, this.buffer, 0, this.buffer.length - this.lastStableIndex);
+            System.arraycopy(this.buffer, this.lastStableIndex, this.buffer, 0,
+              this.buffer.length - this.lastStableIndex);
             // System.out.println("endIndex=" + (this.endIndex));
             this.endIndex -= this.lastStableIndex;
             this.lastStableIndex = 0;
@@ -397,7 +408,8 @@ import java.util.*;
         }
       } while (total < length);
       // Fill buffer with processed code points
-      count = Math.max(0, Math.min(this.processedIndex - this.flushIndex, length - total));
+      count = Math.max(0, Math.min(this.processedIndex - this.flushIndex,
+        length - total));
       System.arraycopy(this.buffer, this.flushIndex, chars, index, count);
       index += count;
       total += count;
@@ -417,7 +429,8 @@ import java.util.*;
             this.endOfString = true;
             break;
           }
-          this.endIndex = Normalizer.DecompToBuffer(c, this.compatMode, this.buffer, this.endIndex);
+          this.endIndex = Normalizer.DecompToBuffer(c, this.compatMode,
+            this.buffer, this.endIndex);
         }
         // Check for the last stable code point if the
         // end of the String is not reached yet
@@ -425,7 +438,8 @@ import java.util.*;
           boolean haveNewStable = false;
           // NOTE: lastStableIndex begins at -1
           for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
-            // System.out.println("stable({0:X4})=" + (IsStableCodePoint(this.buffer[i], this.form)));
+            // System.out.println("stable({0:X4})=" +
+            //(IsStableCodePoint(this.buffer[i], this.form)));
             if (Normalizer.IsStableCodePoint(this.buffer[i], this.form)) {
               this.lastStableIndex = i;
               haveNewStable = true;
@@ -456,7 +470,8 @@ import java.util.*;
       Normalizer.ReorderBuffer(this.buffer, 0, this.lastStableIndex);
       if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
         // Composition
-        this.processedIndex = Normalizer.ComposeBuffer(this.buffer, this.lastStableIndex);
+        this.processedIndex = Normalizer.ComposeBuffer(this.buffer,
+          this.lastStableIndex);
       } else {
         this.processedIndex = this.lastStableIndex;
       }

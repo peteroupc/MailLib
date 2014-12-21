@@ -15,8 +15,7 @@ namespace PeterO.Mail {
     private int bufferIndex;
     private int bufferCount;
 
-    public QEncodingStringTransform(
-      String input) {
+    public QEncodingStringTransform(String input) {
       this.input = input;
     }
 
@@ -44,7 +43,8 @@ namespace PeterO.Mail {
       }
       int endIndex = this.input.Length;
       while (true) {
-        int c = (this.inputIndex < endIndex) ? this.input[this.inputIndex++] : -1;
+     int c = (this.inputIndex < endIndex) ? this.input[this.inputIndex++] :
+          -1;
         if (c < 0) {
           // End of stream
           return -1;
@@ -60,7 +60,8 @@ namespace PeterO.Mail {
           return 0x1a;
         }
         if (c == '=') {
-          int b1 = (this.inputIndex < endIndex) ? this.input[this.inputIndex++] : -1;
+    int b1 = (this.inputIndex < endIndex) ? this.input[this.inputIndex++] :
+            -1;
           c = 0;
           if (b1 >= '0' && b1 <= '9') {
             c <<= 4;
@@ -75,7 +76,8 @@ namespace PeterO.Mail {
             --this.inputIndex;
             return '=';
           }
-          int b2 = (this.inputIndex < endIndex) ? this.input[this.inputIndex++] : -1;
+    int b2 = (this.inputIndex < endIndex) ? this.input[this.inputIndex++] :
+            -1;
           if (b2 >= '0' && b2 <= '9') {
             c <<= 4;
             c |= b2 - '0';

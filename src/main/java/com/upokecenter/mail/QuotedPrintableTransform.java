@@ -17,10 +17,8 @@ at: http://upokecenter.com/d/
     private boolean checkStrictEncoding;
     private int maxLineSize;
 
-    public QuotedPrintableTransform (
-      ITransform input,
-      boolean lenientLineBreaks,
-      int maxLineSize,
+    public QuotedPrintableTransform (ITransform input,
+      boolean lenientLineBreaks, int maxLineSize,
       boolean checkStrictEncoding) {
       this.maxLineSize = maxLineSize;
       this.input = new TransformWithUnget(input);
@@ -28,17 +26,14 @@ at: http://upokecenter.com/d/
       this.checkStrictEncoding = checkStrictEncoding;
     }
 
-    public QuotedPrintableTransform (
-      ITransform input,
+    public QuotedPrintableTransform (ITransform input,
       boolean lenientLineBreaks) {
- this(input,lenientLineBreaks,76,false);
+ this(input, lenientLineBreaks, 76, false);
     }
 
-    public QuotedPrintableTransform (
-      ITransform input,
-      boolean lenientLineBreaks,
-      int maxLineLength) {
- this(input,lenientLineBreaks,maxLineLength,false);
+    public QuotedPrintableTransform (ITransform input,
+      boolean lenientLineBreaks, int maxLineLength) {
+ this(input, lenientLineBreaks, maxLineLength, false);
     }
 
     private void ResizeBuffer(int size) {
@@ -69,8 +64,9 @@ at: http://upokecenter.com/d/
           // End of stream
           return -1;
         }
-        if (c == 0x0d) {  // CR
-          c = this.input.read();
+        if (c == 0x0d) {
+  {  // CR c = this.input.read();
+}
           if (c == 0x0a) {
             // CRLF
             this.ResizeBuffer(1);
@@ -102,7 +98,8 @@ at: http://upokecenter.com/d/
           if (this.maxLineSize >= 0) {
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
-              throw new MessageDataException("Encoded quoted-printable line too long");
+      throw new
+  MessageDataException("Encoded quoted-printable line too long");
             }
           }
           int b1 = this.input.read();
@@ -128,11 +125,13 @@ at: http://upokecenter.com/d/
               this.input.Unget();
               continue;
             }
-            if (!this.checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
+            if (!this.checkStrictEncoding && (this.maxLineSize > 76 ||
+              this.maxLineSize < 0)) {
               if (this.maxLineSize >= 0) {
                 ++this.lineCharCount;
                 if (this.lineCharCount > this.maxLineSize) {
-                  throw new MessageDataException("Encoded quoted-printable line too long");
+      throw new
+  MessageDataException("Encoded quoted-printable line too long");
                 }
               }
               this.input.Unget();
@@ -140,7 +139,8 @@ at: http://upokecenter.com/d/
               this.buffer[0] = (byte)'\r';
               return '=';
             }
-            throw new MessageDataException("CR not followed by LF in quoted-printable");
+   throw new
+  MessageDataException("CR not followed by LF in quoted-printable");
           } else if (b1 == -1) {
             // Equals sign at end, ignore
             return -1;
@@ -149,14 +149,16 @@ at: http://upokecenter.com/d/
             this.lineCharCount = 0;
             continue;
           } else {
-            if (!this.checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
+            if (!this.checkStrictEncoding && (this.maxLineSize > 76 ||
+              this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
               this.input.Unget();
               return '=';
             }
-            throw new MessageDataException("Invalid hex character in quoted-printable");
+   throw new
+  MessageDataException("Invalid hex character in quoted-printable");
           }
           int b2 = this.input.read();
           // At this point, only a hex character is expected
@@ -170,7 +172,8 @@ at: http://upokecenter.com/d/
             c <<= 4;
             c |= b2 + 10 - 'a';
           } else {
-            if (!this.checkStrictEncoding && (this.maxLineSize > 76 || this.maxLineSize < 0)) {
+            if (!this.checkStrictEncoding && (this.maxLineSize > 76 ||
+              this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
@@ -178,19 +181,22 @@ at: http://upokecenter.com/d/
               if (this.maxLineSize >= 0) {
                 ++this.lineCharCount;
                 if (this.lineCharCount > this.maxLineSize) {
-                  throw new MessageDataException("Encoded quoted-printable line too long");
+      throw new
+  MessageDataException("Encoded quoted-printable line too long");
                 }
               }
               this.ResizeBuffer(1);
               this.buffer[0] = (byte)b1;
               return '=';
             }
-            throw new MessageDataException("Invalid hex character in quoted-printable");
+   throw new
+  MessageDataException("Invalid hex character in quoted-printable");
           }
           if (this.maxLineSize >= 0) {
             this.lineCharCount += 2;
             if (this.lineCharCount > this.maxLineSize) {
-              throw new MessageDataException("Encoded quoted-printable line too long");
+      throw new
+  MessageDataException("Encoded quoted-printable line too long");
             }
           }
           return c;
@@ -203,10 +209,11 @@ at: http://upokecenter.com/d/
             // Just increment the line count
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
-              throw new MessageDataException("Encoded quoted-printable line too long");
+      throw new
+  MessageDataException("Encoded quoted-printable line too long");
             }
           } else {
-            throw new MessageDataException("Invalid character in quoted-printable");
+       throw new MessageDataException("Invalid character in quoted-printable");
           }
         } else if (c == ' ' || c == '\t') {
           // Space or tab. Since the quoted-printable spec
@@ -217,7 +224,8 @@ at: http://upokecenter.com/d/
           if (this.maxLineSize >= 0) {
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
-              throw new MessageDataException("Encoded quoted-printable line too long");
+      throw new
+  MessageDataException("Encoded quoted-printable line too long");
             }
           }
           // In most cases, though, there will only be
@@ -271,8 +279,10 @@ at: http://upokecenter.com/d/
               }
               this.input.Unget();  // it's something else
               ++this.lineCharCount;
-              if (this.maxLineSize >= 0 && this.lineCharCount > this.maxLineSize) {
-                throw new MessageDataException("Encoded quoted-printable line too long");
+          if (this.maxLineSize >= 0 && this.lineCharCount >
+                this.maxLineSize) {
+      throw new
+  MessageDataException("Encoded quoted-printable line too long");
               }
               break;
             }
@@ -288,7 +298,8 @@ at: http://upokecenter.com/d/
             if (this.maxLineSize >= 0) {
               ++this.lineCharCount;
               if (this.lineCharCount > this.maxLineSize) {
-                throw new MessageDataException("Encoded quoted-printable line too long");
+      throw new
+  MessageDataException("Encoded quoted-printable line too long");
               }
             }
             c2 = this.input.read();
@@ -307,7 +318,8 @@ at: http://upokecenter.com/d/
           if (this.maxLineSize >= 0) {
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
-              throw new MessageDataException("Encoded quoted-printable line too long");
+      throw new
+  MessageDataException("Encoded quoted-printable line too long");
             }
           } else if (this.checkStrictEncoding && (c >= 0x7f || c < 0x20)) {
             throw new MessageDataException("Invalid character");

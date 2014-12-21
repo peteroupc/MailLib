@@ -1,4 +1,4 @@
-﻿/*
+/*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
@@ -16,10 +16,10 @@ namespace PeterO.Mail {
   public class Address {
     private readonly string localPart;
 
-    /// <summary>Gets the local part of this email address (the part before
-    /// the "@" sign).</summary>
-    /// <value>The local part of this email address (the part before the &quot;@&quot;
-    /// sign).</value>
+    /// <summary>Gets the local part of this email address (the part before the "@"
+    /// sign).</summary>
+    /// <value>The local part of this email address (the part before the
+    /// &quot;@&quot; sign).</value>
     public string LocalPart {
       get {
         return this.localPart;
@@ -30,7 +30,8 @@ namespace PeterO.Mail {
     /// <returns>A string representation of this object.</returns>
     public override string ToString() {
       if (this.localPart.Length > 0 &&
-          HeaderParser.ParseDotAtomText(this.localPart, 0, this.localPart.Length, null) == this.localPart.Length) {
+          HeaderParser.ParseDotAtomText(this.localPart, 0,
+            this.localPart.Length, null) == this.localPart.Length) {
         return this.localPart + "@" + this.domain;
       } else {
         var sb = new StringBuilder();
@@ -58,14 +59,17 @@ namespace PeterO.Mail {
       if (domainLength > 0 && this.domain[0] != '[') {
         // "domain" is a domain name, and not an address literal,
         // so get its A-label length
-        domainLength = checked((int)DataUtilities.GetUtf8Length(Idna.EncodeDomainName(this.domain), true));
+        domainLength =
+  checked((int)DataUtilities.GetUtf8Length(Idna.EncodeDomainName(this.domain),
+          true));
       }
       if (this.localPart.Length > 0 &&
-          HeaderParser.ParseDotAtomText(this.localPart, 0, this.localPart.Length, null) == this.localPart.Length) {
+        HeaderParser.ParseDotAtomText(this.localPart, 0,
+            this.localPart.Length, null) == this.localPart.Length) {
         return this.localPart.Length + domainLength + 1;
       } else {
-        int length = 3 + domainLength;  // two quotes, at sign, and domain length
-        for (int i = 0; i < this.localPart.Length; ++i) {
+      int length = 3 + domainLength;  // two quotes, at sign, and domain
+          length for (int i = 0; i < this.localPart.Length; ++i) {
           char c = this.localPart[i];
           if (c == 0x20 || c == 0x09) {
             ++length;
@@ -81,8 +85,8 @@ namespace PeterO.Mail {
 
     private readonly string domain;
 
-    /// <summary>Gets the domain of this email address (the part after the
-    /// "@" sign).</summary>
+    /// <summary>Gets the domain of this email address (the part after the "@"
+    /// sign).</summary>
     /// <value>The domain of this email address (the part after the &quot;@&quot;
     /// sign).</value>
     public string Domain {
@@ -93,8 +97,8 @@ namespace PeterO.Mail {
 
     /// <summary>Initializes a new instance of the Address class.</summary>
     /// <param name='addressValue'>An email address.</param>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='addressValue'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='addressValue'/> is null.</exception>
     public Address(string addressValue) {
       if (addressValue == null) {
         throw new ArgumentNullException("addressValue");
@@ -105,26 +109,32 @@ namespace PeterO.Mail {
       if (addressValue.IndexOf('@') < 0) {
         throw new ArgumentException("Address doesn't contain a '@' sign");
       }
-      int localPartEnd = HeaderParser.ParseLocalPartNoCfws(addressValue, 0, addressValue.Length, null);
+      int localPartEnd = HeaderParser.ParseLocalPartNoCfws(addressValue, 0,
+        addressValue.Length, null);
       if (localPartEnd == 0) {
         throw new ArgumentException("Invalid local part");
       }
-      if (localPartEnd >= addressValue.Length || addressValue[localPartEnd] != '@') {
+if (localPartEnd >= addressValue.Length || addressValue[localPartEnd] != '@'
+) {
         throw new ArgumentException("Expected '@' sign after local part");
       }
       if (localPartEnd + 1 == addressValue.Length) {
         throw new ArgumentException("Expected domain after '@'");
       }
-      int domainEnd = HeaderParser.ParseDomainNoCfws(addressValue, localPartEnd + 1, addressValue.Length, null);
+      int domainEnd = HeaderParser.ParseDomainNoCfws(addressValue,
+        localPartEnd + 1, addressValue.Length, null);
       if (domainEnd != addressValue.Length) {
         throw new ArgumentException("Invalid domain");
       }
-      this.localPart = HeaderParserUtility.ParseLocalPart(addressValue, 0, localPartEnd);
-      this.domain = HeaderParserUtility.ParseDomain(addressValue, localPartEnd + 1, addressValue.Length);
+      this.localPart = HeaderParserUtility.ParseLocalPart(addressValue, 0,
+        localPartEnd);
+      this.domain = HeaderParserUtility.ParseDomain(addressValue,
+        localPartEnd + 1, addressValue.Length);
       // Check length restrictions.
       if (this.StringLength() > 997) {
         // Maximum character length per line for an Internet message is 998;
-        // we check if the length exceeds 997 (thus excluding the space character
+        // we check if the length exceeds 997 (thus excluding the space
+        //character
         // of a folded line).
         throw new ArgumentException("Address too long");
       }

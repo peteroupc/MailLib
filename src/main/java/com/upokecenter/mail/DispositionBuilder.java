@@ -20,15 +20,15 @@ import com.upokecenter.util.*;
     private Map<String, String> parameters;
 
     /**
-     * Gets this value's disposition type, such value, such as "inline"
-     * or "attachment".
-     * @return This value's disposition type, such value, such as "inline"
-     * or "attachment".
+     * Gets this value's disposition type, such value, such as "inline" or
+     * "attachment".
+     * @return This value's disposition type, such value, such as "inline" or
+     * "attachment".
      */
-    public String getDispositionType() {
+    public final String getDispositionType() {
         return this.type;
       }
-public void setDispositionType(String value) {
+public final void setDispositionType(String value) {
         this.SetDispositionType(value);
       }
 
@@ -43,8 +43,7 @@ public void setDispositionType(String value) {
     /**
      * Initializes a new instance of the DispositionBuilder class.
      * @param mt A ContentDisposition object.
-     * @throws java.lang.NullPointerException The parameter {@code mt}
-     * is null.
+     * @throws NullPointerException The parameter {@code mt} is null.
      */
     public DispositionBuilder (ContentDisposition mt) {
       if (mt == null) {
@@ -67,7 +66,7 @@ public void setDispositionType(String value) {
      * Gets a value indicating whether this is a text media type.
      * @return True if this is a text media type; otherwise, false..
      */
-    public boolean isText() {
+    public final boolean isText() {
         return this.getDispositionType().equals("text");
       }
 
@@ -75,7 +74,7 @@ public void setDispositionType(String value) {
      * Gets a value indicating whether this is a multipart media type.
      * @return True if this is a multipart media type; otherwise, false..
      */
-    public boolean isMultipart() {
+    public final boolean isMultipart() {
         return this.getDispositionType().equals("multipart");
       }
 
@@ -91,8 +90,7 @@ public void setDispositionType(String value) {
      * Sets the disposition type, such as "inline".
      * @param str A string object.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code str}
-     * is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public DispositionBuilder SetDispositionType(String str) {
       if (str == null) {
@@ -101,7 +99,8 @@ public void setDispositionType(String value) {
       if (str.length() == 0) {
         throw new IllegalArgumentException("str is empty.");
       }
-      if (MediaType.skipMimeTypeSubtype(str, 0, str.length(), null) != str.length()) {
+   if (MediaType.skipMimeTypeSubtype(str, 0, str.length(), null) !=
+        str.length()) {
         throw new IllegalArgumentException("Not a well-formed type: " + str);
       }
       this.type = DataUtilities.ToLowerCaseAscii(str);
@@ -110,10 +109,10 @@ public void setDispositionType(String value) {
 
     /**
      * Removes a parameter from this content disposition.
-     * @param name The parameter to remove. The name is compared case insensitively.
+     * @param name The parameter to remove. The name is compared case
+     * insensitively.
      * @return This instance.
-     * @throws java.lang.NullPointerException The parameter {@code name}
-     * is null.
+     * @throws NullPointerException The parameter {@code name} is null.
      */
     public DispositionBuilder RemoveParameter(String name) {
       if (name == null) {
@@ -129,10 +128,9 @@ public void setDispositionType(String value) {
      * (compared case-insensitively), it will be overwritten.
      * @param value Value of the parameter to set.
      * @return This instance.
-     * @throws java.lang.NullPointerException Either {@code value} or
-     * {@code name} is null.
-     * @throws java.lang.IllegalArgumentException The parameter {@code name} is
-     * empty, or it isn't a well-formed parameter name.
+     * @throws NullPointerException Either {@code value} or {@code name} is null.
+     * @throws IllegalArgumentException The parameter {@code name} is empty, or it isn't a
+     * well-formed parameter name.
      */
     public DispositionBuilder SetParameter(String name, String value) {
       if (value == null) {
@@ -144,10 +142,12 @@ public void setDispositionType(String value) {
       if (name.length() == 0) {
         throw new IllegalArgumentException("name is empty.");
       }
-      if (MediaType.skipMimeTypeSubtype(name, 0, name.length(), null) != name.length()) {
-        throw new IllegalArgumentException("Not a well-formed parameter name: " + name);
+if (MediaType.skipMimeTypeSubtype(name, 0, name.length(), null) !=
+        name.length()) {
+      throw new IllegalArgumentException("Not a well-formed parameter name: " +
+          name);
       }
-      this.parameters.put(DataUtilities.ToLowerCaseAscii(name),value);
+      this.parameters.put(DataUtilities.ToLowerCaseAscii(name), value);
       return this;
     }
 
