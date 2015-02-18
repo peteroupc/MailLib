@@ -3,7 +3,7 @@ Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.com/d/
+at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
 using System.Collections.Generic;
@@ -16,8 +16,7 @@ namespace PeterO.Mail {
     /// mail user agent. <para>This type is immutable; its contents can't be changed
     /// after it's created.</para>
     /// </summary>
-  public class ContentDisposition
-  {
+  public class ContentDisposition {
     private string dispositionType;
 
     /// <summary>Gets a string containing this object's disposition type, such as

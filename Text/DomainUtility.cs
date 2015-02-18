@@ -3,15 +3,14 @@ Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.com/d/
+at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
 using System.Text;
 
 namespace PeterO.Text {
     /// <summary>Utility methods for domain names.</summary>
-  internal static class DomainUtility
-  {
+  internal static class DomainUtility {
     private static int CodePointAt(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");

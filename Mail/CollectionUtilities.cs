@@ -3,14 +3,13 @@ Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.com/d/
+at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
 using System.Collections.Generic;
 
 namespace PeterO.Mail {
-  internal static class CollectionUtilities
-  {
+  internal static class CollectionUtilities {
     public static bool MapEquals<TKey, TValue>(IDictionary<TKey, TValue>
       mapA, IDictionary<TKey, TValue> mapB) {
       if (mapA == null) {

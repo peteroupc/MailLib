@@ -985,7 +985,7 @@ private HeaderParser() {
           break;
         }
         if (index + 8 < endIndex && (str.charAt(index) == 61) && (((str.charAt(index + 1) & ~32) == 82 && (str.charAt(index + 2) & ~32) == 69 && (str.charAt(index + 3) & ~32)
-          == 81 && (str.charAt(index + 4) & ~32) == 85 && (str.charAt(index + 5) & ~32) == 73&&
+        == 81 && (str.charAt(index + 4) & ~32) == 85 && (str.charAt(index + 5) & ~32) == 73&&
           (str.charAt(index + 6) & ~32) == 82 && (str.charAt(index + 7) & ~32) == 69 &&
           (str.charAt(index + 8) & ~32) == 68) || ((str.charAt(index + 1) & ~32) == 79 &&
           (str.charAt(index + 2) & ~32) == 80 && (str.charAt(index + 3) & ~32) == 84 &&
@@ -5384,7 +5384,7 @@ if (index + 1 < endIndex && (str.charAt(index) & ~32) == 81 && str.charAt(index 
         if (index + 9 < endIndex && (str.charAt(index) & ~32) == 73 && (str.charAt(index +
           1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 69 && (str.charAt(index + 3) & ~32) == 78 && (str.charAt(index + 4) & ~32) == 84 && (str.charAt(index + 5) & ~32)
             == 73 && (str.charAt(index + 6) & ~32) == 70 && (str.charAt(index + 7) & ~32) ==
-            73 && (str.charAt(index + 8) & ~32) == 69 && (str.charAt(index + 9) & ~32) == 82) {
+          73 && (str.charAt(index + 8) & ~32) == 69 && (str.charAt(index + 9) & ~32) == 82) {
           index += 10;
         } else {
           break;

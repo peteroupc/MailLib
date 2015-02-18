@@ -3,7 +3,7 @@ Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.com/d/
+at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
 using System.Collections.Generic;
@@ -12,8 +12,7 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Mail {
-  internal static class Charsets
-  {
+  internal static class Charsets {
     public static readonly ICharset Ascii = new AsciiEncoding();
     public static readonly ICharset Utf8 = new Utf8Encoding();
 
