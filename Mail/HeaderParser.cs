@@ -994,7 +994,7 @@ namespace PeterO.Mail {
           break;
         }
         if (index + 8 < endIndex && (str[index] == 61) && (((str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32)
-          == 81 && (str[index + 4] & ~32) == 85 && (str[index + 5] & ~32) == 73&&
+        == 81 && (str[index + 4] & ~32) == 85 && (str[index + 5] & ~32) == 73&&
           (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 69 &&
           (str[index + 8] & ~32) == 68) || ((str[index + 1] & ~32) == 79 &&
           (str[index + 2] & ~32) == 80 && (str[index + 3] & ~32) == 84 &&
@@ -5438,7 +5438,7 @@ if (index + 1 < endIndex && (str[index] & ~32) == 81 && str[index + 1] ==
         if (index + 9 < endIndex && (str[index] & ~32) == 73 && (str[index +
           1] & ~32) == 68 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 78 && (str[index + 4] & ~32) == 84 && (str[index + 5] & ~32)
             == 73 && (str[index + 6] & ~32) == 70 && (str[index + 7] & ~32) ==
-            73 && (str[index + 8] & ~32) == 69 && (str[index + 9] & ~32) == 82) {
+          73 && (str[index + 8] & ~32) == 69 && (str[index + 9] & ~32) == 82) {
           index += 10;
         } else {
           break;

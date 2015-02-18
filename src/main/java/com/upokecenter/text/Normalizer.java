@@ -4,7 +4,7 @@ Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
-at: http://upokecenter.com/d/
+at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
     /**
@@ -46,8 +46,7 @@ at: http://upokecenter.com/d/
      * dealings in these Data Files or Software without prior written
      * authorization of the copyright holder.</p>
      */
-  public final class Normalizer
-  {
+  public final class Normalizer {
     /**
      * Converts a string to the given Unicode normalization form.
      * @param str An arbitrary string.
