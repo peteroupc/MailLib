@@ -1,4 +1,4 @@
-﻿## PeterO.Text.Idna
+## PeterO.Text.Idna
 
     public static class Idna
 
@@ -23,7 +23,7 @@ The domain name where each label with non-ASCII characters is encoded into Punyc
 
 <b>Exceptions:</b>
 
- * System.ArgumentNullException: 
+ * System.ArgumentNullException:
 Value is null.
 
 ### IsValidDomainName
@@ -43,5 +43,3 @@ Not documented yet.
 <b>Returns:</b>
 
 A Boolean object.
-
-

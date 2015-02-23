@@ -1,4 +1,4 @@
-﻿## PeterO.Text.ICharacterInput
+## PeterO.Text.ICharacterInput
 
     public interface ICharacterInput
 
@@ -34,5 +34,3 @@ Reads a sequence of Unicode code points from a data source.
 <b>Returns:</b>
 
 The number of Unicode code points read, or 0 if the end of the source is reached.
-
-

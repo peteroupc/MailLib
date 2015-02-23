@@ -1,9 +1,9 @@
 # Written in 2014 by Peter O.
 # Any copyright is dedicated to the Public Domain.
 # http://creativecommons.org/publicdomain/zero/1.0/
-# 
+#
 # If you like this, you should donate to Peter O.
-# at: http://upokecenter.com/d/
+# at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 Dir.chdir(File.dirname(__FILE__))
 
@@ -195,7 +195,7 @@ def self.findLongestMatch(s, sOffset, sLength, subOffset, subLength)
     length=i
   end
   return (lastIndex) ? [lastIndex+sOffset,length] : [0,0]
-end  
+end
 def self.compress(x)
     x=x.pack("C*") if x.is_a?(Array)
     offset=0
@@ -242,7 +242,7 @@ def self.compress(x)
     while offset<x.length
         lastLiteral.push(x[offset,1])
         offset+=1
-    end    
+    end
     if lastLiteral.length>0
         lastLiteral=lastLiteral.join("")
         tokenByte=(lastLiteral.length>=15) ? 0xF0 : (lastLiteral.length<<4)
@@ -326,7 +326,7 @@ module Normalizer
       if form==:NFC
         return !@@canonDecompMappings[ch]
       else
-        return !@@compatDecompMappings[ch]        
+        return !@@compatDecompMappings[ch]
       end
       return true
     end
@@ -376,7 +376,7 @@ module Normalizer
       return ret
     end
   end
-  
+
   def self.decompose(buffer,form)
     return decomposeChar(buffer[0],form) if buffer.length==1
     ret=[]
@@ -416,7 +416,7 @@ module Normalizer
         end
         syllable = starter - 0xAC00;
         if (0 <= syllable && syllable < 11172 &&
-            (syllable % 28) == 0) 
+            (syllable % 28) == 0)
           # Found Hangul LV jamo
           trail = ch-0x11A7;
           if (0 < trail && trail < 28 && (last < cc || last == 0))
@@ -431,7 +431,7 @@ module Normalizer
       end
       composite=UnicodeDatabase.getComposedPair(starter,ch);
       diffClass=last < cc;
-      if(composite>=0 && (diffClass || last == 0)) 
+      if(composite>=0 && (diffClass || last == 0))
         buffer[starterPos]=composite;
         starter = composite;
         buffer[decompPos] = 0x110000;
@@ -454,7 +454,7 @@ module Normalizer
         end
       end
     end
-    return buffer[0,retval];    
+    return buffer[0,retval];
   end
   def self.reorder(buffer)
     return buffer if buffer.length<=1
@@ -493,7 +493,6 @@ end
 def checkEq(a,b,msg)
   raise [msg,a,b].to_s if a!=b
 end
-
 
 def doNormTest(file)
   ret=[]
@@ -658,7 +657,7 @@ end
 
 def linebrokenjoin(arr)
  return linebrokenjoin(arr.unpack("C*")) if arr.is_a?(String)
- data=arr.join(", ") 
+ data=arr.join(", ")
  data=data.gsub(/(.{76}[^,\s]*),\s*/){ "#{$1},\n      " }
  data=data.gsub(/,[ \t]\r?\n/,",\n")
  return data
@@ -678,7 +677,7 @@ def caseFoldingCF(file)
       end
     end
   }
-  return ret  
+  return ret
 end
 
 def toCaseFold(chars,casefold)
@@ -821,7 +820,7 @@ for i in 0..0xEFFFF # iterate to 0xEFFFF because the remaining characters are pr
   else
     for d in decomp
       decomps.push(d)
-    end    
+    end
   end
 end
 binary=[pointers.length/2]
@@ -962,7 +961,7 @@ f.puts("namespace PeterO.Text {")
 f.puts("  internal class IdnaData {")
 final="readonly"
 bidi=getMutexProp("cache/DerivedBidiClass.txt")
-bidivalues=%w( L R AL EN ES ET AN CS NSM BN ON B S WS 
+bidivalues=%w( L R AL EN ES ET AN CS NSM BN ON B S WS
   LRE LRO RLE RLO PDF LRI RLI FSI PDI )
 bidivalueshash={}
 for i in 0...bidivalues.length; bidivalueshash[bidivalues[i]]=i; end

@@ -1,4 +1,4 @@
-﻿## PeterO.Mail.MessageDataException
+## PeterO.Mail.MessageDataException
 
     public class MessageDataException :
         System.Exception,
@@ -37,5 +37,3 @@ Initializes a new instance of the MessageDataException class.
  * <i>message</i>: A string object.
 
  * <i>innerException</i>: An Exception object.
-
-

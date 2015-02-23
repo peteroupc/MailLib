@@ -13,15 +13,15 @@ Text/IdnaData.cs
 src/com/upokecenter/text/NormalizationData.java
 src/com/upokecenter/text/IdnaData.java
 
-In accordance with the license found at <http://www.unicode.org/copyright.html> Exhibit 1, the 
+In accordance with the license found at <http://www.unicode.org/copyright.html> Exhibit 1, the
 copyright notice for the UCD is shown below.  Those files are available under that license.
 
 -------------------------
 
 COPYRIGHT AND PERMISSION NOTICE
 
-Copyright © 1991-2014 Unicode, Inc. All rights reserved.
-Distributed under the Terms of Use in 
+Copyright ï¿½ 1991-2014 Unicode, Inc. All rights reserved.
+Distributed under the Terms of Use in
 http://www.unicode.org/copyright.html.
 
 Permission is hereby granted, free of charge, to any person obtaining
@@ -32,9 +32,9 @@ without restriction, including without limitation the rights to use,
 copy, modify, merge, publish, distribute, and/or sell copies of
 the Data Files or Software, and to permit persons to whom the Data Files
 or Software are furnished to do so, provided that
-(a) this copyright and permission notice appear with all copies 
+(a) this copyright and permission notice appear with all copies
 of the Data Files or Software,
-(b) this copyright and permission notice appear in associated 
+(b) this copyright and permission notice appear in associated
 documentation, and
 (c) there is clear notice in each modified Data File or in the Software
 as well as in the documentation associated with the Data File(s) or
