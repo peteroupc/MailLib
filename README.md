@@ -50,7 +50,7 @@ Version 0.6.1:
 
 - First release as an artifact and a NuGet package.
 
-The [commit history](https://github.com/peteroupc/MailLIb/commits/master) 
+The [commit history](https://github.com/peteroupc/MailLIb/commits/master)
 contains details on code changes in previous versions.
 
 About

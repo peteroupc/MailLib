@@ -1,4 +1,4 @@
-﻿## PeterO.ArrayWriter
+## PeterO.ArrayWriter
 
     public sealed class ArrayWriter
 
@@ -65,7 +65,7 @@ A 32-bit signed integer.
 
 <b>Exceptions:</b>
 
- * System.ArgumentNullException: 
+ * System.ArgumentNullException:
 The parameter <i>src</i>
  is null.
 
@@ -88,7 +88,7 @@ Not documented yet.
 
 <b>Exceptions:</b>
 
- * System.ArgumentNullException: 
+ * System.ArgumentNullException:
 The parameter <i>src</i>
  is null.
 
@@ -101,5 +101,3 @@ Gets or sets a value not documented yet.
 <b>Returns:</b>
 
 A value not documented yet.
-
-

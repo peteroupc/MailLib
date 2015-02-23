@@ -1,4 +1,4 @@
-﻿## PeterO.Text.Normalization
+## PeterO.Text.Normalization
 
     public sealed struct Normalization :
         System.Enum,
@@ -31,5 +31,3 @@ Normalization form KC: compatibility decomposition followed by canonical composi
     public static PeterO.Text.Normalization NFKD = 3;
 
 Normalization form KD: compatibility decomposition.
-
-
