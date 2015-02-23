@@ -1,4 +1,4 @@
-﻿## PeterO.Mail.ContentDisposition
+## PeterO.Mail.ContentDisposition
 
     public class ContentDisposition
 
@@ -72,11 +72,11 @@ The value of the parameter, or null if the parameter does not exist.
 
 <b>Exceptions:</b>
 
- * System.ArgumentNullException: 
+ * System.ArgumentNullException:
 The parameter <i>name</i>
  is null.
 
- * System.ArgumentException: 
+ * System.ArgumentException:
 The parameter  <i>name</i>
  is empty.
 
@@ -128,7 +128,7 @@ A ContentDisposition object.
 
 <b>Exceptions:</b>
 
- * System.ArgumentNullException: 
+ * System.ArgumentNullException:
 The parameter <i>dispositionValue</i>
  is null.
 
@@ -171,5 +171,3 @@ Gets a list of parameter names associated with this object and their values.
 <b>Returns:</b>
 
 A list of parameter names associated with this object and their values. The names will be sorted.
-
-
