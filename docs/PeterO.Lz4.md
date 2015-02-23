@@ -1,4 +1,4 @@
-﻿## PeterO.Lz4
+## PeterO.Lz4
 
     public static class Lz4
 
@@ -18,5 +18,3 @@ Decompresses a byte array compressed using the LZ4 format.
 <b>Returns:</b>
 
 Decompressed output byte array.
-
-
