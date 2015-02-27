@@ -1,4 +1,4 @@
-﻿### RemoveHeader
+### RemoveHeader
 
     public PeterO.Mail.Message RemoveHeader(
         int index);
@@ -112,5 +112,3 @@ Gets or sets this message's subject.
 <b>Returns:</b>
 
 This message's subject.
-
-
