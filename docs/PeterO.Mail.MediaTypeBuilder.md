@@ -1,4 +1,4 @@
-﻿## PeterO.Mail.MediaTypeBuilder
+## PeterO.Mail.MediaTypeBuilder
 
     public sealed class MediaTypeBuilder
 
@@ -13,5 +13,3 @@ Gets or sets this value's subtype.
 <b>Returns:</b>
 
 This value's subtype.
-
-

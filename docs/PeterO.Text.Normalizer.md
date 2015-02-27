@@ -1,4 +1,4 @@
-﻿### IsNormalized
+### IsNormalized
 
     public static bool IsNormalized(
         string str,
@@ -25,5 +25,3 @@ Not documented yet.
 <b>Returns:</b>
 
 A 32-bit signed integer.
-
-

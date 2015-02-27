@@ -1,4 +1,4 @@
-﻿### TopLevelType
+### TopLevelType
 
     public string TopLevelType { get; }
 
@@ -17,5 +17,3 @@ Gets this media type's subtype.
 <b>Returns:</b>
 
 This media type's subtype.
-
-
