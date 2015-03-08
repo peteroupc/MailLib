@@ -1,6 +1,6 @@
 Written by Peter O. in 2013-2014.  In the public domain.
 
-Public domain dedication: http://creativecommons.org/publicdomain/zero/1.0/
+Public domain dedication: [http://creativecommons.org/publicdomain/zero/1.0/](http://creativecommons.org/publicdomain/zero/1.0/)
 
 There is one exception, shown below:
 
@@ -22,7 +22,7 @@ COPYRIGHT AND PERMISSION NOTICE
 
 Copyright � 1991-2014 Unicode, Inc. All rights reserved.
 Distributed under the Terms of Use in
-http://www.unicode.org/copyright.html.
+[http://www.unicode.org/copyright.html.](http://www.unicode.org/copyright.html.)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of the Unicode data files and any associated documentation
