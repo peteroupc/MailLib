@@ -12,7 +12,7 @@ Documentation
 
 See the [Wiki](https://github.com/peteroupc/MailLib/wiki) for Java API documentation.
 
-See [docs/APIDocs.md](https://github.com/peteroupc/MailLib/blob/master/docs/APIDocs.md) for C# (.NET) API documentation.
+**See the [C# (.NET) API documentation](https://peteroupc.github.io/MailLib/docs/).**
 
 How to Install
 ---------
