@@ -121,7 +121,9 @@ int length = endIndex - index;
       StringBuilder builder = new StringBuilder();
       // escapes, but no nested comments
       if (nextComment < 0) {
-        ++index;  // skip the first parenthesis while (index < endIndex) {
+        // skip the first parenthesis
+        ++index;
+        while (index < endIndex) {
           if (str.charAt(index) == ')') {
             // End of the comment
             break;

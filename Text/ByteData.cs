@@ -43,8 +43,9 @@ namespace PeterO.Text {
       if ((x & 0x80) != 0) {  // Indicates a default value.
         return this.array[index];
       }
-x = (x << 8) | (((int)this.array[index]) & 0xff);  // Indicates an array
-        block. index = 0x1100 + (x << 9) + (cp & 511);
+      // Indicates an array block.
+x = (x << 8) | (((int)this.array[index]) & 0xff);
+      index = 0x1100 + (x << 9) + (cp & 511);
       return this.array[index];
     }
   }

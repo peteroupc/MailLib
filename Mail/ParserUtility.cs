@@ -181,7 +181,9 @@ namespace PeterO.Mail {
           >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
           index += 2;
           if (index == endIndex) {
-            return true;  // case AA }
+             // case AA
+            return true;
+          }
           index += 2;
           // convert the language tag to lower case
           // to simplify handling
@@ -202,7 +204,9 @@ namespace PeterO.Mail {
               c1 = str[index];
               c2 = str[index];
               if ((c1 >= 'a' && c1 <= 'z') && (c2 >= 'a' && c2 <= 'z')) {
-                return true;  // case AA-BB or AAA-BB }
+                // case AA-BB or AAA-BB
+                return true;
+              }
             }
           }
           // match grandfathered language tags
@@ -262,8 +266,10 @@ namespace PeterO.Mail {
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
               } else {
-         return false;  // variant already exists; see point 5 in section
-                2.2.5 }
+                 // variant already exists; see point 5 in section
+                // 2.2.5
+         return false;
+              }
               ++splitIndex;
          } else if (len == 4 && (curString[0] >= '0' && curString[0] <= '9'
 )) {
@@ -271,8 +277,10 @@ namespace PeterO.Mail {
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
               } else {
-         return false;  // variant already exists; see point 5 in section
-                2.2.5 }
+                 // variant already exists; see point 5 in section
+                // 2.2.5
+         return false;
+              }
               ++splitIndex;
             } else {
               break;

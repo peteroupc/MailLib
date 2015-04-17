@@ -68,8 +68,9 @@ namespace PeterO.Mail {
             this.localPart.Length, null) == this.localPart.Length) {
         return this.localPart.Length + domainLength + 1;
       } else {
-      int length = 3 + domainLength;  // two quotes, at sign, and domain
-          length for (int i = 0; i < this.localPart.Length; ++i) {
+        // two quotes, at sign, and domain length
+        int length = 3 + domainLength;
+        for (int i = 0; i < this.localPart.Length; ++i) {
           char c = this.localPart[i];
           if (c == 0x20 || c == 0x09) {
             ++length;
@@ -114,7 +115,7 @@ namespace PeterO.Mail {
       if (localPartEnd == 0) {
         throw new ArgumentException("Invalid local part");
       }
-if (localPartEnd >= addressValue.Length || addressValue[localPartEnd] != '@'
+   if (localPartEnd >= addressValue.Length || addressValue[localPartEnd] != '@'
 ) {
         throw new ArgumentException("Expected '@' sign after local part");
       }

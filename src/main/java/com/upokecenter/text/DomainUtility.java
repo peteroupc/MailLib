@@ -240,7 +240,9 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
       for (int k = index; k < lastHyphen; ++k) {
         int c = str.charAt(k);
         if (c >= 0x41 && c <= 0x5a) {
-          c += 0x20;  // convert to lowercase }
+           // convert to lowercase
+          c += 0x20;
+        }
         builder.append((char)c);
       }
       if (lastHyphen >= index) {
