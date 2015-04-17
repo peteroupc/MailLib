@@ -759,14 +759,17 @@ namespace PeterO.Mail {
                 if (bytesCount >= 0) {
                   return -2;
                 }
-                break;  // end of stream
+                // end of stream
+                break;
               }
               return -1;
             }
             if (bytesCount >= 0) {
               return -2;
             }
-            break;  // end of stream }
+            // end of stream
+            break;
+          }
           if (bytesCount > 0) {
             ++pointer;
           }
@@ -870,7 +873,9 @@ namespace PeterO.Mail {
           int b = lastByte = unget ? lastByte : transform.ReadByte();
           unget = false;
           switch (state) {
-            case 0:  // ASCII if (b == 0x1b) {
+            case 0:
+            // ASCII
+            if (b == 0x1b) {
                 state = 1;
               } else if (b < 0) {
                 finished = true;
@@ -880,7 +885,8 @@ namespace PeterO.Mail {
                 builder.Append((char)0xfffd);
               }
               break;
-            case 1:  // Escape start
+            case 1:
+            // Escape start
               if (b == 0x24 || b == 0x28) {
                 lead = b;
                 state = 2;
@@ -890,7 +896,8 @@ namespace PeterO.Mail {
                 builder.Append((char)0xfffd);
               }
               break;
-            case 2:  // Escape middle
+            case 2:
+            // Escape middle
               if (lead == 0x24 && (b == 0x40 || b == 0x42)) {
                 jis0212 = false;
                 state = 4;  // lead
@@ -924,7 +931,9 @@ namespace PeterO.Mail {
                 }
               }
               break;
-            case 3:  // Escape final if (b == 0x44) {
+            case 3:
+            // Escape final
+            if (b == 0x44) {
                 jis0212 = true;
                 state = 4;
               } else {
@@ -943,7 +952,9 @@ namespace PeterO.Mail {
                 }
               }
               break;
-            case 4:  // Lead if (b == 0x0a) {
+            case 4:
+            // Lead
+            if (b == 0x0a) {
                 state = 0;
                 builder.Append((char)0x0a);
               } else if (b == 0x1b) {

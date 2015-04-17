@@ -181,7 +181,9 @@ private ParserUtility() {
           >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
           index += 2;
           if (index == endIndex) {
-            return true;  // case AA }
+             // case AA
+            return true;
+          }
           index += 2;
           // convert the language tag to lower case
           // to simplify handling
@@ -202,7 +204,9 @@ private ParserUtility() {
               c1 = str.charAt(index);
               c2 = str.charAt(index);
               if ((c1 >= 'a' && c1 <= 'z') && (c2 >= 'a' && c2 <= 'z')) {
-                return true;  // case AA-BB or AAA-BB }
+                // case AA-BB or AAA-BB
+                return true;
+              }
             }
           }
           // match grandfathered language tags
@@ -262,8 +266,10 @@ private ParserUtility() {
               if (!variants.contains(curString)) {
                 variants.add(curString);
               } else {
-         return false;  // variant already exists; see point 5 in section
-                2.2.5 }
+                 // variant already exists; see point 5 in section
+                // 2.2.5
+         return false;
+              }
               ++splitIndex;
          } else if (len == 4 && (curString.charAt(0) >= '0' && curString.charAt(0) <= '9'
 )) {
@@ -271,8 +277,10 @@ private ParserUtility() {
               if (!variants.contains(curString)) {
                 variants.add(curString);
               } else {
-         return false;  // variant already exists; see point 5 in section
-                2.2.5 }
+                 // variant already exists; see point 5 in section
+                // 2.2.5
+         return false;
+              }
               ++splitIndex;
             } else {
               break;

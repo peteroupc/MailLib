@@ -68,8 +68,9 @@ import com.upokecenter.text.*;
             this.localPart.length(), null) == this.localPart.length()) {
         return this.localPart.length() + domainLength + 1;
       } else {
-      int length = 3 + domainLength;  // two quotes, at sign, and domain
-          length for (int i = 0; i < this.localPart.length(); ++i) {
+        // two quotes, at sign, and domain length
+        int length = 3 + domainLength;
+        for (int i = 0; i < this.localPart.length(); ++i) {
           char c = this.localPart.charAt(i);
           if (c == 0x20 || c == 0x09) {
             ++length;
@@ -113,7 +114,7 @@ import com.upokecenter.text.*;
       if (localPartEnd == 0) {
         throw new IllegalArgumentException("Invalid local part");
       }
-if (localPartEnd >= addressValue.length() || addressValue.charAt(localPartEnd) != '@'
+   if (localPartEnd >= addressValue.length() || addressValue.charAt(localPartEnd) != '@'
 ) {
         throw new IllegalArgumentException("Expected '@' sign after local part");
       }

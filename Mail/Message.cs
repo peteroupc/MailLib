@@ -1682,13 +1682,16 @@ throw new
           headerValue.Length)) {
           // Encapsulate the header field in encoded words
           if (status != null) {
-            status[0] = 2;  // Encapsulated
+            // Encapsulated
+            status[0] = 2;
           }
      return
   Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTabLeft(origValue));
         }
         if (status != null) {
-          status[0] = 1;  // Downgraded }
+          // Downgraded
+          status[0] = 1;
+        }
         return headerValue;
       }
       if (status != null) {

@@ -131,11 +131,11 @@ import com.upokecenter.text.*;
       if (Idna.IsValidDomainName("x\u0375a",false))Assert.fail();  // Non-Greek
       // Geresh and gershayim
       if (!(Idna.IsValidDomainName("\u05d0\u05f3",false)))Assert.fail();  // Hebrew
-      if (Idna.IsValidDomainName("\u0627\u05f3" ,false))Assert.fail();  // Arabic
-        (non-Hebrew)
+      // Arabic (non-Hebrew)
+      if (Idna.IsValidDomainName("\u0627\u05f3" ,false))Assert.fail();
       if (!(Idna.IsValidDomainName("\u05d0\u05f4",false)))Assert.fail();  // Hebrew
-      if (Idna.IsValidDomainName("\u0627\u05f4" ,false))Assert.fail();  // Arabic
-        (non-Hebrew)
+      // Arabic (non-Hebrew)
+      if (Idna.IsValidDomainName("\u0627\u05f4" ,false))Assert.fail();
       // Bidi Rule: Hebrew and Latin in the same label
       if (Idna.IsValidDomainName("a\u05d0",false))Assert.fail();  // Hebrew
       if (Idna.IsValidDomainName("\u05d0a",false))Assert.fail();  // Hebrew

@@ -131,11 +131,11 @@ namespace MailLibTest {
       Assert.IsFalse(Idna.IsValidDomainName("x\u0375a",false));  // Non-Greek
       // Geresh and gershayim
       Assert.IsTrue(Idna.IsValidDomainName("\u05d0\u05f3",false));  // Hebrew
-      Assert.IsFalse(Idna.IsValidDomainName("\u0627\u05f3" ,false));  // Arabic
-        (non-Hebrew)
+      // Arabic (non-Hebrew)
+      Assert.IsFalse(Idna.IsValidDomainName("\u0627\u05f3" ,false));
       Assert.IsTrue(Idna.IsValidDomainName("\u05d0\u05f4",false));  // Hebrew
-      Assert.IsFalse(Idna.IsValidDomainName("\u0627\u05f4" ,false));  // Arabic
-        (non-Hebrew)
+      // Arabic (non-Hebrew)
+      Assert.IsFalse(Idna.IsValidDomainName("\u0627\u05f4" ,false));
       // Bidi Rule: Hebrew and Latin in the same label
       Assert.IsFalse(Idna.IsValidDomainName("a\u05d0",false));  // Hebrew
       Assert.IsFalse(Idna.IsValidDomainName("\u05d0a",false));  // Hebrew
