@@ -39,7 +39,7 @@ group ID (`com.upokecenter`), artifact ID (`maillib`), and version, as given abo
 
 Source Code
 ---------
-Source code is available in the [project page](https://github.com/MailLib/CBOR).
+Source code is available in the [project page](https://github.com/peteroupc/MailLib).
 
 Release Notes
 ---------
