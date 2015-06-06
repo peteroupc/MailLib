@@ -1,32 +1,12 @@
-### RemoveHeader
+### Subject
 
-    public PeterO.Mail.Message RemoveHeader(
-        int index);
+    public string Subject { get; set;}
 
-Not documented yet.
-
-<b>Parameters:</b>
-
- * <i>index</i>: A 32-bit signed integer.
+Gets or sets this message's subject.
 
 <b>Returns:</b>
 
-A Message object.
-
-### AddHeader
-
-    public PeterO.Mail.Message AddHeader(
-        System.Collections.Generic.KeyValuePair header);
-
-Not documented yet.
-
-<b>Parameters:</b>
-
- * <i>header</i>: A KeyValuePair object.
-
-<b>Returns:</b>
-
-A Message object.
+This message's subject.
 
 ### AddHeader
 
@@ -46,19 +26,31 @@ Not documented yet.
 
 A Message object.
 
-### SetHeader
+### AddHeader
 
-    public PeterO.Mail.Message SetHeader(
-        int index,
+    public PeterO.Mail.Message AddHeader(
         System.Collections.Generic.KeyValuePair header);
 
 Not documented yet.
 
 <b>Parameters:</b>
 
- * <i>index</i>: A 32-bit signed integer.
-
  * <i>header</i>: A KeyValuePair object.
+
+<b>Returns:</b>
+
+A Message object.
+
+### RemoveHeader
+
+    public PeterO.Mail.Message RemoveHeader(
+        int index);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>index</i>: A 32-bit signed integer.
 
 <b>Returns:</b>
 
@@ -103,12 +95,20 @@ Not documented yet.
 
 A Message object.
 
-### Subject
+### SetHeader
 
-    public string Subject { get; set;}
+    public PeterO.Mail.Message SetHeader(
+        int index,
+        System.Collections.Generic.KeyValuePair header);
 
-Gets or sets this message's subject.
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>index</i>: A 32-bit signed integer.
+
+ * <i>header</i>: A KeyValuePair object.
 
 <b>Returns:</b>
 
-This message's subject.
+A Message object.
