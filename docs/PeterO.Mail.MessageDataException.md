@@ -9,12 +9,6 @@ Exception thrown when a message has invalid syntax.
 
 ### MessageDataException Constructor
 
-    public MessageDataException();
-
-Initializes a new instance of the MessageDataException class.
-
-### MessageDataException Constructor
-
     public MessageDataException(
         string message);
 
@@ -37,3 +31,9 @@ Initializes a new instance of the MessageDataException class.
  * <i>message</i>: A string object.
 
  * <i>innerException</i>: An Exception object.
+
+### MessageDataException Constructor
+
+    public MessageDataException();
+
+Initializes a new instance of the MessageDataException class.

@@ -765,7 +765,7 @@ fjs.puts("var NormalizationData = {};\n")
 final="final"
 f.puts("using System;")
 f.puts("namespace PeterO.Text {")
-f.puts("  internal class NormalizationData {")
+f.puts("  internal static class NormalizationData {")
 final="readonly"
 binary=[]
 for key in $ComposedPairs.keys.sort
@@ -956,7 +956,7 @@ File.open("IdnaData.js","wb"){|fjs|
 File.open("Text/IdnaData.cs","wb"){|f|
 f.puts(fileHeader)
 fjs.puts(fileHeader)
-f.puts("/* Character data required for IDNA2008 (RFC 5890-5894) */")
+f.puts("// Character data required for IDNA2008 (RFC 5890-5894)")
 f.puts("namespace PeterO.Text {")
 f.puts("  internal class IdnaData {")
 final="readonly"
