@@ -63,7 +63,7 @@ namespace PeterO.Mail {
 
     /// <summary>Initializes a new instance of the MediaTypeBuilder class.</summary>
     /// <param name='type'>A string object.</param>
-    /// <param name='subtype'>A string object. (2).</param>
+    /// <param name='subtype'>Another string object.</param>
     public MediaTypeBuilder(string type, string subtype) {
       this.parameters = new Dictionary<string, string>();
       this.SetTopLevelType(type);
@@ -131,7 +131,7 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='name'>Name of the parameter to set. The name is compared
     /// case-insensitively.</param>
-    /// <param name='value'>A string object. (2).</param>
+    /// <param name='value'>Another string object.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='value'/> or <paramref name='name'/> is null.</exception>
