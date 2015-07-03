@@ -67,7 +67,7 @@ public final void setSubType(String value) {
     /**
      * Initializes a new instance of the MediaTypeBuilder class.
      * @param type A string object.
-     * @param subtype A string object. (2).
+     * @param subtype Another string object.
      */
     public MediaTypeBuilder (String type, String subtype) {
       this.parameters = new HashMap<String, String>();
@@ -139,7 +139,7 @@ public final void setSubType(String value) {
      * Not documented yet.
      * @param name Name of the parameter to set. The name is compared
      * case-insensitively.
-     * @param value A string object. (2).
+     * @param value Another string object.
      * @return This instance.
      * @throws NullPointerException The parameter {@code value} or {@code name} is
      * null.

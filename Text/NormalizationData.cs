@@ -260,7 +260,7 @@ namespace PeterO.Text {
       71097, 71087, 71099 };
     }
     private static int[] GetComposedPairs() {
-      int[] ret = new int[2820];
+      var ret = new int[2820];
       Array.Copy(GetComposedPairs0(), 0, ret, 0, 2820);
       return ret;
     }
@@ -2443,7 +2443,7 @@ namespace PeterO.Text {
       119227, 119150, 119228, 119150, 119227, 119151, 119228, 119151 };
     }
     private static int[] GetDecompMappings() {
-      int[] ret = new int[13493];
+      var ret = new int[13493];
       Array.Copy(GetDecompMappings0(), 0, ret, 0, 4000);
       Array.Copy(GetDecompMappings1(), 0, ret, 4000, 4000);
       Array.Copy(GetDecompMappings2(), 0, ret, 8000, 4000);
