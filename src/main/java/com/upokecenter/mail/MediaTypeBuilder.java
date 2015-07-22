@@ -139,7 +139,7 @@ public final void setSubType(String value) {
      * Not documented yet.
      * @param name Name of the parameter to set. The name is compared
      * case-insensitively.
-     * @param value Another string object.
+     * @param value A string object.
      * @return This instance.
      * @throws NullPointerException The parameter {@code value} or {@code name} is
      * null.

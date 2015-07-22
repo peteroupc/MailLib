@@ -152,7 +152,7 @@ import com.upokecenter.util.*;
     /**
      * Not documented yet.
      * @param name A string object.
-     * @param value Another string object.
+     * @param value A string object. (2).
      * @return A Message object.
      */
     public Message AddHeader(String name, String value) {
@@ -176,7 +176,7 @@ import com.upokecenter.util.*;
      * Not documented yet.
      * @param index A 32-bit signed integer.
      * @param name A string object.
-     * @param value Another string object.
+     * @param value A string object. (2).
      * @return A Message object.
      */
     public Message SetHeader(int index, String name, String value) {
@@ -318,7 +318,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code
      * points will be replaced with replacement characters.
      * @param text A string object.
-     * @param html Another string object.
+     * @param html A string object. (2).
      * @return This instance.
      * @throws NullPointerException The parameter {@code text} or {@code html} is
      * null.

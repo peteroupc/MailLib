@@ -105,7 +105,7 @@ namespace PeterO.Mail {
     /// <summary>Initializes a new instance of the NamedAddress class using the
     /// given display name and email address.</summary>
     /// <param name='displayName'>A string object.</param>
-    /// <param name='address'>Another string object.</param>
+    /// <param name='address'>A string object. (2).</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='address'/> is null.</exception>
     public NamedAddress(string displayName, string address) {
@@ -141,7 +141,7 @@ namespace PeterO.Mail {
     /// given name and an email address made up of its local part and
     /// domain.</summary>
     /// <param name='displayName'>A string object.</param>
-    /// <param name='localPart'>Another string object.</param>
+    /// <param name='localPart'>A string object. (2).</param>
     /// <param name='domain'>A string object. (3).</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='localPart'/> or <paramref name='domain'/> is null.</exception>
