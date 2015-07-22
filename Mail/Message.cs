@@ -166,7 +166,7 @@ namespace PeterO.Mail {
 
     /// <summary>Not documented yet.</summary>
     /// <param name='name'>A string object.</param>
-    /// <param name='value'>Another string object.</param>
+    /// <param name='value'>A string object. (2).</param>
     /// <returns>A Message object.</returns>
     public Message AddHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
@@ -186,7 +186,7 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='name'>A string object.</param>
-    /// <param name='value'>Another string object.</param>
+    /// <param name='value'>A string object. (2).</param>
     /// <returns>A Message object.</returns>
     public Message SetHeader(int index, string name, string value) {
       if (index < 0) {
@@ -312,7 +312,7 @@ namespace PeterO.Mail {
     /// CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points
     /// will be replaced with replacement characters.</summary>
     /// <param name='text'>A string object.</param>
-    /// <param name='html'>Another string object.</param>
+    /// <param name='html'>A string object. (2).</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='text'/> or <paramref name='html'/> is null.</exception>

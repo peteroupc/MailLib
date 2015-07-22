@@ -131,7 +131,7 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='name'>Name of the parameter to set. The name is compared
     /// case-insensitively.</param>
-    /// <param name='value'>Another string object.</param>
+    /// <param name='value'>A string object.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='value'/> or <paramref name='name'/> is null.</exception>

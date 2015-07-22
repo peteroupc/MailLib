@@ -232,7 +232,7 @@ namespace PeterO.Text {
 
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
-    /// <param name='lookupRules'>Another Boolean object.</param>
+    /// <param name='lookupRules'>A Boolean object. (2).</param>
     /// <returns>A Boolean object.</returns>
     public static bool IsValidDomainName(string str, bool lookupRules) {
       if (String.IsNullOrEmpty(str)) {
