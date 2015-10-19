@@ -74,7 +74,7 @@ boolean replace) {
       }
       if (bytesCount < 0) {
         throw new IllegalArgumentException("bytesCount (" + bytesCount +
-                              ") is less than " + "0");
+                              ") is less than 0");
       }
       if (bytesCount > bytes.length) {
         throw new IllegalArgumentException("bytesCount (" + bytesCount +
@@ -101,9 +101,6 @@ boolean replace) {
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The string contains an unpaired surrogate code
      * point and {@code replace} is false, or an internal error occurred.
-     * @throws IllegalArgumentException The parameter "offset" is less than 0,
-     * "bytesCount" is less than 0, or offset plus bytesCount is greater
-     * than the length of "data" .
      */
     public static byte[] GetUtf8Bytes(String str, boolean replace) {
       if (str == null) {
@@ -609,7 +606,7 @@ boolean replace) {
       }
       if (bytesCount < 0) {
         throw new IllegalArgumentException("bytesCount (" + bytesCount +
-                              ") is less than " + "0");
+                              ") is less than 0");
       }
       if (bytesCount > data.length) {
         throw new IllegalArgumentException("bytesCount (" + bytesCount +
