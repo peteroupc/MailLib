@@ -109,7 +109,7 @@ import java.util.*;
      * Initializes a new instance of the NamedAddress class using the given display
      * name and email address.
      * @param displayName A string object.
-     * @param address A string object. (2).
+     * @param address Another string object.
      * @throws NullPointerException The parameter {@code address} is null.
      */
     public NamedAddress (String displayName, String address) {
@@ -146,7 +146,7 @@ import java.util.*;
      * Initializes a new instance of the NamedAddress class using the given name
      * and an email address made up of its local part and domain.
      * @param displayName A string object.
-     * @param localPart A string object. (2).
+     * @param localPart Another string object.
      * @param domain A string object. (3).
      * @throws NullPointerException The parameter {@code localPart} or {@code
      * domain} is null.

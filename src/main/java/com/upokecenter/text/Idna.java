@@ -232,7 +232,7 @@ private Idna() {
     /**
      * Not documented yet.
      * @param str A string object.
-     * @param lookupRules A Boolean object. (2).
+     * @param lookupRules Another Boolean object.
      * @return A Boolean object.
      */
     public static boolean IsValidDomainName(String str, boolean lookupRules) {

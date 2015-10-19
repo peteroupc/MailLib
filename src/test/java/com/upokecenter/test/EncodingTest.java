@@ -778,91 +778,91 @@ Reflect.Construct(MailNamespace() + ".BEncodingStringTransform",
 
     @Test
     public void TestLanguageTags() {
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-a-bb-x-y-z")))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "0-xx-xx"))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "9-xx-xx"))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "a-xx-xx"))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "x-xx-xx")))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-US-u-islamcal")))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "zh-CN-a-myext-x-private"
 )))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-a-myext-b-another")))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "de-419-DE"))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "a-DE"))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "ar-a-aaa-b-bbb-a-ccc"))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en")))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "qbb-us")))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "zh-yue")))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-us")))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "e0-us"))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-gb-1999")))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-gb-1999-1998")))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-gb-1999-1999"))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-gb-oed")))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "sr-Latn-RS")))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "x-aaaaaaaaa-y-z"))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "x-aaaaaaaa-y-z")))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "a-b-x-y-z"))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "a-bb-xx-yy-zz"))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "a-bb-x-y-z"))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "a-x-y-z"))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "x-x-y-z")))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "i-lojban"))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "i-klingon")))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "art-lojban")))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "sgn-be-fr")))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "no-bok")))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "z-xx-xx"))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag",
         "en-aaa-bbbb-x-xxx-yyy-zzz")))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbbb-x-x-y-z")))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbb"))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbb-ccc"))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbbb")))Assert.fail();
-      if (!((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbbb-cc")))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbb-"))Assert.fail();
-      if ((Boolean)Reflect.InvokeStatic(MailNamespace() +
+      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
         ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbb-ccc-"))Assert.fail();
     }
 
