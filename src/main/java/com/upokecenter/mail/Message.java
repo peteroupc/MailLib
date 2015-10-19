@@ -152,7 +152,7 @@ import com.upokecenter.util.*;
     /**
      * Not documented yet.
      * @param name A string object.
-     * @param value A string object. (2).
+     * @param value Another string object.
      * @return A Message object.
      */
     public Message AddHeader(String name, String value) {
@@ -176,7 +176,7 @@ import com.upokecenter.util.*;
      * Not documented yet.
      * @param index A 32-bit signed integer.
      * @param name A string object.
-     * @param value A string object. (2).
+     * @param value Another string object.
      * @return A Message object.
      */
     public Message SetHeader(int index, String name, String value) {
@@ -318,7 +318,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code
      * points will be replaced with replacement characters.
      * @param text A string object.
-     * @param html A string object. (2).
+     * @param html Another string object.
      * @return This instance.
      * @throws NullPointerException The parameter {@code text} or {@code html} is
      * null.
@@ -1121,9 +1121,9 @@ throw new
     /**
      * Sets the value of this message's header field. If a header field with the
      * same name exists, its value is replaced.
-     * @param name The name of a header field, such as &quot;from&quot; or
-     * &quot;subject&quot;.
-     * @param value The header field&apos;s value.
+     * @param name The name of a header field, such as &#x22;from&#x22; or
+     * &#x22;subject&#x22;.
+     * @param value The header field&#x27;s value.
      * @return This instance.
      * @throws IllegalArgumentException The header field name is too long or contains an
      * invalid character, or the header field's value is syntactically
