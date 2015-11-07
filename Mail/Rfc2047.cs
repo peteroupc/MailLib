@@ -512,8 +512,10 @@ whitespaceEnd - whitespaceStart));
       string retval = builder.ToString();
       if (
 wordsWereDecoded && (
-hasSuspiciousText || (retval.IndexOf("=?",
-        StringComparison.Ordinal) >= 0 && retval.IndexOf(
+hasSuspiciousText || (
+retval.IndexOf(
+"=?",
+StringComparison.Ordinal) >= 0 && retval.IndexOf(
 "?=",
 StringComparison.Ordinal) >= 0))) {
         if (context == EncodedWordContext.Comment) {

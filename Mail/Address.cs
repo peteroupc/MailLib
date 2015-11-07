@@ -66,8 +66,9 @@ null) == this.localPart.Length) {
         domainLength =
   checked(
 (
-int)DataUtilities.GetUtf8Length(Idna.EncodeDomainName(this.domain),
-          true));
+int)DataUtilities.GetUtf8Length(
+Idna.EncodeDomainName(this.domain),
+true));
       }
       if (this.localPart.Length > 0 && HeaderParser.ParseDotAtomText(
 this.localPart,

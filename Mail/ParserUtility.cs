@@ -135,7 +135,7 @@ StringBuilder sb) {
     /// with the delimiter, the result will start with an empty
     /// string.</summary>
     /// <param name='str'>A string to split.</param>
-    /// <param name='delimiter' >A string to signal where each substring begins
+    /// <param name='delimiter'>A string to signal where each substring begins
     /// and
     /// ends.</param>
     /// <returns>An array containing strings that are split by the delimiter. If
@@ -143,7 +143,7 @@ StringBuilder sb) {
     /// string to split is null or empty, returns an array whose sole element is
     /// the
     /// empty string.</returns>
-    /// <exception cref='ArgumentException' >Delimiter is null or
+    /// <exception cref='ArgumentException'>Delimiter is null or
     /// empty.</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='delimiter'/> is null.</exception>

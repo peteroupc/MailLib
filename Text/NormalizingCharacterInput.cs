@@ -29,7 +29,7 @@ namespace PeterO.Text {
     /// <param name='str'>A string object.</param>
     /// <param name='form'>A Normalization object.</param>
     /// <returns>A list of Unicode characters.</returns>
-    /// <exception cref='ArgumentNullException' >The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str' />
     /// is null.</exception>
     public static IList<int> GetChars(string str, Normalization form) {
@@ -43,7 +43,7 @@ namespace PeterO.Text {
     /// <param name='str'>An ICharacterInput object.</param>
     /// <param name='form'>A Normalization object.</param>
     /// <returns>A list of Unicode characters.</returns>
-    /// <exception cref='ArgumentNullException' >The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str' />
     /// is null.</exception>
     public static IList<int> GetChars(ICharacterInput str, Normalization form) {

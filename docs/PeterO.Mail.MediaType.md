@@ -40,7 +40,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
-True if this is a multipart media type; otherwise, false..
+True if this is a multipart media type; otherwise, false.
 
 ### IsText
 
@@ -50,7 +50,7 @@ Gets a value indicating whether this is a text media type ("text/*").
 
 <b>Returns:</b>
 
-True if this is a text media type; otherwise, false..
+True if this is a text media type; otherwise, false.
 
 ### Parameters
 
@@ -136,11 +136,11 @@ Gets the value of a parameter in this media type, such as "charset".
 
 <b>Parameters:</b>
 
- * <i>name</i>: Another string object.
+ * <i>name</i>: Name of the parameter to get. The name is compared case-insensitively.
 
 <b>Returns:</b>
 
-A string object.
+The value of the parameter as a string, or null if the parameter doesn't exist.
 
 <b>Exceptions:</b>
 
@@ -161,7 +161,8 @@ Parses a media type string and returns a media type object.
 
 <b>Returns:</b>
 
-A MediaType object.
+A media type object, or text/plain if  <i>mediaTypeValue</i>
+ is empty or syntactically invalid.
 
 ### Parse
 
@@ -173,9 +174,9 @@ Parses a media type string and returns a media type object, or the default value
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object.
+ * <i>str</i>: A string object representing a media type.
 
- * <i>defaultValue</i>: Another MediaType object.
+ * <i>defaultValue</i>: The media type to return if the string is syntactically invalid. Can be null.
 
 <b>Returns:</b>
 
@@ -195,4 +196,4 @@ Converts this object to a text string.
 
 <b>Returns:</b>
 
-A string object.
+A string representation of this object.

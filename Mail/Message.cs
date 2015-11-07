@@ -296,7 +296,7 @@ this.headers[index + 1]);
     /// characters.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException' >The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str' />
     /// is null.</exception>
     public Message SetTextBody(string str) {
@@ -316,7 +316,7 @@ this.headers[index + 1]);
     /// replacement characters.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException' >The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str' />
     /// is null.</exception>
     public Message SetHtmlBody(string str) {
@@ -383,10 +383,11 @@ this.headers[index + 1]);
           string headerValue = this.headers[i + 1];
           if (
 HeaderFieldParsers.GetParser(
-name).Parse(headerValue,
- 0,
-            headerValue.Length,
- null) != headerValue.Length) {
+name).Parse(
+headerValue,
+0,
+headerValue.Length,
+null) != headerValue.Length) {
             return false;
           }
           have = true;
@@ -614,7 +615,7 @@ tokener.GetTokens()));
 
     /// <summary>Gets or sets this message's media type.</summary>
     /// <value>This message&#x27;s media type.</value>
-    /// <exception cref='ArgumentNullException' >This value is being set and
+    /// <exception cref='ArgumentNullException'>This value is being set and
     /// "value"
     /// is null.</exception>
     public MediaType ContentType {
@@ -776,10 +777,10 @@ this.contentType = digest ? MediaType.MessageRfc822 :
           this.transferEncoding = EncodingEightBit;
         } else if (this.contentType.TypeAndSubType.Equals("text/html")) {
           if (charset.Equals("us-ascii") || charset.Equals("ascii") ||
-            charset.Equals("windows-1252") || charset.Equals("windows-1251"
-) ||
-         (charset.Length > 9 && charset.Substring(0, 9).Equals("iso-8859-"
-))) {
+            charset.Equals("windows-1252") || charset.Equals(
+"windows-1251") ||
+         (charset.Length > 9 && charset.Substring(0, 9).Equals(
+"iso-8859-"))) {
             // DEVIATION: Be a little more liberal with text/html and
             // single-byte charsets or UTF-8
             this.transferEncoding = EncodingEightBit;
@@ -793,8 +794,8 @@ this.contentType = digest ? MediaType.MessageRfc822 :
           (this.contentType.TopLevelType.Equals("message") &&
              !this.contentType.SubType.Equals("global") &&
              !this.contentType.SubType.Equals("global-headers") &&
-         !this.contentType.SubType.Equals("global-disposition-notification"
-) &&
+         !this.contentType.SubType.Equals(
+"global-disposition-notification") &&
              !this.contentType.SubType.Equals("global-delivery-status"))) {
           if (this.transferEncoding == EncodingQuotedPrintable) {
             // DEVIATION: Treat quoted-printable for multipart and message
@@ -1178,7 +1179,7 @@ throw new
     /// <summary>Sets the value of this message's header field. If a header
     /// field
     /// with the same name exists, its value is replaced.</summary>
-    /// <param name='name' >The name of a header field, such as &#x22;from&#x22;
+    /// <param name='name'>The name of a header field, such as &#x22;from&#x22;
     /// or
     /// &#x22;subject&#x22;.</param>
     /// <param name='value'>The header field&#x27;s value.</param>
@@ -1438,8 +1439,8 @@ bool checkBoundaryDelimiter) {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
           bool msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
-     if ((builder.SubType.Equals("rfc822") || builder.SubType.Equals("news"
-)) &&
+     if ((builder.SubType.Equals("rfc822") || builder.SubType.Equals(
+"news")) &&
               !msgCanBeUnencoded) {
             builder.SetSubType("global");
           } else if (builder.SubType.Equals("disposition-notification") &&
@@ -1500,8 +1501,9 @@ depth > 0);
         }
         if (
 depth > 0 && (
-name.Length < 8 || !name.Substring(0,
-          8).Equals("content-"))) {
+name.Length < 8 || !name.Substring(
+0,
+8).Equals("content-"))) {
           // don't generate header fields not starting with "Content-"
           // in body parts
           continue;
@@ -1551,10 +1553,10 @@ downgraded,
 0,
 downgraded.Length)) {
             if (name.Equals("message-id") ||
-              name.Equals("resent-message-id") || name.Equals("in-reply-to"
-) ||
-              name.Equals("references") || name.Equals("original-recipient"
-) ||
+              name.Equals("resent-message-id") || name.Equals(
+"in-reply-to") ||
+              name.Equals("references") || name.Equals(
+"original-recipient") ||
                 name.Equals("final-recipient")) {
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
@@ -1744,8 +1746,8 @@ null);
           // Downgrade the comments in the type part
           // NOTE: Final-recipient has the same syntax as original-recipient,
           // except for the header field name
-          typePart = HeaderFieldParsers.GetParser("original-recipient"
-).DowngradeFieldValue(typePart);
+          typePart = HeaderFieldParsers.GetParser(
+"original-recipient").DowngradeFieldValue(typePart);
           if (isUtf8) {
             // Downgrade the non-ASCII characters in the address
             var builder = new StringBuilder();
@@ -2024,8 +2026,8 @@ bool start) {
             }
             break;
           } else if (c == 0x20 || c == 0x09) {
-    if (start && c == 0x20 && sb.Length == 4 && sb.ToString().Equals("From"
-)) {
+    if (start && c == 0x20 && sb.Length == 4 && sb.ToString().Equals(
+"From")) {
               // Mbox convention, skip the entire line
               sb.Remove(0, sb.Length);
               while (true) {
@@ -2245,8 +2247,7 @@ bool start) {
               this).ContentType ?? MediaType.TextPlainAscii) +
               "] [encoding=" + transferEnc + "]";
             valueExMessage = valueExMessage.Replace('\r', ' ')
-              .Replace('\n' , ' ')
-              .Replace('\0' , ' ');
+              .Replace('\n' , ' ') .Replace('\0' , ' ');
 #endif
             throw new MessageDataException(valueExMessage);
           }

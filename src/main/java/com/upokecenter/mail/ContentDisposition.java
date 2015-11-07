@@ -78,9 +78,9 @@ import com.upokecenter.text.*;
       }
 
     ContentDisposition(
-String type, Map<String,
- String>
-      parameters) {
+String type,
+ Map<String,
+ String> parameters) {
       this.dispositionType = type;
       this.parameters = new TreeMap<String, String>(parameters);
     }
@@ -193,7 +193,9 @@ EncodedWordContext.Unstructured);
         // RFC 2231 encoding, even though all the examples in that RFC
         // show unquoted use of this encoding.
         String charset = Charsets.ResolveAliasForEmail(
-str.substring(0,str.indexOf('\'')));
+str.substring(
+0, (
+0)+(str.indexOf('\''))));
         if (!((charset) == null || (charset).length() == 0)) {
           String newstr = MediaType.DecodeRfc2231Extension(str);
           if (!((newstr) == null || (newstr).length() == 0)) {
@@ -259,15 +261,13 @@ str.substring(0,str.indexOf('\'')));
       }
       String strLower = DataUtilities.ToLowerCaseAscii(str);
       if (
-strLower.equals("nul") || strLower.indexOf("nul.") == 0 ||
-          strLower.equals(
-"prn") || strLower.indexOf("prn.") == 0 ||
-          strLower.equals(
-"aux") || strLower.indexOf("aux.") == 0 ||
-          strLower.equals(
-"con") || strLower.indexOf("con.") == 0 ||
-          (
-strLower.length() >= 4 && strLower.indexOf("lpt") == 0 && strLower.charAt(3) >= '1' &&
+strLower.equals(
+"nul") || strLower.indexOf("nul.") == 0 || strLower.equals(
+"prn") || strLower.indexOf("prn.") == 0 || strLower.equals(
+"aux") || strLower.indexOf("aux.") == 0 || strLower.equals(
+"con") || strLower.indexOf("con.") == 0 || (
+strLower.length() >= 4 && strLower.indexOf(
+"lpt") == 0 && strLower.charAt(3) >= '1' &&
        strLower.charAt(3) <= '9') || (strLower.length() >= 4 &&
               strLower.indexOf(
 "com") == 0 && strLower.charAt(3) >= '1' &&

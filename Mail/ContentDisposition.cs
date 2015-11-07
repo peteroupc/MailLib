@@ -15,8 +15,8 @@ namespace PeterO.Mail {
     /// <summary>Specifies how a message body should be displayed or handled by
     /// a
     /// mail user agent. This type is immutable; its contents can't be changed
-    /// after it's created.
-    /// </summary>
+    /// after
+    /// it's created.</summary>
   public class ContentDisposition {
     private string dispositionType;
 
@@ -81,9 +81,9 @@ namespace PeterO.Mail {
     }
 
     internal ContentDisposition(
-string type, IDictionary<string,
- string>
-      parameters) {
+string type,
+ IDictionary<string,
+ string> parameters) {
       this.dispositionType = type;
       this.parameters = new SortedMap<string, string>(parameters);
     }
@@ -196,8 +196,9 @@ EncodedWordContext.Unstructured);
         // RFC 2231 encoding, even though all the examples in that RFC
         // show unquoted use of this encoding.
         string charset = Charsets.ResolveAliasForEmail(
-str.Substring(0,
-          str.IndexOf('\'')));
+str.Substring(
+0,
+str.IndexOf('\'')));
         if (!String.IsNullOrEmpty(charset)) {
           string newstr = MediaType.DecodeRfc2231Extension(str);
           if (!String.IsNullOrEmpty(newstr)) {
@@ -263,19 +264,18 @@ str.Substring(0,
       }
       string strLower = DataUtilities.ToLowerCaseAscii(str);
       if (
-strLower.Equals("nul") || strLower.IndexOf("nul.",
-        StringComparison.Ordinal) == 0 ||
-          strLower.Equals(
+strLower.Equals(
+"nul") || strLower.IndexOf("nul.",
+        StringComparison.Ordinal) == 0 || strLower.Equals(
 "prn") || strLower.IndexOf("prn.",
-            StringComparison.Ordinal) == 0 ||
-          strLower.Equals(
+            StringComparison.Ordinal) == 0 || strLower.Equals(
 "aux") || strLower.IndexOf("aux.",
-            StringComparison.Ordinal) == 0 ||
-          strLower.Equals(
+            StringComparison.Ordinal) == 0 || strLower.Equals(
 "con") || strLower.IndexOf("con.",
             StringComparison.Ordinal) == 0 || (
-strLower.Length >= 4 && strLower.IndexOf("lpt",
-            StringComparison.Ordinal) == 0 && strLower[3] >= '1' &&
+strLower.Length >= 4 && strLower.IndexOf(
+"lpt",
+StringComparison.Ordinal) == 0 && strLower[3] >= '1' &&
        strLower[3] <= '9') || (strLower.Length >= 4 &&
               strLower.IndexOf(
 "com",
@@ -302,7 +302,7 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '1' &&
     /// exist.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
-    /// <exception cref='ArgumentException' >The parameter <paramref name='name'
+    /// <exception cref='ArgumentException'>The parameter <paramref name='name'
     /// /> is
     /// empty.</exception>
     public string GetParameter(string name) {
@@ -390,10 +390,10 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '1' &&
 
     /// <summary>Creates a new content disposition object from the value of a
     /// Content-Disposition header field.</summary>
-    /// <param name='dispositionValue' >A string object that should be the value
+    /// <param name='dispositionValue'>A string object that should be the value
     /// of a
     /// Content-Disposition header field.</param>
-    /// <param name='defaultValue' >The value to return in case the disposition
+    /// <param name='defaultValue'>The value to return in case the disposition
     /// value
     /// is syntactically invalid. Can be null.</param>
     /// <returns>A ContentDisposition object.</returns>
