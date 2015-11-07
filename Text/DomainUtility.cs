@@ -38,7 +38,7 @@ namespace PeterO.Text {
     /// 3492).</summary>
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='endIndex'>A 32-bit signed integer. (2).</param>
+    /// <param name='endIndex'>Another 32-bit signed integer.</param>
     /// <returns>The Punycode length of the encoded string. If the string contains
     /// non-ASCII characters, returns the Punycode length plus 4 (the length of the
     /// ACE prefix). If there are only ASCII characters, returns the length of the
@@ -325,14 +325,16 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
     }
 
 private const string PunycodeAlphabet =
-      "abcdefghijklmnopqrstuvwxyz0123456789" ;
+      "abcdefghijklmnopqrstuvwxyz0123456789";
 
     internal static string PunycodeEncode(string str) {
       return PunycodeEncodePortion(str, 0, str.Length);
     }
 
-    internal static string PunycodeEncodePortion(string str, int index, int
-      endIndex) {
+    internal static string PunycodeEncodePortion(
+string str,
+int index,
+int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }

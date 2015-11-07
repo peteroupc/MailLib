@@ -40,7 +40,7 @@ private DomainUtility() {
      * Gets the Punycode length of a string (Punycode is defined in RFC 3492).
      * @param str A string object.
      * @param index A 32-bit signed integer.
-     * @param endIndex A 32-bit signed integer. (2).
+     * @param endIndex Another 32-bit signed integer.
      * @return The Punycode length of the encoded string. If the string contains
      * non-ASCII characters, returns the Punycode length plus 4 (the length
      * of the ACE prefix). If there are only ASCII characters, returns the
@@ -327,14 +327,16 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
     }
 
 private static final String PunycodeAlphabet =
-      "abcdefghijklmnopqrstuvwxyz0123456789" ;
+      "abcdefghijklmnopqrstuvwxyz0123456789";
 
     static String PunycodeEncode(String str) {
       return PunycodeEncodePortion(str, 0, str.length());
     }
 
-    static String PunycodeEncodePortion(String str, int index, int
-      endIndex) {
+    static String PunycodeEncodePortion(
+String str,
+int index,
+int endIndex) {
       if (str == null) {
         throw new NullPointerException("str");
       }

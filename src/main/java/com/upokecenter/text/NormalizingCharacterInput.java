@@ -84,8 +84,10 @@ import java.util.*;
      * Normalization Form C.
      * @param str A string object.
      */
-  public NormalizingCharacterInput (String str) {
- this(str, Normalization.NFC);
+  public NormalizingCharacterInput (
+String str) {
+ this(
+str, Normalization.NFC);
     }
 
     /**
@@ -93,8 +95,10 @@ import java.util.*;
      * Normalization Form C.
      * @param input An ICharacterInput object.
      */
-    public NormalizingCharacterInput (ICharacterInput input) {
- this(input, Normalization.NFC);
+    public NormalizingCharacterInput (
+ICharacterInput input) {
+ this(
+input, Normalization.NFC);
     }
 
     /**
@@ -104,8 +108,9 @@ import java.util.*;
      * @param form A Normalization object.
      * @throws NullPointerException The parameter {@code characterList} is null.
      */
-    public NormalizingCharacterInput (List<Integer> characterList, Normalization
-      form) {
+    public NormalizingCharacterInput (
+List<Integer> characterList,
+Normalization form) {
       if (characterList == null) {
         throw new NullPointerException("characterList");
       }
@@ -124,10 +129,13 @@ import java.util.*;
      * @param length A 32-bit signed integer. (2).
      * @param form A Normalization object.
      */
-    public NormalizingCharacterInput (String str, int index, int length,
-      Normalization form) {
- this(new StringCharacterInput(str, index,
-        length), form);
+    public NormalizingCharacterInput (
+String str,
+int index,
+int length,
+Normalization form) {
+ this(
+new StringCharacterInput(str, index, length), form);
     }
 
     /**
@@ -145,8 +153,9 @@ import java.util.*;
      * @param form A Normalization object.
      * @throws NullPointerException The parameter {@code stream} is null.
      */
- public NormalizingCharacterInput (ICharacterInput stream, Normalization
-      form) {
+ public NormalizingCharacterInput (
+ICharacterInput stream,
+Normalization form) {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
@@ -178,9 +187,11 @@ import java.util.*;
       return IsNormalized(list, form);
     }
 
-    private static boolean NormalizeAndCheck(List<Integer> charList,
-      int start, int length,
-      Normalization form) {
+    private static boolean NormalizeAndCheck(
+List<Integer> charList,
+int start,
+int length,
+Normalization form) {
       int i = 0;
       for (int ch : NormalizingCharacterInput.GetChars(
         new PartialListCharacterInput(charList, start, length),
@@ -245,16 +256,22 @@ import java.util.*;
         } else if (nonStableStart >= 0 && isStable) {
           // We have at least one non-stable code point,
           // normalize these code points.
-  if (!NormalizeAndCheck(charList, nonStableStart, i - nonStableStart,
-            form)) {
+  if (!NormalizeAndCheck(
+charList,
+nonStableStart,
+i - nonStableStart,
+form)) {
             return false;
           }
           nonStableStart = -1;
         }
       }
       if (nonStableStart >= 0) {
-        if (!NormalizeAndCheck(charList, nonStableStart, charList.size() -
-          nonStableStart, form)) {
+        if (!NormalizeAndCheck(
+charList,
+nonStableStart,
+charList.size() - nonStableStart,
+form)) {
           return false;
         }
       }
@@ -359,7 +376,7 @@ this.characterList.size()) ? -1 :
       }
       do {
         // System.out.println("indexes=" + this.processedIndex + " " +
-        //this.flushIndex + ", length=" + length + " total=" + total);
+        // this.flushIndex + ", length=" + length + " total=" + total);
         count = Math.min(this.processedIndex - this.flushIndex, length - total);
         if (count < 0) {
           count = 0;
@@ -394,8 +411,12 @@ this.characterList.size()) ? -1 :
             // Move unprocessed data to the beginning of
             // the buffer
 
-            System.arraycopy(this.buffer, this.lastStableIndex, this.buffer, 0,
-              this.buffer.length - this.lastStableIndex);
+            System.arraycopy(
+this.buffer,
+this.lastStableIndex,
+this.buffer,
+0,
+this.buffer.length - this.lastStableIndex);
             // System.out.println("endIndex=" + (this.endIndex));
             this.endIndex -= this.lastStableIndex;
             this.lastStableIndex = 0;
@@ -408,8 +429,9 @@ this.characterList.size()) ? -1 :
         }
       } while (total < length);
       // Fill buffer with processed code points
-      count = Math.max(0, Math.min(this.processedIndex - this.flushIndex,
-        length - total));
+      count = Math.max(
+0,
+Math.min(this.processedIndex - this.flushIndex, length - total));
       System.arraycopy(this.buffer, this.flushIndex, chars, index, count);
       index += count;
       total += count;
@@ -429,8 +451,11 @@ this.characterList.size()) ? -1 :
             this.endOfString = true;
             break;
           }
-          this.endIndex = Normalizer.DecompToBuffer(c, this.compatMode,
-            this.buffer, this.endIndex);
+          this.endIndex = Normalizer.DecompToBuffer(
+c,
+this.compatMode,
+this.buffer,
+this.endIndex);
         }
         // Check for the last stable code point if the
         // end of the String is not reached yet
@@ -439,7 +464,7 @@ this.characterList.size()) ? -1 :
           // NOTE: lastStableIndex begins at -1
           for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
             // System.out.println("stable({0:X4})=" +
-            //(IsStableCodePoint(this.buffer[i], this.form)));
+            // (IsStableCodePoint(this.buffer[i], this.form)));
             if (Normalizer.IsStableCodePoint(this.buffer[i], this.form)) {
               this.lastStableIndex = i;
               haveNewStable = true;
@@ -470,8 +495,9 @@ this.characterList.size()) ? -1 :
       Normalizer.ReorderBuffer(this.buffer, 0, this.lastStableIndex);
       if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
         // Composition
-        this.processedIndex = Normalizer.ComposeBuffer(this.buffer,
-          this.lastStableIndex);
+        this.processedIndex = Normalizer.ComposeBuffer(
+this.buffer,
+this.lastStableIndex);
       } else {
         this.processedIndex = this.lastStableIndex;
       }

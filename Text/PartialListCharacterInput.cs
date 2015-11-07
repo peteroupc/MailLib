@@ -17,15 +17,15 @@ namespace PeterO.Text {
       }
       if (start > ilist.Count) {
         throw new ArgumentException("start (" + start + ") is more than " +
-          (ilist.Count));
+          ilist.Count);
       }
       if (length < 0) {
     throw new ArgumentException("length (" + length + ") is less than " +
           "0");
       }
       if (length > ilist.Count) {
-        throw new ArgumentException("length (" + length + ") is more than "+
-          (ilist.Count));
+        throw new ArgumentException("length (" + length + ") is more than " +
+          ilist.Count);
       }
       if (ilist.Count - start < length) {
         throw new ArgumentException("ilist's length minus " + start + " (" +

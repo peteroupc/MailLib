@@ -187,7 +187,7 @@ Not documented yet.
 
  * <i>name</i>: A string object.
 
- * <i>value</i>: A string object. (2).
+ * <i>value</i>: Another string object.
 
 <b>Returns:</b>
 
@@ -347,7 +347,7 @@ Not documented yet.
 
  * <i>name</i>: A string object.
 
- * <i>value</i>: A string object. (2).
+ * <i>value</i>: Another string object.
 
 <b>Returns:</b>
 
@@ -450,7 +450,7 @@ Sets the body of this message to a multipart body with plain text and HTML versi
 
  * <i>text</i>: A string object.
 
- * <i>html</i>: A string object. (2).
+ * <i>html</i>: Another string object.
 
 <b>Returns:</b>
 

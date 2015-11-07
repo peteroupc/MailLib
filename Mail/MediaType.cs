@@ -15,16 +15,19 @@ using PeterO;
 namespace PeterO.Mail {
     /// <summary><para>Specifies what kind of data a message body is.</para>
     /// <para>A
-    /// media type consists of a top-level type (the general category of the data),
+    /// media type consists of a top-level type (the general category of the
+    /// data),
     /// a subtype (the specific type), and an optional list of parameters. For
     /// example, the media type <c>text/plain; charset = utf-8</c>
     /// is a text media
-    /// type ("text"), namely, a plain text type ("plain"), and the parameters say
+    /// type ("text"), namely, a plain text type ("plain"), and the parameters
+    /// say
     /// that that the data uses the character set UTF-8, a form of Unicode
     /// ("charset=utf-8"). Other top-level types include "audio", "video", and
     /// "application".</para>
     /// <para>This type is immutable, meaning its values can't
-    /// be changed once it' s created. To create a changeable media type object, use
+    /// be changed once it' s created. To create a changeable media type object,
+    /// use
     /// the MediaTypeBuilder class.</para>
     /// </summary>
   public sealed class MediaType {
@@ -42,7 +45,8 @@ namespace PeterO.Mail {
     /// <summary>Determines whether this object and another object are
     /// equal.</summary>
     /// <param name='obj'>An arbitrary object.</param>
-    /// <returns>True if the objects are equal; otherwise, false.</returns>
+    /// <returns>True if this object and another object are equal; otherwise,
+    /// false.</returns>
     public override bool Equals(object obj) {
       var other = obj as MediaType;
       if (other == null) {
@@ -54,7 +58,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Returns the hash code for this instance.</summary>
-    /// <returns>A 32-bit hash code.</returns>
+    /// <returns>A 32-bit signed integer.</returns>
     public override int GetHashCode() {
       int hashCode = 632580499;
       unchecked {
@@ -75,7 +79,7 @@ namespace PeterO.Mail {
     private string subType;
 
     /// <summary>Gets this media type's subtype.</summary>
-    /// <value>This media type&apos;s subtype.</value>
+    /// <value>This media type&#x27;s subtype.</value>
     public string SubType {
       get {
         return this.subType;
@@ -84,7 +88,7 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this is a text media type
     /// ("text/*").</summary>
-    /// <value>True if this is a text media type; otherwise, false..</value>
+    /// <value>True if this is a text media type; otherwise, false.</value>
     public bool IsText {
       get {
         return this.TopLevelType.Equals("text");
@@ -93,14 +97,17 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this is a multipart media
     /// type.</summary>
-    /// <value>True if this is a multipart media type; otherwise, false..</value>
+    /// <value>True if this is a multipart media type; otherwise, false.</value>
     public bool IsMultipart {
       get {
         return this.TopLevelType.Equals("multipart");
       }
     }
 
-    internal MediaType(string type, string subtype, IDictionary<string,
+    internal MediaType(
+string type,
+ string subtype,
+ IDictionary<string,
       string> parameters) {
       this.topLevelType = type;
       this.subType = subtype;
@@ -109,9 +116,11 @@ namespace PeterO.Mail {
 
     private SortedMap<string, string> parameters;
 
-    /// <summary>Gets a sorted list of the parameters contained in this media type
+    /// <summary>Gets a sorted list of the parameters contained in this media
+    /// type
     /// object.</summary>
-    /// <value>A list of the parameters contained in this media type object, sorted
+    /// <value>A list of the parameters contained in this media type object,
+    /// sorted
     /// by name.</value>
     public IDictionary<string, string> Parameters {
       get {
@@ -152,7 +161,7 @@ namespace PeterO.Mail {
         if (i2 < endIndex) {
           char c = s[i2];
           // Non-ASCII (allowed in internationalized email headers under
-          //RFC6532)
+          // RFC6532)
           if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && s[i2 + 1] >=
             0xdc00 && s[i2 + 1] <= 0xdfff) {
             i2 += 2;
@@ -165,7 +174,7 @@ namespace PeterO.Mail {
             ++i2;
           }
           // obs-qtext (same as obs-ctext)
-          if ((c < 0x20 && c != 0x00 && c != 0x09 && c != 0x0a && c != 0x0d)||
+          if ((c < 0x20 && c != 0x00 && c != 0x09 && c != 0x0a && c != 0x0d) ||
             c == 0x7f) {
             ++i2;
           }
@@ -207,17 +216,25 @@ namespace PeterO.Mail {
     }
 
     // quoted-string (RFC5322 sec. 3.2.4)
-    internal static int skipQuotedString(string s,
-      int index, int endIndex,
-      StringBuilder builder) {
-return skipQuotedString(s, index, endIndex, builder,
-        QuotedStringRule.Rfc5322);
+    internal static int skipQuotedString(
+string s,
+int index,
+int endIndex,
+StringBuilder builder) {
+return skipQuotedString(
+s,
+index,
+endIndex,
+builder,
+QuotedStringRule.Rfc5322);
     }
 
-    private static int skipQuotedString(string str,
-      int index, int endIndex,
-      StringBuilder builder,  // receives the unescaped version of the _string
-      QuotedStringRule rule) {
+    private static int skipQuotedString(
+string str,
+int index,
+int endIndex,
+StringBuilder builder,  // receives the unescaped version of the _string
+QuotedStringRule rule) {
       int startIndex = index;
       int valueBLength = (builder == null) ? 0 : builder.Length;
       index = (rule != QuotedStringRule.Rfc5322) ? index :
@@ -270,8 +287,10 @@ return skipQuotedString(s, index, endIndex, builder,
       return startIndex;  // not a valid quoted-string
     }
 
-    private static void AppendComplexParamValue(string name, string str,
-      StringBuilder sb) {
+    private static void AppendComplexParamValue(
+string name,
+string str,
+StringBuilder sb) {
       int length = 1;
       int contin = 0;
       string hex = "0123456789ABCDEF";
@@ -416,8 +435,10 @@ return skipQuotedString(s, index, endIndex, builder,
       }
     }
 
-    private static bool AppendSimpleParamValue(string name, string str,
-      StringBuilder sb) {
+    private static bool AppendSimpleParamValue(
+string name,
+string str,
+StringBuilder sb) {
       sb.Append(name);
       sb.Append('=');
       if (str.Length == 0) {
@@ -461,8 +482,10 @@ return skipQuotedString(s, index, endIndex, builder,
       return 0;
     }
 
-    internal static void AppendParameters(IDictionary<string, string>
-      parameters, StringBuilder sb) {
+    internal static void AppendParameters(
+IDictionary<string, string>
+      parameters,
+ StringBuilder sb) {
       var tmp = new StringBuilder();
       foreach (string key in parameters.Keys) {
         int lineIndex = LastLineStart(sb);
@@ -499,9 +522,12 @@ return skipQuotedString(s, index, endIndex, builder,
       return sb.ToString();
     }
 
-    internal static int SkipMimeToken(string str,
-      int index, int endIndex,
-      StringBuilder builder, bool httpRules) {
+    internal static int SkipMimeToken(
+string str,
+int index,
+int endIndex,
+StringBuilder builder,
+bool httpRules) {
       int i = index;
       while (i < endIndex) {
         char c = str[i];
@@ -586,14 +612,17 @@ return skipQuotedString(s, index, endIndex, builder,
       return i;
     }
 
-    internal static int skipMimeTypeSubtype(string str, int index, int
-      endIndex, StringBuilder builder) {
+    internal static int skipMimeTypeSubtype(
+string str,
+int index,
+int endIndex,
+StringBuilder builder) {
       int i = index;
       int count = 0;
       while (i < endIndex) {
         char c = str[i];
         // See RFC6838
-        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0'&&
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' &&
           c <= '9')) {
           if (builder != null) {
             builder.Append(c);
@@ -618,27 +647,29 @@ return skipQuotedString(s, index, endIndex, builder,
       return i;
     }
 
-    /// <summary>Returns the charset parameter, converted to ASCII lower-case, if it
+    /// <summary>Returns the charset parameter, converted to ASCII lower-case,
+    /// if it
     /// exists, or <c>"us-ascii"</c>
     /// if the media type is ill-formed (RFC2045 sec.
     /// 5.2), or if the media type is "text/plain" and doesn't have a charset
-    /// parameter (see RFC2046), or the default charset, if any, for the media type
+    /// parameter (see RFC2046), or the default charset, if any, for the media
+    /// type
     /// if the charset parameter is absent. Returns an empty string in all other
     /// cases.</summary>
-    /// <returns>A string object.</returns>
+    /// <returns>Not documented yet.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design", "CA1024",
-Justification="This method has different semantics from
-        GetParameter(\"charset\").")]
+Justification="This method has different semantics from " +
+        "GetParameter(\"charset\").")]
     #endif
     public string GetCharset() {
       // NOTE: RFC6657 changed the rules for the default charset in text
-      //media types,
+      // media types,
       // so that there is no default charset for as yet undefined media
-      //types. However,
+      // types. However,
       // media types defined before this RFC are grandfathered from the
-      //rule: those
+      // rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of Apr. 17,
       // 2014, are listed below:
@@ -647,14 +678,14 @@ Justification="This method has different semantics from
       //
       // RTP payload types; these are usually unsuitable for MIME,
       // and don't permit a charset parameter, so a default charset is
-      //irrelevant:
+      // irrelevant:
       // -- 1d-interleaved-parityfec, fwdred, red, parityfec, encaprtp,
       // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback
       //
       // These media types don't define a charset parameter:
       // -- dns, grammar-ref-list, mizar, vnd-latex-z, vnd.motorola.reflex,
       // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript,
-      //vnd.dvb.subtitle,
+      // vnd.dvb.subtitle,
       // vnd.fly, rtf, rfc822-headers
       //
       // Special procedure defined for charset detection:
@@ -724,7 +755,7 @@ Justification="This method has different semantics from
               sub.Equals("parameters") || sub.Equals("prs.fallenstein.rst") ||
               sub.Equals("vnd.esmertec.theme.descriptor") ||
             sub.Equals("vnd.trolltech.linguist") ||
-              sub.Equals("vnd.graphviz") || sub.Equals("cache-manifest")||
+              sub.Equals("vnd.graphviz") || sub.Equals("cache-manifest") ||
               sub.Equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";
         }
@@ -736,7 +767,8 @@ Justification="This method has different semantics from
     /// "charset".</summary>
     /// <param name='name'>Name of the parameter to get. The name is compared
     /// case-insensitively.</param>
-    /// <returns>The value of the parameter as a string, or null if the parameter
+    /// <returns>The value of the parameter as a string, or null if the
+    /// parameter
     /// doesn't exist.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
@@ -763,8 +795,9 @@ Justification="This method has different semantics from
         return null;
       }
       string charset = value.Substring(0, firstQuote);
-      string language = value.Substring(firstQuote + 1, secondQuote -
-        (firstQuote + 1));
+      string language = value.Substring(
+firstQuote + 1,
+secondQuote - (firstQuote + 1));
       if (language.Length > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
         return null;
@@ -790,8 +823,9 @@ Justification="This method has different semantics from
         return Charsets.Ascii;
       }
       string charset = value.Substring(0, firstQuote);
-      string language = value.Substring(firstQuote + 1, secondQuote -
-        (firstQuote + 1));
+      string language = value.Substring(
+firstQuote + 1,
+secondQuote - (firstQuote + 1));
       if (language.Length > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
         return null;
@@ -800,8 +834,9 @@ Justification="This method has different semantics from
       return (cs == null) ? Charsets.Ascii : cs;
     }
 
-  private static string DecodeRfc2231Encoding(string value, ICharset
-      charset) {
+  private static string DecodeRfc2231Encoding(
+string value,
+ICharset charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.IndexOf('\'');
@@ -848,7 +883,8 @@ Justification="This method has different semantics from
           // search for name*1 or name*1*, then name*2 or name*2*,
           // and so on
           while (true) {
-            string contin = realName + "*" + Convert.ToString((int)pindex,
+            string contin = realName + "*" + Convert.ToString(
+              (int)pindex,
               CultureInfo.InvariantCulture);
             string continEncoded = contin + "*";
             if (parameters.ContainsKey(contin)) {
@@ -857,8 +893,9 @@ Justification="This method has different semantics from
               parameters.Remove(contin);
             } else if (parameters.ContainsKey(continEncoded)) {
               // Encoded continuation
- string newEnc = DecodeRfc2231Encoding(parameters[continEncoded],
-                charsetUsed);
+ string newEnc = DecodeRfc2231Encoding(
+parameters[continEncoded],
+charsetUsed);
               if (newEnc == null) {
                 // Contains a quote character in the encoding, so illegal
                 return false;
@@ -885,10 +922,11 @@ Justification="This method has different semantics from
       return true;
     }
 
-    /// <summary>Gets the top level type and subtype of this media type, separated
+    /// <summary>Gets the top level type and subtype of this media type,
+    /// separated
     /// by a slash; for example, "text/plain".</summary>
     /// <value>The top level type and subtype of this media type, separated by a
-    /// slash; for example, &quot;text/plain&quot;.</value>
+    /// slash; for example, &#x22;text/plain&#x22;.</value>
     public string TypeAndSubType {
       get {
         return this.TopLevelType + "/" + this.SubType;
@@ -906,9 +944,13 @@ Justification="This method has different semantics from
       return index;
     }
 
-    internal static bool ParseParameters(string str,
-      int index, int endIndex,
-      bool httpRules, IDictionary<string, string> parameters) {
+    internal static bool ParseParameters(
+string str,
+      int index,
+ int endIndex,
+      bool httpRules,
+ IDictionary<string,
+ string> parameters) {
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipLws, though that may change
@@ -933,9 +975,11 @@ Justification="This method has different semantics from
         if (httpRules) {
           index = skipOws(str, index, endIndex);
         } else {
-          index = HeaderParser.ParseCFWS(str,
-            index, endIndex,
-            null);
+          index = HeaderParser.ParseCFWS(
+str,
+index,
+endIndex,
+null);
         }
         var builder = new StringBuilder();
         // NOTE: RFC6838 restricts the format of parameter names to the same
@@ -954,12 +998,14 @@ Justification="This method has different semantics from
         index = afteratt;
         if (!httpRules) {
           // NOTE: MIME implicitly doesn't restrict whether whitespace can
-          //appear
+          // appear
           // around the equal sign separating an attribute and value, while
           // HTTP explicitly forbids such whitespace
-          index = HeaderParser.ParseCFWS(str,
-            index, endIndex,
-            null);
+          index = HeaderParser.ParseCFWS(
+str,
+index,
+endIndex,
+null);
         }
         if (index >= endIndex) {
           return false;
@@ -975,9 +1021,11 @@ Justification="This method has different semantics from
         ++index;
         if (!httpRules) {
           // See note above on whitespace around the equal sign
-          index = HeaderParser.ParseCFWS(str,
-            index, endIndex,
-            null);
+          index = HeaderParser.ParseCFWS(
+str,
+index,
+endIndex,
+null);
         }
         if (index >= endIndex) {
           // No more parameters
@@ -986,7 +1034,7 @@ Justification="This method has different semantics from
         builder.Remove(0, builder.Length);
         int qs;
         // If the attribute name ends with '*' the value may not be a quoted
-        //string
+        // string
         if (attribute[attribute.Length - 1] != '*') {
           // try getting the value quoted
           qs = skipQuotedString(
@@ -1060,10 +1108,13 @@ Justification="This method has different semantics from
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "text/plain" and the charset "US-ASCII",
+    /// <summary>Specifies the media type "text/plain" and the charset
+    /// "US-ASCII",
     /// used for plain text data.</summary>
     public static readonly MediaType TextPlainAscii =
-      new MediaTypeBuilder("text" , "plain").SetParameter("charset",
+      new MediaTypeBuilder(
+"text",
+"plain").SetParameter("charset",
         "us-ascii").ToMediaType();
 
     #if CODE_ANALYSIS
@@ -1072,10 +1123,13 @@ Justification="This method has different semantics from
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "text/plain" and the charset "utf-8", used
+    /// <summary>Specifies the media type "text/plain" and the charset "utf-8",
+    /// used
     /// for Unicode plain text data.</summary>
     public static readonly MediaType TextPlainUtf8 =
-      new MediaTypeBuilder("text" , "plain").SetParameter("charset",
+      new MediaTypeBuilder(
+"text",
+"plain").SetParameter("charset",
         "utf-8").ToMediaType();
 
     #if CODE_ANALYSIS
@@ -1084,7 +1138,8 @@ Justification="This method has different semantics from
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "message/rfc822" , used for Internet mail
+    /// <summary>Specifies the media type "message/rfc822" , used for Internet
+    /// mail
     /// messages.</summary>
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
@@ -1106,13 +1161,15 @@ Justification="This method has different semantics from
       return Parse(mediaTypeValue, TextPlainAscii);
     }
 
-    /// <summary>Parses a media type string and returns a media type object, or the
+    /// <summary>Parses a media type string and returns a media type object, or
+    /// the
     /// default value if the string is invalid.</summary>
     /// <param name='str'>A string object representing a media type.</param>
     /// <param name='defaultValue'>The media type to return if the string is
     /// syntactically invalid. Can be null.</param>
     /// <returns>A MediaType object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
+    /// <exception cref='ArgumentNullException' >The parameter <paramref
+    /// name='str' />
     /// is null.</exception>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {

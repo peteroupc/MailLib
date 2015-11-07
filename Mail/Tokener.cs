@@ -20,7 +20,7 @@ namespace PeterO.Mail {
       #if DEBUG
       if (state > this.tokenStack.Count) {
         throw new ArgumentException("state (" + state + ") is more than " +
-          (this.tokenStack.Count));
+          this.tokenStack.Count);
       }
       if (state < 0) {
       throw new ArgumentException("state (" + state + ") is less than " +
@@ -29,7 +29,7 @@ namespace PeterO.Mail {
       #endif
       // if (tokenStack.Count != state) {
       // Console.WriteLine("Rolling back from " + tokenStack.Count + " to "
-      //+ state);
+      // + state);
       // }
       while (state < this.tokenStack.Count) {
         this.tokenStack.RemoveAt(state);
@@ -38,7 +38,7 @@ namespace PeterO.Mail {
 
     public void Commit(int token, int startIndex, int endIndex) {
       // Console.WriteLine("Committing token " + token + ", size now " +
-      //(tokenStack.Count + 1));
+      // (tokenStack.Count + 1));
       this.tokenStack.Add(new[] { token, startIndex, endIndex });
     }
 

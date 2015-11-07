@@ -219,8 +219,10 @@ private Idna() {
           lastIndex = i + 1;
         }
       }
-  retval = DomainUtility.PunycodeEncodePortion(value, lastIndex,
-        value.length());
+  retval = DomainUtility.PunycodeEncodePortion(
+value,
+lastIndex,
+value.length());
       if (retval == null) {
         builder.append(value.substring(lastIndex, (lastIndex)+(value.length() - lastIndex)));
       } else {
@@ -248,16 +250,20 @@ private Idna() {
             // Empty label
             return false;
           }
-          if (!IsValidLabel(str.substring(lastIndex, (lastIndex)+(i - lastIndex)),
-            lookupRules, bidiRule)) {
+          if (!IsValidLabel(
+str.substring(lastIndex, (lastIndex)+(i - lastIndex)),
+lookupRules,
+bidiRule)) {
             return false;
           }
           lastIndex = i + 1;
         }
       }
       return (str.length() != lastIndex) &&
-        IsValidLabel(str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)),
-        lookupRules, bidiRule);
+        IsValidLabel(
+str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)),
+lookupRules,
+bidiRule);
     }
 
     private static String ToLowerCaseAscii(String str) {
@@ -289,8 +295,10 @@ private Idna() {
       return builder.toString();
     }
 
-private static boolean IsValidLabel(String str, boolean lookupRules, boolean
-      bidiRule) {
+private static boolean IsValidLabel(
+String str,
+boolean lookupRules,
+boolean bidiRule) {
       if (((str) == null || (str).length() == 0)) {
         return false;
       }
@@ -330,10 +338,10 @@ private static boolean IsValidLabel(String str, boolean lookupRules, boolean
       if (allLDH) {
         if (str.length() >= 4 && str.charAt(2) == '-' && str.charAt(3) == '-') {
           // Contains a hyphen at the third and fourth (one-based) character
-          //positions
+          // positions
           return false;
         }
-        if (str.charAt(0) != '-' && str.charAt(str.length() - 1) != '-' && !(str.charAt(0) >= '0'&&
+        if (str.charAt(0) != '-' && str.charAt(str.length() - 1) != '-' && !(str.charAt(0) >= '0' &&
           str.charAt(0) <= '9')) {
           // Only LDH characters, doesn't start with hyphen or digit,
           // and doesn't end with hyphen
@@ -343,8 +351,10 @@ private static boolean IsValidLabel(String str, boolean lookupRules, boolean
       return IsValidULabel(str, lookupRules, bidiRule);
     }
 
-    private static boolean IsValidULabel(String str, boolean lookupRules, boolean
-      bidiRule) {
+    private static boolean IsValidULabel(
+String str,
+boolean lookupRules,
+boolean bidiRule) {
       if (((str) == null || (str).length() == 0)) {
         return false;
       }
@@ -354,7 +364,7 @@ private static boolean IsValidLabel(String str, boolean lookupRules, boolean
       }
       if (str.length() >= 4 && str.charAt(2) == '-' && str.charAt(3) == '-') {
         // Contains a hyphen at the third and fourth (one-based) character
-        //positions
+        // positions
         return false;
       }
       if (!lookupRules) {

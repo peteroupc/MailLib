@@ -37,7 +37,7 @@ namespace PeterO.Mail {
     /// <summary>Gets a value indicating whether this represents a group of
     /// addresses rather than a single address.</summary>
     /// <value>True if this represents a group of addresses; otherwise,
-    /// false..</value>
+    /// false.</value>
     public bool IsGroup {
       get {
         return this.isGroup;
@@ -92,8 +92,11 @@ namespace PeterO.Mail {
         address.Length) {
         throw new ArgumentException("Address has an invalid syntax.");
       }
-      NamedAddress na = HeaderParserUtility.ParseAddress(address, 0,
-        address.Length, tokener.GetTokens());
+      NamedAddress na = HeaderParserUtility.ParseAddress(
+address,
+0,
+address.Length,
+tokener.GetTokens());
       if (na == null) {
         throw new ArgumentException("Address has an invalid syntax.");
       }

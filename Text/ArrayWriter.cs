@@ -31,8 +31,8 @@ namespace PeterO.Text {
           "0");
       }
       if (length > this.retvalMax) {
-        throw new ArgumentException("length (" + length + ") is more than "+
-          (this.retvalMax));
+        throw new ArgumentException("length (" + length + ") is more than " +
+          this.retvalMax);
       }
       this.retvalMax = length;
       if (this.retvalPos > this.retvalMax) {
@@ -51,8 +51,8 @@ namespace PeterO.Text {
             "0");
         }
         if (value > this.retvalMax) {
-          throw new ArgumentException("value (" + value + ") is more than "+
-            (this.retvalMax));
+          throw new ArgumentException("value (" + value + ") is more than " +
+            this.retvalMax);
         }
         this.retvalPos = value;
       }
@@ -121,8 +121,9 @@ namespace PeterO.Text {
       }
       if (this.retval.Length - this.retvalPos < length) {
         // Array too small, make it grow
-        int newLength = Math.Max(this.retvalPos + length + 1000,
-          this.retval.Length * 2);
+        int newLength = Math.Max(
+this.retvalPos + length + 1000,
+this.retval.Length * 2);
         var newArray = new byte[newLength];
         Array.Copy(this.retval, 0, newArray, 0, this.retvalPos);
         this.retval = newArray;

@@ -12,8 +12,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      */
   final class IdentityEncoder implements IStringEncoder
   {
-    public void WriteToString(StringBuilder str, byte[] data, int offset,
-      int count) {
+    public void WriteToString(
+StringBuilder str,
+byte[] data,
+int offset,
+int count) {
       if (str == null) {
         throw new NullPointerException("str");
       }

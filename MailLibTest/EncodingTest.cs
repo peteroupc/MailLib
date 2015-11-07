@@ -673,7 +673,7 @@ Reflect.Construct(MailNamespace() + ".BEncodingStringTransform",
 
     private static void AssertUtf8Equal(byte[] expected, byte[] actual) {
       Assert.AreEqual(DataUtilities.GetUtf8String(expected, true),
-                      DataUtilities.GetUtf8String(actual, true));
+                    DataUtilities.GetUtf8String(actual, true));
     }
 
     private static string WrapHeader(string s) {
@@ -859,6 +859,7 @@ Reflect.Construct(MailNamespace() + ".BEncodingStringTransform",
     }
 
     [TestMethod]
+    [Timeout(5000)]
     public void TestDecode() {
       TestDecodeQuotedPrintable("test", "test");
       TestDecodeQuotedPrintable("te \tst", "te \tst");

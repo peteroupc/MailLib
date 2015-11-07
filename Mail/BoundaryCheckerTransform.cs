@@ -220,8 +220,8 @@ if (this.bufferCount != 0) {
           // Boundary line found
           if (matchingBoundary.Length + 1 < bytesRead) {
             closingDelim |= this.buffer[matchingBoundary.Length +
-              bufferStart] == '-' && this.buffer[matchingBoundary.Length + 1+
-              bufferStart] == '-' ;
+              bufferStart] == '-' && this.buffer[matchingBoundary.Length + 1 +
+              bufferStart] == '-';
           }
           // Clear the buffer, the boundary line
           // isn't part of any body data
@@ -383,7 +383,7 @@ if (this.bufferCount != 0) {
 
     /// <summary>Gets a value indicating whether a new body part was
     /// detected.</summary>
-    /// <value>True if a new body part was detected; otherwise, false..</value>
+    /// <value>True if a new body part was detected; otherwise, false.</value>
     public bool HasNewBodyPart {
       get {
         return this.hasNewBodyPart;

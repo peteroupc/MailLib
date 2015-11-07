@@ -9,14 +9,18 @@ using System;
 using System.Collections.Generic;
 
 namespace PeterO.Text {
-    /// <summary><para>Implements the Unicode normalization algorithm and contains
-    /// methods and functionality to test and convert Unicode strings for Unicode
-    /// normalization. This is similar to the Normalizer class, except it implements
+    /// <summary><para>Implements the Unicode normalization algorithm and
+    /// contains
+    /// methods and functionality to test and convert Unicode strings for
+    /// Unicode
+    /// normalization. This is similar to the Normalizer class, except it
+    /// implements
     /// the ICharacterInput interface.</para>
     /// <para>NOTICE: While this class's
     /// source code is in the public domain, the class uses an internal class,
     /// called NormalizationData, that includes data derived from the Unicode
-    /// Character Database. See the documentation for the Normalizer class for the
+    /// Character Database. See the documentation for the Normalizer class for
+    /// the
     /// permission notice for the Unicode Character Database.</para>
     /// </summary>
   public sealed class NormalizingCharacterInput : ICharacterInput
@@ -25,7 +29,8 @@ namespace PeterO.Text {
     /// <param name='str'>A string object.</param>
     /// <param name='form'>A Normalization object.</param>
     /// <returns>A list of Unicode characters.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
+    /// <exception cref='ArgumentNullException' >The parameter <paramref
+    /// name='str' />
     /// is null.</exception>
     public static IList<int> GetChars(string str, Normalization form) {
       if (str == null) {
@@ -38,7 +43,8 @@ namespace PeterO.Text {
     /// <param name='str'>An ICharacterInput object.</param>
     /// <param name='form'>A Normalization object.</param>
     /// <returns>A list of Unicode characters.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
+    /// <exception cref='ArgumentNullException' >The parameter <paramref
+    /// name='str' />
     /// is null.</exception>
     public static IList<int> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
@@ -67,35 +73,44 @@ namespace PeterO.Text {
     private IList<int> characterList;
     private int characterListPos;
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput class
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class
     /// using Normalization Form C.</summary>
     /// <param name='characterList'>An IList object.</param>
     public NormalizingCharacterInput(IList<int> characterList) :
       this(characterList, Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput class
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class
     /// using Normalization Form C.</summary>
     /// <param name='str'>A string object.</param>
-  public NormalizingCharacterInput(string str) : this(str,
-      Normalization.NFC) {
+  public NormalizingCharacterInput(
+string str) : this(
+str,
+Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput class
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class
     /// using Normalization Form C.</summary>
     /// <param name='input'>An ICharacterInput object.</param>
-    public NormalizingCharacterInput(ICharacterInput input) : this(input,
-      Normalization.NFC) {
+    public NormalizingCharacterInput(
+ICharacterInput input) : this(
+input,
+Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput class
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class
     /// using the given normalization form.</summary>
     /// <param name='characterList'>An IList object.</param>
     /// <param name='form'>A Normalization object.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='characterList'/> is null.</exception>
-    public NormalizingCharacterInput(IList<int> characterList, Normalization
-      form) {
+    public NormalizingCharacterInput(
+IList<int> characterList,
+Normalization form) {
       if (characterList == null) {
         throw new ArgumentNullException("characterList");
       }
@@ -106,15 +121,20 @@ namespace PeterO.Text {
         Normalization.NFKD;
     }
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput class.
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class.
     /// Uses a portion of a string as the input.</summary>
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='length'>A 32-bit signed integer. (2).</param>
     /// <param name='form'>A Normalization object.</param>
-    public NormalizingCharacterInput(string str, int index, int length,
-      Normalization form) : this(new StringCharacterInput(str, index,
-        length), form) {
+    public NormalizingCharacterInput(
+string str,
+int index,
+int length,
+Normalization form) : this(
+new StringCharacterInput(str, index, length),
+form) {
     }
 
     /// <summary>Initializes a new instance of the NormalizingCharacterInput
@@ -131,8 +151,9 @@ namespace PeterO.Text {
     /// <param name='form'>A Normalization object.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='stream'/> is null.</exception>
- public NormalizingCharacterInput(ICharacterInput stream, Normalization
-      form) {
+ public NormalizingCharacterInput(
+ICharacterInput stream,
+Normalization form) {
       if (stream == null) {
         throw new ArgumentNullException("stream");
       }
@@ -162,9 +183,11 @@ namespace PeterO.Text {
       return IsNormalized(list, form);
     }
 
-    private static bool NormalizeAndCheck(IList<int> charList,
-      int start, int length,
-      Normalization form) {
+    private static bool NormalizeAndCheck(
+IList<int> charList,
+int start,
+int length,
+Normalization form) {
       int i = 0;
       foreach (int ch in NormalizingCharacterInput.GetChars(
         new PartialListCharacterInput(charList, start, length),
@@ -210,7 +233,7 @@ namespace PeterO.Text {
           return false;
         }
         bool isStable = false;
-        if ((c & mask) == c && (i + 1 == charList.Count || (charList[i + 1]&
+        if ((c & mask) == c && (i + 1 == charList.Count || (charList[i + 1 ]&
           mask) == charList[i + 1])) {
           // Quick check for an ASCII character followed by another
           // ASCII character (or Latin-1 in NFC) or the end of string.
@@ -226,16 +249,22 @@ namespace PeterO.Text {
         } else if (nonStableStart >= 0 && isStable) {
           // We have at least one non-stable code point,
           // normalize these code points.
-  if (!NormalizeAndCheck(charList, nonStableStart, i - nonStableStart,
-            form)) {
+  if (!NormalizeAndCheck(
+charList,
+nonStableStart,
+i - nonStableStart,
+form)) {
             return false;
           }
           nonStableStart = -1;
         }
       }
       if (nonStableStart >= 0) {
-        if (!NormalizeAndCheck(charList, nonStableStart, charList.Count -
-          nonStableStart, form)) {
+        if (!NormalizeAndCheck(
+charList,
+nonStableStart,
+charList.Count - nonStableStart,
+form)) {
           return false;
         }
       }
@@ -336,7 +365,7 @@ this.characterList.Count) ? -1 :
       }
       do {
         // Console.WriteLine("indexes=" + this.processedIndex + " " +
-        //this.flushIndex + ", length=" + length + " total=" + total);
+        // this.flushIndex + ", length=" + length + " total=" + total);
         count = Math.Min(this.processedIndex - this.flushIndex, length - total);
         if (count < 0) {
           count = 0;
@@ -383,8 +412,12 @@ if (this.buffer == null) {
               throw new ArgumentException("endIndex less than lastStableIndex");
             }
             #endif
-            Array.Copy(this.buffer, this.lastStableIndex, this.buffer, 0,
-              this.buffer.Length - this.lastStableIndex);
+            Array.Copy(
+this.buffer,
+this.lastStableIndex,
+this.buffer,
+0,
+this.buffer.Length - this.lastStableIndex);
             // Console.WriteLine("endIndex=" + (this.endIndex));
             this.endIndex -= this.lastStableIndex;
             this.lastStableIndex = 0;
@@ -397,8 +430,9 @@ if (this.buffer == null) {
         }
       } while (total < length);
       // Fill buffer with processed code points
-      count = Math.Max(0, Math.Min(this.processedIndex - this.flushIndex,
-        length - total));
+      count = Math.Max(
+0,
+Math.Min(this.processedIndex - this.flushIndex, length - total));
       Array.Copy(this.buffer, this.flushIndex, chars, index, count);
       index += count;
       total += count;
@@ -418,8 +452,11 @@ if (this.buffer == null) {
             this.endOfString = true;
             break;
           }
-          this.endIndex = Normalizer.DecompToBuffer(c, this.compatMode,
-            this.buffer, this.endIndex);
+          this.endIndex = Normalizer.DecompToBuffer(
+c,
+this.compatMode,
+this.buffer,
+this.endIndex);
         }
         // Check for the last stable code point if the
         // end of the string is not reached yet
@@ -428,7 +465,7 @@ if (this.buffer == null) {
           // NOTE: lastStableIndex begins at -1
           for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
             // Console.WriteLine("stable({0:X4})=" +
-            //(IsStableCodePoint(this.buffer[i], this.form)));
+            // (IsStableCodePoint(this.buffer[i], this.form)));
             if (Normalizer.IsStableCodePoint(this.buffer[i], this.form)) {
               this.lastStableIndex = i;
               haveNewStable = true;
@@ -459,8 +496,9 @@ if (this.buffer == null) {
       Normalizer.ReorderBuffer(this.buffer, 0, this.lastStableIndex);
       if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
         // Composition
-        this.processedIndex = Normalizer.ComposeBuffer(this.buffer,
-          this.lastStableIndex);
+        this.processedIndex = Normalizer.ComposeBuffer(
+this.buffer,
+this.lastStableIndex);
       } else {
         this.processedIndex = this.lastStableIndex;
       }

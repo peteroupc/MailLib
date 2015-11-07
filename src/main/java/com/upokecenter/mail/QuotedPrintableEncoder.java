@@ -75,8 +75,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       this.WriteToString(str, new byte[] { b  }, 0, 1);
     }
 
-    public void WriteToString(StringBuilder str, byte[] data, int offset,
-      int count) {
+    public void WriteToString(
+StringBuilder str,
+byte[] data,
+int offset,
+int count) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -135,7 +138,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           length && (data[i] == '\r' || data[i] == '\n')) {
           this.IncrementAndAppend(str, "=2E");
         } else if (this.lineCount == 0 && i + 4 < length && data[i] ==
-          (byte)'F' && data[i + 1] == (byte)'r' && data[i + 2] == (byte)'o'&&
+          (byte)'F' && data[i + 1] == (byte)'r' && data[i + 2] == (byte)'o' &&
           data[i + 3] == (byte)'m' && data[i + 4] == (byte)' ') {
           // See page 7-8 of RFC 2049
           this.IncrementAndAppend(str, "=46rom ");

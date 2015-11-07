@@ -13,7 +13,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
   final class Base64Encoder implements IStringEncoder
   {
     private static final String Base64Classic =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" ;
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     private int lineCount;
     private int quantumCount;
@@ -26,13 +26,19 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private String alphabet;
     private char[] charBuffer;
 
-    public Base64Encoder (boolean padding, boolean lenientLineBreaks, boolean
-      unlimitedLineLength) {
- this(padding, lenientLineBreaks, unlimitedLineLength, Base64Classic);
+    public Base64Encoder (
+boolean padding,
+boolean lenientLineBreaks,
+boolean unlimitedLineLength) {
+ this(
+padding, lenientLineBreaks, unlimitedLineLength, Base64Classic);
     }
 
-    public Base64Encoder (boolean padding, boolean lenientLineBreaks, boolean
-      unlimitedLineLength, String alphabet) {
+    public Base64Encoder (
+boolean padding,
+boolean lenientLineBreaks,
+boolean unlimitedLineLength,
+String alphabet) {
       if (alphabet == null) {
         throw new NullPointerException("alphabet");
       }
@@ -60,8 +66,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       sb.append(c);
     }
 
-    private void LineAwareAppendFour(StringBuilder sb, char c1, char c2,
-      char c3, char c4) {
+    private void LineAwareAppendFour(
+StringBuilder sb,
+char c1,
+char c2,
+char c3,
+char c4) {
       int charCount = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= 76) {
@@ -88,9 +98,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private void AddByteInternal(StringBuilder str, byte b) {
       int ib = ((int)b) & 0xff;
       if (this.quantumCount == 2) {
-        this.LineAwareAppendFour(str,
-          this.alphabet.charAt((this.byte1 >> 2) & 63), this.alphabet.charAt(((this.byte1&
-            3) << 4) + ((this.byte2 >> 4) & 15)),
+        this.LineAwareAppendFour(
+str,
+          this.alphabet.charAt((this.byte1 >> 2) & 63),
+ this.alphabet.charAt(((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)),
           this.alphabet.charAt(((this.byte2 & 15) << 2) + ((ib >> 6) & 3)),
           this.alphabet.charAt(ib & 63));
         this.byte1 = -1;
@@ -170,14 +181,20 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       this.haveCR = false;
     }
 
-public void WriteToStringAndFinalize(StringBuilder str, byte[] data, int
-  offset, int count) {
+public void WriteToStringAndFinalize(
+StringBuilder str,
+byte[] data,
+int offset,
+int count) {
       this.WriteToString(str, data, offset, count);
       this.FinalizeEncoding(str);
     }
 
-    public void WriteToString(StringBuilder str, byte[] data, int offset,
-      int count) {
+    public void WriteToString(
+StringBuilder str,
+byte[] data,
+int offset,
+int count) {
       if (str == null) {
         throw new NullPointerException("str");
       }

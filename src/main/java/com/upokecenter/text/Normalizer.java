@@ -75,10 +75,16 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       return builder.toString();
     }
 
-    static int DecompToBufferInternal(int ch, boolean compat, int[]
-      buffer, int index) {
-int offset = UnicodeDatabase.GetDecomposition(ch, compat,
-        buffer, index);
+    static int DecompToBufferInternal(
+int ch,
+boolean compat,
+int[] buffer,
+int index) {
+int offset = UnicodeDatabase.GetDecomposition(
+ch,
+compat,
+buffer,
+index);
       if (buffer[index] != ch) {
         int[] copy = new int[offset - index];
         System.arraycopy(buffer, index, copy, 0, copy.length);
@@ -90,8 +96,11 @@ int offset = UnicodeDatabase.GetDecomposition(ch, compat,
       return offset;
     }
 
-    static int DecompToBuffer(int ch, boolean compat, int[] buffer,
-      int index) {
+    static int DecompToBuffer(
+int ch,
+boolean compat,
+int[] buffer,
+int index) {
       if (ch >= 0xac00 && ch < 0xac00 + 11172) {
         // Hangul syllable
         int valueSIndex = ch - 0xac00;
@@ -135,8 +144,11 @@ int offset = UnicodeDatabase.GetDecomposition(ch, compat,
         Normalization.NFKD;
     }
 
-    private Normalizer Init(String str, int index, int length, Normalization
-      formLocal) {
+    private Normalizer Init(
+String str,
+int index,
+int length,
+Normalization formLocal) {
       if (str == null) {
         throw new NullPointerException("str");
       }
@@ -177,8 +189,13 @@ int offset = UnicodeDatabase.GetDecomposition(ch, compat,
       int length,
       Normalization form) {
       int i = start;
- Normalizer norm = new Normalizer(charList, form).Init(charList, start, length,
-        form);
+ Normalizer norm = new Normalizer(
+charList,
+form).Init(
+charList,
+start,
+length,
+form);
       int ch = 0;
       while ((ch = norm.ReadChar()) >= 0) {
         int c = charList.charAt(i);
@@ -238,8 +255,11 @@ int offset = UnicodeDatabase.GetDecomposition(ch, compat,
         } else if (nonStableStart >= 0 && isStable) {
           // We have at least one non-stable code point,
           // normalize these code points.
- if (!NormalizeAndCheckString(str, nonStableStart, i - nonStableStart,
-            form)) {
+ if (!NormalizeAndCheckString(
+str,
+nonStableStart,
+i - nonStableStart,
+form)) {
             return false;
           }
           nonStableStart = -1;
@@ -249,8 +269,11 @@ int offset = UnicodeDatabase.GetDecomposition(ch, compat,
         }
       }
       if (nonStableStart >= 0) {
-        if (!NormalizeAndCheckString(str, nonStableStart, str.length() -
-          nonStableStart, form)) {
+        if (!NormalizeAndCheckString(
+str,
+nonStableStart,
+str.length() - nonStableStart,
+form)) {
           return false;
         }
       }
@@ -287,7 +310,7 @@ int offset = UnicodeDatabase.GetDecomposition(ch, compat,
         ch = -1;
       } else {
         ch = this.iterator.charAt(this.characterListPos);
-if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex&&
+if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex &&
           this.iterator.charAt(this.characterListPos + 1) >= 0xdc00 &&
                   this.iterator.charAt(this.characterListPos + 1) <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
@@ -335,7 +358,7 @@ if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex&&
           "0");
       }
       if (length > chars.length) {
-        throw new IllegalArgumentException("length (" + length + ") is more than "+
+        throw new IllegalArgumentException("length (" + length + ") is more than " +
           chars.length);
       }
       if (chars.length - index < length) {
@@ -368,7 +391,7 @@ if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex&&
       }
       do {
         // System.out.println("indexes=" + this.processedIndex + " " +
-        //this.flushIndex + ", length=" + length + " total=" + total);
+        // this.flushIndex + ", length=" + length + " total=" + total);
         count = Math.min(this.processedIndex - this.flushIndex, length - total);
         if (count < 0) {
           count = 0;
@@ -405,8 +428,12 @@ if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex&&
             // Move unprocessed data to the beginning of
             // the buffer
 
-            System.arraycopy(this.buffer, this.lastStableIndex, this.buffer, 0,
-              this.buffer.length - this.lastStableIndex);
+            System.arraycopy(
+this.buffer,
+this.lastStableIndex,
+this.buffer,
+0,
+this.buffer.length - this.lastStableIndex);
             // System.out.println("endIndex=" + (this.endIndex));
             this.endIndex -= this.lastStableIndex;
             this.lastStableIndex = 0;
@@ -419,8 +446,9 @@ if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex&&
         }
       } while (total < length);
       // Fill buffer with processed code points
-      count = Math.max(0, Math.min(this.processedIndex - this.flushIndex,
-        length - total));
+      count = Math.max(
+0,
+Math.min(this.processedIndex - this.flushIndex, length - total));
       System.arraycopy(this.buffer, this.flushIndex, chars, index, count);
       index += count;
       total += count;
@@ -446,8 +474,11 @@ if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex&&
             this.endOfString = true;
             break;
           }
-this.endIndex = DecompToBuffer(c, this.compatMode, this.buffer,
-            this.endIndex);
+this.endIndex = DecompToBuffer(
+c,
+this.compatMode,
+this.buffer,
+this.endIndex);
         }
         // Check for the last stable code point if the
         // end of the String is not reached yet
@@ -456,7 +487,7 @@ this.endIndex = DecompToBuffer(c, this.compatMode, this.buffer,
           // NOTE: lastStableIndex begins at -1
           for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
             // System.out.println("stable({0:X4})=" +
-            //(IsStableCodePoint(this.buffer[i], this.form)));
+            // (IsStableCodePoint(this.buffer[i], this.form)));
             if (IsStableCodePoint(this.buffer[i], this.form)) {
               this.lastStableIndex = i;
               haveNewStable = true;

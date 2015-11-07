@@ -105,7 +105,7 @@ Determines whether this object and another object are equal.
 
 <b>Returns:</b>
 
-True if the objects are equal; otherwise, false.
+True if this object and another object are equal; otherwise, false.
 
 ### GetCharset
 
@@ -115,7 +115,7 @@ Returns the charset parameter, converted to ASCII lower-case, if it exists, or  
 
 <b>Returns:</b>
 
-A string object.
+Not documented yet.
 
 ### GetHashCode
 
@@ -125,7 +125,7 @@ Returns the hash code for this instance.
 
 <b>Returns:</b>
 
-A 32-bit hash code.
+A 32-bit signed integer.
 
 ### GetParameter
 
@@ -136,11 +136,11 @@ Gets the value of a parameter in this media type, such as "charset".
 
 <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to get. The name is compared case-insensitively.
+ * <i>name</i>: Another string object.
 
 <b>Returns:</b>
 
-The value of the parameter as a string, or null if the parameter doesn't exist.
+A string object.
 
 <b>Exceptions:</b>
 
@@ -161,8 +161,7 @@ Parses a media type string and returns a media type object.
 
 <b>Returns:</b>
 
-A media type object, or text/plain if  <i>mediaTypeValue</i>
- is empty or syntactically invalid.
+A MediaType object.
 
 ### Parse
 
@@ -174,9 +173,9 @@ Parses a media type string and returns a media type object, or the default value
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object representing a media type.
+ * <i>str</i>: A string object.
 
- * <i>defaultValue</i>: The media type to return if the string is syntactically invalid. Can be null.
+ * <i>defaultValue</i>: Another MediaType object.
 
 <b>Returns:</b>
 
@@ -196,4 +195,4 @@ Converts this object to a text string.
 
 <b>Returns:</b>
 
-A string representation of this object.
+A string object.

@@ -8,6 +8,7 @@ package com.upokecenter.text;
 private NormalizationData() {
 }
     public static final int[] ComposedPairs = GetComposedPairs();
+
     private static int[] GetComposedPairs0() {
       return new int[] { 60, 824, 8814, 61, 824, 8800, 62, 824, 8815, 65, 768,
         192, 65, 769, 193, 65, 770,
@@ -261,11 +262,13 @@ private NormalizationData() {
         71087, 71098,
       71097, 71087, 71099 };
     }
+
     private static int[] GetComposedPairs() {
       int[] ret = new int[2820];
       System.arraycopy(GetComposedPairs0(), 0, ret, 0, 2820);
       return ret;
     }
+
     public static final byte[] CombiningClasses = new byte[] { (byte)0xf0,
       23, 0, (byte)0x80, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0,
       8, 0, 0, (byte)0x80, 9, 0, 10, 0, 11, 0, 12, 0, 0, (byte)0x80, 13, 0, 0,
@@ -378,7 +381,9 @@ private NormalizationData() {
       15, 119, 4, (byte)0x85, 15, 14, 5, (byte)0xff, 88, 15, (byte)0xd3, 20,
         (byte)0xff,
       19, 4, 84, 3, 15, 47, 1, (byte)0xff, 20, 16, 0  };
+
     public static final int[] DecompMappings = GetDecompMappings();
+
     private static int[] GetDecompMappings0() {
       return new int[] { 5721, 160, 12582944, 168, 41943040, 170, 12583009, 175,
         41943042, 178, 12582962,
@@ -922,6 +927,7 @@ private NormalizationData() {
         12613347,
       12973, 12603137, 12974, 12618951, 12975 };
     }
+
     private static int[] GetDecompMappings1() {
       return new int[] { 12604244, 12976, 12605724, 12977, 41943844, 12978,
         41943846, 12979, 41943848,
@@ -1625,6 +1631,7 @@ private NormalizationData() {
 119894, 12583017, 119895, 12583018, 119896, 12583019, 119897, 12583020, 119898,
       12583021, 119899, 12583022, 119900 };
     }
+
     private static int[] GetDecompMappings2() {
       return new int[] { 12583023, 119901, 12583024, 119902, 12583025, 119903,
         12583026, 119904, 12583027,
@@ -2284,6 +2291,7 @@ private NormalizationData() {
 945, 769, 949, 769, 951, 769, 953, 769, 971, 769, 953, 776, 965, 776, 959, 769,
       965, 769, 969, 769, 978, 769, 978, 776, 1045, 768, 1045, 776, 1043 };
     }
+
     private static int[] GetDecompMappings3() {
       return new int[] { 769, 1030, 776, 1050, 769, 1048, 768, 1059, 774, 1048,
         774, 1080, 774, 1077, 768,
@@ -2444,6 +2452,7 @@ private NormalizationData() {
 119135, 119152, 119135, 119153, 119135, 119154, 119225, 119141, 119226, 119141,
       119227, 119150, 119228, 119150, 119227, 119151, 119228, 119151 };
     }
+
     private static int[] GetDecompMappings() {
       int[] ret = new int[13493];
       System.arraycopy(GetDecompMappings0(), 0, ret, 0, 4000);
@@ -2452,7 +2461,9 @@ private NormalizationData() {
       System.arraycopy(GetDecompMappings3(), 0, ret, 12000, 1493);
       return ret;
     }
+
  public static final int[] CompatDecompMappings = GetCompatDecompMappings();
+
     private static int[] GetCompatDecompMappings() {
       return new int[] { 32, 776, 32, 772, 32, 769, 32, 807, 49, 8260, 52, 49,
         8260, 50, 51, 8260, 52,
@@ -2704,6 +2715,7 @@ private NormalizationData() {
         12309, 12308,
       21213, 12309, 12308, 25943, 12309 };
     }
+
     public static final byte[] StableNFC = new byte[] { (byte)0xf0, 13, 0, 1,
       2, 3, 4, 5, 6, 7, 8, (byte)0xff, (byte)0xff, 9, (byte)0xff,
       10, 11, 12, 13, 14, 15, 16, 17, 18, (byte)0xff, 19, (byte)0xff,
@@ -3096,6 +3108,7 @@ private NormalizationData() {
       1, (byte)0xbe, 28, 1, 5, 0, 6, 10, 0, 15, 20, 0, 1, 15, 27, 0, 8, 31,
         (byte)0xc0,
       (byte)0xff, 0, (byte)0xa8, 16, (byte)0xff  };
+
     public static final byte[] StableNFD = new byte[] { (byte)0xf3, 9, 0, 1,
       (byte)0xff, (byte)0xff, (byte)0xff, 2, 3, 4, 5, (byte)0xff,
       (byte)0xff, 6, (byte)0xff, 7, 8, 9, (byte)0xff, (byte)0xff, (byte)0xff,
@@ -3193,6 +3206,7 @@ private NormalizationData() {
         (byte)0xff,
 (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xd8, 15, 79, 28, 48, 31, (byte)0xc0,
       (byte)0xff, 0, (byte)0xa8, 16, (byte)0xff  };
+
     public static final byte[] StableNFKC = new byte[] { (byte)0xf3, 9, 0, 1,
       2, 3, 4, 5, 6, 7, 8, (byte)0xff, (byte)0xff, 9, (byte)0xff,
       10, 11, 12, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff,
@@ -3421,6 +3435,7 @@ private NormalizationData() {
         (byte)0xa0,
   15, (byte)0x85, 23, 25, 15, (byte)0x9c, 23, 7, 15, (byte)0xff, 0, (byte)0xa6,
       16, (byte)0xff  };
+
     public static final byte[] StableNFKD = new byte[] { (byte)0xf3, 9, 0, 1,
       (byte)0xff, (byte)0xff, (byte)0xff, 2, 3, 4, 5, (byte)0xff,
       (byte)0xff, 6, (byte)0xff, 7, 8, 9, (byte)0xff, (byte)0xff, (byte)0xff,

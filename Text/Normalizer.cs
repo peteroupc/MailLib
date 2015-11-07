@@ -9,41 +9,56 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-    /// <summary><para>Implements the Unicode normalization algorithm and contains
-    /// methods and functionality to test and convert Unicode strings for Unicode
+    /// <summary><para>Implements the Unicode normalization algorithm and
+    /// contains
+    /// methods and functionality to test and convert Unicode strings for
+    /// Unicode
     /// normalization.</para>
     /// <para>NOTICE: While this class's source code is in the
-    /// public domain, the class uses an internal class, called NormalizationData,
+    /// public domain, the class uses an internal class, called
+    /// NormalizationData,
     /// that includes data derived from the Unicode Character Database. In case
     /// doing so is required, the permission notice for the Unicode Character
     /// Database is given here:</para>
     /// <para>COPYRIGHT AND PERMISSION NOTICE</para>
-    /// <para>Copyright (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed
+    /// <para>Copyright (c) 1991-2014 Unicode, Inc. All rights reserved.
+    /// Distributed
     /// under the Terms of Use in http://www.unicode.org/copyright.html.</para>
-    /// <para>Permission is hereby granted, free of charge, to any person obtaining
-    /// a copy of the Unicode data files and any associated documentation (the "Data
+    /// <para>Permission is hereby granted, free of charge, to any person
+    /// obtaining
+    /// a copy of the Unicode data files and any associated documentation (the
+    /// "Data
     /// Files") or Unicode software and any associated documentation (the
     /// "Software") to deal in the Data Files or Software without restriction,
     /// including without limitation the rights to use, copy, modify, merge,
-    /// publish, distribute, and/or sell copies of the Data Files or Software, and
-    /// to permit persons to whom the Data Files or Software are furnished to do so,
+    /// publish, distribute, and/or sell copies of the Data Files or Software,
+    /// and
+    /// to permit persons to whom the Data Files or Software are furnished to do
+    /// so,
     /// provided that (a) this copyright and permission notice appear with all
     /// copies of the Data Files or Software, (b) this copyright and permission
-    /// notice appear in associated documentation, and (c) there is clear notice in
-    /// each modified Data File or in the Software as well as in the documentation
-    /// associated with the Data File(s) or Software that the data or software has
+    /// notice appear in associated documentation, and (c) there is clear notice
+    /// in
+    /// each modified Data File or in the Software as well as in the
+    /// documentation
+    /// associated with the Data File(s) or Software that the data or software
+    /// has
     /// been modified.</para>
     /// <para>THE DATA FILES AND SOFTWARE ARE PROVIDED "AS
     /// IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
     /// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
     /// PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE
-    /// COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM,
-    /// OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER
+    /// COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY
+    /// CLAIM,
+    /// OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES
+    /// WHATSOEVER
     /// RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
     /// CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
-    /// CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.</para>
+    /// CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA FILES OR
+    /// SOFTWARE.</para>
     /// <para>Except as contained in this notice, the name of a copyright holder
-    /// shall not be used in advertising or otherwise to promote the sale, use or
+    /// shall not be used in advertising or otherwise to promote the sale, use
+    /// or
     /// other dealings in these Data Files or Software without prior written
     /// authorization of the copyright holder.</para>
     /// </summary>
@@ -54,7 +69,8 @@ namespace PeterO.Text {
     /// <param name='form'>The Unicode normalization form to convert to.</param>
     /// <returns>The parameter <paramref name='str'/> converted to the given
     /// normalization form.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
+    /// <exception cref='ArgumentNullException' >The parameter <paramref
+    /// name='str' />
     /// is null.</exception>
     public static string Normalize(string str, Normalization form) {
       if (str == null) {
@@ -77,8 +93,11 @@ namespace PeterO.Text {
       return builder.ToString();
     }
 
-    internal static int DecompToBufferInternal(int ch, bool compat, int[]
-      buffer, int index) {
+    internal static int DecompToBufferInternal(
+int ch,
+bool compat,
+int[] buffer,
+int index) {
       #if DEBUG
       if (buffer == null) {
         throw new ArgumentNullException("buffer");
@@ -92,8 +111,11 @@ namespace PeterO.Text {
           buffer.Length);
       }
       #endif
-int offset = UnicodeDatabase.GetDecomposition(ch, compat,
-        buffer, index);
+int offset = UnicodeDatabase.GetDecomposition(
+ch,
+compat,
+buffer,
+index);
       if (buffer[index] != ch) {
         var copy = new int[offset - index];
         Array.Copy(buffer, index, copy, 0, copy.Length);
@@ -105,8 +127,11 @@ int offset = UnicodeDatabase.GetDecomposition(ch, compat,
       return offset;
     }
 
-    internal static int DecompToBuffer(int ch, bool compat, int[] buffer,
-      int index) {
+    internal static int DecompToBuffer(
+int ch,
+bool compat,
+int[] buffer,
+int index) {
       #if DEBUG
       if (buffer == null) {
         throw new ArgumentNullException("buffer");
@@ -162,8 +187,11 @@ int offset = UnicodeDatabase.GetDecomposition(ch, compat,
         Normalization.NFKD;
     }
 
-    private Normalizer Init(string str, int index, int length, Normalization
-      formLocal) {
+    private Normalizer Init(
+string str,
+int index,
+int length,
+Normalization formLocal) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
@@ -204,8 +232,13 @@ int offset = UnicodeDatabase.GetDecomposition(ch, compat,
       int length,
       Normalization form) {
       int i = start;
- var norm = new Normalizer(charList, form).Init(charList, start, length,
-        form);
+ var norm = new Normalizer(
+charList,
+form).Init(
+charList,
+start,
+length,
+form);
       int ch = 0;
       while ((ch = norm.ReadChar()) >= 0) {
         int c = charList[i];
@@ -263,8 +296,11 @@ int offset = UnicodeDatabase.GetDecomposition(ch, compat,
         } else if (nonStableStart >= 0 && isStable) {
           // We have at least one non-stable code point,
           // normalize these code points.
- if (!NormalizeAndCheckString(str, nonStableStart, i - nonStableStart,
-            form)) {
+ if (!NormalizeAndCheckString(
+str,
+nonStableStart,
+i - nonStableStart,
+form)) {
             return false;
           }
           nonStableStart = -1;
@@ -274,8 +310,11 @@ int offset = UnicodeDatabase.GetDecomposition(ch, compat,
         }
       }
       if (nonStableStart >= 0) {
-        if (!NormalizeAndCheckString(str, nonStableStart, str.Length -
-          nonStableStart, form)) {
+        if (!NormalizeAndCheckString(
+str,
+nonStableStart,
+str.Length - nonStableStart,
+form)) {
           return false;
         }
       }
@@ -310,7 +349,7 @@ int offset = UnicodeDatabase.GetDecomposition(ch, compat,
         ch = -1;
       } else {
         ch = this.iterator[this.characterListPos];
-if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex&&
+if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex &&
           this.iterator[this.characterListPos + 1] >= 0xdc00 &&
                   this.iterator[this.characterListPos + 1] <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
@@ -356,7 +395,7 @@ if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex&&
           "0");
       }
       if (length > chars.Length) {
-        throw new ArgumentException("length (" + length + ") is more than "+
+        throw new ArgumentException("length (" + length + ") is more than " +
           chars.Length);
       }
       if (chars.Length - index < length) {
@@ -389,7 +428,7 @@ if ((ch & 0xfc00) == 0xd800 && this.characterListPos + 1 < this.iterEndIndex&&
       }
       do {
         // Console.WriteLine("indexes=" + this.processedIndex + " " +
-        //this.flushIndex + ", length=" + length + " total=" + total);
+        // this.flushIndex + ", length=" + length + " total=" + total);
         count = Math.Min(this.processedIndex - this.flushIndex, length - total);
         if (count < 0) {
           count = 0;
@@ -438,8 +477,12 @@ if (this.buffer == null) {
               throw new ArgumentException("endIndex less than lastStableIndex");
             }
             #endif
-            Array.Copy(this.buffer, this.lastStableIndex, this.buffer, 0,
-              this.buffer.Length - this.lastStableIndex);
+            Array.Copy(
+this.buffer,
+this.lastStableIndex,
+this.buffer,
+0,
+this.buffer.Length - this.lastStableIndex);
             // Console.WriteLine("endIndex=" + (this.endIndex));
             this.endIndex -= this.lastStableIndex;
             this.lastStableIndex = 0;
@@ -452,8 +495,9 @@ if (this.buffer == null) {
         }
       } while (total < length);
       // Fill buffer with processed code points
-      count = Math.Max(0, Math.Min(this.processedIndex - this.flushIndex,
-        length - total));
+      count = Math.Max(
+0,
+Math.Min(this.processedIndex - this.flushIndex, length - total));
       Array.Copy(this.buffer, this.flushIndex, chars, index, count);
       index += count;
       total += count;
@@ -479,8 +523,11 @@ if (this.buffer == null) {
             this.endOfString = true;
             break;
           }
-this.endIndex = DecompToBuffer(c, this.compatMode, this.buffer,
-            this.endIndex);
+this.endIndex = DecompToBuffer(
+c,
+this.compatMode,
+this.buffer,
+this.endIndex);
         }
         // Check for the last stable code point if the
         // end of the string is not reached yet
@@ -489,7 +536,7 @@ this.endIndex = DecompToBuffer(c, this.compatMode, this.buffer,
           // NOTE: lastStableIndex begins at -1
           for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
             // Console.WriteLine("stable({0:X4})=" +
-            //(IsStableCodePoint(this.buffer[i], this.form)));
+            // (IsStableCodePoint(this.buffer[i], this.form)));
             if (IsStableCodePoint(this.buffer[i], this.form)) {
               this.lastStableIndex = i;
               haveNewStable = true;

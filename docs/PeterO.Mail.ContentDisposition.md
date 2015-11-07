@@ -69,7 +69,7 @@ Determines whether this object and another object are equal.
 
 <b>Returns:</b>
 
-True if the objects are equal; otherwise, false.
+True if this object and another object are equal; otherwise, false.
 
 ### GetHashCode
 
@@ -79,7 +79,7 @@ Returns the hash code for this instance.
 
 <b>Returns:</b>
 
-A 32-bit hash code.
+A 32-bit signed integer.
 
 ### GetParameter
 
@@ -90,11 +90,11 @@ Gets a parameter from this disposition object.
 
 <b>Parameters:</b>
 
- * <i>name</i>: The name of the parameter to get. The name will be matched case-insensitively. Can't be null.
+ * <i>name</i>: Another string object.
 
 <b>Returns:</b>
 
-The value of the parameter, or null if the parameter does not exist.
+A string object.
 
 <b>Exceptions:</b>
 
@@ -115,12 +115,11 @@ Converts a filename from the Content-Disposition header to a suitable name for s
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string representing a file name.
+ * <i>str</i>: Another string object.
 
 <b>Returns:</b>
 
-A string with the converted version of the file name. Among other things, encoded words under RFC 2047 are decoded (since they occur so frequently in Content-Disposition filenames); the value is decoded under RFC 2231 if possible; characters unsuitable for use in a filename (including the directory separators slash and backslash) are replaced with underscores; and the filename is truncated if it would otherwise be too long. Returns an empty string if  <i>str</i>
- is null.
+A string object.
 
 ### Parse
 
@@ -132,9 +131,9 @@ Creates a new content disposition object from the value of a Content-Disposition
 
 <b>Parameters:</b>
 
- * <i>dispositionValue</i>: A string object that should be the value of a Content-Disposition header field.
+ * <i>dispositionValue</i>: A string object.
 
- * <i>defaultValue</i>: The value to return in case the disposition value is syntactically invalid. Can be null.
+ * <i>defaultValue</i>: Another ContentDisposition object.
 
 <b>Returns:</b>
 
@@ -159,8 +158,7 @@ Parses a content disposition string and returns a content disposition object.
 
 <b>Returns:</b>
 
-A content disposition object, or "Attachment" if  <i>dispoValue</i>
- is empty or syntactically invalid.
+A ContentDisposition object.
 
 ### ToString
 
@@ -170,4 +168,4 @@ Converts this object to a text string.
 
 <b>Returns:</b>
 
-A string representation of this object.
+A string object.

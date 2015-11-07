@@ -210,7 +210,9 @@ Assert.AreEqual("2" , MediaType.Parse("x/y;z=1;z*=utf-8''2"
         ContentDisposition.MakeFilename("utf-8''file%c2%bename.txt"));
       Assert.AreEqual("file\u00bename.txt",
         ContentDisposition.MakeFilename("utf-8'en'file%c2%bename.txt"));
-      Assert.AreEqual("x-unknown'en'file%c2%bename.txt",
+      Assert.AreEqual("file\u00bename.txt",
+        ContentDisposition.MakeFilename("windows-1252'en'file%bename.txt"));
+      Assert.AreEqual("x-unknown'en'file_c2_bename.txt",
         ContentDisposition.MakeFilename("x-unknown'en'file%c2%bename.txt"));
       Assert.AreEqual("file\u00bename.txt",
         ContentDisposition.MakeFilename("utf-8'en-us'file%c2%bename.txt"));
