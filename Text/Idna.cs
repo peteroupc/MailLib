@@ -10,10 +10,12 @@ using System.Text;
 
 namespace PeterO.Text {
     /// <summary><para>Contains methods that implement Internationalized Domain
-    /// Names in Applications (IDNA). IDNA enables using a wider range of letters,
+    /// Names in Applications (IDNA). IDNA enables using a wider range of
+    /// letters,
     /// numbers, and certain other characters in domain names.</para>
     /// <para>NOTICE:
-    /// While this class's source code is in the public domain, the class uses two
+    /// While this class's source code is in the public domain, the class uses
+    /// two
     /// internal classes, called <c>NormalizationData</c>
     /// and <c>IdnaData</c>
     /// , that
@@ -220,8 +222,10 @@ namespace PeterO.Text {
           lastIndex = i + 1;
         }
       }
-  retval = DomainUtility.PunycodeEncodePortion(value, lastIndex,
-        value.Length);
+  retval = DomainUtility.PunycodeEncodePortion(
+value,
+lastIndex,
+value.Length);
       if (retval == null) {
         builder.Append(value.Substring(lastIndex, value.Length - lastIndex));
       } else {
@@ -247,16 +251,20 @@ namespace PeterO.Text {
             // Empty label
             return false;
           }
-          if (!IsValidLabel(str.Substring(lastIndex, i - lastIndex),
-            lookupRules, bidiRule)) {
+          if (!IsValidLabel(
+str.Substring(lastIndex, i - lastIndex),
+lookupRules,
+bidiRule)) {
             return false;
           }
           lastIndex = i + 1;
         }
       }
       return (str.Length != lastIndex) &&
-        IsValidLabel(str.Substring(lastIndex, str.Length - lastIndex),
-        lookupRules, bidiRule);
+        IsValidLabel(
+str.Substring(lastIndex, str.Length - lastIndex),
+lookupRules,
+bidiRule);
     }
 
     private static string ToLowerCaseAscii(string str) {
@@ -288,8 +296,10 @@ namespace PeterO.Text {
       return builder.ToString();
     }
 
-private static bool IsValidLabel(string str, bool lookupRules, bool
-      bidiRule) {
+private static bool IsValidLabel(
+string str,
+bool lookupRules,
+bool bidiRule) {
       if (String.IsNullOrEmpty(str)) {
         return false;
       }
@@ -329,10 +339,10 @@ private static bool IsValidLabel(string str, bool lookupRules, bool
       if (allLDH) {
         if (str.Length >= 4 && str[2] == '-' && str[3] == '-') {
           // Contains a hyphen at the third and fourth (one-based) character
-          //positions
+          // positions
           return false;
         }
-        if (str[0] != '-' && str[str.Length - 1] != '-' && !(str[0] >= '0'&&
+        if (str[0] != '-' && str[str.Length - 1] != '-' && !(str[0] >= '0' &&
           str[0] <= '9')) {
           // Only LDH characters, doesn't start with hyphen or digit,
           // and doesn't end with hyphen
@@ -342,8 +352,10 @@ private static bool IsValidLabel(string str, bool lookupRules, bool
       return IsValidULabel(str, lookupRules, bidiRule);
     }
 
-    private static bool IsValidULabel(string str, bool lookupRules, bool
-      bidiRule) {
+    private static bool IsValidULabel(
+string str,
+bool lookupRules,
+bool bidiRule) {
       if (String.IsNullOrEmpty(str)) {
         return false;
       }
@@ -353,7 +365,7 @@ private static bool IsValidLabel(string str, bool lookupRules, bool
       }
       if (str.Length >= 4 && str[2] == '-' && str[3] == '-') {
         // Contains a hyphen at the third and fourth (one-based) character
-        //positions
+        // positions
         return false;
       }
       if (!lookupRules) {

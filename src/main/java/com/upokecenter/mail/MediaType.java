@@ -37,7 +37,7 @@ import com.upokecenter.util.*;
     /**
      * Determines whether this object and another object are equal.
      * @param obj An arbitrary object.
-     * @return True if the objects are equal; otherwise, false.
+     * @return True if this object and another object are equal; otherwise, false.
      */
     @Override public boolean equals(Object obj) {
       MediaType other = ((obj instanceof MediaType) ? (MediaType)obj : null);
@@ -51,7 +51,7 @@ import com.upokecenter.util.*;
 
     /**
      * Returns the hash code for this instance.
-     * @return A 32-bit hash code.
+     * @return A 32-bit signed integer.
      */
     @Override public int hashCode() {
       int valueHashCode = 632580499;
@@ -81,7 +81,7 @@ import com.upokecenter.util.*;
 
     /**
      * Gets a value indicating whether this is a text media type ("text/*").
-     * @return True if this is a text media type; otherwise, false..
+     * @return True if this is a text media type; otherwise, false.
      */
     public final boolean isText() {
         return this.getTopLevelType().equals("text");
@@ -89,13 +89,16 @@ import com.upokecenter.util.*;
 
     /**
      * Gets a value indicating whether this is a multipart media type.
-     * @return True if this is a multipart media type; otherwise, false..
+     * @return True if this is a multipart media type; otherwise, false.
      */
     public final boolean isMultipart() {
         return this.getTopLevelType().equals("multipart");
       }
 
-    MediaType(String type, String subtype, Map<String,
+    MediaType(
+String type,
+ String subtype,
+ Map<String,
       String> parameters) {
       this.topLevelType = type;
       this.subType = subtype;
@@ -150,7 +153,7 @@ import com.upokecenter.util.*;
         if (i2 < endIndex) {
           char c = s.charAt(i2);
           // Non-ASCII (allowed in internationalized email headers under
-          //RFC6532)
+          // RFC6532)
           if ((c & 0xfc00) == 0xd800 && i2 + 1 < endIndex && s.charAt(i2 + 1) >=
             0xdc00 && s.charAt(i2 + 1) <= 0xdfff) {
             i2 += 2;
@@ -163,7 +166,7 @@ import com.upokecenter.util.*;
             ++i2;
           }
           // obs-qtext (same as obs-ctext)
-          if ((c < 0x20 && c != 0x00 && c != 0x09 && c != 0x0a && c != 0x0d)||
+          if ((c < 0x20 && c != 0x00 && c != 0x09 && c != 0x0a && c != 0x0d) ||
             c == 0x7f) {
             ++i2;
           }
@@ -205,17 +208,25 @@ import com.upokecenter.util.*;
     }
 
     // quoted-String (RFC5322 sec. 3.2.4)
-    static int skipQuotedString(String s,
-      int index, int endIndex,
-      StringBuilder builder) {
-return skipQuotedString(s, index, endIndex, builder,
-        QuotedStringRule.Rfc5322);
+    static int skipQuotedString(
+String s,
+int index,
+int endIndex,
+StringBuilder builder) {
+return skipQuotedString(
+s,
+index,
+endIndex,
+builder,
+QuotedStringRule.Rfc5322);
     }
 
-    private static int skipQuotedString(String str,
-      int index, int endIndex,
-      StringBuilder builder,  // receives the unescaped version of the _string
-      QuotedStringRule rule) {
+    private static int skipQuotedString(
+String str,
+int index,
+int endIndex,
+StringBuilder builder,  // receives the unescaped version of the _string
+QuotedStringRule rule) {
       int startIndex = index;
       int valueBLength = (builder == null) ? 0 : builder.length();
       index = (rule != QuotedStringRule.Rfc5322) ? index :
@@ -268,8 +279,10 @@ return skipQuotedString(s, index, endIndex, builder,
       return startIndex;  // not a valid quoted-String
     }
 
-    private static void AppendComplexParamValue(String name, String str,
-      StringBuilder sb) {
+    private static void AppendComplexParamValue(
+String name,
+String str,
+StringBuilder sb) {
       int length = 1;
       int contin = 0;
       String hex = "0123456789ABCDEF";
@@ -412,8 +425,10 @@ return skipQuotedString(s, index, endIndex, builder,
       }
     }
 
-    private static boolean AppendSimpleParamValue(String name, String str,
-      StringBuilder sb) {
+    private static boolean AppendSimpleParamValue(
+String name,
+String str,
+StringBuilder sb) {
       sb.append(name);
       sb.append('=');
       if (str.length() == 0) {
@@ -457,8 +472,10 @@ return skipQuotedString(s, index, endIndex, builder,
       return 0;
     }
 
-    static void AppendParameters(Map<String, String>
-      parameters, StringBuilder sb) {
+    static void AppendParameters(
+Map<String, String>
+      parameters,
+ StringBuilder sb) {
       StringBuilder tmp = new StringBuilder();
       for (String key : parameters.keySet()) {
         int lineIndex = LastLineStart(sb);
@@ -497,9 +514,12 @@ return skipQuotedString(s, index, endIndex, builder,
       return sb.toString();
     }
 
-    static int SkipMimeToken(String str,
-      int index, int endIndex,
-      StringBuilder builder, boolean httpRules) {
+    static int SkipMimeToken(
+String str,
+int index,
+int endIndex,
+StringBuilder builder,
+boolean httpRules) {
       int i = index;
       while (i < endIndex) {
         char c = str.charAt(i);
@@ -584,14 +604,17 @@ return skipQuotedString(s, index, endIndex, builder,
       return i;
     }
 
-    static int skipMimeTypeSubtype(String str, int index, int
-      endIndex, StringBuilder builder) {
+    static int skipMimeTypeSubtype(
+String str,
+int index,
+int endIndex,
+StringBuilder builder) {
       int i = index;
       int count = 0;
       while (i < endIndex) {
         char c = str.charAt(i);
         // See RFC6838
-        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0'&&
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' &&
           c <= '9')) {
           if (builder != null) {
             builder.append(c);
@@ -623,16 +646,16 @@ return skipQuotedString(s, index, endIndex, builder,
      * parameter (see RFC2046), or the default charset, if any, for the
      * media type if the charset parameter is absent. Returns an empty
      * string in all other cases.
-     * @return A string object.
+     * @return Not documented yet.
      */
 
     public String GetCharset() {
       // NOTE: RFC6657 changed the rules for the default charset in text
-      //media types,
+      // media types,
       // so that there is no default charset for as yet undefined media
-      //types. However,
+      // types. However,
       // media types defined before this RFC are grandfathered from the
-      //rule: those
+      // rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of Apr. 17,
       // 2014, are listed below:
@@ -641,14 +664,14 @@ return skipQuotedString(s, index, endIndex, builder,
       //
       // RTP payload types; these are usually unsuitable for MIME,
       // and don't permit a charset parameter, so a default charset is
-      //irrelevant:
+      // irrelevant:
       // -- 1d-interleaved-parityfec, fwdred, red, parityfec, encaprtp,
       // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback
       //
       // These media types don't define a charset parameter:
       // -- dns, grammar-ref-list, mizar, vnd-latex-z, vnd.motorola.reflex,
       // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript,
-      //vnd.dvb.subtitle,
+      // vnd.dvb.subtitle,
       // vnd.fly, rtf, rfc822-headers
       //
       // Special procedure defined for charset detection:
@@ -718,7 +741,7 @@ return skipQuotedString(s, index, endIndex, builder,
               sub.equals("parameters") || sub.equals("prs.fallenstein.rst") ||
               sub.equals("vnd.esmertec.theme.descriptor") ||
             sub.equals("vnd.trolltech.linguist") ||
-              sub.equals("vnd.graphviz") || sub.equals("cache-manifest")||
+              sub.equals("vnd.graphviz") || sub.equals("cache-manifest") ||
               sub.equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";
         }
@@ -757,8 +780,9 @@ return skipQuotedString(s, index, endIndex, builder,
         return null;
       }
       String charset = value.substring(0, firstQuote);
-      String language = value.substring(firstQuote + 1, (firstQuote + 1)+(secondQuote -
-        (firstQuote + 1)));
+      String language = value.substring(
+firstQuote + 1, (
+firstQuote + 1)+(secondQuote - (firstQuote + 1)));
       if (language.length() > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
         return null;
@@ -784,8 +808,9 @@ return skipQuotedString(s, index, endIndex, builder,
         return Charsets.Ascii;
       }
       String charset = value.substring(0, firstQuote);
-      String language = value.substring(firstQuote + 1, (firstQuote + 1)+(secondQuote -
-        (firstQuote + 1)));
+      String language = value.substring(
+firstQuote + 1, (
+firstQuote + 1)+(secondQuote - (firstQuote + 1)));
       if (language.length() > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
         return null;
@@ -794,8 +819,9 @@ return skipQuotedString(s, index, endIndex, builder,
       return (cs == null) ? Charsets.Ascii : cs;
     }
 
-  private static String DecodeRfc2231Encoding(String value, ICharset
-      charset) {
+  private static String DecodeRfc2231Encoding(
+String value,
+ICharset charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.indexOf('\'');
@@ -850,8 +876,9 @@ return skipQuotedString(s, index, endIndex, builder,
               parameters.remove(contin);
             } else if (parameters.containsKey(continEncoded)) {
               // Encoded continuation
- String newEnc = DecodeRfc2231Encoding(parameters.get(continEncoded),
-                charsetUsed);
+ String newEnc = DecodeRfc2231Encoding(
+parameters.get(continEncoded),
+charsetUsed);
               if (newEnc == null) {
                 // Contains a quote character in the encoding, so illegal
                 return false;
@@ -899,9 +926,13 @@ return skipQuotedString(s, index, endIndex, builder,
       return index;
     }
 
-    static boolean ParseParameters(String str,
-      int index, int endIndex,
-      boolean httpRules, Map<String, String> parameters) {
+    static boolean ParseParameters(
+String str,
+      int index,
+ int endIndex,
+      boolean httpRules,
+ Map<String,
+ String> parameters) {
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipLws, though that may change
@@ -926,9 +957,11 @@ return skipQuotedString(s, index, endIndex, builder,
         if (httpRules) {
           index = skipOws(str, index, endIndex);
         } else {
-          index = HeaderParser.ParseCFWS(str,
-            index, endIndex,
-            null);
+          index = HeaderParser.ParseCFWS(
+str,
+index,
+endIndex,
+null);
         }
         StringBuilder builder = new StringBuilder();
         // NOTE: RFC6838 restricts the format of parameter names to the same
@@ -947,12 +980,14 @@ return skipQuotedString(s, index, endIndex, builder,
         index = afteratt;
         if (!httpRules) {
           // NOTE: MIME implicitly doesn't restrict whether whitespace can
-          //appear
+          // appear
           // around the equal sign separating an attribute and value, while
           // HTTP explicitly forbids such whitespace
-          index = HeaderParser.ParseCFWS(str,
-            index, endIndex,
-            null);
+          index = HeaderParser.ParseCFWS(
+str,
+index,
+endIndex,
+null);
         }
         if (index >= endIndex) {
           return false;
@@ -968,9 +1003,11 @@ return skipQuotedString(s, index, endIndex, builder,
         ++index;
         if (!httpRules) {
           // See note above on whitespace around the equal sign
-          index = HeaderParser.ParseCFWS(str,
-            index, endIndex,
-            null);
+          index = HeaderParser.ParseCFWS(
+str,
+index,
+endIndex,
+null);
         }
         if (index >= endIndex) {
           // No more parameters
@@ -979,7 +1016,7 @@ return skipQuotedString(s, index, endIndex, builder,
         builder.delete(0, (0)+(builder.length()));
         int qs;
         // If the attribute name ends with '*' the value may not be a quoted
-        //String
+        // String
         if (attribute.charAt(attribute.length() - 1) != '*') {
           // try getting the value quoted
           qs = skipQuotedString(
@@ -1052,7 +1089,9 @@ return skipQuotedString(s, index, endIndex, builder,
      * plain text data.
      */
     public static final MediaType TextPlainAscii =
-      new MediaTypeBuilder("text" , "plain").SetParameter("charset",
+      new MediaTypeBuilder(
+"text",
+"plain").SetParameter("charset",
         "us-ascii").ToMediaType();
 
     /**
@@ -1060,7 +1099,9 @@ return skipQuotedString(s, index, endIndex, builder,
      * Unicode plain text data.
      */
     public static final MediaType TextPlainUtf8 =
-      new MediaTypeBuilder("text" , "plain").SetParameter("charset",
+      new MediaTypeBuilder(
+"text",
+"plain").SetParameter("charset",
         "utf-8").ToMediaType();
 
     /**

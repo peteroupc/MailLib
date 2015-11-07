@@ -14,8 +14,8 @@ import com.upokecenter.text.*;
 
     /**
      * Specifies how a message body should be displayed or handled by a mail user
-     * agent. <p>This type is immutable; its contents can't be changed after
-     * it's created.</p>
+     * agent. This type is immutable; its contents can't be changed after
+     * it's created.
      */
   public class ContentDisposition {
     private String dispositionType;
@@ -63,7 +63,7 @@ import com.upokecenter.text.*;
 
     /**
      * Gets a value indicating whether the disposition type is inline.
-     * @return True if the disposition type is inline; otherwise, false..
+     * @return True if the disposition type is inline; otherwise, false.
      */
     public final boolean isInline() {
         return this.dispositionType.equals("inline");
@@ -71,13 +71,15 @@ import com.upokecenter.text.*;
 
     /**
      * Gets a value indicating whether the disposition type is attachment.
-     * @return True if the disposition type is attachment; otherwise, false..
+     * @return True if the disposition type is attachment; otherwise, false.
      */
     public final boolean isAttachment() {
         return this.dispositionType.equals("attachment");
       }
 
-    ContentDisposition(String type, Map<String, String>
+    ContentDisposition(
+String type, Map<String,
+ String>
       parameters) {
       this.dispositionType = type;
       this.parameters = new TreeMap<String, String>(parameters);
@@ -175,8 +177,11 @@ import com.upokecenter.text.*;
         // appear justified in sec. 2.3 of RFC 2183, which says that
         // the parameter's value "should be used as a
         // basis for the actual filename, where possible."
-        str = Rfc2047.DecodeEncodedWords(str, 0, str.length(),
-          EncodedWordContext.Unstructured);
+        str = Rfc2047.DecodeEncodedWords(
+str,
+0,
+str.length(),
+EncodedWordContext.Unstructured);
         if (str.indexOf("=?") >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
@@ -187,7 +192,8 @@ import com.upokecenter.text.*;
         // too, to use quotes around a filename parameter AND use
         // RFC 2231 encoding, even though all the examples in that RFC
         // show unquoted use of this encoding.
-        String charset = Charsets.ResolveAliasForEmail(str.substring(0,str.indexOf('\'')));
+        String charset = Charsets.ResolveAliasForEmail(
+str.substring(0,str.indexOf('\'')));
         if (!((charset) == null || (charset).length() == 0)) {
           String newstr = MediaType.DecodeRfc2231Extension(str);
           if (!((newstr) == null || (newstr).length() == 0)) {
@@ -218,10 +224,10 @@ import com.upokecenter.text.*;
         if (c == (int)'\t') {
           // Replace tab with space
           builder.append(' ');
-        } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' || c == '?'||
-          c == '|' ||
-    c == ':' || c == '<' || c == '>' || c == '"' || (c >= 0x7f && c <=
-                     0x9f)) {
+        } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||
+          c == '?' || c == '|' ||
+    c == ':' || c == '<' || c == '>' || c == '"' ||
+          (c >= 0x7f && c <= 0x9f)) {
           // Unsuitable character for a filename (one of the characters
           // reserved by Windows,
           // backslash, forward slash, ASCII controls, and C1 controls).
@@ -252,13 +258,19 @@ import com.upokecenter.text.*;
         str += "_";
       }
       String strLower = DataUtilities.ToLowerCaseAscii(str);
-      if (strLower.equals("nul") || strLower.indexOf("nul.") == 0 ||
-          strLower.equals("prn") || strLower.indexOf("prn.") == 0 ||
-          strLower.equals("aux") || strLower.indexOf("aux.") == 0 ||
-          strLower.equals("con") || strLower.indexOf("con.") == 0 ||
-          (strLower.length() >= 4 && strLower.indexOf("lpt") == 0 && strLower.charAt(3) >= '1' &&
+      if (
+strLower.equals("nul") || strLower.indexOf("nul.") == 0 ||
+          strLower.equals(
+"prn") || strLower.indexOf("prn.") == 0 ||
+          strLower.equals(
+"aux") || strLower.indexOf("aux.") == 0 ||
+          strLower.equals(
+"con") || strLower.indexOf("con.") == 0 ||
+          (
+strLower.length() >= 4 && strLower.indexOf("lpt") == 0 && strLower.charAt(3) >= '1' &&
        strLower.charAt(3) <= '9') || (strLower.length() >= 4 &&
-              strLower.indexOf("com") == 0 && strLower.charAt(3) >= '1' &&
+              strLower.indexOf(
+"com") == 0 && strLower.charAt(3) >= '1' &&
             strLower.charAt(3) <= '9')) {
         // Reserved filenames on Windows
         str = "_" + str;
@@ -320,7 +332,11 @@ import com.upokecenter.text.*;
         }
       }
       index = i;
-      return MediaType.ParseParameters(str, index, endIndex, HttpRules,
+      return MediaType.ParseParameters(
+        str,
+        index,
+        endIndex,
+        HttpRules,
         this.parameters);
     }
 
@@ -366,8 +382,9 @@ import com.upokecenter.text.*;
      * @throws NullPointerException The parameter {@code dispositionValue} is
      * null.
      */
-    public static ContentDisposition Parse(String dispositionValue,
-      ContentDisposition defaultValue) {
+    public static ContentDisposition Parse(
+String dispositionValue,
+ContentDisposition defaultValue) {
       if (dispositionValue == null) {
         throw new NullPointerException("dispositionValue");
       }

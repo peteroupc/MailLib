@@ -33,7 +33,7 @@ Initializes a new instance of the MediaTypeBuilder class.
 
  * <i>type</i>: A string object.
 
- * <i>subtype</i>: A string object. (2).
+ * <i>subtype</i>: Another string object.
 
 ### MediaTypeBuilder Constructor
 
@@ -114,7 +114,7 @@ Not documented yet.
 
  * <i>name</i>: Name of the parameter to set. The name is compared case-insensitively.
 
- * <i>value</i>: A string object. (2).
+ * <i>value</i>: A string object.
 
 <b>Returns:</b>
 

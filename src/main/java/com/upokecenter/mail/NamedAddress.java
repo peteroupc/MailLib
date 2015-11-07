@@ -38,7 +38,7 @@ import java.util.*;
     /**
      * Gets a value indicating whether this represents a group of addresses rather
      * than a single address.
-     * @return True if this represents a group of addresses; otherwise, false..
+     * @return True if this represents a group of addresses; otherwise, false.
      */
     public final boolean isGroup() {
         return this.isGroup;
@@ -95,8 +95,11 @@ import java.util.*;
         address.length()) {
         throw new IllegalArgumentException("Address has an invalid syntax.");
       }
-      NamedAddress na = HeaderParserUtility.ParseAddress(address, 0,
-        address.length(), tokener.GetTokens());
+      NamedAddress na = HeaderParserUtility.ParseAddress(
+address,
+0,
+address.length(),
+tokener.GetTokens());
       if (na == null) {
         throw new IllegalArgumentException("Address has an invalid syntax.");
       }

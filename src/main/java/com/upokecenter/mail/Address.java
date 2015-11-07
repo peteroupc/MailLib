@@ -30,8 +30,11 @@ import com.upokecenter.text.*;
      */
     @Override public String toString() {
       if (this.localPart.length() > 0 &&
-          HeaderParser.ParseDotAtomText(this.localPart, 0,
-            this.localPart.length(), null) == this.localPart.length()) {
+          HeaderParser.ParseDotAtomText(
+this.localPart,
+0,
+this.localPart.length(),
+null) == this.localPart.length()) {
         return this.localPart + "@" + this.domain;
       } else {
         StringBuilder sb = new StringBuilder();
@@ -60,12 +63,16 @@ import com.upokecenter.text.*;
         // "domain" is a domain name, and not an address literal,
         // so get its A-label length
         domainLength =
-  ((int)DataUtilities.GetUtf8Length(Idna.EncodeDomainName(this.domain),
+  (
+(
+int)DataUtilities.GetUtf8Length(Idna.EncodeDomainName(this.domain),
           true));
       }
-      if (this.localPart.length() > 0 &&
-        HeaderParser.ParseDotAtomText(this.localPart, 0,
-            this.localPart.length(), null) == this.localPart.length()) {
+      if (this.localPart.length() > 0 && HeaderParser.ParseDotAtomText(
+this.localPart,
+0,
+this.localPart.length(),
+null) == this.localPart.length()) {
         return this.localPart.length() + domainLength + 1;
       } else {
         // two quotes, at sign, and domain length
@@ -109,8 +116,11 @@ import com.upokecenter.text.*;
       if (addressValue.indexOf('@') < 0) {
         throw new IllegalArgumentException("Address doesn't contain a '@' sign");
       }
-      int localPartEnd = HeaderParser.ParseLocalPartNoCfws(addressValue, 0,
-        addressValue.length(), null);
+      int localPartEnd = HeaderParser.ParseLocalPartNoCfws(
+addressValue,
+0,
+addressValue.length(),
+null);
       if (localPartEnd == 0) {
         throw new IllegalArgumentException("Invalid local part");
       }
@@ -121,20 +131,27 @@ import com.upokecenter.text.*;
       if (localPartEnd + 1 == addressValue.length()) {
         throw new IllegalArgumentException("Expected domain after '@'");
       }
-      int domainEnd = HeaderParser.ParseDomainNoCfws(addressValue,
-        localPartEnd + 1, addressValue.length(), null);
+      int domainEnd = HeaderParser.ParseDomainNoCfws(
+addressValue,
+localPartEnd + 1,
+addressValue.length(),
+null);
       if (domainEnd != addressValue.length()) {
         throw new IllegalArgumentException("Invalid domain");
       }
-      this.localPart = HeaderParserUtility.ParseLocalPart(addressValue, 0,
-        localPartEnd);
-      this.domain = HeaderParserUtility.ParseDomain(addressValue,
-        localPartEnd + 1, addressValue.length());
+      this.localPart = HeaderParserUtility.ParseLocalPart(
+addressValue,
+0,
+localPartEnd);
+      this.domain = HeaderParserUtility.ParseDomain(
+addressValue,
+localPartEnd + 1,
+addressValue.length());
       // Check length restrictions.
       if (this.StringLength() > 997) {
         // Maximum character length per line for an Internet message is 998;
         // we check if the length exceeds 997 (thus excluding the space
-        //character
+        // character
         // of a folded line).
         throw new IllegalArgumentException("Address too long");
       }

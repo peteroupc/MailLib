@@ -681,7 +681,7 @@ Reflect.Construct(MailNamespace() + ".BEncodingStringTransform",
 
     private static void AssertUtf8Equal(byte[] expected, byte[] actual) {
       Assert.assertEquals(DataUtilities.GetUtf8String(expected, true),
-                      DataUtilities.GetUtf8String(actual, true));
+                    DataUtilities.GetUtf8String(actual, true));
     }
 
     private static String WrapHeader(String s) {
@@ -866,7 +866,7 @@ Reflect.Construct(MailNamespace() + ".BEncodingStringTransform",
         ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbb-ccc-"))Assert.fail();
     }
 
-    @Test
+    @Test(timeout = 5000)
     public void TestDecode() {
       TestDecodeQuotedPrintable("test", "test");
       TestDecodeQuotedPrintable("te \tst", "te \tst");

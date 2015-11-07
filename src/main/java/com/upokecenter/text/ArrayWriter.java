@@ -37,8 +37,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
           "0");
       }
       if (length > this.retvalMax) {
-        throw new IllegalArgumentException("length (" + length + ") is more than "+
-          (this.retvalMax));
+        throw new IllegalArgumentException("length (" + length + ") is more than " +
+          this.retvalMax);
       }
       this.retvalMax = length;
       if (this.retvalPos > this.retvalMax) {
@@ -55,8 +55,8 @@ public final void setPosition(int value) {
             "0");
         }
         if (value > this.retvalMax) {
-          throw new IllegalArgumentException("value (" + value + ") is more than "+
-            (this.retvalMax));
+          throw new IllegalArgumentException("value (" + value + ") is more than " +
+            this.retvalMax);
         }
         this.retvalPos = value;
       }
@@ -124,8 +124,9 @@ public final void setPosition(int value) {
       }
       if (this.retval.length - this.retvalPos < length) {
         // Array too small, make it grow
-        int newLength = Math.max(this.retvalPos + length + 1000,
-          this.retval.length * 2);
+        int newLength = Math.max(
+this.retvalPos + length + 1000,
+this.retval.length * 2);
         byte[] newArray = new byte[newLength];
         System.arraycopy(this.retval, 0, newArray, 0, this.retvalPos);
         this.retval = newArray;

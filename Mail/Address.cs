@@ -16,10 +16,11 @@ namespace PeterO.Mail {
   public class Address {
     private readonly string localPart;
 
-    /// <summary>Gets the local part of this email address (the part before the "@"
+    /// <summary>Gets the local part of this email address (the part before the
+    /// "@"
     /// sign).</summary>
     /// <value>The local part of this email address (the part before the
-    /// &quot;@&quot; sign).</value>
+    /// &#x22;@&#x22; sign).</value>
     public string LocalPart {
       get {
         return this.localPart;
@@ -30,8 +31,11 @@ namespace PeterO.Mail {
     /// <returns>A string representation of this object.</returns>
     public override string ToString() {
       if (this.localPart.Length > 0 &&
-          HeaderParser.ParseDotAtomText(this.localPart, 0,
-            this.localPart.Length, null) == this.localPart.Length) {
+          HeaderParser.ParseDotAtomText(
+this.localPart,
+0,
+this.localPart.Length,
+null) == this.localPart.Length) {
         return this.localPart + "@" + this.domain;
       } else {
         var sb = new StringBuilder();
@@ -60,12 +64,16 @@ namespace PeterO.Mail {
         // "domain" is a domain name, and not an address literal,
         // so get its A-label length
         domainLength =
-  checked((int)DataUtilities.GetUtf8Length(Idna.EncodeDomainName(this.domain),
+  checked(
+(
+int)DataUtilities.GetUtf8Length(Idna.EncodeDomainName(this.domain),
           true));
       }
-      if (this.localPart.Length > 0 &&
-        HeaderParser.ParseDotAtomText(this.localPart, 0,
-            this.localPart.Length, null) == this.localPart.Length) {
+      if (this.localPart.Length > 0 && HeaderParser.ParseDotAtomText(
+this.localPart,
+0,
+this.localPart.Length,
+null) == this.localPart.Length) {
         return this.localPart.Length + domainLength + 1;
       } else {
         // two quotes, at sign, and domain length
@@ -88,7 +96,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets the domain of this email address (the part after the "@"
     /// sign).</summary>
-    /// <value>The domain of this email address (the part after the &quot;@&quot;
+    /// <value>The domain of this email address (the part after the
+    /// &#x22;@&#x22;
     /// sign).</value>
     public string Domain {
       get {
@@ -110,8 +119,11 @@ namespace PeterO.Mail {
       if (addressValue.IndexOf('@') < 0) {
         throw new ArgumentException("Address doesn't contain a '@' sign");
       }
-      int localPartEnd = HeaderParser.ParseLocalPartNoCfws(addressValue, 0,
-        addressValue.Length, null);
+      int localPartEnd = HeaderParser.ParseLocalPartNoCfws(
+addressValue,
+0,
+addressValue.Length,
+null);
       if (localPartEnd == 0) {
         throw new ArgumentException("Invalid local part");
       }
@@ -122,20 +134,27 @@ namespace PeterO.Mail {
       if (localPartEnd + 1 == addressValue.Length) {
         throw new ArgumentException("Expected domain after '@'");
       }
-      int domainEnd = HeaderParser.ParseDomainNoCfws(addressValue,
-        localPartEnd + 1, addressValue.Length, null);
+      int domainEnd = HeaderParser.ParseDomainNoCfws(
+addressValue,
+localPartEnd + 1,
+addressValue.Length,
+null);
       if (domainEnd != addressValue.Length) {
         throw new ArgumentException("Invalid domain");
       }
-      this.localPart = HeaderParserUtility.ParseLocalPart(addressValue, 0,
-        localPartEnd);
-      this.domain = HeaderParserUtility.ParseDomain(addressValue,
-        localPartEnd + 1, addressValue.Length);
+      this.localPart = HeaderParserUtility.ParseLocalPart(
+addressValue,
+0,
+localPartEnd);
+      this.domain = HeaderParserUtility.ParseDomain(
+addressValue,
+localPartEnd + 1,
+addressValue.Length);
       // Check length restrictions.
       if (this.StringLength() > 997) {
         // Maximum character length per line for an Internet message is 998;
         // we check if the length exceeds 997 (thus excluding the space
-        //character
+        // character
         // of a folded line).
         throw new ArgumentException("Address too long");
       }

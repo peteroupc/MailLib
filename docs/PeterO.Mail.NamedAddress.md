@@ -53,7 +53,7 @@ Initializes a new instance of the NamedAddress class using the given display nam
 
  * <i>displayName</i>: A string object.
 
- * <i>address</i>: A string object. (2).
+ * <i>address</i>: Another string object.
 
 <b>Exceptions:</b>
 
@@ -74,7 +74,7 @@ Initializes a new instance of the NamedAddress class using the given name and an
 
  * <i>displayName</i>: A string object.
 
- * <i>localPart</i>: A string object. (2).
+ * <i>localPart</i>: Another string object.
 
  * <i>domain</i>: A string object. (3).
 

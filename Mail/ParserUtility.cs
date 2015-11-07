@@ -29,8 +29,10 @@ namespace PeterO.Mail {
           ") is more than " + str.Length);
       }
       int endpos = suffix.Length + strStartPos;
-      return (endpos <= str.Length) && str.Substring(strStartPos, endpos -
-        strStartPos).Equals(suffix);
+      return (
+endpos <= str.Length) && str.Substring(
+strStartPos,
+endpos - strStartPos).Equals(suffix);
     }
 
     public static bool StartsWith(string str, string prefix) {
@@ -40,8 +42,10 @@ namespace PeterO.Mail {
       if (prefix == null) {
         throw new ArgumentNullException("prefix");
       }
-      return (prefix.Length >= str.Length) && str.Substring(0,
-        prefix.Length).Equals(prefix);
+      return (
+prefix.Length >= str.Length) && str.Substring(
+0,
+prefix.Length).Equals(prefix);
     }
 
     public static string TrimSpaceAndTab(string str) {
@@ -82,12 +86,18 @@ namespace PeterO.Mail {
     }
 
     public static bool IsNullEmptyOrSpaceTabOnly(string str) {
-      return String.IsNullOrEmpty(str) || SkipSpaceAndTab(str, 0,
-        str.Length) == str.Length;
+      return String.IsNullOrEmpty(
+str) || SkipSpaceAndTab(
+str,
+0,
+str.Length) == str.Length;
     }
 
-    public static int ParseFWSLax(string str, int index, int endIndex,
-      StringBuilder sb) {
+    public static int ParseFWSLax(
+string str,
+int index,
+int endIndex,
+StringBuilder sb) {
       while (index < endIndex) {
         int tmp = index;
         // Skip CRLF
@@ -120,15 +130,21 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Splits a string by a delimiter. If the string ends with the
-    /// delimiter, the result will end with an empty string. If the string begins
-    /// with the delimiter, the result will start with an empty string.</summary>
+    /// delimiter, the result will end with an empty string. If the string
+    /// begins
+    /// with the delimiter, the result will start with an empty
+    /// string.</summary>
     /// <param name='str'>A string to split.</param>
-    /// <param name='delimiter'>A string to signal where each substring begins and
+    /// <param name='delimiter' >A string to signal where each substring begins
+    /// and
     /// ends.</param>
-    /// <returns>An array containing strings that are split by the delimiter. If str
-    /// is null or empty, returns an array whose sole element is the empty
-    /// string.</returns>
-    /// <exception cref='ArgumentException'>Delimiter is null or empty.</exception>
+    /// <returns>An array containing strings that are split by the delimiter. If
+    /// the
+    /// string to split is null or empty, returns an array whose sole element is
+    /// the
+    /// empty string.</returns>
+    /// <exception cref='ArgumentException' >Delimiter is null or
+    /// empty.</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='delimiter'/> is null.</exception>
     public static string[] SplitAt(string str, string delimiter) {
@@ -215,8 +231,9 @@ namespace PeterO.Mail {
             return true;
           }
           // More complex cases
-          string[] splitString = SplitAt(str.Substring(startIndex, endIndex
-            - startIndex), "-");
+          string[] splitString = SplitAt(
+str.Substring(startIndex, endIndex - startIndex),
+"-");
           if (splitString.Length == 0) {
             return false;
           }
@@ -294,7 +311,7 @@ namespace PeterO.Mail {
             string curString = splitString[splitIndex];
             int curIndex = splitIndex;
             if (lengthIfAllAlphaNum(curString) == 1 &&
-                      !curString.Equals("x")) {
+                    !curString.Equals("x")) {
               variants = variants ?? (new List<string>());
               if (!variants.Contains(curString)) {
                 variants.Add(curString);

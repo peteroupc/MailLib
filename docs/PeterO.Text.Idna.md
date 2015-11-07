@@ -38,7 +38,7 @@ Not documented yet.
 
  * <i>str</i>: A string object.
 
- * <i>lookupRules</i>: A Boolean object. (2).
+ * <i>lookupRules</i>: Another Boolean object.
 
 <b>Returns:</b>
 

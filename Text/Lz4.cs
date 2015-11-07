@@ -18,7 +18,7 @@ namespace PeterO.Text {
     public static byte[] Decompress(byte[] input) {
       int index = 0;
       var copy = new byte[16];
-      var ms = new ArrayWriter(8 + (input.Length * 3 / 2));
+      var writer = new ArrayWriter(8 + (input.Length * 3 / 2));
       while (index < input.Length) {
         int b = input[index];
         int literalLength = (b >> 4) & 15;
@@ -44,7 +44,7 @@ namespace PeterO.Text {
           throw new ArgumentException("Invalid LZ4");
         }
         if (literalLength > 0) {
-          ms.WriteBytes(input, index, literalLength);
+          writer.WriteBytes(input, index, literalLength);
 // Console.WriteLine("literal [idx="+index+", len="+literalLength+"] ");
           index += literalLength;
         }
@@ -76,9 +76,9 @@ namespace PeterO.Text {
         }
         matchLength += 4;
        // Console.WriteLine("match=" + matchLength + " offset=" + offset +
-       //" index=" + index);
-        int pos = ms.Position - offset;
-        int oldPos = ms.Position;
+       // " index=" + index);
+        int pos = writer.Position - offset;
+        int oldPos = writer.Position;
         if (pos < 0) {
           throw new ArgumentException("Invalid LZ4");
         }
@@ -88,13 +88,13 @@ namespace PeterO.Text {
         if (matchLength > copy.Length) {
           copy = new byte[matchLength];
         }
-        ms.Position = pos;
-        ms.ReadBytes(copy, 0, matchLength);
+        writer.Position = pos;
+        writer.ReadBytes(copy, 0, matchLength);
         // Console.WriteLine("match "+ToString(copy,0,matchLength));
-        ms.Position = oldPos;
-        ms.WriteBytes(copy, 0, matchLength);
+        writer.Position = oldPos;
+        writer.WriteBytes(copy, 0, matchLength);
       }
-      return ms.ToArray();
+      return writer.ToArray();
     }
   }
 }

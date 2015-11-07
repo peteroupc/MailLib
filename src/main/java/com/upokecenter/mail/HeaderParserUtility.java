@@ -56,7 +56,7 @@ private HeaderParserUtility() {
         }
         char c = str.charAt(i);
         // Has specials, or CTLs other than tab
-        if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29||
+        if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29 ||
           c == 0x3c || c == 0x3e || c == 0x5b || c == 0x5d || c == 0x3a || c
             == 0x3b || c == 0x40 ||
               c == 0x5c || c == 0x2c || c == 0x2e || c == '"') {
@@ -106,8 +106,10 @@ private HeaderParserUtility() {
       return builder.toString();
     }
 
-    private static String ParseDotAtomAfterCFWS(String str, int index, int
-      endIndex) {
+    private static String ParseDotAtomAfterCFWS(
+String str,
+int index,
+int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a dot-atom
       StringBuilder builder = new StringBuilder();
@@ -128,8 +130,10 @@ private HeaderParserUtility() {
       return builder.toString();
     }
 
-    private static String ParseDotWordAfterCFWS(String str, int index, int
-      endIndex) {
+    private static String ParseDotWordAfterCFWS(
+String str,
+int index,
+int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a word separated by dots
       StringBuilder builder = new StringBuilder();
@@ -182,8 +186,10 @@ private HeaderParserUtility() {
             int startQuote = index;
             index = HeaderParser.ParseQuotedPair(str, index, endIndex, null);
             if (index == startQuote) {
-       builder.append(str.substring(startQuote + 1, (startQuote + 1)+(index - (startQuote +
-                1))));
+       builder.append(
+str.substring(
+startQuote + 1, (
+startQuote + 1)+(index - (startQuote + 1))));
             } else {
               ++index;
             }
@@ -199,8 +205,11 @@ private HeaderParserUtility() {
       return ParseDotAtomAfterCFWS(str, index, endIndex);
     }
 
-    public static List<NamedAddress> ParseAddressList(String str, int
-      index, int endIndex, List<int[]> tokens) {
+    public static List<NamedAddress> ParseAddressList(
+String str,
+int index,
+int endIndex,
+List<int[]> tokens) {
       int lastIndex = index;
       List<NamedAddress> addresses = new ArrayList<NamedAddress>();
       for (int i = 0; i < tokens.size(); ++i) {
@@ -220,8 +229,11 @@ private HeaderParserUtility() {
       return addresses;
     }
 
-    public static NamedAddress ParseAddress(String str, int index, int
-      endIndex, List<int[]> tokens) {
+    public static NamedAddress ParseAddress(
+String str,
+int index,
+int endIndex,
+List<int[]> tokens) {
       int lastIndex = index;
       for (int i = 0; i < tokens.size(); ++i) {
         int tokenIndex = tokens.get(i)[1];
@@ -239,8 +251,11 @@ private HeaderParserUtility() {
       return null;
     }
 
-    public static NamedAddress ParseGroup(String str, int index, int
-      endIndex, List<int[]> tokens) {
+    public static NamedAddress ParseGroup(
+String str,
+int index,
+int endIndex,
+List<int[]> tokens) {
       String displayName = null;
       boolean haveDisplayName = false;
       List<NamedAddress> mailboxes = new ArrayList<NamedAddress>();
@@ -269,8 +284,11 @@ private HeaderParserUtility() {
       return new NamedAddress(displayName, mailboxes);
     }
 
-    public static NamedAddress ParseMailbox(String str, int index, int
-      endIndex, List<int[]> tokens) {
+    public static NamedAddress ParseMailbox(
+String str,
+int index,
+int endIndex,
+List<int[]> tokens) {
       String displayName = null;
       String localPart = null;
       String domain = null;
@@ -301,8 +319,11 @@ private HeaderParserUtility() {
     }
 
     // Parses a comment using the obsolete syntax.
-    static int ParseCommentLax(String str, int index, int endIndex,
-      ITokener tokener) {
+    static int ParseCommentLax(
+String str,
+int index,
+int endIndex,
+ITokener tokener) {
       int indexStart = index;
       int depth = 0;
       if (index < endIndex && (str.charAt(index) == 40)) {
@@ -332,8 +353,11 @@ private HeaderParserUtility() {
                   indexTemp3 += 2; break;
                 }
                 int indexTemp4;
-      indexTemp4 = HeaderParser.ParseQuotedPair(str, index, endIndex,
-                  tokener);
+      indexTemp4 = HeaderParser.ParseQuotedPair(
+str,
+index,
+endIndex,
+tokener);
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
@@ -394,8 +418,10 @@ private HeaderParserUtility() {
     }
 
     // Parses a comment without using the obsolete syntax.
-  static int ParseCommentStrict(String str, int index, int
-      endIndex) {
+  static int ParseCommentStrict(
+String str,
+int index,
+int endIndex) {
       if (index < endIndex && (str.charAt(index) == 40)) {
         ++index;
       } else {
@@ -419,14 +445,14 @@ private HeaderParserUtility() {
                   do {
                     int indexStart4 = index;
         while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) ==
-                      9))) {
-                      ++index;
+                    9))) {
+                    ++index;
                     }
         if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1) ==
-                      10) {
-                      index += 2;
+                    10) {
+                    index += 2;
                     } else {
-                      index = indexStart4; break;
+                    index = indexStart4; break;
                     }
                     indexTemp4 = index;
                     index = indexStart4;
@@ -479,26 +505,26 @@ private HeaderParserUtility() {
                     int indexTemp5;
                     indexTemp5 = index;
                     do {
-                      if (index < endIndex && ((str.charAt(index) == 32) ||
-                        (str.charAt(index) == 9) || (str.charAt(index) >= 128 &&
-                        str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
-                        str.charAt(index) <= 65535))) {
-                        ++indexTemp5; break;
-                      }
-                      if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
-                        str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
-                        str.charAt(index + 1) <= 57343))) {
-                        indexTemp5 += 2; break;
-                      }
+                    if (index < endIndex && ((str.charAt(index) == 32) ||
+                    (str.charAt(index) == 9) || (str.charAt(index) >= 128 &&
+                    str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
+                    str.charAt(index) <= 65535))) {
+                    ++indexTemp5; break;
+                    }
+                    if (index + 1 < endIndex && ((str.charAt(index) >= 55296 &&
+                    str.charAt(index) <= 56319) && (str.charAt(index + 1) >= 56320 &&
+                    str.charAt(index + 1) <= 57343))) {
+                    indexTemp5 += 2; break;
+                    }
              if (index < endIndex && (str.charAt(index) >= 33 && str.charAt(index) <=
-                        126)) {
-                        ++indexTemp5; break;
-                      }
+                    126)) {
+                    ++indexTemp5; break;
+                    }
                     } while (false);
                     if (indexTemp5 != index) {
-                      index = indexTemp5;
+                    index = indexTemp5;
                     } else {
-                      index = indexStart4; break;
+                    index = indexStart4; break;
                     }
                   } while (false);
                   if (index == indexStart4) {

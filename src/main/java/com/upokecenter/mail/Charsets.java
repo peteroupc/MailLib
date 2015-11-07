@@ -490,16 +490,16 @@ private Charsets() {
           134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146,
           147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159,
           160, 0xfffd, 0xfffd, 0xfffd, 164, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 0xfffd, 0xfffd, 1548, 173, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 1563, 0xfffd, 0xfffd, 0xfffd, 1567, 0xfffd, 1569, 1570,
+            0xfffd, 0xfffd, 0xfffd, 1548, 173, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            0xfffd, 1563, 0xfffd, 0xfffd, 0xfffd, 1567, 0xfffd, 1569, 1570,
           1571, 1572, 1573, 1574, 1575, 1576, 1577, 1578, 1579, 1580, 1581,
           1582, 1583, 1584, 1585, 1586, 1587, 1588, 1589, 1590, 1591, 1592,
           1593, 1594, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 1600, 1601,
           1602, 1603, 1604, 1605, 1606, 1607, 1608, 1609, 1610, 1611, 1612,
-          1613, 1614, 1615, 1616, 1617, 1618, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 0xfffd });
+          1613, 1614, 1615, 1616, 1617, 1618, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            0xfffd });
       } else if (name.equals("iso-8859-7")) {
         return new SingleByteEncoding(new int[] { 128, 129, 130, 131, 132, 133,
           134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146,
@@ -518,11 +518,11 @@ private Charsets() {
           147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159,
           160, 0xfffd, 162, 163, 164, 165, 166, 167, 168, 169, 215, 171,
           172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184,
-          185, 247, 187, 188, 189, 190, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 0xfffd, 0xfffd, 0xfffd, 8215, 1488, 1489, 1490, 1491,
+          185, 247, 187, 188, 189, 190, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            0xfffd, 0xfffd, 0xfffd, 8215, 1488, 1489, 1490, 1491,
           1492, 1493, 1494, 1495, 1496, 1497, 1498, 1499, 1500, 1501, 1502,
           1503, 1504, 1505, 1506, 1507, 1508, 1509, 1510, 1511, 1512, 1513,
           1514, 0xfffd, 0xfffd, 8206, 8207, 0xfffd });
@@ -532,11 +532,11 @@ private Charsets() {
           147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159,
           160, 0xfffd, 162, 163, 164, 165, 166, 167, 168, 169, 215, 171,
           172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184,
-          185, 247, 187, 188, 189, 190, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 0xfffd, 0xfffd, 0xfffd, 8215, 1488, 1489, 1490, 1491,
+          185, 247, 187, 188, 189, 190, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            0xfffd, 0xfffd, 0xfffd, 8215, 1488, 1489, 1490, 1491,
           1492, 1493, 1494, 1495, 1496, 1497, 1498, 1499, 1500, 1501, 1502,
           1503, 1504, 1505, 1506, 1507, 1508, 1509, 1510, 1511, 1512, 1513,
           1514, 0xfffd, 0xfffd, 8206, 8207, 0xfffd });
@@ -627,8 +627,8 @@ private Charsets() {
           182, 183, 184, 185, 247, 187, 188, 189, 190, 191, 1456, 1457,
           1458, 1459, 1460, 1461, 1462, 1463, 1464, 1465, 0xfffd, 1467,
           1468, 1469, 1470, 1471, 1472, 1473, 1474, 1475, 1520, 1521, 1522,
-          1523, 1524, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 1488, 1489, 1490, 1491, 1492, 1493, 1494, 1495, 1496,
+          1523, 1524, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            1488, 1489, 1490, 1491, 1492, 1493, 1494, 1495, 1496,
           1497, 1498, 1499, 1500, 1501, 1502, 1503, 1504, 1505, 1506, 1507,
           1508, 1509, 1510, 1511, 1512, 1513, 1514, 0xfffd, 0xfffd, 8206,
           8207, 0xfffd });
@@ -678,11 +678,11 @@ private Charsets() {
           3604, 3605, 3606, 3607, 3608, 3609, 3610, 3611, 3612, 3613, 3614,
           3615, 3616, 3617, 3618, 3619, 3620, 3621, 3622, 3623, 3624, 3625,
           3626, 3627, 3628, 3629, 3630, 3631, 3632, 3633, 3634, 3635, 3636,
-          3637, 3638, 3639, 3640, 3641, 3642, 0xfffd, 0xfffd, 0xfffd,
-          0xfffd, 3647, 3648, 3649, 3650, 3651, 3652, 3653, 3654, 3655,
+          3637, 3638, 3639, 3640, 3641, 3642, 0xfffd, 0xfffd, 0xfffd, 0xfffd,
+            3647, 3648, 3649, 3650, 3651, 3652, 3653, 3654, 3655,
           3656, 3657, 3658, 3659, 3660, 3661, 3662, 3663, 3664, 3665, 3666,
-          3667, 3668, 3669, 3670, 3671, 3672, 3673, 3674, 3675, 0xfffd,
-          0xfffd, 0xfffd, 0xfffd });
+          3667, 3668, 3669, 3670, 3671, 3672, 3673, 3674, 3675, 0xfffd, 0xfffd,
+            0xfffd, 0xfffd });
       } else if (name.equals("macintosh")) {
         return new SingleByteEncoding(new int[] { 196, 197, 199, 201, 209, 214,
           220, 225, 224, 226, 228, 227, 229, 231, 233, 232, 234, 235, 237,
@@ -735,9 +735,11 @@ private Charsets() {
         return builder.toString();
       }
 
-      private static int ReadUtf8(ITransform input,
-        int bytesCount, StringBuilder builder,
-        boolean replace) {
+      private static int ReadUtf8(
+ITransform input,
+int bytesCount,
+StringBuilder builder,
+boolean replace) {
         if (input == null) {
           throw new NullPointerException("input");
         }
@@ -1217,8 +1219,9 @@ private Charsets() {
         }
       }
 
-      private static void ReadUtf7(ITransform input,
-        StringBuilder builder) {
+      private static void ReadUtf7(
+ITransform input,
+StringBuilder builder) {
         if (input == null) {
           throw new NullPointerException("input");
         }
@@ -1316,28 +1319,28 @@ private Charsets() {
                 state = 0;
                  switch (base64count) {
                     case 1: {
-                      // incomplete base64 byte
-                      appender.AppendIncompleteByte();
-                      break;
+                    // incomplete base64 byte
+                    appender.AppendIncompleteByte();
+                    break;
                     }
                     case 2: {
-                      base64value <<= 12;
-                      appender.AppendByte((base64value >> 16) & 0xff, builder);
-                      if ((base64value & 0xffff) != 0) {
-                        // Redundant pad bits
-                        appender.AppendIncompleteByte();
-                      }
-                      break;
+                    base64value <<= 12;
+                    appender.AppendByte((base64value >> 16) & 0xff, builder);
+                    if ((base64value & 0xffff) != 0) {
+                    // Redundant pad bits
+                    appender.AppendIncompleteByte();
+                    }
+                    break;
                     }
                     case 3: {
-                      base64value <<= 6;
-                      appender.AppendByte((base64value >> 16) & 0xff, builder);
-                      appender.AppendByte((base64value >> 8) & 0xff, builder);
-                      if ((base64value & 0xff) != 0) {
-                        // Redundant pad bits
-                        appender.AppendIncompleteByte();
-                      }
-                      break;
+                    base64value <<= 6;
+                    appender.AppendByte((base64value >> 16) & 0xff, builder);
+                    appender.AppendByte((base64value >> 8) & 0xff, builder);
+                    if ((base64value & 0xff) != 0) {
+                    // Redundant pad bits
+                    appender.AppendIncompleteByte();
+                    }
+                    break;
                     }
                 }
                 appender.FinalizeAndReset(builder);

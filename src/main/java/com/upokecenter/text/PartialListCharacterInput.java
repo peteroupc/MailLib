@@ -17,15 +17,15 @@ import java.util.*;
       }
       if (start > ilist.size()) {
         throw new IllegalArgumentException("start (" + start + ") is more than " +
-          (ilist.size()));
+          ilist.size());
       }
       if (length < 0) {
     throw new IllegalArgumentException("length (" + length + ") is less than " +
           "0");
       }
       if (length > ilist.size()) {
-        throw new IllegalArgumentException("length (" + length + ") is more than "+
-          (ilist.size()));
+        throw new IllegalArgumentException("length (" + length + ") is more than " +
+          ilist.size());
       }
       if (ilist.size() - start < length) {
         throw new IllegalArgumentException("ilist's length minus " + start + " (" +

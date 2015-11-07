@@ -214,8 +214,8 @@ int c = this.lastByte = this.ungetting ? this.lastByte :
           // Boundary line found
           if (matchingBoundary.length() + 1 < bytesRead) {
             closingDelim |= this.buffer[matchingBoundary.length() +
-              bufferStart] == '-' && this.buffer[matchingBoundary.length() + 1+
-              bufferStart] == '-' ;
+              bufferStart] == '-' && this.buffer[matchingBoundary.length() + 1 +
+              bufferStart] == '-';
           }
           // Clear the buffer, the boundary line
           // isn't part of any body data
@@ -354,7 +354,7 @@ int c = this.lastByte = this.ungetting ? this.lastByte :
 
     /**
      * Gets a value indicating whether a new body part was detected.
-     * @return True if a new body part was detected; otherwise, false..
+     * @return True if a new body part was detected; otherwise, false.
      */
     public final boolean getHasNewBodyPart() {
         return this.hasNewBodyPart;

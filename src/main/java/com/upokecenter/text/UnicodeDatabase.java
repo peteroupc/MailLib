@@ -35,7 +35,7 @@ private UnicodeDatabase() {
 
     public static boolean IsCombiningMark(int cp) {
       synchronized (valueCmSyncRoot) {
-        combmark = (combmark == null) ? ((ByteData.Decompress(IdnaData.CombiningMarks))) : combmark;
+        combmark = (combmark == null) ? (ByteData.Decompress(IdnaData.CombiningMarks)) : combmark;
         return combmark.GetBoolean(cp);
       }
     }
@@ -70,8 +70,11 @@ private UnicodeDatabase() {
 
     private static int[] decomps;
 
-    public static int GetDecomposition(int cp, boolean compat, int[] buffer,
-      int offset) {
+    public static int GetDecomposition(
+int cp,
+boolean compat,
+int[] buffer,
+int offset) {
       if (cp < 0x80) {
         // ASCII characters have no decomposition
         buffer[offset++] = cp;
@@ -98,8 +101,12 @@ private UnicodeDatabase() {
           if (size > 0) {
             if ((data & (1 << 23)) > 0) {
               realIndex = data & 0x1fffff;
-              System.arraycopy(NormalizationData.CompatDecompMappings, realIndex,
-                buffer, offset, size);
+              System.arraycopy(
+                NormalizationData.CompatDecompMappings,
+                realIndex,
+                buffer,
+                offset,
+                size);
             } else {
               realIndex = 1 + (decomps[0] << 1) + (data & 0x1fffff);
               System.arraycopy(decomps, realIndex, buffer, offset, size);

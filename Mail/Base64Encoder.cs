@@ -13,7 +13,7 @@ namespace PeterO.Mail {
   internal sealed class Base64Encoder : IStringEncoder
   {
     private const string Base64Classic =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" ;
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     private int lineCount;
     private int quantumCount;
@@ -26,13 +26,21 @@ namespace PeterO.Mail {
     private string alphabet;
     private char[] charBuffer;
 
-    public Base64Encoder(bool padding, bool lenientLineBreaks, bool
-      unlimitedLineLength) : this(padding, lenientLineBreaks,
-        unlimitedLineLength, Base64Classic) {
+    public Base64Encoder(
+bool padding,
+bool lenientLineBreaks,
+bool unlimitedLineLength) : this(
+padding,
+lenientLineBreaks,
+unlimitedLineLength,
+Base64Classic) {
     }
 
-    public Base64Encoder(bool padding, bool lenientLineBreaks, bool
-      unlimitedLineLength, string alphabet) {
+    public Base64Encoder(
+bool padding,
+bool lenientLineBreaks,
+bool unlimitedLineLength,
+string alphabet) {
       if (alphabet == null) {
         throw new ArgumentNullException("alphabet");
       }
@@ -60,8 +68,12 @@ namespace PeterO.Mail {
       sb.Append(c);
     }
 
-    private void LineAwareAppendFour(StringBuilder sb, char c1, char c2,
-      char c3, char c4) {
+    private void LineAwareAppendFour(
+StringBuilder sb,
+char c1,
+char c2,
+char c3,
+char c4) {
       int charCount = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= 76) {
@@ -88,9 +100,10 @@ namespace PeterO.Mail {
     private void AddByteInternal(StringBuilder str, byte b) {
       int ib = ((int)b) & 0xff;
       if (this.quantumCount == 2) {
-        this.LineAwareAppendFour(str,
-          this.alphabet[(this.byte1 >> 2) & 63], this.alphabet[((this.byte1&
-            3) << 4) + ((this.byte2 >> 4) & 15)],
+        this.LineAwareAppendFour(
+str,
+          this.alphabet[(this.byte1 >> 2) & 63],
+ this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)],
           this.alphabet[((this.byte2 & 15) << 2) + ((ib >> 6) & 3)],
           this.alphabet[ib & 63]);
         this.byte1 = -1;
@@ -170,14 +183,20 @@ namespace PeterO.Mail {
       this.haveCR = false;
     }
 
-public void WriteToStringAndFinalize(StringBuilder str, byte[] data, int
-  offset, int count) {
+public void WriteToStringAndFinalize(
+StringBuilder str,
+byte[] data,
+int offset,
+int count) {
       this.WriteToString(str, data, offset, count);
       this.FinalizeEncoding(str);
     }
 
-    public void WriteToString(StringBuilder str, byte[] data, int offset,
-      int count) {
+    public void WriteToString(
+StringBuilder str,
+byte[] data,
+int offset,
+int count) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }

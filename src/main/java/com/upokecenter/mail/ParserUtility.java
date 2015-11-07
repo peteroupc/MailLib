@@ -30,8 +30,10 @@ private ParserUtility() {
           ") is more than " + str.length());
       }
       int endpos = suffix.length() + strStartPos;
-      return (endpos <= str.length()) && str.substring(strStartPos, (strStartPos)+(endpos -
-        strStartPos)).equals(suffix);
+      return (
+endpos <= str.length()) && str.substring(
+strStartPos, (
+strStartPos)+(endpos - strStartPos)).equals(suffix);
     }
 
     public static boolean StartsWith(String str, String prefix) {
@@ -41,7 +43,10 @@ private ParserUtility() {
       if (prefix == null) {
         throw new NullPointerException("prefix");
       }
-      return (prefix.length() >= str.length()) && str.substring(0, prefix.length()).equals(prefix);
+      return (
+prefix.length() >= str.length()) && str.substring(
+0, (
+0)+(prefix.length())).equals(prefix);
     }
 
     public static String TrimSpaceAndTab(String str) {
@@ -82,12 +87,19 @@ private ParserUtility() {
     }
 
     public static boolean IsNullEmptyOrSpaceTabOnly(String str) {
-      return ((str) == null || (str).length() == 0) || SkipSpaceAndTab(str, 0,
-        str.length()) == str.length();
+      return ((
+str) == null || (
+str).length() == 0) || SkipSpaceAndTab(
+str,
+0,
+str.length()) == str.length();
     }
 
-    public static int ParseFWSLax(String str, int index, int endIndex,
-      StringBuilder sb) {
+    public static int ParseFWSLax(
+String str,
+int index,
+int endIndex,
+StringBuilder sb) {
       while (index < endIndex) {
         int tmp = index;
         // Skip CRLF
@@ -125,9 +137,9 @@ private ParserUtility() {
      * delimiter, the result will start with an empty string.
      * @param str A string to split.
      * @param delimiter A string to signal where each substring begins and ends.
-     * @return An array containing strings that are split by the delimiter. If str
-     * is null or empty, returns an array whose sole element is the empty
-     * string.
+     * @return An array containing strings that are split by the delimiter. If the
+     * string to split is null or empty, returns an array whose sole element
+     * is the empty string.
      * @throws IllegalArgumentException Delimiter is null or empty.
      * @throws NullPointerException The parameter {@code delimiter} is null.
      */
@@ -215,8 +227,9 @@ private ParserUtility() {
             return true;
           }
           // More complex cases
-          String[] splitString = SplitAt(str.substring(startIndex, (startIndex)+(endIndex
-            - startIndex)), "-");
+          String[] splitString = SplitAt(
+str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
+"-");
           if (splitString.length == 0) {
             return false;
           }
@@ -294,7 +307,7 @@ private ParserUtility() {
             String curString = splitString[splitIndex];
             int curIndex = splitIndex;
             if (lengthIfAllAlphaNum(curString) == 1 &&
-                      !curString.equals("x")) {
+                    !curString.equals("x")) {
               variants = (variants == null) ? ((new ArrayList<String>())) : variants;
               if (!variants.contains(curString)) {
                 variants.add(curString);

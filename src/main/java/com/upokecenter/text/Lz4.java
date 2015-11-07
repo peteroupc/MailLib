@@ -22,7 +22,7 @@ private Lz4() {
     public static byte[] Decompress(byte[] input) {
       int index = 0;
       byte[] copy = new byte[16];
-      ArrayWriter ms = new ArrayWriter(8 + (input.length * 3 / 2));
+      ArrayWriter writer = new ArrayWriter(8 + (input.length * 3 / 2));
       while (index < input.length) {
         int b = input[index];
         int literalLength = (b >> 4) & 15;
@@ -48,7 +48,7 @@ private Lz4() {
           throw new IllegalArgumentException("Invalid LZ4");
         }
         if (literalLength > 0) {
-          ms.WriteBytes(input, index, literalLength);
+          writer.WriteBytes(input, index, literalLength);
 // System.out.println("literal [idx="+index+", len="+literalLength+"] ");
           index += literalLength;
         }
@@ -80,9 +80,9 @@ private Lz4() {
         }
         matchLength += 4;
        // System.out.println("match=" + matchLength + " offset=" + offset +
-       //" index=" + index);
-        int pos = ms.getPosition() - offset;
-        int oldPos = ms.getPosition();
+       // " index=" + index);
+        int pos = writer.getPosition() - offset;
+        int oldPos = writer.getPosition();
         if (pos < 0) {
           throw new IllegalArgumentException("Invalid LZ4");
         }
@@ -92,12 +92,12 @@ private Lz4() {
         if (matchLength > copy.length) {
           copy = new byte[matchLength];
         }
-        ms.setPosition(pos);
-        ms.ReadBytes(copy, 0, matchLength);
+        writer.setPosition(pos);
+        writer.ReadBytes(copy, 0, matchLength);
         // System.out.println("match "+toString(copy,0,matchLength));
-        ms.setPosition(oldPos);
-        ms.WriteBytes(copy, 0, matchLength);
+        writer.setPosition(oldPos);
+        writer.WriteBytes(copy, 0, matchLength);
       }
-      return ms.ToArray();
+      return writer.ToArray();
     }
   }
