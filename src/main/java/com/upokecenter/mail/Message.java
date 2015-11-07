@@ -366,10 +366,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           String headerValue = this.headers.get(i + 1);
           if (
 HeaderFieldParsers.GetParser(
-name).Parse(headerValue,
- 0,
-            headerValue.length(),
- null) != headerValue.length()) {
+name).Parse(
+headerValue,
+0,
+headerValue.length(),
+null) != headerValue.length()) {
             return false;
           }
           have = true;
@@ -748,10 +749,10 @@ this.contentType = digest ? MediaType.MessageRfc822 :
           this.transferEncoding = EncodingEightBit;
         } else if (this.contentType.getTypeAndSubType().equals("text/html")) {
           if (charset.equals("us-ascii") || charset.equals("ascii") ||
-            charset.equals("windows-1252") || charset.equals("windows-1251"
-) ||
-         (charset.length() > 9 && charset.substring(0,9).equals("iso-8859-"
-))) {
+            charset.equals("windows-1252") || charset.equals(
+"windows-1251") ||
+         (charset.length() > 9 && charset.substring(0, 9).equals(
+"iso-8859-"))) {
             // DEVIATION: Be a little more liberal with text/html and
             // single-byte charsets or UTF-8
             this.transferEncoding = EncodingEightBit;
@@ -765,8 +766,8 @@ this.contentType = digest ? MediaType.MessageRfc822 :
           (this.contentType.getTopLevelType().equals("message") &&
              !this.contentType.getSubType().equals("global") &&
              !this.contentType.getSubType().equals("global-headers") &&
-         !this.contentType.getSubType().equals("global-disposition-notification"
-) &&
+         !this.contentType.getSubType().equals(
+"global-disposition-notification") &&
              !this.contentType.getSubType().equals("global-delivery-status"))) {
           if (this.transferEncoding == EncodingQuotedPrintable) {
             // DEVIATION: Treat quoted-printable for multipart and message
@@ -1401,8 +1402,8 @@ boolean checkBoundaryDelimiter) {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
           boolean msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
-     if ((builder.getSubType().equals("rfc822") || builder.getSubType().equals("news"
-)) &&
+     if ((builder.getSubType().equals("rfc822") || builder.getSubType().equals(
+"news")) &&
               !msgCanBeUnencoded) {
             builder.SetSubType("global");
           } else if (builder.getSubType().equals("disposition-notification") &&
@@ -1463,7 +1464,9 @@ depth > 0);
         }
         if (
 depth > 0 && (
-name.length() < 8 || !name.substring(0,8).equals("content-"))) {
+name.length() < 8 || !name.substring(
+0, (
+0)+(8)).equals("content-"))) {
           // don't generate header fields not starting with "Content-"
           // in body parts
           continue;
@@ -1513,10 +1516,10 @@ downgraded,
 0,
 downgraded.length())) {
             if (name.equals("message-id") ||
-              name.equals("resent-message-id") || name.equals("in-reply-to"
-) ||
-              name.equals("references") || name.equals("original-recipient"
-) ||
+              name.equals("resent-message-id") || name.equals(
+"in-reply-to") ||
+              name.equals("references") || name.equals(
+"original-recipient") ||
                 name.equals("final-recipient")) {
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
@@ -1698,8 +1701,8 @@ null);
           // Downgrade the comments in the type part
           // NOTE: Final-recipient has the same syntax as original-recipient,
           // except for the header field name
-          typePart = HeaderFieldParsers.GetParser("original-recipient"
-).DowngradeFieldValue(typePart);
+          typePart = HeaderFieldParsers.GetParser(
+"original-recipient").DowngradeFieldValue(typePart);
           if (isUtf8) {
             // Downgrade the non-ASCII characters in the address
             StringBuilder builder = new StringBuilder();
@@ -1978,8 +1981,8 @@ boolean start) {
             }
             break;
           } else if (c == 0x20 || c == 0x09) {
-    if (start && c == 0x20 && sb.length() == 4 && sb.toString().equals("From"
-)) {
+    if (start && c == 0x20 && sb.length() == 4 && sb.toString().equals(
+"From")) {
               // Mbox convention, skip the entire line
               sb.delete(0, (0)+(sb.length()));
               while (true) {

@@ -66,19 +66,19 @@ boolean replace) {
       }
       if (offset < 0) {
         throw new IllegalArgumentException("offset (" + offset + ") is less than " +
-                              "0");
+                    "0");
       }
       if (offset > bytes.length) {
         throw new IllegalArgumentException("offset (" + offset + ") is more than " +
-                              bytes.length);
+                    bytes.length);
       }
       if (bytesCount < 0) {
         throw new IllegalArgumentException("bytesCount (" + bytesCount +
-                              ") is less than 0");
+                    ") is less than 0");
       }
       if (bytesCount > bytes.length) {
         throw new IllegalArgumentException("bytesCount (" + bytesCount +
-                              ") is more than " + bytes.length);
+                    ") is more than " + bytes.length);
       }
       if (bytes.length - offset < bytesCount) {
         throw new IllegalArgumentException("bytes's length minus " + offset + " (" +
@@ -220,7 +220,7 @@ int surrogateBehavior) {
       if ((c & 0xf800) == 0xd800) {
         // unpaired surrogate
         return (surrogateBehavior == 0) ? 0xfffd : ((surrogateBehavior == 1) ?
-                              c : (-1));
+                    c : (-1));
       }
       return c;
     }
@@ -275,7 +275,7 @@ int surrogateBehavior) {
       } else if ((c & 0xf800) == 0xd800) {
         // unpaired surrogate
         return (surrogateBehavior == 0) ? 0xfffd : ((surrogateBehavior == 1) ?
-                              c : (-1));
+                    c : (-1));
       }
       return c;
     }
@@ -377,7 +377,7 @@ int surrogateBehavior) {
         }
       }
       return (strA.length() == strB.length()) ? 0 : ((strA.length() < strB.length()) ?
-                              -1 : 1);
+                    -1 : 1);
     }
 
     /**
@@ -444,19 +444,19 @@ boolean lenientLineBreaks) throws java.io.IOException {
       }
       if (offset < 0) {
         throw new IllegalArgumentException("offset (" + offset + ") is less than " +
-                              "0");
+                    "0");
       }
       if (offset > str.length()) {
         throw new IllegalArgumentException("offset (" + offset + ") is more than " +
-                              str.length());
+                    str.length());
       }
       if (length < 0) {
         throw new IllegalArgumentException("length (" + length + ") is less than " +
-                              "0");
+                    "0");
       }
       if (length > str.length()) {
         throw new IllegalArgumentException("length (" + length + ") is more than " +
-                              str.length());
+                    str.length());
       }
       if (str.length() - offset < length) {
         throw new IllegalArgumentException("str.length() minus offset (" +
@@ -472,7 +472,7 @@ boolean lenientLineBreaks) throws java.io.IOException {
         if (c <= 0x7f) {
           if (lenientLineBreaks) {
             if (c == 0x0d && (index + 1 >= endIndex || str.charAt(index + 1) !=
-                              0x0a)) {
+                    0x0a)) {
               // bare CR, convert to CRLF
               if (byteIndex + 2 > StreamedStringBufferLength) {
                 // Write bytes retrieved so far
@@ -481,6 +481,18 @@ boolean lenientLineBreaks) throws java.io.IOException {
               }
               bytes[byteIndex++] = 0x0d;
               bytes[byteIndex++] = 0x0a;
+              continue;
+            }
+            if (c == 0x0d && str.charAt(index + 1) == 0x0a) {
+              // CR-LF pair
+              if (byteIndex + 2 > StreamedStringBufferLength) {
+                // Write bytes retrieved so far
+                stream.write(bytes, 0, byteIndex);
+                byteIndex = 0;
+              }
+              bytes[byteIndex++] = 0x0d;
+              bytes[byteIndex++] = 0x0a;
+              ++index;
               continue;
             }
             if (c == 0x0a) {
@@ -598,19 +610,19 @@ boolean replace) {
       }
       if (offset < 0) {
         throw new IllegalArgumentException("offset (" + offset + ") is less than " +
-                              "0");
+                    "0");
       }
       if (offset > data.length) {
         throw new IllegalArgumentException("offset (" + offset + ") is more than " +
-                              data.length);
+                    data.length);
       }
       if (bytesCount < 0) {
         throw new IllegalArgumentException("bytesCount (" + bytesCount +
-                              ") is less than 0");
+                    ") is less than 0");
       }
       if (bytesCount > data.length) {
         throw new IllegalArgumentException("bytesCount (" + bytesCount +
-                              ") is more than " + data.length);
+                    ") is more than " + data.length);
       }
       if (data.length - offset < bytesCount) {
         throw new IllegalArgumentException("data.length minus offset (" +

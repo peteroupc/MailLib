@@ -471,7 +471,9 @@ whitespaceStart)+(whitespaceEnd - whitespaceStart)));
       String retval = builder.toString();
       if (
 wordsWereDecoded && (
-hasSuspiciousText || (retval.indexOf("=?") >= 0 && retval.indexOf(
+hasSuspiciousText || (
+retval.indexOf(
+"=?") >= 0 && retval.indexOf(
 "?=") >= 0))) {
         if (context == EncodedWordContext.Comment) {
           String wrappedComment = "(" + retval + ")";

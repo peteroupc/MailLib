@@ -1168,7 +1168,7 @@ null);
     /// <param name='defaultValue'>The media type to return if the string is
     /// syntactically invalid. Can be null.</param>
     /// <returns>A MediaType object.</returns>
-    /// <exception cref='ArgumentNullException' >The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str' />
     /// is null.</exception>
     public static MediaType Parse(string str, MediaType defaultValue) {

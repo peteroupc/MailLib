@@ -175,8 +175,9 @@ token[2]);
 Message.HasTextToEscapeIgnoreEncodedWords(
 domain,
 0,
-domain.Length) && Idna.IsValidDomainName(domain,
- false)) ? Idna.EncodeDomainName(
+domain.Length) && Idna.IsValidDomainName(
+domain,
+false)) ? Idna.EncodeDomainName(
 domain) : str.Substring(
 token2[1],
 token2[2] - token2[1]);
@@ -268,8 +269,9 @@ token[2]);
 Message.HasTextToEscapeIgnoreEncodedWords(
 domain,
 0,
-domain.Length) && Idna.IsValidDomainName(domain,
- false)) ? Idna.EncodeDomainName(
+domain.Length) && Idna.IsValidDomainName(
+domain,
+false)) ? Idna.EncodeDomainName(
 domain) : str.Substring(
 token2[1],
 token2[2] - token2[1]);

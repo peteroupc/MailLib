@@ -41,6 +41,27 @@ Source Code
 ---------
 Source code is available in the [project page](https://github.com/peteroupc/MailLib).
 
+Example
+---------
+
+An example of reading an email message from a file:
+
+    // Create a file stream from the email message file
+    using(var file = new System.IO.FileStream("email.eml",System.IO.FileMode.Read)){
+      // Read the email message
+      var message = new Message(file);
+      // Output each address in the From header
+      foreach(var addr in message.FromAddresses){
+         Console.WriteLine("From: "+addr);
+      }
+      // Output each address in the To header
+      foreach(var addr in message.ToAddresses){
+         Console.WriteLine("To: "+addr);
+      }
+      // Output the message's text
+      Console.WriteLine(message.BodyString);
+    }
+
 Release Notes
 ---------
 Version 0.7.0:
