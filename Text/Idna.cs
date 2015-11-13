@@ -10,12 +10,10 @@ using System.Text;
 
 namespace PeterO.Text {
     /// <summary><para>Contains methods that implement Internationalized Domain
-    /// Names in Applications (IDNA). IDNA enables using a wider range of
-    /// letters,
+    /// Names in Applications (IDNA). IDNA enables using a wider range of letters,
     /// numbers, and certain other characters in domain names.</para>
     /// <para>NOTICE:
-    /// While this class's source code is in the public domain, the class uses
-    /// two
+    /// While this class's source code is in the public domain, the class uses two
     /// internal classes, called <c>NormalizationData</c>
     /// and <c>IdnaData</c>
     /// , that

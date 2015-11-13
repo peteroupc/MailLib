@@ -16,11 +16,10 @@ namespace PeterO.Mail {
   public class Address {
     private readonly string localPart;
 
-    /// <summary>Gets the local part of this email address (the part before the
-    /// "@"
+    /// <summary>Gets the local part of this email address (the part before the "@"
     /// sign).</summary>
     /// <value>The local part of this email address (the part before the
-    /// &#x22;@&#x22; sign).</value>
+    /// &quot;@&quot; sign).</value>
     public string LocalPart {
       get {
         return this.localPart;
@@ -97,8 +96,7 @@ null) == this.localPart.Length) {
 
     /// <summary>Gets the domain of this email address (the part after the "@"
     /// sign).</summary>
-    /// <value>The domain of this email address (the part after the
-    /// &#x22;@&#x22;
+    /// <value>The domain of this email address (the part after the &quot;@&quot;
     /// sign).</value>
     public string Domain {
       get {

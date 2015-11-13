@@ -7,6 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
+import com.upokecenter.util.*;
+
     /**
      * Utility methods for domain names.
      */
@@ -38,9 +40,6 @@ private DomainUtility() {
 
     /**
      * Gets the Punycode length of a string (Punycode is defined in RFC 3492).
-     * @param str A string object.
-     * @param index A 32-bit signed integer.
-     * @param endIndex Another 32-bit signed integer.
      * @return The Punycode length of the encoded string. If the string contains
      * non-ASCII characters, returns the Punycode length plus 4 (the length
      * of the ACE prefix). If there are only ASCII characters, returns the

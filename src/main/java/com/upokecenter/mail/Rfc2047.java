@@ -10,6 +10,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import java.util.*;
 
 import com.upokecenter.util.*;
+using PeterO.Text.Encoders;
 
   final class Rfc2047 {
 private Rfc2047() {
@@ -380,7 +381,9 @@ asterisk + 1)+(str.length() - (asterisk + 1)));
                 ITransform transform = base64 ?
                   (ITransform)new BEncodingStringTransform(encodedText) :
                   (ITransform)new QEncodingStringTransform(encodedText);
-                ICharset encoding = Charsets.GetCharset(charset);
+                ICharacterEncoding encoding = Encodings.GetEncoding(
+                  charset,
+                  true);
                 if (encoding == null) {
                   // System.out.println("Unknown charset " + charset);
      decodedWord = str.substring(
@@ -390,7 +393,7 @@ startIndex - 2)+(afterLast - (startIndex - 2)));
                 } else {
                   // System.out.println("Encoded " + (base64 ? "B" : "Q") +
                   // " to: " + (encoding.GetString(transform)));
-                  decodedWord = encoding.GetString(transform);
+                  decodedWord = Encodings.DecodeString(encoding, transform);
                   // Check for text in the decoded String
                   // that could render the comment syntactically invalid
                   // (the encoded

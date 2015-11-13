@@ -10,7 +10,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * A generic interface for reading data one byte at a time.
      */
-  interface ITransform {
+  public interface ITransform {
     /**
      * Reads a byte from the data source.
      * @return The byte read, or -1 if the end of the source is reached.

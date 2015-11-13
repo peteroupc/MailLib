@@ -9,18 +9,14 @@ using System;
 using System.Collections.Generic;
 
 namespace PeterO.Text {
-    /// <summary><para>Implements the Unicode normalization algorithm and
-    /// contains
-    /// methods and functionality to test and convert Unicode strings for
-    /// Unicode
-    /// normalization. This is similar to the Normalizer class, except it
-    /// implements
+    /// <summary><para>Implements the Unicode normalization algorithm and contains
+    /// methods and functionality to test and convert Unicode strings for Unicode
+    /// normalization. This is similar to the Normalizer class, except it implements
     /// the ICharacterInput interface.</para>
     /// <para>NOTICE: While this class's
     /// source code is in the public domain, the class uses an internal class,
     /// called NormalizationData, that includes data derived from the Unicode
-    /// Character Database. See the documentation for the Normalizer class for
-    /// the
+    /// Character Database. See the documentation for the Normalizer class for the
     /// permission notice for the Unicode Character Database.</para>
     /// </summary>
   public sealed class NormalizingCharacterInput : ICharacterInput
@@ -29,8 +25,7 @@ namespace PeterO.Text {
     /// <param name='str'>A string object.</param>
     /// <param name='form'>A Normalization object.</param>
     /// <returns>A list of Unicode characters.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='str' />
+    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
     /// is null.</exception>
     public static IList<int> GetChars(string str, Normalization form) {
       if (str == null) {
@@ -43,8 +38,7 @@ namespace PeterO.Text {
     /// <param name='str'>An ICharacterInput object.</param>
     /// <param name='form'>A Normalization object.</param>
     /// <returns>A list of Unicode characters.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='str' />
+    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
     /// is null.</exception>
     public static IList<int> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
@@ -73,16 +67,14 @@ namespace PeterO.Text {
     private IList<int> characterList;
     private int characterListPos;
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput
-    /// class
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput class
     /// using Normalization Form C.</summary>
     /// <param name='characterList'>An IList object.</param>
     public NormalizingCharacterInput(IList<int> characterList) :
       this(characterList, Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput
-    /// class
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput class
     /// using Normalization Form C.</summary>
     /// <param name='str'>A string object.</param>
   public NormalizingCharacterInput(
@@ -91,8 +83,7 @@ str,
 Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput
-    /// class
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput class
     /// using Normalization Form C.</summary>
     /// <param name='input'>An ICharacterInput object.</param>
     public NormalizingCharacterInput(
@@ -101,8 +92,7 @@ input,
 Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput
-    /// class
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput class
     /// using the given normalization form.</summary>
     /// <param name='characterList'>An IList object.</param>
     /// <param name='form'>A Normalization object.</param>
@@ -121,8 +111,7 @@ Normalization form) {
         Normalization.NFKD;
     }
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput
-    /// class.
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput class.
     /// Uses a portion of a string as the input.</summary>
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer.</param>

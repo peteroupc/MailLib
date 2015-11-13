@@ -10,6 +10,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import java.util.*;
 
 import com.upokecenter.util.*;
+using PeterO.Text.Encoders;
 
     /**
      * <p>Specifies what kind of data a message body is.</p> <p>A media type
@@ -788,24 +789,24 @@ firstQuote + 1)+(secondQuote - (firstQuote + 1)));
         return null;
       }
       String paramValue = value.substring(secondQuote + 1);
-      ICharset cs = Charsets.GetCharset(charset);
-      cs = (cs == null) ? (Charsets.Ascii) : cs;
+      ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
+      cs = (cs == null) ? (Encodings.GetEncoding("us-ascii",true)) : cs;
       return DecodeRfc2231Encoding(paramValue, cs);
     }
 
-    private static ICharset GetRfc2231Charset(String value) {
+    private static ICharacterEncoding GetRfc2231Charset(String value) {
       if (value == null) {
-        return Charsets.Ascii;
+        return Encodings.GetEncoding("us-ascii",true);
       }
       int firstQuote = value.indexOf('\'');
       if (firstQuote < 0) {
         // not a valid encoded parameter
-        return Charsets.Ascii;
+        return Encodings.GetEncoding("us-ascii",true);
       }
       int secondQuote = value.indexOf('\'',firstQuote + 1);
       if (secondQuote < 0) {
         // not a valid encoded parameter
-        return Charsets.Ascii;
+        return Encodings.GetEncoding("us-ascii",true);
       }
       String charset = value.substring(0, firstQuote);
       String language = value.substring(
@@ -815,18 +816,20 @@ firstQuote + 1)+(secondQuote - (firstQuote + 1)));
         // not a valid language tag
         return null;
       }
-      ICharset cs = Charsets.GetCharset(charset);
-      return (cs == null) ? Charsets.Ascii : cs;
+      ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
+      cs = (cs == null) ? (Encodings.GetEncoding("us-ascii",true)) : cs;
+      return cs;
     }
 
   private static String DecodeRfc2231Encoding(
 String value,
-ICharset charset) {
+ICharacterEncoding charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.indexOf('\'');
-      return (quote >= 0) ? null : charset.GetString(new
-        PercentEncodingStringTransform(value));
+      return (quote >= 0) ? null : Encodings.DecodeString(
+        charset,
+        new PercentEncodingStringTransform(value));
     }
 
     private static boolean ExpandRfc2231Extensions(Map<String, String>
@@ -861,7 +864,7 @@ ICharset charset) {
           String realName = name.substring(0, asterisk);
           String realValue = (asterisk == name.length() - 3) ?
             DecodeRfc2231Extension(value) : value;
-          ICharset charsetUsed = GetRfc2231Charset(
+          ICharacterEncoding charsetUsed = GetRfc2231Charset(
             (asterisk == name.length() - 3) ? value : null);
           parameters.remove(name);
           int pindex = 1;

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using PeterO;
+using PeterO.Text.Encoders;
 
 namespace PeterO.Mail {
   internal static class Rfc2047 {
@@ -421,7 +422,9 @@ str.Length - (asterisk + 1));
                 ITransform transform = base64 ?
                   (ITransform)new BEncodingStringTransform(encodedText) :
                   (ITransform)new QEncodingStringTransform(encodedText);
-                ICharset encoding = Charsets.GetCharset(charset);
+                ICharacterEncoding encoding = Encodings.GetEncoding(
+                  charset,
+                  true);
                 if (encoding == null) {
                   // Console.WriteLine("Unknown charset " + charset);
      decodedWord = str.Substring(
@@ -431,7 +434,7 @@ afterLast - (startIndex - 2));
                 } else {
                   // Console.WriteLine("Encoded " + (base64 ? "B" : "Q") +
                   // " to: " + (encoding.GetString(transform)));
-                  decodedWord = encoding.GetString(transform);
+                  decodedWord = Encodings.DecodeString(encoding, transform);
                   // Check for text in the decoded string
                   // that could render the comment syntactically invalid
                   // (the encoded
