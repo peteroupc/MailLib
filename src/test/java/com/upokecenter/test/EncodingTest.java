@@ -101,15 +101,15 @@ import com.upokecenter.text.*;
             System.out.println("Colon at end");
             return false;
           }
-          if (index == 0 || str.charAt(index - 1) == 0x20 || str.charAt(index - 1) == 0x09||
+          if (index == 0 || str.charAt(index - 1) == 0x20 || str.charAt(index - 1) == 0x09 ||
             str.charAt(index - 1) == 0x0d) {
 System.out.println("End of line, whitespace, or start of message before colon");
             return false;
           }
           if (str.charAt(index + 1) != 0x20) {
             String test = str.substring(Math.max(index + 2 - 30, 0), (Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
-  System.out.println("No space after header name and colon: (0x {0:X2}) [" +
-              test + "] " + index);
+      System.out.println("No space after header name and colon: (0x {0:X2}) [" +
+                    test + "] " + index);
             return false;
           }
           colon = true;
@@ -125,13 +125,13 @@ System.out.println("End of line, whitespace, or start of message before colon");
             wordLength > 78);
         }
         if (c == 0) {
-   System.out.println("CTL in message (0x" + ToBase16(new byte[] { (byte)c  }) +
-            ")");
+          System.out.println("CTL in message (0x" + ToBase16(new byte[] { (byte)c  }) +
+                   ")");
           return false;
         }
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
-    System.out.println("CTL in header (0x" + ToBase16(new byte[] { (byte)c  }) +
-            ")");
+          System.out.println("CTL in header (0x" + ToBase16(new byte[] { (byte)c  }) +
+                  ")");
           return false;
         }
         int maxLineLength = 998;
@@ -215,16 +215,16 @@ System.out.println("End of line, whitespace, or start of message before colon");
         throw new NullPointerException("data");
       }
       if (offset < 0) {
-    throw new IllegalArgumentException("offset (" + offset + ") is less than " +
-          "0");
+        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
+              "0");
       }
       if (offset > data.length) {
         throw new IllegalArgumentException("offset (" + offset + ") is more than " +
           data.length);
       }
       if (count < 0) {
-      throw new IllegalArgumentException("count (" + count + ") is less than " +
-          "0");
+        throw new IllegalArgumentException("count (" + count + ") is less than " +
+            "0");
       }
       if (count > data.length) {
         throw new IllegalArgumentException("count (" + count + ") is more than " +
@@ -236,10 +236,10 @@ System.out.println("End of line, whitespace, or start of message before colon");
       }
       java.io.ByteArrayInputStream ms = new java.io.ByteArrayInputStream(data, offset, count);
       try {
-    Object t = Reflect.Construct(MailNamespace() +
-          ".QuotedPrintableTransform" , Reflect.Construct(MailNamespace() +
-            ".WrappedStream" , ms), lenientLineBreaks,
-          unlimitedLineLength ? -1 : 76, false);
+        Object t = Reflect.Construct(MailNamespace() +
+              ".QuotedPrintableTransform", Reflect.Construct(MailNamespace() +
+                ".WrappedStream", ms), lenientLineBreaks,
+              unlimitedLineLength ? -1 : 76, false);
         Object readByteMethod = Reflect.GetMethod(t, "ReadByte");
         readByteMethod = (readByteMethod == null) ? ((Reflect.GetMethod(t, "read"))) : readByteMethod;
         while (true) {
@@ -315,13 +315,13 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
       StringBuilder sb = new StringBuilder();
       Object enc = Reflect.Construct(MailNamespace() +
-        ".QuotedPrintableEncoder" , mode, false);
+        ".QuotedPrintableEncoder", mode, false);
       Reflect.Invoke(enc, "WriteToString", sb, bytes, 0, bytes.length);
       Assert.assertEquals(expectedOutput, sb.toString());
     }
 
-  public void TestQuotedPrintable(String input, String a, String b, String
-      c) {
+    public void TestQuotedPrintable(String input, String a, String b, String
+        c) {
       TestQuotedPrintable(input, 0, a);
       TestQuotedPrintable(input, 1, b);
       TestQuotedPrintable(input, 2, c);
@@ -334,17 +334,17 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     private void TestParseDomain(String str, String expected) {
-      if (!(str.length() == (Integer)Reflect.InvokeStatic(MailNamespace()+
-        ".HeaderParser" , "ParseDomain" , str, 0, str.length(), null)))Assert.fail();
-      Assert.assertEquals(expected, (String)Reflect.InvokeStatic(MailNamespace()+
-        ".HeaderParserUtility" , "ParseDomain" , str, 0, str.length()));
+      if (!(str.length() == (Integer)Reflect.InvokeStatic(MailNamespace() +
+        ".HeaderParser", "ParseDomain", str, 0, str.length(), null)))Assert.fail();
+      Assert.assertEquals(expected, (String)Reflect.InvokeStatic(MailNamespace() +
+        ".HeaderParserUtility", "ParseDomain", str, 0, str.length()));
     }
 
     private void TestParseLocalPart(String str, String expected) {
-      if (!(str.length() == (Integer)Reflect.InvokeStatic(MailNamespace()+
-        ".HeaderParser" , "ParseLocalPart" , str, 0, str.length(), null)))Assert.fail();
-      Assert.assertEquals(expected, (String)Reflect.InvokeStatic(MailNamespace()+
-        ".HeaderParserUtility" , "ParseLocalPart" , str, 0, str.length()));
+      if (!(str.length() == (Integer)Reflect.InvokeStatic(MailNamespace() +
+        ".HeaderParser", "ParseLocalPart", str, 0, str.length(), null)))Assert.fail();
+      Assert.assertEquals(expected, (String)Reflect.InvokeStatic(MailNamespace() +
+        ".HeaderParserUtility", "ParseLocalPart", str, 0, str.length()));
     }
 
     @Test
@@ -375,18 +375,18 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     public static void TestWordWrapOne(String firstWord, String nextWords,
       String expected) {
-Object ww = Reflect.Construct(MailNamespace() + ".WordWrapEncoder",
-        firstWord);
+      Object ww = Reflect.Construct(MailNamespace() + ".WordWrapEncoder",
+              firstWord);
       Reflect.Invoke(ww, "AddString", nextWords);
       Assert.assertEquals(expected, ww.toString());
     }
 
     @Test
     public void TestWordWrap() {
-      TestWordWrapOne("Subject:" , Repeat("xxxx " , 10) + "y" , "Subject: "+
-        Repeat("xxxx " , 10) + "y");
-      TestWordWrapOne("Subject:" , Repeat("xxxx " , 10), "Subject: " +
-        Repeat("xxxx " , 9) + "xxxx");
+      TestWordWrapOne("Subject:", Repeat("xxxx ", 10) + "y", "Subject: " +
+        Repeat("xxxx ", 10) + "y");
+      TestWordWrapOne("Subject:", Repeat("xxxx ", 10), "Subject: " +
+        Repeat("xxxx ", 9) + "xxxx");
     }
 
     @Test
@@ -395,18 +395,22 @@ Object ww = Reflect.Construct(MailNamespace() + ".WordWrapEncoder",
   "Joe P Customer <customer@example.com>, Jane W Customer <jane@example.com>"
         ;
       if (testString.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser" , "ParseMailboxList" , testString, 0,
+        ".HeaderParser", "ParseMailboxList", testString, 0,
         testString.length(), null)) {
- Assert.fail(testString);
-}
+        Assert.fail(testString);
+      }
     }
 
     @Test
     public void TestPunycodeDecode() {
-      Assert.assertEquals(
-  "e\u00e1",
-  Reflect.InvokeStatic(Idna.class.getPackage().getName() + ".DomainUtility",
-    "PunycodeDecode" , "xn--e-ufa" , 4, 9));
+      {
+        String stringTemp = (String)Reflect.InvokeStatic(Idna.class.getPackage().getName() +
+          ".DomainUtility",
+            "PunycodeDecode", "xn--e-ufa", 4, 9);
+        Assert.assertEquals(
+        "e\u00e1",
+        stringTemp);
+      }
     }
 
     @Test
@@ -429,7 +433,7 @@ Object ww = Reflect.Construct(MailNamespace() + ".WordWrapEncoder",
       }
       try {
         Reflect.Construct(MailNamespace() + ".Address",
-          EncodingTest.Repeat("local" , 200), "example.com");
+          EncodingTest.Repeat("local", 200), "example.com");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -439,10 +443,10 @@ Object ww = Reflect.Construct(MailNamespace() + ".WordWrapEncoder",
     }
 
     static Object Transform(String str) {
-      return Reflect.Construct(MailNamespace() + ".WrappedStream" , new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(str, true)));
+      return Reflect.Construct(MailNamespace() + ".WrappedStream", new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(str, true)));
     }
     static Object Transform(byte[] bytes) {
-      return Reflect.Construct(MailNamespace() + ".WrappedStream" , new java.io.ByteArrayInputStream(bytes));
+      return Reflect.Construct(MailNamespace() + ".WrappedStream", new java.io.ByteArrayInputStream(bytes));
     }
 
     static byte[] GetBytes(Object trans) {
@@ -466,8 +470,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     @Test
     public void TestBase64() {
       AssertEqual(
-        new byte[] { 0, 16, 1  }, GetBytes(Reflect.Construct(MailNamespace()+
-          ".Base64Transform" , Transform("ABAB"), true)));
+        new byte[] { 0, 16, 1  }, GetBytes(Reflect.Construct(MailNamespace() +
+          ".Base64Transform", Transform("ABAB"), true)));
       AssertEqual(new byte[] { 0, 16, 1, 93  },
           GetBytes(Reflect.Construct(MailNamespace() + ".Base64Transform",
           Transform("ABABXX=="), true)));
@@ -490,50 +494,49 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
     @Test
     public void TestPercentEncoding() {
-   Object utf8 = Reflect.GetFieldStatic(MailNamespace() + ".Charsets",
-        "Utf8");
+      Object utf8 = CharsetsTest.GetCharset("utf-8");
       Assert.assertEquals(
-        "test\u00be", (String)Reflect.Invoke(utf8, "GetString",
+        "test\u00be", (String)CharsetsTest.CharsetGetString(utf8,
           Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform" , "test%c2%be")));
+            ".PercentEncodingStringTransform", "test%c2%be")));
       Assert.assertEquals("tesA",
-        (String)Reflect.Invoke(utf8, "GetString",
+        (String)CharsetsTest.CharsetGetString(utf8,
           Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform" , "tes%41")));
+            ".PercentEncodingStringTransform", "tes%41")));
       Assert.assertEquals("tesa",
-        (String)Reflect.Invoke(utf8, "GetString",
+        (String)CharsetsTest.CharsetGetString(utf8,
           Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform" , "tes%61")));
+            ".PercentEncodingStringTransform", "tes%61")));
       Assert.assertEquals("tes\r\na",
-        (String)Reflect.Invoke(utf8, "GetString",
+        (String)CharsetsTest.CharsetGetString(utf8,
           Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform" , "tes%0d%0aa")));
+            ".PercentEncodingStringTransform", "tes%0d%0aa")));
       Assert.assertEquals("tes\r\na",
-        (String)Reflect.Invoke(utf8, "GetString",
+        (String)CharsetsTest.CharsetGetString(utf8,
           Reflect.Construct(MailNamespace() + ".QEncodingStringTransform",
           "tes=0d=0aa")));
       Assert.assertEquals(
-        "tes%xx", (String)Reflect.Invoke(utf8, "GetString",
+        "tes%xx", (String)CharsetsTest.CharsetGetString(utf8,
           Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform" , "tes%xx")));
+            ".PercentEncodingStringTransform", "tes%xx")));
       Assert.assertEquals("tes%dxx",
-        (String)Reflect.Invoke(utf8, "GetString",
+        (String)CharsetsTest.CharsetGetString(utf8,
           Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform" , "tes%dxx")));
+            ".PercentEncodingStringTransform", "tes%dxx")));
       Assert.assertEquals("tes=dxx",
-        (String)Reflect.Invoke(utf8, "GetString",
+        (String)CharsetsTest.CharsetGetString(utf8,
           Reflect.Construct(MailNamespace() + ".QEncodingStringTransform",
           "tes=dxx")));
       Assert.assertEquals(
-        "tes??x", (String)Reflect.Invoke(utf8, "GetString",
+        "tes??x", (String)CharsetsTest.CharsetGetString(utf8,
           Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform" , "tes\r\nx")));
+            ".PercentEncodingStringTransform", "tes\r\nx")));
     }
 
     @Test
     public void TestArgumentValidation() {
       try {
-        Reflect.Construct(MailNamespace() + ".Base64Encoder" , false, false,
+        Reflect.Construct(MailNamespace() + ".Base64Encoder", false, false,
           false, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
@@ -542,7 +545,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        Reflect.Construct(MailNamespace() + ".Base64Encoder" , false, false,
+        Reflect.Construct(MailNamespace() + ".Base64Encoder", false, false,
           false, "xyz");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
@@ -566,11 +569,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      Object encoder = Reflect.Construct(MailNamespace() + ".Base64Encoder"
-        , false, false, false);
+      Object encoder = Reflect.Construct(MailNamespace() + ".Base64Encoder",
+false, false, false);
       try {
-     Reflect.Invoke(encoder, "WriteToString" , new StringBuilder(), null, 0,
-          1);
+        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), null, 0,
+             1);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
       } catch (Exception ex) {
@@ -578,7 +581,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        Reflect.Invoke(encoder, "WriteToString" , new StringBuilder(), new byte[] { 0  }, -1, 1);
+        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, -1, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -586,7 +589,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        Reflect.Invoke(encoder, "WriteToString" , new StringBuilder(), new byte[] { 0  }, 2, 1);
+        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 2, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -594,7 +597,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        Reflect.Invoke(encoder, "WriteToString" , new StringBuilder(), new byte[] { 0  }, 0, -1);
+        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 0, -1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -602,7 +605,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        Reflect.Invoke(encoder, "WriteToString" , new StringBuilder(), new byte[] { 0  }, 0, 2);
+        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 0, 2);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -610,7 +613,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        Reflect.Invoke(encoder, "WriteToString" , new StringBuilder(), new byte[] { 0  }, 1, 1);
+        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 1, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -618,10 +621,10 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       encoder = Reflect.Construct(MailNamespace() +
-        ".QuotedPrintableEncoder" , 0, false);
+        ".QuotedPrintableEncoder", 0, false);
       try {
-     Reflect.Invoke(encoder, "WriteToString" , new StringBuilder(), null, 0,
-          1);
+        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), null, 0,
+             1);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
       } catch (Exception ex) {
@@ -629,7 +632,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        Reflect.Invoke(encoder, "WriteToString" , new StringBuilder(), new byte[] { 0  }, -1, 1);
+        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, -1, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -637,7 +640,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        Reflect.Invoke(encoder, "WriteToString" , new StringBuilder(), new byte[] { 0  }, 2, 1);
+        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 2, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -645,7 +648,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        Reflect.Invoke(encoder, "WriteToString" , new StringBuilder(), new byte[] { 0  }, 0, -1);
+        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 0, -1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -653,7 +656,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        Reflect.Invoke(encoder, "WriteToString" , new StringBuilder(), new byte[] { 0  }, 0, 2);
+        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 0, 2);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -661,7 +664,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-        Reflect.Invoke(encoder, "WriteToString" , new StringBuilder(), new byte[] { 0  }, 1, 1);
+        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 1, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
       } catch (Exception ex) {
@@ -669,8 +672,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       try {
-Reflect.Construct(MailNamespace() + ".BEncodingStringTransform",
-          (Object)null);
+        Reflect.Construct(MailNamespace() + ".BEncodingStringTransform",
+                  (Object)null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
       } catch (Exception ex) {
@@ -686,66 +689,66 @@ Reflect.Construct(MailNamespace() + ".BEncodingStringTransform",
 
     private static String WrapHeader(String s) {
       return Reflect.Invoke(Reflect.Construct(MailNamespace() +
-        ".WordWrapEncoder" , ""), "AddString",
+        ".WordWrapEncoder", ""), "AddString",
         s).toString();
     }
 
     private void TestDowngradeDSNOne(String expected, String actual) {
-      Assert.assertEquals(expected, (String)Reflect.InvokeStatic(MailNamespace()+
-        ".Message" , "DowngradeRecipientHeaderValue" , actual));
+      Assert.assertEquals(expected, (String)Reflect.InvokeStatic(MailNamespace() +
+        ".Message", "DowngradeRecipientHeaderValue", actual));
       String dsn;
       String expectedDSN;
       byte[] bytes;
       byte[] expectedBytes;
       boolean encap = (expected.startsWith("=?"));
       dsn = "X-Ignore: X\r\n\r\nOriginal-Recipient: " + actual +
-        "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n" ;
+        "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
       if (encap) expectedDSN = "X-Ignore: X\r\n\r\n" +
           WrapHeader("Downgraded-Original-Recipient: " + expected) +
           "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
-            "\r\nX-Ignore: Y\r\n\r\n" ;
+            "\r\nX-Ignore: Y\r\n\r\n";
       else {
         expectedDSN = "X-Ignore: X\r\n\r\n" +
           WrapHeader("Original-Recipient: " + expected) + "\r\n" +
           WrapHeader("Final-Recipient: " + expected) +
-          "\r\nX-Ignore: Y\r\n\r\n" ;
+          "\r\nX-Ignore: Y\r\n\r\n";
       }
       bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
-        "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn, true));
+        "DowngradeDeliveryStatus", DataUtilities.GetUtf8Bytes(dsn, true));
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
       dsn = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\nOriginal-Recipient: " +
         actual + "\r\nFinal-Recipient: " + actual +
-        "\r\nX-Ignore: Y\r\n\r\n" ;
+        "\r\nX-Ignore: Y\r\n\r\n";
       if (encap)
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
           WrapHeader("Downgraded-Original-Recipient: " + expected) +
           "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
-            "\r\nX-Ignore: Y\r\n\r\n" ;
+            "\r\nX-Ignore: Y\r\n\r\n";
       else {
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
           WrapHeader("Original-Recipient: " + expected) + "\r\n" +
           WrapHeader("Final-Recipient: " + expected) +
-          "\r\nX-Ignore: Y\r\n\r\n" ;
+          "\r\nX-Ignore: Y\r\n\r\n";
       }
       bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
-        "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn, true));
+        "DowngradeDeliveryStatus", DataUtilities.GetUtf8Bytes(dsn, true));
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
       dsn = "X-Ignore: X\r\n\r\nOriginal-recipient : " + actual +
-        "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n" ;
+        "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
       if (encap) expectedDSN = "X-Ignore: X\r\n\r\n" +
           WrapHeader("Downgraded-Original-Recipient: " + expected) +
           "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
-            "\r\nX-Ignore: Y\r\n\r\n" ;
+            "\r\nX-Ignore: Y\r\n\r\n";
       else {
         expectedDSN = "X-Ignore: X\r\n\r\n" +
           WrapHeader("Original-recipient : " + expected) + "\r\n" +
           WrapHeader("Final-Recipient: " + expected) +
-          "\r\nX-Ignore: Y\r\n\r\n" ;
+          "\r\nX-Ignore: Y\r\n\r\n";
       }
       bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
-        "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn, true));
+        "DowngradeDeliveryStatus", DataUtilities.GetUtf8Bytes(dsn, true));
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
     }
@@ -759,7 +762,7 @@ Reflect.Construct(MailNamespace() + ".BEncodingStringTransform",
         "utf-8; x@x" + hexstart + "BE}.example",
         ("utf-8; x@x\u00be.example"));
       TestDowngradeDSNOne("utf-8; x@x" + hexstart + "BE}" + hexstart +
-        "FF20}.example" , ("utf-8; x@x\u00be\uff20.example"));
+        "FF20}.example", ("utf-8; x@x\u00be\uff20.example"));
       TestDowngradeDSNOne("(=?utf-8?Q?=C2=BE?=) utf-8; x@x.example",
         ("(\u00be) utf-8; x@x.example"));
       TestDowngradeDSNOne(
@@ -779,91 +782,91 @@ Reflect.Construct(MailNamespace() + ".BEncodingStringTransform",
     @Test
     public void TestLanguageTags() {
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-a-bb-x-y-z")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-a-bb-x-y-z")))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "0-xx-xx"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "0-xx-xx"))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "9-xx-xx"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "9-xx-xx"))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "a-xx-xx"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "a-xx-xx"))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "x-xx-xx")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "x-xx-xx")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-US-u-islamcal")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-US-u-islamcal")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "zh-CN-a-myext-x-private"
+        ".ParserUtility", "IsValidLanguageTag", "zh-CN-a-myext-x-private"
 )))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-a-myext-b-another")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-a-myext-b-another")))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "de-419-DE"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "de-419-DE"))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "a-DE"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "a-DE"))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "ar-a-aaa-b-bbb-a-ccc"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "ar-a-aaa-b-bbb-a-ccc"))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "qbb-us")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "qbb-us")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "zh-yue")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "zh-yue")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-us")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-us")))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "e0-us"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "e0-us"))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-gb-1999")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-gb-1999")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-gb-1999-1998")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-gb-1999-1998")))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-gb-1999-1999"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-gb-1999-1999"))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-gb-oed")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-gb-oed")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "sr-Latn-RS")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "sr-Latn-RS")))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "x-aaaaaaaaa-y-z"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "x-aaaaaaaaa-y-z"))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "x-aaaaaaaa-y-z")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "x-aaaaaaaa-y-z")))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "a-b-x-y-z"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "a-b-x-y-z"))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "a-bb-xx-yy-zz"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "a-bb-xx-yy-zz"))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "a-bb-x-y-z"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "a-bb-x-y-z"))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "a-x-y-z"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "a-x-y-z"))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "x-x-y-z")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "x-x-y-z")))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "i-lojban"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "i-lojban"))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "i-klingon")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "i-klingon")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "art-lojban")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "art-lojban")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "sgn-be-fr")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "sgn-be-fr")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "no-bok")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "no-bok")))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "z-xx-xx"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "z-xx-xx"))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag",
+        ".ParserUtility", "IsValidLanguageTag",
         "en-aaa-bbbb-x-xxx-yyy-zzz")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbbb-x-x-y-z")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbbb-x-x-y-z")))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbb"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb"))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbb-ccc"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb-ccc"))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbbb")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbbb")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbbb-cc")))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbbb-cc")))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbb-"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb-"))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility" , "IsValidLanguageTag" , "en-aaa-bbb-ccc-"))Assert.fail();
+        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb-ccc-"))Assert.fail();
     }
 
     @Test(timeout = 5000)
@@ -937,28 +940,28 @@ Reflect.Construct(MailNamespace() + ".BEncodingStringTransform",
     public static void TestEncodedWordsOne(String expected, String input) {
       String par = "(";
       Assert.assertEquals(expected, Reflect.InvokeStatic(MailNamespace() +
-        ".Rfc2047" , "DecodeEncodedWords" , input, 0, input.length(),
+        ".Rfc2047", "DecodeEncodedWords", input, 0, input.length(),
         Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext",
         "Unstructured")));
       Assert.assertEquals(
         "(" + expected + ") en",
-        DecodeHeaderField("content-language" , "("+ input + ") en"));
+        DecodeHeaderField("content-language", "(" + input + ") en"));
       Assert.assertEquals(" (" + expected + ") en",
         DecodeHeaderField("content-language", " (" + input + ") en"));
       Assert.assertEquals(" " + par + "comment " + par + "cmt " + expected +
         ")comment) en",
-        DecodeHeaderField("content-language" , " (comment (cmt " + input +
+        DecodeHeaderField("content-language", " (comment (cmt " + input +
           ")comment) en"));
       Assert.assertEquals(
         " " + par + "comment " + par + "=?bad?= " + expected + ")comment) en",
-        DecodeHeaderField("content-language" , " (comment (=?bad?= " + input+
+        DecodeHeaderField("content-language", " (comment (=?bad?= " + input +
           ")comment) en"));
       Assert.assertEquals(
         " " + par + "comment " + par + "" + expected + ")comment) en",
-DecodeHeaderField("content-language" , " (comment (" + input +
+DecodeHeaderField("content-language", " (comment (" + input +
           ")comment) en"));
       Assert.assertEquals(
-        " (" + expected + "()) en" , DecodeHeaderField("content-language",
+        " (" + expected + "()) en", DecodeHeaderField("content-language",
           " (" + input + "()) en"));
       Assert.assertEquals(
         " en (" + expected + ")",
@@ -969,9 +972,13 @@ DecodeHeaderField("content-language" , " (comment (" + input +
 
     @Test
     public void TestEncodedPhrase2() {
-      Assert.assertEquals(
+      {
+        String stringTemp = DowngradeHeaderField("subject",
+          "(tes\u00bet) x@x.example");
+        Assert.assertEquals(
         "=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
-        DowngradeHeaderField("subject", "(tes\u00bet) x@x.example"));
+        stringTemp);
+      }
     }
 
     @Test
@@ -980,121 +987,279 @@ DecodeHeaderField("content-language" , " (comment (" + input +
       Assert.assertEquals("x <x@example.com>" + sep + "\"X\" <y@example.com>",
         DowngradeHeaderField("to", "x <x@example.com>, \"X\" <y@example.com>"));
       Assert.assertEquals("x <x@example.com>" + sep +
-        "=?utf-8?Q?=C2=BE?= <y@example.com>" , DowngradeHeaderField("to",
+        "=?utf-8?Q?=C2=BE?= <y@example.com>", DowngradeHeaderField("to",
           "x <x@example.com>, \u00be <y@example.com>"));
       Assert.assertEquals("x <x@example.com>" + sep +
         "=?utf-8?Q?=C2=BE?= <y@example.com>",
-  DowngradeHeaderField("to" , "x <x@example.com>, \"\u00be\" <y@example.com>"));
+  DowngradeHeaderField("to", "x <x@example.com>, \"\u00be\" <y@example.com>"));
       Assert.assertEquals(
    "x <x@example.com>" + sep + "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>",
         DowngradeHeaderField("to",
           "x <x@example.com>, x\u00e1 x x\u00e1 <y@example.com>"));
-      Assert.assertEquals(
+      {
+        String stringTemp = DowngradeHeaderField("to",
+          "g: x@example.com, x\u00e1y@example.com;");
+        Assert.assertEquals(
         "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;",
-        DowngradeHeaderField("to", "g: x@example.com, x\u00e1y@example.com;"));
- Assert.assertEquals(
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("to",
+          "g: x@example.com, x@\u0300.example;");
+        Assert.assertEquals(
         "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;",
-        DowngradeHeaderField("to", "g: x@example.com, x@\u0300.example;"));
+        stringTemp);
+      }
       Assert.assertEquals("g: x@example.com" + sep + "x@xn--e-ufa.example;",
         DowngradeHeaderField("to", "g: x@example.com, x@e\u00e1.example;"));
-      Assert.assertEquals("x <x@xn--e-ufa.example>",
-        DowngradeHeaderField("sender", "x <x@e\u00e1.example>"));
-      Assert.assertEquals("=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
-        DowngradeHeaderField("sender", "x\u00e1 x x\u00e1 <x@example.com>"));
-      Assert.assertEquals("=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
-      DowngradeHeaderField("sender" , "x\u00e1 x x\u00e1 <x@e\u00e1.example>"));
-      Assert.assertEquals("x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
-        DowngradeHeaderField("sender", "x <x\u00e1y@example.com>"));
+      {
+   String stringTemp = DowngradeHeaderField("sender" , "x <x@e\u00e1.example>"
+);
+        Assert.assertEquals(
+        "x <x@xn--e-ufa.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("sender",
+          "x\u00e1 x x\u00e1 <x@example.com>");
+        Assert.assertEquals(
+        "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("sender",
+          "x\u00e1 x x\u00e1 <x@e\u00e1.example>");
+        Assert.assertEquals(
+        "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
+        stringTemp);
+      }
+      {
+String stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>"
+);
+        Assert.assertEquals(
+        "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
+        stringTemp);
+      }
     }
 
     private static String EncodeComment(String str) {
       return (String)Reflect.InvokeStatic(MailNamespace() + ".Rfc2047",
-        "EncodeComment" , str, 0, str.length());
+        "EncodeComment", str, 0, str.length());
     }
 
     private static String DowngradeHeaderField(String name, String value) {
       return (String)Reflect.Invoke(Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderFieldParsers" , "GetParser" , name),
+        ".HeaderFieldParsers", "GetParser", name),
         "DowngradeFieldValue", value);
     }
 
     private static String DecodeHeaderField(String name, String value) {
       return (String)Reflect.Invoke(Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderFieldParsers" , "GetParser" , name),
+        ".HeaderFieldParsers", "GetParser", name),
         "DecodeEncodedWords", value);
     }
 
     @Test
     public void TestCommentsToWords() {
-      Assert.assertEquals("(=?utf-8?Q?x?=)", EncodeComment("(x)"));
-      Assert.assertEquals("(=?utf-8?Q?xy?=)", EncodeComment("(x\\y)"));
-      Assert.assertEquals("(=?utf-8?Q?x_y?=)", EncodeComment("(x\r\n y)"));
-      Assert.assertEquals("(=?utf-8?Q?x=C2=A0?=)", EncodeComment("(x\u00a0)"));
-      Assert.assertEquals("(=?utf-8?Q?x=C2=A0?=)", EncodeComment("(x\\\u00a0)"));
+      {
+        String stringTemp = EncodeComment("(x)");
+        Assert.assertEquals(
+        "(=?utf-8?Q?x?=)",
+        stringTemp);
+      }
+      {
+        String stringTemp = EncodeComment("(x\\y)");
+        Assert.assertEquals(
+        "(=?utf-8?Q?xy?=)",
+        stringTemp);
+      }
+      {
+        String stringTemp = EncodeComment("(x\r\n y)");
+        Assert.assertEquals(
+        "(=?utf-8?Q?x_y?=)",
+        stringTemp);
+      }
+      {
+        String stringTemp = EncodeComment("(x\u00a0)");
+        Assert.assertEquals(
+        "(=?utf-8?Q?x=C2=A0?=)",
+        stringTemp);
+      }
+      {
+        String stringTemp = EncodeComment("(x\\\u00a0)");
+        Assert.assertEquals(
+        "(=?utf-8?Q?x=C2=A0?=)",
+        stringTemp);
+      }
       Assert.assertEquals("(=?utf-8?Q?x?=())", EncodeComment("(x())"));
-    Assert.assertEquals("(=?utf-8?Q?x?=()=?utf-8?Q?y?=)",
-        EncodeComment("(x()y)"));
+      Assert.assertEquals("(=?utf-8?Q?x?=()=?utf-8?Q?y?=)",
+          EncodeComment("(x()y)"));
       Assert.assertEquals("(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)",
         EncodeComment("(x(a\\b)y)"));
-      Assert.assertEquals("()", EncodeComment("()"));
-      Assert.assertEquals("(test) x@x.example" , DowngradeHeaderField("from",
-        "(test) x@x.example"));
-      Assert.assertEquals(
+      {
+        String stringTemp = EncodeComment("()");
+        Assert.assertEquals(
+        "()",
+        stringTemp);
+      }
+      {
+String stringTemp = DowngradeHeaderField("from",
+        "(test) x@x.example");
+Assert.assertEquals(
+"(test) x@x.example",
+stringTemp);
+}
+      {
+  String stringTemp = DowngradeHeaderField("from" , "(tes\u00bet) x@x.example"
+);
+        Assert.assertEquals(
         "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
-        DowngradeHeaderField("from" , "(tes\u00bet) x@x.example"));
-      Assert.assertEquals("(=?utf-8?Q?tes=C2=BEt?=) en",
-        DowngradeHeaderField("content-language", "(tes\u00bet) en"));
-      Assert.assertEquals("(comment) Test <x@x.example>",
-        DowngradeHeaderField("from", "(comment) Test <x@x.example>"));
-      Assert.assertEquals("(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-        DowngradeHeaderField("from", "(comment) Tes\u00bet <x@x.example>"));
-      Assert.assertEquals("(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-   DowngradeHeaderField("from" , "(comment) Tes\u00bet Subject <x@x.example>"));
-      Assert.assertEquals("(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-   DowngradeHeaderField("from" , "(comment) Test Sub\u00beject <x@x.example>"));
-      Assert.assertEquals("(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-        DowngradeHeaderField("from", "(comment) \"Tes\u00bet\" <x@x.example>"));
-      Assert.assertEquals("(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-        DowngradeHeaderField("from",
-          "(comment) \"Tes\u00bet Subject\" <x@x.example>"));
-      Assert.assertEquals("(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-        DowngradeHeaderField("from",
-          "(comment) \"Test Sub\u00beject\" <x@x.example>"));
-   Assert.assertEquals(
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("content-language",
+          "(tes\u00bet) en");
+        Assert.assertEquals(
+        "(=?utf-8?Q?tes=C2=BEt?=) en",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+          "(comment) Test <x@x.example>");
+        Assert.assertEquals(
+        "(comment) Test <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+          "(comment) Tes\u00bet <x@x.example>");
+        Assert.assertEquals(
+        "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+          "(comment) Tes\u00bet Subject <x@x.example>");
+        Assert.assertEquals(
+        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+          "(comment) Test Sub\u00beject <x@x.example>");
+        Assert.assertEquals(
+        "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+          "(comment) \"Tes\u00bet\" <x@x.example>");
+        Assert.assertEquals(
+        "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+                  "(comment) \"Tes\u00bet Subject\" <x@x.example>");
+        Assert.assertEquals(
+        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+                  "(comment) \"Test Sub\u00beject\" <x@x.example>");
+        Assert.assertEquals(
+        "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+                  "(comment) \"Tes\u00bet   Subject\" <x@x.example>");
+        Assert.assertEquals(
         "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
-        DowngradeHeaderField("from",
-          "(comment) \"Tes\u00bet   Subject\" <x@x.example>"));
-      Assert.assertEquals(
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+                  "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
+        Assert.assertEquals(
         "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-        DowngradeHeaderField("from",
-          "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>"));
-      Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-        DowngradeHeaderField("from",
-          "\"Tes\u00bet Subject\" (comment) <x@x.example>"));
-      Assert.assertEquals("Test <x@x.example>",
-        DowngradeHeaderField("from", "Test <x@x.example>"));
-      Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-        DowngradeHeaderField("from", "Tes\u00bet <x@x.example>"));
-      Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-        DowngradeHeaderField("from", "Tes\u00bet Subject <x@x.example>"));
-      Assert.assertEquals("=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-        DowngradeHeaderField("from", "Test Sub\u00beject <x@x.example>"));
-      Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-        DowngradeHeaderField("from", "\"Tes\u00bet\" <x@x.example>"));
-      Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-        DowngradeHeaderField("from", "\"Tes\u00bet Subject\" <x@x.example>"));
-      Assert.assertEquals("=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-        DowngradeHeaderField("from", "\"Test Sub\u00beject\" <x@x.example>"));
-      Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
-        DowngradeHeaderField("from", "\"Tes\u00bet   Subject\" <x@x.example>"));
-      Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-        DowngradeHeaderField("from",
-          "\"Tes\u00bet Subject\" (comment) <x@x.example>"));
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+                  "\"Tes\u00bet Subject\" (comment) <x@x.example>");
+        Assert.assertEquals(
+        "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from", "Test <x@x.example>");
+        Assert.assertEquals(
+        "Test <x@x.example>",
+        stringTemp);
+      }
+      {
+  String stringTemp = DowngradeHeaderField("from" , "Tes\u00bet <x@x.example>"
+);
+        Assert.assertEquals(
+        "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+          "Tes\u00bet Subject <x@x.example>");
+        Assert.assertEquals(
+        "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+          "Test Sub\u00beject <x@x.example>");
+        Assert.assertEquals(
+        "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+          "\"Tes\u00bet\" <x@x.example>");
+        Assert.assertEquals(
+        "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+          "\"Tes\u00bet Subject\" <x@x.example>");
+        Assert.assertEquals(
+        "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+          "\"Test Sub\u00beject\" <x@x.example>");
+        Assert.assertEquals(
+        "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+          "\"Tes\u00bet   Subject\" <x@x.example>");
+        Assert.assertEquals(
+        "=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
+        stringTemp);
+      }
+      {
+        String stringTemp = DowngradeHeaderField("from",
+                  "\"Tes\u00bet Subject\" (comment) <x@x.example>");
+        Assert.assertEquals(
+        "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+        stringTemp);
+      }
     }
 
     private void TestParseCommentStrictCore(String input) {
       Assert.assertEquals(input, input.length(), Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParserUtility" , "ParseCommentStrict" , input, 0,
+        ".HeaderParserUtility", "ParseCommentStrict", input, 0,
         input.length()));
     }
 
@@ -1135,7 +1300,7 @@ DecodeHeaderField("content-language" , " (comment (" + input +
         "=?utf-8?q?me?= \"x:y\"");
     }
 
-    @Test
+    @Test(timeout = 5000)
     public void TestEncodedWords() {
       String par = "(";
       TestEncodedWordsPhrase("(sss) y", "(sss) =?us-ascii?q?y?=");
@@ -1150,9 +1315,10 @@ DecodeHeaderField("content-language" , " (comment (" + input +
         "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       TestEncodedWordsPhrase(" xy", " =?us-ascii?q?x?= =?us-ascii?q?y?=");
- TestEncodedWordsPhrase("xy (sss)" , "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
-TestEncodedWordsPhrase("x (sss) y",
-        "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
+ TestEncodedWordsPhrase("xy (sss)" , "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)"
+);
+      TestEncodedWordsPhrase("x (sss) y",
+              "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase("x (z) y",
         "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase("=?us-ascii?q?x?=" + par + "sss)=?us-ascii?q?y?=",
@@ -1180,22 +1346,22 @@ TestEncodedWordsPhrase("x (sss) y",
       TestEncodedWordsOne("abc de", "=?utf-8?Q?abc_de?=");
       TestEncodedWordsOne("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
       TestEncodedWordsOne("=?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?=");
-      TestEncodedWordsOne("=?utf-8?Q?" + Repeat("x" , 200) + "?=",
-        "=?utf-8?Q?" + Repeat("x" , 200) + "?=");
-  TestEncodedWordsPhrase("=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
-        "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
+      TestEncodedWordsOne("=?utf-8?Q?" + Repeat("x", 200) + "?=",
+        "=?utf-8?Q?" + Repeat("x", 200) + "?=");
+      TestEncodedWordsPhrase("=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
+            "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
     }
 
     @Test
     public void TestHeaderParsingRfc2047() {
       String tmp = "=?utf-8?q??=\r\n \r\nABC";
       Assert.assertEquals(tmp, (String)Reflect.InvokeStatic(MailNamespace() +
-        ".Rfc2047" , "DecodeEncodedWords" , tmp, 0, tmp.length(),
+        ".Rfc2047", "DecodeEncodedWords", tmp, 0, tmp.length(),
         Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext",
         "Unstructured")));
       tmp = "=?utf-8?q??=\r\n \r\n ABC";
       Assert.assertEquals(tmp, (String)Reflect.InvokeStatic(MailNamespace() +
-        ".Rfc2047" , "DecodeEncodedWords" , tmp, 0, tmp.length(),
+        ".Rfc2047", "DecodeEncodedWords", tmp, 0, tmp.length(),
         Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext",
         "Unstructured")));
     }
@@ -1205,50 +1371,50 @@ TestEncodedWordsPhrase("x (sss) y",
       String tmp;
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>;";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(), null)) {
- Assert.fail(tmp);
-}
+        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.length(), null)) {
+        Assert.fail(tmp);
+      }
       // just a local part in address
-      if (0!=(Integer)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser",
-        "ParseHeaderFrom" , "\"Me\" <1234>" , 0, 11, null)) {
- Assert.fail(tmp);
-}
+      if (0 != (Integer)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser",
+        "ParseHeaderFrom", "\"Me\" <1234>", 0, 11, null)) {
+        Assert.fail(tmp);
+      }
       tmp = "<x@x.invalid>";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(), null)) {
- Assert.fail(tmp);
-}
+        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.length(), null)) {
+        Assert.fail(tmp);
+      }
       tmp = "<x y@x.invalid>";  // local part is not a dot-atom
-      if (0!=(Integer)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser",
-        "ParseHeaderTo" , tmp, 0, tmp.length(), null)) {
- Assert.fail(tmp);
-}
+      if (0 != (Integer)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser",
+        "ParseHeaderTo", tmp, 0, tmp.length(), null)) {
+        Assert.fail(tmp);
+      }
       tmp = " <x@x.invalid>";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(), null)) {
- Assert.fail(tmp);
-}
+        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.length(), null)) {
+        Assert.fail(tmp);
+      }
       // Group syntax
       tmp = "G:;";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(), null)) {
- Assert.fail(tmp);
-}
+        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.length(), null)) {
+        Assert.fail(tmp);
+      }
       tmp = "G:a <x@x.example>;";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(), null)) {
- Assert.fail(tmp);
-}
+        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.length(), null)) {
+        Assert.fail(tmp);
+      }
       tmp = " A Xxxxx: ;";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(), null)) {
- Assert.fail(tmp);
-}
+        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.length(), null)) {
+        Assert.fail(tmp);
+      }
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>, y@y.example, Ww <z@z.invalid>;";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(), null)) {
- Assert.fail(tmp);
-}
+        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.length(), null)) {
+        Assert.fail(tmp);
+      }
     }
 
     @Test
@@ -1263,27 +1429,27 @@ TestEncodedWordsPhrase("x (sss) y",
       TestQuotedPrintable("te\r\nst", "te=0D=0Ast", "te\r\nst", "te\r\nst");
       TestQuotedPrintable("te\rst", "te=0Dst", "te=0Dst", "te\r\nst");
       TestQuotedPrintable("te\nst", "te=0Ast", "te=0Ast", "te\r\nst");
-      TestQuotedPrintable("te " + " " + "\r\nst" , "te " + " " + "=0D=0Ast"
-        , "te =20\r\nst" , "te =20\r\nst");
- TestQuotedPrintable("te \r\nst" , "te =0D=0Ast" , "te=20\r\nst",
-        "te=20\r\nst");
-      TestQuotedPrintable("te \t\r\nst" , "te =09=0D=0Ast" , "te =09\r\nst"
-        , "te =09\r\nst");
-      TestQuotedPrintable("te\t\r\nst" , "te=09=0D=0Ast" , "te=09\r\nst",
+      TestQuotedPrintable("te " + " " + "\r\nst", "te " + " " + "=0D=0Ast",
+"te =20\r\nst", "te =20\r\nst");
+      TestQuotedPrintable("te \r\nst", "te =0D=0Ast", "te=20\r\nst",
+             "te=20\r\nst");
+      TestQuotedPrintable("te \t\r\nst", "te =09=0D=0Ast", "te =09\r\nst",
+"te =09\r\nst");
+      TestQuotedPrintable("te\t\r\nst", "te=09=0D=0Ast", "te=09\r\nst",
         "te=09\r\nst");
       TestQuotedPrintable(Repeat("a", 75), Repeat("a", 75));
       TestQuotedPrintable(Repeat("a", 76), Repeat("a", 75) + "=\r\na");
-      TestQuotedPrintable(Repeat("\u000c" , 30), Repeat("=0C" , 25) +
-        "=\r\n" + Repeat("=0C" , 5));
+      TestQuotedPrintable(Repeat("\u000c", 30), Repeat("=0C", 25) +
+        "=\r\n" + Repeat("=0C", 5));
     }
 
     @Test
     public void TestReceivedHeader() {
       Object parser = Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderFieldParsers" , "GetParser" , "received");
+        ".HeaderFieldParsers", "GetParser", "received");
       String test =
-        "from x.y.example by a.b.example; Thu, 31 Dec 2012 00:00:00 -0100" ;
-      if (test.length()!=(Integer)Reflect.Invoke(parser, "Parse" , test, 0,
+        "from x.y.example by a.b.example; Thu, 31 Dec 2012 00:00:00 -0100";
+      if (test.length() != (Integer)Reflect.Invoke(parser, "Parse", test, 0,
         test.length(), null)) {
         Assert.fail(test);
       }

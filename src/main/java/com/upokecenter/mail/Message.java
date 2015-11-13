@@ -11,6 +11,7 @@ import java.util.*;
 import java.io.*;
 
 import com.upokecenter.util.*;
+using PeterO.Text.Encoders;
 
     /**
      * <p>Represents an email message, and contains methods and properties for
@@ -466,13 +467,15 @@ public final void setSubject(String value) {
 try {
 ms = new java.io.ByteArrayInputStream(this.body);
 
-          ICharset charset = Charsets.GetCharset(this.getContentType().GetCharset());
+          ICharacterEncoding charset = Encodings.GetEncoding(
+            this.getContentType().GetCharset(),
+            true);
           if (charset == null) {
           throw new
               UnsupportedOperationException("Not in a supported character set.");
           }
           ITransform transform = new WrappedStream(ms);
-          return charset.GetString(transform);
+          return Encodings.DecodeString(charset, transform);
 }
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}

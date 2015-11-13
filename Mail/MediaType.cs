@@ -11,23 +11,21 @@ using System.Globalization;
 using System.Text;
 
 using PeterO;
+using PeterO.Text.Encoders;
 
 namespace PeterO.Mail {
     /// <summary><para>Specifies what kind of data a message body is.</para>
     /// <para>A
-    /// media type consists of a top-level type (the general category of the
-    /// data),
+    /// media type consists of a top-level type (the general category of the data),
     /// a subtype (the specific type), and an optional list of parameters. For
     /// example, the media type <c>text/plain; charset = utf-8</c>
     /// is a text media
-    /// type ("text"), namely, a plain text type ("plain"), and the parameters
-    /// say
+    /// type ("text"), namely, a plain text type ("plain"), and the parameters say
     /// that that the data uses the character set UTF-8, a form of Unicode
     /// ("charset=utf-8"). Other top-level types include "audio", "video", and
     /// "application".</para>
     /// <para>This type is immutable, meaning its values can't
-    /// be changed once it' s created. To create a changeable media type object,
-    /// use
+    /// be changed once it' s created. To create a changeable media type object, use
     /// the MediaTypeBuilder class.</para>
     /// </summary>
   public sealed class MediaType {
@@ -79,7 +77,7 @@ namespace PeterO.Mail {
     private string subType;
 
     /// <summary>Gets this media type's subtype.</summary>
-    /// <value>This media type&#x27;s subtype.</value>
+    /// <value>This media type&apos;s subtype.</value>
     public string SubType {
       get {
         return this.subType;
@@ -116,11 +114,9 @@ string type,
 
     private SortedMap<string, string> parameters;
 
-    /// <summary>Gets a sorted list of the parameters contained in this media
-    /// type
+    /// <summary>Gets a sorted list of the parameters contained in this media type
     /// object.</summary>
-    /// <value>A list of the parameters contained in this media type object,
-    /// sorted
+    /// <value>A list of the parameters contained in this media type object, sorted
     /// by name.</value>
     public IDictionary<string, string> Parameters {
       get {
@@ -647,13 +643,11 @@ StringBuilder builder) {
       return i;
     }
 
-    /// <summary>Returns the charset parameter, converted to ASCII lower-case,
-    /// if it
+    /// <summary>Returns the charset parameter, converted to ASCII lower-case, if it
     /// exists, or <c>"us-ascii"</c>
     /// if the media type is ill-formed (RFC2045 sec.
     /// 5.2), or if the media type is "text/plain" and doesn't have a charset
-    /// parameter (see RFC2046), or the default charset, if any, for the media
-    /// type
+    /// parameter (see RFC2046), or the default charset, if any, for the media type
     /// if the charset parameter is absent. Returns an empty string in all other
     /// cases.</summary>
     /// <returns>Not documented yet.</returns>
@@ -767,8 +761,7 @@ Justification="This method has different semantics from " +
     /// "charset".</summary>
     /// <param name='name'>Name of the parameter to get. The name is compared
     /// case-insensitively.</param>
-    /// <returns>The value of the parameter as a string, or null if the
-    /// parameter
+    /// <returns>The value of the parameter as a string, or null if the parameter
     /// doesn't exist.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
@@ -803,24 +796,24 @@ secondQuote - (firstQuote + 1));
         return null;
       }
       string paramValue = value.Substring(secondQuote + 1);
-      ICharset cs = Charsets.GetCharset(charset);
-      cs = cs ?? Charsets.Ascii;
+      ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
+      cs = cs ?? Encodings.GetEncoding("us-ascii",true);
       return DecodeRfc2231Encoding(paramValue, cs);
     }
 
-    private static ICharset GetRfc2231Charset(string value) {
+    private static ICharacterEncoding GetRfc2231Charset(string value) {
       if (value == null) {
-        return Charsets.Ascii;
+        return Encodings.GetEncoding("us-ascii",true);
       }
       int firstQuote = value.IndexOf('\'');
       if (firstQuote < 0) {
         // not a valid encoded parameter
-        return Charsets.Ascii;
+        return Encodings.GetEncoding("us-ascii",true);
       }
       int secondQuote = value.IndexOf('\'', firstQuote + 1);
       if (secondQuote < 0) {
         // not a valid encoded parameter
-        return Charsets.Ascii;
+        return Encodings.GetEncoding("us-ascii",true);
       }
       string charset = value.Substring(0, firstQuote);
       string language = value.Substring(
@@ -830,18 +823,20 @@ secondQuote - (firstQuote + 1));
         // not a valid language tag
         return null;
       }
-      ICharset cs = Charsets.GetCharset(charset);
-      return (cs == null) ? Charsets.Ascii : cs;
+      ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
+      cs = cs ?? Encodings.GetEncoding("us-ascii",true);
+      return cs;
     }
 
   private static string DecodeRfc2231Encoding(
 string value,
-ICharset charset) {
+ICharacterEncoding charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.IndexOf('\'');
-      return (quote >= 0) ? null : charset.GetString(new
-        PercentEncodingStringTransform(value));
+      return (quote >= 0) ? null : Encodings.DecodeString(
+        charset,
+        new PercentEncodingStringTransform(value));
     }
 
     private static bool ExpandRfc2231Extensions(IDictionary<string, string>
@@ -876,7 +871,7 @@ ICharset charset) {
           string realName = name.Substring(0, asterisk);
           string realValue = (asterisk == name.Length - 3) ?
             DecodeRfc2231Extension(value) : value;
-          ICharset charsetUsed = GetRfc2231Charset(
+          ICharacterEncoding charsetUsed = GetRfc2231Charset(
             (asterisk == name.Length - 3) ? value : null);
           parameters.Remove(name);
           int pindex = 1;
@@ -922,11 +917,10 @@ charsetUsed);
       return true;
     }
 
-    /// <summary>Gets the top level type and subtype of this media type,
-    /// separated
+    /// <summary>Gets the top level type and subtype of this media type, separated
     /// by a slash; for example, "text/plain".</summary>
     /// <value>The top level type and subtype of this media type, separated by a
-    /// slash; for example, &#x22;text/plain&#x22;.</value>
+    /// slash; for example, &quot;text/plain&quot;.</value>
     public string TypeAndSubType {
       get {
         return this.TopLevelType + "/" + this.SubType;
@@ -1108,8 +1102,7 @@ null);
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "text/plain" and the charset
-    /// "US-ASCII",
+    /// <summary>Specifies the media type "text/plain" and the charset "US-ASCII",
     /// used for plain text data.</summary>
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder(
@@ -1123,8 +1116,7 @@ null);
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "text/plain" and the charset "utf-8",
-    /// used
+    /// <summary>Specifies the media type "text/plain" and the charset "utf-8", used
     /// for Unicode plain text data.</summary>
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
@@ -1138,8 +1130,7 @@ null);
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "message/rfc822" , used for Internet
-    /// mail
+    /// <summary>Specifies the media type "message/rfc822" , used for Internet mail
     /// messages.</summary>
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
@@ -1161,15 +1152,13 @@ null);
       return Parse(mediaTypeValue, TextPlainAscii);
     }
 
-    /// <summary>Parses a media type string and returns a media type object, or
-    /// the
+    /// <summary>Parses a media type string and returns a media type object, or the
     /// default value if the string is invalid.</summary>
     /// <param name='str'>A string object representing a media type.</param>
     /// <param name='defaultValue'>The media type to return if the string is
     /// syntactically invalid. Can be null.</param>
     /// <returns>A MediaType object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='str' />
+    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
     /// is null.</exception>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {

@@ -9,7 +9,7 @@ using System;
 
 namespace PeterO.Mail {
     /// <summary>A generic interface for reading data one byte at a time.</summary>
-  internal interface ITransform {
+  public interface ITransform {
     /// <summary>Reads a byte from the data source.</summary>
     /// <returns>The byte read, or -1 if the end of the source is reached.</returns>
     int ReadByte();

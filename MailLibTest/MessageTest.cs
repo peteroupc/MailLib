@@ -179,94 +179,273 @@ Assert.AreEqual("2" , MediaType.Parse("x/y;z=1;z*=utf-8''2"
     }
 
     [TestMethod]
+    [Timeout(5000)]
     public void TestMakeFilename() {
-      Assert.AreEqual(
-        "hello.txt",
-        ContentDisposition.MakeFilename("=?utf-8?q?hello.txt?="));
-      Assert.AreEqual("hello.txt",
-        ContentDisposition.MakeFilename("=?utf-8?q?___hello.txt___?="));
-      Assert.AreEqual("hello.txt",
-        ContentDisposition.MakeFilename("  =?utf-8?q?hello.txt?=  "));
-      Assert.AreEqual("hello.txt",
-        ContentDisposition.MakeFilename("  =?utf-8?q?___hello.txt___?=  "));
-      Assert.AreEqual("a\u00e7\u00e3o.txt",
-        ContentDisposition.MakeFilename("=?iso-8859-1?q?a=E7=E3o.txt?="));
-      Assert.AreEqual("a\u00e7\u00e3o.txt",
-        ContentDisposition.MakeFilename("a\u00e7\u00e3o.txt"));
-      Assert.AreEqual("hello.txt",
-        ContentDisposition.MakeFilename("=?x-unknown?q?hello.txt?="));
-      Assert.AreEqual("_",
-        ContentDisposition.MakeFilename("=?x-unknown"));
-      Assert.AreEqual("my_file_name_.txt",
-        ContentDisposition.MakeFilename("my?file<name>.txt"));
-      Assert.AreEqual("my file name_.txt",
-        ContentDisposition.MakeFilename("my file\tname\".txt"));
-      Assert.AreEqual("my\ufffdfile\ufffdname\ud800\udc00.txt",
-    ContentDisposition.MakeFilename("my\ud800file\udc00name\ud800\udc00.txt"
-));
-      Assert.AreEqual("file\ufffdname",
-        ContentDisposition.MakeFilename("=?x-unknown?Q?file\ud800name?="));
-      Assert.AreEqual("file\u00bename.txt",
-        ContentDisposition.MakeFilename("utf-8''file%c2%bename.txt"));
-      Assert.AreEqual("file\u00bename.txt",
-        ContentDisposition.MakeFilename("utf-8'en'file%c2%bename.txt"));
-      Assert.AreEqual("file\u00bename.txt",
-        ContentDisposition.MakeFilename("windows-1252'en'file%bename.txt"));
-      Assert.AreEqual("x-unknown'en'file_c2_bename.txt",
-        ContentDisposition.MakeFilename("x-unknown'en'file%c2%bename.txt"));
-      Assert.AreEqual("file\u00bename.txt",
-        ContentDisposition.MakeFilename("utf-8'en-us'file%c2%bename.txt"));
-      Assert.AreEqual("_..._",
-        ContentDisposition.MakeFilename("..."));
-      Assert.AreEqual(
-        "_~home",
-        ContentDisposition.MakeFilename("~home"));
-      Assert.AreEqual("_~nul",
-        ContentDisposition.MakeFilename("~nul"));
-      Assert.AreEqual("myfilename.txt._",
-        ContentDisposition.MakeFilename("myfilename.txt."));
-      Assert.AreEqual("_nul",
-        ContentDisposition.MakeFilename("nul"));
-      Assert.AreEqual(
-        "_nul",
-        ContentDisposition.MakeFilename("   nul   "));
-      Assert.AreEqual("ordinary",
-        ContentDisposition.MakeFilename("   ordinary   "));
-      Assert.AreEqual("_nul.txt",
-        ContentDisposition.MakeFilename("nul.txt"));
-      Assert.AreEqual("_con",
-        ContentDisposition.MakeFilename("con"));
-      Assert.AreEqual(
-        "_aux",
-        ContentDisposition.MakeFilename("aux"));
-      Assert.AreEqual("_lpt1device",
-        ContentDisposition.MakeFilename("lpt1device"));
-      Assert.AreEqual("my_file_name_.txt",
-        ContentDisposition.MakeFilename("my\u0001file\u007fname*.txt"));
-      Assert.AreEqual("folder_hello.txt",
-        ContentDisposition.MakeFilename("=?utf-8?q?folder\\hello.txt?="));
-      Assert.AreEqual("folder_",
-        ContentDisposition.MakeFilename("folder/"));
-      Assert.AreEqual("folder______",
-        ContentDisposition.MakeFilename("folder//////"));
-      Assert.AreEqual("fol_der_",
-        ContentDisposition.MakeFilename("fol/der/"));
-      Assert.AreEqual("fol_der______",
-        ContentDisposition.MakeFilename("fol/der//////"));
-      Assert.AreEqual("folder_hello.txt",
-        ContentDisposition.MakeFilename("folder/hello.txt"));
-      Assert.AreEqual("fol_der_hello.txt",
-        ContentDisposition.MakeFilename("fol/der/hello.txt"));
-      Assert.AreEqual("folder_hello.txt",
-        ContentDisposition.MakeFilename("=?x-unknown?q?folder\\hello.txt?="));
+      {
+string stringTemp = ContentDisposition.MakeFilename("=?utf-8?q?hello.txt?=");
+Assert.AreEqual(
+"hello.txt",
+stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("=?utf-8?q?___hello.txt___?=");
+Assert.AreEqual(
+"hello.txt",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename(
+"  =?utf-8?q?hello.txt?=  ");
+Assert.AreEqual(
+"hello.txt",
+stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("  =?utf-8?q?___hello.txt___?=  ");
+Assert.AreEqual(
+"hello.txt",
+stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("=?iso-8859-1?q?a=E7=E3o.txt?=");
+Assert.AreEqual(
+"a\u00e7\u00e3o.txt",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("a\u00e7\u00e3o.txt");
+Assert.AreEqual(
+"a\u00e7\u00e3o.txt",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename(
+"=?x-unknown?q?hello.txt?=");
+Assert.AreEqual(
+"hello.txt",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("=?x-unknown");
+Assert.AreEqual(
+"_",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("my?file<name>.txt");
+Assert.AreEqual(
+"my_file_name_.txt",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("my file\tname\".txt");
+Assert.AreEqual(
+"my file name_.txt",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename(
+"my\ud800file\udc00name\ud800\udc00.txt");
+Assert.AreEqual(
+"my\ufffdfile\ufffdname\ud800\udc00.txt",
+stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("=?x-unknown?Q?file\ud800name?=");
+Assert.AreEqual(
+"file\ufffdname",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename(
+"utf-8''file%c2%bename.txt");
+Assert.AreEqual(
+"file\u00bename.txt",
+stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("utf-8'en'file%c2%bename.txt");
+Assert.AreEqual(
+"file\u00bename.txt",
+stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("windows-1252'en'file%bename.txt");
+Assert.AreEqual(
+"file\u00bename.txt",
+stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("x-unknown'en'file%c2%bename.txt");
+Assert.AreEqual(
+"x-unknown'en'file_c2_bename.txt",
+stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("utf-8'en-us'file%c2%bename.txt");
+Assert.AreEqual(
+"file\u00bename.txt",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("...");
+Assert.AreEqual(
+"_..._",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("~home");
+Assert.AreEqual(
+"_~home",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("~nul");
+Assert.AreEqual(
+"_~nul",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("myfilename.txt.");
+Assert.AreEqual(
+"myfilename.txt._",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("nul");
+Assert.AreEqual(
+"_nul",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("   nul   ");
+Assert.AreEqual(
+"_nul",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("   ordinary   ");
+Assert.AreEqual(
+"ordinary",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("nul.txt");
+Assert.AreEqual(
+"_nul.txt",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("con");
+Assert.AreEqual(
+"_con",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("aux");
+Assert.AreEqual(
+"_aux",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("lpt1device");
+Assert.AreEqual(
+"_lpt1device",
+stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("my\u0001file\u007fname*.txt");
+Assert.AreEqual(
+"my_file_name_.txt",
+stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("=?utf-8?q?folder\\hello.txt?=");
+Assert.AreEqual(
+"folder_hello.txt",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("folder/");
+Assert.AreEqual(
+"folder_",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("folder//////");
+Assert.AreEqual(
+"folder______",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("fol/der/");
+Assert.AreEqual(
+"fol_der_",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("fol/der//////");
+Assert.AreEqual(
+"fol_der______",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("folder/hello.txt");
+Assert.AreEqual(
+"folder_hello.txt",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("fol/der/hello.txt");
+Assert.AreEqual(
+"fol_der_hello.txt",
+stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("=?x-unknown?q?folder\\hello.txt?=");
+Assert.AreEqual(
+"folder_hello.txt",
+stringTemp);
+}
     }
 
     [TestMethod]
     public void TestCharset() {
-      Assert.AreEqual("us-ascii", MediaType.Parse("text/plain").GetCharset());
-      Assert.AreEqual("us-ascii", MediaType.Parse("TEXT/PLAIN").GetCharset());
-      Assert.AreEqual("us-ascii", MediaType.Parse("TeXt/PlAiN").GetCharset());
-      Assert.AreEqual("us-ascii", MediaType.Parse("text/troff").GetCharset());
+      {
+string stringTemp = MediaType.Parse("text/plain").GetCharset();
+Assert.AreEqual(
+"us-ascii",
+stringTemp);
+}
+      {
+string stringTemp = MediaType.Parse("TEXT/PLAIN").GetCharset();
+Assert.AreEqual(
+"us-ascii",
+stringTemp);
+}
+      {
+string stringTemp = MediaType.Parse("TeXt/PlAiN").GetCharset();
+Assert.AreEqual(
+"us-ascii",
+stringTemp);
+}
+      {
+string stringTemp = MediaType.Parse("text/troff").GetCharset();
+Assert.AreEqual(
+"us-ascii",
+stringTemp);
+}
       Assert.AreEqual("utf-8" , MediaType.Parse("text/plain; CHARSET=UTF-8"
 ).GetCharset());
       Assert.AreEqual("utf-8" , MediaType.Parse("text/plain; ChArSeT=UTF-8"
@@ -274,30 +453,75 @@ Assert.AreEqual("2" , MediaType.Parse("x/y;z=1;z*=utf-8''2"
       Assert.AreEqual("utf-8" , MediaType.Parse("text/plain; charset=UTF-8"
 ).GetCharset());
       // Note that MIME implicitly allows whitespace around the equal sign
-      Assert.AreEqual("utf-8",
-        MediaType.Parse("text/plain; charset = UTF-8").GetCharset());
-      Assert.AreEqual("utf-8",
-        MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8"
-).GetCharset());
-      Assert.AreEqual("'utf-8'",
-        MediaType.Parse("text/plain; charset='UTF-8'").GetCharset());
-      Assert.AreEqual("utf-8",
-        MediaType.Parse("text/plain; charset=\"UTF-8\"").GetCharset());
-      Assert.AreEqual("utf-8",
-        MediaType.Parse("text/plain; foo=\"\\\"\"; charset=\"UTF-8\""
-).GetCharset());
-      Assert.AreEqual("us-ascii",
-        MediaType.Parse("text/plain; foo=\"; charset=\\\"UTF-8\\\"\""
-).GetCharset());
-      Assert.AreEqual("utf-8",
-        MediaType.Parse("text/plain; foo='; charset=\"UTF-8\""
-).GetCharset());
-      Assert.AreEqual("utf-8",
-        MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\""
-).GetCharset());
-      Assert.AreEqual("utf-8",
-        MediaType.Parse("text/plain; charset=\"UTF-\\8\"").GetCharset());
-      Assert.AreEqual("us-ascii", MediaType.Parse("nana").GetCharset());
+      {
+string stringTemp = MediaType.Parse("text/plain; charset = UTF-8").GetCharset();
+Assert.AreEqual(
+"utf-8",
+stringTemp);
+}
+      {
+string stringTemp = MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8"
+).GetCharset();
+Assert.AreEqual(
+"utf-8",
+stringTemp);
+}
+      {
+string stringTemp = MediaType.Parse("text/plain; charset='UTF-8'").GetCharset();
+Assert.AreEqual(
+"'utf-8'",
+stringTemp);
+}
+      {
+string stringTemp = MediaType.Parse("text/plain; charset=\"UTF-8\""
+).GetCharset();
+Assert.AreEqual(
+"utf-8",
+stringTemp);
+}
+      {
+string stringTemp =
+  MediaType.Parse("text/plain; foo=\"\\\"\"; charset=\"UTF-8\""
+).GetCharset();
+Assert.AreEqual(
+"utf-8",
+stringTemp);
+}
+      {
+string stringTemp =
+  MediaType.Parse("text/plain; foo=\"; charset=\\\"UTF-8\\\"\""
+).GetCharset();
+Assert.AreEqual(
+"us-ascii",
+stringTemp);
+}
+      {
+string stringTemp = MediaType.Parse("text/plain; foo='; charset=\"UTF-8\""
+).GetCharset();
+Assert.AreEqual(
+"utf-8",
+stringTemp);
+}
+      {
+string stringTemp = MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\""
+).GetCharset();
+Assert.AreEqual(
+"utf-8",
+stringTemp);
+}
+      {
+string stringTemp = MediaType.Parse("text/plain; charset=\"UTF-\\8\""
+).GetCharset();
+Assert.AreEqual(
+"utf-8",
+stringTemp);
+}
+      {
+string stringTemp = MediaType.Parse("nana").GetCharset();
+Assert.AreEqual(
+"us-ascii",
+stringTemp);
+}
       Assert.AreEqual("", MediaType.Parse("text/xxx").GetCharset());
       Assert.AreEqual("utf-8" , MediaType.Parse("text/xxx;charset=UTF-8"
 ).GetCharset());
@@ -309,8 +533,12 @@ Assert.AreEqual("2" , MediaType.Parse("x/y;z=1;z*=utf-8''2"
 ).GetCharset());
       Assert.AreEqual("utf-8" , MediaType.Parse("text/plain;charset=utf-8"
 ).GetCharset());
-      Assert.AreEqual("us-ascii",
-        MediaType.Parse("text/plain;chabset=utf-8").GetCharset());
+      {
+string stringTemp = MediaType.Parse("text/plain;chabset=utf-8").GetCharset();
+Assert.AreEqual(
+"us-ascii",
+stringTemp);
+}
       Assert.AreEqual("utf-8" , MediaType.Parse("image/xml;charset=utf-8"
 ).GetCharset());
   Assert.AreEqual("" , MediaType.Parse("image/xml;chabset=utf-8"
@@ -373,8 +601,8 @@ Assert.AreEqual("" , MediaType.Parse("image/plain;chabset=utf-8"
       TestRfc2231Extension("text/plain; charset*0=\"a\";charset*1=b",
         "charset" , "ab");
 
-  TestRfc2231Extension("text/plain; charset*0*=utf-8''a%20b;charset*1*=c%20d"
-        , "charset" , "a bc d");
+  TestRfc2231Extension("text/plain; charset*0*=utf-8''a%20b;charset*1*=c%20d",
+"charset" , "a bc d");
       TestRfc2231Extension(
         "text/plain; charset*0=ab;charset*1*=iso-8859-1-en-xyz",
         "charset",
@@ -385,10 +613,12 @@ Assert.AreEqual("" , MediaType.Parse("image/plain;chabset=utf-8"
         "a biso-8859-1-en-xyz");
 
   Assert.IsNull(MediaType.Parse("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz"
-        , null));
+    ,
+null));
 
   Assert.IsNull(MediaType.Parse("text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz"
-        , null));
+    ,
+null));
       TestRfc2231Extension(
         "text/plain; charset*0*=utf-8''a%20b;charset*1=a%20b",
         "charset",
@@ -695,15 +925,28 @@ using (var ms = new MemoryStream(DataUtilities.GetUtf8Bytes(mtstring,
         throw new InvalidOperationException(String.Empty, ex);
       }
       Assert.IsFalse(new NamedAddress("x@example.com").IsGroup);
-      Assert.AreEqual("x@example.com", new NamedAddress("x@example.com").Name);
-      Assert.AreEqual("x@example.com" , new NamedAddress("x@example.com"
-).Address.ToString());
+      {
+string stringTemp = new NamedAddress("x@example.com").Name;
+Assert.AreEqual(
+"x@example.com",
+stringTemp);
+}
+      Assert.AreEqual("x@example.com" , new NamedAddress(
+"x@example.com").Address.ToString());
       Assert.AreEqual("\"(lo cal)\"@example.com",
         new Address("\"(lo cal)\"@example.com").ToString());
-      Assert.AreEqual("local",
-        new Address("local@example.com").LocalPart);
-      Assert.AreEqual("example.com",
-        new Address("local@example.com").Domain);
+      {
+string stringTemp = new Address("local@example.com").LocalPart;
+Assert.AreEqual(
+"local",
+stringTemp);
+}
+      {
+string stringTemp = new Address("local@example.com").Domain;
+Assert.AreEqual(
+"example.com",
+stringTemp);
+}
       try {
         Assert.AreEqual(null, new Address("local=domain.example"));
         Assert.Fail("Should have failed");
@@ -741,25 +984,55 @@ using (var ms = new MemoryStream(DataUtilities.GetUtf8Bytes(mtstring,
 
     [TestMethod]
     public void TestHeaderManip() {
-      Assert.AreEqual("comment",
-        MessageFromString("From: Me <me@example.com>\r\n\r\n"
-).AddHeader("x-comment" , "comment").GetHeader("x-comment"));
-      Assert.AreEqual("comment",
-        MessageFromString("From: Me <me@example.com>\r\n\r\n"
-).AddHeader(new KeyValuePair<string, string>("x-comment" , "comment"
-)).GetHeader("x-comment"));
-      Assert.AreEqual("from",
-        MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-        "you@example.com").GetHeader(0).Key);
-      Assert.AreEqual("you@example.com",
-        MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-        "you@example.com").GetHeader(0).Value);
-      Assert.AreEqual("x-comment",
-        MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-        "x-comment" , "comment").GetHeader(0).Key);
-      Assert.AreEqual("comment",
-        MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-        "x-comment" , "comment").GetHeader(0).Value);
+      {
+string stringTemp = MessageFromString(
+"From: Me <me@example.com>\r\n\r\n").AddHeader("x-comment" , "comment"
+).GetHeader("x-comment");
+Assert.AreEqual(
+"comment",
+stringTemp);
+}
+      {
+string stringTemp = MessageFromString(
+"From: Me <me@example.com>\r\n\r\n").AddHeader(new KeyValuePair<string,
+  string>("x-comment" , "comment"
+)).GetHeader("x-comment");
+Assert.AreEqual(
+"comment",
+stringTemp);
+}
+      {
+string stringTemp = MessageFromString(
+"From: Me <me@example.com>\r\n\r\n").SetHeader(0,
+        "you@example.com").GetHeader(0).Key;
+Assert.AreEqual(
+"from",
+stringTemp);
+}
+      {
+string stringTemp = MessageFromString(
+"From: Me <me@example.com>\r\n\r\n").SetHeader(0,
+        "you@example.com").GetHeader(0).Value;
+Assert.AreEqual(
+"you@example.com",
+stringTemp);
+}
+      {
+string stringTemp = MessageFromString(
+"From: Me <me@example.com>\r\n\r\n").SetHeader(0,
+        "x-comment" , "comment").GetHeader(0).Key;
+Assert.AreEqual(
+"x-comment",
+stringTemp);
+}
+      {
+string stringTemp = MessageFromString(
+"From: Me <me@example.com>\r\n\r\n").SetHeader(0,
+        "x-comment" , "comment").GetHeader(0).Value;
+Assert.AreEqual(
+"comment",
+stringTemp);
+}
       Message msg = MessageFromString("From: Me <me@example.com>\r\n\r\n");
       try {
         msg.SetHeader(0, (string)null);
@@ -1042,7 +1315,12 @@ using (var ms = new MemoryStream(DataUtilities.GetUtf8Bytes(mtstring,
     public void TestMailbox() {
       string mbox = "Me <@example.org,@example.net,@example.com:me@x.example>";
       var result = new NamedAddress(mbox);
-      Assert.AreEqual("Me <me@x.example>", result.ToString());
+      {
+string stringTemp = result.ToString();
+Assert.AreEqual(
+"Me <me@x.example>",
+stringTemp);
+}
     }
 
     internal static bool HasNestedMessageType(Message message) {
@@ -1051,8 +1329,8 @@ using (var ms = new MemoryStream(DataUtilities.GetUtf8Bytes(mtstring,
           ((!message.ContentType.SubType.Equals("global-headers")) &&
           ((message.ContentType.SubType.Equals("global-delivery-status"))
           ||
-  (message.ContentType.SubType.Equals("global-disposition-notification"
-))));
+  (message.ContentType.SubType.Equals(
+"global-disposition-notification"))));
       }
       foreach (Message part in message.Parts) {
         if (HasNestedMessageType(part)) {
@@ -1078,7 +1356,12 @@ using (var ms = new MemoryStream(DataUtilities.GetUtf8Bytes(mtstring,
 msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
         true)));
       Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
-      Assert.AreEqual("b1", msg.ContentType.GetParameter("boundary"));
+      {
+string stringTemp = msg.ContentType.GetParameter("boundary");
+Assert.AreEqual(
+"b1",
+stringTemp);
+}
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
       Assert.AreEqual("Test", msg.Parts[0].BodyString);
@@ -1128,7 +1411,12 @@ msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
 msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
         true)));
       Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
-      Assert.AreEqual("b1", msg.ContentType.GetParameter("boundary"));
+      {
+string stringTemp = msg.ContentType.GetParameter("boundary");
+Assert.AreEqual(
+"b1",
+stringTemp);
+}
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual("application", msg.Parts[0].ContentType.TopLevelType);
       body = msg.Parts[0].GetBody();
@@ -1147,7 +1435,12 @@ msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
 msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
         true)));
       Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
-      Assert.AreEqual("b1", msg.ContentType.GetParameter("boundary"));
+      {
+string stringTemp = msg.ContentType.GetParameter("boundary");
+Assert.AreEqual(
+"b1",
+stringTemp);
+}
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual("application", msg.Parts[0].ContentType.TopLevelType);
       body = msg.Parts[0].GetBody();
@@ -1169,7 +1462,12 @@ msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
 msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
         true)));
       Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
-      Assert.AreEqual("b1", msg.ContentType.GetParameter("boundary"));
+      {
+string stringTemp = msg.ContentType.GetParameter("boundary");
+Assert.AreEqual(
+"b1",
+stringTemp);
+}
       Assert.AreEqual(1, msg.Parts.Count);
       Message part = msg.Parts[0];
       Assert.AreEqual("application", part.Parts[0].ContentType.TopLevelType);
@@ -1220,7 +1518,12 @@ msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      Assert.AreEqual("application", new MediaTypeBuilder().TopLevelType);
+      {
+string stringTemp = new MediaTypeBuilder().TopLevelType;
+Assert.AreEqual(
+"application",
+stringTemp);
+}
       Assert.AreEqual("text" , new
         MediaTypeBuilder(MediaType.TextPlainAscii).TopLevelType);
       Assert.AreEqual("plain" , new
@@ -1447,18 +1750,19 @@ msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
     [TestMethod]
     public void TestSetHeader2() {
       Assert.AreEqual("my subject" , new Message().SetHeader("comments",
-        "subject").SetHeader("subject" , "my subject").GetHeader("subject"
-));
+        "subject").SetHeader("subject" , "my subject").GetHeader(
+"subject"));
     }
 
     [TestMethod]
     public void TestMediaTypeArgumentValidationExtra() {
       Assert.IsTrue(MediaType.Parse("text/plain").IsText);
       Assert.IsTrue(MediaType.Parse("multipart/alternative").IsMultipart);
-    Assert.AreEqual("example/x" , MediaType.Parse("example/x "
-).TypeAndSubType);
-      Assert.AreEqual("text/plain" , MediaType.Parse("example/x, a=b"
-).TypeAndSubType);
+    Assert.AreEqual("example/x" , MediaType.Parse(
+"example/x ").TypeAndSubType);
+    string strtest = "example/x" + "," + " a=b";
+      Assert.AreEqual("text/plain",
+        MediaType.Parse(strtest).TypeAndSubType);
       Assert.AreEqual("example/x" , MediaType.Parse("example/x ; a=b"
 ).TypeAndSubType);
 Assert.AreEqual("example/x" , MediaType.Parse("example/x; a=b"
@@ -1471,11 +1775,26 @@ Assert.AreEqual("example/x" , MediaType.Parse("example/x; a=b"
       var msg = new Message().SetTextAndHtml("Hello", "Hello");
       msg.SetHeader("x-test", "test");
       msg.Parts[0].SetHeader("x-test", "test");
-      Assert.AreEqual("test", msg.GetHeader("x-test"));
-      Assert.AreEqual("test", msg.Parts[0].GetHeader("x-test"));
+      {
+string stringTemp = msg.GetHeader("x-test");
+Assert.AreEqual(
+"test",
+stringTemp);
+}
+      {
+string stringTemp = msg.Parts[0].GetHeader("x-test");
+Assert.AreEqual(
+"test",
+stringTemp);
+}
       msg = new Message(new
         MemoryStream(DataUtilities.GetUtf8Bytes(msg.Generate(), true)));
-      Assert.AreEqual("test", msg.GetHeader("x-test"));
+      {
+string stringTemp = msg.GetHeader("x-test");
+Assert.AreEqual(
+"test",
+stringTemp);
+}
       Assert.AreEqual(null, msg.Parts[0].GetHeader("x-test"));
     }
   }

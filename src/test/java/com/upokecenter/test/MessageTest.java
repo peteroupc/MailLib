@@ -174,95 +174,273 @@ Assert.assertEquals("2" , MediaType.Parse("x/y;z=1;z*=utf-8''2"
       }
     }
 
-    @Test
+    @Test(timeout = 5000)
     public void TestMakeFilename() {
-      Assert.assertEquals(
-        "hello.txt",
-        ContentDisposition.MakeFilename("=?utf-8?q?hello.txt?="));
-      Assert.assertEquals("hello.txt",
-        ContentDisposition.MakeFilename("=?utf-8?q?___hello.txt___?="));
-      Assert.assertEquals("hello.txt",
-        ContentDisposition.MakeFilename("  =?utf-8?q?hello.txt?=  "));
-      Assert.assertEquals("hello.txt",
-        ContentDisposition.MakeFilename("  =?utf-8?q?___hello.txt___?=  "));
-      Assert.assertEquals("a\u00e7\u00e3o.txt",
-        ContentDisposition.MakeFilename("=?iso-8859-1?q?a=E7=E3o.txt?="));
-      Assert.assertEquals("a\u00e7\u00e3o.txt",
-        ContentDisposition.MakeFilename("a\u00e7\u00e3o.txt"));
-      Assert.assertEquals("hello.txt",
-        ContentDisposition.MakeFilename("=?x-unknown?q?hello.txt?="));
-      Assert.assertEquals("_",
-        ContentDisposition.MakeFilename("=?x-unknown"));
-      Assert.assertEquals("my_file_name_.txt",
-        ContentDisposition.MakeFilename("my?file<name>.txt"));
-      Assert.assertEquals("my file name_.txt",
-        ContentDisposition.MakeFilename("my file\tname\".txt"));
-      Assert.assertEquals("my\ufffdfile\ufffdname\ud800\udc00.txt",
-    ContentDisposition.MakeFilename("my\ud800file\udc00name\ud800\udc00.txt"
-));
-      Assert.assertEquals("file\ufffdname",
-        ContentDisposition.MakeFilename("=?x-unknown?Q?file\ud800name?="));
-      Assert.assertEquals("file\u00bename.txt",
-        ContentDisposition.MakeFilename("utf-8''file%c2%bename.txt"));
-      Assert.assertEquals("file\u00bename.txt",
-        ContentDisposition.MakeFilename("utf-8'en'file%c2%bename.txt"));
-      Assert.assertEquals("file\u00bename.txt",
-        ContentDisposition.MakeFilename("windows-1252'en'file%bename.txt"));
-      Assert.assertEquals("x-unknown'en'file_c2_bename.txt",
-        ContentDisposition.MakeFilename("x-unknown'en'file%c2%bename.txt"));
-      Assert.assertEquals("file\u00bename.txt",
-        ContentDisposition.MakeFilename("utf-8'en-us'file%c2%bename.txt"));
-      Assert.assertEquals("_..._",
-        ContentDisposition.MakeFilename("..."));
-      Assert.assertEquals(
-        "_~home",
-        ContentDisposition.MakeFilename("~home"));
-      Assert.assertEquals("_~nul",
-        ContentDisposition.MakeFilename("~nul"));
-      Assert.assertEquals("myfilename.txt._",
-        ContentDisposition.MakeFilename("myfilename.txt."));
-      Assert.assertEquals("_nul",
-        ContentDisposition.MakeFilename("nul"));
-      Assert.assertEquals(
-        "_nul",
-        ContentDisposition.MakeFilename("   nul   "));
-      Assert.assertEquals("ordinary",
-        ContentDisposition.MakeFilename("   ordinary   "));
-      Assert.assertEquals("_nul.txt",
-        ContentDisposition.MakeFilename("nul.txt"));
-      Assert.assertEquals("_con",
-        ContentDisposition.MakeFilename("con"));
-      Assert.assertEquals(
-        "_aux",
-        ContentDisposition.MakeFilename("aux"));
-      Assert.assertEquals("_lpt1device",
-        ContentDisposition.MakeFilename("lpt1device"));
-      Assert.assertEquals("my_file_name_.txt",
-        ContentDisposition.MakeFilename("my\u0001file\u007fname*.txt"));
-      Assert.assertEquals("folder_hello.txt",
-        ContentDisposition.MakeFilename("=?utf-8?q?folder\\hello.txt?="));
-      Assert.assertEquals("folder_",
-        ContentDisposition.MakeFilename("folder/"));
-      Assert.assertEquals("folder______",
-        ContentDisposition.MakeFilename("folder//////"));
-      Assert.assertEquals("fol_der_",
-        ContentDisposition.MakeFilename("fol/der/"));
-      Assert.assertEquals("fol_der______",
-        ContentDisposition.MakeFilename("fol/der//////"));
-      Assert.assertEquals("folder_hello.txt",
-        ContentDisposition.MakeFilename("folder/hello.txt"));
-      Assert.assertEquals("fol_der_hello.txt",
-        ContentDisposition.MakeFilename("fol/der/hello.txt"));
-      Assert.assertEquals("folder_hello.txt",
-        ContentDisposition.MakeFilename("=?x-unknown?q?folder\\hello.txt?="));
+      {
+String stringTemp = ContentDisposition.MakeFilename("=?utf-8?q?hello.txt?=");
+Assert.assertEquals(
+"hello.txt",
+stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("=?utf-8?q?___hello.txt___?=");
+Assert.assertEquals(
+"hello.txt",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename(
+"  =?utf-8?q?hello.txt?=  ");
+Assert.assertEquals(
+"hello.txt",
+stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("  =?utf-8?q?___hello.txt___?=  ");
+Assert.assertEquals(
+"hello.txt",
+stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("=?iso-8859-1?q?a=E7=E3o.txt?=");
+Assert.assertEquals(
+"a\u00e7\u00e3o.txt",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("a\u00e7\u00e3o.txt");
+Assert.assertEquals(
+"a\u00e7\u00e3o.txt",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename(
+"=?x-unknown?q?hello.txt?=");
+Assert.assertEquals(
+"hello.txt",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("=?x-unknown");
+Assert.assertEquals(
+"_",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("my?file<name>.txt");
+Assert.assertEquals(
+"my_file_name_.txt",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("my file\tname\".txt");
+Assert.assertEquals(
+"my file name_.txt",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename(
+"my\ud800file\udc00name\ud800\udc00.txt");
+Assert.assertEquals(
+"my\ufffdfile\ufffdname\ud800\udc00.txt",
+stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("=?x-unknown?Q?file\ud800name?=");
+Assert.assertEquals(
+"file\ufffdname",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename(
+"utf-8''file%c2%bename.txt");
+Assert.assertEquals(
+"file\u00bename.txt",
+stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("utf-8'en'file%c2%bename.txt");
+Assert.assertEquals(
+"file\u00bename.txt",
+stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("windows-1252'en'file%bename.txt");
+Assert.assertEquals(
+"file\u00bename.txt",
+stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("x-unknown'en'file%c2%bename.txt");
+Assert.assertEquals(
+"x-unknown'en'file_c2_bename.txt",
+stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("utf-8'en-us'file%c2%bename.txt");
+Assert.assertEquals(
+"file\u00bename.txt",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("...");
+Assert.assertEquals(
+"_..._",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("~home");
+Assert.assertEquals(
+"_~home",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("~nul");
+Assert.assertEquals(
+"_~nul",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("myfilename.txt.");
+Assert.assertEquals(
+"myfilename.txt._",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("nul");
+Assert.assertEquals(
+"_nul",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("   nul   ");
+Assert.assertEquals(
+"_nul",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("   ordinary   ");
+Assert.assertEquals(
+"ordinary",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("nul.txt");
+Assert.assertEquals(
+"_nul.txt",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("con");
+Assert.assertEquals(
+"_con",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("aux");
+Assert.assertEquals(
+"_aux",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("lpt1device");
+Assert.assertEquals(
+"_lpt1device",
+stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("my\u0001file\u007fname*.txt");
+Assert.assertEquals(
+"my_file_name_.txt",
+stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("=?utf-8?q?folder\\hello.txt?=");
+Assert.assertEquals(
+"folder_hello.txt",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("folder/");
+Assert.assertEquals(
+"folder_",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("folder//////");
+Assert.assertEquals(
+"folder______",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("fol/der/");
+Assert.assertEquals(
+"fol_der_",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("fol/der//////");
+Assert.assertEquals(
+"fol_der______",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("folder/hello.txt");
+Assert.assertEquals(
+"folder_hello.txt",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("fol/der/hello.txt");
+Assert.assertEquals(
+"fol_der_hello.txt",
+stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("=?x-unknown?q?folder\\hello.txt?=");
+Assert.assertEquals(
+"folder_hello.txt",
+stringTemp);
+}
     }
 
     @Test
     public void TestCharset() {
-      Assert.assertEquals("us-ascii", MediaType.Parse("text/plain").GetCharset());
-      Assert.assertEquals("us-ascii", MediaType.Parse("TEXT/PLAIN").GetCharset());
-      Assert.assertEquals("us-ascii", MediaType.Parse("TeXt/PlAiN").GetCharset());
-      Assert.assertEquals("us-ascii", MediaType.Parse("text/troff").GetCharset());
+      {
+String stringTemp = MediaType.Parse("text/plain").GetCharset();
+Assert.assertEquals(
+"us-ascii",
+stringTemp);
+}
+      {
+String stringTemp = MediaType.Parse("TEXT/PLAIN").GetCharset();
+Assert.assertEquals(
+"us-ascii",
+stringTemp);
+}
+      {
+String stringTemp = MediaType.Parse("TeXt/PlAiN").GetCharset();
+Assert.assertEquals(
+"us-ascii",
+stringTemp);
+}
+      {
+String stringTemp = MediaType.Parse("text/troff").GetCharset();
+Assert.assertEquals(
+"us-ascii",
+stringTemp);
+}
       Assert.assertEquals("utf-8" , MediaType.Parse("text/plain; CHARSET=UTF-8"
 ).GetCharset());
       Assert.assertEquals("utf-8" , MediaType.Parse("text/plain; ChArSeT=UTF-8"
@@ -270,30 +448,75 @@ Assert.assertEquals("2" , MediaType.Parse("x/y;z=1;z*=utf-8''2"
       Assert.assertEquals("utf-8" , MediaType.Parse("text/plain; charset=UTF-8"
 ).GetCharset());
       // Note that MIME implicitly allows whitespace around the equal sign
-      Assert.assertEquals("utf-8",
-        MediaType.Parse("text/plain; charset = UTF-8").GetCharset());
-      Assert.assertEquals("utf-8",
-        MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8"
-).GetCharset());
-      Assert.assertEquals("'utf-8'",
-        MediaType.Parse("text/plain; charset='UTF-8'").GetCharset());
-      Assert.assertEquals("utf-8",
-        MediaType.Parse("text/plain; charset=\"UTF-8\"").GetCharset());
-      Assert.assertEquals("utf-8",
-        MediaType.Parse("text/plain; foo=\"\\\"\"; charset=\"UTF-8\""
-).GetCharset());
-      Assert.assertEquals("us-ascii",
-        MediaType.Parse("text/plain; foo=\"; charset=\\\"UTF-8\\\"\""
-).GetCharset());
-      Assert.assertEquals("utf-8",
-        MediaType.Parse("text/plain; foo='; charset=\"UTF-8\""
-).GetCharset());
-      Assert.assertEquals("utf-8",
-        MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\""
-).GetCharset());
-      Assert.assertEquals("utf-8",
-        MediaType.Parse("text/plain; charset=\"UTF-\\8\"").GetCharset());
-      Assert.assertEquals("us-ascii", MediaType.Parse("nana").GetCharset());
+      {
+String stringTemp = MediaType.Parse("text/plain; charset = UTF-8").GetCharset();
+Assert.assertEquals(
+"utf-8",
+stringTemp);
+}
+      {
+String stringTemp = MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8"
+).GetCharset();
+Assert.assertEquals(
+"utf-8",
+stringTemp);
+}
+      {
+String stringTemp = MediaType.Parse("text/plain; charset='UTF-8'").GetCharset();
+Assert.assertEquals(
+"'utf-8'",
+stringTemp);
+}
+      {
+String stringTemp = MediaType.Parse("text/plain; charset=\"UTF-8\""
+).GetCharset();
+Assert.assertEquals(
+"utf-8",
+stringTemp);
+}
+      {
+String stringTemp =
+  MediaType.Parse("text/plain; foo=\"\\\"\"; charset=\"UTF-8\""
+).GetCharset();
+Assert.assertEquals(
+"utf-8",
+stringTemp);
+}
+      {
+String stringTemp =
+  MediaType.Parse("text/plain; foo=\"; charset=\\\"UTF-8\\\"\""
+).GetCharset();
+Assert.assertEquals(
+"us-ascii",
+stringTemp);
+}
+      {
+String stringTemp = MediaType.Parse("text/plain; foo='; charset=\"UTF-8\""
+).GetCharset();
+Assert.assertEquals(
+"utf-8",
+stringTemp);
+}
+      {
+String stringTemp = MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\""
+).GetCharset();
+Assert.assertEquals(
+"utf-8",
+stringTemp);
+}
+      {
+String stringTemp = MediaType.Parse("text/plain; charset=\"UTF-\\8\""
+).GetCharset();
+Assert.assertEquals(
+"utf-8",
+stringTemp);
+}
+      {
+String stringTemp = MediaType.Parse("nana").GetCharset();
+Assert.assertEquals(
+"us-ascii",
+stringTemp);
+}
       Assert.assertEquals("", MediaType.Parse("text/xxx").GetCharset());
       Assert.assertEquals("utf-8" , MediaType.Parse("text/xxx;charset=UTF-8"
 ).GetCharset());
@@ -305,8 +528,12 @@ Assert.assertEquals("2" , MediaType.Parse("x/y;z=1;z*=utf-8''2"
 ).GetCharset());
       Assert.assertEquals("utf-8" , MediaType.Parse("text/plain;charset=utf-8"
 ).GetCharset());
-      Assert.assertEquals("us-ascii",
-        MediaType.Parse("text/plain;chabset=utf-8").GetCharset());
+      {
+String stringTemp = MediaType.Parse("text/plain;chabset=utf-8").GetCharset();
+Assert.assertEquals(
+"us-ascii",
+stringTemp);
+}
       Assert.assertEquals("utf-8" , MediaType.Parse("image/xml;charset=utf-8"
 ).GetCharset());
   Assert.assertEquals("" , MediaType.Parse("image/xml;chabset=utf-8"
@@ -369,8 +596,8 @@ Assert.assertEquals("" , MediaType.Parse("image/plain;chabset=utf-8"
       TestRfc2231Extension("text/plain; charset*0=\"a\";charset*1=b",
         "charset" , "ab");
 
-  TestRfc2231Extension("text/plain; charset*0*=utf-8''a%20b;charset*1*=c%20d"
-        , "charset" , "a bc d");
+  TestRfc2231Extension("text/plain; charset*0*=utf-8''a%20b;charset*1*=c%20d",
+"charset" , "a bc d");
       TestRfc2231Extension(
         "text/plain; charset*0=ab;charset*1*=iso-8859-1-en-xyz",
         "charset",
@@ -381,10 +608,12 @@ Assert.assertEquals("" , MediaType.Parse("image/plain;chabset=utf-8"
         "a biso-8859-1-en-xyz");
 
   if ((MediaType.Parse("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz"
-        , null)) != null)Assert.fail();
+    ,
+null)) != null)Assert.fail();
 
   if ((MediaType.Parse("text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz"
-        , null)) != null)Assert.fail();
+    ,
+null)) != null)Assert.fail();
       TestRfc2231Extension(
         "text/plain; charset*0*=utf-8''a%20b;charset*1=a%20b",
         "charset",
@@ -696,15 +925,28 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         throw new IllegalStateException("", ex);
       }
       if (new NamedAddress("x@example.com").isGroup())Assert.fail();
-      Assert.assertEquals("x@example.com", new NamedAddress("x@example.com").getName());
-      Assert.assertEquals("x@example.com" , new NamedAddress("x@example.com"
-).getAddress().toString());
+      {
+String stringTemp = new NamedAddress("x@example.com").getName();
+Assert.assertEquals(
+"x@example.com",
+stringTemp);
+}
+      Assert.assertEquals("x@example.com" , new NamedAddress(
+"x@example.com").getAddress().toString());
       Assert.assertEquals("\"(lo cal)\"@example.com",
         new Address("\"(lo cal)\"@example.com").toString());
-      Assert.assertEquals("local",
-        new Address("local@example.com").getLocalPart());
-      Assert.assertEquals("example.com",
-        new Address("local@example.com").getDomain());
+      {
+String stringTemp = new Address("local@example.com").getLocalPart();
+Assert.assertEquals(
+"local",
+stringTemp);
+}
+      {
+String stringTemp = new Address("local@example.com").getDomain();
+Assert.assertEquals(
+"example.com",
+stringTemp);
+}
       try {
         Assert.assertEquals(null, new Address("local=domain.example"));
         Assert.fail("Should have failed");
@@ -742,25 +984,55 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     @Test
     public void TestHeaderManip() {
-      Assert.assertEquals("comment",
-        MessageFromString("From: Me <me@example.com>\r\n\r\n"
-).AddHeader("x-comment" , "comment").GetHeader("x-comment"));
-      Assert.assertEquals("comment",
-        MessageFromString("From: Me <me@example.com>\r\n\r\n"
-).AddHeader(new AbstractMap.SimpleImmutableEntry<String, String>("x-comment" , "comment"
-)).GetHeader("x-comment"));
-      Assert.assertEquals("from",
-        MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-        "you@example.com").GetHeader(0).getKey());
-      Assert.assertEquals("you@example.com",
-        MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-        "you@example.com").GetHeader(0).getValue());
-      Assert.assertEquals("x-comment",
-        MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-        "x-comment" , "comment").GetHeader(0).getKey());
-      Assert.assertEquals("comment",
-        MessageFromString("From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-        "x-comment" , "comment").GetHeader(0).getValue());
+      {
+String stringTemp = MessageFromString(
+"From: Me <me@example.com>\r\n\r\n").AddHeader("x-comment" , "comment"
+).GetHeader("x-comment");
+Assert.assertEquals(
+"comment",
+stringTemp);
+}
+      {
+String stringTemp = MessageFromString(
+"From: Me <me@example.com>\r\n\r\n").AddHeader(new AbstractMap.SimpleImmutableEntry<String,
+  String>("x-comment" , "comment"
+)).GetHeader("x-comment");
+Assert.assertEquals(
+"comment",
+stringTemp);
+}
+      {
+String stringTemp = MessageFromString(
+"From: Me <me@example.com>\r\n\r\n").SetHeader(0,
+        "you@example.com").GetHeader(0).getKey();
+Assert.assertEquals(
+"from",
+stringTemp);
+}
+      {
+String stringTemp = MessageFromString(
+"From: Me <me@example.com>\r\n\r\n").SetHeader(0,
+        "you@example.com").GetHeader(0).getValue();
+Assert.assertEquals(
+"you@example.com",
+stringTemp);
+}
+      {
+String stringTemp = MessageFromString(
+"From: Me <me@example.com>\r\n\r\n").SetHeader(0,
+        "x-comment" , "comment").GetHeader(0).getKey();
+Assert.assertEquals(
+"x-comment",
+stringTemp);
+}
+      {
+String stringTemp = MessageFromString(
+"From: Me <me@example.com>\r\n\r\n").SetHeader(0,
+        "x-comment" , "comment").GetHeader(0).getValue();
+Assert.assertEquals(
+"comment",
+stringTemp);
+}
       Message msg = MessageFromString("From: Me <me@example.com>\r\n\r\n");
       try {
         msg.SetHeader(0, (String)null);
@@ -1041,7 +1313,12 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     public void TestMailbox() {
       String mbox = "Me <@example.org,@example.net,@example.com:me@x.example>";
       NamedAddress result = new NamedAddress(mbox);
-      Assert.assertEquals("Me <me@x.example>", result.toString());
+      {
+String stringTemp = result.toString();
+Assert.assertEquals(
+"Me <me@x.example>",
+stringTemp);
+}
     }
 
     static boolean HasNestedMessageType(Message message) {
@@ -1050,8 +1327,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           ((!message.getContentType().getSubType().equals("global-headers")) &&
           ((message.getContentType().getSubType().equals("global-delivery-status"))
           ||
-  (message.getContentType().getSubType().equals("global-disposition-notification"
-))));
+  (message.getContentType().getSubType().equals(
+"global-disposition-notification"))));
       }
       for (Message part : message.getParts()) {
         if (HasNestedMessageType(part)) {
@@ -1077,7 +1354,12 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message,
         true)));
       Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
-      Assert.assertEquals("b1", msg.getContentType().GetParameter("boundary"));
+      {
+String stringTemp = msg.getContentType().GetParameter("boundary");
+Assert.assertEquals(
+"b1",
+stringTemp);
+}
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
       Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
@@ -1127,7 +1409,12 @@ msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(me
 msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message,
         true)));
       Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
-      Assert.assertEquals("b1", msg.getContentType().GetParameter("boundary"));
+      {
+String stringTemp = msg.getContentType().GetParameter("boundary");
+Assert.assertEquals(
+"b1",
+stringTemp);
+}
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals("application", msg.getParts().get(0).getContentType().getTopLevelType());
       body = msg.getParts().get(0).GetBody();
@@ -1146,7 +1433,12 @@ msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(me
 msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message,
         true)));
       Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
-      Assert.assertEquals("b1", msg.getContentType().GetParameter("boundary"));
+      {
+String stringTemp = msg.getContentType().GetParameter("boundary");
+Assert.assertEquals(
+"b1",
+stringTemp);
+}
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals("application", msg.getParts().get(0).getContentType().getTopLevelType());
       body = msg.getParts().get(0).GetBody();
@@ -1168,7 +1460,12 @@ msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(me
 msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message,
         true)));
       Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
-      Assert.assertEquals("b1", msg.getContentType().GetParameter("boundary"));
+      {
+String stringTemp = msg.getContentType().GetParameter("boundary");
+Assert.assertEquals(
+"b1",
+stringTemp);
+}
       Assert.assertEquals(1, msg.getParts().size());
       Message part = msg.getParts().get(0);
       Assert.assertEquals("application", part.getParts().get(0).getContentType().getTopLevelType());
@@ -1219,7 +1516,12 @@ msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(me
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      Assert.assertEquals("application", new MediaTypeBuilder().getTopLevelType());
+      {
+String stringTemp = new MediaTypeBuilder().getTopLevelType();
+Assert.assertEquals(
+"application",
+stringTemp);
+}
       Assert.assertEquals("text" , new
         MediaTypeBuilder(MediaType.TextPlainAscii).getTopLevelType());
       Assert.assertEquals("plain" , new
@@ -1446,18 +1748,19 @@ msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(me
     @Test
     public void TestSetHeader2() {
       Assert.assertEquals("my subject" , new Message().SetHeader("comments",
-        "subject").SetHeader("subject" , "my subject").GetHeader("subject"
-));
+        "subject").SetHeader("subject" , "my subject").GetHeader(
+"subject"));
     }
 
     @Test
     public void TestMediaTypeArgumentValidationExtra() {
       if (!(MediaType.Parse("text/plain").isText()))Assert.fail();
       if (!(MediaType.Parse("multipart/alternative").isMultipart()))Assert.fail();
-    Assert.assertEquals("example/x" , MediaType.Parse("example/x "
-).getTypeAndSubType());
-      Assert.assertEquals("text/plain" , MediaType.Parse("example/x, a=b"
-).getTypeAndSubType());
+    Assert.assertEquals("example/x" , MediaType.Parse(
+"example/x ").getTypeAndSubType());
+    String strtest = "example/x" + "," + " a=b";
+      Assert.assertEquals("text/plain",
+        MediaType.Parse(strtest).getTypeAndSubType());
       Assert.assertEquals("example/x" , MediaType.Parse("example/x ; a=b"
 ).getTypeAndSubType());
 Assert.assertEquals("example/x" , MediaType.Parse("example/x; a=b"
@@ -1470,10 +1773,25 @@ Assert.assertEquals("example/x" , MediaType.Parse("example/x; a=b"
       Message msg = new Message().SetTextAndHtml("Hello", "Hello");
       msg.SetHeader("x-test", "test");
       msg.getParts().get(0).SetHeader("x-test", "test");
-      Assert.assertEquals("test", msg.GetHeader("x-test"));
-      Assert.assertEquals("test", msg.getParts().get(0).GetHeader("x-test"));
+      {
+String stringTemp = msg.GetHeader("x-test");
+Assert.assertEquals(
+"test",
+stringTemp);
+}
+      {
+String stringTemp = msg.getParts().get(0).GetHeader("x-test");
+Assert.assertEquals(
+"test",
+stringTemp);
+}
       msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(msg.Generate(), true)));
-      Assert.assertEquals("test", msg.GetHeader("x-test"));
+      {
+String stringTemp = msg.GetHeader("x-test");
+Assert.assertEquals(
+"test",
+stringTemp);
+}
       Assert.assertEquals(null, msg.getParts().get(0).GetHeader("x-test"));
     }
   }

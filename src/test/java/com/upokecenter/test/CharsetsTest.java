@@ -12,12 +12,16 @@ import org.junit.Test;
 
   public class CharsetsTest {
     static Object GetCharset(String name) {
-      return Reflect.InvokeStatic(EncodingTest.MailNamespace() + ".Charsets"
-        , "GetCharset" , name);
+      return PeterO.Text.Encoders.Encodings.GetEncoding(name, true);
     }
 
-    static Object CharsetGetString(Object charset, Object transform) {
-      return Reflect.Invoke(charset, "GetString", transform);
+    static String CharsetGetString(Object charset, Object transform) {
+      if ((charset) == null) {
+ Assert.fail();
+ }
+      return (String)PeterO.Text.Encoders.Encodings.DecodeString(
+         (PeterO.Text.Encoders.ICharacterEncoding)charset,
+         (PeterO.Mail.ITransform)transform);
     }
 
     @Test
@@ -66,7 +70,7 @@ import org.junit.Test;
       Assert.assertEquals(" Aa\\" , CharsetGetString(charset,
         EncodingTest.Transform(bytes)));
       bytes = new byte[] { 0x1b, 0x28, 0x4a, 0x20, 0x41, 0x61, 0x5c  };
-      Assert.assertEquals(" Aa\\" , CharsetGetString(charset,
+      Assert.assertEquals(" Aa\u00a5" , CharsetGetString(charset,
         EncodingTest.Transform(bytes)));
       // JIS0208 state
    bytes = new byte[] { 0x1b, 0x24, 0x40, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23  };
@@ -77,42 +81,23 @@ import org.junit.Test;
         EncodingTest.Transform(bytes)));
       bytes = new byte[] { 0x1b, 0x24, 0x42, 0x21, 0x21, 0x21, 0x22, 0x0a,
         0x21, 0x23  };
-      Assert.assertEquals("\u3000\u3001\n!#" , CharsetGetString(charset,
-        EncodingTest.Transform(bytes)));
-      bytes = new byte[] { 0x1b, 0x24, 0x42, 0x21, 0x21, 0x21, 0x22, 0x1b,
-        0x28, 0x42, 0x21, 0x23  };
-      Assert.assertEquals("\u3000\u3001!#" , CharsetGetString(charset,
-        EncodingTest.Transform(bytes)));
-      bytes = new byte[] { 0x1b, 0x24, 0x42, 0x21, 0x21, 0x21, 0x0a, 0x21,
-        0x23, 0x22  };
-      Assert.assertEquals("\u3000\ufffd\u3002\ufffd" , CharsetGetString(charset,
-        EncodingTest.Transform(bytes)));
       // Illegal state
    bytes = new byte[] { 0x1b, 0x24, 0x4f, 0x21, 0x21, 0x21, 0x23, 0x21, 0x23  };
-      Assert.assertEquals("\ufffd\u0024\u004f!!!\u0023!#",
-        CharsetGetString(charset, EncodingTest.Transform(bytes)));
-      // JIS0212 state
-      bytes = new byte[] { 0x1b, 0x24, 0x28, 0x44, 0x22, 0x2f, 0x22, 0x30,
-        0x22, 0x31  };
-      Assert.assertEquals("\u02d8\u02c7\u00b8",
-                      CharsetGetString(charset, EncodingTest.Transform(bytes)));
-      bytes = new byte[] { 0x1b, 0x24, 0x28, 0x44, 0x22, 0x2f, 0x22, 0x30,
-        0x0a, 0x23, 0x31  };
-      Assert.assertEquals("\u02d8\u02c7\n\u00231" , CharsetGetString(charset,
-        EncodingTest.Transform(bytes)));
-      bytes = new byte[] { 0x1b, 0x24, 0x28, 0x44, 0x22, 0x2f, 0x22, 0x30,
-        0x1b, 0x28, 0x42, 0x23, 0x31  };
-      Assert.assertEquals("\u02d8\u02c7\u00231" , CharsetGetString(charset,
-        EncodingTest.Transform(bytes)));
-      bytes = new byte[] { 0x1b, 0x24, 0x28, 0x44, 0x22, 0x2f, 0x22, 0x0a,
-        0x22, 0x31, 0x23  };
-      Assert.assertEquals("\u02d8\ufffd\u00b8\ufffd" , CharsetGetString(charset,
-        EncodingTest.Transform(bytes)));
+      {
+String stringTemp = CharsetGetString(charset, EncodingTest.Transform(bytes));
+Assert.assertEquals(
+"\ufffd\u0024\u004f!!!\u0023!#",
+stringTemp);
+}
       // Illegal state
       bytes = new byte[] { 0x1b, 0x24, 0x28, 0x4f, 0x21, 0x21, 0x21, 0x23,
         0x21, 0x23  };
-      Assert.assertEquals("\ufffd\u0024\u0028\u004f!!!\u0023!#",
-        CharsetGetString(charset, EncodingTest.Transform(bytes)));
+      {
+String stringTemp = CharsetGetString(charset, EncodingTest.Transform(bytes));
+Assert.assertEquals(
+"\ufffd\u0024\u0028\u004f!!!\u0023!#",
+stringTemp);
+}
       // Illegal state at end
       bytes = new byte[] { 0x41, 0x1b  };
       Assert.assertEquals("A\ufffd" , CharsetGetString(charset,
@@ -121,10 +106,10 @@ import org.junit.Test;
       Assert.assertEquals("A\ufffd'" , CharsetGetString(charset,
         EncodingTest.Transform(bytes)));
       bytes = new byte[] { 0x41, 0x1b, 0x24  };
-      Assert.assertEquals("A\ufffd" , CharsetGetString(charset,
+      Assert.assertEquals("A\ufffd$" , CharsetGetString(charset,
         EncodingTest.Transform(bytes)));
       bytes = new byte[] { 0x41, 0x1b, 0x24, 0x28  };
-      Assert.assertEquals("A\ufffd\u0028" , CharsetGetString(charset,
+      Assert.assertEquals("A\ufffd$\u0028" , CharsetGetString(charset,
         EncodingTest.Transform(bytes)));
     }
 

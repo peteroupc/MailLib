@@ -11,6 +11,7 @@ import java.util.*;
 
 import com.upokecenter.util.*;
 import com.upokecenter.text.*;
+using PeterO.Text.Encoders;
 
     /**
      * Specifies how a message body should be displayed or handled by a mail user
@@ -192,7 +193,7 @@ EncodedWordContext.Unstructured);
         // too, to use quotes around a filename parameter AND use
         // RFC 2231 encoding, even though all the examples in that RFC
         // show unquoted use of this encoding.
-        String charset = Charsets.ResolveAliasForEmail(
+        String charset = Encodings.ResolveAliasForEmail(
 str.substring(
 0, (
 0)+(str.indexOf('\''))));

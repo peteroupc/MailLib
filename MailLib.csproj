@@ -44,13 +44,40 @@
     <Compile Include="Mail\ArrayWriter.cs" />
     <Compile Include="Text\ArrayWriter.cs" />
     <Compile Include="DataUtilities.cs" />
+    <Compile Include="Text\Encoders\Big5.cs" />
+    <Compile Include="Text\Encoders\DecoderState.cs" />
+    <Compile Include="Text\Encoders\EncoderAlgorithms.cs" />
+    <Compile Include="Text\Encoders\EncoderHelper.cs" />
+    <Compile Include="Text\Encoders\EncodingAscii.cs" />
+    <Compile Include="Text\Encoders\EncodingBig5.cs" />
+    <Compile Include="Text\Encoders\EncodingEUCJP.cs" />
+    <Compile Include="Text\Encoders\EncodingGB18030.cs" />
+    <Compile Include="Text\Encoders\EncodingGBK.cs" />
+    <Compile Include="Text\Encoders\EncodingISO2022JP.cs" />
+    <Compile Include="Text\Encoders\EncodingKoreanEUC.cs" />
+    <Compile Include="Text\Encoders\EncodingLatinOne.cs" />
+    <Compile Include="Text\Encoders\EncodingReplacement.cs" />
+    <Compile Include="Text\Encoders\Encodings.cs" />
+    <Compile Include="Text\Encoders\EncodingShiftJIS.cs" />
+    <Compile Include="Text\Encoders\EncodingSingleByte.cs" />
+    <Compile Include="Text\Encoders\EncodingUtf16.cs" />
+    <Compile Include="Text\Encoders\EncodingUtf16BE.cs" />
+    <Compile Include="Text\Encoders\EncodingUtf7.cs" />
+    <Compile Include="Text\Encoders\EncodingUtf8.cs" />
+    <Compile Include="Text\Encoders\EncodingXUserDefined.cs" />
+    <Compile Include="Text\Encoders\Gb18030.cs" />
+    <Compile Include="Text\Encoders\ICharacterDecoder.cs" />
+    <Compile Include="Text\Encoders\ICharacterEncoder.cs" />
+    <Compile Include="Text\Encoders\ICharacterEncoding.cs" />
+    <Compile Include="Text\Encoders\Jis0208.cs" />
+    <Compile Include="Text\Encoders\Jis0212.cs" />
+    <Compile Include="Text\Encoders\Korean.cs" />
     <Compile Include="Text\Lz4.cs" />
     <Compile Include="Mail\Address.cs" />
     <Compile Include="Mail\Base64Encoder.cs" />
     <Compile Include="Mail\Base64Transform.cs" />
     <Compile Include="Mail\BEncodingStringTransform.cs" />
     <Compile Include="Mail\BoundaryCheckerTransform.cs" />
-    <Compile Include="Mail\Charsets.cs" />
     <Compile Include="Mail\CollectionUtilities.cs" />
     <Compile Include="Mail\ContentDisposition.cs" />
     <Compile Include="Mail\DebugUtility.cs" />
@@ -58,11 +85,8 @@
     <Compile Include="Mail\EightBitTransform.cs" />
     <Compile Include="Mail\EncodedWordContext.cs" />
     <Compile Include="Mail\EncodedWordEncoder.cs" />
-    <Compile Include="Mail\ICharset.cs" />
     <Compile Include="Mail\IdentityEncoder.cs" />
     <Compile Include="Mail\IStringEncoder.cs" />
-    <Compile Include="Mail\JIS0208.cs" />
-    <Compile Include="Mail\JIS0212.cs" />
     <Compile Include="Mail\LineBreakNormalizeTransform.cs" />
     <Compile Include="Mail\MessageDataException.cs" />
     <Compile Include="Mail\HeaderFieldParsers.cs" />
@@ -104,6 +128,9 @@
     <Compile Include="Text\PartialListCharacterInput.cs" />
     <Compile Include="Text\StringCharacterInput.cs" />
     <Compile Include="Text\UnicodeDatabase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets" />
