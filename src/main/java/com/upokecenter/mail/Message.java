@@ -12,7 +12,7 @@ import java.io.*;
 
 import com.upokecenter.util.*;
 using PeterO.Mail.Transforms;
-using PeterO.Text.Encoders;
+import com.upokecenter.text.*;
 
     /**
      * <p>Represents an email message, and contains methods and properties for
@@ -476,7 +476,7 @@ ms = new java.io.ByteArrayInputStream(this.body);
               UnsupportedOperationException("Not in a supported character set.");
           }
           ITransform transform = new WrappedStream(ms);
-          return Encodings.DecodeString(charset, transform);
+          return Encodings.DecodeToString(charset, transform);
 }
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
@@ -1332,7 +1332,16 @@ boolean checkBoundaryDelimiter) {
      * @throws MessageDataException The message can't be generated.
      */
     public String Generate() {
-      return this.Generate(0);
+      java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+        this.Generate(ms, 0);
+        return DataUtilities.GetUtf8String(ms.toByteArray(), false);
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
     }
 
     private static String GenerateBoundary(int num) {
@@ -1379,7 +1388,17 @@ boolean checkBoundaryDelimiter) {
     private static Map<String, Integer> valueHeaderIndices =
       MakeHeaderIndices();
 
-    private String Generate(int depth) {
+    private static void AppendAscii(InputStream output, String str) {
+      for (int i = 0; i < str.length(); ++i) {
+        char c = str.charAt(i);
+        if (c >= 0x80) {
+ throw new MessageDataException("ascii expected");
+}
+        output.write((byte)c);
+      }
+    }
+
+    private void Generate(InputStream output, int depth) {
       StringBuilder sb = new StringBuilder();
       boolean haveMimeVersion = false;
       boolean haveContentEncoding = false;
@@ -1507,7 +1526,7 @@ name.length() < 8 || !name.substring(
         String rawField = Capitalize(name) + ":" +
           (StartsWithWhitespace(value) ? "" : " ") + value;
         if (CanOutputRaw(rawField)) {
-          sb.append(rawField);
+          AppendAscii(output, rawField);
           if (rawField.indexOf(": ") < 0) {
             throw new MessageDataException("No colon+space: " + rawField);
           }
@@ -1542,7 +1561,7 @@ Capitalize(name) + ": ",
           if (newValue.indexOf(": ") < 0) {
             throw new MessageDataException("No colon+space: " + newValue);
           }
-          sb.append(newValue);
+          AppendAscii(output, newValue);
         } else {
           boolean haveDquote = value.indexOf('"') >= 0;
        WordWrapEncoder encoder = new WordWrapEncoder(
@@ -1553,28 +1572,30 @@ Capitalize(name) + ": ",
           if (newValue.indexOf(": ") < 0) {
             throw new MessageDataException("No colon+space: " + newValue);
           }
-          sb.append(newValue);
+          AppendAscii(output, newValue);
         }
-        sb.append("\r\n");
+        AppendAscii(output, "\r\n");
       }
       if (true && depth == 0) {
         // Output a synthetic From field if it doesn't
         // exist and this isn't a body part
-        sb.append("From: me@author-address.invalid\r\n");
+        AppendAscii(output, "From: me@author-address.invalid\r\n");
       }
       if (!haveMsgId && depth == 0) {
-        sb.append("Message-ID: " + this.GenerateMessageID() + "\r\n");
+        AppendAscii(output, "Message-ID: ");
+        AppendAscii(output, this.GenerateMessageID());
+        AppendAscii(output, "\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
-        sb.append("MIME-Version: 1.0\r\n");
+        AppendAscii(output, "MIME-Version: 1.0\r\n");
       }
       if (!haveContentType) {
-        sb.append("Content-Type: " + builder + "\r\n");
+        AppendAscii(output, "Content-Type: " + builder + "\r\n");
       }
       if (!haveContentEncoding) {
-        sb.append("Content-Transfer-Encoding: " + encodingString + "\r\n");
+   AppendAscii(output, "Content-Transfer-Encoding: " + encodingString + "\r\n");
       }
-      IStringEncoder bodyEncoder = null;
+      ICharacterEncoder bodyEncoder = null;
       switch (transferEnc) {
         case EncodingBase64:
           bodyEncoder = new Base64Encoder(true, builder.isText(), false);
@@ -1588,18 +1609,26 @@ false);
           break;
       }
       // Write the body
-      sb.append("\r\n");
+      AppendAscii(output, "\r\n");
       if (!isMultipart) {
-        bodyEncoder.WriteToString(sb, bodyToWrite, 0, bodyToWrite.length);
-        bodyEncoder.FinalizeEncoding(sb);
+        int index = 0;
+        while (true) {
+          int c = (index >= bodyToWrite.length) ? -1 : bodyToWrite[index++];
+          int count = bodyEncoder.Encode(c, output);
+          if (count == -2) {
+ throw new MessageDataException("encoding error");
+}
+          if (count == -1) {
+ break;
+}
+        }
       } else {
         for (Message part : this.getParts()) {
-          sb.append("\r\n--" + boundary + "\r\n");
-          sb.append(part.Generate(depth + 1));
+          AppendAscii(output, "\r\n--" + boundary + "\r\n");
+          part.Generate(output, depth + 1);
         }
-        sb.append("\r\n--" + boundary + "--");
+        AppendAscii(output, "\r\n--" + boundary + "--");
       }
-      return sb.toString();
     }
 
   private static int ReadUtf8Char(

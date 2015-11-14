@@ -16,7 +16,8 @@ using PeterO.Text.Encoders;
     /**
      * Specifies how a message body should be displayed or handled by a mail user
      * agent. This type is immutable; its contents can't be changed after
-     * it's created.
+     * it's created. To create a changeable disposition object, use the
+     * DispositionBuilder class.
      */
   public class ContentDisposition {
     private String dispositionType;
@@ -90,8 +91,8 @@ String type,
 
     /**
      * Gets a list of parameter names associated with this object and their values.
-     * @return A list of parameter names associated with this object and their
-     * values. The names will be sorted.
+     * @return A read-only list of parameter names associated with this object and
+     * their values. The names will be sorted.
      */
     public final Map<String, String> getParameters() {
         return java.util.Collections.unmodifiableMap(this.parameters);
@@ -263,21 +264,31 @@ str.substring(
       String strLower = DataUtilities.ToLowerCaseAscii(str);
       if (
 strLower.equals(
-"nul") || strLower.indexOf("nul.") == 0 || strLower.equals(
-"prn") || strLower.indexOf("prn.") == 0 || strLower.equals(
-"aux") || strLower.indexOf("aux.") == 0 || strLower.equals(
-"con") || strLower.indexOf("con.") == 0 || (
+"nul") ||
+strLower.indexOf(
+"nul.") == 0 || strLower.equals(
+"prn") ||
+strLower.indexOf(
+"prn.") == 0 || strLower.equals(
+"aux") ||
+strLower.indexOf(
+"aux.") == 0 || strLower.equals(
+"con") ||
+strLower.indexOf(
+"con.") == 0 || (
 strLower.length() >= 4 && strLower.indexOf(
-"lpt") == 0 && strLower.charAt(3) >= '1' &&
+"lpt") == 0 && strLower.charAt(3) >= '0' &&
        strLower.charAt(3) <= '9') || (strLower.length() >= 4 &&
               strLower.indexOf(
-"com") == 0 && strLower.charAt(3) >= '1' &&
+"com") == 0 && strLower.charAt(3) >= '0' &&
             strLower.charAt(3) <= '9')) {
         // Reserved filenames on Windows
         str = "_" + str;
       }
-      if (str.charAt(0) == '~') {
-        // Home folder convention
+      if (str.charAt(0) == '~' || str.charAt(0) == '-') {
+        // Home folder convention (tilde).
+        // Filenames starting with hyphens can also be
+        // problematic especially in Unix-based systems
         str = "_" + str;
       }
       if (str.charAt(0) == '.') {

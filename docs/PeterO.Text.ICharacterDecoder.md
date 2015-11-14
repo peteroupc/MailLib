@@ -1,11 +1,11 @@
-## PeterO.Text.Encoders.ICharacterDecoder
+## PeterO.Text.ICharacterDecoder
 
     public interface ICharacterDecoder
 
 ### ReadChar
 
     int ReadChar(
-        PeterO.Mail.ITransform input);
+        PeterO.ITransform input);
 
 Reads bytes from an input transform until a Unicode character is decoded or until the end of the stream is reached.
 
@@ -15,4 +15,4 @@ Reads bytes from an input transform until a Unicode character is decoded or unti
 
 <b>Returns:</b>
 
-The Unicode character decoded, from U + 0000 to U + 10FFFF. Returns -1 if the end of the source is reached or -2 if a decoder error occurs.
+The Unicode code point decoded, from 0-0xd7ff or from 0xe000 to 0x10ffff. Returns -1 if the end of the source is reached or -2 if a decoder error occurs.

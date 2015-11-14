@@ -12,15 +12,15 @@ import org.junit.Test;
 
   public class CharsetsTest {
     static Object GetCharset(String name) {
-      return PeterO.Text.Encoders.Encodings.GetEncoding(name, true);
+      return PeterO.Text.Encodings.GetEncoding(name, true);
     }
 
     static String CharsetGetString(Object charset, Object transform) {
       if ((charset) == null) {
  Assert.fail();
  }
-      return (String)PeterO.Text.Encoders.Encodings.DecodeString(
-         (PeterO.Text.Encoders.ICharacterEncoding)charset,
+      return (String)PeterO.Text.Encodings.DecodeToString(
+         (PeterO.Text.ICharacterEncoding)charset,
          (PeterO.ITransform)transform);
     }
 

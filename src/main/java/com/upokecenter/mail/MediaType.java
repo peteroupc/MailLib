@@ -11,7 +11,7 @@ import java.util.*;
 
 import com.upokecenter.util.*;
 using PeterO.Mail.Transforms;
-using PeterO.Text.Encoders;
+import com.upokecenter.text.*;
 
     /**
      * <p>Specifies what kind of data a message body is.</p> <p>A media type
@@ -29,8 +29,10 @@ using PeterO.Text.Encoders;
     private String topLevelType;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets the name of this media type's top-level type (such as "text" or
+     * "audio".
+     * @return The name of this media type's top-level type (such as "text" or
+     * "audio".
      */
     public final String getTopLevelType() {
         return this.topLevelType;
@@ -316,8 +318,8 @@ StringBuilder sb) {
           c = 0xfffd;
         }
         ++index;
-      if (c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=*%'" .indexOf((char)c) <
-          0) {
+      if (c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=*%'"
+        .indexOf((char)c) < 0) {
           ++length;
           if (!first && length + 1 > MaxLength) {
             sb.append(";\r\n ");
@@ -815,7 +817,7 @@ firstQuote + 1, (
 firstQuote + 1)+(secondQuote - (firstQuote + 1)));
       if (language.length() > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
-        return null;
+        return Encodings.GetEncoding("us-ascii", true);
       }
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
       cs = (cs == null) ? (Encodings.GetEncoding("us-ascii", true)) : cs;
@@ -828,7 +830,7 @@ ICharacterEncoding charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.indexOf('\'');
-      return (quote >= 0) ? null : Encodings.DecodeString(
+      return (quote >= 0) ? null : Encodings.DecodeToString(
         charset,
         new PercentEncodingStringTransform(value));
     }
@@ -859,9 +861,9 @@ ICharacterEncoding charset) {
           continue;
         }
         // name*0 or name*0*
-        if (asterisk > 0 && ((asterisk == name.length() - 2 && name.charAt(asterisk +
-     1) == '0') || (asterisk == name.length() - 3 && name.charAt(asterisk + 1) ==
-            '0' && name.charAt(asterisk + 2) == '*'))) {
+        if (asterisk > 0 && ((asterisk == name.length() - 2 &&
+          name.charAt(asterisk + 1) == '0') || (asterisk == name.length() - 3 &&
+          name.charAt(asterisk + 1) == '0' && name.charAt(asterisk + 2) == '*'))) {
           String realName = name.substring(0, asterisk);
           String realValue = (asterisk == name.length() - 3) ?
             DecodeRfc2231Extension(value) : value;
@@ -935,12 +937,10 @@ String str,
       int index,
  int endIndex,
       boolean httpRules,
- Map<String,
- String> parameters) {
+ Map<String, String> parameters) {
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
-        // HTTP currently uses skipLws, though that may change
-        // to skipWsp in a future revision of HTTP
+        // HTTP currently uses skipOws
         if (httpRules) {
           index = skipOws(str, index, endIndex);
         } else {

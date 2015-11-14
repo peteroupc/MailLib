@@ -11,7 +11,7 @@ import java.util.*;
 
 import com.upokecenter.util.*;
 using PeterO.Mail.Transforms;
-using PeterO.Text.Encoders;
+import com.upokecenter.text.*;
 
   final class Rfc2047 {
 private Rfc2047() {
@@ -394,7 +394,7 @@ startIndex - 2)+(afterLast - (startIndex - 2)));
                 } else {
                   // System.out.println("Encoded " + (base64 ? "B" : "Q") +
                   // " to: " + (encoding.GetString(transform)));
-                  decodedWord = Encodings.DecodeString(encoding, transform);
+                  decodedWord = Encodings.DecodeToString(encoding, transform);
                   // Check for text in the decoded String
                   // that could render the comment syntactically invalid
                   // (the encoded

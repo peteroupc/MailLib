@@ -199,12 +199,13 @@ tokener.GetTokens());
     private List<NamedAddress> groupAddresses;
 
     /**
-     * Gets a list of address that make up the group, if this object represents a
-     * group, or an empty list otherwise.
+     * Gets a read-only list of addresses that make up the group, if this object
+     * represents a group, or an empty list otherwise.
      * @return A list of address that make up the group, if this object represents
      * a group, or an empty list otherwise.
      */
     public final List<NamedAddress> getGroupAddresses() {
-        return java.util.Collections.unmodifiableList(this.groupAddresses);
+        return java.util.Collections.unmodifiableList(
+  this.groupAddresses);
       }
   }

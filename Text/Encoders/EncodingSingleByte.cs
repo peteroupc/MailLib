@@ -15,7 +15,7 @@ namespace PeterO.Text.Encoders {
 
      public int ReadChar(ITransform transform) {
        int b = transform.ReadByte();
-       return (b < 0) ? (-1) : ((b < 0x80) ? b : this.mapping[b-0x80]);
+       return (b < 0) ? (-1) : ((b < 0x80) ? b : this.mapping[b - 0x80]);
     }
   }
 

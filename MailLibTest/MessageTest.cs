@@ -38,7 +38,7 @@ Assert.AreEqual("2" , MediaType.Parse("x/y;z=1;z*=utf-8''2"
 ).GetParameter("z"));
     }
 
-    private static Message MessageFromString(string str) {
+    internal static Message MessageFromString(string str) {
   return new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(str,
         true)));
     }
@@ -195,6 +195,51 @@ Assert.AreEqual(
 stringTemp);
 }
       {
+string stringTemp =
+  ContentDisposition.MakeFilename("com0.txt");
+Assert.AreEqual("_com0.txt",stringTemp);
+}
+{
+string stringTemp =
+  ContentDisposition.MakeFilename("-hello.txt");
+Assert.AreEqual("_-hello.txt",stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("lpt0.txt");
+Assert.AreEqual("_lpt0.txt",stringTemp);
+}
+   {
+string stringTemp =
+  ContentDisposition.MakeFilename("com1.txt");
+Assert.AreEqual("_com1.txt",stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("lpt1.txt");
+Assert.AreEqual("_lpt1.txt",stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("nul.txt");
+Assert.AreEqual("_nul.txt",stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("prn.txt");
+Assert.AreEqual("_prn.txt",stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("aux.txt");
+Assert.AreEqual("_aux.txt",stringTemp);
+}
+      {
+string stringTemp =
+  ContentDisposition.MakeFilename("con.txt");
+Assert.AreEqual("_con.txt",stringTemp);
+}
+      {
 string stringTemp = ContentDisposition.MakeFilename(
 "  =?utf-8?q?hello.txt?=  ");
 Assert.AreEqual(
@@ -291,6 +336,13 @@ stringTemp);
       {
 string stringTemp =
   ContentDisposition.MakeFilename("utf-8'en-us'file%c2%bename.txt");
+Assert.AreEqual(
+"file\u00bename.txt",
+stringTemp);
+}
+{
+string stringTemp =
+  ContentDisposition.MakeFilename("utf-8''file%c2%bename.txt");
 Assert.AreEqual(
 "file\u00bename.txt",
 stringTemp);
@@ -522,12 +574,12 @@ Assert.AreEqual(
 "us-ascii",
 stringTemp);
 }
-      Assert.AreEqual("", MediaType.Parse("text/xxx").GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/xxx;charset=UTF-8"
+      Assert.AreEqual("", MediaType.Parse("text/xyz").GetCharset());
+      Assert.AreEqual("utf-8" , MediaType.Parse("text/xyz;charset=UTF-8"
 ).GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/xxx;charset=utf-8"
+      Assert.AreEqual("utf-8" , MediaType.Parse("text/xyz;charset=utf-8"
 ).GetCharset());
-   Assert.AreEqual("" , MediaType.Parse("text/xxx;chabset=utf-8"
+   Assert.AreEqual("" , MediaType.Parse("text/xyz;chabset=utf-8"
 ).GetCharset());
       Assert.AreEqual("utf-8" , MediaType.Parse("text/xml;charset=utf-8"
 ).GetCharset());
@@ -549,27 +601,6 @@ Assert.AreEqual("" , MediaType.Parse("image/plain;chabset=utf-8"
 ).GetCharset());
     }
 
-    [TestMethod]
-    public void TestCodePointCompare() {
-      Assert.IsTrue(DataUtilities.CodePointCompare("abc", "def") < 0);
-      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800\udc00",
-        "a\ud900\udc00") < 0);
-      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800\udc00",
-        "a\ud800\udc00") == 0);
-      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800", "a\ud800") == 0);
-      Assert.IsTrue(DataUtilities.CodePointCompare("a\udc00", "a\udc00") == 0);
-      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800\udc00",
-        "a\ud800\udd00") < 0);
-      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800\ufffd",
-        "a\ud800\udc00") < 0);
-      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800\ud7ff",
-        "a\ud800\udc00") < 0);
-      Assert.IsTrue(DataUtilities.CodePointCompare("a\ufffd\udc00",
-        "a\ud800\udc00") < 0);
-      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud7ff\udc00",
-        "a\ud800\udc00") < 0);
-    }
-
     public static void TestRfc2231Extension(string mtype, string param,
       string expected) {
       MediaType mt = MediaType.Parse(mtype);
@@ -585,7 +616,12 @@ Assert.AreEqual("" , MediaType.Parse("image/plain;chabset=utf-8"
         "charset" , "utf-8");
     TestRfc2231Extension("text/plain; charset*='en'utf-8" , "charset",
         "utf-8");
-      TestRfc2231Extension("text/plain; charset*=''utf-8", "charset", "utf-8");
+    TestRfc2231Extension("text/plain; charset*='i-unknown'utf-8", "charset",
+        "us-ascii");
+    TestRfc2231Extension("text/plain; charset*=us-ascii'i-unknown'utf-8",
+      "charset",
+        "us-ascii");
+    TestRfc2231Extension("text/plain; charset*=''utf-8", "charset", "utf-8");
   TestRfc2231Extension("text/plain; charset*0=a;charset*1=b" , "charset",
         "ab");
    TestRfc2231Extension("text/plain; charset*=utf-8''a%20b" , "charset",
@@ -612,13 +648,18 @@ Assert.AreEqual("" , MediaType.Parse("image/plain;chabset=utf-8"
         "charset",
         "a biso-8859-1-en-xyz");
 
-  Assert.IsNull(MediaType.Parse("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz"
+  if ((MediaType.Parse("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz"
     ,
-null));
+null)) != null) {
+ Assert.Fail();
+ }
 
-  Assert.IsNull(MediaType.Parse("text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz"
+  if
+  ((MediaType.Parse("text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz"
     ,
-null));
+null)) != null) {
+ Assert.Fail();
+ }
       TestRfc2231Extension(
         "text/plain; charset*0*=utf-8''a%20b;charset*1=a%20b",
         "charset",

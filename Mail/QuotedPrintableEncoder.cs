@@ -6,12 +6,14 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
+using System.IO;
 using System.Text;
+
+using PeterO.Text;
 
 namespace PeterO.Mail {
     /// <summary>Encodes binary data into Quoted Printable.</summary>
-  internal sealed class QuotedPrintableEncoder : IStringEncoder
-  {
+  internal sealed class QuotedPrintableEncoder : ICharacterEncoder {
     private const string HexAlphabet = "0123456789ABCDEF";
     private int lineCount;
     private int lineBreakMode;
@@ -26,159 +28,313 @@ namespace PeterO.Mail {
       this.unlimitedLineLength = unlimitedLineLength;
     }
 
-    private void IncrementLineCount(StringBuilder str, int length) {
+    private int IncrementLineCount(Stream output, int length) {
       if (!this.unlimitedLineLength) {
         if (this.lineCount + length > 75) {
           // 76 including the final '='
-          str.Append("=\r\n");
+          output.WriteByte(0x3d);
+          output.WriteByte(0x0d);
+          output.WriteByte(0x0a);
           this.lineCount = length;
+          return 3;
         } else {
           this.lineCount += length;
         }
       }
+      return 0;
     }
 
-    private void IncrementAndAppend(StringBuilder str, string appendStr) {
+    private int IncrementAndAppend(Stream output, string appendStr) {
+      int count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + appendStr.Length > 75) {
           // 76 including the final '='
-          str.Append("=\r\n");
+          output.WriteByte(0x3d);
+          output.WriteByte(0x0d);
+          output.WriteByte(0x0a);
           this.lineCount = appendStr.Length;
+          count += 3;
         } else {
           this.lineCount += appendStr.Length;
         }
       }
-      str.Append(appendStr);
+      for (int i = 0; i < appendStr.Length; ++i) {
+        output.WriteByte((byte)appendStr[i]);
+        ++count;
+      }
+      return count;
     }
 
-    private void IncrementAndAppendChar(StringBuilder str, char ch) {
+    private int IncrementAndAppendChars(
+Stream output,
+char b1,
+char b2,
+char b3) {
+      int count = 0;
+      if (!this.unlimitedLineLength) {
+        if (this.lineCount + 3 > 75) {
+          // 76 including the final '='
+          output.WriteByte(0x3d);
+          output.WriteByte(0x0d);
+          output.WriteByte(0x0a);
+          this.lineCount = 3;
+          count += 3;
+        } else {
+          this.lineCount += 3;
+        }
+      }
+      output.WriteByte((byte)b1);
+      output.WriteByte((byte)b2);
+      output.WriteByte((byte)b3);
+      count += 3;
+      return count;
+    }
+
+    private int IncrementAndAppendChar(Stream output, char ch) {
+      int count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + 1 > 75) {
           // 76 including the final '='
-          str.Append("=\r\n");
+          output.WriteByte(0x3d);
+          output.WriteByte(0x0d);
+          output.WriteByte(0x0a);
           this.lineCount = 1;
+          count += 3;
         } else {
           ++this.lineCount;
         }
       }
-      str.Append(ch);
+      output.WriteByte((byte)ch);
+      return count;
     }
 
-    public void FinalizeEncoding(StringBuilder str) {
-      // No need to finalize encoding for quoted printable
-    }
+    private int machineState;
 
-    public void WriteToString(StringBuilder str, byte b) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
+    public int Encode(
+      int c,
+      Stream output) {
+  if (output == null) {
+    throw new ArgumentNullException("output");
+  }
+      int count = 0;
+      if (c >= 0) {
+        c &= 0xff;
       }
-      this.WriteToString(str, new[] { b }, 0, 1);
-    }
-
-    public void WriteToString(
-StringBuilder str,
-byte[] data,
-int offset,
-int count) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      if (data == null) {
-        throw new ArgumentNullException("data");
-      }
-      if (offset < 0) {
-    throw new ArgumentException("offset (" + offset + ") is less than " +
-          "0");
-      }
-      if (offset > data.Length) {
-        throw new ArgumentException("offset (" + offset + ") is more than " +
-          data.Length);
-      }
-      if (count < 0) {
-      throw new ArgumentException("count (" + count + ") is less than " +
-          "0");
-      }
-      if (count > data.Length) {
-        throw new ArgumentException("count (" + count + ") is more than " +
-          data.Length);
-      }
-      if (data.Length - offset < count) {
-        throw new ArgumentException("data's length minus " + offset + " (" +
-          (data.Length - offset) + ") is less than " + count);
-      }
-      int length = offset + count;
-      int i = offset;
-      var buf = new char[4];
-      for (i = offset; i < length; ++i) {
-        if (data[i] == 0xd) {
-          if (this.lineBreakMode == 0) {
-            this.IncrementAndAppend(str, "=0D");
-          } else if (i + 1 >= length || data[i + 1] != 0xa) {
-            if (this.lineBreakMode == 2) {
-              str.Append("\r\n");
-              this.lineCount = 0;
-            } else {
-              this.IncrementAndAppend(str, "=0D");
+      while (true) {
+        switch (this.machineState) {
+          case 0: {
+              // Normal
+              if (c < 0) {
+                return -1;
+              }
+              if (c == 0xd) {
+                if (this.lineBreakMode == 0) {
+                  return count + this.IncrementAndAppend(output, "=0D");
+                } else {
+                  this.machineState = 1;
+                  return count;
+                }
+              } else if (c == 0xa) {
+                if (this.lineBreakMode == 2) {
+                  output.WriteByte((byte)0x0d);
+                  output.WriteByte((byte)0x0a);
+                  this.lineCount = 0;
+                  return 2 + count;
+                } else {
+                  return count + this.IncrementAndAppend(output, "=0A");
+                }
+              } else if (c == 0x09) {
+                return count + this.IncrementAndAppend(output, "=09");
+              } else if (c == 0x3d) {
+                return count + this.IncrementAndAppend(output, "=3D");
+              } else if (c == 0x2e && this.lineCount == 0) {
+                this.machineState = 2;
+                return count;
+              } else if (c == 0x46 && this.lineCount == 0) {
+                this.machineState = 3;
+                return count;
+              } else if (c == 0x09) {
+                this.machineState = 7;
+                return count;
+              } else if ((c >= 'A' && c <= 'Z') ||
+                (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') ||
+                "()'+-.,/?:".IndexOf((char)c) >= 0) {
+                return count + this.IncrementAndAppendChar(output, (char)c);
+              } else {
+                count += this.IncrementAndAppendChars(
+output,
+(char)0x3d,
+HexAlphabet[(c >> 4) & 15],
+HexAlphabet[c & 15]);
+                return count;
+              }
             }
-          } else {
-            ++i;
-            str.Append("\r\n");
-            this.lineCount = 0;
-          }
-        } else if (data[i] == 0xa) {
-          if (this.lineBreakMode == 2) {
-            str.Append("\r\n");
-            this.lineCount = 0;
-          } else {
-            this.IncrementAndAppend(str, "=0A");
-          }
-        } else if (data[i] == 9) {
-          this.IncrementAndAppend(str, "=09");
-        } else if (this.lineCount == 0 && data[i] == (byte)'.' && i + 1 <
-          length && (data[i] == '\r' || data[i] == '\n')) {
-          this.IncrementAndAppend(str, "=2E");
-        } else if (this.lineCount == 0 && i + 4 < length && data[i] ==
-          (byte)'F' && data[i + 1] == (byte)'r' && data[i + 2] == (byte)'o' &&
-          data[i + 3] == (byte)'m' && data[i + 4] == (byte)' ') {
-          // See page 7-8 of RFC 2049
-          this.IncrementAndAppend(str, "=46rom ");
-          i += 4;
-        } else if (data[i] == 32) {
-          if (i + 1 == length) {
-            this.IncrementAndAppend(str, "=20");
-          } else if (i + 2 < length && this.lineBreakMode > 0) {
-            if (data[i + 1] == 0xd && data[i + 2] == 0xa) {
-              this.IncrementAndAppend(str, "=20\r\n");
-              this.lineCount = 0;
-              i += 2;
-            } else {
-              this.IncrementAndAppendChar(str, (char)data[i]);
+          case 1: {
+              // Carriage return
+              if (c == 0x0a) {
+                output.WriteByte((byte)0x0d);
+                output.WriteByte((byte)0x0a);
+                this.lineCount = 0;
+                count += 2;
+                this.machineState = 0;
+                return count;
+              } else {
+                if (this.lineBreakMode == 2) {
+                  output.WriteByte((byte)0x0d);
+                  output.WriteByte((byte)0x0a);
+                  this.lineCount = 0;
+                  this.machineState = 0;
+                  count += 2;
+                  continue;
+                } else {
+                  count += this.IncrementAndAppend(output, "=0D");
+                  this.machineState = 0;
+                  continue;
+                }
+              }
             }
-          } else if (i + 1 < length && this.lineBreakMode == 2) {
-            if (data[i + 1] == 0xd || data[i + 1] == 0xa) {
-              this.IncrementLineCount(str, 3);
-              str.Append("=20\r\n");
-              this.lineCount = 0;
-              ++i;
-            } else {
-              this.IncrementAndAppendChar(str, (char)data[i]);
+          case 2: {
+              // Dot at beginning of line
+              if (c == 0x0d || c == 0x0a) {
+                count += this.IncrementAndAppend(output, "=2E");
+              } else {
+                count += this.IncrementAndAppendChar(output, (char)0x2e);
+              }
+              this.machineState = 0;
+              continue;
             }
-          } else {
-            this.IncrementAndAppendChar(str, (char)data[i]);
-          }
-        } else if (data[i] == (byte)'=') {
-          this.IncrementAndAppend(str, "=3D");
-        } else if ((data[i] >= 'A' && data[i] <= 'Z') ||
-    (data[i] >= '0' && data[i] <= '9') || (data[i] >= 'a' && data[i] <= 'z'
-) ||
-                   "()'+-.,/?:".IndexOf((char)data[i]) >= 0) {
-          this.IncrementAndAppendChar(str, (char)data[i]);
-        } else {
-          this.IncrementLineCount(str, 3);
-          buf[0] = '=';
-          buf[1] = HexAlphabet[(data[i] >> 4) & 15];
-          buf[2] = HexAlphabet[data[i] & 15];
-          str.Append(buf, 0, 3);
+          case 3: {
+              // Capital F at beginning of line
+              // See page 7-8 of RFC 2049
+              if (c == (byte)'r') {
+                this.machineState = 4;
+                return count;
+              } else {
+                count += this.IncrementAndAppendChar(output, (char)'F');
+                this.machineState = 0;
+                continue;
+              }
+            }
+          case 4: {
+              // 'Fr' at beginning of line
+              if (c == (byte)'o') {
+                this.machineState = 5;
+                return count;
+              } else {
+                count += this.IncrementAndAppendChar(output, (char)'F');
+                count += this.IncrementAndAppendChar(output, (char)'r');
+                this.machineState = 0;
+                continue;
+              }
+            }
+          case 5: {
+              // 'Fro' at beginning of line
+              if (c == (byte)'m') {
+                this.machineState = 6;
+                return count;
+              } else {
+                count += this.IncrementAndAppendChar(output, (char)'F');
+                count += this.IncrementAndAppendChar(output, (char)'r');
+                count += this.IncrementAndAppendChar(output, (char)'o');
+                this.machineState = 0;
+                continue;
+              }
+            }
+          case 6: {
+              // 'From' at beginning of line
+              if (c == 0x20) {
+                count += this.IncrementAndAppend(output, "=46");
+                count += this.IncrementAndAppendChar(output, (char)'r');
+                count += this.IncrementAndAppendChar(output, (char)'o');
+                count += this.IncrementAndAppendChar(output, (char)'m');
+                count += this.IncrementAndAppendChar(output, (char)' ');
+                this.machineState = 6;
+                return count;
+              } else {
+                count += this.IncrementAndAppendChar(output, (char)'F');
+                count += this.IncrementAndAppendChar(output, (char)'r');
+                count += this.IncrementAndAppendChar(output, (char)'o');
+                count += this.IncrementAndAppendChar(output, (char)'m');
+                this.machineState = 0;
+                continue;
+              }
+            }
+          case 7: {
+            // Space
+            if (c < 0) {
+              count += this.IncrementAndAppend(output, "=20");
+              return count;
+            } else if (this.lineBreakMode == 2 && c == 0x0a) {
+              count += this.IncrementAndAppend(output, "=20\r\n");
+              this.lineCount = 0;
+              return count;
+            } else if (this.lineBreakMode == 2 && c == 0x0d) {
+              this.machineState = 8;
+              return count;
+            } else if (this.lineBreakMode == 2) {
+              count += this.IncrementAndAppendChar(output, ' ');
+              this.machineState = 0;
+              continue;
+            } else if (this.lineBreakMode == 1 && c == 0x0d) {
+              this.machineState = 8;
+              return count;
+            } else if (this.lineBreakMode == 1 && c == 0x0a) {
+              count += this.IncrementAndAppend(output, "=20");
+              this.machineState = 0;
+              continue;
+            } else {
+              count += this.IncrementAndAppendChar(output, ' ');
+              this.machineState = 0;
+              continue;
+            }
+            }
+          case 8: {
+            // Space, CR
+            if (c < 0) {
+              if (this.lineBreakMode == 2) {
+                // Space, linebreak, EOF
+                count += this.IncrementAndAppend(output, "=20\r\n");
+                this.machineState = 0;
+                return count;
+              } else if (this.lineBreakMode == 1) {
+                // Space, CR, EOF
+                count += this.IncrementAndAppend(output, "=20");
+                count += this.IncrementAndAppend(output, "=0D");
+                count += this.IncrementAndAppend(output, "\r\n");
+                this.machineState = 0;
+                return count;
+              } else {
+                // Space, CR, EOF
+                count += this.IncrementAndAppend(output, "=20");
+                count += this.IncrementAndAppend(output, "=0D");
+                count += this.IncrementAndAppend(output, "=0A");
+                this.machineState = 0;
+                return count;
+              }
+            } else if (c == 0x0a) {
+              if (this.lineBreakMode == 2 || this.lineBreakMode == 1) {
+                // Space, linebreak, EOF
+                count += this.IncrementAndAppend(output, "=20\r\n");
+                this.machineState = 0;
+                return count;
+              } else {
+                // Space, CR, EOF
+                count += this.IncrementAndAppend(output, "=20");
+                count += this.IncrementAndAppend(output, "=0D");
+                count += this.IncrementAndAppend(output, "=0A");
+                this.machineState = 0;
+                return count;
+              }
+            } else if (c == 0x0d) {
+              count += this.IncrementAndAppend(output, "=20");
+              this.machineState = 0;
+              continue;
+            } else {
+              count += this.IncrementAndAppendChar(output, ' ');
+              this.machineState = 0;
+              continue;
+            }
+            }
         }
       }
     }

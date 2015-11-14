@@ -33,11 +33,11 @@ namespace PeterO.Text.Encoders {
             this.lead = b;
             continue;
           }
-          int code = this.bigEndian ? b + (this.lead << 8) : this.lead+(b << 8);
+       int code = this.bigEndian ? b + (this.lead << 8) : this.lead + (b << 8);
           this.lead = -1;
           if (this.surrogate >= 0) {
             if ((code & 0xfc00) == 0xdc00) {
-              code = 0x10000 + (code-0xdc00)+((this.lead-0xd800) << 10);
+              code = 0x10000 + (code - 0xdc00) +((this.lead - 0xd800) << 10);
               this.lead = -1;
               return code;
             }
@@ -91,8 +91,8 @@ namespace PeterO.Text.Encoders {
           }
           return 2;
         }
-        int c1 = ((c - 0x10000) >> 10)+0xd800;
-        int c2 = ((c - 0x10000) & 0x3ff)+0xdc00;
+        int c1 = ((c - 0x10000) >> 10) +0xd800;
+        int c2 = ((c - 0x10000) & 0x3ff) +0xdc00;
            b1 = (c1 >> 8) & 0xff;
           b2 = c1 & 0xff;
           if (this.bigEndian) {

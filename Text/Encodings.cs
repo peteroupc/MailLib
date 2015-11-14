@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace PeterO.Text.Encoders {
+using PeterO.Text.Encoders;
+
+namespace PeterO.Text {
     /// <summary>Not documented yet.</summary>
   public static class Encodings {
     private class DecoderToInputClass : ICharacterInput {
@@ -13,14 +15,14 @@ namespace PeterO.Text.Encoders {
         this.stream = stream;
       }
 
-/// </summary>
+/// <summary>Not documented yet.</summary>
 /// <returns></returns>
 public int ReadChar() {
         int c = this.reader.ReadChar(this.stream);
         return (c == -2) ? 0xfffd : c;
       }
 
-/// </summary>
+/// <summary>Not documented yet.</summary>
 /// <param name="buffer"></param>
 /// <param name="offset"></param>
 /// <param name="length"></param>
@@ -350,7 +352,8 @@ public int Read(int[] buffer, int offset, int length) {
     /// cases, to email standards such as MIME, and some additional encodings
     /// may be
     /// supported. For instance, setting this value to true will enable the
-    /// &#x22;utf-7&#x22; encoding and change &#x22;us-ascii&#x22; and
+    /// &#x22;utf-7&#x22; encoding and change. <c>"us-ascii"</c>
+    /// and
     /// &#x22;iso-8859-1&#x22; to a 7 bit encoding and the 8-bit Latin-1
     /// encoding,
     /// respectively, rather than aliases to &#x22;windows-1252&#x22;, as
@@ -408,7 +411,7 @@ public int Read(int[] buffer, int offset, int length) {
     /// <returns>The converted string.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoding'/> or <paramref name='transform'/> is null.</exception>
-    public static string DecodeString(
+    public static string DecodeToString(
      this ICharacterEncoding encoding,
      ITransform transform) {
       if (encoding == null) {
@@ -434,7 +437,7 @@ public int Read(int[] buffer, int offset, int length) {
     /// <param name='encoding'>Encoding that exposes a decoder to be converted
     /// into
     /// a character input stream. If the decoder returns -2 (indicating a decode
-    /// error), the character input stream handles the error by outputting a
+    /// error), the character input stream handles the error by returning a
     /// replacement character in its place.</param>
     /// <param name='stream'>Byte stream to convert into Unicode
     /// characters.</param>

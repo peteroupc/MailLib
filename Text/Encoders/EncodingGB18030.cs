@@ -243,7 +243,7 @@ namespace PeterO.Text.Encoders {
  return 39419;
 }
     int v = -1;
-    for (int i = 0; i < gb18030table.Length;i+=2) {
+    for (int i = 0; i < gb18030table.Length; i += 2) {
       if (gb18030table[i + 1 ]<= codepoint) {
         v = i;
       } else {

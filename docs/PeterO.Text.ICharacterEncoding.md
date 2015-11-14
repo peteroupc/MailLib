@@ -1,10 +1,10 @@
-## PeterO.Text.Encoders.ICharacterEncoding
+## PeterO.Text.ICharacterEncoding
 
     public interface ICharacterEncoding
 
 ### GetDecoder
 
-    PeterO.Text.Encoders.ICharacterDecoder GetDecoder();
+    PeterO.Text.ICharacterDecoder GetDecoder();
 
 Creates a decoder for this character encoding with initial state. If the decoder is stateless, multiple calls of this method can return the same decoder.
 
@@ -14,7 +14,7 @@ Not documented yet.
 
 ### GetEncoder
 
-    PeterO.Text.Encoders.ICharacterEncoder GetEncoder();
+    PeterO.Text.ICharacterEncoder GetEncoder();
 
 Creates an encoder for this character encoding with initial state. If the encoder is stateless, multiple calls of this method can return the same encoder.
 

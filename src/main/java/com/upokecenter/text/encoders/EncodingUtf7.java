@@ -2,11 +2,11 @@ package com.upokecenter.text;
 
 import java.io.*;
 import com.upokecenter.util.*;
-import com.upokecenter.mail.*;
+
 import com.upokecenter.text.*;
 
- class EncodingUtf7 implements ICharacterReader {
-      static final int[] Alphabet = { -1, -1, -1, -1, -1, -1,
+  class EncodingUtf7 implements ICharacterEncoding {
+    static final int[] Alphabet = { -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
           -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
@@ -16,15 +16,25 @@ import com.upokecenter.text.*;
         -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
         41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
-      DecoderState state;
-      int alphavalue = 0;
-      int base64value = 0;
-      int base64count = 0;
-   CodeUnitAppender appender;
+    static final int[] ToAlphabet = {
+  0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d,
+  0x4e, 0x4f, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a,
+  0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6a, 0x6b, 0x6c, 0x6d,
+  0x6e, 0x6f, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7a,
+        0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x2b, 0x2f
+      };
+
+    private static class Decoder implements ICharacterDecoder {
+      private DecoderState state;
+      private int alphavalue = 0;
+      private int base64value = 0;
+      private CodeUnitAppender appender;
+      private int base64count = 0;
       // 0: not in base64; 1: start of base 64; 2: continuing base64
-      int machineState = 0;
-      public EncodingUtf7 (ITransform transform) {
-        this.state = new DecoderState(transform, 4);
+      private int machineState = 0;
+
+      public Decoder () {
+        this.state = new DecoderState(4);
         this.appender = new CodeUnitAppender();
       }
 
@@ -40,11 +50,11 @@ import com.upokecenter.text.*;
         public void FinalizeAndReset(DecoderState state) {
           if (this.surrogate >= 0 && this.lastByte >= 0) {
             // Unpaired surrogate and an unpaired byte value
-            state.AppendChar(0xfffd);
-            state.AppendChar(0xfffd);
+            state.AppendChar(-2);
+            state.AppendChar(-2);
           } else if (this.surrogate >= 0 || this.lastByte >= 0) {
             // Unpaired surrogate or byte value remains
-            state.AppendChar(0xfffd);
+            state.AppendChar(-2);
           }
           this.surrogate = -1;
           this.lastByte = -1;
@@ -78,19 +88,19 @@ import com.upokecenter.text.*;
               this.surrogate = -1;
             } else if ((codeunit & 0xfc00) == 0xd800) {
               // unpaired high surrogate
-              state.AppendChar((char)0xfffd);
+              state.AppendChar(-2);
               this.surrogate = codeunit;
             } else {
               // not a surrogate, output the first as U + FFFD
               // and the second as is
-              state.AppendChar((char)0xfffd);
+              state.AppendChar(-2);
               state.AppendChar((char)codeunit);
               this.surrogate = -1;
             }
           } else {
             if ((codeunit & 0xfc00) == 0xdc00) {
               // unpaired low surrogate
-              state.AppendChar((char)0xfffd);
+              state.AppendChar(-2);
             } else if ((codeunit & 0xfc00) == 0xd800) {
               // valid high surrogate
               this.surrogate = codeunit;
@@ -107,17 +117,17 @@ import com.upokecenter.text.*;
         }
       }
 
-      public int ReadChar() {
-        int ch = state.GetChar();
-        if (ch >= 0) {
- return ch;
-}
+      public int ReadChar(ITransform stream) {
+        int ch = this.state.GetChar();
+        if (ch != -1) {
+          return ch;
+        }
         while (true) {
           int b;
-          switch (machineState) {
+          switch (this.machineState) {
             case 0:
-               // not in base64
-              b = state.read();
+              // not in base64
+              b = this.state.read(stream);
               if (b < 0) {
                 // done
                 return -1;
@@ -126,7 +136,7 @@ import com.upokecenter.text.*;
                 return b;
               } else if (b == 0x5c || b >= 0x7e || b < 0x20) {
                 // Illegal byte in UTF-7
-                return 0xfffd;
+                return -2;
               } else if (b == 0x2b) {
                 // plus sign
                 machineState = 1;  // change state to "start of base64"
@@ -138,29 +148,29 @@ import com.upokecenter.text.*;
               }
               break;
             case 1:  // start of base64
-              b = state.read();
+              b = this.state.read(stream);
               if (b < 0) {
                 // End of stream, illegal
-                machineState = 0;
-                return 0xfffd;
+                this.machineState = 0;
+                return -2;
               }
               if (b == 0x2d) {
                 // hyphen, so output a plus sign
-                machineState = 0;
-                state.AppendChar('+');
-                ch = state.GetChar();
-                if (ch >= 0) {
- return ch;
-}
+                this.machineState = 0;
+                this.state.AppendChar('+');
+                ch = this.state.GetChar();
+                if (ch != -1) {
+                  return ch;
+                }
               } else if (b >= 0x80) {
                 // Non-ASCII byte, illegal
                 machineState = 0;
-                state.AppendChar((char)0xfffd);  // for the illegal plus
-             state.AppendChar((char)0xfffd);  // for the illegal non-ASCII byte
+                state.AppendChar(-2);  // for the illegal plus
+             state.AppendChar(-2);  // for the illegal non-ASCII byte
                 ch = state.GetChar();
-                if (ch >= 0) {
- return ch;
-}
+                if (ch != -1) {
+                  return ch;
+                }
               } else {
                 alphavalue = Alphabet[b];
                 if (alphavalue >= 0) {
@@ -172,47 +182,47 @@ import com.upokecenter.text.*;
                   // Non-base64 byte (NOTE: Can't be plus or
                   // minus at this point)
                   machineState = 0;
-                  state.AppendChar((char)0xfffd);  // for the illegal plus
+                  state.AppendChar(-2);  // for the illegal plus
                   if (b == 0x09 || b == 0x0a || b == 0x0d) {
                     state.AppendChar((char)b);
                   } else if (b == 0x5c || b >= 0x7e || b < 0x20) {
                     // Illegal byte in UTF-7
-                    state.AppendChar((char)0xfffd);
+                    state.AppendChar(-2);
                   } else {
                     state.AppendChar((char)b);
                   }
                   ch = state.GetChar();
-                  if (ch >= 0) {
- return ch;
-}
+                  if (ch != -1) {
+                    return ch;
+                  }
                 }
               }
               break;
             case 2:
               // continuing base64
-              b = state.read();
-              alphavalue = (b < 0 || b >= 0x80) ? -1 : Alphabet[b];
-              if (alphavalue >= 0) {
+              b = this.state.read(stream);
+              this.alphavalue = (b < 0 || b >= 0x80) ? -1 : Alphabet[b];
+              if (this.alphavalue >= 0) {
                 // Base64 alphabet (except padding)
-                base64value <<= 6;
-                base64value |= alphavalue;
-                ++base64count;
-                if (base64count == 4) {
+                this.base64value <<= 6;
+                this.base64value |= this.alphavalue;
+                ++this.base64count;
+                if (this.base64count == 4) {
                   // Generate UTF-16 bytes
-                  appender.AppendByte((base64value >> 16) & 0xff, state);
-                  appender.AppendByte((base64value >> 8) & 0xff, state);
-                  appender.AppendByte(base64value & 0xff, state);
-                  base64count = 0;
+         this.appender.AppendByte((this.base64value >> 16) & 0xff, this.state);
+          this.appender.AppendByte((this.base64value >> 8) & 0xff, this.state);
+                  this.appender.AppendByte(this.base64value & 0xff, this.state);
+                  this.base64count = 0;
                 }
               } else {
                 machineState = 0;
-                 switch (base64count) {
-                    case 1: {
+                switch (base64count) {
+                  case 1: {
                     // incomplete base64 byte
                     appender.AppendIncompleteByte();
                     break;
                     }
-                    case 2: {
+                  case 2: {
                     base64value <<= 12;
                     appender.AppendByte((base64value >> 16) & 0xff, state);
                     if ((base64value & 0xffff) != 0) {
@@ -221,7 +231,7 @@ import com.upokecenter.text.*;
                     }
                     break;
                     }
-                    case 3: {
+                  case 3: {
                     base64value <<= 6;
                     appender.AppendByte((base64value >> 16) & 0xff, state);
                     appender.AppendByte((base64value >> 8) & 0xff, state);
@@ -236,7 +246,7 @@ import com.upokecenter.text.*;
                 if (b < 0) {
                   // End of stream
                   ch = state.GetChar();
-                  return (ch >= 0) ? (ch) : (-1);
+                  return (ch != -1) ? (ch) : (-1);
                 }
                 if (b == 0x2d) {
                   // Ignore the hyphen
@@ -244,18 +254,85 @@ import com.upokecenter.text.*;
                   state.AppendChar((char)b);
                 } else if (b == 0x5c || b >= 0x7e || b < 0x20) {
                   // Illegal byte in UTF-7
-                  state.AppendChar((char)0xfffd);
+                  state.AppendChar(-2);
                 } else {
                   state.AppendChar((char)b);
                 }
               }
-              ch = state.GetChar();
-              if (ch >= 0) {
- return ch;
-}
+              ch = this.state.GetChar();
+              if (ch != -1) {
+                return ch;
+              }
               break;
             default: throw new IllegalStateException("Unexpected state");
           }
         }
       }
+    }
+
+    private static class Encoder implements ICharacterEncoder {
+      private int Base64Char(int c, InputStream stream) {
+        if (c <= 0xffff) {
+          int byte1 = (c >> 8) & 0xff;
+          int byte2 = c & 0xff;
+          int c1 = ToAlphabet[(byte1 >> 2) & 63];
+          int c2 = ToAlphabet[((byte1 & 3) << 4) + ((byte2 >> 4) & 15)];
+          int c3 = ToAlphabet[((byte2 & 15) << 2)];
+          stream.write((byte)0x2b);
+          stream.write((byte)c1);
+          stream.write((byte)c2);
+          stream.write((byte)c3);
+          stream.write((byte)0x2d);
+          return 5;
+        } else {
+          int cc1 = (((c - 0x10000) >> 10) & 0x3ff) + 0xd800;
+          int cc2 = ((c - 0x10000) & 0x3ff) + 0xdc00;
+          int byte1 = (cc1 >> 8) & 0xff;
+          int byte2 = cc1 & 0xff;
+          int byte3 = (cc2 >> 8) & 0xff;
+          int byte4 = cc2 & 0xff;
+          int c1 = ToAlphabet[(byte1 >> 2) & 63];
+          int c2 = ToAlphabet[((byte1 & 3) << 4) + ((byte2 >> 4) & 15)];
+          int c3 = ToAlphabet[((byte2 & 15) << 2) + ((byte3 >> 6) & 3)];
+          int c4 = ToAlphabet[byte3 & 63];
+          int c5 = ToAlphabet[(byte4 >> 2) & 63];
+          int c6 = ToAlphabet[((byte4 & 3) << 4)];
+          stream.write((byte)0x2b);
+          stream.write((byte)c1);
+          stream.write((byte)c2);
+          stream.write((byte)c3);
+          stream.write((byte)c4);
+          stream.write((byte)c5);
+          stream.write((byte)c6);
+          stream.write((byte)0x2d);
+          return 8;
+        }
+      }
+
+      public int Encode(int c, InputStream stream) {
+        if (c < 0) {
+ return -1;
+}
+        if (c == 0x2d) {
+          stream.write((byte)0x2b);
+          stream.write((byte)0x2d);
+          return 2;
+        }
+     if (c == 0x09 || c == 0x0a || c == 0x0d || (c >= 0x20 && c < 0x7e && c !=
+          0x5c)) {
+          stream.write((byte)c);
+          return 2;
+        }
+        return (c >= 0x110000 || (c >= 0xd800 && c < 0xe000)) ? (-2) :
+          this.Base64Char(c, stream);
+      }
+    }
+
+    public ICharacterDecoder GetDecoder() {
+      return new Decoder();
+    }
+
+    public ICharacterEncoder GetEncoder() {
+      return new Encoder();
+    }
   }

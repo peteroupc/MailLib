@@ -18,7 +18,7 @@ using PeterO.Text.Encoders;
      * Character Database. See the documentation for the
      * NormalizingCharacterInput class for the permission notice for the
      * Unicode Character Database.</p>
-     * @deprecated Use NormalizingCharacterInput instead, which is much more flexible than
+     * @deprecated Use NormalizingCharacterInput instead; that class is much more flexible than
 * Normalizer.
  */
 @Deprecated
@@ -45,9 +45,12 @@ using PeterO.Text.Encoders;
       this.nci = new NormalizingCharacterInput(str, form);
     }
 
-  /**
-   * Not documented yet.
-   */
+    /**
+     * Not documented yet.
+     * @param str Not documented yet.
+     * @param form A Normalization object.
+     * @return A Boolean object.
+     */
     public static boolean IsNormalized(String str, Normalization form) {
       return NormalizingCharacterInput.IsNormalized(str, form);
     }

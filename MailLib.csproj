@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Mail\ArrayWriter.cs" />
+    <Compile Include="Mail\Transforms\ByteArrayTransform.cs" />
     <Compile Include="Text\ArrayWriter.cs" />
     <Compile Include="DataUtilities.cs" />
     <Compile Include="Text\Encoders\Big5.cs" />
@@ -57,7 +58,7 @@
     <Compile Include="Text\Encoders\EncodingKoreanEUC.cs" />
     <Compile Include="Text\Encoders\EncodingLatinOne.cs" />
     <Compile Include="Text\Encoders\EncodingReplacement.cs" />
-    <Compile Include="Text\Encoders\Encodings.cs" />
+    <Compile Include="Text\Encodings.cs" />
     <Compile Include="Text\Encoders\EncodingShiftJIS.cs" />
     <Compile Include="Text\Encoders\EncodingSingleByte.cs" />
     <Compile Include="Text\Encoders\EncodingUtf16.cs" />
@@ -66,9 +67,9 @@
     <Compile Include="Text\Encoders\EncodingUtf8.cs" />
     <Compile Include="Text\Encoders\EncodingXUserDefined.cs" />
     <Compile Include="Text\Encoders\Gb18030.cs" />
-    <Compile Include="Text\Encoders\ICharacterDecoder.cs" />
-    <Compile Include="Text\Encoders\ICharacterEncoder.cs" />
-    <Compile Include="Text\Encoders\ICharacterEncoding.cs" />
+    <Compile Include="Text\ICharacterDecoder.cs" />
+    <Compile Include="Text\ICharacterEncoder.cs" />
+    <Compile Include="Text\ICharacterEncoding.cs" />
     <Compile Include="Text\Encoders\Jis0208.cs" />
     <Compile Include="Text\Encoders\Jis0212.cs" />
     <Compile Include="Text\Encoders\Korean.cs" />
@@ -86,7 +87,6 @@
     <Compile Include="Mail\EncodedWordContext.cs" />
     <Compile Include="Mail\EncodedWordEncoder.cs" />
     <Compile Include="Mail\IdentityEncoder.cs" />
-    <Compile Include="Mail\IStringEncoder.cs" />
     <Compile Include="Mail\Transforms\LineBreakNormalizeTransform.cs" />
     <Compile Include="Mail\MessageDataException.cs" />
     <Compile Include="Mail\HeaderFieldParsers.cs" />

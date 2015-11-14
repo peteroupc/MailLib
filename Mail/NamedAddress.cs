@@ -190,15 +190,15 @@ tokener.GetTokens());
 
     private IList<NamedAddress> groupAddresses;
 
-    /// <summary>Gets a list of address that make up the group, if this object
-    /// represents a group, or an empty list otherwise.</summary>
+    /// <summary>Gets a read-only list of addresses that make up the group, if this
+    /// object represents a group, or an empty list otherwise.</summary>
     /// <value>A list of address that make up the group, if this object represents a
     /// group, or an empty list otherwise.</value>
     public IList<NamedAddress> GroupAddresses {
       get {
         return new
-
-  System.Collections.ObjectModel.ReadOnlyCollection<NamedAddress>(this.groupAddresses);
+    System.Collections.ObjectModel.ReadOnlyCollection<NamedAddress>(
+  this.groupAddresses);
       }
     }
   }

@@ -7,55 +7,21 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
+import java.io.*;
+
+import com.upokecenter.text.*;
+
     /**
      * An IdentityEncoder.
      */
-  final class IdentityEncoder implements IStringEncoder
+  final class IdentityEncoder implements ICharacterEncoder
   {
-    public void WriteToString(
-StringBuilder str,
-byte[] data,
-int offset,
-int count) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      if (data == null) {
-        throw new NullPointerException("data");
-      }
-      if (offset < 0) {
-    throw new IllegalArgumentException("offset (" + offset + ") is less than " +
-          "0");
-      }
-      if (offset > data.length) {
-        throw new IllegalArgumentException("offset (" + offset + ") is more than " +
-          data.length);
-      }
-      if (count < 0) {
-      throw new IllegalArgumentException("count (" + count + ") is less than " +
-          "0");
-      }
-      if (count > data.length) {
-        throw new IllegalArgumentException("count (" + count + ") is more than " +
-          data.length);
-      }
-      if (data.length - offset < count) {
-        throw new IllegalArgumentException("data's length minus " + offset + " (" +
-          (data.length - offset) + ") is less than " + count);
-      }
-      if (count == 0) {
-        return;
-      }
-      for (int i = 0; i < count; ++i) {
-        str.append((char)(((int)data[i + offset]) & 0xff));
-      }
-    }
-
-    public void FinalizeEncoding(StringBuilder str) {
-      // No need to finalize for identity encodings
-    }
-
-    public void WriteToString(StringBuilder str, byte b) {
-      str.append((char)(((int)b) & 0xff));
+    public int Encode(int c, InputStream s) {
+      if (c < 0) {
+ return -1;
+}
+      c &= 0xff;
+      s.write((byte)c);
+      return 1;
     }
   }

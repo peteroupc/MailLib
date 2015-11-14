@@ -272,17 +272,17 @@ false) {
             if (c2 == '\r') {
               // CR, may or may not be a line break
               c2 = this.input.ReadByte();
-              // Add the CR to the
-              // buffer, it won't be ignored
-              this.ResizeBuffer(spaceCount);
-              this.buffer[spaceCount - 1] = (byte)'\r';
               if (c2 == '\n') {
                 // LF, so it's a line break
                 this.lineCharCount = 0;
-                this.ResizeBuffer(spaceCount + 1);
-                this.buffer[spaceCount] = (byte)'\n';
-                endsWithLineBreak = true;
-                break;
+                this.ResizeBuffer(1);
+                this.buffer[0] = (byte)'\n';
+                return 0x0d;
+              } else {
+                // Add the CR to the
+                // buffer, it won't be ignored
+                this.ResizeBuffer(spaceCount);
+                this.buffer[spaceCount - 1] = (byte)'\r';
               }
               if (!this.lenientLineBreaks) {
                 throw new MessageDataException("Expected LF after CR");
