@@ -20,7 +20,59 @@ namespace MailLibTest {
  }
       return (string)PeterO.Text.Encoders.Encodings.DecodeString(
          (PeterO.Text.Encoders.ICharacterEncoding)charset,
-         (PeterO.Mail.ITransform)transform);
+         (PeterO.ITransform)transform);
+    }
+
+    [TestMethod]
+    public void TestGetEncoding() {
+      if ((GetCharset("utf-8")) == null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("Utf-8")) == null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("uTf-8")) == null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("utF-8")) == null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("UTF-8")) == null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("utg-8")) != null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("utf-9")) != null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("   utf-8    ")) == null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("   utf-8")) == null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("utf-8    ")) == null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("\t\tutf-8\t\t")) == null) {
+ Assert.Fail();
+ }
+      if ((GetCharset(" \r\n utf-8 \r ")) == null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("\nutf-8\n")) == null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("\tutf-8\t")) == null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("\rutf-8\r")) == null) {
+ Assert.Fail();
+ }
+      if ((GetCharset("\futf-8\f")) == null) {
+ Assert.Fail();
+ }
     }
 
     [TestMethod]

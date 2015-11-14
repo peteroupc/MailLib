@@ -1,12 +1,15 @@
 using System;
+
 namespace PeterO.Text.Encoders {
 internal static class Jis0212 {
 private static short[] table = new short[7211];
+
 static Jis0212() {
 Array.Copy(method0(), 0, table, 0, 4096);
 Array.Copy(method1(), 0, table, 4096, 3115);
 }
-private static int[] indextable={
+
+private static int[] indextable = {
 161, 65374, 0, 256, 198, 1119, 512, 256, 192, 501, 768, 256, 378, 382, 1024,
   256, 19970, 20434, 1280, 256, 20444, 21276, 1536, 256, 21278, 22213, 1792,
   256, 22217, 34369, 2048, 256, 23058, 24150, 2304, 256, 24152, 25057, 2560,
@@ -17,16 +20,17 @@ private static int[] indextable={
   256, 36283, 37150, 5888, 256, 37152, 37770, 6144, 256, 23986, 38884, 6400,
   256, 38895, 39808, 6656, 256, 39812, 40756, 6912, 256, 40759, 40869, 7168, 43
 };
+
 public static int CodePointToIndex(int codepoint) {
-   if (codepoint<161 || codepoint>65374) {
+   if (codepoint < 161 || codepoint > 65374) {
  return -1;
 }
-  for (int i = 0;i<indextable.Length;i+=4) {
+  for (int i = 0; i < indextable.Length;i+=4) {
      if (codepoint >= indextable[i] && codepoint <= indextable[i + 1]) {
       int startindex = indextable[i + 2];
        int length = indextable[i + 3];
       for (int j = 0; j < length; ++j) {
-         if ((table[j + startindex]) == codepoint) {
+         if (table[j + startindex] == codepoint) {
  return j + startindex;
 }
        }
@@ -34,13 +38,15 @@ public static int CodePointToIndex(int codepoint) {
    }
   return -1;
  }
+
 public static int IndexToCodePoint(int index) {
-if (index<0 || index >= 7211) {
+if (index < 0 || index >= 7211) {
  return -1;
 }
-int cp=((int)table[index]) & 0xffff;
+int cp = ((int)table[index]) & 0xffff;
 return (cp == 0) ? -1 : cp;
 }
+
 private static short[] method0() {
 return new short[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -415,6 +421,7 @@ return new short[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0x7471, 0x7472, 0x7480, 0x7481, 0x7485, 0x7486, 0x7487, 0x7489, 0x748f,
   0x7490, 0x7491, 0x7492, 0x7498, 0x7499};
 }
+
 private static short[] method1() {
 return new short[] { 0x749a, 0x749c, 0x749f, 0x74a0, 0x74a1, 0x74a3, 0x74a6,
   0x74a8, 0x74a9, 0x74aa, 0x74ab, 0x74ae, 0x74af, 0x74b1, 0x74b2, 0x74b5,

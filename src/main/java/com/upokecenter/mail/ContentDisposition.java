@@ -284,7 +284,7 @@ strLower.length() >= 4 && strLower.indexOf(
         // Starts with period; may be hidden in some configurations
         str = "_" + str;
       }
-      return Normalizer.Normalize(str, Normalization.NFC);
+      return NormalizingCharacterInput.Normalize(str, Normalization.NFC);
     }
 
     /**

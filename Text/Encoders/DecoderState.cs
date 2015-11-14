@@ -1,5 +1,4 @@
 using System;
-using PeterO.Mail;
 
 namespace PeterO.Text.Encoders {
 internal class DecoderState {
@@ -39,15 +38,16 @@ internal class DecoderState {
   }
 
   private class StateToTransform : ITransform {
-    ITransform t;
-    DecoderState s;
+    private ITransform t;
+    private DecoderState s;
+
     public StateToTransform(DecoderState s, ITransform t) {
       this.t = t;
       this.s = s;
     }
 
     public int ReadByte() {
-      return s.ReadByte(t);
+      return this.s.ReadByte(this.t);
     }
   }
 
@@ -56,7 +56,8 @@ internal class DecoderState {
   }
 
   public ITransform ToTransformIfBuffered(ITransform stream) {
-    return (this.prependedBytes == 0) ? (stream) : (new StateToTransform(this,
+    return (
+this.prependedBytes == 0) ? stream : (new StateToTransform(this,
       stream));
   }
 

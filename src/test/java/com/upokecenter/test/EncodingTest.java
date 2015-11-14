@@ -1013,8 +1013,7 @@ DecodeHeaderField("content-language", " (comment (" + input +
       Assert.assertEquals("g: x@example.com" + sep + "x@xn--e-ufa.example;",
         DowngradeHeaderField("to", "g: x@example.com, x@e\u00e1.example;"));
       {
-   String stringTemp = DowngradeHeaderField("sender" , "x <x@e\u00e1.example>"
-);
+   String stringTemp = DowngradeHeaderField("sender" , "x <x@e\u00e1.example>");
         Assert.assertEquals(
         "x <x@xn--e-ufa.example>",
         stringTemp);
@@ -1034,8 +1033,7 @@ DecodeHeaderField("content-language", " (comment (" + input +
         stringTemp);
       }
       {
-String stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>"
-);
+String stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
         Assert.assertEquals(
         "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
         stringTemp);
@@ -1110,8 +1108,7 @@ Assert.assertEquals(
 stringTemp);
 }
       {
-  String stringTemp = DowngradeHeaderField("from" , "(tes\u00bet) x@x.example"
-);
+  String stringTemp = DowngradeHeaderField("from" , "(tes\u00bet) x@x.example");
         Assert.assertEquals(
         "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
         stringTemp);
@@ -1200,8 +1197,7 @@ stringTemp);
         stringTemp);
       }
       {
-  String stringTemp = DowngradeHeaderField("from" , "Tes\u00bet <x@x.example>"
-);
+  String stringTemp = DowngradeHeaderField("from" , "Tes\u00bet <x@x.example>");
         Assert.assertEquals(
         "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
         stringTemp);
@@ -1315,8 +1311,7 @@ stringTemp);
         "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       TestEncodedWordsPhrase(" xy", " =?us-ascii?q?x?= =?us-ascii?q?y?=");
- TestEncodedWordsPhrase("xy (sss)" , "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)"
-);
+ TestEncodedWordsPhrase("xy (sss)" , "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
       TestEncodedWordsPhrase("x (sss) y",
               "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase("x (z) y",

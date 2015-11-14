@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using PeterO;
-using PeterO.Mail;
+
 using PeterO.Text;
 
 namespace PeterO.Text.Encoders {
@@ -9,6 +9,7 @@ namespace PeterO.Text.Encoders {
     private class Decoder : ICharacterDecoder {
       private DecoderState state;
       private int lead;
+
       public Decoder() {
         this.state = new DecoderState(1);
         this.lead = 0;
@@ -28,11 +29,11 @@ namespace PeterO.Text.Encoders {
             }
             return -1;
           }
-          if (lead != 0) {
+          if (this.lead != 0) {
             int c = -1;
-            int o = (b<0x7f) ? 0x40 : 0x62;
+            int o = (b < 0x7f) ? 0x40 : 0x62;
             if ((b >= 0x41 && b <= 0x7e) || (b >= 0xa1 && b <= 0xfe)) {
-              c = ((lead - 0x81) * 157) + (b - o);
+              c = ((this.lead - 0x81) * 157) + (b - o);
               if (c == 1133) {
                 this.state.AppendChar(0x304);
                 return 0xca;
@@ -51,10 +52,10 @@ namespace PeterO.Text.Encoders {
               }
               c = Big5.IndexToCodePoint(c);
             }
-            lead = 0;
-            if (c< 0) {
-              if (b<0x80) {
- state.PrependOne(b);
+            this.lead = 0;
+            if (c < 0) {
+              if (b < 0x80) {
+ this.state.PrependOne(b);
 }
                 return -2;
             }
@@ -63,7 +64,7 @@ namespace PeterO.Text.Encoders {
           if (b <= 0x7f) {
             return b;
           } else if (b >= 0x81 && b <= 0xfe) {
-            lead = b;
+            this.lead = b;
             continue;
           } else {
            return -2;
@@ -89,7 +90,7 @@ namespace PeterO.Text.Encoders {
         }
         int a = cp / 157;
         int b = cp % 157;
-        int o = (b<0x3f) ? 0x40 : 0x62;
+        int o = (b < 0x3f) ? 0x40 : 0x62;
         output.WriteByte((byte)(a + 0x81));
         output.WriteByte((byte)(b + o));
         return 2;

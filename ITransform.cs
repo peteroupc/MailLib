@@ -7,7 +7,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
 
-namespace PeterO.Mail {
+namespace PeterO {
     /// <summary>A generic interface for reading data one byte at a time.</summary>
   public interface ITransform {
     /// <summary>Reads a byte from the data source.</summary>

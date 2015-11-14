@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using PeterO;
-using PeterO.Mail;
+
 using PeterO.Text;
 
 namespace PeterO.Text.Encoders {
@@ -233,26 +233,26 @@ namespace PeterO.Text.Encoders {
     }
 
   private static int GB18030Pointer(int codepoint) {
-    if (codepoint<0x80 || codepoint >= 0x110000) {
+    if (codepoint < 0x80 || codepoint >= 0x110000) {
  return -1;
 }
     if (codepoint >= 0x10000) {
- return 189000 + codepoint-0x10000;
+ return 189000 + codepoint - 0x10000;
 }
     if (codepoint == 0xffff) {
  return 39419;
 }
-    int v=-1;
-    for (int i = 0;i<gb18030table.Length;i+=2) {
-      if (gb18030table[i + 1]<= codepoint) {
+    int v = -1;
+    for (int i = 0; i < gb18030table.Length;i+=2) {
+      if (gb18030table[i + 1 ]<= codepoint) {
         v = i;
       } else {
         break;
       }
     }
-    int size = gb18030table[v + 2]-gb18030table[v];
-    int offset = codepoint-gb18030table[v + 1];
-    return (offset >= size) ? (-1) : (gb18030table[v]+offset);
+    int size = gb18030table[v + 2 ]-gb18030table[v];
+    int offset = codepoint - gb18030table[v + 1];
+    return (offset >= size) ? (-1) : (gb18030table[v ]+offset);
   }
 
     private class Decoder : ICharacterDecoder {
@@ -340,6 +340,7 @@ namespace PeterO.Text.Encoders {
       public Encoder(bool gbk) {
         this.gbk = gbk;
       }
+
       public int Encode(
        int c,
        Stream output) {

@@ -11,6 +11,7 @@ import java.util.*;
 import java.io.*;
 
 import com.upokecenter.util.*;
+using PeterO.Mail.Transforms;
 using PeterO.Text.Encoders;
 
     /**

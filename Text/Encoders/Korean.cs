@@ -1,7 +1,9 @@
 using System;
+
 namespace PeterO.Text.Encoders {
 internal static class Korean {
 private static short[] table = new short[23750];
+
 static Korean() {
 Array.Copy(method0(), 0, table, 0, 4096);
 Array.Copy(method1(), 0, table, 4096, 4096);
@@ -10,7 +12,8 @@ Array.Copy(method3(), 0, table, 12288, 4096);
 Array.Copy(method4(), 0, table, 16384, 4096);
 Array.Copy(method5(), 0, table, 20480, 3270);
 }
-private static int[] indextable={
+
+private static int[] indextable = {
 44034, 44378, 0, 256, 44379, 44702, 256, 256, 44703, 45002, 512, 256, 45004,
   45306, 768, 256, 45307, 45622, 1024, 256, 45623, 45949, 1280, 256, 45950,
   46229, 1536, 256, 46230, 46547, 1792, 256, 46548, 46811, 2048, 256, 46812,
@@ -43,16 +46,17 @@ private static int[] indextable={
   20296, 64006, 22528, 256, 19979, 64007, 22784, 256, 20133, 64010, 23040, 256,
   20024, 64011, 23296, 256, 20241, 40657, 23552, 198
 };
+
 public static int CodePointToIndex(int codepoint) {
-   if (codepoint<161 || codepoint>65510) {
+   if (codepoint < 161 || codepoint > 65510) {
  return -1;
 }
-  for (int i = 0;i<indextable.Length;i+=4) {
+  for (int i = 0; i < indextable.Length;i+=4) {
      if (codepoint >= indextable[i] && codepoint <= indextable[i + 1]) {
       int startindex = indextable[i + 2];
        int length = indextable[i + 3];
       for (int j = 0; j < length; ++j) {
-         if ((table[j + startindex]) == codepoint) {
+         if (table[j + startindex] == codepoint) {
  return j + startindex;
 }
        }
@@ -60,13 +64,15 @@ public static int CodePointToIndex(int codepoint) {
    }
   return -1;
  }
+
 public static int IndexToCodePoint(int index) {
-if (index<0 || index >= 23750) {
+if (index < 0 || index >= 23750) {
  return -1;
 }
-int cp=((int)table[index]) & 0xffff;
+int cp = ((int)table[index]) & 0xffff;
 return (cp == 0) ? -1 : cp;
 }
+
 private static short[] method0() {
 return new short[] { -21502, -21501, -21499, -21498, -21493, -21492, -21491,
   -21490, -21489, -21480, -21474, -21473, -21471, -21470, -21469, -21467,
@@ -501,6 +507,7 @@ return new short[] { -21502, -21501, -21499, -21498, -21493, -21492, -21491,
   -16620, -16619, -16618, -16617, -16614, -16610, -16609, -16608, -16607,
   -16606, -16605, -16604, -16603, -16602, -16601};
 }
+
 private static short[] method1() {
 return new short[] { -16600, -16599, -16598, -16597, -16596, -16595, -16594,
   -16593, -16592, -16591, -16590, -16589, -16588, -16587, -16586, -16585,
@@ -924,6 +931,7 @@ return new short[] { -16600, -16599, -16598, -16597, -16596, -16595, -16594,
   -13053, -13052, -13051, -13050, -13049, -13046, -13045, -13043, -13042,
   -13041, -13039, -13038, -13037, -13036, -13035, -13034, -13033, -13030};
 }
+
 private static short[] method2() {
 return new short[] { -13028, -13026, -13025, -13024, 0, 0, 0, 0, 0, 0, -13023,
   -13022, -13021, -13019, -13018, -13017, -13015, -13014, -13013, -13011,
@@ -1336,6 +1344,7 @@ return new short[] { -13028, -13026, -13025, -13024, 0, 0, 0, 0, 0, 0, -13023,
   -14223, -14220, -14216, -14214, -14208, -14207, -14205, -14203, -14202,
   -14201};
 }
+
 private static short[] method3() {
 return new short[] { -14197, -14196, -14195, -14188, -14179, -14177, -14175,
   -14168, -14148, -14147, -14140, -14136, -14132, -14124, -14123, -14121,
@@ -1657,6 +1666,7 @@ return new short[] { -14197, -14196, -14195, -14188, -14179, -14177, -14175,
   -32694, -31492, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 }
+
 private static short[] method4() {
 return new short[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1957,6 +1967,7 @@ return new short[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   -1556, 0x7037, 0x76ca, 0x7fca, 0x7fcc, 0x7ffc, -29926, 0x4eba, 0x4ec1, 0x5203,
   0x5370, -1555, 0x54bd};
 }
+
 private static short[] method5() {
 return new short[] { 0x56e0, 0x59fb, 0x5bc5, 0x5f15, 0x5fcd, 0x6e6e, -1554,
   -1553, 0x7d6a, -31947, -1552, -31085, -30067, -1551, -26771, -26761, -1550,

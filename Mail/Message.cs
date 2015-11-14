@@ -11,23 +11,28 @@ using System.IO;
 using System.Text;
 
 using PeterO;
+using PeterO.Mail.Transforms;
 using PeterO.Text.Encoders;
 
 namespace PeterO.Mail {
     /// <summary><para>Represents an email message, and contains methods and
     /// properties for accessing and modifying email message data. This class
-    /// implements the Internet Message Format (RFC 5322) and Multipurpose Internet
+    /// implements the Internet Message Format (RFC 5322) and Multipurpose
+    /// Internet
     /// Mail Extensions (MIME; RFC 2045-2047, RFC 2049).</para>
     /// <para><b>Thread
     /// safety:</b>
     /// This class is mutable; its properties can be changed. None of
-    /// its instance methods are designed to be thread safe. Therefore, access to
-    /// objects from this class must be synchronized if multiple threads can access
+    /// its instance methods are designed to be thread safe. Therefore, access
+    /// to
+    /// objects from this class must be synchronized if multiple threads can
+    /// access
     /// them at the same time.</para>
     /// <para>The following lists known deviations
     /// from the mail specifications (Internet Message Format and MIME):</para>
     /// <list type=''><item>The content-transfer-encoding "quoted-printable" is
-    /// treated as 7bit instead if it occurs in a message or body part with content
+    /// treated as 7bit instead if it occurs in a message or body part with
+    /// content
     /// type "multipart/*" or "message/*" (other than "message/global",
     /// "message/global-headers" , "message/global-disposition-notification", or
     /// "message/global-delivery-status").</item>
@@ -36,16 +41,19 @@ namespace PeterO.Mail {
     /// "application/octet-stream", unless one or more of the header fields is
     /// syntactically invalid.</item>
     /// <item>Non-UTF-8 bytes appearing in header
-    /// field values are replaced with replacement characters. Moreover, UTF-8 is
+    /// field values are replaced with replacement characters. Moreover, UTF-8
+    /// is
     /// parsed everywhere in header field values, even in those parts of some
     /// structured header fields where this appears not to be allowed.</item>
-    /// <item>The To and Cc header fields are allowed to contain only comments and
+    /// <item>The To and Cc header fields are allowed to contain only comments
+    /// and
     /// whitespace, but these "empty" header fields will be omitted when
     /// generating.</item>
     /// <item>There is no line length limit imposed when parsing
     /// quoted-printable or base64 encoded bodies.</item>
     /// <item>In the following
-    /// cases, if the transfer encoding is absent or declared as 7bit, 8-bit bytes
+    /// cases, if the transfer encoding is absent or declared as 7bit, 8-bit
+    /// bytes
     /// are still allowed:</item>
     /// <item>(a) The preamble and epilogue of multipart
     /// messages, which will be ignored.</item>
@@ -75,12 +83,15 @@ namespace PeterO.Mail {
     /// <item>The following deviations involve encoded words under RFC
     /// 2047:</item>
     /// <item>(a) If a sequence of encoded words decodes to a string
-    /// with a CTL character (U + 007F, or a character less than U + 0020 and not
+    /// with a CTL character (U + 007F, or a character less than U + 0020 and
+    /// not
     /// TAB) after being converted to Unicode, the encoded words are left
     /// un-decoded.</item>
     /// <item>(b) This implementation can decode an encoded word
-    /// that uses ISO-2022-JP (the only supported encoding that uses code switching)
-    /// even if the encoded word's payload ends in a different mode from ASCII mode.
+    /// that uses ISO-2022-JP (the only supported encoding that uses code
+    /// switching)
+    /// even if the encoded word's payload ends in a different mode from ASCII
+    /// mode.
     /// (Each encoded word still starts in ASCII mode, though.)</item>
     /// </list>
     /// </summary>
@@ -100,7 +111,8 @@ namespace PeterO.Mail {
     /// <summary>Gets a list of all the parts of this message. This list is
     /// editable. This will only be used if the message is a multipart
     /// message.</summary>
-    /// <value>A list of all the parts of this message. This list is editable. This
+    /// <value>A list of all the parts of this message. This list is editable.
+    /// This
     /// will only be used if the message is a multipart message.</value>
     public IList<Message> Parts {
       get {
@@ -108,8 +120,10 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets a snapshot of the header fields of this message, in the order
-    /// they were added. For each item in the list, the key is the header field's
+    /// <summary>Gets a snapshot of the header fields of this message, in the
+    /// order
+    /// they were added. For each item in the list, the key is the header
+    /// field's
     /// name and the value is its value.</summary>
     /// <value>A snapshot of the header fields of this message.</value>
     public IList<KeyValuePair<string, string>> HeaderFields {
@@ -236,7 +250,8 @@ this.headers[index + 1]);
       return this.body;
     }
 
-    /// <summary>Sets the body of this message to the given byte array.</summary>
+    /// <summary>Sets the body of this message to the given byte
+    /// array.</summary>
     /// <param name='bytes'>A byte array.</param>
     /// <exception cref='ArgumentNullException'>Bytes is null.</exception>
     public void SetBody(byte[] bytes) {
@@ -275,13 +290,16 @@ this.headers[index + 1]);
       return true;
     }
 
-    /// <summary>Sets the body of this message to the specified plain text string.
-    /// The character sequences CR, LF, and CR/LF will be converted to CR/LF line
+    /// <summary>Sets the body of this message to the specified plain text
+    /// string.
+    /// The character sequences CR, LF, and CR/LF will be converted to CR/LF
+    /// line
     /// breaks. Unpaired surrogate code points will be replaced with replacement
     /// characters.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str' />
     /// is null.</exception>
     public Message SetTextBody(string str) {
       if (str == null) {
@@ -294,12 +312,14 @@ this.headers[index + 1]);
     }
 
     /// <summary>Sets the body of this message to the specified string in HTML
-    /// format. The character sequences CR, LF, and CR/LF will be converted to CR/LF
+    /// format. The character sequences CR, LF, and CR/LF will be converted to
+    /// CR/LF
     /// line breaks. Unpaired surrogate code points will be replaced with
     /// replacement characters.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str' />
     /// is null.</exception>
     public Message SetHtmlBody(string str) {
       if (str == null) {
@@ -311,9 +331,12 @@ this.headers[index + 1]);
       return this;
     }
 
-    /// <summary>Sets the body of this message to a multipart body with plain text
-    /// and HTML versions of the same message. The character sequences CR, LF, and
-    /// CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points
+    /// <summary>Sets the body of this message to a multipart body with plain
+    /// text
+    /// and HTML versions of the same message. The character sequences CR, LF,
+    /// and
+    /// CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code
+    /// points
     /// will be replaced with replacement characters.</summary>
     /// <param name='text'>A string object.</param>
     /// <param name='html'>Another string object.</param>
@@ -343,7 +366,8 @@ this.headers[index + 1]);
 
     /// <summary>Gets a list of addresses found in the From header field or
     /// fields.</summary>
-    /// <value>A list of addresses found in the From header field or fields.</value>
+    /// <value>A list of addresses found in the From header field or
+    /// fields.</value>
     public IList<NamedAddress> FromAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("from"));
@@ -417,7 +441,8 @@ tokener.GetTokens()));
 
     /// <summary>Gets a list of addresses found in the To header field or
     /// fields.</summary>
-    /// <value>A list of addresses found in the To header field or fields.</value>
+    /// <value>A list of addresses found in the To header field or
+    /// fields.</value>
     public IList<NamedAddress> ToAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("to"));
@@ -426,7 +451,8 @@ tokener.GetTokens()));
 
     /// <summary>Gets a list of addresses found in the CC header field or
     /// fields.</summary>
-    /// <value>A list of addresses found in the CC header field or fields.</value>
+    /// <value>A list of addresses found in the CC header field or
+    /// fields.</value>
     public IList<NamedAddress> CCAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("cc"));
@@ -435,7 +461,8 @@ tokener.GetTokens()));
 
     /// <summary>Gets a list of addresses found in the BCC header field or
     /// fields.</summary>
-    /// <value>A list of addresses found in the BCC header field or fields.</value>
+    /// <value>A list of addresses found in the BCC header field or
+    /// fields.</value>
     public IList<NamedAddress> BccAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("bcc"));
@@ -443,7 +470,7 @@ tokener.GetTokens()));
     }
 
     /// <summary>Gets or sets this message's subject.</summary>
-    /// <value>This message&apos;s subject.</value>
+    /// <value>This message&#x27;s subject.</value>
     public string Subject {
       get {
         return this.GetHeader("subject");
@@ -496,7 +523,8 @@ tokener.GetTokens()));
       this.ReadMessage(transform);
     }
 
-    /// <summary>Initializes a new instance of the Message class The message will be
+    /// <summary>Initializes a new instance of the Message class The message
+    /// will be
     /// plain text and have an artificial From address.</summary>
     public Message() {
       this.headers = new List<string>();
@@ -564,7 +592,8 @@ tokener.GetTokens()));
 
     /// <summary>Returns the mail message contained in this message's
     /// body.</summary>
-    /// <returns>A message object if this object's content type is "message/rfc822"
+    /// <returns>A message object if this object's content type is
+    /// "message/rfc822"
     /// , "message/news", or "message/global", or null otherwise.</returns>
 #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -589,8 +618,9 @@ tokener.GetTokens()));
     private int transferEncoding;
 
     /// <summary>Gets or sets this message's media type.</summary>
-    /// <value>This message&apos;s media type.</value>
-    /// <exception cref='ArgumentNullException'>This value is being set and "value"
+    /// <value>This message&#x27;s media type.</value>
+    /// <exception cref='ArgumentNullException'>This value is being set and
+    /// "value"
     /// is null.</exception>
     public MediaType ContentType {
       get {
@@ -613,9 +643,10 @@ tokener.GetTokens()));
     }
 
     /// <summary>Gets or sets this message's content disposition. The content
-    /// disposition specifies how a user agent should handle or otherwise display
+    /// disposition specifies how a user agent should handle or otherwise
+    /// display
     /// this message.</summary>
-    /// <value>This message&apos;s content disposition, or null if none is
+    /// <value>This message&#x27;s content disposition, or null if none is
     /// specified.</value>
     public ContentDisposition ContentDisposition {
       get {
@@ -633,7 +664,8 @@ tokener.GetTokens()));
       }
     }
 
-    /// <summary>Gets a filename suggested by this message for saving the message's
+    /// <summary>Gets a filename suggested by this message for saving the
+    /// message's
     /// body to a file. For more information on the algorithm, see
     /// ContentDisposition.MakeFilename.</summary>
     /// <value>A suggested name for the file, or the empty string if there is no
@@ -919,7 +951,8 @@ this.contentType = digest ? MediaType.MessageRfc822 :
     }
 
     /// <summary>Returns true if the string has: * non-ASCII characters * "=?" *
-    /// CTLs other than tab, or * a word longer than 75 characters. Can return false
+    /// CTLs other than tab, or * a word longer than 75 characters. Can return
+    /// false
     /// even if the string has: * CRLF followed by a line with just
     /// whitespace.</summary>
     /// <param name='s'>A string object.</param>
@@ -1147,14 +1180,17 @@ throw new
       return name;
     }
 
-    /// <summary>Sets the value of this message's header field. If a header field
+    /// <summary>Sets the value of this message's header field. If a header
+    /// field
     /// with the same name exists, its value is replaced.</summary>
-    /// <param name='name'>The name of a header field, such as &quot;from&quot; or
-    /// &quot;subject&quot;.</param>
-    /// <param name='value'>The header field&apos;s value.</param>
+    /// <param name='name'>The name of a header field, such as &#x22;from&#x22;
+    /// or
+    /// &#x22;subject&#x22;.</param>
+    /// <param name='value'>The header field&#x27;s value.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentException'>The header field name is too long or
-    /// contains an invalid character, or the header field's value is syntactically
+    /// contains an invalid character, or the header field's value is
+    /// syntactically
     /// invalid.</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> or <paramref name='value'/> is null.</exception>
@@ -1172,7 +1208,8 @@ throw new
       return this;
     }
 
-    /// <summary>Removes all instances of the given header field from this message.
+    /// <summary>Removes all instances of the given header field from this
+    /// message.
     /// If this is a multipart message, the header field is not removed from its
     /// body part headers.</summary>
     /// <param name='name'>The name of the header field to remove.</param>
@@ -1309,14 +1346,20 @@ bool checkBoundaryDelimiter) {
     }
 
     /// <summary>Generates this message's data in text form. <para>The generated
-    /// message will always be 7-bit ASCII, and the transfer encoding will always be
-    /// 7bit, quoted-printable, or base64 (the declared transfer encoding for this
+    /// message will always be 7-bit ASCII, and the transfer encoding will
+    /// always be
+    /// 7bit, quoted-printable, or base64 (the declared transfer encoding for
+    /// this
     /// message will be ignored).</para>
     /// <para>The following applies to the From,
-    /// To, Cc, and Bcc header fields. If the header field has an invalid syntax or
-    /// has no addresses, this method will generate a synthetic header field with
-    /// the display-name set to the contents of all of the header fields with the
-    /// same name, and the address set to <c>me@[header-name]-address.invalid</c>
+    /// To, Cc, and Bcc header fields. If the header field has an invalid syntax
+    /// or
+    /// has no addresses, this method will generate a synthetic header field
+    /// with
+    /// the display-name set to the contents of all of the header fields with
+    /// the
+    /// same name, and the address set to
+    /// <c>me@[header-name]-address.invalid</c>
     /// as
     /// the address (a <c>.invalid</c>
     /// address is a reserved address that can never

@@ -5,8 +5,8 @@ namespace PeterO.Text {
     /// source.</summary>
   public interface ICharacterInput {
     /// <summary>Reads a Unicode character from a data source.</summary>
-    /// <returns>The Unicode character read, from U + 0000 to U + 10FFFF. Returns -1
-    /// if the end of the source is reached.</returns>
+    /// <returns>Either a Unicode code point (from 0-0xd7ff or from 0xe000 to
+    /// 0x10ffff), or the value -1 indicating the end of the source.</returns>
     int ReadChar();
 
     /// <summary>Reads a sequence of Unicode code points from a data

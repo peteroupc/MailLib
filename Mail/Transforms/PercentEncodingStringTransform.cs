@@ -6,16 +6,17 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
+using PeterO;
 
-namespace PeterO.Mail {
-  internal sealed class QEncodingStringTransform : ITransform {
+namespace PeterO.Mail.Transforms {
+  internal sealed class PercentEncodingStringTransform : ITransform {
     private String input;
     private int inputIndex;
     private byte[] buffer;
     private int bufferIndex;
     private int bufferCount;
 
-    public QEncodingStringTransform(String input) {
+    public PercentEncodingStringTransform(String input) {
       this.input = input;
     }
 
@@ -50,16 +51,14 @@ namespace PeterO.Mail {
           return -1;
         }
         if (c == 0x0d) {
-          // Can't occur in the Q-encoding; replace
-          // with the ASCII substitute character
-          return 0x1a;
+          // Can't occur in parameter value percent-encoding; replace
+          return '?';
         }
         if (c == 0x0a) {
-          // Can't occur in the Q-encoding; replace
-          // with the ASCII substitute character
-          return 0x1a;
+          // Can't occur in parameter value percent-encoding; replace
+          return '?';
         }
-        if (c == '=') {
+        if (c == '%') {
     int b1 = (this.inputIndex < endIndex) ? this.input[this.inputIndex++] :
             -1;
           c = 0;
@@ -74,7 +73,7 @@ namespace PeterO.Mail {
             c |= b1 + 10 - 'a';
           } else {
             --this.inputIndex;
-            return '=';
+            return '%';
           }
     int b2 = (this.inputIndex < endIndex) ? this.input[this.inputIndex++] :
             -1;
@@ -91,22 +90,19 @@ namespace PeterO.Mail {
             --this.inputIndex;
             this.ResizeBuffer(1);
             this.buffer[0] = (byte)b1;
-            return '=';
+            return '%';
           }
           return c;
         }
-        if (c <= 0x20 || c >= 0x7f) {
-          // Can't occur in the Q-encoding; replace
+        if ((c < 0x20 && c != 0x09) || c >= 0x7f) {
+          // Can't occur in parameter value percent-encoding; replace
           // with the ASCII substitute character
           return 0x1a;
         }
-        if (c == '_') {
-          // Underscore, use space
-          return ' ';
-        } else {
-          // printable ASCII, return that byte
-          return c;
-        }
+        // printable ASCII, space, or tab; return that byte
+        // NOTE: Space and tab are included in case we are
+        // decoding percent-encoded file names
+        return c;
       }
     }
   }

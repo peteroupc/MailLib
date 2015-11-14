@@ -21,7 +21,59 @@ import org.junit.Test;
  }
       return (String)PeterO.Text.Encoders.Encodings.DecodeString(
          (PeterO.Text.Encoders.ICharacterEncoding)charset,
-         (PeterO.Mail.ITransform)transform);
+         (PeterO.ITransform)transform);
+    }
+
+    @Test
+    public void TestGetEncoding() {
+      if ((GetCharset("utf-8")) == null) {
+ Assert.fail();
+ }
+      if ((GetCharset("Utf-8")) == null) {
+ Assert.fail();
+ }
+      if ((GetCharset("uTf-8")) == null) {
+ Assert.fail();
+ }
+      if ((GetCharset("utF-8")) == null) {
+ Assert.fail();
+ }
+      if ((GetCharset("UTF-8")) == null) {
+ Assert.fail();
+ }
+      if ((GetCharset("utg-8")) != null) {
+ Assert.fail();
+ }
+      if ((GetCharset("utf-9")) != null) {
+ Assert.fail();
+ }
+      if ((GetCharset("   utf-8    ")) == null) {
+ Assert.fail();
+ }
+      if ((GetCharset("   utf-8")) == null) {
+ Assert.fail();
+ }
+      if ((GetCharset("utf-8    ")) == null) {
+ Assert.fail();
+ }
+      if ((GetCharset("\t\tutf-8\t\t")) == null) {
+ Assert.fail();
+ }
+      if ((GetCharset(" \r\n utf-8 \r ")) == null) {
+ Assert.fail();
+ }
+      if ((GetCharset("\nutf-8\n")) == null) {
+ Assert.fail();
+ }
+      if ((GetCharset("\tutf-8\t")) == null) {
+ Assert.fail();
+ }
+      if ((GetCharset("\rutf-8\r")) == null) {
+ Assert.fail();
+ }
+      if ((GetCharset("\futf-8\f")) == null) {
+ Assert.fail();
+ }
     }
 
     @Test

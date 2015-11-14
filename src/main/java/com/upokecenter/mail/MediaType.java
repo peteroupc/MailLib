@@ -10,6 +10,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import java.util.*;
 
 import com.upokecenter.util.*;
+using PeterO.Mail.Transforms;
 using PeterO.Text.Encoders;
 
     /**
@@ -790,23 +791,23 @@ firstQuote + 1)+(secondQuote - (firstQuote + 1)));
       }
       String paramValue = value.substring(secondQuote + 1);
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
-      cs = (cs == null) ? (Encodings.GetEncoding("us-ascii",true)) : cs;
+      cs = (cs == null) ? (Encodings.GetEncoding("us-ascii", true)) : cs;
       return DecodeRfc2231Encoding(paramValue, cs);
     }
 
     private static ICharacterEncoding GetRfc2231Charset(String value) {
       if (value == null) {
-        return Encodings.GetEncoding("us-ascii",true);
+        return Encodings.GetEncoding("us-ascii", true);
       }
       int firstQuote = value.indexOf('\'');
       if (firstQuote < 0) {
         // not a valid encoded parameter
-        return Encodings.GetEncoding("us-ascii",true);
+        return Encodings.GetEncoding("us-ascii", true);
       }
       int secondQuote = value.indexOf('\'',firstQuote + 1);
       if (secondQuote < 0) {
         // not a valid encoded parameter
-        return Encodings.GetEncoding("us-ascii",true);
+        return Encodings.GetEncoding("us-ascii", true);
       }
       String charset = value.substring(0, firstQuote);
       String language = value.substring(
@@ -817,7 +818,7 @@ firstQuote + 1)+(secondQuote - (firstQuote + 1)));
         return null;
       }
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
-      cs = (cs == null) ? (Encodings.GetEncoding("us-ascii",true)) : cs;
+      cs = (cs == null) ? (Encodings.GetEncoding("us-ascii", true)) : cs;
       return cs;
     }
 

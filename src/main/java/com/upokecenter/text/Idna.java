@@ -376,7 +376,7 @@ boolean bidiRule) {
           return false;
         }
       }
-      if (!Normalizer.IsNormalized(str, Normalization.NFC)) {
+      if (!NormalizingCharacterInput.IsNormalized(str, Normalization.NFC)) {
         return false;
       }
       int ch;

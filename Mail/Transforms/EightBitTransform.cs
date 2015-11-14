@@ -6,22 +6,20 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
+using PeterO;
 
 namespace PeterO.Mail {
-  // A seven-bit transform used for text/plain data
-  internal sealed class LiberalSevenBitTransform : ITransform {
+  internal sealed class EightBitTransform : ITransform {
     private ITransform input;
 
-    public LiberalSevenBitTransform(ITransform stream) {
+    public EightBitTransform(ITransform stream) {
       this.input = stream;
     }
 
     public int ReadByte() {
       int ret = this.input.ReadByte();
-      if (ret > 0x80 || ret == 0) {
-        // Null or outside the ASCII range; replace with
-        // 0x1a, the ASCII SUB (substitute) character
-        return 0x1a;
+      if (ret == 0) {
+        throw new MessageDataException("Invalid character in message body");
       }
       return ret;
     }

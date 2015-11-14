@@ -1,12 +1,111 @@
 using System;
 using System.Collections.Generic;
-using PeterO.Mail;
 
 namespace PeterO.Text.Encoders {
-  /// <summary>Not documented yet.</summary>
+    /// <summary>Not documented yet.</summary>
   public static class Encodings {
+    private class DecoderToInputClass : ICharacterInput {
+      private ITransform stream;
+      private ICharacterDecoder reader;
+
+      public DecoderToInputClass(ICharacterDecoder reader, ITransform stream) {
+        this.reader = reader;
+        this.stream = stream;
+      }
+
+/// </summary>
+/// <returns></returns>
+public int ReadChar() {
+        int c = this.reader.ReadChar(this.stream);
+        return (c == -2) ? 0xfffd : c;
+      }
+
+/// </summary>
+/// <param name="buffer"></param>
+/// <param name="offset"></param>
+/// <param name="length"></param>
+/// <returns></returns>
+public int Read(int[] buffer, int offset, int length) {
+        if (buffer == null) {
+          throw new ArgumentNullException("buffer");
+        }
+        if (offset < 0) {
+          throw new ArgumentException("offset (" + offset +
+            ") is less than " + 0);
+        }
+        if (offset > buffer.Length) {
+          throw new ArgumentException("offset (" + offset + ") is more than " +
+            buffer.Length);
+        }
+        if (length < 0) {
+          throw new ArgumentException("length (" + length +
+            ") is less than " + 0);
+        }
+        if (length > buffer.Length) {
+          throw new ArgumentException("length (" + length + ") is more than " +
+            buffer.Length);
+        }
+        if (buffer.Length - offset < length) {
+          throw new ArgumentException("buffer's length minus " + offset + " (" +
+            (buffer.Length - offset) + ") is less than " + length);
+        }
+        int count = 0;
+        for (var i = 0; i < length; ++i) {
+          int c = this.ReadChar();
+          if (c == -1) {
+            break;
+          }
+          buffer[offset] = c;
+          ++count;
+          ++offset;
+        }
+        return count;
+      }
+    }
+
     private static IDictionary<string, string> charsetAliases =
         CreateAliasMap();
+
+    /// <summary>Character encoding object for the UTF-8 character
+    /// encoding.</summary>
+    public static readonly ICharacterEncoding UTF8 = new EncodingUtf8();
+
+    private static string TrimAsciiWhite(string str) {
+      return string.IsNullOrEmpty(str) ? str :
+        TrimAsciiWhiteLeft(TrimAsciiWhiteRight(str));
+    }
+
+    private static string TrimAsciiWhiteLeft(string str) {
+      if (string.IsNullOrEmpty(str)) {
+        return str;
+      }
+      int index = 0;
+      int valueSLength = str.Length;
+      while (index < valueSLength) {
+        char c = str[index];
+        if (c != 0x09 && c != 0x20 && c != 0x0c && c != 0x0d && c != 0x0a) {
+          break;
+        }
+        ++index;
+      }
+      return (index == valueSLength) ? String.Empty : ((index == 0) ? str :
+        str.Substring(index));
+    }
+
+    private static string TrimAsciiWhiteRight(string str) {
+      if (string.IsNullOrEmpty(str)) {
+        return str;
+      }
+      int index = str.Length - 1;
+      while (index >= 0) {
+        char c = str[index];
+        if (c != 0x09 && c != 0x20 && c != 0x0c && c != 0x0d && c != 0x0a) {
+          return str.Substring(0, index + 1);
+        }
+        --index;
+      }
+      return String.Empty;
+    }
 
     private static IDictionary<string, string> CreateAliasMap() {
       var aliases = new Dictionary<string, string>();
@@ -232,26 +331,37 @@ namespace PeterO.Text.Encoders {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='name'>Another string object.</param>
+    /// <param name='name'>A string that names a given character
+    /// encoding.</param>
     /// <returns>A string object.</returns>
     public static string ResolveAliasForWeb(string name) {
       if (String.IsNullOrEmpty(name)) {
         return String.Empty;
       }
-      name = ParserUtility.TrimAsciiWhite(name);
+      name = TrimAsciiWhite(name);
       name = DataUtilities.ToLowerCaseAscii(name);
       return charsetAliases.ContainsKey(name) ? charsetAliases[name] :
              String.Empty;
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='name'>Another string object.</param>
+    /// <param name='name'>A string naming a character encoding. Uses a modified
+    /// version of the rules in the Encoding Standard to better conform, in some
+    /// cases, to email standards such as MIME, and some additional encodings
+    /// may be
+    /// supported. For instance, setting this value to true will enable the
+    /// &#x22;utf-7&#x22; encoding and change &#x22;us-ascii&#x22; and
+    /// &#x22;iso-8859-1&#x22; to a 7 bit encoding and the 8-bit Latin-1
+    /// encoding,
+    /// respectively, rather than aliases to &#x22;windows-1252&#x22;, as
+    /// specified
+    /// in the Encoding Standard.</param>
     /// <returns>A string object.</returns>
     public static string ResolveAliasForEmail(string name) {
       if (String.IsNullOrEmpty(name)) {
         return String.Empty;
       }
-      name = ParserUtility.TrimAsciiWhite(name);
+      name = TrimAsciiWhite(name);
       name = DataUtilities.ToLowerCaseAscii(name);
       if (name.Equals("utf-8") || name.Equals("iso-8859-1")) {
         return name;
@@ -280,20 +390,61 @@ namespace PeterO.Text.Encoders {
       return String.Empty;
     }
 
-  /// <summary>Not documented yet.</summary>
+    /// <summary>Reads bytes from a data source and converts the bytes to a text
+    /// string in a given encoding. <para>In the .NET implementation, this
+    /// method is
+    /// implemented as an extension method to any object implementing
+    /// ICharacterEncoding and can be called as follows:
+    /// "encoding.DecodeString(transform)". If the object's class already has a
+    /// DecodeString method with the same parameters, that method takes
+    /// precedence
+    /// over this extension method.</para>
+    /// </summary>
+    /// <param name='encoding'>An object that implements a given character
+    /// encoding.
+    /// Any bytes that can&#x27;t be decoded are converted to the replacement
+    /// character (U + FFFD).</param>
+    /// <param name='transform'>An object that implements a byte stream.</param>
+    /// <returns>The converted string.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='encoding'/> or <paramref name='transform'/> is null.</exception>
     public static string DecodeString(
-     ICharacterEncoding encoding,
+     this ICharacterEncoding encoding,
      ITransform transform) {
-      /*
-      if ((encoding) == null) {
+      if (encoding == null) {
   throw new ArgumentNullException("encoding");
 }
-      if ((transform) == null) {
+      if (transform == null) {
   throw new ArgumentNullException("transform");
 }
-       */ ICharacterDecoder decoder = encoding.GetDecoder();
       return EncoderHelper.InputToString(
-         EncoderHelper.DecoderToInput(decoder, transform));
+         GetDecoderInput(encoding, transform));
+    }
+
+    /// <summary>Converts a character encoding into a character input stream.
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension
+    /// method to any object implementing ICharacterEncoding and can be called
+    /// as
+    /// follows: "encoding.GetDecoderInput(transform)". If the object's class
+    /// already has a GetDecoderInput method with the same parameters, that
+    /// method
+    /// takes precedence over this extension method.</para>
+    /// </summary>
+    /// <param name='encoding'>Encoding that exposes a decoder to be converted
+    /// into
+    /// a character input stream. If the decoder returns -2 (indicating a decode
+    /// error), the character input stream handles the error by outputting a
+    /// replacement character in its place.</param>
+    /// <param name='stream'>Byte stream to convert into Unicode
+    /// characters.</param>
+    /// <returns>An ICharacterInput object.</returns>
+    public static ICharacterInput GetDecoderInput(
+      this ICharacterEncoding encoding,
+      ITransform stream) {
+        return new DecoderToInputClass(
+          encoding.GetDecoder(),
+          stream);
     }
 
     /// <summary>Not documented yet.</summary>
@@ -307,18 +458,8 @@ namespace PeterO.Text.Encoders {
     /// <param name='name'>A string naming a character encoding.</param>
     /// <param name='forEmail'>If false, uses the encoding resolution rules in
     /// the
-    /// Encoding Standard. If true, these rules will be modified in some cases
-    /// to
-    /// better conform to email standards such as MIME, and some additional
-    /// encodings may be supported. For instance, setting this value to true
-    /// will
-    /// enable the &#x22;utf-7&#x22; encoding and change &#x22;us-ascii&#x22;
-    /// and
-    /// &#x22;iso-8859-1&#x22; to a 7 bit encoding and the 8-bit Latin-1
-    /// encoding,
-    /// respectively, rather than aliases to &#x22;windows-1252&#x22;, as
-    /// specified
-    /// in the Encoding Standard.</param>
+    /// Encoding Standard. If true, uses modified rules as described in the
+    /// ResolveAliasForEmail method.</param>
     /// <returns>An object that enables encoding and decoding text in the given
     /// character encoding.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -333,19 +474,20 @@ namespace PeterO.Text.Encoders {
       name = forEmail ? ResolveAliasForEmail(name) :
         ResolveAliasForWeb(name);
       if (name.Equals("utf-8")) {
-        return (new EncodingUtf8());
+        return UTF8;
       }
       if (name.Equals("us-ascii")) {
-        return (new EncodingAscii());
+        return (ICharacterEncoding)(new EncodingAscii());
       }
       if (name.Equals("iso-8859-1")) {
-        return (new EncodingLatinOne());
+        return (ICharacterEncoding)(new EncodingLatinOne());
       }
       if (name.Equals("utf-7") || name.Equals("unicode-1-1-utf-7")) {
-        return (new EncodingUtf7());
+        return (ICharacterEncoding)(new EncodingUtf7());
       }
       if (name.Equals("windows-1252")) {
-  return new EncodingSingleByte(new[] { 8364, 129, 8218, 402, 8222, 8230, 8224,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+    402, 8222, 8230, 8224,
     8225, 710, 8240, 352, 8249, 338, 141, 381, 143, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 732, 8482, 353, 8250, 339, 157, 382, 376, 160, 161, 162,
     163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177,
@@ -358,7 +500,8 @@ namespace PeterO.Text.Encoders {
       }
 
       if (name.Equals("ibm866")) {
-      return new EncodingSingleByte(new[] { 1040, 1041, 1042, 1043, 1044, 1045,
+      return (ICharacterEncoding)new EncodingSingleByte(new[] { 1040, 1041,
+        1042, 1043, 1044, 1045,
     1046, 1047, 1048, 1049, 1050, 1051, 1052, 1053, 1054, 1055, 1056, 1057,
     1058, 1059, 1060, 1061, 1062, 1063, 1064, 1065, 1066, 1067, 1068, 1069,
     1070, 1071, 1072, 1073, 1074, 1075, 1076, 1077, 1078, 1079, 1080, 1081,
@@ -372,7 +515,8 @@ namespace PeterO.Text.Encoders {
     160 });
       }
       if (name.Equals("iso-8859-10")) {
-  return new EncodingSingleByte(new[] { 128, 129, 130, 131, 132, 133, 134, 135,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+    132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 260, 274, 290, 298, 296,
     310, 167, 315, 272, 352, 358, 381, 173, 362, 330, 176, 261, 275, 291, 299,
@@ -384,7 +528,8 @@ namespace PeterO.Text.Encoders {
     });
       }
       if (name.Equals("iso-8859-13")) {
-  return new EncodingSingleByte(new[] { 128, 129, 130, 131, 132, 133, 134, 135,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+    132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 8221, 162, 163, 164, 8222,
     166, 167, 216, 169, 342, 171, 172, 173, 174, 198, 176, 177, 178, 179, 8220,
@@ -396,7 +541,8 @@ namespace PeterO.Text.Encoders {
     });
       }
       if (name.Equals("iso-8859-14")) {
-  return new EncodingSingleByte(new[] { 128, 129, 130, 131, 132, 133, 134, 135,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+    132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 7682, 7683, 163, 266, 267,
     7690, 167, 7808, 169, 7810, 7691, 7922, 173, 174, 376, 7710, 7711, 288, 289,
@@ -408,7 +554,8 @@ namespace PeterO.Text.Encoders {
     253, 375, 255 });
       }
       if (name.Equals("iso-8859-15")) {
-  return new EncodingSingleByte(new[] { 128, 129, 130, 131, 132, 133, 134, 135,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+    132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 8364, 165,
     352, 167, 353, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 381,
@@ -420,7 +567,8 @@ namespace PeterO.Text.Encoders {
     });
       }
       if (name.Equals("iso-8859-16")) {
-  return new EncodingSingleByte(new[] { 128, 129, 130, 131, 132, 133, 134, 135,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+    132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 260, 261, 321, 8364, 8222,
     352, 167, 353, 169, 536, 171, 377, 173, 378, 379, 176, 177, 268, 322, 381,
@@ -432,7 +580,8 @@ namespace PeterO.Text.Encoders {
     });
       }
       if (name.Equals("iso-8859-2")) {
-  return new EncodingSingleByte(new[] { 128, 129, 130, 131, 132, 133, 134, 135,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+    132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 260, 728, 321, 164, 317,
     346, 167, 168, 352, 350, 356, 377, 173, 381, 379, 176, 261, 731, 322, 180,
@@ -444,7 +593,8 @@ namespace PeterO.Text.Encoders {
     });
       }
       if (name.Equals("iso-8859-3")) {
-  return new EncodingSingleByte(new[] { 128, 129, 130, 131, 132, 133, 134, 135,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+    132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 294, 728, 163, 164, -2,
     292, 167, 168, 304, 350, 286, 308, 173, -2, 379, 176, 295, 178, 179, 180,
@@ -456,7 +606,8 @@ namespace PeterO.Text.Encoders {
     349, 729 });
       }
       if (name.Equals("iso-8859-4")) {
-  return new EncodingSingleByte(new[] { 128, 129, 130, 131, 132, 133, 134, 135,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+    132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 260, 312, 342, 164, 296,
     315, 167, 168, 352, 274, 290, 358, 173, 381, 175, 176, 261, 731, 343, 180,
@@ -468,7 +619,8 @@ namespace PeterO.Text.Encoders {
     });
       }
       if (name.Equals("iso-8859-5")) {
-  return new EncodingSingleByte(new[] { 128, 129, 130, 131, 132, 133, 134, 135,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+    132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 1025, 1026, 1027, 1028,
     1029, 1030, 1031, 1032, 1033, 1034, 1035, 1036, 173, 1038, 1039, 1040, 1041,
@@ -481,7 +633,8 @@ namespace PeterO.Text.Encoders {
     1114, 1115, 1116, 167, 1118, 1119 });
       }
       if (name.Equals("iso-8859-6")) {
-  return new EncodingSingleByte(new[] { 128, 129, 130, 131, 132, 133, 134, 135,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+    132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, -2, -2, -2, 164,
     -2, -2, -2, -2, -2, -2, -2, 1548, 173, -2, -2,
@@ -494,7 +647,8 @@ namespace PeterO.Text.Encoders {
     -2, -2, -2, -2, -2, -2, -2, -2, -2 });
       }
       if (name.Equals("iso-8859-7")) {
-  return new EncodingSingleByte(new[] { 128, 129, 130, 131, 132, 133, 134, 135,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+    132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 8216, 8217, 163, 8364,
     8367, 166, 167, 168, 169, 890, 171, 172, 173, -2, 8213, 176, 177, 178,
@@ -506,7 +660,8 @@ namespace PeterO.Text.Encoders {
     974, -2 });
       }
       if (name.Equals("iso-8859-8") || name.Equals("iso-8859-8-i")) {
-  return new EncodingSingleByte(new[] { 128, 129, 130, 131, 132, 133, 134, 135,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+    132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, -2, 162, 163, 164, 165,
     166, 167, 168, 169, 215, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180,
@@ -519,7 +674,8 @@ namespace PeterO.Text.Encoders {
     -2, -2, 8206, 8207, -2 });
       }
       if (name.Equals("koi8-r")) {
-      return new EncodingSingleByte(new[] { 9472, 9474, 9484, 9488, 9492, 9496,
+      return (ICharacterEncoding)new EncodingSingleByte(new[] { 9472, 9474,
+        9484, 9488, 9492, 9496,
     9500, 9508, 9516, 9524, 9532, 9600, 9604, 9608, 9612, 9616, 9617, 9618,
     9619, 8992, 9632, 8729, 8730, 8776, 8804, 8805, 160, 8993, 176, 178, 183,
     247, 9552, 9553, 9554, 1105, 9555, 9556, 9557, 9558, 9559, 9560, 9561, 9562,
@@ -532,7 +688,8 @@ namespace PeterO.Text.Encoders {
     1059, 1046, 1042, 1068, 1067, 1047, 1064, 1069, 1065, 1063, 1066 });
       }
       if (name.Equals("koi8-u")) {
-      return new EncodingSingleByte(new[] { 9472, 9474, 9484, 9488, 9492, 9496,
+      return (ICharacterEncoding)new EncodingSingleByte(new[] { 9472, 9474,
+        9484, 9488, 9492, 9496,
     9500, 9508, 9516, 9524, 9532, 9600, 9604, 9608, 9612, 9616, 9617, 9618,
     9619, 8992, 9632, 8729, 8730, 8776, 8804, 8805, 160, 8993, 176, 178, 183,
     247, 9552, 9553, 9554, 1105, 1108, 9556, 1110, 1111, 9559, 9560, 9561, 9562,
@@ -545,7 +702,8 @@ namespace PeterO.Text.Encoders {
     1059, 1046, 1042, 1068, 1067, 1047, 1064, 1069, 1065, 1063, 1066 });
       }
       if (name.Equals("macintosh")) {
-  return new EncodingSingleByte(new[] { 196, 197, 199, 201, 209, 214, 220, 225,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 196, 197, 199, 201,
+    209, 214, 220, 225,
     224, 226, 228, 227, 229, 231, 233, 232, 234, 235, 237, 236, 238, 239, 241,
     243, 242, 244, 246, 245, 250, 249, 251, 252, 8224, 176, 162, 163, 167, 8226,
     182, 223, 174, 169, 8482, 180, 168, 8800, 198, 216, 8734, 177, 8804, 8805,
@@ -557,7 +715,8 @@ namespace PeterO.Text.Encoders {
     728, 729, 730, 184, 733, 731, 711 });
       }
       if (name.Equals("windows-1250")) {
-  return new EncodingSingleByte(new[] { 8364, 129, 8218, 131, 8222, 8230, 8224,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+    131, 8222, 8230, 8224,
     8225, 136, 8240, 352, 8249, 346, 356, 381, 377, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 152, 8482, 353, 8250, 347, 357, 382, 378, 160, 711, 728,
     321, 164, 260, 166, 167, 168, 169, 350, 171, 172, 173, 174, 379, 176, 177,
@@ -569,7 +728,8 @@ namespace PeterO.Text.Encoders {
     253, 355, 729 });
       }
       if (name.Equals("windows-1251")) {
-      return new EncodingSingleByte(new[] { 1026, 1027, 8218, 1107, 8222, 8230,
+      return (ICharacterEncoding)new EncodingSingleByte(new[] { 1026, 1027,
+        8218, 1107, 8222, 8230,
     8224, 8225, 8364, 8240, 1033, 8249, 1034, 1036, 1035, 1039, 1106, 8216,
     8217, 8220, 8221, 8226, 8211, 8212, 152, 8482, 1113, 8250, 1114, 1116, 1115,
     1119, 160, 1038, 1118, 1032, 164, 1168, 166, 167, 1025, 169, 1028, 171, 172,
@@ -582,7 +742,8 @@ namespace PeterO.Text.Encoders {
     1096, 1097, 1098, 1099, 1100, 1101, 1102, 1103 });
       }
       if (name.Equals("windows-1253")) {
-  return new EncodingSingleByte(new[] { 8364, 129, 8218, 402, 8222, 8230, 8224,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+    402, 8222, 8230, 8224,
     8225, 136, 8240, 138, 8249, 140, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 152, 8482, 154, 8250, 156, 157, 158, 159, 160, 901, 902,
     163, 164, 165, 166, 167, 168, 169, -2, 171, 172, 173, 174, 8213, 176,
@@ -594,7 +755,8 @@ namespace PeterO.Text.Encoders {
     972, 973, 974, -2 });
       }
       if (name.Equals("windows-1254")) {
-  return new EncodingSingleByte(new[] { 8364, 129, 8218, 402, 8222, 8230, 8224,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+    402, 8222, 8230, 8224,
     8225, 710, 8240, 352, 8249, 338, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 732, 8482, 353, 8250, 339, 157, 158, 376, 160, 161, 162,
     163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177,
@@ -606,7 +768,8 @@ namespace PeterO.Text.Encoders {
     305, 351, 255 });
       }
       if (name.Equals("windows-1255")) {
-  return new EncodingSingleByte(new[] { 8364, 129, 8218, 402, 8222, 8230, 8224,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+    402, 8222, 8230, 8224,
     8225, 710, 8240, 138, 8249, 140, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 732, 8482, 154, 8250, 156, 157, 158, 159, 160, 161, 162,
     163, 8362, 165, 166, 167, 168, 169, 215, 171, 172, 173, 174, 175, 176, 177,
@@ -619,7 +782,8 @@ namespace PeterO.Text.Encoders {
     -2, 8206, 8207, -2 });
       }
       if (name.Equals("windows-1256")) {
- return new EncodingSingleByte(new[] { 8364, 1662, 8218, 402, 8222, 8230, 8224,
+ return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 1662, 8218,
+   402, 8222, 8230, 8224,
     8225, 710, 8240, 1657, 8249, 338, 1670, 1688, 1672, 1711, 8216, 8217, 8220,
     8221, 8226, 8211, 8212, 1705, 8482, 1681, 8250, 339, 8204, 8205, 1722, 160,
     1548, 162, 163, 164, 165, 166, 167, 168, 169, 1726, 171, 172, 173, 174, 175,
@@ -631,7 +795,8 @@ namespace PeterO.Text.Encoders {
     1614, 244, 1615, 1616, 247, 1617, 249, 1618, 251, 252, 8206, 8207, 1746 });
       }
       if (name.Equals("windows-1257")) {
-  return new EncodingSingleByte(new[] { 8364, 129, 8218, 131, 8222, 8230, 8224,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+    131, 8222, 8230, 8224,
     8225, 136, 8240, 138, 8249, 140, 168, 711, 184, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 152, 8482, 154, 8250, 156, 175, 731, 159, 160, -2, 162,
     163, 164, -2, 166, 167, 216, 169, 342, 171, 172, 173, 174, 198, 176, 177,
@@ -643,7 +808,8 @@ namespace PeterO.Text.Encoders {
     380, 382, 729 });
       }
       if (name.Equals("windows-1258")) {
-  return new EncodingSingleByte(new[] { 8364, 129, 8218, 402, 8222, 8230, 8224,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+    402, 8222, 8230, 8224,
     8225, 710, 8240, 138, 8249, 338, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 732, 8482, 154, 8250, 339, 157, 158, 376, 160, 161, 162,
     163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177,
@@ -655,7 +821,8 @@ namespace PeterO.Text.Encoders {
     432, 8363, 255 });
       }
       if (name.Equals("windows-874")) {
-     return new EncodingSingleByte(new[] { 8364, 129, 130, 131, 132, 8230, 134,
+     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 130,
+       131, 132, 8230, 134,
     135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 152, 153, 154, 155, 156, 157, 158, 159, 160, 3585, 3586,
     3587, 3588, 3589, 3590, 3591, 3592, 3593, 3594, 3595, 3596, 3597, 3598,
@@ -668,7 +835,8 @@ namespace PeterO.Text.Encoders {
     3671, 3672, 3673, 3674, 3675, -2, -2, -2, -2 });
       }
       if (name.Equals("x-mac-cyrillic")) {
-      return new EncodingSingleByte(new[] { 1040, 1041, 1042, 1043, 1044, 1045,
+      return (ICharacterEncoding)new EncodingSingleByte(new[] { 1040, 1041,
+        1042, 1043, 1044, 1045,
     1046, 1047, 1048, 1049, 1050, 1051, 1052, 1053, 1054, 1055, 1056, 1057,
     1058, 1059, 1060, 1061, 1062, 1063, 1064, 1065, 1066, 1067, 1068, 1069,
     1070, 1071, 8224, 176, 1168, 163, 167, 8226, 182, 1030, 174, 169, 8482,
@@ -680,26 +848,28 @@ namespace PeterO.Text.Encoders {
     1083, 1084, 1085, 1086, 1087, 1088, 1089, 1090, 1091, 1092, 1093, 1094,
     1095, 1096, 1097, 1098, 1099, 1100, 1101, 1102, 8364 });
       } else if (name.Equals("euc-jp")) {
-        return (new EncodingEUCJP());
+        return (ICharacterEncoding)(new EncodingEUCJP());
       } else if (name.Equals("euc-kr")) {
-        return (new EncodingKoreanEUC());
+        return (ICharacterEncoding)(new EncodingKoreanEUC());
       } else if (name.Equals("big5")) {
-        return (new EncodingBig5());
+        return (ICharacterEncoding)(new EncodingBig5());
       } else if (name.Equals("shift_jis")) {
-        return (new EncodingShiftJIS());
+        return (ICharacterEncoding)(new EncodingShiftJIS());
       } else if (name.Equals("x-user-defined")) {
-        return (new EncodingXUserDefined());
+        return (ICharacterEncoding)(new EncodingXUserDefined());
       } else if (name.Equals("gbk")) {
-        return (new EncodingGBK());
+        return (ICharacterEncoding)(new EncodingGBK());
       } else if (name.Equals("gb18030")) {
-        return (new EncodingGB18030());
+        return (ICharacterEncoding)(new EncodingGB18030());
       } else if (name.Equals("utf-16le")) {
-        return (new EncodingUtf16());
+        return (ICharacterEncoding)(new EncodingUtf16());
       } else if (name.Equals("utf-16be")) {
-        return (new EncodingUtf16BE());
+        return (ICharacterEncoding)(new EncodingUtf16BE());
       }
-      return (name.Equals("iso-2022-jp")) ? ((new EncodingISO2022JP())) :
-        ((name.Equals("replacement")) ? (new EncodingReplacement()) : (null));
+      return name.Equals("iso-2022-jp") ? (ICharacterEncoding)(new
+        EncodingISO2022JP()) :
+        (name.Equals("replacement") ? (ICharacterEncoding)(new
+          EncodingReplacement()) : null);
     }
   }
 }

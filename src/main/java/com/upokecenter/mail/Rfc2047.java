@@ -10,6 +10,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import java.util.*;
 
 import com.upokecenter.util.*;
+using PeterO.Mail.Transforms;
 using PeterO.Text.Encoders;
 
   final class Rfc2047 {

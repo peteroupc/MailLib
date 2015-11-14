@@ -85,43 +85,6 @@ prefix.Length).Equals(prefix);
       return String.Empty;
     }
 
-    public static string TrimAsciiWhite(string str) {
-      return string.IsNullOrEmpty(str) ? str :
-        TrimAsciiWhiteLeft(TrimAsciiWhiteRight(str));
-    }
-
-    public static string TrimAsciiWhiteLeft(string str) {
-      if (string.IsNullOrEmpty(str)) {
-        return str;
-      }
-      int index = 0;
-      int valueSLength = str.Length;
-      while (index < valueSLength) {
-        char c = str[index];
-        if (c != 0x09 && c != 0x20 && c != 0x0c && c != 0x0d && c != 0x0a) {
-          break;
-        }
-        ++index;
-      }
-      return (index == valueSLength) ? String.Empty : ((index == 0) ? str :
-        str.Substring(index));
-    }
-
-    public static string TrimAsciiWhiteRight(string str) {
-      if (string.IsNullOrEmpty(str)) {
-        return str;
-      }
-      int index = str.Length - 1;
-      while (index >= 0) {
-        char c = str[index];
-        if (c != 0x09 && c != 0x20 && c != 0x0c && c != 0x0d && c != 0x0a) {
-          return str.Substring(0, index + 1);
-        }
-        --index;
-      }
-      return String.Empty;
-    }
-
     public static bool IsNullEmptyOrSpaceTabOnly(string str) {
       return String.IsNullOrEmpty(
 str) || SkipSpaceAndTab(
@@ -167,15 +130,21 @@ StringBuilder sb) {
     }
 
     /// <summary>Splits a string by a delimiter. If the string ends with the
-    /// delimiter, the result will end with an empty string. If the string begins
-    /// with the delimiter, the result will start with an empty string.</summary>
+    /// delimiter, the result will end with an empty string. If the string
+    /// begins
+    /// with the delimiter, the result will start with an empty
+    /// string.</summary>
     /// <param name='str'>A string to split.</param>
-    /// <param name='delimiter'>A string to signal where each substring begins and
+    /// <param name='delimiter'>A string to signal where each substring begins
+    /// and
     /// ends.</param>
-    /// <returns>An array containing strings that are split by the delimiter. If the
-    /// string to split is null or empty, returns an array whose sole element is the
+    /// <returns>An array containing strings that are split by the delimiter. If
+    /// the
+    /// string to split is null or empty, returns an array whose sole element is
+    /// the
     /// empty string.</returns>
-    /// <exception cref='ArgumentException'>Delimiter is null or empty.</exception>
+    /// <exception cref='ArgumentException'>Delimiter is null or
+    /// empty.</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='delimiter'/> is null.</exception>
     public static string[] SplitAt(string str, string delimiter) {

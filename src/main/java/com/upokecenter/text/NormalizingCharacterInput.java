@@ -9,19 +9,199 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.util.*;
 
+using PeterO.Text.Encoders;
+
     /**
-     * <p>Implements the Unicode normalization algorithm and contains methods and
-     * functionality to test and convert Unicode strings for Unicode
-     * normalization. This is similar to the Normalizer class, except it
-     * implements the ICharacterInput interface.</p> <p>NOTICE: While this
-     * class's source code is in the public domain, the class uses an
-     * class, called NormalizationData, that includes data derived
-     * from the Unicode Character Database. See the documentation for the
-     * Normalizer class for the permission notice for the Unicode Character
-     * Database.</p>
+     * <p>A character input class that implements the Unicode normalization
+     * algorithm and contains methods and functionality to test and convert
+     * Unicode strings for Unicode normalization. This is similar to the
+     * Normalizer class, except it implements the ICharacterInput
+     * interface.</p> <p>NOTICE: While this class's source code is in the
+     * public domain, the class uses an class, called
+     * NormalizationData, that includes data derived from the Unicode
+     * Character Database. In case doing so is required, the permission
+     * notice for the Unicode Character Database is given here:</p>
+     * <p>COPYRIGHT AND PERMISSION NOTICE</p> <p>Copyright (c) 1991-2014
+     * Unicode, Inc. All rights reserved. Distributed under the Terms of Use
+     * in http://www.unicode.org/copyright.html.</p> <p>Permission is hereby
+     * granted, free of charge, to any person obtaining a copy of the
+     * Unicode data files and any associated documentation (the "Data
+     * Files") or Unicode software and any associated documentation (the
+     * "Software") to deal in the Data Files or Software without
+     * restriction, including without limitation the rights to use, copy,
+     * modify, merge, publish, distribute, and/or sell copies of the Data
+     * Files or Software, and to permit persons to whom the Data Files or
+     * Software are furnished to do so, provided that (a) this copyright and
+     * permission notice appear with all copies of the Data Files or
+     * Software, (b) this copyright and permission notice appear in
+     * associated documentation, and (c) there is clear notice in each
+     * modified Data File or in the Software as well as in the documentation
+     * associated with the Data File(s) or Software that the data or
+     * software has been modified.</p> <p>THE DATA FILES AND SOFTWARE ARE
+     * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+     * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+     * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY
+     * RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN
+     * THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR
+     * CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
+     * OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE
+     * OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE
+     * USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.</p> <p>Except as
+     * contained in this notice, the name of a copyright holder shall not be
+     * used in advertising or otherwise to promote the sale, use or other
+     * dealings in these Data Files or Software without prior written
+     * authorization of the copyright holder.</p>
      */
   public final class NormalizingCharacterInput implements ICharacterInput
   {
+    static int DecompToBufferInternal(
+int ch,
+boolean compat,
+int[] buffer,
+int index) {
+      int offset = UnicodeDatabase.GetDecomposition(
+      ch,
+      compat,
+      buffer,
+      index);
+      if (buffer[index] != ch) {
+        int[] copy = new int[offset - index];
+        System.arraycopy(buffer, index, copy, 0, copy.length);
+        offset = index;
+        for (int i = 0; i < copy.length; ++i) {
+          offset = DecompToBufferInternal(copy[i], compat, buffer, offset);
+        }
+      }
+      return offset;
+    }
+
+    static int DecompToBuffer(
+int ch,
+boolean compat,
+int[] buffer,
+int index) {
+      if (ch >= 0xac00 && ch < 0xac00 + 11172) {
+        // Hangul syllable
+        int valueSIndex = ch - 0xac00;
+        int trail = 0x11a7 + (valueSIndex % 28);
+        buffer[index++] = 0x1100 + (valueSIndex / 588);
+        buffer[index++] = 0x1161 + ((valueSIndex % 588) / 28);
+        if (trail != 0x11a7) {
+          buffer[index++] = trail;
+        }
+        return index;
+      }
+      return DecompToBufferInternal(ch, compat, buffer, index);
+    }
+
+    static boolean IsStableCodePoint(int cp, Normalization form) {
+      // Exclude YOD and HIRIQ because of Corrigendum 2
+      return UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 &&
+        cp != 0x5d9;
+    }
+
+    static void ReorderBuffer(int[] buffer, int index, int length) {
+      int i;
+
+      if (length < 2) {
+        return;
+      }
+      boolean changed;
+      do {
+        changed = false;
+        // System.out.println(toString(buffer, index, length));
+        int lead = UnicodeDatabase.GetCombiningClass(buffer[index]);
+        int trail;
+        for (i = 1; i < length; ++i) {
+          int offset = index + i;
+          trail = UnicodeDatabase.GetCombiningClass(buffer[offset]);
+          if (trail != 0 && lead > trail) {
+            int c = buffer[offset - 1];
+            buffer[offset - 1] = buffer[offset];
+            buffer[offset] = c;
+            // System.out.println("lead= {0:X4} ccc=" + lead);
+            // System.out.println("trail={0:X4} ccc=" + trail);
+            // System.out.println("now "+toString(buffer,index,length));
+            changed = true;
+            // Lead is now at trail's position
+          } else {
+            lead = trail;
+          }
+        }
+      } while (changed);
+    }
+
+    static int ComposeBuffer(int[] array, int length) {
+      if (length < 2) {
+        return length;
+      }
+      int starterPos = 0;
+      int retval = length;
+      int starter = array[0];
+      int last = UnicodeDatabase.GetCombiningClass(starter);
+      if (last != 0) {
+        last = 256;
+      }
+      int endPos = 0 + length;
+      boolean composed = false;
+      for (int decompPos = 0; decompPos < endPos; ++decompPos) {
+        int ch = array[decompPos];
+        int valuecc = UnicodeDatabase.GetCombiningClass(ch);
+        if (decompPos > 0) {
+          int lead = starter - 0x1100;
+          if (0 <= lead && lead < 19) {
+            // Found Hangul L jamo
+            int vowel = ch - 0x1161;
+            if (0 <= vowel && vowel < 21 && (last < valuecc || last == 0)) {
+              starter = 0xac00 + (((lead * 21) + vowel) * 28);
+              array[starterPos] = starter;
+              array[decompPos] = 0x110000;
+              composed = true;
+              --retval;
+              continue;
+            }
+          }
+          int syllable = starter - 0xac00;
+          if (0 <= syllable && syllable < 11172 && (syllable % 28) == 0) {
+            // Found Hangul LV jamo
+            int trail = ch - 0x11a7;
+            if (0 < trail && trail < 28 && (last < valuecc || last == 0)) {
+              starter += trail;
+              array[starterPos] = starter;
+              array[decompPos] = 0x110000;
+              composed = true;
+              --retval;
+              continue;
+            }
+          }
+        }
+        int composite = UnicodeDatabase.GetComposedPair(starter, ch);
+        boolean diffClass = last < valuecc;
+        if (composite >= 0 && (diffClass || last == 0)) {
+          array[starterPos] = composite;
+          starter = composite;
+          array[decompPos] = 0x110000;
+          composed = true;
+          --retval;
+          continue;
+        }
+        if (valuecc == 0) {
+          starterPos = decompPos;
+          starter = ch;
+        }
+        last = valuecc;
+      }
+      if (composed) {
+        int j = 0;
+        for (int i = 0; i < endPos; ++i) {
+          if (array[i] != 0x110000) {
+            array[j++] = array[i];
+          }
+        }
+      }
+      return retval;
+    }
+
     /**
      * Not documented yet.
      * @param str A string object.
@@ -199,12 +379,30 @@ Normalization form) {
         if (i >= length) {
           return false;
         }
-        if (ch != charList.get(start + i)) {
+        if (ch != charList.charAt(start + i)) {
           return false;
         }
         ++i;
       }
       return true;
+    }
+
+    /**
+     * Converts a string to the given Unicode normalization form.
+     * @param str An arbitrary string.
+     * @param form The Unicode normalization form to convert to.
+     * @return The parameter {@code str} converted to the given normalization form.
+     * @throws NullPointerException The parameter {@code str} is null.
+     */
+    public static String Normalize(String str, Normalization form) {
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
+      if (str.length() <= 1024 && IsNormalized(str, form)) {
+        return str;
+      }
+      return EncoderHelper.InputToString(
+        new NormalizingCharacterInput(str));
     }
 
     /**
@@ -216,7 +414,92 @@ Normalization form) {
      * otherwise, false.
      */
     public static boolean IsNormalized(String str, Normalization form) {
-      return Normalizer.IsNormalized(str, form);
+      if (str == null) {
+        return false;
+      }
+      int nonStableStart = -1;
+      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
+      for (int i = 0; i < str.length(); ++i) {
+        int c = str.charAt(i);
+        if ((c & 0xfc00) == 0xd800 && i + 1 < str.length() &&
+            str.charAt(i + 1) >= 0xdc00 && str.charAt(i + 1) <= 0xdfff) {
+          // Get the Unicode code point for the surrogate pair
+          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(i + 1) - 0xdc00);
+        } else if ((c & 0xf800) == 0xd800) {
+          // unpaired surrogate
+          return false;
+        }
+        boolean isStable = false;
+        if ((c & mask) == c && (i + 1 == str.length() || (str.charAt(i + 1) & mask)
+          == str.charAt(i + 1))) {
+          // Quick check for an ASCII character followed by another
+          // ASCII character (or Latin-1 in NFC) or the end of String.
+          // Treat the first character as stable
+          // in this situation.
+          isStable = true;
+        } else {
+          isStable = NormalizingCharacterInput.IsStableCodePoint(c, form);
+        }
+        if (nonStableStart < 0 && !isStable) {
+          // First non-stable code point in a row
+          nonStableStart = i;
+        } else if (nonStableStart >= 0 && isStable) {
+          // We have at least one non-stable code point,
+          // normalize these code points.
+          if (!NormalizeAndCheckString(
+         str,
+         nonStableStart,
+         i - nonStableStart,
+         form)) {
+            return false;
+          }
+          nonStableStart = -1;
+        }
+        if (c >= 0x10000) {
+          ++i;
+        }
+      }
+      if (nonStableStart >= 0) {
+        if (!NormalizeAndCheckString(
+str,
+nonStableStart,
+str.length() - nonStableStart,
+form)) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    private static boolean NormalizeAndCheckString(
+      String charList,
+      int start,
+      int length,
+      Normalization form) {
+      int i = start;
+      NormalizingCharacterInput norm = new NormalizingCharacterInput(
+     charList,
+     start,
+     length,
+     form);
+      int ch = 0;
+      while ((ch = norm.ReadChar()) >= 0) {
+        int c = charList.charAt(i);
+        if ((c & 0xfc00) == 0xd800 && i + 1 < charList.length() &&
+            charList.charAt(i + 1) >= 0xdc00 && charList.charAt(i + 1) <= 0xdfff) {
+          // Get the Unicode code point for the surrogate pair
+          c = 0x10000 + ((c - 0xd800) << 10) + (charList.charAt(i + 1) - 0xdc00);
+          ++i;
+        } else if ((c & 0xf800) == 0xd800) {
+          // unpaired surrogate
+          c = 0xfffd;
+        }
+        ++i;
+        if (c != ch) {
+          return false;
+        }
+      }
+      return i == start + length;
     }
 
     /**
@@ -235,20 +518,20 @@ Normalization form) {
         throw new NullPointerException("charList");
       }
       for (int i = 0; i < charList.size(); ++i) {
-        int c = charList.get(i);
+        int c = charList.charAt(i);
         if (c < 0 || c > 0x10ffff || ((c & 0x1ff800) == 0xd800)) {
           return false;
         }
         boolean isStable = false;
-        if ((c & mask) == c && (i + 1 == charList.size() || (charList.get(i + 1)&
-          mask) == charList.get(i + 1))) {
+        if ((c & mask) == c && (i + 1 == charList.size() || (charList.charAt(i + 1)&
+          mask) == charList.charAt(i + 1))) {
           // Quick check for an ASCII character followed by another
           // ASCII character (or Latin-1 in NFC) or the end of String.
           // Treat the first character as stable
           // in this situation.
           isStable = true;
         } else {
-          isStable = Normalizer.IsStableCodePoint(c, form);
+          isStable = IsStableCodePoint(c, form);
         }
         if (nonStableStart < 0 && !isStable) {
           // First non-stable code point in a row
@@ -361,7 +644,7 @@ this.characterList.size()) ? -1 :
           if (c < 0) {
             return (total == 0) ? -1 : total;
           }
-          if (Normalizer.IsStableCodePoint(c, this.form)) {
+          if (IsStableCodePoint(c, this.form)) {
             chars[index] = c;
             ++total;
             ++index;
@@ -397,7 +680,7 @@ this.characterList.size()) ? -1 :
             this.endOfString = true;
             break;
           }
-          if (Normalizer.IsStableCodePoint(c, this.form)) {
+          if (IsStableCodePoint(c, this.form)) {
             chars[index++] = c;
             ++total;
           } else {
@@ -451,7 +734,7 @@ Math.min(this.processedIndex - this.flushIndex, length - total));
             this.endOfString = true;
             break;
           }
-          this.endIndex = Normalizer.DecompToBuffer(
+          this.endIndex = DecompToBuffer(
 c,
 this.compatMode,
 this.buffer,
@@ -465,7 +748,7 @@ this.endIndex);
           for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
             // System.out.println("stable({0:X4})=" +
             // (IsStableCodePoint(this.buffer[i], this.form)));
-            if (Normalizer.IsStableCodePoint(this.buffer[i], this.form)) {
+            if (IsStableCodePoint(this.buffer[i], this.form)) {
               this.lastStableIndex = i;
               haveNewStable = true;
               break;
@@ -492,10 +775,10 @@ this.endIndex);
       }
       this.flushIndex = 0;
       // Canonical reordering
-      Normalizer.ReorderBuffer(this.buffer, 0, this.lastStableIndex);
+      ReorderBuffer(this.buffer, 0, this.lastStableIndex);
       if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
         // Composition
-        this.processedIndex = Normalizer.ComposeBuffer(
+        this.processedIndex = ComposeBuffer(
 this.buffer,
 this.lastStableIndex);
       } else {

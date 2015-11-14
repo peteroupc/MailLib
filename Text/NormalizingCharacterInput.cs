@@ -8,24 +8,294 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 using System;
 using System.Collections.Generic;
 
+using PeterO.Text.Encoders;
+
 namespace PeterO.Text {
-    /// <summary><para>Implements the Unicode normalization algorithm and contains
-    /// methods and functionality to test and convert Unicode strings for Unicode
-    /// normalization. This is similar to the Normalizer class, except it implements
-    /// the ICharacterInput interface.</para>
-    /// <para>NOTICE: While this class's
-    /// source code is in the public domain, the class uses an internal class,
-    /// called NormalizationData, that includes data derived from the Unicode
-    /// Character Database. See the documentation for the Normalizer class for the
-    /// permission notice for the Unicode Character Database.</para>
+    /// <summary><para>A character input class that implements the Unicode
+    /// normalization algorithm and contains methods and functionality to test
+    /// and
+    /// convert Unicode strings for Unicode normalization. This is similar to
+    /// the
+    /// Normalizer class, except it implements the ICharacterInput
+    /// interface.</para>
+    /// <para>NOTICE: While this class's source code is in the public domain,
+    /// the
+    /// class uses an internal class, called NormalizationData, that includes
+    /// data
+    /// derived from the Unicode Character Database. In case doing so is
+    /// required,
+    /// the permission notice for the Unicode Character Database is given
+    /// here:</para>
+    /// <para>COPYRIGHT AND PERMISSION NOTICE</para>
+    /// <para>Copyright
+    /// (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under the
+    /// Terms
+    /// of Use in http://www.unicode.org/copyright.html.</para>
+    /// <para>Permission is
+    /// hereby granted, free of charge, to any person obtaining a copy of the
+    /// Unicode data files and any associated documentation (the "Data Files")
+    /// or
+    /// Unicode software and any associated documentation (the "Software") to
+    /// deal
+    /// in the Data Files or Software without restriction, including without
+    /// limitation the rights to use, copy, modify, merge, publish, distribute,
+    /// and/or sell copies of the Data Files or Software, and to permit persons
+    /// to
+    /// whom the Data Files or Software are furnished to do so, provided that
+    /// (a)
+    /// this copyright and permission notice appear with all copies of the Data
+    /// Files or Software, (b) this copyright and permission notice appear in
+    /// associated documentation, and (c) there is clear notice in each modified
+    /// Data File or in the Software as well as in the documentation associated
+    /// with
+    /// the Data File(s) or Software that the data or software has been
+    /// modified.</para>
+    /// <para>THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS",
+    /// WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+    /// LIMITED
+    /// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+    /// AND
+    /// NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT
+    /// HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR
+    /// ANY
+    /// SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER
+    /// RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+    /// CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+    /// CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA FILES OR
+    /// SOFTWARE.</para>
+    /// <para>Except as contained in this notice, the name of a copyright holder
+    /// shall not be used in advertising or otherwise to promote the sale, use
+    /// or
+    /// other dealings in these Data Files or Software without prior written
+    /// authorization of the copyright holder.</para>
     /// </summary>
   public sealed class NormalizingCharacterInput : ICharacterInput
   {
+    internal static int DecompToBufferInternal(
+int ch,
+bool compat,
+int[] buffer,
+int index) {
+#if DEBUG
+      if (buffer == null) {
+        throw new ArgumentNullException("buffer");
+      }
+      if (index < 0) {
+        throw new ArgumentException("index (" + index + ") is less than " +
+            "0");
+      }
+      if (index > buffer.Length) {
+        throw new ArgumentException("index (" + index + ") is more than " +
+          buffer.Length);
+      }
+#endif
+      int offset = UnicodeDatabase.GetDecomposition(
+      ch,
+      compat,
+      buffer,
+      index);
+      if (buffer[index] != ch) {
+        var copy = new int[offset - index];
+        Array.Copy(buffer, index, copy, 0, copy.Length);
+        offset = index;
+        for (int i = 0; i < copy.Length; ++i) {
+          offset = DecompToBufferInternal(copy[i], compat, buffer, offset);
+        }
+      }
+      return offset;
+    }
+
+    internal static int DecompToBuffer(
+int ch,
+bool compat,
+int[] buffer,
+int index) {
+#if DEBUG
+      if (buffer == null) {
+        throw new ArgumentNullException("buffer");
+      }
+      if (index < 0) {
+        throw new ArgumentException("index (" + index + ") is less than " +
+            "0");
+      }
+      if (index > buffer.Length) {
+        throw new ArgumentException("index (" + index + ") is more than " +
+          buffer.Length);
+      }
+#endif
+
+      if (ch >= 0xac00 && ch < 0xac00 + 11172) {
+        // Hangul syllable
+        int valueSIndex = ch - 0xac00;
+        int trail = 0x11a7 + (valueSIndex % 28);
+        buffer[index++] = 0x1100 + (valueSIndex / 588);
+        buffer[index++] = 0x1161 + ((valueSIndex % 588) / 28);
+        if (trail != 0x11a7) {
+          buffer[index++] = trail;
+        }
+        return index;
+      }
+      return DecompToBufferInternal(ch, compat, buffer, index);
+    }
+
+    internal static bool IsStableCodePoint(int cp, Normalization form) {
+      // Exclude YOD and HIRIQ because of Corrigendum 2
+      return UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 &&
+        cp != 0x5d9;
+    }
+
+    internal static void ReorderBuffer(int[] buffer, int index, int length) {
+      int i;
+#if DEBUG
+      if (buffer == null) {
+        throw new ArgumentNullException("buffer");
+      }
+      if (index < 0) {
+        throw new ArgumentException("index (" + index + ") is less than " +
+            "0");
+      }
+      if (index > buffer.Length) {
+        throw new ArgumentException("index (" + index + ") is more than " +
+          buffer.Length);
+      }
+      if (length < 0) {
+        throw new ArgumentException("length (" + length + ") is less than " +
+              "0");
+      }
+      if (length > buffer.Length) {
+        throw new ArgumentException("length (" + length + ") is more than " +
+          buffer.Length);
+      }
+      if (buffer.Length - index < length) {
+        throw new ArgumentException("buffer's length minus " + index + " (" +
+          (buffer.Length - index) +
+          ") is less than " + length);
+      }
+#endif
+
+      if (length < 2) {
+        return;
+      }
+      bool changed;
+      do {
+        changed = false;
+        // Console.WriteLine(ToString(buffer, index, length));
+        int lead = UnicodeDatabase.GetCombiningClass(buffer[index]);
+        int trail;
+        for (i = 1; i < length; ++i) {
+          int offset = index + i;
+          trail = UnicodeDatabase.GetCombiningClass(buffer[offset]);
+          if (trail != 0 && lead > trail) {
+            int c = buffer[offset - 1];
+            buffer[offset - 1] = buffer[offset];
+            buffer[offset] = c;
+            // Console.WriteLine("lead= {0:X4} ccc=" + lead);
+            // Console.WriteLine("trail={0:X4} ccc=" + trail);
+            // Console.WriteLine("now "+ToString(buffer,index,length));
+            changed = true;
+            // Lead is now at trail's position
+          } else {
+            lead = trail;
+          }
+        }
+      } while (changed);
+    }
+
+    internal static int ComposeBuffer(int[] array, int length) {
+#if DEBUG
+      if (array == null) {
+        throw new ArgumentNullException("array");
+      }
+      if (length < 0) {
+        throw new ArgumentException("length (" + length + ") is less than " +
+              "0");
+      }
+      if (length > array.Length) {
+        throw new ArgumentException("length (" + length + ") is more than " +
+          array.Length);
+      }
+      if (array.Length < length) {
+        throw new ArgumentException("array's length (" + array.Length +
+          ") is less than " + length);
+      }
+#endif
+
+      if (length < 2) {
+        return length;
+      }
+      int starterPos = 0;
+      int retval = length;
+      int starter = array[0];
+      int last = UnicodeDatabase.GetCombiningClass(starter);
+      if (last != 0) {
+        last = 256;
+      }
+      int endPos = 0 + length;
+      bool composed = false;
+      for (int decompPos = 0; decompPos < endPos; ++decompPos) {
+        int ch = array[decompPos];
+        int valuecc = UnicodeDatabase.GetCombiningClass(ch);
+        if (decompPos > 0) {
+          int lead = starter - 0x1100;
+          if (0 <= lead && lead < 19) {
+            // Found Hangul L jamo
+            int vowel = ch - 0x1161;
+            if (0 <= vowel && vowel < 21 && (last < valuecc || last == 0)) {
+              starter = 0xac00 + (((lead * 21) + vowel) * 28);
+              array[starterPos] = starter;
+              array[decompPos] = 0x110000;
+              composed = true;
+              --retval;
+              continue;
+            }
+          }
+          int syllable = starter - 0xac00;
+          if (0 <= syllable && syllable < 11172 && (syllable % 28) == 0) {
+            // Found Hangul LV jamo
+            int trail = ch - 0x11a7;
+            if (0 < trail && trail < 28 && (last < valuecc || last == 0)) {
+              starter += trail;
+              array[starterPos] = starter;
+              array[decompPos] = 0x110000;
+              composed = true;
+              --retval;
+              continue;
+            }
+          }
+        }
+        int composite = UnicodeDatabase.GetComposedPair(starter, ch);
+        bool diffClass = last < valuecc;
+        if (composite >= 0 && (diffClass || last == 0)) {
+          array[starterPos] = composite;
+          starter = composite;
+          array[decompPos] = 0x110000;
+          composed = true;
+          --retval;
+          continue;
+        }
+        if (valuecc == 0) {
+          starterPos = decompPos;
+          starter = ch;
+        }
+        last = valuecc;
+      }
+      if (composed) {
+        int j = 0;
+        for (int i = 0; i < endPos; ++i) {
+          if (array[i] != 0x110000) {
+            array[j++] = array[i];
+          }
+        }
+      }
+      return retval;
+    }
+
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
     /// <param name='form'>A Normalization object.</param>
     /// <returns>A list of Unicode characters.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str' />
     /// is null.</exception>
     public static IList<int> GetChars(string str, Normalization form) {
       if (str == null) {
@@ -38,7 +308,8 @@ namespace PeterO.Text {
     /// <param name='str'>An ICharacterInput object.</param>
     /// <param name='form'>A Normalization object.</param>
     /// <returns>A list of Unicode characters.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str' />
     /// is null.</exception>
     public static IList<int> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
@@ -67,14 +338,16 @@ namespace PeterO.Text {
     private IList<int> characterList;
     private int characterListPos;
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput class
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class
     /// using Normalization Form C.</summary>
     /// <param name='characterList'>An IList object.</param>
     public NormalizingCharacterInput(IList<int> characterList) :
       this(characterList, Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput class
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class
     /// using Normalization Form C.</summary>
     /// <param name='str'>A string object.</param>
   public NormalizingCharacterInput(
@@ -83,7 +356,8 @@ str,
 Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput class
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class
     /// using Normalization Form C.</summary>
     /// <param name='input'>An ICharacterInput object.</param>
     public NormalizingCharacterInput(
@@ -92,7 +366,8 @@ input,
 Normalization.NFC) {
     }
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput class
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class
     /// using the given normalization form.</summary>
     /// <param name='characterList'>An IList object.</param>
     /// <param name='form'>A Normalization object.</param>
@@ -111,7 +386,8 @@ Normalization form) {
         Normalization.NFKD;
     }
 
-    /// <summary>Initializes a new instance of the NormalizingCharacterInput class.
+    /// <summary>Initializes a new instance of the NormalizingCharacterInput
+    /// class.
     /// Uses a portion of a string as the input.</summary>
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer.</param>
@@ -192,6 +468,26 @@ Normalization form) {
       return true;
     }
 
+    /// <summary>Converts a string to the given Unicode normalization
+    /// form.</summary>
+    /// <param name='str'>An arbitrary string.</param>
+    /// <param name='form'>The Unicode normalization form to convert to.</param>
+    /// <returns>The parameter <paramref name='str'/> converted to the given
+    /// normalization form.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str' />
+    /// is null.</exception>
+    public static string Normalize(string str, Normalization form) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      if (str.Length <= 1024 && IsNormalized(str, form)) {
+        return str;
+      }
+      return EncoderHelper.InputToString(
+        new NormalizingCharacterInput(str));
+    }
+
     /// <summary>Determines whether the given string is in the given Unicode
     /// normalization form.</summary>
     /// <param name='str'>An arbitrary string.</param>
@@ -199,7 +495,92 @@ Normalization form) {
     /// <returns>True if the given string is in the given Unicode normalization
     /// form; otherwise, false.</returns>
     public static bool IsNormalized(string str, Normalization form) {
-      return Normalizer.IsNormalized(str, form);
+      if (str == null) {
+        return false;
+      }
+      int nonStableStart = -1;
+      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
+      for (int i = 0; i < str.Length; ++i) {
+        int c = str[i];
+        if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
+            str[i + 1] >= 0xdc00 && str[i + 1] <= 0xdfff) {
+          // Get the Unicode code point for the surrogate pair
+          c = 0x10000 + ((c - 0xd800) << 10) + (str[i + 1] - 0xdc00);
+        } else if ((c & 0xf800) == 0xd800) {
+          // unpaired surrogate
+          return false;
+        }
+        bool isStable = false;
+        if ((c & mask) == c && (i + 1 == str.Length || (str[i + 1] & mask)
+          == str[i + 1])) {
+          // Quick check for an ASCII character followed by another
+          // ASCII character (or Latin-1 in NFC) or the end of string.
+          // Treat the first character as stable
+          // in this situation.
+          isStable = true;
+        } else {
+          isStable = NormalizingCharacterInput.IsStableCodePoint(c, form);
+        }
+        if (nonStableStart < 0 && !isStable) {
+          // First non-stable code point in a row
+          nonStableStart = i;
+        } else if (nonStableStart >= 0 && isStable) {
+          // We have at least one non-stable code point,
+          // normalize these code points.
+          if (!NormalizeAndCheckString(
+         str,
+         nonStableStart,
+         i - nonStableStart,
+         form)) {
+            return false;
+          }
+          nonStableStart = -1;
+        }
+        if (c >= 0x10000) {
+          ++i;
+        }
+      }
+      if (nonStableStart >= 0) {
+        if (!NormalizeAndCheckString(
+str,
+nonStableStart,
+str.Length - nonStableStart,
+form)) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    private static bool NormalizeAndCheckString(
+      string charList,
+      int start,
+      int length,
+      Normalization form) {
+      int i = start;
+      var norm = new NormalizingCharacterInput(
+     charList,
+     start,
+     length,
+     form);
+      int ch = 0;
+      while ((ch = norm.ReadChar()) >= 0) {
+        int c = charList[i];
+        if ((c & 0xfc00) == 0xd800 && i + 1 < charList.Length &&
+            charList[i + 1] >= 0xdc00 && charList[i + 1] <= 0xdfff) {
+          // Get the Unicode code point for the surrogate pair
+          c = 0x10000 + ((c - 0xd800) << 10) + (charList[i + 1] - 0xdc00);
+          ++i;
+        } else if ((c & 0xf800) == 0xd800) {
+          // unpaired surrogate
+          c = 0xfffd;
+        }
+        ++i;
+        if (c != ch) {
+          return false;
+        }
+      }
+      return i == start + length;
     }
 
     /// <summary>Determines whether the given list of characters is in the given
@@ -230,7 +611,7 @@ Normalization form) {
           // in this situation.
           isStable = true;
         } else {
-          isStable = Normalizer.IsStableCodePoint(c, form);
+          isStable = IsStableCodePoint(c, form);
         }
         if (nonStableStart < 0 && !isStable) {
           // First non-stable code point in a row
@@ -339,7 +720,7 @@ this.characterList.Count) ? -1 :
           if (c < 0) {
             return (total == 0) ? -1 : total;
           }
-          if (Normalizer.IsStableCodePoint(c, this.form)) {
+          if (IsStableCodePoint(c, this.form)) {
             chars[index] = c;
             ++total;
             ++index;
@@ -380,7 +761,7 @@ if (this.buffer == null) {
             this.endOfString = true;
             break;
           }
-          if (Normalizer.IsStableCodePoint(c, this.form)) {
+          if (IsStableCodePoint(c, this.form)) {
             chars[index++] = c;
             ++total;
           } else {
@@ -441,7 +822,7 @@ Math.Min(this.processedIndex - this.flushIndex, length - total));
             this.endOfString = true;
             break;
           }
-          this.endIndex = Normalizer.DecompToBuffer(
+          this.endIndex = DecompToBuffer(
 c,
 this.compatMode,
 this.buffer,
@@ -455,7 +836,7 @@ this.endIndex);
           for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
             // Console.WriteLine("stable({0:X4})=" +
             // (IsStableCodePoint(this.buffer[i], this.form)));
-            if (Normalizer.IsStableCodePoint(this.buffer[i], this.form)) {
+            if (IsStableCodePoint(this.buffer[i], this.form)) {
               this.lastStableIndex = i;
               haveNewStable = true;
               break;
@@ -482,10 +863,10 @@ this.endIndex);
       }
       this.flushIndex = 0;
       // Canonical reordering
-      Normalizer.ReorderBuffer(this.buffer, 0, this.lastStableIndex);
+      ReorderBuffer(this.buffer, 0, this.lastStableIndex);
       if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
         // Composition
-        this.processedIndex = Normalizer.ComposeBuffer(
+        this.processedIndex = ComposeBuffer(
 this.buffer,
 this.lastStableIndex);
       } else {

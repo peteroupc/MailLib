@@ -86,43 +86,6 @@ prefix.length() >= str.length()) && str.substring(
       return "";
     }
 
-    public static String TrimAsciiWhite(String str) {
-      return ((str) == null || (str).length() == 0) ? str :
-        TrimAsciiWhiteLeft(TrimAsciiWhiteRight(str));
-    }
-
-    public static String TrimAsciiWhiteLeft(String str) {
-      if (((str) == null || (str).length() == 0)) {
-        return str;
-      }
-      int index = 0;
-      int valueSLength = str.length();
-      while (index < valueSLength) {
-        char c = str.charAt(index);
-        if (c != 0x09 && c != 0x20 && c != 0x0c && c != 0x0d && c != 0x0a) {
-          break;
-        }
-        ++index;
-      }
-      return (index == valueSLength) ? "" : ((index == 0) ? str :
-        str.substring(index));
-    }
-
-    public static String TrimAsciiWhiteRight(String str) {
-      if (((str) == null || (str).length() == 0)) {
-        return str;
-      }
-      int index = str.length() - 1;
-      while (index >= 0) {
-        char c = str.charAt(index);
-        if (c != 0x09 && c != 0x20 && c != 0x0c && c != 0x0d && c != 0x0a) {
-          return str.substring(0, index + 1);
-        }
-        --index;
-      }
-      return "";
-    }
-
     public static boolean IsNullEmptyOrSpaceTabOnly(String str) {
       return ((
 str) == null || (

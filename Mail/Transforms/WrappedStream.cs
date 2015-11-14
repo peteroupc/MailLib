@@ -7,8 +7,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
 using System.IO;
+using PeterO;
 
-namespace PeterO.Mail {
+namespace PeterO.Mail.Transforms {
   internal sealed class WrappedStream : ITransform {
     private Stream stream;
 
