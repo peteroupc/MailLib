@@ -1759,8 +1759,12 @@ stringTemp);
     Assert.assertEquals("example/x" , MediaType.Parse(
 "example/x ").getTypeAndSubType());
     String strtest = "example/x" + "," + " a=b";
-      Assert.assertEquals("text/plain",
-        MediaType.Parse(strtest).getTypeAndSubType());
+      {
+String stringTemp = MediaType.Parse(strtest).getTypeAndSubType();
+Assert.assertEquals(
+"text/plain",
+stringTemp);
+}
       Assert.assertEquals("example/x" , MediaType.Parse("example/x ; a=b"
 ).getTypeAndSubType());
 Assert.assertEquals("example/x" , MediaType.Parse("example/x; a=b"

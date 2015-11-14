@@ -15,4 +15,4 @@ Reads bytes from an input transform until a Unicode character is decoded or unti
 
 <b>Returns:</b>
 
-The Unicode character decoded, from U + 0000 to U + 10FFFF. Returns -1 if the end of the source is reached.
+The Unicode character decoded, from U + 0000 to U + 10FFFF. Returns -1 if the end of the source is reached or -2 if a decoder error occurs.

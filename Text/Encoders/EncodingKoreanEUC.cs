@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using PeterO;
-using PeterO.Mail;
+
 using PeterO.Text;
 
 namespace PeterO.Text.Encoders {
@@ -9,6 +9,7 @@ namespace PeterO.Text.Encoders {
     private class Decoder : ICharacterDecoder {
       private DecoderState state;
       private int lead;
+
       public Decoder() {
         this.state = new DecoderState(1);
         this.lead = 0;
@@ -24,16 +25,16 @@ namespace PeterO.Text.Encoders {
             }
             return -1;
           }
-          if (lead != 0) {
+          if (this.lead != 0) {
             int c = -1;
             if (b >= 0x41 && b <= 0xfe) {
-              c = ((lead - 0x81) * 190) + (b - 0x41);
+              c = ((this.lead - 0x81) * 190) + (b - 0x41);
               c = Korean.IndexToCodePoint(c);
             }
-            lead = 0;
-            if (c< 0) {
-              if (b<0x80) {
- state.PrependOne(b);
+            this.lead = 0;
+            if (c < 0) {
+              if (b < 0x80) {
+ this.state.PrependOne(b);
 }
                 return -2;
             }
@@ -42,7 +43,7 @@ namespace PeterO.Text.Encoders {
           if (b <= 0x7f) {
             return b;
           } else if (b >= 0x81 && b <= 0xfe) {
-            lead = b;
+            this.lead = b;
             continue;
           } else {
            return -2;

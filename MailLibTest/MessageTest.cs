@@ -1761,8 +1761,12 @@ stringTemp);
     Assert.AreEqual("example/x" , MediaType.Parse(
 "example/x ").TypeAndSubType);
     string strtest = "example/x" + "," + " a=b";
-      Assert.AreEqual("text/plain",
-        MediaType.Parse(strtest).TypeAndSubType);
+      {
+string stringTemp = MediaType.Parse(strtest).TypeAndSubType;
+Assert.AreEqual(
+"text/plain",
+stringTemp);
+}
       Assert.AreEqual("example/x" , MediaType.Parse("example/x ; a=b"
 ).TypeAndSubType);
 Assert.AreEqual("example/x" , MediaType.Parse("example/x; a=b"

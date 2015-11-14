@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using PeterO;
+using PeterO.Mail.Transforms;
 using PeterO.Text.Encoders;
 
 namespace PeterO.Mail {

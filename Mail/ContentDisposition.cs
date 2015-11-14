@@ -13,16 +13,19 @@ using PeterO.Text;
 using PeterO.Text.Encoders;
 
 namespace PeterO.Mail {
-    /// <summary>Specifies how a message body should be displayed or handled by a
-    /// mail user agent. This type is immutable; its contents can't be changed after
+    /// <summary>Specifies how a message body should be displayed or handled by
+    /// a
+    /// mail user agent. This type is immutable; its contents can't be changed
+    /// after
     /// it's created.</summary>
   public class ContentDisposition {
     private string dispositionType;
 
-    /// <summary>Gets a string containing this object's disposition type, such as
+    /// <summary>Gets a string containing this object's disposition type, such
+    /// as
     /// "inline" or "attachment".</summary>
-    /// <value>A string containing this object&apos;s disposition type, such as
-    /// &quot;inline&quot; or &quot;attachment&quot;.</value>
+    /// <value>A string containing this object&#x27;s disposition type, such as
+    /// &#x22;inline&#x22; or &#x22;attachment&#x22;.</value>
     public string DispositionType {
       get {
         return this.dispositionType;
@@ -70,7 +73,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether the disposition type is
     /// attachment.</summary>
-    /// <value>True if the disposition type is attachment; otherwise, false.</value>
+    /// <value>True if the disposition type is attachment; otherwise,
+    /// false.</value>
     public bool IsAttachment {
       get {
         return this.dispositionType.Equals("attachment");
@@ -154,11 +158,15 @@ string type,
     /// <summary>Converts a filename from the Content-Disposition header to a
     /// suitable name for saving data to a file.</summary>
     /// <param name='str'>A string representing a file name.</param>
-    /// <returns>A string with the converted version of the file name. Among other
+    /// <returns>A string with the converted version of the file name. Among
+    /// other
     /// things, encoded words under RFC 2047 are decoded (since they occur so
-    /// frequently in Content-Disposition filenames); the value is decoded under RFC
-    /// 2231 if possible; characters unsuitable for use in a filename (including the
-    /// directory separators slash and backslash) are replaced with underscores; and
+    /// frequently in Content-Disposition filenames); the value is decoded under
+    /// RFC
+    /// 2231 if possible; characters unsuitable for use in a filename (including
+    /// the
+    /// directory separators slash and backslash) are replaced with underscores;
+    /// and
     /// the filename is truncated if it would otherwise be too long. Returns an
     /// empty string if <paramref name='str'/> is null.</returns>
     public static string MakeFilename(string str) {
@@ -285,17 +293,18 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '1' &&
         // Starts with period; may be hidden in some configurations
         str = "_" + str;
       }
-      return Normalizer.Normalize(str, Normalization.NFC);
+      return NormalizingCharacterInput.Normalize(str, Normalization.NFC);
     }
 
     /// <summary>Gets a parameter from this disposition object.</summary>
     /// <param name='name'>The name of the parameter to get. The name will be
-    /// matched case-insensitively. Can&apos;t be null.</param>
+    /// matched case-insensitively. Can&#x27;t be null.</param>
     /// <returns>The value of the parameter, or null if the parameter does not
     /// exist.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref name='name'/> is
+    /// <exception cref='ArgumentException'>The parameter <paramref name='name'
+    /// /> is
     /// empty.</exception>
     public string GetParameter(string name) {
       if (name == null) {
@@ -382,9 +391,11 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '1' &&
 
     /// <summary>Creates a new content disposition object from the value of a
     /// Content-Disposition header field.</summary>
-    /// <param name='dispositionValue'>A string object that should be the value of a
+    /// <param name='dispositionValue'>A string object that should be the value
+    /// of a
     /// Content-Disposition header field.</param>
-    /// <param name='defaultValue'>The value to return in case the disposition value
+    /// <param name='defaultValue'>The value to return in case the disposition
+    /// value
     /// is syntactically invalid. Can be null.</param>
     /// <returns>A ContentDisposition object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref

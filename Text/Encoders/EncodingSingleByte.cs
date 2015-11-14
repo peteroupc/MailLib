@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using PeterO;
-using PeterO.Mail;
+
 using PeterO.Text;
 
 namespace PeterO.Text.Encoders {
@@ -15,7 +15,7 @@ namespace PeterO.Text.Encoders {
 
      public int ReadChar(ITransform transform) {
        int b = transform.ReadByte();
-       return (b< 0) ? (-1) : ((b<0x80) ? b : this.mapping[b-0x80]);
+       return (b < 0) ? (-1) : ((b < 0x80) ? b : this.mapping[b-0x80]);
     }
   }
 
@@ -36,7 +36,7 @@ namespace PeterO.Text.Encoders {
            output.WriteByte((byte)c);
            return 1;
          }
-         for (var i = 0; i<this.mapping.Length; ++i) {
+         for (var i = 0; i < this.mapping.Length; ++i) {
            if (this.mapping[i ]==c) {
              output.WriteByte((byte)(i + 0x80));
              return 1;
