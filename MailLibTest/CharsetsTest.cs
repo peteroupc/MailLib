@@ -11,15 +11,15 @@ namespace MailLibTest {
   [TestClass]
   public class CharsetsTest {
     internal static object GetCharset(string name) {
-      return PeterO.Text.Encoders.Encodings.GetEncoding(name, true);
+      return PeterO.Text.Encodings.GetEncoding(name, true);
     }
 
     internal static string CharsetGetString(object charset, object transform) {
       if ((charset) == null) {
  Assert.Fail();
  }
-      return (string)PeterO.Text.Encoders.Encodings.DecodeString(
-         (PeterO.Text.Encoders.ICharacterEncoding)charset,
+      return (string)PeterO.Text.Encodings.DecodeToString(
+         (PeterO.Text.ICharacterEncoding)charset,
          (PeterO.ITransform)transform);
     }
 

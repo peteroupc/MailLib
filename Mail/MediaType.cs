@@ -12,7 +12,7 @@ using System.Text;
 
 using PeterO;
 using PeterO.Mail.Transforms;
-using PeterO.Text.Encoders;
+using PeterO.Text;
 
 namespace PeterO.Mail {
     /// <summary><para>Specifies what kind of data a message body is.</para>
@@ -35,8 +35,11 @@ namespace PeterO.Mail {
   public sealed class MediaType {
     private string topLevelType;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets the name of this media type's top-level type (such as
+    /// "text"
+    /// or "audio".</summary>
+    /// <value>The name of this media type&#x27;s top-level type (such as
+    /// &#x22;text&#x22; or &#x22;audio&#x22;.</value>
     public string TopLevelType {
       get {
         return this.topLevelType;
@@ -324,8 +327,8 @@ StringBuilder sb) {
           c = 0xfffd;
         }
         ++index;
-      if (c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=*%'" .IndexOf((char)c) <
-          0) {
+      if (c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=*%'"
+        .IndexOf((char)c) < 0) {
           ++length;
           if (!first && length + 1 > MaxLength) {
             sb.Append(";\r\n ");
@@ -830,7 +833,7 @@ firstQuote + 1,
 secondQuote - (firstQuote + 1));
       if (language.Length > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
-        return null;
+        return Encodings.GetEncoding("us-ascii", true);
       }
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
       cs = cs ?? Encodings.GetEncoding("us-ascii", true);
@@ -843,7 +846,7 @@ ICharacterEncoding charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.IndexOf('\'');
-      return (quote >= 0) ? null : Encodings.DecodeString(
+      return (quote >= 0) ? null : Encodings.DecodeToString(
         charset,
         new PercentEncodingStringTransform(value));
     }
@@ -874,9 +877,9 @@ ICharacterEncoding charset) {
           continue;
         }
         // name*0 or name*0*
-        if (asterisk > 0 && ((asterisk == name.Length - 2 && name[asterisk +
-     1] == '0') || (asterisk == name.Length - 3 && name[asterisk + 1] ==
-            '0' && name[asterisk + 2] == '*'))) {
+        if (asterisk > 0 && ((asterisk == name.Length - 2 &&
+          name[asterisk + 1] == '0') || (asterisk == name.Length - 3 &&
+          name[asterisk + 1] == '0' && name[asterisk + 2] == '*'))) {
           string realName = name.Substring(0, asterisk);
           string realValue = (asterisk == name.Length - 3) ?
             DecodeRfc2231Extension(value) : value;
@@ -953,12 +956,10 @@ string str,
       int index,
  int endIndex,
       bool httpRules,
- IDictionary<string,
- string> parameters) {
+ IDictionary<string, string> parameters) {
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
-        // HTTP currently uses skipLws, though that may change
-        // to skipWsp in a future revision of HTTP
+        // HTTP currently uses skipOws
         if (httpRules) {
           index = skipOws(str, index, endIndex);
         } else {

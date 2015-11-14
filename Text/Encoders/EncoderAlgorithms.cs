@@ -128,10 +128,6 @@ Encodings.UTF8,
 bomTransform);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='stream'>An ICharacterInput object.</param>
-    /// <param name='output'>A Stream object.</param>
-    /// <returns>A 32-bit signed integer.</returns>
     public static int Utf8EncodeAlgorithm(
        ICharacterInput stream,
        Stream output) {
@@ -140,13 +136,16 @@ bomTransform);
       return EncodeAlgorithm(stream, Encodings.UTF8, output);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='stream'>An ICharacterInput object.</param>
-    /// <param name='encoding'>An ICharacterEncoding object.</param>
-    /// <param name='output'>A Stream object.</param>
+    /// <param name='stream'>Not documented yet.</param>
+    /// <param name='stream'>Not documented yet.</param>
+    /// <param name='stream'>Not documented yet.</param>
+    /// <param name='stream'>Not documented yet.</param>
+    /// <param name='stream'>Not documented yet.</param>
+    /// <param name='stream'>Not documented yet.</param>
     /// <returns>A 32-bit signed integer.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='stream'/> or <paramref name='output'/> is null.</exception>
+  /// <summary>Not documented yet.</summary>
     public static int EncodeAlgorithm(
       ICharacterInput stream,
       ICharacterEncoding encoding,

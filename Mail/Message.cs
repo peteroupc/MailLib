@@ -12,7 +12,7 @@ using System.Text;
 
 using PeterO;
 using PeterO.Mail.Transforms;
-using PeterO.Text.Encoders;
+using PeterO.Text;
 
 namespace PeterO.Mail {
     /// <summary><para>Represents an email message, and contains methods and
@@ -497,7 +497,7 @@ tokener.GetTokens()));
               NotSupportedException("Not in a supported character set.");
           }
           ITransform transform = new WrappedStream(ms);
-          return Encodings.DecodeString(charset, transform);
+          return Encodings.DecodeToString(charset, transform);
         }
       }
     }
@@ -1369,7 +1369,10 @@ bool checkBoundaryDelimiter) {
     /// <exception cref='MessageDataException'>The message can't be
     /// generated.</exception>
     public string Generate() {
-      return this.Generate(0);
+      using (var ms = new MemoryStream()) {
+        this.Generate(ms, 0);
+        return DataUtilities.GetUtf8String(ms.ToArray(), false);
+      }
     }
 
     private static string GenerateBoundary(int num) {
@@ -1416,7 +1419,17 @@ bool checkBoundaryDelimiter) {
     private static IDictionary<string, int> valueHeaderIndices =
       MakeHeaderIndices();
 
-    private string Generate(int depth) {
+    private static void AppendAscii(Stream output, string str) {
+      for (var i = 0; i < str.Length; ++i) {
+        char c = str[i];
+        if (c >= 0x80) {
+ throw new MessageDataException("ascii expected");
+}
+        output.WriteByte((byte)c);
+      }
+    }
+
+    private void Generate(Stream output, int depth) {
       var sb = new StringBuilder();
       bool haveMimeVersion = false;
       bool haveContentEncoding = false;
@@ -1544,7 +1557,7 @@ name.Length < 8 || !name.Substring(
         string rawField = Capitalize(name) + ":" +
           (StartsWithWhitespace(value) ? String.Empty : " ") + value;
         if (CanOutputRaw(rawField)) {
-          sb.Append(rawField);
+          AppendAscii(output, rawField);
           if (rawField.IndexOf(": ", StringComparison.Ordinal) < 0) {
             throw new MessageDataException("No colon+space: " + rawField);
           }
@@ -1587,7 +1600,7 @@ Capitalize(name) + ": ",
           if (newValue.IndexOf(": ", StringComparison.Ordinal) < 0) {
             throw new MessageDataException("No colon+space: " + newValue);
           }
-          sb.Append(newValue);
+          AppendAscii(output, newValue);
         } else {
           bool haveDquote = value.IndexOf('"') >= 0;
        var encoder = new WordWrapEncoder(
@@ -1598,28 +1611,30 @@ Capitalize(name) + ": ",
           if (newValue.IndexOf(": ", StringComparison.Ordinal) < 0) {
             throw new MessageDataException("No colon+space: " + newValue);
           }
-          sb.Append(newValue);
+          AppendAscii(output, newValue);
         }
-        sb.Append("\r\n");
+        AppendAscii(output, "\r\n");
       }
       if (true && depth == 0) {
         // Output a synthetic From field if it doesn't
         // exist and this isn't a body part
-        sb.Append("From: me@author-address.invalid\r\n");
+        AppendAscii(output, "From: me@author-address.invalid\r\n");
       }
       if (!haveMsgId && depth == 0) {
-        sb.Append("Message-ID: " + this.GenerateMessageID() + "\r\n");
+        AppendAscii(output, "Message-ID: ");
+        AppendAscii(output, this.GenerateMessageID());
+        AppendAscii(output, "\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
-        sb.Append("MIME-Version: 1.0\r\n");
+        AppendAscii(output, "MIME-Version: 1.0\r\n");
       }
       if (!haveContentType) {
-        sb.Append("Content-Type: " + builder + "\r\n");
+        AppendAscii(output, "Content-Type: " + builder + "\r\n");
       }
       if (!haveContentEncoding) {
-        sb.Append("Content-Transfer-Encoding: " + encodingString + "\r\n");
+   AppendAscii(output, "Content-Transfer-Encoding: " + encodingString + "\r\n");
       }
-      IStringEncoder bodyEncoder = null;
+      ICharacterEncoder bodyEncoder = null;
       switch (transferEnc) {
         case EncodingBase64:
           bodyEncoder = new Base64Encoder(true, builder.IsText, false);
@@ -1633,18 +1648,26 @@ false);
           break;
       }
       // Write the body
-      sb.Append("\r\n");
+      AppendAscii(output, "\r\n");
       if (!isMultipart) {
-        bodyEncoder.WriteToString(sb, bodyToWrite, 0, bodyToWrite.Length);
-        bodyEncoder.FinalizeEncoding(sb);
+        int index = 0;
+        while (true) {
+          int c = (index >= bodyToWrite.Length) ? -1 : bodyToWrite[index++];
+          int count = bodyEncoder.Encode(c, output);
+          if (count == -2) {
+ throw new MessageDataException("encoding error");
+}
+          if (count == -1) {
+ break;
+}
+        }
       } else {
         foreach (Message part in this.Parts) {
-          sb.Append("\r\n--" + boundary + "\r\n");
-          sb.Append(part.Generate(depth + 1));
+          AppendAscii(output, "\r\n--" + boundary + "\r\n");
+          part.Generate(output, depth + 1);
         }
-        sb.Append("\r\n--" + boundary + "--");
+        AppendAscii(output, "\r\n--" + boundary + "--");
       }
-      return sb.ToString();
     }
 
   private static int ReadUtf8Char(

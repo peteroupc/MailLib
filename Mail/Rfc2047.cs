@@ -11,7 +11,7 @@ using System.Text;
 
 using PeterO;
 using PeterO.Mail.Transforms;
-using PeterO.Text.Encoders;
+using PeterO.Text;
 
 namespace PeterO.Mail {
   internal static class Rfc2047 {
@@ -435,7 +435,7 @@ afterLast - (startIndex - 2));
                 } else {
                   // Console.WriteLine("Encoded " + (base64 ? "B" : "Q") +
                   // " to: " + (encoding.GetString(transform)));
-                  decodedWord = Encodings.DecodeString(encoding, transform);
+                  decodedWord = Encodings.DecodeToString(encoding, transform);
                   // Check for text in the decoded string
                   // that could render the comment syntactically invalid
                   // (the encoded

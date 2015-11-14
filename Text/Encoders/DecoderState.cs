@@ -57,8 +57,10 @@ internal class DecoderState {
 
   public ITransform ToTransformIfBuffered(ITransform stream) {
     return (
-this.prependedBytes == 0) ? stream : (new StateToTransform(this,
-      stream));
+this.prependedBytes == 0) ? stream : (
+new StateToTransform(
+this,
+stream));
   }
 
   public int ReadByte(ITransform stream) {

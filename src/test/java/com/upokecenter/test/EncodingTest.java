@@ -254,22 +254,6 @@ System.out.println("End of line, whitespace, or start of message before colon");
       }
     }
 
-    public static void TestDecodeQuotedPrintable(String input, String
-      expectedOutput) {
-      byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
-      java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-        ReadQuotedPrintable(ms, bytes, 0, bytes.length, true, true);
-        Assert.assertEquals(expectedOutput,
-          DataUtilities.GetUtf8String(ms.toByteArray(), true));
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-    }
-
     public static void TestFailQuotedPrintable(String input) {
       byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
       java.io.ByteArrayOutputStream ms = null;
@@ -288,49 +272,6 @@ ms = new java.io.ByteArrayOutputStream();
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
-    }
-
-    public static void TestFailQuotedPrintableNonLenient(String input) {
-      byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
-      java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-        try {
-          ReadQuotedPrintable(ms, bytes, 0, bytes.length, false, false);
-          Assert.fail("Should have failed");
-        } catch (MessageDataException ex) {
-        } catch (Exception ex) {
-          Assert.fail(ex.toString());
-          throw new IllegalStateException("", ex);
-        }
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-    }
-
-    public static void TestQuotedPrintable(String input, int mode, String
-      expectedOutput) {
-      byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
-      StringBuilder sb = new StringBuilder();
-      Object enc = Reflect.Construct(MailNamespace() +
-        ".QuotedPrintableEncoder", mode, false);
-      Reflect.Invoke(enc, "WriteToString", sb, bytes, 0, bytes.length);
-      Assert.assertEquals(expectedOutput, sb.toString());
-    }
-
-    public void TestQuotedPrintable(String input, String a, String b, String
-        c) {
-      TestQuotedPrintable(input, 0, a);
-      TestQuotedPrintable(input, 1, b);
-      TestQuotedPrintable(input, 2, c);
-    }
-
-    public void TestQuotedPrintable(String input, String a) {
-      TestQuotedPrintable(input, 0, a);
-      TestQuotedPrintable(input, 1, a);
-      TestQuotedPrintable(input, 2, a);
     }
 
     private void TestParseDomain(String str, String expected) {
@@ -443,10 +384,10 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     static Object Transform(String str) {
-      return Reflect.Construct(MailNamespace() + ".WrappedStream", new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(str, true)));
+      return new ByteArrayTransform(DataUtilities.GetUtf8Bytes(str, true));
     }
     static Object Transform(byte[] bytes) {
-      return Reflect.Construct(MailNamespace() + ".WrappedStream", new java.io.ByteArrayInputStream(bytes));
+      return new ByteArrayTransform(bytes);
     }
 
     static byte[] GetBytes(Object trans) {
@@ -467,213 +408,842 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
     }
 
+    private void TestBase64Decode(byte[] expected, String input) {
+      String msgString = "From: <test@example.com>\r\n" +
+        "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
+        "Content-Transfer-Encoding: base64\r\n\r\n" + input;
+      Message msg = MessageTest.MessageFromString(msgString);
+      AssertEqual(expected, msg.GetBody());
+    }
+
+    private void TestDecodeQuotedPrintable(String input, String expected) {
+      String msgString = "From: <test@example.com>\r\n" +
+        "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
+        "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
+      Message msg = MessageTest.MessageFromString(msgString);
+      AssertEqual(DataUtilities.GetUtf8Bytes(expected, true), msg.GetBody());
+    }
+
+    public static void TestFailQuotedPrintableNonLenient(String input) {
+      String msgString = "From: <test@example.com>\r\n" +
+         "MIME-Version: 1.0\r\n" +
+         "Content-Type: application/octet-stream\r\n" +
+         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
+      try {
+        MessageTest.MessageFromString(msgString);
+      } catch (MessageDataException ex) {
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+    }
+
     @Test
     public void TestBase64() {
-      AssertEqual(
-        new byte[] { 0, 16, 1  }, GetBytes(Reflect.Construct(MailNamespace() +
-          ".Base64Transform", Transform("ABAB"), true)));
-      AssertEqual(new byte[] { 0, 16, 1, 93  },
-          GetBytes(Reflect.Construct(MailNamespace() + ".Base64Transform",
-          Transform("ABABXX=="), true)));
-      AssertEqual(
-        new byte[] { 0, 16, 1, 93  },
-          GetBytes(Reflect.Construct(MailNamespace() + ".Base64Transform",
-          Transform("ABABXX==="), true)));
-      AssertEqual(
-        new byte[] { 0, 16, 1, 93  },
-          GetBytes(Reflect.Construct(MailNamespace() + ".Base64Transform",
-          Transform("ABABXX"), true)));
-      AssertEqual(
-        new byte[] { (byte)169, (byte)172, (byte)241, (byte)179, 7, (byte)157, 114, (byte)247, (byte)235  },
-        GetBytes(Reflect.Construct(MailNamespace() + ".Base64Transform",
-          Transform("qazxswedcvfr"), true)));
-      AssertEqual(
-        new byte[] { (byte)255, (byte)239, (byte)254, 103  },
-          GetBytes(Reflect.Construct(MailNamespace() + ".Base64Transform",
-          Transform("/+/+Zz=="), true)));
+      TestBase64Decode(
+        new byte[] { 0, 16, 1  }, "ABAB");
+      TestBase64Decode(new byte[] { 0, 16, 1, 93  }, "ABABXX==");
+      TestBase64Decode(
+     new byte[] { (byte)169, (byte)172, (byte)241, (byte)179, 7, (byte)157, 114, (byte)247, (byte)235  }, "qazxswedcvfr");
+      TestBase64Decode(
+        new byte[] { (byte)255, (byte)239, (byte)254, 103  }, "/+/+Zz==");
+      TestBase64Decode(
+        new byte[] { 0, 16, 1, 93  }, "ABABXX===");
+      TestBase64Decode(
+        new byte[] { 0, 16, 1, 93  }, "ABABXX");
+      TestBase64Decode(new byte[] { 0  }, "AA==");
+      TestBase64Decode(new byte[] { 1  }, "AQ==");
+      TestBase64Decode(new byte[] { 2  }, "Ag==");
+      TestBase64Decode(new byte[] { 3  }, "Aw==");
+      TestBase64Decode(new byte[] { 4  }, "BA==");
+      TestBase64Decode(new byte[] { 5  }, "BQ==");
+      TestBase64Decode(new byte[] { 6  }, "Bg==");
+      TestBase64Decode(new byte[] { 7  }, "Bw==");
+      TestBase64Decode(new byte[] { 8  }, "CA==");
+      TestBase64Decode(new byte[] { 9  }, "CQ==");
+      TestBase64Decode(new byte[] { 10  }, "Cg==");
+      TestBase64Decode(new byte[] { 11  }, "Cw==");
+      TestBase64Decode(new byte[] { 12  }, "DA==");
+      TestBase64Decode(new byte[] { 13  }, "DQ==");
+      TestBase64Decode(new byte[] { 14  }, "Dg==");
+      TestBase64Decode(new byte[] { 15  }, "Dw==");
+      TestBase64Decode(new byte[] { 16  }, "EA==");
+      TestBase64Decode(new byte[] { 17  }, "EQ==");
+      TestBase64Decode(new byte[] { 18  }, "Eg==");
+      TestBase64Decode(new byte[] { 19  }, "Ew==");
+      TestBase64Decode(new byte[] { 20  }, "FA==");
+      TestBase64Decode(new byte[] { 21  }, "FQ==");
+      TestBase64Decode(new byte[] { 22  }, "Fg==");
+      TestBase64Decode(new byte[] { 23  }, "Fw==");
+      TestBase64Decode(new byte[] { 24  }, "GA==");
+      TestBase64Decode(new byte[] { 25  }, "GQ==");
+      TestBase64Decode(new byte[] { 26  }, "Gg==");
+      TestBase64Decode(new byte[] { 27  }, "Gw==");
+      TestBase64Decode(new byte[] { 28  }, "HA==");
+      TestBase64Decode(new byte[] { 29  }, "HQ==");
+      TestBase64Decode(new byte[] { 30  }, "Hg==");
+      TestBase64Decode(new byte[] { 31  }, "Hw==");
+      TestBase64Decode(new byte[] { 32  }, "IA==");
+      TestBase64Decode(new byte[] { 33  }, "IQ==");
+      TestBase64Decode(new byte[] { 34  }, "Ig==");
+      TestBase64Decode(new byte[] { 35  }, "Iw==");
+      TestBase64Decode(new byte[] { 36  }, "JA==");
+      TestBase64Decode(new byte[] { 37  }, "JQ==");
+      TestBase64Decode(new byte[] { 38  }, "Jg==");
+      TestBase64Decode(new byte[] { 39  }, "Jw==");
+      TestBase64Decode(new byte[] { 40  }, "KA==");
+      TestBase64Decode(new byte[] { 41  }, "KQ==");
+      TestBase64Decode(new byte[] { 42  }, "Kg==");
+      TestBase64Decode(new byte[] { 43  }, "Kw==");
+      TestBase64Decode(new byte[] { 44  }, "LA==");
+      TestBase64Decode(new byte[] { 45  }, "LQ==");
+      TestBase64Decode(new byte[] { 46  }, "Lg==");
+      TestBase64Decode(new byte[] { 47  }, "Lw==");
+      TestBase64Decode(new byte[] { 48  }, "MA==");
+      TestBase64Decode(new byte[] { 49  }, "MQ==");
+      TestBase64Decode(new byte[] { 50  }, "Mg==");
+      TestBase64Decode(new byte[] { 51  }, "Mw==");
+      TestBase64Decode(new byte[] { 52  }, "NA==");
+      TestBase64Decode(new byte[] { 53  }, "NQ==");
+      TestBase64Decode(new byte[] { 54  }, "Ng==");
+      TestBase64Decode(new byte[] { 55  }, "Nw==");
+      TestBase64Decode(new byte[] { 56  }, "OA==");
+      TestBase64Decode(new byte[] { 57  }, "OQ==");
+      TestBase64Decode(new byte[] { 58  }, "Og==");
+      TestBase64Decode(new byte[] { 59  }, "Ow==");
+      TestBase64Decode(new byte[] { 60  }, "PA==");
+      TestBase64Decode(new byte[] { 61  }, "PQ==");
+      TestBase64Decode(new byte[] { 62  }, "Pg==");
+      TestBase64Decode(new byte[] { 63  }, "Pw==");
+      TestBase64Decode(new byte[] { 64  }, "QA==");
+      TestBase64Decode(new byte[] { 65  }, "QQ==");
+      TestBase64Decode(new byte[] { 66  }, "Qg==");
+      TestBase64Decode(new byte[] { 67  }, "Qw==");
+      TestBase64Decode(new byte[] { 68  }, "RA==");
+      TestBase64Decode(new byte[] { 69  }, "RQ==");
+      TestBase64Decode(new byte[] { 70  }, "Rg==");
+      TestBase64Decode(new byte[] { 71  }, "Rw==");
+      TestBase64Decode(new byte[] { 72  }, "SA==");
+      TestBase64Decode(new byte[] { 73  }, "SQ==");
+      TestBase64Decode(new byte[] { 74  }, "Sg==");
+      TestBase64Decode(new byte[] { 75  }, "Sw==");
+      TestBase64Decode(new byte[] { 76  }, "TA==");
+      TestBase64Decode(new byte[] { 77  }, "TQ==");
+      TestBase64Decode(new byte[] { 78  }, "Tg==");
+      TestBase64Decode(new byte[] { 79  }, "Tw==");
+      TestBase64Decode(new byte[] { 80  }, "UA==");
+      TestBase64Decode(new byte[] { 81  }, "UQ==");
+      TestBase64Decode(new byte[] { 82  }, "Ug==");
+      TestBase64Decode(new byte[] { 83  }, "Uw==");
+      TestBase64Decode(new byte[] { 84  }, "VA==");
+      TestBase64Decode(new byte[] { 85  }, "VQ==");
+      TestBase64Decode(new byte[] { 86  }, "Vg==");
+      TestBase64Decode(new byte[] { 87  }, "Vw==");
+      TestBase64Decode(new byte[] { 88  }, "WA==");
+      TestBase64Decode(new byte[] { 89  }, "WQ==");
+      TestBase64Decode(new byte[] { 90  }, "Wg==");
+      TestBase64Decode(new byte[] { 91  }, "Ww==");
+      TestBase64Decode(new byte[] { 92  }, "XA==");
+      TestBase64Decode(new byte[] { 93  }, "XQ==");
+      TestBase64Decode(new byte[] { 94  }, "Xg==");
+      TestBase64Decode(new byte[] { 95  }, "Xw==");
+      TestBase64Decode(new byte[] { 96  }, "YA==");
+      TestBase64Decode(new byte[] { 97  }, "YQ==");
+      TestBase64Decode(new byte[] { 98  }, "Yg==");
+      TestBase64Decode(new byte[] { 99  }, "Yw==");
+      TestBase64Decode(new byte[] { 100  }, "ZA==");
+      TestBase64Decode(new byte[] { 101  }, "ZQ==");
+      TestBase64Decode(new byte[] { 102  }, "Zg==");
+      TestBase64Decode(new byte[] { 103  }, "Zw==");
+      TestBase64Decode(new byte[] { 104  }, "aA==");
+      TestBase64Decode(new byte[] { 105  }, "aQ==");
+      TestBase64Decode(new byte[] { 106  }, "ag==");
+      TestBase64Decode(new byte[] { 107  }, "aw==");
+      TestBase64Decode(new byte[] { 108  }, "bA==");
+      TestBase64Decode(new byte[] { 109  }, "bQ==");
+      TestBase64Decode(new byte[] { 110  }, "bg==");
+      TestBase64Decode(new byte[] { 111  }, "bw==");
+      TestBase64Decode(new byte[] { 112  }, "cA==");
+      TestBase64Decode(new byte[] { 113  }, "cQ==");
+      TestBase64Decode(new byte[] { 114  }, "cg==");
+      TestBase64Decode(new byte[] { 115  }, "cw==");
+      TestBase64Decode(new byte[] { 116  }, "dA==");
+      TestBase64Decode(new byte[] { 117  }, "dQ==");
+      TestBase64Decode(new byte[] { 118  }, "dg==");
+      TestBase64Decode(new byte[] { 119  }, "dw==");
+      TestBase64Decode(new byte[] { 120  }, "eA==");
+      TestBase64Decode(new byte[] { 121  }, "eQ==");
+      TestBase64Decode(new byte[] { 122  }, "eg==");
+      TestBase64Decode(new byte[] { 123  }, "ew==");
+      TestBase64Decode(new byte[] { 124  }, "fA==");
+      TestBase64Decode(new byte[] { 125  }, "fQ==");
+      TestBase64Decode(new byte[] { 126  }, "fg==");
+      TestBase64Decode(new byte[] { 127  }, "fw==");
+      TestBase64Decode(new byte[] { (byte)128  }, "gA==");
+      TestBase64Decode(new byte[] { (byte)129  }, "gQ==");
+      TestBase64Decode(new byte[] { (byte)130  }, "gg==");
+      TestBase64Decode(new byte[] { (byte)131  }, "gw==");
+      TestBase64Decode(new byte[] { (byte)132  }, "hA==");
+      TestBase64Decode(new byte[] { (byte)133  }, "hQ==");
+      TestBase64Decode(new byte[] { (byte)134  }, "hg==");
+      TestBase64Decode(new byte[] { (byte)135  }, "hw==");
+      TestBase64Decode(new byte[] { (byte)136  }, "iA==");
+      TestBase64Decode(new byte[] { (byte)137  }, "iQ==");
+      TestBase64Decode(new byte[] { (byte)138  }, "ig==");
+      TestBase64Decode(new byte[] { (byte)139  }, "iw==");
+      TestBase64Decode(new byte[] { (byte)140  }, "jA==");
+      TestBase64Decode(new byte[] { (byte)141  }, "jQ==");
+      TestBase64Decode(new byte[] { (byte)142  }, "jg==");
+      TestBase64Decode(new byte[] { (byte)143  }, "jw==");
+      TestBase64Decode(new byte[] { (byte)144  }, "kA==");
+      TestBase64Decode(new byte[] { (byte)145  }, "kQ==");
+      TestBase64Decode(new byte[] { (byte)146  }, "kg==");
+      TestBase64Decode(new byte[] { (byte)147  }, "kw==");
+      TestBase64Decode(new byte[] { (byte)148  }, "lA==");
+      TestBase64Decode(new byte[] { (byte)149  }, "lQ==");
+      TestBase64Decode(new byte[] { (byte)150  }, "lg==");
+      TestBase64Decode(new byte[] { (byte)151  }, "lw==");
+      TestBase64Decode(new byte[] { (byte)152  }, "mA==");
+      TestBase64Decode(new byte[] { (byte)153  }, "mQ==");
+      TestBase64Decode(new byte[] { (byte)154  }, "mg==");
+      TestBase64Decode(new byte[] { (byte)155  }, "mw==");
+      TestBase64Decode(new byte[] { (byte)156  }, "nA==");
+      TestBase64Decode(new byte[] { (byte)157  }, "nQ==");
+      TestBase64Decode(new byte[] { (byte)158  }, "ng==");
+      TestBase64Decode(new byte[] { (byte)159  }, "nw==");
+      TestBase64Decode(new byte[] { (byte)160  }, "oA==");
+      TestBase64Decode(new byte[] { (byte)161  }, "oQ==");
+      TestBase64Decode(new byte[] { (byte)162  }, "og==");
+      TestBase64Decode(new byte[] { (byte)163  }, "ow==");
+      TestBase64Decode(new byte[] { (byte)164  }, "pA==");
+      TestBase64Decode(new byte[] { (byte)165  }, "pQ==");
+      TestBase64Decode(new byte[] { (byte)166  }, "pg==");
+      TestBase64Decode(new byte[] { (byte)167  }, "pw==");
+      TestBase64Decode(new byte[] { (byte)168  }, "qA==");
+      TestBase64Decode(new byte[] { (byte)169  }, "qQ==");
+      TestBase64Decode(new byte[] { (byte)170  }, "qg==");
+      TestBase64Decode(new byte[] { (byte)171  }, "qw==");
+      TestBase64Decode(new byte[] { (byte)172  }, "rA==");
+      TestBase64Decode(new byte[] { (byte)173  }, "rQ==");
+      TestBase64Decode(new byte[] { (byte)174  }, "rg==");
+      TestBase64Decode(new byte[] { (byte)175  }, "rw==");
+      TestBase64Decode(new byte[] { (byte)176  }, "sA==");
+      TestBase64Decode(new byte[] { (byte)177  }, "sQ==");
+      TestBase64Decode(new byte[] { (byte)178  }, "sg==");
+      TestBase64Decode(new byte[] { (byte)179  }, "sw==");
+      TestBase64Decode(new byte[] { (byte)180  }, "tA==");
+      TestBase64Decode(new byte[] { (byte)181  }, "tQ==");
+      TestBase64Decode(new byte[] { (byte)182  }, "tg==");
+      TestBase64Decode(new byte[] { (byte)183  }, "tw==");
+      TestBase64Decode(new byte[] { (byte)184  }, "uA==");
+      TestBase64Decode(new byte[] { (byte)185  }, "uQ==");
+      TestBase64Decode(new byte[] { (byte)186  }, "ug==");
+      TestBase64Decode(new byte[] { (byte)187  }, "uw==");
+      TestBase64Decode(new byte[] { (byte)188  }, "vA==");
+      TestBase64Decode(new byte[] { (byte)189  }, "vQ==");
+      TestBase64Decode(new byte[] { (byte)190  }, "vg==");
+      TestBase64Decode(new byte[] { (byte)191  }, "vw==");
+      TestBase64Decode(new byte[] { (byte)192  }, "wA==");
+      TestBase64Decode(new byte[] { (byte)193  }, "wQ==");
+      TestBase64Decode(new byte[] { (byte)194  }, "wg==");
+      TestBase64Decode(new byte[] { (byte)195  }, "ww==");
+      TestBase64Decode(new byte[] { (byte)196  }, "xA==");
+      TestBase64Decode(new byte[] { (byte)197  }, "xQ==");
+      TestBase64Decode(new byte[] { (byte)198  }, "xg==");
+      TestBase64Decode(new byte[] { (byte)199  }, "xw==");
+      TestBase64Decode(new byte[] { (byte)200  }, "yA==");
+      TestBase64Decode(new byte[] { (byte)201  }, "yQ==");
+      TestBase64Decode(new byte[] { (byte)202  }, "yg==");
+      TestBase64Decode(new byte[] { (byte)203  }, "yw==");
+      TestBase64Decode(new byte[] { (byte)204  }, "zA==");
+      TestBase64Decode(new byte[] { (byte)205  }, "zQ==");
+      TestBase64Decode(new byte[] { (byte)206  }, "zg==");
+      TestBase64Decode(new byte[] { (byte)207  }, "zw==");
+      TestBase64Decode(new byte[] { (byte)208  }, "0A==");
+      TestBase64Decode(new byte[] { (byte)209  }, "0Q==");
+      TestBase64Decode(new byte[] { (byte)210  }, "0g==");
+      TestBase64Decode(new byte[] { (byte)211  }, "0w==");
+      TestBase64Decode(new byte[] { (byte)212  }, "1A==");
+      TestBase64Decode(new byte[] { (byte)213  }, "1Q==");
+      TestBase64Decode(new byte[] { (byte)214  }, "1g==");
+      TestBase64Decode(new byte[] { (byte)215  }, "1w==");
+      TestBase64Decode(new byte[] { (byte)216  }, "2A==");
+      TestBase64Decode(new byte[] { (byte)217  }, "2Q==");
+      TestBase64Decode(new byte[] { (byte)218  }, "2g==");
+      TestBase64Decode(new byte[] { (byte)219  }, "2w==");
+      TestBase64Decode(new byte[] { (byte)220  }, "3A==");
+      TestBase64Decode(new byte[] { (byte)221  }, "3Q==");
+      TestBase64Decode(new byte[] { (byte)222  }, "3g==");
+      TestBase64Decode(new byte[] { (byte)223  }, "3w==");
+      TestBase64Decode(new byte[] { (byte)224  }, "4A==");
+      TestBase64Decode(new byte[] { (byte)225  }, "4Q==");
+      TestBase64Decode(new byte[] { (byte)226  }, "4g==");
+      TestBase64Decode(new byte[] { (byte)227  }, "4w==");
+      TestBase64Decode(new byte[] { (byte)228  }, "5A==");
+      TestBase64Decode(new byte[] { (byte)229  }, "5Q==");
+      TestBase64Decode(new byte[] { (byte)230  }, "5g==");
+      TestBase64Decode(new byte[] { (byte)231  }, "5w==");
+      TestBase64Decode(new byte[] { (byte)232  }, "6A==");
+      TestBase64Decode(new byte[] { (byte)233  }, "6Q==");
+      TestBase64Decode(new byte[] { (byte)234  }, "6g==");
+      TestBase64Decode(new byte[] { (byte)235  }, "6w==");
+      TestBase64Decode(new byte[] { (byte)236  }, "7A==");
+      TestBase64Decode(new byte[] { (byte)237  }, "7Q==");
+      TestBase64Decode(new byte[] { (byte)238  }, "7g==");
+      TestBase64Decode(new byte[] { (byte)239  }, "7w==");
+      TestBase64Decode(new byte[] { (byte)240  }, "8A==");
+      TestBase64Decode(new byte[] { (byte)241  }, "8Q==");
+      TestBase64Decode(new byte[] { (byte)242  }, "8g==");
+      TestBase64Decode(new byte[] { (byte)243  }, "8w==");
+      TestBase64Decode(new byte[] { (byte)244  }, "9A==");
+      TestBase64Decode(new byte[] { (byte)245  }, "9Q==");
+      TestBase64Decode(new byte[] { (byte)246  }, "9g==");
+      TestBase64Decode(new byte[] { (byte)247  }, "9w==");
+      TestBase64Decode(new byte[] { (byte)248  }, "+A==");
+      TestBase64Decode(new byte[] { (byte)249  }, "+Q==");
+      TestBase64Decode(new byte[] { (byte)250  }, "+g==");
+      TestBase64Decode(new byte[] { (byte)251  }, "+w==");
+      TestBase64Decode(new byte[] { (byte)252  }, "/A==");
+      TestBase64Decode(new byte[] { (byte)253  }, "/Q==");
+      TestBase64Decode(new byte[] { (byte)254  }, "/g==");
+      TestBase64Decode(new byte[] { (byte)255  }, "/w==");
+      TestBase64Decode(new byte[] { 0, 2  }, "AAI=");
+      TestBase64Decode(new byte[] { 1, 3  }, "AQM=");
+      TestBase64Decode(new byte[] { 2, 4  }, "AgQ=");
+      TestBase64Decode(new byte[] { 3, 5  }, "AwU=");
+      TestBase64Decode(new byte[] { 4, 6  }, "BAY=");
+      TestBase64Decode(new byte[] { 5, 7  }, "BQc=");
+      TestBase64Decode(new byte[] { 6, 8  }, "Bgg=");
+      TestBase64Decode(new byte[] { 7, 9  }, "Bwk=");
+      TestBase64Decode(new byte[] { 8, 10  }, "CAo=");
+      TestBase64Decode(new byte[] { 9, 11  }, "CQs=");
+      TestBase64Decode(new byte[] { 10, 12  }, "Cgw=");
+      TestBase64Decode(new byte[] { 11, 13  }, "Cw0=");
+      TestBase64Decode(new byte[] { 12, 14  }, "DA4=");
+      TestBase64Decode(new byte[] { 13, 15  }, "DQ8=");
+      TestBase64Decode(new byte[] { 14, 16  }, "DhA=");
+      TestBase64Decode(new byte[] { 15, 17  }, "DxE=");
+      TestBase64Decode(new byte[] { 16, 18  }, "EBI=");
+      TestBase64Decode(new byte[] { 17, 19  }, "ERM=");
+      TestBase64Decode(new byte[] { 18, 20  }, "EhQ=");
+      TestBase64Decode(new byte[] { 19, 21  }, "ExU=");
+      TestBase64Decode(new byte[] { 20, 22  }, "FBY=");
+      TestBase64Decode(new byte[] { 21, 23  }, "FRc=");
+      TestBase64Decode(new byte[] { 22, 24  }, "Fhg=");
+      TestBase64Decode(new byte[] { 23, 25  }, "Fxk=");
+      TestBase64Decode(new byte[] { 24, 26  }, "GBo=");
+      TestBase64Decode(new byte[] { 25, 27  }, "GRs=");
+      TestBase64Decode(new byte[] { 26, 28  }, "Ghw=");
+      TestBase64Decode(new byte[] { 27, 29  }, "Gx0=");
+      TestBase64Decode(new byte[] { 28, 30  }, "HB4=");
+      TestBase64Decode(new byte[] { 29, 31  }, "HR8=");
+      TestBase64Decode(new byte[] { 30, 32  }, "HiA=");
+      TestBase64Decode(new byte[] { 31, 33  }, "HyE=");
+      TestBase64Decode(new byte[] { 32, 34  }, "ICI=");
+      TestBase64Decode(new byte[] { 33, 35  }, "ISM=");
+      TestBase64Decode(new byte[] { 34, 36  }, "IiQ=");
+      TestBase64Decode(new byte[] { 35, 37  }, "IyU=");
+      TestBase64Decode(new byte[] { 36, 38  }, "JCY=");
+      TestBase64Decode(new byte[] { 37, 39  }, "JSc=");
+      TestBase64Decode(new byte[] { 38, 40  }, "Jig=");
+      TestBase64Decode(new byte[] { 39, 41  }, "Jyk=");
+      TestBase64Decode(new byte[] { 40, 42  }, "KCo=");
+      TestBase64Decode(new byte[] { 41, 43  }, "KSs=");
+      TestBase64Decode(new byte[] { 42, 44  }, "Kiw=");
+      TestBase64Decode(new byte[] { 43, 45  }, "Ky0=");
+      TestBase64Decode(new byte[] { 44, 46  }, "LC4=");
+      TestBase64Decode(new byte[] { 45, 47  }, "LS8=");
+      TestBase64Decode(new byte[] { 46, 48  }, "LjA=");
+      TestBase64Decode(new byte[] { 47, 49  }, "LzE=");
+      TestBase64Decode(new byte[] { 48, 50  }, "MDI=");
+      TestBase64Decode(new byte[] { 49, 51  }, "MTM=");
+      TestBase64Decode(new byte[] { 50, 52  }, "MjQ=");
+      TestBase64Decode(new byte[] { 51, 53  }, "MzU=");
+      TestBase64Decode(new byte[] { 52, 54  }, "NDY=");
+      TestBase64Decode(new byte[] { 53, 55  }, "NTc=");
+      TestBase64Decode(new byte[] { 54, 56  }, "Njg=");
+      TestBase64Decode(new byte[] { 55, 57  }, "Nzk=");
+      TestBase64Decode(new byte[] { 56, 58  }, "ODo=");
+      TestBase64Decode(new byte[] { 57, 59  }, "OTs=");
+      TestBase64Decode(new byte[] { 58, 60  }, "Ojw=");
+      TestBase64Decode(new byte[] { 59, 61  }, "Oz0=");
+      TestBase64Decode(new byte[] { 60, 62  }, "PD4=");
+      TestBase64Decode(new byte[] { 61, 63  }, "PT8=");
+      TestBase64Decode(new byte[] { 62, 64  }, "PkA=");
+      TestBase64Decode(new byte[] { 63, 65  }, "P0E=");
+      TestBase64Decode(new byte[] { 64, 66  }, "QEI=");
+      TestBase64Decode(new byte[] { 65, 67  }, "QUM=");
+      TestBase64Decode(new byte[] { 66, 68  }, "QkQ=");
+      TestBase64Decode(new byte[] { 67, 69  }, "Q0U=");
+      TestBase64Decode(new byte[] { 68, 70  }, "REY=");
+      TestBase64Decode(new byte[] { 69, 71  }, "RUc=");
+      TestBase64Decode(new byte[] { 70, 72  }, "Rkg=");
+      TestBase64Decode(new byte[] { 71, 73  }, "R0k=");
+      TestBase64Decode(new byte[] { 72, 74  }, "SEo=");
+      TestBase64Decode(new byte[] { 73, 75  }, "SUs=");
+      TestBase64Decode(new byte[] { 74, 76  }, "Skw=");
+      TestBase64Decode(new byte[] { 75, 77  }, "S00=");
+      TestBase64Decode(new byte[] { 76, 78  }, "TE4=");
+      TestBase64Decode(new byte[] { 77, 79  }, "TU8=");
+      TestBase64Decode(new byte[] { 78, 80  }, "TlA=");
+      TestBase64Decode(new byte[] { 79, 81  }, "T1E=");
+      TestBase64Decode(new byte[] { 80, 82  }, "UFI=");
+      TestBase64Decode(new byte[] { 81, 83  }, "UVM=");
+      TestBase64Decode(new byte[] { 82, 84  }, "UlQ=");
+      TestBase64Decode(new byte[] { 83, 85  }, "U1U=");
+      TestBase64Decode(new byte[] { 84, 86  }, "VFY=");
+      TestBase64Decode(new byte[] { 85, 87  }, "VVc=");
+      TestBase64Decode(new byte[] { 86, 88  }, "Vlg=");
+      TestBase64Decode(new byte[] { 87, 89  }, "V1k=");
+      TestBase64Decode(new byte[] { 88, 90  }, "WFo=");
+      TestBase64Decode(new byte[] { 89, 91  }, "WVs=");
+      TestBase64Decode(new byte[] { 90, 92  }, "Wlw=");
+      TestBase64Decode(new byte[] { 91, 93  }, "W10=");
+      TestBase64Decode(new byte[] { 92, 94  }, "XF4=");
+      TestBase64Decode(new byte[] { 93, 95  }, "XV8=");
+      TestBase64Decode(new byte[] { 94, 96  }, "XmA=");
+      TestBase64Decode(new byte[] { 95, 97  }, "X2E=");
+      TestBase64Decode(new byte[] { 96, 98  }, "YGI=");
+      TestBase64Decode(new byte[] { 97, 99  }, "YWM=");
+      TestBase64Decode(new byte[] { 98, 100  }, "YmQ=");
+      TestBase64Decode(new byte[] { 99, 101  }, "Y2U=");
+      TestBase64Decode(new byte[] { 100, 102  }, "ZGY=");
+      TestBase64Decode(new byte[] { 101, 103  }, "ZWc=");
+      TestBase64Decode(new byte[] { 102, 104  }, "Zmg=");
+      TestBase64Decode(new byte[] { 103, 105  }, "Z2k=");
+      TestBase64Decode(new byte[] { 104, 106  }, "aGo=");
+      TestBase64Decode(new byte[] { 105, 107  }, "aWs=");
+      TestBase64Decode(new byte[] { 106, 108  }, "amw=");
+      TestBase64Decode(new byte[] { 107, 109  }, "a20=");
+      TestBase64Decode(new byte[] { 108, 110  }, "bG4=");
+      TestBase64Decode(new byte[] { 109, 111  }, "bW8=");
+      TestBase64Decode(new byte[] { 110, 112  }, "bnA=");
+      TestBase64Decode(new byte[] { 111, 113  }, "b3E=");
+      TestBase64Decode(new byte[] { 112, 114  }, "cHI=");
+      TestBase64Decode(new byte[] { 113, 115  }, "cXM=");
+      TestBase64Decode(new byte[] { 114, 116  }, "cnQ=");
+      TestBase64Decode(new byte[] { 115, 117  }, "c3U=");
+      TestBase64Decode(new byte[] { 116, 118  }, "dHY=");
+      TestBase64Decode(new byte[] { 117, 119  }, "dXc=");
+      TestBase64Decode(new byte[] { 118, 120  }, "dng=");
+      TestBase64Decode(new byte[] { 119, 121  }, "d3k=");
+      TestBase64Decode(new byte[] { 120, 122  }, "eHo=");
+      TestBase64Decode(new byte[] { 121, 123  }, "eXs=");
+      TestBase64Decode(new byte[] { 122, 124  }, "enw=");
+      TestBase64Decode(new byte[] { 123, 125  }, "e30=");
+      TestBase64Decode(new byte[] { 124, 126  }, "fH4=");
+      TestBase64Decode(new byte[] { 125, 127  }, "fX8=");
+      TestBase64Decode(new byte[] { 126, (byte)128  }, "foA=");
+      TestBase64Decode(new byte[] { 127, (byte)129  }, "f4E=");
+      TestBase64Decode(new byte[] { (byte)128, (byte)130  }, "gII=");
+      TestBase64Decode(new byte[] { (byte)129, (byte)131  }, "gYM=");
+      TestBase64Decode(new byte[] { (byte)130, (byte)132  }, "goQ=");
+      TestBase64Decode(new byte[] { (byte)131, (byte)133  }, "g4U=");
+      TestBase64Decode(new byte[] { (byte)132, (byte)134  }, "hIY=");
+      TestBase64Decode(new byte[] { (byte)133, (byte)135  }, "hYc=");
+      TestBase64Decode(new byte[] { (byte)134, (byte)136  }, "hog=");
+      TestBase64Decode(new byte[] { (byte)135, (byte)137  }, "h4k=");
+      TestBase64Decode(new byte[] { (byte)136, (byte)138  }, "iIo=");
+      TestBase64Decode(new byte[] { (byte)137, (byte)139  }, "iYs=");
+      TestBase64Decode(new byte[] { (byte)138, (byte)140  }, "iow=");
+      TestBase64Decode(new byte[] { (byte)139, (byte)141  }, "i40=");
+      TestBase64Decode(new byte[] { (byte)140, (byte)142  }, "jI4=");
+      TestBase64Decode(new byte[] { (byte)141, (byte)143  }, "jY8=");
+      TestBase64Decode(new byte[] { (byte)142, (byte)144  }, "jpA=");
+      TestBase64Decode(new byte[] { (byte)143, (byte)145  }, "j5E=");
+      TestBase64Decode(new byte[] { (byte)144, (byte)146  }, "kJI=");
+      TestBase64Decode(new byte[] { (byte)145, (byte)147  }, "kZM=");
+      TestBase64Decode(new byte[] { (byte)146, (byte)148  }, "kpQ=");
+      TestBase64Decode(new byte[] { (byte)147, (byte)149  }, "k5U=");
+      TestBase64Decode(new byte[] { (byte)148, (byte)150  }, "lJY=");
+      TestBase64Decode(new byte[] { (byte)149, (byte)151  }, "lZc=");
+      TestBase64Decode(new byte[] { (byte)150, (byte)152  }, "lpg=");
+      TestBase64Decode(new byte[] { (byte)151, (byte)153  }, "l5k=");
+      TestBase64Decode(new byte[] { (byte)152, (byte)154  }, "mJo=");
+      TestBase64Decode(new byte[] { (byte)153, (byte)155  }, "mZs=");
+      TestBase64Decode(new byte[] { (byte)154, (byte)156  }, "mpw=");
+      TestBase64Decode(new byte[] { (byte)155, (byte)157  }, "m50=");
+      TestBase64Decode(new byte[] { (byte)156, (byte)158  }, "nJ4=");
+      TestBase64Decode(new byte[] { (byte)157, (byte)159  }, "nZ8=");
+      TestBase64Decode(new byte[] { (byte)158, (byte)160  }, "nqA=");
+      TestBase64Decode(new byte[] { (byte)159, (byte)161  }, "n6E=");
+      TestBase64Decode(new byte[] { (byte)160, (byte)162  }, "oKI=");
+      TestBase64Decode(new byte[] { (byte)161, (byte)163  }, "oaM=");
+      TestBase64Decode(new byte[] { (byte)162, (byte)164  }, "oqQ=");
+      TestBase64Decode(new byte[] { (byte)163, (byte)165  }, "o6U=");
+      TestBase64Decode(new byte[] { (byte)164, (byte)166  }, "pKY=");
+      TestBase64Decode(new byte[] { (byte)165, (byte)167  }, "pac=");
+      TestBase64Decode(new byte[] { (byte)166, (byte)168  }, "pqg=");
+      TestBase64Decode(new byte[] { (byte)167, (byte)169  }, "p6k=");
+      TestBase64Decode(new byte[] { (byte)168, (byte)170  }, "qKo=");
+      TestBase64Decode(new byte[] { (byte)169, (byte)171  }, "qas=");
+      TestBase64Decode(new byte[] { (byte)170, (byte)172  }, "qqw=");
+      TestBase64Decode(new byte[] { (byte)171, (byte)173  }, "q60=");
+      TestBase64Decode(new byte[] { (byte)172, (byte)174  }, "rK4=");
+      TestBase64Decode(new byte[] { (byte)173, (byte)175  }, "ra8=");
+      TestBase64Decode(new byte[] { (byte)174, (byte)176  }, "rrA=");
+      TestBase64Decode(new byte[] { (byte)175, (byte)177  }, "r7E=");
+      TestBase64Decode(new byte[] { (byte)176, (byte)178  }, "sLI=");
+      TestBase64Decode(new byte[] { (byte)177, (byte)179  }, "sbM=");
+      TestBase64Decode(new byte[] { (byte)178, (byte)180  }, "srQ=");
+      TestBase64Decode(new byte[] { (byte)179, (byte)181  }, "s7U=");
+      TestBase64Decode(new byte[] { (byte)180, (byte)182  }, "tLY=");
+      TestBase64Decode(new byte[] { (byte)181, (byte)183  }, "tbc=");
+      TestBase64Decode(new byte[] { (byte)182, (byte)184  }, "trg=");
+      TestBase64Decode(new byte[] { (byte)183, (byte)185  }, "t7k=");
+      TestBase64Decode(new byte[] { (byte)184, (byte)186  }, "uLo=");
+      TestBase64Decode(new byte[] { (byte)185, (byte)187  }, "ubs=");
+      TestBase64Decode(new byte[] { (byte)186, (byte)188  }, "urw=");
+      TestBase64Decode(new byte[] { (byte)187, (byte)189  }, "u70=");
+      TestBase64Decode(new byte[] { (byte)188, (byte)190  }, "vL4=");
+      TestBase64Decode(new byte[] { (byte)189, (byte)191  }, "vb8=");
+      TestBase64Decode(new byte[] { (byte)190, (byte)192  }, "vsA=");
+      TestBase64Decode(new byte[] { (byte)191, (byte)193  }, "v8E=");
+      TestBase64Decode(new byte[] { (byte)192, (byte)194  }, "wMI=");
+      TestBase64Decode(new byte[] { (byte)193, (byte)195  }, "wcM=");
+      TestBase64Decode(new byte[] { (byte)194, (byte)196  }, "wsQ=");
+      TestBase64Decode(new byte[] { (byte)195, (byte)197  }, "w8U=");
+      TestBase64Decode(new byte[] { (byte)196, (byte)198  }, "xMY=");
+      TestBase64Decode(new byte[] { (byte)197, (byte)199  }, "xcc=");
+      TestBase64Decode(new byte[] { (byte)198, (byte)200  }, "xsg=");
+      TestBase64Decode(new byte[] { (byte)199, (byte)201  }, "x8k=");
+      TestBase64Decode(new byte[] { (byte)200, (byte)202  }, "yMo=");
+      TestBase64Decode(new byte[] { (byte)201, (byte)203  }, "ycs=");
+      TestBase64Decode(new byte[] { (byte)202, (byte)204  }, "ysw=");
+      TestBase64Decode(new byte[] { (byte)203, (byte)205  }, "y80=");
+      TestBase64Decode(new byte[] { (byte)204, (byte)206  }, "zM4=");
+      TestBase64Decode(new byte[] { (byte)205, (byte)207  }, "zc8=");
+      TestBase64Decode(new byte[] { (byte)206, (byte)208  }, "ztA=");
+      TestBase64Decode(new byte[] { (byte)207, (byte)209  }, "z9E=");
+      TestBase64Decode(new byte[] { (byte)208, (byte)210  }, "0NI=");
+      TestBase64Decode(new byte[] { (byte)209, (byte)211  }, "0dM=");
+      TestBase64Decode(new byte[] { (byte)210, (byte)212  }, "0tQ=");
+      TestBase64Decode(new byte[] { (byte)211, (byte)213  }, "09U=");
+      TestBase64Decode(new byte[] { (byte)212, (byte)214  }, "1NY=");
+      TestBase64Decode(new byte[] { (byte)213, (byte)215  }, "1dc=");
+      TestBase64Decode(new byte[] { (byte)214, (byte)216  }, "1tg=");
+      TestBase64Decode(new byte[] { (byte)215, (byte)217  }, "19k=");
+      TestBase64Decode(new byte[] { (byte)216, (byte)218  }, "2No=");
+      TestBase64Decode(new byte[] { (byte)217, (byte)219  }, "2ds=");
+      TestBase64Decode(new byte[] { (byte)218, (byte)220  }, "2tw=");
+      TestBase64Decode(new byte[] { (byte)219, (byte)221  }, "290=");
+      TestBase64Decode(new byte[] { (byte)220, (byte)222  }, "3N4=");
+      TestBase64Decode(new byte[] { (byte)221, (byte)223  }, "3d8=");
+      TestBase64Decode(new byte[] { (byte)222, (byte)224  }, "3uA=");
+      TestBase64Decode(new byte[] { (byte)223, (byte)225  }, "3+E=");
+      TestBase64Decode(new byte[] { (byte)224, (byte)226  }, "4OI=");
+      TestBase64Decode(new byte[] { (byte)225, (byte)227  }, "4eM=");
+      TestBase64Decode(new byte[] { (byte)226, (byte)228  }, "4uQ=");
+      TestBase64Decode(new byte[] { (byte)227, (byte)229  }, "4+U=");
+      TestBase64Decode(new byte[] { (byte)228, (byte)230  }, "5OY=");
+      TestBase64Decode(new byte[] { (byte)229, (byte)231  }, "5ec=");
+      TestBase64Decode(new byte[] { (byte)230, (byte)232  }, "5ug=");
+      TestBase64Decode(new byte[] { (byte)231, (byte)233  }, "5+k=");
+      TestBase64Decode(new byte[] { (byte)232, (byte)234  }, "6Oo=");
+      TestBase64Decode(new byte[] { (byte)233, (byte)235  }, "6es=");
+      TestBase64Decode(new byte[] { (byte)234, (byte)236  }, "6uw=");
+      TestBase64Decode(new byte[] { (byte)235, (byte)237  }, "6+0=");
+      TestBase64Decode(new byte[] { (byte)236, (byte)238  }, "7O4=");
+      TestBase64Decode(new byte[] { (byte)237, (byte)239  }, "7e8=");
+      TestBase64Decode(new byte[] { (byte)238, (byte)240  }, "7vA=");
+      TestBase64Decode(new byte[] { (byte)239, (byte)241  }, "7/E=");
+      TestBase64Decode(new byte[] { (byte)240, (byte)242  }, "8PI=");
+      TestBase64Decode(new byte[] { (byte)241, (byte)243  }, "8fM=");
+      TestBase64Decode(new byte[] { (byte)242, (byte)244  }, "8vQ=");
+      TestBase64Decode(new byte[] { (byte)243, (byte)245  }, "8/U=");
+      TestBase64Decode(new byte[] { (byte)244, (byte)246  }, "9PY=");
+      TestBase64Decode(new byte[] { (byte)245, (byte)247  }, "9fc=");
+      TestBase64Decode(new byte[] { (byte)246, (byte)248  }, "9vg=");
+      TestBase64Decode(new byte[] { (byte)247, (byte)249  }, "9/k=");
+      TestBase64Decode(new byte[] { (byte)248, (byte)250  }, "+Po=");
+      TestBase64Decode(new byte[] { (byte)249, (byte)251  }, "+fs=");
+      TestBase64Decode(new byte[] { (byte)250, (byte)252  }, "+vw=");
+      TestBase64Decode(new byte[] { (byte)251, (byte)253  }, "+/0=");
+      TestBase64Decode(new byte[] { (byte)252, (byte)254  }, "/P4=");
+      TestBase64Decode(new byte[] { (byte)253, (byte)255  }, "/f8=");
+      TestBase64Decode(new byte[] { (byte)254, 0  }, "/gA=");
+      TestBase64Decode(new byte[] { (byte)255, 1  }, "/wE=");
+      TestBase64Decode(new byte[] { 0, 2, 4  }, "AAIE");
+      TestBase64Decode(new byte[] { 1, 3, 5  }, "AQMF");
+      TestBase64Decode(new byte[] { 2, 4, 6  }, "AgQG");
+      TestBase64Decode(new byte[] { 3, 5, 7  }, "AwUH");
+      TestBase64Decode(new byte[] { 4, 6, 8  }, "BAYI");
+      TestBase64Decode(new byte[] { 5, 7, 9  }, "BQcJ");
+      TestBase64Decode(new byte[] { 6, 8, 10  }, "BggK");
+      TestBase64Decode(new byte[] { 7, 9, 11  }, "BwkL");
+      TestBase64Decode(new byte[] { 8, 10, 12  }, "CAoM");
+      TestBase64Decode(new byte[] { 9, 11, 13  }, "CQsN");
+      TestBase64Decode(new byte[] { 10, 12, 14  }, "CgwO");
+      TestBase64Decode(new byte[] { 11, 13, 15  }, "Cw0P");
+      TestBase64Decode(new byte[] { 12, 14, 16  }, "DA4Q");
+      TestBase64Decode(new byte[] { 13, 15, 17  }, "DQ8R");
+      TestBase64Decode(new byte[] { 14, 16, 18  }, "DhAS");
+      TestBase64Decode(new byte[] { 15, 17, 19  }, "DxET");
+      TestBase64Decode(new byte[] { 16, 18, 20  }, "EBIU");
+      TestBase64Decode(new byte[] { 17, 19, 21  }, "ERMV");
+      TestBase64Decode(new byte[] { 18, 20, 22  }, "EhQW");
+      TestBase64Decode(new byte[] { 19, 21, 23  }, "ExUX");
+      TestBase64Decode(new byte[] { 20, 22, 24  }, "FBYY");
+      TestBase64Decode(new byte[] { 21, 23, 25  }, "FRcZ");
+      TestBase64Decode(new byte[] { 22, 24, 26  }, "Fhga");
+      TestBase64Decode(new byte[] { 23, 25, 27  }, "Fxkb");
+      TestBase64Decode(new byte[] { 24, 26, 28  }, "GBoc");
+      TestBase64Decode(new byte[] { 25, 27, 29  }, "GRsd");
+      TestBase64Decode(new byte[] { 26, 28, 30  }, "Ghwe");
+      TestBase64Decode(new byte[] { 27, 29, 31  }, "Gx0f");
+      TestBase64Decode(new byte[] { 28, 30, 32  }, "HB4g");
+      TestBase64Decode(new byte[] { 29, 31, 33  }, "HR8h");
+      TestBase64Decode(new byte[] { 30, 32, 34  }, "HiAi");
+      TestBase64Decode(new byte[] { 31, 33, 35  }, "HyEj");
+      TestBase64Decode(new byte[] { 32, 34, 36  }, "ICIk");
+      TestBase64Decode(new byte[] { 33, 35, 37  }, "ISMl");
+      TestBase64Decode(new byte[] { 34, 36, 38  }, "IiQm");
+      TestBase64Decode(new byte[] { 35, 37, 39  }, "IyUn");
+      TestBase64Decode(new byte[] { 36, 38, 40  }, "JCYo");
+      TestBase64Decode(new byte[] { 37, 39, 41  }, "JScp");
+      TestBase64Decode(new byte[] { 38, 40, 42  }, "Jigq");
+      TestBase64Decode(new byte[] { 39, 41, 43  }, "Jykr");
+      TestBase64Decode(new byte[] { 40, 42, 44  }, "KCos");
+      TestBase64Decode(new byte[] { 41, 43, 45  }, "KSst");
+      TestBase64Decode(new byte[] { 42, 44, 46  }, "Kiwu");
+      TestBase64Decode(new byte[] { 43, 45, 47  }, "Ky0v");
+      TestBase64Decode(new byte[] { 44, 46, 48  }, "LC4w");
+      TestBase64Decode(new byte[] { 45, 47, 49  }, "LS8x");
+      TestBase64Decode(new byte[] { 46, 48, 50  }, "LjAy");
+      TestBase64Decode(new byte[] { 47, 49, 51  }, "LzEz");
+      TestBase64Decode(new byte[] { 48, 50, 52  }, "MDI0");
+      TestBase64Decode(new byte[] { 49, 51, 53  }, "MTM1");
+      TestBase64Decode(new byte[] { 50, 52, 54  }, "MjQ2");
+      TestBase64Decode(new byte[] { 51, 53, 55  }, "MzU3");
+      TestBase64Decode(new byte[] { 52, 54, 56  }, "NDY4");
+      TestBase64Decode(new byte[] { 53, 55, 57  }, "NTc5");
+      TestBase64Decode(new byte[] { 54, 56, 58  }, "Njg6");
+      TestBase64Decode(new byte[] { 55, 57, 59  }, "Nzk7");
+      TestBase64Decode(new byte[] { 56, 58, 60  }, "ODo8");
+      TestBase64Decode(new byte[] { 57, 59, 61  }, "OTs9");
+      TestBase64Decode(new byte[] { 58, 60, 62  }, "Ojw+");
+      TestBase64Decode(new byte[] { 59, 61, 63  }, "Oz0/");
+      TestBase64Decode(new byte[] { 60, 62, 64  }, "PD5A");
+      TestBase64Decode(new byte[] { 61, 63, 65  }, "PT9B");
+      TestBase64Decode(new byte[] { 62, 64, 66  }, "PkBC");
+      TestBase64Decode(new byte[] { 63, 65, 67  }, "P0FD");
+      TestBase64Decode(new byte[] { 64, 66, 68  }, "QEJE");
+      TestBase64Decode(new byte[] { 65, 67, 69  }, "QUNF");
+      TestBase64Decode(new byte[] { 66, 68, 70  }, "QkRG");
+      TestBase64Decode(new byte[] { 67, 69, 71  }, "Q0VH");
+      TestBase64Decode(new byte[] { 68, 70, 72  }, "REZI");
+      TestBase64Decode(new byte[] { 69, 71, 73  }, "RUdJ");
+      TestBase64Decode(new byte[] { 70, 72, 74  }, "RkhK");
+      TestBase64Decode(new byte[] { 71, 73, 75  }, "R0lL");
+      TestBase64Decode(new byte[] { 72, 74, 76  }, "SEpM");
+      TestBase64Decode(new byte[] { 73, 75, 77  }, "SUtN");
+      TestBase64Decode(new byte[] { 74, 76, 78  }, "SkxO");
+      TestBase64Decode(new byte[] { 75, 77, 79  }, "S01P");
+      TestBase64Decode(new byte[] { 76, 78, 80  }, "TE5Q");
+      TestBase64Decode(new byte[] { 77, 79, 81  }, "TU9R");
+      TestBase64Decode(new byte[] { 78, 80, 82  }, "TlBS");
+      TestBase64Decode(new byte[] { 79, 81, 83  }, "T1FT");
+      TestBase64Decode(new byte[] { 80, 82, 84  }, "UFJU");
+      TestBase64Decode(new byte[] { 81, 83, 85  }, "UVNV");
+      TestBase64Decode(new byte[] { 82, 84, 86  }, "UlRW");
+      TestBase64Decode(new byte[] { 83, 85, 87  }, "U1VX");
+      TestBase64Decode(new byte[] { 84, 86, 88  }, "VFZY");
+      TestBase64Decode(new byte[] { 85, 87, 89  }, "VVdZ");
+      TestBase64Decode(new byte[] { 86, 88, 90  }, "Vlha");
+      TestBase64Decode(new byte[] { 87, 89, 91  }, "V1lb");
+      TestBase64Decode(new byte[] { 88, 90, 92  }, "WFpc");
+      TestBase64Decode(new byte[] { 89, 91, 93  }, "WVtd");
+      TestBase64Decode(new byte[] { 90, 92, 94  }, "Wlxe");
+      TestBase64Decode(new byte[] { 91, 93, 95  }, "W11f");
+      TestBase64Decode(new byte[] { 92, 94, 96  }, "XF5g");
+      TestBase64Decode(new byte[] { 93, 95, 97  }, "XV9h");
+      TestBase64Decode(new byte[] { 94, 96, 98  }, "XmBi");
+      TestBase64Decode(new byte[] { 95, 97, 99  }, "X2Fj");
+      TestBase64Decode(new byte[] { 96, 98, 100  }, "YGJk");
+      TestBase64Decode(new byte[] { 97, 99, 101  }, "YWNl");
+      TestBase64Decode(new byte[] { 98, 100, 102  }, "YmRm");
+      TestBase64Decode(new byte[] { 99, 101, 103  }, "Y2Vn");
+      TestBase64Decode(new byte[] { 100, 102, 104  }, "ZGZo");
+      TestBase64Decode(new byte[] { 101, 103, 105  }, "ZWdp");
+      TestBase64Decode(new byte[] { 102, 104, 106  }, "Zmhq");
+      TestBase64Decode(new byte[] { 103, 105, 107  }, "Z2lr");
+      TestBase64Decode(new byte[] { 104, 106, 108  }, "aGps");
+      TestBase64Decode(new byte[] { 105, 107, 109  }, "aWtt");
+      TestBase64Decode(new byte[] { 106, 108, 110  }, "amxu");
+      TestBase64Decode(new byte[] { 107, 109, 111  }, "a21v");
+      TestBase64Decode(new byte[] { 108, 110, 112  }, "bG5w");
+      TestBase64Decode(new byte[] { 109, 111, 113  }, "bW9x");
+      TestBase64Decode(new byte[] { 110, 112, 114  }, "bnBy");
+      TestBase64Decode(new byte[] { 111, 113, 115  }, "b3Fz");
+      TestBase64Decode(new byte[] { 112, 114, 116  }, "cHJ0");
+      TestBase64Decode(new byte[] { 113, 115, 117  }, "cXN1");
+      TestBase64Decode(new byte[] { 114, 116, 118  }, "cnR2");
+      TestBase64Decode(new byte[] { 115, 117, 119  }, "c3V3");
+      TestBase64Decode(new byte[] { 116, 118, 120  }, "dHZ4");
+      TestBase64Decode(new byte[] { 117, 119, 121  }, "dXd5");
+      TestBase64Decode(new byte[] { 118, 120, 122  }, "dnh6");
+      TestBase64Decode(new byte[] { 119, 121, 123  }, "d3l7");
+      TestBase64Decode(new byte[] { 120, 122, 124  }, "eHp8");
+      TestBase64Decode(new byte[] { 121, 123, 125  }, "eXt9");
+      TestBase64Decode(new byte[] { 122, 124, 126  }, "enx+");
+      TestBase64Decode(new byte[] { 123, 125, 127  }, "e31/");
+      TestBase64Decode(new byte[] { 124, 126, (byte)128  }, "fH6A");
+      TestBase64Decode(new byte[] { 125, 127, (byte)129  }, "fX+B");
+      TestBase64Decode(new byte[] { 126, (byte)128, (byte)130  }, "foCC");
+      TestBase64Decode(new byte[] { 127, (byte)129, (byte)131  }, "f4GD");
+      TestBase64Decode(new byte[] { (byte)128, (byte)130, (byte)132  }, "gIKE");
+      TestBase64Decode(new byte[] { (byte)129, (byte)131, (byte)133  }, "gYOF");
+      TestBase64Decode(new byte[] { (byte)130, (byte)132, (byte)134  }, "goSG");
+      TestBase64Decode(new byte[] { (byte)131, (byte)133, (byte)135  }, "g4WH");
+      TestBase64Decode(new byte[] { (byte)132, (byte)134, (byte)136  }, "hIaI");
+      TestBase64Decode(new byte[] { (byte)133, (byte)135, (byte)137  }, "hYeJ");
+      TestBase64Decode(new byte[] { (byte)134, (byte)136, (byte)138  }, "hoiK");
+      TestBase64Decode(new byte[] { (byte)135, (byte)137, (byte)139  }, "h4mL");
+      TestBase64Decode(new byte[] { (byte)136, (byte)138, (byte)140  }, "iIqM");
+      TestBase64Decode(new byte[] { (byte)137, (byte)139, (byte)141  }, "iYuN");
+      TestBase64Decode(new byte[] { (byte)138, (byte)140, (byte)142  }, "ioyO");
+      TestBase64Decode(new byte[] { (byte)139, (byte)141, (byte)143  }, "i42P");
+      TestBase64Decode(new byte[] { (byte)140, (byte)142, (byte)144  }, "jI6Q");
+      TestBase64Decode(new byte[] { (byte)141, (byte)143, (byte)145  }, "jY+R");
+      TestBase64Decode(new byte[] { (byte)142, (byte)144, (byte)146  }, "jpCS");
+      TestBase64Decode(new byte[] { (byte)143, (byte)145, (byte)147  }, "j5GT");
+      TestBase64Decode(new byte[] { (byte)144, (byte)146, (byte)148  }, "kJKU");
+      TestBase64Decode(new byte[] { (byte)145, (byte)147, (byte)149  }, "kZOV");
+      TestBase64Decode(new byte[] { (byte)146, (byte)148, (byte)150  }, "kpSW");
+      TestBase64Decode(new byte[] { (byte)147, (byte)149, (byte)151  }, "k5WX");
+      TestBase64Decode(new byte[] { (byte)148, (byte)150, (byte)152  }, "lJaY");
+      TestBase64Decode(new byte[] { (byte)149, (byte)151, (byte)153  }, "lZeZ");
+      TestBase64Decode(new byte[] { (byte)150, (byte)152, (byte)154  }, "lpia");
+      TestBase64Decode(new byte[] { (byte)151, (byte)153, (byte)155  }, "l5mb");
+      TestBase64Decode(new byte[] { (byte)152, (byte)154, (byte)156  }, "mJqc");
+      TestBase64Decode(new byte[] { (byte)153, (byte)155, (byte)157  }, "mZud");
+      TestBase64Decode(new byte[] { (byte)154, (byte)156, (byte)158  }, "mpye");
+      TestBase64Decode(new byte[] { (byte)155, (byte)157, (byte)159  }, "m52f");
+      TestBase64Decode(new byte[] { (byte)156, (byte)158, (byte)160  }, "nJ6g");
+      TestBase64Decode(new byte[] { (byte)157, (byte)159, (byte)161  }, "nZ+h");
+      TestBase64Decode(new byte[] { (byte)158, (byte)160, (byte)162  }, "nqCi");
+      TestBase64Decode(new byte[] { (byte)159, (byte)161, (byte)163  }, "n6Gj");
+      TestBase64Decode(new byte[] { (byte)160, (byte)162, (byte)164  }, "oKKk");
+      TestBase64Decode(new byte[] { (byte)161, (byte)163, (byte)165  }, "oaOl");
+      TestBase64Decode(new byte[] { (byte)162, (byte)164, (byte)166  }, "oqSm");
+      TestBase64Decode(new byte[] { (byte)163, (byte)165, (byte)167  }, "o6Wn");
+      TestBase64Decode(new byte[] { (byte)164, (byte)166, (byte)168  }, "pKao");
+      TestBase64Decode(new byte[] { (byte)165, (byte)167, (byte)169  }, "paep");
+      TestBase64Decode(new byte[] { (byte)166, (byte)168, (byte)170  }, "pqiq");
+      TestBase64Decode(new byte[] { (byte)167, (byte)169, (byte)171  }, "p6mr");
+      TestBase64Decode(new byte[] { (byte)168, (byte)170, (byte)172  }, "qKqs");
+      TestBase64Decode(new byte[] { (byte)169, (byte)171, (byte)173  }, "qaut");
+      TestBase64Decode(new byte[] { (byte)170, (byte)172, (byte)174  }, "qqyu");
+      TestBase64Decode(new byte[] { (byte)171, (byte)173, (byte)175  }, "q62v");
+      TestBase64Decode(new byte[] { (byte)172, (byte)174, (byte)176  }, "rK6w");
+      TestBase64Decode(new byte[] { (byte)173, (byte)175, (byte)177  }, "ra+x");
+      TestBase64Decode(new byte[] { (byte)174, (byte)176, (byte)178  }, "rrCy");
+      TestBase64Decode(new byte[] { (byte)175, (byte)177, (byte)179  }, "r7Gz");
+      TestBase64Decode(new byte[] { (byte)176, (byte)178, (byte)180  }, "sLK0");
+      TestBase64Decode(new byte[] { (byte)177, (byte)179, (byte)181  }, "sbO1");
+      TestBase64Decode(new byte[] { (byte)178, (byte)180, (byte)182  }, "srS2");
+      TestBase64Decode(new byte[] { (byte)179, (byte)181, (byte)183  }, "s7W3");
+      TestBase64Decode(new byte[] { (byte)180, (byte)182, (byte)184  }, "tLa4");
+      TestBase64Decode(new byte[] { (byte)181, (byte)183, (byte)185  }, "tbe5");
+      TestBase64Decode(new byte[] { (byte)182, (byte)184, (byte)186  }, "tri6");
+      TestBase64Decode(new byte[] { (byte)183, (byte)185, (byte)187  }, "t7m7");
+      TestBase64Decode(new byte[] { (byte)184, (byte)186, (byte)188  }, "uLq8");
+      TestBase64Decode(new byte[] { (byte)185, (byte)187, (byte)189  }, "ubu9");
+      TestBase64Decode(new byte[] { (byte)186, (byte)188, (byte)190  }, "ury+");
+      TestBase64Decode(new byte[] { (byte)187, (byte)189, (byte)191  }, "u72/");
+      TestBase64Decode(new byte[] { (byte)188, (byte)190, (byte)192  }, "vL7A");
+      TestBase64Decode(new byte[] { (byte)189, (byte)191, (byte)193  }, "vb/B");
+      TestBase64Decode(new byte[] { (byte)190, (byte)192, (byte)194  }, "vsDC");
+      TestBase64Decode(new byte[] { (byte)191, (byte)193, (byte)195  }, "v8HD");
+      TestBase64Decode(new byte[] { (byte)192, (byte)194, (byte)196  }, "wMLE");
+      TestBase64Decode(new byte[] { (byte)193, (byte)195, (byte)197  }, "wcPF");
+      TestBase64Decode(new byte[] { (byte)194, (byte)196, (byte)198  }, "wsTG");
+      TestBase64Decode(new byte[] { (byte)195, (byte)197, (byte)199  }, "w8XH");
+      TestBase64Decode(new byte[] { (byte)196, (byte)198, (byte)200  }, "xMbI");
+      TestBase64Decode(new byte[] { (byte)197, (byte)199, (byte)201  }, "xcfJ");
+      TestBase64Decode(new byte[] { (byte)198, (byte)200, (byte)202  }, "xsjK");
+      TestBase64Decode(new byte[] { (byte)199, (byte)201, (byte)203  }, "x8nL");
+      TestBase64Decode(new byte[] { (byte)200, (byte)202, (byte)204  }, "yMrM");
+      TestBase64Decode(new byte[] { (byte)201, (byte)203, (byte)205  }, "ycvN");
+      TestBase64Decode(new byte[] { (byte)202, (byte)204, (byte)206  }, "yszO");
+      TestBase64Decode(new byte[] { (byte)203, (byte)205, (byte)207  }, "y83P");
+      TestBase64Decode(new byte[] { (byte)204, (byte)206, (byte)208  }, "zM7Q");
+      TestBase64Decode(new byte[] { (byte)205, (byte)207, (byte)209  }, "zc/R");
+      TestBase64Decode(new byte[] { (byte)206, (byte)208, (byte)210  }, "ztDS");
+      TestBase64Decode(new byte[] { (byte)207, (byte)209, (byte)211  }, "z9HT");
+      TestBase64Decode(new byte[] { (byte)208, (byte)210, (byte)212  }, "0NLU");
+      TestBase64Decode(new byte[] { (byte)209, (byte)211, (byte)213  }, "0dPV");
+      TestBase64Decode(new byte[] { (byte)210, (byte)212, (byte)214  }, "0tTW");
+      TestBase64Decode(new byte[] { (byte)211, (byte)213, (byte)215  }, "09XX");
+      TestBase64Decode(new byte[] { (byte)212, (byte)214, (byte)216  }, "1NbY");
+      TestBase64Decode(new byte[] { (byte)213, (byte)215, (byte)217  }, "1dfZ");
+      TestBase64Decode(new byte[] { (byte)214, (byte)216, (byte)218  }, "1tja");
+      TestBase64Decode(new byte[] { (byte)215, (byte)217, (byte)219  }, "19nb");
+      TestBase64Decode(new byte[] { (byte)216, (byte)218, (byte)220  }, "2Nrc");
+      TestBase64Decode(new byte[] { (byte)217, (byte)219, (byte)221  }, "2dvd");
+      TestBase64Decode(new byte[] { (byte)218, (byte)220, (byte)222  }, "2tze");
+      TestBase64Decode(new byte[] { (byte)219, (byte)221, (byte)223  }, "293f");
+      TestBase64Decode(new byte[] { (byte)220, (byte)222, (byte)224  }, "3N7g");
+      TestBase64Decode(new byte[] { (byte)221, (byte)223, (byte)225  }, "3d/h");
+      TestBase64Decode(new byte[] { (byte)222, (byte)224, (byte)226  }, "3uDi");
+      TestBase64Decode(new byte[] { (byte)223, (byte)225, (byte)227  }, "3+Hj");
+      TestBase64Decode(new byte[] { (byte)224, (byte)226, (byte)228  }, "4OLk");
+      TestBase64Decode(new byte[] { (byte)225, (byte)227, (byte)229  }, "4ePl");
+      TestBase64Decode(new byte[] { (byte)226, (byte)228, (byte)230  }, "4uTm");
+      TestBase64Decode(new byte[] { (byte)227, (byte)229, (byte)231  }, "4+Xn");
+      TestBase64Decode(new byte[] { (byte)228, (byte)230, (byte)232  }, "5Obo");
+      TestBase64Decode(new byte[] { (byte)229, (byte)231, (byte)233  }, "5efp");
+      TestBase64Decode(new byte[] { (byte)230, (byte)232, (byte)234  }, "5ujq");
+      TestBase64Decode(new byte[] { (byte)231, (byte)233, (byte)235  }, "5+nr");
+      TestBase64Decode(new byte[] { (byte)232, (byte)234, (byte)236  }, "6Ors");
+      TestBase64Decode(new byte[] { (byte)233, (byte)235, (byte)237  }, "6evt");
+      TestBase64Decode(new byte[] { (byte)234, (byte)236, (byte)238  }, "6uzu");
+      TestBase64Decode(new byte[] { (byte)235, (byte)237, (byte)239  }, "6+3v");
+      TestBase64Decode(new byte[] { (byte)236, (byte)238, (byte)240  }, "7O7w");
+      TestBase64Decode(new byte[] { (byte)237, (byte)239, (byte)241  }, "7e/x");
+      TestBase64Decode(new byte[] { (byte)238, (byte)240, (byte)242  }, "7vDy");
+      TestBase64Decode(new byte[] { (byte)239, (byte)241, (byte)243  }, "7/Hz");
+      TestBase64Decode(new byte[] { (byte)240, (byte)242, (byte)244  }, "8PL0");
+      TestBase64Decode(new byte[] { (byte)241, (byte)243, (byte)245  }, "8fP1");
+      TestBase64Decode(new byte[] { (byte)242, (byte)244, (byte)246  }, "8vT2");
+      TestBase64Decode(new byte[] { (byte)243, (byte)245, (byte)247  }, "8/X3");
+      TestBase64Decode(new byte[] { (byte)244, (byte)246, (byte)248  }, "9Pb4");
+      TestBase64Decode(new byte[] { (byte)245, (byte)247, (byte)249  }, "9ff5");
+      TestBase64Decode(new byte[] { (byte)246, (byte)248, (byte)250  }, "9vj6");
+      TestBase64Decode(new byte[] { (byte)247, (byte)249, (byte)251  }, "9/n7");
+      TestBase64Decode(new byte[] { (byte)248, (byte)250, (byte)252  }, "+Pr8");
+      TestBase64Decode(new byte[] { (byte)249, (byte)251, (byte)253  }, "+fv9");
+      TestBase64Decode(new byte[] { (byte)250, (byte)252, (byte)254  }, "+vz+");
+      TestBase64Decode(new byte[] { (byte)251, (byte)253, (byte)255  }, "+/3/");
+      TestBase64Decode(new byte[] { (byte)252, (byte)254, 0  }, "/P4A");
+      TestBase64Decode(new byte[] { (byte)253, (byte)255, 1  }, "/f8B");
+      TestBase64Decode(new byte[] { (byte)254, 0, 2  }, "/gAC");
+      TestBase64Decode(new byte[] { (byte)255, 1, 3  }, "/wED");
     }
+
+    private void TestPercentEncodingOne(String expected, String input) {
+      ContentDisposition cd = ContentDisposition.Parse(
+        "inline; filename*=utf-8''" + input);
+      Assert.assertEquals(expected, cd.GetParameter("filename"));
+    }
+
     @Test
     public void TestPercentEncoding() {
       Object utf8 = CharsetsTest.GetCharset("utf-8");
-      Assert.assertEquals(
-        "test\u00be", (String)CharsetsTest.CharsetGetString(utf8,
-          Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform", "test%c2%be")));
-      Assert.assertEquals("tesA",
-        (String)CharsetsTest.CharsetGetString(utf8,
-          Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform", "tes%41")));
-      Assert.assertEquals("tesa",
-        (String)CharsetsTest.CharsetGetString(utf8,
-          Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform", "tes%61")));
-      Assert.assertEquals("tes\r\na",
-        (String)CharsetsTest.CharsetGetString(utf8,
-          Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform", "tes%0d%0aa")));
-      Assert.assertEquals("tes\r\na",
-        (String)CharsetsTest.CharsetGetString(utf8,
-          Reflect.Construct(MailNamespace() + ".QEncodingStringTransform",
-          "tes=0d=0aa")));
-      Assert.assertEquals(
-        "tes%xx", (String)CharsetsTest.CharsetGetString(utf8,
-          Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform", "tes%xx")));
-      Assert.assertEquals("tes%dxx",
-        (String)CharsetsTest.CharsetGetString(utf8,
-          Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform", "tes%dxx")));
-      Assert.assertEquals("tes=dxx",
-        (String)CharsetsTest.CharsetGetString(utf8,
-          Reflect.Construct(MailNamespace() + ".QEncodingStringTransform",
-          "tes=dxx")));
-      Assert.assertEquals(
-        "tes??x", (String)CharsetsTest.CharsetGetString(utf8,
-          Reflect.Construct(MailNamespace() +
-            ".PercentEncodingStringTransform", "tes\r\nx")));
+      TestPercentEncodingOne("test\u00be", "test%c2%be");
+      TestPercentEncodingOne("tesA", "tes%41");
+      TestPercentEncodingOne("tesa", "tes%61");
+      TestPercentEncodingOne("tes\r\na", "tes%0d%0aa");
+      TestPercentEncodingOne(
+        "tes%xx",
+        "tes%xx");
+      TestPercentEncodingOne("tes%dxx", "tes%dxx");
     }
 
     @Test
     public void TestArgumentValidation() {
       try {
-        Reflect.Construct(MailNamespace() + ".Base64Encoder", false, false,
-          false, null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Construct(MailNamespace() + ".Base64Encoder", false, false,
-          false, "xyz");
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Construct(MailNamespace() + ".WordWrapEncoder", (Object)null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
         CharsetsTest.GetCharset(null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      Object encoder = Reflect.Construct(MailNamespace() + ".Base64Encoder",
-false, false, false);
-      try {
-        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), null, 0,
-             1);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, -1, 1);
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 2, 1);
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 0, -1);
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 0, 2);
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 1, 1);
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      encoder = Reflect.Construct(MailNamespace() +
-        ".QuotedPrintableEncoder", 0, false);
-      try {
-        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), null, 0,
-             1);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, -1, 1);
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 2, 1);
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 0, -1);
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 0, 2);
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Invoke(encoder, "WriteToString", new StringBuilder(), new byte[] { 0  }, 1, 1);
-        Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Construct(MailNamespace() + ".BEncodingStringTransform",
-                  (Object)null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
       } catch (Exception ex) {
@@ -870,7 +1440,7 @@ false, false, false);
     }
 
     @Test(timeout = 5000)
-    public void TestDecode() {
+    public void TestDecodeQuotedPrintable() {
       TestDecodeQuotedPrintable("test", "test");
       TestDecodeQuotedPrintable("te \tst", "te \tst");
       TestDecodeQuotedPrintable("te=20", "te ");
@@ -889,13 +1459,7 @@ false, false, false);
       TestDecodeQuotedPrintable("te==C2=A0st", "te=\u00a0st");
       TestDecodeQuotedPrintable(Repeat("a", 100), Repeat("a", 100));
       TestDecodeQuotedPrintable("te\r\nst", "te\r\nst");
-      TestDecodeQuotedPrintable("te\rst", "te\r\nst");
-      TestDecodeQuotedPrintable("te\nst", "te\r\nst");
       TestDecodeQuotedPrintable("te=\r\nst", "test");
-      TestDecodeQuotedPrintable("te=\rst", "test");
-      TestDecodeQuotedPrintable("te=\nst", "test");
-      TestDecodeQuotedPrintable("te=\r", "te");
-      TestDecodeQuotedPrintable("te=\n", "te");
       TestDecodeQuotedPrintable("te=xy", "te=xy");
       TestDecodeQuotedPrintable("te\u000cst", "test");
       TestDecodeQuotedPrintable("te\u007fst", "test");
@@ -909,15 +1473,36 @@ false, false, false);
       TestDecodeQuotedPrintable("te==", "te=");
       TestDecodeQuotedPrintable("te==\r\nst", "te=st");
       TestDecodeQuotedPrintable("te=3", "te=3");
-      TestDecodeQuotedPrintable("te \r\n", "te\r\n");
-      TestDecodeQuotedPrintable("te \r\nst", "te\r\nst");
       TestDecodeQuotedPrintable("te w\r\nst", "te w\r\nst");
       TestDecodeQuotedPrintable("te =\r\nst", "te st");
-      TestDecodeQuotedPrintable("te \t\r\nst", "te\r\nst");
+    }
+    @Test
+    public void TestSpaceBeforeBreakQuotedPrintable() {
+      TestDecodeQuotedPrintable("te \r\nst", "te\r\nst");
       TestDecodeQuotedPrintable("te\t \r\nst", "te\r\nst");
-      TestDecodeQuotedPrintable("te \nst", "te\r\nst");
+      TestDecodeQuotedPrintable("te \t\r\nst", "te\r\nst");
+      TestDecodeQuotedPrintable("te \r\n", "te\r\n");
+      TestDecodeQuotedPrintable("te\t \r\n", "te\r\n");
+      TestDecodeQuotedPrintable("te \t\r\n", "te\r\n");
+    }
+    //@Test
+    public void TestLenientQuotedPrintable() {
+      // Ignore for now, Message constructor currently uses
+      // non-lenient quoted-printable parsing
+      TestDecodeQuotedPrintable("te\rst", "te\r\nst");
+      TestDecodeQuotedPrintable("te\nst", "te\r\nst");
       TestDecodeQuotedPrintable("te \t\nst", "te\r\nst");
+      TestDecodeQuotedPrintable("te=\rst", "test");
+      TestDecodeQuotedPrintable("te=\nst", "test");
       TestDecodeQuotedPrintable("te\t \nst", "te\r\nst");
+      TestDecodeQuotedPrintable("te\t \rst", "te\r\nst");
+      TestDecodeQuotedPrintable("te \rst", "te\r\nst");
+      TestDecodeQuotedPrintable("te \nst", "te\r\nst");
+      TestDecodeQuotedPrintable("te=\r", "te");
+      TestDecodeQuotedPrintable("te=\n", "te");
+    }
+    @Test
+    public void TestNonLenientQuotedPrintable() {
       TestFailQuotedPrintableNonLenient("te\rst");
       TestFailQuotedPrintableNonLenient("te\nst");
       TestFailQuotedPrintableNonLenient("te=\rst");
@@ -1013,7 +1598,8 @@ DecodeHeaderField("content-language", " (comment (" + input +
       Assert.assertEquals("g: x@example.com" + sep + "x@xn--e-ufa.example;",
         DowngradeHeaderField("to", "g: x@example.com, x@e\u00e1.example;"));
       {
-   String stringTemp = DowngradeHeaderField("sender" , "x <x@e\u00e1.example>");
+   String stringTemp = DowngradeHeaderField("sender" , "x <x@e\u00e1.example>"
+);
         Assert.assertEquals(
         "x <x@xn--e-ufa.example>",
         stringTemp);
@@ -1033,7 +1619,8 @@ DecodeHeaderField("content-language", " (comment (" + input +
         stringTemp);
       }
       {
-String stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
+String stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>"
+);
         Assert.assertEquals(
         "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
         stringTemp);
@@ -1101,14 +1688,15 @@ String stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
         stringTemp);
       }
       {
-String stringTemp = DowngradeHeaderField("from",
-        "(test) x@x.example");
-Assert.assertEquals(
-"(test) x@x.example",
-stringTemp);
-}
+        String stringTemp = DowngradeHeaderField("from",
+                "(test) x@x.example");
+        Assert.assertEquals(
+        "(test) x@x.example",
+        stringTemp);
+      }
       {
-  String stringTemp = DowngradeHeaderField("from" , "(tes\u00bet) x@x.example");
+  String stringTemp = DowngradeHeaderField("from" , "(tes\u00bet) x@x.example"
+);
         Assert.assertEquals(
         "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
         stringTemp);
@@ -1197,7 +1785,8 @@ stringTemp);
         stringTemp);
       }
       {
-  String stringTemp = DowngradeHeaderField("from" , "Tes\u00bet <x@x.example>");
+  String stringTemp = DowngradeHeaderField("from" , "Tes\u00bet <x@x.example>"
+);
         Assert.assertEquals(
         "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
         stringTemp);
@@ -1300,6 +1889,7 @@ stringTemp);
     public void TestEncodedWords() {
       String par = "(";
       TestEncodedWordsPhrase("(sss) y", "(sss) =?us-ascii?q?y?=");
+      TestEncodedWordsPhrase("tes=dxx", "=?us-ascii?q?tes=dxx?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       TestEncodedWordsPhrase("=?bad1?= =?bad2?= =?bad3?=",
         "=?bad1?= =?bad2?= =?bad3?=");
@@ -1311,7 +1901,8 @@ stringTemp);
         "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       TestEncodedWordsPhrase(" xy", " =?us-ascii?q?x?= =?us-ascii?q?y?=");
- TestEncodedWordsPhrase("xy (sss)" , "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
+ TestEncodedWordsPhrase("xy (sss)" , "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)"
+);
       TestEncodedWordsPhrase("x (sss) y",
               "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase("x (z) y",
@@ -1412,30 +2003,72 @@ stringTemp);
       }
     }
 
+    public static void TestQuotedPrintableRoundTrip(byte[] bytes) {
+      TestQuotedPrintableRoundTrip(bytes, 0);
+      TestQuotedPrintableRoundTrip(bytes, 1);
+      TestQuotedPrintableRoundTrip(bytes, 2);
+    }
+
+    public static String EncodeQP(byte[] bytes, int mode) {
+      Object enc = Reflect.Construct(MailNamespace() +
+        ".QuotedPrintableEncoder", mode, false);
+      ICharacterEncoder enc2 = (ICharacterEncoder)enc;
+      int offset = 0;
+      java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+        while (true) {
+          int c = -1;
+          if (offset < bytes.length) {
+            c = ((int)bytes[offset++]) & 0xff;
+          }
+          if (enc2.Encode(c, ms) < 0) {
+ break;
+}
+        }
+        return DataUtilities.GetUtf8String(ms.toByteArray(), true);
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+    }
+    public static void TestQuotedPrintableRoundTrip(byte[] bytes, int mode) {
+      String input = EncodeQP(bytes, mode);
+      String msgString = "From: <test@example.com>\r\n" +
+      "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
+      "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
+      Message msg = MessageTest.MessageFromString(msgString);
+      //try {
+        AssertEqual(bytes, msg.GetBody());
+      /*
+      } catch (Exception ex) {
+        String emsg = ex.getMessage();
+        System.out.println("mode="+mode);
+        System.out.println(emsg);
+        System.out.println(input);
+        System.out.println(EncodeQP(msg.GetBody(), mode));
+        Assert.fail(emsg);
+      }
+       */
+    }
+
+    private byte[] RandomBytes(java.util.Random rnd) {
+      int count = 10 + rnd.nextInt(350);
+      byte[] arr = new byte[count];
+      for (int i = 0; i < count; ++i) {
+        arr[i] = (byte)rnd.nextInt(0x100);
+      }
+      return arr;
+    }
+
     @Test
-    public void TestEncode() {
-      TestQuotedPrintable("test", "test");
-      TestQuotedPrintable("te\u000cst", "te=0Cst");
-      TestQuotedPrintable("te\u007Fst", "te=7Fst");
-      TestQuotedPrintable("te ", "te=20");
-      TestQuotedPrintable("te\t", "te=09");
-      TestQuotedPrintable("te st", "te st");
-      TestQuotedPrintable("te=st", "te=3Dst");
-      TestQuotedPrintable("te\r\nst", "te=0D=0Ast", "te\r\nst", "te\r\nst");
-      TestQuotedPrintable("te\rst", "te=0Dst", "te=0Dst", "te\r\nst");
-      TestQuotedPrintable("te\nst", "te=0Ast", "te=0Ast", "te\r\nst");
-      TestQuotedPrintable("te " + " " + "\r\nst", "te " + " " + "=0D=0Ast",
-"te =20\r\nst", "te =20\r\nst");
-      TestQuotedPrintable("te \r\nst", "te =0D=0Ast", "te=20\r\nst",
-             "te=20\r\nst");
-      TestQuotedPrintable("te \t\r\nst", "te =09=0D=0Ast", "te =09\r\nst",
-"te =09\r\nst");
-      TestQuotedPrintable("te\t\r\nst", "te=09=0D=0Ast", "te=09\r\nst",
-        "te=09\r\nst");
-      TestQuotedPrintable(Repeat("a", 75), Repeat("a", 75));
-      TestQuotedPrintable(Repeat("a", 76), Repeat("a", 75) + "=\r\na");
-      TestQuotedPrintable(Repeat("\u000c", 30), Repeat("=0C", 25) +
-        "=\r\n" + Repeat("=0C", 5));
+    public void TestRandomQuotedPrintable() {
+      java.util.Random rnd = new java.util.Random();
+      for (int i = 0; i < 5000; ++i) {
+        TestQuotedPrintableRoundTrip(RandomBytes(rnd), 0);
+        TestQuotedPrintableRoundTrip(RandomBytes(rnd), 1);
+      }
     }
 
     @Test

@@ -76,11 +76,11 @@ This media type's subtype.
 
     public string TopLevelType { get; }
 
-Gets a value not documented yet.
+Gets the name of this media type's top-level type (such as "text" or "audio".
 
 <b>Returns:</b>
 
-A value not documented yet.
+The name of this media type's top-level type (such as "text" or "audio".
 
 ### TypeAndSubType
 

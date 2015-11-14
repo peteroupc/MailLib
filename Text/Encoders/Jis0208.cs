@@ -29,7 +29,7 @@ public static int CodePointToIndex(int codepoint) {
    if (codepoint < 167 || codepoint > 65509) {
  return -1;
 }
-  for (int i = 0; i < indextable.Length;i+=4) {
+  for (int i = 0; i < indextable.Length; i += 4) {
      if (codepoint >= indextable[i] && codepoint <= indextable[i + 1]) {
       int startindex = indextable[i + 2];
        int length = indextable[i + 3];
@@ -61,7 +61,7 @@ public static int ShiftJISCodePointToIndex(int codepoint) {
    if (codepoint < 167 || codepoint > 65509) {
  return -1;
 }
-  for (int i = 0; i < indextable2.Length;i+=4) {
+  for (int i = 0; i < indextable2.Length; i += 4) {
      if (codepoint >= indextable2[i] && codepoint <= indextable[i + 1]) {
       int startindex = indextable2[i + 2];
        int length = indextable2[i + 3];

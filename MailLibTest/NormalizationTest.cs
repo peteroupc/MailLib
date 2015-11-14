@@ -56,7 +56,7 @@ namespace MailLibTest {
     }
 
     public static int[] NormalizerGetChars(int[] cp, Normalization form) {
-      string ret = Normalizer.Normalize(ToCodePointString(cp), form);
+ string ret = NormalizingCharacterInput.Normalize(ToCodePointString(cp), form);
       IList<int> list = new List<int>();
       for (int i = 0; i < ret.Length; ++i) {
         int c = PeterO.DataUtilities.CodePointAt(ret, i);
@@ -93,6 +93,26 @@ namespace MailLibTest {
               ToString(actual) + "\n" + msg);
         }
       }
+    }
+
+    [TestMethod]
+    public void TestIsNormalizedAlmostSurrogates() {
+          Assert.IsTrue(
+    NormalizingCharacterInput.IsNormalized(
+     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00
+       }, Normalization.NFC));
+    Assert.IsTrue(
+    NormalizingCharacterInput.IsNormalized(
+     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00
+       }, Normalization.NFD));
+    Assert.IsTrue(
+    NormalizingCharacterInput.IsNormalized(
+     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00
+       }, Normalization.NFKC));
+    Assert.IsTrue(
+    NormalizingCharacterInput.IsNormalized(
+     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00
+       }, Normalization.NFKD));
     }
 
     [TestMethod]
@@ -180,24 +200,24 @@ namespace MailLibTest {
           }
           string cpstr = new String(cptemp, 0, (i >= 0x10000 ? 2 : 1));
           string imsg = "" + i;
-          Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr,
+          Assert.AreEqual(cpstr, NormalizingCharacterInput.Normalize(cpstr,
               Normalization.NFC));
-          Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr,
+          Assert.AreEqual(cpstr, NormalizingCharacterInput.Normalize(cpstr,
               Normalization.NFD));
-          Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr,
+          Assert.AreEqual(cpstr, NormalizingCharacterInput.Normalize(cpstr,
                Normalization.NFKC));
-          Assert.AreEqual(cpstr, Normalizer.Normalize(cpstr,
+          Assert.AreEqual(cpstr, NormalizingCharacterInput.Normalize(cpstr,
                Normalization.NFKD));
-          if (!Normalizer.IsNormalized(cpstr, Normalization.NFC)) {
+       if (!NormalizingCharacterInput.IsNormalized(cpstr, Normalization.NFC)) {
             Assert.Fail(imsg);
           }
-          if (!Normalizer.IsNormalized(cpstr, Normalization.NFD)) {
+       if (!NormalizingCharacterInput.IsNormalized(cpstr, Normalization.NFD)) {
             Assert.Fail(imsg);
           }
-          if (!Normalizer.IsNormalized(cpstr, Normalization.NFKC)) {
+      if (!NormalizingCharacterInput.IsNormalized(cpstr, Normalization.NFKC)) {
             Assert.Fail(imsg);
           }
-          if (!Normalizer.IsNormalized(cpstr, Normalization.NFKD)) {
+      if (!NormalizingCharacterInput.IsNormalized(cpstr, Normalization.NFKD)) {
             Assert.Fail(imsg);
           }
         }

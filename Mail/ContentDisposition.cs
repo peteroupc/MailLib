@@ -17,7 +17,8 @@ namespace PeterO.Mail {
     /// a
     /// mail user agent. This type is immutable; its contents can't be changed
     /// after
-    /// it's created.</summary>
+    /// it's created. To create a changeable disposition object, use the
+    /// DispositionBuilder class.</summary>
   public class ContentDisposition {
     private string dispositionType;
 
@@ -93,8 +94,9 @@ string type,
 
     /// <summary>Gets a list of parameter names associated with this object and
     /// their values.</summary>
-    /// <value>A list of parameter names associated with this object and their
-    /// values. The names will be sorted.</value>
+    /// <value>A read-only list of parameter names associated with this object
+    /// and
+    /// their values. The names will be sorted.</value>
     public IDictionary<string, string> Parameters {
       get {
         return new ReadOnlyMap<string, string>(this.parameters);
@@ -266,27 +268,37 @@ str.IndexOf('\'')));
       string strLower = DataUtilities.ToLowerCaseAscii(str);
       if (
 strLower.Equals(
-"nul") || strLower.IndexOf("nul.",
-        StringComparison.Ordinal) == 0 || strLower.Equals(
-"prn") || strLower.IndexOf("prn.",
-            StringComparison.Ordinal) == 0 || strLower.Equals(
-"aux") || strLower.IndexOf("aux.",
-            StringComparison.Ordinal) == 0 || strLower.Equals(
-"con") || strLower.IndexOf("con.",
-            StringComparison.Ordinal) == 0 || (
+"nul") ||
+strLower.IndexOf(
+"nul.",
+StringComparison.Ordinal) == 0 || strLower.Equals(
+"prn") ||
+strLower.IndexOf(
+"prn.",
+StringComparison.Ordinal) == 0 || strLower.Equals(
+"aux") ||
+strLower.IndexOf(
+"aux.",
+StringComparison.Ordinal) == 0 || strLower.Equals(
+"con") ||
+strLower.IndexOf(
+"con.",
+StringComparison.Ordinal) == 0 || (
 strLower.Length >= 4 && strLower.IndexOf(
 "lpt",
-StringComparison.Ordinal) == 0 && strLower[3] >= '1' &&
+StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
        strLower[3] <= '9') || (strLower.Length >= 4 &&
               strLower.IndexOf(
 "com",
-StringComparison.Ordinal) == 0 && strLower[3] >= '1' &&
+StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
             strLower[3] <= '9')) {
         // Reserved filenames on Windows
         str = "_" + str;
       }
-      if (str[0] == '~') {
-        // Home folder convention
+      if (str[0] == '~' || str[0] == '-') {
+        // Home folder convention (tilde).
+        // Filenames starting with hyphens can also be
+        // problematic especially in Unix-based systems
         str = "_" + str;
       }
       if (str[0] == '.') {

@@ -2,9 +2,7 @@ using System;
 using System.IO;
 using PeterO;
 
-using PeterO.Text;
-
-namespace PeterO.Text.Encoders {
+namespace PeterO.Text {
 /// <summary>
 /// </summary>
 public interface ICharacterEncoding {

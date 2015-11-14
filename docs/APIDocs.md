@@ -1,8 +1,8 @@
 * [PeterO.DataUtilities](PeterO.DataUtilities.md) - Contains methods useful for reading and writing strings.
+ * [PeterO.ITransform](PeterO.ITransform.md) - A generic interface for reading data one byte at a time.
  * [PeterO.Mail.Address](PeterO.Mail.Address.md) - Represents an email address.
  * [PeterO.Mail.ContentDisposition](PeterO.Mail.ContentDisposition.md) - Specifies how a message body should be displayed or handled by a             mail user agent.
  * [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) - Description of DispositionBuilder.
- * [PeterO.Mail.ITransform](PeterO.Mail.ITransform.md) - A generic interface for reading data one byte at a time.
  * [PeterO.Mail.MediaType](PeterO.Mail.MediaType.md) -
 Specifies what kind of data a message body is.
  * [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.MediaTypeBuilder.md) - A mutable media type object.
@@ -10,12 +10,11 @@ Specifies what kind of data a message body is.
 Represents an email message, and contains methods and             properties for accessing and modifying email message data.
  * [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) - Exception thrown when a message has invalid syntax.
  * [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) - Represents an email address and a name for that address.
- * [PeterO.Text.Encoders.Encodings](PeterO.Text.Encoders.Encodings.md) - Not documented yet.
- * [PeterO.Text.Encoders.ICharacterDecoder](PeterO.Text.Encoders.ICharacterDecoder.md) -
+ * [PeterO.Text.Encodings](PeterO.Text.Encodings.md) - Not documented yet.
+ * [PeterO.Text.ICharacterDecoder](PeterO.Text.ICharacterDecoder.md) -
 
- * [PeterO.Text.Encoders.ICharacterEncoder](PeterO.Text.Encoders.ICharacterEncoder.md) -
-
- * [PeterO.Text.Encoders.ICharacterEncoding](PeterO.Text.Encoders.ICharacterEncoding.md) -
+ * [PeterO.Text.ICharacterEncoder](PeterO.Text.ICharacterEncoder.md) - Defines a method that can be implemented by classes that convert             Unicode code points to bytes.
+ * [PeterO.Text.ICharacterEncoding](PeterO.Text.ICharacterEncoding.md) -
 
  * [PeterO.Text.ICharacterInput](PeterO.Text.ICharacterInput.md) - An interface for reading Unicode characters from a data             source.
  * [PeterO.Text.Idna](PeterO.Text.Idna.md) -
@@ -24,4 +23,4 @@ Contains methods that implement Internationalized Domain             Names in Ap
  * [PeterO.Text.Normalizer](PeterO.Text.Normalizer.md) -
 Implements the Unicode normalization algorithm and contains             methods and functionality to test and convert Unicode strings for Unicode             normalization.
  * [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) -
-Implements the Unicode normalization algorithm and contains             methods and functionality to test and convert Unicode strings for Unicode             normalization.
+A character input class that implements the Unicode             normalization algorithm and contains methods and functionality to test and             convert Unicode strings for Unicode normalization.

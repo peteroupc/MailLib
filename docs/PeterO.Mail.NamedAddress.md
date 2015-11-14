@@ -120,7 +120,7 @@ A value not documented yet.
 
     public System.Collections.Generic.IList GroupAddresses { get; }
 
-Gets a list of address that make up the group, if this object represents a group, or an empty list otherwise.
+Gets a read-only list of addresses that make up the group, if this object represents a group, or an empty list otherwise.
 
 <b>Returns:</b>
 

@@ -7,56 +7,21 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
 using System.Text;
+using System.IO;
+
+using PeterO.Text;
 
 namespace PeterO.Mail {
     /// <summary>An IdentityEncoder.</summary>
-  internal sealed class IdentityEncoder : IStringEncoder
+  internal sealed class IdentityEncoder : ICharacterEncoder
   {
-    public void WriteToString(
-StringBuilder str,
-byte[] data,
-int offset,
-int count) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      if (data == null) {
-        throw new ArgumentNullException("data");
-      }
-      if (offset < 0) {
-    throw new ArgumentException("offset (" + offset + ") is less than " +
-          "0");
-      }
-      if (offset > data.Length) {
-        throw new ArgumentException("offset (" + offset + ") is more than " +
-          data.Length);
-      }
-      if (count < 0) {
-      throw new ArgumentException("count (" + count + ") is less than " +
-          "0");
-      }
-      if (count > data.Length) {
-        throw new ArgumentException("count (" + count + ") is more than " +
-          data.Length);
-      }
-      if (data.Length - offset < count) {
-        throw new ArgumentException("data's length minus " + offset + " (" +
-          (data.Length - offset) + ") is less than " + count);
-      }
-      if (count == 0) {
-        return;
-      }
-      for (int i = 0; i < count; ++i) {
-        str.Append((char)(((int)data[i + offset]) & 0xff));
-      }
-    }
-
-    public void FinalizeEncoding(StringBuilder str) {
-      // No need to finalize for identity encodings
-    }
-
-    public void WriteToString(StringBuilder str, byte b) {
-      str.Append((char)(((int)b) & 0xff));
+    public int Encode(int c, Stream s) {
+      if (c < 0) {
+ return -1;
+}
+      c &= 0xff;
+      s.WriteByte((byte)c);
+      return 1;
     }
   }
 }

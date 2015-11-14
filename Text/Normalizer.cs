@@ -23,9 +23,8 @@ namespace PeterO.Text {
     /// documentation for the NormalizingCharacterInput class for the permission
     /// notice for the Unicode Character Database.</para>
     /// </summary>
-
-  [Obsolete("Use NormalizingCharacterInput instead, which is much more flexible than Normalizer."
-)]
+  [Obsolete(
+  "Use NormalizingCharacterInput instead; that class is much more flexible than Normalizer." )]
   public sealed class Normalizer {
     /// <summary>Converts a string to the given Unicode normalization
     /// form.</summary>
@@ -49,7 +48,10 @@ namespace PeterO.Text {
       this.nci = new NormalizingCharacterInput(str, form);
     }
 
-  /// <summary>Not documented yet.</summary>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>Not documented yet.</param>
+    /// <param name='form'>A Normalization object.</param>
+    /// <returns>A Boolean object.</returns>
     public static bool IsNormalized(string str, Normalization form) {
       return NormalizingCharacterInput.IsNormalized(str, form);
     }

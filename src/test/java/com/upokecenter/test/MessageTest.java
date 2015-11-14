@@ -39,7 +39,7 @@ Assert.assertEquals("2" , MediaType.Parse("x/y;z=1;z*=utf-8''2"
 ).GetParameter("z"));
     }
 
-    private static Message MessageFromString(String str) {
+    static Message MessageFromString(String str) {
   return new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(str,
         true)));
     }
@@ -190,6 +190,51 @@ Assert.assertEquals(
 stringTemp);
 }
       {
+String stringTemp =
+  ContentDisposition.MakeFilename("com0.txt");
+Assert.assertEquals("_com0.txt",stringTemp);
+}
+{
+String stringTemp =
+  ContentDisposition.MakeFilename("-hello.txt");
+Assert.assertEquals("_-hello.txt",stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("lpt0.txt");
+Assert.assertEquals("_lpt0.txt",stringTemp);
+}
+   {
+String stringTemp =
+  ContentDisposition.MakeFilename("com1.txt");
+Assert.assertEquals("_com1.txt",stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("lpt1.txt");
+Assert.assertEquals("_lpt1.txt",stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("nul.txt");
+Assert.assertEquals("_nul.txt",stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("prn.txt");
+Assert.assertEquals("_prn.txt",stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("aux.txt");
+Assert.assertEquals("_aux.txt",stringTemp);
+}
+      {
+String stringTemp =
+  ContentDisposition.MakeFilename("con.txt");
+Assert.assertEquals("_con.txt",stringTemp);
+}
+      {
 String stringTemp = ContentDisposition.MakeFilename(
 "  =?utf-8?q?hello.txt?=  ");
 Assert.assertEquals(
@@ -286,6 +331,13 @@ stringTemp);
       {
 String stringTemp =
   ContentDisposition.MakeFilename("utf-8'en-us'file%c2%bename.txt");
+Assert.assertEquals(
+"file\u00bename.txt",
+stringTemp);
+}
+{
+String stringTemp =
+  ContentDisposition.MakeFilename("utf-8''file%c2%bename.txt");
 Assert.assertEquals(
 "file\u00bename.txt",
 stringTemp);
@@ -517,12 +569,12 @@ Assert.assertEquals(
 "us-ascii",
 stringTemp);
 }
-      Assert.assertEquals("", MediaType.Parse("text/xxx").GetCharset());
-      Assert.assertEquals("utf-8" , MediaType.Parse("text/xxx;charset=UTF-8"
+      Assert.assertEquals("", MediaType.Parse("text/xyz").GetCharset());
+      Assert.assertEquals("utf-8" , MediaType.Parse("text/xyz;charset=UTF-8"
 ).GetCharset());
-      Assert.assertEquals("utf-8" , MediaType.Parse("text/xxx;charset=utf-8"
+      Assert.assertEquals("utf-8" , MediaType.Parse("text/xyz;charset=utf-8"
 ).GetCharset());
-   Assert.assertEquals("" , MediaType.Parse("text/xxx;chabset=utf-8"
+   Assert.assertEquals("" , MediaType.Parse("text/xyz;chabset=utf-8"
 ).GetCharset());
       Assert.assertEquals("utf-8" , MediaType.Parse("text/xml;charset=utf-8"
 ).GetCharset());
@@ -544,27 +596,6 @@ Assert.assertEquals("" , MediaType.Parse("image/plain;chabset=utf-8"
 ).GetCharset());
     }
 
-    @Test
-    public void TestCodePointCompare() {
-      if (!(DataUtilities.CodePointCompare("abc", "def") < 0))Assert.fail();
-      if (!(DataUtilities.CodePointCompare("a\ud800\udc00",
-        "a\ud900\udc00") < 0))Assert.fail();
-      if (!(DataUtilities.CodePointCompare("a\ud800\udc00",
-        "a\ud800\udc00") == 0))Assert.fail();
-      if (!(DataUtilities.CodePointCompare("a\ud800", "a\ud800") == 0))Assert.fail();
-      if (!(DataUtilities.CodePointCompare("a\udc00", "a\udc00") == 0))Assert.fail();
-      if (!(DataUtilities.CodePointCompare("a\ud800\udc00",
-        "a\ud800\udd00") < 0))Assert.fail();
-      if (!(DataUtilities.CodePointCompare("a\ud800\ufffd",
-        "a\ud800\udc00") < 0))Assert.fail();
-      if (!(DataUtilities.CodePointCompare("a\ud800\ud7ff",
-        "a\ud800\udc00") < 0))Assert.fail();
-      if (!(DataUtilities.CodePointCompare("a\ufffd\udc00",
-        "a\ud800\udc00") < 0))Assert.fail();
-      if (!(DataUtilities.CodePointCompare("a\ud7ff\udc00",
-        "a\ud800\udc00") < 0))Assert.fail();
-    }
-
     public static void TestRfc2231Extension(String mtype, String param,
       String expected) {
       MediaType mt = MediaType.Parse(mtype);
@@ -580,7 +611,12 @@ Assert.assertEquals("" , MediaType.Parse("image/plain;chabset=utf-8"
         "charset" , "utf-8");
     TestRfc2231Extension("text/plain; charset*='en'utf-8" , "charset",
         "utf-8");
-      TestRfc2231Extension("text/plain; charset*=''utf-8", "charset", "utf-8");
+    TestRfc2231Extension("text/plain; charset*='i-unknown'utf-8", "charset",
+        "us-ascii");
+    TestRfc2231Extension("text/plain; charset*=us-ascii'i-unknown'utf-8",
+      "charset",
+        "us-ascii");
+    TestRfc2231Extension("text/plain; charset*=''utf-8", "charset", "utf-8");
   TestRfc2231Extension("text/plain; charset*0=a;charset*1=b" , "charset",
         "ab");
    TestRfc2231Extension("text/plain; charset*=utf-8''a%20b" , "charset",
@@ -609,11 +645,16 @@ Assert.assertEquals("" , MediaType.Parse("image/plain;chabset=utf-8"
 
   if ((MediaType.Parse("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz"
     ,
-null)) != null)Assert.fail();
+null)) != null) {
+ Assert.fail();
+ }
 
-  if ((MediaType.Parse("text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz"
+  if
+  ((MediaType.Parse("text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz"
     ,
-null)) != null)Assert.fail();
+null)) != null) {
+ Assert.fail();
+ }
       TestRfc2231Extension(
         "text/plain; charset*0*=utf-8''a%20b;charset*1=a%20b",
         "charset",

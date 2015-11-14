@@ -168,8 +168,7 @@ int index) {
       }
       if (buffer.Length - index < length) {
         throw new ArgumentException("buffer's length minus " + index + " (" +
-          (buffer.Length - index) +
-          ") is less than " + length);
+          (buffer.Length - index) + ") is less than " + length);
       }
 #endif
 
@@ -437,10 +436,11 @@ Normalization form) {
       if (chars == null) {
         return false;
       }
+
       IList<int> list = new List<int>();
       int ch = 0;
       while ((ch = chars.ReadChar()) >= 0) {
-        if ((ch & 0xf800) == 0xd800) {
+        if ((ch & 0x1ff800) == 0xd800) {
           return false;
         }
         list.Add(ch);
@@ -485,7 +485,7 @@ Normalization form) {
         return str;
       }
       return EncoderHelper.InputToString(
-        new NormalizingCharacterInput(str));
+        new NormalizingCharacterInput(str, form));
     }
 
     /// <summary>Determines whether the given string is in the given Unicode
@@ -566,12 +566,12 @@ form)) {
       int ch = 0;
       while ((ch = norm.ReadChar()) >= 0) {
         int c = charList[i];
-        if ((c & 0xfc00) == 0xd800 && i + 1 < charList.Length &&
+        if ((c & 0x1ffc00) == 0xd800 && i + 1 < charList.Length &&
             charList[i + 1] >= 0xdc00 && charList[i + 1] <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
           c = 0x10000 + ((c - 0xd800) << 10) + (charList[i + 1] - 0xdc00);
           ++i;
-        } else if ((c & 0xf800) == 0xd800) {
+        } else if ((c & 0x1ff800) == 0xd800) {
           // unpaired surrogate
           c = 0xfffd;
         }
