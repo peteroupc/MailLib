@@ -142,6 +142,8 @@ bomTransform);
     /// <param name='stream'>Not documented yet.</param>
     /// <param name='stream'>Not documented yet.</param>
     /// <param name='stream'>Not documented yet.</param>
+    /// <param name='stream'>Not documented yet.</param>
+    /// <param name='stream'>Not documented yet.</param>
     /// <returns>A 32-bit signed integer.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='stream'/> or <paramref name='output'/> is null.</exception>
