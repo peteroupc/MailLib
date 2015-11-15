@@ -1,4 +1,4 @@
-package com.upokecenter.mail;
+package com.upokecenter.mail.transforms;
 /*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
@@ -9,6 +9,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.util.*;
 import com.upokecenter.util.*;
+import com.upokecenter.mail.*;
 
   public final class BoundaryCheckerTransform implements ITransform {
     private ITransform input;

@@ -5,7 +5,7 @@ private Big5() {
 }
 private static int[] table = new int[19782];
 
-static Big5() {
+static {
 System.arraycopy(method0(), 0, table, 0, 4096);
 System.arraycopy(method1(), 0, table, 4096, 4096);
 System.arraycopy(method2(), 0, table, 8192, 4096);

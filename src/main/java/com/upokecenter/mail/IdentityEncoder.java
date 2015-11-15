@@ -16,7 +16,7 @@ import com.upokecenter.text.*;
      */
   final class IdentityEncoder implements ICharacterEncoder
   {
-    public int Encode(int c, InputStream s) {
+    public int Encode(int c, OutputStream s) throws java.io.IOException {
       if (c < 0) {
  return -1;
 }

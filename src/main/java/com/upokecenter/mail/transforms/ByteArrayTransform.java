@@ -9,6 +9,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.io.*;
 import com.upokecenter.util.*;
+import com.upokecenter.mail.*;
 
   public final class ByteArrayTransform implements ITransform {
     private byte[] bytes;

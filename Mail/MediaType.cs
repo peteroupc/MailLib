@@ -15,29 +15,26 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary><para>Specifies what kind of data a message body is.</para>
-    /// <para>A
-    /// media type consists of a top-level type (the general category of the
-    /// data),
-    /// a subtype (the specific type), and an optional list of parameters. For
-    /// example, the media type <c>text/plain; charset = utf-8</c>
-    /// is a text media
-    /// type ("text"), namely, a plain text type ("plain"), and the parameters
-    /// say
-    /// that that the data uses the character set UTF-8, a form of Unicode
-    /// ("charset=utf-8"). Other top-level types include "audio", "video", and
-    /// "application".</para>
-    /// <para>This type is immutable, meaning its values can't
-    /// be changed once it' s created. To create a changeable media type object,
-    /// use
-    /// the MediaTypeBuilder class.</para>
+    /// <summary><para>Specifies what kind of data a message body
+    /// is.</para>
+    /// <para>A media type consists of a top-level type (the
+    /// general category of the data), a subtype (the specific type), and
+    /// an optional list of parameters. For example, the media type
+    /// <c>text/plain; charset = utf-8</c>
+    /// is a text media type ("text"),
+    /// namely, a plain text type ("plain"), and the parameters say that
+    /// that the data uses the character set UTF-8, a form of Unicode
+    /// ("charset=utf-8"). Other top-level types include "audio", "video",
+    /// and "application".</para>
+    /// <para>This type is immutable, meaning its
+    /// values can't be changed once it' s created. To create a changeable
+    /// media type object, use the MediaTypeBuilder class.</para>
     /// </summary>
   public sealed class MediaType {
     private string topLevelType;
 
     /// <summary>Gets the name of this media type's top-level type (such as
-    /// "text"
-    /// or "audio".</summary>
+    /// "text" or "audio".</summary>
     /// <value>The name of this media type&#x27;s top-level type (such as
     /// &#x22;text&#x22; or &#x22;audio&#x22;.</value>
     public string TopLevelType {
@@ -50,8 +47,8 @@ namespace PeterO.Mail {
     /// <summary>Determines whether this object and another object are
     /// equal.</summary>
     /// <param name='obj'>An arbitrary object.</param>
-    /// <returns>True if this object and another object are equal; otherwise,
-    /// false.</returns>
+    /// <returns>True if this object and another object are equal;
+    /// otherwise, false.</returns>
     public override bool Equals(object obj) {
       var other = obj as MediaType;
       if (other == null) {
@@ -102,7 +99,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this is a multipart media
     /// type.</summary>
-    /// <value>True if this is a multipart media type; otherwise, false.</value>
+    /// <value>True if this is a multipart media type; otherwise,
+    /// false.</value>
     public bool IsMultipart {
       get {
         return this.TopLevelType.Equals("multipart");
@@ -121,12 +119,10 @@ string type,
 
     private SortedMap<string, string> parameters;
 
-    /// <summary>Gets a sorted list of the parameters contained in this media
-    /// type
-    /// object.</summary>
-    /// <value>A list of the parameters contained in this media type object,
-    /// sorted
-    /// by name.</value>
+    /// <summary>Gets a sorted list of the parameters contained in this
+    /// media type object.</summary>
+    /// <value>A list of the parameters contained in this media type
+    /// object, sorted by name.</value>
     public IDictionary<string, string> Parameters {
       get {
         return new ReadOnlyMap<string, string>(this.parameters);
@@ -137,7 +133,8 @@ string type,
     /// <summary>Use HTTP rules for quoted strings.</summary>
       Http,
 
-    /// <summary>Use Internet Message Format rules for quoted strings.</summary>
+    /// <summary>Use Internet Message Format rules for quoted
+    /// strings.</summary>
       Rfc5322
     }
 
@@ -652,15 +649,13 @@ StringBuilder builder) {
       return i;
     }
 
-    /// <summary>Returns the charset parameter, converted to ASCII lower-case,
-    /// if it
-    /// exists, or <c>"us-ascii"</c>
-    /// if the media type is ill-formed (RFC2045 sec.
-    /// 5.2), or if the media type is "text/plain" and doesn't have a charset
-    /// parameter (see RFC2046), or the default charset, if any, for the media
-    /// type
-    /// if the charset parameter is absent. Returns an empty string in all other
-    /// cases.</summary>
+    /// <summary>Returns the charset parameter, converted to ASCII
+    /// lower-case, if it exists, or <c>"us-ascii"</c>
+    /// if the media type is
+    /// ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain"
+    /// and doesn't have a charset parameter (see RFC2046), or the default
+    /// charset, if any, for the media type if the charset parameter is
+    /// absent. Returns an empty string in all other cases.</summary>
     /// <returns>Not documented yet.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -770,12 +765,11 @@ Justification="This method has different semantics from " +
 
     /// <summary>Gets the value of a parameter in this media type, such as
     /// "charset".</summary>
-    /// <param name='name'>Name of the parameter to get. The name is compared
-    /// case-insensitively.</param>
+    /// <param name='name'>Name of the parameter to get. The name is
+    /// compared case-insensitively.</param>
     /// <returns>The value of the parameter as a string, or null if the
-    /// parameter
-    /// doesn't exist.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// parameter doesn't exist.</returns>
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='name'/> is null.</exception>
     public string GetParameter(string name) {
       if (name == null) {
@@ -930,10 +924,9 @@ charsetUsed);
     }
 
     /// <summary>Gets the top level type and subtype of this media type,
-    /// separated
-    /// by a slash; for example, "text/plain".</summary>
-    /// <value>The top level type and subtype of this media type, separated by a
-    /// slash; for example, &#x22;text/plain&#x22;.</value>
+    /// separated by a slash; for example, "text/plain".</summary>
+    /// <value>The top level type and subtype of this media type, separated
+    /// by a slash; for example, &#x22;text/plain&#x22;.</value>
     public string TypeAndSubType {
       get {
         return this.TopLevelType + "/" + this.SubType;
@@ -1114,8 +1107,7 @@ null);
       Justification="This instance is immutable")]
     #endif
     /// <summary>Specifies the media type "text/plain" and the charset
-    /// "US-ASCII",
-    /// used for plain text data.</summary>
+    /// "US-ASCII", used for plain text data.</summary>
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder(
 "text",
@@ -1128,9 +1120,8 @@ null);
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "text/plain" and the charset "utf-8",
-    /// used
-    /// for Unicode plain text data.</summary>
+    /// <summary>Specifies the media type "text/plain" and the charset
+    /// "utf-8", used for Unicode plain text data.</summary>
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
 "text",
@@ -1143,14 +1134,13 @@ null);
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "message/rfc822" , used for Internet
-    /// mail
-    /// messages.</summary>
+    /// <summary>Specifies the media type "message/rfc822" , used for
+    /// Internet mail messages.</summary>
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
-    /// <summary>Specifies the media type "application/octet-stream", used for
-    /// arbitrary binary data.</summary>
+    /// <summary>Specifies the media type "application/octet-stream", used
+    /// for arbitrary binary data.</summary>
     public static readonly MediaType ApplicationOctetStream =
       new MediaTypeBuilder("application", "octet-stream").ToMediaType();
 
@@ -1161,21 +1151,21 @@ null);
     /// object.</summary>
     /// <param name='mediaTypeValue'>A string object.</param>
     /// <returns>A media type object, or text/plain if <paramref
-    /// name='mediaTypeValue'/> is empty or syntactically invalid.</returns>
+    /// name='mediaTypeValue'/> is empty or syntactically
+    /// invalid.</returns>
     public static MediaType Parse(string mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);
     }
 
-    /// <summary>Parses a media type string and returns a media type object, or
-    /// the
-    /// default value if the string is invalid.</summary>
-    /// <param name='str'>A string object representing a media type.</param>
-    /// <param name='defaultValue'>The media type to return if the string is
-    /// syntactically invalid. Can be null.</param>
+    /// <summary>Parses a media type string and returns a media type
+    /// object, or the default value if the string is invalid.</summary>
+    /// <param name='str'>A string object representing a media
+    /// type.</param>
+    /// <param name='defaultValue'>The media type to return if the string
+    /// is syntactically invalid. Can be null.</param>
     /// <returns>A MediaType object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='str' />
-    /// is null.</exception>
+    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {
         throw new ArgumentNullException("str");

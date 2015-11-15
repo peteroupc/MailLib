@@ -41,9 +41,12 @@ import com.upokecenter.text.*;
       tmp="\u007fascii";
       Assert.assertEquals(tmp, Idna.EncodeDomainName(tmp));
       // Test other aspects of Punycode
-      Assert.assertEquals(
-        "xn--e-ufa",
-        Idna.EncodeDomainName("e\u00e1"));
+      {
+String stringTemp = Idna.EncodeDomainName("e\u00e1");
+Assert.assertEquals(
+"xn--e-ufa",
+stringTemp);
+}
     }
 
     @Test
@@ -61,10 +64,10 @@ import com.upokecenter.text.*;
       // Label starting with digit is valid since there are no RTL labels
       if (!(Idna.IsValidDomainName("1domain.example",false)))Assert.fail();
       // Label starting with digit is not valid since there are RTL labels
-  if (Idna.IsValidDomainName("1domain.example.\u05d0\u05d0"
-        , false))Assert.fail();
-  if (Idna.IsValidDomainName("\u05d0\u05d0.1domain.example"
-        , false))Assert.fail();
+  if (Idna.IsValidDomainName("1domain.example.\u05d0\u05d0",
+false))Assert.fail();
+  if (Idna.IsValidDomainName("\u05d0\u05d0.1domain.example",
+false))Assert.fail();
       if (Idna.IsValidDomainName("el\u00b7",false))Assert.fail();
       if (Idna.IsValidDomainName("el\u00b7ma",false))Assert.fail();
       if (Idna.IsValidDomainName("em\u00b7la",false))Assert.fail();
@@ -93,39 +96,43 @@ import com.upokecenter.text.*;
       if (Idna.IsValidDomainName("xy\u200dz",false))Assert.fail();
 
   if (Idna.IsValidDomainName("\ua840\u0300\u0300\u200d\u0300\u0300\ua840"
-        , false))Assert.fail();
+    ,
+false))Assert.fail();
       // ZWNJ preceded by virama
       if (!(Idna.IsValidDomainName("xy\u094d\u200cz",false)))Assert.fail();
       if (Idna.IsValidDomainName("xy\u200cz",false))Assert.fail();
       // Dual-joining character (U + A840, Phags-pa KA) on both sides
       if (!(Idna.IsValidDomainName("\ua840\u200c\ua840",false)))Assert.fail();
       // Dual-joining character with intervening T-joining characters
- if (!(Idna.IsValidDomainName("\ua840\u0300\u0300\u200c\ua840"
-        , false)))Assert.fail();
+ if (!(Idna.IsValidDomainName("\ua840\u0300\u0300\u200c\ua840",
+false)))Assert.fail();
 
   if (!(Idna.IsValidDomainName("\ua840\u0300\u0300\u200c\u0300\u0300\ua840"
-        , false)))Assert.fail();
+    ,
+false)))Assert.fail();
       // Left-joining character (U + A872, the only such character
       // in Unicode 6.3, with Bidi type L) on left side
       if (!(Idna.IsValidDomainName("\ua872\u200c\ua840",false)))Assert.fail();
 
   if (!(Idna.IsValidDomainName("\ua872\u0300\u0300\u200c\u0300\u0300\ua840"
-        , false)))Assert.fail();
+    ,
+false)))Assert.fail();
       // Left-joining character on right side
       if (Idna.IsValidDomainName("\ua840\u200c\ua872",false))Assert.fail();
 
   if (Idna.IsValidDomainName("\ua840\u0300\u0300\u200c\u0300\u0300\ua872"
-        , false))Assert.fail();
+    ,
+false))Assert.fail();
       // Nonjoining character on right side
       if (Idna.IsValidDomainName("\ua840\u200cx",false))Assert.fail();
 
-  if (Idna.IsValidDomainName("\ua840\u0300\u0300\u200c\u0300\u0300x"
-        , false))Assert.fail();
+  if (Idna.IsValidDomainName("\ua840\u0300\u0300\u200c\u0300\u0300x",
+false))Assert.fail();
       // Nonjoining character on left side
       if (Idna.IsValidDomainName("x\u200c\ua840",false))Assert.fail();
 
-  if (Idna.IsValidDomainName("x\u0300\u0300\u200c\u0300\u0300\ua840"
-        , false))Assert.fail();
+  if (Idna.IsValidDomainName("x\u0300\u0300\u200c\u0300\u0300\ua840",
+false))Assert.fail();
       // Keraia
       if (!(Idna.IsValidDomainName("x\u0375\u03b1",false)))Assert.fail();  // Greek
       if (Idna.IsValidDomainName("x\u0375a",false))Assert.fail();  // Non-Greek
@@ -149,11 +156,13 @@ import com.upokecenter.text.*;
       if (!(Idna.IsValidDomainName("\u062d\u200c\u062f",false)))Assert.fail();
 
   if (!(Idna.IsValidDomainName("\u062d\u0300\u0300\u200c\u0300\u0300\u062f"
-        , false)))Assert.fail();
+    ,
+false)))Assert.fail();
       // Right-joining character on left side
       if (Idna.IsValidDomainName("\u062f\u200c\u062d",false))Assert.fail();
 
   if (Idna.IsValidDomainName("\u062f\u0300\u0300\u200c\u0300\u0300\u062d"
-        , false))Assert.fail();
+    ,
+false))Assert.fail();
     }
   }

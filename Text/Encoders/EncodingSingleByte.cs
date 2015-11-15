@@ -7,23 +7,23 @@ using PeterO.Text;
 namespace PeterO.Text.Encoders {
  internal class EncodingSingleByte : ICharacterEncoding {
    private class Decoder : ICharacterDecoder {
-      private int[] mapping;
+      private int[] codepoints;
 
-      public Decoder(int[] mapping) {
-        this.mapping = mapping;
+      public Decoder(int[] codepoints) {
+        this.codepoints = codepoints;
       }
 
      public int ReadChar(ITransform transform) {
        int b = transform.ReadByte();
-       return (b < 0) ? (-1) : ((b < 0x80) ? b : this.mapping[b - 0x80]);
+       return (b < 0) ? (-1) : ((b < 0x80) ? b : this.codepoints[b - 0x80]);
     }
   }
 
    private class Encoder : ICharacterEncoder {
-      private int[] mapping;
+      private int[] codepoints;
 
-      public Encoder(int[] mapping) {
-        this.mapping = mapping;
+      public Encoder(int[] codepoints) {
+        this.codepoints = codepoints;
       }
 
     public int Encode(
@@ -36,8 +36,8 @@ namespace PeterO.Text.Encoders {
            output.WriteByte((byte)c);
            return 1;
          }
-         for (var i = 0; i < this.mapping.Length; ++i) {
-           if (this.mapping[i ]==c) {
+         for (var i = 0; i < this.codepoints.Length; ++i) {
+           if (this.codepoints[i ]==c) {
              output.WriteByte((byte)(i + 0x80));
              return 1;
            }
@@ -49,16 +49,16 @@ namespace PeterO.Text.Encoders {
    private Encoder encoder;
    private Decoder decoder;
 
-  public EncodingSingleByte(int[] mapping) {
-        if (mapping == null) {
-  throw new ArgumentNullException("mapping");
+  public EncodingSingleByte(int[] codepoints) {
+        if (codepoints == null) {
+  throw new ArgumentNullException("codepoints");
 }
-        if (mapping.Length != 128) {
-  throw new ArgumentException("mapping.Length (" + mapping.Length +
+        if (codepoints.Length != 128) {
+  throw new ArgumentException("codepoints.Length (" + codepoints.Length +
     ") is not equal to " + 128);
 }
-this.encoder = new Encoder(mapping);
-this.decoder = new Decoder(mapping);
+this.encoder = new Encoder(codepoints);
+this.decoder = new Decoder(codepoints);
       }
 
   public ICharacterDecoder GetDecoder() {

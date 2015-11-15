@@ -21,7 +21,7 @@ namespace PeterO.Text.Encoders {
  return cc;
 }
         while (true) {
-          int b = this.state.ReadByte(stream);
+          int b = this.state.ReadInputByte(stream);
           if (b < 0) {
             if (this.lead != 0) {
               this.lead = 0;

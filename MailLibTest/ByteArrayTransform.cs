@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using PeterO;
 
@@ -12,16 +9,16 @@ namespace MailLibTest {
     int endOffset;
 
     public ByteArrayTransform(byte[] bytes) {
-      /* if ((bytes) == null) {
+      if ((bytes) == null) {
   throw new ArgumentNullException("bytes");
 }
-       */ this.bytes = bytes;
+       this.bytes = bytes;
       this.offset = 0;
       this.endOffset = bytes.Length;
     }
 
     public ByteArrayTransform(byte[] bytes, int offset, int length) {
-      /* if ((bytes) == null) {
+      if ((bytes) == null) {
   throw new ArgumentNullException("bytes");
 }
 if (offset < 0) {
@@ -44,7 +41,7 @@ if (bytes.Length-offset < length) {
   throw new ArgumentException("bytes's length minus " + offset + " (" +
     (bytes.Length-offset) + ") is less than " + length);
 }
-       */ this.bytes = bytes;
+      this.bytes = bytes;
       this.offset = offset;
       this.endOffset = offset + length;
     }

@@ -6,7 +6,7 @@ import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncoderAlgorithms {
+  public class EncoderAlgorithms {
     private static class DecodeWithFallbackDecoder implements ICharacterDecoder,
       ICharacterEncoding {
       private boolean bomChecked;
@@ -130,30 +130,16 @@ bomTransform);
 
     public static int Utf8EncodeAlgorithm(
        ICharacterInput stream,
-       InputStream output) {
+       OutputStream output) throws java.io.IOException {
       // Implements the "utf-8 encode" algorithm
       // in the Encoding Standard
       return EncodeAlgorithm(stream, Encodings.UTF8, output);
     }
 
-    /**
-     * Not documented yet.
-     * @param stream Not documented yet.
-     * @param stream Not documented yet.
-     * @param stream Not documented yet.
-     * @param stream Not documented yet.
-     * @param stream Not documented yet.
-     * @param stream Not documented yet.
-     * @param stream Not documented yet.
-     * @param stream Not documented yet.
-     * @return A 32-bit signed integer.
-     * @throws NullPointerException The parameter {@code stream} or {@code output}
-     * is null.
-     */
     public static int EncodeAlgorithm(
       ICharacterInput stream,
       ICharacterEncoding encoding,
-      InputStream output) {
+      OutputStream output) throws java.io.IOException {
       int total = 0;
       ICharacterEncoder encoder = encoding.GetEncoder();
       // Implements the "encode" algorithm

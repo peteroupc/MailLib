@@ -8,18 +8,20 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 using System;
 
 namespace PeterO.Text {
-    /// <summary>A lightweight version of MemoryStream, since it doesn't derive from
-    /// Stream and doesn't use IO exceptions.</summary>
+    /// <summary>A lightweight version of MemoryStream, since it doesn't
+    /// derive from Stream and doesn't use IO exceptions.</summary>
   internal sealed class ArrayWriter {
     private int retvalPos;
     private int retvalMax;
     private byte[] retval;
 
-    /// <summary>Initializes a new instance of the ArrayWriter class.</summary>
+    /// <summary>Initializes a new instance of the ArrayWriter
+    /// class.</summary>
     public ArrayWriter() : this(16) {
     }
 
-    /// <summary>Initializes a new instance of the ArrayWriter class.</summary>
+    /// <summary>Initializes a new instance of the ArrayWriter
+    /// class.</summary>
     /// <param name='initialSize'>A 32-bit signed integer.</param>
     public ArrayWriter(int initialSize) {
       this.retval = new byte[initialSize];

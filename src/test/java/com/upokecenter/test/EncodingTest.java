@@ -1342,7 +1342,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=); x@x.example",
         ("(\u00be) rfc822(\u00be); x@x.example"));
       TestDowngradeDSNOne(
-        "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=); x@x" + hexstart + "BE}"+ hexstart + "FF20}.example",
+        "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=); x@x" + hexstart + "BE}" + hexstart + "FF20}.example",
         ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example"));
       TestDowngradeDSNOne(
         "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40x=C2=BE=EF=BC=A0=2Eexample?=",
@@ -1598,8 +1598,7 @@ DecodeHeaderField("content-language", " (comment (" + input +
       Assert.assertEquals("g: x@example.com" + sep + "x@xn--e-ufa.example;",
         DowngradeHeaderField("to", "g: x@example.com, x@e\u00e1.example;"));
       {
-   String stringTemp = DowngradeHeaderField("sender" , "x <x@e\u00e1.example>"
-);
+   String stringTemp = DowngradeHeaderField("sender" , "x <x@e\u00e1.example>");
         Assert.assertEquals(
         "x <x@xn--e-ufa.example>",
         stringTemp);
@@ -1619,8 +1618,7 @@ DecodeHeaderField("content-language", " (comment (" + input +
         stringTemp);
       }
       {
-String stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>"
-);
+String stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
         Assert.assertEquals(
         "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
         stringTemp);
@@ -1695,8 +1693,7 @@ String stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>"
         stringTemp);
       }
       {
-  String stringTemp = DowngradeHeaderField("from" , "(tes\u00bet) x@x.example"
-);
+  String stringTemp = DowngradeHeaderField("from" , "(tes\u00bet) x@x.example");
         Assert.assertEquals(
         "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
         stringTemp);
@@ -1785,8 +1782,7 @@ String stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>"
         stringTemp);
       }
       {
-  String stringTemp = DowngradeHeaderField("from" , "Tes\u00bet <x@x.example>"
-);
+  String stringTemp = DowngradeHeaderField("from" , "Tes\u00bet <x@x.example>");
         Assert.assertEquals(
         "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
         stringTemp);
@@ -1901,8 +1897,7 @@ String stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>"
         "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       TestEncodedWordsPhrase(" xy", " =?us-ascii?q?x?= =?us-ascii?q?y?=");
- TestEncodedWordsPhrase("xy (sss)" , "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)"
-);
+ TestEncodedWordsPhrase("xy (sss)" , "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
       TestEncodedWordsPhrase("x (sss) y",
               "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase("x (z) y",
@@ -2023,8 +2018,12 @@ ms = new java.io.ByteArrayOutputStream();
           if (offset < bytes.length) {
             c = ((int)bytes[offset++]) & 0xff;
           }
+          try {
           if (enc2.Encode(c, ms) < 0) {
  break;
+}
+} catch (IOException ex) {
+   throw new IllegalStateException(ex.getMessage(), ex);
 }
         }
         return DataUtilities.GetUtf8String(ms.toByteArray(), true);

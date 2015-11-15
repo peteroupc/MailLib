@@ -9,21 +9,21 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.util.*;
 
-using PeterO.Text.Encoders;
+import com.upokecenter.text.encoders.*;
 
     /**
      * <p>A character input class that implements the Unicode normalization
      * algorithm and contains methods and functionality to test and convert
-     * Unicode strings for Unicode normalization. This is similar to the
-     * Normalizer class, except it implements the ICharacterInput
-     * interface.</p> <p>NOTICE: While this class's source code is in the
-     * public domain, the class uses an class, called
-     * NormalizationData, that includes data derived from the Unicode
-     * Character Database. In case doing so is required, the permission
-     * notice for the Unicode Character Database is given here:</p>
-     * <p>COPYRIGHT AND PERMISSION NOTICE</p> <p>Copyright (c) 1991-2014
-     * Unicode, Inc. All rights reserved. Distributed under the Terms of Use
-     * in http://www.unicode.org/copyright.html.</p> <p>Permission is hereby
+     * text strings for normalization. This is similar to the Normalizer
+     * class, except it implements the ICharacterInput interface.</p>
+     * <p>NOTICE: While this class's source code is in the public domain,
+     * the class uses an class, called NormalizationData, that
+     * includes data derived from the Unicode Character Database. In case
+     * doing so is required, the permission notice for the Unicode Character
+     * Database is given here:</p> <p>COPYRIGHT AND PERMISSION NOTICE</p>
+     * <p>Copyright (c) 1991-2014 Unicode, Inc. All rights reserved.
+     * Distributed under the Terms of Use in
+     * http://www.unicode.org/copyright.html.</p> <p>Permission is hereby
      * granted, free of charge, to any person obtaining a copy of the
      * Unicode data files and any associated documentation (the "Data
      * Files") or Unicode software and any associated documentation (the
@@ -380,7 +380,7 @@ Normalization form) {
         if (i >= length) {
           return false;
         }
-        if (ch != charList.charAt(start + i)) {
+        if (ch != charList.get(start + i)) {
           return false;
         }
         ++i;
@@ -473,23 +473,23 @@ form)) {
     }
 
     private static boolean NormalizeAndCheckString(
-      String charList,
+      String charString,
       int start,
       int length,
       Normalization form) {
       int i = start;
       NormalizingCharacterInput norm = new NormalizingCharacterInput(
-     charList,
+     charString,
      start,
      length,
      form);
       int ch = 0;
       while ((ch = norm.ReadChar()) >= 0) {
-        int c = charList.charAt(i);
-        if ((c & 0x1ffc00) == 0xd800 && i + 1 < charList.length() &&
-            charList.charAt(i + 1) >= 0xdc00 && charList.charAt(i + 1) <= 0xdfff) {
+        int c = charString.charAt(i);
+        if ((c & 0x1ffc00) == 0xd800 && i + 1 < charString.length() &&
+            charString.charAt(i + 1) >= 0xdc00 && charString.charAt(i + 1) <= 0xdfff) {
           // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (charList.charAt(i + 1) - 0xdc00);
+          c = 0x10000 + ((c - 0xd800) << 10) + (charString.charAt(i + 1) - 0xdc00);
           ++i;
         } else if ((c & 0x1ff800) == 0xd800) {
           // unpaired surrogate
@@ -519,13 +519,13 @@ form)) {
         throw new NullPointerException("charList");
       }
       for (int i = 0; i < charList.size(); ++i) {
-        int c = charList.charAt(i);
+        int c = charList.get(i);
         if (c < 0 || c > 0x10ffff || ((c & 0x1ff800) == 0xd800)) {
           return false;
         }
         boolean isStable = false;
-        if ((c & mask) == c && (i + 1 == charList.size() || (charList.charAt(i + 1)&
-          mask) == charList.charAt(i + 1))) {
+        if ((c & mask) == c && (i + 1 == charList.size() || (charList.get(i + 1)&
+          mask) == charList.get(i + 1))) {
           // Quick check for an ASCII character followed by another
           // ASCII character (or Latin-1 in NFC) or the end of String.
           // Treat the first character as stable

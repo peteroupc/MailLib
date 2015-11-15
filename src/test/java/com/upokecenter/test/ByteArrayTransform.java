@@ -1,8 +1,5 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
 
-import java.util.*;
-using System.Linq;
-
 import com.upokecenter.util.*;
 
   class ByteArrayTransform implements ITransform {
@@ -11,16 +8,16 @@ import com.upokecenter.util.*;
     int endOffset;
 
     public ByteArrayTransform (byte[] bytes) {
-      /* if ((bytes) == null) {
+      if ((bytes) == null) {
   throw new NullPointerException("bytes");
 }
-       */ this.bytes = bytes;
+       this.bytes = bytes;
       this.offset = 0;
       this.endOffset = bytes.length;
     }
 
     public ByteArrayTransform (byte[] bytes, int offset, int length) {
-      /* if ((bytes) == null) {
+      if ((bytes) == null) {
   throw new NullPointerException("bytes");
 }
 if (offset < 0) {
@@ -43,7 +40,7 @@ if (bytes.length-offset < length) {
   throw new IllegalArgumentException("bytes's length minus " + offset + " (" +
     (bytes.length-offset) + ") is less than " + length);
 }
-       */ this.bytes = bytes;
+      this.bytes = bytes;
       this.offset = offset;
       this.endOffset = offset + length;
     }

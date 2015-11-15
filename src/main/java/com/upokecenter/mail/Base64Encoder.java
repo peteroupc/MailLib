@@ -91,7 +91,7 @@ byte[] alphabet) {
       this.alphabet = alphabet;
     }
 
-    private int LineAwareAppend(InputStream output, byte c) {
+    private int LineAwareAppend(OutputStream output, byte c) throws java.io.IOException {
       int charCount = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= 76) {
@@ -107,36 +107,36 @@ byte[] alphabet) {
     }
 
     private int LineAwareAppendFour(
-InputStream stream,
+OutputStream output,
 byte c1,
 byte c2,
 byte c3,
-byte c4) {
+byte c4) throws java.io.IOException {
       int charCount = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= 76) {
           // Output CRLF
-          stream.write((byte)0x0d);
-          stream.write((byte)0x0a);
+          output.write((byte)0x0d);
+          output.write((byte)0x0a);
           charCount += 2;
           this.lineCount = 0;
         } else if (this.lineCount + 3 >= 76) {
-          charCount += this.LineAwareAppend(stream, c1);
-          charCount += this.LineAwareAppend(stream, c2);
-          charCount += this.LineAwareAppend(stream, c3);
-          charCount += this.LineAwareAppend(stream, c4);
+          charCount += this.LineAwareAppend(output, c1);
+          charCount += this.LineAwareAppend(output, c2);
+          charCount += this.LineAwareAppend(output, c3);
+          charCount += this.LineAwareAppend(output, c4);
           return charCount;
         }
         this.lineCount += 4;
       }
-      stream.write((byte)c1);
-      stream.write((byte)c2);
-      stream.write((byte)c3);
-      stream.write((byte)c4);
+      output.write((byte)c1);
+      output.write((byte)c2);
+      output.write((byte)c3);
+      output.write((byte)c4);
       return 4 + charCount;
     }
 
-    private int AddByteInternal(InputStream output, byte b) {
+    private int AddByteInternal(OutputStream output, byte b) throws java.io.IOException {
       int ib = ((int)b) & 0xff;
       if (this.quantumCount == 2) {
         int ret = this.LineAwareAppendFour(
@@ -160,7 +160,7 @@ output,
       }
     }
 
-    private int FinalizeEncoding(InputStream stream) {
+    private int FinalizeEncoding(OutputStream output) throws java.io.IOException {
       int count = 0;
       if (this.quantumCount == 2) {
         byte c1 = this.alphabet[(this.byte1 >> 2) & 63];
@@ -168,11 +168,11 @@ output,
           15)];
         byte c3 = this.alphabet[((this.byte2 & 15) << 2)];
         if (this.padding) {
-          count += this.LineAwareAppendFour(stream, c1, c2, c3, (byte)'=');
+          count += this.LineAwareAppendFour(output, c1, c2, c3, (byte)'=');
         } else {
-          count += this.LineAwareAppend(stream, c1);
-          count += this.LineAwareAppend(stream, c2);
-          count += this.LineAwareAppend(stream, c3);
+          count += this.LineAwareAppend(output, c1);
+          count += this.LineAwareAppend(output, c2);
+          count += this.LineAwareAppend(output, c3);
         }
         this.byte1 = -1;
         this.byte2 = -1;
@@ -181,11 +181,11 @@ output,
         byte c1 = this.alphabet[(this.byte1 >> 2) & 63];
         byte c2 = this.alphabet[((this.byte1 & 3) << 4)];
         if (this.padding) {
-       count += this.LineAwareAppendFour(stream, c1, c2, (byte)'=' , (byte)'='
+       count += this.LineAwareAppendFour(output, c1, c2, (byte)'=' , (byte)'='
 );
         } else {
-          count += this.LineAwareAppend(stream, c1);
-          count += this.LineAwareAppend(stream, c2);
+          count += this.LineAwareAppend(output, c1);
+          count += this.LineAwareAppend(output, c2);
         }
         this.byte1 = -1;
         this.byte2 = -1;
@@ -196,7 +196,7 @@ output,
       return count;
     }
 
-    public int Encode(int b, InputStream output) {
+    public int Encode(int b, OutputStream output) throws java.io.IOException {
       if (b < 0) {
         return this.finalized ? (-1) : this.FinalizeEncoding(output);
       }

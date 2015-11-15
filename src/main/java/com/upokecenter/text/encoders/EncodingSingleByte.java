@@ -1,34 +1,34 @@
-package com.upokecenter.text;
+package com.upokecenter.text.encoders;
 
 import java.io.*;
 import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
- class EncodingSingleByte implements ICharacterEncoding {
+ public class EncodingSingleByte implements ICharacterEncoding {
    private static class Decoder implements ICharacterDecoder {
-      private int[] mapping;
+      private int[] codepoints;
 
-      public Decoder (int[] mapping) {
-        this.mapping = mapping;
+      public Decoder (int[] codepoints) {
+        this.codepoints = codepoints;
       }
 
      public int ReadChar(ITransform transform) {
        int b = transform.read();
-       return (b < 0) ? (-1) : ((b < 0x80) ? b : this.mapping.get(b - 0x80));
+       return (b < 0) ? (-1) : ((b < 0x80) ? b : this.codepoints[b - 0x80]);
     }
   }
 
    private static class Encoder implements ICharacterEncoder {
-      private int[] mapping;
+      private int[] codepoints;
 
-      public Encoder (int[] mapping) {
-        this.mapping = mapping;
+      public Encoder (int[] codepoints) {
+        this.codepoints = codepoints;
       }
 
     public int Encode(
      int c,
-     InputStream output) {
+     OutputStream output) throws java.io.IOException {
        if (c < 0) {
  return -1;
 }
@@ -36,8 +36,8 @@ import com.upokecenter.text.*;
            output.write((byte)c);
            return 1;
          }
-         for (int i = 0; i < this.mapping.length; ++i) {
-           if (this.mapping.get(i) == c) {
+         for (int i = 0; i < this.codepoints.length; ++i) {
+           if (this.codepoints[i ]==c) {
              output.write((byte)(i + 0x80));
              return 1;
            }
@@ -49,16 +49,16 @@ import com.upokecenter.text.*;
    private Encoder encoder;
    private Decoder decoder;
 
-  public EncodingSingleByte (int[] mapping) {
-        if (mapping == null) {
-  throw new NullPointerException("mapping");
+  public EncodingSingleByte (int[] codepoints) {
+        if (codepoints == null) {
+  throw new NullPointerException("codepoints");
 }
-        if (mapping.length != 128) {
-  throw new IllegalArgumentException("mapping.length (" + mapping.length +
+        if (codepoints.length != 128) {
+  throw new IllegalArgumentException("codepoints.length (" + codepoints.length +
     ") is not equal to " + 128);
 }
-this.encoder = new Encoder(mapping);
-this.decoder = new Decoder(mapping);
+this.encoder = new Encoder(codepoints);
+this.decoder = new Decoder(codepoints);
       }
 
   public ICharacterDecoder GetDecoder() {

@@ -1,11 +1,11 @@
-package com.upokecenter.text;
+package com.upokecenter.text.encoders;
 
 import java.io.*;
 import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncodingKoreanEUC implements ICharacterEncoding {
+  public class EncodingKoreanEUC implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
       private DecoderState state;
       private int lead;
@@ -17,7 +17,7 @@ import com.upokecenter.text.*;
 
       public int ReadChar(ITransform stream) {
         while (true) {
-          int b = this.state.read(stream);
+          int b = this.state.ReadInputByte(stream);
           if (b < 0) {
             if (this.lead != 0) {
               this.lead = 0;
@@ -55,7 +55,7 @@ import com.upokecenter.text.*;
     private static class Encoder implements ICharacterEncoder {
       public int Encode(
        int c,
-       InputStream output) {
+       OutputStream output) throws java.io.IOException {
         if (c < 0) {
           return -1;
         }

@@ -7,6 +7,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
 using PeterO;
+using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
   // A seven-bit transform used for text/plain data

@@ -1,4 +1,5 @@
 using System;
+using PeterO;
 
 namespace PeterO.Text.Encoders {
 internal class DecoderState {
@@ -47,7 +48,7 @@ internal class DecoderState {
     }
 
     public int ReadByte() {
-      return this.s.ReadByte(this.t);
+      return this.s.ReadInputByte(this.t);
     }
   }
 
@@ -63,7 +64,7 @@ this,
 stream));
   }
 
-  public int ReadByte(ITransform stream) {
+  public int ReadInputByte(ITransform stream) {
    if (this.prependedBytes > 0) {
     --this.prependedBytes;
     int b = this.bytes[this.prependedBytes];

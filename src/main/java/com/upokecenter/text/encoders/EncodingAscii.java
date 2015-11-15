@@ -1,11 +1,11 @@
-package com.upokecenter.text;
+package com.upokecenter.text.encoders;
 
 import java.io.*;
 import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncodingAscii implements ICharacterEncoding {
+  public class EncodingAscii implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
       public int ReadChar(ITransform transform) {
         int b = transform.read();
@@ -16,7 +16,7 @@ import com.upokecenter.text.*;
     private static class Encoder implements ICharacterEncoder {
       public int Encode(
       int c,
-      InputStream output) {
+      OutputStream output) throws java.io.IOException {
         if (c < 0) {
           return -1;
         }

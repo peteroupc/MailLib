@@ -1,12 +1,12 @@
-package com.upokecenter.text;
+package com.upokecenter.text.encoders;
 
 import java.io.*;
 import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncodingUtf7 implements ICharacterEncoding {
-    static final int[] Alphabet = { -1, -1, -1, -1, -1, -1,
+  public class EncodingUtf7 implements ICharacterEncoding {
+    public static final int[] Alphabet = { -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
           -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
@@ -16,7 +16,7 @@ import com.upokecenter.text.*;
         -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
         41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
-    static final int[] ToAlphabet = {
+    public static final int[] ToAlphabet = {
   0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d,
   0x4e, 0x4f, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a,
   0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6a, 0x6b, 0x6c, 0x6d,
@@ -127,7 +127,7 @@ import com.upokecenter.text.*;
           switch (this.machineState) {
             case 0:
               // not in base64
-              b = this.state.read(stream);
+              b = this.state.ReadInputByte(stream);
               if (b < 0) {
                 // done
                 return -1;
@@ -148,7 +148,7 @@ import com.upokecenter.text.*;
               }
               break;
             case 1:  // start of base64
-              b = this.state.read(stream);
+              b = this.state.ReadInputByte(stream);
               if (b < 0) {
                 // End of stream, illegal
                 this.machineState = 0;
@@ -200,7 +200,7 @@ import com.upokecenter.text.*;
               break;
             case 2:
               // continuing base64
-              b = this.state.read(stream);
+              b = this.state.ReadInputByte(stream);
               this.alphavalue = (b < 0 || b >= 0x80) ? -1 : Alphabet[b];
               if (this.alphavalue >= 0) {
                 // Base64 alphabet (except padding)
@@ -271,18 +271,18 @@ import com.upokecenter.text.*;
     }
 
     private static class Encoder implements ICharacterEncoder {
-      private int Base64Char(int c, InputStream stream) {
+      private int Base64Char(int c, OutputStream output) throws java.io.IOException {
         if (c <= 0xffff) {
           int byte1 = (c >> 8) & 0xff;
           int byte2 = c & 0xff;
           int c1 = ToAlphabet[(byte1 >> 2) & 63];
           int c2 = ToAlphabet[((byte1 & 3) << 4) + ((byte2 >> 4) & 15)];
           int c3 = ToAlphabet[((byte2 & 15) << 2)];
-          stream.write((byte)0x2b);
-          stream.write((byte)c1);
-          stream.write((byte)c2);
-          stream.write((byte)c3);
-          stream.write((byte)0x2d);
+          output.write((byte)0x2b);
+          output.write((byte)c1);
+          output.write((byte)c2);
+          output.write((byte)c3);
+          output.write((byte)0x2d);
           return 5;
         } else {
           int cc1 = (((c - 0x10000) >> 10) & 0x3ff) + 0xd800;
@@ -297,34 +297,34 @@ import com.upokecenter.text.*;
           int c4 = ToAlphabet[byte3 & 63];
           int c5 = ToAlphabet[(byte4 >> 2) & 63];
           int c6 = ToAlphabet[((byte4 & 3) << 4)];
-          stream.write((byte)0x2b);
-          stream.write((byte)c1);
-          stream.write((byte)c2);
-          stream.write((byte)c3);
-          stream.write((byte)c4);
-          stream.write((byte)c5);
-          stream.write((byte)c6);
-          stream.write((byte)0x2d);
+          output.write((byte)0x2b);
+          output.write((byte)c1);
+          output.write((byte)c2);
+          output.write((byte)c3);
+          output.write((byte)c4);
+          output.write((byte)c5);
+          output.write((byte)c6);
+          output.write((byte)0x2d);
           return 8;
         }
       }
 
-      public int Encode(int c, InputStream stream) {
+      public int Encode(int c, OutputStream output) throws java.io.IOException {
         if (c < 0) {
  return -1;
 }
         if (c == 0x2d) {
-          stream.write((byte)0x2b);
-          stream.write((byte)0x2d);
+          output.write((byte)0x2b);
+          output.write((byte)0x2d);
           return 2;
         }
      if (c == 0x09 || c == 0x0a || c == 0x0d || (c >= 0x20 && c < 0x7e && c !=
           0x5c)) {
-          stream.write((byte)c);
+          output.write((byte)c);
           return 2;
         }
         return (c >= 0x110000 || (c >= 0xd800 && c < 0xe000)) ? (-2) :
-          this.Base64Char(c, stream);
+          this.Base64Char(c, output);
       }
     }
 

@@ -9,19 +9,22 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import org.junit.Assert;
 import org.junit.Test;
+import com.upokecenter.util.*;
+import com.upokecenter.text.*;
+import com.upokecenter.text.encoders.*;
 
   public class CharsetsTest {
     static Object GetCharset(String name) {
-      return PeterO.Text.Encodings.GetEncoding(name, true);
+      return Encodings.GetEncoding(name, true);
     }
 
     static String CharsetGetString(Object charset, Object transform) {
       if ((charset) == null) {
  Assert.fail();
  }
-      return (String)PeterO.Text.Encodings.DecodeToString(
-         (PeterO.Text.ICharacterEncoding)charset,
-         (PeterO.ITransform)transform);
+      return (String)Encodings.DecodeToString(
+         (ICharacterEncoding)charset,
+         (ITransform)transform);
     }
 
     @Test

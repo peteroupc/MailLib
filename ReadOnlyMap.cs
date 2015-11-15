@@ -58,7 +58,7 @@ namespace PeterO {
     }
 
     /// <summary>Adds two TKey objects.</summary>
-    /// <param name='key'>A TKey object.</param>
+    /// <param name='key'>Not documented yet.</param>
     /// <param name='value'>A TValue object.</param>
     public void Add(TKey key, TValue value) {
       throw new NotSupportedException();

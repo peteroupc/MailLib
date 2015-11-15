@@ -1,4 +1,4 @@
-package com.upokecenter.mail;
+package com.upokecenter.mail.transforms;
 /*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
@@ -9,11 +9,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.io.*;
 import com.upokecenter.util.*;
+import com.upokecenter.mail.*;
 
     /**
      * Normalizes bare CR and bare LF to CRLF.
      */
-  class LineBreakNormalizeTransform implements ITransform
+  public class LineBreakNormalizeTransform implements ITransform
   {
     private InputStream stream;
     private int val;
@@ -22,9 +23,8 @@ import com.upokecenter.util.*;
 
     /**
      * Initializes a new instance of the LineBreakNormalizeTransform class.
-     * @param stream A InputStream object.
-     * @param supportBareLF A Boolean object.
      */
+
     public LineBreakNormalizeTransform (InputStream stream, boolean supportBareLF) {
       this.stream = stream;
       this.val = -1;

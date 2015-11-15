@@ -20,7 +20,7 @@ namespace PeterO.Text.Encoders {
 
       public int ReadChar(ITransform stream) {
         while (true) {
-          int b = this.state.ReadByte(stream);
+          int b = this.state.ReadInputByte(stream);
           if (b < 0) {
             if (this.bytesNeeded != 0) {
               this.bytesNeeded = 0;

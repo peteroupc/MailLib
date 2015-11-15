@@ -267,7 +267,7 @@ namespace PeterO.Text.Encoders {
         int c;
         while (true) {
           int b;
-          b = this.state.ReadByte(stream);
+          b = this.state.ReadInputByte(stream);
           if (b < 0) {
             if ((this.gbk1 | this.gbk2 | this.gbk3) == 0) {
               return -1;

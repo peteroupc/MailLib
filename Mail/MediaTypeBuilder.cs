@@ -41,17 +41,19 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Initializes a new instance of the MediaTypeBuilder class.</summary>
+    /// <summary>Initializes a new instance of the MediaTypeBuilder
+    /// class.</summary>
     public MediaTypeBuilder() {
       this.parameters = new Dictionary<string, string>();
       this.type = "application";
       this.subtype = "octet-stream";
     }
 
-    /// <summary>Initializes a new instance of the MediaTypeBuilder class.</summary>
+    /// <summary>Initializes a new instance of the MediaTypeBuilder
+    /// class.</summary>
     /// <param name='mt'>A MediaType object.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='mt'/>
-    /// is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='mt'/> is null.</exception>
     public MediaTypeBuilder(MediaType mt) {
       if (mt == null) {
         throw new ArgumentNullException("mt");
@@ -61,7 +63,8 @@ namespace PeterO.Mail {
       this.subtype = mt.SubType;
     }
 
-    /// <summary>Initializes a new instance of the MediaTypeBuilder class.</summary>
+    /// <summary>Initializes a new instance of the MediaTypeBuilder
+    /// class.</summary>
     /// <param name='type'>A string object.</param>
     /// <param name='subtype'>Another string object.</param>
     public MediaTypeBuilder(string type, string subtype) {
@@ -72,7 +75,7 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this is a text media
     /// type.</summary>
-    /// <value>True if this is a text media type; otherwise, false..</value>
+    /// <value>True if this is a text media type; otherwise, false.</value>
     public bool IsText {
       get {
         return this.TopLevelType.Equals("text");
@@ -81,14 +84,16 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this is a multipart media
     /// type.</summary>
-    /// <value>True if this is a multipart media type; otherwise, false..</value>
+    /// <value>True if this is a multipart media type; otherwise,
+    /// false.</value>
     public bool IsMultipart {
       get {
         return this.TopLevelType.Equals("multipart");
       }
     }
 
-    /// <summary>Converts this builder to an immutable media type object.</summary>
+    /// <summary>Converts this builder to an immutable media type
+    /// object.</summary>
     /// <returns>A MediaType object.</returns>
     public MediaType ToMediaType() {
       return new MediaType(this.type, this.subtype, this.parameters);
@@ -97,8 +102,8 @@ namespace PeterO.Mail {
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
-    /// is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public MediaTypeBuilder SetTopLevelType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -115,8 +120,8 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Removes a parameter from this builder object.</summary>
-    /// <param name='name'>Name of the parameter to remove. The name is compared
-    /// case-insensitively.</param>
+    /// <param name='name'>Name of the parameter to remove. The name is
+    /// compared case-insensitively.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
@@ -129,8 +134,8 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='name'>Name of the parameter to set. The name is compared
-    /// case-insensitively.</param>
+    /// <param name='name'>Name of the parameter to set. The name is
+    /// compared case-insensitively.</param>
     /// <param name='value'>A string object.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -157,8 +162,8 @@ if (MediaType.skipMimeTypeSubtype(name, 0, name.Length, null) !=
     /// <summary>Not documented yet.</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
-    /// is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public MediaTypeBuilder SetSubType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");

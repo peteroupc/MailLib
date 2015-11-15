@@ -63,7 +63,7 @@ The parameter  <i>str</i>
 
  * System.ArgumentNullException:
 The parameter  <i>str</i>
-is null.
+ is null.
 
 ### Read
 

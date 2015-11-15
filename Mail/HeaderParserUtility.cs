@@ -86,7 +86,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Quotes a string according to RFC 5322 rules.</summary>
-    /// <param name='str'>A String object.</param>
+    /// <param name='str'>Not documented yet.</param>
     /// <returns>A string object.</returns>
     public static string QuoteValue(String str) {
       var builder = new StringBuilder();
