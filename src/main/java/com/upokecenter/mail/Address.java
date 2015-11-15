@@ -25,7 +25,7 @@ import com.upokecenter.text.*;
       }
 
     /**
-     * Converts this object to a text string.
+     * Converts this address object to a text string.
      * @return A string representation of this object.
      */
     @Override public String toString() {

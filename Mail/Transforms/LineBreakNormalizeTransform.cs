@@ -8,6 +8,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 using System;
 using System.IO;
 using PeterO;
+using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
     /// <summary>Normalizes bare CR and bare LF to CRLF.</summary>
@@ -18,10 +19,9 @@ namespace PeterO.Mail.Transforms {
     private bool cr;
     private bool supportBareLF;
 
-    /// <summary>Initializes a new instance of the LineBreakNormalizeTransform
-    /// class.</summary>
-    /// <param name='stream'>A Stream object.</param>
-    /// <param name='supportBareLF'>A Boolean object.</param>
+    /// <summary>Initializes a new instance of the
+    /// LineBreakNormalizeTransform class.</summary>
+
     public LineBreakNormalizeTransform(Stream stream, bool supportBareLF) {
       this.stream = stream;
       this.val = -1;

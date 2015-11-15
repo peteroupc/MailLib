@@ -1,11 +1,11 @@
-package com.upokecenter.text;
+package com.upokecenter.text.encoders;
 
 import java.io.*;
 import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncodingGBK implements ICharacterEncoding {
+  public class EncodingGBK implements ICharacterEncoding {
     private ICharacterEncoder enc = EncodingGB18030.GetEncoder2(true);
 
     public ICharacterDecoder GetDecoder() {

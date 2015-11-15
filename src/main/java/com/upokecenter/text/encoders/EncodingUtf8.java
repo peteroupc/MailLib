@@ -1,11 +1,11 @@
-package com.upokecenter.text;
+package com.upokecenter.text.encoders;
 
 import java.io.*;
 import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
- class EncodingUtf8 implements ICharacterEncoding {
+ public class EncodingUtf8 implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
       private DecoderState state;
         private int cp = 0;
@@ -20,7 +20,7 @@ import com.upokecenter.text.*;
 
       public int ReadChar(ITransform stream) {
         while (true) {
-          int b = this.state.read(stream);
+          int b = this.state.ReadInputByte(stream);
           if (b < 0) {
             if (this.bytesNeeded != 0) {
               this.bytesNeeded = 0;
@@ -74,7 +74,7 @@ import com.upokecenter.text.*;
     }
 
     private static class Encoder implements ICharacterEncoder {
-      public int Encode(int c, InputStream stream) {
+      public int Encode(int c, OutputStream stream) throws java.io.IOException {
         if (c < 0) {
  return -1;
 }

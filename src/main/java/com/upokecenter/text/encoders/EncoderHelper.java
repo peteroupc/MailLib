@@ -1,4 +1,4 @@
-package com.upokecenter.text;
+package com.upokecenter.text.encoders;
 
 import java.io.*;
 
@@ -6,7 +6,7 @@ import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncoderHelper {
+  public class EncoderHelper {
     public static String InputToString(ICharacterInput reader) {
       StringBuilder builder = new StringBuilder();
       while (true) {

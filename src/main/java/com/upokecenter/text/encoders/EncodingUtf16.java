@@ -5,8 +5,8 @@ import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncodingUtf16 implements ICharacterEncoding {
-    class Decoder implements ICharacterDecoder {
+  public class EncodingUtf16 implements ICharacterEncoding {
+    private static class Decoder implements ICharacterDecoder {
       private DecoderState state;
       private int lead;
       private int surrogate;
@@ -21,7 +21,7 @@ import com.upokecenter.text.*;
 
       public int ReadChar(ITransform stream) {
         while (true) {
-          int b = this.state.read(stream);
+          int b = this.state.ReadInputByte(stream);
           if (b < 0) {
             if (this.lead >= 0 || this.surrogate >= 0) {
               this.lead = this.surrogate = -1;
@@ -62,7 +62,7 @@ import com.upokecenter.text.*;
       }
     }
 
-    class Encoder implements ICharacterEncoder {
+    private static class Encoder implements ICharacterEncoder {
       private boolean bigEndian;
 
       public Encoder (boolean bigEndian) {
@@ -71,7 +71,7 @@ import com.upokecenter.text.*;
 
       public int Encode(
        int c,
-       InputStream output) {
+       OutputStream output) throws java.io.IOException {
         if (c < 0) {
           return -1;
         }
@@ -115,11 +115,19 @@ import com.upokecenter.text.*;
       }
     }
 
+    public static ICharacterDecoder GetDecoder2(boolean bigEndian) {
+      return new Decoder(bigEndian);
+    }
+
+    public static ICharacterEncoder GetEncoder2(boolean bigEndian) {
+      return new Encoder(bigEndian);
+    }
+
     public ICharacterDecoder GetDecoder() {
-      return new Decoder(false);
+      return GetDecoder2(false);
     }
 
     public ICharacterEncoder GetEncoder() {
-      return new Encoder(false);
+      return GetEncoder2(false);
     }
   }

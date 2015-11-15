@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+using PeterO;
 using PeterO.Text.Encoders;
 
 namespace PeterO.Text {
@@ -15,18 +16,18 @@ namespace PeterO.Text {
         this.stream = stream;
       }
 
-/// <summary>Not documented yet.</summary>
-/// <returns></returns>
+    /// <summary>Not documented yet.</summary>
+    /// <returns></returns>
 public int ReadChar() {
         int c = this.reader.ReadChar(this.stream);
         return (c == -2) ? 0xfffd : c;
       }
 
-/// <summary>Not documented yet.</summary>
-/// <param name="buffer"></param>
-/// <param name="offset"></param>
-/// <param name="length"></param>
-/// <returns></returns>
+    /// <summary>Not documented yet.</summary>
+    /// <param name="buffer"></param>
+    /// <param name="offset"></param>
+    /// <param name="length"></param>
+    /// <returns></returns>
 public int Read(int[] buffer, int offset, int length) {
         if (buffer == null) {
           throw new ArgumentNullException("buffer");
@@ -332,11 +333,35 @@ public int Read(int[] buffer, int offset, int length) {
       return aliases;
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Resolves a character encoding's name
+    /// to a standard form.</summary>
     /// <param name='name'>A string that names a given character
-    /// encoding.</param>
-    /// <returns>A string object.</returns>
-    public static string ResolveAliasForWeb(string name) {
+    /// encoding. Any leading and trailing whitespace is removed and
+    /// the name converted to lowercase before resolving the
+    /// encoding's name. The Encoding Standard supports
+    /// only the following encodings (and defines aliases for most of
+    /// them):<list>
+    /// <item><c>utf-8</c> - UTF-8 (the encoding recommended by
+    /// the Encoding Standard for new data formats)</item>
+    /// <item><c>utf-16le</c> - UTF-16 little-endian</item>
+    /// <item><c>utf-16be</c> - UTF-16 big-endian</item>
+    /// <item>Two special purpose encodings (<c>x-user-defined</c> and
+    /// <c>replacement</c>)</item>
+    /// <item>28 legacy single-byte encodings (other than
+    /// <c>x-user-defined</c>)</item>
+    /// <item>Three legacy Japanese encodings (<c>shift_jis</c>, <c>euc-jp</c>,
+
+    /// <c>iso-2022-jp</c>)</item>
+    /// <item>Two legacy simplified Chinese encodings (<c>gbk</c>,
+
+    /// <c>gb18030</c>)</item>
+    /// <item><c>big5</c> - legacy traditional Chinese encoding</item>
+    /// <item><c>euc-kr</c> - legacy Korean encoding</item>
+    /// </list></param>
+    /// <returns>A standardized name for the encoding. Returns the empty
+    /// string if "name" is null
+    /// or empty, or if the encoding name is unsupported.</returns>
+    public static string ResolveAlias(string name) {
       if (String.IsNullOrEmpty(name)) {
         return String.Empty;
       }
@@ -346,20 +371,21 @@ public int Read(int[] buffer, int offset, int length) {
              String.Empty;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='name'>A string naming a character encoding. Uses a modified
-    /// version of the rules in the Encoding Standard to better conform, in some
-    /// cases, to email standards such as MIME, and some additional encodings
-    /// may be
-    /// supported. For instance, setting this value to true will enable the
-    /// &#x22;utf-7&#x22; encoding and change. <c>"us-ascii"</c>
-    /// and
-    /// &#x22;iso-8859-1&#x22; to a 7 bit encoding and the 8-bit Latin-1
-    /// encoding,
-    /// respectively, rather than aliases to &#x22;windows-1252&#x22;, as
-    /// specified
-    /// in the Encoding Standard.</param>
-    /// <returns>A string object.</returns>
+    /// <summary>Resolves a character encoding's name to a canonical form,
+    /// using rules more suitable for email.</summary>
+    /// <param name='name'>A string naming a character encoding. Uses a
+    /// modified version of the rules in the Encoding Standard to better
+    /// conform, in some cases, to email standards like MIME, and some
+    /// additional encodings may be supported. For instance, setting this
+    /// value to true will enable the &#x22;utf-7&#x22; encoding and
+    /// change. <c>"us-ascii"</c>
+    /// and &#x22;iso-8859-1&#x22; to a 7 bit
+    /// encoding and the 8-bit Latin-1 encoding, respectively, rather than
+    /// aliases to &#x22;windows-1252&#x22;, as specified in the Encoding
+    /// Standard.</param>
+    /// <returns>A standardized name for the encoding. Returns the empty
+    /// string if <paramref name='name'/> is null or empty, or if the
+    /// encoding name is unsupported.</returns>
     public static string ResolveAliasForEmail(string name) {
       if (String.IsNullOrEmpty(name)) {
         return String.Empty;
@@ -393,24 +419,23 @@ public int Read(int[] buffer, int offset, int length) {
       return String.Empty;
     }
 
-    /// <summary>Reads bytes from a data source and converts the bytes to a text
-    /// string in a given encoding. <para>In the .NET implementation, this
-    /// method is
-    /// implemented as an extension method to any object implementing
-    /// ICharacterEncoding and can be called as follows:
-    /// "encoding.DecodeString(transform)". If the object's class already has a
-    /// DecodeString method with the same parameters, that method takes
-    /// precedence
-    /// over this extension method.</para>
+    /// <summary>Reads bytes from a data source and converts the bytes to a
+    /// text string in a given encoding. <para>In the .NET implementation,
+    /// this method is implemented as an extension method to any object
+    /// implementing ICharacterEncoding and can be called as follows:
+    /// "encoding.DecodeString(transform)". If the object's class already
+    /// has a DecodeString method with the same parameters, that method
+    /// takes precedence over this extension method.</para>
     /// </summary>
     /// <param name='encoding'>An object that implements a given character
-    /// encoding.
-    /// Any bytes that can&#x27;t be decoded are converted to the replacement
-    /// character (U + FFFD).</param>
-    /// <param name='transform'>An object that implements a byte stream.</param>
+    /// encoding. Any bytes that can&#x27;t be decoded are converted to the
+    /// replacement character (U + FFFD).</param>
+    /// <param name='transform'>An object that implements a byte
+    /// stream.</param>
     /// <returns>The converted string.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='encoding'/> or <paramref name='transform'/> is null.</exception>
+    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// name='encoding'/> or <paramref name='transform'/> is
+    /// null.</exception>
     public static string DecodeToString(
      this ICharacterEncoding encoding,
      ITransform transform) {
@@ -424,21 +449,18 @@ public int Read(int[] buffer, int offset, int length) {
          GetDecoderInput(encoding, transform));
     }
 
-    /// <summary>Converts a character encoding into a character input stream.
-    /// <para>In the .NET implementation, this method is implemented as an
-    /// extension
-    /// method to any object implementing ICharacterEncoding and can be called
-    /// as
-    /// follows: "encoding.GetDecoderInput(transform)". If the object's class
+    /// <summary>Converts a character encoding into a character input
+    /// stream. <para>In the .NET implementation, this method is
+    /// implemented as an extension method to any object implementing
+    /// ICharacterEncoding and can be called as follows:
+    /// "encoding.GetDecoderInput(transform)". If the object's class
     /// already has a GetDecoderInput method with the same parameters, that
-    /// method
-    /// takes precedence over this extension method.</para>
+    /// method takes precedence over this extension method.</para>
     /// </summary>
-    /// <param name='encoding'>Encoding that exposes a decoder to be converted
-    /// into
-    /// a character input stream. If the decoder returns -2 (indicating a decode
-    /// error), the character input stream handles the error by returning a
-    /// replacement character in its place.</param>
+    /// <param name='encoding'>Encoding that exposes a decoder to be
+    /// converted into a character input stream. If the decoder returns -2
+    /// (indicating a decode error), the character input stream handles the
+    /// error by returning a replacement character in its place.</param>
     /// <param name='stream'>Byte stream to convert into Unicode
     /// characters.</param>
     /// <returns>An ICharacterInput object.</returns>
@@ -453,19 +475,22 @@ public int Read(int[] buffer, int offset, int length) {
     /// <summary>Not documented yet.</summary>
     /// <param name='name'>A string naming a character encoding.</param>
     /// <returns>An ICharacterEncoding object.</returns>
-    public static ICharacterEncoding GetEncoding(string name) {
+    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// name='name'/> is null.</exception>
+     public static ICharacterEncoding GetEncoding(string name) {
       return GetEncoding(name, false);
     }
 
-    /// <summary>Returns a character encoding from the given name.</summary>
-    /// <param name='name'>A string naming a character encoding.</param>
-    /// <param name='forEmail'>If false, uses the encoding resolution rules in
-    /// the
-    /// Encoding Standard. If true, uses modified rules as described in the
-    /// ResolveAliasForEmail method.</param>
-    /// <returns>An object that enables encoding and decoding text in the given
-    /// character encoding.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <summary>Returns a character encoding from the given
+    /// name.</summary>
+    /// <param name='name'>A string naming a character encoding. See the
+    /// ResolveAlias method.</param>
+    /// <param name='forEmail'>If false, uses the encoding resolution rules
+    /// in the Encoding Standard. If true, uses modified rules as described
+    /// in the ResolveAliasForEmail method.</param>
+    /// <returns>An object that enables encoding and decoding text in the
+    /// given character encoding.</returns>
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='name'/> is null.</exception>
     public static ICharacterEncoding GetEncoding(string name, bool forEmail) {
       if (name == null) {
@@ -475,7 +500,7 @@ public int Read(int[] buffer, int offset, int length) {
         return null;
       }
       name = forEmail ? ResolveAliasForEmail(name) :
-        ResolveAliasForWeb(name);
+        ResolveAlias(name);
       if (name.Equals("utf-8")) {
         return UTF8;
       }

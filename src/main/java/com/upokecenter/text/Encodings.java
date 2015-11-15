@@ -2,7 +2,8 @@ package com.upokecenter.text;
 
 import java.util.*;
 
-using PeterO.Text.Encoders;
+import com.upokecenter.util.*;
+import com.upokecenter.text.encoders.*;
 
     /**
      * Not documented yet.
@@ -19,18 +20,20 @@ private Encodings() {
         this.stream = stream;
       }
 
-/// <summary>Not documented yet.</summary>
-/// <returns></returns>
+    /**
+     * Not documented yet.
+     */
 public int ReadChar() {
         int c = this.reader.ReadChar(this.stream);
         return (c == -2) ? 0xfffd : c;
       }
 
-/// <summary>Not documented yet.</summary>
-/// <param name="buffer"></param>
-/// <param name="offset"></param>
-/// <param name="length"></param>
-/// <returns></returns>
+    /**
+     * Not documented yet.
+     * @param buffer
+     * @param offset
+     * @param length
+     */
 public int Read(int[] buffer, int offset, int length) {
         if (buffer == null) {
           throw new NullPointerException("buffer");
@@ -338,11 +341,17 @@ public int Read(int[] buffer, int offset, int length) {
     }
 
     /**
-     * Not documented yet.
-     * @param name A string that names a given character encoding.
-     * @return A string object.
+     *
      */
-    public static String ResolveAliasForWeb(String name) {
+
+    /**
+     *
+     */
+
+    /**
+     *
+     */
+    public static String ResolveAlias(String name) {
       if (((name) == null || (name).length() == 0)) {
         return "";
       }
@@ -353,17 +362,19 @@ public int Read(int[] buffer, int offset, int length) {
     }
 
     /**
-     * Not documented yet.
+     * Resolves a character encoding's name to a canonical form, using rules more
+     * suitable for email.
      * @param name A string naming a character encoding. Uses a modified version of
      * the rules in the Encoding Standard to better conform, in some cases,
-     * to email standards ((such instanceof MIME) ? (MIME)such : null), and
-     * some additional encodings may be supported. For instance, setting
-     * this value to true will enable the &#x22;utf-7&#x22; encoding and
-     * change. <code>"us-ascii"</code> and &#x22;iso-8859-1&#x22; to a 7 bit
-     * encoding and the 8-bit Latin-1 encoding, respectively, rather than
-     * aliases to &#x22;windows-1252&#x22;, as specified in the Encoding
-     * Standard.
-     * @return A string object.
+     * to email standards like MIME, and some additional encodings may be
+     * supported. For instance, setting this value to true will enable the
+     * &#x22;utf-7&#x22; encoding and change. <code>"us-ascii"</code> and
+     * &#x22;iso-8859-1&#x22; to a 7 bit encoding and the 8-bit Latin-1
+     * encoding, respectively, rather than aliases to
+     * &#x22;windows-1252&#x22;, as specified in the Encoding Standard.
+     * @return A standardized name for the encoding. Returns the empty string if
+     * {@code name} is null or empty, or if the encoding name is
+     * unsupported.
      */
     public static String ResolveAliasForEmail(String name) {
       if (((name) == null || (name).length() == 0)) {
@@ -415,7 +426,7 @@ public int Read(int[] buffer, int offset, int length) {
      * transform} is null.
      */
     public static String DecodeToString(
-     this ICharacterEncoding encoding,
+     ICharacterEncoding encoding,
      ITransform transform) {
       if (encoding == null) {
   throw new NullPointerException("encoding");
@@ -442,7 +453,7 @@ public int Read(int[] buffer, int offset, int length) {
      * @return An ICharacterInput object.
      */
     public static ICharacterInput GetDecoderInput(
-      this ICharacterEncoding encoding,
+      ICharacterEncoding encoding,
       ITransform stream) {
         return new DecoderToInputClass(
           encoding.GetDecoder(),
@@ -453,14 +464,16 @@ public int Read(int[] buffer, int offset, int length) {
      * Not documented yet.
      * @param name A string naming a character encoding.
      * @return An ICharacterEncoding object.
+     * @throws NullPointerException The parameter {@code name} is null.
      */
-    public static ICharacterEncoding GetEncoding(String name) {
+     public static ICharacterEncoding GetEncoding(String name) {
       return GetEncoding(name, false);
     }
 
     /**
      * Returns a character encoding from the given name.
-     * @param name A string naming a character encoding.
+     * @param name A string naming a character encoding. See the ResolveAlias
+     * method.
      * @param forEmail If false, uses the encoding resolution rules in the Encoding
      * Standard. If true, uses modified rules as described in the
      * ResolveAliasForEmail method.
@@ -476,7 +489,7 @@ public int Read(int[] buffer, int offset, int length) {
         return null;
       }
       name = forEmail ? ResolveAliasForEmail(name) :
-        ResolveAliasForWeb(name);
+        ResolveAlias(name);
       if (name.equals("utf-8")) {
         return UTF8;
       }

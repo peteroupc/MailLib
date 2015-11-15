@@ -24,5 +24,6 @@ import com.upokecenter.mail.*;
      * for this method to return 0 if, for example, it can't generate new
      * bytes yet based on the current input.).
      */
-    int Encode(int c, InputStream output);
+    int Encode(int c, OutputStream output) throws IOException;
+    // TODO: Consider defining an IWriter-like interface instead of InputStream
   }

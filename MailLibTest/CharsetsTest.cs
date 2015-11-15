@@ -7,20 +7,23 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PeterO;
+using PeterO.Text;
+using PeterO.Text.Encoders;
 namespace MailLibTest {
   [TestClass]
   public class CharsetsTest {
     internal static object GetCharset(string name) {
-      return PeterO.Text.Encodings.GetEncoding(name, true);
+      return Encodings.GetEncoding(name, true);
     }
 
     internal static string CharsetGetString(object charset, object transform) {
       if ((charset) == null) {
  Assert.Fail();
  }
-      return (string)PeterO.Text.Encodings.DecodeToString(
-         (PeterO.Text.ICharacterEncoding)charset,
-         (PeterO.ITransform)transform);
+      return (string)Encodings.DecodeToString(
+         (ICharacterEncoding)charset,
+         (ITransform)transform);
     }
 
     [TestMethod]

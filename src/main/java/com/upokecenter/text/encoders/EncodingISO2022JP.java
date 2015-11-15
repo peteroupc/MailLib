@@ -1,11 +1,11 @@
-package com.upokecenter.text;
+package com.upokecenter.text.encoders;
 
 import java.io.*;
 import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncodingISO2022JP implements ICharacterEncoding {
+  public class EncodingISO2022JP implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
       private int machineState = 0;
       private int outputState = 0;
@@ -19,7 +19,7 @@ import com.upokecenter.text.*;
 
       public int ReadChar(ITransform stream) {
         while (true) {
-          int b = this.state.read(stream);
+          int b = this.state.ReadInputByte(stream);
           switch (this.machineState) {
             case 0:
               // ASCII
@@ -164,7 +164,7 @@ import com.upokecenter.text.*;
         this.state = new DecoderState(2);
       }
 
-      public int Encode(int c, InputStream output) {
+      public int Encode(int c, OutputStream output) throws java.io.IOException {
         if (c < 0) {
           if (this.encoderState != 0) {
             this.state.PrependOne(c);

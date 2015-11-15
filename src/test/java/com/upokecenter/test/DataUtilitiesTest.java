@@ -929,47 +929,47 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         }
         {
           java.io.ByteArrayOutputStream ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\r1", 0, 3, ms, true,true);
+          DataUtilities.WriteUtf8("0\r1", 0, 3, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\n1", 0, 3, ms, true,true);
+          DataUtilities.WriteUtf8("0\n1", 0, 3, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\r\n1", 0, 4, ms, true,true);
+          DataUtilities.WriteUtf8("0\r\n1", 0, 4, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\r\r1", 0, 4, ms, true,true);
+          DataUtilities.WriteUtf8("0\r\r1", 0, 4, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\n\r1", 0, 4, ms, true,true);
+          DataUtilities.WriteUtf8("0\n\r1", 0, 4, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\r\r\n1", 0, 5, ms, true,true);
+          DataUtilities.WriteUtf8("0\r\r\n1", 0, 5, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\n\r\n1", 0, 5, ms, true,true);
+          DataUtilities.WriteUtf8("0\n\r\n1", 0, 5, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\n\n\r1", 0, 5, ms, true,true);
+          DataUtilities.WriteUtf8("0\n\n\r1", 0, 5, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());
           ms = new java.io.ByteArrayOutputStream();
-          DataUtilities.WriteUtf8("0\r\r\r1", 0, 5, ms, true,true);
+          DataUtilities.WriteUtf8("0\r\r\r1", 0, 5, ms, true, true);
           TestCommon.AssertByteArraysEqual(
             new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a, 0x31  },
             ms.toByteArray());

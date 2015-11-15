@@ -127,7 +127,7 @@ namespace PeterO.Text.Encoders {
           switch (this.machineState) {
             case 0:
               // not in base64
-              b = this.state.ReadByte(stream);
+              b = this.state.ReadInputByte(stream);
               if (b < 0) {
                 // done
                 return -1;
@@ -148,7 +148,7 @@ namespace PeterO.Text.Encoders {
               }
               break;
             case 1:  // start of base64
-              b = this.state.ReadByte(stream);
+              b = this.state.ReadInputByte(stream);
               if (b < 0) {
                 // End of stream, illegal
                 this.machineState = 0;
@@ -200,7 +200,7 @@ namespace PeterO.Text.Encoders {
               break;
             case 2:
               // continuing base64
-              b = this.state.ReadByte(stream);
+              b = this.state.ReadInputByte(stream);
               this.alphavalue = (b < 0 || b >= 0x80) ? -1 : Alphabet[b];
               if (this.alphavalue >= 0) {
                 // Base64 alphabet (except padding)
@@ -271,18 +271,18 @@ namespace PeterO.Text.Encoders {
     }
 
     private class Encoder : ICharacterEncoder {
-      private int Base64Char(int c, Stream stream) {
+      private int Base64Char(int c, Stream output) {
         if (c <= 0xffff) {
           int byte1 = (c >> 8) & 0xff;
           int byte2 = c & 0xff;
           int c1 = ToAlphabet[(byte1 >> 2) & 63];
           int c2 = ToAlphabet[((byte1 & 3) << 4) + ((byte2 >> 4) & 15)];
           int c3 = ToAlphabet[((byte2 & 15) << 2)];
-          stream.WriteByte((byte)0x2b);
-          stream.WriteByte((byte)c1);
-          stream.WriteByte((byte)c2);
-          stream.WriteByte((byte)c3);
-          stream.WriteByte((byte)0x2d);
+          output.WriteByte((byte)0x2b);
+          output.WriteByte((byte)c1);
+          output.WriteByte((byte)c2);
+          output.WriteByte((byte)c3);
+          output.WriteByte((byte)0x2d);
           return 5;
         } else {
           int cc1 = (((c - 0x10000) >> 10) & 0x3ff) + 0xd800;
@@ -297,34 +297,34 @@ namespace PeterO.Text.Encoders {
           int c4 = ToAlphabet[byte3 & 63];
           int c5 = ToAlphabet[(byte4 >> 2) & 63];
           int c6 = ToAlphabet[((byte4 & 3) << 4)];
-          stream.WriteByte((byte)0x2b);
-          stream.WriteByte((byte)c1);
-          stream.WriteByte((byte)c2);
-          stream.WriteByte((byte)c3);
-          stream.WriteByte((byte)c4);
-          stream.WriteByte((byte)c5);
-          stream.WriteByte((byte)c6);
-          stream.WriteByte((byte)0x2d);
+          output.WriteByte((byte)0x2b);
+          output.WriteByte((byte)c1);
+          output.WriteByte((byte)c2);
+          output.WriteByte((byte)c3);
+          output.WriteByte((byte)c4);
+          output.WriteByte((byte)c5);
+          output.WriteByte((byte)c6);
+          output.WriteByte((byte)0x2d);
           return 8;
         }
       }
 
-      public int Encode(int c, Stream stream) {
+      public int Encode(int c, Stream output) {
         if (c < 0) {
  return -1;
 }
         if (c == 0x2d) {
-          stream.WriteByte((byte)0x2b);
-          stream.WriteByte((byte)0x2d);
+          output.WriteByte((byte)0x2b);
+          output.WriteByte((byte)0x2d);
           return 2;
         }
      if (c == 0x09 || c == 0x0a || c == 0x0d || (c >= 0x20 && c < 0x7e && c !=
           0x5c)) {
-          stream.WriteByte((byte)c);
+          output.WriteByte((byte)c);
           return 2;
         }
         return (c >= 0x110000 || (c >= 0xd800 && c < 0xe000)) ? (-2) :
-          this.Base64Char(c, stream);
+          this.Base64Char(c, output);
       }
     }
 

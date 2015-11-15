@@ -7,9 +7,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
 using PeterO;
+using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
   internal sealed class QuotedPrintableTransform : ITransform {
+    // TODO: Eliminate TransformWithUnget
     private TransformWithUnget input;
     private int lineCharCount;
     private bool lenientLineBreaks;

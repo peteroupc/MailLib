@@ -88,7 +88,7 @@ private HeaderParserUtility() {
 
     /**
      * Quotes a string according to RFC 5322 rules.
-     * @param str A string object.
+     * @param str Not documented yet.
      * @return A string object.
      */
     public static String QuoteValue(String str) {

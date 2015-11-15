@@ -16,9 +16,8 @@ namespace PeterO.Mail {
   public class Address {
     private readonly string localPart;
 
-    /// <summary>Gets the local part of this email address (the part before the
-    /// "@"
-    /// sign).</summary>
+    /// <summary>Gets the local part of this email address (the part before
+    /// the "@" sign).</summary>
     /// <value>The local part of this email address (the part before the
     /// &#x22;@&#x22; sign).</value>
     public string LocalPart {
@@ -27,7 +26,7 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Converts this object to a text string.</summary>
+    /// <summary>Converts this address object to a text string.</summary>
     /// <returns>A string representation of this object.</returns>
     public override string ToString() {
       if (this.localPart.Length > 0 &&
@@ -95,11 +94,10 @@ null) == this.localPart.Length) {
 
     private readonly string domain;
 
-    /// <summary>Gets the domain of this email address (the part after the "@"
-    /// sign).</summary>
+    /// <summary>Gets the domain of this email address (the part after the
+    /// "@" sign).</summary>
     /// <value>The domain of this email address (the part after the
-    /// &#x22;@&#x22;
-    /// sign).</value>
+    /// &#x22;@&#x22; sign).</value>
     public string Domain {
       get {
         return this.domain;
@@ -108,7 +106,7 @@ null) == this.localPart.Length) {
 
     /// <summary>Initializes a new instance of the Address class.</summary>
     /// <param name='addressValue'>An email address.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='addressValue'/> is null.</exception>
     public Address(string addressValue) {
       if (addressValue == null) {

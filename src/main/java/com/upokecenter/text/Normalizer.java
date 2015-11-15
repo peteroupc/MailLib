@@ -7,7 +7,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-using PeterO.Text.Encoders;
+import com.upokecenter.text.encoders.*;
 
     /**
      * <p>Implements the Unicode normalization algorithm and contains methods and

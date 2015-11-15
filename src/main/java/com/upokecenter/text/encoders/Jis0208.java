@@ -5,7 +5,7 @@ private Jis0208() {
 }
 private static short[] table = new short[11104];
 
-static Jis0208() {
+static {
 System.arraycopy(method0(), 0, table, 0, 4096);
 System.arraycopy(method1(), 0, table, 4096, 4096);
 System.arraycopy(method2(), 0, table, 8192, 2912);

@@ -6,7 +6,7 @@ using PeterO.Text;
 
 namespace PeterO.Text.Encoders {
   internal class EncodingUtf16 : ICharacterEncoding {
-    internal class Decoder : ICharacterDecoder {
+    private class Decoder : ICharacterDecoder {
       private DecoderState state;
       private int lead;
       private int surrogate;
@@ -21,7 +21,7 @@ namespace PeterO.Text.Encoders {
 
       public int ReadChar(ITransform stream) {
         while (true) {
-          int b = this.state.ReadByte(stream);
+          int b = this.state.ReadInputByte(stream);
           if (b < 0) {
             if (this.lead >= 0 || this.surrogate >= 0) {
               this.lead = this.surrogate = -1;
@@ -62,7 +62,7 @@ namespace PeterO.Text.Encoders {
       }
     }
 
-    internal class Encoder : ICharacterEncoder {
+    private class Encoder : ICharacterEncoder {
       private bool bigEndian;
 
       public Encoder(bool bigEndian) {
@@ -115,12 +115,20 @@ namespace PeterO.Text.Encoders {
       }
     }
 
+    internal static ICharacterDecoder GetDecoder2(bool bigEndian) {
+      return new Decoder(bigEndian);
+    }
+
+    internal static ICharacterEncoder GetEncoder2(bool bigEndian) {
+      return new Encoder(bigEndian);
+    }
+
     public ICharacterDecoder GetDecoder() {
-      return new Decoder(false);
+      return GetDecoder2(false);
     }
 
     public ICharacterEncoder GetEncoder() {
-      return new Encoder(false);
+      return GetEncoder2(false);
     }
   }
 }

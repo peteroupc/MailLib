@@ -1,6 +1,8 @@
 package com.upokecenter.text.encoders;
 
-class DecoderState {
+import com.upokecenter.util.*;
+
+public class DecoderState {
   // NOTE: bytes is an int array because some
   // decoders can prepend end-of-stream (-1).
   private int[] bytes;
@@ -46,7 +48,7 @@ class DecoderState {
     }
 
     public int read() {
-      return this.s.read(this.t);
+      return this.s.ReadInputByte(this.t);
     }
   }
 
@@ -62,7 +64,7 @@ this,
 stream));
   }
 
-  public int ReadByte(ITransform stream) {
+  public int ReadInputByte(ITransform stream) {
    if (this.prependedBytes > 0) {
     --this.prependedBytes;
     int b = this.bytes[this.prependedBytes];
