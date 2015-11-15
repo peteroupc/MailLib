@@ -19,7 +19,7 @@ Initializes a new instance of the MediaTypeBuilder class.
 
  * System.ArgumentNullException:
 The parameter  <i>mt</i>
-is null.
+ is null.
 
 ### MediaTypeBuilder Constructor
 
@@ -49,7 +49,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
-True if this is a multipart media type; otherwise, false..
+True if this is a multipart media type; otherwise, false.
 
 ### IsText
 
@@ -59,7 +59,7 @@ Gets a value indicating whether this is a text media type.
 
 <b>Returns:</b>
 
-True if this is a text media type; otherwise, false..
+True if this is a text media type; otherwise, false.
 
 ### SubType
 
@@ -146,7 +146,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter  <i>str</i>
-is null.
+ is null.
 
 ### SetTopLevelType
 
@@ -167,7 +167,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter  <i>str</i>
-is null.
+ is null.
 
 ### ToMediaType
 

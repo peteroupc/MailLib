@@ -41,7 +41,7 @@ The parameter  <i>encoding</i>
         this PeterO.Text.ICharacterEncoding encoding,
         PeterO.ITransform stream);
 
-Converts a character encoding into a character input stream.In the .NET implementation, this method is implemented as an extension method to any object implementing ICharacterEncoding and can be called as follows: "encoding.GetDecoderInput(transform)". If the object's class already has a GetDecoderInput method with the same parameters, that method takes precedence over this extension method.
+Converts a character encoding into a character input stream. In the .NET implementation, this method is implemented as an extension method to any object implementing ICharacterEncoding and can be called as follows: "encoding.GetDecoderInput(transform)". If the object's class already has a GetDecoderInput method with the same parameters, that method takes precedence over this extension method.
 
 <b>Parameters:</b>
 
@@ -68,6 +68,12 @@ Not documented yet.
 
 An ICharacterEncoding object.
 
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>name</i>
+ is null.
+
 ### GetEncoding
 
     public static PeterO.Text.ICharacterEncoding GetEncoding(
@@ -78,7 +84,7 @@ Returns a character encoding from the given name.
 
 <b>Parameters:</b>
 
- * <i>name</i>: A string naming a character encoding.
+ * <i>name</i>: A string naming a character encoding. See the ResolveAlias method.
 
  * <i>forEmail</i>: If false, uses the encoding resolution rules in the Encoding Standard. If true, uses modified rules as described in the ResolveAliasForEmail method.
 
@@ -92,12 +98,25 @@ An object that enables encoding and decoding text in the given character encodin
 The parameter  <i>name</i>
  is null.
 
+### ResolveAlias
+
+    public static string ResolveAlias(
+        string name);
+
+<b>Parameters:</b>
+
+ * <i>name</i>: Not documented yet.
+
+<b>Returns:</b>
+
+A string object.
+
 ### ResolveAliasForEmail
 
     public static string ResolveAliasForEmail(
         string name);
 
-Not documented yet.
+Resolves a character encoding's name to a canonical form, using rules more suitable for email.
 
 <b>Parameters:</b>
 
@@ -105,19 +124,5 @@ Not documented yet.
 
 <b>Returns:</b>
 
-A string object.
-
-### ResolveAliasForWeb
-
-    public static string ResolveAliasForWeb(
-        string name);
-
-Not documented yet.
-
-<b>Parameters:</b>
-
- * <i>name</i>: A string that names a given character encoding.
-
-<b>Returns:</b>
-
-A string object.
+A standardized name for the encoding. Returns the empty string if  <i>name</i>
+ is null or empty, or if the encoding name is unsupported.

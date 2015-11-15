@@ -22,7 +22,7 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * (a) The preamble and epilogue of multipart messages, which will be ignored.
 
- * (b) If the charset is declared to be  `utf-8` .
+ * (b) If the charset is declared to be `utf-8` .
 
  * (c) If the content type is "text/html" and the charset is declared to be  `ascii` ,  `us-ascii` , "windows-1252", "windows-1251", or "iso-8859-*" (all single byte encodings).
 
@@ -30,7 +30,7 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * If the first line of the message starts with the word "From" followed by a space, it is skipped.
 
- * The name `ascii` is treated as a synonym for  `us-ascii` , despite being a reserved name under RFC 2046. The name  `cp1252` is treated as a synonym for  `windows-1252` , even though it's not an IANA registered alias.
+ * The name  `ascii` is treated as a synonym for  `us-ascii` , despite being a reserved name under RFC 2046. The name  `cp1252` is treated as a synonym for `windows-1252` , even though it's not an IANA registered alias.
 
  * The following deviations involve encoded words under RFC 2047:
 
@@ -214,7 +214,7 @@ A Message object.
 
 Generates this message's data in text form. The generated message will always be 7-bit ASCII, and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
 
-The following applies to the From, To, Cc, and Bcc header fields. If the header field has an invalid syntax or has no addresses, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to  `me@[header-name]-address.invalid` as the address (a  `.invalid` address is a reserved address that can never belong to anyone).
+The following applies to the From, To, Cc, and Bcc header fields. If the header field has an invalid syntax or has no addresses, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to `me@[header-name]-address.invalid` as the address (a `.invalid` address is a reserved address that can never belong to anyone).
 
 <b>Returns:</b>
 
@@ -436,7 +436,7 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter  <i>str</i>
-is null.
+ is null.
 
 ### SetTextAndHtml
 
@@ -482,4 +482,4 @@ This instance.
 
  * System.ArgumentNullException:
 The parameter  <i>str</i>
-is null.
+ is null.

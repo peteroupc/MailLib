@@ -8,14 +8,14 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 using System;
 
 namespace PeterO.Mail {
-    /// <summary>Specifies the context where an encoded word under RFC 2047 can
-    /// appear.</summary>
+    /// <summary>Specifies the context where an encoded word under RFC 2047
+    /// can appear.</summary>
   internal enum EncodedWordContext {
     /// <summary>In an unstructured header field's value.</summary>
     Unstructured,
 
-    /// <summary>In a "word" element within a "phrase" of a structured header
-    /// field.</summary>
+    /// <summary>In a "word" element within a "phrase" of a structured
+    /// header field.</summary>
     Phrase,
 
     /// <summary>In a comment within a structured header field.</summary>

@@ -16,8 +16,8 @@ namespace PeterO.Mail {
     private string type;
     private IDictionary<string, string> parameters;
 
-    /// <summary>Gets or sets this value's disposition type, such value, such as
-    /// "inline" or "attachment".</summary>
+    /// <summary>Gets or sets this value's disposition type, such value,
+    /// such as "inline" or "attachment".</summary>
     /// <value>This value&apos;s disposition type, such value, such as
     /// &quot;inline&quot; or &quot;attachment&quot;.</value>
     public string DispositionType {
@@ -40,8 +40,8 @@ namespace PeterO.Mail {
     /// <summary>Initializes a new instance of the DispositionBuilder
     /// class.</summary>
     /// <param name='mt'>A ContentDisposition object.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='mt'/>
-    /// is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='mt'/> is null.</exception>
     public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
         throw new ArgumentNullException("mt");
@@ -60,7 +60,7 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this is a text media
     /// type.</summary>
-    /// <value>True if this is a text media type; otherwise, false..</value>
+    /// <value>True if this is a text media type; otherwise, false.</value>
     public bool IsText {
       get {
         return this.DispositionType.Equals("text");
@@ -69,7 +69,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a value indicating whether this is a multipart media
     /// type.</summary>
-    /// <value>True if this is a multipart media type; otherwise, false..</value>
+    /// <value>True if this is a multipart media type; otherwise,
+    /// false.</value>
     public bool IsMultipart {
       get {
         return this.DispositionType.Equals("multipart");
@@ -86,8 +87,8 @@ namespace PeterO.Mail {
     /// <summary>Sets the disposition type, such as "inline".</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
-    /// is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public DispositionBuilder SetDispositionType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -103,9 +104,10 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Removes a parameter from this content disposition.</summary>
-    /// <param name='name'>The parameter to remove. The name is compared case
-    /// insensitively.</param>
+    /// <summary>Removes a parameter from this content
+    /// disposition.</summary>
+    /// <param name='name'>The parameter to remove. The name is compared
+    /// case insensitively.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
@@ -118,14 +120,16 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Sets a parameter of this content disposition.</summary>
-    /// <param name='name'>Name of the parameter to set. If this name already exists
-    /// (compared case-insensitively), it will be overwritten.</param>
+    /// <param name='name'>Name of the parameter to set. If this name
+    /// already exists (compared case-insensitively), it will be
+    /// overwritten.</param>
     /// <param name='value'>Value of the parameter to set.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>Either <paramref name='value'/> or
-    /// <paramref name='name'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref name='name'/> is
-    /// empty, or it isn't a well-formed parameter name.</exception>
+    /// <exception cref='ArgumentNullException'>Either <paramref
+    /// name='value'/> or <paramref name='name'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='name'/> is empty, or it isn't a well-formed parameter
+    /// name.</exception>
     public DispositionBuilder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException("value");

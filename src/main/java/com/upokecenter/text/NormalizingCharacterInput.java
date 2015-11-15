@@ -9,7 +9,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.util.*;
 
-using PeterO.Text.Encoders;
+import com.upokecenter.text.encoders.*;
 
     /**
      * <p>A character input class that implements the Unicode normalization

@@ -384,7 +384,8 @@ if (this.bufferCount != 0) {
 
     /// <summary>Gets a value indicating whether a new body part was
     /// detected.</summary>
-    /// <value>True if a new body part was detected; otherwise, false.</value>
+    /// <value>True if a new body part was detected; otherwise,
+    /// false.</value>
     public bool HasNewBodyPart {
       get {
         return this.hasNewBodyPart;

@@ -11,7 +11,7 @@ import java.util.*;
 
 import com.upokecenter.util.*;
 import com.upokecenter.text.*;
-using PeterO.Text.Encoders;
+import com.upokecenter.text.encoders.*;
 
     /**
      * Specifies how a message body should be displayed or handled by a mail user

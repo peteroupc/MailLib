@@ -10,7 +10,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace PeterO.Mail {
-    /// <summary>Represents an email address and a name for that address.</summary>
+    /// <summary>Represents an email address and a name for that
+    /// address.</summary>
   public class NamedAddress {
     private string name;
 
@@ -79,7 +80,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Initializes a new instance of the NamedAddress class.</summary>
+    /// <summary>Initializes a new instance of the NamedAddress
+    /// class.</summary>
     /// <param name='address'>A string object.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='address'/> is null.</exception>
@@ -105,8 +107,8 @@ tokener.GetTokens());
       this.groupAddresses = na.groupAddresses;
     }
 
-    /// <summary>Initializes a new instance of the NamedAddress class using the
-    /// given display name and email address.</summary>
+    /// <summary>Initializes a new instance of the NamedAddress class using
+    /// the given display name and email address.</summary>
     /// <param name='displayName'>A string object.</param>
     /// <param name='address'>Another string object.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -123,7 +125,8 @@ tokener.GetTokens());
       this.address = new Address(address);
     }
 
-    /// <summary>Initializes a new instance of the NamedAddress class.</summary>
+    /// <summary>Initializes a new instance of the NamedAddress
+    /// class.</summary>
     /// <param name='displayName'>A string object.</param>
     /// <param name='address'>An email address.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -140,14 +143,15 @@ tokener.GetTokens());
       this.address = address;
     }
 
-    /// <summary>Initializes a new instance of the NamedAddress class using the
-    /// given name and an email address made up of its local part and
+    /// <summary>Initializes a new instance of the NamedAddress class using
+    /// the given name and an email address made up of its local part and
     /// domain.</summary>
     /// <param name='displayName'>A string object.</param>
     /// <param name='localPart'>Another string object.</param>
     /// <param name='domain'>A string object. (3).</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='localPart'/> or <paramref name='domain'/> is null.</exception>
+    /// name='localPart'/> or <paramref name='domain'/> is
+    /// null.</exception>
     public NamedAddress(string displayName, string localPart, string domain) {
       if (localPart == null) {
         throw new ArgumentNullException("localPart");
@@ -163,11 +167,13 @@ tokener.GetTokens());
       this.name = displayName;
     }
 
-    /// <summary>Initializes a new instance of the NamedAddress class.</summary>
+    /// <summary>Initializes a new instance of the NamedAddress
+    /// class.</summary>
     /// <param name='groupName'>A string object.</param>
     /// <param name='mailboxes'>An IList object.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='groupName'/> or <paramref name='mailboxes'/> is null.</exception>
+    /// name='groupName'/> or <paramref name='mailboxes'/> is
+    /// null.</exception>
     public NamedAddress(string groupName, IList<NamedAddress> mailboxes) {
       if (groupName == null) {
         throw new ArgumentNullException("groupName");
@@ -190,10 +196,11 @@ tokener.GetTokens());
 
     private IList<NamedAddress> groupAddresses;
 
-    /// <summary>Gets a read-only list of addresses that make up the group, if this
-    /// object represents a group, or an empty list otherwise.</summary>
-    /// <value>A list of address that make up the group, if this object represents a
-    /// group, or an empty list otherwise.</value>
+    /// <summary>Gets a read-only list of addresses that make up the group,
+    /// if this object represents a group, or an empty list
+    /// otherwise.</summary>
+    /// <value>A list of address that make up the group, if this object
+    /// represents a group, or an empty list otherwise.</value>
     public IList<NamedAddress> GroupAddresses {
       get {
         return new

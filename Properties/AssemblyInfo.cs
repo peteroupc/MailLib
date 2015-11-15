@@ -11,8 +11,8 @@ using System.Reflection;
 [assembly: AssemblyTitle("MailLib")]
 [assembly:
 
-  AssemblyDescription("A parser and generator of Internet email messages as a Portable Class Library."
-)]
+  AssemblyDescription(
+  "A parser and generator of Internet email messages as a Portable Class Library." )]
 [assembly: AssemblyConfiguration("")]
 [assembly: CLSCompliant(true)]
 [assembly: AssemblyCompany("Peter Occil")]

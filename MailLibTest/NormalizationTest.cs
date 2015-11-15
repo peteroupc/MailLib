@@ -99,20 +99,20 @@ namespace MailLibTest {
     public void TestIsNormalizedAlmostSurrogates() {
           Assert.IsTrue(
     NormalizingCharacterInput.IsNormalized(
-     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00
-       }, Normalization.NFC));
+     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+       Normalization.NFC));
     Assert.IsTrue(
     NormalizingCharacterInput.IsNormalized(
-     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00
-       }, Normalization.NFD));
+     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+       Normalization.NFD));
     Assert.IsTrue(
     NormalizingCharacterInput.IsNormalized(
-     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00
-       }, Normalization.NFKC));
+     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+       Normalization.NFKC));
     Assert.IsTrue(
     NormalizingCharacterInput.IsNormalized(
-     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00
-       }, Normalization.NFKD));
+     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+       Normalization.NFKD));
     }
 
     [TestMethod]

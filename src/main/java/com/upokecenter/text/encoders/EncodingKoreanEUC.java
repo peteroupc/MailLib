@@ -1,11 +1,11 @@
-package com.upokecenter.text;
+package com.upokecenter.text.encoders;
 
 import java.io.*;
 import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncodingKoreanEUC implements ICharacterEncoding {
+  public class EncodingKoreanEUC implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
       private DecoderState state;
       private int lead;

@@ -1,4 +1,4 @@
-package com.upokecenter.mail;
+package com.upokecenter.mail.transforms;
 /*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
@@ -13,7 +13,7 @@ import com.upokecenter.util.*;
     /**
      * Normalizes bare CR and bare LF to CRLF.
      */
-  class LineBreakNormalizeTransform implements ITransform
+  public class LineBreakNormalizeTransform implements ITransform
   {
     private InputStream stream;
     private int val;

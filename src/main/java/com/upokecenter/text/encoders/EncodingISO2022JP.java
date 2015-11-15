@@ -1,11 +1,11 @@
-package com.upokecenter.text;
+package com.upokecenter.text.encoders;
 
 import java.io.*;
 import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncodingISO2022JP implements ICharacterEncoding {
+  public class EncodingISO2022JP implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
       private int machineState = 0;
       private int outputState = 0;
