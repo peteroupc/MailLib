@@ -8,8 +8,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 using System;
 
 namespace PeterO.Text {
-    /// <summary>Implements the LZ4 algorithm (see "LZ4 Format Description" by Y
-    /// Collet for more information).</summary>
+    /// <summary>Implements the LZ4 algorithm (see "LZ4 Format Description"
+    /// by Y Collet for more information).</summary>
   internal static class Lz4 {
     /// <summary>Decompresses a byte array compressed using the LZ4
     /// format.</summary>

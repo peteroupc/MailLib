@@ -8,10 +8,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 using System;
 
 namespace PeterO {
-    /// <summary>A generic interface for reading data one byte at a time.</summary>
+    /// <summary>A generic interface for reading data one byte at a
+    /// time.</summary>
   public interface ITransform {
     /// <summary>Reads a byte from the data source.</summary>
-    /// <returns>The byte read, or -1 if the end of the source is reached.</returns>
+    /// <returns>The byte read, or -1 if the end of the source is
+    /// reached.</returns>
     int ReadByte();
   }
 }

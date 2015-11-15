@@ -6,7 +6,7 @@ import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncoderAlgorithms {
+  public class EncoderAlgorithms {
     private static class DecodeWithFallbackDecoder implements ICharacterDecoder,
       ICharacterEncoding {
       private boolean bomChecked;
@@ -137,7 +137,7 @@ bomTransform);
     }
 
     /**
-     * Not documented yet.
+     *
      * @param stream Not documented yet.
      * @param stream Not documented yet.
      * @param stream Not documented yet.
@@ -146,10 +146,24 @@ bomTransform);
      * @param stream Not documented yet.
      * @param stream Not documented yet.
      * @param stream Not documented yet.
-     * @return A 32-bit signed integer.
+     * @param stream Not documented yet.
+     * @param stream Not documented yet.
+     * @param stream Not documented yet.
+     * @param stream Not documented yet.
+     * @param stream Not documented yet.
+     * @param encoding Not documented yet.
+     * @param output Not documented yet. (3).
+     */
+
+    /**
+     *
      * @throws NullPointerException The parameter {@code stream} or {@code output}
      * is null.
      */
+
+  /**
+   * Not documented yet.
+   */
     public static int EncodeAlgorithm(
       ICharacterInput stream,
       ICharacterEncoding encoding,

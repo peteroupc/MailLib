@@ -1,12 +1,12 @@
-package com.upokecenter.text;
+package com.upokecenter.text.encoders;
 
 import java.io.*;
 import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncodingUtf7 implements ICharacterEncoding {
-    static final int[] Alphabet = { -1, -1, -1, -1, -1, -1,
+  public class EncodingUtf7 implements ICharacterEncoding {
+    public static final int[] Alphabet = { -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
           -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
@@ -16,7 +16,7 @@ import com.upokecenter.text.*;
         -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
         41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
-    static final int[] ToAlphabet = {
+    public static final int[] ToAlphabet = {
   0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d,
   0x4e, 0x4f, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a,
   0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6a, 0x6b, 0x6c, 0x6d,

@@ -8,8 +8,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 using System;
 
 namespace PeterO.Mail {
-    /// <summary>A lightweight version of MemoryStream, since it doesn't derive from
-    /// Stream and doesn't use IO exceptions.</summary>
+    /// <summary>A lightweight version of MemoryStream, since it doesn't
+    /// derive from Stream and doesn't use IO exceptions.</summary>
   internal sealed class ArrayWriter {
     private int retvalPos;
     private int retvalMax;

@@ -5,8 +5,8 @@ import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncodingUtf16 implements ICharacterEncoding {
-    class Decoder implements ICharacterDecoder {
+  public class EncodingUtf16 implements ICharacterEncoding {
+    public class Decoder implements ICharacterDecoder {
       private DecoderState state;
       private int lead;
       private int surrogate;
@@ -62,7 +62,7 @@ import com.upokecenter.text.*;
       }
     }
 
-    class Encoder implements ICharacterEncoder {
+    public class Encoder implements ICharacterEncoder {
       private boolean bigEndian;
 
       public Encoder (boolean bigEndian) {

@@ -8,7 +8,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 using System;
 
 namespace PeterO.Mail {
-    /// <summary>Exception thrown when a message has invalid syntax.</summary>
+    /// <summary>Exception thrown when a message has invalid
+    /// syntax.</summary>
   public class MessageDataException : Exception
   {
     /// <summary>Initializes a new instance of the MessageDataException

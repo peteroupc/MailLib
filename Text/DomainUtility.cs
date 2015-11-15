@@ -36,17 +36,16 @@ namespace PeterO.Text {
       return c;
     }
 
-    /// <summary>Gets the Punycode length of a string (Punycode is defined in RFC
-    /// 3492).</summary>
-    /// <param name='str'>A string object.</param>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='endIndex'>Another 32-bit signed integer.</param>
-    /// <returns>The Punycode length of the encoded string. If the string contains
-    /// non-ASCII characters, returns the Punycode length plus 4 (the length of the
-    /// ACE prefix). If there are only ASCII characters, returns the length of the
-    /// string. Returns -1 if an overflow error occurs.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref name='str'/>
-    /// is null.</exception>
+    /// <summary>Gets the Punycode length of a string (Punycode is defined
+    /// in RFC 3492).</summary>
+    /// <param name='str'>Not documented yet.</param>
+    /// <returns>The Punycode length of the encoded string. If the string
+    /// contains non-ASCII characters, returns the Punycode length plus 4
+    /// (the length of the ACE prefix). If there are only ASCII characters,
+    /// returns the length of the string. Returns -1 if an overflow error
+    /// occurs.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static int PunycodeLength(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");

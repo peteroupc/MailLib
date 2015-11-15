@@ -5,8 +5,8 @@ import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncodingGB18030 implements ICharacterEncoding {
-    static final int[] gb18030table = new int[] { 0, 0x0080,
+  public class EncodingGB18030 implements ICharacterEncoding {
+    public static final int[] gb18030table = new int[] { 0, 0x0080,
     36, 0x00a5,
     38, 0x00a9,
     45, 0x00b2,
@@ -387,11 +387,11 @@ import com.upokecenter.text.*;
       }
     }
 
-    static ICharacterDecoder GetDecoder2() {
+    public static ICharacterDecoder GetDecoder2() {
       return new Decoder();
     }
 
-    static ICharacterEncoder GetEncoder2(boolean gbk) {
+    public static ICharacterEncoder GetEncoder2(boolean gbk) {
       return new Encoder(gbk);
     }
 

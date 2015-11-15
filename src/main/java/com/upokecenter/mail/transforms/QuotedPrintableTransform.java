@@ -1,4 +1,4 @@
-package com.upokecenter.mail;
+package com.upokecenter.mail.transforms;
 /*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.

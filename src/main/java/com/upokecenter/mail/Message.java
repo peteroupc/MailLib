@@ -11,7 +11,7 @@ import java.util.*;
 import java.io.*;
 
 import com.upokecenter.util.*;
-using PeterO.Mail.Transforms;
+import com.upokecenter.mail.transforms.*;
 import com.upokecenter.text.*;
 
     /**
@@ -28,7 +28,7 @@ import com.upokecenter.text.*;
      * content-transfer-encoding "quoted-printable" is treated as 7bit
      * instead if it occurs in a message or body part with content type
      * "multipart/*" or "message/*" (other than "message/global",
-     * "message/global-headers" , "message/global-disposition-notification",
+     * "message/global-headers", "message/global-disposition-notification",
      * or "message/global-delivery-status").</li> <li>If a message has two
      * or more Content-Type header fields, it is treated as having a content
      * type of "application/octet-stream", unless one or more of the header
@@ -41,16 +41,16 @@ import com.upokecenter.text.*;
      * will be omitted when generating.</li> <li>There is no line length
      * limit imposed when parsing quoted-printable or base64 encoded
      * bodies.</li> <li>In the following cases, if the transfer encoding is
-     * absent or ((declared instanceof 7bit) ? (7bit)declared : null), 8-bit
-     * bytes are still allowed:</li> <li>(a) The preamble and epilogue of
-     * multipart messages, which will be ignored.</li> <li>(b) If the
-     * charset is declared to be <code>utf-8</code> .</li> <li>(c) If the content
-     * type is "text/html" and the charset is declared to be <code>ascii</code> ,
-     * <code>us-ascii</code> , "windows-1252", "windows-1251", or "iso-8859-*"
-     * (all single byte encodings).</li> <li>(d) In non-MIME message bodies
-     * and in text/plain message bodies. Any 8-bit bytes are replaced with
-     * the ASCII substitute character (0x1a).</li> <li>If the first line of
-     * the message starts with the word "From" followed by a space, it is
+     * absent or declared as 7bit, 8-bit bytes are still allowed:</li>
+     * <li>(a) The preamble and epilogue of multipart messages, which will
+     * be ignored.</li> <li>(b) If the charset is declared to be
+     * <code>utf-8</code> .</li> <li>(c) If the content type is "text/html" and
+     * the charset is declared to be <code>ascii</code> , <code>us-ascii</code> ,
+     * "windows-1252", "windows-1251", or "iso-8859-*" (all single byte
+     * encodings).</li> <li>(d) In non-MIME message bodies and in text/plain
+     * message bodies. Any 8-bit bytes are replaced with the ASCII
+     * substitute character (0x1a).</li> <li>If the first line of the
+     * message starts with the word "From" followed by a space, it is
      * skipped.</li> <li>The name <code>ascii</code> is treated as a synonym for
      * <code>us-ascii</code> , despite being a reserved name under RFC 2046. The
      * name <code>cp1252</code> is treated as a synonym for <code>windows-1252</code> ,

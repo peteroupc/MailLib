@@ -1,11 +1,11 @@
-package com.upokecenter.text;
+package com.upokecenter.text.encoders;
 
 import java.io.*;
 import com.upokecenter.util.*;
 
 import com.upokecenter.text.*;
 
-  class EncodingLatinOne implements ICharacterEncoding {
+  public class EncodingLatinOne implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
       public int ReadChar(ITransform transform) {
         int b = transform.read();
