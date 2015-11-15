@@ -144,6 +144,8 @@ bomTransform);
      * @param stream Not documented yet.
      * @param stream Not documented yet.
      * @param stream Not documented yet.
+     * @param stream Not documented yet.
+     * @param stream Not documented yet.
      * @return A 32-bit signed integer.
      * @throws NullPointerException The parameter {@code stream} or {@code output}
      * is null.
