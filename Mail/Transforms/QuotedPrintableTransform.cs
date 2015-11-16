@@ -21,7 +21,7 @@ namespace PeterO.Mail.Transforms {
 
     private int lastByte;
     private bool unget;
-    internal ITransform input;
+    private ITransform input;
 
     public QuotedPrintableTransform(
 ITransform input,

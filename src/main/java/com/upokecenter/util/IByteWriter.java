@@ -1,4 +1,4 @@
-package com.upokecenter.mail;
+package com.upokecenter.util;
 /*
 Written by Peter O. in 2014.
 Any copyright is dedicated to the Public Domain.
@@ -7,11 +7,12 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-  interface IStringEncoder
-  {
-    void WriteToString(StringBuilder str, byte b);
-
-    void WriteToString(StringBuilder str, byte[] data, int offset, int count);
-
-    void FinalizeEncoding(StringBuilder str);
+    /**
+     * A generic interface for writing bytes of data.
+     */
+  public interface IByteWriter {
+    /**
+     * Writes an 8-bit byte to a data source.
+     */
+    void write(int b);
   }

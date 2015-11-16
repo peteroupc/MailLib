@@ -41,6 +41,23 @@ The following lists known deviations from the mail specifications (Internet Mess
 ### Message Constructor
 
     public Message(
+        byte[] bytes);
+
+Initializes a new instance of the Message class. Reads from the given byte array to initialize the message.
+
+<b>Parameters:</b>
+
+ * <i>bytes</i>: A readable data stream.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>bytes</i>
+ is null.
+
+### Message Constructor
+
+    public Message(
         System.IO.Stream stream);
 
 Initializes a new instance of the Message class. Reads from the given Stream object to initialize the message.

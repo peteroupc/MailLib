@@ -64,12 +64,8 @@ public int ReadByte() {
 /// </summary>
 /// <param name="byteValue"></param>
 /// <returns></returns>
-public void WriteByte(int byteValue) {
-        try {
+      public void WriteByte(int byteValue) {
           this.output.WriteByte((byte)byteValue);
-        } catch (IOException ex) {
-          throw new InvalidOperationException(ex.Message, ex);
-        }
       }
 
       /// <summary>
@@ -102,12 +98,8 @@ public void Write(byte[] bytes, int offset, int length) {
           throw new ArgumentException("bytes's length minus " + offset + " (" +
             (bytes.Length - offset) + ") is less than " + length);
         }
-        try {
-          for (int i = 0; i < length; ++i) {
-            this.output.WriteByte((byte)bytes[i]);
-          }
-        } catch (IOException ex) {
-          throw new InvalidOperationException(ex.Message, ex);
+        for (int i = 0; i < length; ++i) {
+          this.output.WriteByte((byte)bytes[i]);
         }
       }
     }
@@ -147,6 +139,7 @@ public void Write(byte[] bytes, int offset, int length) {
     }
 
   /// <summary>Not documented yet.</summary>
+  /// <returns>Not documented yet.</returns>
     public static ITransform ToTransform(this byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException("bytes");
@@ -155,9 +148,11 @@ public void Write(byte[] bytes, int offset, int length) {
     }
 
   /// <summary>Not documented yet.</summary>
-    public static ITransform ToTransform(this byte[] bytes, int offset,
- int
-      length) {
+  /// <returns>Not documented yet.</returns>
+    public static ITransform ToTransform(
+this byte[] bytes,
+int offset,
+int length) {
       if (bytes == null) {
         throw new ArgumentNullException("bytes");
       }
@@ -185,6 +180,7 @@ public void Write(byte[] bytes, int offset, int length) {
     }
 
   /// <summary>Not documented yet.</summary>
+  /// <returns>Not documented yet.</returns>
     public static ITransform ToTransform(this Stream input) {
       if (input == null) {
         throw new ArgumentNullException("input");
@@ -193,6 +189,7 @@ public void Write(byte[] bytes, int offset, int length) {
     }
 
   /// <summary>Not documented yet.</summary>
+  /// <returns>Not documented yet.</returns>
     public static IWriter ToWriter(this Stream output) {
       if (output == null) {
         throw new ArgumentNullException("output");
@@ -201,6 +198,7 @@ public void Write(byte[] bytes, int offset, int length) {
     }
 
   /// <summary>Not documented yet.</summary>
+  /// <returns>Not documented yet.</returns>
     public static IWriter ToWriter(this IByteWriter output) {
       if (output == null) {
         throw new ArgumentNullException("output");

@@ -2,7 +2,7 @@
 
     public static class Encodings
 
-Not documented yet.
+Contains methods for converting text from one character encoding to another.A character encoding is a mapping from characters to a sequence of bytes.
 
 ### UTF8
 
@@ -16,7 +16,7 @@ Character encoding object for the UTF-8 character encoding.
         this PeterO.Text.ICharacterEncoding encoding,
         PeterO.ITransform transform);
 
-Reads bytes from a data source and converts the bytes to a text string in a given encoding. In the .NET implementation, this method is implemented as an extension method to any object implementing ICharacterEncoding and can be called as follows: "encoding.DecodeString(transform)". If the object's class already has a DecodeString method with the same parameters, that method takes precedence over this extension method.
+Reads bytes from a data source and converts the bytes from a given encoding to a text string. In the .NET implementation, this method is implemented as an extension method to any object implementing ICharacterEncoding and can be called as follows: "encoding.DecodeString(transform)". If the object's class already has a DecodeToString method with the same parameters, that method takes precedence over this extension method.
 
 <b>Parameters:</b>
 
@@ -97,6 +97,39 @@ An object that enables encoding and decoding text in the given character encodin
  * System.ArgumentNullException:
 The parameter  <i>name</i>
  is null.
+
+### ResolveAlias
+
+    public static string ResolveAlias(
+        string name);
+
+Resolves a character encoding's name to a standard form.
+
+<b>Parameters:</b>
+
+ * <i>name</i>: A string that names a given character encoding. Any leading and trailing whitespace is removed and the name converted to lowercase before resolving the encoding's name. The Encoding Standard supports only the following encodings (and defines aliases for most of them):
+
+ *  `utf-8`  - UTF-8 (the encoding recommended by the Encoding Standard for new data formats)
+
+ *  `utf-16le`  - UTF-16 little-endian
+
+ *  `utf-16be`  - UTF-16 big-endian
+
+ * Two special purpose encodings ( `x-user-defined`  and `replacement` )
+
+ * 28 legacy single-byte encodings (other than `x-user-defined` )
+
+ * Three legacy Japanese encodings ( `shift_jis`  and `euc-jp`  and  `iso-2022-jp` )
+
+ * Two legacy simplified Chinese encodings ( `gbk`  and `gb18030` )
+
+ *  `big5`  - legacy traditional Chinese encoding
+
+ *  `euc-kr`  - legacy Korean encoding
+
+<b>Returns:</b>
+
+A standardized name for the encoding. Returns the empty string if "name" is null or empty, or if the encoding name is unsupported.
 
 ### ResolveAliasForEmail
 

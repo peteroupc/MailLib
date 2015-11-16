@@ -21,7 +21,7 @@ import com.upokecenter.mail.*;
 
     private int lastByte;
     private boolean unget;
-    internal ITransform input;
+    private ITransform input;
 
     public QuotedPrintableTransform (
 ITransform input,

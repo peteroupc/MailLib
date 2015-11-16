@@ -61,8 +61,7 @@ namespace PeterO.Mail {
     /// .</item>
     /// <item>(c) If the content type is "text/html"
     /// and the charset is declared to be <c>ascii</c>
-    /// , <c>us-ascii</c>
-    /// ,
+    /// , <c>us-ascii</c>,
     /// "windows-1252", "windows-1251", or "iso-8859-*" (all single byte
     /// encodings).</item>
     /// <item>(d) In non-MIME message bodies and in
@@ -488,7 +487,7 @@ tokener.GetTokens()));
           }
           return Encodings.DecodeToString(
            charset,
-           DataIO.ToTransform(ms.ToArray()));
+           DataIO.ToTransform(ms));
         }
       }
     }

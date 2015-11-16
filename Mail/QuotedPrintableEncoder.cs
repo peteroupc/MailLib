@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Text;
 
+using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
