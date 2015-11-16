@@ -6,7 +6,9 @@ import com.upokecenter.util.*;
 import com.upokecenter.text.encoders.*;
 
     /**
-     * Not documented yet.
+     * Contains methods for converting text from one character encoding to
+     * another.<p> A character encoding is a mapping from characters to a
+     * sequence of bytes.</p>
      */
   public final class Encodings {
 private Encodings() {
@@ -341,15 +343,24 @@ public int Read(int[] buffer, int offset, int length) {
     }
 
     /**
-     *
-     */
-
-    /**
-     *
-     */
-
-    /**
-     *
+     * Resolves a character encoding's name to a standard form.
+     * @param name A string that names a given character encoding. Any leading and
+     * trailing whitespace is removed and the name converted to lowercase
+     * before resolving the encoding's name. The Encoding Standard supports
+     * only the following encodings (and defines aliases for most of
+     * them):<ul> <li><code>utf-8</code> - UTF-8 (the encoding recommended by the
+     * Encoding Standard for new data formats)</li> <li><code>utf-16le</code> -
+     * UTF-16 little-endian</li> <li><code>utf-16be</code> - UTF-16
+     * big-endian</li> <li>Two special purpose encodings
+     * (<code>x-user-defined</code> and <code>replacement</code>)</li> <li>28 legacy
+     * single-byte encodings (other than <code>x-user-defined</code>)</li>
+     * <li>Three legacy Japanese encodings (<code>shift_jis</code> and
+     * <code>euc-jp</code> and <code>iso-2022-jp</code>)</li> <li>Two legacy simplified
+     * Chinese encodings (<code>gbk</code> and <code>gb18030</code>)</li>
+     * <li><code>big5</code> - legacy traditional Chinese encoding</li>
+     * <li><code>euc-kr</code> - legacy Korean encoding</li> </ul>
+     * @return A standardized name for the encoding. Returns the empty string if
+     * "name" is null or empty, or if the encoding name is unsupported.
      */
     public static String ResolveAlias(String name) {
       if (((name) == null || (name).length() == 0)) {
@@ -410,12 +421,12 @@ public int Read(int[] buffer, int offset, int length) {
     }
 
     /**
-     * Reads bytes from a data source and converts the bytes to a text string in a
-     * given encoding. <p>In the .NET implementation, this method is
+     * Reads bytes from a data source and converts the bytes from a given encoding
+     * to a text string. <p>In the .NET implementation, this method is
      * implemented as an extension method to any object implementing
      * ICharacterEncoding and can be called as follows:
      * "encoding.DecodeString(transform)". If the object's class already has
-     * a DecodeString method with the same parameters, that method takes
+     * a DecodeToString method with the same parameters, that method takes
      * precedence over this extension method.</p>
      * @param encoding An object that implements a given character encoding. Any
      * bytes that can&#x27;t be decoded are converted to the replacement

@@ -475,8 +475,9 @@ ms = new java.io.ByteArrayInputStream(this.body);
           throw new
               UnsupportedOperationException("Not in a supported character set.");
           }
-          ITransform transform = new WrappedStream(ms);
-          return Encodings.DecodeToString(charset, transform);
+          return Encodings.DecodeToString(
+           charset,
+           DataIO.ToTransform(ms.toByteArray()));
 }
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
@@ -496,12 +497,31 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
-      ITransform transform = new WrappedStream(stream);
+      ITransform transform = DataIO.ToTransform(stream);
       // if (useLenientLineBreaks) {
         // TODO: Might not be correct if the transfer
         // encoding turns out to be binary
         // transform = new LineBreakNormalizeTransform(stream);
       // }
+      this.ReadMessage(transform);
+    }
+
+    /**
+     * Initializes a new instance of the Message class. Reads from the given byte
+     * array to initialize the message.
+     * @param bytes A readable data stream.
+     * @throws NullPointerException The parameter {@code bytes} is null.
+     */
+    public Message (byte[] bytes) {
+      if (bytes == null) {
+        throw new NullPointerException("bytes");
+      }
+      this.headers = new ArrayList<String>();
+      this.parts = new ArrayList<Message>();
+      this.body = new byte[0];
+      ITransform transform = DataIO.ToTransform(bytes);
+      // TODO: Use MessageDataException if transform throws
+      // an exception
       this.ReadMessage(transform);
     }
 
@@ -1337,7 +1357,7 @@ boolean checkBoundaryDelimiter) {
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-          this.Generate(ms, 0);
+          this.Generate(DataIO.ToWriter(ms), 0);
         return DataUtilities.GetUtf8String(ms.toByteArray(), false);
 }
 finally {
@@ -1392,7 +1412,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     private static Map<String, Integer> valueHeaderIndices =
       MakeHeaderIndices();
 
-    private static void AppendAscii(OutputStream output, String str) throws java.io.IOException {
+    private static void AppendAscii(IWriter output, String str) {
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
         if (c >= 0x80) {
@@ -1402,7 +1422,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       }
     }
 
-    private void Generate(OutputStream output, int depth) throws java.io.IOException {
+    private void Generate(IWriter output, int depth) {
       StringBuilder sb = new StringBuilder();
       boolean haveMimeVersion = false;
       boolean haveContentEncoding = false;
@@ -2368,12 +2388,16 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     private void ReadMessage(ITransform stream) {
-      ReadHeaders(stream, this.headers, true);
-      this.ProcessHeaders(false, false);
-      if (this.contentType.isMultipart()) {
-        this.ReadMultipartBody(stream);
-      } else {
-        this.ReadSimpleBody(stream);
+      try {
+        ReadHeaders(stream, this.headers, true);
+        this.ProcessHeaders(false, false);
+        if (this.contentType.isMultipart()) {
+          this.ReadMultipartBody(stream);
+        } else {
+          this.ReadSimpleBody(stream);
+        }
+      } catch (IllegalStateException ex) {
+        throw new MessageDataException(ex.getMessage(), ex);
       }
     }
   }

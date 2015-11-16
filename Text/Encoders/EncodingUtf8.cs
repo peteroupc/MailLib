@@ -74,7 +74,7 @@ namespace PeterO.Text.Encoders {
     }
 
     private class Encoder : ICharacterEncoder {
-      public int Encode(int c, Stream stream) {
+      public int Encode(int c, IWriter stream) {
         if (c < 0) {
  return -1;
 }

@@ -164,7 +164,7 @@ namespace PeterO.Text.Encoders {
         this.state = new DecoderState(2);
       }
 
-      public int Encode(int c, Stream output) {
+      public int Encode(int c, IWriter output) {
         if (c < 0) {
           if (this.encoderState != 0) {
             this.state.PrependOne(c);

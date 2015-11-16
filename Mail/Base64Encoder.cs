@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Text;
 
+using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
@@ -94,7 +95,7 @@ byte[] alphabet) {
       this.alphabet = alphabet;
     }
 
-    private int LineAwareAppend(Stream output, byte c) {
+    private int LineAwareAppend(IWriter output, byte c) {
       int charCount = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= 76) {
@@ -110,7 +111,7 @@ byte[] alphabet) {
     }
 
     private int LineAwareAppendFour(
-Stream output,
+IWriter output,
 byte c1,
 byte c2,
 byte c3,
@@ -139,7 +140,7 @@ byte c4) {
       return 4 + charCount;
     }
 
-    private int AddByteInternal(Stream output, byte b) {
+    private int AddByteInternal(IWriter output, byte b) {
       int ib = ((int)b) & 0xff;
       if (this.quantumCount == 2) {
         int ret = this.LineAwareAppendFour(
@@ -163,7 +164,7 @@ output,
       }
     }
 
-    private int FinalizeEncoding(Stream output) {
+    private int FinalizeEncoding(IWriter output) {
       int count = 0;
       if (this.quantumCount == 2) {
         byte c1 = this.alphabet[(this.byte1 >> 2) & 63];
@@ -199,7 +200,7 @@ output,
       return count;
     }
 
-    public int Encode(int b, Stream output) {
+    public int Encode(int b, IWriter output) {
       if (b < 0) {
         return this.finalized ? (-1) : this.FinalizeEncoding(output);
       }

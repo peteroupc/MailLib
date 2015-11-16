@@ -271,7 +271,7 @@ import com.upokecenter.text.*;
     }
 
     private static class Encoder implements ICharacterEncoder {
-      private int Base64Char(int c, OutputStream output) throws java.io.IOException {
+      private int Base64Char(int c, IWriter output) {
         if (c <= 0xffff) {
           int byte1 = (c >> 8) & 0xff;
           int byte2 = c & 0xff;
@@ -309,7 +309,7 @@ import com.upokecenter.text.*;
         }
       }
 
-      public int Encode(int c, OutputStream output) throws java.io.IOException {
+      public int Encode(int c, IWriter output) {
         if (c < 0) {
  return -1;
 }

@@ -9,13 +9,14 @@ using System;
 using System.Text;
 using System.IO;
 
+using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
     /// <summary>An IdentityEncoder.</summary>
   internal sealed class IdentityEncoder : ICharacterEncoder
   {
-    public int Encode(int c, Stream s) {
+    public int Encode(int c, IWriter s) {
       if (c < 0) {
  return -1;
 }

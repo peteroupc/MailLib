@@ -9,6 +9,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.io.*;
 
+import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
     /**
@@ -16,7 +17,7 @@ import com.upokecenter.text.*;
      */
   final class IdentityEncoder implements ICharacterEncoder
   {
-    public int Encode(int c, OutputStream s) throws java.io.IOException {
+    public int Encode(int c, IWriter s) {
       if (c < 0) {
  return -1;
 }

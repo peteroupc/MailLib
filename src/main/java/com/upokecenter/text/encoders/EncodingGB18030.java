@@ -343,7 +343,7 @@ import com.upokecenter.text.*;
 
       public int Encode(
        int c,
-       OutputStream output) throws java.io.IOException {
+       IWriter output) {
         if (c < 0) {
           return -1;
         }

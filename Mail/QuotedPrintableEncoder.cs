@@ -28,7 +28,7 @@ namespace PeterO.Mail {
       this.unlimitedLineLength = unlimitedLineLength;
     }
 
-    private int IncrementLineCount(Stream output, int length) {
+    private int IncrementLineCount(IWriter output, int length) {
       if (!this.unlimitedLineLength) {
         if (this.lineCount + length > 75) {
           // 76 including the final '='
@@ -44,7 +44,7 @@ namespace PeterO.Mail {
       return 0;
     }
 
-    private int IncrementAndAppend(Stream output, string appendStr) {
+    private int IncrementAndAppend(IWriter output, string appendStr) {
       int count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + appendStr.Length > 75) {
@@ -66,7 +66,7 @@ namespace PeterO.Mail {
     }
 
     private int IncrementAndAppendChars(
-Stream output,
+IWriter output,
 char b1,
 char b2,
 char b3) {
@@ -90,7 +90,7 @@ char b3) {
       return count;
     }
 
-    private int IncrementAndAppendChar(Stream output, char ch) {
+    private int IncrementAndAppendChar(IWriter output, char ch) {
       int count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + 1 > 75) {
@@ -112,7 +112,7 @@ char b3) {
 
     public int Encode(
       int c,
-      Stream output) {
+      IWriter output) {
   if (output == null) {
     throw new ArgumentNullException("output");
   }

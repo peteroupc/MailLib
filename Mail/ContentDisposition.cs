@@ -155,7 +155,18 @@ string type,
     }
 
     /// <summary>Converts a filename from the Content-Disposition header to
-    /// a suitable name for saving data to a file.</summary>
+    /// a suitable name for saving data to a file.
+    /// <para>Examples:</para>
+    /// <para>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt" (RFC 2047
+    /// encoding)</para>
+    /// <para>"=?utf-8?q?long_filename?=" -&gt; "long filename" (RFC 2047
+    /// encoding)</para>
+    /// <para>"utf-8'en'hello%2Etxt" -&gt; "hello.txt" (RFC 2231
+    /// encoding)</para>
+    /// <para>"nul.txt" -&gt; "_nul.txt" (Reserved name)</para>
+    /// <para>"dir1/dir2/file" -&gt; "dir1_dir2_file" (Directory
+    /// separators)</para>
+    /// </summary>
     /// <param name='str'>A string representing a file name.</param>
     /// <returns>A string with the converted version of the file name.
     /// Among other things, encoded words under RFC 2047 are decoded (since

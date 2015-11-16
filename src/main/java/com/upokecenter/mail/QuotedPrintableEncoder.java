@@ -29,7 +29,7 @@ import com.upokecenter.text.*;
       this.unlimitedLineLength = unlimitedLineLength;
     }
 
-    private int IncrementLineCount(OutputStream output, int length) throws java.io.IOException {
+    private int IncrementLineCount(IWriter output, int length) {
       if (!this.unlimitedLineLength) {
         if (this.lineCount + length > 75) {
           // 76 including the final '='
@@ -45,7 +45,7 @@ import com.upokecenter.text.*;
       return 0;
     }
 
-    private int IncrementAndAppend(OutputStream output, String appendStr) throws java.io.IOException {
+    private int IncrementAndAppend(IWriter output, String appendStr) {
       int count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + appendStr.length() > 75) {
@@ -67,10 +67,10 @@ import com.upokecenter.text.*;
     }
 
     private int IncrementAndAppendChars(
-OutputStream output,
+IWriter output,
 char b1,
 char b2,
-char b3) throws java.io.IOException {
+char b3) {
       int count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + 3 > 75) {
@@ -91,7 +91,7 @@ char b3) throws java.io.IOException {
       return count;
     }
 
-    private int IncrementAndAppendChar(OutputStream output, char ch) throws java.io.IOException {
+    private int IncrementAndAppendChar(IWriter output, char ch) {
       int count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + 1 > 75) {
@@ -113,7 +113,7 @@ char b3) throws java.io.IOException {
 
     public int Encode(
       int c,
-      OutputStream output) throws java.io.IOException {
+      IWriter output) {
   if (output == null) {
     throw new NullPointerException("output");
   }

@@ -47,7 +47,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ByteArrayTransform.cs" />
     <Compile Include="CharsetsTest.cs" />
     <Compile Include="DataUtilitiesTest.cs" />
     <Compile Include="DomainTest.cs" />

@@ -3,13 +3,13 @@
     public sealed class NormalizingCharacterInput :
         PeterO.Text.ICharacterInput
 
-A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert Unicode strings for Unicode normalization. This is similar to the Normalizer class, except it implements the ICharacterInput interface.
+A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the Normalizer class, except it implements the ICharacterInput interface.
 
 NOTICE: While this class's source code is in the public domain, the class uses an internal class, called NormalizationData, that includes data derived from the Unicode Character Database. In case doing so is required, the permission notice for the Unicode Character Database is given here:
 
 COPYRIGHT AND PERMISSION NOTICE
 
-Copyright (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under the Terms of Use in [http://www.unicode.org/copyright.html.](http://www.unicode.org/copyright.html.)
+Copyright (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of the Unicode data files and any associated documentation (the "Data Files") or Unicode software and any associated documentation (the "Software") to deal in the Data Files or Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, and/or sell copies of the Data Files or Software, and to permit persons to whom the Data Files or Software are furnished to do so, provided that (a) this copyright and permission notice appear with all copies of the Data Files or Software, (b) this copyright and permission notice appear in associated documentation, and (c) there is clear notice in each modified Data File or in the Software as well as in the documentation associated with the Data File(s) or Software that the data or software has been modified.
 
