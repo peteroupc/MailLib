@@ -42,7 +42,7 @@ namespace PeterO.Text {
           throw new ArgumentException("Invalid LZ4");
         }
         if (literalLength > 0) {
-          writer.WriteBytes(input, index, literalLength);
+          writer.Write(input, index, literalLength);
           index += literalLength;
         }
         if (index == input.Length) {
@@ -89,7 +89,7 @@ namespace PeterO.Text {
         writer.ReadBytes(copy, 0, matchLength);
         // Console.WriteLine("match "+ToString(copy,0,matchLength));
         writer.Position = oldPos;
-        writer.WriteBytes(copy, 0, matchLength);
+        writer.Write(copy, 0, matchLength);
       }
       return writer.ToArray();
     }

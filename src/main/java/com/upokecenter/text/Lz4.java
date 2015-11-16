@@ -46,7 +46,7 @@ private Lz4() {
           throw new IllegalArgumentException("Invalid LZ4");
         }
         if (literalLength > 0) {
-          writer.WriteBytes(input, index, literalLength);
+          writer.write(input, index, literalLength);
           index += literalLength;
         }
         if (index == input.length) {
@@ -93,7 +93,7 @@ private Lz4() {
         writer.ReadBytes(copy, 0, matchLength);
         // System.out.println("match "+toString(copy,0,matchLength));
         writer.setPosition(oldPos);
-        writer.WriteBytes(copy, 0, matchLength);
+        writer.write(copy, 0, matchLength);
       }
       return writer.ToArray();
     }

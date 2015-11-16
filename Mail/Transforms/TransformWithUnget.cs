@@ -10,8 +10,6 @@ using PeterO.Mail;
 using PeterO;
 
 namespace PeterO.Mail.Transforms {
-  /// <summary>Obsolete class</summary>
-  [Obsolete("This class is to be eliminated.")]
   internal sealed class TransformWithUnget : ITransform {
     private ITransform transform;
     private int lastByte;

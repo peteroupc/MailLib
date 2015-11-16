@@ -3,8 +3,10 @@ package com.upokecenter.text;
 import java.io.*;
 import com.upokecenter.util.*;
 
-/// <summary>
-/// </summary>
+    /**
+     * Defines a method that can be implemented by classes that convert a stream of
+     * bytes to Unicode code points.
+     */
 public interface ICharacterDecoder {
     /**
      * Reads bytes from an input transform until a Unicode character is decoded or

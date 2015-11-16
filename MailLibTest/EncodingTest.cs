@@ -382,10 +382,7 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
     }
 
     internal static object Transform(string str) {
-      return new ByteArrayTransform(DataUtilities.GetUtf8Bytes(str, true));
-    }
-    internal static object Transform(byte[] bytes) {
-      return new ByteArrayTransform(bytes);
+      return DataIO.ToTransform(DataUtilities.GetUtf8Bytes(str, true));
     }
 
     internal static byte[] GetBytes(object trans) {

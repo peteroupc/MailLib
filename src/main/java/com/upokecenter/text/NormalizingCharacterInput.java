@@ -402,7 +402,7 @@ Normalization form) {
       if (str.length() <= 1024 && IsNormalized(str, form)) {
         return str;
       }
-      return EncoderHelper.InputToString(
+      return Encodings.InputToString(
         new NormalizingCharacterInput(str, form));
     }
 
