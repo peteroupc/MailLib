@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 using PeterO;
 using PeterO.Text.Encoders;
 
 namespace PeterO.Text {
     /// <summary>Contains methods for converting text from one
-  /// character encoding to another.<para>
+  /// character encoding to another. This class also contains convenience
+  /// methods
+  /// for converting strings and other character inputs to bytes.<para>
   /// A character encoding is a mapping from characters to
   /// a sequence of bytes.</para></summary>
   public static class Encodings {
@@ -343,19 +346,42 @@ public int Read(int[] buffer, int offset, int length) {
     /// the name converted to lowercase before resolving the
     /// encoding's name. The Encoding Standard supports
     /// only the following encodings (and defines aliases for most of
-    /// them):<list>
-    /// <item><c>utf-8</c> - UTF-8 (the encoding recommended by
+    /// them):<list type='bullet'>
+    /// <item><c>utf-8</c> - UTF-8 (8-bit universal character set,
+    /// the encoding recommended by
     /// the Encoding Standard for new data formats)</item>
-    /// <item><c>utf-16le</c> - UTF-16 little-endian</item>
-    /// <item><c>utf-16be</c> - UTF-16 big-endian</item>
-    /// <item>Two special purpose encodings (<c>x-user-defined</c> and
-    /// <c>replacement</c>)</item>
-    /// <item>28 legacy single-byte encodings (other than
-    /// <c>x-user-defined</c>)</item>
-    /// <item>Three legacy Japanese encodings (<c>shift_jis</c> and
-    /// <c>euc-jp</c> and <c>iso-2022-jp</c>)</item>
-    /// <item>Two legacy simplified Chinese encodings (<c>gbk</c> and
-    /// <c>gb18030</c>)</item>
+    /// <item><c>utf-16le</c> - UTF-16 little-endian (16-bit UCS)</item>
+    /// <item><c>utf-16be</c> - UTF-16 big-endian (16-bit UCS)</item>
+    /// <item>Two special purpose encodings: <c>x-user-defined</c> and
+    /// <c>replacement</c></item>
+    /// <item>28 legacy single-byte encodings:<list type='bullet'>
+    /// <item><c>windows-1252</c> - Western Europe</item>
+    /// <item><c>iso-8859-2</c>, <c>windows-1250</c> - Central Europe</item>
+    /// <item><c>iso-8859-10</c> - Northern Europe</item>
+    /// <item><c>iso-8859-4</c>, <c>windows-1257</c> - Baltic</item>
+    /// <item><c>iso-8859-13</c> - Estonian</item>
+    /// <item><c>iso-8859-14</c> - Celtic</item>
+    /// <item><c>iso-8859-16</c> - Romanian</item>
+    /// <item><c>iso-8859-5</c>, <c>ibm866</c>,
+    /// <c>koi8-r</c>, <c>windows-1251</c>, <c>x-mac-cyrillic</c> -
+    /// Cyrillic</item>
+    /// <item><c>koi8-u</c> - Ukrainian</item>
+    /// <item><c>iso-8859-7</c>, <c>windows-1253</c> - Greek</item>
+    /// <item><c>iso-8859-6</c>, <c>windows-1256</c> - Arabic</item>
+    /// <item><c>iso-8859-8</c>, <c>iso-8859-8-i</c>, <c>windows-1255</c> -
+    /// Hebrew</item>
+    /// <item><c>iso-8859-3</c> - Latin 3</item>
+    /// <item><c>iso-8859-15</c> - Latin 9</item>
+    /// <item><c>windows-1254</c> - Turkish</item>
+    /// <item><c>windows-874</c> - Thai</item>
+    /// <item><c>windows-1258</c> - Vietnamese</item>
+    /// <item><c>macintosh</c> - Mac Roman</item></list>
+    /// </item>
+    /// <item>Three legacy Japanese encodings: 
+    /// <c>shift_jis</c>,
+    /// <c>euc-jp</c>, <c>iso-2022-jp</c></item>
+    /// <item>Two legacy simplified Chinese encodings: <c>gbk</c> and
+    /// <c>gb18030</c></item>
     /// <item><c>big5</c> - legacy traditional Chinese encoding</item>
     /// <item><c>euc-kr</c> - legacy Korean encoding</item>
     /// </list></param>
@@ -376,14 +402,15 @@ public int Read(int[] buffer, int offset, int length) {
     /// using rules more suitable for email.</summary>
     /// <param name='name'>A string naming a character encoding. Uses a
     /// modified version of the rules in the Encoding Standard to better
-    /// conform, in some cases, to email standards like MIME, and some
-    /// additional encodings may be supported. For instance, setting this
-    /// value to true will enable the &#x22;utf-7&#x22; encoding and
-    /// change. <c>"us-ascii"</c>
-    /// and &#x22;iso-8859-1&#x22; to a 7 bit
-    /// encoding and the 8-bit Latin-1 encoding, respectively, rather than
-    /// aliases to &#x22;windows-1252&#x22;, as specified in the Encoding
-    /// Standard.</param>
+    /// conform, in some cases, to email standards like MIME. In addition
+    /// to the encodings mentioned in ResolveAlias, the following additional
+    /// encodings are supported:<list type='bullet'>
+    /// <item><c>us-ascii</c> - ASCII 7-bit encoding, rather than an alias
+    /// to <c>windows-1252</c>, as specified in the Encoding Standard</item>
+    /// <item><c>iso-8859-1</c> - Latin-1 8-bit encoding, rather than an alias
+    /// to <c>windows-1252</c>, as specified in the Encoding Standard</item>
+    /// <item><c>utf-7</c> - UTF-7 (7-bit universal character set)</item>
+    /// </list></param>
     /// <returns>A standardized name for the encoding. Returns the empty
     /// string if <paramref name='name'/> is null or empty, or if the
     /// encoding name is unsupported.</returns>
@@ -446,12 +473,124 @@ public int Read(int[] buffer, int offset, int length) {
       if (transform == null) {
   throw new ArgumentNullException("transform");
 }
-      return EncoderHelper.InputToString(
+      return InputToString(
          GetDecoderInput(encoding, transform));
     }
 
+        /// <summary>
+    /// Converts a text string to a byte array encoded
+    /// in a given character encoding. When reading the
+    /// string, any unpaired surrogate characters are replaced
+    /// with the replacement character (U + FFFD), and when
+    /// writing to the byte array, any characters that can't
+    /// be encoded are replaced with the byte 0x3f (the
+    /// question mark character).
+    /// </summary>
+  /// <returns>Not documented yet.</returns>
+    public static byte[] StringToBytes(
+      this ICharacterEncoding encoding,
+      string str) {
+      if (encoding == null) {
+  throw new ArgumentNullException("encoding");
+}
+        return StringToBytes(encoding.GetEncoder(), str);
+    }
+
+     /// <summary>
+    /// Reads Unicode characters from a character input and
+    /// writes them to a byte array encoded using the
+    /// given character encoder. When
+    /// writing to the byte array, any characters that can't
+    /// be encoded are replaced with the byte 0x3f (the
+    /// question mark character).
+    /// </summary>
+  /// <returns>Not documented yet.</returns>
+    public static byte[] EncodeToBytes(
+      this ICharacterInput input,
+      ICharacterEncoding encoding) {
+        if (encoding == null) {
+  throw new ArgumentNullException("encoding");
+}
+return EncodeToBytes(input, encoding.GetEncoder());
+    }
+
+    /// <summary>
+    /// Reads Unicode characters from a character input and
+    /// writes them to a byte array encoded
+    /// in a given character encoding. When
+    /// writing to the byte array, any characters that can't
+    /// be encoded are replaced with the byte 0x3f (the
+    /// question mark character).
+    /// </summary>
+  /// <returns>Not documented yet.</returns>
+    public static byte[] EncodeToBytes(
+      this ICharacterInput input,
+      ICharacterEncoder encoder) {
+        if (encoder == null) {
+  throw new ArgumentNullException("encoder");
+}
+        if (input == null) {
+  throw new ArgumentNullException("input");
+}
+        var writer = new ArrayWriter();
+        var i = 0;
+        while (true) {
+          int cp = input.ReadChar();
+          int enc = encoder.Encode(cp, writer);
+          if (enc == -2) {
+            // Not encodable, write a question mark instead
+            writer.WriteByte((byte)0x3f);
+          }
+          if (enc == -1) {
+            break;
+          }
+        }
+        return writer.ToArray();
+    }
+
+    /// <summary>
+    /// Converts a text string to a byte array using the
+    /// given character encoder. When reading the
+    /// string, any unpaired surrogate characters are replaced
+    /// with the replacement character (U + FFFD), and when
+    /// writing to the byte array, any characters that can't
+    /// be encoded are replaced with the byte 0x3f (the
+    /// question mark character).
+    /// </summary>
+  /// <returns>Not documented yet.</returns>
+    public static byte[] StringToBytes(
+      this ICharacterEncoder encoder,
+      string str) {
+        return EncodeToBytes(
+            new StringCharacterInput(str),
+            encoder);
+    }
+
+     /// <summary>
+    /// Reads Unicode characters from a character input and
+    /// converts them to a text string.
+    /// </summary>
+  /// <returns>Not documented yet.</returns>
+    public static string InputToString(this ICharacterInput reader) {
+      var builder = new StringBuilder();
+      while (true) {
+        int c = reader.ReadChar();
+        if (c < 0) {
+          break;
+        }
+        if (c <= 0xffff) {
+          builder.Append((char)c);
+        } else if (c <= 0x10ffff) {
+          builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
+          builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+        }
+      }
+      return builder.ToString();
+    }
+
     /// <summary>Converts a character encoding into a character input
-    /// stream. <para>In the .NET implementation, this method is
+    /// stream, given a streamable source of bytes.<para>In the .NET
+    /// implementation, this method is
     /// implemented as an extension method to any object implementing
     /// ICharacterEncoding and can be called as follows:
     /// "encoding.GetDecoderInput(transform)". If the object's class
@@ -473,8 +612,10 @@ public int Read(int[] buffer, int offset, int length) {
           stream);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='name'>A string naming a character encoding.</param>
+    /// <summary>Returns a character encoding from the given
+    /// name.</summary>
+    /// <param name='name'>A string naming a character encoding. See the
+    /// ResolveAlias method.</param>
     /// <returns>An ICharacterEncoding object.</returns>
     /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='name'/> is null.</exception>

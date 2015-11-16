@@ -8,10 +8,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
     /**
-     * A lightweight version of MemoryStream, since it doesn't derive from InputStream
-     * and doesn't use IO exceptions.
+     * A lightweight version of MemoryStream.
      */
-  final class ArrayWriter {
+  final class ArrayWriter implements IWriter {
     private int retvalPos;
     private int retvalMax;
     private byte[] retval;
@@ -25,8 +24,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Initializes a new instance of the ArrayWriter class.
-     * @param initialSize A 32-bit signed integer.
      */
+
     public ArrayWriter (int initialSize) {
       this.retval = new byte[initialSize];
     }
@@ -98,7 +97,22 @@ public final void setPosition(int value) {
       return maxLength;
     }
 
-    public void WriteBytes(byte[] src, int offset, int length) {
+    public void write(int byteValue) {
+      if (this.retval.length <= this.retvalPos) {
+        // Array too small, make it grow
+        int newLength = Math.max(
+            this.retvalPos + 1000,
+            this.retval.length * 2);
+        byte[] newArray = new byte[newLength];
+        System.arraycopy(this.retval, 0, newArray, 0, this.retvalPos);
+        this.retval = newArray;
+      }
+      this.retval[this.retvalPos ]=(byte)(byteValue & 0xff);
+      this.retvalPos = (this.retvalPos + 1);
+      this.retvalMax = Math.max(this.retvalMax, this.retvalPos);
+    }
+
+    public void write(byte[] src, int offset, int length) {
       if (src == null) {
         throw new NullPointerException("src");
       }

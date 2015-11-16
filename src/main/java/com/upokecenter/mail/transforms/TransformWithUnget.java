@@ -10,11 +10,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import com.upokecenter.mail.*;
 import com.upokecenter.util.*;
 
-  /**
-   * Obsolete class
-   * @deprecated This class is to be eliminated.
- */
-@Deprecated
   public final class TransformWithUnget implements ITransform {
     private ITransform transform;
     private int lastByte;

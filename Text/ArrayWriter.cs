@@ -8,9 +8,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 using System;
 
 namespace PeterO.Text {
-    /// <summary>A lightweight version of MemoryStream, since it doesn't
-    /// derive from Stream and doesn't use IO exceptions.</summary>
-  internal sealed class ArrayWriter {
+    /// <summary>A lightweight version of MemoryStream.</summary>
+  internal sealed class ArrayWriter : IWriter {
     private int retvalPos;
     private int retvalMax;
     private byte[] retval;
@@ -22,7 +21,7 @@ namespace PeterO.Text {
 
     /// <summary>Initializes a new instance of the ArrayWriter
     /// class.</summary>
-    /// <param name='initialSize'>A 32-bit signed integer.</param>
+
     public ArrayWriter(int initialSize) {
       this.retval = new byte[initialSize];
     }
@@ -97,7 +96,22 @@ namespace PeterO.Text {
       return maxLength;
     }
 
-    public void WriteBytes(byte[] src, int offset, int length) {
+    public void WriteByte(int byteValue) {
+      if (this.retval.Length <= this.retvalPos) {
+        // Array too small, make it grow
+        int newLength = Math.Max(
+            this.retvalPos + 1000,
+            this.retval.Length * 2);
+        var newArray = new byte[newLength];
+        Array.Copy(this.retval, 0, newArray, 0, this.retvalPos);
+        this.retval = newArray;
+      }
+      this.retval[this.retvalPos ]=(byte)(byteValue & 0xff);
+      this.retvalPos = checked(this.retvalPos + 1);
+      this.retvalMax = Math.Max(this.retvalMax, this.retvalPos);
+    }
+
+    public void Write(byte[] src, int offset, int length) {
       if (src == null) {
         throw new ArgumentNullException("src");
       }

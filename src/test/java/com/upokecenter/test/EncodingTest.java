@@ -384,10 +384,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     static Object Transform(String str) {
-      return new ByteArrayTransform(DataUtilities.GetUtf8Bytes(str, true));
-    }
-    static Object Transform(byte[] bytes) {
-      return new ByteArrayTransform(bytes);
+      return DataIO.ToTransform(DataUtilities.GetUtf8Bytes(str, true));
     }
 
     static byte[] GetBytes(Object trans) {

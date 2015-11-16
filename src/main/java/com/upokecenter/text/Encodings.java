@@ -6,9 +6,10 @@ import com.upokecenter.util.*;
 import com.upokecenter.text.encoders.*;
 
     /**
-     * Contains methods for converting text from one character encoding to
-     * another.<p> A character encoding is a mapping from characters to a
-     * sequence of bytes.</p>
+     * Contains methods for converting text from one character encoding to another.
+     * This class also contains convenience methods for converting strings
+     * and other character inputs to bytes.<p> A character encoding is a
+     * mapping from characters to a sequence of bytes.</p>
      */
   public final class Encodings {
 private Encodings() {
@@ -348,17 +349,32 @@ public int Read(int[] buffer, int offset, int length) {
      * trailing whitespace is removed and the name converted to lowercase
      * before resolving the encoding's name. The Encoding Standard supports
      * only the following encodings (and defines aliases for most of
-     * them):<ul> <li><code>utf-8</code> - UTF-8 (the encoding recommended by the
-     * Encoding Standard for new data formats)</li> <li><code>utf-16le</code> -
-     * UTF-16 little-endian</li> <li><code>utf-16be</code> - UTF-16
-     * big-endian</li> <li>Two special purpose encodings
-     * (<code>x-user-defined</code> and <code>replacement</code>)</li> <li>28 legacy
-     * single-byte encodings (other than <code>x-user-defined</code>)</li>
-     * <li>Three legacy Japanese encodings (<code>shift_jis</code> and
-     * <code>euc-jp</code> and <code>iso-2022-jp</code>)</li> <li>Two legacy simplified
-     * Chinese encodings (<code>gbk</code> and <code>gb18030</code>)</li>
-     * <li><code>big5</code> - legacy traditional Chinese encoding</li>
-     * <li><code>euc-kr</code> - legacy Korean encoding</li> </ul>
+     * them):<ul> <li><code>utf-8</code> - UTF-8 (8-bit universal character set,
+     * the encoding recommended by the Encoding Standard for new data
+     * formats)</li> <li><code>utf-16le</code> - UTF-16 little-endian (16-bit
+     * UCS)</li> <li><code>utf-16be</code> - UTF-16 big-endian (16-bit UCS)</li>
+     * <li>Two special purpose encodings: <code>x-user-defined</code> and
+     * <code>replacement</code></li> <li>28 legacy single-byte encodings:<ul>
+     * <li><code>windows-1252</code> - Western Europe</li> <li><code>iso-8859-2</code>,
+     * <code>windows-1250</code> - Central Europe</li> <li><code>iso-8859-10</code> -
+     * Northern Europe</li> <li><code>iso-8859-4</code>, <code>windows-1257</code> -
+     * Baltic</li> <li><code>iso-8859-13</code> - Estonian</li>
+     * <li><code>iso-8859-14</code> - Celtic</li> <li><code>iso-8859-16</code> -
+     * Romanian</li> <li><code>iso-8859-5</code>, <code>ibm866</code>, <code>koi8-r</code>,
+     * <code>windows-1251</code>, <code>x-mac-cyrillic</code> - Cyrillic</li>
+     * <li><code>koi8-u</code> - Ukrainian</li> <li><code>iso-8859-7</code>,
+     * <code>windows-1253</code> - Greek</li> <li><code>iso-8859-6</code>,
+     * <code>windows-1256</code> - Arabic</li> <li><code>iso-8859-8</code>,
+     * <code>iso-8859-8-i</code>, <code>windows-1255</code> - Hebrew</li>
+     * <li><code>iso-8859-3</code> - Latin 3</li> <li><code>iso-8859-15</code> - Latin
+     * 9</li> <li><code>windows-1254</code> - Turkish</li> <li><code>windows-874</code>
+     * - Thai</li> <li><code>windows-1258</code> - Vietnamese</li>
+     * <li><code>macintosh</code> - Mac Roman</li></ul> </li> <li>Three legacy
+     * Japanese encodings: <code>shift_jis</code>, <code>euc-jp</code>,
+     * <code>iso-2022-jp</code></li> <li>Two legacy simplified Chinese encodings:
+     * <code>gbk</code> and <code>gb18030</code></li> <li><code>big5</code> - legacy
+     * traditional Chinese encoding</li> <li><code>euc-kr</code> - legacy Korean
+     * encoding</li> </ul>
      * @return A standardized name for the encoding. Returns the empty string if
      * "name" is null or empty, or if the encoding name is unsupported.
      */
@@ -377,12 +393,14 @@ public int Read(int[] buffer, int offset, int length) {
      * suitable for email.
      * @param name A string naming a character encoding. Uses a modified version of
      * the rules in the Encoding Standard to better conform, in some cases,
-     * to email standards like MIME, and some additional encodings may be
-     * supported. For instance, setting this value to true will enable the
-     * &#x22;utf-7&#x22; encoding and change. <code>"us-ascii"</code> and
-     * &#x22;iso-8859-1&#x22; to a 7 bit encoding and the 8-bit Latin-1
-     * encoding, respectively, rather than aliases to
-     * &#x22;windows-1252&#x22;, as specified in the Encoding Standard.
+     * to email standards like MIME. In addition to the encodings mentioned
+     * in ResolveAlias, the following additional encodings are
+     * supported:<ul> <li><code>us-ascii</code> - ASCII 7-bit encoding, rather
+     * than an alias to <code>windows-1252</code>, as specified in the Encoding
+     * Standard</li> <li><code>iso-8859-1</code> - Latin-1 8-bit encoding, rather
+     * than an alias to <code>windows-1252</code>, as specified in the Encoding
+     * Standard</li> <li><code>utf-7</code> - UTF-7 (7-bit universal character
+     * set)</li> </ul>
      * @return A standardized name for the encoding. Returns the empty string if
      * {@code name} is null or empty, or if the encoding name is
      * unsupported.
@@ -445,17 +463,122 @@ public int Read(int[] buffer, int offset, int length) {
       if (transform == null) {
   throw new NullPointerException("transform");
 }
-      return EncoderHelper.InputToString(
+      return InputToString(
          GetDecoderInput(encoding, transform));
     }
 
+        /**
+         * Converts a text string to a byte array encoded in a given character
+         * encoding. When reading the string, any unpaired surrogate
+         * characters are replaced with the replacement character (U +
+         * FFFD), and when writing to the byte array, any characters that
+         * can't be encoded are replaced with the byte 0x3f (the question
+         * mark character).
+         * @return Not documented yet.
+         */
+    public static byte[] StringToBytes(
+      ICharacterEncoding encoding,
+      String str) {
+      if (encoding == null) {
+  throw new NullPointerException("encoding");
+}
+        return StringToBytes(encoding.GetEncoder(), str);
+    }
+
+     /**
+      * Reads Unicode characters from a character input and writes them to a byte
+      * array encoded using the given character encoder. When writing to the
+      * byte array, any characters that can't be encoded are replaced with
+      * the byte 0x3f (the question mark character).
+      * @return Not documented yet.
+      */
+    public static byte[] EncodeToBytes(
+      ICharacterInput input,
+      ICharacterEncoding encoding) {
+        if (encoding == null) {
+  throw new NullPointerException("encoding");
+}
+return EncodeToBytes(input, encoding.GetEncoder());
+    }
+
     /**
-     * Converts a character encoding into a character input stream. <p>In the .NET
-     * implementation, this method is implemented as an extension method to
-     * any object implementing ICharacterEncoding and can be called as
-     * follows: "encoding.GetDecoderInput(transform)". If the object's class
-     * already has a GetDecoderInput method with the same parameters, that
-     * method takes precedence over this extension method.</p>
+     * Reads Unicode characters from a character input and writes them to a byte
+     * array encoded in a given character encoding. When writing to the byte
+     * array, any characters that can't be encoded are replaced with the
+     * byte 0x3f (the question mark character).
+     * @return Not documented yet.
+     */
+    public static byte[] EncodeToBytes(
+      ICharacterInput input,
+      ICharacterEncoder encoder) {
+        if (encoder == null) {
+  throw new NullPointerException("encoder");
+}
+        if (input == null) {
+  throw new NullPointerException("input");
+}
+        ArrayWriter writer = new ArrayWriter();
+        var i = 0;
+        while (true) {
+          int cp = input.ReadChar();
+          int enc = encoder.Encode(cp, writer);
+          if (enc == -2) {
+            // Not encodable, write a question mark instead
+            writer.write((byte)0x3f);
+          }
+          if (enc == -1) {
+            break;
+          }
+        }
+        return writer.ToArray();
+    }
+
+    /**
+     * Converts a text string to a byte array using the given character encoder.
+     * When reading the string, any unpaired surrogate characters are
+     * replaced with the replacement character (U + FFFD), and when writing
+     * to the byte array, any characters that can't be encoded are replaced
+     * with the byte 0x3f (the question mark character).
+     * @return Not documented yet.
+     */
+    public static byte[] StringToBytes(
+      ICharacterEncoder encoder,
+      String str) {
+        return EncodeToBytes(
+            new StringCharacterInput(str),
+            encoder);
+    }
+
+     /**
+      * Reads Unicode characters from a character input and converts them to a text
+      * string.
+      * @return Not documented yet.
+      */
+    public static String InputToString(ICharacterInput reader) {
+      StringBuilder builder = new StringBuilder();
+      while (true) {
+        int c = reader.ReadChar();
+        if (c < 0) {
+          break;
+        }
+        if (c <= 0xffff) {
+          builder.append((char)c);
+        } else if (c <= 0x10ffff) {
+          builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
+          builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+        }
+      }
+      return builder.toString();
+    }
+
+    /**
+     * Converts a character encoding into a character input stream, given a
+     * streamable source of bytes.<p>In the .NET implementation, this method
+     * is implemented as an extension method to any object implementing
+     * ICharacterEncoding and can be called as follows:
+     * "encoding.GetDecoderInput(transform)". If the object's class already
+     * has a GetDecoderInput method with the same parameters, that method
+     * takes precedence over this extension method.</p>
      * @param encoding Encoding that exposes a decoder to be converted into a
      * character input stream. If the decoder returns -2 (indicating a
      * decode error), the character input stream handles the error by
@@ -472,8 +595,9 @@ public int Read(int[] buffer, int offset, int length) {
     }
 
     /**
-     * Not documented yet.
-     * @param name A string naming a character encoding.
+     * Returns a character encoding from the given name.
+     * @param name A string naming a character encoding. See the ResolveAlias
+     * method.
      * @return An ICharacterEncoding object.
      * @throws NullPointerException The parameter {@code name} is null.
      */

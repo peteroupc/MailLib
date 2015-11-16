@@ -51,7 +51,6 @@
     <Compile Include="Text\Encoders\Big5.cs" />
     <Compile Include="Text\Encoders\DecoderState.cs" />
     <Compile Include="Text\Encoders\EncoderAlgorithms.cs" />
-    <Compile Include="Text\Encoders\EncoderHelper.cs" />
     <Compile Include="Text\Encoders\EncodingAscii.cs" />
     <Compile Include="Text\Encoders\EncodingBig5.cs" />
     <Compile Include="Text\Encoders\EncodingEUCJP.cs" />
