@@ -384,7 +384,10 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     static Object Transform(String str) {
-      return DataIO.ToTransform(DataUtilities.GetUtf8Bytes(str, true));
+      return new ByteArrayTransform(DataUtilities.GetUtf8Bytes(str, true));
+    }
+    static Object Transform(byte[] bytes) {
+      return new ByteArrayTransform(bytes);
     }
 
     static byte[] GetBytes(Object trans) {
@@ -2006,6 +2009,7 @@ String stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
         ".QuotedPrintableEncoder", mode, false);
       ICharacterEncoder enc2 = (ICharacterEncoder)enc;
       int offset = 0;
+      try {
       java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
@@ -2016,33 +2020,70 @@ ms = new java.io.ByteArrayOutputStream();
             c = ((int)bytes[offset++]) & 0xff;
           }
           if (enc2.Encode(c, DataIO.ToWriter(ms)) < 0) {
-            break;
-          }
+ break;
+}
         }
         return DataUtilities.GetUtf8String(ms.toByteArray(), true);
 }
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
+     } catch (IOException ex) {
+      throw new IllegalStateException(ex.getMessage(), ex);
+     }
     }
+
+    public static String EncodeB64(byte[] bytes, int mode) {
+      boolean a=(mode%2) == 1;
+      boolean b=(mode%4) == 1;
+      Object enc = Reflect.Construct(MailNamespace() +
+        ".Base64Encoder", a, false, b);
+      ICharacterEncoder enc2 = (ICharacterEncoder)enc;
+      int offset = 0;
+      try {
+      java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+        while (true) {
+          int c = -1;
+          if (offset < bytes.length) {
+            c = ((int)bytes[offset++]) & 0xff;
+          }
+          if (enc2.Encode(c, DataIO.ToWriter(ms)) < 0) {
+ break;
+}
+        }
+        return DataUtilities.GetUtf8String(ms.toByteArray(), true);
+}
+finally {
+try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
+     } catch (IOException ex) {
+      throw new IllegalStateException(ex.getMessage(), ex);
+     }
+    }
+
+    public static void TestBase64RoundTrip(byte[] bytes, int mode) {
+      String input = EncodeB64(bytes, mode);
+      String msgString = "From: <test@example.com>\r\n" +
+      "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
+      "Content-Transfer-Encoding: base64\r\n\r\n" + input;
+      Message msg = MessageTest.MessageFromString(msgString);
+      AssertEqual(bytes, msg.GetBody());
+      msg = MessageTest.MessageFromString(msg.Generate());
+      AssertEqual(bytes, msg.GetBody());
+    }
+
     public static void TestQuotedPrintableRoundTrip(byte[] bytes, int mode) {
       String input = EncodeQP(bytes, mode);
       String msgString = "From: <test@example.com>\r\n" +
       "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
       "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
       Message msg = MessageTest.MessageFromString(msgString);
-      //try {
-        AssertEqual(bytes, msg.GetBody());
-      /*
-      } catch (Exception ex) {
-        String emsg = ex.getMessage();
-        System.out.println("mode="+mode);
-        System.out.println(emsg);
-        System.out.println(input);
-        System.out.println(EncodeQP(msg.GetBody(), mode));
-        Assert.fail(emsg);
-      }
-       */
+      AssertEqual(bytes, msg.GetBody());
+      msg = MessageTest.MessageFromString(msg.Generate());
+      AssertEqual(bytes, msg.GetBody());
     }
 
     private byte[] RandomBytes(java.util.Random rnd) {
@@ -2052,6 +2093,17 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         arr[i] = (byte)rnd.nextInt(0x100);
       }
       return arr;
+    }
+
+    @Test
+    public void TestRandomBase64() {
+      java.util.Random rnd = new java.util.Random();
+      for (int i = 0; i < 5000; ++i) {
+        TestBase64RoundTrip(RandomBytes(rnd), 0);
+        TestBase64RoundTrip(RandomBytes(rnd), 1);
+        TestBase64RoundTrip(RandomBytes(rnd), 2);
+        TestBase64RoundTrip(RandomBytes(rnd), 3);
+      }
     }
 
     @Test

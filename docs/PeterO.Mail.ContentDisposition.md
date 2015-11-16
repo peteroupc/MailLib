@@ -111,7 +111,17 @@ The parameter  <i>name</i>
     public static string MakeFilename(
         string str);
 
-Converts a filename from the Content-Disposition header to a suitable name for saving data to a file.
+Converts a filename from the Content-Disposition header to a suitable name for saving data to a file.Examples:
+
+"=?utf-8?q?hello=2Etxt?=" -> "hello.txt" (RFC 2047 encoding)
+
+"=?utf-8?q?long_filename?=" -> "long filename" (RFC 2047 encoding)
+
+"utf-8'en'hello%2Etxt" -> "hello.txt" (RFC 2231 encoding)
+
+"nul.txt" -> "_nul.txt" (Reserved name)
+
+"dir1/dir2/file" -> "dir1_dir2_file" (Directory separators)
 
 <b>Parameters:</b>
 

@@ -45,7 +45,7 @@ import com.upokecenter.text.*;
      * <li>(a) The preamble and epilogue of multipart messages, which will
      * be ignored.</li> <li>(b) If the charset is declared to be
      * <code>utf-8</code> .</li> <li>(c) If the content type is "text/html" and
-     * the charset is declared to be <code>ascii</code> , <code>us-ascii</code> ,
+     * the charset is declared to be <code>ascii</code> , <code>us-ascii</code>,
      * "windows-1252", "windows-1251", or "iso-8859-*" (all single byte
      * encodings).</li> <li>(d) In non-MIME message bodies and in text/plain
      * message bodies. Any 8-bit bytes are replaced with the ASCII
@@ -477,7 +477,7 @@ ms = new java.io.ByteArrayInputStream(this.body);
           }
           return Encodings.DecodeToString(
            charset,
-           DataIO.ToTransform(ms.toByteArray()));
+           DataIO.ToTransform(ms));
 }
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}

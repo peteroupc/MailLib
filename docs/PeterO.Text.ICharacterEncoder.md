@@ -8,7 +8,7 @@ Defines a method that can be implemented by classes that convert Unicode code po
 
     int Encode(
         int c,
-        System.IO.Stream output);
+        PeterO.IWriter output);
 
 Converts a Unicode code point to bytes and writes the bytes to an output stream.
 

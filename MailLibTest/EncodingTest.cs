@@ -382,7 +382,10 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
     }
 
     internal static object Transform(string str) {
-      return DataIO.ToTransform(DataUtilities.GetUtf8Bytes(str, true));
+      return new ByteArrayTransform(DataUtilities.GetUtf8Bytes(str, true));
+    }
+    internal static object Transform(byte[] bytes) {
+      return new ByteArrayTransform(bytes);
     }
 
     internal static byte[] GetBytes(object trans) {
@@ -2001,6 +2004,7 @@ string stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
         ".QuotedPrintableEncoder", mode, false);
       var enc2 = (ICharacterEncoder)enc;
       int offset = 0;
+      try {
       using (var ms = new MemoryStream()) {
         while (true) {
           int c = -1;
@@ -2008,30 +2012,61 @@ string stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
             c = ((int)bytes[offset++]) & 0xff;
           }
           if (enc2.Encode(c, DataIO.ToWriter(ms)) < 0) {
-            break;
-          }
+ break;
+}
         }
         return DataUtilities.GetUtf8String(ms.ToArray(), true);
       }
+     } catch (IOException ex) {
+      throw new InvalidOperationException(ex.Message, ex);
+     }
     }
+
+    public static string EncodeB64(byte[] bytes, int mode) {
+      bool a=(mode%2) == 1;
+      bool b=(mode%4) == 1;
+      object enc = Reflect.Construct(MailNamespace() +
+        ".Base64Encoder", a, false, b);
+      var enc2 = (ICharacterEncoder)enc;
+      int offset = 0;
+      try {
+      using (var ms = new MemoryStream()) {
+        while (true) {
+          int c = -1;
+          if (offset < bytes.Length) {
+            c = ((int)bytes[offset++]) & 0xff;
+          }
+          if (enc2.Encode(c, DataIO.ToWriter(ms)) < 0) {
+ break;
+}
+        }
+        return DataUtilities.GetUtf8String(ms.ToArray(), true);
+      }
+     } catch (IOException ex) {
+      throw new InvalidOperationException(ex.Message, ex);
+     }
+    }
+
+    public static void TestBase64RoundTrip(byte[] bytes, int mode) {
+      string input = EncodeB64(bytes, mode);
+      string msgString = "From: <test@example.com>\r\n" +
+      "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
+      "Content-Transfer-Encoding: base64\r\n\r\n" + input;
+      Message msg = MessageTest.MessageFromString(msgString);
+      AssertEqual(bytes, msg.GetBody());
+      msg = MessageTest.MessageFromString(msg.Generate());
+      AssertEqual(bytes, msg.GetBody());
+    }
+
     public static void TestQuotedPrintableRoundTrip(byte[] bytes, int mode) {
       string input = EncodeQP(bytes, mode);
       string msgString = "From: <test@example.com>\r\n" +
       "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
       "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
       Message msg = MessageTest.MessageFromString(msgString);
-      //try {
-        AssertEqual(bytes, msg.GetBody());
-      /*
-      } catch (Exception ex) {
-        string emsg = ex.Message;
-        Console.WriteLine("mode="+mode);
-        Console.WriteLine(emsg);
-        Console.WriteLine(input);
-        Console.WriteLine(EncodeQP(msg.GetBody(), mode));
-        Assert.Fail(emsg);
-      }
-       */
+      AssertEqual(bytes, msg.GetBody());
+      msg = MessageTest.MessageFromString(msg.Generate());
+      AssertEqual(bytes, msg.GetBody());
     }
 
     private byte[] RandomBytes(Random rnd) {
@@ -2041,6 +2076,17 @@ string stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
         arr[i] = (byte)rnd.Next(0x100);
       }
       return arr;
+    }
+
+    [TestMethod]
+    public void TestRandomBase64() {
+      var rnd = new Random();
+      for (var i = 0; i < 5000; ++i) {
+        TestBase64RoundTrip(RandomBytes(rnd), 0);
+        TestBase64RoundTrip(RandomBytes(rnd), 1);
+        TestBase64RoundTrip(RandomBytes(rnd), 2);
+        TestBase64RoundTrip(RandomBytes(rnd), 3);
+      }
     }
 
     [TestMethod]
