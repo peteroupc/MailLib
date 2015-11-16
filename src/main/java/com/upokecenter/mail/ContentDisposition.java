@@ -156,7 +156,13 @@ String type,
 
     /**
      * Converts a filename from the Content-Disposition header to a suitable name
-     * for saving data to a file.
+     * for saving data to a file. <p>Examples:</p>
+     * <p>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt" (RFC 2047
+     * encoding)</p> <p>"=?utf-8?q?long_filename?=" -&gt; "long filename"
+     * (RFC 2047 encoding)</p> <p>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"
+     * (RFC 2231 encoding)</p> <p>"nul.txt" -&gt; "_nul.txt" (Reserved
+     * name)</p> <p>"dir1/dir2/file" -&gt; "dir1_dir2_file" (Directory
+     * separators)</p>
      * @param str A string representing a file name.
      * @return A string with the converted version of the file name. Among other
      * things, encoded words under RFC 2047 are decoded (since they occur so

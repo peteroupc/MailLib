@@ -384,10 +384,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     static Object Transform(String str) {
-      return new ByteArrayTransform(DataUtilities.GetUtf8Bytes(str, true));
-    }
-    static Object Transform(byte[] bytes) {
-      return new ByteArrayTransform(bytes);
+      return DataIO.ToTransform(DataUtilities.GetUtf8Bytes(str, true));
     }
 
     static byte[] GetBytes(Object trans) {
@@ -2018,13 +2015,9 @@ ms = new java.io.ByteArrayOutputStream();
           if (offset < bytes.length) {
             c = ((int)bytes[offset++]) & 0xff;
           }
-          try {
-          if (enc2.Encode(c, ms) < 0) {
- break;
-}
-} catch (IOException ex) {
-   throw new IllegalStateException(ex.getMessage(), ex);
-}
+          if (enc2.Encode(c, DataIO.ToWriter(ms)) < 0) {
+            break;
+          }
         }
         return DataUtilities.GetUtf8String(ms.toByteArray(), true);
 }

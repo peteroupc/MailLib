@@ -45,7 +45,7 @@ The local part of this email address (the part before the "@" sign).
 
     public override string ToString();
 
-Converts this object to a text string.
+Converts this address object to a text string.
 
 <b>Returns:</b>
 

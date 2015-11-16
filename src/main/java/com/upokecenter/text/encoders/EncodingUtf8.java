@@ -74,7 +74,7 @@ import com.upokecenter.text.*;
     }
 
     private static class Encoder implements ICharacterEncoder {
-      public int Encode(int c, OutputStream stream) throws java.io.IOException {
+      public int Encode(int c, IWriter stream) {
         if (c < 0) {
  return -1;
 }

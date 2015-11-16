@@ -5,7 +5,10 @@ using PeterO;
 using PeterO.Text.Encoders;
 
 namespace PeterO.Text {
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Contains methods for converting text from one
+  /// character encoding to another.<para>
+  /// A character encoding is a mapping from characters to
+  /// a sequence of bytes.</para></summary>
   public static class Encodings {
     private class DecoderToInputClass : ICharacterInput {
       private ITransform stream;
@@ -349,11 +352,9 @@ public int Read(int[] buffer, int offset, int length) {
     /// <c>replacement</c>)</item>
     /// <item>28 legacy single-byte encodings (other than
     /// <c>x-user-defined</c>)</item>
-    /// <item>Three legacy Japanese encodings (<c>shift_jis</c>, <c>euc-jp</c>,
-
-    /// <c>iso-2022-jp</c>)</item>
-    /// <item>Two legacy simplified Chinese encodings (<c>gbk</c>,
-
+    /// <item>Three legacy Japanese encodings (<c>shift_jis</c> and
+    /// <c>euc-jp</c> and <c>iso-2022-jp</c>)</item>
+    /// <item>Two legacy simplified Chinese encodings (<c>gbk</c> and
     /// <c>gb18030</c>)</item>
     /// <item><c>big5</c> - legacy traditional Chinese encoding</item>
     /// <item><c>euc-kr</c> - legacy Korean encoding</item>
@@ -419,12 +420,12 @@ public int Read(int[] buffer, int offset, int length) {
       return String.Empty;
     }
 
-    /// <summary>Reads bytes from a data source and converts the bytes to a
-    /// text string in a given encoding. <para>In the .NET implementation,
+    /// <summary>Reads bytes from a data source and converts the bytes from
+    /// a given encoding to a text string. <para>In the .NET implementation,
     /// this method is implemented as an extension method to any object
     /// implementing ICharacterEncoding and can be called as follows:
     /// "encoding.DecodeString(transform)". If the object's class already
-    /// has a DecodeString method with the same parameters, that method
+    /// has a DecodeToString method with the same parameters, that method
     /// takes precedence over this extension method.</para>
     /// </summary>
     /// <param name='encoding'>An object that implements a given character

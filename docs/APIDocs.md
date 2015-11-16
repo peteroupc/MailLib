@@ -23,4 +23,4 @@ Contains methods that implement Internationalized             Domain Names in Ap
  * [PeterO.Text.Normalizer](PeterO.Text.Normalizer.md) -
 Implements the Unicode normalization algorithm and             contains methods and functionality to test and convert Unicode             strings for Unicode normalization.
  * [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) -
-A character input class that implements the Unicode             normalization algorithm and contains methods and functionality to             test and convert Unicode strings for Unicode normalization.
+A character input class that implements the Unicode             normalization algorithm and contains methods and functionality to             test and convert text strings for normalization.

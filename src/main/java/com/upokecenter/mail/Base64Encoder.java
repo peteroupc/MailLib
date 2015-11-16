@@ -9,6 +9,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.io.*;
 
+import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
     /**
@@ -91,7 +92,7 @@ byte[] alphabet) {
       this.alphabet = alphabet;
     }
 
-    private int LineAwareAppend(OutputStream output, byte c) throws java.io.IOException {
+    private int LineAwareAppend(IWriter output, byte c) {
       int charCount = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= 76) {
@@ -107,11 +108,11 @@ byte[] alphabet) {
     }
 
     private int LineAwareAppendFour(
-OutputStream output,
+IWriter output,
 byte c1,
 byte c2,
 byte c3,
-byte c4) throws java.io.IOException {
+byte c4) {
       int charCount = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= 76) {
@@ -136,7 +137,7 @@ byte c4) throws java.io.IOException {
       return 4 + charCount;
     }
 
-    private int AddByteInternal(OutputStream output, byte b) throws java.io.IOException {
+    private int AddByteInternal(IWriter output, byte b) {
       int ib = ((int)b) & 0xff;
       if (this.quantumCount == 2) {
         int ret = this.LineAwareAppendFour(
@@ -160,7 +161,7 @@ output,
       }
     }
 
-    private int FinalizeEncoding(OutputStream output) throws java.io.IOException {
+    private int FinalizeEncoding(IWriter output) {
       int count = 0;
       if (this.quantumCount == 2) {
         byte c1 = this.alphabet[(this.byte1 >> 2) & 63];
@@ -196,7 +197,7 @@ output,
       return count;
     }
 
-    public int Encode(int b, OutputStream output) throws java.io.IOException {
+    public int Encode(int b, IWriter output) {
       if (b < 0) {
         return this.finalized ? (-1) : this.FinalizeEncoding(output);
       }

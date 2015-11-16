@@ -164,7 +164,7 @@ import com.upokecenter.text.*;
         this.state = new DecoderState(2);
       }
 
-      public int Encode(int c, OutputStream output) throws java.io.IOException {
+      public int Encode(int c, IWriter output) {
         if (c < 0) {
           if (this.encoderState != 0) {
             this.state.PrependOne(c);

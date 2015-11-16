@@ -62,7 +62,7 @@ namespace PeterO.Text.Encoders {
     private class Encoder : ICharacterEncoder {
       public int Encode(
        int c,
-       Stream output) {
+       IWriter output) {
         if (c < 0) {
           return -1;
         }

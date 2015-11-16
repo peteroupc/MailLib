@@ -177,6 +177,19 @@ Assert.assertEquals("2" , MediaType.Parse("x/y;z=1;z*=utf-8''2"
     @Test(timeout = 5000)
     public void TestMakeFilename() {
       {
+String stringTemp =
+  ContentDisposition.MakeFilename("=?utf-8?q?long_filename?=");
+Assert.assertEquals(
+"long filename",
+stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename("utf-8'en'hello%2Etxt");
+Assert.assertEquals(
+"hello.txt",
+stringTemp);
+}
+{
 String stringTemp = ContentDisposition.MakeFilename("=?utf-8?q?hello.txt?=");
 Assert.assertEquals(
 "hello.txt",

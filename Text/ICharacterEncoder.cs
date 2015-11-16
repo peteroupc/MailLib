@@ -22,7 +22,6 @@ namespace PeterO.Text {
     /// that it's possible for this method to return 0 if, for example, it
     /// can't generate new bytes yet based on the current
     /// input.).</returns>
-    int Encode(int c, Stream output);
-    // TODO: Consider defining an IWriter-like interface instead of Stream
+    int Encode(int c, IWriter output);
   }
 }

@@ -107,7 +107,7 @@ Resolves a character encoding's name to a canonical form, using rules more suita
 
 <b>Parameters:</b>
 
- * <i>name</i>: A string naming a character encoding. Uses a modified version of the rules in the Encoding Standard to better conform, in some cases, to email standards such as MIME, and some additional encodings may be supported. For instance, setting this value to true will enable the "utf-7" encoding and change.  `"us-ascii"` and "iso-8859-1" to a 7 bit encoding and the 8-bit Latin-1 encoding, respectively, rather than aliases to "windows-1252", as specified in the Encoding Standard.
+ * <i>name</i>: A string naming a character encoding. Uses a modified version of the rules in the Encoding Standard to better conform, in some cases, to email standards like MIME, and some additional encodings may be supported. For instance, setting this value to true will enable the "utf-7" encoding and change.  `"us-ascii"` and "iso-8859-1" to a 7 bit encoding and the 8-bit Latin-1 encoding, respectively, rather than aliases to "windows-1252", as specified in the Encoding Standard.
 
 <b>Returns:</b>
 

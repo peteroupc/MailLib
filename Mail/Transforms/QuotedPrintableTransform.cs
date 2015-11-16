@@ -11,8 +11,6 @@ using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
   internal sealed class QuotedPrintableTransform : ITransform {
-    // TODO: Eliminate TransformWithUnget
-    private TransformWithUnget input;
     private int lineCharCount;
     private bool lenientLineBreaks;
     private byte[] buffer;
@@ -21,15 +19,20 @@ namespace PeterO.Mail.Transforms {
     private bool checkStrictEncoding;
     private int maxLineSize;
 
+    private int lastByte;
+    private bool unget;
+    internal ITransform input;
+
     public QuotedPrintableTransform(
 ITransform input,
 bool lenientLineBreaks,
 int maxLineSize,
 bool checkStrictEncoding) {
       this.maxLineSize = maxLineSize;
-      this.input = new TransformWithUnget(input);
       this.lenientLineBreaks = lenientLineBreaks;
       this.checkStrictEncoding = checkStrictEncoding;
+      this.input = input;
+      this.lastByte = -1;
     }
 
     public QuotedPrintableTransform(
@@ -59,6 +62,15 @@ false) {
       this.bufferIndex = 0;
     }
 
+    private int ReadInputByte() {
+      if (this.unget) {
+        this.unget = false;
+      } else {
+        this.lastByte = this.input.ReadByte();
+      }
+      return this.lastByte;
+    }
+
     public int ReadByte() {
       if (this.bufferIndex < this.bufferCount) {
         int ret = this.buffer[this.bufferIndex];
@@ -71,14 +83,14 @@ false) {
         return ret;
       }
       while (true) {
-        int c = this.input.ReadByte();
+        int c = this.ReadInputByte();
         if (c < 0) {
           // End of stream
           return -1;
         }
         if (c == 0x0d) {
           // CR
-          c = this.input.ReadByte();
+          c = this.ReadInputByte();
           if (c == 0x0a) {
             // CRLF
             this.ResizeBuffer(1);
@@ -86,7 +98,7 @@ false) {
             this.lineCharCount = 0;
             return 0x0d;
           }
-          this.input.Unget();
+          this.unget = true;
           if (!this.lenientLineBreaks) {
             throw new MessageDataException("Expected LF after CR");
           }
@@ -114,7 +126,7 @@ false) {
           MessageDataException("Encoded quoted-printable line too long");
             }
           }
-          int b1 = this.input.ReadByte();
+          int b1 = this.ReadInputByte();
           c = 0;
           if (b1 >= '0' && b1 <= '9') {
             c <<= 4;
@@ -126,7 +138,7 @@ false) {
             c <<= 4;
             c |= b1 + 10 - 'a';
           } else if (b1 == '\r') {
-            b1 = this.input.ReadByte();
+            b1 = this.ReadInputByte();
             if (b1 == '\n') {
               // Soft line break
               this.lineCharCount = 0;
@@ -134,7 +146,7 @@ false) {
             }
             if (this.lenientLineBreaks) {
               this.lineCharCount = 0;
-              this.input.Unget();
+              this.unget = true;
               continue;
             }
             if (!this.checkStrictEncoding && (this.maxLineSize > 76 ||
@@ -146,7 +158,7 @@ false) {
               MessageDataException("Encoded quoted-printable line too long");
                 }
               }
-              this.input.Unget();
+              this.unget = true;
               this.ResizeBuffer(1);
               this.buffer[0] = (byte)'\r';
               return '=';
@@ -166,13 +178,13 @@ false) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
-              this.input.Unget();
+              this.unget = true;
               return '=';
             }
             throw new
            MessageDataException("Invalid hex character in quoted-printable");
           }
-          int b2 = this.input.ReadByte();
+          int b2 = this.ReadInputByte();
           // At this point, only a hex character is expected
           if (b2 >= '0' && b2 <= '9') {
             c <<= 4;
@@ -189,7 +201,7 @@ false) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
-              this.input.Unget();
+              this.unget = true;
               if (this.maxLineSize >= 0) {
                 ++this.lineCharCount;
                 if (this.lineCharCount > this.maxLineSize) {
@@ -242,7 +254,7 @@ false) {
           }
           // In most cases, though, there will only be
           // one space or tab
-          int c2 = this.input.ReadByte();
+          int c2 = this.ReadInputByte();
           if (c2 != ' ' && c2 != '\t' && c2 != '\r' && c2 != '\n' && c2 >= 0) {
             // Simple: Space before a character other than
             // space, tab, CR, LF, or EOF
@@ -253,7 +265,7 @@ false) {
               this.ResizeBuffer(1);
               this.buffer[0] = (byte)c2;
             } else {
-              this.input.Unget();
+              this.unget = true;
             }
             return c;
           }
@@ -261,19 +273,19 @@ false) {
           while (true) {
             if ((c2 == '\n' && this.lenientLineBreaks) || c2 < 0) {
               // EOF, or LF with lenient line breaks
-              this.input.Unget();
+              this.unget = true;
               endsWithLineBreak = true;
               break;
             }
             if (c2 == '\r' && this.lenientLineBreaks) {
               // CR with lenient line breaks
-              this.input.Unget();
+              this.unget = true;
               endsWithLineBreak = true;
               break;
             }
             if (c2 == '\r') {
               // CR, may or may not be a line break
-              c2 = this.input.ReadByte();
+              c2 = this.ReadInputByte();
               if (c2 == '\n') {
                 // LF, so it's a line break
                 this.lineCharCount = 0;
@@ -289,7 +301,7 @@ false) {
               if (!this.lenientLineBreaks) {
                 throw new MessageDataException("Expected LF after CR");
               }
-              this.input.Unget();  // it's something else
+              this.unget = true;  // it's something else
               ++this.lineCharCount;
               if (this.maxLineSize >= 0 && this.lineCharCount >
                     this.maxLineSize) {
@@ -300,7 +312,7 @@ false) {
             }
             if (c2 != ' ' && c2 != '\t') {
               // Not a space or tab
-              this.input.Unget();
+              this.unget = true;
               break;
             }
             // An additional space or tab
@@ -314,7 +326,7 @@ false) {
             MessageDataException("Encoded quoted-printable line too long");
               }
             }
-            c2 = this.input.ReadByte();
+            c2 = this.ReadInputByte();
           }
           // Ignore space/tab runs if the line ends in that run
           if (!endsWithLineBreak) {

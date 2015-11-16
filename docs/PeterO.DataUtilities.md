@@ -158,9 +158,6 @@ The parameter  <i>str</i>
 The string contains an unpaired surrogate code point and  <i>replace</i>
  is false, or an internal error occurred.
 
- * System.ArgumentException:
-The parameter "offset" is less than 0, "bytesCount" is less than 0, or offset plus bytesCount is greater than the length of "data" .
-
 ### GetUtf8Length
 
     public static long GetUtf8Length(

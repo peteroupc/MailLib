@@ -486,8 +486,9 @@ tokener.GetTokens()));
           throw new
               NotSupportedException("Not in a supported character set.");
           }
-          ITransform transform = new WrappedStream(ms);
-          return Encodings.DecodeToString(charset, transform);
+          return Encodings.DecodeToString(
+           charset,
+           DataIO.ToTransform(ms.ToArray()));
         }
       }
     }
@@ -504,12 +505,30 @@ tokener.GetTokens()));
       this.headers = new List<string>();
       this.parts = new List<Message>();
       this.body = new byte[0];
-      ITransform transform = new WrappedStream(stream);
+      ITransform transform = DataIO.ToTransform(stream);
       // if (useLenientLineBreaks) {
         // TODO: Might not be correct if the transfer
         // encoding turns out to be binary
         // transform = new LineBreakNormalizeTransform(stream);
       // }
+      this.ReadMessage(transform);
+    }
+
+    /// <summary>Initializes a new instance of the Message class. Reads
+    /// from the given byte array to initialize the message.</summary>
+    /// <param name='bytes'>A readable data stream.</param>
+    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// name='bytes'/> is null.</exception>
+    public Message(byte[] bytes) {
+      if (bytes == null) {
+        throw new ArgumentNullException("bytes");
+      }
+      this.headers = new List<string>();
+      this.parts = new List<Message>();
+      this.body = new byte[0];
+      ITransform transform = DataIO.ToTransform(bytes);
+      // TODO: Use MessageDataException if transform throws
+      // an exception
       this.ReadMessage(transform);
     }
 
@@ -1350,7 +1369,7 @@ bool checkBoundaryDelimiter) {
     public string Generate() {
         try {
       using (var ms = new MemoryStream()) {
-          this.Generate(ms, 0);
+          this.Generate(DataIO.ToWriter(ms), 0);
         return DataUtilities.GetUtf8String(ms.ToArray(), false);
          }
         } catch (IOException ex) {
@@ -1402,7 +1421,7 @@ bool checkBoundaryDelimiter) {
     private static IDictionary<string, int> valueHeaderIndices =
       MakeHeaderIndices();
 
-    private static void AppendAscii(Stream output, string str) {
+    private static void AppendAscii(IWriter output, string str) {
       for (var i = 0; i < str.Length; ++i) {
         char c = str[i];
         if (c >= 0x80) {
@@ -1412,7 +1431,7 @@ bool checkBoundaryDelimiter) {
       }
     }
 
-    private void Generate(Stream output, int depth) {
+    private void Generate(IWriter output, int depth) {
       var sb = new StringBuilder();
       bool haveMimeVersion = false;
       bool haveContentEncoding = false;
@@ -2411,12 +2430,16 @@ throw new ArgumentException("multipartStack.Count (" + multipartStack.Count+
     }
 
     private void ReadMessage(ITransform stream) {
-      ReadHeaders(stream, this.headers, true);
-      this.ProcessHeaders(false, false);
-      if (this.contentType.IsMultipart) {
-        this.ReadMultipartBody(stream);
-      } else {
-        this.ReadSimpleBody(stream);
+      try {
+        ReadHeaders(stream, this.headers, true);
+        this.ProcessHeaders(false, false);
+        if (this.contentType.IsMultipart) {
+          this.ReadMultipartBody(stream);
+        } else {
+          this.ReadSimpleBody(stream);
+        }
+      } catch (InvalidOperationException ex) {
+        throw new MessageDataException(ex.Message, ex);
       }
     }
   }

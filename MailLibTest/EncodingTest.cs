@@ -382,10 +382,7 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
     }
 
     internal static object Transform(string str) {
-      return new ByteArrayTransform(DataUtilities.GetUtf8Bytes(str, true));
-    }
-    internal static object Transform(byte[] bytes) {
-      return new ByteArrayTransform(bytes);
+      return DataIO.ToTransform(DataUtilities.GetUtf8Bytes(str, true));
     }
 
     internal static byte[] GetBytes(object trans) {
@@ -2010,13 +2007,9 @@ string stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
           if (offset < bytes.Length) {
             c = ((int)bytes[offset++]) & 0xff;
           }
-          try {
-          if (enc2.Encode(c, ms) < 0) {
- break;
-}
-} catch (IOException ex) {
-   throw new InvalidOperationException(ex.Message, ex);
-}
+          if (enc2.Encode(c, DataIO.ToWriter(ms)) < 0) {
+            break;
+          }
         }
         return DataUtilities.GetUtf8String(ms.ToArray(), true);
       }

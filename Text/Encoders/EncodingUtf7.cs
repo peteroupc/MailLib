@@ -271,7 +271,7 @@ namespace PeterO.Text.Encoders {
     }
 
     private class Encoder : ICharacterEncoder {
-      private int Base64Char(int c, Stream output) {
+      private int Base64Char(int c, IWriter output) {
         if (c <= 0xffff) {
           int byte1 = (c >> 8) & 0xff;
           int byte2 = c & 0xff;
@@ -309,7 +309,7 @@ namespace PeterO.Text.Encoders {
         }
       }
 
-      public int Encode(int c, Stream output) {
+      public int Encode(int c, IWriter output) {
         if (c < 0) {
  return -1;
 }

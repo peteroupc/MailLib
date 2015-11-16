@@ -130,7 +130,7 @@ bomTransform);
 
     public static int Utf8EncodeAlgorithm(
        ICharacterInput stream,
-       OutputStream output) throws java.io.IOException {
+       IWriter output) {
       // Implements the "utf-8 encode" algorithm
       // in the Encoding Standard
       return EncodeAlgorithm(stream, Encodings.UTF8, output);
@@ -139,7 +139,7 @@ bomTransform);
     public static int EncodeAlgorithm(
       ICharacterInput stream,
       ICharacterEncoding encoding,
-      OutputStream output) throws java.io.IOException {
+      IWriter output) {
       int total = 0;
       ICharacterEncoder encoder = encoding.GetEncoder();
       // Implements the "encode" algorithm

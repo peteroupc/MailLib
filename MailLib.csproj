@@ -41,8 +41,10 @@
     <DocumentationFile>bin\Release\MailLib.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DataIO.cs" />
+    <Compile Include="IByteWriter.cs" />
+    <Compile Include="IWriter.cs" />
     <Compile Include="Mail\ArrayWriter.cs" />
-    <Compile Include="Mail\Transforms\ByteArrayTransform.cs" />
     <Compile Include="Mail\Transforms\TransformWithUnget.cs" />
     <Compile Include="Text\ArrayWriter.cs" />
     <Compile Include="DataUtilities.cs" />
@@ -110,7 +112,6 @@
     <Compile Include="Mail\Transforms\SevenBitTransform.cs" />
     <Compile Include="Mail\Tokener.cs" />
     <Compile Include="Mail\WordWrapEncoder.cs" />
-    <Compile Include="Mail\Transforms\WrappedStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadOnlyMap.cs" />
     <Compile Include="RedBlackTree.cs" />

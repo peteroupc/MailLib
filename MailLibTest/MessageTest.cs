@@ -182,6 +182,19 @@ Assert.AreEqual("2" , MediaType.Parse("x/y;z=1;z*=utf-8''2"
     [Timeout(5000)]
     public void TestMakeFilename() {
       {
+string stringTemp =
+  ContentDisposition.MakeFilename("=?utf-8?q?long_filename?=");
+Assert.AreEqual(
+"long filename",
+stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename("utf-8'en'hello%2Etxt");
+Assert.AreEqual(
+"hello.txt",
+stringTemp);
+}
+{
 string stringTemp = ContentDisposition.MakeFilename("=?utf-8?q?hello.txt?=");
 Assert.AreEqual(
 "hello.txt",
