@@ -6,8 +6,8 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
-using PeterO.Mail;
 using PeterO;
+using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
   internal sealed class TransformWithUnget : ITransform {

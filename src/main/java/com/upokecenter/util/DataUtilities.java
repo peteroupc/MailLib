@@ -596,7 +596,7 @@ boolean lenientLineBreaks) throws java.io.IOException {
      * builder} is null.
      * @throws IllegalArgumentException The parameter {@code offset} is less than 0,
      * {@code bytesCount} is less than 0, or offset plus bytesCount is
-     * greater than the length of {@code data} .
+     * greater than the length of {@code data}.
      */
     public static int ReadUtf8FromBytes(
 byte[] data,

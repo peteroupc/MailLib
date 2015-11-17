@@ -242,11 +242,12 @@ private static int SkipCharsetOrEncoding(
 string str,
 int index,
 int endIndex) {
+  string specials = "()<>@,;:\\\"/[]?=.";
       int i = index;
       while (i < endIndex) {
         char c = str[i];
         if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
-          "()<>@,;:\\\"/[]?=." .IndexOf(c) >= 0)) {
+          specials.IndexOf(c) >= 0)) {
           break;
         }
         ++i;
@@ -323,8 +324,8 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         int startIndex = 0;
         bool havePossibleEncodedWord = false;
         bool startParen = false;
-      if (index + 1 < endIndex && str[index] == '=' && str[index + 1] == '?'
-) {
+      if (index + 1 < endIndex && str[index] == '=' &&
+        str[index + 1] == '?') {
           startIndex = index + 2;
           index += 2;
           havePossibleEncodedWord = true;
@@ -380,9 +381,9 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
               if (i2 != index && i2 < endIndex && str[i2] == '?') {
                 // check for supported encoding (B or Q)
                 char encodingChar = str[index];
-          if (i2 - index == 1 && (encodingChar == 'b' || encodingChar == 'B' ||
-                encodingChar == 'q' || encodingChar == 'Q'
-)) {
+          if (i2 - index == 1 && (encodingChar == 'b' ||
+            encodingChar == 'B' ||
+                encodingChar == 'q' || encodingChar == 'Q')) {
                   // Parse encoded text
                   base64 = encodingChar == 'b' || encodingChar == 'B';
                   index = i2 + 1;

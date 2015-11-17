@@ -37,7 +37,7 @@ namespace PeterO.Text.Encoders {
            return 1;
          }
          for (var i = 0; i < this.codepoints.Length; ++i) {
-           if (this.codepoints[i ]==c) {
+           if (this.codepoints[i] == c) {
              output.WriteByte((byte)(i + 0x80));
              return 1;
            }

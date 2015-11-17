@@ -6,12 +6,11 @@ using PeterO;
 using PeterO.Text.Encoders;
 
 namespace PeterO.Text {
-    /// <summary>Contains methods for converting text from one
-  /// character encoding to another. This class also contains convenience
-  /// methods
-  /// for converting strings and other character inputs to bytes.<para>
-  /// A character encoding is a mapping from characters to
-  /// a sequence of bytes.</para></summary>
+    /// <summary>Contains methods for converting text from one character
+    /// encoding to another. This class also contains convenience methods
+    /// for converting strings and other character inputs to bytes.
+    /// <para>A character encoding is a mapping from characters to a
+    /// sequence of bytes.</para></summary>
   public static class Encodings {
     private class DecoderToInputClass : ICharacterInput {
       private ITransform stream;
@@ -23,18 +22,20 @@ namespace PeterO.Text {
       }
 
     /// <summary>Not documented yet.</summary>
-    /// <returns></returns>
-public int ReadChar() {
+    /// <returns>A 32-bit signed integer.</returns>
+      public int ReadChar() {
         int c = this.reader.ReadChar(this.stream);
         return (c == -2) ? 0xfffd : c;
       }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name="buffer"></param>
-    /// <param name="offset"></param>
-    /// <param name="length"></param>
-    /// <returns></returns>
-public int Read(int[] buffer, int offset, int length) {
+    /// <param name='buffer'>An array of 32-bit unsigned integers.</param>
+    /// <param name='offset'>Another 32-bit signed integer.</param>
+    /// <param name='length'>A 32-bit signed integer. (3).</param>
+    /// <returns>A 32-bit signed integer.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='buffer'/> is null.</exception>
+      public int Read(int[] buffer, int offset, int length) {
         if (buffer == null) {
           throw new ArgumentNullException("buffer");
         }
@@ -339,55 +340,53 @@ public int Read(int[] buffer, int offset, int length) {
       return aliases;
     }
 
-    /// <summary>Resolves a character encoding's name
-    /// to a standard form.</summary>
-    /// <param name='name'>A string that names a given character
-    /// encoding. Any leading and trailing whitespace is removed and
-    /// the name converted to lowercase before resolving the
-    /// encoding's name. The Encoding Standard supports
-    /// only the following encodings (and defines aliases for most of
-    /// them):<list type='bullet'>
-    /// <item><c>utf-8</c> - UTF-8 (8-bit universal character set,
-    /// the encoding recommended by
-    /// the Encoding Standard for new data formats)</item>
+    /// <summary>Resolves a character encoding's name to a standard
+    /// form.</summary>
+    /// <param name='name'>A string that names a given character encoding.
+    /// Any leading and trailing whitespace is removed and the name
+    /// converted to lowercase before resolving the encoding&#x27;s name.
+    /// The Encoding Standard supports only the following encodings (and
+    /// defines aliases for most of them):.
+    /// <list type='bullet'>
+    /// <item><c>utf-8</c> - UTF-8 (8-bit universal character set, the
+    /// encoding recommended by the Encoding Standard for new data
+    /// formats)</item>
     /// <item><c>utf-16le</c> - UTF-16 little-endian (16-bit UCS)</item>
     /// <item><c>utf-16be</c> - UTF-16 big-endian (16-bit UCS)</item>
     /// <item>Two special purpose encodings: <c>x-user-defined</c> and
     /// <c>replacement</c></item>
-    /// <item>28 legacy single-byte encodings:<list type='bullet'>
+    /// <item>28 legacy single-byte encodings:
+    /// <list type='bullet'>
     /// <item><c>windows-1252</c> - Western Europe</item>
-    /// <item><c>iso-8859-2</c>, <c>windows-1250</c> - Central Europe</item>
+    /// <item><c>iso-8859-2</c>, <c>windows-1250</c> - Central
+    /// Europe</item>
     /// <item><c>iso-8859-10</c> - Northern Europe</item>
     /// <item><c>iso-8859-4</c>, <c>windows-1257</c> - Baltic</item>
     /// <item><c>iso-8859-13</c> - Estonian</item>
     /// <item><c>iso-8859-14</c> - Celtic</item>
     /// <item><c>iso-8859-16</c> - Romanian</item>
-    /// <item><c>iso-8859-5</c>, <c>ibm866</c>,
-    /// <c>koi8-r</c>, <c>windows-1251</c>, <c>x-mac-cyrillic</c> -
-    /// Cyrillic</item>
+    /// <item><c>iso-8859-5</c>, <c>ibm866</c>, <c>koi8-r</c>,
+    /// <c>windows-1251</c>, <c>x-mac-cyrillic</c> - Cyrillic</item>
     /// <item><c>koi8-u</c> - Ukrainian</item>
     /// <item><c>iso-8859-7</c>, <c>windows-1253</c> - Greek</item>
     /// <item><c>iso-8859-6</c>, <c>windows-1256</c> - Arabic</item>
-    /// <item><c>iso-8859-8</c>, <c>iso-8859-8-i</c>, <c>windows-1255</c> -
-    /// Hebrew</item>
+    /// <item><c>iso-8859-8</c>, <c>iso-8859-8-i</c>, <c>windows-1255</c>
+    /// - Hebrew</item>
     /// <item><c>iso-8859-3</c> - Latin 3</item>
     /// <item><c>iso-8859-15</c> - Latin 9</item>
     /// <item><c>windows-1254</c> - Turkish</item>
     /// <item><c>windows-874</c> - Thai</item>
     /// <item><c>windows-1258</c> - Vietnamese</item>
-    /// <item><c>macintosh</c> - Mac Roman</item></list>
-    /// </item>
-    /// <item>Three legacy Japanese encodings: 
-    /// <c>shift_jis</c>,
+    /// <item><c>macintosh</c> - Mac Roman</item></list></item>
+    /// <item>Three legacy Japanese encodings: <c>shift_jis</c>,
     /// <c>euc-jp</c>, <c>iso-2022-jp</c></item>
     /// <item>Two legacy simplified Chinese encodings: <c>gbk</c> and
     /// <c>gb18030</c></item>
     /// <item><c>big5</c> - legacy traditional Chinese encoding</item>
-    /// <item><c>euc-kr</c> - legacy Korean encoding</item>
-    /// </list></param>
+    /// <item><c>euc-kr</c> - legacy Korean encoding</item></list></param>
     /// <returns>A standardized name for the encoding. Returns the empty
-    /// string if "name" is null
-    /// or empty, or if the encoding name is unsupported.</returns>
+    /// string if <paramref name='name'/> is null or empty, or if the
+    /// encoding name is unsupported.</returns>
     public static string ResolveAlias(string name) {
       if (String.IsNullOrEmpty(name)) {
         return String.Empty;
@@ -403,14 +402,17 @@ public int Read(int[] buffer, int offset, int length) {
     /// <param name='name'>A string naming a character encoding. Uses a
     /// modified version of the rules in the Encoding Standard to better
     /// conform, in some cases, to email standards like MIME. In addition
-    /// to the encodings mentioned in ResolveAlias, the following additional
-    /// encodings are supported:<list type='bullet'>
+    /// to the encodings mentioned in ResolveAlias, the following
+    /// additional encodings are supported:.
+    /// <list type='bullet'>
     /// <item><c>us-ascii</c> - ASCII 7-bit encoding, rather than an alias
-    /// to <c>windows-1252</c>, as specified in the Encoding Standard</item>
-    /// <item><c>iso-8859-1</c> - Latin-1 8-bit encoding, rather than an alias
-    /// to <c>windows-1252</c>, as specified in the Encoding Standard</item>
-    /// <item><c>utf-7</c> - UTF-7 (7-bit universal character set)</item>
-    /// </list></param>
+    /// to <c>windows-1252</c>, as specified in the Encoding
+    /// Standard</item>
+    /// <item><c>iso-8859-1</c> - Latin-1 8-bit encoding, rather than an
+    /// alias to <c>windows-1252</c>, as specified in the Encoding
+    /// Standard</item>
+    /// <item><c>utf-7</c> - UTF-7 (7-bit universal character
+    /// set)</item></list></param>
     /// <returns>A standardized name for the encoding. Returns the empty
     /// string if <paramref name='name'/> is null or empty, or if the
     /// encoding name is unsupported.</returns>
@@ -448,129 +450,301 @@ public int Read(int[] buffer, int offset, int length) {
     }
 
     /// <summary>Reads bytes from a data source and converts the bytes from
-    /// a given encoding to a text string. <para>In the .NET implementation,
-    /// this method is implemented as an extension method to any object
-    /// implementing ICharacterEncoding and can be called as follows:
-    /// "encoding.DecodeString(transform)". If the object's class already
-    /// has a DecodeToString method with the same parameters, that method
-    /// takes precedence over this extension method.</para>
-    /// </summary>
+    /// a given encoding to a text string.
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing ICharacterEncoding and
+    /// can be called as follows: "encoding.DecodeString(transform)". If
+    /// the object's class already has a DecodeToString method with the
+    /// same parameters, that method takes precedence over this extension
+    /// method.</para></summary>
     /// <param name='encoding'>An object that implements a given character
     /// encoding. Any bytes that can&#x27;t be decoded are converted to the
     /// replacement character (U + FFFD).</param>
     /// <param name='transform'>An object that implements a byte
     /// stream.</param>
     /// <returns>The converted string.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoding'/> or <paramref name='transform'/> is
     /// null.</exception>
     public static string DecodeToString(
      this ICharacterEncoding encoding,
      ITransform transform) {
       if (encoding == null) {
-  throw new ArgumentNullException("encoding");
-}
+        throw new ArgumentNullException("encoding");
+      }
       if (transform == null) {
-  throw new ArgumentNullException("transform");
-}
+        throw new ArgumentNullException("transform");
+      }
       return InputToString(
          GetDecoderInput(encoding, transform));
     }
 
-        /// <summary>
-    /// Converts a text string to a byte array encoded
-    /// in a given character encoding. When reading the
-    /// string, any unpaired surrogate characters are replaced
-    /// with the replacement character (U + FFFD), and when
-    /// writing to the byte array, any characters that can't
-    /// be encoded are replaced with the byte 0x3f (the
-    /// question mark character).
-    /// </summary>
-  /// <returns>Not documented yet.</returns>
+    /// <summary>Converts a text string to a byte array encoded in a given
+    /// character encoding. When reading the string, any unpaired surrogate
+    /// characters are replaced with the replacement character (U + FFFD),
+    /// and when writing to the byte array, any characters that can't be
+    /// encoded are replaced with the byte 0x3f (the question mark
+    /// character).
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing ICharacterEncoding and
+    /// can be called as follows: <c>encoding.StringToBytes(str)</c>. If
+    /// the object's class already has a StringToBytes method with the same
+    /// parameters, that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='encoding'>Not documented yet.</param>
+    /// <param name='str'>Not documented yet.</param>
+    /// <returns>A byte array.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='encoding'/> is null.</exception>
     public static byte[] StringToBytes(
       this ICharacterEncoding encoding,
       string str) {
       if (encoding == null) {
-  throw new ArgumentNullException("encoding");
-}
-        return StringToBytes(encoding.GetEncoder(), str);
+        throw new ArgumentNullException("encoding");
+      }
+      return StringToBytes(encoding.GetEncoder(), str);
     }
 
-     /// <summary>
-    /// Reads Unicode characters from a character input and
-    /// writes them to a byte array encoded using the
-    /// given character encoder. When
-    /// writing to the byte array, any characters that can't
-    /// be encoded are replaced with the byte 0x3f (the
-    /// question mark character).
-    /// </summary>
-  /// <returns>Not documented yet.</returns>
+    /// <summary>Reads Unicode characters from a character input and writes
+    /// them to a byte array encoded using the given character encoder.
+    /// When writing to the byte array, any characters that can't be
+    /// encoded are replaced with the byte 0x3f (the question mark
+    /// character).
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing ICharacterInput and can
+    /// be called as follows: <c>input.EncodeToBytes(encoding)</c>. If the
+    /// object's class already has a EncodeToBytes method with the same
+    /// parameters, that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='input'>Not documented yet.</param>
+    /// <param name='encoding'>Not documented yet.</param>
+    /// <returns>A byte array.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='encoding'/> is null.</exception>
     public static byte[] EncodeToBytes(
       this ICharacterInput input,
       ICharacterEncoding encoding) {
-        if (encoding == null) {
-  throw new ArgumentNullException("encoding");
-}
-return EncodeToBytes(input, encoding.GetEncoder());
+      if (encoding == null) {
+        throw new ArgumentNullException("encoding");
+      }
+      return EncodeToBytes(input, encoding.GetEncoder());
     }
 
-    /// <summary>
-    /// Reads Unicode characters from a character input and
-    /// writes them to a byte array encoded
-    /// in a given character encoding. When
-    /// writing to the byte array, any characters that can't
-    /// be encoded are replaced with the byte 0x3f (the
-    /// question mark character).
-    /// </summary>
-  /// <returns>Not documented yet.</returns>
+    /// <summary>Reads Unicode characters from a character input and writes
+    /// them to a byte array encoded in a given character encoding. When
+    /// writing to the byte array, any characters that can't be encoded are
+    /// replaced with the byte 0x3f (the question mark character).
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing ICharacterInput and can
+    /// be called as follows: <c>input.EncodeToBytes(encoder)</c>. If the
+    /// object's class already has a EncodeToBytes method with the same
+    /// parameters, that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='input'>Not documented yet.</param>
+    /// <param name='encoder'>Not documented yet.</param>
+    /// <returns>A byte array.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='encoder'/> or <paramref name='input'/> is null.</exception>
     public static byte[] EncodeToBytes(
       this ICharacterInput input,
       ICharacterEncoder encoder) {
-        if (encoder == null) {
-  throw new ArgumentNullException("encoder");
-}
-        if (input == null) {
-  throw new ArgumentNullException("input");
-}
-        var writer = new ArrayWriter();
-        var i = 0;
-        while (true) {
-          int cp = input.ReadChar();
-          int enc = encoder.Encode(cp, writer);
-          if (enc == -2) {
-            // Not encodable, write a question mark instead
-            writer.WriteByte((byte)0x3f);
-          }
-          if (enc == -1) {
-            break;
-          }
+      if (encoder == null) {
+        throw new ArgumentNullException("encoder");
+      }
+      if (input == null) {
+        throw new ArgumentNullException("input");
+      }
+      var writer = new ArrayWriter();
+      var i = 0;
+      while (true) {
+        int cp = input.ReadChar();
+        int enc = encoder.Encode(cp, writer);
+        if (enc == -2) {
+          // Not encodable, write a question mark instead
+          writer.WriteByte((byte)0x3f);
         }
-        return writer.ToArray();
+        if (enc == -1) {
+          break;
+        }
+      }
+      return writer.ToArray();
     }
 
-    /// <summary>
-    /// Converts a text string to a byte array using the
-    /// given character encoder. When reading the
-    /// string, any unpaired surrogate characters are replaced
-    /// with the replacement character (U + FFFD), and when
-    /// writing to the byte array, any characters that can't
-    /// be encoded are replaced with the byte 0x3f (the
-    /// question mark character).
-    /// </summary>
-  /// <returns>Not documented yet.</returns>
+    /// <summary>Converts a text string to a byte array using the given
+    /// character encoder. When reading the string, any unpaired surrogate
+    /// characters are replaced with the replacement character (U + FFFD),
+    /// and when writing to the byte array, any characters that can't be
+    /// encoded are replaced with the byte 0x3f (the question mark
+    /// character).
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing ICharacterEncoder and
+    /// can be called as follows: <c>encoder.StringToBytes(str)</c>. If
+    /// the object's class already has a StringToBytes method with the same
+    /// parameters, that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='encoder'>Not documented yet.</param>
+    /// <param name='str'>Not documented yet.</param>
+    /// <returns>A byte array.</returns>
     public static byte[] StringToBytes(
       this ICharacterEncoder encoder,
       string str) {
-        return EncodeToBytes(
-            new StringCharacterInput(str),
-            encoder);
+      return EncodeToBytes(
+          new StringCharacterInput(str),
+          encoder);
     }
 
-     /// <summary>
-    /// Reads Unicode characters from a character input and
+    /// <summary>Not documented yet.
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing ICharacterEncoding and
+    /// can be called as follows: <c>enc.DecodeToString(bytes)</c>. If the
+    /// object's class already has a DecodeToString method with the same
+    /// parameters, that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='enc'>An ICharacterEncoding object.</param>
+    /// <param name='bytes'>A byte array.</param>
+    /// <returns>A string object.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='enc'/> or <paramref name='bytes'/> is
+    /// null.</exception>
+    public static string DecodeToString(
+this ICharacterEncoding enc,
+byte[] bytes) {
+      if (enc == null) {
+        throw new ArgumentNullException("enc");
+      }
+      if (bytes == null) {
+        throw new ArgumentNullException("bytes");
+      }
+      return DecodeToString(enc, DataIO.ToTransform(bytes));
+    }
+
+    /// <summary>Not documented yet.
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing ICharacterEncoding and
+    /// can be called as follows: <c>enc.DecodeToString(bytes, offset,
+    /// length)</c>. If the object's class already has a DecodeToString
+    /// method with the same parameters, that method takes precedence over
+    /// this extension method.</para></summary>
+    /// <param name='enc'>An ICharacterEncoding object.</param>
+    /// <param name='bytes'>A byte array.</param>
+    /// <param name='offset'>A 32-bit signed integer.</param>
+    /// <param name='length'>Another 32-bit signed integer.</param>
+    /// <returns>A string object.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='enc'/> or <paramref name='bytes'/> is
+    /// null.</exception>
+    public static string DecodeToString(
+this ICharacterEncoding enc,
+byte[] bytes,
+int offset,
+int length) {
+      if (enc == null) {
+        throw new ArgumentNullException("enc");
+      }
+      if (bytes == null) {
+        throw new ArgumentNullException("bytes");
+      }
+      if (offset < 0) {
+        throw new ArgumentException("offset (" + offset +
+          ") is less than " + 0);
+      }
+      if (offset > bytes.Length) {
+        throw new ArgumentException("offset (" + offset +
+          ") is more than " + bytes.Length);
+      }
+      if (length < 0) {
+        throw new ArgumentException("length (" + length +
+          ") is less than " + 0);
+      }
+      if (length > bytes.Length) {
+        throw new ArgumentException("length (" + length +
+          ") is more than " + bytes.Length);
+      }
+      if (bytes.Length - offset < length) {
+        throw new ArgumentException("bytes's length minus " + offset + " (" +
+          (bytes.Length - offset) + ") is less than " + length);
+      }
+      return DecodeToString(enc, DataIO.ToTransform(bytes, offset, length));
+    }
+
+    /// <summary>Not documented yet.
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing string and can be
+    /// called as follows: <c>str.EncodeToBytes(enc)</c>. If the object's
+    /// class already has a EncodeToBytes method with the same parameters,
+    /// that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='enc'>An ICharacterEncoding object.</param>
+    /// <returns>A byte array.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> or <paramref name='enc'/> is
+    /// null.</exception>
+    public static byte[] EncodeToBytes(
+this string str,
+ICharacterEncoding enc) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      if (enc == null) {
+        throw new ArgumentNullException("enc");
+      }
+      return EncodeToBytes(new StringCharacterInput(str), enc);
+    }
+
+    /// <summary>Not documented yet.
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing string and can be
+    /// called as follows: <c>str.StringToInput(offset, length)</c>. If
+    /// the object's class already has a StringToInput method with the same
+    /// parameters, that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='str'>A string object.</param>
+    /// <param name='offset'>A 32-bit signed integer.</param>
+    /// <param name='length'>Another 32-bit signed integer.</param>
+    /// <returns>An ICharacterInput object.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='str'/> is null.</exception>
+    public static ICharacterInput StringToInput(
+this string str,
+int offset,
+int length) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      if (offset < 0) {
+        throw new ArgumentException("offset (" + offset +
+          ") is less than " + 0);
+      }
+      if (offset > str.Length) {
+        throw new ArgumentException("offset (" + offset +
+          ") is more than " + str.Length);
+      }
+      if (length < 0) {
+        throw new ArgumentException("length (" + length +
+          ") is less than " + 0);
+      }
+      if (length > str.Length) {
+        throw new ArgumentException("length (" + length +
+          ") is more than " + str.Length);
+      }
+      if (str.Length - offset < length) {
+        throw new ArgumentException("str's length minus " + offset + " (" +
+          (str.Length - offset) + ") is less than " + length);
+      }
+      return new StringCharacterInput(str, offset, length);
+    }
+
+    /// <summary>Reads Unicode characters from a character input and
     /// converts them to a text string.
-    /// </summary>
-  /// <returns>Not documented yet.</returns>
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing ICharacterInput and can
+    /// be called as follows: <c>reader.InputToString()</c>. If the
+    /// object's class already has a InputToString method with the same
+    /// parameters, that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='reader'>Not documented yet.</param>
+    /// <returns>A string object.</returns>
     public static string InputToString(this ICharacterInput reader) {
       var builder = new StringBuilder();
       while (true) {
@@ -589,14 +763,13 @@ return EncodeToBytes(input, encoding.GetEncoder());
     }
 
     /// <summary>Converts a character encoding into a character input
-    /// stream, given a streamable source of bytes.<para>In the .NET
-    /// implementation, this method is
-    /// implemented as an extension method to any object implementing
-    /// ICharacterEncoding and can be called as follows:
-    /// "encoding.GetDecoderInput(transform)". If the object's class
-    /// already has a GetDecoderInput method with the same parameters, that
-    /// method takes precedence over this extension method.</para>
-    /// </summary>
+    /// stream, given a streamable source of bytes.
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing ICharacterEncoding and
+    /// can be called as follows: "encoding.GetDecoderInput(transform)". If
+    /// the object's class already has a GetDecoderInput method with the
+    /// same parameters, that method takes precedence over this extension
+    /// method.</para></summary>
     /// <param name='encoding'>Encoding that exposes a decoder to be
     /// converted into a character input stream. If the decoder returns -2
     /// (indicating a decode error), the character input stream handles the
@@ -607,9 +780,9 @@ return EncodeToBytes(input, encoding.GetEncoder());
     public static ICharacterInput GetDecoderInput(
       this ICharacterEncoding encoding,
       ITransform stream) {
-        return new DecoderToInputClass(
-          encoding.GetDecoder(),
-          stream);
+      return new DecoderToInputClass(
+        encoding.GetDecoder(),
+        stream);
     }
 
     /// <summary>Returns a character encoding from the given
@@ -617,9 +790,9 @@ return EncodeToBytes(input, encoding.GetEncoder());
     /// <param name='name'>A string naming a character encoding. See the
     /// ResolveAlias method.</param>
     /// <returns>An ICharacterEncoding object.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
-     public static ICharacterEncoding GetEncoding(string name) {
+    public static ICharacterEncoding GetEncoding(string name) {
       return GetEncoding(name, false);
     }
 
@@ -631,13 +804,10 @@ return EncodeToBytes(input, encoding.GetEncoder());
     /// in the Encoding Standard. If true, uses modified rules as described
     /// in the ResolveAliasForEmail method.</param>
     /// <returns>An object that enables encoding and decoding text in the
-    /// given character encoding.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
-    /// name='name'/> is null.</exception>
+    /// given character encoding. Returns null if the name is null or
+    /// empty, or if it names an unrecognized or unsupported
+    /// encoding.</returns>
     public static ICharacterEncoding GetEncoding(string name, bool forEmail) {
-      if (name == null) {
-        throw new ArgumentNullException("name");
-      }
       if (String.IsNullOrEmpty(name)) {
         return null;
       }
@@ -656,7 +826,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
         return (ICharacterEncoding)(new EncodingUtf7());
       }
       if (name.Equals("windows-1252")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+          8218,
     402, 8222, 8230, 8224,
     8225, 710, 8240, 352, 8249, 338, 141, 381, 143, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 732, 8482, 353, 8250, 339, 157, 382, 376, 160, 161, 162,
@@ -670,7 +841,7 @@ return EncodeToBytes(input, encoding.GetEncoder());
       }
 
       if (name.Equals("ibm866")) {
-      return (ICharacterEncoding)new EncodingSingleByte(new[] { 1040, 1041,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 1040, 1041,
         1042, 1043, 1044, 1045,
     1046, 1047, 1048, 1049, 1050, 1051, 1052, 1053, 1054, 1055, 1056, 1057,
     1058, 1059, 1060, 1061, 1062, 1063, 1064, 1065, 1066, 1067, 1068, 1069,
@@ -685,7 +856,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     160 });
       }
       if (name.Equals("iso-8859-10")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+          131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 260, 274, 290, 298, 296,
@@ -698,7 +870,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     });
       }
       if (name.Equals("iso-8859-13")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+          131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 8221, 162, 163, 164, 8222,
@@ -711,7 +884,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     });
       }
       if (name.Equals("iso-8859-14")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+          131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 7682, 7683, 163, 266, 267,
@@ -724,7 +898,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     253, 375, 255 });
       }
       if (name.Equals("iso-8859-15")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+          131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 8364, 165,
@@ -737,7 +912,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     });
       }
       if (name.Equals("iso-8859-16")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+          131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 260, 261, 321, 8364, 8222,
@@ -750,7 +926,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     });
       }
       if (name.Equals("iso-8859-2")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+          131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 260, 728, 321, 164, 317,
@@ -763,7 +940,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     });
       }
       if (name.Equals("iso-8859-3")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+          131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 294, 728, 163, 164, -2,
@@ -776,7 +954,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     349, 729 });
       }
       if (name.Equals("iso-8859-4")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+          131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 260, 312, 342, 164, 296,
@@ -789,7 +968,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     });
       }
       if (name.Equals("iso-8859-5")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+          131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 1025, 1026, 1027, 1028,
@@ -803,7 +983,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     1114, 1115, 1116, 167, 1118, 1119 });
       }
       if (name.Equals("iso-8859-6")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+          131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, -2, -2, -2, 164,
@@ -817,7 +998,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     -2, -2, -2, -2, -2, -2, -2, -2, -2 });
       }
       if (name.Equals("iso-8859-7")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+          131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 8216, 8217, 163, 8364,
@@ -830,7 +1012,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     974, -2 });
       }
       if (name.Equals("iso-8859-8") || name.Equals("iso-8859-8-i")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130, 131,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+          131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
     151, 152, 153, 154, 155, 156, 157, 158, 159, 160, -2, 162, 163, 164, 165,
@@ -844,7 +1027,7 @@ return EncodeToBytes(input, encoding.GetEncoder());
     -2, -2, 8206, 8207, -2 });
       }
       if (name.Equals("koi8-r")) {
-      return (ICharacterEncoding)new EncodingSingleByte(new[] { 9472, 9474,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 9472, 9474,
         9484, 9488, 9492, 9496,
     9500, 9508, 9516, 9524, 9532, 9600, 9604, 9608, 9612, 9616, 9617, 9618,
     9619, 8992, 9632, 8729, 8730, 8776, 8804, 8805, 160, 8993, 176, 178, 183,
@@ -858,7 +1041,7 @@ return EncodeToBytes(input, encoding.GetEncoder());
     1059, 1046, 1042, 1068, 1067, 1047, 1064, 1069, 1065, 1063, 1066 });
       }
       if (name.Equals("koi8-u")) {
-      return (ICharacterEncoding)new EncodingSingleByte(new[] { 9472, 9474,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 9472, 9474,
         9484, 9488, 9492, 9496,
     9500, 9508, 9516, 9524, 9532, 9600, 9604, 9608, 9612, 9616, 9617, 9618,
     9619, 8992, 9632, 8729, 8730, 8776, 8804, 8805, 160, 8993, 176, 178, 183,
@@ -872,7 +1055,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     1059, 1046, 1042, 1068, 1067, 1047, 1064, 1069, 1065, 1063, 1066 });
       }
       if (name.Equals("macintosh")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 196, 197, 199, 201,
+  return (ICharacterEncoding)new EncodingSingleByte(new[] { 196, 197, 199,
+          201,
     209, 214, 220, 225,
     224, 226, 228, 227, 229, 231, 233, 232, 234, 235, 237, 236, 238, 239, 241,
     243, 242, 244, 246, 245, 250, 249, 251, 252, 8224, 176, 162, 163, 167, 8226,
@@ -885,7 +1069,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     728, 729, 730, 184, 733, 731, 711 });
       }
       if (name.Equals("windows-1250")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+          8218,
     131, 8222, 8230, 8224,
     8225, 136, 8240, 352, 8249, 346, 356, 381, 377, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 152, 8482, 353, 8250, 347, 357, 382, 378, 160, 711, 728,
@@ -898,7 +1083,7 @@ return EncodeToBytes(input, encoding.GetEncoder());
     253, 355, 729 });
       }
       if (name.Equals("windows-1251")) {
-      return (ICharacterEncoding)new EncodingSingleByte(new[] { 1026, 1027,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 1026, 1027,
         8218, 1107, 8222, 8230,
     8224, 8225, 8364, 8240, 1033, 8249, 1034, 1036, 1035, 1039, 1106, 8216,
     8217, 8220, 8221, 8226, 8211, 8212, 152, 8482, 1113, 8250, 1114, 1116, 1115,
@@ -912,7 +1097,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     1096, 1097, 1098, 1099, 1100, 1101, 1102, 1103 });
       }
       if (name.Equals("windows-1253")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+          8218,
     402, 8222, 8230, 8224,
     8225, 136, 8240, 138, 8249, 140, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 152, 8482, 154, 8250, 156, 157, 158, 159, 160, 901, 902,
@@ -925,7 +1111,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     972, 973, 974, -2 });
       }
       if (name.Equals("windows-1254")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+          8218,
     402, 8222, 8230, 8224,
     8225, 710, 8240, 352, 8249, 338, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 732, 8482, 353, 8250, 339, 157, 158, 376, 160, 161, 162,
@@ -938,7 +1125,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     305, 351, 255 });
       }
       if (name.Equals("windows-1255")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+          8218,
     402, 8222, 8230, 8224,
     8225, 710, 8240, 138, 8249, 140, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 732, 8482, 154, 8250, 156, 157, 158, 159, 160, 161, 162,
@@ -952,7 +1140,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     -2, 8206, 8207, -2 });
       }
       if (name.Equals("windows-1256")) {
- return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 1662, 8218,
+    return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 1662,
+          8218,
    402, 8222, 8230, 8224,
     8225, 710, 8240, 1657, 8249, 338, 1670, 1688, 1672, 1711, 8216, 8217, 8220,
     8221, 8226, 8211, 8212, 1705, 8482, 1681, 8250, 339, 8204, 8205, 1722, 160,
@@ -965,7 +1154,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     1614, 244, 1615, 1616, 247, 1617, 249, 1618, 251, 252, 8206, 8207, 1746 });
       }
       if (name.Equals("windows-1257")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+          8218,
     131, 8222, 8230, 8224,
     8225, 136, 8240, 138, 8249, 140, 168, 711, 184, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 152, 8482, 154, 8250, 156, 175, 731, 159, 160, -2, 162,
@@ -978,7 +1168,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     380, 382, 729 });
       }
       if (name.Equals("windows-1258")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 8218,
+     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+          8218,
     402, 8222, 8230, 8224,
     8225, 710, 8240, 138, 8249, 338, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 732, 8482, 154, 8250, 339, 157, 158, 376, 160, 161, 162,
@@ -991,7 +1182,8 @@ return EncodeToBytes(input, encoding.GetEncoder());
     432, 8363, 255 });
       }
       if (name.Equals("windows-874")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129, 130,
+      return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+          130,
        131, 132, 8230, 134,
     135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
     8226, 8211, 8212, 152, 153, 154, 155, 156, 157, 158, 159, 160, 3585, 3586,
@@ -1005,7 +1197,7 @@ return EncodeToBytes(input, encoding.GetEncoder());
     3671, 3672, 3673, 3674, 3675, -2, -2, -2, -2 });
       }
       if (name.Equals("x-mac-cyrillic")) {
-      return (ICharacterEncoding)new EncodingSingleByte(new[] { 1040, 1041,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 1040, 1041,
         1042, 1043, 1044, 1045,
     1046, 1047, 1048, 1049, 1050, 1051, 1052, 1053, 1054, 1055, 1056, 1057,
     1058, 1059, 1060, 1061, 1062, 1063, 1064, 1065, 1066, 1067, 1068, 1069,

@@ -2,6 +2,8 @@
 
     public interface ICharacterDecoder
 
+Defines a method that can be implemented by classes that convert a stream of bytes to Unicode code points.
+
 ### ReadChar
 
     int ReadChar(

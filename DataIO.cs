@@ -9,7 +9,7 @@ using System;
 using System.IO;
 
 namespace PeterO {
-  /// <summary>Not documented yet.</summary>
+    /// <summary>Not documented yet.</summary>
   public static class DataIO {
     private sealed class ByteArrayTransform : ITransform {
       private byte[] bytes;
@@ -22,10 +22,9 @@ namespace PeterO {
         this.endOffset = offset + length;
       }
 
-      /// <summary>
-/// </summary>
-/// <returns></returns>
-public int ReadByte() {
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A 32-bit signed integer.</returns>
+      public int ReadByte() {
         if (this.offset >= this.endOffset) {
           return -1;
         }
@@ -41,10 +40,9 @@ public int ReadByte() {
         this.stream = stream;
       }
 
-      /// <summary>
-/// </summary>
-/// <returns></returns>
-public int ReadByte() {
+    /// <summary>Not documented yet.</summary>
+    /// <returns>A 32-bit signed integer.</returns>
+      public int ReadByte() {
         try {
           return this.stream.ReadByte();
         } catch (IOException ex) {
@@ -60,21 +58,19 @@ public int ReadByte() {
         this.output = output;
       }
 
-      /// <summary>
-/// </summary>
-/// <param name="byteValue"></param>
-/// <returns></returns>
+    /// <summary>Not documented yet.</summary>
+    /// <param name='byteValue'>A 32-bit signed integer.</param>
       public void WriteByte(int byteValue) {
-          this.output.WriteByte((byte)byteValue);
+        this.output.WriteByte((byte)byteValue);
       }
 
-      /// <summary>
-/// </summary>
-/// <param name="bytes"></param>
-/// <param name="offset"></param>
-/// <param name="length"></param>
-/// <returns></returns>
-public void Write(byte[] bytes, int offset, int length) {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='bytes'>A byte array.</param>
+    /// <param name='offset'>A 32-bit signed integer.</param>
+    /// <param name='length'>Another 32-bit signed integer.</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='bytes'/> is null.</exception>
+      public void Write(byte[] bytes, int offset, int length) {
         if (bytes == null) {
           throw new ArgumentNullException("bytes");
         }
@@ -111,11 +107,9 @@ public void Write(byte[] bytes, int offset, int length) {
         this.output = output;
       }
 
-      /// <summary>
-/// </summary>
-/// <param name="byteValue"></param>
-/// <returns></returns>
-public void WriteByte(int byteValue) {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='byteValue'>A 32-bit signed integer.</param>
+      public void WriteByte(int byteValue) {
         try {
           this.output.WriteByte((byte)byteValue);
         } catch (IOException ex) {
@@ -123,13 +117,11 @@ public void WriteByte(int byteValue) {
         }
       }
 
-      /// <summary>
-/// </summary>
-/// <param name="bytes"></param>
-/// <param name="offset"></param>
-/// <param name="length"></param>
-/// <returns></returns>
-public void Write(byte[] bytes, int offset, int length) {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='bytes'>A byte array.</param>
+    /// <param name='offset'>A 32-bit signed integer.</param>
+    /// <param name='length'>Another 32-bit signed integer.</param>
+      public void Write(byte[] bytes, int offset, int length) {
         try {
           this.output.Write(bytes, offset, length);
         } catch (IOException ex) {
@@ -138,8 +130,17 @@ public void Write(byte[] bytes, int offset, int length) {
       }
     }
 
-  /// <summary>Not documented yet.</summary>
-  /// <returns>Not documented yet.</returns>
+    /// <summary>Not documented yet.
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing byte[] and can be
+    /// called as follows: <c>bytes.ToTransform()</c>. If the object's
+    /// class already has a ToTransform method with the same parameters,
+    /// that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='bytes'>Not documented yet.</param>
+    /// <returns>An ITransform object.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='bytes'/> is null.</exception>
     public static ITransform ToTransform(this byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException("bytes");
@@ -147,8 +148,19 @@ public void Write(byte[] bytes, int offset, int length) {
       return new ByteArrayTransform(bytes, 0, bytes.Length);
     }
 
-  /// <summary>Not documented yet.</summary>
-  /// <returns>Not documented yet.</returns>
+    /// <summary>Not documented yet.
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing byte[] and can be
+    /// called as follows: <c>bytes.ToTransform(offset, length)</c>. If
+    /// the object's class already has a ToTransform method with the same
+    /// parameters, that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='bytes'>Not documented yet.</param>
+    /// <param name='offset'>Not documented yet.</param>
+    /// <param name='length'>Not documented yet. (3).</param>
+    /// <returns>An ITransform object.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='bytes'/> is null.</exception>
     public static ITransform ToTransform(
 this byte[] bytes,
 int offset,
@@ -179,8 +191,17 @@ int length) {
       return new ByteArrayTransform(bytes, offset, length);
     }
 
-  /// <summary>Not documented yet.</summary>
-  /// <returns>Not documented yet.</returns>
+    /// <summary>Not documented yet.
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing Stream and can be
+    /// called as follows: <c>input.ToTransform()</c>. If the object's
+    /// class already has a ToTransform method with the same parameters,
+    /// that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='input'>Not documented yet.</param>
+    /// <returns>An ITransform object.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='input'/> is null.</exception>
     public static ITransform ToTransform(this Stream input) {
       if (input == null) {
         throw new ArgumentNullException("input");
@@ -188,8 +209,16 @@ int length) {
       return new WrappedStream(input);
     }
 
-  /// <summary>Not documented yet.</summary>
-  /// <returns>Not documented yet.</returns>
+    /// <summary>Not documented yet.
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing Stream and can be
+    /// called as follows: <c>output.ToWriter()</c>. If the object's class
+    /// already has a ToWriter method with the same parameters, that method
+    /// takes precedence over this extension method.</para></summary>
+    /// <param name='output'>Not documented yet.</param>
+    /// <returns>An IWriter object.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='output'/> is null.</exception>
     public static IWriter ToWriter(this Stream output) {
       if (output == null) {
         throw new ArgumentNullException("output");
@@ -197,8 +226,16 @@ int length) {
       return new WrappedOutputStream(output);
     }
 
-  /// <summary>Not documented yet.</summary>
-  /// <returns>Not documented yet.</returns>
+    /// <summary>Not documented yet.
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing IByteWriter and can be
+    /// called as follows: <c>output.ToWriter()</c>. If the object's class
+    /// already has a ToWriter method with the same parameters, that method
+    /// takes precedence over this extension method.</para></summary>
+    /// <param name='output'>Not documented yet.</param>
+    /// <returns>An IWriter object.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='output'/> is null.</exception>
     public static IWriter ToWriter(this IByteWriter output) {
       if (output == null) {
         throw new ArgumentNullException("output");

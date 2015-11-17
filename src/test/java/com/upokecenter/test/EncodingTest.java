@@ -70,7 +70,13 @@ import com.upokecenter.text.*;
           return false;
         }
         if (c >= 0x80) {
-          System.out.println("Non-ASCII character (0x" + ToBase16(new byte[] { (byte)c  }) + ")");
+          StringBuilder builder = new StringBuilder();
+          String hex = "0123456789ABCDEF";
+          builder.append("Non-ASCII character (0x");
+          builder.append(hex.charAt(((int)c >> 4) & 15));
+          builder.append(hex.charAt(((int)c) & 15));
+          builder.append(")");
+          System.out.println(builder.toString());
           return false;
         }
         if (c == '\r' && index + 1 < endIndex && str.charAt(index + 1) == '\n') {
@@ -125,13 +131,23 @@ System.out.println("End of line, whitespace, or start of message before colon");
             wordLength > 78);
         }
         if (c == 0) {
-          System.out.println("CTL in message (0x" + ToBase16(new byte[] { (byte)c  }) +
-                   ")");
+          StringBuilder builder = new StringBuilder();
+          String hex = "0123456789ABCDEF";
+          builder.append("CTL in message (0x");
+          builder.append(hex.charAt(((int)c >> 4) & 15));
+          builder.append(hex.charAt(((int)c) & 15));
+          builder.append(")");
+          System.out.println(builder.toString());
           return false;
         }
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
-          System.out.println("CTL in header (0x" + ToBase16(new byte[] { (byte)c  }) +
-                  ")");
+          StringBuilder builder = new StringBuilder();
+          String hex = "0123456789ABCDEF";
+          builder.append("CTL in header (0x");
+          builder.append(hex.charAt(((int)c >> 4) & 15));
+          builder.append(hex.charAt(((int)c) & 15));
+          builder.append(")");
+          System.out.println(builder.toString());
           return false;
         }
         int maxLineLength = 998;
@@ -149,16 +165,6 @@ System.out.println("End of line, whitespace, or start of message before colon");
         ++index;
       }
       return true;
-    }
-
-    static String ToBase16(byte[] bytes) {
-      StringBuilder sb = new StringBuilder();
-      String hex = "0123456789ABCDEF";
-      for (int i = 0; i < bytes.length; ++i) {
-        sb.append(hex.charAt((bytes[i] >> 4) & 15));
-        sb.append(hex.charAt((bytes[i]) & 15));
-      }
-      return sb.toString();
     }
 
     public static String toString(byte[] array) {
@@ -1226,7 +1232,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     @Test
     public void TestPercentEncoding() {
-      Object utf8 = CharsetsTest.GetCharset("utf-8");
+      ICharacterEncoding utf8 = Encodings.GetEncoding("utf-8");
       TestPercentEncodingOne("test\u00be", "test%c2%be");
       TestPercentEncodingOne("tesA", "tes%41");
       TestPercentEncodingOne("tesa", "tes%61");
@@ -1235,18 +1241,6 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         "tes%xx",
         "tes%xx");
       TestPercentEncodingOne("tes%dxx", "tes%dxx");
-    }
-
-    @Test
-    public void TestArgumentValidation() {
-      try {
-        CharsetsTest.GetCharset(null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-      } catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
     }
 
     private static void AssertUtf8Equal(byte[] expected, byte[] actual) {

@@ -19,7 +19,7 @@ namespace PeterO.Mail {
     /// <summary>Gets the local part of this email address (the part before
     /// the "@" sign).</summary>
     /// <value>The local part of this email address (the part before the
-    /// &#x22;@&#x22; sign).</value>
+    /// &quot;@&quot; sign).</value>
     public string LocalPart {
       get {
         return this.localPart;
@@ -97,7 +97,7 @@ null) == this.localPart.Length) {
     /// <summary>Gets the domain of this email address (the part after the
     /// "@" sign).</summary>
     /// <value>The domain of this email address (the part after the
-    /// &#x22;@&#x22; sign).</value>
+    /// &quot;@&quot; sign).</value>
     public string Domain {
       get {
         return this.domain;
@@ -106,7 +106,7 @@ null) == this.localPart.Length) {
 
     /// <summary>Initializes a new instance of the Address class.</summary>
     /// <param name='addressValue'>An email address.</param>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='addressValue'/> is null.</exception>
     public Address(string addressValue) {
       if (addressValue == null) {
@@ -126,8 +126,8 @@ null);
       if (localPartEnd == 0) {
         throw new ArgumentException("Invalid local part");
       }
-   if (localPartEnd >= addressValue.Length || addressValue[localPartEnd] != '@'
-) {
+   if (localPartEnd >= addressValue.Length ||
+     addressValue[localPartEnd] != '@') {
         throw new ArgumentException("Expected '@' sign after local part");
       }
       if (localPartEnd + 1 == addressValue.Length) {

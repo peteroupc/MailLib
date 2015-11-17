@@ -23,9 +23,9 @@ namespace PeterO {
     /// replacement character (U + FFFD). If false, stops processing when
     /// invalid UTF-8 is seen.</param>
     /// <returns>A string represented by the UTF-8 byte array.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
-    /// <exception cref="ArgumentException">The string is not valid UTF-8
+    /// <exception cref='ArgumentException'>The string is not valid UTF-8
     /// and <paramref name='replace'/> is false.</exception>
     public static string GetUtf8String(byte[] bytes, bool replace) {
       if (bytes == null) {
@@ -50,12 +50,12 @@ namespace PeterO {
     /// replacement character (U + FFFD). If false, stops processing when
     /// invalid UTF-8 is seen.</param>
     /// <returns>A string represented by the UTF-8 byte array.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
-    /// <exception cref="ArgumentException">The portion of the byte array
+    /// <exception cref='ArgumentException'>The portion of the byte array
     /// is not valid UTF-8 and <paramref name='replace'/> is
     /// false.</exception>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='offset'/> is less than 0, <paramref name='bytesCount'/> is
     /// less than 0, or offset plus bytesCount is greater than the length
     /// of "data" .</exception>
@@ -100,9 +100,9 @@ bool replace) {
     /// points with the replacement character (U + FFFD). If false, stops
     /// processing when an unpaired surrogate code point is seen.</param>
     /// <returns>The string encoded in UTF-8.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
-    /// <exception cref="ArgumentException">The string contains an unpaired
+    /// <exception cref='ArgumentException'>The string contains an unpaired
     /// surrogate code point and <paramref name='replace'/> is false, or an
     /// internal error occurred.</exception>
     public static byte[] GetUtf8Bytes(string str, bool replace) {
@@ -130,7 +130,7 @@ bool replace) {
     /// <returns>The number of bytes needed to encode the given string in
     /// UTF-8, or -1 if the string contains an unpaired surrogate code
     /// point and <paramref name='replace'/> is false.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static long GetUtf8Length(String str, bool replace) {
       if (str == null) {
@@ -178,7 +178,7 @@ bool replace) {
     /// string's length. Returns the replacement character (U + FFFD) if
     /// the previous character is an unpaired surrogate code
     /// point.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static int CodePointBefore(string str, int index) {
       return CodePointBefore(str, index, 0);
@@ -199,7 +199,7 @@ bool replace) {
     /// string's length. Returns a value as specified under <paramref
     /// name='surrogateBehavior'/> if the previous character is an unpaired
     /// surrogate code point.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static int CodePointBefore(
 string str,
@@ -238,7 +238,7 @@ int surrogateBehavior) {
     /// length or greater. Returns the replacement character (U + FFFD) if
     /// the current character is an unpaired surrogate code
     /// point.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static int CodePointAt(string str, int index) {
       return CodePointAt(str, index, 0);
@@ -259,7 +259,7 @@ int surrogateBehavior) {
     /// length or greater. Returns a value as specified under <paramref
     /// name='surrogateBehavior'/> if the previous character is an unpaired
     /// surrogate code point.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static int CodePointAt(
 string str,
@@ -401,10 +401,10 @@ int surrogateBehavior) {
     /// <returns>0 if the entire string portion was written; or -1 if the
     /// string portion contains an unpaired surrogate code point and
     /// <paramref name='replace'/> is false.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null or <paramref name='stream'/> is
     /// null.</exception>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='offset'/> is less than 0, <paramref name='length'/> is less
     /// than 0, or <paramref name='offset'/> plus <paramref name='length'/>
     /// is greater than the string's length.</exception>
@@ -436,10 +436,10 @@ bool replace) {
     /// <returns>0 if the entire string portion was written; or -1 if the
     /// string portion contains an unpaired surrogate code point and
     /// <paramref name='replace'/> is false.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null or <paramref name='stream'/> is
     /// null.</exception>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='offset'/> is less than 0, <paramref name='length'/> is less
     /// than 0, or <paramref name='offset'/> plus <paramref name='length'/>
     /// is greater than the string's length.</exception>
@@ -586,7 +586,7 @@ bool lenientLineBreaks) {
     /// <returns>0 if the entire string was written; or -1 if the string
     /// contains an unpaired surrogate code point and <paramref
     /// name='replace'/> is false.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null or <paramref name='stream'/> is
     /// null.</exception>
     /// <exception cref='System.IO.IOException'>An I/O error
@@ -613,13 +613,13 @@ bool lenientLineBreaks) {
     /// <returns>0 if the entire string was read without errors, or -1 if
     /// the string is not valid UTF-8 and <paramref name='replace'/> is
     /// false.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='data'/> is null or <paramref name='builder'/> is
     /// null.</exception>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='offset'/> is less than 0, <paramref name='bytesCount'/> is
     /// less than 0, or offset plus bytesCount is greater than the length
-    /// of <paramref name='data'/> .</exception>
+    /// of <paramref name='data'/>.</exception>
     public static int ReadUtf8FromBytes(
 byte[] data,
 int offset,
@@ -737,7 +737,7 @@ bool replace) {
     /// <returns>The string read.</returns>
     /// <exception cref='System.IO.IOException'>An I/O error
     /// occurred.</exception>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='stream'/> is null.</exception>
     public static string ReadUtf8ToString(Stream stream) {
       return ReadUtf8ToString(stream, -1, true);
@@ -756,7 +756,7 @@ bool replace) {
     /// <exception cref='System.IO.IOException'>An I/O error occurred; or,
     /// the string is not valid UTF-8 and <paramref name='replace'/> is
     /// false.</exception>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='stream'/> is null.</exception>
     public static string ReadUtf8ToString(
 Stream stream,
@@ -790,7 +790,7 @@ bool replace) {
     /// name='bytesCount'/> is 0 or greater).</returns>
     /// <exception cref='System.IO.IOException'>An I/O error
     /// occurred.</exception>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='stream'/> is null or <paramref name='builder'/> is
     /// null.</exception>
     public static int ReadUtf8(

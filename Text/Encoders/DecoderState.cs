@@ -22,7 +22,7 @@ internal class DecoderState {
       Array.Copy(this.chars, newchars, this.chars.Length);
       this.chars = newchars;
     }
-    this.chars[this.charCount ]=ch;
+    this.chars[this.charCount] = ch;
     ++this.charCount;
   }
 
@@ -80,7 +80,7 @@ stream));
       Array.Copy(this.bytes, newbytes, this.bytes.Length);
       this.bytes = newbytes;
     }
-    this.bytes[this.prependedBytes++ ]=b1;
+    this.bytes[this.prependedBytes++] = b1;
   }
 
   public void PrependTwo(int b1, int b2) {
@@ -89,8 +89,8 @@ stream));
       Array.Copy(this.bytes, newbytes, this.bytes.Length);
       this.bytes = newbytes;
     }
-    this.bytes[this.prependedBytes++ ]=b2;
-    this.bytes[this.prependedBytes++ ]=b1;
+    this.bytes[this.prependedBytes++] = b2;
+    this.bytes[this.prependedBytes++] = b1;
   }
 
   public void PrependThree(int b1, int b2, int b3) {
@@ -99,9 +99,9 @@ stream));
       Array.Copy(this.bytes, newbytes, this.bytes.Length);
       this.bytes = newbytes;
     }
-    this.bytes[this.prependedBytes++ ]=b3;
-    this.bytes[this.prependedBytes++ ]=b2;
-    this.bytes[this.prependedBytes++ ]=b1;
+    this.bytes[this.prependedBytes++] = b3;
+    this.bytes[this.prependedBytes++] = b2;
+    this.bytes[this.prependedBytes++] = b1;
   }
 }
 }

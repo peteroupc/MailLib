@@ -46,10 +46,10 @@ namespace PeterO.Mail {
       }
       var alphabet = new byte[64];
       for (var i = 0; i < alphabetString.Length; ++i) {
-        if (alphabetString[i ]>= 0x100) {
+        if (alphabetString[i] >= 0x100) {
  throw new ArgumentException("alphabet string contains a non-Latin1 character");
 }
-        alphabet[i ]=(byte)alphabetString[i];
+        alphabet[i] = (byte)alphabetString[i];
       }
       return alphabet;
     }

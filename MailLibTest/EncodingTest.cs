@@ -71,8 +71,13 @@ namespace MailLibTest {
           return false;
         }
         if (c >= 0x80) {
-          Console.WriteLine("Non-ASCII character (0x" + ToBase16(new[] {
-            (byte)c }) + ")");
+          var builder = new StringBuilder();
+          string hex = "0123456789ABCDEF";
+          builder.Append("Non-ASCII character (0x");
+          builder.Append(hex[((int)c >> 4) & 15]);
+          builder.Append(hex[((int)c) & 15]);
+          builder.Append(")");
+          Console.WriteLine(builder.ToString());
           return false;
         }
         if (c == '\r' && index + 1 < endIndex && str[index + 1] == '\n') {
@@ -128,13 +133,23 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
             wordLength > 78);
         }
         if (c == 0) {
-          Console.WriteLine("CTL in message (0x" + ToBase16(new[] { (byte)c }) +
-                   ")");
+          var builder = new StringBuilder();
+          string hex = "0123456789ABCDEF";
+          builder.Append("CTL in message (0x");
+          builder.Append(hex[((int)c >> 4) & 15]);
+          builder.Append(hex[((int)c) & 15]);
+          builder.Append(")");
+          Console.WriteLine(builder.ToString());
           return false;
         }
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
-          Console.WriteLine("CTL in header (0x" + ToBase16(new[] { (byte)c }) +
-                  ")");
+          var builder = new StringBuilder();
+          string hex = "0123456789ABCDEF";
+          builder.Append("CTL in header (0x");
+          builder.Append(hex[((int)c >> 4) & 15]);
+          builder.Append(hex[((int)c) & 15]);
+          builder.Append(")");
+          Console.WriteLine(builder.ToString());
           return false;
         }
         int maxLineLength = 998;
@@ -152,16 +167,6 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
         ++index;
       }
       return true;
-    }
-
-    internal static string ToBase16(byte[] bytes) {
-      var sb = new StringBuilder();
-      string hex = "0123456789ABCDEF";
-      for (int i = 0; i < bytes.Length; ++i) {
-        sb.Append(hex[(bytes[i] >> 4) & 15]);
-        sb.Append(hex[(bytes[i]) & 15]);
-      }
-      return sb.ToString();
     }
 
     public static String ToString(byte[] array) {
@@ -1218,7 +1223,7 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
 
     [TestMethod]
     public void TestPercentEncoding() {
-      object utf8 = CharsetsTest.GetCharset("utf-8");
+      ICharacterEncoding utf8 = Encodings.GetEncoding("utf-8");
       TestPercentEncodingOne("test\u00be", "test%c2%be");
       TestPercentEncodingOne("tesA", "tes%41");
       TestPercentEncodingOne("tesa", "tes%61");
@@ -1227,18 +1232,6 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
         "tes%xx",
         "tes%xx");
       TestPercentEncodingOne("tes%dxx", "tes%dxx");
-    }
-
-    [TestMethod]
-    public void TestArgumentValidation() {
-      try {
-        CharsetsTest.GetCharset(null);
-        Assert.Fail("Should have failed");
-      } catch (ArgumentNullException) {
-      } catch (Exception ex) {
-        Assert.Fail(ex.ToString());
-        throw new InvalidOperationException(String.Empty, ex);
-      }
     }
 
     private static void AssertUtf8Equal(byte[] expected, byte[] actual) {

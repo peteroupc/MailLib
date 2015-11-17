@@ -18,13 +18,13 @@ import com.upokecenter.text.*;
      * <p>Represents an email message, and contains methods and properties for
      * accessing and modifying email message data. This class implements the
      * Internet Message Format (RFC 5322) and Multipurpose Internet Mail
-     * Extensions (MIME; RFC 2045-2047, RFC 2049).</p> <p><b>Thread
+     * Extensions (MIME; RFC 2045-2047, RFC 2049).</p> <p> <b>Thread
      * safety:</b> This class is mutable; its properties can be changed.
      * None of its instance methods are designed to be thread safe.
      * Therefore, access to objects from this class must be synchronized if
      * multiple threads can access them at the same time.</p> <p>The
      * following lists known deviations from the mail specifications
-     * (Internet Message Format and MIME):</p> <ul><li>The
+     * (Internet Message Format and MIME):</p> <ul> <li>The
      * content-transfer-encoding "quoted-printable" is treated as 7bit
      * instead if it occurs in a message or body part with content type
      * "multipart/*" or "message/*" (other than "message/global",
@@ -41,18 +41,18 @@ import com.upokecenter.text.*;
      * will be omitted when generating.</li> <li>There is no line length
      * limit imposed when parsing quoted-printable or base64 encoded
      * bodies.</li> <li>In the following cases, if the transfer encoding is
-     * absent or declared as 7bit, 8-bit bytes are still allowed:</li>
-     * <li>(a) The preamble and epilogue of multipart messages, which will
-     * be ignored.</li> <li>(b) If the charset is declared to be
-     * <code>utf-8</code> .</li> <li>(c) If the content type is "text/html" and
-     * the charset is declared to be <code>ascii</code> , <code>us-ascii</code>,
-     * "windows-1252", "windows-1251", or "iso-8859-*" (all single byte
-     * encodings).</li> <li>(d) In non-MIME message bodies and in text/plain
-     * message bodies. Any 8-bit bytes are replaced with the ASCII
-     * substitute character (0x1a).</li> <li>If the first line of the
+     * absent or ((declared instanceof 7bit) ? (7bit)declared : null), 8-bit
+     * bytes are still allowed:</li> <li>(a) The preamble and epilogue of
+     * multipart messages, which will be ignored.</li> <li>(b) If the
+     * charset is declared to be <code>utf-8</code>.</li> <li>(c) If the content
+     * type is "text/html" and the charset is declared to be <code>ascii</code>,
+     * <code>us-ascii</code>, "windows-1252", "windows-1251", or "iso-8859-*" (all
+     * single byte encodings).</li> <li>(d) In non-MIME message bodies and
+     * in text/plain message bodies. Any 8-bit bytes are replaced with the
+     * ASCII substitute character (0x1a).</li> <li>If the first line of the
      * message starts with the word "From" followed by a space, it is
      * skipped.</li> <li>The name <code>ascii</code> is treated as a synonym for
-     * <code>us-ascii</code> , despite being a reserved name under RFC 2046. The
+     * <code>us-ascii</code>, despite being a reserved name under RFC 2046. The
      * name <code>cp1252</code> is treated as a synonym for <code>windows-1252</code> ,
      * even though it's not an IANA registered alias.</li> <li>The following
      * deviations involve encoded words under RFC 2047:</li> <li>(a) If a
@@ -63,7 +63,7 @@ import com.upokecenter.text.*;
      * ISO-2022-JP (the only supported encoding that uses code switching)
      * even if the encoded word's payload ends in a different mode from
      * ASCII mode. (Each encoded word still starts in ASCII mode,
-     * though.)</li> </ul>
+     * though.)</li></ul>
      */
   public final class Message {
     private static final int EncodingSevenBit = 0;
@@ -1341,13 +1341,14 @@ boolean checkBoundaryDelimiter) {
      * always be 7-bit ASCII, and the transfer encoding will always be 7bit,
      * quoted-printable, or base64 (the declared transfer encoding for this
      * message will be ignored).</p> <p>The following applies to the From,
-     * To, Cc, and Bcc header fields. If the header field has an invalid
-     * syntax or has no addresses, this method will generate a synthetic
-     * header field with the display-name set to the contents of all of the
-     * header fields with the same name, and the address set to
+     * To, Cc, and Bcc header fields. If the header field exists, but has an
+     * invalid syntax or has no addresses, this method will generate a
+     * synthetic header field with the display-name set to the contents of
+     * all of the header fields with the same name, and the address set to
      * <code>me@[header-name]-address.invalid</code> as the address (a
      * <code>.invalid</code> address is a reserved address that can never belong
-     * to anyone).</p>
+     * to anyone). The generated message should always have a From header
+     * field.</p>
      * @return The generated message.
      * @throws MessageDataException The message can't be generated.
      */

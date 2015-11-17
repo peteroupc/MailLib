@@ -6,7 +6,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
   public class EncodingGB18030 implements ICharacterEncoding {
-    public static final int[] gb18030table = new int[] { 0, 0x0080,
+    private static final int[] gb18030table = new int[] { 0, 0x0080,
     36, 0x00a5,
     38, 0x00a9,
     45, 0x00b2,
@@ -244,7 +244,7 @@ import com.upokecenter.text.*;
 }
     int v = -1;
     for (int i = 0; i < gb18030table.length; i += 2) {
-      if (gb18030table[i + 1 ]<= codepoint) {
+      if (gb18030table[i + 1] <= codepoint) {
         v = i;
       } else {
         break;

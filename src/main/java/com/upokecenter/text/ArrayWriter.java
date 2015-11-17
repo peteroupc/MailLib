@@ -24,8 +24,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Initializes a new instance of the ArrayWriter class.
+     * @param initialSize A 32-bit signed integer.
      */
-
     public ArrayWriter (int initialSize) {
       this.retval = new byte[initialSize];
     }
@@ -107,7 +107,7 @@ public final void setPosition(int value) {
         System.arraycopy(this.retval, 0, newArray, 0, this.retvalPos);
         this.retval = newArray;
       }
-      this.retval[this.retvalPos ]=(byte)(byteValue & 0xff);
+      this.retval[this.retvalPos] = (byte)(byteValue & 0xff);
       this.retvalPos = (this.retvalPos + 1);
       this.retvalMax = Math.max(this.retvalMax, this.retvalPos);
     }

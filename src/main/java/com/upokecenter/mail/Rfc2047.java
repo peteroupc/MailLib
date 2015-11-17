@@ -223,11 +223,12 @@ private static int SkipCharsetOrEncoding(
 String str,
 int index,
 int endIndex) {
+  String specials = "()<>@,;:\\\"/[]?=.";
       int i = index;
       while (i < endIndex) {
         char c = str.charAt(i);
         if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
-          "()<>@,;:\\\"/[]?=." .indexOf(c) >= 0)) {
+          specials.indexOf(c) >= 0)) {
           break;
         }
         ++i;
@@ -282,8 +283,8 @@ EncodedWordContext context) {
         int startIndex = 0;
         boolean havePossibleEncodedWord = false;
         boolean startParen = false;
-      if (index + 1 < endIndex && str.charAt(index) == '=' && str.charAt(index + 1) == '?'
-) {
+      if (index + 1 < endIndex && str.charAt(index) == '=' &&
+        str.charAt(index + 1) == '?') {
           startIndex = index + 2;
           index += 2;
           havePossibleEncodedWord = true;
@@ -339,9 +340,9 @@ EncodedWordContext context) {
               if (i2 != index && i2 < endIndex && str.charAt(i2) == '?') {
                 // check for supported encoding (B or Q)
                 char encodingChar = str.charAt(index);
-          if (i2 - index == 1 && (encodingChar == 'b' || encodingChar == 'B' ||
-                encodingChar == 'q' || encodingChar == 'Q'
-)) {
+          if (i2 - index == 1 && (encodingChar == 'b' ||
+            encodingChar == 'B' ||
+                encodingChar == 'q' || encodingChar == 'Q')) {
                   // Parse encoded text
                   base64 = encodingChar == 'b' || encodingChar == 'B';
                   index = i2 + 1;

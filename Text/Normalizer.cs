@@ -11,16 +11,16 @@ using System.Text;
 using PeterO.Text.Encoders;
 
 namespace PeterO.Text {
-    /// <summary><para>Implements the Unicode normalization algorithm and
-    /// contains methods and functionality to test and convert Unicode
-    /// strings for Unicode normalization.</para>
-    /// <para>NOTICE: While this
-    /// class's source code is in the public domain, the class uses an
-    /// internal class, called NormalizationData, that includes data
-    /// derived from the Unicode Character Database. See the documentation
-    /// for the NormalizingCharacterInput class for the permission notice
-    /// for the Unicode Character Database.</para>
-    /// </summary>
+    /// <summary>
+    /// <para>Implements the Unicode normalization algorithm and contains
+    /// methods and functionality to test and convert Unicode strings for
+    /// Unicode normalization.</para>
+    /// <para>NOTICE: While this class's source code is in the public
+    /// domain, the class uses an internal class, called NormalizationData,
+    /// that includes data derived from the Unicode Character Database. See
+    /// the documentation for the NormalizingCharacterInput class for the
+    /// permission notice for the Unicode Character
+    /// Database.</para></summary>
   [Obsolete(
   "Use NormalizingCharacterInput instead; that class is much more flexible than Normalizer." )]
   public sealed class Normalizer {
@@ -67,7 +67,7 @@ namespace PeterO.Text {
     /// <param name='length'>A 32-bit signed integer. (3).</param>
     /// <returns>A 32-bit signed integer.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='chars'/> or "this.buffer" is null.</exception>
+    /// name='chars'/> is null.</exception>
     public int Read(int[] chars, int index, int length) {
       return this.nci.Read(chars, index, length);
     }
