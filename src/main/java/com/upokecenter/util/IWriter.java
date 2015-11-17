@@ -11,8 +11,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * A generic interface for writing bytes of data.
      */
   public interface IWriter extends IByteWriter {
-  /**
-   * Not documented yet.
-   */
+    /**
+     * Not documented yet.
+     */
     void write(byte[] bytes, int offset, int length);
   }

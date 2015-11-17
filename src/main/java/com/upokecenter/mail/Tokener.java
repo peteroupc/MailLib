@@ -42,8 +42,8 @@ import java.util.*;
      * @param x An integer array.
      * @param y An integer array. (2).
      * @return Zero if both values are equal; a negative number if {@code x} is
-     * less than {@code y} , or a positive number if {@code x} is greater
-     * than {@code y} .
+     * less than {@code y}, or a positive number if {@code x} is greater
+     * than {@code y}.
      */
     public int compare(int[] x, int[] y) {
       // Sort by their start indexes

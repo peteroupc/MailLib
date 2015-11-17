@@ -69,8 +69,7 @@ import com.upokecenter.text.encoders.*;
      * @param index A 32-bit signed integer. (2).
      * @param length A 32-bit signed integer. (3).
      * @return A 32-bit signed integer.
-     * @throws NullPointerException The parameter {@code chars} or "this.buffer"
-     * is null.
+     * @throws NullPointerException The parameter {@code chars} is null.
      */
     public int Read(int[] chars, int index, int length) {
       return this.nci.Read(chars, index, length);

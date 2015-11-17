@@ -219,36 +219,25 @@ The string is not valid UTF-8 and  <i>replace</i>
         int bytesCount,
         bool replace);
 
-Generates a text string from a portion of a UTF-8 byte array.
-
 <b>Parameters:</b>
 
- * <i>bytes</i>: A byte array containing text encoded in UTF-8.
+ * <i>bytes</i>: Not documented yet.
 
- * <i>offset</i>: Offset into the byte array to start reading.
+ * <i>offset</i>: Not documented yet.
 
- * <i>bytesCount</i>: Length, in bytes, of the UTF-8 string.
+ * <i>bytesCount</i>: Not documented yet. (3).
 
- * <i>replace</i>: If true, replaces invalid encoding with the replacement character (U + FFFD). If false, stops processing when invalid UTF-8 is seen.
+ * <i>replace</i>: Not documented yet. (4).
 
 <b>Returns:</b>
 
-A string represented by the UTF-8 byte array.
+A string object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>bytes</i>
+The parameter <i>bytes</i>
  is null.
-
- * System.ArgumentException:
-The portion of the byte array is not valid UTF-8 and  <i>replace</i>
- is false.
-
- * System.ArgumentException:
-The parameter  <i>offset</i>
- is less than 0,  <i>bytesCount</i>
- is less than 0, or offset plus bytesCount is greater than the length of "data" .
 
 ### ReadUtf8
 
@@ -295,37 +284,28 @@ The parameter  <i>stream</i>
         System.Text.StringBuilder builder,
         bool replace);
 
-Reads a string in UTF-8 encoding from a byte array.
-
 <b>Parameters:</b>
 
- * <i>data</i>: A byte array containing a UTF-8 string.
+ * <i>data</i>: Not documented yet.
 
- * <i>offset</i>: Offset into the byte array to start reading.
+ * <i>offset</i>: Not documented yet.
 
- * <i>bytesCount</i>: Length, in bytes, of the UTF-8 string.
+ * <i>bytesCount</i>: Not documented yet. (3).
 
- * <i>builder</i>: A string builder object where the resulting string will be stored.
+ * <i>builder</i>: Not documented yet. (4).
 
- * <i>replace</i>: If true, replaces invalid encoding with the replacement character (U + FFFD). If false, stops processing when invalid UTF-8 is seen.
+ * <i>replace</i>: Not documented yet. (5).
 
 <b>Returns:</b>
 
-0 if the entire string was read without errors, or -1 if the string is not valid UTF-8 and  <i>replace</i>
- is false.
+A 32-bit signed integer.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>data</i>
- is null or  <i>builder</i>
+The parameter <i>data</i>
+ or  <i>builder</i>
  is null.
-
- * System.ArgumentException:
-The parameter  <i>offset</i>
- is less than 0,  <i>bytesCount</i>
- is less than 0, or offset plus bytesCount is greater than the length of  <i>data</i>
- .
 
 ### ReadUtf8ToString
 
@@ -407,41 +387,21 @@ The converted string, or null if  <i>str</i>
         System.IO.Stream stream,
         bool replace);
 
-Writes a portion of a string in UTF-8 encoding to a data stream.
-
 <b>Parameters:</b>
 
- * <i>str</i>: A string to write.
+ * <i>str</i>: Not documented yet.
 
- * <i>offset</i>: The zero-based index where the string portion to write begins.
+ * <i>offset</i>: Not documented yet.
 
- * <i>length</i>: The length of the string portion to write.
+ * <i>length</i>: Not documented yet. (3).
 
- * <i>stream</i>: A writable data stream.
+ * <i>stream</i>: Not documented yet. (4).
 
- * <i>replace</i>: If true, replaces unpaired surrogate code points with the replacement character (U + FFFD). If false, stops processing when an unpaired surrogate code point is seen.
+ * <i>replace</i>: Not documented yet. (5).
 
 <b>Returns:</b>
 
-0 if the entire string portion was written; or -1 if the string portion contains an unpaired surrogate code point and <i>replace</i>
- is false.
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter  <i>str</i>
- is null or  <i>stream</i>
- is null.
-
- * System.ArgumentException:
-The parameter  <i>offset</i>
- is less than 0,  <i>length</i>
- is less than 0, or  <i>offset</i>
- plus  <i>length</i>
-is greater than the string's length.
-
- * System.IO.IOException:
-An I/O error occurred.
+A 32-bit signed integer.
 
 ### WriteUtf8
 
@@ -453,43 +413,30 @@ An I/O error occurred.
         bool replace,
         bool lenientLineBreaks);
 
-Writes a portion of a string in UTF-8 encoding to a data stream.
-
 <b>Parameters:</b>
 
- * <i>str</i>: A string to write.
+ * <i>str</i>: Not documented yet.
 
- * <i>offset</i>: The zero-based index where the string portion to write begins.
+ * <i>offset</i>: Not documented yet.
 
- * <i>length</i>: The length of the string portion to write.
+ * <i>length</i>: Not documented yet. (3).
 
- * <i>stream</i>: A writable data stream.
+ * <i>stream</i>: Not documented yet. (4).
 
- * <i>replace</i>: If true, replaces unpaired surrogate code points with the replacement character (U + FFFD). If false, stops processing when an unpaired surrogate code point is seen.
+ * <i>replace</i>: Not documented yet. (5).
 
- * <i>lenientLineBreaks</i>: If true, replaces carriage return (CR) not followed by line feed (LF) and LF not preceded by CR with CR-LF pairs.
+ * <i>lenientLineBreaks</i>: Not documented yet. (6).
 
 <b>Returns:</b>
 
-0 if the entire string portion was written; or -1 if the string portion contains an unpaired surrogate code point and <i>replace</i>
- is false.
+A 32-bit signed integer.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>str</i>
- is null or  <i>stream</i>
+The parameter <i>stream</i>
+ or  <i>str</i>
  is null.
-
- * System.ArgumentException:
-The parameter  <i>offset</i>
- is less than 0,  <i>length</i>
- is less than 0, or  <i>offset</i>
- plus  <i>length</i>
-is greater than the string's length.
-
- * System.IO.IOException:
-An I/O error occurred.
 
 ### WriteUtf8
 

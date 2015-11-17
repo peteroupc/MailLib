@@ -9,20 +9,17 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-    /// <summary><para>Contains methods that implement Internationalized
-    /// Domain Names in Applications (IDNA). IDNA enables using a wider
-    /// range of letters, numbers, and certain other characters in domain
+    /// <summary>
+    /// <para>Contains methods that implement Internationalized Domain
+    /// Names in Applications (IDNA). IDNA enables using a wider range of
+    /// letters, numbers, and certain other characters in domain
     /// names.</para>
-    /// <para>NOTICE: While this class's source code is in
-    /// the public domain, the class uses two internal classes, called
-    /// <c>NormalizationData</c>
-    /// and <c>IdnaData</c>
-    /// , that include data
+    /// <para>NOTICE: While this class's source code is in the public
+    /// domain, the class uses two internal classes, called
+    /// <c>NormalizationData</c> and <c>IdnaData</c>, that include data
     /// derived from the Unicode Character Database. See the documentation
     /// for the NormalizingCharacterInput class for the permission notice
-    /// for the Unicode
-    /// Character Database.</para>
-    /// </summary>
+    /// for the Unicode Character Database.</para></summary>
   public static class Idna {
     private const int Unassigned = 0;
     // PValid = 1;
@@ -195,7 +192,7 @@ namespace PeterO.Text {
     /// <returns>The domain name where each label with non-ASCII characters
     /// is encoded into Punycode. Labels where this is not possible remain
     /// unchanged.</returns>
-    /// <exception cref="ArgumentNullException">Value is null.</exception>
+    /// <exception cref='ArgumentNullException'>Value is null.</exception>
     public static string EncodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException("value");

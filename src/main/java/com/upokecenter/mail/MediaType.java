@@ -525,10 +525,11 @@ int endIndex,
 StringBuilder builder,
 boolean httpRules) {
       int i = index;
+      String specials = "()<>@,;:\\\"/[]?=";
       while (i < endIndex) {
         char c = str.charAt(i);
         if (c <= 0x20 || c >= 0x7f || (c == (c & 0x7f) &&
-          "()<>@,;:\\\"/[]?=" .indexOf(c) >= 0)) {
+           specials.indexOf(c) >= 0)) {
           break;
         }
         if (httpRules && (c == '{' || c == '}')) {

@@ -125,8 +125,8 @@ null);
       if (localPartEnd == 0) {
         throw new IllegalArgumentException("Invalid local part");
       }
-   if (localPartEnd >= addressValue.length() || addressValue.charAt(localPartEnd) != '@'
-) {
+   if (localPartEnd >= addressValue.length() ||
+     addressValue.charAt(localPartEnd) != '@') {
         throw new IllegalArgumentException("Expected '@' sign after local part");
       }
       if (localPartEnd + 1 == addressValue.length()) {

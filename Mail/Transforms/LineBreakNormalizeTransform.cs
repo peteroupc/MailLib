@@ -21,7 +21,8 @@ namespace PeterO.Mail.Transforms {
 
     /// <summary>Initializes a new instance of the
     /// LineBreakNormalizeTransform class.</summary>
-
+    /// <param name='stream'>A Stream object.</param>
+    /// <param name='supportBareLF'>A Boolean object.</param>
     public LineBreakNormalizeTransform(Stream stream, bool supportBareLF) {
       this.stream = stream;
       this.val = -1;

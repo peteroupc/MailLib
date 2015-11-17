@@ -37,7 +37,7 @@ import com.upokecenter.text.*;
            return 1;
          }
          for (int i = 0; i < this.codepoints.length; ++i) {
-           if (this.codepoints[i ]==c) {
+           if (this.codepoints[i] == c) {
              output.write((byte)(i + 0x80));
              return 1;
            }

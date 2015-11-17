@@ -22,7 +22,7 @@ public class DecoderState {
       System.arraycopy(this.chars, 0, newchars, 0, this.chars.length);
       this.chars = newchars;
     }
-    this.chars[this.charCount ]=ch;
+    this.chars[this.charCount] = ch;
     ++this.charCount;
   }
 
@@ -80,7 +80,7 @@ stream));
       System.arraycopy(this.bytes, 0, newbytes, 0, this.bytes.length);
       this.bytes = newbytes;
     }
-    this.bytes[this.prependedBytes++ ]=b1;
+    this.bytes[this.prependedBytes++] = b1;
   }
 
   public void PrependTwo(int b1, int b2) {
@@ -89,8 +89,8 @@ stream));
       System.arraycopy(this.bytes, 0, newbytes, 0, this.bytes.length);
       this.bytes = newbytes;
     }
-    this.bytes[this.prependedBytes++ ]=b2;
-    this.bytes[this.prependedBytes++ ]=b1;
+    this.bytes[this.prependedBytes++] = b2;
+    this.bytes[this.prependedBytes++] = b1;
   }
 
   public void PrependThree(int b1, int b2, int b3) {
@@ -99,8 +99,8 @@ stream));
       System.arraycopy(this.bytes, 0, newbytes, 0, this.bytes.length);
       this.bytes = newbytes;
     }
-    this.bytes[this.prependedBytes++ ]=b3;
-    this.bytes[this.prependedBytes++ ]=b2;
-    this.bytes[this.prependedBytes++ ]=b1;
+    this.bytes[this.prependedBytes++] = b3;
+    this.bytes[this.prependedBytes++] = b2;
+    this.bytes[this.prependedBytes++] = b1;
   }
 }

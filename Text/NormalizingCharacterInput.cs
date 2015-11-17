@@ -11,53 +11,50 @@ using System.Collections.Generic;
 using PeterO.Text.Encoders;
 
 namespace PeterO.Text {
-    /// <summary><para>A character input class that implements the Unicode
+    /// <summary>
+    /// <para>A character input class that implements the Unicode
     /// normalization algorithm and contains methods and functionality to
-    /// test and convert text strings for normalization. This is
-    /// similar to the Normalizer class, except it implements the
-    /// ICharacterInput interface.</para>
-    /// <para>NOTICE: While this class's
-    /// source code is in the public domain, the class uses an internal
-    /// class, called NormalizationData, that includes data derived from
-    /// the Unicode Character Database. In case doing so is required, the
-    /// permission notice for the Unicode Character Database is given
-    /// here:</para>
+    /// test and convert text strings for normalization. This is similar to
+    /// the Normalizer class, except it implements the ICharacterInput
+    /// interface.</para>
+    /// <para>NOTICE: While this class's source code is in the public
+    /// domain, the class uses an internal class, called NormalizationData,
+    /// that includes data derived from the Unicode Character Database. In
+    /// case doing so is required, the permission notice for the Unicode
+    /// Character Database is given here:</para>
     /// <para>COPYRIGHT AND PERMISSION NOTICE</para>
     /// <para>Copyright (c) 1991-2014 Unicode, Inc. All rights reserved.
     /// Distributed under the Terms of Use in
     /// http://www.unicode.org/copyright.html.</para>
-    /// <para>Permission is
-    /// hereby granted, free of charge, to any person obtaining a copy of
-    /// the Unicode data files and any associated documentation (the "Data
-    /// Files") or Unicode software and any associated documentation (the
-    /// "Software") to deal in the Data Files or Software without
-    /// restriction, including without limitation the rights to use, copy,
-    /// modify, merge, publish, distribute, and/or sell copies of the Data
-    /// Files or Software, and to permit persons to whom the Data Files or
-    /// Software are furnished to do so, provided that (a) this copyright
-    /// and permission notice appear with all copies of the Data Files or
-    /// Software, (b) this copyright and permission notice appear in
-    /// associated documentation, and (c) there is clear notice in each
-    /// modified Data File or in the Software as well as in the
-    /// documentation associated with the Data File(s) or Software that the
-    /// data or software has been modified.</para>
-    /// <para>THE DATA FILES AND
-    /// SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-    /// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-    /// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-    /// NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE
-    /// COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR
-    /// ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY
-    /// DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
-    /// WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS
-    /// ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-    /// OF THE DATA FILES OR SOFTWARE.</para>
-    /// <para>Except as contained in
-    /// this notice, the name of a copyright holder shall not be used in
-    /// advertising or otherwise to promote the sale, use or other dealings
-    /// in these Data Files or Software without prior written authorization
-    /// of the copyright holder.</para>
-    /// </summary>
+    /// <para>Permission is hereby granted, free of charge, to any person
+    /// obtaining a copy of the Unicode data files and any associated
+    /// documentation (the "Data Files") or Unicode software and any
+    /// associated documentation (the "Software") to deal in the Data Files
+    /// or Software without restriction, including without limitation the
+    /// rights to use, copy, modify, merge, publish, distribute, and/or
+    /// sell copies of the Data Files or Software, and to permit persons to
+    /// whom the Data Files or Software are furnished to do so, provided
+    /// that (a) this copyright and permission notice appear with all
+    /// copies of the Data Files or Software, (b) this copyright and
+    /// permission notice appear in associated documentation, and (c) there
+    /// is clear notice in each modified Data File or in the Software as
+    /// well as in the documentation associated with the Data File(s) or
+    /// Software that the data or software has been modified.</para>
+    /// <para>THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT
+    /// WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    /// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    /// PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT
+    /// SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE
+    /// LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
+    /// DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA
+    /// OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+    /// TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+    /// PERFORMANCE OF THE DATA FILES OR SOFTWARE.</para>
+    /// <para>Except as contained in this notice, the name of a copyright
+    /// holder shall not be used in advertising or otherwise to promote the
+    /// sale, use or other dealings in these Data Files or Software without
+    /// prior written authorization of the copyright
+    /// holder.</para></summary>
   public sealed class NormalizingCharacterInput : ICharacterInput
   {
     internal static int DecompToBufferInternal(
@@ -282,7 +279,7 @@ int index) {
     /// <param name='str'>A string object.</param>
     /// <param name='form'>A Normalization object.</param>
     /// <returns>A list of Unicode characters.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static IList<int> GetChars(string str, Normalization form) {
       if (str == null) {
@@ -295,7 +292,7 @@ int index) {
     /// <param name='str'>An ICharacterInput object.</param>
     /// <param name='form'>A Normalization object.</param>
     /// <returns>A list of Unicode characters.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static IList<int> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
@@ -357,7 +354,7 @@ Normalization.NFC) {
     /// form.</summary>
     /// <param name='characterList'>An IList object.</param>
     /// <param name='form'>A Normalization object.</param>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='characterList'/> is null.</exception>
     public NormalizingCharacterInput(
 IList<int> characterList,
@@ -400,7 +397,7 @@ form) {
     /// NormalizingCharacterInput class.</summary>
     /// <param name='stream'>An ICharacterInput object.</param>
     /// <param name='form'>A Normalization object.</param>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='stream'/> is null.</exception>
  public NormalizingCharacterInput(
 ICharacterInput stream,
@@ -462,7 +459,7 @@ Normalization form) {
     /// to.</param>
     /// <returns>The parameter <paramref name='str'/> converted to the
     /// given normalization form.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static string Normalize(string str, Normalization form) {
       if (str == null) {
@@ -576,8 +573,8 @@ form)) {
     /// <param name='form'>A Normalization object.</param>
     /// <returns>True if the given list of characters is in the given
     /// Unicode normalization form; otherwise, false.</returns>
-    /// <exception cref="ArgumentNullException">The parameter "chars" is
-    /// null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='charList'/> is null.</exception>
     public static bool IsNormalized(IList<int> charList, Normalization form) {
       int nonStableStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
@@ -670,7 +667,7 @@ this.characterList.Count) ? -1 :
     /// <param name='index'>A 32-bit signed integer. (2).</param>
     /// <param name='length'>A 32-bit signed integer. (3).</param>
     /// <returns>A 32-bit signed integer.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='chars'/> or "this.buffer" is null.</exception>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {

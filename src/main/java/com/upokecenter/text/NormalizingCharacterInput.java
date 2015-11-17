@@ -510,7 +510,7 @@ form)) {
      * @param form A Normalization object.
      * @return True if the given list of characters is in the given Unicode
      * normalization form; otherwise, false.
-     * @throws NullPointerException The parameter "chars" is null.
+     * @throws NullPointerException The parameter {@code charList} is null.
      */
     public static boolean IsNormalized(List<Integer> charList, Normalization form) {
       int nonStableStart = -1;

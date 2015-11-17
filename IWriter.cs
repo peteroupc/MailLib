@@ -10,7 +10,7 @@ using System;
 namespace PeterO {
     /// <summary>A generic interface for writing bytes of data.</summary>
   public interface IWriter : IByteWriter {
-  /// <summary>Not documented yet.</summary>
+    /// <summary>Not documented yet.</summary>
     void Write(byte[] bytes, int offset, int length);
   }
 }

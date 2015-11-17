@@ -9,9 +9,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import java.io.*;
 
-  /**
-   * Not documented yet.
-   */
+    /**
+     * Not documented yet.
+     */
   public final class DataIO {
 private DataIO() {
 }
@@ -26,12 +26,11 @@ private DataIO() {
         this.endOffset = offset + length;
       }
 
-      /**
-       *
-       */
-/// </summary>
-/// <returns></returns>
-public int read() {
+    /**
+     * Not documented yet.
+     * @return A 32-bit signed integer.
+     */
+      public int read() {
         if (this.offset >= this.endOffset) {
           return -1;
         }
@@ -47,12 +46,11 @@ public int read() {
         this.stream = stream;
       }
 
-      /**
-       *
-       */
-/// </summary>
-/// <returns></returns>
-public int read() {
+    /**
+     * Not documented yet.
+     * @return A 32-bit signed integer.
+     */
+      public int read() {
         try {
           return this.stream.read();
         } catch (IOException ex) {
@@ -68,25 +66,22 @@ public int read() {
         this.output = output;
       }
 
-      /**
-       *
-       */
-/// </summary>
-/// <param name="byteValue"></param>
-/// <returns></returns>
+    /**
+     * Not documented yet.
+     * @param byteValue A 32-bit signed integer.
+     */
       public void write(int byteValue) {
-          this.output.write((byte)byteValue);
+        this.output.write((byte)byteValue);
       }
 
-      /**
-       *
-       */
-/// </summary>
-/// <param name="bytes"></param>
-/// <param name="offset"></param>
-/// <param name="length"></param>
-/// <returns></returns>
-public void write(byte[] bytes, int offset, int length) {
+    /**
+     * Not documented yet.
+     * @param bytes A byte array.
+     * @param offset A 32-bit signed integer.
+     * @param length Another 32-bit signed integer.
+     * @throws NullPointerException The parameter {@code bytes} is null.
+     */
+      public void write(byte[] bytes, int offset, int length) {
         if (bytes == null) {
           throw new NullPointerException("bytes");
         }
@@ -123,13 +118,11 @@ public void write(byte[] bytes, int offset, int length) {
         this.output = output;
       }
 
-      /**
-       *
-       */
-/// </summary>
-/// <param name="byteValue"></param>
-/// <returns></returns>
-public void write(int byteValue) {
+    /**
+     * Not documented yet.
+     * @param byteValue A 32-bit signed integer.
+     */
+      public void write(int byteValue) {
         try {
           this.output.write((byte)byteValue);
         } catch (IOException ex) {
@@ -137,15 +130,13 @@ public void write(int byteValue) {
         }
       }
 
-      /**
-       *
-       */
-/// </summary>
-/// <param name="bytes"></param>
-/// <param name="offset"></param>
-/// <param name="length"></param>
-/// <returns></returns>
-public void write(byte[] bytes, int offset, int length) {
+    /**
+     * Not documented yet.
+     * @param bytes A byte array.
+     * @param offset A 32-bit signed integer.
+     * @param length Another 32-bit signed integer.
+     */
+      public void write(byte[] bytes, int offset, int length) {
         try {
           this.output.write(bytes, offset, length);
         } catch (IOException ex) {
@@ -154,10 +145,17 @@ public void write(byte[] bytes, int offset, int length) {
       }
     }
 
-  /**
-   * Not documented yet.
-   * @return Not documented yet.
-   */
+    /**
+     * Not documented yet. <p>In the .NET implementation, this method is
+     * implemented as an extension method to any object implementing byte[]
+     * and can be called as follows: <code>bytes.ToTransform()</code>. If the
+     * object's class already has a ToTransform method with the same
+     * parameters, that method takes precedence over this extension
+     * method.</p>
+     * @param bytes Not documented yet.
+     * @return An ITransform object.
+     * @throws NullPointerException The parameter {@code bytes} is null.
+     */
     public static ITransform ToTransform(byte[] bytes) {
       if (bytes == null) {
         throw new NullPointerException("bytes");
@@ -165,10 +163,19 @@ public void write(byte[] bytes, int offset, int length) {
       return new ByteArrayTransform(bytes, 0, bytes.length);
     }
 
-  /**
-   * Not documented yet.
-   * @return Not documented yet.
-   */
+    /**
+     * Not documented yet. <p>In the .NET implementation, this method is
+     * implemented as an extension method to any object implementing byte[]
+     * and can be called as follows: <code>bytes.ToTransform(offset,
+     * length)</code>. If the object's class already has a ToTransform method
+     * with the same parameters, that method takes precedence over this
+     * extension method.</p>
+     * @param bytes Not documented yet.
+     * @param offset Not documented yet.
+     * @param length Not documented yet. (3).
+     * @return An ITransform object.
+     * @throws NullPointerException The parameter {@code bytes} is null.
+     */
     public static ITransform ToTransform(
 byte[] bytes,
 int offset,
@@ -199,10 +206,17 @@ int length) {
       return new ByteArrayTransform(bytes, offset, length);
     }
 
-  /**
-   * Not documented yet.
-   * @return Not documented yet.
-   */
+    /**
+     * Not documented yet. <p>In the .NET implementation, this method is
+     * implemented as an extension method to any object implementing InputStream
+     * and can be called as follows: <code>input.ToTransform()</code>. If the
+     * object's class already has a ToTransform method with the same
+     * parameters, that method takes precedence over this extension
+     * method.</p>
+     * @param input Not documented yet.
+     * @return An ITransform object.
+     * @throws NullPointerException The parameter {@code input} is null.
+     */
     public static ITransform ToTransform(InputStream input) {
       if (input == null) {
         throw new NullPointerException("input");
@@ -210,10 +224,17 @@ int length) {
       return new WrappedStream(input);
     }
 
-  /**
-   * Not documented yet.
-   * @return Not documented yet.
-   */
+    /**
+     * Not documented yet. <p>In the .NET implementation, this method is
+     * implemented as an extension method to any object implementing InputStream
+     * and can be called as follows: <code>output.ToWriter()</code>. If the
+     * object's class already has a ToWriter method with the same
+     * parameters, that method takes precedence over this extension
+     * method.</p>
+     * @param output Not documented yet.
+     * @return An IWriter object.
+     * @throws NullPointerException The parameter {@code output} is null.
+     */
     public static IWriter ToWriter(OutputStream output) throws java.io.IOException {
       if (output == null) {
         throw new NullPointerException("output");
@@ -221,10 +242,17 @@ int length) {
       return new WrappedOutputStream(output);
     }
 
-  /**
-   * Not documented yet.
-   * @return Not documented yet.
-   */
+    /**
+     * Not documented yet. <p>In the .NET implementation, this method is
+     * implemented as an extension method to any object implementing
+     * IByteWriter and can be called as follows: <code>output.ToWriter()</code>.
+     * If the object's class already has a ToWriter method with the same
+     * parameters, that method takes precedence over this extension
+     * method.</p>
+     * @param output Not documented yet.
+     * @return An IWriter object.
+     * @throws NullPointerException The parameter {@code output} is null.
+     */
     public static IWriter ToWriter(IByteWriter output) throws java.io.IOException {
       if (output == null) {
         throw new NullPointerException("output");

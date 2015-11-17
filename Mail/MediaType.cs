@@ -15,21 +15,19 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary><para>Specifies what kind of data a message body
-    /// is.</para>
-    /// <para>A media type consists of a top-level type (the
-    /// general category of the data), a subtype (the specific type), and
-    /// an optional list of parameters. For example, the media type
-    /// <c>text/plain; charset = utf-8</c>
-    /// is a text media type ("text"),
+    /// <summary>
+    /// <para>Specifies what kind of data a message body is.</para>
+    /// <para>A media type consists of a top-level type (the general
+    /// category of the data), a subtype (the specific type), and an
+    /// optional list of parameters. For example, the media type
+    /// <c>text/plain; charset = utf-8</c> is a text media type ("text"),
     /// namely, a plain text type ("plain"), and the parameters say that
     /// that the data uses the character set UTF-8, a form of Unicode
     /// ("charset=utf-8"). Other top-level types include "audio", "video",
     /// and "application".</para>
-    /// <para>This type is immutable, meaning its
-    /// values can't be changed once it' s created. To create a changeable
-    /// media type object, use the MediaTypeBuilder class.</para>
-    /// </summary>
+    /// <para>This type is immutable, meaning its values can't be changed
+    /// once it' s created. To create a changeable media type object, use
+    /// the MediaTypeBuilder class.</para></summary>
   public sealed class MediaType {
     private string topLevelType;
 
@@ -531,10 +529,11 @@ int endIndex,
 StringBuilder builder,
 bool httpRules) {
       int i = index;
+      string specials = "()<>@,;:\\\"/[]?=";
       while (i < endIndex) {
         char c = str[i];
         if (c <= 0x20 || c >= 0x7f || (c == (c & 0x7f) &&
-          "()<>@,;:\\\"/[]?=" .IndexOf(c) >= 0)) {
+           specials.IndexOf(c) >= 0)) {
           break;
         }
         if (httpRules && (c == '{' || c == '}')) {
@@ -650,8 +649,7 @@ StringBuilder builder) {
     }
 
     /// <summary>Returns the charset parameter, converted to ASCII
-    /// lower-case, if it exists, or <c>"us-ascii"</c>
-    /// if the media type is
+    /// lower-case, if it exists, or <c>"us-ascii"</c> if the media type is
     /// ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain"
     /// and doesn't have a charset parameter (see RFC2046), or the default
     /// charset, if any, for the media type if the charset parameter is
@@ -769,7 +767,7 @@ Justification="This method has different semantics from " +
     /// compared case-insensitively.</param>
     /// <returns>The value of the parameter as a string, or null if the
     /// parameter doesn't exist.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
     public string GetParameter(string name) {
       if (name == null) {
@@ -1164,7 +1162,7 @@ null);
     /// <param name='defaultValue'>The media type to return if the string
     /// is syntactically invalid. Can be null.</param>
     /// <returns>A MediaType object.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {

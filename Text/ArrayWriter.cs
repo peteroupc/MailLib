@@ -21,7 +21,7 @@ namespace PeterO.Text {
 
     /// <summary>Initializes a new instance of the ArrayWriter
     /// class.</summary>
-
+    /// <param name='initialSize'>A 32-bit signed integer.</param>
     public ArrayWriter(int initialSize) {
       this.retval = new byte[initialSize];
     }
@@ -106,7 +106,7 @@ namespace PeterO.Text {
         Array.Copy(this.retval, 0, newArray, 0, this.retvalPos);
         this.retval = newArray;
       }
-      this.retval[this.retvalPos ]=(byte)(byteValue & 0xff);
+      this.retval[this.retvalPos] = (byte)(byteValue & 0xff);
       this.retvalPos = checked(this.retvalPos + 1);
       this.retvalMax = Math.Max(this.retvalMax, this.retvalPos);
     }

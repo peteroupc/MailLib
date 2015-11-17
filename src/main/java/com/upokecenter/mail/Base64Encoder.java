@@ -50,7 +50,7 @@ import com.upokecenter.text.*;
         if (alphabetString.charAt(i) >= 0x100) {
  throw new IllegalArgumentException("alphabet String contains a non-Latin1 character");
 }
-        alphabet[i ]=(byte)alphabetString.charAt(i);
+        alphabet[i] = (byte)alphabetString.charAt(i);
       }
       return alphabet;
     }

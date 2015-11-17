@@ -7,8 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.mail.*;
 import com.upokecenter.util.*;
+import com.upokecenter.mail.*;
 
   public final class TransformWithUnget implements ITransform {
     private ITransform transform;

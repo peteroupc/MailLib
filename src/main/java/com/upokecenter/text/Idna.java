@@ -13,10 +13,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
      * numbers, and certain other characters in domain names.</p> <p>NOTICE:
      * While this class's source code is in the public domain, the class
      * uses two internal classes, called <code>NormalizationData</code> and
-     * <code>IdnaData</code> , that include data derived from the Unicode
-     * Character Database. See the documentation for the
-     * NormalizingCharacterInput class for the permission notice for the
-     * Unicode Character Database.</p>
+     * <code>IdnaData</code>, that include data derived from the Unicode Character
+     * Database. See the documentation for the NormalizingCharacterInput
+     * class for the permission notice for the Unicode Character
+     * Database.</p>
      */
   public final class Idna {
 private Idna() {
