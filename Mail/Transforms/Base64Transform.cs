@@ -10,7 +10,7 @@ using PeterO;
 using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
-  internal sealed class Base64Transform : ITransform {
+  internal sealed class Base64Transform : IByteReader {
     internal static readonly int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1,
@@ -21,7 +21,7 @@ namespace PeterO.Mail.Transforms {
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
-    private ITransform input;
+    private IByteReader input;
     private int lineCharCount;
     private bool lenientLineBreaks;
     private byte[] buffer;
@@ -32,12 +32,12 @@ namespace PeterO.Mail.Transforms {
     private int paddingCount;
 
     public Base64Transform(
-ITransform input,
+IByteReader input,
 bool lenientLineBreaks) : this(input, lenientLineBreaks, 76, false) {
     }
 
     public Base64Transform(
-ITransform input,
+IByteReader input,
 bool lenientLineBreaks,
 int maxLineLength,
 bool checkStrictEncoding) {

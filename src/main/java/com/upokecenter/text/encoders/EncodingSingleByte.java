@@ -13,7 +13,7 @@ import com.upokecenter.text.*;
         this.codepoints = codepoints;
       }
 
-     public int ReadChar(ITransform transform) {
+     public int ReadChar(IByteReader transform) {
        int b = transform.read();
        return (b < 0) ? (-1) : ((b < 0x80) ? b : this.codepoints[b - 0x80]);
     }

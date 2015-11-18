@@ -474,7 +474,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
-      ITransform transform = DataIO.ToTransform(stream);
+      IByteReader transform = DataIO.ToTransform(stream);
       // if (useLenientLineBreaks) {
         // TODO: Might not be correct if the transfer
         // encoding turns out to be binary
@@ -496,7 +496,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
-      ITransform transform = DataIO.ToTransform(bytes);
+      IByteReader transform = DataIO.ToTransform(bytes);
       this.ReadMessage(transform);
     }
 
@@ -1970,7 +1970,7 @@ true);
     }
 
     private static void ReadHeaders(
-ITransform stream,
+IByteReader stream,
 Collection<String> headerList,
 boolean start) {
       int lineCount = 0;
@@ -2192,12 +2192,12 @@ boolean start) {
       }
     }
 
-    private void ReadMultipartBody(ITransform stream) {
+    private void ReadMultipartBody(IByteReader stream) {
       int baseTransferEncoding = this.transferEncoding;
       BoundaryCheckerTransform boundaryChecker = new BoundaryCheckerTransform(stream);
       // Be liberal on the preamble and epilogue of multipart
       // messages, as they will be ignored.
-      ITransform currentTransform = MakeTransferEncoding(
+      IByteReader currentTransform = MakeTransferEncoding(
         boundaryChecker,
         baseTransferEncoding,
         true);
@@ -2292,11 +2292,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
     }
 
-    private static ITransform MakeTransferEncoding(
-      ITransform stream,
+    private static IByteReader MakeTransferEncoding(
+      IByteReader stream,
       int encoding,
       boolean useLiberalSevenBit) {
-      ITransform transform = new EightBitTransform(stream);
+      IByteReader transform = new EightBitTransform(stream);
       if (encoding == EncodingQuotedPrintable) {
         // NOTE: The max line size is actually 76, but some emails
         // have lines that exceed this size, so use an unlimited line length
@@ -2317,14 +2317,14 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           // non-MIME messages, and the preamble and epilogue of multipart
           // messages (which will be ignored).
           transform = useLiberalSevenBit ?
-            ((ITransform)new LiberalSevenBitTransform(stream)) :
-            ((ITransform)new SevenBitTransform(stream));
+            ((IByteReader)new LiberalSevenBitTransform(stream)) :
+            ((IByteReader)new SevenBitTransform(stream));
       }
       return transform;
     }
 
-    private void ReadSimpleBody(ITransform stream) {
-      ITransform transform = MakeTransferEncoding(
+    private void ReadSimpleBody(IByteReader stream) {
+      IByteReader transform = MakeTransferEncoding(
         stream,
         this.transferEncoding,
         this.getContentType().getTypeAndSubType().equals("text/plain"));
@@ -2363,7 +2363,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
     }
 
-    private void ReadMessage(ITransform stream) {
+    private void ReadMessage(IByteReader stream) {
       try {
         ReadHeaders(stream, this.headers, true);
         this.ProcessHeaders(false, false);

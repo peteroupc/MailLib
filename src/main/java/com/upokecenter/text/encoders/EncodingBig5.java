@@ -15,7 +15,7 @@ import com.upokecenter.text.*;
         this.lead = 0;
       }
 
-      public int ReadChar(ITransform stream) {
+      public int ReadChar(IByteReader stream) {
         int cc = this.state.GetChar();
         if (cc >= 0) {
  return cc;

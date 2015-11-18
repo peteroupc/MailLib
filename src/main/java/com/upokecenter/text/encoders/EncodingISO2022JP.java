@@ -17,7 +17,7 @@ import com.upokecenter.text.*;
         this.state = new DecoderState(2);
       }
 
-      public int ReadChar(ITransform stream) {
+      public int ReadChar(IByteReader stream) {
         while (true) {
           int b = this.state.ReadInputByte(stream);
           switch (this.machineState) {

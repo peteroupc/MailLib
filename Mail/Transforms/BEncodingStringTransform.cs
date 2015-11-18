@@ -10,7 +10,7 @@ using PeterO;
 using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
-  internal sealed class BEncodingStringTransform : ITransform {
+  internal sealed class BEncodingStringTransform : IByteReader {
     private string input;
     private int inputIndex;
     private byte[] buffer;

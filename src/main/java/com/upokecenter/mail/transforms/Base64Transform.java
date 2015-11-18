@@ -10,7 +10,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
-  public final class Base64Transform implements ITransform {
+  public final class Base64Transform implements IByteReader {
     public static final int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1,
@@ -21,7 +21,7 @@ import com.upokecenter.mail.*;
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
-    private ITransform input;
+    private IByteReader input;
     private int lineCharCount;
     private boolean lenientLineBreaks;
     private byte[] buffer;
@@ -32,13 +32,13 @@ import com.upokecenter.mail.*;
     private int paddingCount;
 
     public Base64Transform (
-ITransform input,
+IByteReader input,
 boolean lenientLineBreaks) {
  this(input, lenientLineBreaks, 76, false);
     }
 
     public Base64Transform (
-ITransform input,
+IByteReader input,
 boolean lenientLineBreaks,
 int maxLineLength,
 boolean checkStrictEncoding) {

@@ -11,10 +11,10 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   // A seven-bit transform used for text/plain data
-  public final class LiberalSevenBitTransform implements ITransform {
-    private ITransform input;
+  public final class LiberalSevenBitTransform implements IByteReader {
+    private IByteReader input;
 
-    public LiberalSevenBitTransform (ITransform stream) {
+    public LiberalSevenBitTransform (IByteReader stream) {
       this.input = stream;
     }
 

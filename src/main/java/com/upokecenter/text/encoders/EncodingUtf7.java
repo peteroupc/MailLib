@@ -117,7 +117,7 @@ import com.upokecenter.text.*;
         }
       }
 
-      public int ReadChar(ITransform stream) {
+      public int ReadChar(IByteReader stream) {
         int ch = this.state.GetChar();
         if (ch != -1) {
           return ch;

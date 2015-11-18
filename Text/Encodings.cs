@@ -13,10 +13,10 @@ namespace PeterO.Text {
     /// sequence of bytes.</para></summary>
   public static class Encodings {
     private class DecoderToInputClass : ICharacterInput {
-      private ITransform stream;
+      private IByteReader stream;
       private ICharacterDecoder reader;
 
-      public DecoderToInputClass(ICharacterDecoder reader, ITransform stream) {
+      public DecoderToInputClass(ICharacterDecoder reader, IByteReader stream) {
         this.reader = reader;
         this.stream = stream;
       }
@@ -344,7 +344,7 @@ namespace PeterO.Text {
     /// form.</summary>
     /// <param name='name'>A string that names a given character encoding.
     /// Any leading and trailing whitespace is removed and the name
-    /// converted to lowercase before resolving the encoding&apos;s name.
+    /// converted to lowercase before resolving the encoding&#x27;s name.
     /// The Encoding Standard supports only the following encodings (and
     /// defines aliases for most of them):.
     /// <list type='bullet'>
@@ -458,7 +458,7 @@ namespace PeterO.Text {
     /// same parameters, that method takes precedence over this extension
     /// method.</para></summary>
     /// <param name='encoding'>An object that implements a given character
-    /// encoding. Any bytes that can&apos;t be decoded are converted to the
+    /// encoding. Any bytes that can&#x27;t be decoded are converted to the
     /// replacement character (U + FFFD).</param>
     /// <param name='transform'>An object that implements a byte
     /// stream.</param>
@@ -468,7 +468,7 @@ namespace PeterO.Text {
     /// null.</exception>
     public static string DecodeToString(
      this ICharacterEncoding encoding,
-     ITransform transform) {
+     IByteReader transform) {
       if (encoding == null) {
         throw new ArgumentNullException("encoding");
       }
@@ -755,6 +755,7 @@ ICharacterEncoding enc) {
       return EncodeToBytes(new StringCharacterInput(str), enc);
     }
 
+  /// <summary>Not documented yet.</summary>
     public static void EncodeToBytes(
 this string str,
 ICharacterEncoding enc,
@@ -855,7 +856,7 @@ int length) {
     /// <returns>An ICharacterInput object.</returns>
     public static ICharacterInput GetDecoderInput(
       this ICharacterEncoding encoding,
-      ITransform stream) {
+      IByteReader stream) {
       return new DecoderToInputClass(
         encoding.GetDecoder(),
         stream);

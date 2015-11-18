@@ -41,11 +41,11 @@
     <DocumentationFile>bin\Release\MailLib.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ArrayWriter.cs" />
     <Compile Include="DataIO.cs" />
     <Compile Include="IByteWriter.cs" />
     <Compile Include="IWriter.cs" />
     <Compile Include="Mail\Transforms\TransformWithUnget.cs" />
-    <Compile Include="ByteStore.cs" />
     <Compile Include="DataUtilities.cs" />
     <Compile Include="Text\Encoders\Big5.cs" />
     <Compile Include="Text\Encoders\DecoderState.cs" />
@@ -95,7 +95,7 @@
     <Compile Include="Mail\HeaderParserUtility.cs" />
     <Compile Include="Mail\IHeaderFieldParser.cs" />
     <Compile Include="Mail\ITokener.cs" />
-    <Compile Include="ITransform.cs" />
+    <Compile Include="IByteReader.cs" />
     <Compile Include="Mail\Transforms\LiberalSevenBitTransform.cs" />
     <Compile Include="Mail\MediaType.cs" />
     <Compile Include="Mail\MediaTypeBuilder.cs" />

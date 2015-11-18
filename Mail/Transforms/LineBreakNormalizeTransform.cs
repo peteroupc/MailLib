@@ -12,7 +12,7 @@ using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
     /// <summary>Normalizes bare CR and bare LF to CRLF.</summary>
-  internal class LineBreakNormalizeTransform : ITransform
+  internal class LineBreakNormalizeTransform : IByteReader
   {
     private Stream stream;
     private int val;

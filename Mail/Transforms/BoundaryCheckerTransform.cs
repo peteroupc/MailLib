@@ -11,8 +11,8 @@ using PeterO;
 using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
-  internal sealed class BoundaryCheckerTransform : ITransform {
-    private ITransform input;
+  internal sealed class BoundaryCheckerTransform : IByteReader {
+    private IByteReader input;
     private bool ungetting;
     private int lastByte;
     private byte[] buffer;
@@ -35,7 +35,7 @@ namespace PeterO.Mail.Transforms {
       this.bufferIndex = 0;
     }
 
-    public BoundaryCheckerTransform(ITransform stream) {
+    public BoundaryCheckerTransform(IByteReader stream) {
       this.input = stream;
       this.boundaries = new List<string>();
       this.started = true;

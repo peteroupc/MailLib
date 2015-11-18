@@ -10,10 +10,10 @@ using PeterO;
 using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
-  internal sealed class EightBitTransform : ITransform {
-    private ITransform input;
+  internal sealed class EightBitTransform : IByteReader {
+    private IByteReader input;
 
-    public EightBitTransform(ITransform stream) {
+    public EightBitTransform(IByteReader stream) {
       this.input = stream;
     }
 

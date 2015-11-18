@@ -10,7 +10,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
-  public final class BEncodingStringTransform implements ITransform {
+  public final class BEncodingStringTransform implements IByteReader {
     private String input;
     private int inputIndex;
     private byte[] buffer;

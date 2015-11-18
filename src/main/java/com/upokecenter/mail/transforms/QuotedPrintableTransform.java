@@ -10,7 +10,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
-  public final class QuotedPrintableTransform implements ITransform {
+  public final class QuotedPrintableTransform implements IByteReader {
     private int lineCharCount;
     private boolean lenientLineBreaks;
     private byte[] buffer;
@@ -21,10 +21,10 @@ import com.upokecenter.mail.*;
 
     private int lastByte;
     private boolean unget;
-    private ITransform input;
+    private IByteReader input;
 
     public QuotedPrintableTransform (
-ITransform input,
+IByteReader input,
 boolean lenientLineBreaks,
 int maxLineSize,
 boolean checkStrictEncoding) {
@@ -36,13 +36,13 @@ boolean checkStrictEncoding) {
     }
 
     public QuotedPrintableTransform (
-ITransform input,
+IByteReader input,
 boolean lenientLineBreaks) {
  this(input, lenientLineBreaks, 76, false);
     }
 
     public QuotedPrintableTransform (
-ITransform input,
+IByteReader input,
 boolean lenientLineBreaks,
 int maxLineLength) {
  this(

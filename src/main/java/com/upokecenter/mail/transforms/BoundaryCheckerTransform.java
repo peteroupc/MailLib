@@ -11,8 +11,8 @@ import java.util.*;
 import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
-  public final class BoundaryCheckerTransform implements ITransform {
-    private ITransform input;
+  public final class BoundaryCheckerTransform implements IByteReader {
+    private IByteReader input;
     private boolean ungetting;
     private int lastByte;
     private byte[] buffer;
@@ -35,7 +35,7 @@ import com.upokecenter.mail.*;
       this.bufferIndex = 0;
     }
 
-    public BoundaryCheckerTransform (ITransform stream) {
+    public BoundaryCheckerTransform (IByteReader stream) {
       this.input = stream;
       this.boundaries = new ArrayList<String>();
       this.started = true;
