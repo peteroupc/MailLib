@@ -185,11 +185,10 @@ String type,
         // appear justified in sec. 2.3 of RFC 2183, which says that
         // the parameter's value "should be used as a
         // basis for the actual filename, where possible."
-        str = Rfc2047.DecodeEncodedWords(
+        str = Rfc2047.DecodeEncodedWordsLenient(
 str,
 0,
-str.length(),
-EncodedWordContext.Unstructured);
+str.length());
         if (str.indexOf("=?") >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
@@ -213,19 +212,20 @@ str.substring(
         }
       }
       str = ParserUtility.TrimSpaceAndTab(str);
-      // NOTE: Even if there are directory separators (backslash
-      // and forward slash), the filename is not treated as a
-      // file system path (in accordance with sec. 2.3 of RFC
-      // 2183); as a result, the directory separators
-      // will be treated as unsuitable characters for filenames
-      // and are handled below.
       if (str.length() == 0) {
         return "_";
       }
       StringBuilder builder = new StringBuilder();
       // Replace unsuitable characters for filenames
       // and make sure the filename's
-      // length doesn't exceed 250
+      // length doesn't exceed 250. (A few additional characters
+      // may be added later on.)
+      // NOTE: Even if there are directory separators (backslash
+      // and forward slash), the filename is not treated as a
+      // file system path (in accordance with sec. 2.3 of RFC
+      // 2183); as a result, the directory separators
+      // will be treated as unsuitable characters for filenames
+      // and are handled below.
       for (int i = 0; i < str.length() && builder.length() < 250; ++i) {
         int c = DataUtilities.CodePointAt(str, i);
         if (c >= 0x10000) {

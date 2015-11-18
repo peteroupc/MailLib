@@ -4,6 +4,8 @@ using PeterO;
 
 namespace PeterO.Text {
 /// <summary>
+/// Defines methods that can be implemented by classes
+/// that convert to and from bytes and character code points.
 /// </summary>
 public interface ICharacterEncoding {
     /// <summary>Creates an encoder for this character encoding with

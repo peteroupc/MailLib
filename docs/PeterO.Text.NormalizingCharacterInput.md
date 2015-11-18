@@ -229,7 +229,8 @@ True if the given list of characters is in the given Unicode normalization form;
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter "chars" is null.
+The parameter  <i>charList</i>
+ is null.
 
 ### Normalize
 

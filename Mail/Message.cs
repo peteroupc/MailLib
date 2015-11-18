@@ -233,29 +233,13 @@ this.headers[index + 1]);
     /// <summary>Sets the body of this message to the given byte
     /// array.</summary>
     /// <param name='bytes'>A byte array.</param>
-    /// <exception cref='ArgumentNullException'>Bytes is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='bytes'/> is null.</exception>
     public void SetBody(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException("bytes");
       }
       this.body = bytes;
-    }
-
-    private static byte[] GetUtf8Bytes(string str) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      try {
-        using (var ms = new MemoryStream()) {
-        if (DataUtilities.WriteUtf8(str, 0, str.Length, ms, true, true) !=
-            0) {
-            throw new ArgumentException("Unpaired surrogate code point");
-          }
-          return ms.ToArray();
-        }
-      } catch (IOException ex) {
-        throw new ArgumentException("I/O error occurred", ex);
-      }
     }
 
     private static bool IsShortAndAllAscii(string str) {
@@ -282,7 +266,7 @@ this.headers[index + 1]);
       if (str == null) {
         throw new ArgumentNullException("str");
       }
-      this.body = GetUtf8Bytes(str);
+      this.body = DataUtilities.GetUtf8Bytes(str, true, true);
       this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
         MediaType.TextPlainUtf8;
       return this;
@@ -300,7 +284,7 @@ this.headers[index + 1]);
       if (str == null) {
         throw new ArgumentNullException("str");
       }
-      this.body = GetUtf8Bytes(str);
+      this.body = DataUtilities.GetUtf8Bytes(str, true, true);
       this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
         MediaType.TextPlainUtf8;
       return this;
@@ -443,7 +427,7 @@ tokener.GetTokens()));
     }
 
     /// <summary>Gets or sets this message's subject.</summary>
-    /// <value>This message&#x27;s subject.</value>
+    /// <value>This message&apos;s subject.</value>
     public string Subject {
       get {
         return this.GetHeader("subject");
@@ -511,8 +495,6 @@ tokener.GetTokens()));
       this.parts = new List<Message>();
       this.body = new byte[0];
       ITransform transform = DataIO.ToTransform(bytes);
-      // TODO: Use MessageDataException if transform throws
-      // an exception
       this.ReadMessage(transform);
     }
 
@@ -611,7 +593,7 @@ tokener.GetTokens()));
     private int transferEncoding;
 
     /// <summary>Gets or sets this message's media type.</summary>
-    /// <value>This message&#x27;s media type.</value>
+    /// <value>This message&apos;s media type.</value>
     /// <exception cref='ArgumentNullException'>This value is being set and
     /// "value" is null.</exception>
     public MediaType ContentType {
@@ -637,7 +619,7 @@ tokener.GetTokens()));
     /// <summary>Gets or sets this message's content disposition. The
     /// content disposition specifies how a user agent should handle or
     /// otherwise display this message.</summary>
-    /// <value>This message&#x27;s content disposition, or null if none is
+    /// <value>This message&apos;s content disposition, or null if none is
     /// specified.</value>
     public ContentDisposition ContentDisposition {
       get {
@@ -1173,8 +1155,8 @@ throw new
     /// <summary>Sets the value of this message's header field. If a header
     /// field with the same name exists, its value is replaced.</summary>
     /// <param name='name'>The name of a header field, such as
-    /// &#x22;from&#x22; or &#x22;subject&#x22;.</param>
-    /// <param name='value'>The header field&#x27;s value.</param>
+    /// &quot;from&quot; or &quot;subject&quot;.</param>
+    /// <param name='value'>The header field&apos;s value.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentException'>The header field name is too
     /// long or contains an invalid character, or the header field's value
@@ -1260,10 +1242,10 @@ throw new
         } else {
  allTextBytes &= body[i] != (byte)'\n';
 }
-        allTextBytes &= lineLength != 0 || i + 2 >= body.Length || body[i ]!=
+        allTextBytes &= lineLength != 0 || i + 2 >= body.Length || body[i] !=
           '.' || body[i + 1] != '\r' || body[i + 2] != '\n';
-        allTextBytes &= lineLength != 0 || i + 4 >= body.Length || body[i ]!=
-          'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3 ]!=
+        allTextBytes &= lineLength != 0 || i + 4 >= body.Length || body[i] !=
+          'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3] !=
           'm' || body[i + 4] != ' ';
         ++lineLength;
         allTextBytes &= lineLength <= 78;
@@ -1963,9 +1945,9 @@ true));
             // Downgraded or encapsulated
             if (writer == null) {
               writer = new ArrayWriter();
-              writer.WriteBytes(bytes, 0, headerNameStart);
+              writer.Write(bytes, 0, headerNameStart);
             } else {
-              writer.WriteBytes(bytes, lastIndex, headerNameStart - lastIndex);
+              writer.Write(bytes, lastIndex, headerNameStart - lastIndex);
             }
             WordWrapEncoder encoder = null;
             if (status[0] == 2) {
@@ -1980,13 +1962,13 @@ true));
         byte[] newBytes = DataUtilities.GetUtf8Bytes(
 encoder.ToString(),
 true);
-            writer.WriteBytes(newBytes, 0, newBytes.Length);
+            writer.Write(newBytes, 0, newBytes.Length);
             lastIndex = headerValueEnd;
           }
         }
       }
       if (writer != null) {
-        writer.WriteBytes(bytes, lastIndex, bytes.Length - lastIndex);
+        writer.Write(bytes, lastIndex, bytes.Length - lastIndex);
         bytes = writer.ToArray();
       }
       return bytes;

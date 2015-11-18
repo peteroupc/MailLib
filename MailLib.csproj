@@ -44,9 +44,8 @@
     <Compile Include="DataIO.cs" />
     <Compile Include="IByteWriter.cs" />
     <Compile Include="IWriter.cs" />
-    <Compile Include="Mail\ArrayWriter.cs" />
     <Compile Include="Mail\Transforms\TransformWithUnget.cs" />
-    <Compile Include="Text\ArrayWriter.cs" />
+    <Compile Include="ByteStore.cs" />
     <Compile Include="DataUtilities.cs" />
     <Compile Include="Text\Encoders\Big5.cs" />
     <Compile Include="Text\Encoders\DecoderState.cs" />
@@ -130,5 +129,7 @@
     <Compile Include="Text\UnicodeDatabase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!--
   <Import Project="$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets" />
+  -->
 </Project>

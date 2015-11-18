@@ -15,10 +15,13 @@ namespace PeterO.Text {
     /// format.</summary>
     /// <param name='input'>Input byte array.</param>
     /// <returns>Decompressed output byte array.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// "output" is null.</exception>
     public static byte[] Decompress(byte[] input) {
       int index = 0;
       var copy = new byte[16];
-      var writer = new ArrayWriter(8 + (input.Length * 3 / 2));
+      var output = new byte[8 + (input.Length * 3 / 2)];
+      var outputPos = 0;
       while (index < input.Length) {
         int b = input[index];
         int literalLength = (b >> 4) & 15;
@@ -42,7 +45,14 @@ namespace PeterO.Text {
           throw new ArgumentException("Invalid LZ4");
         }
         if (literalLength > 0) {
-          writer.Write(input, index, literalLength);
+          if (output.Length - outputPos < literalLength) {
+            int newSize = checked(outputPos + literalLength + 1000);
+            var newoutput = new byte[newSize];
+            Array.Copy(output, 0, newoutput, 0, outputPos);
+            output = newoutput;
+          }
+          Array.Copy(input, index, output, outputPos, literalLength);
+          outputPos += literalLength;
           index += literalLength;
         }
         if (index == input.Length) {
@@ -72,10 +82,9 @@ namespace PeterO.Text {
           }
         }
         matchLength += 4;
-       // Console.WriteLine("match=" + matchLength + " offset=" + offset +
-       // " index=" + index);
-        int pos = writer.Position - offset;
-        int oldPos = writer.Position;
+        // Console.WriteLine("match=" + matchLength + " offset=" + offset +
+        // " index=" + index);
+        int pos = outputPos - offset;
         if (pos < 0) {
           throw new ArgumentException("Invalid LZ4");
         }
@@ -85,13 +94,43 @@ namespace PeterO.Text {
         if (matchLength > copy.Length) {
           copy = new byte[matchLength];
         }
-        writer.Position = pos;
-        writer.ReadBytes(copy, 0, matchLength);
-        // Console.WriteLine("match "+ToString(copy,0,matchLength));
-        writer.Position = oldPos;
-        writer.Write(copy, 0, matchLength);
+        // TODO: Change output.Length with offsetPos
+        if ((output) == null) {
+  throw new ArgumentNullException("output");
+}
+if (pos < 0) {
+  throw new ArgumentException("pos (" + pos +
+    ") is less than " + 0);
+}
+if (pos > output.Length) {
+  throw new ArgumentException("pos (" + pos + ") is more than " +
+    output.Length);
+}
+if (matchLength < 0) {
+  throw new ArgumentException("matchLength (" + matchLength +
+    ") is less than " + 0);
+}
+if (matchLength > output.Length) {
+  throw new ArgumentException("matchLength (" + matchLength +
+    ") is more than " + output.Length);
+}
+if (output.Length-pos < matchLength) {
+  throw new ArgumentException("output's length minus " + pos + " (" +
+    (output.Length-pos) + ") is less than " + matchLength);
+}
+        Array.Copy(output, pos, copy, 0, matchLength);
+        if (output.Length - outputPos < matchLength) {
+          int newSize = checked(outputPos + matchLength + 1000);
+          var newoutput = new byte[newSize];
+          Array.Copy(output, 0, newoutput, 0, outputPos);
+          output = newoutput;
+        }
+        Array.Copy(copy, 0, output, outputPos, matchLength);
+        outputPos += matchLength;
       }
-      return writer.ToArray();
+      var ret = new byte[outputPos];
+      Array.Copy(output, 0, ret, 0, outputPos);
+      return ret;
     }
   }
 }

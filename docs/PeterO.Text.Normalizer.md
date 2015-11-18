@@ -90,7 +90,7 @@ A 32-bit signed integer.
 
  * System.ArgumentNullException:
 The parameter  <i>chars</i>
- or "this.buffer" is null.
+ is null.
 
 ### ReadChar
 

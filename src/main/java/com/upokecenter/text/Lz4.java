@@ -18,11 +18,13 @@ private Lz4() {
      * Decompresses a byte array compressed using the LZ4 format.
      * @param input Input byte array.
      * @return Decompressed output byte array.
+     * @throws java.lang.NullPointerException The parameter "output" is null.
      */
     public static byte[] Decompress(byte[] input) {
       int index = 0;
       byte[] copy = new byte[16];
-      ArrayWriter writer = new ArrayWriter(8 + (input.length * 3 / 2));
+      byte[] output = new byte[8 + (input.length * 3 / 2)];
+      var outputPos = 0;
       while (index < input.length) {
         int b = input[index];
         int literalLength = (b >> 4) & 15;
@@ -46,7 +48,14 @@ private Lz4() {
           throw new IllegalArgumentException("Invalid LZ4");
         }
         if (literalLength > 0) {
-          writer.write(input, index, literalLength);
+          if (output.length - outputPos < literalLength) {
+            int newSize = (outputPos + literalLength + 1000);
+            byte[] newoutput = new byte[newSize];
+            System.arraycopy(output, 0, newoutput, 0, outputPos);
+            output = newoutput;
+          }
+          System.arraycopy(input, index, output, outputPos, literalLength);
+          outputPos += literalLength;
           index += literalLength;
         }
         if (index == input.length) {
@@ -76,10 +85,9 @@ private Lz4() {
           }
         }
         matchLength += 4;
-       // System.out.println("match=" + matchLength + " offset=" + offset +
-       // " index=" + index);
-        int pos = writer.getPosition() - offset;
-        int oldPos = writer.getPosition();
+        // System.out.println("match=" + matchLength + " offset=" + offset +
+        // " index=" + index);
+        int pos = outputPos - offset;
         if (pos < 0) {
           throw new IllegalArgumentException("Invalid LZ4");
         }
@@ -89,12 +97,42 @@ private Lz4() {
         if (matchLength > copy.length) {
           copy = new byte[matchLength];
         }
-        writer.setPosition(pos);
-        writer.ReadBytes(copy, 0, matchLength);
-        // System.out.println("match "+toString(copy,0,matchLength));
-        writer.setPosition(oldPos);
-        writer.write(copy, 0, matchLength);
+        // TODO: Change output.length with offsetPos
+        if ((output) == null) {
+  throw new NullPointerException("output");
+}
+if (pos < 0) {
+  throw new IllegalArgumentException("pos (" + pos +
+    ") is less than " + 0);
+}
+if (pos > output.length) {
+  throw new IllegalArgumentException("pos (" + pos + ") is more than " +
+    output.length);
+}
+if (matchLength < 0) {
+  throw new IllegalArgumentException("matchLength (" + matchLength +
+    ") is less than " + 0);
+}
+if (matchLength > output.length) {
+  throw new IllegalArgumentException("matchLength (" + matchLength +
+    ") is more than " + output.length);
+}
+if (output.length-pos < matchLength) {
+  throw new IllegalArgumentException("output's length minus " + pos + " (" +
+    (output.length-pos) + ") is less than " + matchLength);
+}
+        System.arraycopy(output, pos, copy, 0, matchLength);
+        if (output.length - outputPos < matchLength) {
+          int newSize = (outputPos + matchLength + 1000);
+          byte[] newoutput = new byte[newSize];
+          System.arraycopy(output, 0, newoutput, 0, outputPos);
+          output = newoutput;
+        }
+        System.arraycopy(copy, 0, output, outputPos, matchLength);
+        outputPos += matchLength;
       }
-      return writer.ToArray();
+      byte[] ret = new byte[outputPos];
+      System.arraycopy(output, 0, ret, 0, outputPos);
+      return ret;
     }
   }

@@ -235,36 +235,13 @@ this.headers.get(index + 1));
     /**
      * Sets the body of this message to the given byte array.
      * @param bytes A byte array.
-     * @throws NullPointerException Bytes is null.
+     * @throws NullPointerException The parameter {@code bytes} is null.
      */
     public void SetBody(byte[] bytes) {
       if (bytes == null) {
         throw new NullPointerException("bytes");
       }
       this.body = bytes;
-    }
-
-    private static byte[] GetUtf8Bytes(String str) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      try {
-        java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
-        if (DataUtilities.WriteUtf8(str, 0, str.length(), ms, true, true) !=
-            0) {
-            throw new IllegalArgumentException("Unpaired surrogate code point");
-          }
-          return ms.toByteArray();
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-      } catch (IOException ex) {
-        throw new IllegalArgumentException("I/O error occurred", ex);
-      }
     }
 
     private static boolean IsShortAndAllAscii(String str) {
@@ -292,7 +269,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       if (str == null) {
         throw new NullPointerException("str");
       }
-      this.body = GetUtf8Bytes(str);
+      this.body = DataUtilities.GetUtf8Bytes(str, true, true);
       this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
         MediaType.TextPlainUtf8;
       return this;
@@ -311,7 +288,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       if (str == null) {
         throw new NullPointerException("str");
       }
-      this.body = GetUtf8Bytes(str);
+      this.body = DataUtilities.GetUtf8Bytes(str, true, true);
       this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
         MediaType.TextPlainUtf8;
       return this;
@@ -520,8 +497,6 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
       ITransform transform = DataIO.ToTransform(bytes);
-      // TODO: Use MessageDataException if transform throws
-      // an exception
       this.ReadMessage(transform);
     }
 
@@ -1265,10 +1240,10 @@ throw new
         } else {
  allTextBytes &= body[i] != (byte)'\n';
 }
-        allTextBytes &= lineLength != 0 || i + 2 >= body.length || body[i ]!=
+        allTextBytes &= lineLength != 0 || i + 2 >= body.length || body[i] !=
           '.' || body[i + 1] != '\r' || body[i + 2] != '\n';
-        allTextBytes &= lineLength != 0 || i + 4 >= body.length || body[i ]!=
-          'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3 ]!=
+        allTextBytes &= lineLength != 0 || i + 4 >= body.length || body[i] !=
+          'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3] !=
           'm' || body[i + 4] != ' ';
         ++lineLength;
         allTextBytes &= lineLength <= 78;
@@ -1965,9 +1940,9 @@ true));
             // Downgraded or encapsulated
             if (writer == null) {
               writer = new ArrayWriter();
-              writer.WriteBytes(bytes, 0, headerNameStart);
+              writer.write(bytes, 0, headerNameStart);
             } else {
-              writer.WriteBytes(bytes, lastIndex, headerNameStart - lastIndex);
+              writer.write(bytes, lastIndex, headerNameStart - lastIndex);
             }
             WordWrapEncoder encoder = null;
             if (status[0] == 2) {
@@ -1982,13 +1957,13 @@ true));
         byte[] newBytes = DataUtilities.GetUtf8Bytes(
 encoder.toString(),
 true);
-            writer.WriteBytes(newBytes, 0, newBytes.length);
+            writer.write(newBytes, 0, newBytes.length);
             lastIndex = headerValueEnd;
           }
         }
       }
       if (writer != null) {
-        writer.WriteBytes(bytes, lastIndex, bytes.length - lastIndex);
+        writer.write(bytes, lastIndex, bytes.length - lastIndex);
         bytes = writer.ToArray();
       }
       return bytes;
