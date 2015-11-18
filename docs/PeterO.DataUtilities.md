@@ -173,6 +173,8 @@ Encodes a string in UTF-8 as a byte array.
 
  * <i>replace</i>: If true, replaces unpaired surrogate code points with the replacement character (U + FFFD). If false, stops processing when an unpaired surrogate code point is seen.
 
+ * <i>lenientLineBreaks</i>: A Boolean object.
+
 <b>Returns:</b>
 
 The string encoded in UTF-8.

@@ -7,7 +7,7 @@ Defines a method that can be implemented by classes that convert a stream of byt
 ### ReadChar
 
     int ReadChar(
-        PeterO.ITransform input);
+        PeterO.IByteReader input);
 
 Reads bytes from an input transform until a Unicode character is decoded or until the end of the stream is reached.
 

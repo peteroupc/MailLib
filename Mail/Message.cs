@@ -21,10 +21,9 @@ namespace PeterO.Mail {
     /// class implements the Internet Message Format (RFC 5322) and
     /// Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC
     /// 2049).</para>
-    /// <para>
-    /// <b>Thread safety:</b> This class is mutable; its properties can be
-    /// changed. None of its instance methods are designed to be thread
-    /// safe. Therefore, access to objects from this class must be
+    /// <para><b>Thread safety:</b> This class is mutable; its properties
+    /// can be changed. None of its instance methods are designed to be
+    /// thread safe. Therefore, access to objects from this class must be
     /// synchronized if multiple threads can access them at the same
     /// time.</para>
     /// <para>The following lists known deviations from the mail
@@ -427,7 +426,7 @@ tokener.GetTokens()));
     }
 
     /// <summary>Gets or sets this message's subject.</summary>
-    /// <value>This message&apos;s subject.</value>
+    /// <value>This message&#x27;s subject.</value>
     public string Subject {
       get {
         return this.GetHeader("subject");
@@ -593,7 +592,7 @@ tokener.GetTokens()));
     private int transferEncoding;
 
     /// <summary>Gets or sets this message's media type.</summary>
-    /// <value>This message&apos;s media type.</value>
+    /// <value>This message&#x27;s media type.</value>
     /// <exception cref='ArgumentNullException'>This value is being set and
     /// "value" is null.</exception>
     public MediaType ContentType {
@@ -619,7 +618,7 @@ tokener.GetTokens()));
     /// <summary>Gets or sets this message's content disposition. The
     /// content disposition specifies how a user agent should handle or
     /// otherwise display this message.</summary>
-    /// <value>This message&apos;s content disposition, or null if none is
+    /// <value>This message&#x27;s content disposition, or null if none is
     /// specified.</value>
     public ContentDisposition ContentDisposition {
       get {
@@ -1155,8 +1154,8 @@ throw new
     /// <summary>Sets the value of this message's header field. If a header
     /// field with the same name exists, its value is replaced.</summary>
     /// <param name='name'>The name of a header field, such as
-    /// &quot;from&quot; or &quot;subject&quot;.</param>
-    /// <param name='value'>The header field&apos;s value.</param>
+    /// &#x22;from&#x22; or &#x22;subject&#x22;.</param>
+    /// <param name='value'>The header field&#x27;s value.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentException'>The header field name is too
     /// long or contains an invalid character, or the header field's value

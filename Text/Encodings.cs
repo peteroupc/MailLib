@@ -9,8 +9,69 @@ namespace PeterO.Text {
     /// <summary>Contains methods for converting text from one character
     /// encoding to another. This class also contains convenience methods
     /// for converting strings and other character inputs to bytes.
-    /// <para>A character encoding is a mapping from characters to a
-    /// sequence of bytes.</para></summary>
+    /// <para>The Encoding Standard, which is a Candidate Recommendation as
+    /// of early November 2015, defines algorithms for the most common
+    /// character encodings used on Web pages and recommends the UTF-8
+    /// encoding for new specifications and Web pages. Calling the
+    /// <c>GetEncoding(name)</c> method returns one of the character
+    /// encodings with the given name under the Encoding Standard.</para>
+    /// <para>Now let's define some terms:</para>
+    /// <list>
+    /// <item>A <b>code point</b> is a number that identifies a single text
+    /// character, such as a letter, digit, or symbol.</item>
+    /// <item>An <b>encoder</b> is a class that converts a sequence of
+    /// bytes to a sequence of code points in the universal character set
+    /// (otherwise known as Unicode). An encoder implements the
+    /// <b>ICharacterEncoder</b> interface.</item>
+    /// <item>A <b>decoder</b> is a class that converts a sequence of
+    /// Unicode code points to a sequence of bytes. An encoder implements
+    /// the <b>ICharacterEncoder</b> interface.</item>
+    /// <item>An <b>encoding</b> is a mapping from bytes to universal code
+    /// points and from universal code points to bytes. An encoding allows
+    /// access to both an encoder and a decoder and implements the
+    /// <c>ICharacterEncoder</c> interface.</item></list>
+    /// <item>A <b>character set</b> is a set of code points which are each
+    /// assigned to a single text character. (This may also be called a
+    /// <i>coded character set</i>.)</item>
+    /// <para>There are several kinds of encodings:</para>
+    /// <list>
+    /// <item><b>Single-byte encodings</b> define a character set that
+    /// assigns one code point to one byte. For example, the ISO 8859
+    /// encodings and Windows-1252 are single-byte encodings. ASCII is also
+    /// a single-byte encoding, although its character set only uses the
+    /// lower 7 bits of an eight-bit byte. In the Encoding Standard, all
+    /// single-byte encodings use the ASCII characters as the first 128
+    /// code points of their character sets. (Here, ASCII is the same as
+    /// the International Reference Version of the ISO 646
+    /// standard.)</item>
+    /// <item><b>Multi-byte encodings</b> define a character set that
+    /// assigns some or all code points to several bytes. For example, most
+    /// legacy East Asian encodings, such as <c>shift_jis</c>, <c>gbk</c>
+    /// , and <c>big5</c> are multi-byte encodings, as well as <c>utf-8</c>
+    /// and <c>utf-16</c>, which both encode the Unicode character
+    /// set.</item>
+    /// <item><b>Escape-based encodings</b> use escape sequences to encode
+    /// one or more character sets in the same sequence of bytes. The best
+    /// example of an escape-based encoding supported in the Encoding
+    /// Standard is <c>iso-2022-jp</c>, which defines a Katakana, a Kanji,
+    /// and an ASCII character set.</item>
+    /// <item>The Encoding Standard also defines a <b>replacement
+    /// encoding</b>, which causes a decoding error and is used to alias a
+    /// few problematic or unsupported encoding names, such as
+    /// <c>hz-gb-2312</c>.</item></list>
+    /// <para><b>Getting an Encoding</b></para>
+    /// <para>The Encoding Standard includes UTF-8, UTF-16 and many legacy
+    /// encodings, and gives each one of them a name. The
+    /// <c>GetEncoding(name)</c> method takes a name string and returns an
+    /// ICharacterEncoding object that implements that encoding, or
+    /// <c>null</c> if the name is unrecognized.</para>
+    /// <para>However, the Encoding Standard is designed to include only
+    /// encodings commonly used on Web pages, not in other protocols such
+    /// as email. For email, the Encoding class includes an alternate
+    /// function <c>GetEncoding(name, forEmail)</c>. Setting
+    /// <c>forEmail</c> to <c>true</c> will use modified rules from the
+    /// Encoding Standard to better suit encoding and decoding text from
+    /// email messages.</para></summary>
   public static class Encodings {
     private class DecoderToInputClass : ICharacterInput {
       private IByteReader stream;
@@ -35,6 +96,13 @@ namespace PeterO.Text {
     /// <returns>A 32-bit signed integer.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='buffer'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Either <paramref
+    /// name='offset'/> or <paramref name='length'/> is less than 0 or
+    /// greater than <paramref name='buffer'/> 's length, or <paramref
+    /// name='buffer'/> 's length minus <paramref name='offset'/> is less
+    /// than <paramref name='length'/>.</exception>
+    /// <exception/>
+    /// <exception/>
       public int Read(int[] buffer, int offset, int length) {
         if (buffer == null) {
           throw new ArgumentNullException("buffer");
@@ -343,10 +411,10 @@ namespace PeterO.Text {
     /// <summary>Resolves a character encoding's name to a standard
     /// form.</summary>
     /// <param name='name'>A string that names a given character encoding.
-    /// Any leading and trailing whitespace is removed and the name
-    /// converted to lowercase before resolving the encoding&#x27;s name.
-    /// The Encoding Standard supports only the following encodings (and
-    /// defines aliases for most of them):.
+    /// Can be null. Any leading and trailing whitespace is removed and the
+    /// name converted to lowercase before resolving the encoding&#x27;s
+    /// name. The Encoding Standard supports only the following encodings
+    /// (and defines aliases for most of them):.
     /// <list type='bullet'>
     /// <item><c>utf-8</c> - UTF-8 (8-bit universal character set, the
     /// encoding recommended by the Encoding Standard for new data
@@ -357,33 +425,39 @@ namespace PeterO.Text {
     /// <c>replacement</c></item>
     /// <item>28 legacy single-byte encodings:
     /// <list type='bullet'>
-    /// <item><c>windows-1252</c> - Western Europe</item>
-    /// <item><c>iso-8859-2</c>, <c>windows-1250</c> - Central
+    /// <item><c>windows-1252</c> - Western Europe (Note: The Encoding
+    /// Standard aliases the names <c>us-ascii</c> and <c>iso-8859-1</c> to
+    /// <c>windows-1252</c>, which specifies a different character set
+    /// from either; it differs from <c>iso-8859-1</c> by assigning
+    /// different characters to some bytes from 0x80 to 0x9F. The Encoding
+    /// Standard does this for compatibility with existing Web
+    /// pages.)</item>
+    /// <item><c>iso-8859-2</c>, <c>windows-1250</c> : Central
     /// Europe</item>
-    /// <item><c>iso-8859-10</c> - Northern Europe</item>
-    /// <item><c>iso-8859-4</c>, <c>windows-1257</c> - Baltic</item>
-    /// <item><c>iso-8859-13</c> - Estonian</item>
-    /// <item><c>iso-8859-14</c> - Celtic</item>
-    /// <item><c>iso-8859-16</c> - Romanian</item>
+    /// <item><c>iso-8859-10</c> : Northern Europe</item>
+    /// <item><c>iso-8859-4</c>, <c>windows-1257</c> : Baltic</item>
+    /// <item><c>iso-8859-13</c> : Estonian</item>
+    /// <item><c>iso-8859-14</c> : Celtic</item>
+    /// <item><c>iso-8859-16</c> : Romanian</item>
     /// <item><c>iso-8859-5</c>, <c>ibm866</c>, <c>koi8-r</c>,
-    /// <c>windows-1251</c>, <c>x-mac-cyrillic</c> - Cyrillic</item>
-    /// <item><c>koi8-u</c> - Ukrainian</item>
-    /// <item><c>iso-8859-7</c>, <c>windows-1253</c> - Greek</item>
-    /// <item><c>iso-8859-6</c>, <c>windows-1256</c> - Arabic</item>
+    /// <c>windows-1251</c>, <c>x-mac-cyrillic</c> : Cyrillic</item>
+    /// <item><c>koi8-u</c> : Ukrainian</item>
+    /// <item><c>iso-8859-7</c>, <c>windows-1253</c> : Greek</item>
+    /// <item><c>iso-8859-6</c>, <c>windows-1256</c> : Arabic</item>
     /// <item><c>iso-8859-8</c>, <c>iso-8859-8-i</c>, <c>windows-1255</c>
-    /// - Hebrew</item>
-    /// <item><c>iso-8859-3</c> - Latin 3</item>
-    /// <item><c>iso-8859-15</c> - Latin 9</item>
-    /// <item><c>windows-1254</c> - Turkish</item>
-    /// <item><c>windows-874</c> - Thai</item>
-    /// <item><c>windows-1258</c> - Vietnamese</item>
-    /// <item><c>macintosh</c> - Mac Roman</item></list></item>
+    /// : Hebrew</item>
+    /// <item><c>iso-8859-3</c> : Latin 3</item>
+    /// <item><c>iso-8859-15</c> : Latin 9</item>
+    /// <item><c>windows-1254</c> : Turkish</item>
+    /// <item><c>windows-874</c> : Thai</item>
+    /// <item><c>windows-1258</c> : Vietnamese</item>
+    /// <item><c>macintosh</c> : Mac Roman</item></list></item>
     /// <item>Three legacy Japanese encodings: <c>shift_jis</c>,
     /// <c>euc-jp</c>, <c>iso-2022-jp</c></item>
     /// <item>Two legacy simplified Chinese encodings: <c>gbk</c> and
     /// <c>gb18030</c></item>
-    /// <item><c>big5</c> - legacy traditional Chinese encoding</item>
-    /// <item><c>euc-kr</c> - legacy Korean encoding</item></list></param>
+    /// <item><c>big5</c> : legacy traditional Chinese encoding</item>
+    /// <item><c>euc-kr</c> : legacy Korean encoding</item></list></param>
     /// <returns>A standardized name for the encoding. Returns the empty
     /// string if <paramref name='name'/> is null or empty, or if the
     /// encoding name is unsupported.</returns>
@@ -399,10 +473,10 @@ namespace PeterO.Text {
 
     /// <summary>Resolves a character encoding's name to a canonical form,
     /// using rules more suitable for email.</summary>
-    /// <param name='name'>A string naming a character encoding. Uses a
-    /// modified version of the rules in the Encoding Standard to better
-    /// conform, in some cases, to email standards like MIME. In addition
-    /// to the encodings mentioned in ResolveAlias, the following
+    /// <param name='name'>A string naming a character encoding. Can be
+    /// null. Uses a modified version of the rules in the Encoding Standard
+    /// to better conform, in some cases, to email standards like MIME. In
+    /// addition to the encodings mentioned in ResolveAlias, the following
     /// additional encodings are supported:.
     /// <list type='bullet'>
     /// <item><c>us-ascii</c> - ASCII 7-bit encoding, rather than an alias
@@ -491,9 +565,11 @@ namespace PeterO.Text {
     /// the object's class already has a StringToBytes method with the same
     /// parameters, that method takes precedence over this extension
     /// method.</para></summary>
-    /// <param name='encoding'>Not documented yet.</param>
+    /// <param name='encoding'>An object that implements a character
+    /// encoding.</param>
     /// <param name='str'>Not documented yet.</param>
-    /// <returns>A byte array.</returns>
+    /// <returns>A byte array containing the string encoded in the given
+    /// text encoding.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoding'/> is null.</exception>
     public static byte[] StringToBytes(
@@ -731,7 +807,12 @@ int length) {
       return DecodeToString(enc, DataIO.ToTransform(bytes, offset, length));
     }
 
-    /// <summary>Not documented yet.
+    /// <summary>Reads Unicode characters from a text string and writes
+    /// them to a byte array encoded in a given character encoding. When
+    /// reading the string, any unpaired surrogate characters are replaced
+    /// with the replacement character (U + FFFD), and when writing to the
+    /// byte array, any characters that can't be encoded are replaced with
+    /// the byte 0x3f (the question mark character).
     /// <para>In the .NET implementation, this method is implemented as an
     /// extension method to any object implementing string and can be
     /// called as follows: <c>str.EncodeToBytes(enc)</c>. If the object's
@@ -755,7 +836,23 @@ ICharacterEncoding enc) {
       return EncodeToBytes(new StringCharacterInput(str), enc);
     }
 
-  /// <summary>Not documented yet.</summary>
+    /// <summary>Converts a text string to bytes and writes the bytes to an
+    /// output byte writer. When reading the string, any unpaired surrogate
+    /// characters are replaced with the replacement character (U + FFFD),
+    /// and when writing to the byte stream, any characters that can't be
+    /// encoded are replaced with the byte 0x3f (the question mark
+    /// character).
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing string and can be
+    /// called as follows: <c>str.EncodeToBytes(enc, writer)</c>. If the
+    /// object's class already has a EncodeToBytes method with the same
+    /// parameters, that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='str'>Not documented yet.</param>
+    /// <param name='enc'>Not documented yet.</param>
+    /// <param name='writer'>Not documented yet. (3).</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> or <paramref name='enc'/> is null.</exception>
     public static void EncodeToBytes(
 this string str,
 ICharacterEncoding enc,
@@ -769,7 +866,9 @@ IWriter writer) {
       EncodeToWriter(new StringCharacterInput(str), enc, writer);
     }
 
-    /// <summary>Not documented yet.
+    /// <summary>Converts a portion of a text string to a character input.
+    /// The resulting input can then be used to encode the text to bytes,
+    /// or to read the string code point by code point, among other things.
     /// <para>In the .NET implementation, this method is implemented as an
     /// extension method to any object implementing string and can be
     /// called as follows: <c>str.StringToInput(offset, length)</c>. If
@@ -782,6 +881,13 @@ IWriter writer) {
     /// <returns>An ICharacterInput object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Either <paramref
+    /// name='offset'/> or <paramref name='length'/> is less than 0 or
+    /// greater than <paramref name='str'/> 's length, or <paramref
+    /// name='str'/> 's length minus <paramref name='offset'/> is less than
+    /// <paramref name='length'/>.</exception>
+    /// <exception/>
+    /// <exception/>
     public static ICharacterInput StringToInput(
 this string str,
 int offset,
@@ -865,10 +971,8 @@ int length) {
     /// <summary>Returns a character encoding from the given
     /// name.</summary>
     /// <param name='name'>A string naming a character encoding. See the
-    /// ResolveAlias method.</param>
+    /// ResolveAlias method. Can be null.</param>
     /// <returns>An ICharacterEncoding object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='name'/> is null.</exception>
     public static ICharacterEncoding GetEncoding(string name) {
       return GetEncoding(name, false);
     }
@@ -876,7 +980,7 @@ int length) {
     /// <summary>Returns a character encoding from the given
     /// name.</summary>
     /// <param name='name'>A string naming a character encoding. See the
-    /// ResolveAlias method.</param>
+    /// ResolveAlias method. Can be null.</param>
     /// <param name='forEmail'>If false, uses the encoding resolution rules
     /// in the Encoding Standard. If true, uses modified rules as described
     /// in the ResolveAliasForEmail method.</param>
@@ -903,7 +1007,7 @@ int length) {
         return (ICharacterEncoding)(new EncodingUtf7());
       }
       if (name.Equals("windows-1252")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
           8218,
     402, 8222, 8230, 8224,
     8225, 710, 8240, 352, 8249, 338, 141, 381, 143, 144, 8216, 8217, 8220, 8221,
@@ -933,7 +1037,7 @@ int length) {
     160 });
       }
       if (name.Equals("iso-8859-10")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -947,7 +1051,7 @@ int length) {
     });
       }
       if (name.Equals("iso-8859-13")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -961,7 +1065,7 @@ int length) {
     });
       }
       if (name.Equals("iso-8859-14")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -975,7 +1079,7 @@ int length) {
     253, 375, 255 });
       }
       if (name.Equals("iso-8859-15")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -989,7 +1093,7 @@ int length) {
     });
       }
       if (name.Equals("iso-8859-16")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1003,7 +1107,7 @@ int length) {
     });
       }
       if (name.Equals("iso-8859-2")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1017,7 +1121,7 @@ int length) {
     });
       }
       if (name.Equals("iso-8859-3")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1031,7 +1135,7 @@ int length) {
     349, 729 });
       }
       if (name.Equals("iso-8859-4")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1045,7 +1149,7 @@ int length) {
     });
       }
       if (name.Equals("iso-8859-5")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1060,7 +1164,7 @@ int length) {
     1114, 1115, 1116, 167, 1118, 1119 });
       }
       if (name.Equals("iso-8859-6")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1075,7 +1179,7 @@ int length) {
     -2, -2, -2, -2, -2, -2, -2, -2, -2 });
       }
       if (name.Equals("iso-8859-7")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1089,7 +1193,7 @@ int length) {
     974, -2 });
       }
       if (name.Equals("iso-8859-8") || name.Equals("iso-8859-8-i")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1132,7 +1236,7 @@ int length) {
     1059, 1046, 1042, 1068, 1067, 1047, 1064, 1069, 1065, 1063, 1066 });
       }
       if (name.Equals("macintosh")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new[] { 196, 197, 199,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 196, 197, 199,
           201,
     209, 214, 220, 225,
     224, 226, 228, 227, 229, 231, 233, 232, 234, 235, 237, 236, 238, 239, 241,
@@ -1146,7 +1250,7 @@ int length) {
     728, 729, 730, 184, 733, 731, 711 });
       }
       if (name.Equals("windows-1250")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
           8218,
     131, 8222, 8230, 8224,
     8225, 136, 8240, 352, 8249, 346, 356, 381, 377, 144, 8216, 8217, 8220, 8221,
@@ -1174,7 +1278,7 @@ int length) {
     1096, 1097, 1098, 1099, 1100, 1101, 1102, 1103 });
       }
       if (name.Equals("windows-1253")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
           8218,
     402, 8222, 8230, 8224,
     8225, 136, 8240, 138, 8249, 140, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
@@ -1188,7 +1292,7 @@ int length) {
     972, 973, 974, -2 });
       }
       if (name.Equals("windows-1254")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
           8218,
     402, 8222, 8230, 8224,
     8225, 710, 8240, 352, 8249, 338, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
@@ -1202,7 +1306,7 @@ int length) {
     305, 351, 255 });
       }
       if (name.Equals("windows-1255")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
           8218,
     402, 8222, 8230, 8224,
     8225, 710, 8240, 138, 8249, 140, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
@@ -1217,7 +1321,7 @@ int length) {
     -2, 8206, 8207, -2 });
       }
       if (name.Equals("windows-1256")) {
-    return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 1662,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 1662,
           8218,
    402, 8222, 8230, 8224,
     8225, 710, 8240, 1657, 8249, 338, 1670, 1688, 1672, 1711, 8216, 8217, 8220,
@@ -1231,7 +1335,7 @@ int length) {
     1614, 244, 1615, 1616, 247, 1617, 249, 1618, 251, 252, 8206, 8207, 1746 });
       }
       if (name.Equals("windows-1257")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
           8218,
     131, 8222, 8230, 8224,
     8225, 136, 8240, 138, 8249, 140, 168, 711, 184, 144, 8216, 8217, 8220, 8221,
@@ -1245,7 +1349,7 @@ int length) {
     380, 382, 729 });
       }
       if (name.Equals("windows-1258")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
           8218,
     402, 8222, 8230, 8224,
     8225, 710, 8240, 138, 8249, 338, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
@@ -1259,7 +1363,7 @@ int length) {
     432, 8363, 255 });
       }
       if (name.Equals("windows-874")) {
-      return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new[] { 8364, 129,
           130,
        131, 132, 8230, 134,
     135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 8216, 8217, 8220, 8221,

@@ -80,6 +80,9 @@ private DataIO() {
      * @param offset A 32-bit signed integer.
      * @param length Another 32-bit signed integer.
      * @throws NullPointerException The parameter {@code bytes} is null.
+     * @throws java.lang.IllegalArgumentException Either "offset" or "length" is less than 0
+     * or greater than "bytes"'s length, or "bytes"'s length minus "offset"
+     * is less than "length".
      */
       public void write(byte[] bytes, int offset, int length) {
         if (bytes == null) {
@@ -135,6 +138,10 @@ private DataIO() {
      * @param bytes A byte array.
      * @param offset A 32-bit signed integer.
      * @param length Another 32-bit signed integer.
+     * @throws java.lang.IllegalArgumentException Either "offset" or "length" is less than 0
+     * or greater than "bytes"'s length, or "bytes"'s length minus "offset"
+     * is less than "length".
+     * @throws java.lang.NullPointerException The parameter "bytes" is null.
      */
       public void write(byte[] bytes, int offset, int length) {
         try {
@@ -175,6 +182,9 @@ private DataIO() {
      * @param length Not documented yet. (3).
      * @return An ITransform object.
      * @throws NullPointerException The parameter {@code bytes} is null.
+     * @throws java.lang.IllegalArgumentException Either "offset" or "length" is less than 0
+     * or greater than "bytes"'s length, or "bytes"'s length minus "offset"
+     * is less than "length".
      */
     public static IByteReader ToTransform(
 byte[] bytes,

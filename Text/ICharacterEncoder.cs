@@ -20,8 +20,19 @@ namespace PeterO.Text {
     /// further code points remain (for example, if _c_ is -1 indicating
     /// the end of the stream), or -2 if an encoding error occurs. (Note
     /// that it's possible for this method to return 0 if, for example, it
-    /// can't generate new bytes yet based on the current
-    /// input.).</returns>
+    /// can't generate new bytes yet based on the current input.). If this
+    /// method returns -2, it should not write any bytes to the output
+    /// stream.</returns>
+    /// <remarks>If this method returns -2, indicating an error, the caller
+    /// of this method can take one of a variety of actions to handle the
+    /// error. For example, it can write an escape sequence using the code
+    /// point (such as the HTML error mode in the Encoding Standard), it
+    /// can replace the code point with a "best fit" to that code point
+    /// (which can consist of one or more bytes) and write the "best fit"
+    /// instead, it can replace the code point with an arbitrary byte or
+    /// sequence of bytes, or it can throw an exception. In some cases,
+    /// where the error won't cause data loss or a security problem, the
+    /// caller can also ignore the encoding error.</remarks>
     int Encode(int c, IWriter output);
   }
 }
