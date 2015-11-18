@@ -8,7 +8,17 @@ namespace PeterO.Text {
     /// convert Unicode code points to bytes.</summary>
   public interface ICharacterEncoder {
     /// <summary>Converts a Unicode code point to bytes and writes the
-    /// bytes to an output stream.</summary>
+    /// bytes to an output stream.
+    /// <para>If this method returns -2, indicating an error, the caller of
+    /// this method can take one of a variety of actions to handle the
+    /// error. For example, it can write an escape sequence using the code
+    /// point (such as the HTML error mode in the Encoding Standard), it
+    /// can replace the code point with a "best fit" to that code point
+    /// (which can consist of one or more bytes) and write the "best fit"
+    /// instead, it can replace the code point with an arbitrary byte or
+    /// sequence of bytes, or it can throw an exception. In some cases,
+    /// where the error won't cause data loss or a security problem, the
+    /// caller can also ignore the encoding error.</para></summary>
     /// <param name='c'>Either a Unicode code point (from 0-0xd7ff or from
     /// 0xe000 to 0x10ffff), or the value -1 indicating the end of the
     /// stream.</param>
@@ -23,16 +33,6 @@ namespace PeterO.Text {
     /// can't generate new bytes yet based on the current input.). If this
     /// method returns -2, it should not write any bytes to the output
     /// stream.</returns>
-    /// <remarks>If this method returns -2, indicating an error, the caller
-    /// of this method can take one of a variety of actions to handle the
-    /// error. For example, it can write an escape sequence using the code
-    /// point (such as the HTML error mode in the Encoding Standard), it
-    /// can replace the code point with a "best fit" to that code point
-    /// (which can consist of one or more bytes) and write the "best fit"
-    /// instead, it can replace the code point with an arbitrary byte or
-    /// sequence of bytes, or it can throw an exception. In some cases,
-    /// where the error won't cause data loss or a security problem, the
-    /// caller can also ignore the encoding error.</remarks>
     int Encode(int c, IWriter output);
   }
 }

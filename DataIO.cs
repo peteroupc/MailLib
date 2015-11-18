@@ -66,15 +66,18 @@ namespace PeterO {
 
     /// <summary>Not documented yet.</summary>
     /// <param name='bytes'>A byte array.</param>
-    /// <param name='offset'>A 32-bit signed integer.</param>
-    /// <param name='length'>Another 32-bit signed integer.</param>
+    /// <param name='offset'>A zero-based index showing where the desired
+    /// portion of. <paramref name='bytes'/> begins.</param>
+    /// <param name='length'>The length, in bytes, of the desired portion
+    /// of. <paramref name='bytes'/> (but not more than <paramref
+    /// name='bytes'/> 's length).</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
-    /// <exception cref='System.ArgumentException'>Either
-    /// &#x22;offset&#x22; or &#x22;length&#x22; is less than 0 or greater
-    /// than &#x22;bytes&#x22;&#x27;s length, or &#x22;bytes&#x22;&#x27;s
-    /// length minus &#x22;offset&#x22; is less than
-    /// &#x22;length&#x22;.</exception>
+    /// <exception cref='ArgumentException'>Either <paramref
+    /// name='offset'/> or <paramref name='length'/> is less than 0 or
+    /// greater than <paramref name='bytes'/> 's length, or <paramref
+    /// name='bytes'/> 's length minus <paramref name='offset'/> is less
+    /// than <paramref name='length'/>.</exception>
       public void Write(byte[] bytes, int offset, int length) {
         if (bytes == null) {
           throw new ArgumentNullException("bytes");
@@ -124,15 +127,18 @@ namespace PeterO {
 
     /// <summary>Not documented yet.</summary>
     /// <param name='bytes'>A byte array.</param>
-    /// <param name='offset'>A 32-bit signed integer.</param>
-    /// <param name='length'>Another 32-bit signed integer.</param>
-    /// <exception cref='System.ArgumentException'>Either
-    /// &#x22;offset&#x22; or &#x22;length&#x22; is less than 0 or greater
-    /// than &#x22;bytes&#x22;&#x27;s length, or &#x22;bytes&#x22;&#x27;s
-    /// length minus &#x22;offset&#x22; is less than
-    /// &#x22;length&#x22;.</exception>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// &#x22;bytes&#x22; is null.</exception>
+    /// <param name='offset'>A zero-based index showing where the desired
+    /// portion of. <paramref name='bytes'/> begins.</param>
+    /// <param name='length'>The length, in bytes, of the desired portion
+    /// of. <paramref name='bytes'/> (but not more than <paramref
+    /// name='bytes'/> 's length).</param>
+    /// <exception cref='ArgumentException'>Either <paramref
+    /// name='offset'/> or <paramref name='length'/> is less than 0 or
+    /// greater than <paramref name='bytes'/> 's length, or <paramref
+    /// name='bytes'/> 's length minus <paramref name='offset'/> is less
+    /// than <paramref name='length'/>.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='bytes'/> is null.</exception>
       public void Write(byte[] bytes, int offset, int length) {
         try {
           this.output.Write(bytes, offset, length);
@@ -168,16 +174,19 @@ namespace PeterO {
     /// parameters, that method takes precedence over this extension
     /// method.</para></summary>
     /// <param name='bytes'>Not documented yet.</param>
-    /// <param name='offset'>Not documented yet.</param>
-    /// <param name='length'>Not documented yet. (3).</param>
+    /// <param name='offset'>A zero-based index showing where the desired
+    /// portion of. <paramref name='bytes'/> begins.</param>
+    /// <param name='length'>The length, in bytes, of the desired portion
+    /// of. <paramref name='bytes'/> (but not more than <paramref
+    /// name='bytes'/> 's length).</param>
     /// <returns>An ITransform object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
-    /// <exception cref='System.ArgumentException'>Either
-    /// &#x22;offset&#x22; or &#x22;length&#x22; is less than 0 or greater
-    /// than &#x22;bytes&#x22;&#x27;s length, or &#x22;bytes&#x22;&#x27;s
-    /// length minus &#x22;offset&#x22; is less than
-    /// &#x22;length&#x22;.</exception>
+    /// <exception cref='ArgumentException'>Either <paramref
+    /// name='offset'/> or <paramref name='length'/> is less than 0 or
+    /// greater than <paramref name='bytes'/> 's length, or <paramref
+    /// name='bytes'/> 's length minus <paramref name='offset'/> is less
+    /// than <paramref name='length'/>.</exception>
     public static IByteReader ToTransform(
 this byte[] bytes,
 int offset,
