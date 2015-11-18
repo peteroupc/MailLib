@@ -18,39 +18,38 @@ import com.upokecenter.text.encoders.*;
      * point</b> is a number that identifies a single text character, such
      * as a letter, digit, or symbol.</li> <li>An <b>encoder</b> is a class
      * that converts a sequence of bytes to a sequence of code points in the
-     * universal character set (otherwise ((known instanceof Unicode) ?
-     * (Unicode)known : null)). An encoder implements the
-     * <b>ICharacterEncoder</b> interface.</li> <li>A <b>decoder</b> is a
-     * class that converts a sequence of Unicode code points to a sequence
-     * of bytes. An encoder implements the <b>ICharacterEncoder</b>
-     * interface.</li> <li>An <b>encoding</b> is a mapping from bytes to
-     * universal code points and from universal code points to bytes. An
-     * encoding allows access to both an encoder and a decoder and
-     * implements the <code>ICharacterEncoder</code> interface.</li></ul> <li>A
-     * <b>character set</b> is a set of code points which are each assigned
-     * to a single text character. (This may also be called a <i>coded
-     * character set</i>.)</li> <p>There are several kinds of encodings:</p>
-     * <ul> <li><b>Single-byte encodings</b> define a character set that
-     * assigns one code point to one byte. For example, the ISO 8859
-     * encodings and Windows-1252 are single-byte encodings. ASCII is also a
-     * single-byte encoding, although its character set only uses the lower
-     * 7 bits of an eight-bit byte. In the Encoding Standard, all
-     * single-byte encodings use the ASCII characters as the first 128 code
-     * points of their character sets. (Here, ASCII is the same as the
-     * International Reference Version of the ISO 646 standard.)</li>
-     * <li><b>Multi-byte encodings</b> define a character set that assigns
-     * some or all code points to several bytes. For example, most legacy
-     * East Asian encodings, such as <code>shift_jis</code>, <code>gbk</code> , and
-     * <code>big5</code> are multi-byte encodings, as well as <code>utf-8</code> and
-     * <code>utf-16</code>, which both encode the Unicode character set.</li>
-     * <li><b>Escape-based encodings</b> use escape sequences to encode one
-     * or more character sets in the same sequence of bytes. The best
-     * example of an escape-based encoding supported in the Encoding
-     * Standard is <code>iso-2022-jp</code>, which defines a Katakana, a Kanji,
-     * and an ASCII character set.</li> <li>The Encoding Standard also
-     * defines a <b>replacement encoding</b>, which causes a decoding error
-     * and is used to alias a few problematic or unsupported encoding names,
-     * such as <code>hz-gb-2312</code>.</li></ul> <p><b>Getting an
+     * universal character set (otherwise known under the name Unicode). An
+     * encoder implements the <code>ICharacterEncoder</code> interface.</li> <li>A
+     * <b>decoder</b> is a class that converts a sequence of Unicode code
+     * points to a sequence of bytes. An encoder implements the
+     * <code>ICharacterDecoder</code> interface.</li> <li>An <b>encoding</b> is a
+     * mapping from bytes to universal code points and from universal code
+     * points to bytes. An encoding allows access to both an encoder and a
+     * decoder and implements the <code>ICharacterEncoding</code> interface.</li>
+     * <li>A <b>character set</b> is a set of code points which are each
+     * assigned to a single text character. (This may also be called a
+     * <i>coded character set</i>.)</li></ul> <p>There are several kinds of
+     * encodings:</p> <ul> <li><b>Single-byte encodings</b> define a
+     * character set that assigns one code point to one byte. For example,
+     * the ISO 8859 encodings and <code>windows-1252</code> are single-byte
+     * encodings. ASCII is also a single-byte encoding, although its
+     * character set only uses the lower 7 bits of an eight-bit byte. In the
+     * Encoding Standard, all single-byte encodings use the ASCII characters
+     * as the first 128 code points of their character sets. (Here, ASCII is
+     * the same as the International Reference Version of the ISO 646
+     * standard.)</li> <li><b>Multi-byte encodings</b> define a character
+     * set that assigns some or all code points to several bytes. For
+     * example, most legacy East Asian encodings, such as <code>shift_jis</code>,
+     * <code>gbk</code> , and <code>big5</code> are multi-byte encodings, as well as
+     * <code>utf-8</code> and <code>utf-16</code>, which both encode the Unicode
+     * character set.</li> <li><b>Escape-based encodings</b> use escape
+     * sequences to encode one or more character sets in the same sequence
+     * of bytes. The best example of an escape-based encoding supported in
+     * the Encoding Standard is <code>iso-2022-jp</code>, which defines a
+     * Katakana, a Kanji, and an ASCII character set.</li> <li>The Encoding
+     * Standard also defines a <b>replacement encoding</b>, which causes a
+     * decoding error and is used to alias a few problematic or unsupported
+     * encoding names, such as <code>hz-gb-2312</code>.</li></ul> <p><b>Getting an
      * Encoding</b></p> <p>The Encoding Standard includes UTF-8, UTF-16 and
      * many legacy encodings, and gives each one of them a name. The
      * <code>GetEncoding(name)</code> method takes a name string and returns an
@@ -87,15 +86,16 @@ private Encodings() {
     /**
      * Not documented yet.
      * @param buffer An array of 32-bit unsigned integers.
-     * @param offset Another 32-bit signed integer.
-     * @param length A 32-bit signed integer. (3).
+     * @param offset A zero-based index showing where the desired portion of.
+     * <paramref name='buffer'/> begins.
+     * @param length The number of elements in the desired portion of. <paramref
+     * name='buffer'/> (but not more than <paramref name='buffer'/> 's
+     * length).
      * @return A 32-bit signed integer.
      * @throws NullPointerException The parameter {@code buffer} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
      * than 0 or greater than {@code buffer} 's length, or {@code buffer} 's
      * length minus {@code offset} is less than {@code length}.
-     * @throws
-     * @throws
      */
       public int Read(int[] buffer, int offset, int length) {
         if (buffer == null) {
@@ -748,11 +748,17 @@ byte[] bytes) {
      * that method takes precedence over this extension method.</p>
      * @param enc An ICharacterEncoding object.
      * @param bytes A byte array.
-     * @param offset A 32-bit signed integer.
-     * @param length Another 32-bit signed integer.
+     * @param offset A zero-based index showing where the desired portion of.
+     * <paramref name='bytes'/> begins.
+     * @param length The length, in bytes, of the desired portion of. <paramref
+     * name='bytes'/> (but not more than <paramref name='bytes'/> 's
+     * length).
      * @return A string object.
      * @throws NullPointerException The parameter {@code enc} or {@code bytes} is
      * null.
+     * @throws java.lang.IllegalArgumentException Either "offset" or "length" is less than 0
+     * or greater than "bytes"'s length, or "bytes"'s length minus "offset"
+     * is less than "length".
      */
     public static String DecodeToString(
 ICharacterEncoding enc,
@@ -858,15 +864,16 @@ IWriter writer) {
      * already has a StringToInput method with the same parameters, that
      * method takes precedence over this extension method.</p>
      * @param str A string object.
-     * @param offset A 32-bit signed integer.
-     * @param length Another 32-bit signed integer.
+     * @param offset A zero-based index showing where the desired portion of.
+     * <paramref name='str'/> begins.
+     * @param length The length, in code units, of the desired portion of.
+     * <paramref name='str'/> (but not more than <paramref name='str'/> 's
+     * length).
      * @return An ICharacterInput object.
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
      * than 0 or greater than {@code str} 's length, or {@code str} 's
      * length minus {@code offset} is less than {@code length}.
-     * @throws
-     * @throws
      */
     public static ICharacterInput StringToInput(
 String str,

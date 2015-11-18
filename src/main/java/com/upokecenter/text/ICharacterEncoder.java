@@ -11,7 +11,7 @@ import com.upokecenter.mail.*;
   public interface ICharacterEncoder {
     /**
      * Converts a Unicode code point to bytes and writes the bytes to an output
-     * stream.<p>If this method returns -2, indicating an error, the caller
+     * stream. <p>If this method returns -2, indicating an error, the caller
      * of this method can take one of a variety of actions to handle the
      * error. For example, it can write an escape sequence using the code
      * point (such as the HTML error mode in the Encoding Standard), it can

@@ -21,28 +21,28 @@ namespace PeterO.Text {
     /// character, such as a letter, digit, or symbol.</item>
     /// <item>An <b>encoder</b> is a class that converts a sequence of
     /// bytes to a sequence of code points in the universal character set
-    /// (otherwise known as Unicode). An encoder implements the
-    /// <b>ICharacterEncoder</b> interface.</item>
+    /// (otherwise known under the name Unicode). An encoder implements the
+    /// <c>ICharacterEncoder</c> interface.</item>
     /// <item>A <b>decoder</b> is a class that converts a sequence of
     /// Unicode code points to a sequence of bytes. An encoder implements
-    /// the <b>ICharacterEncoder</b> interface.</item>
+    /// the <c>ICharacterDecoder</c> interface.</item>
     /// <item>An <b>encoding</b> is a mapping from bytes to universal code
     /// points and from universal code points to bytes. An encoding allows
     /// access to both an encoder and a decoder and implements the
-    /// <c>ICharacterEncoder</c> interface.</item></list>
+    /// <c>ICharacterEncoding</c> interface.</item>
     /// <item>A <b>character set</b> is a set of code points which are each
     /// assigned to a single text character. (This may also be called a
-    /// <i>coded character set</i>.)</item>
+    /// <i>coded character set</i>.)</item></list>
     /// <para>There are several kinds of encodings:</para>
     /// <list>
     /// <item><b>Single-byte encodings</b> define a character set that
     /// assigns one code point to one byte. For example, the ISO 8859
-    /// encodings and Windows-1252 are single-byte encodings. ASCII is also
-    /// a single-byte encoding, although its character set only uses the
-    /// lower 7 bits of an eight-bit byte. In the Encoding Standard, all
-    /// single-byte encodings use the ASCII characters as the first 128
-    /// code points of their character sets. (Here, ASCII is the same as
-    /// the International Reference Version of the ISO 646
+    /// encodings and <c>windows-1252</c> are single-byte encodings. ASCII
+    /// is also a single-byte encoding, although its character set only
+    /// uses the lower 7 bits of an eight-bit byte. In the Encoding
+    /// Standard, all single-byte encodings use the ASCII characters as the
+    /// first 128 code points of their character sets. (Here, ASCII is the
+    /// same as the International Reference Version of the ISO 646
     /// standard.)</item>
     /// <item><b>Multi-byte encodings</b> define a character set that
     /// assigns some or all code points to several bytes. For example, most
@@ -91,8 +91,11 @@ namespace PeterO.Text {
 
     /// <summary>Not documented yet.</summary>
     /// <param name='buffer'>An array of 32-bit unsigned integers.</param>
-    /// <param name='offset'>Another 32-bit signed integer.</param>
-    /// <param name='length'>A 32-bit signed integer. (3).</param>
+    /// <param name='offset'>A zero-based index showing where the desired
+    /// portion of. <paramref name='buffer'/> begins.</param>
+    /// <param name='length'>The number of elements in the desired portion
+    /// of. <paramref name='buffer'/> (but not more than <paramref
+    /// name='buffer'/> 's length).</param>
     /// <returns>A 32-bit signed integer.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='buffer'/> is null.</exception>
@@ -101,8 +104,6 @@ namespace PeterO.Text {
     /// greater than <paramref name='buffer'/> 's length, or <paramref
     /// name='buffer'/> 's length minus <paramref name='offset'/> is less
     /// than <paramref name='length'/>.</exception>
-    /// <exception/>
-    /// <exception/>
       public int Read(int[] buffer, int offset, int length) {
         if (buffer == null) {
           throw new ArgumentNullException("buffer");
@@ -768,11 +769,19 @@ byte[] bytes) {
     /// this extension method.</para></summary>
     /// <param name='enc'>An ICharacterEncoding object.</param>
     /// <param name='bytes'>A byte array.</param>
-    /// <param name='offset'>A 32-bit signed integer.</param>
-    /// <param name='length'>Another 32-bit signed integer.</param>
+    /// <param name='offset'>A zero-based index showing where the desired
+    /// portion of. <paramref name='bytes'/> begins.</param>
+    /// <param name='length'>The length, in bytes, of the desired portion
+    /// of. <paramref name='bytes'/> (but not more than <paramref
+    /// name='bytes'/> 's length).</param>
     /// <returns>A string object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='enc'/> or <paramref name='bytes'/> is null.</exception>
+    /// <exception cref='System.ArgumentException'>Either
+    /// &#x22;offset&#x22; or &#x22;length&#x22; is less than 0 or greater
+    /// than &#x22;bytes&#x22;&#x27;s length, or &#x22;bytes&#x22;&#x27;s
+    /// length minus &#x22;offset&#x22; is less than
+    /// &#x22;length&#x22;.</exception>
     public static string DecodeToString(
 this ICharacterEncoding enc,
 byte[] bytes,
@@ -876,8 +885,11 @@ IWriter writer) {
     /// parameters, that method takes precedence over this extension
     /// method.</para></summary>
     /// <param name='str'>A string object.</param>
-    /// <param name='offset'>A 32-bit signed integer.</param>
-    /// <param name='length'>Another 32-bit signed integer.</param>
+    /// <param name='offset'>A zero-based index showing where the desired
+    /// portion of. <paramref name='str'/> begins.</param>
+    /// <param name='length'>The length, in code units, of the desired
+    /// portion of. <paramref name='str'/> (but not more than <paramref
+    /// name='str'/> 's length).</param>
     /// <returns>An ICharacterInput object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
@@ -886,8 +898,6 @@ IWriter writer) {
     /// greater than <paramref name='str'/> 's length, or <paramref
     /// name='str'/> 's length minus <paramref name='offset'/> is less than
     /// <paramref name='length'/>.</exception>
-    /// <exception/>
-    /// <exception/>
     public static ICharacterInput StringToInput(
 this string str,
 int offset,

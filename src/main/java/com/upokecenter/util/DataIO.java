@@ -77,12 +77,15 @@ private DataIO() {
     /**
      * Not documented yet.
      * @param bytes A byte array.
-     * @param offset A 32-bit signed integer.
-     * @param length Another 32-bit signed integer.
+     * @param offset A zero-based index showing where the desired portion of.
+     * <paramref name='bytes'/> begins.
+     * @param length The length, in bytes, of the desired portion of. <paramref
+     * name='bytes'/> (but not more than <paramref name='bytes'/> 's
+     * length).
      * @throws NullPointerException The parameter {@code bytes} is null.
-     * @throws java.lang.IllegalArgumentException Either "offset" or "length" is less than 0
-     * or greater than "bytes"'s length, or "bytes"'s length minus "offset"
-     * is less than "length".
+     * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
+     * than 0 or greater than {@code bytes} 's length, or {@code bytes} 's
+     * length minus {@code offset} is less than {@code length}.
      */
       public void write(byte[] bytes, int offset, int length) {
         if (bytes == null) {
@@ -136,12 +139,15 @@ private DataIO() {
     /**
      * Not documented yet.
      * @param bytes A byte array.
-     * @param offset A 32-bit signed integer.
-     * @param length Another 32-bit signed integer.
-     * @throws java.lang.IllegalArgumentException Either "offset" or "length" is less than 0
-     * or greater than "bytes"'s length, or "bytes"'s length minus "offset"
-     * is less than "length".
-     * @throws java.lang.NullPointerException The parameter "bytes" is null.
+     * @param offset A zero-based index showing where the desired portion of.
+     * <paramref name='bytes'/> begins.
+     * @param length The length, in bytes, of the desired portion of. <paramref
+     * name='bytes'/> (but not more than <paramref name='bytes'/> 's
+     * length).
+     * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
+     * than 0 or greater than {@code bytes} 's length, or {@code bytes} 's
+     * length minus {@code offset} is less than {@code length}.
+     * @throws NullPointerException The parameter {@code bytes} is null.
      */
       public void write(byte[] bytes, int offset, int length) {
         try {
@@ -178,13 +184,16 @@ private DataIO() {
      * with the same parameters, that method takes precedence over this
      * extension method.</p>
      * @param bytes Not documented yet.
-     * @param offset Not documented yet.
-     * @param length Not documented yet. (3).
+     * @param offset A zero-based index showing where the desired portion of.
+     * <paramref name='bytes'/> begins.
+     * @param length The length, in bytes, of the desired portion of. <paramref
+     * name='bytes'/> (but not more than <paramref name='bytes'/> 's
+     * length).
      * @return An ITransform object.
      * @throws NullPointerException The parameter {@code bytes} is null.
-     * @throws java.lang.IllegalArgumentException Either "offset" or "length" is less than 0
-     * or greater than "bytes"'s length, or "bytes"'s length minus "offset"
-     * is less than "length".
+     * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
+     * than 0 or greater than {@code bytes} 's length, or {@code bytes} 's
+     * length minus {@code offset} is less than {@code length}.
      */
     public static IByteReader ToTransform(
 byte[] bytes,
@@ -245,7 +254,7 @@ int length) {
      * @return An IWriter object.
      * @throws NullPointerException The parameter {@code output} is null.
      */
-    public static IWriter ToWriter(OutputStream output) throws java.io.IOException {
+    public static IWriter ToWriter(InputStream output) throws java.io.IOException {
       if (output == null) {
         throw new NullPointerException("output");
       }
