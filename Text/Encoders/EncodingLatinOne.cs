@@ -7,7 +7,7 @@ using PeterO.Text;
 namespace PeterO.Text.Encoders {
   internal class EncodingLatinOne : ICharacterEncoding {
     private class Decoder : ICharacterDecoder {
-      public int ReadChar(ITransform transform) {
+      public int ReadChar(IByteReader transform) {
         int b = transform.ReadByte();
         return (b < 0) ? (-1) : b;
       }

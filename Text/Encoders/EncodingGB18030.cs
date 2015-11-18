@@ -263,7 +263,7 @@ namespace PeterO.Text.Encoders {
         this.state = new DecoderState(3);
       }
 
-      public int ReadChar(ITransform stream) {
+      public int ReadChar(IByteReader stream) {
         int c;
         while (true) {
           int b;

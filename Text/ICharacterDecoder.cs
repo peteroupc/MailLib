@@ -16,6 +16,6 @@ public interface ICharacterDecoder {
     /// <returns>The Unicode code point decoded, from 0-0xd7ff or from
     /// 0xe000 to 0x10ffff. Returns -1 if the end of the source is reached
     /// or -2 if a decoder error occurs.</returns>
-  int ReadChar(ITransform input);
+  int ReadChar(IByteReader input);
 }
 }

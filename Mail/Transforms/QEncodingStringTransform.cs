@@ -10,7 +10,7 @@ using PeterO;
 using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
-  internal sealed class QEncodingStringTransform : ITransform {
+  internal sealed class QEncodingStringTransform : IByteReader {
     private String input;
     private int inputIndex;
     private byte[] buffer;

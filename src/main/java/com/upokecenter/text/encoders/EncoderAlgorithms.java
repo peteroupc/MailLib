@@ -18,7 +18,7 @@ import com.upokecenter.text.*;
         this.state = new DecoderState(3);
       }
 
-      public int ReadChar(ITransform input) {
+      public int ReadChar(IByteReader input) {
         if (!this.bomChecked) {
           int c = 0;
           int[] buffer = new int[3];
@@ -69,14 +69,14 @@ import com.upokecenter.text.*;
       }
     }
 
-    private static class BomBufferedTransform implements ITransform {
+    private static class BomBufferedTransform implements IByteReader {
       private int[] buffer;
       private int bufferOffset;
       private int bufferCount;
-      private ITransform transform;
+      private IByteReader transform;
       private boolean bomChecked;
 
-      public BomBufferedTransform (ITransform transform) {
+      public BomBufferedTransform (IByteReader transform) {
         this.buffer = new int[3];
         this.transform = transform;
       }
@@ -116,7 +116,7 @@ import com.upokecenter.text.*;
     }
 
     public static ICharacterInput Utf8DecodeAlgorithmInput(
-       ITransform transform) {
+       IByteReader transform) {
       // Implements the "utf-8 decode" algorithm in the Encoding
       // Standard
       if (transform == null) {
@@ -183,7 +183,7 @@ bomTransform);
     }
 
     public static ICharacterInput Utf8DecodeWithoutBOMAlgorithmInput(
-       ITransform transform) {
+       IByteReader transform) {
       // Implements the "utf-8 decode without BOM" algorithm
       // in the Encoding Standard
       if (transform == null) {
@@ -195,7 +195,7 @@ transform);
     }
 
     public static ICharacterInput DecodeAlgorithmInput(
-       ITransform transform,
+       IByteReader transform,
        ICharacterEncoding fallbackEncoding) {
       // Implements the "decode" algorithm in the Encoding
       // Standard

@@ -14,7 +14,7 @@ import com.upokecenter.mail.*;
     /**
      * Normalizes bare CR and bare LF to CRLF.
      */
-  public class LineBreakNormalizeTransform implements ITransform
+  public class LineBreakNormalizeTransform implements IByteReader
   {
     private InputStream stream;
     private int val;

@@ -7,7 +7,7 @@ import com.upokecenter.text.*;
 
   public class EncodingLatinOne implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
-      public int ReadChar(ITransform transform) {
+      public int ReadChar(IByteReader transform) {
         int b = transform.read();
         return (b < 0) ? (-1) : b;
       }

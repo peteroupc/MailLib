@@ -19,5 +19,5 @@ public interface ICharacterDecoder {
      * 0x10ffff. Returns -1 if the end of the source is reached or -2 if a
      * decoder error occurs.
      */
-  int ReadChar(ITransform input);
+  int ReadChar(IByteReader input);
 }

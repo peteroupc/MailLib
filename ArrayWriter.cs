@@ -26,6 +26,7 @@ namespace PeterO {
       this.retval = new byte[initialSize];
     }
 
+  /// <summary>Not documented yet.</summary>
     public byte[] ToArray() {
       var ret = new byte[this.retvalMax];
       Array.Copy(this.retval, 0, ret, 0, this.retvalMax);

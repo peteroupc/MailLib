@@ -10,12 +10,12 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
-  public final class TransformWithUnget implements ITransform {
-    private ITransform transform;
+  public final class TransformWithUnget implements IByteReader {
+    private IByteReader transform;
     private int lastByte;
     private boolean unget;
 
-    public TransformWithUnget (ITransform stream) {
+    public TransformWithUnget (IByteReader stream) {
       this.lastByte = -1;
       this.transform = stream;
     }

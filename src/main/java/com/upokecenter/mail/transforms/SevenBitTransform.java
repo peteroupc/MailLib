@@ -10,10 +10,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
-  public final class SevenBitTransform implements ITransform {
-    private ITransform transform;
+  public final class SevenBitTransform implements IByteReader {
+    private IByteReader transform;
 
-    public SevenBitTransform (ITransform stream) {
+    public SevenBitTransform (IByteReader stream) {
       this.transform = stream;
     }
 

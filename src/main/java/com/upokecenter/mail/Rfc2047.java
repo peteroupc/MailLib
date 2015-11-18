@@ -340,9 +340,9 @@ int endIndex) {
                 acceptedEncodedWord &= asterisk != 0;
               }
               if (acceptedEncodedWord) {
-                ITransform transform = (encoding == 1) ?
-                  (ITransform)new BEncodingStringTransform(data) :
-                  (ITransform)new QEncodingStringTransform(data);
+                IByteReader transform = (encoding == 1) ?
+                  (IByteReader)new BEncodingStringTransform(data) :
+                  (IByteReader)new QEncodingStringTransform(data);
                 ICharacterEncoding charEncoding = Encodings.GetEncoding(
                   charset,
                   true);
@@ -468,9 +468,8 @@ EncodedWordContext context) {
   index,
   afterLast,
   context == EncodedWordContext.Comment);
-if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 + 1) == '='
-                    &&
-                    i2 + 2 == afterLast) {
+if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 + 1) == '='&&
+                i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
                     i2 += 2;
                   }
@@ -498,9 +497,9 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
                 acceptedEncodedWord &= asterisk != 0;
               }
               if (acceptedEncodedWord) {
-                ITransform transform = base64 ?
-                  (ITransform)new BEncodingStringTransform(encodedText) :
-                  (ITransform)new QEncodingStringTransform(encodedText);
+                IByteReader transform = base64 ?
+                  (IByteReader)new BEncodingStringTransform(encodedText) :
+                  (IByteReader)new QEncodingStringTransform(encodedText);
                 ICharacterEncoding encoding = Encodings.GetEncoding(
                   charset,
                   true);
@@ -523,9 +522,8 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
                     HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
                   } else {
-                  hasSuspiciousText |= context == EncodedWordContext.Comment
-                      &&
-                    HasSuspiciousTextInComments(decodedWord);
+                  hasSuspiciousText |= context == EncodedWordContext.Comment&&
+                HasSuspiciousTextInComments(decodedWord);
                   }
                   wordsWereDecoded = true;
                 }
@@ -689,9 +687,8 @@ String str,
       // Get each relevant token sorted by starting index
       for (int[] token : tokens) {
         boolean hasCFWS = false;
-    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex
-          &&
-              token[2] >= index && token[2] <= endIndex)) {
+    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex&&
+          token[2] >= index && token[2] <= endIndex)) {
           continue;
         }
         if (token[0] == HeaderParserUtility.TokenComment && withComments) {
@@ -880,8 +877,7 @@ EncodedWordContext.Phrase);
       }
       if (endIndex < 0) {
       throw new IllegalArgumentException("endIndex (" + endIndex +
-          ") is less than " +
-                  "0");
+          ") is less than " + "0");
       }
       if (endIndex > str.length()) {
         throw new IllegalArgumentException("endIndex (" + endIndex +
@@ -913,9 +909,8 @@ List<int[]> tokens) {
       int lastIndex = index;
       StringBuilder builder = new StringBuilder();
       for (int[] token : tokens) {
-    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex
-          &&
-              token[2] >= index && token[2] <= endIndex)) {
+    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex&&
+          token[2] >= index && token[2] <= endIndex)) {
           continue;
         }
         if (token[0] == HeaderParserUtility.TokenComment) {

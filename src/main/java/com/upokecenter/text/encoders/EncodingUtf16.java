@@ -19,7 +19,7 @@ import com.upokecenter.text.*;
         this.surrogate = -1;
       }
 
-      public int ReadChar(ITransform stream) {
+      public int ReadChar(IByteReader stream) {
         while (true) {
           int b = this.state.ReadInputByte(stream);
           if (b < 0) {

@@ -10,7 +10,7 @@ using PeterO;
 using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
-  internal sealed class QuotedPrintableTransform : ITransform {
+  internal sealed class QuotedPrintableTransform : IByteReader {
     private int lineCharCount;
     private bool lenientLineBreaks;
     private byte[] buffer;
@@ -21,10 +21,10 @@ namespace PeterO.Mail.Transforms {
 
     private int lastByte;
     private bool unget;
-    private ITransform input;
+    private IByteReader input;
 
     public QuotedPrintableTransform(
-ITransform input,
+IByteReader input,
 bool lenientLineBreaks,
 int maxLineSize,
 bool checkStrictEncoding) {
@@ -36,12 +36,12 @@ bool checkStrictEncoding) {
     }
 
     public QuotedPrintableTransform(
-ITransform input,
+IByteReader input,
 bool lenientLineBreaks) : this(input, lenientLineBreaks, 76, false) {
     }
 
     public QuotedPrintableTransform(
-ITransform input,
+IByteReader input,
 bool lenientLineBreaks,
 int maxLineLength) :
       this(

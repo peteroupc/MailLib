@@ -9,7 +9,7 @@ namespace PeterO.Text.Encoders {
     private class Decoder : ICharacterDecoder {
       private int replacement = 0;
 
-      public int ReadChar(ITransform transform) {
+      public int ReadChar(IByteReader transform) {
         if (this.replacement == 0) {
           this.replacement = 1;
           return -2;

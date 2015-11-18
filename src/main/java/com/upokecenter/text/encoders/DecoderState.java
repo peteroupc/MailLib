@@ -38,11 +38,11 @@ public class DecoderState {
     return c;
   }
 
-  private static class StateToTransform implements ITransform {
-    private ITransform t;
+  private static class StateToTransform implements IByteReader {
+    private IByteReader t;
     private DecoderState s;
 
-    public StateToTransform (DecoderState s, ITransform t) {
+    public StateToTransform (DecoderState s, IByteReader t) {
       this.t = t;
       this.s = s;
     }
@@ -52,11 +52,11 @@ public class DecoderState {
     }
   }
 
-  public ITransform ToTransform(ITransform stream) {
+  public IByteReader ToTransform(IByteReader stream) {
     return new StateToTransform(this, stream);
   }
 
-  public ITransform ToTransformIfBuffered(ITransform stream) {
+  public IByteReader ToTransformIfBuffered(IByteReader stream) {
     return (
 this.prependedBytes == 0) ? stream : (
 new StateToTransform(
@@ -64,7 +64,7 @@ this,
 stream));
   }
 
-  public int ReadInputByte(ITransform stream) {
+  public int ReadInputByte(IByteReader stream) {
    if (this.prependedBytes > 0) {
     --this.prependedBytes;
     int b = this.bytes[this.prependedBytes];

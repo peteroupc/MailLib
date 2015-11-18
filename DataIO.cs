@@ -11,7 +11,7 @@ using System.IO;
 namespace PeterO {
     /// <summary>Not documented yet.</summary>
   public static class DataIO {
-    private sealed class ByteArrayTransform : ITransform {
+    private sealed class ByteArrayTransform : IByteReader {
       private byte[] bytes;
       private int offset;
       private int endOffset;
@@ -33,7 +33,7 @@ namespace PeterO {
       }
     }
 
-    private sealed class WrappedStream : ITransform {
+    private sealed class WrappedStream : IByteReader {
       private Stream stream;
 
       public WrappedStream(Stream stream) {
@@ -141,7 +141,7 @@ namespace PeterO {
     /// <returns>An ITransform object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
-    public static ITransform ToTransform(this byte[] bytes) {
+    public static IByteReader ToTransform(this byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException("bytes");
       }
@@ -161,7 +161,7 @@ namespace PeterO {
     /// <returns>An ITransform object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
-    public static ITransform ToTransform(
+    public static IByteReader ToTransform(
 this byte[] bytes,
 int offset,
 int length) {
@@ -202,7 +202,7 @@ int length) {
     /// <returns>An ITransform object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='input'/> is null.</exception>
-    public static ITransform ToTransform(this Stream input) {
+    public static IByteReader ToTransform(this Stream input) {
       if (input == null) {
         throw new ArgumentNullException("input");
       }

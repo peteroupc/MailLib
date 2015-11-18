@@ -15,7 +15,7 @@ import java.io.*;
   public final class DataIO {
 private DataIO() {
 }
-    private static final class ByteArrayTransform implements ITransform {
+    private static final class ByteArrayTransform implements IByteReader {
       private byte[] bytes;
       private int offset;
       private int endOffset;
@@ -39,7 +39,7 @@ private DataIO() {
       }
     }
 
-    private static final class WrappedStream implements ITransform {
+    private static final class WrappedStream implements IByteReader {
       private InputStream stream;
 
       public WrappedStream (InputStream stream) {
@@ -156,7 +156,7 @@ private DataIO() {
      * @return An ITransform object.
      * @throws NullPointerException The parameter {@code bytes} is null.
      */
-    public static ITransform ToTransform(byte[] bytes) {
+    public static IByteReader ToTransform(byte[] bytes) {
       if (bytes == null) {
         throw new NullPointerException("bytes");
       }
@@ -176,7 +176,7 @@ private DataIO() {
      * @return An ITransform object.
      * @throws NullPointerException The parameter {@code bytes} is null.
      */
-    public static ITransform ToTransform(
+    public static IByteReader ToTransform(
 byte[] bytes,
 int offset,
 int length) {
@@ -217,7 +217,7 @@ int length) {
      * @return An ITransform object.
      * @throws NullPointerException The parameter {@code input} is null.
      */
-    public static ITransform ToTransform(InputStream input) {
+    public static IByteReader ToTransform(InputStream input) {
       if (input == null) {
         throw new NullPointerException("input");
       }

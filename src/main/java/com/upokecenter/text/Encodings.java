@@ -15,10 +15,10 @@ import com.upokecenter.text.encoders.*;
 private Encodings() {
 }
     private static class DecoderToInputClass implements ICharacterInput {
-      private ITransform stream;
+      private IByteReader stream;
       private ICharacterDecoder reader;
 
-      public DecoderToInputClass (ICharacterDecoder reader, ITransform stream) {
+      public DecoderToInputClass (ICharacterDecoder reader, IByteReader stream) {
         this.reader = reader;
         this.stream = stream;
       }
@@ -459,7 +459,7 @@ private Encodings() {
      */
     public static String DecodeToString(
      ICharacterEncoding encoding,
-     ITransform transform) {
+     IByteReader transform) {
       if (encoding == null) {
         throw new NullPointerException("encoding");
       }
@@ -749,6 +749,9 @@ ICharacterEncoding enc) {
       return EncodeToBytes(new StringCharacterInput(str), enc);
     }
 
+  /**
+   * Not documented yet.
+   */
     public static void EncodeToBytes(
 String str,
 ICharacterEncoding enc,
@@ -850,7 +853,7 @@ int length) {
      */
     public static ICharacterInput GetDecoderInput(
       ICharacterEncoding encoding,
-      ITransform stream) {
+      IByteReader stream) {
       return new DecoderToInputClass(
         encoding.GetDecoder(),
         stream);

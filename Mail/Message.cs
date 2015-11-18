@@ -473,7 +473,7 @@ tokener.GetTokens()));
       this.headers = new List<string>();
       this.parts = new List<Message>();
       this.body = new byte[0];
-      ITransform transform = DataIO.ToTransform(stream);
+      IByteReader transform = DataIO.ToTransform(stream);
       // if (useLenientLineBreaks) {
         // TODO: Might not be correct if the transfer
         // encoding turns out to be binary
@@ -494,7 +494,7 @@ tokener.GetTokens()));
       this.headers = new List<string>();
       this.parts = new List<Message>();
       this.body = new byte[0];
-      ITransform transform = DataIO.ToTransform(bytes);
+      IByteReader transform = DataIO.ToTransform(bytes);
       this.ReadMessage(transform);
     }
 
@@ -1975,7 +1975,7 @@ true);
     }
 
     private static void ReadHeaders(
-ITransform stream,
+IByteReader stream,
 ICollection<string> headerList,
 bool start) {
       int lineCount = 0;
@@ -2203,12 +2203,12 @@ bool start) {
       }
     }
 
-    private void ReadMultipartBody(ITransform stream) {
+    private void ReadMultipartBody(IByteReader stream) {
       int baseTransferEncoding = this.transferEncoding;
       var boundaryChecker = new BoundaryCheckerTransform(stream);
       // Be liberal on the preamble and epilogue of multipart
       // messages, as they will be ignored.
-      ITransform currentTransform = MakeTransferEncoding(
+      IByteReader currentTransform = MakeTransferEncoding(
         boundaryChecker,
         baseTransferEncoding,
         true);
@@ -2316,11 +2316,11 @@ throw new ArgumentException("multipartStack.Count (" + multipartStack.Count+
       }
     }
 
-    private static ITransform MakeTransferEncoding(
-      ITransform stream,
+    private static IByteReader MakeTransferEncoding(
+      IByteReader stream,
       int encoding,
       bool useLiberalSevenBit) {
-      ITransform transform = new EightBitTransform(stream);
+      IByteReader transform = new EightBitTransform(stream);
       if (encoding == EncodingQuotedPrintable) {
         // NOTE: The max line size is actually 76, but some emails
         // have lines that exceed this size, so use an unlimited line length
@@ -2341,14 +2341,14 @@ throw new ArgumentException("multipartStack.Count (" + multipartStack.Count+
           // non-MIME messages, and the preamble and epilogue of multipart
           // messages (which will be ignored).
           transform = useLiberalSevenBit ?
-            ((ITransform)new LiberalSevenBitTransform(stream)) :
-            ((ITransform)new SevenBitTransform(stream));
+            ((IByteReader)new LiberalSevenBitTransform(stream)) :
+            ((IByteReader)new SevenBitTransform(stream));
       }
       return transform;
     }
 
-    private void ReadSimpleBody(ITransform stream) {
-      ITransform transform = MakeTransferEncoding(
+    private void ReadSimpleBody(IByteReader stream) {
+      IByteReader transform = MakeTransferEncoding(
         stream,
         this.transferEncoding,
         this.ContentType.TypeAndSubType.Equals("text/plain"));
@@ -2395,7 +2395,7 @@ throw new ArgumentException("multipartStack.Count (" + multipartStack.Count+
       }
     }
 
-    private void ReadMessage(ITransform stream) {
+    private void ReadMessage(IByteReader stream) {
       try {
         ReadHeaders(stream, this.headers, true);
         this.ProcessHeaders(false, false);
