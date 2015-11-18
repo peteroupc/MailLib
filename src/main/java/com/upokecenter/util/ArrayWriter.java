@@ -30,9 +30,10 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       this.retval = new byte[initialSize];
     }
 
-  /**
-   * Not documented yet.
-   */
+    /**
+     * Not documented yet.
+     * @return A byte array.
+     */
     public byte[] ToArray() {
       byte[] ret = new byte[this.retvalMax];
       System.arraycopy(this.retval, 0, ret, 0, this.retvalMax);

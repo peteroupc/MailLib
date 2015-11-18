@@ -70,6 +70,11 @@ namespace PeterO {
     /// <param name='length'>Another 32-bit signed integer.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
+    /// <exception cref='System.ArgumentException'>Either
+    /// &#x22;offset&#x22; or &#x22;length&#x22; is less than 0 or greater
+    /// than &#x22;bytes&#x22;&#x27;s length, or &#x22;bytes&#x22;&#x27;s
+    /// length minus &#x22;offset&#x22; is less than
+    /// &#x22;length&#x22;.</exception>
       public void Write(byte[] bytes, int offset, int length) {
         if (bytes == null) {
           throw new ArgumentNullException("bytes");
@@ -121,6 +126,13 @@ namespace PeterO {
     /// <param name='bytes'>A byte array.</param>
     /// <param name='offset'>A 32-bit signed integer.</param>
     /// <param name='length'>Another 32-bit signed integer.</param>
+    /// <exception cref='System.ArgumentException'>Either
+    /// &#x22;offset&#x22; or &#x22;length&#x22; is less than 0 or greater
+    /// than &#x22;bytes&#x22;&#x27;s length, or &#x22;bytes&#x22;&#x27;s
+    /// length minus &#x22;offset&#x22; is less than
+    /// &#x22;length&#x22;.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// &#x22;bytes&#x22; is null.</exception>
       public void Write(byte[] bytes, int offset, int length) {
         try {
           this.output.Write(bytes, offset, length);
@@ -161,6 +173,11 @@ namespace PeterO {
     /// <returns>An ITransform object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
+    /// <exception cref='System.ArgumentException'>Either
+    /// &#x22;offset&#x22; or &#x22;length&#x22; is less than 0 or greater
+    /// than &#x22;bytes&#x22;&#x27;s length, or &#x22;bytes&#x22;&#x27;s
+    /// length minus &#x22;offset&#x22; is less than
+    /// &#x22;length&#x22;.</exception>
     public static IByteReader ToTransform(
 this byte[] bytes,
 int offset,

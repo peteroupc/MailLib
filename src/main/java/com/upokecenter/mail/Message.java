@@ -18,7 +18,7 @@ import com.upokecenter.text.*;
      * <p>Represents an email message, and contains methods and properties for
      * accessing and modifying email message data. This class implements the
      * Internet Message Format (RFC 5322) and Multipurpose Internet Mail
-     * Extensions (MIME; RFC 2045-2047, RFC 2049).</p> <p> <b>Thread
+     * Extensions (MIME; RFC 2045-2047, RFC 2049).</p> <p><b>Thread
      * safety:</b> This class is mutable; its properties can be changed.
      * None of its instance methods are designed to be thread safe.
      * Therefore, access to objects from this class must be synchronized if

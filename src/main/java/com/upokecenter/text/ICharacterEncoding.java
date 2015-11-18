@@ -12,7 +12,7 @@ public interface ICharacterEncoding {
      * Creates an encoder for this character encoding with initial state. If the
      * encoder is stateless, multiple calls of this method can return the
      * same encoder.
-     * @return Not documented yet.
+     * @return A character encoder object.
      */
   ICharacterEncoder GetEncoder();
 
@@ -20,7 +20,7 @@ public interface ICharacterEncoding {
      * Creates a decoder for this character encoding with initial state. If the
      * decoder is stateless, multiple calls of this method can return the
      * same decoder.
-     * @return Not documented yet.
+     * @return A character decoder object.
      */
   ICharacterDecoder GetDecoder();
 }

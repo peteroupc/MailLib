@@ -18,7 +18,7 @@ private Lz4() {
      * Decompresses a byte array compressed using the LZ4 format.
      * @param input Input byte array.
      * @return Decompressed output byte array.
-     * @throws java.lang.NullPointerException The parameter "output" is null.
+     * @throws NullPointerException The parameter "output" is null.
      */
     public static byte[] Decompress(byte[] input) {
       int index = 0;
@@ -97,30 +97,29 @@ private Lz4() {
         if (matchLength > copy.length) {
           copy = new byte[matchLength];
         }
-        // TODO: Change output.length with offsetPos
-        if ((output) == null) {
-  throw new NullPointerException("output");
-}
-if (pos < 0) {
-  throw new IllegalArgumentException("pos (" + pos +
-    ") is less than " + 0);
-}
-if (pos > output.length) {
-  throw new IllegalArgumentException("pos (" + pos + ") is more than " +
-    output.length);
-}
-if (matchLength < 0) {
-  throw new IllegalArgumentException("matchLength (" + matchLength +
-    ") is less than " + 0);
-}
-if (matchLength > output.length) {
-  throw new IllegalArgumentException("matchLength (" + matchLength +
-    ") is more than " + output.length);
-}
-if (output.length-pos < matchLength) {
-  throw new IllegalArgumentException("output's length minus " + pos + " (" +
-    (output.length-pos) + ") is less than " + matchLength);
-}
+        if (output == null) {
+          throw new NullPointerException("output");
+        }
+        if (pos < 0) {
+          throw new IllegalArgumentException("pos (" + pos +
+            ") is less than " + 0);
+        }
+        if (pos > outputPos) {
+          throw new IllegalArgumentException("pos (" + pos + ") is more than " +
+            output.length);
+        }
+        if (matchLength < 0) {
+          throw new IllegalArgumentException("matchLength (" + matchLength +
+            ") is less than " + 0);
+        }
+        if (matchLength > outputPos) {
+          throw new IllegalArgumentException("matchLength (" + matchLength +
+            ") is more than " + outputPos);
+        }
+        if (outputPos - pos < matchLength) {
+          throw new IllegalArgumentException("outputPos minus " + pos + " (" +
+            (outputPos - pos) + ") is less than " + matchLength);
+        }
         System.arraycopy(output, pos, copy, 0, matchLength);
         if (output.length - outputPos < matchLength) {
           int newSize = (outputPos + matchLength + 1000);

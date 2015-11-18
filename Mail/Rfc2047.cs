@@ -295,7 +295,7 @@ int endIndex) {
         switch (state) {
           case 0:
             // normal
-        if (str[index] == '=' && index + 1 < endIndex && str[index+1] == '?'
+        if (str[index] == '=' && index + 1 < endIndex && str[index + 1] == '?'
 ) {
               wordStart = index;
               state = 1;
@@ -338,8 +338,9 @@ int endIndex) {
             // data
       if (str[index] == '?' && index + 1 < endIndex && str[index + 1] == '='
 ) {
-       string charset = str.Substring(charsetStart, charsetEnd -
-                charsetStart);
+       string charset = str.Substring(
+charsetStart,
+charsetEnd - charsetStart);
               string data = str.Substring(dataStart, index - dataStart);
               state = 0;
               index += 2;
@@ -477,8 +478,8 @@ EncodedWordContext context) {
           }
           if (maybeWord) {
             // May be an encoded word
-            //DebugUtility.Log("maybe "
-            //+str.Substring(startIndex-2, afterLast-(startIndex-2)));
+            // DebugUtility.Log("maybe "
+            // +str.Substring(startIndex-2, afterLast-(startIndex-2)));
             index = startIndex;
             int i2;
             // Parse charset
@@ -509,7 +510,7 @@ EncodedWordContext context) {
   index,
   afterLast,
   context == EncodedWordContext.Comment);
-if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '='&&
+if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
                 i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
                     i2 += 2;
@@ -524,7 +525,7 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '='&&
               string encodedText = str.Substring(
                 encodedTextStart,
                 (afterLast - 2) - encodedTextStart);
-              //DebugUtility.Log("enctext " + encodedText);
+              // DebugUtility.Log("enctext " + encodedText);
               int asterisk = charset.IndexOf('*');
               if (asterisk >= 1) {
                 charset = str.Substring(0, asterisk);
@@ -563,7 +564,7 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '='&&
                     HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
                   } else {
-                  hasSuspiciousText |= context == EncodedWordContext.Comment&&
+                  hasSuspiciousText |= context == EncodedWordContext.Comment &&
                 HasSuspiciousTextInComments(decodedWord);
                   }
                   wordsWereDecoded = true;
@@ -730,7 +731,7 @@ string str,
       // Get each relevant token sorted by starting index
       foreach (int[] token in tokens) {
         bool hasCFWS = false;
-    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex&&
+    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
           token[2] >= index && token[2] <= endIndex)) {
           continue;
         }
@@ -952,7 +953,7 @@ IList<int[]> tokens) {
       int lastIndex = index;
       var builder = new StringBuilder();
       foreach (int[] token in tokens) {
-    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex&&
+    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
           token[2] >= index && token[2] <= endIndex)) {
           continue;
         }

@@ -1,7 +1,8 @@
-* [PeterO.DataIO](PeterO.DataIO.md) - Not documented yet.
+* [PeterO.ArrayWriter](PeterO.ArrayWriter.md) - A growable array of bytes.
+ * [PeterO.DataIO](PeterO.DataIO.md) - Contains static methods for converting byte arrays and             data streams to byte readers and byte writers.
  * [PeterO.DataUtilities](PeterO.DataUtilities.md) - Contains methods useful for reading and writing strings.
+ * [PeterO.IByteReader](PeterO.IByteReader.md) - A generic interface for reading data one byte at a             time.
  * [PeterO.IByteWriter](PeterO.IByteWriter.md) - A generic interface for writing bytes of data.
- * [PeterO.ITransform](PeterO.ITransform.md) - A generic interface for reading data one byte at a             time.
  * [PeterO.IWriter](PeterO.IWriter.md) - A generic interface for writing bytes of data.
  * [PeterO.Mail.Address](PeterO.Mail.Address.md) - Represents an email address.
  * [PeterO.Mail.ContentDisposition](PeterO.Mail.ContentDisposition.md) - Specifies how a message body should be displayed or             handled by a mail user agent.
@@ -16,8 +17,7 @@ Represents an email message, and contains methods and             properties for
  * [PeterO.Text.Encodings](PeterO.Text.Encodings.md) - Contains methods for converting text from one character             encoding to another.
  * [PeterO.Text.ICharacterDecoder](PeterO.Text.ICharacterDecoder.md) - Defines a method that can be implemented by classes that             convert a stream of bytes to Unicode code points.
  * [PeterO.Text.ICharacterEncoder](PeterO.Text.ICharacterEncoder.md) - Defines a method that can be implemented by classes that             convert Unicode code points to bytes.
- * [PeterO.Text.ICharacterEncoding](PeterO.Text.ICharacterEncoding.md) -
-
+ * [PeterO.Text.ICharacterEncoding](PeterO.Text.ICharacterEncoding.md) - Defines methods that can be implemented by classes that convert to and from bytes and character code points.
  * [PeterO.Text.ICharacterInput](PeterO.Text.ICharacterInput.md) - An interface for reading Unicode characters from a data             source.
  * [PeterO.Text.Idna](PeterO.Text.Idna.md) -
 Contains methods that implement Internationalized Domain             Names in Applications (IDNA).

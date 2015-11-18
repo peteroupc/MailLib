@@ -15,8 +15,8 @@ namespace PeterO.Text {
     /// format.</summary>
     /// <param name='input'>Input byte array.</param>
     /// <returns>Decompressed output byte array.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// "output" is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter "output" is
+    /// null.</exception>
     public static byte[] Decompress(byte[] input) {
       int index = 0;
       var copy = new byte[16];
@@ -94,30 +94,29 @@ namespace PeterO.Text {
         if (matchLength > copy.Length) {
           copy = new byte[matchLength];
         }
-        // TODO: Change output.Length with offsetPos
-        if ((output) == null) {
-  throw new ArgumentNullException("output");
-}
-if (pos < 0) {
-  throw new ArgumentException("pos (" + pos +
-    ") is less than " + 0);
-}
-if (pos > output.Length) {
-  throw new ArgumentException("pos (" + pos + ") is more than " +
-    output.Length);
-}
-if (matchLength < 0) {
-  throw new ArgumentException("matchLength (" + matchLength +
-    ") is less than " + 0);
-}
-if (matchLength > output.Length) {
-  throw new ArgumentException("matchLength (" + matchLength +
-    ") is more than " + output.Length);
-}
-if (output.Length-pos < matchLength) {
-  throw new ArgumentException("output's length minus " + pos + " (" +
-    (output.Length-pos) + ") is less than " + matchLength);
-}
+        if (output == null) {
+          throw new ArgumentNullException("output");
+        }
+        if (pos < 0) {
+          throw new ArgumentException("pos (" + pos +
+            ") is less than " + 0);
+        }
+        if (pos > outputPos) {
+          throw new ArgumentException("pos (" + pos + ") is more than " +
+            output.Length);
+        }
+        if (matchLength < 0) {
+          throw new ArgumentException("matchLength (" + matchLength +
+            ") is less than " + 0);
+        }
+        if (matchLength > outputPos) {
+          throw new ArgumentException("matchLength (" + matchLength +
+            ") is more than " + outputPos);
+        }
+        if (outputPos - pos < matchLength) {
+          throw new ArgumentException("outputPos minus " + pos + " (" +
+            (outputPos - pos) + ") is less than " + matchLength);
+        }
         Array.Copy(output, pos, copy, 0, matchLength);
         if (output.Length - outputPos < matchLength) {
           int newSize = checked(outputPos + matchLength + 1000);

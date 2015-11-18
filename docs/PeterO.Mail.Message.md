@@ -347,7 +347,8 @@ Sets the body of this message to the given byte array.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-"bytes" is null.
+The parameter  <i>bytes</i>
+ is null.
 
 ### SetHeader
 

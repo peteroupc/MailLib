@@ -8,8 +8,60 @@ import com.upokecenter.text.encoders.*;
     /**
      * Contains methods for converting text from one character encoding to another.
      * This class also contains convenience methods for converting strings
-     * and other character inputs to bytes. <p>A character encoding is a
-     * mapping from characters to a sequence of bytes.</p>
+     * and other character inputs to bytes. <p>The Encoding Standard, which
+     * is a Candidate Recommendation as of early November 2015, defines
+     * algorithms for the most common character encodings used on Web pages
+     * and recommends the UTF-8 encoding for new specifications and Web
+     * pages. Calling the <code>GetEncoding(name)</code> method returns one of the
+     * character encodings with the given name under the Encoding
+     * Standard.</p> <p>Now let's define some terms:</p> <ul> <li>A <b>code
+     * point</b> is a number that identifies a single text character, such
+     * as a letter, digit, or symbol.</li> <li>An <b>encoder</b> is a class
+     * that converts a sequence of bytes to a sequence of code points in the
+     * universal character set (otherwise ((known instanceof Unicode) ?
+     * (Unicode)known : null)). An encoder implements the
+     * <b>ICharacterEncoder</b> interface.</li> <li>A <b>decoder</b> is a
+     * class that converts a sequence of Unicode code points to a sequence
+     * of bytes. An encoder implements the <b>ICharacterEncoder</b>
+     * interface.</li> <li>An <b>encoding</b> is a mapping from bytes to
+     * universal code points and from universal code points to bytes. An
+     * encoding allows access to both an encoder and a decoder and
+     * implements the <code>ICharacterEncoder</code> interface.</li></ul> <li>A
+     * <b>character set</b> is a set of code points which are each assigned
+     * to a single text character. (This may also be called a <i>coded
+     * character set</i>.)</li> <p>There are several kinds of encodings:</p>
+     * <ul> <li><b>Single-byte encodings</b> define a character set that
+     * assigns one code point to one byte. For example, the ISO 8859
+     * encodings and Windows-1252 are single-byte encodings. ASCII is also a
+     * single-byte encoding, although its character set only uses the lower
+     * 7 bits of an eight-bit byte. In the Encoding Standard, all
+     * single-byte encodings use the ASCII characters as the first 128 code
+     * points of their character sets. (Here, ASCII is the same as the
+     * International Reference Version of the ISO 646 standard.)</li>
+     * <li><b>Multi-byte encodings</b> define a character set that assigns
+     * some or all code points to several bytes. For example, most legacy
+     * East Asian encodings, such as <code>shift_jis</code>, <code>gbk</code> , and
+     * <code>big5</code> are multi-byte encodings, as well as <code>utf-8</code> and
+     * <code>utf-16</code>, which both encode the Unicode character set.</li>
+     * <li><b>Escape-based encodings</b> use escape sequences to encode one
+     * or more character sets in the same sequence of bytes. The best
+     * example of an escape-based encoding supported in the Encoding
+     * Standard is <code>iso-2022-jp</code>, which defines a Katakana, a Kanji,
+     * and an ASCII character set.</li> <li>The Encoding Standard also
+     * defines a <b>replacement encoding</b>, which causes a decoding error
+     * and is used to alias a few problematic or unsupported encoding names,
+     * such as <code>hz-gb-2312</code>.</li></ul> <p><b>Getting an
+     * Encoding</b></p> <p>The Encoding Standard includes UTF-8, UTF-16 and
+     * many legacy encodings, and gives each one of them a name. The
+     * <code>GetEncoding(name)</code> method takes a name string and returns an
+     * ICharacterEncoding object that implements that encoding, or
+     * <code>null</code> if the name is unrecognized.</p> <p>However, the Encoding
+     * Standard is designed to include only encodings commonly used on Web
+     * pages, not in other protocols such as email. For email, the Encoding
+     * class includes an alternate function <code>GetEncoding(name,
+     * forEmail)</code>. Setting <code>forEmail</code> to <code>true</code> will use
+     * modified rules from the Encoding Standard to better suit encoding and
+     * decoding text from email messages.</p>
      */
   public final class Encodings {
 private Encodings() {
@@ -39,6 +91,11 @@ private Encodings() {
      * @param length A 32-bit signed integer. (3).
      * @return A 32-bit signed integer.
      * @throws NullPointerException The parameter {@code buffer} is null.
+     * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
+     * than 0 or greater than {@code buffer} 's length, or {@code buffer} 's
+     * length minus {@code offset} is less than {@code length}.
+     * @throws
+     * @throws
      */
       public int Read(int[] buffer, int offset, int length) {
         if (buffer == null) {
@@ -348,36 +405,41 @@ private Encodings() {
 
     /**
      * Resolves a character encoding's name to a standard form.
-     * @param name A string that names a given character encoding. Any leading and
-     * trailing whitespace is removed and the name converted to lowercase
-     * before resolving the encoding&#x27;s name. The Encoding Standard
-     * supports only the following encodings (and defines aliases for most
-     * of them):. <ul> <li><code>utf-8</code> - UTF-8 (8-bit universal character
-     * set, the encoding recommended by the Encoding Standard for new data
-     * formats)</li> <li><code>utf-16le</code> - UTF-16 little-endian (16-bit
-     * UCS)</li> <li><code>utf-16be</code> - UTF-16 big-endian (16-bit UCS)</li>
-     * <li>Two special purpose encodings: <code>x-user-defined</code> and
-     * <code>replacement</code></li> <li>28 legacy single-byte encodings: <ul>
-     * <li><code>windows-1252</code> - Western Europe</li> <li><code>iso-8859-2</code>,
-     * <code>windows-1250</code> - Central Europe</li> <li><code>iso-8859-10</code> -
-     * Northern Europe</li> <li><code>iso-8859-4</code>, <code>windows-1257</code> -
-     * Baltic</li> <li><code>iso-8859-13</code> - Estonian</li>
-     * <li><code>iso-8859-14</code> - Celtic</li> <li><code>iso-8859-16</code> -
-     * Romanian</li> <li><code>iso-8859-5</code>, <code>ibm866</code>, <code>koi8-r</code>,
-     * <code>windows-1251</code>, <code>x-mac-cyrillic</code> - Cyrillic</li>
-     * <li><code>koi8-u</code> - Ukrainian</li> <li><code>iso-8859-7</code>,
-     * <code>windows-1253</code> - Greek</li> <li><code>iso-8859-6</code>,
-     * <code>windows-1256</code> - Arabic</li> <li><code>iso-8859-8</code>,
-     * <code>iso-8859-8-i</code>, <code>windows-1255</code> - Hebrew</li>
-     * <li><code>iso-8859-3</code> - Latin 3</li> <li><code>iso-8859-15</code> - Latin
-     * 9</li> <li><code>windows-1254</code> - Turkish</li> <li><code>windows-874</code>
-     * - Thai</li> <li><code>windows-1258</code> - Vietnamese</li>
-     * <li><code>macintosh</code> - Mac Roman</li></ul></li> <li>Three legacy
-     * Japanese encodings: <code>shift_jis</code>, <code>euc-jp</code>,
-     * <code>iso-2022-jp</code></li> <li>Two legacy simplified Chinese encodings:
-     * <code>gbk</code> and <code>gb18030</code></li> <li><code>big5</code> - legacy
-     * traditional Chinese encoding</li> <li><code>euc-kr</code> - legacy Korean
-     * encoding</li></ul>
+     * @param name A string that names a given character encoding. Can be null. Any
+     * leading and trailing whitespace is removed and the name converted to
+     * lowercase before resolving the encoding&#x27;s name. The Encoding
+     * Standard supports only the following encodings (and defines aliases
+     * for most of them):. <ul> <li><code>utf-8</code> - UTF-8 (8-bit universal
+     * character set, the encoding recommended by the Encoding Standard for
+     * new data formats)</li> <li><code>utf-16le</code> - UTF-16 little-endian
+     * (16-bit UCS)</li> <li><code>utf-16be</code> - UTF-16 big-endian (16-bit
+     * UCS)</li> <li>Two special purpose encodings: <code>x-user-defined</code>
+     * and <code>replacement</code></li> <li>28 legacy single-byte encodings: <ul>
+     * <li><code>windows-1252</code> - Western Europe (Note: The Encoding Standard
+     * aliases the names <code>us-ascii</code> and <code>iso-8859-1</code> to
+     * <code>windows-1252</code>, which specifies a different character set from
+     * either; it differs from <code>iso-8859-1</code> by assigning different
+     * characters to some bytes from 0x80 to 0x9F. The Encoding Standard
+     * does this for compatibility with existing Web pages.)</li>
+     * <li><code>iso-8859-2</code>, <code>windows-1250</code> : Central Europe</li>
+     * <li><code>iso-8859-10</code> : Northern Europe</li> <li><code>iso-8859-4</code>,
+     * <code>windows-1257</code> : Baltic</li> <li><code>iso-8859-13</code> :
+     * Estonian</li> <li><code>iso-8859-14</code> : Celtic</li>
+     * <li><code>iso-8859-16</code> : Romanian</li> <li><code>iso-8859-5</code>,
+     * <code>ibm866</code>, <code>koi8-r</code>, <code>windows-1251</code>,
+     * <code>x-mac-cyrillic</code> : Cyrillic</li> <li><code>koi8-u</code> :
+     * Ukrainian</li> <li><code>iso-8859-7</code>, <code>windows-1253</code> :
+     * Greek</li> <li><code>iso-8859-6</code>, <code>windows-1256</code> : Arabic</li>
+     * <li><code>iso-8859-8</code>, <code>iso-8859-8-i</code>, <code>windows-1255</code> :
+     * Hebrew</li> <li><code>iso-8859-3</code> : Latin 3</li>
+     * <li><code>iso-8859-15</code> : Latin 9</li> <li><code>windows-1254</code> :
+     * Turkish</li> <li><code>windows-874</code> : Thai</li>
+     * <li><code>windows-1258</code> : Vietnamese</li> <li><code>macintosh</code> : Mac
+     * Roman</li></ul></li> <li>Three legacy Japanese encodings:
+     * <code>shift_jis</code>, <code>euc-jp</code>, <code>iso-2022-jp</code></li> <li>Two
+     * legacy simplified Chinese encodings: <code>gbk</code> and
+     * <code>gb18030</code></li> <li><code>big5</code> : legacy traditional Chinese
+     * encoding</li> <li><code>euc-kr</code> : legacy Korean encoding</li></ul>
      * @return A standardized name for the encoding. Returns the empty string if
      * {@code name} is null or empty, or if the encoding name is
      * unsupported.
@@ -395,15 +457,16 @@ private Encodings() {
     /**
      * Resolves a character encoding's name to a canonical form, using rules more
      * suitable for email.
-     * @param name A string naming a character encoding. Uses a modified version of
-     * the rules in the Encoding Standard to better conform, in some cases,
-     * to email standards like MIME. In addition to the encodings mentioned
-     * in ResolveAlias, the following additional encodings are supported:.
-     * <ul> <li><code>us-ascii</code> - ASCII 7-bit encoding, rather than an alias
-     * to <code>windows-1252</code>, as specified in the Encoding Standard</li>
-     * <li><code>iso-8859-1</code> - Latin-1 8-bit encoding, rather than an alias
-     * to <code>windows-1252</code>, as specified in the Encoding Standard</li>
-     * <li><code>utf-7</code> - UTF-7 (7-bit universal character set)</li></ul>
+     * @param name A string naming a character encoding. Can be null. Uses a
+     * modified version of the rules in the Encoding Standard to better
+     * conform, in some cases, to email standards like MIME. In addition to
+     * the encodings mentioned in ResolveAlias, the following additional
+     * encodings are supported:. <ul> <li><code>us-ascii</code> - ASCII 7-bit
+     * encoding, rather than an alias to <code>windows-1252</code>, as specified
+     * in the Encoding Standard</li> <li><code>iso-8859-1</code> - Latin-1 8-bit
+     * encoding, rather than an alias to <code>windows-1252</code>, as specified
+     * in the Encoding Standard</li> <li><code>utf-7</code> - UTF-7 (7-bit
+     * universal character set)</li></ul>
      * @return A standardized name for the encoding. Returns the empty string if
      * {@code name} is null or empty, or if the encoding name is
      * unsupported.
@@ -482,9 +545,10 @@ private Encodings() {
      * object's class already has a StringToBytes method with the same
      * parameters, that method takes precedence over this extension
      * method.</p>
-     * @param encoding Not documented yet.
+     * @param encoding An object that implements a character encoding.
      * @param str Not documented yet.
-     * @return A byte array.
+     * @return A byte array containing the string encoded in the given text
+     * encoding.
      * @throws NullPointerException The parameter {@code encoding} is null.
      */
     public static byte[] StringToBytes(
@@ -725,11 +789,16 @@ int length) {
     }
 
     /**
-     * Not documented yet. <p>In the .NET implementation, this method is
-     * implemented as an extension method to any object implementing string
-     * and can be called as follows: <code>str.EncodeToBytes(enc)</code>. If the
-     * object's class already has a EncodeToBytes method with the same
-     * parameters, that method takes precedence over this extension
+     * Reads Unicode characters from a text string and writes them to a byte array
+     * encoded in a given character encoding. When reading the string, any
+     * unpaired surrogate characters are replaced with the replacement
+     * character (U + FFFD), and when writing to the byte array, any
+     * characters that can't be encoded are replaced with the byte 0x3f (the
+     * question mark character). <p>In the .NET implementation, this method
+     * is implemented as an extension method to any object implementing
+     * string and can be called as follows: <code>str.EncodeToBytes(enc)</code>.
+     * If the object's class already has a EncodeToBytes method with the
+     * same parameters, that method takes precedence over this extension
      * method.</p>
      * @param str A string object.
      * @param enc An ICharacterEncoding object.
@@ -749,9 +818,23 @@ ICharacterEncoding enc) {
       return EncodeToBytes(new StringCharacterInput(str), enc);
     }
 
-  /**
-   * Not documented yet.
-   */
+    /**
+     * Converts a text string to bytes and writes the bytes to an output byte
+     * writer. When reading the string, any unpaired surrogate characters
+     * are replaced with the replacement character (U + FFFD), and when
+     * writing to the byte stream, any characters that can't be encoded are
+     * replaced with the byte 0x3f (the question mark character). <p>In the
+     * .NET implementation, this method is implemented as an extension
+     * method to any object implementing string and can be called as
+     * follows: <code>str.EncodeToBytes(enc, writer)</code>. If the object's class
+     * already has a EncodeToBytes method with the same parameters, that
+     * method takes precedence over this extension method.</p>
+     * @param str Not documented yet.
+     * @param enc Not documented yet.
+     * @param writer Not documented yet. (3).
+     * @throws NullPointerException The parameter {@code str} or {@code enc} is
+     * null.
+     */
     public static void EncodeToBytes(
 String str,
 ICharacterEncoding enc,
@@ -766,17 +849,24 @@ IWriter writer) {
     }
 
     /**
-     * Not documented yet. <p>In the .NET implementation, this method is
-     * implemented as an extension method to any object implementing string
-     * and can be called as follows: <code>str.StringToInput(offset,
-     * length)</code>. If the object's class already has a StringToInput method
-     * with the same parameters, that method takes precedence over this
-     * extension method.</p>
+     * Converts a portion of a text string to a character input. The resulting
+     * input can then be used to encode the text to bytes, or to read the
+     * string code point by code point, among other things. <p>In the .NET
+     * implementation, this method is implemented as an extension method to
+     * any object implementing string and can be called as follows:
+     * <code>str.StringToInput(offset, length)</code>. If the object's class
+     * already has a StringToInput method with the same parameters, that
+     * method takes precedence over this extension method.</p>
      * @param str A string object.
      * @param offset A 32-bit signed integer.
      * @param length Another 32-bit signed integer.
      * @return An ICharacterInput object.
      * @throws NullPointerException The parameter {@code str} is null.
+     * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
+     * than 0 or greater than {@code str} 's length, or {@code str} 's
+     * length minus {@code offset} is less than {@code length}.
+     * @throws
+     * @throws
      */
     public static ICharacterInput StringToInput(
 String str,
@@ -862,9 +952,8 @@ int length) {
     /**
      * Returns a character encoding from the given name.
      * @param name A string naming a character encoding. See the ResolveAlias
-     * method.
+     * method. Can be null.
      * @return An ICharacterEncoding object.
-     * @throws NullPointerException The parameter {@code name} is null.
      */
     public static ICharacterEncoding GetEncoding(String name) {
       return GetEncoding(name, false);
@@ -873,7 +962,7 @@ int length) {
     /**
      * Returns a character encoding from the given name.
      * @param name A string naming a character encoding. See the ResolveAlias
-     * method.
+     * method. Can be null.
      * @param forEmail If false, uses the encoding resolution rules in the Encoding
      * Standard. If true, uses modified rules as described in the
      * ResolveAliasForEmail method.
@@ -900,7 +989,7 @@ int length) {
         return (ICharacterEncoding)(new EncodingUtf7());
       }
       if (name.equals("windows-1252")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
           8218,
     402, 8222, 8230, 8224,
     8225, 710, 8240, 352, 8249, 338, 141, 381, 143, 144, 8216, 8217, 8220, 8221,
@@ -930,7 +1019,7 @@ int length) {
     160 });
       }
       if (name.equals("iso-8859-10")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -944,7 +1033,7 @@ int length) {
     });
       }
       if (name.equals("iso-8859-13")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -958,7 +1047,7 @@ int length) {
     });
       }
       if (name.equals("iso-8859-14")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -972,7 +1061,7 @@ int length) {
     253, 375, 255 });
       }
       if (name.equals("iso-8859-15")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -986,7 +1075,7 @@ int length) {
     });
       }
       if (name.equals("iso-8859-16")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1000,7 +1089,7 @@ int length) {
     });
       }
       if (name.equals("iso-8859-2")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1014,7 +1103,7 @@ int length) {
     });
       }
       if (name.equals("iso-8859-3")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1028,7 +1117,7 @@ int length) {
     349, 729 });
       }
       if (name.equals("iso-8859-4")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1042,7 +1131,7 @@ int length) {
     });
       }
       if (name.equals("iso-8859-5")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1057,7 +1146,7 @@ int length) {
     1114, 1115, 1116, 167, 1118, 1119 });
       }
       if (name.equals("iso-8859-6")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1072,7 +1161,7 @@ int length) {
     -2, -2, -2, -2, -2, -2, -2, -2, -2 });
       }
       if (name.equals("iso-8859-7")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1086,7 +1175,7 @@ int length) {
     974, -2 });
       }
       if (name.equals("iso-8859-8") || name.equals("iso-8859-8-i")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 128, 129, 130,
           131,
     132, 133, 134, 135,
     136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
@@ -1129,7 +1218,7 @@ int length) {
     1059, 1046, 1042, 1068, 1067, 1047, 1064, 1069, 1065, 1063, 1066 });
       }
       if (name.equals("macintosh")) {
-  return (ICharacterEncoding)new EncodingSingleByte(new int[] { 196, 197, 199,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 196, 197, 199,
           201,
     209, 214, 220, 225,
     224, 226, 228, 227, 229, 231, 233, 232, 234, 235, 237, 236, 238, 239, 241,
@@ -1143,7 +1232,7 @@ int length) {
     728, 729, 730, 184, 733, 731, 711 });
       }
       if (name.equals("windows-1250")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
           8218,
     131, 8222, 8230, 8224,
     8225, 136, 8240, 352, 8249, 346, 356, 381, 377, 144, 8216, 8217, 8220, 8221,
@@ -1171,7 +1260,7 @@ int length) {
     1096, 1097, 1098, 1099, 1100, 1101, 1102, 1103 });
       }
       if (name.equals("windows-1253")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
           8218,
     402, 8222, 8230, 8224,
     8225, 136, 8240, 138, 8249, 140, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
@@ -1185,7 +1274,7 @@ int length) {
     972, 973, 974, -2 });
       }
       if (name.equals("windows-1254")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
           8218,
     402, 8222, 8230, 8224,
     8225, 710, 8240, 352, 8249, 338, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
@@ -1199,7 +1288,7 @@ int length) {
     305, 351, 255 });
       }
       if (name.equals("windows-1255")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
           8218,
     402, 8222, 8230, 8224,
     8225, 710, 8240, 138, 8249, 140, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
@@ -1214,7 +1303,7 @@ int length) {
     -2, 8206, 8207, -2 });
       }
       if (name.equals("windows-1256")) {
-    return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 1662,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 1662,
           8218,
    402, 8222, 8230, 8224,
     8225, 710, 8240, 1657, 8249, 338, 1670, 1688, 1672, 1711, 8216, 8217, 8220,
@@ -1228,7 +1317,7 @@ int length) {
     1614, 244, 1615, 1616, 247, 1617, 249, 1618, 251, 252, 8206, 8207, 1746 });
       }
       if (name.equals("windows-1257")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
           8218,
     131, 8222, 8230, 8224,
     8225, 136, 8240, 138, 8249, 140, 168, 711, 184, 144, 8216, 8217, 8220, 8221,
@@ -1242,7 +1331,7 @@ int length) {
     380, 382, 729 });
       }
       if (name.equals("windows-1258")) {
-     return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
           8218,
     402, 8222, 8230, 8224,
     8225, 710, 8240, 138, 8249, 338, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
@@ -1256,7 +1345,7 @@ int length) {
     432, 8363, 255 });
       }
       if (name.equals("windows-874")) {
-      return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
+        return (ICharacterEncoding)new EncodingSingleByte(new int[] { 8364, 129,
           130,
        131, 132, 8230, 134,
     135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 8216, 8217, 8220, 8221,
