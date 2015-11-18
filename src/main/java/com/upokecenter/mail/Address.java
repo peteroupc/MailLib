@@ -106,6 +106,10 @@ null) == this.localPart.length()) {
      * Initializes a new instance of the Address class.
      * @param addressValue An email address.
      * @throws NullPointerException The parameter {@code addressValue} is null.
+     * @throws IllegalArgumentException The email address contains invalid syntax. For
+     * example, it doesn't contain an '@' sign or either side of the '@'
+     * contains invalid characters, the address is too long, or the address
+     * contains comments (text within parentheses).
      */
     public Address (String addressValue) {
       if (addressValue == null) {

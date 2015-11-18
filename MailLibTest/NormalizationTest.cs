@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+using PeterO.Mail;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterO.Text;
 

@@ -105,7 +105,26 @@ bool replace) {
     /// <exception cref='ArgumentException'>The string contains an unpaired
     /// surrogate code point and <paramref name='replace'/> is false, or an
     /// internal error occurred.</exception>
-    public static byte[] GetUtf8Bytes(string str, bool replace) {
+        public static byte[] GetUtf8Bytes(string str, bool replace) {
+          return GetUtf8Bytes(str, replace, false);
+        }
+
+    /// <summary>Encodes a string in UTF-8 as a byte array.</summary>
+    /// <param name='str'>A text string.</param>
+    /// <param name='replace'>If true, replaces unpaired surrogate code
+    /// points with the replacement character (U + FFFD). If false, stops
+    /// processing when an unpaired surrogate code point is seen.</param>
+    /// <param name='lenientLineBreaks'>A Boolean object.</param>
+    /// <returns>The string encoded in UTF-8.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The string contains an unpaired
+    /// surrogate code point and <paramref name='replace'/> is false, or an
+    /// internal error occurred.</exception>
+    public static byte[] GetUtf8Bytes(
+string str,
+bool replace,
+bool lenientLineBreaks) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }

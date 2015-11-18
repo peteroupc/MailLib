@@ -22,8 +22,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a string containing this object's disposition type,
     /// such as "inline" or "attachment".</summary>
-    /// <value>A string containing this object&#x27;s disposition type,
-    /// such as &#x22;inline&#x22; or &#x22;attachment&#x22;.</value>
+    /// <value>A string containing this object&apos;s disposition type,
+    /// such as &quot;inline&quot; or &quot;attachment&quot;.</value>
     public string DispositionType {
       get {
         return this.dispositionType;
@@ -187,11 +187,10 @@ string type,
         // appear justified in sec. 2.3 of RFC 2183, which says that
         // the parameter's value "should be used as a
         // basis for the actual filename, where possible."
-        str = Rfc2047.DecodeEncodedWords(
+        str = Rfc2047.DecodeEncodedWordsLenient(
 str,
 0,
-str.Length,
-EncodedWordContext.Unstructured);
+str.Length);
         if (str.IndexOf("=?", StringComparison.Ordinal) >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
@@ -215,19 +214,20 @@ str.IndexOf('\'')));
         }
       }
       str = ParserUtility.TrimSpaceAndTab(str);
-      // NOTE: Even if there are directory separators (backslash
-      // and forward slash), the filename is not treated as a
-      // file system path (in accordance with sec. 2.3 of RFC
-      // 2183); as a result, the directory separators
-      // will be treated as unsuitable characters for filenames
-      // and are handled below.
       if (str.Length == 0) {
         return "_";
       }
       var builder = new StringBuilder();
       // Replace unsuitable characters for filenames
       // and make sure the filename's
-      // length doesn't exceed 250
+      // length doesn't exceed 250. (A few additional characters
+      // may be added later on.)
+      // NOTE: Even if there are directory separators (backslash
+      // and forward slash), the filename is not treated as a
+      // file system path (in accordance with sec. 2.3 of RFC
+      // 2183); as a result, the directory separators
+      // will be treated as unsuitable characters for filenames
+      // and are handled below.
       for (int i = 0; i < str.Length && builder.Length < 250; ++i) {
         int c = DataUtilities.CodePointAt(str, i);
         if (c >= 0x10000) {
@@ -314,7 +314,7 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
 
     /// <summary>Gets a parameter from this disposition object.</summary>
     /// <param name='name'>The name of the parameter to get. The name will
-    /// be matched case-insensitively. Can&#x27;t be null.</param>
+    /// be matched case-insensitively. Can&apos;t be null.</param>
     /// <returns>The value of the parameter, or null if the parameter does
     /// not exist.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref

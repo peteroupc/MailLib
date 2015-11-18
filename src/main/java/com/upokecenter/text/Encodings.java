@@ -546,7 +546,6 @@ private Encodings() {
         throw new NullPointerException("input");
       }
       ArrayWriter writer = new ArrayWriter();
-      var i = 0;
       while (true) {
         int cp = input.ReadChar();
         int enc = encoder.Encode(cp, writer);
@@ -559,6 +558,73 @@ private Encodings() {
         }
       }
       return writer.ToArray();
+    }
+
+    /**
+     * Reads Unicode characters from a character input and writes them to a byte
+     * array encoded using the given character encoder. When writing to the
+     * byte array, any characters that can't be encoded are replaced with
+     * the byte 0x3f (the question mark character). <p>In the .NET
+     * implementation, this method is implemented as an extension method to
+     * any object implementing ICharacterInput and can be called as follows:
+     * <code>input.EncodeToBytes(encoding)</code>. If the object's class already
+     * has a EncodeToBytes method with the same parameters, that method
+     * takes precedence over this extension method.</p>
+     * @param input Not documented yet.
+     * @param encoding Not documented yet.
+     * @param writer An IWriter object.
+     * @throws NullPointerException The parameter {@code encoding} is null.
+     */
+    public static void EncodeToWriter(
+      ICharacterInput input,
+      ICharacterEncoding encoding,
+      IWriter writer) {
+      if (encoding == null) {
+        throw new NullPointerException("encoding");
+      }
+      EncodeToWriter(input, encoding.GetEncoder(), writer);
+    }
+
+    /**
+     * Reads Unicode characters from a character input and writes them to a byte
+     * array encoded in a given character encoding. When writing to the byte
+     * array, any characters that can't be encoded are replaced with the
+     * byte 0x3f (the question mark character). <p>In the .NET
+     * implementation, this method is implemented as an extension method to
+     * any object implementing ICharacterInput and can be called as follows:
+     * <code>input.EncodeToBytes(encoder)</code>. If the object's class already
+     * has a EncodeToBytes method with the same parameters, that method
+     * takes precedence over this extension method.</p>
+     * @param input Not documented yet.
+     * @param encoder Not documented yet.
+     * @param writer An IWriter object.
+     * @throws NullPointerException The parameter {@code encoder} or {@code input}
+     * is null.
+     */
+    public static void EncodeToWriter(
+      ICharacterInput input,
+      ICharacterEncoder encoder,
+      IWriter writer) {
+      if (encoder == null) {
+        throw new NullPointerException("encoder");
+      }
+      if (input == null) {
+        throw new NullPointerException("input");
+      }
+      if (writer == null) {
+        throw new NullPointerException("writer");
+      }
+      while (true) {
+        int cp = input.ReadChar();
+        int enc = encoder.Encode(cp, writer);
+        if (enc == -2) {
+          // Not encodable, write a question mark instead
+          writer.write((byte)0x3f);
+        }
+        if (enc == -1) {
+          break;
+        }
+      }
     }
 
     /**
@@ -594,8 +660,8 @@ private Encodings() {
      * @param enc An ICharacterEncoding object.
      * @param bytes A byte array.
      * @return A string object.
-     * @throws java.lang.NullPointerException The parameter {@code enc} or {@code
-     * bytes} is null.
+     * @throws NullPointerException The parameter {@code enc} or {@code bytes} is
+     * null.
      */
     public static String DecodeToString(
 ICharacterEncoding enc,
@@ -621,8 +687,8 @@ byte[] bytes) {
      * @param offset A 32-bit signed integer.
      * @param length Another 32-bit signed integer.
      * @return A string object.
-     * @throws java.lang.NullPointerException The parameter {@code enc} or {@code
-     * bytes} is null.
+     * @throws NullPointerException The parameter {@code enc} or {@code bytes} is
+     * null.
      */
     public static String DecodeToString(
 ICharacterEncoding enc,
@@ -668,8 +734,8 @@ int length) {
      * @param str A string object.
      * @param enc An ICharacterEncoding object.
      * @return A byte array.
-     * @throws java.lang.NullPointerException The parameter {@code str} or {@code
-     * enc} is null.
+     * @throws NullPointerException The parameter {@code str} or {@code enc} is
+     * null.
      */
     public static byte[] EncodeToBytes(
 String str,
@@ -683,6 +749,19 @@ ICharacterEncoding enc) {
       return EncodeToBytes(new StringCharacterInput(str), enc);
     }
 
+    public static void EncodeToBytes(
+String str,
+ICharacterEncoding enc,
+IWriter writer) {
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
+      if (enc == null) {
+        throw new NullPointerException("enc");
+      }
+      EncodeToWriter(new StringCharacterInput(str), enc, writer);
+    }
+
     /**
      * Not documented yet. <p>In the .NET implementation, this method is
      * implemented as an extension method to any object implementing string
@@ -694,7 +773,7 @@ ICharacterEncoding enc) {
      * @param offset A 32-bit signed integer.
      * @param length Another 32-bit signed integer.
      * @return An ICharacterInput object.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static ICharacterInput StringToInput(
 String str,

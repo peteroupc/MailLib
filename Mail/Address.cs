@@ -108,6 +108,11 @@ null) == this.localPart.Length) {
     /// <param name='addressValue'>An email address.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='addressValue'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The email address contains
+    /// invalid syntax. For example, it doesn't contain an '@' sign or
+    /// either side of the '@' contains invalid characters, the address is
+    /// too long, or the address contains comments (text within
+    /// parentheses).</exception>
     public Address(string addressValue) {
       if (addressValue == null) {
         throw new ArgumentNullException("addressValue");

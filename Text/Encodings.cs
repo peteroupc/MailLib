@@ -344,7 +344,7 @@ namespace PeterO.Text {
     /// form.</summary>
     /// <param name='name'>A string that names a given character encoding.
     /// Any leading and trailing whitespace is removed and the name
-    /// converted to lowercase before resolving the encoding&#x27;s name.
+    /// converted to lowercase before resolving the encoding&apos;s name.
     /// The Encoding Standard supports only the following encodings (and
     /// defines aliases for most of them):.
     /// <list type='bullet'>
@@ -458,7 +458,7 @@ namespace PeterO.Text {
     /// same parameters, that method takes precedence over this extension
     /// method.</para></summary>
     /// <param name='encoding'>An object that implements a given character
-    /// encoding. Any bytes that can&#x27;t be decoded are converted to the
+    /// encoding. Any bytes that can&apos;t be decoded are converted to the
     /// replacement character (U + FFFD).</param>
     /// <param name='transform'>An object that implements a byte
     /// stream.</param>
@@ -555,7 +555,6 @@ namespace PeterO.Text {
         throw new ArgumentNullException("input");
       }
       var writer = new ArrayWriter();
-      var i = 0;
       while (true) {
         int cp = input.ReadChar();
         int enc = encoder.Encode(cp, writer);
@@ -568,6 +567,73 @@ namespace PeterO.Text {
         }
       }
       return writer.ToArray();
+    }
+
+    /// <summary>Reads Unicode characters from a character input and writes
+    /// them to a byte array encoded using the given character encoder.
+    /// When writing to the byte array, any characters that can't be
+    /// encoded are replaced with the byte 0x3f (the question mark
+    /// character).
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing ICharacterInput and can
+    /// be called as follows: <c>input.EncodeToBytes(encoding)</c>. If the
+    /// object's class already has a EncodeToBytes method with the same
+    /// parameters, that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='input'>Not documented yet.</param>
+    /// <param name='encoding'>Not documented yet.</param>
+    /// <param name='writer'>An IWriter object.</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='encoding'/> is null.</exception>
+    public static void EncodeToWriter(
+      this ICharacterInput input,
+      ICharacterEncoding encoding,
+      IWriter writer) {
+      if (encoding == null) {
+        throw new ArgumentNullException("encoding");
+      }
+      EncodeToWriter(input, encoding.GetEncoder(), writer);
+    }
+
+    /// <summary>Reads Unicode characters from a character input and writes
+    /// them to a byte array encoded in a given character encoding. When
+    /// writing to the byte array, any characters that can't be encoded are
+    /// replaced with the byte 0x3f (the question mark character).
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any object implementing ICharacterInput and can
+    /// be called as follows: <c>input.EncodeToBytes(encoder)</c>. If the
+    /// object's class already has a EncodeToBytes method with the same
+    /// parameters, that method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='input'>Not documented yet.</param>
+    /// <param name='encoder'>Not documented yet.</param>
+    /// <param name='writer'>An IWriter object.</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='encoder'/> or <paramref name='input'/> is null.</exception>
+    public static void EncodeToWriter(
+      this ICharacterInput input,
+      ICharacterEncoder encoder,
+      IWriter writer) {
+      if (encoder == null) {
+        throw new ArgumentNullException("encoder");
+      }
+      if (input == null) {
+        throw new ArgumentNullException("input");
+      }
+      if (writer == null) {
+        throw new ArgumentNullException("writer");
+      }
+      while (true) {
+        int cp = input.ReadChar();
+        int enc = encoder.Encode(cp, writer);
+        if (enc == -2) {
+          // Not encodable, write a question mark instead
+          writer.WriteByte((byte)0x3f);
+        }
+        if (enc == -1) {
+          break;
+        }
+      }
     }
 
     /// <summary>Converts a text string to a byte array using the given
@@ -603,9 +669,8 @@ namespace PeterO.Text {
     /// <param name='enc'>An ICharacterEncoding object.</param>
     /// <param name='bytes'>A byte array.</param>
     /// <returns>A string object.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='enc'/> or <paramref name='bytes'/> is
-    /// null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='enc'/> or <paramref name='bytes'/> is null.</exception>
     public static string DecodeToString(
 this ICharacterEncoding enc,
 byte[] bytes) {
@@ -630,9 +695,8 @@ byte[] bytes) {
     /// <param name='offset'>A 32-bit signed integer.</param>
     /// <param name='length'>Another 32-bit signed integer.</param>
     /// <returns>A string object.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='enc'/> or <paramref name='bytes'/> is
-    /// null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='enc'/> or <paramref name='bytes'/> is null.</exception>
     public static string DecodeToString(
 this ICharacterEncoding enc,
 byte[] bytes,
@@ -677,9 +741,8 @@ int length) {
     /// <param name='str'>A string object.</param>
     /// <param name='enc'>An ICharacterEncoding object.</param>
     /// <returns>A byte array.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> or <paramref name='enc'/> is
-    /// null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> or <paramref name='enc'/> is null.</exception>
     public static byte[] EncodeToBytes(
 this string str,
 ICharacterEncoding enc) {
@@ -690,6 +753,19 @@ ICharacterEncoding enc) {
         throw new ArgumentNullException("enc");
       }
       return EncodeToBytes(new StringCharacterInput(str), enc);
+    }
+
+    public static void EncodeToBytes(
+this string str,
+ICharacterEncoding enc,
+IWriter writer) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      if (enc == null) {
+        throw new ArgumentNullException("enc");
+      }
+      EncodeToWriter(new StringCharacterInput(str), enc, writer);
     }
 
     /// <summary>Not documented yet.
@@ -703,8 +779,8 @@ ICharacterEncoding enc) {
     /// <param name='offset'>A 32-bit signed integer.</param>
     /// <param name='length'>Another 32-bit signed integer.</param>
     /// <returns>An ICharacterInput object.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='str'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static ICharacterInput StringToInput(
 this string str,
 int offset,

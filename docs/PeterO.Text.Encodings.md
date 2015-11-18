@@ -13,6 +13,63 @@ Character encoding object for the UTF-8 character encoding.
 ### DecodeToString
 
     public static string DecodeToString(
+        this PeterO.Text.ICharacterEncoding enc,
+        byte[] bytes);
+
+Not documented yet.In the .NET implementation, this method is implemented as an extension method to any object implementing ICharacterEncoding and can be called as follows:  `enc.DecodeToString(bytes)` . If the object's class already has a DecodeToString method with the same parameters, that method takes precedence over this extension method.
+
+<b>Parameters:</b>
+
+ * <i>enc</i>: An ICharacterEncoding object.
+
+ * <i>bytes</i>: A byte array.
+
+<b>Returns:</b>
+
+A string object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>enc</i>
+ or  <i>bytes</i>
+ is null.
+
+### DecodeToString
+
+    public static string DecodeToString(
+        this PeterO.Text.ICharacterEncoding enc,
+        byte[] bytes,
+        int offset,
+        int length);
+
+Not documented yet.In the .NET implementation, this method is implemented as an extension method to any object implementing ICharacterEncoding and can be called as follows:  `enc.DecodeToString(bytes, offset,
+            length)` . If the object's class already has a DecodeToString method with the same parameters, that method takes precedence over this extension method.
+
+<b>Parameters:</b>
+
+ * <i>enc</i>: An ICharacterEncoding object.
+
+ * <i>bytes</i>: A byte array.
+
+ * <i>offset</i>: A 32-bit signed integer.
+
+ * <i>length</i>: Another 32-bit signed integer.
+
+<b>Returns:</b>
+
+A string object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>enc</i>
+ or  <i>bytes</i>
+ is null.
+
+### DecodeToString
+
+    public static string DecodeToString(
         this PeterO.Text.ICharacterEncoding encoding,
         PeterO.ITransform transform);
 
@@ -82,6 +139,31 @@ A byte array.
 
  * System.ArgumentNullException:
 The parameter  <i>encoding</i>
+ is null.
+
+### EncodeToBytes
+
+    public static byte[] EncodeToBytes(
+        this string str,
+        PeterO.Text.ICharacterEncoding enc);
+
+Not documented yet.In the .NET implementation, this method is implemented as an extension method to any object implementing string and can be called as follows:  `str.EncodeToBytes(enc)` . If the object's class already has a EncodeToBytes method with the same parameters, that method takes precedence over this extension method.
+
+<b>Parameters:</b>
+
+ * <i>str</i>: A string object.
+
+ * <i>enc</i>: An ICharacterEncoding object.
+
+<b>Returns:</b>
+
+A byte array.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>str</i>
+ or  <i>enc</i>
  is null.
 
 ### GetDecoderInput
@@ -161,13 +243,70 @@ A string object.
     public static string ResolveAlias(
         string name);
 
+Resolves a character encoding's name to a standard form.
+
 <b>Parameters:</b>
 
- * <i>name</i>: Not documented yet.
+ * <i>name</i>: A string that names a given character encoding. Any leading and trailing whitespace is removed and the name converted to lowercase before resolving the encoding's name. The Encoding Standard supports only the following encodings (and defines aliases for most of them):.
+
+ *  `utf-8`  - UTF-8 (8-bit universal character set, the encoding recommended by the Encoding Standard for new data formats)
+
+ *  `utf-16le`  - UTF-16 little-endian (16-bit UCS)
+
+ *  `utf-16be`  - UTF-16 big-endian (16-bit UCS)
+
+ * Two special purpose encodings:  `x-user-defined`  and `replacement`
+
+ * 28 legacy single-byte encodings:
+
+ *  `windows-1252`  - Western Europe
+
+ *  `iso-8859-2` ,  `windows-1250`  - Central Europe
+
+ *  `iso-8859-10`  - Northern Europe
+
+ *  `iso-8859-4` ,  `windows-1257`  - Baltic
+
+ *  `iso-8859-13`  - Estonian
+
+ *  `iso-8859-14`  - Celtic
+
+ *  `iso-8859-16`  - Romanian
+
+ *  `iso-8859-5` ,  `ibm866` ,  `koi8-r` , `windows-1251` ,  `x-mac-cyrillic`  - Cyrillic
+
+ *  `koi8-u`  - Ukrainian
+
+ *  `iso-8859-7` ,  `windows-1253`  - Greek
+
+ *  `iso-8859-6` ,  `windows-1256`  - Arabic
+
+ *  `iso-8859-8` ,  `iso-8859-8-i` ,  `windows-1255` - Hebrew
+
+ *  `iso-8859-3`  - Latin 3
+
+ *  `iso-8859-15`  - Latin 9
+
+ *  `windows-1254`  - Turkish
+
+ *  `windows-874`  - Thai
+
+ *  `windows-1258`  - Vietnamese
+
+ *  `macintosh`  - Mac Roman
+
+ * Three legacy Japanese encodings:  `shift_jis` , `euc-jp` ,  `iso-2022-jp`
+
+ * Two legacy simplified Chinese encodings:  `gbk`  and `gb18030`
+
+ *  `big5`  - legacy traditional Chinese encoding
+
+ *  `euc-kr`  - legacy Korean encoding
 
 <b>Returns:</b>
 
-A string object.
+A standardized name for the encoding. Returns the empty string if  <i>name</i>
+ is null or empty, or if the encoding name is unsupported.
 
 ### ResolveAliasForEmail
 
@@ -231,4 +370,31 @@ A byte array.
 
  * System.ArgumentNullException:
 The parameter  <i>encoding</i>
+ is null.
+
+### StringToInput
+
+    public static PeterO.Text.ICharacterInput StringToInput(
+        this string str,
+        int offset,
+        int length);
+
+Not documented yet.In the .NET implementation, this method is implemented as an extension method to any object implementing string and can be called as follows:  `str.StringToInput(offset, length)` . If the object's class already has a StringToInput method with the same parameters, that method takes precedence over this extension method.
+
+<b>Parameters:</b>
+
+ * <i>str</i>: A string object.
+
+ * <i>offset</i>: A 32-bit signed integer.
+
+ * <i>length</i>: Another 32-bit signed integer.
+
+<b>Returns:</b>
+
+An ICharacterInput object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter <i>str</i>
  is null.
