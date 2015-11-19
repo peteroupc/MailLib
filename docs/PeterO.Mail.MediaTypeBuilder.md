@@ -153,11 +153,11 @@ The parameter  <i>str</i>
     public PeterO.Mail.MediaTypeBuilder SetTopLevelType(
         string str);
 
-Not documented yet.
+Sets this media type's top-level type.
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object.
+ * <i>str</i>: A string object naming a top-level type, such as "text" or "audio".
 
 <b>Returns:</b>
 
@@ -168,6 +168,10 @@ This instance.
  * System.ArgumentNullException:
 The parameter  <i>str</i>
  is null.
+
+ * System.ArgumentException:
+The parameter  <i>str</i>
+ is syntactically invalid for a top-level type.
 
 ### ToMediaType
 

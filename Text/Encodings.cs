@@ -92,9 +92,9 @@ namespace PeterO.Text {
     /// <summary>Not documented yet.</summary>
     /// <param name='buffer'>An array of 32-bit unsigned integers.</param>
     /// <param name='offset'>A zero-based index showing where the desired
-    /// portion of. <paramref name='buffer'/> begins.</param>
+    /// portion of <paramref name='buffer'/> begins.</param>
     /// <param name='length'>The number of elements in the desired portion
-    /// of. <paramref name='buffer'/> (but not more than <paramref
+    /// of <paramref name='buffer'/> (but not more than <paramref
     /// name='buffer'/> 's length).</param>
     /// <returns>A 32-bit signed integer.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -458,7 +458,8 @@ namespace PeterO.Text {
     /// <item>Two legacy simplified Chinese encodings: <c>gbk</c> and
     /// <c>gb18030</c></item>
     /// <item><c>big5</c> : legacy traditional Chinese encoding</item>
-    /// <item><c>euc-kr</c> : legacy Korean encoding</item></list></param>
+    /// <item><c>euc-kr</c> : legacy Korean encoding</item></list>
+    /// .</param>
     /// <returns>A standardized name for the encoding. Returns the empty
     /// string if <paramref name='name'/> is null or empty, or if the
     /// encoding name is unsupported.</returns>
@@ -487,7 +488,7 @@ namespace PeterO.Text {
     /// alias to <c>windows-1252</c>, as specified in the Encoding
     /// Standard</item>
     /// <item><c>utf-7</c> - UTF-7 (7-bit universal character
-    /// set)</item></list></param>
+    /// set)</item></list>.</param>
     /// <returns>A standardized name for the encoding. Returns the empty
     /// string if <paramref name='name'/> is null or empty, or if the
     /// encoding name is unsupported.</returns>
@@ -770,18 +771,18 @@ byte[] bytes) {
     /// <param name='enc'>An ICharacterEncoding object.</param>
     /// <param name='bytes'>A byte array.</param>
     /// <param name='offset'>A zero-based index showing where the desired
-    /// portion of. <paramref name='bytes'/> begins.</param>
+    /// portion of <paramref name='bytes'/> begins.</param>
     /// <param name='length'>The length, in bytes, of the desired portion
-    /// of. <paramref name='bytes'/> (but not more than <paramref
+    /// of <paramref name='bytes'/> (but not more than <paramref
     /// name='bytes'/> 's length).</param>
     /// <returns>A string object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='enc'/> or <paramref name='bytes'/> is null.</exception>
-    /// <exception cref='System.ArgumentException'>Either
-    /// &#x22;offset&#x22; or &#x22;length&#x22; is less than 0 or greater
-    /// than &#x22;bytes&#x22;&#x27;s length, or &#x22;bytes&#x22;&#x27;s
-    /// length minus &#x22;offset&#x22; is less than
-    /// &#x22;length&#x22;.</exception>
+    /// <exception cref='ArgumentException'>Either <paramref
+    /// name='offset'/> or <paramref name='length'/> is less than 0 or
+    /// greater than <paramref name='bytes'/> 's length, or <paramref
+    /// name='bytes'/> 's length minus <paramref name='offset'/> is less
+    /// than <paramref name='length'/>.</exception>
     public static string DecodeToString(
 this ICharacterEncoding enc,
 byte[] bytes,
@@ -886,9 +887,9 @@ IWriter writer) {
     /// method.</para></summary>
     /// <param name='str'>A string object.</param>
     /// <param name='offset'>A zero-based index showing where the desired
-    /// portion of. <paramref name='str'/> begins.</param>
+    /// portion of <paramref name='str'/> begins.</param>
     /// <param name='length'>The length, in code units, of the desired
-    /// portion of. <paramref name='str'/> (but not more than <paramref
+    /// portion of <paramref name='str'/> (but not more than <paramref
     /// name='str'/> 's length).</param>
     /// <returns>An ICharacterInput object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref

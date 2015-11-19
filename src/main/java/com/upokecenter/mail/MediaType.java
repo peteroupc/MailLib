@@ -645,13 +645,13 @@ StringBuilder builder) {
     }
 
     /**
-     * Returns the charset parameter, converted to ASCII lower-case, if it exists,
-     * or <code>"us-ascii"</code> if the media type is ill-formed (RFC2045 sec.
+     * Gets this media type's charset parameter.
+     * @return Returns the charset parameter, converted to ASCII lower-case, if it
+     * exists, or "us-ascii" if the media type is ill-formed (RFC2045 sec.
      * 5.2), or if the media type is "text/plain" and doesn't have a charset
      * parameter (see RFC2046), or the default charset, if any, for the
      * media type if the charset parameter is absent. Returns an empty
      * string in all other cases.
-     * @return Not documented yet.
      */
 
     public String GetCharset() {

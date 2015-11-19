@@ -9,7 +9,9 @@ using System;
 using System.IO;
 
 namespace PeterO {
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Convenience class that contains static methods for
+    /// wrapping byte arrays and streams into byte readers and byte
+    /// writers.</summary>
   public static class DataIO {
     private sealed class ByteArrayTransform : IByteReader {
       private byte[] bytes;
@@ -67,10 +69,9 @@ namespace PeterO {
     /// <summary>Not documented yet.</summary>
     /// <param name='bytes'>A byte array.</param>
     /// <param name='offset'>A zero-based index showing where the desired
-    /// portion of. <paramref name='bytes'/> begins.</param>
+    /// portion of "bytes" begins.</param>
     /// <param name='length'>The length, in bytes, of the desired portion
-    /// of. <paramref name='bytes'/> (but not more than <paramref
-    /// name='bytes'/> 's length).</param>
+    /// of "bytes" (but not more than "bytes" 's length).</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
     /// <exception cref='ArgumentException'>Either <paramref
@@ -128,10 +129,9 @@ namespace PeterO {
     /// <summary>Not documented yet.</summary>
     /// <param name='bytes'>A byte array.</param>
     /// <param name='offset'>A zero-based index showing where the desired
-    /// portion of. <paramref name='bytes'/> begins.</param>
+    /// portion of "bytes" begins.</param>
     /// <param name='length'>The length, in bytes, of the desired portion
-    /// of. <paramref name='bytes'/> (but not more than <paramref
-    /// name='bytes'/> 's length).</param>
+    /// of "bytes" (but not more than "bytes" 's length).</param>
     /// <exception cref='ArgumentException'>Either <paramref
     /// name='offset'/> or <paramref name='length'/> is less than 0 or
     /// greater than <paramref name='bytes'/> 's length, or <paramref
@@ -166,19 +166,18 @@ namespace PeterO {
       return new ByteArrayTransform(bytes, 0, bytes.Length);
     }
 
-    /// <summary>Not documented yet.
+    /// <summary>Wraps a portion of a byte array into a byte reader object.
     /// <para>In the .NET implementation, this method is implemented as an
     /// extension method to any object implementing byte[] and can be
     /// called as follows: <c>bytes.ToTransform(offset, length)</c>. If
     /// the object's class already has a ToTransform method with the same
     /// parameters, that method takes precedence over this extension
     /// method.</para></summary>
-    /// <param name='bytes'>Not documented yet.</param>
+    /// <param name='bytes'>The byte array to wrap.</param>
     /// <param name='offset'>A zero-based index showing where the desired
-    /// portion of. <paramref name='bytes'/> begins.</param>
+    /// portion of "bytes" begins.</param>
     /// <param name='length'>The length, in bytes, of the desired portion
-    /// of. <paramref name='bytes'/> (but not more than <paramref
-    /// name='bytes'/> 's length).</param>
+    /// of "bytes" (but not more than "bytes" 's length).</param>
     /// <returns>An ITransform object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
@@ -217,7 +216,9 @@ int length) {
       return new ByteArrayTransform(bytes, offset, length);
     }
 
-    /// <summary>Not documented yet.
+    /// <summary>Wraps an input stream into a reader object. If an
+    /// IOException is thrown by the input stream, the reader object throws
+    /// InvalidOperationException instead.
     /// <para>In the .NET implementation, this method is implemented as an
     /// extension method to any object implementing Stream and can be
     /// called as follows: <c>input.ToTransform()</c>. If the object's
@@ -235,13 +236,15 @@ int length) {
       return new WrappedStream(input);
     }
 
-    /// <summary>Not documented yet.
+    /// <summary>Wraps an output stream into a writer object. If an
+    /// IOException is thrown by the input stream, the writer object throws
+    /// InvalidOperationException instead.
     /// <para>In the .NET implementation, this method is implemented as an
     /// extension method to any object implementing Stream and can be
     /// called as follows: <c>output.ToWriter()</c>. If the object's class
     /// already has a ToWriter method with the same parameters, that method
     /// takes precedence over this extension method.</para></summary>
-    /// <param name='output'>Not documented yet.</param>
+    /// <param name='output'>Output stream to wrap.</param>
     /// <returns>An IWriter object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='output'/> is null.</exception>
@@ -252,13 +255,15 @@ int length) {
       return new WrappedOutputStream(output);
     }
 
-    /// <summary>Not documented yet.
+    /// <summary>Wraps a byte writer (one that only implements a ReadByte
+    /// method) to a writer (one that also implements a three-parameter
+    /// Read method.)
     /// <para>In the .NET implementation, this method is implemented as an
     /// extension method to any object implementing IByteWriter and can be
     /// called as follows: <c>output.ToWriter()</c>. If the object's class
     /// already has a ToWriter method with the same parameters, that method
     /// takes precedence over this extension method.</para></summary>
-    /// <param name='output'>Not documented yet.</param>
+    /// <param name='output'>A byte stream.</param>
     /// <returns>An IWriter object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='output'/> is null.</exception>

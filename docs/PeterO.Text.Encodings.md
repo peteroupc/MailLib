@@ -6,25 +6,25 @@ Contains methods for converting text from one character encoding to another. Thi
 
 Now let's define some terms:
 
- * Acode point is a number that identifies a single text character, such as a letter, digit, or symbol.
+ * A code point is a number that identifies a single text character, such as a letter, digit, or symbol.
 
- * Anencoder is a class that converts a sequence of bytes to a sequence of code points in the universal character set (otherwise known as Unicode). An encoder implements theICharacterEncoder interface.
+ * An encoder is a class that converts a sequence of bytes to a sequence of code points in the universal character set (otherwise known under the name Unicode). An encoder implements the `ICharacterEncoder`  interface.
 
- * Adecoder is a class that converts a sequence of Unicode code points to a sequence of bytes. An encoder implements theICharacterEncoder interface.
+ * A decoder is a class that converts a sequence of Unicode code points to a sequence of bytes. An encoder implements the  `ICharacterDecoder`  interface.
 
- * Anencoding is a mapping from bytes to universal code points and from universal code points to bytes. An encoding allows access to both an encoder and a decoder and implements the `ICharacterEncoder`  interface.
+ * An encoding is a mapping from bytes to universal code points and from universal code points to bytes. An encoding allows access to both an encoder and a decoder and implements the `ICharacterEncoding`  interface.
 
- * Acharacter set is a set of code points which are each assigned to a single text character. (This may also be called acoded character set.)
+ * A character set is a set of code points which are each assigned to a single text character. (This may also be called acoded character set.)
 
 There are several kinds of encodings:
 
- * Single-byte encodings define a character set that assigns one code point to one byte. For example, the ISO 8859 encodings and Windows-1252 are single-byte encodings. ASCII is also a single-byte encoding, although its character set only uses the lower 7 bits of an eight-bit byte. In the Encoding Standard, all single-byte encodings use the ASCII characters as the first 128 code points of their character sets.
+ * Single-byte encodings define a character set that assigns one code point to one byte. For example, the ISO 8859 encodings and  `windows-1252`  are single-byte encodings. ASCII is also a single-byte encoding, although its character set only uses the lower 7 bits of an eight-bit byte. In the Encoding Standard, all single-byte encodings use the ASCII characters as the first 128 code points of their character sets. (Here, ASCII is the same as the International Reference Version of the ISO 646 standard.)
 
- * Multi-byte encodings define a character set that assigns some or all code points to several bytes. For example, most legacy East Asian encodings, such as  `shift_jis` ,  `gbk` , and `big5`  are multi-byte encodings, as well as  `utf-8`  and `utf-16` , which both encode the Unicode character set.
+ * Multi-byte encodings define a character set that assigns some or all code points to several bytes. For example, most legacy East Asian encodings, such as  `shift_jis` ,  `gbk` , and  `big5`  are multi-byte encodings, as well as  `utf-8` and  `utf-16` , which both encode the Unicode character set.
 
- * Escape-based encodings use escape sequences to encode one or more character sets in the same sequence of bytes. The best example of an escape-based encoding supported in the Encoding Standard is `iso-2022-jp` , which defines a Katakana, a Kanji, and an ASCII character set.
+ * Escape-based encodings use escape sequences to encode one or more character sets in the same sequence of bytes. The best example of an escape-based encoding supported in the Encoding Standard is  `iso-2022-jp` , which defines a Katakana, a Kanji, and an ASCII character set.
 
- * The Encoding Standard also defines areplacement encoding, which causes a decoding error and is used to alias a few problematic or unsupported encoding names, such as  `hz-gb-2312` .
+ * The Encoding Standard also defines a replacement encoding, which causes a decoding error and is used to alias a few problematic or unsupported encoding names, such as `hz-gb-2312` .
 
 Getting an Encoding
 
@@ -80,9 +80,9 @@ Not documented yet.In the .NET implementation, this method is implemented as an 
 
  * <i>bytes</i>: A byte array.
 
- * <i>offset</i>: A 32-bit signed integer.
+ * <i>offset</i>: A zero-based index showing where the desired portion of "bytes" begins.
 
- * <i>length</i>: Another 32-bit signed integer.
+ * <i>length</i>: The length, in bytes, of the desired portion of "bytes" (but not more than "bytes" 's length).
 
 <b>Returns:</b>
 
@@ -94,6 +94,15 @@ A string object.
 The parameter  <i>enc</i>
  or  <i>bytes</i>
  is null.
+
+ * System.ArgumentException:
+Either  <i>offset</i>
+ or  <i>length</i>
+ is less than 0 or greater than  <i>bytes</i>
+ 's length, or  <i>bytes</i>
+ 's length minus  <i>offset</i>
+ is less than  <i>length</i>
+.
 
 ### DecodeToString
 
@@ -292,17 +301,11 @@ Returns a character encoding from the given name.
 
 <b>Parameters:</b>
 
- * <i>name</i>: A string naming a character encoding. See the ResolveAlias method.
+ * <i>name</i>: A string naming a character encoding. See the ResolveAlias method. Can be null.
 
 <b>Returns:</b>
 
 An ICharacterEncoding object.
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter  <i>name</i>
- is null.
 
 ### GetEncoding
 
@@ -314,7 +317,7 @@ Returns a character encoding from the given name.
 
 <b>Parameters:</b>
 
- * <i>name</i>: A string naming a character encoding. See the ResolveAlias method.
+ * <i>name</i>: A string naming a character encoding. See the ResolveAlias method. Can be null.
 
  * <i>forEmail</i>: If false, uses the encoding resolution rules in the Encoding Standard. If true, uses modified rules as described in the ResolveAliasForEmail method.
 
@@ -346,61 +349,7 @@ Resolves a character encoding's name to a standard form.
 
 <b>Parameters:</b>
 
- * <i>name</i>: A string that names a given character encoding. Any leading and trailing whitespace is removed and the name converted to lowercase before resolving the encoding's name. The Encoding Standard supports only the following encodings (and defines aliases for most of them):.
-
- *  `utf-8`  - UTF-8 (8-bit universal character set, the encoding recommended by the Encoding Standard for new data formats)
-
- *  `utf-16le`  - UTF-16 little-endian (16-bit UCS)
-
- *  `utf-16be`  - UTF-16 big-endian (16-bit UCS)
-
- * Two special purpose encodings:  `x-user-defined`  and `replacement`
-
- * 28 legacy single-byte encodings:
-
- *  `windows-1252`  - Western Europe
-
- *  `iso-8859-2` ,  `windows-1250`  - Central Europe
-
- *  `iso-8859-10`  - Northern Europe
-
- *  `iso-8859-4` ,  `windows-1257`  - Baltic
-
- *  `iso-8859-13`  - Estonian
-
- *  `iso-8859-14`  - Celtic
-
- *  `iso-8859-16`  - Romanian
-
- *  `iso-8859-5` ,  `ibm866` ,  `koi8-r` , `windows-1251` ,  `x-mac-cyrillic`  - Cyrillic
-
- *  `koi8-u`  - Ukrainian
-
- *  `iso-8859-7` ,  `windows-1253`  - Greek
-
- *  `iso-8859-6` ,  `windows-1256`  - Arabic
-
- *  `iso-8859-8` ,  `iso-8859-8-i` ,  `windows-1255` - Hebrew
-
- *  `iso-8859-3`  - Latin 3
-
- *  `iso-8859-15`  - Latin 9
-
- *  `windows-1254`  - Turkish
-
- *  `windows-874`  - Thai
-
- *  `windows-1258`  - Vietnamese
-
- *  `macintosh`  - Mac Roman
-
- * Three legacy Japanese encodings:  `shift_jis` , `euc-jp` ,  `iso-2022-jp`
-
- * Two legacy simplified Chinese encodings:  `gbk`  and `gb18030`
-
- *  `big5`  - legacy traditional Chinese encoding
-
- *  `euc-kr`  - legacy Korean encoding
+ * <i>name</i>: A string that names a given character encoding. Can be null. Any leading and trailing whitespace is removed and the name converted to lowercase before resolving the encoding's name. The Encoding Standard supports only the following encodings (and defines aliases for most of them):.
 
 <b>Returns:</b>
 
@@ -416,13 +365,7 @@ Resolves a character encoding's name to a canonical form, using rules more suita
 
 <b>Parameters:</b>
 
- * <i>name</i>: A string naming a character encoding. Uses a modified version of the rules in the Encoding Standard to better conform, in some cases, to email standards like MIME. In addition to the encodings mentioned in ResolveAlias, the following additional encodings are supported:.
-
- *  `us-ascii`  - ASCII 7-bit encoding, rather than an alias to  `windows-1252` , as specified in the Encoding Standard
-
- *  `iso-8859-1`  - Latin-1 8-bit encoding, rather than an alias to  `windows-1252` , as specified in the Encoding Standard
-
- *  `utf-7`  - UTF-7 (7-bit universal character set)
+ * <i>name</i>: A string naming a character encoding. Can be null. Uses a modified version of the rules in the Encoding Standard to better conform, in some cases, to email standards like MIME. In addition to the encodings mentioned in ResolveAlias, the following additional encodings are supported:.
 
 <b>Returns:</b>
 
@@ -484,9 +427,9 @@ Converts a portion of a text string to a character input. The resulting input ca
 
  * <i>str</i>: A string object.
 
- * <i>offset</i>: A 32-bit signed integer.
+ * <i>offset</i>: A zero-based index showing where the desired portion of "str" begins.
 
- * <i>length</i>: Another 32-bit signed integer.
+ * <i>length</i>: The length, in code units, of the desired portion of "str" (but not more than "str" 's length).
 
 <b>Returns:</b>
 
@@ -499,4 +442,10 @@ The parameter  <i>str</i>
  is null.
 
  * System.ArgumentException:
-Either "offset" or "length" is less than 0 or greater than "str"'s length, or "str"'s length minus "offset" is less than "length".
+Either  <i>offset</i>
+ or  <i>length</i>
+ is less than 0 or greater than  <i>str</i>
+ 's length, or  <i>str</i>
+ 's length minus  <i>offset</i>
+ is less than <i>length</i>
+.

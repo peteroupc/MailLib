@@ -307,7 +307,7 @@ strLower.length() >= 4 && strLower.indexOf(
     /**
      * Gets a parameter from this disposition object.
      * @param name The name of the parameter to get. The name will be matched
-     * case-insensitively. Can&#x27;t be null.
+     * case-insensitively. Can't be null.
      * @return The value of the parameter, or null if the parameter does not exist.
      * @throws NullPointerException The parameter {@code name} is null.
      * @throws IllegalArgumentException The parameter {@code name} is empty.

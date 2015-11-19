@@ -100,10 +100,13 @@ public final void setSubType(String value) {
     }
 
     /**
-     * Not documented yet.
-     * @param str A string object.
+     * Sets this media type's top-level type.
+     * @param str A string object naming a top-level type, such as "text" or
+     * "audio".
      * @return This instance.
      * @throws NullPointerException The parameter {@code str} is null.
+     * @throws IllegalArgumentException The parameter {@code str} is syntactically invalid
+     * for a top-level type.
      */
     public MediaTypeBuilder SetTopLevelType(String str) {
       if (str == null) {

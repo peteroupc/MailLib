@@ -648,13 +648,13 @@ StringBuilder builder) {
       return i;
     }
 
-    /// <summary>Returns the charset parameter, converted to ASCII
-    /// lower-case, if it exists, or <c>"us-ascii"</c> if the media type is
+    /// <summary>Gets this media type's charset parameter.</summary>
+    /// <returns>Returns the charset parameter, converted to ASCII
+    /// lower-case, if it exists, or "us-ascii" if the media type is
     /// ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain"
     /// and doesn't have a charset parameter (see RFC2046), or the default
     /// charset, if any, for the media type if the charset parameter is
-    /// absent. Returns an empty string in all other cases.</summary>
-    /// <returns>Not documented yet.</returns>
+    /// absent. Returns an empty string in all other cases.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design", "CA1024",

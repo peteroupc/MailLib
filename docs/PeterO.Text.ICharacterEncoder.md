@@ -10,7 +10,7 @@ Defines a method that can be implemented by classes that convert Unicode code po
         int c,
         PeterO.IWriter output);
 
-Converts a Unicode code point to bytes and writes the bytes to an output stream.
+Converts a Unicode code point to bytes and writes the bytes to an output stream.If this method returns -2, indicating an error, the caller of this method can take one of a variety of actions to handle the error. For example, it can write an escape sequence using the code point (such as the HTML error mode in the Encoding Standard), it can replace the code point with a "best fit" to that code point (which can consist of one or more bytes) and write the "best fit" instead, it can replace the code point with an arbitrary byte or sequence of bytes, or it can throw an exception. In some cases, where the error won't cause data loss or a security problem, the caller can also ignore the encoding error.
 
 <b>Parameters:</b>
 

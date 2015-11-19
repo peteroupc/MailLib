@@ -233,10 +233,13 @@ value.length());
     }
 
     /**
-     * Not documented yet.
+     * Determines whether the given string is a syntactically valid domain name.
      * @param str A string object.
-     * @param lookupRules Another Boolean object.
-     * @return A Boolean object.
+     * @param lookupRules If true, uses rules to apply when looking up the string
+     * as a domain name. If false, uses rules to apply when registering the
+     * string as a domain name.
+     * @return True if the given string is a syntactically valid domain name;
+     * otherwise; false.
      */
     public static boolean IsValidDomainName(String str, boolean lookupRules) {
       if (((str) == null || (str).length() == 0)) {

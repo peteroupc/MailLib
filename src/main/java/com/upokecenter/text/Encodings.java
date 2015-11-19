@@ -86,11 +86,10 @@ private Encodings() {
     /**
      * Not documented yet.
      * @param buffer An array of 32-bit unsigned integers.
-     * @param offset A zero-based index showing where the desired portion of.
-     * <paramref name='buffer'/> begins.
-     * @param length The number of elements in the desired portion of. <paramref
-     * name='buffer'/> (but not more than <paramref name='buffer'/> 's
-     * length).
+     * @param offset A zero-based index showing where the desired portion of {@code
+     * buffer} begins.
+     * @param length The number of elements in the desired portion of {@code
+     * buffer} (but not more than {@code buffer} 's length).
      * @return A 32-bit signed integer.
      * @throws NullPointerException The parameter {@code buffer} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
@@ -439,7 +438,7 @@ private Encodings() {
      * <code>shift_jis</code>, <code>euc-jp</code>, <code>iso-2022-jp</code></li> <li>Two
      * legacy simplified Chinese encodings: <code>gbk</code> and
      * <code>gb18030</code></li> <li><code>big5</code> : legacy traditional Chinese
-     * encoding</li> <li><code>euc-kr</code> : legacy Korean encoding</li></ul>
+     * encoding</li> <li><code>euc-kr</code> : legacy Korean encoding</li></ul> .
      * @return A standardized name for the encoding. Returns the empty string if
      * {@code name} is null or empty, or if the encoding name is
      * unsupported.
@@ -466,7 +465,7 @@ private Encodings() {
      * in the Encoding Standard</li> <li><code>iso-8859-1</code> - Latin-1 8-bit
      * encoding, rather than an alias to <code>windows-1252</code>, as specified
      * in the Encoding Standard</li> <li><code>utf-7</code> - UTF-7 (7-bit
-     * universal character set)</li></ul>
+     * universal character set)</li></ul>.
      * @return A standardized name for the encoding. Returns the empty string if
      * {@code name} is null or empty, or if the encoding name is
      * unsupported.
@@ -748,17 +747,16 @@ byte[] bytes) {
      * that method takes precedence over this extension method.</p>
      * @param enc An ICharacterEncoding object.
      * @param bytes A byte array.
-     * @param offset A zero-based index showing where the desired portion of.
-     * <paramref name='bytes'/> begins.
-     * @param length The length, in bytes, of the desired portion of. <paramref
-     * name='bytes'/> (but not more than <paramref name='bytes'/> 's
-     * length).
+     * @param offset A zero-based index showing where the desired portion of {@code
+     * bytes} begins.
+     * @param length The length, in bytes, of the desired portion of {@code bytes}
+     * (but not more than {@code bytes} 's length).
      * @return A string object.
      * @throws NullPointerException The parameter {@code enc} or {@code bytes} is
      * null.
-     * @throws java.lang.IllegalArgumentException Either "offset" or "length" is less than 0
-     * or greater than "bytes"'s length, or "bytes"'s length minus "offset"
-     * is less than "length".
+     * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
+     * than 0 or greater than {@code bytes} 's length, or {@code bytes} 's
+     * length minus {@code offset} is less than {@code length}.
      */
     public static String DecodeToString(
 ICharacterEncoding enc,
@@ -864,11 +862,10 @@ IWriter writer) {
      * already has a StringToInput method with the same parameters, that
      * method takes precedence over this extension method.</p>
      * @param str A string object.
-     * @param offset A zero-based index showing where the desired portion of.
-     * <paramref name='str'/> begins.
-     * @param length The length, in code units, of the desired portion of.
-     * <paramref name='str'/> (but not more than <paramref name='str'/> 's
-     * length).
+     * @param offset A zero-based index showing where the desired portion of {@code
+     * str} begins.
+     * @param length The length, in code units, of the desired portion of {@code
+     * str} (but not more than {@code str} 's length).
      * @return An ICharacterInput object.
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less

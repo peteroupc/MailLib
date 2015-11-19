@@ -12,7 +12,7 @@ Creates a decoder for this character encoding with initial state. If the decoder
 
 <b>Returns:</b>
 
-Not documented yet.
+A character decoder object.
 
 ### GetEncoder
 
@@ -22,4 +22,4 @@ Creates an encoder for this character encoding with initial state. If the encode
 
 <b>Returns:</b>
 
-Not documented yet.
+A character encoder object.
