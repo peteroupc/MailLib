@@ -21,7 +21,7 @@ namespace PeterO.Text {
       int index = 0;
       var copy = new byte[16];
       var output = new byte[8 + (input.Length * 3 / 2)];
-      var outputPos = 0;
+      int outputPos = 0;
       while (index < input.Length) {
         int b = input[index];
         int literalLength = (b >> 4) & 15;
@@ -93,13 +93,6 @@ namespace PeterO.Text {
         }
         if (matchLength > copy.Length) {
           copy = new byte[matchLength];
-        }
-        if (output == null) {
-          throw new ArgumentNullException("output");
-        }
-        if (pos < 0) {
-          throw new ArgumentException("pos (" + pos +
-            ") is less than " + 0);
         }
         if (pos > outputPos) {
           throw new ArgumentException("pos (" + pos + ") is more than " +

@@ -24,7 +24,7 @@ private Lz4() {
       int index = 0;
       byte[] copy = new byte[16];
       byte[] output = new byte[8 + (input.length * 3 / 2)];
-      var outputPos = 0;
+      int outputPos = 0;
       while (index < input.length) {
         int b = input[index];
         int literalLength = (b >> 4) & 15;

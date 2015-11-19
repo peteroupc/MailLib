@@ -1662,7 +1662,7 @@ false);
       if (!isMultipart) {
         int index = 0;
         while (true) {
-          int c = (index >= bodyToWrite.Length) ? -1 : bodyToWrite[index++];
+          int c = (index >= bodyToWrite.Length) ? -1 : ((int)bodyToWrite[index++])&0xFF;
           int count = bodyEncoder.Encode(c, output);
           if (count == -2) {
  throw new MessageDataException("encoding error");
