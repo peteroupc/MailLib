@@ -75,7 +75,7 @@ private Encodings() {
       }
 
     /**
-     * Not documented yet.
+     * This is an internal method.
      * @return A 32-bit signed integer.
      */
       public int ReadChar() {
@@ -84,7 +84,7 @@ private Encodings() {
       }
 
     /**
-     * Not documented yet.
+     * This is an internal method.
      * @param buffer An array of 32-bit unsigned integers.
      * @param offset A zero-based index showing where the desired portion of {@code
      * buffer} begins.
@@ -408,37 +408,37 @@ private Encodings() {
      * leading and trailing whitespace is removed and the name converted to
      * lowercase before resolving the encoding&#x27;s name. The Encoding
      * Standard supports only the following encodings (and defines aliases
-     * for most of them):. <ul> <li><code>utf-8</code> - UTF-8 (8-bit universal
+     * for most of them):. <ul> <li> {@code utf-8} - UTF-8 (8-bit universal
      * character set, the encoding recommended by the Encoding Standard for
-     * new data formats)</li> <li><code>utf-16le</code> - UTF-16 little-endian
-     * (16-bit UCS)</li> <li><code>utf-16be</code> - UTF-16 big-endian (16-bit
-     * UCS)</li> <li>Two special purpose encodings: <code>x-user-defined</code>
-     * and <code>replacement</code></li> <li>28 legacy single-byte encodings: <ul>
-     * <li><code>windows-1252</code> - Western Europe (Note: The Encoding Standard
-     * aliases the names <code>us-ascii</code> and <code>iso-8859-1</code> to
-     * <code>windows-1252</code>, which specifies a different character set from
-     * either; it differs from <code>iso-8859-1</code> by assigning different
+     * new data formats)</li> <li> {@code utf-16le} - UTF-16 little-endian
+     * (16-bit UCS)</li> <li> {@code utf-16be} - UTF-16 big-endian (16-bit
+     * UCS)</li> <li>Two special purpose encodings: {@code x-user-defined}
+     * and {@code replacement}</li> <li>28 legacy single-byte encodings:
+     * <ul> <li> {@code windows-1252} - Western Europe (Note: The Encoding
+     * Standard aliases the names {@code us-ascii} and {@code iso-8859-1} to
+     * {@code windows-1252}, which specifies a different character set from
+     * either; it differs from {@code iso-8859-1} by assigning different
      * characters to some bytes from 0x80 to 0x9F. The Encoding Standard
-     * does this for compatibility with existing Web pages.)</li>
-     * <li><code>iso-8859-2</code>, <code>windows-1250</code> : Central Europe</li>
-     * <li><code>iso-8859-10</code> : Northern Europe</li> <li><code>iso-8859-4</code>,
-     * <code>windows-1257</code> : Baltic</li> <li><code>iso-8859-13</code> :
-     * Estonian</li> <li><code>iso-8859-14</code> : Celtic</li>
-     * <li><code>iso-8859-16</code> : Romanian</li> <li><code>iso-8859-5</code>,
-     * <code>ibm866</code>, <code>koi8-r</code>, <code>windows-1251</code>,
-     * <code>x-mac-cyrillic</code> : Cyrillic</li> <li><code>koi8-u</code> :
-     * Ukrainian</li> <li><code>iso-8859-7</code>, <code>windows-1253</code> :
-     * Greek</li> <li><code>iso-8859-6</code>, <code>windows-1256</code> : Arabic</li>
-     * <li><code>iso-8859-8</code>, <code>iso-8859-8-i</code>, <code>windows-1255</code> :
-     * Hebrew</li> <li><code>iso-8859-3</code> : Latin 3</li>
-     * <li><code>iso-8859-15</code> : Latin 9</li> <li><code>windows-1254</code> :
-     * Turkish</li> <li><code>windows-874</code> : Thai</li>
-     * <li><code>windows-1258</code> : Vietnamese</li> <li><code>macintosh</code> : Mac
-     * Roman</li></ul></li> <li>Three legacy Japanese encodings:
-     * <code>shift_jis</code>, <code>euc-jp</code>, <code>iso-2022-jp</code></li> <li>Two
-     * legacy simplified Chinese encodings: <code>gbk</code> and
-     * <code>gb18030</code></li> <li><code>big5</code> : legacy traditional Chinese
-     * encoding</li> <li><code>euc-kr</code> : legacy Korean encoding</li></ul> .
+     * does this for compatibility with existing Web pages.)</li> <li> {@code
+     * iso-8859-2}, {@code windows-1250} : Central Europe</li> <li> {@code
+     * iso-8859-10} : Northern Europe</li> <li> {@code iso-8859-4}, {@code
+     * windows-1257} : Baltic</li> <li> {@code iso-8859-13} : Estonian</li>
+     * <li> {@code iso-8859-14} : Celtic</li> <li> {@code iso-8859-16} :
+     * Romanian</li> <li> {@code iso-8859-5}, {@code ibm866}, {@code koi8-r},
+     * {@code windows-1251}, {@code x-mac-cyrillic} : Cyrillic</li>
+     * <li> {@code koi8-u} : Ukrainian</li> <li> {@code iso-8859-7}, {@code
+     * windows-1253} : Greek</li> <li> {@code iso-8859-6}, {@code
+     * windows-1256} : Arabic</li> <li> {@code iso-8859-8}, {@code
+     * iso-8859-8-i}, {@code windows-1255} : Hebrew</li> <li> {@code
+     * iso-8859-3} : Latin 3</li> <li> {@code iso-8859-15} : Latin 9</li>
+     * <li> {@code windows-1254} : Turkish</li> <li> {@code windows-874} :
+     * Thai</li> <li> {@code windows-1258} : Vietnamese</li> <li> {@code
+     * macintosh} : Mac Roman</li></ul></li> <li>Three legacy Japanese
+     * encodings: {@code shift_jis}, {@code euc-jp}, {@code
+     * iso-2022-jp}</li> <li>Two legacy simplified Chinese encodings: {@code
+     * gbk} and {@code gb18030}</li> <li> {@code big5} : legacy traditional
+     * Chinese encoding</li> <li> {@code euc-kr} : legacy Korean
+     * encoding</li></ul> .
      * @return A standardized name for the encoding. Returns the empty string if
      * {@code name} is null or empty, or if the encoding name is
      * unsupported.
@@ -460,11 +460,11 @@ private Encodings() {
      * modified version of the rules in the Encoding Standard to better
      * conform, in some cases, to email standards like MIME. In addition to
      * the encodings mentioned in ResolveAlias, the following additional
-     * encodings are supported:. <ul> <li><code>us-ascii</code> - ASCII 7-bit
-     * encoding, rather than an alias to <code>windows-1252</code>, as specified
-     * in the Encoding Standard</li> <li><code>iso-8859-1</code> - Latin-1 8-bit
-     * encoding, rather than an alias to <code>windows-1252</code>, as specified
-     * in the Encoding Standard</li> <li><code>utf-7</code> - UTF-7 (7-bit
+     * encodings are supported:. <ul> <li> {@code us-ascii} - ASCII 7-bit
+     * encoding, rather than an alias to {@code windows-1252}, as specified
+     * in the Encoding Standard</li> <li> {@code iso-8859-1} - Latin-1 8-bit
+     * encoding, rather than an alias to {@code windows-1252}, as specified
+     * in the Encoding Standard</li> <li> {@code utf-7} - UTF-7 (7-bit
      * universal character set)</li></ul>.
      * @return A standardized name for the encoding. Returns the empty string if
      * {@code name} is null or empty, or if the encoding name is
@@ -545,7 +545,7 @@ private Encodings() {
      * parameters, that method takes precedence over this extension
      * method.</p>
      * @param encoding An object that implements a character encoding.
-     * @param str Not documented yet.
+     * @param str A string to be encoded into a byte array.
      * @return A byte array containing the string encoded in the given text
      * encoding.
      * @throws NullPointerException The parameter {@code encoding} is null.
@@ -569,8 +569,8 @@ private Encodings() {
      * <code>input.EncodeToBytes(encoding)</code>. If the object's class already
      * has a EncodeToBytes method with the same parameters, that method
      * takes precedence over this extension method.</p>
-     * @param input Not documented yet.
-     * @param encoding Not documented yet.
+     * @param input An object that implements a stream of universal code points.
+     * @param encoding An ICharacterEncoding object.
      * @return A byte array.
      * @throws NullPointerException The parameter {@code encoding} is null.
      */
@@ -585,16 +585,16 @@ private Encodings() {
 
     /**
      * Reads Unicode characters from a character input and writes them to a byte
-     * array encoded in a given character encoding. When writing to the byte
-     * array, any characters that can't be encoded are replaced with the
-     * byte 0x3f (the question mark character). <p>In the .NET
+     * array encoded using a given character encoding. When writing to the
+     * byte array, any characters that can't be encoded are replaced with
+     * the byte 0x3f (the question mark character). <p>In the .NET
      * implementation, this method is implemented as an extension method to
      * any object implementing ICharacterInput and can be called as follows:
      * <code>input.EncodeToBytes(encoder)</code>. If the object's class already
      * has a EncodeToBytes method with the same parameters, that method
      * takes precedence over this extension method.</p>
-     * @param input Not documented yet.
-     * @param encoder Not documented yet.
+     * @param input An object that implements a stream of universal code points.
+     * @param encoder An object that implements a character encoder.
      * @return A byte array.
      * @throws NullPointerException The parameter {@code encoder} or {@code input}
      * is null.
@@ -635,7 +635,7 @@ private Encodings() {
      * takes precedence over this extension method.</p>
      * @param input Not documented yet.
      * @param encoding Not documented yet.
-     * @param writer An IWriter object.
+     * @param writer Not documented yet. (3).
      * @throws NullPointerException The parameter {@code encoding} is null.
      */
     public static void EncodeToWriter(
@@ -658,9 +658,9 @@ private Encodings() {
      * <code>input.EncodeToBytes(encoder)</code>. If the object's class already
      * has a EncodeToBytes method with the same parameters, that method
      * takes precedence over this extension method.</p>
-     * @param input Not documented yet.
-     * @param encoder Not documented yet.
-     * @param writer An IWriter object.
+     * @param input An object that implements a stream of universal code points.
+     * @param encoder An object that implements a character encoder.
+     * @param writer A byte writer to write the encoded bytes to.
      * @throws NullPointerException The parameter {@code encoder} or {@code input}
      * is null.
      */
@@ -701,25 +701,36 @@ private Encodings() {
      * follows: <code>encoder.StringToBytes(str)</code>. If the object's class
      * already has a StringToBytes method with the same parameters, that
      * method takes precedence over this extension method.</p>
-     * @param encoder Not documented yet.
-     * @param str Not documented yet.
+     * @param encoder An object that implements a character encoder.
+     * @param str A text string to encode into a byte array.
      * @return A byte array.
+     * @throws java.lang.NullPointerException The parameter {@code encoder} or {@code
+     * str} is null.
      */
     public static byte[] StringToBytes(
       ICharacterEncoder encoder,
       String str) {
+      if (encoder == null) {
+  throw new NullPointerException("encoder");
+}
+      if (str == null) {
+  throw new NullPointerException("str");
+}
       return EncodeToBytes(
           new StringCharacterInput(str),
           encoder);
     }
 
     /**
-     * Not documented yet. <p>In the .NET implementation, this method is
-     * implemented as an extension method to any object implementing
-     * ICharacterEncoding and can be called as follows:
-     * <code>enc.DecodeToString(bytes)</code>. If the object's class already has a
-     * DecodeToString method with the same parameters, that method takes
-     * precedence over this extension method.</p>
+     * Reads a byte array from a data source and converts the bytes from a given
+     * encoding to a text string. Errors in decoding are handled by
+     * replacing erroneous bytes with the replacement character (U + FFFD).
+     * <p>In the .NET implementation, this method is implemented as an
+     * extension method to any object implementing ICharacterEncoding and
+     * can be called as follows: <code>enc.DecodeToString(bytes)</code>. If the
+     * object's class already has a DecodeToString method with the same
+     * parameters, that method takes precedence over this extension
+     * method.</p>
      * @param enc An ICharacterEncoding object.
      * @param bytes A byte array.
      * @return A string object.
@@ -739,14 +750,18 @@ byte[] bytes) {
     }
 
     /**
-     * Not documented yet. <p>In the .NET implementation, this method is
-     * implemented as an extension method to any object implementing
-     * ICharacterEncoding and can be called as follows:
-     * <code>enc.DecodeToString(bytes, offset, length)</code>. If the object's
-     * class already has a DecodeToString method with the same parameters,
-     * that method takes precedence over this extension method.</p>
-     * @param enc An ICharacterEncoding object.
-     * @param bytes A byte array.
+     * Reads a portion of a byte array from a data source and converts the bytes
+     * from a given encoding to a text string. Errors in decoding are
+     * handled by replacing erroneous bytes with the replacement character
+     * (U + FFFD). <p>In the .NET implementation, this method is implemented
+     * as an extension method to any object implementing ICharacterEncoding
+     * and can be called as follows: <code>enc.DecodeToString(bytes, offset,
+     * length)</code>. If the object's class already has a DecodeToString
+     * method with the same parameters, that method takes precedence over
+     * this extension method.</p>
+     * @param enc An object implementing a character encoding (gives access to an
+     * encoder and a decoder).
+     * @param bytes A byte array containing the desired portion to read.
      * @param offset A zero-based index showing where the desired portion of {@code
      * bytes} begins.
      * @param length The length, in bytes, of the desired portion of {@code bytes}
@@ -805,7 +820,8 @@ int length) {
      * same parameters, that method takes precedence over this extension
      * method.</p>
      * @param str A string object.
-     * @param enc An ICharacterEncoding object.
+     * @param enc An object implementing a character encoding (gives access to an
+     * encoder and a decoder).
      * @return A byte array.
      * @throws NullPointerException The parameter {@code str} or {@code enc} is
      * null.
@@ -833,13 +849,14 @@ ICharacterEncoding enc) {
      * follows: <code>str.EncodeToBytes(enc, writer)</code>. If the object's class
      * already has a EncodeToBytes method with the same parameters, that
      * method takes precedence over this extension method.</p>
-     * @param str Not documented yet.
-     * @param enc Not documented yet.
-     * @param writer Not documented yet. (3).
+     * @param str A string object to encode.
+     * @param enc An object implementing a character encoding (gives access to an
+     * encoder and a decoder).
+     * @param writer A byte writer where the encoded bytes will be written to.
      * @throws NullPointerException The parameter {@code str} or {@code enc} is
      * null.
      */
-    public static void EncodeToBytes(
+    public static void EncodeToWriter(
 String str,
 ICharacterEncoding enc,
 IWriter writer) {
@@ -910,8 +927,9 @@ int length) {
      * object's class already has a InputToString method with the same
      * parameters, that method takes precedence over this extension
      * method.</p>
-     * @param reader Not documented yet.
-     * @return A string object.
+     * @param reader A character input whose characters will be converted to a text
+     * string.
+     * @return A text string containing the characters read.
      */
     public static String InputToString(ICharacterInput reader) {
       StringBuilder builder = new StringBuilder();

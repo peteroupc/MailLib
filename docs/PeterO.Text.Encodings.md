@@ -80,9 +80,12 @@ Not documented yet.In the .NET implementation, this method is implemented as an 
 
  * <i>bytes</i>: A byte array.
 
- * <i>offset</i>: A zero-based index showing where the desired portion of "bytes" begins.
+ * <i>offset</i>: A zero-based index showing where the desired portion of  <i>bytes</i>
+ begins.
 
- * <i>length</i>: The length, in bytes, of the desired portion of "bytes" (but not more than "bytes" 's length).
+ * <i>length</i>: The length, in bytes, of the desired portion of  <i>bytes</i>
+ (but not more than  <i>bytes</i>
+ 's length).
 
 <b>Returns:</b>
 
@@ -135,13 +138,15 @@ The parameter  <i>encoding</i>
         this PeterO.Text.ICharacterInput input,
         PeterO.Text.ICharacterEncoder encoder);
 
-Reads Unicode characters from a character input and writes them to a byte array encoded in a given character encoding. When writing to the byte array, any characters that can't be encoded are replaced with the byte 0x3f (the question mark character).In the .NET implementation, this method is implemented as an extension method to any object implementing ICharacterInput and can be called as follows:  `input.EncodeToBytes(encoder)` . If the object's class already has a EncodeToBytes method with the same parameters, that method takes precedence over this extension method.
+Reads Unicode characters from a character input and writes them to a byte array encoded in a given character encoding. When writing to the byte array, any characters that can't be encoded are replaced with the byte 0x3f (the question mark character).In the .NET implementation, this m ethod is implemented as an extension method to any object implementing ICharacterInput and can be called as follows: `input.EncodeToBytes(encoder)` . If the object's class already has a EncodeToBytes method with the same parameters, that method takes precedence over this extension method.
 
 <b>Parameters:</b>
 
- * <i>input</i>: Not documented yet.
-
  * <i>encoder</i>: Not documented yet.
+
+ * <i>input</i>: An object that implements a stream of universal code points.
+
+ * <i>encoder</i>: An object that implements a character encoder.
 
 <b>Returns:</b>
 
@@ -164,9 +169,9 @@ Reads Unicode characters from a character input and writes them to a byte array 
 
 <b>Parameters:</b>
 
- * <i>input</i>: Not documented yet.
+ * <i>input</i>: An object that implements a stream of universal code points.
 
- * <i>encoding</i>: Not documented yet.
+ * <i>encoding</i>: An ICharacterEncoding object.
 
 <b>Returns:</b>
 
@@ -238,11 +243,11 @@ Reads Unicode characters from a character input and writes them to a byte array 
 
 <b>Parameters:</b>
 
- * <i>input</i>: Not documented yet.
+ * <i>input</i>: An object that implements a stream of universal code points.
 
- * <i>encoder</i>: Not documented yet.
+ * <i>encoder</i>: An object that implements a character encoder.
 
- * <i>writer</i>: An IWriter object.
+ * <i>writer</i>: A byte writer to write the encoded bytes to.
 
 <b>Exceptions:</b>
 
@@ -259,14 +264,6 @@ The parameter  <i>encoder</i>
         PeterO.IWriter writer);
 
 Reads Unicode characters from a character input and writes them to a byte array encoded using the given character encoder. When writing to the byte array, any characters that can't be encoded are replaced with the byte 0x3f (the question mark character).In the .NET implementation, this method is implemented as an extension method to any object implementing ICharacterInput and can be called as follows:  `input.EncodeToBytes(encoding)` . If the object's class already has a EncodeToBytes method with the same parameters, that method takes precedence over this extension method.
-
-<b>Parameters:</b>
-
- * <i>input</i>: Not documented yet.
-
- * <i>encoding</i>: Not documented yet.
-
- * <i>writer</i>: An IWriter object.
 
 <b>Exceptions:</b>
 
@@ -334,11 +331,11 @@ Reads Unicode characters from a character input and converts them to a text stri
 
 <b>Parameters:</b>
 
- * <i>reader</i>: Not documented yet.
+ * <i>reader</i>: A character input whose characters will be converted to a text string.
 
 <b>Returns:</b>
 
-A string object.
+A text string containing the characters read.
 
 ### ResolveAlias
 
@@ -350,6 +347,62 @@ Resolves a character encoding's name to a standard form.
 <b>Parameters:</b>
 
  * <i>name</i>: A string that names a given character encoding. Can be null. Any leading and trailing whitespace is removed and the name converted to lowercase before resolving the encoding's name. The Encoding Standard supports only the following encodings (and defines aliases for most of them):.
+
+ *  `utf-8`  - UTF-8 (8-bit universal character set, the encoding recommended by the Encoding Standard for new data formats)
+
+ *  `utf-16le`  - UTF-16 little-endian (16-bit UCS)
+
+ *  `utf-16be`  - UTF-16 big-endian (16-bit UCS)
+
+ * Two special purpose encodings:  `x-user-defined`  and `replacement`
+
+ * 28 legacy single-byte encodings:
+
+ *  `windows-1252`  - Western Europe (Note: The Encoding Standard aliases the names  `us-ascii`  and  `iso-8859-1`  to `windows-1252` , which specifies a different character set from either; it differs from  `iso-8859-1`  by assigning different characters to some bytes from 0x80 to 0x9F. The Encoding Standard does this for compatibility with existing Web pages.)
+
+ *  `iso-8859-2` ,  `windows-1250`  : Central Europe
+
+ *  `iso-8859-10`  : Northern Europe
+
+ *  `iso-8859-4` ,  `windows-1257`  : Baltic
+
+ *  `iso-8859-13`  : Estonian
+
+ *  `iso-8859-14`  : Celtic
+
+ *  `iso-8859-16`  : Romanian
+
+ *  `iso-8859-5` ,  `ibm866` ,  `koi8-r` , `windows-1251` ,  `x-mac-cyrillic`  : Cyrillic
+
+ *  `koi8-u`  : Ukrainian
+
+ *  `iso-8859-7` ,  `windows-1253`  : Greek
+
+ *  `iso-8859-6` ,  `windows-1256`  : Arabic
+
+ *  `iso-8859-8` ,  `iso-8859-8-i` ,  `windows-1255` : Hebrew
+
+ *  `iso-8859-3`  : Latin 3
+
+ *  `iso-8859-15`  : Latin 9
+
+ *  `windows-1254`  : Turkish
+
+ *  `windows-874`  : Thai
+
+ *  `windows-1258`  : Vietnamese
+
+ *  `macintosh`  : Mac Roman
+
+ * Three legacy Japanese encodings:  `shift_jis` , `euc-jp` ,  `iso-2022-jp`
+
+ * Two legacy simplified Chinese encodings:  `gbk`  and `gb18030`
+
+ *  `big5`  : legacy traditional Chinese encoding
+
+ *  `euc-kr`  : legacy Korean encoding
+
+.
 
 <b>Returns:</b>
 
@@ -367,6 +420,14 @@ Resolves a character encoding's name to a canonical form, using rules more suita
 
  * <i>name</i>: A string naming a character encoding. Can be null. Uses a modified version of the rules in the Encoding Standard to better conform, in some cases, to email standards like MIME. In addition to the encodings mentioned in ResolveAlias, the following additional encodings are supported:.
 
+ *  `us-ascii`  - ASCII 7-bit encoding, rather than an alias to  `windows-1252` , as specified in the Encoding Standard
+
+ *  `iso-8859-1`  - Latin-1 8-bit encoding, rather than an alias to  `windows-1252` , as specified in the Encoding Standard
+
+ *  `utf-7`  - UTF-7 (7-bit universal character set)
+
+.
+
 <b>Returns:</b>
 
 A standardized name for the encoding. Returns the empty string if  <i>name</i>
@@ -382,7 +443,7 @@ Converts a text string to a byte array using the given character encoder. When r
 
 <b>Parameters:</b>
 
- * <i>encoder</i>: Not documented yet.
+ * <i>encoder</i>: An object that implements a character encoder.
 
  * <i>str</i>: Not documented yet.
 
@@ -427,9 +488,12 @@ Converts a portion of a text string to a character input. The resulting input ca
 
  * <i>str</i>: A string object.
 
- * <i>offset</i>: A zero-based index showing where the desired portion of "str" begins.
+ * <i>offset</i>: A zero-based index showing where the desired portion of  <i>str</i>
+ begins.
 
- * <i>length</i>: The length, in code units, of the desired portion of "str" (but not more than "str" 's length).
+ * <i>length</i>: The length, in code units, of the desired portion of  <i>str</i>
+ (but not more than  <i>str</i>
+ 's length).
 
 <b>Returns:</b>
 

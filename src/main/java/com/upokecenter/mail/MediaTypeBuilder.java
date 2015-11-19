@@ -139,13 +139,15 @@ public final void setSubType(String value) {
     }
 
     /**
-     * Not documented yet.
-     * @param name Name of the parameter to set. The name is compared
-     * case-insensitively.
-     * @param value A string object.
+     * Sets a parameter's name and value for this media type.
+     * @param name Name of the parameter to set, such as "charset". The name is
+     * compared case-insensitively.
+     * @param value A string object giving the parameter's value.
      * @return This instance.
      * @throws NullPointerException The parameter {@code value} or {@code name} is
      * null.
+     * @throws IllegalArgumentException The parameter {@code name} is empty or
+     * syntactically invalid.
      */
     public MediaTypeBuilder SetParameter(String name, String value) {
       if (value == null) {
@@ -167,10 +169,12 @@ if (MediaType.skipMimeTypeSubtype(name, 0, name.length(), null) !=
     }
 
     /**
-     * Not documented yet.
-     * @param str A string object.
+     * Sets this media type's subtype, such as "plain" or "xml" .
+     * @param str A string object naming a media subtype.
      * @return This instance.
      * @throws NullPointerException The parameter {@code str} is null.
+     * @throws IllegalArgumentException The parameter {@code str} is empty or
+     * syntactically invalid.
      */
     public MediaTypeBuilder SetSubType(String str) {
       if (str == null) {

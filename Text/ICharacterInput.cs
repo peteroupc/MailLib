@@ -13,12 +13,10 @@ namespace PeterO.Text {
     /// <summary>Reads a sequence of Unicode code points from a data
     /// source.</summary>
     /// <param name='chars'>Output buffer.</param>
-    /// <param name='index'>Index in the output buffer to start writing
-    /// to.</param>
-    /// <param name='length'>Maximum number of code points to
-    /// write.</param>
     /// <returns>The number of Unicode code points read, or 0 if the end of
     /// the source is reached.</returns>
+    /// <exception cref='ArgumentNullException'>Should be thrown if "chars"
+    /// is null.</exception>
     int Read(int[] chars, int index, int length);
   }
 }

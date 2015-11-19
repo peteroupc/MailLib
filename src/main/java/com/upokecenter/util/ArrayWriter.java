@@ -41,7 +41,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Not documented yet.
+     * Writes an 8-bit byte to the array.
      * @param byteValue A 32-bit signed integer.
      */
     public void write(int byteValue) {
@@ -60,7 +60,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Not documented yet.
+     * Writes a series of bytes to the array.
      * @param src Byte array containing the data to write.
      * @param offset A zero-based index showing where the desired portion of {@code
      * src} begins.

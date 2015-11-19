@@ -85,10 +85,8 @@ namespace PeterO.Mail {
       return str.Substring(index, tmp - index);
     }
 
-    /// <summary>Quotes a string according to RFC 5322 rules.</summary>
-    /// <param name='str'>Not documented yet.</param>
-    /// <returns>A string object.</returns>
     public static string QuoteValue(String str) {
+      // Quotes a string according to RFC 5322 rules.
       var builder = new StringBuilder();
       builder.Append('"');
       for (int i = 0; i < str.Length; ++i) {

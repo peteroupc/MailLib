@@ -47,27 +47,39 @@ namespace PeterO.Text {
       this.nci = new NormalizingCharacterInput(str, form);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>Not documented yet.</param>
+    /// <summary>Returns whether this string is normalized.</summary>
+    /// <param name='str'>The string to check.</param>
     /// <param name='form'>A Normalization object.</param>
-    /// <returns>A Boolean object.</returns>
+    /// <returns>True if this string is normalized; otherwise,
+    /// false.</returns>
     public static bool IsNormalized(string str, Normalization form) {
       return NormalizingCharacterInput.IsNormalized(str, form);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
+    /// <summary>Reads a Unicode character from a data source.</summary>
+    /// <returns>Either a Unicode code point (from 0-0xd7ff or from 0xe000
+    /// to 0x10ffff), or the value -1 indicating the end of the
+    /// source.</returns>
     public int ReadChar() {
       return this.nci.ReadChar();
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='chars'>An array of 32-bit unsigned integers.</param>
-    /// <param name='index'>A 32-bit signed integer. (2).</param>
-    /// <param name='length'>A 32-bit signed integer. (3).</param>
-    /// <returns>A 32-bit signed integer.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='chars'/> is null.</exception>
+    /// <summary>Reads a sequence of Unicode code points from a data
+    /// source.</summary>
+    /// <param name='chars'>Output buffer.</param>
+    /// <param name='index'>Index in the output buffer to start writing
+    /// to.</param>
+    /// <param name='length'>Maximum number of code points to
+    /// write.</param>
+    /// <returns>The number of Unicode code points read, or 0 if the end of
+    /// the source is reached.</returns>
+    /// <exception cref='System.ArgumentException'>Either &#x22;index&#x22;
+    /// or &#x22;length&#x22; is less than 0 or greater than
+    /// &#x22;chars&#x22;&#x27;s length, or &#x22;chars&#x22;&#x27;s length
+    /// minus &#x22;index&#x22; is less than
+    /// &#x22;length&#x22;.</exception>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// &#x22;chars&#x22; is null.</exception>
     public int Read(int[] chars, int index, int length) {
       return this.nci.Read(chars, index, length);
     }

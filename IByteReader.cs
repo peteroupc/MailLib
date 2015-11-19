@@ -12,8 +12,8 @@ namespace PeterO {
     /// time.</summary>
   public interface IByteReader {
     /// <summary>Reads a byte from the data source.</summary>
-    /// <returns>The byte read, or -1 if the end of the source is
-    /// reached.</returns>
+    /// <returns>The byte read (from 0 through 255), or -1 if the end of
+    /// the source is reached.</returns>
     int ReadByte();
   }
 }

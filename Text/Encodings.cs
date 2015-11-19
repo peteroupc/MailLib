@@ -82,14 +82,14 @@ namespace PeterO.Text {
         this.stream = stream;
       }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>This is an internal method.</summary>
     /// <returns>A 32-bit signed integer.</returns>
       public int ReadChar() {
         int c = this.reader.ReadChar(this.stream);
         return (c == -2) ? 0xfffd : c;
       }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>This is an internal method.</summary>
     /// <param name='buffer'>An array of 32-bit unsigned integers.</param>
     /// <param name='offset'>A zero-based index showing where the desired
     /// portion of <paramref name='buffer'/> begins.</param>
@@ -569,7 +569,7 @@ namespace PeterO.Text {
     /// method.</para></summary>
     /// <param name='encoding'>An object that implements a character
     /// encoding.</param>
-    /// <param name='str'>Not documented yet.</param>
+    /// <param name='str'>A string to be encoded into a byte array.</param>
     /// <returns>A byte array containing the string encoded in the given
     /// text encoding.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -594,8 +594,9 @@ namespace PeterO.Text {
     /// object's class already has a EncodeToBytes method with the same
     /// parameters, that method takes precedence over this extension
     /// method.</para></summary>
-    /// <param name='input'>Not documented yet.</param>
-    /// <param name='encoding'>Not documented yet.</param>
+    /// <param name='input'>An object that implements a stream of universal
+    /// code points.</param>
+    /// <param name='encoding'>An ICharacterEncoding object.</param>
     /// <returns>A byte array.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoding'/> is null.</exception>
@@ -609,7 +610,7 @@ namespace PeterO.Text {
     }
 
     /// <summary>Reads Unicode characters from a character input and writes
-    /// them to a byte array encoded in a given character encoding. When
+    /// them to a byte array encoded using a given character encoding. When
     /// writing to the byte array, any characters that can't be encoded are
     /// replaced with the byte 0x3f (the question mark character).
     /// <para>In the .NET implementation, this method is implemented as an
@@ -618,8 +619,10 @@ namespace PeterO.Text {
     /// object's class already has a EncodeToBytes method with the same
     /// parameters, that method takes precedence over this extension
     /// method.</para></summary>
-    /// <param name='input'>Not documented yet.</param>
-    /// <param name='encoder'>Not documented yet.</param>
+    /// <param name='input'>An object that implements a stream of universal
+    /// code points.</param>
+    /// <param name='encoder'>An object that implements a character
+    /// encoder.</param>
     /// <returns>A byte array.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoder'/> or <paramref name='input'/> is null.</exception>
@@ -660,7 +663,7 @@ namespace PeterO.Text {
     /// method.</para></summary>
     /// <param name='input'>Not documented yet.</param>
     /// <param name='encoding'>Not documented yet.</param>
-    /// <param name='writer'>An IWriter object.</param>
+    /// <param name='writer'>Not documented yet. (3).</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoding'/> is null.</exception>
     public static void EncodeToWriter(
@@ -683,9 +686,12 @@ namespace PeterO.Text {
     /// object's class already has a EncodeToBytes method with the same
     /// parameters, that method takes precedence over this extension
     /// method.</para></summary>
-    /// <param name='input'>Not documented yet.</param>
-    /// <param name='encoder'>Not documented yet.</param>
-    /// <param name='writer'>An IWriter object.</param>
+    /// <param name='input'>An object that implements a stream of universal
+    /// code points.</param>
+    /// <param name='encoder'>An object that implements a character
+    /// encoder.</param>
+    /// <param name='writer'>A byte writer to write the encoded bytes
+    /// to.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoder'/> or <paramref name='input'/> is null.</exception>
     public static void EncodeToWriter(
@@ -726,18 +732,32 @@ namespace PeterO.Text {
     /// the object's class already has a StringToBytes method with the same
     /// parameters, that method takes precedence over this extension
     /// method.</para></summary>
-    /// <param name='encoder'>Not documented yet.</param>
-    /// <param name='str'>Not documented yet.</param>
+    /// <param name='encoder'>An object that implements a character
+    /// encoder.</param>
+    /// <param name='str'>A text string to encode into a byte
+    /// array.</param>
     /// <returns>A byte array.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='encoder'/> or <paramref name='str'/> is
+    /// null.</exception>
     public static byte[] StringToBytes(
       this ICharacterEncoder encoder,
       string str) {
+      if (encoder == null) {
+  throw new ArgumentNullException("encoder");
+}
+      if (str == null) {
+  throw new ArgumentNullException("str");
+}
       return EncodeToBytes(
           new StringCharacterInput(str),
           encoder);
     }
 
-    /// <summary>Not documented yet.
+    /// <summary>Reads a byte array from a data source and converts the
+    /// bytes from a given encoding to a text string. Errors in decoding
+    /// are handled by replacing erroneous bytes with the replacement
+    /// character (U + FFFD).
     /// <para>In the .NET implementation, this method is implemented as an
     /// extension method to any object implementing ICharacterEncoding and
     /// can be called as follows: <c>enc.DecodeToString(bytes)</c>. If the
@@ -761,15 +781,20 @@ byte[] bytes) {
       return DecodeToString(enc, DataIO.ToTransform(bytes));
     }
 
-    /// <summary>Not documented yet.
+    /// <summary>Reads a portion of a byte array from a data source and
+    /// converts the bytes from a given encoding to a text string. Errors
+    /// in decoding are handled by replacing erroneous bytes with the
+    /// replacement character (U + FFFD).
     /// <para>In the .NET implementation, this method is implemented as an
     /// extension method to any object implementing ICharacterEncoding and
     /// can be called as follows: <c>enc.DecodeToString(bytes, offset,
     /// length)</c>. If the object's class already has a DecodeToString
     /// method with the same parameters, that method takes precedence over
     /// this extension method.</para></summary>
-    /// <param name='enc'>An ICharacterEncoding object.</param>
-    /// <param name='bytes'>A byte array.</param>
+    /// <param name='enc'>An object implementing a character encoding
+    /// (gives access to an encoder and a decoder).</param>
+    /// <param name='bytes'>A byte array containing the desired portion to
+    /// read.</param>
     /// <param name='offset'>A zero-based index showing where the desired
     /// portion of <paramref name='bytes'/> begins.</param>
     /// <param name='length'>The length, in bytes, of the desired portion
@@ -830,7 +855,8 @@ int length) {
     /// that method takes precedence over this extension
     /// method.</para></summary>
     /// <param name='str'>A string object.</param>
-    /// <param name='enc'>An ICharacterEncoding object.</param>
+    /// <param name='enc'>An object implementing a character encoding
+    /// (gives access to an encoder and a decoder).</param>
     /// <returns>A byte array.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> or <paramref name='enc'/> is null.</exception>
@@ -858,12 +884,14 @@ ICharacterEncoding enc) {
     /// object's class already has a EncodeToBytes method with the same
     /// parameters, that method takes precedence over this extension
     /// method.</para></summary>
-    /// <param name='str'>Not documented yet.</param>
-    /// <param name='enc'>Not documented yet.</param>
-    /// <param name='writer'>Not documented yet. (3).</param>
+    /// <param name='str'>A string object to encode.</param>
+    /// <param name='enc'>An object implementing a character encoding
+    /// (gives access to an encoder and a decoder).</param>
+    /// <param name='writer'>A byte writer where the encoded bytes will be
+    /// written to.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> or <paramref name='enc'/> is null.</exception>
-    public static void EncodeToBytes(
+    public static void EncodeToWriter(
 this string str,
 ICharacterEncoding enc,
 IWriter writer) {
@@ -937,8 +965,9 @@ int length) {
     /// object's class already has a InputToString method with the same
     /// parameters, that method takes precedence over this extension
     /// method.</para></summary>
-    /// <param name='reader'>Not documented yet.</param>
-    /// <returns>A string object.</returns>
+    /// <param name='reader'>A character input whose characters will be
+    /// converted to a text string.</param>
+    /// <returns>A text string containing the characters read.</returns>
     public static string InputToString(this ICharacterInput reader) {
       var builder = new StringBuilder();
       while (true) {

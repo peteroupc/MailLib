@@ -203,10 +203,11 @@ int index) {
     }
 
     /**
-     * Not documented yet.
+     * Gets a list of normalized code points after reading from a string.
      * @param str A string object.
-     * @param form A Normalization object.
-     * @return A list of Unicode characters.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
+     * @return A list of the normalized Unicode characters.
      * @throws NullPointerException The parameter {@code str} is null.
      */
     public static List<Integer> GetChars(String str, Normalization form) {
@@ -217,10 +218,11 @@ int index) {
     }
 
     /**
-     * Not documented yet.
-     * @param str An ICharacterInput object.
-     * @param form A Normalization object.
-     * @return A list of Unicode characters.
+     * Gets a list of normalized code points after reading from a character stream.
+     * @param str An object that implements a stream of Unicode characters.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
+     * @return A list of the normalized Unicode characters.
      * @throws NullPointerException The parameter {@code str} is null.
      */
     public static List<Integer> GetChars(ICharacterInput str, Normalization form) {
@@ -253,7 +255,8 @@ int index) {
     /**
      * Initializes a new instance of the NormalizingCharacterInput class using
      * Normalization Form C.
-     * @param characterList An List object.
+     * @param characterList A list of Unicode code points specifying the text to
+     * normalize.
      */
     public NormalizingCharacterInput (List<Integer> characterList) {
  this(characterList, Normalization.NFC);
@@ -262,7 +265,7 @@ int index) {
     /**
      * Initializes a new instance of the NormalizingCharacterInput class using
      * Normalization Form C.
-     * @param str A string object.
+     * @param str A string specifying the text to normalize.
      */
   public NormalizingCharacterInput (
 String str) {
@@ -285,7 +288,8 @@ input, Normalization.NFC);
      * Initializes a new instance of the NormalizingCharacterInput class using the
      * given normalization form.
      * @param characterList An List object.
-     * @param form A Normalization object.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
      * @throws NullPointerException The parameter {@code characterList} is null.
      */
     public NormalizingCharacterInput (
@@ -307,7 +311,8 @@ Normalization form) {
      * @param str A string object.
      * @param index A 32-bit signed integer.
      * @param length A 32-bit signed integer. (2).
-     * @param form A Normalization object.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
      */
     public NormalizingCharacterInput (
 String str,
@@ -321,7 +326,8 @@ new StringCharacterInput(str, index, length), form);
     /**
      * Initializes a new instance of the NormalizingCharacterInput class.
      * @param str A string object.
-     * @param form A Normalization object.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
      */
     public NormalizingCharacterInput (String str, Normalization form) {
  this(new StringCharacterInput(str), form);
@@ -330,7 +336,8 @@ new StringCharacterInput(str, index, length), form);
     /**
      * Initializes a new instance of the NormalizingCharacterInput class.
      * @param stream An ICharacterInput object.
-     * @param form A Normalization object.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
      * @throws NullPointerException The parameter {@code stream} is null.
      */
  public NormalizingCharacterInput (
@@ -347,10 +354,11 @@ Normalization form) {
     }
 
     /**
-     * Not documented yet.
-     * @param chars An ICharacterInput object.
-     * @param form A Normalization object.
-     * @return A Boolean object.
+     * Determines whether the text provided by a character input is normalized.
+     * @param chars A object that implements a streamable character input.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
+     * @return True if the text is normalized; otherwise, false.
      */
     public static boolean IsNormalized(ICharacterInput chars, Normalization form) {
       if (chars == null) {
@@ -410,7 +418,8 @@ Normalization form) {
      * Determines whether the given string is in the given Unicode normalization
      * form.
      * @param str An arbitrary string.
-     * @param form A Normalization object.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
      * @return True if the given string is in the given Unicode normalization form;
      * otherwise, false.
      */
@@ -506,8 +515,9 @@ form)) {
     /**
      * Determines whether the given list of characters is in the given Unicode
      * normalization form.
-     * @param charList An List object.
-     * @param form A Normalization object.
+     * @param charList A list of Unicode code points.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
      * @return True if the given list of characters is in the given Unicode
      * normalization form; otherwise, false.
      * @throws NullPointerException The parameter {@code charList} is null.
@@ -565,8 +575,9 @@ form)) {
     private int[] readbuffer = new int[1];
 
     /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
+     * Reads a Unicode character from a data source.
+     * @return Either a Unicode code point (from 0-0xd7ff or from 0xe000 to
+     * 0x10ffff), or the value -1 indicating the end of the source.
      */
     public int ReadChar() {
       int r = this.Read(this.readbuffer, 0, 1);
@@ -602,13 +613,17 @@ this.characterList.size()) ? -1 :
     }
 
     /**
-     * Not documented yet.
-     * @param chars An array of 32-bit unsigned integers.
-     * @param index A 32-bit signed integer. (2).
-     * @param length A 32-bit signed integer. (3).
-     * @return A 32-bit signed integer.
-     * @throws NullPointerException The parameter {@code chars} or "this.buffer"
-     * is null.
+     * Reads a sequence of Unicode code points from a data source.
+     * @param chars Output buffer.
+     * @param index A 32-bit signed integer.
+     * @param length Another 32-bit signed integer.
+     * @return The number of Unicode code points read, or 0 if the end of the
+     * source is reached.
+     * @throws java.lang.NullPointerException The parameter {@code chars} or
+     * "this.buffer" is null.
+     * @throws java.lang.IllegalArgumentException Either "index" or "length" is less than 0
+     * or greater than "chars"'s length, or "chars"'s length minus "index"
+     * is less than "length".
      */
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
