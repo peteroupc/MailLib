@@ -25,8 +25,9 @@ namespace PeterO.Mail {
 
     private Address address;
 
-    /// <summary>Gets a value not documented yet.</summary>
-    /// <value>A value not documented yet.</value>
+    /// <summary>Gets the email address associated with this
+    /// object.</summary>
+    /// <value>The email address associated with this object.</value>
     public Address Address {
       get {
         return this.address;

@@ -231,10 +231,14 @@ value.Length);
       return builder.ToString();
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Determines whether the given string is a syntactically
+    /// valid domain name.</summary>
     /// <param name='str'>A string object.</param>
-    /// <param name='lookupRules'>Another Boolean object.</param>
-    /// <returns>A Boolean object.</returns>
+    /// <param name='lookupRules'>If true, uses rules to apply when looking
+    /// up the string as a domain name. If false, uses rules to apply when
+    /// registering the string as a domain name.</param>
+    /// <returns>True if the given string is a syntactically valid domain
+    /// name; otherwise; false.</returns>
     public static bool IsValidDomainName(string str, bool lookupRules) {
       if (String.IsNullOrEmpty(str)) {
         return false;

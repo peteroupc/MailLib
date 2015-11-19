@@ -176,15 +176,27 @@ this.headers[index + 1]);
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='header'>A KeyValuePair object.</param>
     /// <returns>A Message object.</returns>
+    /// <exception cref='ArgumentException'>"Value" is 0 or greater than or
+    /// equal to the number of header fields.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least the number of
+    /// header fields.</exception>
+    /// <exception cref='ArgumentNullException'>The key or value of
+    /// <paramref name='header'/> is null.</exception>
     public Message SetHeader(int index, KeyValuePair<string, string> header) {
       return this.SetHeader(index, header.Key, header.Value);
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='index'>A 32-bit signed integer.</param>
+    /// <param name='index'>Zero-based index of the header to set.</param>
     /// <param name='name'>A string object.</param>
     /// <param name='value'>Another string object.</param>
     /// <returns>A Message object.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least the number of
+    /// header fields.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> or <paramref name='value'/> is null.</exception>
     public Message SetHeader(int index, string name, string value) {
       if (index < 0) {
       throw new ArgumentException("index (" + index + ") is less than " +
@@ -205,6 +217,11 @@ this.headers[index + 1]);
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='value'>A string object.</param>
     /// <returns>A Message object.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least the number of
+    /// header fields.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='value'/> is null.</exception>
     public Message SetHeader(int index, string value) {
       if (index < 0) {
       throw new ArgumentException("index (" + index + ") is less than " +
@@ -922,13 +939,11 @@ this.contentType = digest ? MediaType.MessageRfc822 :
         (ret.Equals("Message-Id") ? "Message-ID" : ret);
     }
 
-    /// <summary>Returns true if the string has: * non-ASCII characters *
-    /// "=?" * CTLs other than tab, or * a word longer than 75 characters.
-    /// Can return false even if the string has: * CRLF followed by a line
-    /// with just whitespace.</summary>
-    /// <param name='s'>A string object.</param>
-    /// <returns>A Boolean object.</returns>
     internal static bool HasTextToEscape(string s) {
+      // <summary>Returns true if the string has: * non-ASCII characters *
+      // "=?" * CTLs other than tab, or * a word longer than 75 characters.
+      // Can return false even if the string has: * CRLF followed by a line
+      // with just whitespace.</summary>
       return HasTextToEscape(s, 0, s.Length);
     }
 
@@ -1153,9 +1168,9 @@ throw new
 
     /// <summary>Sets the value of this message's header field. If a header
     /// field with the same name exists, its value is replaced.</summary>
-    /// <param name='name'>The name of a header field, such as
-    /// &#x22;from&#x22; or &#x22;subject&#x22;.</param>
-    /// <param name='value'>The header field&#x27;s value.</param>
+    /// <param name='name'>The name of a header field, such as "from" or
+    /// "subject".</param>
+    /// <param name='value'>The header field's value.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentException'>The header field name is too
     /// long or contains an invalid character, or the header field's value

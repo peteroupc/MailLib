@@ -10,7 +10,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import java.io.*;
 
     /**
-     * Not documented yet.
+     * Convenience class that contains static methods for wrapping byte arrays and
+     * streams into byte readers and byte writers.
      */
   public final class DataIO {
 private DataIO() {
@@ -77,11 +78,10 @@ private DataIO() {
     /**
      * Not documented yet.
      * @param bytes A byte array.
-     * @param offset A zero-based index showing where the desired portion of.
-     * <paramref name='bytes'/> begins.
-     * @param length The length, in bytes, of the desired portion of. <paramref
-     * name='bytes'/> (but not more than <paramref name='bytes'/> 's
-     * length).
+     * @param offset A zero-based index showing where the desired portion of
+     * "bytes" begins.
+     * @param length The length, in bytes, of the desired portion of "bytes" (but
+     * not more than "bytes" 's length).
      * @throws NullPointerException The parameter {@code bytes} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
      * than 0 or greater than {@code bytes} 's length, or {@code bytes} 's
@@ -139,11 +139,10 @@ private DataIO() {
     /**
      * Not documented yet.
      * @param bytes A byte array.
-     * @param offset A zero-based index showing where the desired portion of.
-     * <paramref name='bytes'/> begins.
-     * @param length The length, in bytes, of the desired portion of. <paramref
-     * name='bytes'/> (but not more than <paramref name='bytes'/> 's
-     * length).
+     * @param offset A zero-based index showing where the desired portion of
+     * "bytes" begins.
+     * @param length The length, in bytes, of the desired portion of "bytes" (but
+     * not more than "bytes" 's length).
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
      * than 0 or greater than {@code bytes} 's length, or {@code bytes} 's
      * length minus {@code offset} is less than {@code length}.
@@ -177,18 +176,17 @@ private DataIO() {
     }
 
     /**
-     * Not documented yet. <p>In the .NET implementation, this method is
-     * implemented as an extension method to any object implementing byte[]
-     * and can be called as follows: <code>bytes.ToTransform(offset,
-     * length)</code>. If the object's class already has a ToTransform method
-     * with the same parameters, that method takes precedence over this
-     * extension method.</p>
-     * @param bytes Not documented yet.
-     * @param offset A zero-based index showing where the desired portion of.
-     * <paramref name='bytes'/> begins.
-     * @param length The length, in bytes, of the desired portion of. <paramref
-     * name='bytes'/> (but not more than <paramref name='bytes'/> 's
-     * length).
+     * Wraps a portion of a byte array into a byte reader object. <p>In the .NET
+     * implementation, this method is implemented as an extension method to
+     * any object implementing byte[] and can be called as follows:
+     * <code>bytes.ToTransform(offset, length)</code>. If the object's class
+     * already has a ToTransform method with the same parameters, that
+     * method takes precedence over this extension method.</p>
+     * @param bytes The byte array to wrap.
+     * @param offset A zero-based index showing where the desired portion of
+     * "bytes" begins.
+     * @param length The length, in bytes, of the desired portion of "bytes" (but
+     * not more than "bytes" 's length).
      * @return An ITransform object.
      * @throws NullPointerException The parameter {@code bytes} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
@@ -226,12 +224,13 @@ int length) {
     }
 
     /**
-     * Not documented yet. <p>In the .NET implementation, this method is
-     * implemented as an extension method to any object implementing InputStream
-     * and can be called as follows: <code>input.ToTransform()</code>. If the
-     * object's class already has a ToTransform method with the same
-     * parameters, that method takes precedence over this extension
-     * method.</p>
+     * Wraps an input stream into a reader object. If an IOException is thrown by
+     * the input stream, the reader object throws IllegalStateException
+     * instead. <p>In the .NET implementation, this method is implemented as
+     * an extension method to any object implementing InputStream and can be
+     * called as follows: <code>input.ToTransform()</code>. If the object's class
+     * already has a ToTransform method with the same parameters, that
+     * method takes precedence over this extension method.</p>
      * @param input Not documented yet.
      * @return An ITransform object.
      * @throws NullPointerException The parameter {@code input} is null.
@@ -244,17 +243,18 @@ int length) {
     }
 
     /**
-     * Not documented yet. <p>In the .NET implementation, this method is
-     * implemented as an extension method to any object implementing InputStream
-     * and can be called as follows: <code>output.ToWriter()</code>. If the
-     * object's class already has a ToWriter method with the same
-     * parameters, that method takes precedence over this extension
-     * method.</p>
-     * @param output Not documented yet.
+     * Wraps an output stream into a writer object. If an IOException is thrown by
+     * the input stream, the writer object throws IllegalStateException
+     * instead. <p>In the .NET implementation, this method is implemented as
+     * an extension method to any object implementing InputStream and can be
+     * called as follows: <code>output.ToWriter()</code>. If the object's class
+     * already has a ToWriter method with the same parameters, that method
+     * takes precedence over this extension method.</p>
+     * @param output Output stream to wrap.
      * @return An IWriter object.
      * @throws NullPointerException The parameter {@code output} is null.
      */
-    public static IWriter ToWriter(InputStream output) throws java.io.IOException {
+    public static IWriter ToWriter(OutputStream output) throws java.io.IOException {
       if (output == null) {
         throw new NullPointerException("output");
       }
@@ -262,13 +262,14 @@ int length) {
     }
 
     /**
-     * Not documented yet. <p>In the .NET implementation, this method is
-     * implemented as an extension method to any object implementing
-     * IByteWriter and can be called as follows: <code>output.ToWriter()</code>.
-     * If the object's class already has a ToWriter method with the same
-     * parameters, that method takes precedence over this extension
-     * method.</p>
-     * @param output Not documented yet.
+     * Wraps a byte writer (one that only implements a ReadByte method) to a writer
+     * (one that also implements a three-parameter Read method.) <p>In the
+     * .NET implementation, this method is implemented as an extension
+     * method to any object implementing IByteWriter and can be called as
+     * follows: <code>output.ToWriter()</code>. If the object's class already has
+     * a ToWriter method with the same parameters, that method takes
+     * precedence over this extension method.</p>
+     * @param output A byte stream.
      * @return An IWriter object.
      * @throws NullPointerException The parameter {@code output} is null.
      */

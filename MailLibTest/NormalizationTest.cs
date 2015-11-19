@@ -56,8 +56,8 @@ namespace MailLibTest {
       return builder.ToString();
     }
 
-    public static int[] NormalizerGetChars(int[] cp, Normalization form) {
- string ret = NormalizingCharacterInput.Normalize(ToCodePointString(cp), form);
+    public static int[] NormalizerGetChars(string cp, Normalization form) {
+      string ret = NormalizingCharacterInput.Normalize(cp, form);
       IList<int> list = new List<int>();
       for (int i = 0; i < ret.Length; ++i) {
         int c = PeterO.DataUtilities.CodePointAt(ret, i);
@@ -85,35 +85,91 @@ namespace MailLibTest {
     public static void AssertEqual(int[] expected, int[] actual, String msg) {
       if (expected.Length != actual.Length) {
         Assert.Fail(
-          "\nexpected: " + ToString(expected) + "\n" + "\nwas:      "+
+          "\nexpected: " + ToString(expected) + "\n" + "\nwas:      " +
             ToString(actual) + "\n" + msg);
       }
       for (int i = 0; i < expected.Length; ++i) {
         if (expected[i] != actual[i]) {
-        Assert.Fail("\nexpected: " + ToString(expected) + "\n" + "\nwas:      "+
-              ToString(actual) + "\n" + msg);
+      Assert.Fail("\nexpected: " + ToString(expected) + "\n" +
+            "\nwas:      " +
+                ToString(actual) + "\n" + msg);
         }
       }
     }
 
     [TestMethod]
     public void TestIsNormalizedAlmostSurrogates() {
-          Assert.IsTrue(
-    NormalizingCharacterInput.IsNormalized(
-     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
-       Normalization.NFC));
-    Assert.IsTrue(
-    NormalizingCharacterInput.IsNormalized(
-     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
-       Normalization.NFD));
-    Assert.IsTrue(
-    NormalizingCharacterInput.IsNormalized(
-     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
-       Normalization.NFKC));
-    Assert.IsTrue(
-    NormalizingCharacterInput.IsNormalized(
-     new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
-       Normalization.NFKD));
+      Assert.IsTrue(
+NormalizingCharacterInput.IsNormalized(
+ new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+   Normalization.NFC));
+      Assert.IsTrue(
+      NormalizingCharacterInput.IsNormalized(
+       new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+         Normalization.NFD));
+      Assert.IsTrue(
+      NormalizingCharacterInput.IsNormalized(
+       new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+         Normalization.NFKC));
+      Assert.IsTrue(
+      NormalizingCharacterInput.IsNormalized(
+       new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+         Normalization.NFKD));
+    }
+
+    private sealed class NormResult {
+      private int[] orig;
+      private string origstr;
+      private int[] nfc;
+      private int[] nfd;
+      private int[] nfkc;
+      private int[] nfkd;
+      private string line;
+      public NormResult(string column, string line) {
+        this.line = line;
+        this.orig = GetCodePoints(column);
+        this.origstr = ToCodePointString(this.orig);
+        this.nfc = NormalizerGetChars(this.origstr, Normalization.NFC);
+        this.nfd = NormalizerGetChars(this.origstr, Normalization.NFD);
+        this.nfkc = NormalizerGetChars(this.origstr, Normalization.NFKC);
+        this.nfkd = NormalizerGetChars(this.origstr, Normalization.NFKD);
+        if (!NormalizingCharacterInput.IsNormalized(
+            this.nfc,
+            Normalization.NFC)) {
+  { Assert.Fail(line);
+} }
+        if (!NormalizingCharacterInput.IsNormalized(
+            this.nfd,
+            Normalization.NFD)) {
+  { Assert.Fail(line);
+} }
+        if (!NormalizingCharacterInput.IsNormalized(
+            this.nfkc,
+            Normalization.NFKC)) {
+  { Assert.Fail(line);
+} }
+        if (!NormalizingCharacterInput.IsNormalized(
+            this.nfkd,
+            Normalization.NFKD)) {
+  { Assert.Fail(line);
+} }
+      }
+      public void AssertNFC(params NormResult[] other) {
+        foreach (NormResult o in other)
+          AssertEqual(this.orig, o.nfc, this.line);
+      }
+      public void AssertNFD(params NormResult[] other) {
+        foreach (NormResult o in other)
+          AssertEqual(this.orig, o.nfd, this.line);
+      }
+      public void AssertNFKC(params NormResult[] other) {
+        foreach (NormResult o in other)
+          AssertEqual(this.orig, o.nfkc, this.line);
+      }
+      public void AssertNFKD(params NormResult[] other) {
+        foreach (NormResult o in other)
+          AssertEqual(this.orig, o.nfkd, this.line);
+      }
     }
 
     [TestMethod]
@@ -148,40 +204,18 @@ namespace MailLibTest {
           if (part1) {
             handled[cps[0]] = true;
           }
-          int[] expected = GetCodePoints(columns[1]);
-          int[] actual;
-          int[] ci = cps;
-          actual = NormalizerGetChars(ci, Normalization.NFC);
-          if (!NormalizingCharacterInput.IsNormalized(
-            expected,
-            Normalization.NFC)) {
-            Assert.Fail(line);
+          var nr = new NormResult[5];
+          for (var i = 0; i < 5; ++i) {
+            nr[i] = new NormResult(columns[i], line);
           }
-          AssertEqual(expected, actual, line);
-          ci = cps;
-          actual = NormalizerGetChars(ci, Normalization.NFD);
-          AssertEqual(GetCodePoints(columns[2]), actual, line);
-          if (!NormalizingCharacterInput.IsNormalized(
-  GetCodePoints(columns[2]),
-  Normalization.NFD)) {
-            Assert.Fail(line);
-          }
-          ci = cps;
-          actual = NormalizerGetChars(ci, Normalization.NFKC);
-          AssertEqual(GetCodePoints(columns[3]), actual, line);
-          if (!NormalizingCharacterInput.IsNormalized(
-  GetCodePoints(columns[3]),
-  Normalization.NFKC)) {
-            Assert.Fail(line);
-          }
-          ci = cps;
-          actual = NormalizerGetChars(ci, Normalization.NFKD);
-          AssertEqual(GetCodePoints(columns[4]), actual, line);
-          if (!NormalizingCharacterInput.IsNormalized(
-  GetCodePoints(columns[4]),
-  Normalization.NFKD)) {
-            Assert.Fail(line);
-          }
+          nr[1].AssertNFC(nr[0], nr[1], nr[2]);
+          nr[3].AssertNFC(nr[3], nr[4]);
+          nr[2].AssertNFD(nr[0], nr[1], nr[2]);
+          nr[4].AssertNFD(nr[3], nr[4]);
+          nr[4].AssertNFKD(nr[0], nr[1], nr[2]);
+          nr[4].AssertNFKD(nr[3], nr[4]);
+          nr[3].AssertNFKC(nr[0], nr[1], nr[2]);
+          nr[3].AssertNFKC(nr[3], nr[4]);
         }
       }
       var cptemp = new char[2];
@@ -209,16 +243,20 @@ namespace MailLibTest {
                Normalization.NFKC));
           Assert.AreEqual(cpstr, NormalizingCharacterInput.Normalize(cpstr,
                Normalization.NFKD));
-       if (!NormalizingCharacterInput.IsNormalized(cpstr, Normalization.NFC)) {
+       if (!NormalizingCharacterInput.IsNormalized(cpstr,
+            Normalization.NFC)) {
             Assert.Fail(imsg);
           }
-       if (!NormalizingCharacterInput.IsNormalized(cpstr, Normalization.NFD)) {
+       if (!NormalizingCharacterInput.IsNormalized(cpstr,
+            Normalization.NFD)) {
             Assert.Fail(imsg);
           }
-      if (!NormalizingCharacterInput.IsNormalized(cpstr, Normalization.NFKC)) {
+      if (!NormalizingCharacterInput.IsNormalized(cpstr,
+            Normalization.NFKC)) {
             Assert.Fail(imsg);
           }
-      if (!NormalizingCharacterInput.IsNormalized(cpstr, Normalization.NFKD)) {
+      if (!NormalizingCharacterInput.IsNormalized(cpstr,
+            Normalization.NFKD)) {
             Assert.Fail(imsg);
           }
         }

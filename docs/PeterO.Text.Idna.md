@@ -32,14 +32,14 @@ Value is null.
         string str,
         bool lookupRules);
 
-Not documented yet.
+Determines whether the given string is a syntactically valid domain name.
 
 <b>Parameters:</b>
 
  * <i>str</i>: A string object.
 
- * <i>lookupRules</i>: Another Boolean object.
+ * <i>lookupRules</i>: If true, uses rules to apply when looking up the string as a domain name. If false, uses rules to apply when registering the string as a domain name.
 
 <b>Returns:</b>
 
-A Boolean object.
+True if the given string is a syntactically valid domain name; otherwise; false.

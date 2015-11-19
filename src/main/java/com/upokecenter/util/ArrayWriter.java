@@ -31,7 +31,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     /**
-     * Not documented yet.
+     * Generates an array of all bytes written so far to it.
      * @return A byte array.
      */
     public byte[] ToArray() {
@@ -40,10 +40,11 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
       return ret;
     }
 
-/// </summary>
-/// <param name="byteValue"></param>
-/// <returns></returns>
-public void write(int byteValue) {
+    /**
+     * Not documented yet.
+     * @param byteValue A 32-bit signed integer.
+     */
+    public void write(int byteValue) {
       if (this.retval.length <= this.retvalPos) {
         // Array too small, make it grow
         int newLength = Math.max(
@@ -58,26 +59,33 @@ public void write(int byteValue) {
       this.retvalMax = Math.max(this.retvalMax, this.retvalPos);
     }
 
-/// </summary>
-/// <param name="src"></param>
-/// <param name="offset"></param>
-/// <param name="length"></param>
-/// <returns></returns>
-public void write(byte[] src, int offset, int length) {
+    /**
+     * Not documented yet.
+     * @param src Byte array containing the data to write.
+     * @param offset A zero-based index showing where the desired portion of {@code
+     * src} begins.
+     * @param length The number of elements in the desired portion of {@code src}
+     * (but not more than {@code src} 's length).
+     * @throws NullPointerException The parameter {@code src} is null.
+     * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
+     * than 0 or greater than {@code src} 's length, or {@code src} 's
+     * length minus {@code offset} is less than {@code length}.
+     */
+    public void write(byte[] src, int offset, int length) {
       if (src == null) {
         throw new NullPointerException("src");
       }
       if (offset < 0) {
-    throw new IllegalArgumentException("offset (" + offset + ") is less than " +
-          "0");
+        throw new IllegalArgumentException("offset (" + offset + ") is less than " +
+              "0");
       }
       if (offset > src.length) {
         throw new IllegalArgumentException("offset (" + offset + ") is more than " +
           src.length);
       }
       if (length < 0) {
-    throw new IllegalArgumentException("length (" + length + ") is less than " +
-          "0");
+        throw new IllegalArgumentException("length (" + length + ") is less than " +
+              "0");
       }
       if (length > src.length) {
         throw new IllegalArgumentException("length (" + length + ") is more than " +

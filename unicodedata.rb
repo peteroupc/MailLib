@@ -323,12 +323,7 @@ module Normalizer
           end
         end
       end
-      if form==:NFC
-        return !@@canonDecompMappings[ch]
-      else
-        return !@@compatDecompMappings[ch]
-      end
-      return true
+      return !@@canonDecompMappings[ch]
     end
     if !@@maxAffectedCodePoint
       @@maxAffectedCodePoint=0
@@ -707,7 +702,7 @@ def getChunkedFunctions(arr, name, chunkSize)
     j+=1
   end
   ret+=("    private static int[] #{name}() {\n")
-  ret+=("      int[] ret=new int[#{arr.length}];\n")
+  ret+=("      int[] ret = new int[#{arr.length}];\n")
   i=0; j=0; while i<arr.length
     alen=[chunkSize,arr.length-i].min
     ret+=("      Array.Copy(#{name}#{j}(), 0, ret, #{i}, #{alen});\n")
@@ -830,7 +825,7 @@ data=binary.transform{|x| (x>>31)!=0 ? "unchecked((int)#{x})" : x.to_s }
 f.puts("    public static #{final} int[] DecompMappings = GetDecompMappings();")
 f.puts(getChunkedFunctions(data, "GetDecompMappings", 4000))
 f.puts("    public static #{final} int[] CompatDecompMappings = GetCompatDecompMappings();")
-f.puts("    private static int[] GetCompatDecompMappings(){")
+f.puts("    private static int[] GetCompatDecompMappings() {")
 f.puts("      return new int[] {")
 data=compatdecomps.transform{|x| (x>>31)!=0 ? "unchecked((int)#{x})" : x.to_s }
 data=linebrokenjoin(data)

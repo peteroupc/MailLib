@@ -172,6 +172,11 @@ this.headers.get(index + 1));
      * @param index A 32-bit signed integer.
      * @param header A Map.Entry object.
      * @return A Message object.
+     * @throws IllegalArgumentException "Value" is 0 or at least the
+     * number of header fields.
+     * @throws IllegalArgumentException The parameter {@code index} is 0 or at least the
+     * number of header fields.
+     * @throws NullPointerException The key or value of {@code header} is null.
      */
     public Message SetHeader(int index, Map.Entry<String, String> header) {
       return this.SetHeader(index, header.getKey(), header.getValue());
@@ -179,10 +184,14 @@ this.headers.get(index + 1));
 
     /**
      * Not documented yet.
-     * @param index A 32-bit signed integer.
+     * @param index Zero-based index of the header to set.
      * @param name A string object.
      * @param value Another string object.
      * @return A Message object.
+     * @throws IllegalArgumentException The parameter {@code index} is 0 or at least the
+     * number of header fields.
+     * @throws NullPointerException The parameter {@code name} or {@code value} is
+     * null.
      */
     public Message SetHeader(int index, String name, String value) {
       if (index < 0) {
@@ -205,6 +214,9 @@ this.headers.get(index + 1));
      * @param index A 32-bit signed integer.
      * @param value A string object.
      * @return A Message object.
+     * @throws IllegalArgumentException The parameter {@code index} is 0 or at least the
+     * number of header fields.
+     * @throws NullPointerException The parameter {@code value} is null.
      */
     public Message SetHeader(int index, String value) {
       if (index < 0) {
@@ -916,15 +928,11 @@ this.contentType = digest ? MediaType.MessageRfc822 :
         (ret.equals("Message-Id") ? "Message-ID" : ret);
     }
 
-    /**
-     * Returns true if the string has: * non-ASCII characters * "=?" * CTLs other
-     * than tab, or * a word longer than 75 characters. Can return false
-     * even if the string has: * CRLF followed by a line with just
-     * whitespace.
-     * @param s A string object.
-     * @return A Boolean object.
-     */
     static boolean HasTextToEscape(String s) {
+      // <summary>Returns true if the String has: * non-ASCII characters *
+      // "=?" * CTLs other than tab, or * a word longer than 75 characters.
+      // Can return false even if the String has: * CRLF followed by a line
+      // with just whitespace.</summary>
       return HasTextToEscape(s, 0, s.length());
     }
 
@@ -1150,9 +1158,8 @@ throw new
     /**
      * Sets the value of this message's header field. If a header field with the
      * same name exists, its value is replaced.
-     * @param name The name of a header field, such as &#x22;from&#x22; or
-     * &#x22;subject&#x22;.
-     * @param value The header field&#x27;s value.
+     * @param name The name of a header field, such as "from" or "subject".
+     * @param value The header field's value.
      * @return This instance.
      * @throws IllegalArgumentException The header field name is too long or contains an
      * invalid character, or the header field's value is syntactically

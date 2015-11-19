@@ -314,7 +314,7 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
 
     /// <summary>Gets a parameter from this disposition object.</summary>
     /// <param name='name'>The name of the parameter to get. The name will
-    /// be matched case-insensitively. Can&#x27;t be null.</param>
+    /// be matched case-insensitively. Can't be null.</param>
     /// <returns>The value of the parameter, or null if the parameter does
     /// not exist.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref

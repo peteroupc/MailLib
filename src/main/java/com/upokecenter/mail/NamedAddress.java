@@ -26,8 +26,8 @@ import java.util.*;
     private Address address;
 
     /**
-     * Gets a value not documented yet.
-     * @return A value not documented yet.
+     * Gets the email address associated with this object.
+     * @return The email address associated with this object.
      */
     public final Address getAddress() {
         return this.address;

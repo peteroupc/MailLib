@@ -99,11 +99,15 @@ namespace PeterO.Mail {
       return new MediaType(this.type, this.subtype, this.parameters);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
+    /// <summary>Sets this media type's top-level type.</summary>
+    /// <param name='str'>A string object naming a top-level type, such as
+    /// "text" or "audio".</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='str'/> is syntactically invalid for a top-level
+    /// type.</exception>
     public MediaTypeBuilder SetTopLevelType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");

@@ -26,7 +26,8 @@ namespace PeterO {
       this.retval = new byte[initialSize];
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Generates an array of all bytes written so far to
+    /// it.</summary>
     /// <returns>A byte array.</returns>
     public byte[] ToArray() {
       var ret = new byte[this.retvalMax];
@@ -34,10 +35,9 @@ namespace PeterO {
       return ret;
     }
 
-/// </summary>
-/// <param name="byteValue"></param>
-/// <returns></returns>
-public void WriteByte(int byteValue) {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='byteValue'>A 32-bit signed integer.</param>
+    public void WriteByte(int byteValue) {
       if (this.retval.Length <= this.retvalPos) {
         // Array too small, make it grow
         int newLength = Math.Max(
@@ -52,26 +52,35 @@ public void WriteByte(int byteValue) {
       this.retvalMax = Math.Max(this.retvalMax, this.retvalPos);
     }
 
-/// </summary>
-/// <param name="src"></param>
-/// <param name="offset"></param>
-/// <param name="length"></param>
-/// <returns></returns>
-public void Write(byte[] src, int offset, int length) {
+    /// <summary>Not documented yet.</summary>
+    /// <param name='src'>Byte array containing the data to write.</param>
+    /// <param name='offset'>A zero-based index showing where the desired
+    /// portion of <paramref name='src'/> begins.</param>
+    /// <param name='length'>The number of elements in the desired portion
+    /// of <paramref name='src'/> (but not more than <paramref name='src'/>
+    /// 's length).</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='src'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Either <paramref
+    /// name='offset'/> or <paramref name='length'/> is less than 0 or
+    /// greater than <paramref name='src'/> 's length, or <paramref
+    /// name='src'/> 's length minus <paramref name='offset'/> is less than
+    /// <paramref name='length'/>.</exception>
+    public void Write(byte[] src, int offset, int length) {
       if (src == null) {
         throw new ArgumentNullException("src");
       }
       if (offset < 0) {
-    throw new ArgumentException("offset (" + offset + ") is less than " +
-          "0");
+        throw new ArgumentException("offset (" + offset + ") is less than " +
+              "0");
       }
       if (offset > src.Length) {
         throw new ArgumentException("offset (" + offset + ") is more than " +
           src.Length);
       }
       if (length < 0) {
-    throw new ArgumentException("length (" + length + ") is less than " +
-          "0");
+        throw new ArgumentException("length (" + length + ") is less than " +
+              "0");
       }
       if (length > src.Length) {
         throw new ArgumentException("length (" + length + ") is more than " +
