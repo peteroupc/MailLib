@@ -596,7 +596,8 @@ namespace PeterO.Text {
     /// method.</para></summary>
     /// <param name='input'>An object that implements a stream of universal
     /// code points.</param>
-    /// <param name='encoding'>An ICharacterEncoding object.</param>
+    /// <param name='encoding'>An object that implements a given character
+    /// encoding.</param>
     /// <returns>A byte array.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoding'/> is null.</exception>
@@ -661,9 +662,12 @@ namespace PeterO.Text {
     /// object's class already has a EncodeToBytes method with the same
     /// parameters, that method takes precedence over this extension
     /// method.</para></summary>
-    /// <param name='input'>Not documented yet.</param>
-    /// <param name='encoding'>Not documented yet.</param>
-    /// <param name='writer'>Not documented yet. (3).</param>
+    /// <param name='input'>An object that implements a stream of universal
+    /// code points.</param>
+    /// <param name='encoding'>An object that implements a character
+    /// encoding.</param>
+    /// <param name='writer'>A byte writer to write the encoded bytes
+    /// to.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoding'/> is null.</exception>
     public static void EncodeToWriter(
