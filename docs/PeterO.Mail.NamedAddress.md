@@ -110,11 +110,11 @@ The parameter  <i>groupName</i>
 
     public PeterO.Mail.Address Address { get; }
 
-Gets a value not documented yet.
+Gets the email address associated with this object.
 
 <b>Returns:</b>
 
-A value not documented yet.
+The email address associated with this object.
 
 ### GroupAddresses
 

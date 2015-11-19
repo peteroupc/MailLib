@@ -106,9 +106,12 @@ this.headers.get(i + 1)));
       }
 
     /**
-     * Not documented yet.
-     * @param index A 32-bit signed integer.
-     * @return A Map.Entry(string, string) object.
+     * Gets the name and value of a header field by index.
+     * @param index Zero-based index of the header field to get.
+     * @return A Map.Entry object. The key is the name of the header field, such
+     * as "From" or "Content-ID". The value is the header field's value.
+     * @throws IllegalArgumentException The parameter {@code index} is 0 or at least the
+     * number of header fields.
      */
     public Map.Entry<String, String> GetHeader(int index) {
       if (index < 0) {
@@ -126,9 +129,11 @@ this.headers.get(index + 1));
     }
 
     /**
-     * Not documented yet.
-     * @param index A 32-bit signed integer.
-     * @return A Message object.
+     * Removes a header field by index.
+     * @param index Zero-based index of the header field to set.
+     * @return This instance.
+     * @throws IllegalArgumentException The parameter {@code index} is 0 or at least the
+     * number of header fields.
      */
     public Message RemoveHeader(int index) {
       if (index < 0) {
@@ -146,19 +151,24 @@ this.headers.get(index + 1));
     }
 
     /**
-     * Not documented yet.
-     * @param header A Map.Entry object.
-     * @return A Message object.
+     * Adds a header field to the end of the message's header.
+     * @param header A Map.Entry object. The key is the name of the header
+     * field, such as "From" or "Content-ID". The value is the header
+     * field's value.
+     * @return This instance.
+     * @throws NullPointerException The key or value of {@code header} is null.
      */
     public Message AddHeader(Map.Entry<String, String> header) {
       return this.AddHeader(header.getKey(), header.getValue());
     }
 
     /**
-     * Not documented yet.
-     * @param name A string object.
-     * @param value Another string object.
-     * @return A Message object.
+     * Adds a header field to the end of the message's header.
+     * @param name Name of a header field, such as "From" or "Content-ID".
+     * @param value Value of the header field.
+     * @return This instance.
+     * @throws NullPointerException The parameter {@code name} or {@code value} is
+     * null.
      */
     public Message AddHeader(String name, String value) {
       name = ValidateHeaderField(name, value);
@@ -168,11 +178,13 @@ this.headers.get(index + 1));
     }
 
     /**
-     * Not documented yet.
-     * @param index A 32-bit signed integer.
-     * @param header A Map.Entry object.
+     * Sets the name and value of a header field by index.
+     * @param index Zero-based index of the header field to set.
+     * @param header A Map.Entry object. The key is the name of the header
+     * field, such as "From" or "Content-ID". The value is the header
+     * field's value.
      * @return A Message object.
-     * @throws IllegalArgumentException "Value" is 0 or at least the
+     * @throws IllegalArgumentException The parameter {@code index} is 0 or at least the
      * number of header fields.
      * @throws IllegalArgumentException The parameter {@code index} is 0 or at least the
      * number of header fields.
@@ -183,11 +195,11 @@ this.headers.get(index + 1));
     }
 
     /**
-     * Not documented yet.
-     * @param index Zero-based index of the header to set.
-     * @param name A string object.
-     * @param value Another string object.
-     * @return A Message object.
+     * Sets the name and value of a header field by index.
+     * @param index Zero-based index of the header field to set.
+     * @param name Name of a header field, such as "From" or "Content-ID".
+     * @param value Value of the header field.
+     * @return This instance.
      * @throws IllegalArgumentException The parameter {@code index} is 0 or at least the
      * number of header fields.
      * @throws NullPointerException The parameter {@code name} or {@code value} is
@@ -210,10 +222,10 @@ this.headers.get(index + 1));
     }
 
     /**
-     * Not documented yet.
-     * @param index A 32-bit signed integer.
-     * @param value A string object.
-     * @return A Message object.
+     * Sets the value of a header field by index without changing its name.
+     * @param index Zero-based index of the header field to set.
+     * @param value Value of the header field.
+     * @return This instance.
      * @throws IllegalArgumentException The parameter {@code index} is 0 or at least the
      * number of header fields.
      * @throws NullPointerException The parameter {@code value} is null.

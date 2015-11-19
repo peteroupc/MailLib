@@ -137,13 +137,17 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='name'>Name of the parameter to set. The name is
-    /// compared case-insensitively.</param>
-    /// <param name='value'>A string object.</param>
+    /// <summary>Sets a parameter's name and value for this media
+    /// type.</summary>
+    /// <param name='name'>Name of the parameter to set, such as "charset".
+    /// The name is compared case-insensitively.</param>
+    /// <param name='value'>A string object giving the parameter's
+    /// value.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='value'/> or <paramref name='name'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='name'/> is empty or syntactically invalid.</exception>
     public MediaTypeBuilder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException("value");
@@ -163,11 +167,14 @@ if (MediaType.skipMimeTypeSubtype(name, 0, name.Length, null) !=
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>A string object.</param>
+    /// <summary>Sets this media type's subtype, such as "plain" or "xml"
+    /// .</summary>
+    /// <param name='str'>A string object naming a media subtype.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='str'/> is empty or syntactically invalid.</exception>
     public MediaTypeBuilder SetSubType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");

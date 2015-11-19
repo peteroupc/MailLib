@@ -86,12 +86,8 @@ private HeaderParserUtility() {
       return str.substring(index, (index)+(tmp - index));
     }
 
-    /**
-     * Quotes a string according to RFC 5322 rules.
-     * @param str Not documented yet.
-     * @return A string object.
-     */
     public static String QuoteValue(String str) {
+      // Quotes a String according to RFC 5322 rules.
       StringBuilder builder = new StringBuilder();
       builder.append('"');
       for (int i = 0; i < str.length(); ++i) {

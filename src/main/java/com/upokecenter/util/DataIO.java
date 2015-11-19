@@ -28,7 +28,7 @@ private DataIO() {
       }
 
     /**
-     * Not documented yet.
+     * This is an internal method.
      * @return A 32-bit signed integer.
      */
       public int read() {
@@ -48,7 +48,7 @@ private DataIO() {
       }
 
     /**
-     * Not documented yet.
+     * This is an internal method.
      * @return A 32-bit signed integer.
      */
       public int read() {
@@ -68,7 +68,7 @@ private DataIO() {
       }
 
     /**
-     * Not documented yet.
+     * This is an internal method.
      * @param byteValue A 32-bit signed integer.
      */
       public void write(int byteValue) {
@@ -76,7 +76,7 @@ private DataIO() {
       }
 
     /**
-     * Not documented yet.
+     * This is an internal method.
      * @param bytes A byte array.
      * @param offset A zero-based index showing where the desired portion of
      * "bytes" begins.
@@ -125,7 +125,7 @@ private DataIO() {
       }
 
     /**
-     * Not documented yet.
+     * This is an internal method.
      * @param byteValue A 32-bit signed integer.
      */
       public void write(int byteValue) {
@@ -137,7 +137,7 @@ private DataIO() {
       }
 
     /**
-     * Not documented yet.
+     * This is an internal method.
      * @param bytes A byte array.
      * @param offset A zero-based index showing where the desired portion of
      * "bytes" begins.
@@ -158,14 +158,15 @@ private DataIO() {
     }
 
     /**
-     * Not documented yet. <p>In the .NET implementation, this method is
-     * implemented as an extension method to any object implementing byte[]
-     * and can be called as follows: <code>bytes.ToTransform()</code>. If the
-     * object's class already has a ToTransform method with the same
-     * parameters, that method takes precedence over this extension
-     * method.</p>
-     * @param bytes Not documented yet.
-     * @return An ITransform object.
+     * Wraps a byte array into a byte reader. The reader will start at the
+     * beginning of the byte array. <p>In the .NET implementation, this
+     * method is implemented as an extension method to any object
+     * implementing byte[] and can be called as follows:
+     * <code>bytes.ToTransform()</code>. If the object's class already has a
+     * ToTransform method with the same parameters, that method takes
+     * precedence over this extension method.</p>
+     * @param bytes The byte array to wrap.
+     * @return A byte reader wrapping the byte array.
      * @throws NullPointerException The parameter {@code bytes} is null.
      */
     public static IByteReader ToTransform(byte[] bytes) {
@@ -187,7 +188,7 @@ private DataIO() {
      * "bytes" begins.
      * @param length The length, in bytes, of the desired portion of "bytes" (but
      * not more than "bytes" 's length).
-     * @return An ITransform object.
+     * @return A byte reader wrapping the byte array.
      * @throws NullPointerException The parameter {@code bytes} is null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
      * than 0 or greater than {@code bytes} 's length, or {@code bytes} 's
@@ -231,8 +232,8 @@ int length) {
      * called as follows: <code>input.ToTransform()</code>. If the object's class
      * already has a ToTransform method with the same parameters, that
      * method takes precedence over this extension method.</p>
-     * @param input Not documented yet.
-     * @return An ITransform object.
+     * @param input The input stream to wrap.
+     * @return A byte reader wrapping the input stream.
      * @throws NullPointerException The parameter {@code input} is null.
      */
     public static IByteReader ToTransform(InputStream input) {

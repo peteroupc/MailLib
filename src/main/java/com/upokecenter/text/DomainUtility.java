@@ -40,14 +40,19 @@ private DomainUtility() {
 
     /**
      * Gets the Punycode length of a string (Punycode is defined in RFC 3492).
-     * @param str Not documented yet.
-     * @param index A 32-bit signed integer.
-     * @param endIndex Another 32-bit signed integer.
+     * @param str A string containing the desired portion to get the length for.
+     * @param index Zero-based index showing where the desired portion of "str"
+     * begins.
+     * @param endIndex Zero-based index showing where the desired portion of "str"
+     * ends. The character before this index is the last character.
      * @return The Punycode length of the encoded string. If the string contains
      * non-ASCII characters, returns the Punycode length plus 4 (the length
      * of the ACE prefix). If there are only ASCII characters, returns the
      * length of the string. Returns -1 if an overflow error occurs.
      * @throws NullPointerException The parameter {@code str} is null.
+     * @throws NullPointerException Either {@code index} or {@code endIndex} is
+     * less than 0 or greater than {@code str} 's length, or {@code index}
+     * is greater than {@code endIndex} .
      */
     public static int PunycodeLength(String str, int index, int endIndex) {
       if (str == null) {

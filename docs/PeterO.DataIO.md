@@ -9,15 +9,15 @@ Convenience class that contains static methods for wrapping byte arrays and stre
     public static PeterO.IByteReader ToTransform(
         this byte[] bytes);
 
-Not documented yet.In the .NET implementation, this method is implemented as an extension method to any object implementing byte[] and can be called as follows:  `bytes.ToTransform()` . If the object's class already has a ToTransform method with the same parameters, that method takes precedence over this extension method.
+Wraps a byte array into a byte reader. The reader will start at the beginning of the byte array.In the .NET implementation, this method is implemented as an extension method to any object implementing byte[] and can be called as follows:  `bytes.ToTransform()` . If the object's class already has a ToTransform method with the same parameters, that method takes precedence over this extension method.
 
 <b>Parameters:</b>
 
- * <i>bytes</i>: Not documented yet.
+ * <i>bytes</i>: The byte array to wrap.
 
 <b>Returns:</b>
 
-An ITransform object.
+A byte reader wrapping the byte array.
 
 <b>Exceptions:</b>
 
@@ -44,7 +44,7 @@ Wraps a portion of a byte array into a byte reader object.In the .NET implementa
 
 <b>Returns:</b>
 
-An ITransform object.
+A byte reader wrapping the byte array.
 
 <b>Exceptions:</b>
 
@@ -70,11 +70,11 @@ Wraps an input stream into a reader object. If an IOException is thrown by the i
 
 <b>Parameters:</b>
 
- * <i>input</i>: Not documented yet.
+ * <i>input</i>: The input stream to wrap.
 
 <b>Returns:</b>
 
-An ITransform object.
+A byte reader wrapping the input stream.
 
 <b>Exceptions:</b>
 

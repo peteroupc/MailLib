@@ -108,13 +108,13 @@ The parameter  <i>name</i>
         string name,
         string value);
 
-Not documented yet.
+Sets a parameter's name and value for this media type.
 
 <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to set. The name is compared case-insensitively.
+ * <i>name</i>: Name of the parameter to set, such as "charset". The name is compared case-insensitively.
 
- * <i>value</i>: A string object.
+ * <i>value</i>: A string object giving the parameter's value.
 
 <b>Returns:</b>
 
@@ -127,16 +127,20 @@ The parameter  <i>value</i>
  or  <i>name</i>
  is null.
 
+ * System.ArgumentException:
+The parameter  <i>name</i>
+ is empty or syntactically invalid.
+
 ### SetSubType
 
     public PeterO.Mail.MediaTypeBuilder SetSubType(
         string str);
 
-Not documented yet.
+Sets this media type's subtype, such as "plain" or "xml" .
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object.
+ * <i>str</i>: A string object naming a media subtype.
 
 <b>Returns:</b>
 
@@ -147,6 +151,10 @@ This instance.
  * System.ArgumentNullException:
 The parameter  <i>str</i>
  is null.
+
+ * System.ArgumentException:
+The parameter  <i>str</i>
+ is empty or syntactically invalid.
 
 ### SetTopLevelType
 

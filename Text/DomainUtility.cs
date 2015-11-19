@@ -38,9 +38,13 @@ namespace PeterO.Text {
 
     /// <summary>Gets the Punycode length of a string (Punycode is defined
     /// in RFC 3492).</summary>
-    /// <param name='str'>Not documented yet.</param>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='endIndex'>Another 32-bit signed integer.</param>
+    /// <param name='str'>A string containing the desired portion to get
+    /// the length for.</param>
+    /// <param name='index'>Zero-based index showing where the desired
+    /// portion of "str" begins.</param>
+    /// <param name='endIndex'>Zero-based index showing where the desired
+    /// portion of "str" ends. The character before this index is the last
+    /// character.</param>
     /// <returns>The Punycode length of the encoded string. If the string
     /// contains non-ASCII characters, returns the Punycode length plus 4
     /// (the length of the ACE prefix). If there are only ASCII characters,
@@ -48,6 +52,11 @@ namespace PeterO.Text {
     /// occurs.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
+    /// <exception cref='ArgumentNullException'>Either <paramref
+    /// name='index'/> or <paramref name='endIndex'/> is less than 0 or
+    /// greater than <paramref name='str'/> 's length, or <paramref
+    /// name='index'/> is greater than <paramref name='endIndex'/>
+    /// .</exception>
     public static int PunycodeLength(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");

@@ -198,32 +198,45 @@ A list of addresses found in the To header field or fields.
         string name,
         string value);
 
-Not documented yet.
+Adds a header field to the end of the message's header.
 
 <b>Parameters:</b>
 
- * <i>name</i>: A string object.
+ * <i>name</i>: Name of a header field, such as "From" or "Content-ID".
 
- * <i>value</i>: Another string object.
+ * <i>value</i>: Value of the header field.
 
 <b>Returns:</b>
 
-A Message object.
+This instance.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>name</i>
+ or  <i>value</i>
+ is null.
 
 ### AddHeader
 
     public PeterO.Mail.Message AddHeader(
         System.Collections.Generic.KeyValuePair header);
 
-Not documented yet.
+Adds a header field to the end of the message's header.
 
 <b>Parameters:</b>
 
- * <i>header</i>: A KeyValuePair object.
+ * <i>header</i>: A KeyValuePair object. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
 
 <b>Returns:</b>
 
-A Message object.
+This instance.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The key or value of <i>header</i>
+ is null.
 
 ### Generate
 
@@ -287,7 +300,7 @@ Name is null.
     public System.Collections.Generic.KeyValuePair GetHeader(
         int index);
 
-Not documented yet.
+Gets the name and value of a header field by index.
 
 <b>Parameters:</b>
 
@@ -297,20 +310,30 @@ Not documented yet.
 
 A KeyValuePair(string, string) object.
 
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+"Index" is 0 or greater than or equal to the number of header fields.
+
 ### RemoveHeader
 
     public PeterO.Mail.Message RemoveHeader(
         int index);
 
-Not documented yet.
+Removes a header field by index.
 
 <b>Parameters:</b>
 
- * <i>index</i>: A 32-bit signed integer.
+ * <i>index</i>: Zero-based index of the header field to set.
 
 <b>Returns:</b>
 
-A Message object.
+This instance.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+"Index" is 0 or greater than or equal to the number of header fields.
 
 ### RemoveHeader
 
@@ -357,19 +380,30 @@ The parameter  <i>bytes</i>
         string name,
         string value);
 
-Not documented yet.
+Sets the name and value of a header field by index.
 
 <b>Parameters:</b>
 
- * <i>index</i>: A 32-bit signed integer.
+ * <i>index</i>: Zero-based index of the header field to set.
 
- * <i>name</i>: A string object.
+ * <i>name</i>: Name of a header field, such as "From" or "Content-ID".
 
- * <i>value</i>: Another string object.
+ * <i>value</i>: Value of the header field.
 
 <b>Returns:</b>
 
-A Message object.
+This instance.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+The parameter  <i>index</i>
+ is 0 or at least the number of header fields.
+
+ * System.ArgumentNullException:
+The parameter  <i>name</i>
+ or  <i>value</i>
+ is null.
 
 ### SetHeader
 
@@ -377,17 +411,27 @@ A Message object.
         int index,
         string value);
 
-Not documented yet.
+Sets the value of a header field by index without changing its name.
 
 <b>Parameters:</b>
 
- * <i>index</i>: A 32-bit signed integer.
+ * <i>index</i>: Zero-based index of the header field to set.
 
- * <i>value</i>: A string object.
+ * <i>value</i>: Value of the header field.
 
 <b>Returns:</b>
 
-A Message object.
+This instance.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+The parameter  <i>index</i>
+ is 0 or at least the number of header fields.
+
+ * System.ArgumentNullException:
+The parameter  <i>value</i>
+ is null.
 
 ### SetHeader
 
@@ -395,17 +439,30 @@ A Message object.
         int index,
         System.Collections.Generic.KeyValuePair header);
 
-Not documented yet.
+Sets the name and value of a header field by index.
 
 <b>Parameters:</b>
 
- * <i>index</i>: A 32-bit signed integer.
+ * <i>index</i>: Zero-based index of the header field to set.
 
- * <i>header</i>: A KeyValuePair object.
+ * <i>header</i>: A KeyValuePair object. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
 
 <b>Returns:</b>
 
 A Message object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+"Index" is 0 or greater than or equal to the number of header fields.
+
+ * System.ArgumentException:
+The parameter  <i>index</i>
+ is 0 or at least the number of header fields.
+
+ * System.ArgumentNullException:
+The key or value of <i>header</i>
+ is null.
 
 ### SetHeader
 

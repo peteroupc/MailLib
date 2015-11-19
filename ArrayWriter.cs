@@ -35,7 +35,7 @@ namespace PeterO {
       return ret;
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Writes an 8-bit byte to the array.</summary>
     /// <param name='byteValue'>A 32-bit signed integer.</param>
     public void WriteByte(int byteValue) {
       if (this.retval.Length <= this.retvalPos) {
@@ -52,7 +52,7 @@ namespace PeterO {
       this.retvalMax = Math.Max(this.retvalMax, this.retvalPos);
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Writes a series of bytes to the array.</summary>
     /// <param name='src'>Byte array containing the data to write.</param>
     /// <param name='offset'>A zero-based index showing where the desired
     /// portion of <paramref name='src'/> begins.</param>

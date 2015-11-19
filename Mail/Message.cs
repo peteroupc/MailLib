@@ -118,9 +118,16 @@ this.headers[i + 1]));
       }
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <returns>A KeyValuePair(string, string) object.</returns>
+    /// <summary>Gets the name and value of a header field by
+    /// index.</summary>
+    /// <param name='index'>Zero-based index of the header field to
+    /// get.</param>
+    /// <returns>A KeyValuePair object. The key is the name of the header
+    /// field, such as "From" or "Content-ID". The value is the header
+    /// field's value.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least the number of
+    /// header fields.</exception>
     public KeyValuePair<string, string> GetHeader(int index) {
       if (index < 0) {
       throw new ArgumentException("index (" + index + ") is less than " +
@@ -136,9 +143,13 @@ this.headers[index],
 this.headers[index + 1]);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <returns>A Message object.</returns>
+    /// <summary>Removes a header field by index.</summary>
+    /// <param name='index'>Zero-based index of the header field to
+    /// set.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least the number of
+    /// header fields.</exception>
     public Message RemoveHeader(int index) {
       if (index < 0) {
       throw new ArgumentException("index (" + index + ") is less than " +
@@ -154,17 +165,26 @@ this.headers[index + 1]);
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='header'>A KeyValuePair object.</param>
-    /// <returns>A Message object.</returns>
+    /// <summary>Adds a header field to the end of the message's
+    /// header.</summary>
+    /// <param name='header'>A KeyValuePair object. The key is the name of
+    /// the header field, such as "From" or "Content-ID". The value is the
+    /// header field's value.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The key or value of
+    /// <paramref name='header'/> is null.</exception>
     public Message AddHeader(KeyValuePair<string, string> header) {
       return this.AddHeader(header.Key, header.Value);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='name'>A string object.</param>
-    /// <param name='value'>Another string object.</param>
-    /// <returns>A Message object.</returns>
+    /// <summary>Adds a header field to the end of the message's
+    /// header.</summary>
+    /// <param name='name'>Name of a header field, such as "From" or
+    /// "Content-ID".</param>
+    /// <param name='value'>Value of the header field.</param>
+    /// <returns>This instance.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='name'/> or <paramref name='value'/> is null.</exception>
     public Message AddHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
       this.headers.Add(name);
@@ -172,29 +192,37 @@ this.headers[index + 1]);
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='header'>A KeyValuePair object.</param>
+    /// <summary>Sets the name and value of a header field by
+    /// index.</summary>
+    /// <param name='index'>Zero-based index of the header field to
+    /// set.</param>
+    /// <param name='header'>A KeyValuePair object. The key is the name of
+    /// the header field, such as "From" or "Content-ID". The value is the
+    /// header field's value.</param>
     /// <returns>A Message object.</returns>
-    /// <exception cref='ArgumentException'>"Value" is 0 or greater than or
-    /// equal to the number of header fields.</exception>
     /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='index'/> is 0 or at least the number of
     /// header fields.</exception>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='index'/> is 0 or at least the number of header
+    /// fields.</exception>
     /// <exception cref='ArgumentNullException'>The key or value of
     /// <paramref name='header'/> is null.</exception>
     public Message SetHeader(int index, KeyValuePair<string, string> header) {
       return this.SetHeader(index, header.Key, header.Value);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='index'>Zero-based index of the header to set.</param>
-    /// <param name='name'>A string object.</param>
-    /// <param name='value'>Another string object.</param>
-    /// <returns>A Message object.</returns>
+    /// <summary>Sets the name and value of a header field by
+    /// index.</summary>
+    /// <param name='index'>Zero-based index of the header field to
+    /// set.</param>
+    /// <param name='name'>Name of a header field, such as "From" or
+    /// "Content-ID".</param>
+    /// <param name='value'>Value of the header field.</param>
+    /// <returns>This instance.</returns>
     /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='index'/> is 0 or at least the number of
-    /// header fields.</exception>
+    /// name='index'/> is 0 or at least the number of header
+    /// fields.</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> or <paramref name='value'/> is null.</exception>
     public Message SetHeader(int index, string name, string value) {
@@ -213,13 +241,15 @@ this.headers[index + 1]);
       return this;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='value'>A string object.</param>
-    /// <returns>A Message object.</returns>
+    /// <summary>Sets the value of a header field by index without changing
+    /// its name.</summary>
+    /// <param name='index'>Zero-based index of the header field to
+    /// set.</param>
+    /// <param name='value'>Value of the header field.</param>
+    /// <returns>This instance.</returns>
     /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='index'/> is 0 or at least the number of
-    /// header fields.</exception>
+    /// name='index'/> is 0 or at least the number of header
+    /// fields.</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='value'/> is null.</exception>
     public Message SetHeader(int index, string value) {

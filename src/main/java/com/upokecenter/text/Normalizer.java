@@ -46,30 +46,35 @@ import com.upokecenter.text.encoders.*;
     }
 
     /**
-     * Not documented yet.
-     * @param str Not documented yet.
+     * Returns whether this string is normalized.
+     * @param str The string to check.
      * @param form A Normalization object.
-     * @return A Boolean object.
+     * @return True if this string is normalized; otherwise, false.
      */
     public static boolean IsNormalized(String str, Normalization form) {
       return NormalizingCharacterInput.IsNormalized(str, form);
     }
 
     /**
-     * Not documented yet.
-     * @return A 32-bit signed integer.
+     * Reads a Unicode character from a data source.
+     * @return Either a Unicode code point (from 0-0xd7ff or from 0xe000 to
+     * 0x10ffff), or the value -1 indicating the end of the source.
      */
     public int ReadChar() {
       return this.nci.ReadChar();
     }
 
     /**
-     * Not documented yet.
-     * @param chars An array of 32-bit unsigned integers.
-     * @param index A 32-bit signed integer. (2).
-     * @param length A 32-bit signed integer. (3).
-     * @return A 32-bit signed integer.
-     * @throws NullPointerException The parameter {@code chars} is null.
+     * Reads a sequence of Unicode code points from a data source.
+     * @param chars Output buffer.
+     * @param index Index in the output buffer to start writing to.
+     * @param length Maximum number of code points to write.
+     * @return The number of Unicode code points read, or 0 if the end of the
+     * source is reached.
+     * @throws java.lang.IllegalArgumentException Either "index" or "length" is less than 0
+     * or greater than "chars"'s length, or "chars"'s length minus "index"
+     * is less than "length".
+     * @throws java.lang.NullPointerException The parameter "chars" is null.
      */
     public int Read(int[] chars, int index, int length) {
       return this.nci.Read(chars, index, length);

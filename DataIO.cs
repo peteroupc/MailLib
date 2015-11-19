@@ -24,7 +24,7 @@ namespace PeterO {
         this.endOffset = offset + length;
       }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>This is an internal method.</summary>
     /// <returns>A 32-bit signed integer.</returns>
       public int ReadByte() {
         if (this.offset >= this.endOffset) {
@@ -42,7 +42,7 @@ namespace PeterO {
         this.stream = stream;
       }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>This is an internal method.</summary>
     /// <returns>A 32-bit signed integer.</returns>
       public int ReadByte() {
         try {
@@ -60,13 +60,13 @@ namespace PeterO {
         this.output = output;
       }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>This is an internal method.</summary>
     /// <param name='byteValue'>A 32-bit signed integer.</param>
       public void WriteByte(int byteValue) {
         this.output.WriteByte((byte)byteValue);
       }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>This is an internal method.</summary>
     /// <param name='bytes'>A byte array.</param>
     /// <param name='offset'>A zero-based index showing where the desired
     /// portion of "bytes" begins.</param>
@@ -116,7 +116,7 @@ namespace PeterO {
         this.output = output;
       }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>This is an internal method.</summary>
     /// <param name='byteValue'>A 32-bit signed integer.</param>
       public void WriteByte(int byteValue) {
         try {
@@ -126,7 +126,7 @@ namespace PeterO {
         }
       }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>This is an internal method.</summary>
     /// <param name='bytes'>A byte array.</param>
     /// <param name='offset'>A zero-based index showing where the desired
     /// portion of "bytes" begins.</param>
@@ -148,15 +148,16 @@ namespace PeterO {
       }
     }
 
-    /// <summary>Not documented yet.
+    /// <summary>Wraps a byte array into a byte reader. The reader will
+    /// start at the beginning of the byte array.
     /// <para>In the .NET implementation, this method is implemented as an
     /// extension method to any object implementing byte[] and can be
     /// called as follows: <c>bytes.ToTransform()</c>. If the object's
     /// class already has a ToTransform method with the same parameters,
     /// that method takes precedence over this extension
     /// method.</para></summary>
-    /// <param name='bytes'>Not documented yet.</param>
-    /// <returns>An ITransform object.</returns>
+    /// <param name='bytes'>The byte array to wrap.</param>
+    /// <returns>A byte reader wrapping the byte array.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
     public static IByteReader ToTransform(this byte[] bytes) {
@@ -178,7 +179,7 @@ namespace PeterO {
     /// portion of "bytes" begins.</param>
     /// <param name='length'>The length, in bytes, of the desired portion
     /// of "bytes" (but not more than "bytes" 's length).</param>
-    /// <returns>An ITransform object.</returns>
+    /// <returns>A byte reader wrapping the byte array.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
     /// <exception cref='ArgumentException'>Either <paramref
@@ -225,8 +226,8 @@ int length) {
     /// class already has a ToTransform method with the same parameters,
     /// that method takes precedence over this extension
     /// method.</para></summary>
-    /// <param name='input'>Not documented yet.</param>
-    /// <returns>An ITransform object.</returns>
+    /// <param name='input'>The input stream to wrap.</param>
+    /// <returns>A byte reader wrapping the input stream.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='input'/> is null.</exception>
     public static IByteReader ToTransform(this Stream input) {

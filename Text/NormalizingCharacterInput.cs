@@ -275,10 +275,12 @@ int index) {
       return retval;
     }
 
-    /// <summary>Not documented yet.</summary>
+    /// <summary>Gets a list of normalized code points after reading from a
+    /// string.</summary>
     /// <param name='str'>A string object.</param>
-    /// <param name='form'>A Normalization object.</param>
-    /// <returns>A list of Unicode characters.</returns>
+    /// <param name='form'>Specifies the normalization form to use when
+    /// normalizing the text.</param>
+    /// <returns>A list of the normalized Unicode characters.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static IList<int> GetChars(string str, Normalization form) {
@@ -288,10 +290,13 @@ int index) {
       return GetChars(new StringCharacterInput(str), form);
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>An ICharacterInput object.</param>
-    /// <param name='form'>A Normalization object.</param>
-    /// <returns>A list of Unicode characters.</returns>
+    /// <summary>Gets a list of normalized code points after reading from a
+    /// character stream.</summary>
+    /// <param name='str'>An object that implements a stream of Unicode
+    /// characters.</param>
+    /// <param name='form'>Specifies the normalization form to use when
+    /// normalizing the text.</param>
+    /// <returns>A list of the normalized Unicode characters.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static IList<int> GetChars(ICharacterInput str, Normalization form) {
@@ -324,7 +329,8 @@ int index) {
     /// <summary>Initializes a new instance of the
     /// NormalizingCharacterInput class using Normalization Form
     /// C.</summary>
-    /// <param name='characterList'>An IList object.</param>
+    /// <param name='characterList'>A list of Unicode code points
+    /// specifying the text to normalize.</param>
     public NormalizingCharacterInput(IList<int> characterList) :
       this(characterList, Normalization.NFC) {
     }
@@ -332,7 +338,8 @@ int index) {
     /// <summary>Initializes a new instance of the
     /// NormalizingCharacterInput class using Normalization Form
     /// C.</summary>
-    /// <param name='str'>A string object.</param>
+    /// <param name='str'>A string specifying the text to
+    /// normalize.</param>
   public NormalizingCharacterInput(
 string str) : this(
 str,
@@ -353,7 +360,8 @@ Normalization.NFC) {
     /// NormalizingCharacterInput class using the given normalization
     /// form.</summary>
     /// <param name='characterList'>An IList object.</param>
-    /// <param name='form'>A Normalization object.</param>
+    /// <param name='form'>Specifies the normalization form to use when
+    /// normalizing the text.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='characterList'/> is null.</exception>
     public NormalizingCharacterInput(
@@ -375,7 +383,8 @@ Normalization form) {
     /// <param name='str'>A string object.</param>
     /// <param name='index'>A 32-bit signed integer.</param>
     /// <param name='length'>A 32-bit signed integer. (2).</param>
-    /// <param name='form'>A Normalization object.</param>
+    /// <param name='form'>Specifies the normalization form to use when
+    /// normalizing the text.</param>
     public NormalizingCharacterInput(
 string str,
 int index,
@@ -388,7 +397,8 @@ form) {
     /// <summary>Initializes a new instance of the
     /// NormalizingCharacterInput class.</summary>
     /// <param name='str'>A string object.</param>
-    /// <param name='form'>A Normalization object.</param>
+    /// <param name='form'>Specifies the normalization form to use when
+    /// normalizing the text.</param>
     public NormalizingCharacterInput(string str, Normalization form) :
       this(new StringCharacterInput(str), form) {
     }
@@ -396,7 +406,8 @@ form) {
     /// <summary>Initializes a new instance of the
     /// NormalizingCharacterInput class.</summary>
     /// <param name='stream'>An ICharacterInput object.</param>
-    /// <param name='form'>A Normalization object.</param>
+    /// <param name='form'>Specifies the normalization form to use when
+    /// normalizing the text.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='stream'/> is null.</exception>
  public NormalizingCharacterInput(
@@ -412,10 +423,14 @@ Normalization form) {
         Normalization.NFKD;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='chars'>An ICharacterInput object.</param>
-    /// <param name='form'>A Normalization object.</param>
-    /// <returns>A Boolean object.</returns>
+    /// <summary>Determines whether the text provided by a character input
+    /// is normalized.</summary>
+    /// <param name='chars'>A object that implements a streamable character
+    /// input.</param>
+    /// <param name='form'>Specifies the normalization form to use when
+    /// normalizing the text.</param>
+    /// <returns>True if the text is normalized; otherwise,
+    /// false.</returns>
     public static bool IsNormalized(ICharacterInput chars, Normalization form) {
       if (chars == null) {
         return false;
@@ -475,7 +490,8 @@ Normalization form) {
     /// <summary>Determines whether the given string is in the given
     /// Unicode normalization form.</summary>
     /// <param name='str'>An arbitrary string.</param>
-    /// <param name='form'>A Normalization object.</param>
+    /// <param name='form'>Specifies the normalization form to use when
+    /// normalizing the text.</param>
     /// <returns>True if the given string is in the given Unicode
     /// normalization form; otherwise, false.</returns>
     public static bool IsNormalized(string str, Normalization form) {
@@ -569,8 +585,9 @@ form)) {
 
     /// <summary>Determines whether the given list of characters is in the
     /// given Unicode normalization form.</summary>
-    /// <param name='charList'>An IList object.</param>
-    /// <param name='form'>A Normalization object.</param>
+    /// <param name='charList'>A list of Unicode code points.</param>
+    /// <param name='form'>Specifies the normalization form to use when
+    /// normalizing the text.</param>
     /// <returns>True if the given list of characters is in the given
     /// Unicode normalization form; otherwise, false.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -627,8 +644,10 @@ form)) {
 
     private int[] readbuffer = new int[1];
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
+    /// <summary>Reads a Unicode character from a data source.</summary>
+    /// <returns>Either a Unicode code point (from 0-0xd7ff or from 0xe000
+    /// to 0x10ffff), or the value -1 indicating the end of the
+    /// source.</returns>
     public int ReadChar() {
       int r = this.Read(this.readbuffer, 0, 1);
       return r == 1 ? this.readbuffer[0] : -1;
@@ -662,13 +681,20 @@ this.characterList.Count) ? -1 :
       return ch;
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <param name='chars'>An array of 32-bit unsigned integers.</param>
-    /// <param name='index'>A 32-bit signed integer. (2).</param>
-    /// <param name='length'>A 32-bit signed integer. (3).</param>
-    /// <returns>A 32-bit signed integer.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='chars'/> or "this.buffer" is null.</exception>
+    /// <summary>Reads a sequence of Unicode code points from a data
+    /// source.</summary>
+    /// <param name='chars'>Output buffer.</param>
+    /// <param name='index'>A 32-bit signed integer.</param>
+    /// <param name='length'>Another 32-bit signed integer.</param>
+    /// <returns>The number of Unicode code points read, or 0 if the end of
+    /// the source is reached.</returns>
+    /// <exception cref='System.ArgumentNullException'>The parameter
+    /// <paramref name='chars'/> or "this.buffer" is null.</exception>
+    /// <exception cref='System.ArgumentException'>Either &#x22;index&#x22;
+    /// or &#x22;length&#x22; is less than 0 or greater than
+    /// &#x22;chars&#x22;&#x27;s length, or &#x22;chars&#x22;&#x27;s length
+    /// minus &#x22;index&#x22; is less than
+    /// &#x22;length&#x22;.</exception>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new ArgumentNullException("chars");
