@@ -125,7 +125,7 @@ Converts a filename from the Content-Disposition header to a suitable name for s
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string representing a file name.
+ * <i>str</i>: A string representing a file name. Can be null.
 
 <b>Returns:</b>
 
@@ -171,6 +171,12 @@ Parses a content disposition string and returns a content disposition object.
 
 A content disposition object, or "Attachment" if  <i>dispoValue</i>
  is empty or syntactically invalid.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>dispoValue</i>
+ is null.
 
 ### ToString
 

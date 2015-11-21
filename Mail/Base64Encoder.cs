@@ -117,12 +117,12 @@ byte c2,
 byte c3,
 byte c4) {
       int charCount = 0;
+      byte[] bytes = new byte[6];
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= 76) {
           // Output CRLF
-          output.WriteByte((byte)0x0d);
-          output.WriteByte((byte)0x0a);
-          charCount += 2;
+          bytes[charCount++]=((byte)0x0d);
+          bytes[charCount++]=((byte)0x0a);
           this.lineCount = 0;
         } else if (this.lineCount + 3 >= 76) {
           charCount += this.LineAwareAppend(output, c1);
@@ -133,11 +133,12 @@ byte c4) {
         }
         this.lineCount += 4;
       }
-      output.WriteByte((byte)c1);
-      output.WriteByte((byte)c2);
-      output.WriteByte((byte)c3);
-      output.WriteByte((byte)c4);
-      return 4 + charCount;
+      bytes[charCount++]=((byte)c1);
+      bytes[charCount++]=((byte)c2);
+      bytes[charCount++]=((byte)c3);
+      bytes[charCount++]=((byte)c4);
+      output.Write(bytes, 0, charCount);
+      return charCount;
     }
 
     private int AddByteInternal(IWriter output, byte b) {

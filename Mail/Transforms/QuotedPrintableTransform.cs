@@ -71,6 +71,19 @@ false) {
       return this.lastByte;
     }
 
+    private readonly int[] printable = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
     public int ReadByte() {
       if (this.bufferIndex < this.bufferCount) {
         int ret = this.buffer[this.bufferIndex];
@@ -87,6 +100,9 @@ false) {
         if (c < 0) {
           // End of stream
           return -1;
+        }
+        if (!this.checkStrictEncoding && printable[c]==1 && this.maxLineSize< 0) {
+          return c;
         }
         if (c == 0x0d) {
           // CR
@@ -225,21 +241,7 @@ false) {
           }
           return c;
         }
-        if (c != '\t' && (c < 0x20 || c >= 0x7f)) {
-          // Invalid character
-          if (this.maxLineSize < 0) {
-            // Ignore the character
-          } else if (this.maxLineSize > 76) {
-            // Just increment the line count
-            ++this.lineCharCount;
-            if (this.lineCharCount > this.maxLineSize) {
-              throw new
-          MessageDataException("Encoded quoted-printable line too long");
-            }
-          } else {
-       throw new MessageDataException("Invalid character in quoted-printable");
-          }
-        } else if (c == ' ' || c == '\t') {
+        if (c == ' ' || c == '\t') {
           // Space or tab. Since the quoted-printable spec
           // requires decoders to delete spaces and tabs before
           // CRLF, we need to create a lookahead buffer for
@@ -337,6 +339,21 @@ false) {
           }
           this.bufferCount = 0;
           continue;
+        }
+        if (c != '\t' && (c < 0x20 || c >= 0x7f)) {
+          // Invalid character
+          if (this.maxLineSize < 0) {
+            // Ignore the character
+          } else if (this.maxLineSize > 76) {
+            // Just increment the line count
+            ++this.lineCharCount;
+            if (this.lineCharCount > this.maxLineSize) {
+              throw new
+          MessageDataException("Encoded quoted-printable line too long");
+            }
+          } else {
+       throw new MessageDataException("Invalid character in quoted-printable");
+          }
         } else {
           // Any other character
           if (this.maxLineSize >= 0) {

@@ -431,11 +431,12 @@ Normalization form) {
     /// normalizing the text.</param>
     /// <returns>True if the text is normalized; otherwise,
     /// false.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='chars'/> is null.</exception>
     public static bool IsNormalized(ICharacterInput chars, Normalization form) {
       if (chars == null) {
-        return false;
+        throw new ArgumentNullException("chars");
       }
-
       IList<int> list = new List<int>();
       int ch = 0;
       while ((ch = chars.ReadChar()) >= 0) {
@@ -494,10 +495,12 @@ Normalization form) {
     /// normalizing the text.</param>
     /// <returns>True if the given string is in the given Unicode
     /// normalization form; otherwise, false.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
     public static bool IsNormalized(string str, Normalization form) {
-      if (str == null) {
-        return false;
-      }
+      if ((str) == null) {
+  throw new ArgumentNullException("str");
+}
       int nonStableStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       for (int i = 0; i < str.Length; ++i) {
@@ -684,17 +687,20 @@ this.characterList.Count) ? -1 :
     /// <summary>Reads a sequence of Unicode code points from a data
     /// source.</summary>
     /// <param name='chars'>Output buffer.</param>
-    /// <param name='index'>A 32-bit signed integer.</param>
-    /// <param name='length'>Another 32-bit signed integer.</param>
+    /// <param name='index'>A zero-based index showing where the desired
+    /// portion of <paramref name='chars'/> begins.</param>
+    /// <param name='length'>The number of elements in the desired portion
+    /// of <paramref name='chars'/> (but not more than <paramref
+    /// name='chars'/> 's length).</param>
     /// <returns>The number of Unicode code points read, or 0 if the end of
     /// the source is reached.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='chars'/> or "this.buffer" is null.</exception>
-    /// <exception cref='System.ArgumentException'>Either &#x22;index&#x22;
-    /// or &#x22;length&#x22; is less than 0 or greater than
-    /// &#x22;chars&#x22;&#x27;s length, or &#x22;chars&#x22;&#x27;s length
-    /// minus &#x22;index&#x22; is less than
-    /// &#x22;length&#x22;.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='chars'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Either <paramref name='index'/>
+    /// or <paramref name='length'/> is less than 0 or greater than
+    /// <paramref name='chars'/> 's length, or <paramref name='chars'/> 's
+    /// length minus <paramref name='index'/> is less than <paramref
+    /// name='length'/>.</exception>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new ArgumentNullException("chars");
@@ -751,11 +757,6 @@ this.characterList.Count) ? -1 :
           count = 0;
         }
         if (count != 0) {
-          #if DEBUG
-if (this.buffer == null) {
-            throw new ArgumentException("buffer is null");
-          }
-          #endif
           // Fill buffer with processed code points
           Array.Copy(this.buffer, this.flushIndex, chars, index, count);
         }
@@ -785,9 +786,6 @@ if (this.buffer == null) {
             // Move unprocessed data to the beginning of
             // the buffer
             #if DEBUG
-            if (this.buffer == null) {
-              throw new ArgumentNullException("this.buffer");
-            }
             if (this.endIndex < this.lastStableIndex) {
               throw new ArgumentException("endIndex less than lastStableIndex");
             }

@@ -73,13 +73,13 @@ namespace PeterO.Text {
     /// write.</param>
     /// <returns>The number of Unicode code points read, or 0 if the end of
     /// the source is reached.</returns>
-    /// <exception cref='System.ArgumentException'>Either &#x22;index&#x22;
-    /// or &#x22;length&#x22; is less than 0 or greater than
-    /// &#x22;chars&#x22;&#x27;s length, or &#x22;chars&#x22;&#x27;s length
-    /// minus &#x22;index&#x22; is less than
-    /// &#x22;length&#x22;.</exception>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// &#x22;chars&#x22; is null.</exception>
+    /// <exception cref='ArgumentException'>Either <paramref name='index'/>
+    /// or <paramref name='length'/> is less than 0 or greater than
+    /// <paramref name='chars'/> 's length, or <paramref name='chars'/> 's
+    /// length minus <paramref name='index'/> is less than <paramref
+    /// name='length'/>.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='chars'/> is null.</exception>
     public int Read(int[] chars, int index, int length) {
       return this.nci.Read(chars, index, length);
     }

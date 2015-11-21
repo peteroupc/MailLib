@@ -359,12 +359,12 @@ Normalization form) {
      * @param form Specifies the normalization form to use when normalizing the
      * text.
      * @return True if the text is normalized; otherwise, false.
+     * @throws NullPointerException The parameter {@code chars} is null.
      */
     public static boolean IsNormalized(ICharacterInput chars, Normalization form) {
       if (chars == null) {
-        return false;
+        throw new NullPointerException("chars");
       }
-
       List<Integer> list = new ArrayList<Integer>();
       int ch = 0;
       while ((ch = chars.ReadChar()) >= 0) {
@@ -422,11 +422,12 @@ Normalization form) {
      * text.
      * @return True if the given string is in the given Unicode normalization form;
      * otherwise, false.
+     * @throws NullPointerException The parameter {@code str} is null.
      */
     public static boolean IsNormalized(String str, Normalization form) {
-      if (str == null) {
-        return false;
-      }
+      if ((str) == null) {
+  throw new NullPointerException("str");
+}
       int nonStableStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       for (int i = 0; i < str.length(); ++i) {
@@ -615,15 +616,16 @@ this.characterList.size()) ? -1 :
     /**
      * Reads a sequence of Unicode code points from a data source.
      * @param chars Output buffer.
-     * @param index A 32-bit signed integer.
-     * @param length Another 32-bit signed integer.
+     * @param index A zero-based index showing where the desired portion of {@code
+     * chars} begins.
+     * @param length The number of elements in the desired portion of {@code chars}
+     * (but not more than {@code chars} 's length).
      * @return The number of Unicode code points read, or 0 if the end of the
      * source is reached.
-     * @throws java.lang.NullPointerException The parameter {@code chars} or
-     * "this.buffer" is null.
-     * @throws java.lang.IllegalArgumentException Either "index" or "length" is less than 0
-     * or greater than "chars"'s length, or "chars"'s length minus "index"
-     * is less than "length".
+     * @throws NullPointerException The parameter {@code chars} is null.
+     * @throws IllegalArgumentException Either {@code index} or {@code length} is less
+     * than 0 or greater than {@code chars} 's length, or {@code chars} 's
+     * length minus {@code index} is less than {@code length}.
      */
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {

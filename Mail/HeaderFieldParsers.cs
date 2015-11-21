@@ -1637,7 +1637,19 @@ endIndex,
 tokener);
       }
     }
-
+    private sealed class HeaderEesstVersion : StructuredHeaderField {
+      public override int Parse(string str, int index, int endIndex,
+        ITokener tokener) {
+    return HeaderParser.ParseHeaderEesstVersion(str, index, endIndex,
+          tokener);
+      }
+    }
+    private sealed class HeaderSioLabel : StructuredHeaderField {
+      public override int Parse(string str, int index, int endIndex,
+        ITokener tokener) {
+        return HeaderParser.ParseHeaderSioLabel(str, index, endIndex, tokener);
+      }
+    }
     private static IDictionary<string, IHeaderFieldParser> fieldMap =
       CreateHeaderFieldList();
 
@@ -1668,7 +1680,7 @@ tokener);
       fieldMap["autoforwarded"] = new HeaderAutoforwarded();
       fieldMap["generate-delivery-report"] = new HeaderGenerateDeliveryReport();
       fieldMap["incomplete-copy"] = new HeaderIncompleteCopy();
- fieldMap["prevent-nondelivery-report"] = new
+ fieldMap["prevent-nondelivery-report" ] = new
         HeaderPreventNondeliveryReport();
       fieldMap["alternate-recipient"] = new HeaderAlternateRecipient();
       fieldMap["disclose-recipients"] = new HeaderDiscloseRecipients();
@@ -1696,17 +1708,18 @@ tokener);
       fieldMap["content-language"] = new HeaderContentLanguage();
       fieldMap["content-location"] = new HeaderContentLocation();
       fieldMap["content-md5"] = new HeaderContentMd5();
-   fieldMap["content-transfer-encoding"] = new
+   fieldMap["content-transfer-encoding" ] = new
         HeaderContentTransferEncoding();
       fieldMap["content-type"] = new HeaderContentType();
       fieldMap["date"] = new HeaderDate();
       fieldMap["deferred-delivery"] = new HeaderDeferredDelivery();
-      fieldMap["disposition-notification-options"] = new
+      fieldMap["disposition-notification-options" ] = new
         HeaderDispositionNotificationOptions();
-      fieldMap["disposition-notification-to"] = new
+      fieldMap["disposition-notification-to" ] = new
         HeaderDispositionNotificationTo();
       fieldMap["dkim-signature"] = new HeaderDkimSignature();
       fieldMap["ediint-features"] = new HeaderEdiintFeatures();
+      fieldMap["eesst-version"] = new HeaderEesstVersion();
       fieldMap["encoding"] = new HeaderEncoding();
       fieldMap["encrypted"] = new HeaderEncrypted();
       fieldMap["expiry-date"] = new HeaderDate();
@@ -1720,28 +1733,28 @@ tokener);
       fieldMap["message-context"] = new HeaderMessageContext();
       fieldMap["message-id"] = new HeaderMessageId();
       fieldMap["mime-version"] = new HeaderMimeVersion();
-      fieldMap["mmhs-acp127-message-identifier"] = new
+      fieldMap["mmhs-acp127-message-identifier" ] = new
         HeaderMmhsAcp127MessageIdentifier();
-      fieldMap["mmhs-codress-message-indicator"] = new
+      fieldMap["mmhs-codress-message-indicator" ] = new
         HeaderMmhsCodressMessageIndicator();
       fieldMap["mmhs-copy-precedence"] = new HeaderMmhsCopyPrecedence();
       fieldMap["mmhs-exempted-address"] = new HeaderMmhsExemptedAddress();
-      fieldMap["mmhs-extended-authorisation-info"] = new
+      fieldMap["mmhs-extended-authorisation-info" ] = new
         HeaderMmhsExtendedAuthorisationInfo();
- fieldMap["mmhs-handling-instructions"] = new
+ fieldMap["mmhs-handling-instructions" ] = new
         HeaderMmhsHandlingInstructions();
-   fieldMap["mmhs-message-instructions"] = new
+   fieldMap["mmhs-message-instructions" ] = new
         HeaderMmhsMessageInstructions();
       fieldMap["mmhs-message-type"] = new HeaderMmhsMessageType();
       fieldMap["mmhs-originator-plad"] = new HeaderMmhsOriginatorPlad();
-   fieldMap["mmhs-originator-reference"] = new
+   fieldMap["mmhs-originator-reference" ] = new
         HeaderMmhsOriginatorReference();
-      fieldMap["mmhs-other-recipients-indicator-cc"] = new
+      fieldMap["mmhs-other-recipients-indicator-cc" ] = new
         HeaderMmhsOtherRecipientsIndicatorCc();
-      fieldMap["mmhs-other-recipients-indicator-to"] = new
+      fieldMap["mmhs-other-recipients-indicator-to" ] = new
         HeaderMmhsOtherRecipientsIndicatorTo();
       fieldMap["mmhs-primary-precedence"] = new HeaderMmhsPrimaryPrecedence();
-      fieldMap["mmhs-subject-indicator-codes"] = new
+      fieldMap["mmhs-subject-indicator-codes" ] = new
         HeaderMmhsSubjectIndicatorCodes();
       fieldMap["mt-priority"] = new HeaderMtPriority();
       fieldMap["obsoletes"] = new HeaderObsoletes();
@@ -1752,7 +1765,7 @@ tokener);
       fieldMap["received-spf"] = new HeaderReceivedSpf();
       fieldMap["references"] = new HeaderInReplyTo();
       fieldMap["reply-to"] = new HeaderResentTo();
-      fieldMap["require-recipient-valid-since"] = new
+      fieldMap["require-recipient-valid-since" ] = new
         HeaderRequireRecipientValidSince();
       fieldMap["resent-bcc"] = new HeaderBcc();
       fieldMap["resent-cc"] = new HeaderResentTo();
@@ -1764,6 +1777,8 @@ tokener);
       fieldMap["resent-to"] = new HeaderResentTo();
       fieldMap["return-path"] = new HeaderReturnPath();
       fieldMap["sender"] = new HeaderSender();
+      fieldMap["sio-label"] = new HeaderSioLabel();
+      fieldMap["sio-label-history"] = new HeaderSioLabel();
       fieldMap["solicitation"] = new HeaderSolicitation();
       fieldMap["to"] = new HeaderTo();
       fieldMap["vbr-info"] = new HeaderVbrInfo();

@@ -86,7 +86,7 @@ This value's top-level type.
     public PeterO.Mail.MediaTypeBuilder RemoveParameter(
         string name);
 
-Removes a parameter from this builder object.
+Removes a parameter from this builder object. Does nothing if the parameter's name doesn't exist.
 
 <b>Parameters:</b>
 

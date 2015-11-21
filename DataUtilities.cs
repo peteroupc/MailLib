@@ -114,7 +114,9 @@ bool replace) {
     /// <param name='replace'>If true, replaces unpaired surrogate code
     /// points with the replacement character (U + FFFD). If false, stops
     /// processing when an unpaired surrogate code point is seen.</param>
-    /// <param name='lenientLineBreaks'>A Boolean object.</param>
+    /// <param name='lenientLineBreaks'>If true, replaces carriage return
+    /// (CR) not followed by line feed (LF) and LF not preceded by CR with
+    /// CR-LF pairs.</param>
     /// <returns>The string encoded in UTF-8.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>

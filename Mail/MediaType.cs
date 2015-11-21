@@ -33,8 +33,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets the name of this media type's top-level type (such as
     /// "text" or "audio".</summary>
-    /// <value>The name of this media type&#x27;s top-level type (such as
-    /// &#x22;text&#x22; or &#x22;audio&#x22;.</value>
+    /// <value>The name of this media type&apos;s top-level type (such as
+    /// &quot;text&quot; or &quot;audio&quot;.</value>
     public string TopLevelType {
       get {
         return this.topLevelType;
@@ -79,7 +79,7 @@ namespace PeterO.Mail {
     private string subType;
 
     /// <summary>Gets this media type's subtype.</summary>
-    /// <value>This media type&#x27;s subtype.</value>
+    /// <value>This media type&apos;s subtype.</value>
     public string SubType {
       get {
         return this.subType;
@@ -669,8 +669,8 @@ Justification="This method has different semantics from " +
       // media types defined before this RFC are grandfathered from the
       // rule: those
       // media types "that fail to specify how the charset is determined" still
-      // have US-ASCII as default. The text media types defined as of Apr. 17,
-      // 2014, are listed below:
+      // have US-ASCII as default. The text media types defined as of Nov. 20,
+      // 2015, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -681,7 +681,8 @@ Justification="This method has different semantics from " +
       // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback
       //
       // These media types don't define a charset parameter:
-      // -- dns, grammar-ref-list, mizar, vnd-latex-z, vnd.motorola.reflex,
+      // -- csv-schema, dns, grammar-ref-list, mizar, vnd.latex-z,
+      // vnd.motorola.reflex,
       // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript,
       // vnd.dvb.subtitle,
       // vnd.fly, rtf, rfc822-headers
@@ -700,12 +701,15 @@ Justification="This method has different semantics from " +
       // charset is treated as default is irrelevant):
       // -- example
       //
+      // No default specified (after RFC6657):
+      // -- markdown*
+      //
       // -- US-ASCII assumed: --
       //
       // These media types don't define a default charset:
-      // -- css, richtext, enriched, tab-separated-values, vnd.in3d.spot*,
-      // vnd.abc, vnd.wap.wmlscript, vnd.curl, vnd.fmi.flexstor, uri-list,
-      // directory
+      // -- css, richtext, enriched, tab-separated-values,
+      // vnd.in3d.spot*, vnd.abc, vnd.wap.wmlscript, vnd.curl,
+      // vnd.fmi.flexstor, uri-list, directory
       //
       // US-ASCII default:
       // -- plain, sgml, troff
@@ -737,7 +741,7 @@ Justification="This method has different semantics from " +
         // Media types that assume a default of US-ASCII
         if (sub.Equals("plain") || sub.Equals("sgml") ||
           sub.Equals("troff") || sub.Equals("directory") ||
-       sub.Equals("css") || sub.Equals("richtext") ||
+          sub.Equals("css") || sub.Equals("richtext") ||
               sub.Equals("enriched") || sub.Equals("tab-separated-values") ||
               sub.Equals("vnd.in3d.spot") || sub.Equals("vnd.abc") ||
             sub.Equals("vnd.wap.wmlscript") || sub.Equals("vnd.curl") ||
@@ -863,7 +867,6 @@ ICharacterEncoding charset) {
             continue;
           }
           parameters.Remove(name);
-          realValue = realValue ?? value;
           // NOTE: Overrides the name without continuations
           parameters[realName] = realValue;
           continue;
@@ -924,7 +927,7 @@ charsetUsed);
     /// <summary>Gets the top level type and subtype of this media type,
     /// separated by a slash; for example, "text/plain".</summary>
     /// <value>The top level type and subtype of this media type, separated
-    /// by a slash; for example, &#x22;text/plain&#x22;.</value>
+    /// by a slash; for example, &quot;text/plain&quot;.</value>
     public string TypeAndSubType {
       get {
         return this.TopLevelType + "/" + this.SubType;
@@ -1147,7 +1150,8 @@ null);
 
     /// <summary>Parses a media type string and returns a media type
     /// object.</summary>
-    /// <param name='mediaTypeValue'>A string object.</param>
+    /// <param name='mediaTypeValue'>A string object representing a media
+    /// type. This media type can include parameters.</param>
     /// <returns>A media type object, or text/plain if <paramref
     /// name='mediaTypeValue'/> is empty or syntactically
     /// invalid.</returns>
@@ -1157,8 +1161,8 @@ null);
 
     /// <summary>Parses a media type string and returns a media type
     /// object, or the default value if the string is invalid.</summary>
-    /// <param name='str'>A string object representing a media
-    /// type.</param>
+    /// <param name='str'>A string object representing a media type. This
+    /// media type can include parameters.</param>
     /// <param name='defaultValue'>The media type to return if the string
     /// is syntactically invalid. Can be null.</param>
     /// <returns>A MediaType object.</returns>

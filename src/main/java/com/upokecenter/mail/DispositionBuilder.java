@@ -107,7 +107,8 @@ public final void setDispositionType(String value) {
     }
 
     /**
-     * Removes a parameter from this content disposition.
+     * Removes a parameter from this content disposition. Does nothing if the
+     * parameter's name doesn't exist.
      * @param name The parameter to remove. The name is compared case
      * insensitively.
      * @return This instance.

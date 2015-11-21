@@ -276,7 +276,6 @@ List<int[]> tokens) {
           }
         }
       }
-
       return new NamedAddress(displayName, mailboxes);
     }
 

@@ -91,8 +91,7 @@ namespace MailLibTest {
       for (int i = 0; i < expected.Length; ++i) {
         if (expected[i] != actual[i]) {
       Assert.Fail("\nexpected: " + ToString(expected) + "\n" +
-            "\nwas:      " +
-                ToString(actual) + "\n" + msg);
+            "\nwas:      " + ToString(actual) + "\n" + msg);
         }
       }
     }
@@ -235,14 +234,23 @@ NormalizingCharacterInput.IsNormalized(
           }
           string cpstr = new String(cptemp, 0, (i >= 0x10000 ? 2 : 1));
           string imsg = "" + i;
-          Assert.AreEqual(cpstr, NormalizingCharacterInput.Normalize(cpstr,
-              Normalization.NFC));
-          Assert.AreEqual(cpstr, NormalizingCharacterInput.Normalize(cpstr,
-              Normalization.NFD));
-          Assert.AreEqual(cpstr, NormalizingCharacterInput.Normalize(cpstr,
-               Normalization.NFKC));
-          Assert.AreEqual(cpstr, NormalizingCharacterInput.Normalize(cpstr,
-               Normalization.NFKD));
+          if (!cpstr.Equals(NormalizingCharacterInput.Normalize(
+            cpstr,
+            Normalization.NFC))) {
+ Assert.Fail(imsg);
+}
+          if (!cpstr.Equals(NormalizingCharacterInput.Normalize(cpstr,
+              Normalization.NFD))) {
+ Assert.Fail(imsg);
+}
+          if (!cpstr.Equals(NormalizingCharacterInput.Normalize(cpstr,
+               Normalization.NFKC))) {
+ Assert.Fail(imsg);
+}
+          if (!cpstr.Equals(NormalizingCharacterInput.Normalize(cpstr,
+               Normalization.NFKD))) {
+ Assert.Fail(imsg);
+}
        if (!NormalizingCharacterInput.IsNormalized(cpstr,
             Normalization.NFC)) {
             Assert.Fail(imsg);
@@ -261,13 +269,6 @@ NormalizingCharacterInput.IsNormalized(
           }
         }
       }
-      // Additional normalization tests
-      Assert.IsFalse(NormalizingCharacterInput.IsNormalized(
-        "x\u0300\u0323yz",
-        Normalization.NFC));
-      Assert.IsFalse(NormalizingCharacterInput.IsNormalized(
-        "x\u0300\u0323",
-        Normalization.NFC));
     }
   }
 }

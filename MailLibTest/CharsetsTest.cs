@@ -14,58 +14,6 @@ namespace MailLibTest {
   [TestClass]
   public class CharsetsTest {
     [TestMethod]
-    public void TestGetEncoding() {
-      if ((Encodings.GetEncoding("utf-8")) == null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("Utf-8")) == null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("uTf-8")) == null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("utF-8")) == null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("UTF-8")) == null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("utg-8")) != null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("utf-9")) != null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("   utf-8    ")) == null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("   utf-8")) == null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("utf-8    ")) == null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("\t\tutf-8\t\t")) == null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding(" \r\n utf-8 \r ")) == null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("\nutf-8\n")) == null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("\tutf-8\t")) == null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("\rutf-8\r")) == null) {
- Assert.Fail();
- }
-      if ((Encodings.GetEncoding("\futf-8\f")) == null) {
- Assert.Fail();
- }
-    }
-
-    [TestMethod]
     public void TestShiftJIS() {
       // Adapted from the public domain Gonk test cases
       byte[] bytes;

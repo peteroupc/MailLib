@@ -120,7 +120,7 @@ private DataIO() {
     private static final class WrappedOutputStream implements IWriter {
       private OutputStream output;
 
-      public WrappedOutputStream (OutputStream output) throws java.io.IOException {
+      public WrappedOutputStream (OutputStream output) {
         this.output = output;
       }
 
@@ -252,10 +252,10 @@ int length) {
      * already has a ToWriter method with the same parameters, that method
      * takes precedence over this extension method.</p>
      * @param output Output stream to wrap.
-     * @return An IWriter object.
+     * @return A byte writer that wraps the given output stream.
      * @throws NullPointerException The parameter {@code output} is null.
      */
-    public static IWriter ToWriter(OutputStream output) throws java.io.IOException {
+    public static IWriter ToWriter(OutputStream output) {
       if (output == null) {
         throw new NullPointerException("output");
       }
@@ -271,10 +271,10 @@ int length) {
      * a ToWriter method with the same parameters, that method takes
      * precedence over this extension method.</p>
      * @param output A byte stream.
-     * @return An IWriter object.
+     * @return A writer that wraps the given stream.
      * @throws NullPointerException The parameter {@code output} is null.
      */
-    public static IWriter ToWriter(IByteWriter output) throws java.io.IOException {
+    public static IWriter ToWriter(IByteWriter output) {
       if (output == null) {
         throw new NullPointerException("output");
       }

@@ -16,7 +16,7 @@ Initializes a new instance of the MessageDataException class.
 
 <b>Parameters:</b>
 
- * <i>message</i>: A string object.
+ * <i>message</i>: A string to use as the exception message.
 
 ### MessageDataException Constructor
 
@@ -28,7 +28,7 @@ Initializes a new instance of the MessageDataException class.
 
 <b>Parameters:</b>
 
- * <i>message</i>: A string object.
+ * <i>message</i>: A string to use as the exception message.
 
  * <i>innerException</i>: An Exception object.
 

@@ -350,12 +350,7 @@ charsetEnd - charsetStart);
               string decodedWord = null;
               if (asterisk >= 1) {
                 charset = str.Substring(0, asterisk);
-                string language = str.Substring(
-            asterisk + 1,
-            str.Length - (asterisk + 1));
-                if (!ParserUtility.IsValidLanguageTag(language)) {
-                  acceptedEncodedWord = false;
-                }
+                // Ignore language parameter after the asterisk
               } else {
                 acceptedEncodedWord &= asterisk != 0;
               }
@@ -396,28 +391,6 @@ string str,
 int index,
 int endIndex,
 EncodedWordContext context) {
-#if DEBUG
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      if (index < 0) {
-        throw new ArgumentException("index (" + index + ") is less than " +
-            "0");
-      }
-      if (index > str.Length) {
-        throw new ArgumentException("index (" + index + ") is more than " +
-          str.Length);
-      }
-      if (endIndex < 0) {
-      throw new ArgumentException("endIndex (" + endIndex +
-          ") is less than " + "0");
-      }
-      if (endIndex > str.Length) {
-        throw new ArgumentException("endIndex (" + endIndex +
-          ") is more than " + str.Length);
-      }
-#endif
-
       if (endIndex - index < 9) {
         // Too short for encoded words to appear
         return str.Substring(index, endIndex - index);

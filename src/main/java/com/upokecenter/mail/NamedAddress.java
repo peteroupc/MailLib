@@ -10,13 +10,15 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import java.util.*;
 
     /**
-     * Represents an email address and a name for that address.
+     * Represents an email address and a name for that address. Can represent a
+     * group of email addresses instead.
      */
   public class NamedAddress {
     private String name;
 
     /**
-     * Gets the display name for this email address.
+     * Gets the display name for this email address (or the email address's value
+     * if the display name is absent).
      * @return The display name for this email address.
      */
     public final String getName() {
@@ -82,9 +84,28 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the NamedAddress class.
-     * @param address A string object.
+     * Initializes a new instance of the NamedAddress class. Examples: <ul>
+     * <li><code>john@example.com</code></li> <li><code>"John Doe"
+     * &lt;john@example.com&gt;</code></li>
+     * <li><code>=?utf-8?q?John</code><code>=</code><code>27s_Office?=
+     * &lt;john@example.com&gt;</code></li> <li><code>John
+     * &lt;john@example.com&gt;</code></li> <li><code>"Group" : Tom
+     * &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;</code></li></ul>
+     * @param address A string object identifying a single email address or a group
+     * of email addresses. Comments, or text within parentheses, can appear.
+     * Multiple email addresses are not allowed unless they appear in the
+     * group syntax given above. Encoded words under RFC 2047 that appear
+     * within comments or display names will be decoded. <para>An RFC 2047
+     * encoded word consists of "=?", a character encoding name, such as
+     * {@code utf-8}, either "?B?" or "?Q?" (in upper or lower case), a
+     * series of bytes in the character encoding, further encoded using B or
+     * Q encoding, and finally "?=". B encoding uses Base64, while in Q
+     * encoding, spaces are changed to "_", equals are changed to "=3D",
+     * and most bytes other than ASCII letters and digits are changed to "="
+     * followed by their 2-digit hexadecimal form. An encoded word's maximum
+     * length is 75 characters. See the second example.</para>.
      * @throws NullPointerException The parameter {@code address} is null.
+     * @throws IllegalArgumentException The named address has an invalid syntax.
      */
     public NamedAddress (String address) {
       if (address == null) {
@@ -106,14 +127,18 @@ tokener.GetTokens());
       this.name = na.name;
       this.address = na.address;
       this.groupAddresses = na.groupAddresses;
+      this.isGroup = na.isGroup;
     }
 
     /**
      * Initializes a new instance of the NamedAddress class using the given display
      * name and email address.
-     * @param displayName A string object.
-     * @param address Another string object.
+     * @param displayName The address's display name. Can be null or empty, in
+     * which case the email address is used instead. Encoded words under RFC
+     * 2047 will not be decoded.
+     * @param address An email address.
      * @throws NullPointerException The parameter {@code address} is null.
+     * @throws IllegalArgumentException The display name or address has an invalid syntax.
      */
     public NamedAddress (String displayName, String address) {
       if (((displayName) == null || (displayName).length() == 0)) {
@@ -129,7 +154,9 @@ tokener.GetTokens());
 
     /**
      * Initializes a new instance of the NamedAddress class.
-     * @param displayName A string object.
+     * @param displayName A string object. If this value is null or empty, uses the
+     * email address as the display name. Encoded words under RFC 2047 will
+     * not be decoded.
      * @param address An email address.
      * @throws NullPointerException The parameter {@code address} is null.
      */
@@ -148,9 +175,10 @@ tokener.GetTokens());
     /**
      * Initializes a new instance of the NamedAddress class using the given name
      * and an email address made up of its local part and domain.
-     * @param displayName A string object.
-     * @param localPart Another string object.
-     * @param domain A string object. (3).
+     * @param displayName A string object. If this value is null or empty, uses the
+     * email address as the display name.
+     * @param localPart The local part of the email address (before the "@").
+     * @param domain The domain of the email address (before the "@").
      * @throws NullPointerException The parameter {@code localPart} or {@code
      * domain} is null.
      */
@@ -170,11 +198,15 @@ tokener.GetTokens());
     }
 
     /**
-     * Initializes a new instance of the NamedAddress class.
-     * @param groupName A string object.
-     * @param mailboxes An List object.
+     * Initializes a new instance of the NamedAddress class. Takes a group name and
+     * several named email ((addresses instanceof parameters) ?
+     * (parameters)addresses : null), and forms a group with them.
+     * @param groupName The group's name.
+     * @param mailboxes A list of named addresses that make up the group.
      * @throws NullPointerException The parameter {@code groupName} or {@code
      * mailboxes} is null.
+     * @throws IllegalArgumentException The parameter {@code groupName} is empty, or an
+     * item in the list is itself a group.
      */
     public NamedAddress (String groupName, List<NamedAddress> mailboxes) {
       if (groupName == null) {
@@ -201,8 +233,8 @@ tokener.GetTokens());
     /**
      * Gets a read-only list of addresses that make up the group, if this object
      * represents a group, or an empty list otherwise.
-     * @return A list of address that make up the group, if this object represents
-     * a group, or an empty list otherwise.
+     * @return A list of addresses that make up the group, if this object
+     * represents a group, or an empty list otherwise.
      */
     public final List<NamedAddress> getGroupAddresses() {
         return java.util.Collections.unmodifiableList(

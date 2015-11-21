@@ -662,8 +662,8 @@ StringBuilder builder) {
       // media types defined before this RFC are grandfathered from the
       // rule: those
       // media types "that fail to specify how the charset is determined" still
-      // have US-ASCII as default. The text media types defined as of Apr. 17,
-      // 2014, are listed below:
+      // have US-ASCII as default. The text media types defined as of Nov. 20,
+      // 2015, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -674,7 +674,8 @@ StringBuilder builder) {
       // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback
       //
       // These media types don't define a charset parameter:
-      // -- dns, grammar-ref-list, mizar, vnd-latex-z, vnd.motorola.reflex,
+      // -- csv-schema, dns, grammar-ref-list, mizar, vnd.latex-z,
+      // vnd.motorola.reflex,
       // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript,
       // vnd.dvb.subtitle,
       // vnd.fly, rtf, rfc822-headers
@@ -693,12 +694,15 @@ StringBuilder builder) {
       // charset is treated as default is irrelevant):
       // -- example
       //
+      // No default specified (after RFC6657):
+      // -- markdown*
+      //
       // -- US-ASCII assumed: --
       //
       // These media types don't define a default charset:
-      // -- css, richtext, enriched, tab-separated-values, vnd.in3d.spot*,
-      // vnd.abc, vnd.wap.wmlscript, vnd.curl, vnd.fmi.flexstor, uri-list,
-      // directory
+      // -- css, richtext, enriched, tab-separated-values,
+      // vnd.in3d.spot*, vnd.abc, vnd.wap.wmlscript, vnd.curl,
+      // vnd.fmi.flexstor, uri-list, directory
       //
       // US-ASCII default:
       // -- plain, sgml, troff
@@ -730,7 +734,7 @@ StringBuilder builder) {
         // Media types that assume a default of US-ASCII
         if (sub.equals("plain") || sub.equals("sgml") ||
           sub.equals("troff") || sub.equals("directory") ||
-       sub.equals("css") || sub.equals("richtext") ||
+          sub.equals("css") || sub.equals("richtext") ||
               sub.equals("enriched") || sub.equals("tab-separated-values") ||
               sub.equals("vnd.in3d.spot") || sub.equals("vnd.abc") ||
             sub.equals("vnd.wap.wmlscript") || sub.equals("vnd.curl") ||
@@ -856,7 +860,6 @@ ICharacterEncoding charset) {
             continue;
           }
           parameters.remove(name);
-          realValue = (realValue == null) ? (value) : realValue;
           // NOTE: Overrides the name without continuations
           parameters.put(realName, realValue);
           continue;
@@ -1127,7 +1130,8 @@ null);
 
     /**
      * Parses a media type string and returns a media type object.
-     * @param mediaTypeValue A string object.
+     * @param mediaTypeValue A string object representing a media type. This media
+     * type can include parameters.
      * @return A media type object, or text/plain if {@code mediaTypeValue} is
      * empty or syntactically invalid.
      */
@@ -1138,7 +1142,8 @@ null);
     /**
      * Parses a media type string and returns a media type object, or the default
      * value if the string is invalid.
-     * @param str A string object representing a media type.
+     * @param str A string object representing a media type. This media type can
+     * include parameters.
      * @param defaultValue The media type to return if the string is syntactically
      * invalid. Can be null.
      * @return A MediaType object.

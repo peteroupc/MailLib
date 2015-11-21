@@ -275,12 +275,6 @@ IList<int[]> tokens) {
           }
         }
       }
-      #if DEBUG
-      if (displayName == null) {
-        throw new ArgumentNullException("displayName");
-      }
-      #endif
-
       return new NamedAddress(displayName, mailboxes);
     }
 
