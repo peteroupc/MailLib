@@ -95,7 +95,7 @@ Wraps a byte writer (one that only implements a ReadByte method) to a writer (on
 
 <b>Returns:</b>
 
-An IWriter object.
+A writer that wraps the given stream.
 
 <b>Exceptions:</b>
 
@@ -116,7 +116,7 @@ Wraps an output stream into a writer object. If an IOException is thrown by the 
 
 <b>Returns:</b>
 
-An IWriter object.
+A byte writer that wraps the given output stream.
 
 <b>Exceptions:</b>
 

@@ -21,7 +21,7 @@ import com.upokecenter.text.encoders.*;
      * universal character set (otherwise known under the name Unicode). An
      * encoder implements the <code>ICharacterEncoder</code> interface.</li> <li>A
      * <b>decoder</b> is a class that converts a sequence of Unicode code
-     * points to a sequence of bytes. An encoder implements the
+     * points to a sequence of bytes. A decoder implements the
      * <code>ICharacterDecoder</code> interface.</li> <li>An <b>encoding</b> is a
      * mapping from bytes to universal code points and from universal code
      * points to bytes. An encoding allows access to both an encoder and a
@@ -38,28 +38,32 @@ import com.upokecenter.text.encoders.*;
      * as the first 128 code points of their character sets. (Here, ASCII is
      * the same as the International Reference Version of the ISO 646
      * standard.)</li> <li><b>Multi-byte encodings</b> define a character
-     * set that assigns some or all code points to several bytes. For
-     * example, most legacy East Asian encodings, such as <code>shift_jis</code>,
-     * <code>gbk</code> , and <code>big5</code> are multi-byte encodings, as well as
-     * <code>utf-8</code> and <code>utf-16</code>, which both encode the Unicode
-     * character set.</li> <li><b>Escape-based encodings</b> use escape
-     * sequences to encode one or more character sets in the same sequence
-     * of bytes. The best example of an escape-based encoding supported in
-     * the Encoding Standard is <code>iso-2022-jp</code>, which defines a
-     * Katakana, a Kanji, and an ASCII character set.</li> <li>The Encoding
-     * Standard also defines a <b>replacement encoding</b>, which causes a
-     * decoding error and is used to alias a few problematic or unsupported
-     * encoding names, such as <code>hz-gb-2312</code>.</li></ul> <p><b>Getting an
-     * Encoding</b></p> <p>The Encoding Standard includes UTF-8, UTF-16 and
-     * many legacy encodings, and gives each one of them a name. The
-     * <code>GetEncoding(name)</code> method takes a name string and returns an
-     * ICharacterEncoding object that implements that encoding, or
-     * <code>null</code> if the name is unrecognized.</p> <p>However, the Encoding
-     * Standard is designed to include only encodings commonly used on Web
-     * pages, not in other protocols such as email. For email, the Encoding
-     * class includes an alternate function <code>GetEncoding(name,
-     * forEmail)</code>. Setting <code>forEmail</code> to <code>true</code> will use
-     * modified rules from the Encoding Standard to better suit encoding and
+     * set that assigns some or all code points to several bytes. (They can
+     * include multiple character sets, such as single-byte ASCII and a
+     * multi-byte Chinese character set.) For example, most legacy East
+     * Asian encodings, such as <code>shift_jis</code>, <code>gbk</code>, and
+     * <code>big5</code> are multi-byte encodings, as well as <code>utf-8</code> and
+     * UTF-16, which both encode the Unicode character set.</li>
+     * <li><b>Escape-based encodings</b> use escape sequences to encode one
+     * or more character sets in the same sequence of bytes. Each escape
+     * sequence "shifts" the bytes that follow into a different character
+     * set. The best example of an escape-based encoding supported in the
+     * Encoding Standard is <code>iso-2022-jp</code>, which supports several
+     * escape sequences that shift into different character sets, including
+     * a Katakana, a Kanji, and an ASCII character set.</li> <li>The
+     * Encoding Standard also defines a <b>replacement encoding</b>, which
+     * causes a decoding error and is used to alias a few problematic or
+     * unsupported encoding names, such as <code>hz-gb-2312</code>.</li></ul>
+     * <p><b>Getting an Encoding</b></p> <p>The Encoding Standard includes
+     * UTF-8, UTF-16, and many legacy encodings, and gives each one of them
+     * a name. The <code>GetEncoding(name)</code> method takes a name string and
+     * returns an ICharacterEncoding object that implements that encoding,
+     * or <code>null</code> if the name is unrecognized.</p> <p>However, the
+     * Encoding Standard is designed to include only encodings commonly used
+     * on Web pages, not in other protocols such as email. For email, the
+     * Encoding class includes an alternate function <code>GetEncoding(name,
+     * forEmail)</code>. Setting <code>forEmail</code> to <code>true</code> will use rules
+     * modified from the Encoding Standard to better suit encoding and
      * decoding text from email messages.</p>
      */
   public final class Encodings {
@@ -570,7 +574,7 @@ private Encodings() {
      * has a EncodeToBytes method with the same parameters, that method
      * takes precedence over this extension method.</p>
      * @param input An object that implements a stream of universal code points.
-     * @param encoding An ICharacterEncoding object.
+     * @param encoding An object that implements a given character encoding.
      * @return A byte array.
      * @throws NullPointerException The parameter {@code encoding} is null.
      */
@@ -633,9 +637,9 @@ private Encodings() {
      * <code>input.EncodeToBytes(encoding)</code>. If the object's class already
      * has a EncodeToBytes method with the same parameters, that method
      * takes precedence over this extension method.</p>
-     * @param input Not documented yet.
-     * @param encoding Not documented yet.
-     * @param writer Not documented yet. (3).
+     * @param input An object that implements a stream of universal code points.
+     * @param encoding An object that implements a character encoding.
+     * @param writer A byte writer to write the encoded bytes to.
      * @throws NullPointerException The parameter {@code encoding} is null.
      */
     public static void EncodeToWriter(
@@ -704,8 +708,8 @@ private Encodings() {
      * @param encoder An object that implements a character encoder.
      * @param str A text string to encode into a byte array.
      * @return A byte array.
-     * @throws java.lang.NullPointerException The parameter {@code encoder} or {@code
-     * str} is null.
+     * @throws NullPointerException The parameter {@code encoder} or {@code str}
+     * is null.
      */
     public static byte[] StringToBytes(
       ICharacterEncoder encoder,
@@ -733,7 +737,7 @@ private Encodings() {
      * method.</p>
      * @param enc An ICharacterEncoding object.
      * @param bytes A byte array.
-     * @return A string object.
+     * @return A string consisting of the decoded text.
      * @throws NullPointerException The parameter {@code enc} or {@code bytes} is
      * null.
      */
@@ -766,7 +770,7 @@ byte[] bytes) {
      * bytes} begins.
      * @param length The length, in bytes, of the desired portion of {@code bytes}
      * (but not more than {@code bytes} 's length).
-     * @return A string object.
+     * @return A string consisting of the decoded text.
      * @throws NullPointerException The parameter {@code enc} or {@code bytes} is
      * null.
      * @throws IllegalArgumentException Either {@code offset} or {@code length} is less

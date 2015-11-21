@@ -97,7 +97,11 @@ namespace PeterO.Mail.Transforms {
           }
           return c;
         }
-        if (c <= 0x20 || c >= 0x7f) {
+        if (c == 0x20) {
+          // Space can't occur in the Q-encoding; output
+          // the space character
+          return 0x20;
+        } else if (c < 0x20 || c >= 0x7f) {
           // Can't occur in the Q-encoding; replace
           // with the ASCII substitute character
           return 0x1a;

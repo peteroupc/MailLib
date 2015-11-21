@@ -128,6 +128,12 @@
     <Compile Include="Text\StringCharacterInput.cs" />
     <Compile Include="Text\UnicodeDatabase.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="ProfilingSessions\Session20151120_202816.sdps" />
+    <Content Include="ProfilingSessions\Session20151120_203952.sdps" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!--
   <Import Project="$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets" />
+  -->
 </Project>

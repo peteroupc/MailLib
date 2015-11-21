@@ -28,17 +28,17 @@ Initializes a new instance of the Normalizer class.
         string str,
         PeterO.Text.Normalization form);
 
-Not documented yet.
+Returns whether this string is normalized.
 
 <b>Parameters:</b>
 
- * <i>str</i>: Not documented yet.
+ * <i>str</i>: The string to check.
 
  * <i>form</i>: A Normalization object.
 
 <b>Returns:</b>
 
-A Boolean object.
+True if this string is normalized; otherwise, false.
 
 ### Normalize
 
@@ -72,21 +72,30 @@ The parameter  <i>str</i>
         int index,
         int length);
 
-Not documented yet.
+Reads a sequence of Unicode code points from a data source.
 
 <b>Parameters:</b>
 
- * <i>chars</i>: An array of 32-bit unsigned integers.
+ * <i>chars</i>: Output buffer.
 
- * <i>index</i>: A 32-bit signed integer. (2).
+ * <i>index</i>: Index in the output buffer to start writing to.
 
- * <i>length</i>: A 32-bit signed integer. (3).
+ * <i>length</i>: Maximum number of code points to write.
 
 <b>Returns:</b>
 
-A 32-bit signed integer.
+The number of Unicode code points read, or 0 if the end of the source is reached.
 
 <b>Exceptions:</b>
+
+ * System.ArgumentException:
+Either  <i>index</i>
+or  <i>length</i>
+ is less than 0 or greater than <i>chars</i>
+ 's length, or  <i>chars</i>
+ 's length minus  <i>index</i>
+ is less than  <i>length</i>
+.
 
  * System.ArgumentNullException:
 The parameter  <i>chars</i>
@@ -96,8 +105,8 @@ The parameter  <i>chars</i>
 
     public int ReadChar();
 
-Not documented yet.
+Reads a Unicode character from a data source.
 
 <b>Returns:</b>
 
-A 32-bit signed integer.
+Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), or the value -1 indicating the end of the source.

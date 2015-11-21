@@ -331,12 +331,7 @@ charsetStart)+(charsetEnd - charsetStart));
               String decodedWord = null;
               if (asterisk >= 1) {
                 charset = str.substring(0, asterisk);
-                String language = str.substring(
-            asterisk + 1, (
-            asterisk + 1)+(str.length() - (asterisk + 1)));
-                if (!ParserUtility.IsValidLanguageTag(language)) {
-                  acceptedEncodedWord = false;
-                }
+                // Ignore language parameter after the asterisk
               } else {
                 acceptedEncodedWord &= asterisk != 0;
               }

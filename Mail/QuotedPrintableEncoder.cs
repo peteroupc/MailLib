@@ -92,21 +92,19 @@ char b3) {
     }
 
     private int IncrementAndAppendChar(IWriter output, char ch) {
-      int count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + 1 > 75) {
           // 76 including the final '='
-          output.WriteByte(0x3d);
-          output.WriteByte(0x0d);
-          output.WriteByte(0x0a);
+          byte[] buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)ch };
+          output.Write(buf, 0, buf.Length);
           this.lineCount = 1;
-          count += 3;
+          return 4;
         } else {
           ++this.lineCount;
         }
       }
       output.WriteByte((byte)ch);
-      return count;
+      return 1;
     }
 
     private int machineState;

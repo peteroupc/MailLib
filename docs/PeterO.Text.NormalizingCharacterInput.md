@@ -40,7 +40,7 @@ Initializes a new instance of the NormalizingCharacterInput class.
 
  * <i>stream</i>: An ICharacterInput object.
 
- * <i>form</i>: A Normalization object.
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
 <b>Exceptions:</b>
 
@@ -57,7 +57,7 @@ Initializes a new instance of the NormalizingCharacterInput class using Normaliz
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object.
+ * <i>str</i>: A string specifying the text to normalize.
 
 ### NormalizingCharacterInput Constructor
 
@@ -77,7 +77,7 @@ Initializes a new instance of the NormalizingCharacterInput class. Uses a portio
 
  * <i>length</i>: A 32-bit signed integer. (2).
 
- * <i>form</i>: A Normalization object.
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
 ### NormalizingCharacterInput Constructor
 
@@ -91,7 +91,7 @@ Initializes a new instance of the NormalizingCharacterInput class.
 
  * <i>str</i>: A string object.
 
- * <i>form</i>: A Normalization object.
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
 ### NormalizingCharacterInput Constructor
 
@@ -102,7 +102,7 @@ Initializes a new instance of the NormalizingCharacterInput class using Normaliz
 
 <b>Parameters:</b>
 
- * <i>characterList</i>: An IList object.
+ * <i>characterList</i>: A list of Unicode code points specifying the text to normalize.
 
 ### NormalizingCharacterInput Constructor
 
@@ -116,7 +116,7 @@ Initializes a new instance of the NormalizingCharacterInput class using the give
 
  * <i>characterList</i>: An IList object.
 
- * <i>form</i>: A Normalization object.
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
 <b>Exceptions:</b>
 
@@ -130,17 +130,17 @@ The parameter  <i>characterList</i>
         PeterO.Text.ICharacterInput str,
         PeterO.Text.Normalization form);
 
-Not documented yet.
+Gets a list of normalized code points after reading from a character stream.
 
 <b>Parameters:</b>
 
- * <i>str</i>: An ICharacterInput object.
+ * <i>str</i>: An object that implements a stream of Unicode characters.
 
- * <i>form</i>: A Normalization object.
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
 <b>Returns:</b>
 
-A list of Unicode characters.
+A list of the normalized Unicode characters.
 
 <b>Exceptions:</b>
 
@@ -154,17 +154,17 @@ The parameter  <i>str</i>
         string str,
         PeterO.Text.Normalization form);
 
-Not documented yet.
+Gets a list of normalized code points after reading from a string.
 
 <b>Parameters:</b>
 
  * <i>str</i>: A string object.
 
- * <i>form</i>: A Normalization object.
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
 <b>Returns:</b>
 
-A list of Unicode characters.
+A list of the normalized Unicode characters.
 
 <b>Exceptions:</b>
 
@@ -178,17 +178,23 @@ The parameter  <i>str</i>
         PeterO.Text.ICharacterInput chars,
         PeterO.Text.Normalization form);
 
-Not documented yet.
+Determines whether the text provided by a character input is normalized.
 
 <b>Parameters:</b>
 
- * <i>chars</i>: An ICharacterInput object.
+ * <i>chars</i>: A object that implements a streamable character input.
 
- * <i>form</i>: A Normalization object.
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
 <b>Returns:</b>
 
-A Boolean object.
+True if the text is normalized; otherwise, false.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>chars</i>
+ is null.
 
 ### IsNormalized
 
@@ -202,11 +208,17 @@ Determines whether the given string is in the given Unicode normalization form.
 
  * <i>str</i>: An arbitrary string.
 
- * <i>form</i>: A Normalization object.
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
 <b>Returns:</b>
 
 True if the given string is in the given Unicode normalization form; otherwise, false.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>str</i>
+ is null.
 
 ### IsNormalized
 
@@ -218,9 +230,9 @@ Determines whether the given list of characters is in the given Unicode normaliz
 
 <b>Parameters:</b>
 
- * <i>charList</i>: An IList object.
+ * <i>charList</i>: A list of Unicode code points.
 
- * <i>form</i>: A Normalization object.
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
 <b>Returns:</b>
 
@@ -264,32 +276,44 @@ The parameter  <i>str</i>
         int index,
         int length);
 
-Not documented yet.
+Reads a sequence of Unicode code points from a data source.
 
 <b>Parameters:</b>
 
- * <i>chars</i>: An array of 32-bit unsigned integers.
+ * <i>chars</i>: Output buffer.
 
- * <i>index</i>: A 32-bit signed integer. (2).
+ * <i>index</i>: A zero-based index showing where the desired portion of  <i>chars</i>
+ begins.
 
- * <i>length</i>: A 32-bit signed integer. (3).
+ * <i>length</i>: The number of elements in the desired portion of  <i>chars</i>
+ (but not more than  <i>chars</i>
+ 's length).
 
 <b>Returns:</b>
 
-A 32-bit signed integer.
+The number of Unicode code points read, or 0 if the end of the source is reached.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
 The parameter  <i>chars</i>
- or "this.buffer" is null.
+ is null.
+
+ * System.ArgumentException:
+Either  <i>index</i>
+or  <i>length</i>
+ is less than 0 or greater than <i>chars</i>
+ 's length, or  <i>chars</i>
+ 's length minus  <i>index</i>
+ is less than  <i>length</i>
+.
 
 ### ReadChar
 
     public sealed int ReadChar();
 
-Not documented yet.
+Reads a Unicode character from a data source.
 
 <b>Returns:</b>
 
-A 32-bit signed integer.
+Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), or the value -1 indicating the end of the source.

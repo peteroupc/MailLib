@@ -163,7 +163,7 @@ String type,
      * (RFC 2231 encoding)</p> <p>"nul.txt" -&gt; "_nul.txt" (Reserved
      * name)</p> <p>"dir1/dir2/file" -&gt; "dir1_dir2_file" (Directory
      * separators)</p>
-     * @param str A string representing a file name.
+     * @param str A string representing a file name. Can be null.
      * @return A string with the converted version of the file name. Among other
      * things, encoded words under RFC 2047 are decoded (since they occur so
      * frequently in Content-Disposition filenames); the value is decoded
@@ -384,8 +384,12 @@ strLower.length() >= 4 && strLower.indexOf(
      * @param dispoValue A string object.
      * @return A content disposition object, or "Attachment" if {@code dispoValue}
      * is empty or syntactically invalid.
+     * @throws NullPointerException The parameter {@code dispoValue} is null.
      */
     public static ContentDisposition Parse(String dispoValue) {
+      if ((dispoValue) == null) {
+  throw new NullPointerException("dispoValue");
+}
       return Parse(dispoValue, Attachment);
     }
 

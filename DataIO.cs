@@ -72,9 +72,9 @@ namespace PeterO {
     /// portion of "bytes" begins.</param>
     /// <param name='length'>The length, in bytes, of the desired portion
     /// of "bytes" (but not more than "bytes" 's length).</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='bytes'/> is null.</exception>
-    /// <exception cref='ArgumentException'>Either <paramref
+    /// <exception cref="ArgumentException">Either <paramref
     /// name='offset'/> or <paramref name='length'/> is less than 0 or
     /// greater than <paramref name='bytes'/> 's length, or <paramref
     /// name='bytes'/> 's length minus <paramref name='offset'/> is less
@@ -132,12 +132,12 @@ namespace PeterO {
     /// portion of "bytes" begins.</param>
     /// <param name='length'>The length, in bytes, of the desired portion
     /// of "bytes" (but not more than "bytes" 's length).</param>
-    /// <exception cref='ArgumentException'>Either <paramref
+    /// <exception cref="ArgumentException">Either <paramref
     /// name='offset'/> or <paramref name='length'/> is less than 0 or
     /// greater than <paramref name='bytes'/> 's length, or <paramref
     /// name='bytes'/> 's length minus <paramref name='offset'/> is less
     /// than <paramref name='length'/>.</exception>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='bytes'/> is null.</exception>
       public void Write(byte[] bytes, int offset, int length) {
         try {
@@ -158,7 +158,7 @@ namespace PeterO {
     /// method.</para></summary>
     /// <param name='bytes'>The byte array to wrap.</param>
     /// <returns>A byte reader wrapping the byte array.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='bytes'/> is null.</exception>
     public static IByteReader ToTransform(this byte[] bytes) {
       if (bytes == null) {
@@ -180,9 +180,9 @@ namespace PeterO {
     /// <param name='length'>The length, in bytes, of the desired portion
     /// of "bytes" (but not more than "bytes" 's length).</param>
     /// <returns>A byte reader wrapping the byte array.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='bytes'/> is null.</exception>
-    /// <exception cref='ArgumentException'>Either <paramref
+    /// <exception cref="ArgumentException">Either <paramref
     /// name='offset'/> or <paramref name='length'/> is less than 0 or
     /// greater than <paramref name='bytes'/> 's length, or <paramref
     /// name='bytes'/> 's length minus <paramref name='offset'/> is less
@@ -228,7 +228,7 @@ int length) {
     /// method.</para></summary>
     /// <param name='input'>The input stream to wrap.</param>
     /// <returns>A byte reader wrapping the input stream.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='input'/> is null.</exception>
     public static IByteReader ToTransform(this Stream input) {
       if (input == null) {
@@ -246,8 +246,8 @@ int length) {
     /// already has a ToWriter method with the same parameters, that method
     /// takes precedence over this extension method.</para></summary>
     /// <param name='output'>Output stream to wrap.</param>
-    /// <returns>An IWriter object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <returns>A byte writer that wraps the given output stream.</returns>
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='output'/> is null.</exception>
     public static IWriter ToWriter(this Stream output) {
       if (output == null) {
@@ -265,8 +265,8 @@ int length) {
     /// already has a ToWriter method with the same parameters, that method
     /// takes precedence over this extension method.</para></summary>
     /// <param name='output'>A byte stream.</param>
-    /// <returns>An IWriter object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <returns>A writer that wraps the given stream.</returns>
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='output'/> is null.</exception>
     public static IWriter ToWriter(this IByteWriter output) {
       if (output == null) {

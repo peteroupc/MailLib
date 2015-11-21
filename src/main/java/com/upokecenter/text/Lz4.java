@@ -97,13 +97,6 @@ private Lz4() {
         if (matchLength > copy.length) {
           copy = new byte[matchLength];
         }
-        if (output == null) {
-          throw new NullPointerException("output");
-        }
-        if (pos < 0) {
-          throw new IllegalArgumentException("pos (" + pos +
-            ") is less than " + 0);
-        }
         if (pos > outputPos) {
           throw new IllegalArgumentException("pos (" + pos + ") is more than " +
             output.length);

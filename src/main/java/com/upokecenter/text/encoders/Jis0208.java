@@ -63,7 +63,7 @@ public static int ShiftJISCodePointToIndex(int codepoint) {
  return -1;
 }
   for (int i = 0; i < indextable2.length; i += 4) {
-     if (codepoint >= indextable2[i] && codepoint <= indextable[i + 1]) {
+     if (codepoint >= indextable2[i] && codepoint <= indextable2[i + 1]) {
       int startindex = indextable2[i + 2];
        int length = indextable2[i + 3];
       for (int j = 0; j < length; ++j) {

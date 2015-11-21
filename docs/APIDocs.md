@@ -13,7 +13,7 @@ Specifies what kind of data a message body is.
  * [PeterO.Mail.Message](PeterO.Mail.Message.md) -
 Represents an email message, and contains methods and             properties for accessing and modifying email message data.
  * [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) - Exception thrown when a message has invalid             syntax.
- * [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) - Represents an email address and a name for that             address.
+ * [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) - Represents an email address and a name for that address.
  * [PeterO.Text.Encodings](PeterO.Text.Encodings.md) - Contains methods for converting text from one character             encoding to another.
  * [PeterO.Text.ICharacterDecoder](PeterO.Text.ICharacterDecoder.md) - Defines a method that can be implemented by classes that             convert a stream of bytes to Unicode code points.
  * [PeterO.Text.ICharacterEncoder](PeterO.Text.ICharacterEncoder.md) - Defines a method that can be implemented by classes that             convert Unicode code points to bytes.

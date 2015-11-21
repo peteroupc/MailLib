@@ -24,7 +24,7 @@ namespace PeterO.Text {
     /// (otherwise known under the name Unicode). An encoder implements the
     /// <c>ICharacterEncoder</c> interface.</item>
     /// <item>A <b>decoder</b> is a class that converts a sequence of
-    /// Unicode code points to a sequence of bytes. An encoder implements
+    /// Unicode code points to a sequence of bytes. A decoder implements
     /// the <c>ICharacterDecoder</c> interface.</item>
     /// <item>An <b>encoding</b> is a mapping from bytes to universal code
     /// points and from universal code points to bytes. An encoding allows
@@ -45,22 +45,26 @@ namespace PeterO.Text {
     /// same as the International Reference Version of the ISO 646
     /// standard.)</item>
     /// <item><b>Multi-byte encodings</b> define a character set that
-    /// assigns some or all code points to several bytes. For example, most
-    /// legacy East Asian encodings, such as <c>shift_jis</c>, <c>gbk</c>
-    /// , and <c>big5</c> are multi-byte encodings, as well as <c>utf-8</c>
-    /// and <c>utf-16</c>, which both encode the Unicode character
-    /// set.</item>
+    /// assigns some or all code points to several bytes. (They can include
+    /// multiple character sets, such as single-byte ASCII and a multi-byte
+    /// Chinese character set.) For example, most legacy East Asian
+    /// encodings, such as <c>shift_jis</c>, <c>gbk</c>, and <c>big5</c>
+    /// are multi-byte encodings, as well as <c>utf-8</c> and UTF-16, which
+    /// both encode the Unicode character set.</item>
     /// <item><b>Escape-based encodings</b> use escape sequences to encode
-    /// one or more character sets in the same sequence of bytes. The best
-    /// example of an escape-based encoding supported in the Encoding
-    /// Standard is <c>iso-2022-jp</c>, which defines a Katakana, a Kanji,
-    /// and an ASCII character set.</item>
+    /// one or more character sets in the same sequence of bytes. Each
+    /// escape sequence "shifts" the bytes that follow into a different
+    /// character set. The best example of an escape-based encoding
+    /// supported in the Encoding Standard is <c>iso-2022-jp</c>, which
+    /// supports several escape sequences that shift into different
+    /// character sets, including a Katakana, a Kanji, and an ASCII
+    /// character set.</item>
     /// <item>The Encoding Standard also defines a <b>replacement
     /// encoding</b>, which causes a decoding error and is used to alias a
     /// few problematic or unsupported encoding names, such as
     /// <c>hz-gb-2312</c>.</item></list>
     /// <para><b>Getting an Encoding</b></para>
-    /// <para>The Encoding Standard includes UTF-8, UTF-16 and many legacy
+    /// <para>The Encoding Standard includes UTF-8, UTF-16, and many legacy
     /// encodings, and gives each one of them a name. The
     /// <c>GetEncoding(name)</c> method takes a name string and returns an
     /// ICharacterEncoding object that implements that encoding, or
@@ -69,7 +73,7 @@ namespace PeterO.Text {
     /// encodings commonly used on Web pages, not in other protocols such
     /// as email. For email, the Encoding class includes an alternate
     /// function <c>GetEncoding(name, forEmail)</c>. Setting
-    /// <c>forEmail</c> to <c>true</c> will use modified rules from the
+    /// <c>forEmail</c> to <c>true</c> will use rules modified from the
     /// Encoding Standard to better suit encoding and decoding text from
     /// email messages.</para></summary>
   public static class Encodings {
@@ -741,9 +745,8 @@ namespace PeterO.Text {
     /// <param name='str'>A text string to encode into a byte
     /// array.</param>
     /// <returns>A byte array.</returns>
-    /// <exception cref='System.ArgumentNullException'>The parameter
-    /// <paramref name='encoder'/> or <paramref name='str'/> is
-    /// null.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='encoder'/> or <paramref name='str'/> is null.</exception>
     public static byte[] StringToBytes(
       this ICharacterEncoder encoder,
       string str) {
@@ -770,7 +773,7 @@ namespace PeterO.Text {
     /// method.</para></summary>
     /// <param name='enc'>An ICharacterEncoding object.</param>
     /// <param name='bytes'>A byte array.</param>
-    /// <returns>A string object.</returns>
+    /// <returns>A string consisting of the decoded text.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='enc'/> or <paramref name='bytes'/> is null.</exception>
     public static string DecodeToString(
@@ -804,7 +807,7 @@ byte[] bytes) {
     /// <param name='length'>The length, in bytes, of the desired portion
     /// of <paramref name='bytes'/> (but not more than <paramref
     /// name='bytes'/> 's length).</param>
-    /// <returns>A string object.</returns>
+    /// <returns>A string consisting of the decoded text.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='enc'/> or <paramref name='bytes'/> is null.</exception>
     /// <exception cref='ArgumentException'>Either <paramref

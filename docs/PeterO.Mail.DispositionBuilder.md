@@ -73,7 +73,7 @@ True if this is a text media type; otherwise, false.
     public PeterO.Mail.DispositionBuilder RemoveParameter(
         string name);
 
-Removes a parameter from this content disposition.
+Removes a parameter from this content disposition. Does nothing if the parameter's name doesn't exist.
 
 <b>Parameters:</b>
 

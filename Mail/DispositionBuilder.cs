@@ -104,8 +104,8 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Removes a parameter from this content
-    /// disposition.</summary>
+    /// <summary>Removes a parameter from this content disposition. Does
+    /// nothing if the parameter's name doesn't exist.</summary>
     /// <param name='name'>The parameter to remove. The name is compared
     /// case insensitively.</param>
     /// <returns>This instance.</returns>

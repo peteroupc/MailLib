@@ -1620,7 +1620,19 @@ endIndex,
 tokener);
       }
     }
-
+    private static final class HeaderEesstVersion extends StructuredHeaderField {
+      @Override public int Parse(String str, int index, int endIndex,
+        ITokener tokener) {
+    return HeaderParser.ParseHeaderEesstVersion(str, index, endIndex,
+          tokener);
+      }
+    }
+    private static final class HeaderSioLabel extends StructuredHeaderField {
+      @Override public int Parse(String str, int index, int endIndex,
+        ITokener tokener) {
+        return HeaderParser.ParseHeaderSioLabel(str, index, endIndex, tokener);
+      }
+    }
     private static Map<String, IHeaderFieldParser> fieldMap =
       CreateHeaderFieldList();
 
@@ -1650,7 +1662,7 @@ tokener);
       fieldMap.put("autoforwarded",new HeaderAutoforwarded());
       fieldMap.put("generate-delivery-report",new HeaderGenerateDeliveryReport());
       fieldMap.put("incomplete-copy",new HeaderIncompleteCopy());
- fieldMap.put("prevent-nondelivery-report",new
+ fieldMap.put("prevent-nondelivery-report" ,new
         HeaderPreventNondeliveryReport());
       fieldMap.put("alternate-recipient",new HeaderAlternateRecipient());
       fieldMap.put("disclose-recipients",new HeaderDiscloseRecipients());
@@ -1678,17 +1690,18 @@ tokener);
       fieldMap.put("content-language",new HeaderContentLanguage());
       fieldMap.put("content-location",new HeaderContentLocation());
       fieldMap.put("content-md5",new HeaderContentMd5());
-   fieldMap.put("content-transfer-encoding",new
+   fieldMap.put("content-transfer-encoding" ,new
         HeaderContentTransferEncoding());
       fieldMap.put("content-type",new HeaderContentType());
       fieldMap.put("date",new HeaderDate());
       fieldMap.put("deferred-delivery",new HeaderDeferredDelivery());
-      fieldMap.put("disposition-notification-options",new
+      fieldMap.put("disposition-notification-options" ,new
         HeaderDispositionNotificationOptions());
-      fieldMap.put("disposition-notification-to",new
+      fieldMap.put("disposition-notification-to" ,new
         HeaderDispositionNotificationTo());
       fieldMap.put("dkim-signature",new HeaderDkimSignature());
       fieldMap.put("ediint-features",new HeaderEdiintFeatures());
+      fieldMap.put("eesst-version",new HeaderEesstVersion());
       fieldMap.put("encoding",new HeaderEncoding());
       fieldMap.put("encrypted",new HeaderEncrypted());
       fieldMap.put("expiry-date",new HeaderDate());
@@ -1702,28 +1715,28 @@ tokener);
       fieldMap.put("message-context",new HeaderMessageContext());
       fieldMap.put("message-id",new HeaderMessageId());
       fieldMap.put("mime-version",new HeaderMimeVersion());
-      fieldMap.put("mmhs-acp127-message-identifier",new
+      fieldMap.put("mmhs-acp127-message-identifier" ,new
         HeaderMmhsAcp127MessageIdentifier());
-      fieldMap.put("mmhs-codress-message-indicator",new
+      fieldMap.put("mmhs-codress-message-indicator" ,new
         HeaderMmhsCodressMessageIndicator());
       fieldMap.put("mmhs-copy-precedence",new HeaderMmhsCopyPrecedence());
       fieldMap.put("mmhs-exempted-address",new HeaderMmhsExemptedAddress());
-      fieldMap.put("mmhs-extended-authorisation-info",new
+      fieldMap.put("mmhs-extended-authorisation-info" ,new
         HeaderMmhsExtendedAuthorisationInfo());
- fieldMap.put("mmhs-handling-instructions",new
+ fieldMap.put("mmhs-handling-instructions" ,new
         HeaderMmhsHandlingInstructions());
-   fieldMap.put("mmhs-message-instructions",new
+   fieldMap.put("mmhs-message-instructions" ,new
         HeaderMmhsMessageInstructions());
       fieldMap.put("mmhs-message-type",new HeaderMmhsMessageType());
       fieldMap.put("mmhs-originator-plad",new HeaderMmhsOriginatorPlad());
-   fieldMap.put("mmhs-originator-reference",new
+   fieldMap.put("mmhs-originator-reference" ,new
         HeaderMmhsOriginatorReference());
-      fieldMap.put("mmhs-other-recipients-indicator-cc",new
+      fieldMap.put("mmhs-other-recipients-indicator-cc" ,new
         HeaderMmhsOtherRecipientsIndicatorCc());
-      fieldMap.put("mmhs-other-recipients-indicator-to",new
+      fieldMap.put("mmhs-other-recipients-indicator-to" ,new
         HeaderMmhsOtherRecipientsIndicatorTo());
       fieldMap.put("mmhs-primary-precedence",new HeaderMmhsPrimaryPrecedence());
-      fieldMap.put("mmhs-subject-indicator-codes",new
+      fieldMap.put("mmhs-subject-indicator-codes" ,new
         HeaderMmhsSubjectIndicatorCodes());
       fieldMap.put("mt-priority",new HeaderMtPriority());
       fieldMap.put("obsoletes",new HeaderObsoletes());
@@ -1734,7 +1747,7 @@ tokener);
       fieldMap.put("received-spf",new HeaderReceivedSpf());
       fieldMap.put("references",new HeaderInReplyTo());
       fieldMap.put("reply-to",new HeaderResentTo());
-      fieldMap.put("require-recipient-valid-since",new
+      fieldMap.put("require-recipient-valid-since" ,new
         HeaderRequireRecipientValidSince());
       fieldMap.put("resent-bcc",new HeaderBcc());
       fieldMap.put("resent-cc",new HeaderResentTo());
@@ -1746,6 +1759,8 @@ tokener);
       fieldMap.put("resent-to",new HeaderResentTo());
       fieldMap.put("return-path",new HeaderReturnPath());
       fieldMap.put("sender",new HeaderSender());
+      fieldMap.put("sio-label",new HeaderSioLabel());
+      fieldMap.put("sio-label-history",new HeaderSioLabel());
       fieldMap.put("solicitation",new HeaderSolicitation());
       fieldMap.put("to",new HeaderTo());
       fieldMap.put("vbr-info",new HeaderVbrInfo());

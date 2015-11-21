@@ -19,13 +19,15 @@ namespace PeterO.Mail {
 
     /// <summary>Initializes a new instance of the MessageDataException
     /// class.</summary>
-    /// <param name='message'>A string object.</param>
+    /// <param name='message'>A string to use as the exception
+    /// message.</param>
     public MessageDataException(string message) : base(message) {
     }
 
     /// <summary>Initializes a new instance of the MessageDataException
     /// class.</summary>
-    /// <param name='message'>A string object.</param>
+    /// <param name='message'>A string to use as the exception
+    /// message.</param>
     /// <param name='innerException'>An Exception object.</param>
     public MessageDataException(string message, Exception innerException) :
       base(message, innerException) {

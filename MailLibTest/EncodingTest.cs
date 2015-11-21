@@ -50,7 +50,7 @@ namespace MailLibTest {
     }
 
     internal static bool IsGoodAsciiMessageFormat(string str, bool
-      hasMessageType) {
+                    hasMessageType) {
       int lineLength = 0;
       int wordLength = 0;
       int index = 0;
@@ -96,7 +96,7 @@ namespace MailLibTest {
           hasLongWord = false;
           startsWithSpace = false;
           startsWithSpace |= index < endIndex && (str[index] == ' ' ||
-            str[index] == '\t');
+                    str[index] == '\t');
           continue;
         }
         if (c == '\r' || c == '\n') {
@@ -109,14 +109,15 @@ namespace MailLibTest {
             return false;
           }
           if (index == 0 || str[index - 1] == 0x20 || str[index - 1] == 0x09 ||
-            str[index - 1] == 0x0d) {
-Console.WriteLine("End of line, whitespace, or start of message before colon");
+              str[index - 1] == 0x0d) {
+  Console.WriteLine("End of line, whitespace, or start of message before colon"
+);
             return false;
           }
           if (str[index + 1] != 0x20) {
             string test = str.Substring(Math.Max(index + 2 - 30, 0),
-              Math.Min(index + 2, 30));
-      Console.WriteLine("No space after header name and colon: (0x {0:X2}) [" +
+                    Math.Min(index + 2, 30));
+  Console.WriteLine("No space after header name and colon: (0x {0:X2}) [" +
                     test + "] " + index);
             return false;
           }
@@ -130,7 +131,7 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
           ++wordLength;
           hasNonWhiteSpace = true;
           hasLongWord |= (wordLength > 77) || (lineLength == wordLength &&
-            wordLength > 78);
+                    wordLength > 78);
         }
         if (c == 0) {
           var builder = new StringBuilder();
@@ -161,7 +162,7 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
         }
         if (lineLength > maxLineLength) {
           Console.WriteLine("Line length exceeded (" + maxLineLength + " " +
-            (str.Substring(index - 78, 78)) + ")");
+                    (str.Substring(index - 78, 78)) + ")");
           return false;
         }
         ++index;
@@ -179,7 +180,7 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
           builder.Append(", ");
         }
         builder.Append(Convert.ToString((int)vi,
-          System.Globalization.CultureInfo.InvariantCulture));
+                    System.Globalization.CultureInfo.InvariantCulture));
         first = false;
       }
       builder.Append("]");
@@ -190,15 +191,15 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
       AssertEqual(expectedBytes, actualBytes, String.Empty);
     }
     public static void AssertEqual(byte[] expectedBytes, byte[] actualBytes,
-      String msg) {
+                    String msg) {
       if (expectedBytes.Length != actualBytes.Length) {
         Assert.Fail("\nexpected: " + ToString(expectedBytes) + "\n" +
-          "\nwas:      " + ToString(actualBytes) + "\n" + msg);
+                    "\nwas:      " + ToString(actualBytes) + "\n" + msg);
       }
       for (int i = 0; i < expectedBytes.Length; ++i) {
         if (expectedBytes[i] != actualBytes[i]) {
           Assert.Fail("\nexpected: " + ToString(expectedBytes) + "\n" +
-            "\nwas:      " + ToString(actualBytes) + "\n" + msg);
+                    "\nwas:      " + ToString(actualBytes) + "\n" + msg);
         }
       }
     }
@@ -211,84 +212,20 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
       return sb.ToString();
     }
 
-    // -----------------------------------------------------------
-
-    private static void ReadQuotedPrintable(Stream outputStream,
-      byte[] data, int offset,
-      int count, bool lenientLineBreaks,
-      bool unlimitedLineLength) {
-      if (outputStream == null) {
-        throw new ArgumentNullException("outputStream");
-      }
-      if (data == null) {
-        throw new ArgumentNullException("data");
-      }
-      if (offset < 0) {
-        throw new ArgumentException("offset (" + offset + ") is less than " +
-              "0");
-      }
-      if (offset > data.Length) {
-        throw new ArgumentException("offset (" + offset + ") is more than " +
-          data.Length);
-      }
-      if (count < 0) {
-        throw new ArgumentException("count (" + count + ") is less than " +
-            "0");
-      }
-      if (count > data.Length) {
-        throw new ArgumentException("count (" + count + ") is more than " +
-          data.Length);
-      }
-      if (data.Length - offset < count) {
-        throw new ArgumentException("data's length minus " + offset + " (" +
-          (data.Length - offset) + ") is less than " + count);
-      }
-      var ms = new MemoryStream(data, offset, count);
-      try {
-        object t = Reflect.Construct(MailNamespace() +
-              ".QuotedPrintableTransform", Reflect.Construct(MailNamespace() +
-                ".WrappedStream", ms), lenientLineBreaks,
-              unlimitedLineLength ? -1 : 76, false);
-        object readByteMethod = Reflect.GetMethod(t, "ReadByte");
-        readByteMethod = readByteMethod ?? (Reflect.GetMethod(t, "read"));
-        while (true) {
-          var c = (int)Reflect.InvokeMethod(t, readByteMethod);
-          if (c < 0) {
-            return;
-          }
-          outputStream.WriteByte((byte)c);
-        }
-      } catch (IOException ex) {
-        Assert.Fail(ex.Message);
-      }
-    }
-
-    public static void TestFailQuotedPrintable(string input) {
-      byte[] bytes = DataUtilities.GetUtf8Bytes(input, true);
-      using (var ms = new MemoryStream()) {
-        try {
-          ReadQuotedPrintable(ms, bytes, 0, bytes.Length, true, true);
-          Assert.Fail("Should have failed");
-        } catch (MessageDataException) {
-        } catch (Exception ex) {
-          Assert.Fail(ex.ToString());
-          throw new InvalidOperationException(String.Empty, ex);
-        }
-      }
-    }
-
     private void TestParseDomain(string str, string expected) {
       Assert.IsTrue(str.Length == (int)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser", "ParseDomain", str, 0, str.Length, null));
+                    ".HeaderParser", "ParseDomain", str, 0, str.Length, null));
       Assert.AreEqual(expected, (string)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParserUtility", "ParseDomain", str, 0, str.Length));
+                    ".HeaderParserUtility", "ParseDomain", str, 0, str.Length));
     }
 
     private void TestParseLocalPart(string str, string expected) {
       Assert.IsTrue(str.Length == (int)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser", "ParseLocalPart", str, 0, str.Length, null));
+                 ".HeaderParser" , "ParseLocalPart" , str, 0, str.Length,
+                      null));
       Assert.AreEqual(expected, (string)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParserUtility", "ParseLocalPart", str, 0, str.Length));
+                ".HeaderParserUtility" , "ParseLocalPart" , str, 0,
+                      str.Length));
     }
 
     [TestMethod]
@@ -299,18 +236,18 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
       TestParseDomain("x.example", "x.example");
       TestParseLocalPart("x.example", "x.example");
       TestParseLocalPart("x.example\ud800\udc00.example.com",
-        "x.example\ud800\udc00.example.com");
+                    "x.example\ud800\udc00.example.com");
       TestParseDomain("x.example\ud800\udc00.example.com",
-        "x.example\ud800\udc00.example.com");
+                    "x.example\ud800\udc00.example.com");
       TestParseDomain("x.example.com", "x.example.com");
       TestParseLocalPart("x.example.com", "x.example.com");
       TestParseLocalPart("\"(not a comment)\"", "(not a comment)");
       TestParseLocalPart("(comment1) x (comment2)", "x");
       TestParseLocalPart("(comment1) example (comment2) . (comment3) com",
-        "example.com");
+                    "example.com");
       TestParseDomain("(comment1) x (comment2)", "x");
       TestParseDomain("(comment1) example (comment2) . (comment3) com",
-        "example.com");
+                    "example.com");
       TestParseDomain("(comment1) [x] (comment2)", "[x]");
       TestParseDomain("(comment1) [a.b.c.d] (comment2)", "[a.b.c.d]");
       TestParseDomain("[]", "[]");
@@ -318,9 +255,9 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
     }
 
     public static void TestWordWrapOne(string firstWord, string nextWords,
-      string expected) {
+                    string expected) {
       object ww = Reflect.Construct(MailNamespace() + ".WordWrapEncoder",
-              firstWord);
+                    firstWord);
       Reflect.Invoke(ww, "AddString", nextWords);
       Assert.AreEqual(expected, ww.ToString());
     }
@@ -328,19 +265,20 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
     [TestMethod]
     public void TestWordWrap() {
       TestWordWrapOne("Subject:", Repeat("xxxx ", 10) + "y", "Subject: " +
-        Repeat("xxxx ", 10) + "y");
+                    Repeat("xxxx ", 10) + "y");
       TestWordWrapOne("Subject:", Repeat("xxxx ", 10), "Subject: " +
-        Repeat("xxxx ", 9) + "xxxx");
+                    Repeat("xxxx ", 9) + "xxxx");
     }
 
     [TestMethod]
     public void TestHeaderFields() {
       string testString =
+
   "Joe P Customer <customer@example.com>, Jane W Customer <jane@example.com>"
         ;
       if (testString.Length != (int)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser", "ParseMailboxList", testString, 0,
-        testString.Length, null)) {
+                    ".HeaderParser", "ParseMailboxList", testString, 0,
+                    testString.Length, null)) {
         Assert.Fail(testString);
       }
     }
@@ -349,11 +287,11 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
     public void TestPunycodeDecode() {
       {
         var stringTemp = (string)Reflect.InvokeStatic(typeof(Idna).Namespace +
-          ".DomainUtility",
-            "PunycodeDecode", "xn--e-ufa", 4, 9);
+                    ".DomainUtility",
+                    "PunycodeDecode", "xn--e-ufa", 4, 9);
         Assert.AreEqual(
-        "e\u00e1",
-        stringTemp);
+          "e\u00e1",
+          stringTemp);
       }
     }
 
@@ -377,7 +315,7 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
       }
       try {
         Reflect.Construct(MailNamespace() + ".Address",
-          EncodingTest.Repeat("local", 200), "example.com");
+                    EncodingTest.Repeat("local", 200), "example.com");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
       } catch (Exception ex) {
@@ -388,18 +326,6 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
 
     internal static object Transform(string str) {
       return DataIO.ToTransform(DataUtilities.GetUtf8Bytes(str, true));
-    }
-
-    internal static byte[] GetBytes(object trans) {
-      object readByteMethod = Reflect.GetMethod(trans, "ReadByte");
-      readByteMethod = readByteMethod ?? (Reflect.GetMethod(trans, "read"));
-      using (var ms = new MemoryStream()) {
-        int c = 0;
-        while ((c = (int)Reflect.InvokeMethod(trans, readByteMethod)) >= 0) {
-          ms.WriteByte((byte)c);
-        }
-        return ms.ToArray();
-      }
     }
 
     private void TestBase64Decode(byte[] expected, string input) {
@@ -420,9 +346,8 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
 
     public static void TestFailQuotedPrintableNonLenient(string input) {
       string msgString = "From: <test@example.com>\r\n" +
-         "MIME-Version: 1.0\r\n" +
-         "Content-Type: application/octet-stream\r\n" +
-         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
+        "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
+        "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
       try {
         MessageTest.MessageFromString(msgString);
       } catch (MessageDataException) {
@@ -438,7 +363,8 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
         new byte[] { 0, 16, 1 }, "ABAB");
       TestBase64Decode(new byte[] { 0, 16, 1, 93 }, "ABABXX==");
       TestBase64Decode(
-     new byte[] { 169, 172, 241, 179, 7, 157, 114, 247, 235 }, "qazxswedcvfr");
+     new byte[] { 169, 172, 241, 179, 7, 157, 114, 247, 235 },
+          "qazxswedcvfr");
       TestBase64Decode(
         new byte[] { 255, 239, 254, 103 }, "/+/+Zz==");
       TestBase64Decode(
@@ -1241,13 +1167,13 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
 
     private static string WrapHeader(string s) {
       return Reflect.Invoke(Reflect.Construct(MailNamespace() +
-        ".WordWrapEncoder", String.Empty), "AddString",
-        s).ToString();
+                    ".WordWrapEncoder", String.Empty), "AddString",
+                    s).ToString();
     }
 
     private void TestDowngradeDSNOne(string expected, string actual) {
       Assert.AreEqual(expected, (string)Reflect.InvokeStatic(MailNamespace() +
-        ".Message", "DowngradeRecipientHeaderValue", actual));
+                    ".Message", "DowngradeRecipientHeaderValue", actual));
       string dsn;
       string expectedDSN;
       byte[] bytes;
@@ -1256,9 +1182,9 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
       dsn = "X-Ignore: X\r\n\r\nOriginal-Recipient: " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
       if (encap) expectedDSN = "X-Ignore: X\r\n\r\n" +
-          WrapHeader("Downgraded-Original-Recipient: " + expected) +
-          "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
-            "\r\nX-Ignore: Y\r\n\r\n";
+        WrapHeader("Downgraded-Original-Recipient: " + expected) +
+        "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
+        "\r\nX-Ignore: Y\r\n\r\n";
       else {
         expectedDSN = "X-Ignore: X\r\n\r\n" +
           WrapHeader("Original-Recipient: " + expected) + "\r\n" +
@@ -1266,7 +1192,8 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
           "\r\nX-Ignore: Y\r\n\r\n";
       }
       bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
-        "DowngradeDeliveryStatus", DataUtilities.GetUtf8Bytes(dsn, true));
+             "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn,
+                      true));
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
       dsn = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\nOriginal-Recipient: " +
@@ -1276,7 +1203,7 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
           WrapHeader("Downgraded-Original-Recipient: " + expected) +
           "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
-            "\r\nX-Ignore: Y\r\n\r\n";
+          "\r\nX-Ignore: Y\r\n\r\n";
       else {
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
           WrapHeader("Original-Recipient: " + expected) + "\r\n" +
@@ -1284,15 +1211,16 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
           "\r\nX-Ignore: Y\r\n\r\n";
       }
       bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
-        "DowngradeDeliveryStatus", DataUtilities.GetUtf8Bytes(dsn, true));
+             "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn,
+                      true));
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
       dsn = "X-Ignore: X\r\n\r\nOriginal-recipient : " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
       if (encap) expectedDSN = "X-Ignore: X\r\n\r\n" +
-          WrapHeader("Downgraded-Original-Recipient: " + expected) +
-          "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
-            "\r\nX-Ignore: Y\r\n\r\n";
+        WrapHeader("Downgraded-Original-Recipient: " + expected) +
+        "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
+        "\r\nX-Ignore: Y\r\n\r\n";
       else {
         expectedDSN = "X-Ignore: X\r\n\r\n" +
           WrapHeader("Original-recipient : " + expected) + "\r\n" +
@@ -1300,7 +1228,8 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
           "\r\nX-Ignore: Y\r\n\r\n";
       }
       bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
-        "DowngradeDeliveryStatus", DataUtilities.GetUtf8Bytes(dsn, true));
+             "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn,
+                      true));
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
     }
@@ -1309,14 +1238,14 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
     public void TestDowngradeDSN() {
       string hexstart = "\\x" + "{";
       TestDowngradeDSNOne("utf-8; x@x.example",
-        ("utf-8; x@x.example"));
+                    ("utf-8; x@x.example"));
       TestDowngradeDSNOne(
         "utf-8; x@x" + hexstart + "BE}.example",
         ("utf-8; x@x\u00be.example"));
       TestDowngradeDSNOne("utf-8; x@x" + hexstart + "BE}" + hexstart +
-        "FF20}.example", ("utf-8; x@x\u00be\uff20.example"));
+                    "FF20}.example", ("utf-8; x@x\u00be\uff20.example"));
       TestDowngradeDSNOne("(=?utf-8?Q?=C2=BE?=) utf-8; x@x.example",
-        ("(\u00be) utf-8; x@x.example"));
+                    ("(\u00be) utf-8; x@x.example"));
       TestDowngradeDSNOne(
         "(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
         ("(\u00be) rfc822; x@x.example"));
@@ -1334,91 +1263,96 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
     [TestMethod]
     public void TestLanguageTags() {
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-a-bb-x-y-z"));
+                    ".ParserUtility", "IsValidLanguageTag", "en-a-bb-x-y-z"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "0-xx-xx"));
+                    ".ParserUtility", "IsValidLanguageTag", "0-xx-xx"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "9-xx-xx"));
+                    ".ParserUtility", "IsValidLanguageTag", "9-xx-xx"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "a-xx-xx"));
+                    ".ParserUtility", "IsValidLanguageTag", "a-xx-xx"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "x-xx-xx"));
+                    ".ParserUtility", "IsValidLanguageTag", "x-xx-xx"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-US-u-islamcal"));
+                  ".ParserUtility" , "IsValidLanguageTag",
+                      "en-US-u-islamcal"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "zh-CN-a-myext-x-private"
+              ".ParserUtility" , "IsValidLanguageTag",
+                      "zh-CN-a-myext-x-private"
 ));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-a-myext-b-another"));
+              ".ParserUtility" , "IsValidLanguageTag",
+                      "en-a-myext-b-another"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "de-419-DE"));
+                    ".ParserUtility", "IsValidLanguageTag", "de-419-DE"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "a-DE"));
+                    ".ParserUtility", "IsValidLanguageTag", "a-DE"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "ar-a-aaa-b-bbb-a-ccc"));
+              ".ParserUtility" , "IsValidLanguageTag",
+                      "ar-a-aaa-b-bbb-a-ccc"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en"));
+                    ".ParserUtility", "IsValidLanguageTag", "en"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "qbb-us"));
+                    ".ParserUtility", "IsValidLanguageTag", "qbb-us"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "zh-yue"));
+                    ".ParserUtility", "IsValidLanguageTag", "zh-yue"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-us"));
+                    ".ParserUtility", "IsValidLanguageTag", "en-us"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "e0-us"));
+                    ".ParserUtility", "IsValidLanguageTag", "e0-us"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-gb-1999"));
+                    ".ParserUtility", "IsValidLanguageTag", "en-gb-1999"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-gb-1999-1998"));
+                    ".ParserUtility", "IsValidLanguageTag", "en-gb-1999-1998"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-gb-1999-1999"));
+                    ".ParserUtility", "IsValidLanguageTag", "en-gb-1999-1999"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-gb-oed"));
+                    ".ParserUtility", "IsValidLanguageTag", "en-gb-oed"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "sr-Latn-RS"));
+                    ".ParserUtility", "IsValidLanguageTag", "sr-Latn-RS"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "x-aaaaaaaaa-y-z"));
+                    ".ParserUtility", "IsValidLanguageTag", "x-aaaaaaaaa-y-z"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "x-aaaaaaaa-y-z"));
+                    ".ParserUtility", "IsValidLanguageTag", "x-aaaaaaaa-y-z"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "a-b-x-y-z"));
+                    ".ParserUtility", "IsValidLanguageTag", "a-b-x-y-z"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "a-bb-xx-yy-zz"));
+                    ".ParserUtility", "IsValidLanguageTag", "a-bb-xx-yy-zz"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "a-bb-x-y-z"));
+                    ".ParserUtility", "IsValidLanguageTag", "a-bb-x-y-z"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "a-x-y-z"));
+                    ".ParserUtility", "IsValidLanguageTag", "a-x-y-z"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "x-x-y-z"));
+                    ".ParserUtility", "IsValidLanguageTag", "x-x-y-z"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "i-lojban"));
+                    ".ParserUtility", "IsValidLanguageTag", "i-lojban"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "i-klingon"));
+                    ".ParserUtility", "IsValidLanguageTag", "i-klingon"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "art-lojban"));
+                    ".ParserUtility", "IsValidLanguageTag", "art-lojban"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "sgn-be-fr"));
+                    ".ParserUtility", "IsValidLanguageTag", "sgn-be-fr"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "no-bok"));
+                    ".ParserUtility", "IsValidLanguageTag", "no-bok"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "z-xx-xx"));
+                    ".ParserUtility", "IsValidLanguageTag", "z-xx-xx"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag",
-        "en-aaa-bbbb-x-xxx-yyy-zzz"));
+                    ".ParserUtility", "IsValidLanguageTag",
+                    "en-aaa-bbbb-x-xxx-yyy-zzz"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbbb-x-x-y-z"));
+               ".ParserUtility" , "IsValidLanguageTag",
+                      "en-aaa-bbbb-x-x-y-z"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb"));
+                    ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb-ccc"));
+                    ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb-ccc"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbbb"));
+                    ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbbb"));
       Assert.IsTrue((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbbb-cc"));
+                    ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbbb-cc"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb-"));
+                    ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb-"));
       Assert.IsFalse((bool)Reflect.InvokeStatic(MailNamespace() +
-        ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb-ccc-"));
+                    ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb-ccc-"));
     }
 
     [TestMethod]
@@ -1501,51 +1435,57 @@ Console.WriteLine("End of line, whitespace, or start of message before colon");
     }
 
     public static void TestEncodedWordsPhrase(string expected, string input) {
-      Assert.AreEqual(expected + " <test@example.com>",
-        DecodeHeaderField("from", input + " <test@example.com>"));
+      string str = "From: " + input + " <test@example.com>\r\n\r\nTest";
+      Message msg = MessageTest.MessageFromString(str);
+      Assert.AreEqual(
+        expected + " <test@example.com>",
+        msg.GetHeader("from"));
     }
 
     public static void TestEncodedWordsOne(string expected, string input) {
       string par = "(";
       Assert.AreEqual(expected, Reflect.InvokeStatic(MailNamespace() +
-        ".Rfc2047", "DecodeEncodedWords", input, 0, input.Length,
-        Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext",
-        "Unstructured")));
+                    ".Rfc2047", "DecodeEncodedWords", input, 0, input.Length,
+                Reflect.GetFieldStatic(MailNamespace() +
+                      ".EncodedWordContext",
+                    "Unstructured")));
       Assert.AreEqual(
         "(" + expected + ") en",
         DecodeHeaderField("content-language", "(" + input + ") en"));
       Assert.AreEqual(" (" + expected + ") en",
-        DecodeHeaderField("content-language", " (" + input + ") en"));
+                 DecodeHeaderField("content-language" , " (" + input +
+                      ") en"));
       Assert.AreEqual(" " + par + "comment " + par + "cmt " + expected +
-        ")comment) en",
-        DecodeHeaderField("content-language", " (comment (cmt " + input +
-          ")comment) en"));
+                    ")comment) en",
+              DecodeHeaderField("content-language" , " (comment (cmt " +
+                      input +
+                    ")comment) en"));
       Assert.AreEqual(
         " " + par + "comment " + par + "=?bad?= " + expected + ")comment) en",
         DecodeHeaderField("content-language", " (comment (=?bad?= " + input +
-          ")comment) en"));
+                    ")comment) en"));
       Assert.AreEqual(
         " " + par + "comment " + par + String.Empty + expected + ")comment) en",
-DecodeHeaderField("content-language", " (comment (" + input +
-          ")comment) en"));
+        DecodeHeaderField("content-language", " (comment (" + input +
+                    ")comment) en"));
       Assert.AreEqual(
         " (" + expected + "()) en", DecodeHeaderField("content-language",
-          " (" + input + "()) en"));
+                    " (" + input + "()) en"));
       Assert.AreEqual(
         " en (" + expected + ")",
         DecodeHeaderField("content-language", " en (" + input + ")"));
       Assert.AreEqual(expected,
-        DecodeHeaderField("subject", input));
+                    DecodeHeaderField("subject", input));
     }
 
     [TestMethod]
     public void TestEncodedPhrase2() {
       {
         string stringTemp = DowngradeHeaderField("subject",
-          "(tes\u00bet) x@x.example");
+                    "(tes\u00bet) x@x.example");
         Assert.AreEqual(
-        "=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
-        stringTemp);
+          "=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
+          stringTemp);
       }
     }
 
@@ -1553,76 +1493,83 @@ DecodeHeaderField("content-language", " (comment (" + input +
     public void TestToFieldDowngrading() {
       string sep = ", ";
       Assert.AreEqual("x <x@example.com>" + sep + "\"X\" <y@example.com>",
-        DowngradeHeaderField("to", "x <x@example.com>, \"X\" <y@example.com>"));
+       DowngradeHeaderField("to",
+                      "x <x@example.com>, \"X\" <y@example.com>"));
       Assert.AreEqual("x <x@example.com>" + sep +
-        "=?utf-8?Q?=C2=BE?= <y@example.com>", DowngradeHeaderField("to",
-          "x <x@example.com>, \u00be <y@example.com>"));
+               "=?utf-8?Q?=C2=BE?= <y@example.com>",
+                      DowngradeHeaderField("to",
+                    "x <x@example.com>, \u00be <y@example.com>"));
       Assert.AreEqual("x <x@example.com>" + sep +
-        "=?utf-8?Q?=C2=BE?= <y@example.com>",
-  DowngradeHeaderField("to", "x <x@example.com>, \"\u00be\" <y@example.com>"));
+                    "=?utf-8?Q?=C2=BE?= <y@example.com>",
+  DowngradeHeaderField("to",
+                      "x <x@example.com>, \"\u00be\" <y@example.com>"));
       Assert.AreEqual(
-   "x <x@example.com>" + sep + "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>",
+   "x <x@example.com>" + sep +
+          "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>",
         DowngradeHeaderField("to",
-          "x <x@example.com>, x\u00e1 x x\u00e1 <y@example.com>"));
+                    "x <x@example.com>, x\u00e1 x x\u00e1 <y@example.com>"));
       {
         string stringTemp = DowngradeHeaderField("to",
-          "g: x@example.com, x\u00e1y@example.com;");
+                    "g: x@example.com, x\u00e1y@example.com;");
         Assert.AreEqual(
-        "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;",
-        stringTemp);
+          "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("to",
-          "g: x@example.com, x@\u0300.example;");
+                    "g: x@example.com, x@\u0300.example;");
         Assert.AreEqual(
-        "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;",
-        stringTemp);
+          "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;",
+          stringTemp);
       }
       Assert.AreEqual("g: x@example.com" + sep + "x@xn--e-ufa.example;",
-        DowngradeHeaderField("to", "g: x@example.com, x@e\u00e1.example;"));
+           DowngradeHeaderField("to",
+                      "g: x@example.com, x@e\u00e1.example;"));
       {
-   string stringTemp = DowngradeHeaderField("sender" , "x <x@e\u00e1.example>");
+  string stringTemp = DowngradeHeaderField("sender",
+          "x <x@e\u00e1.example>");
         Assert.AreEqual(
-        "x <x@xn--e-ufa.example>",
-        stringTemp);
+          "x <x@xn--e-ufa.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("sender",
-          "x\u00e1 x x\u00e1 <x@example.com>");
+                    "x\u00e1 x x\u00e1 <x@example.com>");
         Assert.AreEqual(
-        "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
-        stringTemp);
+          "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("sender",
-          "x\u00e1 x x\u00e1 <x@e\u00e1.example>");
+                    "x\u00e1 x x\u00e1 <x@e\u00e1.example>");
         Assert.AreEqual(
-        "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
-        stringTemp);
+          "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
+          stringTemp);
       }
       {
-string stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
+        string stringTemp = DowngradeHeaderField("sender",
+          "x <x\u00e1y@example.com>");
         Assert.AreEqual(
-        "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
-        stringTemp);
+          "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
+          stringTemp);
       }
     }
 
     private static string EncodeComment(string str) {
       return (string)Reflect.InvokeStatic(MailNamespace() + ".Rfc2047",
-        "EncodeComment", str, 0, str.Length);
+                    "EncodeComment", str, 0, str.Length);
     }
 
     private static string DowngradeHeaderField(string name, string value) {
       return (string)Reflect.Invoke(Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderFieldParsers", "GetParser", name),
-        "DowngradeFieldValue", value);
+                    ".HeaderFieldParsers", "GetParser", name),
+                    "DowngradeFieldValue", value);
     }
 
     private static string DecodeHeaderField(string name, string value) {
       return (string)Reflect.Invoke(Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderFieldParsers", "GetParser", name),
-        "DecodeEncodedWords", value);
+                    ".HeaderFieldParsers", "GetParser", name),
+                    "DecodeEncodedWords", value);
     }
 
     [TestMethod]
@@ -1630,201 +1577,203 @@ string stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
       {
         string stringTemp = EncodeComment("(x)");
         Assert.AreEqual(
-        "(=?utf-8?Q?x?=)",
-        stringTemp);
+          "(=?utf-8?Q?x?=)",
+          stringTemp);
       }
       {
         string stringTemp = EncodeComment("(x\\y)");
         Assert.AreEqual(
-        "(=?utf-8?Q?xy?=)",
-        stringTemp);
+          "(=?utf-8?Q?xy?=)",
+          stringTemp);
       }
       {
         string stringTemp = EncodeComment("(x\r\n y)");
         Assert.AreEqual(
-        "(=?utf-8?Q?x_y?=)",
-        stringTemp);
+          "(=?utf-8?Q?x_y?=)",
+          stringTemp);
       }
       {
         string stringTemp = EncodeComment("(x\u00a0)");
         Assert.AreEqual(
-        "(=?utf-8?Q?x=C2=A0?=)",
-        stringTemp);
+          "(=?utf-8?Q?x=C2=A0?=)",
+          stringTemp);
       }
       {
         string stringTemp = EncodeComment("(x\\\u00a0)");
         Assert.AreEqual(
-        "(=?utf-8?Q?x=C2=A0?=)",
-        stringTemp);
+          "(=?utf-8?Q?x=C2=A0?=)",
+          stringTemp);
       }
       Assert.AreEqual("(=?utf-8?Q?x?=())", EncodeComment("(x())"));
       Assert.AreEqual("(=?utf-8?Q?x?=()=?utf-8?Q?y?=)",
-          EncodeComment("(x()y)"));
+                    EncodeComment("(x()y)"));
       Assert.AreEqual("(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)",
-        EncodeComment("(x(a\\b)y)"));
+                    EncodeComment("(x(a\\b)y)"));
       {
         string stringTemp = EncodeComment("()");
         Assert.AreEqual(
-        "()",
-        stringTemp);
+          "()",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-                "(test) x@x.example");
+                    "(test) x@x.example");
         Assert.AreEqual(
-        "(test) x@x.example",
-        stringTemp);
+          "(test) x@x.example",
+          stringTemp);
       }
       {
-  string stringTemp = DowngradeHeaderField("from" , "(tes\u00bet) x@x.example");
+ string stringTemp = DowngradeHeaderField("from",
+          "(tes\u00bet) x@x.example");
         Assert.AreEqual(
-        "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
-        stringTemp);
+          "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("content-language",
-          "(tes\u00bet) en");
+                    "(tes\u00bet) en");
         Assert.AreEqual(
-        "(=?utf-8?Q?tes=C2=BEt?=) en",
-        stringTemp);
+          "(=?utf-8?Q?tes=C2=BEt?=) en",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-          "(comment) Test <x@x.example>");
+                    "(comment) Test <x@x.example>");
         Assert.AreEqual(
-        "(comment) Test <x@x.example>",
-        stringTemp);
+          "(comment) Test <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-          "(comment) Tes\u00bet <x@x.example>");
+                    "(comment) Tes\u00bet <x@x.example>");
         Assert.AreEqual(
-        "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-        stringTemp);
+          "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-          "(comment) Tes\u00bet Subject <x@x.example>");
+                    "(comment) Tes\u00bet Subject <x@x.example>");
         Assert.AreEqual(
-        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-        stringTemp);
+          "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-          "(comment) Test Sub\u00beject <x@x.example>");
+                    "(comment) Test Sub\u00beject <x@x.example>");
         Assert.AreEqual(
-        "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-        stringTemp);
+          "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-          "(comment) \"Tes\u00bet\" <x@x.example>");
+                    "(comment) \"Tes\u00bet\" <x@x.example>");
         Assert.AreEqual(
-        "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-        stringTemp);
+          "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-                  "(comment) \"Tes\u00bet Subject\" <x@x.example>");
+                    "(comment) \"Tes\u00bet Subject\" <x@x.example>");
         Assert.AreEqual(
-        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-        stringTemp);
+          "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-                  "(comment) \"Test Sub\u00beject\" <x@x.example>");
+                    "(comment) \"Test Sub\u00beject\" <x@x.example>");
         Assert.AreEqual(
-        "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-        stringTemp);
+          "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-                  "(comment) \"Tes\u00bet   Subject\" <x@x.example>");
+                    "(comment) \"Tes\u00bet   Subject\" <x@x.example>");
         Assert.AreEqual(
-        "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
-        stringTemp);
+          "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-                  "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
+                    "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
         Assert.AreEqual(
-        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-        stringTemp);
+          "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-                  "\"Tes\u00bet Subject\" (comment) <x@x.example>");
+                    "\"Tes\u00bet Subject\" (comment) <x@x.example>");
         Assert.AreEqual(
-        "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-        stringTemp);
+          "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from", "Test <x@x.example>");
         Assert.AreEqual(
-        "Test <x@x.example>",
-        stringTemp);
+          "Test <x@x.example>",
+          stringTemp);
       }
       {
-  string stringTemp = DowngradeHeaderField("from" , "Tes\u00bet <x@x.example>");
+ string stringTemp = DowngradeHeaderField("from",
+          "Tes\u00bet <x@x.example>");
         Assert.AreEqual(
-        "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-        stringTemp);
-      }
-      {
-        string stringTemp = DowngradeHeaderField("from",
-          "Tes\u00bet Subject <x@x.example>");
-        Assert.AreEqual(
-        "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-        stringTemp);
+          "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-          "Test Sub\u00beject <x@x.example>");
+                    "Tes\u00bet Subject <x@x.example>");
         Assert.AreEqual(
-        "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-        stringTemp);
+          "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-          "\"Tes\u00bet\" <x@x.example>");
+                    "Test Sub\u00beject <x@x.example>");
         Assert.AreEqual(
-        "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-        stringTemp);
+          "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-          "\"Tes\u00bet Subject\" <x@x.example>");
+                    "\"Tes\u00bet\" <x@x.example>");
         Assert.AreEqual(
-        "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-        stringTemp);
+          "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-          "\"Test Sub\u00beject\" <x@x.example>");
+                    "\"Tes\u00bet Subject\" <x@x.example>");
         Assert.AreEqual(
-        "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-        stringTemp);
+          "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-          "\"Tes\u00bet   Subject\" <x@x.example>");
+                    "\"Test Sub\u00beject\" <x@x.example>");
         Assert.AreEqual(
-        "=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
-        stringTemp);
+          "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+          stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
-                  "\"Tes\u00bet Subject\" (comment) <x@x.example>");
+                    "\"Tes\u00bet   Subject\" <x@x.example>");
         Assert.AreEqual(
-        "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-        stringTemp);
+          "=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
+          stringTemp);
+      }
+      {
+        string stringTemp = DowngradeHeaderField("from",
+                    "\"Tes\u00bet Subject\" (comment) <x@x.example>");
+        Assert.AreEqual(
+          "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+          stringTemp);
       }
     }
 
     private void TestParseCommentStrictCore(string input) {
       Assert.AreEqual(input.Length, Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParserUtility", "ParseCommentStrict", input, 0,
-        input.Length), input);
+                    ".HeaderParserUtility", "ParseCommentStrict", input, 0,
+                    input.Length), input);
     }
 
     [TestMethod]
@@ -1854,14 +1803,14 @@ string stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
         "\"=?utf-8?q?xyz?=\"",
         "=?utf-8?q?=3D=3Futf-8=3Fq=3Fxyz=3F=3D?=");
       TestEncodedWordsPhrase("\"=?utf-8?q?xyz?=\"",
-        "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
+                    "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
       // Already quoted material
       TestEncodedWordsPhrase(
         "me (x) \"x:y\"",
         "=?utf-8?q?me?= (x) \"x:y\"");
       // Already quoted material with a special
       TestEncodedWordsPhrase("me \"x:y\"",
-        "=?utf-8?q?me?= \"x:y\"");
+                    "=?utf-8?q?me?= \"x:y\"");
     }
 
     [TestMethod]
@@ -1872,34 +1821,32 @@ string stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
       TestEncodedWordsPhrase("tes=dxx", "=?us-ascii?q?tes=dxx?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
       TestEncodedWordsPhrase("=?bad1?= =?bad2?= =?bad3?=",
-        "=?bad1?= =?bad2?= =?bad3?=");
+                    "=?bad1?= =?bad2?= =?bad3?=");
       // quoted because one word was decoded
       TestEncodedWordsPhrase("\"y =?bad2?= =?bad3?=\"",
-        "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
+                    "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
       // quoted because one word was decoded
       TestEncodedWordsPhrase("\"=?bad1?= y =?bad3?=\"",
-        "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
+                    "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase(" xy", " =?us-ascii?q?x?= =?us-ascii?q?y?=");
- TestEncodedWordsPhrase("xy (sss)" , "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
+TestEncodedWordsPhrase("xy (sss)",
+        "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
       TestEncodedWordsPhrase("x (sss) y",
-              "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
+                    "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase("x (z) y",
-        "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+                    "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase("=?us-ascii?q?x?=" + par + "sss)=?us-ascii?q?y?=",
-        "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
+                    "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
       TestEncodedWordsPhrase("=?us-ascii?q?x?=" + par + "z)=?us-ascii?q?y?=",
-        "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
+                    "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
       TestEncodedWordsPhrase("=?us-ascii?q?x?=" + par + "z) y",
-        "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+                    "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
       TestEncodedWordsOne("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
       TestEncodedWordsOne("abcde abcde", "abcde abcde");
       TestEncodedWordsOne("abcde", "abcde");
       TestEncodedWordsOne("abcde", "=?utf-8?Q?abcde?=");
       TestEncodedWordsOne("=?utf-8?Q?abcde?=extra", "=?utf-8?Q?abcde?=extra");
       TestEncodedWordsOne("abcde ", "=?utf-8?Q?abcde?= ");
-      TestEncodedWordsOne(" abcde", " =?utf-8?Q?abcde?=");
-      TestEncodedWordsOne(" abcde", " =?utf-8?Q?abcde?=");
       TestEncodedWordsOne("ab\u00a0de", "=?utf-8?Q?ab=C2=A0de?=");
       TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
       TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
@@ -1912,23 +1859,25 @@ string stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
       TestEncodedWordsOne("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
       TestEncodedWordsOne("=?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?=");
       TestEncodedWordsOne("=?utf-8?Q?" + Repeat("x", 200) + "?=",
-        "=?utf-8?Q?" + Repeat("x", 200) + "?=");
+                    "=?utf-8?Q?" + Repeat("x", 200) + "?=");
       TestEncodedWordsPhrase("=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
-            "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
+                    "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
     }
 
     [TestMethod]
     public void TestHeaderParsingRfc2047() {
       string tmp = "=?utf-8?q??=\r\n \r\nABC";
       Assert.AreEqual(tmp, (string)Reflect.InvokeStatic(MailNamespace() +
-        ".Rfc2047", "DecodeEncodedWords", tmp, 0, tmp.Length,
-        Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext",
-        "Unstructured")));
+                    ".Rfc2047", "DecodeEncodedWords", tmp, 0, tmp.Length,
+                Reflect.GetFieldStatic(MailNamespace() +
+                      ".EncodedWordContext",
+                    "Unstructured")));
       tmp = "=?utf-8?q??=\r\n \r\n ABC";
       Assert.AreEqual(tmp, (string)Reflect.InvokeStatic(MailNamespace() +
-        ".Rfc2047", "DecodeEncodedWords", tmp, 0, tmp.Length,
-        Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext",
-        "Unstructured")));
+                    ".Rfc2047", "DecodeEncodedWords", tmp, 0, tmp.Length,
+                Reflect.GetFieldStatic(MailNamespace() +
+                      ".EncodedWordContext",
+                    "Unstructured")));
     }
 
     [TestMethod]
@@ -1937,48 +1886,55 @@ string stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
       string tmp;
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>;";
       if (tmp.Length != (int)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.Length,
+                      null)) {
         Assert.Fail(tmp);
       }
       // just a local part in address
       if (0 != (int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser",
-        "ParseHeaderFrom", "\"Me\" <1234>", 0, 11, null)) {
+                    "ParseHeaderFrom", "\"Me\" <1234>", 0, 11, null)) {
         Assert.Fail(tmp);
       }
       tmp = "<x@x.invalid>";
       if (tmp.Length != (int)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.Length,
+                      null)) {
         Assert.Fail(tmp);
       }
       tmp = "<x y@x.invalid>";  // local part is not a dot-atom
       if (0 != (int)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser",
-        "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+                    "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
         Assert.Fail(tmp);
       }
       tmp = " <x@x.invalid>";
       if (tmp.Length != (int)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.Length,
+                      null)) {
         Assert.Fail(tmp);
       }
       // Group syntax
       tmp = "G:;";
       if (tmp.Length != (int)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.Length,
+                      null)) {
         Assert.Fail(tmp);
       }
       tmp = "G:a <x@x.example>;";
       if (tmp.Length != (int)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.Length,
+                      null)) {
         Assert.Fail(tmp);
       }
       tmp = " A Xxxxx: ;";
       if (tmp.Length != (int)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.Length,
+                      null)) {
         Assert.Fail(tmp);
       }
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>, y@y.example, Ww <z@z.invalid>;";
       if (tmp.Length != (int)Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderParser", "ParseHeaderTo", tmp, 0, tmp.Length, null)) {
+                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.Length,
+                      null)) {
         Assert.Fail(tmp);
       }
     }
@@ -1990,58 +1946,53 @@ string stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
     }
 
     public static string EncodeQP(byte[] bytes, int mode) {
-      object enc = Reflect.Construct(MailNamespace() +
-        ".QuotedPrintableEncoder", mode, false);
+      object enc = Reflect.Construct(
+        MailNamespace() + ".QuotedPrintableEncoder",
+        mode,
+        false);
       var enc2 = (ICharacterEncoder)enc;
       int offset = 0;
-      try {
-      using (var ms = new MemoryStream()) {
-        while (true) {
-          int c = -1;
-          if (offset < bytes.Length) {
-            c = ((int)bytes[offset++]) & 0xff;
-          }
-          if (enc2.Encode(c, DataIO.ToWriter(ms)) < 0) {
- break;
-}
+      var aw = new ArrayWriter();
+      while (true) {
+        int c = -1;
+        if (offset < bytes.Length) {
+          c = ((int)bytes[offset++]) & 0xff;
         }
-        return DataUtilities.GetUtf8String(ms.ToArray(), true);
+        if (enc2.Encode(c, aw) < 0) {
+          break;
+        }
       }
-     } catch (IOException ex) {
-      throw new InvalidOperationException(ex.Message, ex);
-     }
+      return DataUtilities.GetUtf8String(aw.ToArray(), true);
     }
 
     public static string EncodeB64(byte[] bytes, int mode) {
       bool a=(mode%2) == 1;
       bool b=(mode%4) == 1;
-      object enc = Reflect.Construct(MailNamespace() +
-        ".Base64Encoder", a, false, b);
+      object enc = Reflect.Construct(
+        MailNamespace() + ".Base64Encoder",
+        a,
+        false,
+        b);
       var enc2 = (ICharacterEncoder)enc;
       int offset = 0;
-      try {
-      using (var ms = new MemoryStream()) {
-        while (true) {
-          int c = -1;
-          if (offset < bytes.Length) {
-            c = ((int)bytes[offset++]) & 0xff;
-          }
-          if (enc2.Encode(c, DataIO.ToWriter(ms)) < 0) {
- break;
-}
+      var aw = new ArrayWriter();
+      while (true) {
+        int c = -1;
+        if (offset < bytes.Length) {
+          c = ((int)bytes[offset++]) & 0xff;
         }
-        return DataUtilities.GetUtf8String(ms.ToArray(), true);
+        if (enc2.Encode(c, aw) < 0) {
+          break;
+        }
       }
-     } catch (IOException ex) {
-      throw new InvalidOperationException(ex.Message, ex);
-     }
+      return DataUtilities.GetUtf8String(aw.ToArray(), true);
     }
 
     public static void TestBase64RoundTrip(byte[] bytes, int mode) {
       string input = EncodeB64(bytes, mode);
       string msgString = "From: <test@example.com>\r\n" +
-      "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
-      "Content-Transfer-Encoding: base64\r\n\r\n" + input;
+        "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
+        "Content-Transfer-Encoding: base64\r\n\r\n" + input;
       Message msg = MessageTest.MessageFromString(msgString);
       AssertEqual(bytes, msg.GetBody());
       msg = MessageTest.MessageFromString(msg.Generate());
@@ -2051,8 +2002,8 @@ string stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
     public static void TestQuotedPrintableRoundTrip(byte[] bytes, int mode) {
       string input = EncodeQP(bytes, mode);
       string msgString = "From: <test@example.com>\r\n" +
-      "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
-      "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
+        "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
+        "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
       Message msg = MessageTest.MessageFromString(msgString);
       AssertEqual(bytes, msg.GetBody());
       msg = MessageTest.MessageFromString(msg.Generate());
@@ -2091,11 +2042,11 @@ string stringTemp = DowngradeHeaderField("sender" , "x <x\u00e1y@example.com>");
     [TestMethod]
     public void TestReceivedHeader() {
       object parser = Reflect.InvokeStatic(MailNamespace() +
-        ".HeaderFieldParsers", "GetParser", "received");
+                    ".HeaderFieldParsers", "GetParser", "received");
       string test =
         "from x.y.example by a.b.example; Thu, 31 Dec 2012 00:00:00 -0100";
       if (test.Length != (int)Reflect.Invoke(parser, "Parse", test, 0,
-        test.Length, null)) {
+                    test.Length, null)) {
         Assert.Fail(test);
       }
     }

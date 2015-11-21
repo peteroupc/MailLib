@@ -22,8 +22,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a string containing this object's disposition type,
     /// such as "inline" or "attachment".</summary>
-    /// <value>A string containing this object&#x27;s disposition type,
-    /// such as &#x22;inline&#x22; or &#x22;attachment&#x22;.</value>
+    /// <value>A string containing this object&apos;s disposition type,
+    /// such as &quot;inline&quot; or &quot;attachment&quot;.</value>
     public string DispositionType {
       get {
         return this.dispositionType;
@@ -166,7 +166,8 @@ string type,
     /// <para>"nul.txt" -&gt; "_nul.txt" (Reserved name)</para>
     /// <para>"dir1/dir2/file" -&gt; "dir1_dir2_file" (Directory
     /// separators)</para></summary>
-    /// <param name='str'>A string representing a file name.</param>
+    /// <param name='str'>A string representing a file name. Can be
+    /// null.</param>
     /// <returns>A string with the converted version of the file name.
     /// Among other things, encoded words under RFC 2047 are decoded (since
     /// they occur so frequently in Content-Disposition filenames); the
@@ -400,7 +401,12 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
     /// <param name='dispoValue'>A string object.</param>
     /// <returns>A content disposition object, or "Attachment" if <paramref
     /// name='dispoValue'/> is empty or syntactically invalid.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='dispoValue'/> is null.</exception>
     public static ContentDisposition Parse(string dispoValue) {
+      if ((dispoValue) == null) {
+  throw new ArgumentNullException("dispoValue");
+}
       return Parse(dispoValue, Attachment);
     }
 

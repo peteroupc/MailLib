@@ -395,7 +395,7 @@ namespace PeterO.Text.Encoders {
       return new Encoder(gbk);
     }
 
-    private ICharacterEncoder enc = EncodingGB18030.GetEncoder2(false);
+    private ICharacterEncoder enc = GetEncoder2(false);
 
     public ICharacterDecoder GetDecoder() {
       return EncodingGB18030.GetDecoder2();

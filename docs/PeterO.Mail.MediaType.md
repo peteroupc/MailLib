@@ -157,7 +157,7 @@ Parses a media type string and returns a media type object.
 
 <b>Parameters:</b>
 
- * <i>mediaTypeValue</i>: A string object.
+ * <i>mediaTypeValue</i>: A string object representing a media type. This media type can include parameters.
 
 <b>Returns:</b>
 
@@ -174,7 +174,7 @@ Parses a media type string and returns a media type object, or the default value
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object representing a media type.
+ * <i>str</i>: A string object representing a media type. This media type can include parameters.
 
  * <i>defaultValue</i>: The media type to return if the string is syntactically invalid. Can be null.
 

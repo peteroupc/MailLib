@@ -124,7 +124,8 @@ public final void setSubType(String value) {
     }
 
     /**
-     * Removes a parameter from this builder object.
+     * Removes a parameter from this builder object. Does nothing if the
+     * parameter's name doesn't exist.
      * @param name Name of the parameter to remove. The name is compared
      * case-insensitively.
      * @return This instance.

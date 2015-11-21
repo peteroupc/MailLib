@@ -17,13 +17,21 @@ Reads a sequence of Unicode code points from a data source.
 
  * <i>chars</i>: Output buffer.
 
- * <i>index</i>: Index in the output buffer to start writing to.
+ * <i>index</i>: A zero-based index showing where the desired portion of  <i>chars</i>
+ begins.
 
- * <i>length</i>: Maximum number of code points to write.
+ * <i>length</i>: The number of elements in the desired portion of  <i>chars</i>
+ (but not more than  <i>chars</i>
+ 's length).
 
 <b>Returns:</b>
 
 The number of Unicode code points read, or 0 if the end of the source is reached.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+Should be thrown if "chars" is null.
 
 ### ReadChar
 

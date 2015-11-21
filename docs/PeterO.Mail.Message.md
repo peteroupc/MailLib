@@ -18,6 +18,8 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * There is no line length limit imposed when parsing quoted-printable or base64 encoded bodies.
 
+ * If the transfer encoding is absent and the content type is "message/rfc822", 8-bit bytes are still allowed, despite the default value of "7bit" for "Content-Transfer-Encoding".
+
  * In the following cases, if the transfer encoding is absent or declared as 7bit, 8-bit bytes are still allowed:
 
  * (a) The preamble and epilogue of multipart messages, which will be ignored.
@@ -304,16 +306,17 @@ Gets the name and value of a header field by index.
 
 <b>Parameters:</b>
 
- * <i>index</i>: A 32-bit signed integer.
+ * <i>index</i>: Zero-based index of the header field to get.
 
 <b>Returns:</b>
 
-A KeyValuePair(string, string) object.
+A KeyValuePair object. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
 
 <b>Exceptions:</b>
 
  * System.ArgumentException:
-"Index" is 0 or greater than or equal to the number of header fields.
+The parameter  <i>index</i>
+ is 0 or at least as high as the number of header fields.
 
 ### RemoveHeader
 
@@ -333,7 +336,8 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentException:
-"Index" is 0 or greater than or equal to the number of header fields.
+The parameter  <i>index</i>
+ is 0 or at least as high as the number of header fields.
 
 ### RemoveHeader
 
@@ -398,7 +402,7 @@ This instance.
 
  * System.ArgumentException:
 The parameter  <i>index</i>
- is 0 or at least the number of header fields.
+ is 0 or at least as high as the number of header fields.
 
  * System.ArgumentNullException:
 The parameter  <i>name</i>
@@ -427,7 +431,7 @@ This instance.
 
  * System.ArgumentException:
 The parameter  <i>index</i>
- is 0 or at least the number of header fields.
+ is 0 or at least as high as the number of header fields.
 
  * System.ArgumentNullException:
 The parameter  <i>value</i>
@@ -454,11 +458,12 @@ A Message object.
 <b>Exceptions:</b>
 
  * System.ArgumentException:
-"Index" is 0 or greater than or equal to the number of header fields.
+The parameter  <i>index</i>
+ is 0 or at least as high as the number of header fields.
 
  * System.ArgumentException:
 The parameter  <i>index</i>
- is 0 or at least the number of header fields.
+ is 0 or at least as high as the number of header fields.
 
  * System.ArgumentNullException:
 The key or value of <i>header</i>
@@ -501,7 +506,7 @@ Sets the body of this message to the specified string in HTML format. The charac
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object.
+ * <i>str</i>: A string consisting of the message in HTML format.
 
 <b>Returns:</b>
 
@@ -523,9 +528,9 @@ Sets the body of this message to a multipart body with plain text and HTML versi
 
 <b>Parameters:</b>
 
- * <i>text</i>: A string object.
+ * <i>text</i>: A string consisting of the plain text version of the message.
 
- * <i>html</i>: Another string object.
+ * <i>html</i>: A string consisting of the HTML version of the message.
 
 <b>Returns:</b>
 
@@ -547,7 +552,7 @@ Sets the body of this message to the specified plain text string. The character 
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object.
+ * <i>str</i>: A string consisting of the message in plain text format.
 
 <b>Returns:</b>
 
