@@ -95,7 +95,7 @@ char b3) {
       if (!this.unlimitedLineLength) {
         if (this.lineCount + 1 > 75) {
           // 76 including the final '='
-          byte[] buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)ch };
+          var buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)ch };
           output.Write(buf, 0, buf.Length);
           this.lineCount = 1;
           return 4;
@@ -246,9 +246,8 @@ HexAlphabet[c & 15]);
                 count += this.IncrementAndAppendChar(output, (char)'r');
                 count += this.IncrementAndAppendChar(output, (char)'o');
                 count += this.IncrementAndAppendChar(output, (char)'m');
-                count += this.IncrementAndAppendChar(output, (char)' ');
-                this.machineState = 6;
-                return count;
+                this.machineState = 0;
+                continue;
               } else {
                 count += this.IncrementAndAppendChar(output, (char)'F');
                 count += this.IncrementAndAppendChar(output, (char)'r');

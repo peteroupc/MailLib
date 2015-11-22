@@ -247,9 +247,8 @@ HexAlphabet.charAt(c & 15));
                 count += this.IncrementAndAppendChar(output, (char)'r');
                 count += this.IncrementAndAppendChar(output, (char)'o');
                 count += this.IncrementAndAppendChar(output, (char)'m');
-                count += this.IncrementAndAppendChar(output, (char)' ');
-                this.machineState = 6;
-                return count;
+                this.machineState = 0;
+                continue;
               } else {
                 count += this.IncrementAndAppendChar(output, (char)'F');
                 count += this.IncrementAndAppendChar(output, (char)'r');
