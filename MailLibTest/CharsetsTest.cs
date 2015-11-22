@@ -6,6 +6,7 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterO;
 using PeterO.Text;
@@ -102,16 +103,14 @@ stringTemp);
         stringTemp);
       }
       // JIS0208 state
-   bytes = new byte[] { 0x1b, 0x24, 0x40, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23
-        };
+   bytes = new byte[] { 0x1b, 0x24, 0x40, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23 };
       {
         string stringTemp = Encodings.DecodeToString(charset, bytes);
         Assert.AreEqual(
         "\u3000\u3001\u3002",
         stringTemp);
       }
-   bytes = new byte[] { 0x1b, 0x24, 0x42, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23
-        };
+   bytes = new byte[] { 0x1b, 0x24, 0x42, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23 };
       {
         string stringTemp = Encodings.DecodeToString(charset, bytes);
         Assert.AreEqual(
@@ -121,8 +120,7 @@ stringTemp);
       bytes = new byte[] { 0x1b, 0x24, 0x42, 0x21, 0x21, 0x21, 0x22, 0x0a,
         0x21, 0x23 };
       // Illegal state
-   bytes = new byte[] { 0x1b, 0x24, 0x4f, 0x21, 0x21, 0x21, 0x23, 0x21, 0x23
-        };
+   bytes = new byte[] { 0x1b, 0x24, 0x4f, 0x21, 0x21, 0x21, 0x23, 0x21, 0x23 };
       {
         string stringTemp = Encodings.DecodeToString(charset, bytes);
         Assert.AreEqual(
@@ -366,10 +364,17 @@ stringTemp);
       "macintosh"
     };
 
-    public static void TestUtfRoundTrip(ICharacterEncoding enc) {
-      var aw = new ArrayWriter();
+    public static void TestUtfRoundTrip(
+       ICharacterEncoding enc) {
       ICharacterEncoder encoder = enc.GetEncoder();
       ICharacterDecoder decoder = enc.GetDecoder();
+         TestUtfRoundTrip(encoder, decoder);
+    }
+
+    public static void TestUtfRoundTrip(
+       ICharacterEncoder encoder,
+       ICharacterDecoder decoder) {
+      var aw = new ArrayWriter();
       for (var i = 0; i < 0x110000; ++i) {
         if (i >= 0xd800 && i < 0xe000) {
           continue;
@@ -379,7 +384,7 @@ stringTemp);
           Assert.Fail("Failed to encode " + i);
         }
       }
-      var reader = DataIO.ToTransform(aw.ToArray());
+      IByteReader reader = DataIO.ToTransform(aw.ToArray());
       for (var i = 0; i < 0x110000; ++i) {
         if (i >= 0xd800 && i < 0xe000) {
           continue;
@@ -389,6 +394,85 @@ stringTemp);
           Assert.AreEqual(i, c);
         }
       }
+    }
+
+    public static void TestCJKRoundTrip(string name) {
+      ICharacterEncoding enc = Encodings.GetEncoding(name, true);
+      ICharacterEncoder encoder = enc.GetEncoder();
+      ICharacterDecoder decoder = enc.GetDecoder();
+      List<int> list = new List<int>();
+      var aw = new ArrayWriter();
+      for (var i = 0; i < 0x110000; ++i) {
+        if (i >= 0xd800 && i < 0xe000) {
+          continue;
+        }
+        if (i == 0xa5 || i == 0x203e || i == 0x0e || i == 0x0f || i == 0x1b) {
+          // ignore certain characters that intentionally
+          // don't round trip in certain encodings
+          continue;
+        }
+        int e = encoder.Encode(i, aw);
+        if (e >= 0) {
+          list.Add(i);
+        }
+      }
+      while (encoder.Encode(-1, aw) >= 0) {
+      }
+      IByteReader reader = DataIO.ToTransform(aw.ToArray());
+      for (var i = 0; i < list.Count; ++i) {
+        int ch = list[i];
+        int c = decoder.ReadChar(reader);
+        if (c != ch) {
+          Assert.Fail(name+": expected "+ch+", was "+c);
+        }
+      }
+    }
+    [TestMethod]
+    public void TestGBK() {
+      TestCJKRoundTrip("gbk");
+    }
+    //[TestMethod]
+    public void TestGB18030RoundTrip() {
+      // Unfortunately, the current Encoding Standard
+      // includes problematic ranges, so this test
+      // is disabled for now.
+      TestCJKRoundTrip("gb18030");
+    }
+    [TestMethod]
+    public void TestBig5() {
+      TestCJKRoundTrip("big5");
+    }
+    [TestMethod]
+    public void TestKoreanEUC() {
+      TestCJKRoundTrip("euc-kr");
+    }
+    [TestMethod]
+    public void TestShiftJISRoundTrip() {
+      TestCJKRoundTrip("shift-jis");
+    }
+    [TestMethod]
+    public void TestEucJPRoundTrip() {
+      TestCJKRoundTrip("euc-jp");
+    }
+    [TestMethod]
+    public void TestIso2022JPRoundTrip() {
+      TestCJKRoundTrip("iso-2022-jp");
+    }
+
+    [TestMethod]
+    public void TestReplacementEncoding() {
+      if ((Encodings.GetEncoding("replacement")) != null) {
+ Assert.Fail();
+ }
+      ICharacterEncoding enc = Encodings.GetEncoding("hz-gb-2312", true);
+      ICharacterEncoder encoder = enc.GetEncoder();
+      ICharacterDecoder decoder = enc.GetDecoder();
+      IByteReader reader = DataIO.ToTransform(new byte[] { 0, 0, 0, 0 });
+      Assert.AreEqual(-2, decoder.ReadChar(reader));
+      Assert.AreEqual(-1, decoder.ReadChar(reader));
+      TestUtfRoundTrip(
+        encoder,
+        Encodings.GetEncoding("utf-8", true).GetDecoder());
     }
 
     [TestMethod]

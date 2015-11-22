@@ -426,8 +426,10 @@ namespace PeterO.Text {
     /// formats)</item>
     /// <item><c>utf-16le</c> - UTF-16 little-endian (16-bit UCS)</item>
     /// <item><c>utf-16be</c> - UTF-16 big-endian (16-bit UCS)</item>
-    /// <item>Two special purpose encodings: <c>x-user-defined</c> and
-    /// <c>replacement</c></item>
+    /// <item>The special-purpose encoding <c>x-user-defined</c></item>
+    /// <item>The special-purpose encoding <c>replacement</c>, which this
+    /// function returns only if one of several aliases are passed to it,
+    /// as defined in the Encoding Standard.</item>
     /// <item>28 legacy single-byte encodings:
     /// <list type='bullet'>
     /// <item><c>windows-1252</c> - Western Europe (Note: The Encoding

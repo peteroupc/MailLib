@@ -158,76 +158,75 @@ namespace PeterO.Text.Encoders {
 
     private class Encoder : ICharacterEncoder {
       private int encoderState = 0;
-      private DecoderState state;
 
       public Encoder() {
-        this.state = new DecoderState(2);
       }
 
       public int Encode(int c, IWriter output) {
-        if (c < 0) {
-          if (this.encoderState != 0) {
-            this.state.PrependOne(c);
+        int count = 0;
+        while (true) {
+          if (c < 0) {
+            if (this.encoderState != 0) {
+              encoderState = 0;
+              output.WriteByte((byte)0x1b);
+              output.WriteByte((byte)0x28);
+              output.WriteByte((byte)0x42);
+              return count + 3;
+            } else {
+              return -1;
+            }
+          }
+          if (c <= 0x7f) {
+            if (this.encoderState == 0) {
+              output.WriteByte((byte)c);
+              return 1 + count;
+            } else if (this.encoderState == 3 && c != 0x5c && c != 0x7e) {
+              output.WriteByte((byte)c);
+              return 1 + count;
+            } else {
+              this.encoderState = 0;
+              output.WriteByte((byte)0x1b);
+              output.WriteByte((byte)0x28);
+              output.WriteByte((byte)0x42);
+              count += 3;
+            }
+          }
+          if (this.encoderState == 3 && c == 0xa5) {
+            output.WriteByte((byte)0x5c);
+            return 1 + count;
+          }
+          if (this.encoderState == 3 && c == 0x203e) {
+            output.WriteByte((byte)0x7e);
+            return 1 + count;
+          }
+          if (this.encoderState != 3 && (c == 0xa5 || c == 0x203e)) {
+            this.encoderState = 3;
             output.WriteByte((byte)0x1b);
             output.WriteByte((byte)0x28);
-            output.WriteByte((byte)0x42);
-            return 3;
-          } else {
-            return -1;
+            output.WriteByte((byte)0x4a);
+            count += 3;
+            continue;
           }
-        }
-        if (c <= 0x7f) {
-          if (this.encoderState == 0) {
-            output.WriteByte((byte)c);
-            return 1;
-          } else if (this.encoderState == 3 && c != 0x5c && c != 0x7e) {
-            output.WriteByte((byte)c);
-            return 1;
-          } else {
-            this.encoderState = 0;
-            this.state.PrependOne(c);
+          if (c == 0x2022) {
+            c = 0xff0d;
+          }
+          int cp = Jis0208.CodePointToIndex(c);
+          if (cp < 0) {
+            return -2;
+          }
+          if (this.encoderState != 4) {
+            this.encoderState = 4;
             output.WriteByte((byte)0x1b);
-            output.WriteByte((byte)0x28);
+            output.WriteByte((byte)0x24);
             output.WriteByte((byte)0x42);
-            return 3;
+            count += 3;
           }
+          int a = cp / 94;
+          int b = cp % 94;
+          output.WriteByte((byte)(a + 0x21));
+          output.WriteByte((byte)(b + 0x21));
+          return count + 2;
         }
-        if (this.encoderState == 3 && c == 0xa5) {
-          output.WriteByte((byte)0x5c);
-          return 1;
-        }
-        if (this.encoderState == 3 && c == 0x203e) {
-          output.WriteByte((byte)0x7e);
-          return 1;
-        }
-        if (this.encoderState != 3 && (c == 0xa5 || c == 0x203e)) {
-          this.encoderState = 3;
-          this.state.PrependOne(c);
-          output.WriteByte((byte)0x1b);
-          output.WriteByte((byte)0x28);
-          output.WriteByte((byte)0x4a);
-          return 3;
-        }
-        if (c == 0x2022) {
- c = 0xff0d;
-}
-        int cp = Jis0208.CodePointToIndex(c);
-        if (cp < 0) {
-          return -2;
-        }
-        if (this.encoderState != 4) {
-          this.encoderState = 4;
-          this.state.PrependOne(c);
-          output.WriteByte((byte)0x1b);
-          output.WriteByte((byte)0x24);
-          output.WriteByte((byte)0x42);
-          return 0;
-        }
-        int a = cp / 94;
-        int b = cp % 94;
-        output.WriteByte((byte)(a + 0x21));
-        output.WriteByte((byte)(b + 0x21));
-        return 2;
       }
     }
 

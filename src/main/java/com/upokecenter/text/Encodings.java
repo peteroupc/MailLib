@@ -416,33 +416,35 @@ private Encodings() {
      * character set, the encoding recommended by the Encoding Standard for
      * new data formats)</li> <li> {@code utf-16le} - UTF-16 little-endian
      * (16-bit UCS)</li> <li> {@code utf-16be} - UTF-16 big-endian (16-bit
-     * UCS)</li> <li>Two special purpose encodings: {@code x-user-defined}
-     * and {@code replacement}</li> <li>28 legacy single-byte encodings:
-     * <ul> <li> {@code windows-1252} - Western Europe (Note: The Encoding
-     * Standard aliases the names {@code us-ascii} and {@code iso-8859-1} to
-     * {@code windows-1252}, which specifies a different character set from
-     * either; it differs from {@code iso-8859-1} by assigning different
-     * characters to some bytes from 0x80 to 0x9F. The Encoding Standard
-     * does this for compatibility with existing Web pages.)</li> <li> {@code
-     * iso-8859-2}, {@code windows-1250} : Central Europe</li> <li> {@code
-     * iso-8859-10} : Northern Europe</li> <li> {@code iso-8859-4}, {@code
-     * windows-1257} : Baltic</li> <li> {@code iso-8859-13} : Estonian</li>
-     * <li> {@code iso-8859-14} : Celtic</li> <li> {@code iso-8859-16} :
-     * Romanian</li> <li> {@code iso-8859-5}, {@code ibm866}, {@code koi8-r},
-     * {@code windows-1251}, {@code x-mac-cyrillic} : Cyrillic</li>
-     * <li> {@code koi8-u} : Ukrainian</li> <li> {@code iso-8859-7}, {@code
-     * windows-1253} : Greek</li> <li> {@code iso-8859-6}, {@code
-     * windows-1256} : Arabic</li> <li> {@code iso-8859-8}, {@code
-     * iso-8859-8-i}, {@code windows-1255} : Hebrew</li> <li> {@code
-     * iso-8859-3} : Latin 3</li> <li> {@code iso-8859-15} : Latin 9</li>
-     * <li> {@code windows-1254} : Turkish</li> <li> {@code windows-874} :
-     * Thai</li> <li> {@code windows-1258} : Vietnamese</li> <li> {@code
-     * macintosh} : Mac Roman</li></ul></li> <li>Three legacy Japanese
-     * encodings: {@code shift_jis}, {@code euc-jp}, {@code
-     * iso-2022-jp}</li> <li>Two legacy simplified Chinese encodings: {@code
-     * gbk} and {@code gb18030}</li> <li> {@code big5} : legacy traditional
-     * Chinese encoding</li> <li> {@code euc-kr} : legacy Korean
-     * encoding</li></ul> .
+     * UCS)</li> <li>The special-purpose encoding {@code
+     * x-user-defined}</li> <li>The special-purpose encoding {@code
+     * replacement}, which this function returns only if one of several
+     * aliases are passed to it, as defined in the Encoding Standard.</li>
+     * <li>28 legacy single-byte encodings: <ul> <li> {@code windows-1252} -
+     * Western Europe (Note: The Encoding Standard aliases the names {@code
+     * us-ascii} and {@code iso-8859-1} to {@code windows-1252}, which
+     * specifies a different character set from either; it differs from
+     * {@code iso-8859-1} by assigning different characters to some bytes
+     * from 0x80 to 0x9F. The Encoding Standard does this for compatibility
+     * with existing Web pages.)</li> <li> {@code iso-8859-2}, {@code
+     * windows-1250} : Central Europe</li> <li> {@code iso-8859-10} :
+     * Northern Europe</li> <li> {@code iso-8859-4}, {@code windows-1257} :
+     * Baltic</li> <li> {@code iso-8859-13} : Estonian</li> <li> {@code
+     * iso-8859-14} : Celtic</li> <li> {@code iso-8859-16} : Romanian</li>
+     * <li> {@code iso-8859-5}, {@code ibm866}, {@code koi8-r}, {@code
+     * windows-1251}, {@code x-mac-cyrillic} : Cyrillic</li> <li> {@code
+     * koi8-u} : Ukrainian</li> <li> {@code iso-8859-7}, {@code windows-1253}
+     * : Greek</li> <li> {@code iso-8859-6}, {@code windows-1256} :
+     * Arabic</li> <li> {@code iso-8859-8}, {@code iso-8859-8-i}, {@code
+     * windows-1255} : Hebrew</li> <li> {@code iso-8859-3} : Latin 3</li>
+     * <li> {@code iso-8859-15} : Latin 9</li> <li> {@code windows-1254} :
+     * Turkish</li> <li> {@code windows-874} : Thai</li> <li> {@code
+     * windows-1258} : Vietnamese</li> <li> {@code macintosh} : Mac
+     * Roman</li></ul></li> <li>Three legacy Japanese encodings: {@code
+     * shift_jis}, {@code euc-jp}, {@code iso-2022-jp}</li> <li>Two legacy
+     * simplified Chinese encodings: {@code gbk} and {@code gb18030}</li>
+     * <li> {@code big5} : legacy traditional Chinese encoding</li>
+     * <li> {@code euc-kr} : legacy Korean encoding</li></ul> .
      * @return A standardized name for the encoding. Returns the empty string if
      * {@code name} is null or empty, or if the encoding name is
      * unsupported.

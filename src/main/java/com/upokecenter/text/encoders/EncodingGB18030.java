@@ -229,7 +229,12 @@ import com.upokecenter.text.*;
           break;
         }
       }
-      return gb18030table[v + 1] + pointer - gb18030table[v];
+      if (v >= gb18030table.length) {
+        return -1;
+      }
+      int cpoffset = gb18030table[v + 1];
+      int offset = gb18030table[v];
+      return (cpoffset + pointer - offset);
     }
 
   private static int GB18030Pointer(int codepoint) {
@@ -250,9 +255,12 @@ import com.upokecenter.text.*;
         break;
       }
     }
-    int size = gb18030table[v + 2 ]-gb18030table[v];
-    int offset = codepoint - gb18030table[v + 1];
-    return (offset >= size) ? (-1) : (gb18030table[v ]+offset);
+    if (v >= gb18030table.length) {
+        return -1;
+      }
+    int cpoffset = gb18030table[v + 1];
+    int offset = gb18030table[v];
+    return (offset + codepoint - cpoffset);
   }
 
     private static class Decoder implements ICharacterDecoder {
@@ -320,6 +328,7 @@ import com.upokecenter.text.*;
               }
               return -2;
             }
+            return c;
           }
           if (b < 0x80) {
             return b;
