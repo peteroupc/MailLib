@@ -31,7 +31,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
     <dependency>
       <groupId>com.upokecenter</groupId>
       <artifactId>maillib</artifactId>
-      <version>0.7.0</version>
+      <version>0.8.1</version>
     </dependency>
 
 In other Java-based environments, the library can be referred to by its
@@ -64,6 +64,10 @@ An example of reading an email message from a file:
 
 Release Notes
 ---------
+Version 0.8.1:
+
+- Fixes bugs in character encoding algorithms
+
 Version 0.8.0:
 
 - New helper classes added:

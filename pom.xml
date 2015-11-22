@@ -4,7 +4,7 @@
   <groupId>com.upokecenter</groupId>
   <artifactId>maillib</artifactId>
   <packaging>jar</packaging>
-  <version>0.8.1-SNAPSHOT</version>
+  <version>0.8.1</version>
   <name>MailLib</name>
   <description>A Java library for parsing and generating Internet mail messages.</description>
 	<url>https://github.com/peteroupc/MailLib</url>
