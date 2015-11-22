@@ -33,12 +33,14 @@ import com.upokecenter.text.*;
             this.lead = b;
             continue;
           }
-       int code = this.bigEndian ? b + (this.lead << 8) : this.lead + (b << 8);
+       int code = this.bigEndian ? b + (this.lead << 8) : this.lead + (b <<
+            8);
           this.lead = -1;
           if (this.surrogate >= 0) {
             if ((code & 0xfc00) == 0xdc00) {
-              code = 0x10000 + (code - 0xdc00) +((this.lead - 0xd800) << 10);
-              this.lead = -1;
+          code = 0x10000 + (code - 0xdc00) + ((this.surrogate - 0xd800) <<
+                10);
+              this.surrogate = -1;
               return code;
             }
             this.lead = -1;
@@ -49,6 +51,7 @@ import com.upokecenter.text.*;
             } else {
               this.state.PrependTwo(b2, b1);
             }
+            this.surrogate = -1;
             return -2;
           }
           if ((code & 0xfc00) == 0xd800) {
@@ -75,42 +78,44 @@ import com.upokecenter.text.*;
         if (c < 0) {
           return -1;
         }
-        if (c > 0x10ffff || ((c & 0xf800) == 0xd800)) {
+        if (c > 0x10ffff || ((c & 0x1ff800) == 0xd800)) {
           return -2;
         }
         int b1, b2;
         if (c <= 0xffff) {
           b1 = (c >> 8) & 0xff;
-           b2 = c & 0xff;
+          b2 = c & 0xff;
           if (this.bigEndian) {
-             output.write((byte)b1);
-             output.write((byte)b2);
+            output.write((byte)b1);
+            output.write((byte)b2);
           } else {
-             output.write((byte)b2);
-             output.write((byte)b1);
+            output.write((byte)b2);
+            output.write((byte)b1);
           }
           return 2;
         }
-        int c1 = ((c - 0x10000) >> 10) +0xd800;
-        int c2 = ((c - 0x10000) & 0x3ff) +0xdc00;
-           b1 = (c1 >> 8) & 0xff;
-          b2 = c1 & 0xff;
-          if (this.bigEndian) {
-             output.write((byte)b1);
-             output.write((byte)b2);
-          } else {
-             output.write((byte)b2);
-             output.write((byte)b1);
-          }
-           b1 = (c2 >> 8) & 0xff;
-          b2 = c2 & 0xff;
-          if (this.bigEndian) {
-             output.write((byte)b1);
-             output.write((byte)b2);
-          } else {
-             output.write((byte)b2);
-             output.write((byte)b1);
-          }
+        byte[] buf = new byte[4];
+        int c1 = ((c - 0x10000) >> 10) + 0xd800;
+        int c2 = ((c - 0x10000) & 0x3ff) + 0xdc00;
+        b1 = (c1 >> 8) & 0xff;
+        b2 = c1 & 0xff;
+        if (this.bigEndian) {
+          buf[0] = ((byte)b1);
+          buf[1] = ((byte)b2);
+        } else {
+          buf[0] = ((byte)b2);
+          buf[1] = ((byte)b1);
+        }
+        b1 = (c2 >> 8) & 0xff;
+        b2 = c2 & 0xff;
+        if (this.bigEndian) {
+          buf[2] = ((byte)b1);
+          buf[3] = ((byte)b2);
+        } else {
+          buf[2] = ((byte)b2);
+          buf[3] = ((byte)b1);
+        }
+        output.write(buf, 0, 4);
         return 4;
       }
     }

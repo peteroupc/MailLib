@@ -47,8 +47,8 @@ import com.upokecenter.text.encoders.*;
 
     @Test
     public void TestGB18030() {
-      ICharacterEncoding encoding=Encodings.GetEncoding("gb18030");
-      TestEncodingRoundTrip("\uffff",encoding);
+      ICharacterEncoding encoding = Encodings.GetEncoding("gb18030");
+      TestEncodingRoundTrip("\uffff", encoding);
       TestEncodingRoundTrip("\ud800\udc00", encoding);
       TestEncodingRoundTrip("\udbff\udfff", encoding);
     }
@@ -58,108 +58,116 @@ import com.upokecenter.text.encoders.*;
       byte[] bytes;
       ICharacterEncoding charset = Encodings.GetEncoding("iso-2022-jp");
       bytes = new byte[] { 0x20, 0x41, 0x61, 0x5c  };
-      Assert.assertEquals(" Aa\\" , Encodings.DecodeToString(charset,bytes));
-      // Illegal byte in escape middle state
-      bytes = new byte[] { 0x1b, 0x28, 0x47, 0x21, 0x41, 0x31, 0x5c  };
-      {
-String stringTemp = Encodings.DecodeToString(charset, bytes);
-Assert.assertEquals(
-"\ufffd\u0028\u0047!A1\\",
-stringTemp);
-}
-      // Katakana
-      bytes = new byte[] { 0x1b, 0x28, 0x49, 0x21, 0x41, 0x31, 0x5c  };
-      {
-String stringTemp = Encodings.DecodeToString(charset, bytes);
-Assert.assertEquals(
-"\uff61\uff81\uff71\uff9c",
-stringTemp);
-}
-      bytes = new byte[] { 0x1b, 0x28, 0x49, 0x20, 0x41, 0x61, 0x5c  };
-      {
-String stringTemp = Encodings.DecodeToString(charset, bytes);
-Assert.assertEquals(
-"\ufffd\uff81\ufffd\uff9c",
-stringTemp);
-}
-      // ASCII state via escape
-      bytes = new byte[] { 0x1b, 0x28, 0x42, 0x20, 0x41, 0x61, 0x5c  };
       {
 String stringTemp = Encodings.DecodeToString(charset, bytes);
 Assert.assertEquals(
 " Aa\\",
 stringTemp);
 }
+      // Illegal byte in escape middle state
+      bytes = new byte[] { 0x1b, 0x28, 0x47, 0x21, 0x41, 0x31, 0x5c  };
+      {
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "\ufffd\u0028\u0047!A1\\",
+        stringTemp);
+      }
+      // Katakana
+      bytes = new byte[] { 0x1b, 0x28, 0x49, 0x21, 0x41, 0x31, 0x5c  };
+      {
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "\uff61\uff81\uff71\uff9c",
+        stringTemp);
+      }
+      bytes = new byte[] { 0x1b, 0x28, 0x49, 0x20, 0x41, 0x61, 0x5c  };
+      {
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "\ufffd\uff81\ufffd\uff9c",
+        stringTemp);
+      }
+      // ASCII state via escape
+      bytes = new byte[] { 0x1b, 0x28, 0x42, 0x20, 0x41, 0x61, 0x5c  };
+      {
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        " Aa\\",
+        stringTemp);
+      }
       bytes = new byte[] { 0x1b, 0x28, 0x4a, 0x20, 0x41, 0x61, 0x5c  };
       {
-String stringTemp = Encodings.DecodeToString(charset, bytes);
-Assert.assertEquals(
-" Aa\u00a5",
-stringTemp);
-}
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        " Aa\u00a5",
+        stringTemp);
+      }
       // JIS0208 state
-   bytes = new byte[] { 0x1b, 0x24, 0x40, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23  };
-   {
-String stringTemp = Encodings.DecodeToString(charset, bytes);
-Assert.assertEquals(
-"\u3000\u3001\u3002",
-stringTemp);
-}
-   bytes = new byte[] { 0x1b, 0x24, 0x42, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23  };
-   {
-String stringTemp = Encodings.DecodeToString(charset, bytes);
-Assert.assertEquals(
-"\u3000\u3001\u3002",
-stringTemp);
-}
+   bytes = new byte[] { 0x1b, 0x24, 0x40, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23
+         };
+      {
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "\u3000\u3001\u3002",
+        stringTemp);
+      }
+   bytes = new byte[] { 0x1b, 0x24, 0x42, 0x21, 0x21, 0x21, 0x22, 0x21, 0x23
+         };
+      {
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "\u3000\u3001\u3002",
+        stringTemp);
+      }
       bytes = new byte[] { 0x1b, 0x24, 0x42, 0x21, 0x21, 0x21, 0x22, 0x0a,
         0x21, 0x23  };
       // Illegal state
-   bytes = new byte[] { 0x1b, 0x24, 0x4f, 0x21, 0x21, 0x21, 0x23, 0x21, 0x23  };
+   bytes = new byte[] { 0x1b, 0x24, 0x4f, 0x21, 0x21, 0x21, 0x23, 0x21, 0x23
+         };
       {
-String stringTemp = Encodings.DecodeToString(charset, bytes);
-Assert.assertEquals(
-"\ufffd\u0024\u004f!!!\u0023!#",
-stringTemp);
-}
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "\ufffd\u0024\u004f!!!\u0023!#",
+        stringTemp);
+      }
       // Illegal state
       bytes = new byte[] { 0x1b, 0x24, 0x28, 0x4f, 0x21, 0x21, 0x21, 0x23,
         0x21, 0x23  };
       {
-String stringTemp = Encodings.DecodeToString(charset, bytes);
-Assert.assertEquals(
-"\ufffd\u0024\u0028\u004f!!!\u0023!#",
-stringTemp);
-}
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "\ufffd\u0024\u0028\u004f!!!\u0023!#",
+        stringTemp);
+      }
       // Illegal state at end
       bytes = new byte[] { 0x41, 0x1b  };
       {
-String stringTemp = Encodings.DecodeToString(charset, bytes);
-Assert.assertEquals(
-"A\ufffd",
-stringTemp);
-}
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "A\ufffd",
+        stringTemp);
+      }
       bytes = new byte[] { 0x41, 0x1b, 0x27  };
       {
-String stringTemp = Encodings.DecodeToString(charset, bytes);
-Assert.assertEquals(
-"A\ufffd'",
-stringTemp);
-}
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "A\ufffd'",
+        stringTemp);
+      }
       bytes = new byte[] { 0x41, 0x1b, 0x24  };
       {
-String stringTemp = Encodings.DecodeToString(charset, bytes);
-Assert.assertEquals(
-"A\ufffd$",
-stringTemp);
-}
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "A\ufffd$",
+        stringTemp);
+      }
       bytes = new byte[] { 0x41, 0x1b, 0x24, 0x28  };
       {
-String stringTemp = Encodings.DecodeToString(charset, bytes);
-Assert.assertEquals(
-"A\ufffd$\u0028",
-stringTemp);
-}
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "A\ufffd$\u0028",
+        stringTemp);
+      }
     }
 
     @Test
@@ -168,53 +176,103 @@ stringTemp);
       ICharacterEncoding charset = Encodings.GetEncoding("euc-jp");
       bytes = new byte[] { (byte)0x8e  };
       {
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "\ufffd",
+        stringTemp);
+      }
+      bytes = new byte[] { (byte)0x8e, 0x21  };
+      {
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "\ufffd!",
+        stringTemp);
+      }
+      bytes = new byte[] { (byte)0x8e, (byte)0x8e, (byte)0xa1  };
+      {
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "\ufffd\uff61",
+        stringTemp);
+      }
+      bytes = new byte[] { (byte)0x8f  };
+      {
 String stringTemp = Encodings.DecodeToString(charset, bytes);
 Assert.assertEquals(
 "\ufffd",
 stringTemp);
 }
-      bytes = new byte[] { (byte)0x8e, 0x21  };
+      bytes = new byte[] { (byte)0x8f, 0x21  };
       {
 String stringTemp = Encodings.DecodeToString(charset, bytes);
 Assert.assertEquals(
 "\ufffd!",
 stringTemp);
 }
-      bytes = new byte[] { (byte)0x8e, (byte)0x8e, (byte)0xa1  };
+      bytes = new byte[] { (byte)0x8f, (byte)0xa1  };
       {
 String stringTemp = Encodings.DecodeToString(charset, bytes);
 Assert.assertEquals(
-"\ufffd\uff61",
+"\ufffd",
 stringTemp);
 }
-      bytes = new byte[] { (byte)0x8f  };
-      Assert.assertEquals("\ufffd" , Encodings.DecodeToString(charset, bytes));
-      bytes = new byte[] { (byte)0x8f, 0x21  };
-      Assert.assertEquals("\ufffd!" , Encodings.DecodeToString(charset, bytes));
-      bytes = new byte[] { (byte)0x8f, (byte)0xa1  };
-      Assert.assertEquals("\ufffd" , Encodings.DecodeToString(charset, bytes));
       bytes = new byte[] { (byte)0x8f, (byte)0xa1, 0x21  };
-      Assert.assertEquals("\ufffd!" , Encodings.DecodeToString(charset, bytes));
+      {
+String stringTemp = Encodings.DecodeToString(charset, bytes);
+Assert.assertEquals(
+"\ufffd!",
+stringTemp);
+}
       bytes = new byte[] { (byte)0x90  };
-      Assert.assertEquals("\ufffd" , Encodings.DecodeToString(charset, bytes));
+      {
+String stringTemp = Encodings.DecodeToString(charset, bytes);
+Assert.assertEquals(
+"\ufffd",
+stringTemp);
+}
       bytes = new byte[] { (byte)0x90, 0x21  };
-      Assert.assertEquals("\ufffd!" , Encodings.DecodeToString(charset, bytes));
+      {
+String stringTemp = Encodings.DecodeToString(charset, bytes);
+Assert.assertEquals(
+"\ufffd!",
+stringTemp);
+}
       bytes = new byte[] { (byte)0xa1  };
-      Assert.assertEquals("\ufffd" , Encodings.DecodeToString(charset, bytes));
+      {
+String stringTemp = Encodings.DecodeToString(charset, bytes);
+Assert.assertEquals(
+"\ufffd",
+stringTemp);
+}
       bytes = new byte[] { (byte)0xa1, (byte)0xa1  };
-      Assert.assertEquals("\u3000" , Encodings.DecodeToString(charset, bytes));
+      {
+String stringTemp = Encodings.DecodeToString(charset, bytes);
+Assert.assertEquals(
+"\u3000",
+stringTemp);
+}
       bytes = new byte[] { (byte)0x90, (byte)0xa1, (byte)0xa1  };
-    Assert.assertEquals("\ufffd\u3000" , Encodings.DecodeToString(charset,
-        bytes));
+      {
+String stringTemp = Encodings.DecodeToString(charset,
+          bytes);
+Assert.assertEquals(
+"\ufffd\u3000",
+stringTemp);
+}
       bytes = new byte[] { (byte)0x90, (byte)0xa1, (byte)0xa1, (byte)0xa1  };
       {
+        String stringTemp = Encodings.DecodeToString(charset, bytes);
+        Assert.assertEquals(
+        "\ufffd\u3000\ufffd",
+        stringTemp);
+      }
+      bytes = new byte[] { (byte)0xa1, 0x21  };
+      {
 String stringTemp = Encodings.DecodeToString(charset, bytes);
 Assert.assertEquals(
-"\ufffd\u3000\ufffd",
+"\ufffd!",
 stringTemp);
 }
-      bytes = new byte[] { (byte)0xa1, 0x21  };
-      Assert.assertEquals("\ufffd!" , Encodings.DecodeToString(charset, bytes));
       String result;
       bytes = new byte[] { 0x15, (byte)0xf2, (byte)0xbf, (byte)0xdd, (byte)0xd7, 0x13, (byte)0xeb, (byte)0xcf,
         (byte)0x8e, (byte)0xd6, (byte)0x8f, (byte)0xec, (byte)0xe9, (byte)0x8f, (byte)0xd6, (byte)0xe6, (byte)0x8f, (byte)0xd3, (byte)0xa3,
@@ -236,9 +294,134 @@ stringTemp);
       Assert.assertEquals(result, (Encodings.DecodeToString(charset, bytes)));
     }
 
+    public static void TestSingleByteRoundTrip(String name) {
+      ICharacterEncoding enc = Encodings.GetEncoding(name, true);
+      int[] codepoints = new int[256];
+      int[] codesrc = new int[256];
+      ICharacterEncoder encoder = enc.GetEncoder();
+      ICharacterDecoder decoder = enc.GetDecoder();
+      int codetotal = 0;
+      byte[] bytes = new byte[256];
+      for (int i = 0; i < 256; ++i) {
+        bytes[i] = (byte)(i);
+      }
+      IByteReader ib = DataIO.ToTransform(bytes);
+      for (int i = 0; i < 256; ++i) {
+        int c = decoder.ReadChar(ib);
+        if (c == -1) {
+ Assert.fail(name);
+}
+        if (c != -2) {
+          codepoints[codetotal] = c;
+          codesrc[codetotal] = i;
+          ++codetotal;
+        }
+      }
+      ArrayWriter aw = new ArrayWriter();
+      for (int i = 0; i < codetotal; ++i) {
+        int c = encoder.Encode(codepoints[i], aw);
+        if (c < 0) {
+ Assert.fail(name);
+}
+      }
+      bytes = aw.ToArray();
+      for (int i = 0; i < codetotal; ++i) {
+        int b = ((int)bytes[i]) & 0xff;
+        if (b != codesrc[i]) {
+          Assert.assertEquals(name, codesrc[i], b);
+        }
+      }
+    }
+
+    private final String[] SingleByteNames = new String[] {
+      "windows-1252",
+      "us-ascii",
+      "x-user-defined",
+      "iso-8859-1",
+      "iso-8859-2",
+      "iso-8859-10",
+      "windows-1250",
+      "iso-8859-4",
+      "windows-1257",
+      "iso-8859-13",
+      "iso-8859-14",
+      "iso-8859-16",
+      "windows-1255",
+      "iso-8859-8",
+      "iso-8859-8-i",
+      "iso-8859-5",
+      "ibm866",
+      "koi8-r",
+      "windows-1251",
+      "x-mac-cyrillic",
+      "koi8-u",
+      "iso-8859-7",
+      "windows-1253",
+      "iso-8859-6",
+      "windows-1256",
+      "iso-8859-3",
+      "iso-8859-15",
+      "windows-1254",
+      "windows-874",
+      "windows-1258",
+      "macintosh"
+    };
+
+    public static void TestUtfRoundTrip(ICharacterEncoding enc) {
+      ArrayWriter aw = new ArrayWriter();
+      ICharacterEncoder encoder = enc.GetEncoder();
+      ICharacterDecoder decoder = enc.GetDecoder();
+      for (int i = 0; i < 0x110000; ++i) {
+        if (i >= 0xd800 && i < 0xe000) {
+          continue;
+        }
+        int e = encoder.Encode(i, aw);
+        if (e == -2) {
+          Assert.fail("Failed to encode " + i);
+        }
+      }
+      var reader = DataIO.ToTransform(aw.ToArray());
+      for (int i = 0; i < 0x110000; ++i) {
+        if (i >= 0xd800 && i < 0xe000) {
+          continue;
+        }
+        int c = decoder.ReadChar(reader);
+        if (c != i) {
+          Assert.assertEquals(i, c);
+        }
+      }
+    }
+
+    @Test
+    public void TestSingleByteEncodings() {
+      for (int i = 0; i < SingleByteNames.length; ++i) {
+        TestSingleByteRoundTrip(SingleByteNames[i]);
+      }
+    }
+
+    @Test
+    public void TestUtf7RoundTrip() {
+      TestUtfRoundTrip(Encodings.GetEncoding("utf-7", true));
+    }
+
+    @Test
+    public void TestUtf8RoundTrip() {
+      TestUtfRoundTrip(Encodings.GetEncoding("utf-8", true));
+    }
+
+    @Test
+    public void TestUtf16LERoundTrip() {
+      TestUtfRoundTrip(Encodings.GetEncoding("utf-16le", true));
+    }
+
+    @Test
+    public void TestUtf16BERoundTrip() {
+      TestUtfRoundTrip(Encodings.GetEncoding("utf-16be", true));
+    }
+
     public static void TestUtf7One(String input, String expected) {
       Assert.assertEquals(expected, Encodings.DecodeToString(
-        Encodings.GetEncoding("utf-7",true),
+        Encodings.GetEncoding("utf-7", true),
         DataUtilities.GetUtf8Bytes(input, true)));
     }
 
