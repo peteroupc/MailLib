@@ -2,10 +2,10 @@
 <package>
   <metadata>
     <id>PeterO.MailLib</id>
-    <version>$version$</version>
+    <version>0.8.0</version>
     <title>MailLib</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <authors>Peter Occil</authors>
+    <owners>Peter Occil</owners>
     <licenseUrl>https://github.com/peteroupc/MailLib/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/peteroupc/MailLib</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -34,8 +34,8 @@ Version 0.8.0:
   encoder
    See the project page for release notes on previous versions: https://github.com/peteroupc/MailLib
     </releaseNotes>
-    <copyright>Written by Peter O. in 2013-2014.  Any copyright is released to the Public Domain.
+    <copyright>Written by Peter O. in 2013-2015.  Any copyright is released to the Public Domain.
     (This applies to all the source code except the normalization and IDNA data.  See https://github.com/peteroupc/MailLib/LICENSE.md for details.)</copyright>
-    <tags>email mail mime parser</tags>
+    <tags>email mail mime parser charset charsets</tags>
   </metadata>
 </package>

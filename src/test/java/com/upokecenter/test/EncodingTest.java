@@ -109,10 +109,8 @@ import com.upokecenter.text.*;
           }
           if (index == 0 || str.charAt(index - 1) == 0x20 || str.charAt(index - 1) == 0x09 ||
               str.charAt(index - 1) == 0x0d) {
-  System.out.println(
-"End of line,
-whitespace,
-or start of message before colon");
+String wl="End of line, whitespace, or start of message before colon";
+                System.out.println(wl);
             return false;
           }
           if (str.charAt(index + 1) != 0x20) {
