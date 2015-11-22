@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>PeterO.MailLib</id>
-    <version>0.8.0</version>
+    <version>0.8.1</version>
     <title>MailLib</title>
     <authors>Peter Occil</authors>
     <owners>Peter Occil</owners>
@@ -13,6 +13,10 @@
     A parser and generator of Internet email messages as a Portable Class Library.
     </description>
     <releaseNotes>
+Version 0.8.1:
+
+- Fixes bugs in character encoding algorithms
+
 Version 0.8.0:
 
 - New helper classes added:
