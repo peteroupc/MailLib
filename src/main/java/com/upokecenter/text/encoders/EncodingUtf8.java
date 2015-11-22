@@ -88,10 +88,10 @@ import com.upokecenter.text.*;
           bytes[byteIndex++] = (byte)(0xc0 | ((c >> 6) & 0x1f));
           bytes[byteIndex++] = (byte)(0x80 | (c & 0x3f));
         } else if (c <= 0xffff) {
-          if (c >= 0xd800 || c < 0xe000) {
- return -2;
-}
-            bytes[byteIndex++] = (byte)(0xe0 | ((c >> 12) & 0x0f));
+          if (c >= 0xd800 && c < 0xe000) {
+            return -2;
+          }
+          bytes[byteIndex++] = (byte)(0xe0 | ((c >> 12) & 0x0f));
             bytes[byteIndex++] = (byte)(0x80 | ((c >> 6) & 0x3f));
             bytes[byteIndex++] = (byte)(0x80 | (c & 0x3f));
         } else if (c <= 0x10ffff) {

@@ -83,8 +83,9 @@ namespace PeterO.Text.Encoders {
             // must be a valid "low surrogate" to complete the pair
             if ((codeunit & 0xfc00) == 0xdc00) {
               // valid low surrogate
-              state.AppendChar((char)this.surrogate);
-              state.AppendChar((char)codeunit);
+              var codepoint = 0x10000 + (codeunit - 0xdc00) +
+                ((this.surrogate - 0xd800) << 10);
+              state.AppendChar(codepoint);
               this.surrogate = -1;
             } else if ((codeunit & 0xfc00) == 0xd800) {
               // unpaired high surrogate
@@ -313,7 +314,7 @@ namespace PeterO.Text.Encoders {
         if (c < 0) {
  return -1;
 }
-        if (c == 0x2d) {
+        if (c == 0x2b) {
           output.WriteByte((byte)0x2b);
           output.WriteByte((byte)0x2d);
           return 2;

@@ -110,7 +110,8 @@ namespace MailLibTest {
           }
           if (index == 0 || str[index - 1] == 0x20 || str[index - 1] == 0x09 ||
               str[index - 1] == 0x0d) {
-                string wl="End of line, whitespace, or start of message before colon";
+         string
+  wl="End of line, whitespace, or start of message before colon" ;
   Console.WriteLine(wl);
             return false;
           }
