@@ -109,8 +109,10 @@ import com.upokecenter.text.*;
           }
           if (index == 0 || str.charAt(index - 1) == 0x20 || str.charAt(index - 1) == 0x09 ||
               str.charAt(index - 1) == 0x0d) {
-  System.out.println("End of line, whitespace, or start of message before colon"
-);
+  System.out.println(
+"End of line,
+whitespace,
+or start of message before colon");
             return false;
           }
           if (str.charAt(index + 1) != 0x20) {
@@ -219,10 +221,10 @@ import com.upokecenter.text.*;
     private void TestParseLocalPart(String str, String expected) {
       if (!(str.length() == (Integer)Reflect.InvokeStatic(MailNamespace() +
                  ".HeaderParser" , "ParseLocalPart" , str, 0, str.length(),
-                      null)))Assert.fail();
+                    null)))Assert.fail();
       Assert.assertEquals(expected, (String)Reflect.InvokeStatic(MailNamespace() +
                 ".HeaderParserUtility" , "ParseLocalPart" , str, 0,
-                      str.length()));
+                    str.length()));
     }
 
     @Test
@@ -1190,7 +1192,7 @@ import com.upokecenter.text.*;
       }
       bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
              "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn,
-                      true));
+                    true));
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
       dsn = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\nOriginal-Recipient: " +
@@ -1209,7 +1211,7 @@ import com.upokecenter.text.*;
       }
       bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
              "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn,
-                      true));
+                    true));
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
       dsn = "X-Ignore: X\r\n\r\nOriginal-recipient : " + actual +
@@ -1226,7 +1228,7 @@ import com.upokecenter.text.*;
       }
       bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
              "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn,
-                      true));
+                    true));
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
     }
@@ -1271,21 +1273,21 @@ import com.upokecenter.text.*;
                     ".ParserUtility", "IsValidLanguageTag", "x-xx-xx")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
                   ".ParserUtility" , "IsValidLanguageTag",
-                      "en-US-u-islamcal")))Assert.fail();
+                    "en-US-u-islamcal")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
               ".ParserUtility" , "IsValidLanguageTag",
-                      "zh-CN-a-myext-x-private"
+                    "zh-CN-a-myext-x-private"
 )))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
               ".ParserUtility" , "IsValidLanguageTag",
-                      "en-a-myext-b-another")))Assert.fail();
+                    "en-a-myext-b-another")))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
                     ".ParserUtility", "IsValidLanguageTag", "de-419-DE"))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
                     ".ParserUtility", "IsValidLanguageTag", "a-DE"))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
               ".ParserUtility" , "IsValidLanguageTag",
-                      "ar-a-aaa-b-bbb-a-ccc"))Assert.fail();
+                    "ar-a-aaa-b-bbb-a-ccc"))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
                     ".ParserUtility", "IsValidLanguageTag", "en")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
@@ -1337,7 +1339,7 @@ import com.upokecenter.text.*;
                     "en-aaa-bbbb-x-xxx-yyy-zzz")))Assert.fail();
       if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
                ".ParserUtility" , "IsValidLanguageTag",
-                      "en-aaa-bbbb-x-x-y-z")))Assert.fail();
+                    "en-aaa-bbbb-x-x-y-z")))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
                     ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb"))Assert.fail();
       if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
@@ -1442,20 +1444,18 @@ import com.upokecenter.text.*;
       String par = "(";
       Assert.assertEquals(expected, Reflect.InvokeStatic(MailNamespace() +
                     ".Rfc2047", "DecodeEncodedWords", input, 0, input.length(),
-                Reflect.GetFieldStatic(MailNamespace() +
-                      ".EncodedWordContext",
+                Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext",
                     "Unstructured")));
       Assert.assertEquals(
         "(" + expected + ") en",
         DecodeHeaderField("content-language", "(" + input + ") en"));
       Assert.assertEquals(" (" + expected + ") en",
                  DecodeHeaderField("content-language" , " (" + input +
-                      ") en"));
+                    ") en"));
       Assert.assertEquals(" " + par + "comment " + par + "cmt " + expected +
                     ")comment) en",
               DecodeHeaderField("content-language" , " (comment (cmt " +
-                      input +
-                    ")comment) en"));
+                input + ")comment) en"));
       Assert.assertEquals(
         " " + par + "comment " + par + "=?bad?= " + expected + ")comment) en",
         DecodeHeaderField("content-language", " (comment (=?bad?= " + input +
@@ -1490,18 +1490,17 @@ import com.upokecenter.text.*;
       String sep = ", ";
       Assert.assertEquals("x <x@example.com>" + sep + "\"X\" <y@example.com>",
        DowngradeHeaderField("to",
-                      "x <x@example.com>, \"X\" <y@example.com>"));
+                    "x <x@example.com>, \"X\" <y@example.com>"));
       Assert.assertEquals("x <x@example.com>" + sep +
                "=?utf-8?Q?=C2=BE?= <y@example.com>",
-                      DowngradeHeaderField("to",
+                    DowngradeHeaderField("to",
                     "x <x@example.com>, \u00be <y@example.com>"));
       Assert.assertEquals("x <x@example.com>" + sep +
                     "=?utf-8?Q?=C2=BE?= <y@example.com>",
   DowngradeHeaderField("to",
-                      "x <x@example.com>, \"\u00be\" <y@example.com>"));
+                    "x <x@example.com>, \"\u00be\" <y@example.com>"));
       Assert.assertEquals(
-   "x <x@example.com>" + sep +
-          "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>",
+   "x <x@example.com>" + sep + "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>",
         DowngradeHeaderField("to",
                     "x <x@example.com>, x\u00e1 x x\u00e1 <y@example.com>"));
       {
@@ -1520,7 +1519,7 @@ import com.upokecenter.text.*;
       }
       Assert.assertEquals("g: x@example.com" + sep + "x@xn--e-ufa.example;",
            DowngradeHeaderField("to",
-                      "g: x@example.com, x@e\u00e1.example;"));
+                    "g: x@example.com, x@e\u00e1.example;"));
       {
   String stringTemp = DowngradeHeaderField("sender",
           "x <x@e\u00e1.example>");
@@ -1864,14 +1863,12 @@ TestEncodedWordsPhrase("xy (sss)",
       String tmp = "=?utf-8?q??=\r\n \r\nABC";
       Assert.assertEquals(tmp, (String)Reflect.InvokeStatic(MailNamespace() +
                     ".Rfc2047", "DecodeEncodedWords", tmp, 0, tmp.length(),
-                Reflect.GetFieldStatic(MailNamespace() +
-                      ".EncodedWordContext",
+                Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext",
                     "Unstructured")));
       tmp = "=?utf-8?q??=\r\n \r\n ABC";
       Assert.assertEquals(tmp, (String)Reflect.InvokeStatic(MailNamespace() +
                     ".Rfc2047", "DecodeEncodedWords", tmp, 0, tmp.length(),
-                Reflect.GetFieldStatic(MailNamespace() +
-                      ".EncodedWordContext",
+                Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext",
                     "Unstructured")));
     }
 
@@ -1881,7 +1878,7 @@ TestEncodedWordsPhrase("xy (sss)",
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>;";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
                  ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                      null)) {
+                    null)) {
         Assert.fail(tmp);
       }
       // just a local part in address
@@ -1892,7 +1889,7 @@ TestEncodedWordsPhrase("xy (sss)",
       tmp = "<x@x.invalid>";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
                  ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                      null)) {
+                    null)) {
         Assert.fail(tmp);
       }
       tmp = "<x y@x.invalid>";  // local part is not a dot-atom
@@ -1903,32 +1900,32 @@ TestEncodedWordsPhrase("xy (sss)",
       tmp = " <x@x.invalid>";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
                  ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                      null)) {
+                    null)) {
         Assert.fail(tmp);
       }
       // Group syntax
       tmp = "G:;";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
                  ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                      null)) {
+                    null)) {
         Assert.fail(tmp);
       }
       tmp = "G:a <x@x.example>;";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
                  ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                      null)) {
+                    null)) {
         Assert.fail(tmp);
       }
       tmp = " A Xxxxx: ;";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
                  ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                      null)) {
+                    null)) {
         Assert.fail(tmp);
       }
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>, y@y.example, Ww <z@z.invalid>;";
       if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
                  ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                      null)) {
+                    null)) {
         Assert.fail(tmp);
       }
     }
@@ -1988,9 +1985,9 @@ TestEncodedWordsPhrase("xy (sss)",
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: base64\r\n\r\n" + input;
       Message msg = MessageTest.MessageFromString(msgString);
-      AssertEqual(bytes, msg.GetBody());
+      AssertEqual(bytes, msg.GetBody(), input);
       msg = MessageTest.MessageFromString(msg.Generate());
-      AssertEqual(bytes, msg.GetBody());
+      AssertEqual(bytes, msg.GetBody(), input);
     }
 
     public static void TestQuotedPrintableRoundTrip(byte[] bytes, int mode) {
@@ -1999,9 +1996,21 @@ TestEncodedWordsPhrase("xy (sss)",
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
       Message msg = MessageTest.MessageFromString(msgString);
-      AssertEqual(bytes, msg.GetBody());
+      AssertEqual(bytes, msg.GetBody(), input);
       msg = MessageTest.MessageFromString(msg.Generate());
-      AssertEqual(bytes, msg.GetBody());
+      AssertEqual(bytes, msg.GetBody(), input);
+    }
+
+    public static void TestQuotedPrintableRoundTrip(String str, int mode) {
+      byte[] bytes = DataUtilities.GetUtf8Bytes(str, true);
+      String input = EncodeQP(bytes, mode);
+      String msgString = "From: <test@example.com>\r\n" +
+        "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
+        "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
+      Message msg = MessageTest.MessageFromString(msgString);
+      AssertEqual(bytes, msg.GetBody(), input);
+      msg = MessageTest.MessageFromString(msg.Generate());
+      AssertEqual(bytes, msg.GetBody(), input);
     }
 
     private byte[] RandomBytes(java.util.Random rnd) {
@@ -2031,6 +2040,19 @@ TestEncodedWordsPhrase("xy (sss)",
         TestQuotedPrintableRoundTrip(RandomBytes(rnd), 0);
         TestQuotedPrintableRoundTrip(RandomBytes(rnd), 1);
       }
+    }
+
+    @Test
+    public void TestQuotedPrintableSpecific() {
+      TestQuotedPrintableRoundTrip("T\u000best\r\nFrom Me", 2);
+      TestQuotedPrintableRoundTrip("T\u000best\r\nGood ", 2);
+      TestQuotedPrintableRoundTrip("T\u000best\r\nFrom ", 2);
+      TestQuotedPrintableRoundTrip("T\u000best\r\nFromMe", 2);
+      TestQuotedPrintableRoundTrip("T\u000best\r\nFroMe", 2);
+      TestQuotedPrintableRoundTrip("T\u000best\r\nFrMe", 2);
+      TestQuotedPrintableRoundTrip("T\u000best\r\nFMe", 2);
+      TestQuotedPrintableRoundTrip("T\u000best\r\n.\r\nGood ", 2);
+      TestQuotedPrintableRoundTrip("T\u000best\r\n.\r\nFrom Me", 2);
     }
 
     @Test
