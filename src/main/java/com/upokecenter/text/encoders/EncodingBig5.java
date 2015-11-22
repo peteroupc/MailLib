@@ -18,8 +18,8 @@ import com.upokecenter.text.*;
       public int ReadChar(IByteReader stream) {
         int cc = this.state.GetChar();
         if (cc >= 0) {
- return cc;
-}
+          return cc;
+        }
         while (true) {
           int b = this.state.ReadInputByte(stream);
           if (b < 0) {
@@ -32,7 +32,7 @@ import com.upokecenter.text.*;
           if (this.lead != 0) {
             int c = -1;
             int o = (b < 0x7f) ? 0x40 : 0x62;
-            if ((b >= 0x41 && b <= 0x7e) || (b >= 0xa1 && b <= 0xfe)) {
+            if ((b >= 0x40 && b <= 0x7e) || (b >= 0xa1 && b <= 0xfe)) {
               c = ((this.lead - 0x81) * 157) + (b - o);
               if (c == 1133) {
                 this.state.AppendChar(0x304);
@@ -55,11 +55,11 @@ import com.upokecenter.text.*;
             this.lead = 0;
             if (c < 0) {
               if (b < 0x80) {
- this.state.PrependOne(b);
-}
-                return -2;
+                this.state.PrependOne(b);
+              }
+              return -2;
             }
-              return c;
+            return c;
           }
           if (b <= 0x7f) {
             return b;
@@ -67,7 +67,7 @@ import com.upokecenter.text.*;
             this.lead = b;
             continue;
           } else {
-           return -2;
+            return -2;
           }
         }
       }
