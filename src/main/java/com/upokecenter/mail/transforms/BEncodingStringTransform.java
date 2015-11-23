@@ -11,9 +11,9 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   public final class BEncodingStringTransform implements IByteReader {
-    private String input;
+    private final String input;
     private int inputIndex;
-    private byte[] buffer;
+    private final byte[] buffer;
     private int bufferIndex;
     private int bufferCount;
 
@@ -43,9 +43,9 @@ import com.upokecenter.mail.*;
       }
       int value = 0;
       int count = 0;
-      int[] alphabet = Base64Transform.Alphabet;
+      int c;
       while (count < 4) {
-        int c = (this.inputIndex < this.input.length()) ?
+        c = (this.inputIndex < this.input.length()) ?
           this.input.charAt(this.inputIndex++) : -1;
         if (c < 0) {
           // End of stream
@@ -72,7 +72,7 @@ import com.upokecenter.mail.*;
         if (c >= 0x80) {
           // ignore this character
         } else {
-          c = alphabet[c];
+          c = Base64Transform.Alphabet.get(c);
           // non-base64 characters are ignored
           if (c >= 0) {
             value <<= 6;

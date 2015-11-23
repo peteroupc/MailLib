@@ -4,8 +4,8 @@ import java.util.*;
 
   final class PartialListCharacterInput implements ICharacterInput {
     private int pos;
-    private int endPos;
-    private List<Integer> ilist;
+    private final int endPos;
+    private final List<Integer> ilist;
 
     public PartialListCharacterInput (List<Integer> ilist, int start, int length) {
       if (ilist == null) {

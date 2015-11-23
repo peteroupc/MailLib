@@ -5,7 +5,7 @@ namespace PeterO.Text {
     /// store.</summary>
   internal sealed class IntArrayCharacterInput : ICharacterInput {
     private int pos;
-    private int[] ilist;
+    private readonly int[] ilist;
 
     public IntArrayCharacterInput(int[] ilist) {
       this.ilist = ilist;
@@ -45,7 +45,7 @@ namespace PeterO.Text {
       }
       int[] arr = this.ilist;
       int size = this.ilist.Length;
-      int count = 0;
+      var count = 0;
       while (this.pos < size && unitCount > 0) {
         buf[offset] = arr[this.pos];
         ++offset;

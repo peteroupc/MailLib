@@ -11,72 +11,81 @@ namespace MailLibTest {
       try {
         Assert.AreEqual(null, new NamedAddress(String.Empty, (string)null));
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException) {
-      } catch (Exception ex) {
+      } catch (ArgumentNullException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
         Assert.AreEqual(null, new NamedAddress(String.Empty, (Address)null));
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException) {
-      } catch (Exception ex) {
+      } catch (ArgumentNullException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
         Assert.AreEqual(null, new NamedAddress("x at example.com"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException) {
-      } catch (Exception ex) {
+      } catch (ArgumentException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
         Assert.AreEqual(null, new NamedAddress("x"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException) {
-      } catch (Exception ex) {
+      } catch (ArgumentException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
         Assert.AreEqual(null, new NamedAddress("x@"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException) {
-      } catch (Exception ex) {
+      } catch (ArgumentException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
         Assert.AreEqual(null, new NamedAddress("@example.com"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException) {
-      } catch (Exception ex) {
+      } catch (ArgumentException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
         Assert.AreEqual(null, new NamedAddress("example.com"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException) {
-      } catch (Exception ex) {
+      } catch (ArgumentException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
         Assert.AreEqual(null, new Address((string)null));
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException) {
-      } catch (Exception ex) {
+      } catch (ArgumentNullException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
         Assert.AreEqual(null, new NamedAddress(String.Empty));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException) {
-      } catch (Exception ex) {
+      } catch (ArgumentException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -212,8 +221,8 @@ stringTemp);
       Assert.IsTrue(na.IsGroup);
       {
 string stringTemp = na.ToString();
-        string s1 = "Group: Me <me@example.com>, Fred <fred@example.com>;";
-Assert.AreEqual(s1, stringTemp);
+      const string s1 = "Group: Me <me@example.com>, Fred <fred@example.com>;" ;
+        Assert.AreEqual(s1, stringTemp);
 }
       groupAddr = na.GroupAddresses;
       Assert.AreEqual(2, groupAddr.Count);
@@ -240,8 +249,8 @@ na = new
       Assert.IsTrue(na.IsGroup);
       {
 string stringTemp = na.ToString();
-        string s1 = "Group: Me <me@example.com>, somebody@example.com;";
-Assert.AreEqual(s1, stringTemp);
+        const string s1 = "Group: Me <me@example.com>, somebody@example.com;";
+        Assert.AreEqual(s1, stringTemp);
 }
       groupAddr = na.GroupAddresses;
       Assert.AreEqual(2, groupAddr.Count);

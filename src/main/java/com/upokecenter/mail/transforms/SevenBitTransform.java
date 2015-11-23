@@ -11,7 +11,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   public final class SevenBitTransform implements IByteReader {
-    private IByteReader transform;
+    private final IByteReader transform;
 
     public SevenBitTransform (IByteReader stream) {
       this.transform = stream;

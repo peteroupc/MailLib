@@ -1,7 +1,7 @@
 package com.upokecenter.text;
 
   final class ByteData {
-    private byte[] array;
+    private final byte[] array;
 
     public static ByteData Decompress(byte[] data) {
       return new ByteData(Lz4.Decompress(data));

@@ -11,7 +11,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   public final class QEncodingStringTransform implements IByteReader {
-    private String input;
+    private final String input;
     private int inputIndex;
     private byte[] buffer;
     private int bufferIndex;
@@ -106,13 +106,7 @@ import com.upokecenter.mail.*;
           // with the ASCII substitute character
           return 0x1a;
         }
-        if (c == '_') {
-          // Underscore, use space
-          return ' ';
-        } else {
-          // printable ASCII, return that byte
-          return c;
-        }
+        return c == '_' ? ' ' : c;
       }
     }
   }

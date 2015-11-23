@@ -16,7 +16,7 @@ import com.upokecenter.util.*;
      */
   public class DispositionBuilder {
     private String type;
-    private Map<String, String> parameters;
+    private final Map<String, String> parameters;
 
     /**
      * Gets this value's disposition type, such value, such as "inline" or

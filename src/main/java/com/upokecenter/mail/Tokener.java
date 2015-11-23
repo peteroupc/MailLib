@@ -10,7 +10,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import java.util.*;
 
   final class Tokener implements ITokener, Comparator<int[]> {
-    private ArrayList<int[]> tokenStack = new ArrayList<int[]>();
+    private final ArrayList<int[]> tokenStack = new ArrayList<int[]>();
 
     public int GetState() {
       return this.tokenStack.size();

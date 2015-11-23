@@ -29,6 +29,11 @@ str.length(),
 EncodedWordContext.Unstructured);
       }
 
+      public String UncommentAndCollapse(String str) {
+        // For unstructured header fields.
+        return str;
+      }
+
       public boolean IsStructured() {
         return false;
       }
@@ -45,10 +50,10 @@ int index,
 int endIndex,
 ITokener tokener);
 
-   private List<String> ParseGroupLists(
-String str,
-int index,
-int endIndex) {
+      private List<String> ParseGroupLists(
+   String str,
+   int index,
+   int endIndex) {
         ArrayList<String> groups = new ArrayList<String>();
         Tokener tokener = new Tokener();
         this.Parse(str, index, endIndex, tokener);
@@ -98,274 +103,316 @@ endIndex);
             }
             // NOTE: Doesn't downgrade ID-Left or ID-Right
             // if extended characters appear in those areas
-            if (phase == 0) {  // Comment downgrading
-              if (token[0] == HeaderParserUtility.TokenComment) {
-                int startIndex = token[1];
-                endIndex = token[2];
-                // System.out.println(str.substring(startIndex, (startIndex)+(endIndex -
-                // startIndex)));
-                if (Message.HasTextToEscape(str, startIndex, endIndex)) {
-          String newComment = Rfc2047.EncodeComment(
-str,
-startIndex,
-endIndex);
-                  sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
-                  sb.append(newComment);
-                } else {
-                  // No text needs to be escaped, output the comment as is
-                  sb.append(str.substring(lastIndex, (lastIndex)+(endIndex - lastIndex)));
+            switch (phase) {
+              case 0: {
+                  if (token[0] == HeaderParserUtility.TokenComment) {
+                    int startIndex = token[1];
+                    endIndex = token[2];
+                    // System.out.println(str.substring(startIndex, (startIndex)+(endIndex -
+                    // startIndex)));
+                    if (Message.HasTextToEscape(str, startIndex, endIndex)) {
+                    String newComment = Rfc2047.EncodeComment(
+            str,
+            startIndex,
+            endIndex);
+                    sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
+                    sb.append(newComment);
+                    } else {
+                    // No text needs to be escaped, output the comment as is
+                    sb.append(str.substring(lastIndex, (lastIndex)+(endIndex - lastIndex)));
+                    }
+                    lastIndex = endIndex;
+                  }
+
+                  break;
                 }
-                lastIndex = endIndex;
-              }
-            } else if (phase == 1) {  // Phrase downgrading
-              if (token[0] == HeaderParserUtility.TokenPhrase) {
-                int startIndex = token[1];
-                endIndex = token[2];
-                String newComment = Rfc2047.EncodePhraseText(
-str,
-startIndex,
-endIndex,
-tokens);
-                sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
-                sb.append(newComment);
-                lastIndex = endIndex;
-              }
-            } else if (phase == 2) {  // Group downgrading
-              if (token[0] == HeaderParserUtility.TokenGroup) {
-                int startIndex = token[1];
-                endIndex = token[2];
-                boolean nonasciiLocalParts = false;
-                int displayNameEnd = -1;
-                String originalGroupList;
-                for (int[] token2 : tokens) {
-                  if (token2[0] == HeaderParserUtility.TokenPhrase) {
+              case 1: {
+                  if (token[0] == HeaderParserUtility.TokenPhrase) {
+                    int startIndex = token[1];
+                    endIndex = token[2];
+                    String newComment = Rfc2047.EncodePhraseText(
+    str,
+    startIndex,
+    endIndex,
+    tokens);
+                    sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
+                    sb.append(newComment);
+                    lastIndex = endIndex;
+                  }
+
+                  break;
+                }
+              case 2: {
+                  if (token[0] == HeaderParserUtility.TokenGroup) {
+                    int startIndex = token[1];
+                    endIndex = token[2];
+                    boolean nonasciiLocalParts = false;
+                    int displayNameEnd = -1;
+                    String originalGroupList;
+                    for (int[] token2 : tokens) {
+                    if (token2[0] == HeaderParserUtility.TokenPhrase) {
                     if (displayNameEnd < 0) {
                     displayNameEnd = token2[2];
                     }
-                  }
-                  if (token2[0] == HeaderParserUtility.TokenLocalPart) {
+                    }
+                    if (token2[0] == HeaderParserUtility.TokenLocalPart) {
                     if (token2[1] >= startIndex && token2[2] <= endIndex) {
                     // Local part within a group
-    if (
-Message.HasTextToEscapeIgnoreEncodedWords(
-str,
-token2[1],
-token2[2])) {
+                    if (
+                    Message.HasTextToEscapeIgnoreEncodedWords(
+                    str,
+                    token2[1],
+                    token2[2])) {
                     nonasciiLocalParts = true;
                     break;
                     }
                     }
-                  }
-                }
-                if (!nonasciiLocalParts) {
-                  int localLastIndex = startIndex;
-                  boolean nonasciiDomains = false;
-                  StringBuilder sb2 = new StringBuilder();
-                  for (int[] token2 : tokens) {
+                    }
+                    }
+                    if (!nonasciiLocalParts) {
+                    int localLastIndex = startIndex;
+                    boolean nonasciiDomains = false;
+                    StringBuilder sb2 = new StringBuilder();
+                    for (int[] token2 : tokens) {
                     if (token2[0] == HeaderParserUtility.TokenDomain) {
                     if (token2[1] >= startIndex && token2[2] <= endIndex) {
                     // Domain within the group
-     String domain = HeaderParserUtility.ParseDomain(
-str,
-token2[1],
-token[2]);
+                    String domain = HeaderParserUtility.ParseDomain(
+                    str,
+                    token2[1],
+                    token[2]);
                     // NOTE: "domain" can include domain literals, enclosed
                     // in brackets; they are invalid under
                     // "IsValidDomainName" .
-                domain = (
-Message.HasTextToEscapeIgnoreEncodedWords(
-domain,
-0,
-domain.length()) && Idna.IsValidDomainName(
-domain,
-false)) ? Idna.EncodeDomainName(
-domain) : str.substring(
-token2[1], (
-token2[1])+(token2[2] - token2[1]));
-     if (
-Message.HasTextToEscapeIgnoreEncodedWords(
-domain,
-0,
-domain.length())) {
+                    domain = (
+            Message.HasTextToEscapeIgnoreEncodedWords(
+            domain,
+            0,
+            domain.length()) && Idna.IsValidDomainName(
+            domain,
+            false)) ? Idna.EncodeDomainName(
+            domain) : str.substring(
+            token2[1], (
+            token2[1])+(token2[2] - token2[1]));
+                    if (
+                    Message.HasTextToEscapeIgnoreEncodedWords(
+                    domain,
+                    0,
+                    domain.length())) {
                     // ASCII encoding failed
                     nonasciiDomains = true;
                     break;
                     }
-         sb2.append(
-str.substring(
-localLastIndex, (
-localLastIndex)+(token2[1] - localLastIndex)));
+                    sb2.append(
+                   str.substring(
+                   localLastIndex, (
+                   localLastIndex)+(token2[1] - localLastIndex)));
                     sb2.append(domain);
                     localLastIndex = token2[2];
                     }
                     }
-                  }
-                  nonasciiLocalParts = nonasciiDomains;
-                  if (!nonasciiLocalParts) {
+                    }
+                    nonasciiLocalParts = nonasciiDomains;
+                    if (!nonasciiLocalParts) {
                     // All of the domains could be converted to ASCII
-          sb2.append(
-str.substring(
-localLastIndex, (
-localLastIndex)+(endIndex - localLastIndex)));
+                    sb2.append(
+              str.substring(
+              localLastIndex, (
+              localLastIndex)+(endIndex - localLastIndex)));
                     sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
                     sb.append(sb2.toString());
                     lastIndex = endIndex;
-                  }
-                }
-                if (nonasciiLocalParts) {
-                  // At least some of the domains could not
-                  // be converted to ASCII
-                   originalGroups = (originalGroups == null) ? (this.ParseGroupLists(originalString, 0, originalString.length())) : originalGroups;
-                  originalGroupList = originalGroups.get(groupIndex);
-                  String groupText = originalGroupList;
-                  String displayNameText = str.substring(
-startIndex, (
-startIndex)+(displayNameEnd - startIndex));
-                  String encodedText = displayNameText + " " +
+                    }
+                    }
+                    if (nonasciiLocalParts) {
+                    // At least some of the domains could not
+                    // be converted to ASCII
+                    originalGroups = (originalGroups == null) ? (this.ParseGroupLists(originalString, 0,
+                    originalString.length())) : originalGroups;
+                    originalGroupList = originalGroups.get(groupIndex);
+                    String groupText = originalGroupList;
+                    String displayNameText = str.substring(
+    startIndex, (
+    startIndex)+(displayNameEnd - startIndex));
+                    String encodedText = displayNameText + " " +
                     Rfc2047.EncodeString(groupText) + " :;";
-                  sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
-                  sb.append(encodedText);
-                  lastIndex = endIndex;
+                    sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
+                    sb.append(encodedText);
+                    lastIndex = endIndex;
+                    }
+                    ++groupIndex;
+                  }
+
+                  break;
                 }
-                ++groupIndex;
-              }
-            } else if (phase == 3) {  // Mailbox downgrading
-              if (token[0] == HeaderParserUtility.TokenMailbox) {
-                int startIndex = token[1];
-                endIndex = token[2];
-                boolean nonasciiLocalPart = false;
-                boolean hasPhrase = false;
-                for (int[] token2 : tokens) {
-                  hasPhrase |= token2[0] == HeaderParserUtility.TokenPhrase;
-                  if (token2[0] == HeaderParserUtility.TokenLocalPart) {
+              case 3: {
+                  if (token[0] == HeaderParserUtility.TokenMailbox) {
+                    int startIndex = token[1];
+                    endIndex = token[2];
+                    boolean nonasciiLocalPart = false;
+                    boolean hasPhrase = false;
+                    for (int[] token2 : tokens) {
+                    hasPhrase |= token2[0] == HeaderParserUtility.TokenPhrase;
+                    if (token2[0] == HeaderParserUtility.TokenLocalPart) {
                     if (token2[1] >= startIndex && token2[2] <= endIndex) {
-    if (
-Message.HasTextToEscapeIgnoreEncodedWords(
-str,
-token2[1],
-token2[2])) {
+                    if (
+                    Message.HasTextToEscapeIgnoreEncodedWords(
+                    str,
+                    token2[1],
+                    token2[2])) {
                     nonasciiLocalPart = true;
                     break;
                     }
                     }
-                  }
-                }
-                if (!nonasciiLocalPart) {
-                  int localLastIndex = startIndex;
-                  boolean nonasciiDomains = false;
-                  StringBuilder sb2 = new StringBuilder();
-                  for (int[] token2 : tokens) {
+                    }
+                    }
+                    if (!nonasciiLocalPart) {
+                    int localLastIndex = startIndex;
+                    boolean nonasciiDomains = false;
+                    StringBuilder sb2 = new StringBuilder();
+                    for (int[] token2 : tokens) {
                     if (token2[0] == HeaderParserUtility.TokenDomain) {
                     if (token2[1] >= startIndex && token2[2] <= endIndex) {
                     // Domain within the group
-     String domain = HeaderParserUtility.ParseDomain(
-str,
-token2[1],
-token[2]);
+                    String domain = HeaderParserUtility.ParseDomain(
+                    str,
+                    token2[1],
+                    token[2]);
                     // NOTE: "domain" can include domain literals, enclosed
                     // in brackets; they are invalid under
                     // "IsValidDomainName" .
-                domain = (
-Message.HasTextToEscapeIgnoreEncodedWords(
-domain,
-0,
-domain.length()) && Idna.IsValidDomainName(
-domain,
-false)) ? Idna.EncodeDomainName(
-domain) : str.substring(
-token2[1], (
-token2[1])+(token2[2] - token2[1]));
-     if (
-Message.HasTextToEscapeIgnoreEncodedWords(
-domain,
-0,
-domain.length())) {
+                    domain = (
+            Message.HasTextToEscapeIgnoreEncodedWords(
+            domain,
+            0,
+            domain.length()) && Idna.IsValidDomainName(
+            domain,
+            false)) ? Idna.EncodeDomainName(
+            domain) : str.substring(
+            token2[1], (
+            token2[1])+(token2[2] - token2[1]));
+                    if (
+                    Message.HasTextToEscapeIgnoreEncodedWords(
+                    domain,
+                    0,
+                    domain.length())) {
                     // ASCII encoding failed
                     nonasciiDomains = true;
                     break;
                     }
-         sb2.append(
-str.substring(
-localLastIndex, (
-localLastIndex)+(token2[1] - localLastIndex)));
+                    sb2.append(
+                   str.substring(
+                   localLastIndex, (
+                   localLastIndex)+(token2[1] - localLastIndex)));
                     sb2.append(domain);
                     localLastIndex = token2[2];
                     }
                     }
-                  }
-                  nonasciiLocalPart = nonasciiDomains;
-                  if (!nonasciiLocalPart) {
+                    }
+                    nonasciiLocalPart = nonasciiDomains;
+                    if (!nonasciiLocalPart) {
                     // All of the domains could be converted to ASCII
-          sb2.append(
-str.substring(
-localLastIndex, (
-localLastIndex)+(endIndex - localLastIndex)));
+                    sb2.append(
+              str.substring(
+              localLastIndex, (
+              localLastIndex)+(endIndex - localLastIndex)));
                     sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
                     sb.append(sb2.toString());
                     lastIndex = endIndex;
-                  }
-                }
-                // Downgrading failed
-                if (nonasciiLocalPart) {
-                  sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
-                  if (!hasPhrase) {
-                String addrSpec = str.substring(
-token[1], (
-token[1])+(token[2] - token[1]));
-             String encodedText = " " + Rfc2047.EncodeString(addrSpec) +
+                    }
+                    }
+                    // Downgrading failed
+                    if (nonasciiLocalPart) {
+                    sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
+                    if (!hasPhrase) {
+                    String addrSpec = str.substring(
+        token[1], (
+        token[1])+(token[2] - token[1]));
+                    String encodedText = " " + Rfc2047.EncodeString(addrSpec) +
                     " :;";
                     sb.append(encodedText);
-                  } else {
+                    } else {
                     // Has a phrase, extract the addr-spec and convert
                     // the mailbox to a group
-  int angleAddrStart = HeaderParser.ParsePhrase(
-str,
-token[1],
-token[2],
-null);
+                    int angleAddrStart = HeaderParser.ParsePhrase(
+                    str,
+                    token[1],
+                    token[2],
+                    null);
                     // append the rest of the String so far up to and
                     // including the phrase
-               sb.append(
-str.substring(
-lastIndex, (
-lastIndex)+(angleAddrStart - lastIndex)));
+                    sb.append(
+         str.substring(
+         lastIndex, (
+         lastIndex)+(angleAddrStart - lastIndex)));
                     int addrSpecStart = HeaderParser.ParseCFWS(
-str,
-angleAddrStart,
-token[2],
-null);
+    str,
+    angleAddrStart,
+    token[2],
+    null);
                     if (addrSpecStart < token[2] && str.charAt(addrSpecStart) == '<') {
                     ++addrSpecStart;
                     }
-addrSpecStart = HeaderParser.ParseObsRoute(
-str,
-addrSpecStart,
-token[2],
-null);
+                    addrSpecStart = HeaderParser.ParseObsRoute(
+                    str,
+                    addrSpecStart,
+                    token[2],
+                    null);
                     int addrSpecEnd = HeaderParser.ParseAddrSpec(
-str,
-addrSpecStart,
-token[2],
-null);
-   String addrSpec = str.substring(
-addrSpecStart, (
-addrSpecStart)+(addrSpecEnd - addrSpecStart));
+    str,
+    addrSpecStart,
+    token[2],
+    null);
+                    String addrSpec = str.substring(
+                    addrSpecStart, (
+                    addrSpecStart)+(addrSpecEnd - addrSpecStart));
                     boolean endsWithSpace = sb.length() > 0 && (sb.charAt(sb.length() - 1)
                     == 0x20 || sb.charAt(sb.length() - 1) == 0x09);
                     String encodedText = (endsWithSpace ? "" : " ") +
                     Rfc2047.EncodeString(addrSpec) + " :;";
                     sb.append(encodedText);
+                    }
+                    lastIndex = endIndex;
+                    }
+                    ++groupIndex;
                   }
-                  lastIndex = endIndex;
+
+                  break;
                 }
-                ++groupIndex;
-              }
             }
           }
           sb.append(str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)));
           str = sb.toString();
         }
         return str;
+      }
+
+      public String UncommentAndCollapse(String str) {
+        StringBuilder sb = new StringBuilder();
+        Tokener tokener = new Tokener();
+        int endIndex = this.Parse(str, 0, str.length(), tokener);
+        if (endIndex != str.length()) {
+          // The header field is syntactically invalid
+          return str;
+        }
+        int lastIndex = 0;
+        // Get each relevant token sorted by starting index
+        List<int[]> tokens = tokener.GetTokens();
+        for (int[] token : tokens) {
+          if (token[0] == HeaderParserUtility.TokenComment && token[0] >=
+                   lastIndex) {
+            // This is a comment token; ignore the comment
+            int startIndex = token[1];
+            endIndex = token[2];
+            sb.append(str.substring(lastIndex, (lastIndex)+(startIndex + 1 - lastIndex)));
+            lastIndex = endIndex - 1;
+          }
+        }
+        sb.append(str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)));
+        String ret = sb.toString();
+        ret = ParserUtility.TrimSpaceAndTab(ret);
+        ret = ParserUtility.CollapseSpaceAndTab(ret);
+        return ret;
       }
 
       public String DecodeEncodedWords(String str) {
@@ -396,8 +443,8 @@ addrSpecStart)+(addrSpecEnd - addrSpecStart));
         for (int[] token : tokens) {
           // System.out.println("" + token[0] + " [" +
           // (str.substring(token[1],(token[1])+(token[2]-token[1]))) + "]");
-   if (token[0] == HeaderParserUtility.TokenComment && token[0] >=
-            lastIndex) {
+          if (token[0] == HeaderParserUtility.TokenComment && token[0] >=
+                   lastIndex) {
             // This is a comment token
             int startIndex = token[1];
             endIndex = token[2];
@@ -453,11 +500,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-    return HeaderParser.ParseHeaderDeliveryDate(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderDeliveryDate(
+    str,
+    index,
+    endIndex,
+    tokener);
       }
     }
 
@@ -477,11 +524,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-      return HeaderParser.ParseHeaderImportance(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderImportance(
+  str,
+  index,
+  endIndex,
+  tokener);
       }
     }
 
@@ -491,11 +538,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-     return HeaderParser.ParseHeaderSensitivity(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderSensitivity(
+   str,
+   index,
+   endIndex,
+   tokener);
       }
     }
 
@@ -519,11 +566,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-    return HeaderParser.ParseHeaderX400Received(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderX400Received(
+    str,
+    index,
+    endIndex,
+    tokener);
       }
     }
 
@@ -547,11 +594,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-  return HeaderParser.ParseHeaderX400Originator(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderX400Originator(
+      str,
+      index,
+      endIndex,
+      tokener);
       }
     }
 
@@ -561,11 +608,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-  return HeaderParser.ParseHeaderX400Recipients(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderX400Recipients(
+      str,
+      index,
+      endIndex,
+      tokener);
       }
     }
 
@@ -575,11 +622,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-      return HeaderParser.ParseHeaderConversion(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderConversion(
+  str,
+  index,
+  endIndex,
+  tokener);
       }
     }
 
@@ -603,11 +650,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-      return HeaderParser.ParseHeaderSupersedes(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderSupersedes(
+  str,
+  index,
+  endIndex,
+  tokener);
       }
     }
 
@@ -617,11 +664,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-   return HeaderParser.ParseHeaderAutoforwarded(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderAutoforwarded(
+     str,
+     index,
+     endIndex,
+     tokener);
       }
     }
 
@@ -634,8 +681,7 @@ ITokener tokener) {
         return HeaderParser.ParseHeaderGenerateDeliveryReport(
 str,
 index,
-endIndex,
-tokener);
+endIndex);
       }
     }
 
@@ -645,15 +691,15 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-  return HeaderParser.ParseHeaderIncompleteCopy(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderIncompleteCopy(
+      str,
+      index,
+      endIndex,
+      tokener);
       }
     }
 
-  private static final class HeaderPreventNondeliveryReport extends StructuredHeaderField {
+    private static final class HeaderPreventNondeliveryReport extends StructuredHeaderField {
       @Override public int Parse(
 String str,
 int index,
@@ -662,8 +708,7 @@ ITokener tokener) {
         return HeaderParser.ParseHeaderPreventNondeliveryReport(
 str,
 index,
-endIndex,
-tokener);
+endIndex);
       }
     }
 
@@ -701,11 +746,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-      return HeaderParser.ParseHeaderNewsgroups(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderNewsgroups(
+  str,
+  index,
+  endIndex,
+  tokener);
       }
     }
 
@@ -735,7 +780,7 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-        return HeaderParser.ParseHeaderControl(str, index, endIndex, tokener);
+        return HeaderParser.ParseHeaderControl(str, index, endIndex);
       }
     }
 
@@ -745,11 +790,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-    return HeaderParser.ParseHeaderDistribution(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderDistribution(
+    str,
+    index,
+    endIndex,
+    tokener);
       }
     }
 
@@ -759,11 +804,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-      return HeaderParser.ParseHeaderFollowupTo(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderFollowupTo(
+  str,
+  index,
+  endIndex,
+  tokener);
       }
     }
 
@@ -773,11 +818,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-   return HeaderParser.ParseHeaderInjectionDate(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderInjectionDate(
+     str,
+     index,
+     endIndex,
+     tokener);
       }
     }
 
@@ -787,11 +832,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-   return HeaderParser.ParseHeaderInjectionInfo(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderInjectionInfo(
+     str,
+     index,
+     endIndex,
+     tokener);
       }
     }
 
@@ -821,11 +866,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-  return HeaderParser.ParseHeaderAcceptLanguage(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderAcceptLanguage(
+      str,
+      index,
+      endIndex,
+      tokener);
       }
     }
 
@@ -835,11 +880,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-      return HeaderParser.ParseHeaderArchivedAt(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderArchivedAt(
+  str,
+  index,
+  endIndex,
+  tokener);
       }
     }
 
@@ -863,11 +908,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-   return HeaderParser.ParseHeaderAutoSubmitted(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderAutoSubmitted(
+     str,
+     index,
+     endIndex,
+     tokener);
       }
     }
 
@@ -887,11 +932,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-     return HeaderParser.ParseHeaderContentBase(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderContentBase(
+   str,
+   index,
+   endIndex,
+   tokener);
       }
     }
 
@@ -915,11 +960,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
- return HeaderParser.ParseHeaderContentDuration(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderContentDuration(
+       str,
+       index,
+       endIndex,
+       tokener);
       }
     }
 
@@ -939,11 +984,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
- return HeaderParser.ParseHeaderContentLanguage(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderContentLanguage(
+       str,
+       index,
+       endIndex,
+       tokener);
       }
     }
 
@@ -953,11 +998,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
- return HeaderParser.ParseHeaderContentLocation(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderContentLocation(
+       str,
+       index,
+       endIndex,
+       tokener);
       }
     }
 
@@ -967,11 +1012,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-      return HeaderParser.ParseHeaderContentMd5(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderContentMd5(
+  str,
+  index,
+  endIndex,
+  tokener);
       }
     }
 
@@ -995,11 +1040,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-     return HeaderParser.ParseHeaderContentType(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderContentType(
+   str,
+   index,
+   endIndex,
+   tokener);
       }
     }
 
@@ -1019,11 +1064,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-return HeaderParser.ParseHeaderDeferredDelivery(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderDeferredDelivery(
+        str,
+        index,
+        endIndex,
+        tokener);
       }
     }
 
@@ -1041,7 +1086,7 @@ tokener);
       }
     }
 
- private static final class HeaderDispositionNotificationTo extends StructuredHeaderField {
+    private static final class HeaderDispositionNotificationTo extends StructuredHeaderField {
       @Override public int Parse(
 String str,
 int index,
@@ -1061,11 +1106,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-   return HeaderParser.ParseHeaderDkimSignature(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderDkimSignature(
+     str,
+     index,
+     endIndex,
+     tokener);
       }
     }
 
@@ -1075,11 +1120,10 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-  return HeaderParser.ParseHeaderEdiintFeatures(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderEdiintFeatures(
+      str,
+      index,
+      endIndex);
       }
     }
 
@@ -1183,11 +1227,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-  return HeaderParser.ParseHeaderMessageContext(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderMessageContext(
+      str,
+      index,
+      endIndex,
+      tokener);
       }
     }
 
@@ -1207,11 +1251,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-     return HeaderParser.ParseHeaderMimeVersion(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderMimeVersion(
+   str,
+   index,
+   endIndex,
+   tokener);
       }
     }
 
@@ -1285,7 +1329,7 @@ tokener);
       }
     }
 
-  private static final class HeaderMmhsHandlingInstructions extends StructuredHeaderField {
+    private static final class HeaderMmhsHandlingInstructions extends StructuredHeaderField {
       @Override public int Parse(
 String str,
 int index,
@@ -1319,11 +1363,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
- return HeaderParser.ParseHeaderMmhsMessageType(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderMmhsMessageType(
+       str,
+       index,
+       endIndex,
+       tokener);
       }
     }
 
@@ -1397,7 +1441,7 @@ tokener);
       }
     }
 
- private static final class HeaderMmhsSubjectIndicatorCodes extends StructuredHeaderField {
+    private static final class HeaderMmhsSubjectIndicatorCodes extends StructuredHeaderField {
       @Override public int Parse(
 String str,
 int index,
@@ -1417,11 +1461,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-      return HeaderParser.ParseHeaderMtPriority(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderMtPriority(
+  str,
+  index,
+  endIndex,
+  tokener);
       }
     }
 
@@ -1465,15 +1509,15 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-     return HeaderParser.ParseHeaderReceivedSpf(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderReceivedSpf(
+   str,
+   index,
+   endIndex,
+   tokener);
       }
     }
 
-private static final class HeaderRequireRecipientValidSince extends StructuredHeaderField {
+    private static final class HeaderRequireRecipientValidSince extends StructuredHeaderField {
       @Override public int Parse(
 String str,
 int index,
@@ -1503,11 +1547,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-      return HeaderParser.ParseHeaderReturnPath(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderReturnPath(
+  str,
+  index,
+  endIndex,
+  tokener);
       }
     }
 
@@ -1527,11 +1571,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-    return HeaderParser.ParseHeaderSolicitation(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderSolicitation(
+    str,
+    index,
+    endIndex,
+    tokener);
       }
     }
 
@@ -1561,11 +1605,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-     return HeaderParser.ParseHeaderXArchivedAt(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderXArchivedAt(
+   str,
+   index,
+   endIndex,
+   tokener);
       }
     }
 
@@ -1585,11 +1629,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-   return HeaderParser.ParseHeaderXTiporicevuta(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderXTiporicevuta(
+     str,
+     index,
+     endIndex,
+     tokener);
       }
     }
 
@@ -1599,11 +1643,11 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-      return HeaderParser.ParseHeaderXTrasporto(
-str,
-index,
-endIndex,
-tokener);
+        return HeaderParser.ParseHeaderXTrasporto(
+  str,
+  index,
+  endIndex,
+  tokener);
       }
     }
 
@@ -1623,8 +1667,8 @@ tokener);
     private static final class HeaderEesstVersion extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex,
         ITokener tokener) {
-    return HeaderParser.ParseHeaderEesstVersion(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderEesstVersion(str, index, endIndex,
+              tokener);
       }
     }
     private static final class HeaderSioLabel extends StructuredHeaderField {
@@ -1662,8 +1706,8 @@ tokener);
       fieldMap.put("autoforwarded",new HeaderAutoforwarded());
       fieldMap.put("generate-delivery-report",new HeaderGenerateDeliveryReport());
       fieldMap.put("incomplete-copy",new HeaderIncompleteCopy());
- fieldMap.put("prevent-nondelivery-report" ,new
-        HeaderPreventNondeliveryReport());
+      fieldMap.put("prevent-nondelivery-report",new
+             HeaderPreventNondeliveryReport());
       fieldMap.put("alternate-recipient",new HeaderAlternateRecipient());
       fieldMap.put("disclose-recipients",new HeaderDiscloseRecipients());
       fieldMap.put("newsgroups",new HeaderNewsgroups());
@@ -1690,14 +1734,14 @@ tokener);
       fieldMap.put("content-language",new HeaderContentLanguage());
       fieldMap.put("content-location",new HeaderContentLocation());
       fieldMap.put("content-md5",new HeaderContentMd5());
-   fieldMap.put("content-transfer-encoding" ,new
-        HeaderContentTransferEncoding());
+      fieldMap.put("content-transfer-encoding",new
+           HeaderContentTransferEncoding());
       fieldMap.put("content-type",new HeaderContentType());
       fieldMap.put("date",new HeaderDate());
       fieldMap.put("deferred-delivery",new HeaderDeferredDelivery());
-      fieldMap.put("disposition-notification-options" ,new
+      fieldMap.put("disposition-notification-options",new
         HeaderDispositionNotificationOptions());
-      fieldMap.put("disposition-notification-to" ,new
+      fieldMap.put("disposition-notification-to",new
         HeaderDispositionNotificationTo());
       fieldMap.put("dkim-signature",new HeaderDkimSignature());
       fieldMap.put("ediint-features",new HeaderEdiintFeatures());
@@ -1715,28 +1759,28 @@ tokener);
       fieldMap.put("message-context",new HeaderMessageContext());
       fieldMap.put("message-id",new HeaderMessageId());
       fieldMap.put("mime-version",new HeaderMimeVersion());
-      fieldMap.put("mmhs-acp127-message-identifier" ,new
+      fieldMap.put("mmhs-acp127-message-identifier",new
         HeaderMmhsAcp127MessageIdentifier());
-      fieldMap.put("mmhs-codress-message-indicator" ,new
+      fieldMap.put("mmhs-codress-message-indicator",new
         HeaderMmhsCodressMessageIndicator());
       fieldMap.put("mmhs-copy-precedence",new HeaderMmhsCopyPrecedence());
       fieldMap.put("mmhs-exempted-address",new HeaderMmhsExemptedAddress());
-      fieldMap.put("mmhs-extended-authorisation-info" ,new
+      fieldMap.put("mmhs-extended-authorisation-info",new
         HeaderMmhsExtendedAuthorisationInfo());
- fieldMap.put("mmhs-handling-instructions" ,new
-        HeaderMmhsHandlingInstructions());
-   fieldMap.put("mmhs-message-instructions" ,new
-        HeaderMmhsMessageInstructions());
+      fieldMap.put("mmhs-handling-instructions",new
+             HeaderMmhsHandlingInstructions());
+      fieldMap.put("mmhs-message-instructions",new
+           HeaderMmhsMessageInstructions());
       fieldMap.put("mmhs-message-type",new HeaderMmhsMessageType());
       fieldMap.put("mmhs-originator-plad",new HeaderMmhsOriginatorPlad());
-   fieldMap.put("mmhs-originator-reference" ,new
-        HeaderMmhsOriginatorReference());
-      fieldMap.put("mmhs-other-recipients-indicator-cc" ,new
+      fieldMap.put("mmhs-originator-reference",new
+           HeaderMmhsOriginatorReference());
+      fieldMap.put("mmhs-other-recipients-indicator-cc",new
         HeaderMmhsOtherRecipientsIndicatorCc());
-      fieldMap.put("mmhs-other-recipients-indicator-to" ,new
+      fieldMap.put("mmhs-other-recipients-indicator-to",new
         HeaderMmhsOtherRecipientsIndicatorTo());
       fieldMap.put("mmhs-primary-precedence",new HeaderMmhsPrimaryPrecedence());
-      fieldMap.put("mmhs-subject-indicator-codes" ,new
+      fieldMap.put("mmhs-subject-indicator-codes",new
         HeaderMmhsSubjectIndicatorCodes());
       fieldMap.put("mt-priority",new HeaderMtPriority());
       fieldMap.put("obsoletes",new HeaderObsoletes());
@@ -1747,7 +1791,7 @@ tokener);
       fieldMap.put("received-spf",new HeaderReceivedSpf());
       fieldMap.put("references",new HeaderInReplyTo());
       fieldMap.put("reply-to",new HeaderResentTo());
-      fieldMap.put("require-recipient-valid-since" ,new
+      fieldMap.put("require-recipient-valid-since",new
         HeaderRequireRecipientValidSince());
       fieldMap.put("resent-bcc",new HeaderBcc());
       fieldMap.put("resent-cc",new HeaderResentTo());

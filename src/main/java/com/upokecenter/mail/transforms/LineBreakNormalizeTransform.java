@@ -16,10 +16,10 @@ import com.upokecenter.mail.*;
      */
   public class LineBreakNormalizeTransform implements IByteReader
   {
-    private InputStream stream;
+    private final InputStream stream;
     private int val;
     private boolean cr;
-    private boolean supportBareLF;
+    private final boolean supportBareLF;
 
     /**
      * Initializes a new instance of the LineBreakNormalizeTransform class.

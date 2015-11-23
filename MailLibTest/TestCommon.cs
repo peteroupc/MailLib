@@ -17,7 +17,7 @@ namespace Test {
  return "null";
 }
       var sb = new System.Text.StringBuilder();
-      string hex = "0123456789ABCDEF";
+      const string hex = "0123456789ABCDEF";
       sb.Append("new byte[] { ");
       for (var i = 0; i < bytes.Length; ++i) {
         if (i > 0) {

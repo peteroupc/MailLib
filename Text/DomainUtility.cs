@@ -81,15 +81,15 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         throw new ArgumentException("endIndex (" + endIndex +
           ") is less than " + index);
       }
-      int n = 128;
-      int delta = 0;
-      int bias = 72;
-      int h = 0;
+      var n = 128;
+      var delta = 0;
+      var bias = 72;
+      var h = 0;
       int tmpIndex;
-      int firstIndex = -1;
-      int codePointLength = 0;
-      int basicsBeforeFirstNonbasic = 0;
-      bool allBasics = true;
+      var firstIndex = -1;
+      var codePointLength = 0;
+      var basicsBeforeFirstNonbasic = 0;
+      var allBasics = true;
       tmpIndex = index;
       while (tmpIndex < endIndex) {
         if (str[tmpIndex] >= 0x80) {
@@ -101,7 +101,7 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
       if (allBasics) {
         return endIndex - index;
       }
-      int outputLength = 4;
+      var outputLength = 4;
       tmpIndex = index;
       while (tmpIndex < endIndex) {
         int c = CodePointAt(str, tmpIndex, endIndex);
@@ -161,7 +161,7 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
             ++delta;
           } else if (c == n) {
             int q = delta;
-            int k = 36;
+            var k = 36;
             while (true) {
               int t;
               t = (k <= bias) ? 1 : ((k >= bias + 26) ? 26 : (k - bias));
@@ -192,7 +192,8 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
       return outputLength;
     }
 
-    private static int[] valueDigitValues = { -1, -1, -1, -1, -1, -1, -1,
+ private static readonly int[] valueDigitValues = { -1, -1, -1, -1, -1, -1,
+      -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -236,7 +237,7 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         }
         --lastHyphen;
       }
-      int i = 0;
+      var i = 0;
       if (lastHyphen >= index) {
         for (i = index; i < lastHyphen; ++i) {
           if (str[i] >= 0x80) {
@@ -259,14 +260,14 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         index = lastHyphen + 1;
       }
       i = 0;
-      int n = 128;
-      int bias = 72;
+      var n = 128;
+      var bias = 72;
       int stringLength = builder.Length;
       var chararr = new char[2];
       while (index < endIndex) {
         int old = index;
-        int w = 1;
-        int k = 36;
+        var w = 1;
+        var k = 36;
         while (true) {
           if (index >= endIndex) {
             return null;
@@ -370,15 +371,15 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         throw new ArgumentException("endIndex (" + endIndex +
           ") is less than " + index);
       }
-      int n = 128;
-      int delta = 0;
-      int bias = 72;
-      int h = 0;
+      var n = 128;
+      var delta = 0;
+      var bias = 72;
+      var h = 0;
       int tmpIndex;
-      int firstIndex = -1;
-      int codePointLength = 0;
-      int basicsBeforeFirstNonbasic = 0;
-      bool allBasics = true;
+      var firstIndex = -1;
+      var codePointLength = 0;
+      var basicsBeforeFirstNonbasic = 0;
+      var allBasics = true;
       tmpIndex = index;
       while (tmpIndex < endIndex) {
         if (str[tmpIndex] >= 0x80) {
@@ -472,7 +473,7 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
             ++delta;
           } else if (c == n) {
             int q = delta;
-            int k = 36;
+            var k = 36;
             while (true) {
               int t;
               t = (k <= bias) ? 1 : ((k >= bias + 26) ? 26 : (k - bias));

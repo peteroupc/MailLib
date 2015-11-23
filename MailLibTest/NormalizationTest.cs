@@ -17,7 +17,7 @@ namespace MailLibTest {
     public static int[] GetCodePoints(String cp) {
       String[] cpArray = TrimSpaces(cp).Split(' ');
       var retArray = new int[cpArray.Length];
-      int index = 0;
+      var index = 0;
       foreach (String v in cpArray) {
         int hex = Int32.Parse(TrimSpaces(v),
           System.Globalization.NumberStyles.AllowHexSpecifier,
@@ -29,7 +29,7 @@ namespace MailLibTest {
 
     public static String ToString(int[] array) {
       var builder = new StringBuilder();
-      bool first = true;
+      var first = true;
       builder.Append("[");
       foreach (int v in array) {
         if (!first) {
@@ -71,7 +71,7 @@ namespace MailLibTest {
 
     public static int[] ToIntArray(IList<int> list) {
       var retArray = new int[list.Count];
-      int index = 0;
+      var index = 0;
       foreach (int v in list) {
         retArray[index++] = v;
       }
@@ -117,13 +117,13 @@ NormalizingCharacterInput.IsNormalized(
     }
 
     private sealed class NormResult {
-      private int[] orig;
-      private string origstr;
-      private int[] nfc;
-      private int[] nfd;
-      private int[] nfkc;
-      private int[] nfkd;
-      private string line;
+      private readonly int[] orig;
+      private readonly string origstr;
+      private readonly int[] nfc;
+      private readonly int[] nfd;
+      private readonly int[] nfkc;
+      private readonly int[] nfkd;
+      private readonly string line;
       public NormResult(string column, string line) {
         this.line = line;
         this.orig = GetCodePoints(column);
@@ -173,13 +173,13 @@ NormalizingCharacterInput.IsNormalized(
 
     [TestMethod]
     public void NormTest() {
-      string normTestFile = "..\\..\\..\\cache\\NormalizationTest.txt";
+      const string normTestFile = "..\\..\\..\\cache\\NormalizationTest.txt";
       if (!File.Exists(normTestFile)) {
         Assert.Inconclusive();
       }
       var handled = new bool[0x110000];
       using (var reader = new StreamReader(normTestFile)) {
-        bool part1 = false;
+        var part1 = false;
         while (true) {
           String line = reader.ReadLine();
           if (line == null) {

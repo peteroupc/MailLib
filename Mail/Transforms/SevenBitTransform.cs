@@ -11,7 +11,7 @@ using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
   internal sealed class SevenBitTransform : IByteReader {
-    private IByteReader transform;
+    private readonly IByteReader transform;
 
     public SevenBitTransform(IByteReader stream) {
       this.transform = stream;

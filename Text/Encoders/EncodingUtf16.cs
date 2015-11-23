@@ -7,10 +7,10 @@ using PeterO.Text;
 namespace PeterO.Text.Encoders {
   internal class EncodingUtf16 : ICharacterEncoding {
     private class Decoder : ICharacterDecoder {
-      private DecoderState state;
+      private readonly DecoderState state;
       private int lead;
       private int surrogate;
-      private bool bigEndian;
+      private readonly bool bigEndian;
 
       public Decoder(bool bigEndian) {
         this.bigEndian = bigEndian;
@@ -56,17 +56,15 @@ namespace PeterO.Text.Encoders {
           }
           if ((code & 0xfc00) == 0xd800) {
             this.surrogate = code;
-          } else if ((code & 0xfc00) == 0xdc00) {
-            return -2;
           } else {
-            return code;
-          }
+ return (code & 0xfc00) == 0xdc00 ? -2 : code;
+}
         }
       }
     }
 
     private class Encoder : ICharacterEncoder {
-      private bool bigEndian;
+      private readonly bool bigEndian;
 
       public Encoder(bool bigEndian) {
         this.bigEndian = bigEndian;

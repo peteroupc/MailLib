@@ -14,7 +14,7 @@ namespace PeterO.Mail {
     /// <summary>Description of DispositionBuilder.</summary>
   public class DispositionBuilder {
     private string type;
-    private IDictionary<string, string> parameters;
+    private readonly IDictionary<string, string> parameters;
 
     /// <summary>Gets or sets this value's disposition type, such value,
     /// such as "inline" or "attachment".</summary>

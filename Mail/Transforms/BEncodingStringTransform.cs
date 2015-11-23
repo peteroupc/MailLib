@@ -11,9 +11,9 @@ using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
   internal sealed class BEncodingStringTransform : IByteReader {
-    private string input;
+    private readonly string input;
     private int inputIndex;
-    private byte[] buffer;
+    private readonly byte[] buffer;
     private int bufferIndex;
     private int bufferCount;
 
@@ -41,11 +41,11 @@ namespace PeterO.Mail.Transforms {
         ret &= 0xff;
         return ret;
       }
-      int value = 0;
-      int count = 0;
-      int[] alphabet = Base64Transform.Alphabet;
+      var value = 0;
+      var count = 0;
+      int c;
       while (count < 4) {
-        int c = (this.inputIndex < this.input.Length) ?
+        c = (this.inputIndex < this.input.Length) ?
           this.input[this.inputIndex++] : -1;
         if (c < 0) {
           // End of stream
@@ -72,7 +72,7 @@ namespace PeterO.Mail.Transforms {
         if (c >= 0x80) {
           // ignore this character
         } else {
-          c = alphabet[c];
+          c = Base64Transform.Alphabet[c];
           // non-base64 characters are ignored
           if (c >= 0) {
             value <<= 6;

@@ -170,7 +170,7 @@ int endIndex) {
         var builder = new StringBuilder();
         builder.Append('[');
         while (index < endIndex) {
-          index = HeaderParser.ParseFWS(str, index, endIndex, null);
+          index = HeaderParser.ParseFWS(str, index, endIndex);
           if (index >= endIndex) {
             break;
           }
@@ -179,7 +179,7 @@ int endIndex) {
           }
           if (str[index] == '\\') {
             int startQuote = index;
-            index = HeaderParser.ParseQuotedPair(str, index, endIndex, null);
+            index = HeaderParser.ParseQuotedPair(str, index, endIndex);
             if (index == startQuote) {
        builder.Append(
 str.Substring(
@@ -252,7 +252,7 @@ int index,
 int endIndex,
 IList<int[]> tokens) {
       string displayName = null;
-      bool haveDisplayName = false;
+      var haveDisplayName = false;
       IList<NamedAddress> mailboxes = new List<NamedAddress>();
       for (int i = 0; i < tokens.Count; ++i) {
         int tokenIndex = tokens[i][1];
@@ -291,20 +291,24 @@ IList<int[]> tokens) {
         int tokenEnd = tokens[i][2];
         if (tokenIndex >= index && tokenIndex < endIndex) {
           int tokenKind = tokens[i][0];
-          if (tokenKind == TokenPhrase) {
-            // Phrase
-            displayName = Rfc2047.DecodePhraseText(
-              str,
-              tokenIndex,
-              tokenEnd,
-              tokens,
-              false);
-          } else if (tokenKind == TokenLocalPart) {
-            localPart = ParseLocalPart(str, tokenIndex, tokenEnd);
-          } else if (tokenKind == TokenDomain) {
-            // NOTE: Domain will end up as the last domain token,
-            // even if the mailbox contains obsolete route syntax
-            domain = ParseDomain(str, tokenIndex, tokenEnd);
+          switch (tokenKind) {
+            case TokenPhrase:
+              // Phrase
+              displayName = Rfc2047.DecodePhraseText(
+                str,
+                tokenIndex,
+                tokenEnd,
+                tokens,
+                false);
+              break;
+            case TokenLocalPart:
+              localPart = ParseLocalPart(str, tokenIndex, tokenEnd);
+              break;
+            case TokenDomain:
+              // NOTE: Domain will end up as the last domain token,
+              // even if the mailbox contains obsolete route syntax
+              domain = ParseDomain(str, tokenIndex, tokenEnd);
+              break;
           }
         }
       }
@@ -327,7 +331,7 @@ int index,
 int endIndex,
 ITokener tokener) {
       int indexStart = index;
-      int depth = 0;
+      var depth = 0;
       if (index < endIndex && (str[index] == 40)) {
         ++index;
       } else {
@@ -341,7 +345,7 @@ ITokener tokener) {
           indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = HeaderParser.ParseFWS(str, index, endIndex, tokener);
+            index = HeaderParser.ParseFWS(str, index, endIndex);
             do {
               int indexTemp3 = index;
               do {
@@ -358,8 +362,7 @@ ITokener tokener) {
       indexTemp4 = HeaderParser.ParseQuotedPair(
 str,
 index,
-endIndex,
-tokener);
+endIndex);
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
@@ -395,7 +398,7 @@ tokener);
             break;
           }
         }
-        index = HeaderParser.ParseFWS(str, index, endIndex, tokener);
+        index = HeaderParser.ParseFWS(str, index, endIndex);
         if (index < endIndex && str[index] == 41) {
           // End of current comment
           ++index;
@@ -431,7 +434,7 @@ int endIndex) {
       }
 
       int indexStart = index;
-      int depth = 0;
+      var depth = 0;
       do {
         while (true) {
           int indexTemp2 = index;

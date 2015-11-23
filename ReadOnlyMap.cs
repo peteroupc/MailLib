@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace PeterO {
   internal sealed class ReadOnlyMap<TKey, TValue> : IDictionary<TKey, TValue> {
-    private IDictionary<TKey, TValue> wrapped;
+    private readonly IDictionary<TKey, TValue> wrapped;
 
     public ReadOnlyMap(IDictionary<TKey, TValue> wrapped) {
       this.wrapped = wrapped;

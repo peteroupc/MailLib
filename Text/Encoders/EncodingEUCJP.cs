@@ -7,9 +7,9 @@ using PeterO.Text;
 namespace PeterO.Text.Encoders {
   internal class EncodingEUCJP : ICharacterEncoding {
     private class Decoder : ICharacterDecoder {
-      private DecoderState state;
+      private readonly DecoderState state;
       private int lead;
-        private bool jis0212 = false;
+        private bool jis0212;
 
       public Decoder() {
         this.state = new DecoderState(1);
@@ -36,7 +36,7 @@ namespace PeterO.Text.Encoders {
             continue;
           }
           if (this.lead != 0) {
-            int c = -1;
+            var c = -1;
       if ((this.lead >= 0xa1 && this.lead <= 0xfe) && b >= 0xa1 && b <= 0xfe) {
               c = ((this.lead - 0xa1) * 94) + (b - 0xa1);
               c = this.jis0212 ? Jis0212.IndexToCodePoint(c) :
@@ -47,11 +47,7 @@ namespace PeterO.Text.Encoders {
             if (b < 0xa1 || b == 0xff) {
               this.state.PrependOne(b);
             }
-            if (c < 0) {
-              return -2;
-            } else {
-              return c;
-            }
+            return c < 0 ? -2 : c;
           }
           if (b <= 0x7f) {
             return b;

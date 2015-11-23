@@ -7,7 +7,7 @@ using PeterO.Text;
 namespace PeterO.Text.Encoders {
   internal class EncodingReplacement : ICharacterEncoding {
     private class Decoder : ICharacterDecoder {
-      private int replacement = 0;
+      private int replacement;
 
       public int ReadChar(IByteReader transform) {
         if (this.replacement == 0) {

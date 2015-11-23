@@ -28,8 +28,8 @@ import com.upokecenter.text.*;
       }
     }
 
-    private Encoder encoder;
-    private Decoder decoder;
+    private final Encoder encoder;
+    private final Decoder decoder;
 
     public EncodingLatinOne () {
       this.encoder = new Encoder();

@@ -10,7 +10,7 @@ using System;
 namespace PeterO.Text {
   internal static class UnicodeDatabase {
     private static ByteData classes;
-    private static Object classesSyncRoot = new Object();
+    private static readonly Object classesSyncRoot = new Object();
 
     public static int GetCombiningClass(int cp) {
       lock (classesSyncRoot) {
@@ -20,7 +20,7 @@ namespace PeterO.Text {
     }
 
     private static ByteData idnaCat;
-    private static Object idnaCatSyncRoot = new Object();
+    private static readonly Object idnaCatSyncRoot = new Object();
 
     public static int GetIdnaCategory(int cp) {
       lock (idnaCatSyncRoot) {
@@ -30,7 +30,7 @@ namespace PeterO.Text {
     }
 
     private static ByteData combmark;
-    private static Object valueCmSyncRoot = new Object();
+    private static readonly Object valueCmSyncRoot = new Object();
 
     public static bool IsCombiningMark(int cp) {
       lock (valueCmSyncRoot) {
@@ -43,7 +43,7 @@ namespace PeterO.Text {
     private static ByteData stablenfd;
     private static ByteData stablenfkc;
     private static ByteData stablenfkd;
-    private static Object stableSyncRoot = new Object();
+    private static readonly Object stableSyncRoot = new Object();
 
     public static bool IsStableCodePoint(int cp, Normalization form) {
       lock (stableSyncRoot) {
@@ -80,7 +80,7 @@ int offset) {
         return offset;
       }
       decomps = NormalizationData.DecompMappings;
-      int left = 0;
+      var left = 0;
       int right = decomps[0] - 1;
       while (left <= right) {
         int index = (left + right) >> 1;
@@ -126,7 +126,7 @@ int offset) {
 
     private static int pairsLength;
     private static int[] pairs;
-    private static Object pairsSyncRoot = new Object();
+    private static readonly Object pairsSyncRoot = new Object();
 
     private static void EnsurePairs() {
       lock (pairsSyncRoot) {
@@ -142,7 +142,7 @@ int offset) {
         return -1;
       }
       EnsurePairs();
-      int left = 0;
+      var left = 0;
       int right = pairsLength - 1;
       while (left <= right) {
         int index = (left + right) >> 1;

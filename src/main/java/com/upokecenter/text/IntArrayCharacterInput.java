@@ -5,7 +5,7 @@ package com.upokecenter.text;
      */
   final class IntArrayCharacterInput implements ICharacterInput {
     private int pos;
-    private int[] ilist;
+    private final int[] ilist;
 
     public IntArrayCharacterInput (int[] ilist) {
       this.ilist = ilist;

@@ -7,11 +7,11 @@ using PeterO.Text;
 namespace PeterO.Text.Encoders {
   internal class EncodingISO2022JP : ICharacterEncoding {
     private class Decoder : ICharacterDecoder {
-      private int machineState = 0;
-      private int outputState = 0;
-      private int lead = 0;
-      private int output = 0;
-      private DecoderState state;
+      private int machineState;
+      private int outputState;
+      private int lead;
+      private int output;
+      private readonly DecoderState state;
 
       public Decoder() {
         this.state = new DecoderState(2);
@@ -49,7 +49,7 @@ namespace PeterO.Text.Encoders {
               break;
             case 2: {
                 // Escape
-                int tmpState = -1;
+                var tmpState = -1;
                 if (this.lead == 0x24 && (b == 0x40 || b == 0x42)) {
                   tmpState = 4;  // JIS0208
                   this.lead = 0;
@@ -106,11 +106,7 @@ namespace PeterO.Text.Encoders {
                 int p = (lead - 0x21) * 94 + (b - 0x21);
                 // NOTE: Only JIS0208 now supported here
                 int c = Jis0208.IndexToCodePoint(p);
-                if (c < 0) {
-                  return -2;
-                } else {
-                  return c;
-                }
+                return c < 0 ? -2 : c;
               } else {
                 machineState = 4;
                 return -2;
@@ -157,13 +153,13 @@ namespace PeterO.Text.Encoders {
     }
 
     private class Encoder : ICharacterEncoder {
-      private int encoderState = 0;
+      private int encoderState;
 
       public Encoder() {
       }
 
       public int Encode(int c, IWriter output) {
-        int count = 0;
+        var count = 0;
         while (true) {
           if (c < 0) {
             if (this.encoderState != 0) {

@@ -11,9 +11,9 @@ using PeterO;
 namespace PeterO.Text {
   internal class StringCharacterInput : ICharacterInput
   {
-    private string str;
+    private readonly string str;
     private int index;
-    private int endIndex;
+    private readonly int endIndex;
 
     public StringCharacterInput(string str) {
       if (str == null) {

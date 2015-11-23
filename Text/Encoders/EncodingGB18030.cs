@@ -221,7 +221,7 @@ namespace PeterO.Text.Encoders {
       if (pointer >= 189000) {
         return 0x10000 + pointer - 189000;
       }
-      int v = -1;
+      var v = -1;
       for (int i = 0; i < gb18030table.Length; i += 2) {
         if (gb18030table[i] <= pointer) {
           v = i;
@@ -247,7 +247,7 @@ namespace PeterO.Text.Encoders {
     if (codepoint == 0xffff) {
  return 39419;
 }
-    int v = -1;
+    var v = -1;
     for (int i = 0; i < gb18030table.Length; i += 2) {
       if (gb18030table[i + 1] <= codepoint) {
         v = i;
@@ -265,7 +265,7 @@ namespace PeterO.Text.Encoders {
 
     private class Decoder : ICharacterDecoder {
       private int gbk1, gbk2, gbk3;
-      private DecoderState state;
+      private readonly DecoderState state;
 
       public Decoder() {
         this.state = new DecoderState(3);
@@ -314,7 +314,7 @@ namespace PeterO.Text.Encoders {
               continue;
             }
             int a1 = this.gbk1;
-            int ap = -1;
+            var ap = -1;
             this.gbk1 = 0;
             c = -1;
             int a2 = (b < 0x7f) ? 0x40 : 0x41;
@@ -344,7 +344,7 @@ namespace PeterO.Text.Encoders {
     }
 
     private class Encoder : ICharacterEncoder {
-      private bool gbk;
+      private readonly bool gbk;
 
       public Encoder(bool gbk) {
         this.gbk = gbk;
@@ -404,7 +404,7 @@ namespace PeterO.Text.Encoders {
       return new Encoder(gbk);
     }
 
-    private ICharacterEncoder enc = GetEncoder2(false);
+    private readonly ICharacterEncoder enc = GetEncoder2(false);
 
     public ICharacterDecoder GetDecoder() {
       return EncodingGB18030.GetDecoder2();

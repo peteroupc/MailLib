@@ -11,7 +11,7 @@ using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
   internal sealed class TransformWithUnget : IByteReader {
-    private IByteReader transform;
+    private readonly IByteReader transform;
     private int lastByte;
     private bool unget;
 

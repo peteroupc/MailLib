@@ -41,9 +41,9 @@ private Idna() {
     private static ByteData bidiClasses;
     private static ByteData joiningTypes;
     private static ByteData scripts;
-    private static Object bidiClassesSync = new Object();
-    private static Object joiningTypesSync = new Object();
-    private static Object scriptsSync = new Object();
+    private static final Object bidiClassesSync = new Object();
+    private static final Object joiningTypesSync = new Object();
+    private static final Object scriptsSync = new Object();
 
     static int CodePointBefore(String str, int index) {
       if (str == null) {

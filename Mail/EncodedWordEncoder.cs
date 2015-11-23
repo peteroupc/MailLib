@@ -14,8 +14,8 @@ namespace PeterO.Mail {
   internal sealed class EncodedWordEncoder {
     private const string HexChars = "0123456789ABCDEF";
 
-    private StringBuilder currentWord;
-    private StringBuilder fullString;
+    private readonly StringBuilder currentWord;
+    private readonly StringBuilder fullString;
     private int spaceCount;
 
     // Doesn't add a space to the beginning of

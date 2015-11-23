@@ -10,7 +10,7 @@ namespace PeterO.Text.Encoders {
     private class DecodeWithFallbackDecoder : ICharacterDecoder,
       ICharacterEncoding {
       private bool bomChecked;
-      private DecoderState state;
+      private readonly DecoderState state;
       private ICharacterDecoder decoder;
 
       public DecodeWithFallbackDecoder(ICharacterEncoding encoding) {
@@ -20,9 +20,9 @@ namespace PeterO.Text.Encoders {
 
       public int ReadChar(IByteReader input) {
         if (!this.bomChecked) {
-          int c = 0;
+          var c = 0;
           var buffer = new int[3];
-          int bufferCount = 0;
+          var bufferCount = 0;
           this.bomChecked = true;
           while (c >= 0 && bufferCount < 3) {
             c = input.ReadByte();
@@ -47,12 +47,16 @@ namespace PeterO.Text.Encoders {
             this.decoder = new EncodingUtf16().GetDecoder();
           } else {
             // No BOM found
-            if (bufferCount == 1) {
-              this.state.PrependOne(buffer[0]);
-            } else if (bufferCount == 2) {
-              this.state.PrependTwo(buffer[0], buffer[1]);
-            } else if (bufferCount == 3) {
-              this.state.PrependThree(buffer[0], buffer[1], buffer[2]);
+            switch (bufferCount) {
+              case 1:
+                this.state.PrependOne(buffer[0]);
+                break;
+              case 2:
+                this.state.PrependTwo(buffer[0], buffer[1]);
+                break;
+              case 3:
+                this.state.PrependThree(buffer[0], buffer[1], buffer[2]);
+                break;
             }
           }
         }
@@ -70,10 +74,10 @@ namespace PeterO.Text.Encoders {
     }
 
     private class BomBufferedTransform : IByteReader {
-      private int[] buffer;
+      private readonly int[] buffer;
       private int bufferOffset;
       private int bufferCount;
-      private IByteReader transform;
+      private readonly IByteReader transform;
       private bool bomChecked;
 
       public BomBufferedTransform(IByteReader transform) {
@@ -82,7 +86,7 @@ namespace PeterO.Text.Encoders {
       }
 
       private void CheckForUtf8BOM() {
-        int c = 0;
+        var c = 0;
         while (c >= 0 && this.bufferCount < 3) {
           c = this.transform.ReadByte();
           if (c >= 0) {
@@ -140,7 +144,7 @@ bomTransform);
       ICharacterInput stream,
       ICharacterEncoding encoding,
       IWriter output) {
-      int total = 0;
+      var total = 0;
       ICharacterEncoder encoder = encoding.GetEncoder();
       // Implements the "encode" algorithm
       // in the Encoding Standard

@@ -12,7 +12,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   public final class BoundaryCheckerTransform implements IByteReader {
-    private IByteReader input;
+    private final IByteReader input;
     private boolean ungetting;
     private int lastByte;
     private byte[] buffer;
@@ -22,7 +22,7 @@ import com.upokecenter.mail.*;
     private boolean readingHeaders;
     private boolean hasNewBodyPart;
     private boolean endOfStream;
-    private ArrayList<String> boundaries;
+    private final ArrayList<String> boundaries;
 
     private void ResizeBuffer(int size) {
       this.buffer = (this.buffer == null) ? ((new byte[size + 10])) : this.buffer;

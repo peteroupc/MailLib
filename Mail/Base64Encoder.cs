@@ -28,11 +28,11 @@ namespace PeterO.Mail {
     private int quantumCount;
     private int byte1;
     private int byte2;
-    private bool padding;
-    private bool lenientLineBreaks;
+    private readonly bool padding;
+    private readonly bool lenientLineBreaks;
     private bool haveCR;
-    private bool unlimitedLineLength;
-    private byte[] alphabet;
+    private readonly bool unlimitedLineLength;
+    private readonly byte[] alphabet;
 
     private bool finalized;
 
@@ -96,7 +96,7 @@ byte[] alphabet) {
     }
 
     private int LineAwareAppend(IWriter output, byte c) {
-      int charCount = 0;
+      var charCount = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= 76) {
           output.WriteByte((byte)0x0d);
@@ -116,8 +116,8 @@ byte c1,
 byte c2,
 byte c3,
 byte c4) {
-      int charCount = 0;
-      byte[] bytes = new byte[6];
+      var charCount = 0;
+      var bytes = new byte[6];
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= 76) {
           // Output CRLF
@@ -166,7 +166,7 @@ output,
     }
 
     private int FinalizeEncoding(IWriter output) {
-      int count = 0;
+      var count = 0;
       if (this.quantumCount == 2) {
         byte c1 = this.alphabet[(this.byte1 >> 2) & 63];
         byte c2 = this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) &
@@ -206,7 +206,7 @@ output,
         return this.finalized ? (-1) : this.FinalizeEncoding(output);
       }
       b &= 0xff;
-      int count = 0;
+      var count = 0;
       if (this.lenientLineBreaks) {
         if (b == 0x0d) {
           // CR

@@ -13,7 +13,8 @@ import org.junit.Test;
         Assert.assertEquals(null, new NamedAddress("", (String)null));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -21,7 +22,8 @@ import org.junit.Test;
         Assert.assertEquals(null, new NamedAddress("", (Address)null));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -29,7 +31,8 @@ import org.junit.Test;
         Assert.assertEquals(null, new NamedAddress("x at example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -37,7 +40,8 @@ import org.junit.Test;
         Assert.assertEquals(null, new NamedAddress("x"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -45,7 +49,8 @@ import org.junit.Test;
         Assert.assertEquals(null, new NamedAddress("x@"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -53,7 +58,8 @@ import org.junit.Test;
         Assert.assertEquals(null, new NamedAddress("@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -61,7 +67,8 @@ import org.junit.Test;
         Assert.assertEquals(null, new NamedAddress("example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -69,7 +76,8 @@ import org.junit.Test;
         Assert.assertEquals(null, new Address((String)null));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -77,7 +85,8 @@ import org.junit.Test;
         Assert.assertEquals(null, new NamedAddress(""));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -213,8 +222,8 @@ stringTemp);
       if (!(na.isGroup()))Assert.fail();
       {
 String stringTemp = na.toString();
-        String s1 = "Group: Me <me@example.com>, Fred <fred@example.com>;";
-Assert.assertEquals(s1, stringTemp);
+      String s1 = "Group: Me <me@example.com>, Fred <fred@example.com>;" ;
+        Assert.assertEquals(s1, stringTemp);
 }
       groupAddr = na.getGroupAddresses();
       Assert.assertEquals(2, groupAddr.size());
@@ -242,7 +251,7 @@ na = new
       {
 String stringTemp = na.toString();
         String s1 = "Group: Me <me@example.com>, somebody@example.com;";
-Assert.assertEquals(s1, stringTemp);
+        Assert.assertEquals(s1, stringTemp);
 }
       groupAddr = na.getGroupAddresses();
       Assert.assertEquals(2, groupAddr.size());

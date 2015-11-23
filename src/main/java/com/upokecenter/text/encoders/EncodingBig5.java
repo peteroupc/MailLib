@@ -7,7 +7,7 @@ import com.upokecenter.text.*;
 
   public class EncodingBig5 implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
-      private DecoderState state;
+      private final DecoderState state;
       private int lead;
 
       public Decoder () {

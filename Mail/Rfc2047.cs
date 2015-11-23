@@ -242,7 +242,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
     string str,
     int index,
     int endIndex) {
-      string specials = "()<>@,;:\\\"/[]?=.";
+      const string specials = "()<>@,;:\\\"/[]?=.";
       int i = index;
       while (i < endIndex) {
         char c = str[i];
@@ -278,13 +278,13 @@ bool inComments) {
 string str,
 int index,
 int endIndex) {
-      int state = 0;
-      int markStart = 0;
-      int wordStart = 0;
-      int charsetStart = -1;
-      int charsetEnd = -1;
-      int dataStart = -1;
-      int encoding = 0;
+      var state = 0;
+      var markStart = 0;
+      var wordStart = 0;
+      var charsetStart = -1;
+      var charsetEnd = -1;
+      var dataStart = -1;
+      var encoding = 0;
       if (str.IndexOf('=') < 0) {
         // Contains no equal sign, and therefore no
         // encoded words
@@ -345,7 +345,7 @@ charsetEnd - charsetStart);
               state = 0;
               index += 2;
               int endData = index;
-              bool acceptedEncodedWord = true;
+              var acceptedEncodedWord = true;
               int asterisk = charset.IndexOf('*');
               string decodedWord = null;
               if (asterisk >= 1) {
@@ -402,18 +402,18 @@ EncodedWordContext context) {
       }
       int start = index;
       var builder = new StringBuilder();
-      bool hasSuspiciousText = false;
-      bool lastWordWasEncodedWord = false;
-      int whitespaceStart = -1;
-      int whitespaceEnd = -1;
-      bool wordsWereDecoded = false;
+      var hasSuspiciousText = false;
+      var lastWordWasEncodedWord = false;
+      var whitespaceStart = -1;
+      var whitespaceEnd = -1;
+      var wordsWereDecoded = false;
       while (index < endIndex) {
-        int charCount = 2;
-        bool acceptedEncodedWord = false;
+        var charCount = 2;
+        var acceptedEncodedWord = false;
         string decodedWord = null;
-        int startIndex = 0;
-        bool havePossibleEncodedWord = false;
-        bool startParen = false;
+        var startIndex = 0;
+        var havePossibleEncodedWord = false;
+        var startParen = false;
         if (index + 1 < endIndex && str[index] == '=' &&
           str[index + 1] == '?') {
           startIndex = index + 2;
@@ -428,7 +428,7 @@ EncodedWordContext context) {
           havePossibleEncodedWord = true;
         }
         if (havePossibleEncodedWord) {
-          bool maybeWord = true;
+          var maybeWord = true;
           int afterLast = endIndex;
           while (index < endIndex) {
             char c = str[index];
@@ -459,9 +459,9 @@ EncodedWordContext context) {
             // (NOTE: Compatible with RFC 2231's addition of language
             // to charset, since charset is defined as a 'token' in
             // RFC 2047, which includes '*')
-            int charsetEnd = -1;
-            int encodedTextStart = -1;
-            bool base64 = false;
+            var charsetEnd = -1;
+            var encodedTextStart = -1;
+            var base64 = false;
             i2 = SkipCharsetOrEncoding(str, index, afterLast);
             if (i2 != index && i2 < endIndex && str[i2] == '?') {
               // Parse encoding
@@ -588,7 +588,7 @@ whitespaceEnd - whitespaceStart));
         }
         whitespaceStart = index;
         // Read to nonwhitespace
-        index = HeaderParser.ParseFWS(str, index, endIndex, null);
+        index = HeaderParser.ParseFWS(str, index, endIndex);
         whitespaceEnd = index;
         if (builder.Length == 0 && oldIndex == 0 && index == str.Length) {
           // Nothing to replace, and the whole string
@@ -700,10 +700,10 @@ string str,
       }
       var builder = new StringBuilder();
       int lastIndex = index;
-      bool appendSpace = false;
+      var appendSpace = false;
       // Get each relevant token sorted by starting index
       foreach (int[] token in tokens) {
-        bool hasCFWS = false;
+        var hasCFWS = false;
     if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
           token[2] >= index && token[2] <= endIndex)) {
           continue;
@@ -850,7 +850,7 @@ EncodedWordContext.Phrase);
           builderPhrase.Append(str.Substring(index, index2 - index));
           index = index2;
         }
-        index2 = HeaderParser.ParseFWS(str, index, endIndex, null);
+        index2 = HeaderParser.ParseFWS(str, index, endIndex);
         if (index2 == endIndex) {
           encoder.AddString(builderPhrase.ToString());
           encoder.FinalizeEncoding();

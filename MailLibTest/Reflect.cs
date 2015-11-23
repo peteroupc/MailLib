@@ -7,7 +7,7 @@ namespace MailLibTest {
     /// <summary>Utility methods for accessing internal APIs via
     /// reflection.</summary>
   public static class Reflect {
-    private static IDictionary<string, Type> typeCache = new
+    private static readonly IDictionary<string, Type> typeCache = new
       Dictionary<string, Type>();
 
     // Check every assembly in the AppDomain; by default,
@@ -18,7 +18,7 @@ namespace MailLibTest {
         return typeCache[type];
       }
       foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-        Type typeObject = Type.GetType(type + "," + assembly.FullName);
+        var typeObject = Type.GetType(type + "," + assembly.FullName);
         if (typeObject != null) {
           typeCache[type] = typeObject;
           return typeObject;
@@ -45,7 +45,7 @@ namespace MailLibTest {
     }
     private static object GetMethodExtended(IReflect type, string name, bool
       staticMethod, int parameterCount) {
-      bool haveMethodName = false;
+      var haveMethodName = false;
       BindingFlags flags = (staticMethod ? BindingFlags.Static :
         BindingFlags.Instance) | BindingFlags.Public |
         BindingFlags.NonPublic | BindingFlags.InvokeMethod;

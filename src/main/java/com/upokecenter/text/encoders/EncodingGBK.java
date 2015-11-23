@@ -6,7 +6,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
   public class EncodingGBK implements ICharacterEncoding {
-    private ICharacterEncoder enc = EncodingGB18030.GetEncoder2(true);
+    private final ICharacterEncoder enc = EncodingGB18030.GetEncoder2(true);
 
     public ICharacterDecoder GetDecoder() {
       return EncodingGB18030.GetDecoder2();

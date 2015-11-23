@@ -29,11 +29,11 @@ import com.upokecenter.text.*;
     private int quantumCount;
     private int byte1;
     private int byte2;
-    private boolean padding;
-    private boolean lenientLineBreaks;
+    private final boolean padding;
+    private final boolean lenientLineBreaks;
     private boolean haveCR;
-    private boolean unlimitedLineLength;
-    private byte[] alphabet;
+    private final boolean unlimitedLineLength;
+    private final byte[] alphabet;
 
     private boolean finalized;
 

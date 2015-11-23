@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace PeterO.Mail {
   internal sealed class Tokener : ITokener, IComparer<int[]> {
-    private List<int[]> tokenStack = new List<int[]>();
+    private readonly List<int[]> tokenStack = new List<int[]>();
 
     public int GetState() {
       return this.tokenStack.Count;

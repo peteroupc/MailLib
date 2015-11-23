@@ -11,7 +11,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   public final class EightBitTransform implements IByteReader {
-    private IByteReader input;
+    private final IByteReader input;
 
     public EightBitTransform (IByteReader stream) {
       this.input = stream;

@@ -15,4 +15,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     String DowngradeFieldValue(String str);
 
     String DecodeEncodedWords(String str);
+
+    String UncommentAndCollapse(String str);
   }

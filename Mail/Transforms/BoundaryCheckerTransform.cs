@@ -12,7 +12,7 @@ using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
   internal sealed class BoundaryCheckerTransform : IByteReader {
-    private IByteReader input;
+    private readonly IByteReader input;
     private bool ungetting;
     private int lastByte;
     private byte[] buffer;
@@ -22,7 +22,7 @@ namespace PeterO.Mail.Transforms {
     private bool readingHeaders;
     private bool hasNewBodyPart;
     private bool endOfStream;
-    private List<string> boundaries;
+    private readonly List<string> boundaries;
 
     private void ResizeBuffer(int size) {
       this.buffer = this.buffer ?? (new byte[size + 10]);
@@ -155,10 +155,10 @@ if (this.bufferCount != 0) {
       }
       #endif
 
-      bool done = false;
+      var done = false;
       while (!done) {
         done = true;
-        int bufferStart = 0;
+        var bufferStart = 0;
         if (includeCrLf) {
           this.ResizeBuffer(3);
           bufferStart = 3;
@@ -177,7 +177,7 @@ if (this.bufferCount != 0) {
         // of a boundary plus 2 bytes for the closing
         // hyphens)
         int c;
-        int bytesRead = 0;
+        var bytesRead = 0;
         for (int i = 0; i < 72; ++i) {
           c = this.lastByte = this.ungetting ? this.lastByte :
             this.input.ReadByte(); this.ungetting = false;
@@ -196,11 +196,11 @@ if (this.bufferCount != 0) {
         // less than 128). Check boundaries from
         // top to bottom in the stack.
         string matchingBoundary = null;
-        int matchingIndex = -1;
+        var matchingIndex = -1;
         for (int i = this.boundaries.Count - 1; i >= 0; --i) {
           string boundary = this.boundaries[i];
           if (!String.IsNullOrEmpty(boundary) && boundary.Length <= bytesRead) {
-            bool match = true;
+            var match = true;
             for (int j = 0; j < boundary.Length; ++j) {
    match &= (boundary[j] & 0xff) == (int)(this.buffer[j + bufferStart] &
                 0xff);
@@ -213,7 +213,7 @@ if (this.bufferCount != 0) {
           }
         }
         if (matchingBoundary != null) {
-          bool closingDelim = false;
+          var closingDelim = false;
           // Pop the stack until the matching body part
           // is on top
           while (this.boundaries.Count > matchingIndex + 1) {

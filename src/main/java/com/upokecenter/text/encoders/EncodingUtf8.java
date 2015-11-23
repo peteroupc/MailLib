@@ -7,10 +7,10 @@ import com.upokecenter.text.*;
 
  public class EncodingUtf8 implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
-      private DecoderState state;
-        private int cp = 0;
-        private int bytesSeen = 0;
-        private int bytesNeeded = 0;
+      private final DecoderState state;
+      private int cp;
+        private int bytesSeen;
+        private int bytesNeeded;
         private int lower = 0x80;
         private int upper = 0xbf;
 
@@ -107,9 +107,9 @@ import com.upokecenter.text.*;
       }
     }
 
-    private Encoder encoder = new Encoder();
+    private final Encoder encoder = new Encoder();
 
-  public ICharacterDecoder GetDecoder() {
+    public ICharacterDecoder GetDecoder() {
     return new Decoder();
   }
 

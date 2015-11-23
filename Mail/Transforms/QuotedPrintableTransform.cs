@@ -12,16 +12,16 @@ using PeterO.Mail;
 namespace PeterO.Mail.Transforms {
   internal sealed class QuotedPrintableTransform : IByteReader {
     private int lineCharCount;
-    private bool lenientLineBreaks;
+    private readonly bool lenientLineBreaks;
     private byte[] buffer;
     private int bufferIndex;
     private int bufferCount;
-    private bool checkStrictEncoding;
-    private int maxLineSize;
+    private readonly bool checkStrictEncoding;
+    private readonly int maxLineSize;
 
     private int lastByte;
     private bool unget;
-    private IByteReader input;
+    private readonly IByteReader input;
 
     public QuotedPrintableTransform(
 IByteReader input,
@@ -101,7 +101,8 @@ false) {
           // End of stream
           return -1;
         }
-        if (!this.checkStrictEncoding && printable[c]==1 && this.maxLineSize< 0) {
+     if (!this.checkStrictEncoding && printable[c]==1 && this.maxLineSize<
+          0) {
           return c;
         }
         if (c == 0x0d) {
@@ -246,7 +247,7 @@ false) {
           // requires decoders to delete spaces and tabs before
           // CRLF, we need to create a lookahead buffer for
           // tabs and spaces read to see if they precede CRLF.
-          int spaceCount = 1;
+          var spaceCount = 1;
           if (this.maxLineSize >= 0) {
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {
@@ -271,7 +272,7 @@ false) {
             }
             return c;
           }
-          bool endsWithLineBreak = false;
+          var endsWithLineBreak = false;
           while (true) {
             if ((c2 == '\n' && this.lenientLineBreaks) || c2 < 0) {
               // EOF, or LF with lenient line breaks

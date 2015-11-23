@@ -28,8 +28,8 @@ namespace PeterO.Text.Encoders {
       }
     }
 
-    private Encoder encoder;
-    private Decoder decoder;
+    private readonly Encoder encoder;
+    private readonly Decoder decoder;
 
     public EncodingAscii() {
       this.encoder = new Encoder();

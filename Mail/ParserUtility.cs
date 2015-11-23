@@ -57,7 +57,7 @@ prefix.Length).Equals(prefix);
       if (string.IsNullOrEmpty(str)) {
         return str;
       }
-      int index = 0;
+      var index = 0;
       int valueSLength = str.Length;
       while (index < valueSLength) {
         char c = str[index];
@@ -68,6 +68,44 @@ prefix.Length).Equals(prefix);
       }
       return (index == valueSLength) ? String.Empty : ((index == 0) ? str :
         str.Substring(index));
+    }
+
+    public static string CollapseSpaceAndTab(string str) {
+      if (string.IsNullOrEmpty(str)) {
+        return str;
+      }
+      StringBuilder builder = null;
+      var index = 0;
+      while (index < str.Length) {
+        int si = index;
+        char c = str[index++];
+        bool isspace = (c == 0x20);
+        var count = 0;
+        while (c == 0x09 || c == 0x20) {
+          ++count;
+          if (index < str.Length) {
+            c = str[index++];
+          } else {
+            break;
+          }
+        }
+        if (count > 0 && !(isspace && count == 1)) {
+          if (builder == null) {
+            // create the builder lazily, in case
+            // it's rare to pass strings with
+            // spaces (other than a single space)
+            // to this method
+            builder = new StringBuilder();
+            builder.Append(str.Substring(0, si));
+          }
+          builder.Append(' ');
+        } else {
+          if (builder != null) {
+            builder.Append(c);
+          }
+        }
+      }
+      return (builder == null) ? str : builder.ToString();
     }
 
     public static string TrimSpaceAndTabRight(string str) {
@@ -153,8 +191,8 @@ StringBuilder sb) {
       if (string.IsNullOrEmpty(str)) {
         return new[] { String.Empty };
       }
-      int index = 0;
-      bool first = true;
+      var index = 0;
+      var first = true;
       List<string> strings = null;
       int delimLength = delimiter.Length;
       while (true) {
@@ -183,7 +221,7 @@ StringBuilder sb) {
       if (String.IsNullOrEmpty(str)) {
         return false;
       }
-      int index = 0;
+      var index = 0;
       int endIndex = str.Length;
       int startIndex = index;
       if (index + 1 < endIndex) {
@@ -233,7 +271,7 @@ str.Substring(startIndex, endIndex - startIndex),
           if (splitString.Length == 0) {
             return false;
           }
-          int splitIndex = 0;
+          var splitIndex = 0;
           int splitLength = splitString.Length;
           int len = lengthIfAllAlpha(splitString[splitIndex]);
           if (len < 2 || len > 8) {
@@ -315,7 +353,7 @@ str.Substring(startIndex, endIndex - startIndex),
                 return false;  // extension already exists
               }
               ++splitIndex;
-              bool havetoken = false;
+              var havetoken = false;
               while (splitIndex < splitLength) {
                 curString = splitString[splitIndex];
                 len = lengthIfAllAlphaNum(curString);
@@ -339,7 +377,7 @@ str.Substring(startIndex, endIndex - startIndex),
             int curIndex = splitIndex;
             if (splitString[splitIndex].Equals("x")) {
               ++splitIndex;
-              bool havetoken = false;
+              var havetoken = false;
               while (splitIndex < splitLength) {
                 len = lengthIfAllAlphaNum(splitString[splitIndex]);
                 if (len >= 1 && len <= 8) {
@@ -361,7 +399,7 @@ str.Substring(startIndex, endIndex - startIndex),
           // private use
           ++index;
           while (index < endIndex) {
-            int count = 0;
+            var count = 0;
             if (str[index] != '-') {
               return false;
             }

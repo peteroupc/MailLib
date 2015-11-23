@@ -144,7 +144,8 @@ import com.upokecenter.mail.*;
                     true))));
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -153,7 +154,8 @@ import com.upokecenter.mail.*;
                     true))));
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -162,7 +164,8 @@ import com.upokecenter.mail.*;
                     true))));
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -171,7 +174,8 @@ import com.upokecenter.mail.*;
                     true))));
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -720,7 +724,8 @@ import com.upokecenter.mail.*;
         new Message().SetHeader("from", "\"a\r\nb\" <x@example.com>");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -728,7 +733,8 @@ import com.upokecenter.mail.*;
         new Message().SetHeader("from", "\"a\rb\" <x@example.com>");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -736,7 +742,8 @@ import com.upokecenter.mail.*;
         new Message().SetHeader("from", "\"a\r b\" <x@example.com>");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -744,7 +751,8 @@ import com.upokecenter.mail.*;
         new Message().SetHeader("from", "\"a\r\n b\" <x@example.com");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -758,7 +766,8 @@ import com.upokecenter.mail.*;
         new Message().SetHeader("from", "=?utf-8?q?=01?= <x@example.com");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -772,7 +781,8 @@ import com.upokecenter.mail.*;
         new Message().SetHeader("from", "\"a\nb\" <x@example.com>");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -780,7 +790,8 @@ import com.upokecenter.mail.*;
         new Message().SetHeader("from", "\"a\0b\" <x@example.com>");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -797,7 +808,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address(""));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -805,7 +817,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address("a b@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -813,7 +826,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new NamedAddress("a b@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -821,7 +835,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new NamedAddress("ab.example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -829,7 +844,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address("ab@exa mple.example"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -837,7 +853,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address("ab@example.com addr"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -876,7 +893,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address("Me <me@example.com>"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -884,7 +902,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address("Me\u00e0 <me@example.com>"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -892,7 +911,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address("\"Me\" <me@example.com>"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -900,7 +920,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address("\"Me\u00e0\" <me@example.com>"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -909,7 +930,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new NamedAddress(st));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -993,7 +1015,8 @@ import com.upokecenter.mail.*;
         msg.SetHeader(0, (String)null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1001,7 +1024,8 @@ import com.upokecenter.mail.*;
         msg.SetHeader(0, null, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1009,7 +1033,8 @@ import com.upokecenter.mail.*;
         msg.AddHeader(null, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1017,7 +1042,8 @@ import com.upokecenter.mail.*;
         msg.SetHeader(-1, "me@example.com");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1025,7 +1051,8 @@ import com.upokecenter.mail.*;
         msg.SetHeader(-1, "To", "me@example.com");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1033,7 +1060,8 @@ import com.upokecenter.mail.*;
         msg.GetHeader(-1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1041,7 +1069,8 @@ import com.upokecenter.mail.*;
         msg.RemoveHeader(-1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1049,7 +1078,8 @@ import com.upokecenter.mail.*;
 
     @Test
     public void TestMessageTests() {
-      String multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n"
+      String multipart =
+        "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n"
         ;
       String msg;
       msg = multipart +
@@ -1124,7 +1154,8 @@ import com.upokecenter.mail.*;
       // The following tests currently fail, since I
       // don't know the best way to handle these cases
       // without being too lenient
-      String multipart = "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n"
+      String multipart =
+        "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n"
         ;
       String msg;
       // Multipart message with base64
@@ -1266,7 +1297,8 @@ import com.upokecenter.mail.*;
 
     @Test
     public void TestMailbox() {
-      String mbox = "Me <@example.org,@example.net,@example.com:me@x.example>";
+String mbox =
+        "Me <@example.org,@example.net,@example.com:me@x.example>" ;
       NamedAddress result = new NamedAddress(mbox);
       {
         String stringTemp = result.toString();
@@ -1450,7 +1482,8 @@ import com.upokecenter.mail.*;
         MediaType.TextPlainAscii.GetParameter(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1458,7 +1491,8 @@ import com.upokecenter.mail.*;
         MediaType.TextPlainAscii.GetParameter("");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1466,7 +1500,8 @@ import com.upokecenter.mail.*;
         MediaType.Parse(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1493,7 +1528,8 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new MediaTypeBuilder(null));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1502,7 +1538,8 @@ import com.upokecenter.mail.*;
         builder.SetTopLevelType(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1510,7 +1547,8 @@ import com.upokecenter.mail.*;
         builder.SetParameter(null, "v");
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1518,7 +1556,8 @@ import com.upokecenter.mail.*;
         builder.SetParameter(null, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1526,7 +1565,8 @@ import com.upokecenter.mail.*;
         builder.SetParameter("", "v");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1534,7 +1574,8 @@ import com.upokecenter.mail.*;
         builder.SetParameter("v", null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1542,7 +1583,8 @@ import com.upokecenter.mail.*;
         builder.SetTopLevelType("");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1550,7 +1592,8 @@ import com.upokecenter.mail.*;
         builder.SetTopLevelType("e=");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1558,7 +1601,8 @@ import com.upokecenter.mail.*;
         builder.SetTopLevelType("e/e");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1566,7 +1610,8 @@ import com.upokecenter.mail.*;
         new MediaTypeBuilder().SetSubType(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1574,7 +1619,8 @@ import com.upokecenter.mail.*;
         new MediaTypeBuilder().RemoveParameter(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1594,7 +1640,8 @@ import com.upokecenter.mail.*;
         new MediaTypeBuilder().SetSubType("");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1602,7 +1649,8 @@ import com.upokecenter.mail.*;
         new MediaTypeBuilder().SetSubType("x;y");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1610,7 +1658,8 @@ import com.upokecenter.mail.*;
         new MediaTypeBuilder().SetSubType("x/y");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1624,7 +1673,8 @@ import com.upokecenter.mail.*;
         new MediaTypeBuilder().SetParameter("x;y", "v");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1632,7 +1682,8 @@ import com.upokecenter.mail.*;
         new MediaTypeBuilder().SetParameter("x/y", "v");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1691,7 +1742,7 @@ MessageFromString(MessageFromString(msg) .Generate())
     @Test
     public void TestFWSAtSubjectEnd() {
       Message msg;
-      String str="From: me@example.com\r\nSubject: Test\r\n " +
+      String str = "From: me@example.com\r\nSubject: Test\r\n " +
         "\r\nX-Header: Header\r\n\r\nBody";
       msg = MessageFromString(str);
       {
@@ -1756,6 +1807,7 @@ stringTemp);
 Assert.assertEquals(null, new Message((InputStream)null));
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1764,6 +1816,7 @@ throw new IllegalStateException("", ex);
 Assert.assertEquals(null, new Message((byte[])null));
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1797,6 +1850,7 @@ throw new IllegalStateException("", ex);
  msg.setContentType(null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1839,12 +1893,13 @@ throw new IllegalStateException("", ex);
     }
     @Test
     public void TestGetHeader() {
-      String str="From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      String str = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
       Message msg = MessageFromString(str);
       try {
  msg.GetHeader(2);
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1853,7 +1908,8 @@ throw new IllegalStateException("", ex);
         new Message().GetHeader(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1868,12 +1924,13 @@ throw new IllegalStateException("", ex);
     }
     @Test
     public void TestRemoveHeader() {
-      String str="From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      String str = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
       Message msg = MessageFromString(str);
       try {
  msg.RemoveHeader(2);
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1885,19 +1942,21 @@ throw new IllegalStateException("", ex);
         new Message().SetBody(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
     }
     @Test
     public void TestSetHeader3() {
-      String str="From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      String str = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
       Message msg = MessageFromString(str);
       try {
  msg.SetHeader(2,"X-Header2","2");
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1906,6 +1965,7 @@ throw new IllegalStateException("", ex);
  msg.SetHeader(2,"2");
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1914,6 +1974,7 @@ throw new IllegalStateException("", ex);
         msg.SetHeader(1, (String)null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1931,6 +1992,7 @@ throw new IllegalStateException("", ex);
  msg.SetHtmlBody(null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);

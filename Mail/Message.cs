@@ -88,9 +88,9 @@ namespace PeterO.Mail {
     private const int EncodingBase64 = 2;
     private const bool UseLenientLineBreaks = true;
 
-    private IList<string> headers;
+    private readonly IList<string> headers;
 
-    private IList<Message> parts;
+    private readonly IList<Message> parts;
 
     /// <summary>Gets a list of all the parts of this message. This list is
     /// editable. This will only be used if the message is a multipart
@@ -386,7 +386,7 @@ namespace PeterO.Mail {
 
     private bool IsValidAddressingField(string name) {
       name = DataUtilities.ToLowerCaseAscii(name);
-      bool have = false;
+      var have = false;
       for (int i = 0; i < this.headers.Count; i += 2) {
         if (this.headers[i].Equals(name)) {
           if (have) {
@@ -508,7 +508,7 @@ namespace PeterO.Mail {
         }
         return Encodings.DecodeToString(
           charset,
-          DataIO.ToTransform(this.body));
+          DataIO.ToByteReader(this.body));
       }
     }
 
@@ -524,7 +524,7 @@ namespace PeterO.Mail {
       this.headers = new List<string>();
       this.parts = new List<Message>();
       this.body = new byte[0];
-      IByteReader transform = DataIO.ToTransform(stream);
+      IByteReader transform = DataIO.ToByteReader(stream);
       // if (useLenientLineBreaks) {
       // TODO: Might not be correct if the transfer
       // encoding turns out to be binary
@@ -545,7 +545,7 @@ namespace PeterO.Mail {
       this.headers = new List<string>();
       this.parts = new List<Message>();
       this.body = new byte[0];
-      IByteReader transform = DataIO.ToTransform(bytes);
+      IByteReader transform = DataIO.ToByteReader(bytes);
       this.ReadMessage(transform);
     }
 
@@ -565,15 +565,15 @@ namespace PeterO.Mail {
       this.headers.Add("1.0");
     }
 
-    private static Random msgidRandom = new Random();
+    private static readonly Random msgidRandom = new Random();
     private static bool seqFirstTime = true;
     private static int msgidSequence;
-    private static object sequenceSync = new Object();
+    private static readonly object sequenceSync = new Object();
 
     private string GenerateMessageID() {
       long ticks = DateTime.UtcNow.Ticks;
       var builder = new StringBuilder();
-      int seq = 0;
+      var seq = 0;
       builder.Append("<");
       lock (sequenceSync) {
         if (seqFirstTime) {
@@ -585,7 +585,7 @@ namespace PeterO.Mail {
         seq = unchecked(msgidSequence++);
       }
       string guid = Guid.NewGuid().ToString();
-      string hex = "0123456789abcdef";
+      const string hex = "0123456789abcdef";
       for (int i = 0; i < 16; ++i) {
         builder.Append(hex[(int)(ticks & 15)]);
         ticks >>= 4;
@@ -700,15 +700,15 @@ namespace PeterO.Mail {
         ContentDisposition disp = this.contentDisposition;
         return (disp != null) ?
           ContentDisposition.MakeFilename(disp.GetParameter("filename")) :
-        ContentDisposition.MakeFilename(this.contentType.GetParameter("name"
-));
+        ContentDisposition.MakeFilename(this.contentType.GetParameter(
+"name"));
       }
     }
 
     private void ProcessHeaders(bool assumeMime, bool digest) {
-      bool haveContentType = false;
+      var haveContentType = false;
       bool mime = assumeMime;
-      bool haveContentDisp = false;
+      var haveContentDisp = false;
       string transferEncodingValue = String.Empty;
       for (int i = 0; i < this.headers.Count; i += 2) {
         string name = this.headers[i];
@@ -729,8 +729,7 @@ namespace PeterO.Mail {
               endIndex,
               value.Length,
               null) == value.Length) ? value.Substring(startIndex, endIndex -
-                startIndex) :
-            String.Empty;
+                startIndex) : String.Empty;
         }
         mime |= name.Equals("mime-version");
         if (value.IndexOf("=?", StringComparison.Ordinal) >= 0) {
@@ -742,8 +741,8 @@ namespace PeterO.Mail {
       }
       this.contentType = digest ? MediaType.MessageRfc822 :
         MediaType.TextPlainAscii;
-      bool haveInvalid = false;
-      bool haveContentEncoding = false;
+      var haveInvalid = false;
+      var haveContentEncoding = false;
       for (int i = 0; i < this.headers.Count; i += 2) {
         string name = this.headers[i];
         string value = this.headers[i + 1];
@@ -865,7 +864,7 @@ namespace PeterO.Mail {
         if (!(
           (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <=
             '9') || c == 0x20 || c == 0x2c || "'()-./+_:=?" .IndexOf(c) >=
-                      0)) {
+                    0)) {
           return false;
         }
       }
@@ -901,7 +900,7 @@ namespace PeterO.Mail {
         return strings[0];
       }
       var sb = new StringBuilder();
-      bool first = true;
+      var first = true;
       foreach (string s in strings) {
         if (!first) {
           sb.Append(delim);
@@ -931,9 +930,9 @@ namespace PeterO.Mail {
     // LF, and/or TAB
     internal static bool CanOutputRaw(string s) {
       int len = s.Length;
-      int chunkLength = 0;
-      bool maybe = false;
-      bool firstColon = true;
+      var chunkLength = 0;
+      var maybe = false;
+      var firstColon = true;
       for (int i = 0; i < len; ++i) {
         char c = s[i];
         if (c == ':' && firstColon) {
@@ -972,7 +971,7 @@ namespace PeterO.Mail {
 
     private static string Capitalize(string s) {
       var builder = new StringBuilder();
-      bool afterHyphen = true;
+      var afterHyphen = true;
       for (int i = 0; i < s.Length; ++i) {
         if (afterHyphen && s[i] >= 'a' && s[i] <= 'z') {
           builder.Append((char)(s[i] - 0x20));
@@ -996,7 +995,7 @@ namespace PeterO.Mail {
 
     internal static bool HasTextToEscape(string s, int index, int endIndex) {
       int len = endIndex;
-      int chunkLength = 0;
+      var chunkLength = 0;
       for (int i = index; i < endIndex; ++i) {
         char c = s[i];
         if (c == '=' && i + 1 < len && c == '?') {
@@ -1043,7 +1042,7 @@ namespace PeterO.Mail {
       int index,
       int endIndex) {
       int len = endIndex;
-      int chunkLength = 0;
+      var chunkLength = 0;
 
       for (int i = index; i < endIndex; ++i) {
         char c = s[i];
@@ -1102,13 +1101,11 @@ namespace PeterO.Mail {
                   do {
                     int indexStart4 = index;
                while (index < endIndex && ((str[index] == 32) || (str[index]
-                      ==
-                    9))) {
+                == 9))) {
                     ++index;
                     }
               if (index + 1 < endIndex && str[index] == 13 && str[index + 1]
-                      ==
-                    10) {
+                == 10) {
                     index += 2;
                     } else {
                     index = indexStart4; break;
@@ -1126,8 +1123,7 @@ namespace PeterO.Mail {
                     9))) {
                   ++index;
                while (index < endIndex && ((str[index] == 32) || (str[index]
-                    ==
-                    9))) {
+                == 9))) {
                     ++index;
                   }
                 } else {
@@ -1206,8 +1202,7 @@ namespace PeterO.Mail {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
-       throw new
-            ArgumentException("Header field value contains invalid text");
+       throw new ArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.Length, null) != value.Length) {
           throw new
@@ -1275,9 +1270,9 @@ namespace PeterO.Mail {
         return EncodingSevenBit;
       }
       int lengthCheck = Math.Min(body.Length, 4096);
-      int highBytes = 0;
-      int ctlBytes = 0;
-      int lineLength = 0;
+      var highBytes = 0;
+      var ctlBytes = 0;
+      var lineLength = 0;
       bool allTextBytes = !isBodyPart;
       for (int i = 0; i < lengthCheck; ++i) {
         if ((body[i] & 0x80) != 0) {
@@ -1287,9 +1282,8 @@ namespace PeterO.Mail {
           allTextBytes = false;
           ++ctlBytes;
         } else if (body[i] == 0x7f ||
-            (body[i] < 0x20 && body[i] != 0x0d && body[i] != 0x0a && body[i]
-                     !=
-                    0x09)) {
+            (body[i] < 0x20 && body[i] != 0x0d && body[i] != 0x0a && body[i]!=
+                0x09)) {
           allTextBytes = false;
           ++ctlBytes;
         } else if (body[i] == (byte)'\r') {
@@ -1339,10 +1333,10 @@ namespace PeterO.Mail {
       if (bytes == null || bytes.Length == 0) {
         return true;
       }
-      int lineLength = 0;
-      int index = 0;
+      var lineLength = 0;
+      var index = 0;
       int endIndex = bytes.Length;
-      bool headers = true;
+      var headers = true;
       while (index < endIndex) {
         int c = ((int)bytes[index]) & 0xff;
         if (c >= 0x80) {
@@ -1405,7 +1399,7 @@ namespace PeterO.Mail {
 
     private static string GenerateBoundary(int num) {
       var sb = new StringBuilder();
-      string hex = "0123456789ABCDEF";
+      const string hex = "0123456789ABCDEF";
       sb.Append("=_Boundary");
       for (int i = 0; i < 4; ++i) {
         int b = (num >> 56) & 255;
@@ -1444,7 +1438,7 @@ namespace PeterO.Mail {
       return dict;
     }
 
-    private static IDictionary<string, int> valueHeaderIndices =
+    private static readonly IDictionary<string, int> valueHeaderIndices =
       MakeHeaderIndices();
 
     private static void AppendAscii(IWriter output, string str) {
@@ -1459,18 +1453,18 @@ namespace PeterO.Mail {
 
     private void Generate(IWriter output, int depth) {
       var sb = new StringBuilder();
-      bool haveMimeVersion = false;
-      bool haveContentEncoding = false;
-      bool haveContentType = false;
-      bool haveContentDisp = false;
-      bool haveMsgId = false;
+      var haveMimeVersion = false;
+      var haveContentEncoding = false;
+      var haveContentType = false;
+      var haveContentDisp = false;
+      var haveMsgId = false;
       var haveHeaders = new bool[11];
       byte[] bodyToWrite = this.body;
       var builder = new MediaTypeBuilder(this.ContentType);
       string contentDisp = (this.ContentDisposition == null) ? null :
         this.ContentDisposition.ToString();
-      int transferEnc = 0;
-      bool isMultipart = false;
+      var transferEnc = 0;
+      var isMultipart = false;
       string boundary = String.Empty;
       if (builder.IsMultipart) {
         boundary = GenerateBoundary(depth);
@@ -1499,18 +1493,15 @@ namespace PeterO.Mail {
         }
       }
       string topLevel = builder.TopLevelType;
-      if (topLevel.Equals("message") || topLevel.Equals("multipart")) {
-        transferEnc = (topLevel.Equals("multipart") || (
+      transferEnc = topLevel.Equals("message") ||
+        topLevel.Equals("multipart") ? (topLevel.Equals("multipart") || (
           !builder.SubType.Equals("global") &&
           !builder.SubType.Equals("global-headers") &&
           !builder.SubType.Equals("global-disposition-notification") &&
           !builder.SubType.Equals("global-delivery-status"))) ?
           EncodingSevenBit : TransferEncodingToUse(
             bodyToWrite,
-            depth > 0);
-      } else {
-        transferEnc = TransferEncodingToUse(bodyToWrite, depth > 0);
-      }
+            depth > 0) : TransferEncodingToUse(bodyToWrite, depth > 0);
       string encodingString = "7bit";
       if (transferEnc == EncodingBase64) {
         encodingString = "base64";
@@ -1680,7 +1671,7 @@ namespace PeterO.Mail {
       // Write the body
       AppendAscii(output, "\r\n");
       if (!isMultipart) {
-        int index = 0;
+        var index = 0;
         while (true) {
           int c = (index >= bodyToWrite.Length) ? -1 :
             ((int)bodyToWrite[index++]) & 0xff;
@@ -1707,12 +1698,12 @@ namespace PeterO.Mail {
       if (stream == null) {
         throw new ArgumentNullException("stream");
       }
-      int cp = 0;
-      int bytesSeen = 0;
-      int bytesNeeded = 0;
+      var cp = 0;
+      var bytesSeen = 0;
+      var bytesNeeded = 0;
       int lower = 0x80;
       int upper = 0xbf;
-      int read = 0;
+      var read = 0;
       while (true) {
         int b = stream.ReadByte();
         ++read;
@@ -1793,7 +1784,7 @@ namespace PeterO.Mail {
         bool isUtf8 = typeEnd - index == 5 &&
           (headerValue[index] & ~0x20) == 'U' && (headerValue[index +
                1] & ~0x20) == 'T' && (headerValue[index + 2] & ~0x20) == 'F'
-                      &&
+                    &&
           headerValue[index + 3] == '-' && headerValue[index + 4] == '8';
         atomText = HeaderParser.ParseCFWS(
           headerValue,
@@ -1810,7 +1801,7 @@ namespace PeterO.Mail {
           if (isUtf8) {
             // Downgrade the non-ASCII characters in the address
             var builder = new StringBuilder();
-            string hex = "0123456789ABCDEF";
+            const string hex = "0123456789ABCDEF";
             for (int i = atomText + 1; i < headerValue.Length; ++i) {
               if (headerValue[i] < 0x80) {
                 builder.Append(headerValue[i]);
@@ -1862,19 +1853,18 @@ namespace PeterO.Mail {
     // Parse the delivery status byte array to downgrade
     // the Original-Recipient and Final-Recipient header fields
     internal static byte[] DowngradeDeliveryStatus(byte[] bytes) {
-      // int lineCount = 0;
       var sb = new StringBuilder();
-      int index = 0;
+      var index = 0;
       int endIndex = bytes.Length;
-      int lastIndex = -1;
+      var lastIndex = -1;
       ArrayWriter writer = null;
       while (index < endIndex) {
         sb.Remove(0, sb.Length);
-        bool first = true;
+        var first = true;
         int headerNameStart = index;
         int headerNameEnd = index;
         // lineCount = 0;
-        bool endOfHeaders = false;
+        var endOfHeaders = false;
         while (true) {
           if (index >= endIndex) {
             // All headers read
@@ -1947,9 +1937,9 @@ namespace PeterO.Mail {
               // lineCount = 0;
               // Parse obsolete folding whitespace (obs-fws) under RFC5322
               // (parsed according to errata), same as LWSP in RFC5234
-              bool fwsFirst = true;
-              bool haveFWS = false;
-              bool lineStart = true;
+              var fwsFirst = true;
+              var haveFWS = false;
+              var lineStart = true;
               while (true) {
                 // Skip the CRLF pair, if any (except if iterating for
                 // the first time, since CRLF was already parsed)
@@ -2022,14 +2012,9 @@ namespace PeterO.Mail {
               writer.Write(bytes, lastIndex, headerNameStart - lastIndex);
             }
             WordWrapEncoder encoder = null;
-            if (status[0] == 2) {
-              encoder = new WordWrapEncoder((origRecipient ?
-                 "Downgraded-Original-Recipient" :
-                      "Downgraded-Final-Recipient"
-) + ":");
-            } else {
-              encoder = new WordWrapEncoder(origFieldName);
-            }
+            encoder = status[0] == 2 ? new WordWrapEncoder((origRecipient ?
+                "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient"
+) + ":") : new WordWrapEncoder(origFieldName);
             encoder.AddString(headerValue);
             byte[] newBytes = DataUtilities.GetUtf8Bytes(
               encoder.ToString(),
@@ -2050,15 +2035,15 @@ namespace PeterO.Mail {
       IByteReader stream,
       ICollection<string> headerList,
       bool start) {
-      int lineCount = 0;
+      var lineCount = 0;
       var bytesRead = new int[1];
       var sb = new StringBuilder();
       var ungetStream = new TransformWithUnget(stream);
       while (true) {
         sb.Remove(0, sb.Length);
-        bool first = true;
-        bool endOfHeaders = false;
-        bool wsp = false;
+        var first = true;
+        var endOfHeaders = false;
+        var wsp = false;
         lineCount = 0;
         while (true) {
           int c = ungetStream.ReadByte();
@@ -2150,8 +2135,8 @@ namespace PeterO.Mail {
               lineCount = 0;
               // Parse obsolete folding whitespace (obs-fws) under RFC5322
               // (parsed according to errata), same as LWSP in RFC5234
-              bool fwsFirst = true;
-              bool haveFWS = false;
+              var fwsFirst = true;
+              var haveFWS = false;
               while (true) {
                 // Skip the CRLF pair, if any (except if iterating for
                 // the first time, since CRLF was already parsed)
@@ -2275,9 +2260,8 @@ namespace PeterO.Mail {
           }
           if (!IsWellFormedBoundary(newBoundary)) {
             throw new
-  MessageDataException("Multipart message has an invalid boundary defined: "
-                +
-                    newBoundary);
+  MessageDataException("Multipart message has an invalid boundary defined: "+
+                newBoundary);
           }
         }
         this.boundary = newBoundary;
@@ -2299,12 +2283,12 @@ namespace PeterO.Mail {
       boundaryChecker.PushBoundary(entry.Boundary);
       Message leaf = null;
       var buffer = new byte[8192];
-      int bufferCount = 0;
+      var bufferCount = 0;
       int bufferLength = buffer.Length;
       this.body = new byte[0];
       using (var ms = new MemoryStream()) {
         while (true) {
-          int ch = 0;
+          var ch = 0;
           try {
             ch = currentTransform.ReadByte();
           } catch (MessageDataException ex) {
@@ -2335,8 +2319,7 @@ namespace PeterO.Mail {
 #if DEBUG
               if (multipartStack.Count < stackCount) {
   throw new ArgumentException("multipartStack.Count (" +
-                  multipartStack.Count +
-                    ") is less than " + stackCount);
+                multipartStack.Count + ") is less than " + stackCount);
               }
 #endif
               if (leaf != null) {
@@ -2404,29 +2387,34 @@ namespace PeterO.Mail {
       int encoding,
       bool useLiberalSevenBit) {
       IByteReader transform = new EightBitTransform(stream);
-      if (encoding == EncodingQuotedPrintable) {
-        // NOTE: The max line size is actually 76, but some emails
-        // have lines that exceed this size, so use an unlimited line length
-        // when parsing
-        transform = new QuotedPrintableTransform(stream, false, -1);
-        // transform = new QuotedPrintableTransform(stream, false, 76, true);
-      } else if (encoding == EncodingBase64) {
-        // NOTE: Same as quoted-printable regarding line length
-        transform = new Base64Transform(stream, false, -1, false);
-        // transform = new Base64Transform(stream, false, 76, true);
-      } else if (encoding == EncodingEightBit) {
-        transform = new EightBitTransform(stream);
-      } else if (encoding == EncodingBinary) {
-        transform = stream;
-      } else if (encoding == EncodingSevenBit) {
-        // DEVIATION: Replace 8-bit bytes and null with the
-        // ASCII substitute character (0x1a) for text/plain messages,
-        // non-MIME messages, and the preamble and epilogue of multipart
-        // messages (which will be ignored).
-        transform = useLiberalSevenBit ?
-          ((IByteReader)new LiberalSevenBitTransform(stream)) :
-          ((IByteReader)new SevenBitTransform(stream));
+      switch (encoding) {
+        case EncodingQuotedPrintable:
+          // NOTE: The max line size is actually 76, but some emails
+          // have lines that exceed this size, so use an unlimited line length
+          // when parsing
+          transform = new QuotedPrintableTransform(stream, false, -1);
+          break;
+        case EncodingBase64:
+          // NOTE: Same as quoted-printable regarding line length
+          transform = new Base64Transform(stream, false, -1, false);
+          break;
+        case EncodingEightBit:
+          transform = new EightBitTransform(stream);
+          break;
+        case EncodingBinary:
+          transform = stream;
+          break;
+        case EncodingSevenBit:
+          // DEVIATION: Replace 8-bit bytes and null with the
+          // ASCII substitute character (0x1a) for text/plain messages,
+          // non-MIME messages, and the preamble and epilogue of multipart
+          // messages (which will be ignored).
+          transform = useLiberalSevenBit ?
+            ((IByteReader)new LiberalSevenBitTransform(stream)) :
+            ((IByteReader)new SevenBitTransform(stream));
+          break;
       }
+
       return transform;
     }
 
@@ -2436,11 +2424,11 @@ namespace PeterO.Mail {
         this.transferEncoding,
         this.ContentType.TypeAndSubType.Equals("text/plain"));
       var buffer = new byte[8192];
-      int bufferCount = 0;
+      var bufferCount = 0;
       int bufferLength = buffer.Length;
       using (var ms = new MemoryStream()) {
         while (true) {
-          int ch = 0;
+          var ch = 0;
           try {
             ch = transform.ReadByte();
           } catch (MessageDataException ex) {
@@ -2456,7 +2444,7 @@ namespace PeterO.Mail {
             string transferEnc = this.GetHeader("content-transfer-encoding");
             valueExMessage += " [" + ss + "] [type=" + (this.ContentType ??
                 MediaType.TextPlainAscii) + "] [encoding=" + transferEnc +
-                      "]" ;
+                    "]" ;
             valueExMessage = valueExMessage.Replace('\r', ' ')
               .Replace('\n', ' ') .Replace('\0', ' ');
 #endif

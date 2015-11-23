@@ -2,7 +2,7 @@ using System;
 
 namespace PeterO.Text {
   internal sealed class ByteData {
-    private byte[] array;
+    private readonly byte[] array;
 
     public static ByteData Decompress(byte[] data) {
       return new ByteData(Lz4.Decompress(data));

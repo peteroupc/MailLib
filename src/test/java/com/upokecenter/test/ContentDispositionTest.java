@@ -54,7 +54,8 @@ import org.junit.Test;
       try {
  ContentDisposition.Parse(null);
 Assert.fail("Should have failed");
-} catch (NullPointerException ex) {
+} catch(NullPointerException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);

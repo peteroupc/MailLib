@@ -7,10 +7,10 @@ using PeterO.Text;
 namespace PeterO.Text.Encoders {
  internal class EncodingUtf8 : ICharacterEncoding {
     private class Decoder : ICharacterDecoder {
-      private DecoderState state;
-        private int cp = 0;
-        private int bytesSeen = 0;
-        private int bytesNeeded = 0;
+      private readonly DecoderState state;
+      private int cp;
+        private int bytesSeen;
+        private int bytesNeeded;
         private int lower = 0x80;
         private int upper = 0xbf;
 
@@ -83,7 +83,7 @@ namespace PeterO.Text.Encoders {
           return 1;
         }
         var bytes = new byte[4];
-        int byteIndex = 0;
+        var byteIndex = 0;
         if (c <= 0x7ff) {
           bytes[byteIndex++] = (byte)(0xc0 | ((c >> 6) & 0x1f));
           bytes[byteIndex++] = (byte)(0x80 | (c & 0x3f));
@@ -107,9 +107,9 @@ namespace PeterO.Text.Encoders {
       }
     }
 
-    private Encoder encoder = new Encoder();
+    private readonly Encoder encoder = new Encoder();
 
-  public ICharacterDecoder GetDecoder() {
+    public ICharacterDecoder GetDecoder() {
     return new Decoder();
   }
 

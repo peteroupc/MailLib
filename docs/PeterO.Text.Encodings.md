@@ -360,7 +360,9 @@ Resolves a character encoding's name to a standard form.
 
  *  `utf-16be`  - UTF-16 big-endian (16-bit UCS)
 
- * Two special purpose encodings:  `x-user-defined`  and `replacement`
+ * The special-purpose encoding  `x-user-defined`
+
+ * The special-purpose encoding  `replacement` , which this function returns only if one of several aliases are passed to it, as defined in the Encoding Standard.
 
  * 28 legacy single-byte encodings:
 

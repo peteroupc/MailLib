@@ -22,7 +22,7 @@ namespace MailLibTest {
     }
 
     public static string EscapeString(string str) {
-      string hex = "0123456789abcdef";
+      const string hex = "0123456789abcdef";
       var sb = new StringBuilder();
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
@@ -51,15 +51,15 @@ namespace MailLibTest {
 
     internal static bool IsGoodAsciiMessageFormat(string str, bool
                     hasMessageType) {
-      int lineLength = 0;
-      int wordLength = 0;
-      int index = 0;
+      var lineLength = 0;
+      var wordLength = 0;
+      var index = 0;
       int endIndex = str.Length;
-      bool headers = true;
-      bool colon = false;
-      bool hasNonWhiteSpace = false;
-      bool startsWithSpace = false;
-      bool hasLongWord = false;
+      var headers = true;
+      var colon = false;
+      var hasNonWhiteSpace = false;
+      var startsWithSpace = false;
+      var hasLongWord = false;
       if (index == endIndex) {
         Console.WriteLine("Message is empty");
         return false;
@@ -72,7 +72,7 @@ namespace MailLibTest {
         }
         if (c >= 0x80) {
           var builder = new StringBuilder();
-          string hex = "0123456789ABCDEF";
+          const string hex = "0123456789ABCDEF";
           builder.Append("Non-ASCII character (0x");
           builder.Append(hex[((int)c >> 4) & 15]);
           builder.Append(hex[((int)c) & 15]);
@@ -110,9 +110,9 @@ namespace MailLibTest {
           }
           if (index == 0 || str[index - 1] == 0x20 || str[index - 1] == 0x09 ||
               str[index - 1] == 0x0d) {
-         string
-  wl="End of line, whitespace, or start of message before colon" ;
-  Console.WriteLine(wl);
+            const string
+     wl = "End of line, whitespace, or start of message before colon";
+            Console.WriteLine(wl);
             return false;
           }
           if (str[index + 1] != 0x20) {
@@ -136,7 +136,7 @@ namespace MailLibTest {
         }
         if (c == 0) {
           var builder = new StringBuilder();
-          string hex = "0123456789ABCDEF";
+          const string hex = "0123456789ABCDEF";
           builder.Append("CTL in message (0x");
           builder.Append(hex[((int)c >> 4) & 15]);
           builder.Append(hex[((int)c) & 15]);
@@ -146,7 +146,7 @@ namespace MailLibTest {
         }
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
           var builder = new StringBuilder();
-          string hex = "0123456789ABCDEF";
+          const string hex = "0123456789ABCDEF";
           builder.Append("CTL in header (0x");
           builder.Append(hex[((int)c >> 4) & 15]);
           builder.Append(hex[((int)c) & 15]);
@@ -154,7 +154,7 @@ namespace MailLibTest {
           Console.WriteLine(builder.ToString());
           return false;
         }
-        int maxLineLength = 998;
+        var maxLineLength = 998;
         if (!headers && (!hasLongWord && !hasMessageType)) {
           // Set max length for the body to 78 unless a line
           // contains a word so long that exceeding 78 characters
@@ -173,7 +173,7 @@ namespace MailLibTest {
 
     public static String ToString(byte[] array) {
       var builder = new StringBuilder();
-      bool first = true;
+      var first = true;
       builder.Append("[");
       foreach (byte v in array) {
         int vi = ((int)v) & 0xff;
@@ -213,14 +213,14 @@ namespace MailLibTest {
       return sb.ToString();
     }
 
-    private void TestParseDomain(string str, string expected) {
+    private static void TestParseDomain(string str, string expected) {
       Assert.IsTrue(str.Length == (int)Reflect.InvokeStatic(MailNamespace() +
                     ".HeaderParser", "ParseDomain", str, 0, str.Length, null));
       Assert.AreEqual(expected, (string)Reflect.InvokeStatic(MailNamespace() +
                     ".HeaderParserUtility", "ParseDomain", str, 0, str.Length));
     }
 
-    private void TestParseLocalPart(string str, string expected) {
+    private static void TestParseLocalPart(string str, string expected) {
       Assert.IsTrue(str.Length == (int)Reflect.InvokeStatic(MailNamespace() +
                  ".HeaderParser" , "ParseLocalPart" , str, 0, str.Length,
                     null));
@@ -273,7 +273,7 @@ namespace MailLibTest {
 
     [TestMethod]
     public void TestHeaderFields() {
-      string testString =
+      const string testString =
 
   "Joe P Customer <customer@example.com>, Jane W Customer <jane@example.com>"
         ;
@@ -301,16 +301,18 @@ namespace MailLibTest {
       try {
         Reflect.Construct(MailNamespace() + ".Address", null, "example.com");
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException) {
-      } catch (Exception ex) {
+      } catch (ArgumentNullException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
         Reflect.Construct(MailNamespace() + ".Address", "local", null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException) {
-      } catch (Exception ex) {
+      } catch (ArgumentNullException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -318,18 +320,19 @@ namespace MailLibTest {
         Reflect.Construct(MailNamespace() + ".Address",
                     EncodingTest.Repeat("local", 200), "example.com");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException) {
-      } catch (Exception ex) {
+      } catch (ArgumentException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
     }
 
     internal static object Transform(string str) {
-      return DataIO.ToTransform(DataUtilities.GetUtf8Bytes(str, true));
+      return DataIO.ToByteReader(DataUtilities.GetUtf8Bytes(str, true));
     }
 
-    private void TestBase64Decode(byte[] expected, string input) {
+    private static void TestBase64Decode(byte[] expected, string input) {
       string msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: base64\r\n\r\n" + input;
@@ -337,7 +340,8 @@ namespace MailLibTest {
       AssertEqual(expected, msg.GetBody());
     }
 
-    private void TestDecodeQuotedPrintable(string input, string expected) {
+ private static void TestDecodeQuotedPrintable(string input, string
+      expected) {
       string msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
@@ -351,8 +355,9 @@ namespace MailLibTest {
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
       try {
         MessageTest.MessageFromString(msgString);
-      } catch (MessageDataException) {
-      } catch (Exception ex) {
+      } catch (MessageDataException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -1142,7 +1147,7 @@ namespace MailLibTest {
       TestBase64Decode(new byte[] { 255, 1, 3 }, "/wED");
     }
 
-    private void TestPercentEncodingOne(string expected, string input) {
+    private static void TestPercentEncodingOne(string expected, string input) {
       ContentDisposition cd = ContentDisposition.Parse(
         "inline; filename*=utf-8''" + input);
       Assert.AreEqual(expected, cd.GetParameter("filename"));
@@ -1172,7 +1177,7 @@ namespace MailLibTest {
                     s).ToString();
     }
 
-    private void TestDowngradeDSNOne(string expected, string actual) {
+    private static void TestDowngradeDSNOne(string expected, string actual) {
       Assert.AreEqual(expected, (string)Reflect.InvokeStatic(MailNamespace() +
                     ".Message", "DowngradeRecipientHeaderValue", actual));
       string dsn;
@@ -1182,16 +1187,13 @@ namespace MailLibTest {
       bool encap = (expected.StartsWith("=?", StringComparison.Ordinal));
       dsn = "X-Ignore: X\r\n\r\nOriginal-Recipient: " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
-      if (encap) expectedDSN = "X-Ignore: X\r\n\r\n" +
+      expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
         WrapHeader("Downgraded-Original-Recipient: " + expected) +
         "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
-        "\r\nX-Ignore: Y\r\n\r\n";
-      else {
-        expectedDSN = "X-Ignore: X\r\n\r\n" +
+        "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
           WrapHeader("Original-Recipient: " + expected) + "\r\n" +
           WrapHeader("Final-Recipient: " + expected) +
           "\r\nX-Ignore: Y\r\n\r\n";
-      }
       bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
              "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn,
                     true));
@@ -1218,16 +1220,13 @@ namespace MailLibTest {
       AssertUtf8Equal(expectedBytes, bytes);
       dsn = "X-Ignore: X\r\n\r\nOriginal-recipient : " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
-      if (encap) expectedDSN = "X-Ignore: X\r\n\r\n" +
+      expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
         WrapHeader("Downgraded-Original-Recipient: " + expected) +
         "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
-        "\r\nX-Ignore: Y\r\n\r\n";
-      else {
-        expectedDSN = "X-Ignore: X\r\n\r\n" +
+        "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
           WrapHeader("Original-recipient : " + expected) + "\r\n" +
           WrapHeader("Final-Recipient: " + expected) +
           "\r\nX-Ignore: Y\r\n\r\n";
-      }
       bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
              "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn,
                     true));
@@ -1237,7 +1236,7 @@ namespace MailLibTest {
 
     [TestMethod]
     public void TestDowngradeDSN() {
-      string hexstart = "\\x" + "{";
+      const string hexstart = "\\x" + "{";
       TestDowngradeDSNOne("utf-8; x@x.example",
                     ("utf-8; x@x.example"));
       TestDowngradeDSNOne(
@@ -1443,38 +1442,49 @@ namespace MailLibTest {
         msg.GetHeader("from"));
     }
 
+    private static void TestDecodeStructured(string ex, string input) {
+      string str = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
+       "Content-Language: " + input + "\r\n\r\nBody";
+      Message msg = MessageTest.MessageFromString(str);
+      Console.WriteLine(msg.GetHeader("content-language"));
+      Assert.AreEqual(ex, msg.GetHeader("content-language"));
+    }
+
+    private static void TestDecodeUnstructured(string ex, string input) {
+      string str = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
+       "Subject: " + input + "\r\n\r\nBody";
+      Message msg = MessageTest.MessageFromString(str);
+      Console.WriteLine(msg.GetHeader("subject"));
+      Assert.AreEqual(ex, msg.GetHeader("subject"));
+    }
+
+    [TestMethod]
+    public void TestDecodeStruc() {
+      TestDecodeStructured("", "(comment) en");
+    }
+
     public static void TestEncodedWordsOne(string expected, string input) {
-      string par = "(";
-      Assert.AreEqual(expected, Reflect.InvokeStatic(MailNamespace() +
-                    ".Rfc2047", "DecodeEncodedWords", input, 0, input.Length,
-                Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext",
-                    "Unstructured")));
-      Assert.AreEqual(
+      const string par = "(";
+      TestDecodeUnstructured(expected, input);
+      TestDecodeStructured(
         "(" + expected + ") en",
-        DecodeHeaderField("content-language", "(" + input + ") en"));
-      Assert.AreEqual(" (" + expected + ") en",
-                 DecodeHeaderField("content-language" , " (" + input +
-                    ") en"));
-      Assert.AreEqual(" " + par + "comment " + par + "cmt " + expected +
-                    ")comment) en",
-              DecodeHeaderField("content-language" , " (comment (cmt " +
-                input + ")comment) en"));
-      Assert.AreEqual(
+        "(" + input + ") en");
+      TestDecodeStructured(" (" + expected + ") en"," (" + input +
+                    ") en");
+      TestDecodeStructured(" " + par + "comment " + par + "cmt " + expected +
+                ")comment) en"," (comment (cmt " + input + ")comment) en");
+      TestDecodeStructured(
         " " + par + "comment " + par + "=?bad?= " + expected + ")comment) en",
-        DecodeHeaderField("content-language", " (comment (=?bad?= " + input +
-                    ")comment) en"));
-      Assert.AreEqual(
+        " (comment (=?bad?= " + input + ")comment) en");
+      TestDecodeStructured(
         " " + par + "comment " + par + String.Empty + expected + ")comment) en",
-        DecodeHeaderField("content-language", " (comment (" + input +
-                    ")comment) en"));
-      Assert.AreEqual(
-        " (" + expected + "()) en", DecodeHeaderField("content-language",
-                    " (" + input + "()) en"));
-      Assert.AreEqual(
+        " (comment (" + input + ")comment) en");
+      TestDecodeStructured(
+        " (" + expected + "()) en",
+        " (" + input + "()) en");
+      TestDecodeStructured(
         " en (" + expected + ")",
-        DecodeHeaderField("content-language", " en (" + input + ")"));
-      Assert.AreEqual(expected,
-                    DecodeHeaderField("subject", input));
+        " en (" + input + ")");
     }
 
     [TestMethod]
@@ -1490,7 +1500,7 @@ namespace MailLibTest {
 
     [TestMethod]
     public void TestToFieldDowngrading() {
-      string sep = ", ";
+      const string sep = ", ";
       Assert.AreEqual("x <x@example.com>" + sep + "\"X\" <y@example.com>",
        DowngradeHeaderField("to",
                     "x <x@example.com>, \"X\" <y@example.com>"));
@@ -1562,12 +1572,6 @@ namespace MailLibTest {
       return (string)Reflect.Invoke(Reflect.InvokeStatic(MailNamespace() +
                     ".HeaderFieldParsers", "GetParser", name),
                     "DowngradeFieldValue", value);
-    }
-
-    private static string DecodeHeaderField(string name, string value) {
-      return (string)Reflect.Invoke(Reflect.InvokeStatic(MailNamespace() +
-                    ".HeaderFieldParsers", "GetParser", name),
-                    "DecodeEncodedWords", value);
     }
 
     [TestMethod]
@@ -1768,7 +1772,7 @@ namespace MailLibTest {
       }
     }
 
-    private void TestParseCommentStrictCore(string input) {
+    private static void TestParseCommentStrictCore(string input) {
       Assert.AreEqual(input.Length, Reflect.InvokeStatic(MailNamespace() +
                     ".HeaderParserUtility", "ParseCommentStrict", input, 0,
                     input.Length), input);
@@ -1814,7 +1818,7 @@ namespace MailLibTest {
     [TestMethod]
     [Timeout(5000)]
     public void TestEncodedWords() {
-      string par = "(";
+      const string par = "(";
       TestEncodedWordsPhrase("(sss) y", "(sss) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase("tes=dxx", "=?us-ascii?q?tes=dxx?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
@@ -1947,10 +1951,10 @@ TestEncodedWordsPhrase("xy (sss)",
         mode,
         false);
       var enc2 = (ICharacterEncoder)enc;
-      int offset = 0;
+      var offset = 0;
       var aw = new ArrayWriter();
       while (true) {
-        int c = -1;
+        var c = -1;
         if (offset < bytes.Length) {
           c = ((int)bytes[offset++]) & 0xff;
         }
@@ -1970,10 +1974,10 @@ TestEncodedWordsPhrase("xy (sss)",
         false,
         b);
       var enc2 = (ICharacterEncoder)enc;
-      int offset = 0;
+      var offset = 0;
       var aw = new ArrayWriter();
       while (true) {
-        int c = -1;
+        var c = -1;
         if (offset < bytes.Length) {
           c = ((int)bytes[offset++]) & 0xff;
         }
@@ -2018,7 +2022,7 @@ TestEncodedWordsPhrase("xy (sss)",
       AssertEqual(bytes, msg.GetBody(), input);
     }
 
-    private byte[] RandomBytes(Random rnd) {
+    private static byte[] RandomBytes(Random rnd) {
       int count = 10 + rnd.Next(350);
       var arr = new byte[count];
       for (var i = 0; i < count; ++i) {
@@ -2064,7 +2068,7 @@ TestEncodedWordsPhrase("xy (sss)",
     public void TestReceivedHeader() {
       object parser = Reflect.InvokeStatic(MailNamespace() +
                     ".HeaderFieldParsers", "GetParser", "received");
-      string test =
+      const string test =
         "from x.y.example by a.b.example; Thu, 31 Dec 2012 00:00:00 -0100";
       if (test.Length != (int)Reflect.Invoke(parser, "Parse", test, 0,
                     test.Length, null)) {

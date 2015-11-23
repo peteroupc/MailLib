@@ -34,7 +34,7 @@ import com.upokecenter.text.encoders.*;
       return NormalizingCharacterInput.Normalize(str, form);
     }
 
-    private NormalizingCharacterInput nci;
+    private final NormalizingCharacterInput nci;
 
     /**
      * Initializes a new instance of the Normalizer class.

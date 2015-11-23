@@ -15,7 +15,7 @@ namespace PeterO.Mail {
   public sealed class MediaTypeBuilder {
     private string type;
     private string subtype;
-    private IDictionary<string, string> parameters;
+    private readonly IDictionary<string, string> parameters;
 
     /// <summary>Gets or sets this value's top-level type.</summary>
     /// <value>This value&apos;s top-level type.</value>
