@@ -7,7 +7,7 @@ using PeterO.Text;
 namespace PeterO.Text.Encoders {
   internal class EncodingShiftJIS : ICharacterEncoding {
     private class Decoder : ICharacterDecoder {
-      private DecoderState state;
+      private readonly DecoderState state;
       private int lead;
 
       public Decoder() {
@@ -26,7 +26,7 @@ namespace PeterO.Text.Encoders {
             return -1;
           }
           if (this.lead != 0) {
-            int cp = -1;
+            var cp = -1;
             int offset = (b < 0x7f) ? 0x40 : 0x41;
             int leadoffset = (this.lead < 0xa0) ? 0x81 : 0xc1;
             if ((b >= 0x40 && b <= 0xfc) && b != 0x7f) {

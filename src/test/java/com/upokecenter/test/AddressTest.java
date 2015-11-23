@@ -12,16 +12,18 @@ import org.junit.Test;
       try {
         Assert.assertEquals(null, new Address("local=domain.example"));
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+      } catch(IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       try {
         Assert.assertEquals(null, new Address("local@"));
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+      } catch(IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -29,16 +31,18 @@ import org.junit.Test;
         Assert.assertEquals(null, new Address(EncodingTest.Repeat("local", 200) +
           "@example.com"));
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+      } catch(IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       try {
         Assert.assertEquals(null, new Address("lo,cal@example.com"));
         Assert.fail("Should have failed");
-      } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+      } catch(IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }

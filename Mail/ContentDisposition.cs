@@ -47,7 +47,7 @@ namespace PeterO.Mail {
     /// <summary>Returns the hash code for this instance.</summary>
     /// <returns>A 32-bit hash code.</returns>
     public override int GetHashCode() {
-      int hashCode = 632580499;
+      var hashCode = 632580499;
       unchecked {
         if (this.dispositionType != null) {
           hashCode += 632580503 * this.dispositionType.GetHashCode();
@@ -111,15 +111,15 @@ string type,
 
     private static string RemoveEncodedWordEnds(string str) {
       var sb = new StringBuilder();
-      int index = 0;
-      bool inEncodedWord = false;
+      var index = 0;
+      var inEncodedWord = false;
       while (index < str.Length) {
         if (!inEncodedWord && index + 1 < str.Length && str[index] == '=' &&
           str[index + 1] == '?') {
           // Remove start of encoded word
           inEncodedWord = true;
           index += 2;
-          int qmarks = 0;
+          var qmarks = 0;
           // skip charset and encoding
           while (index < str.Length) {
             if (str[index] == '?') {
@@ -335,7 +335,7 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
 
     private bool ParseDisposition(string str) {
       const bool HttpRules = false;
-      int index = 0;
+      var index = 0;
       if (str == null) {
         throw new ArgumentNullException("str");
       }

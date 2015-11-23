@@ -14,10 +14,10 @@ namespace PeterO.Mail.Transforms {
     /// <summary>Normalizes bare CR and bare LF to CRLF.</summary>
   internal class LineBreakNormalizeTransform : IByteReader
   {
-    private Stream stream;
+    private readonly Stream stream;
     private int val;
     private bool cr;
-    private bool supportBareLF;
+    private readonly bool supportBareLF;
 
     /// <summary>Initializes a new instance of the
     /// LineBreakNormalizeTransform class.</summary>

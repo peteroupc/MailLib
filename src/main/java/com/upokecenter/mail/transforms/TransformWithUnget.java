@@ -11,7 +11,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   public final class TransformWithUnget implements IByteReader {
-    private IByteReader transform;
+    private final IByteReader transform;
     private int lastByte;
     private boolean unget;
 

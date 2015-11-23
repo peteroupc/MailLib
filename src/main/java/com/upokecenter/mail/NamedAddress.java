@@ -14,7 +14,7 @@ import java.util.*;
      * group of email addresses instead.
      */
   public class NamedAddress {
-    private String name;
+    private final String name;
 
     /**
      * Gets the display name for this email address (or the email address's value
@@ -25,7 +25,7 @@ import java.util.*;
         return this.name;
       }
 
-    private Address address;
+    private final Address address;
 
     /**
      * Gets the email address associated with this object.
@@ -35,7 +35,7 @@ import java.util.*;
         return this.address;
       }
 
-    private boolean isGroup;
+    private final boolean isGroup;
 
     /**
      * Gets a value indicating whether this represents a group of addresses rather
@@ -95,7 +95,7 @@ import java.util.*;
      * of email addresses. Comments, or text within parentheses, can appear.
      * Multiple email addresses are not allowed unless they appear in the
      * group syntax given above. Encoded words under RFC 2047 that appear
-     * within comments or display names will be decoded. <para>An RFC 2047
+     * within comments or display names will be decoded. <p>An RFC 2047
      * encoded word consists of "=?", a character encoding name, such as
      * {@code utf-8}, either "?B?" or "?Q?" (in upper or lower case), a
      * series of bytes in the character encoding, further encoded using B or
@@ -103,7 +103,7 @@ import java.util.*;
      * encoding, spaces are changed to "_", equals are changed to "=3D",
      * and most bytes other than ASCII letters and digits are changed to "="
      * followed by their 2-digit hexadecimal form. An encoded word's maximum
-     * length is 75 characters. See the second example.</para>.
+     * length is 75 characters. See the second example.</p>.
      * @throws NullPointerException The parameter {@code address} is null.
      * @throws IllegalArgumentException The named address has an invalid syntax.
      */
@@ -145,7 +145,7 @@ tokener.GetTokens());
         displayName = address;
       }
       if (address == null) {
-        throw new NullPointerException("address");
+        throw new NullPointerException(nameof(address));
       }
       this.name = displayName;
       this.groupAddresses = new ArrayList<NamedAddress>();
@@ -228,7 +228,7 @@ tokener.GetTokens());
       this.groupAddresses = new ArrayList<NamedAddress>(mailboxes);
     }
 
-    private List<NamedAddress> groupAddresses;
+    private final List<NamedAddress> groupAddresses;
 
     /**
      * Gets a read-only list of addresses that make up the group, if this object

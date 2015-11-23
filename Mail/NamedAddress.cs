@@ -13,7 +13,7 @@ namespace PeterO.Mail {
     /// <summary>Represents an email address and a name for that address.
     /// Can represent a group of email addresses instead.</summary>
   public class NamedAddress {
-    private string name;
+    private readonly string name;
 
     /// <summary>Gets the display name for this email address (or the email
     /// address's value if the display name is absent).</summary>
@@ -24,7 +24,7 @@ namespace PeterO.Mail {
       }
     }
 
-    private Address address;
+    private readonly Address address;
 
     /// <summary>Gets the email address associated with this
     /// object.</summary>
@@ -35,7 +35,7 @@ namespace PeterO.Mail {
       }
     }
 
-    private bool isGroup;
+    private readonly bool isGroup;
 
     /// <summary>Gets a value indicating whether this represents a group of
     /// addresses rather than a single address.</summary>
@@ -54,7 +54,7 @@ namespace PeterO.Mail {
         var builder = new StringBuilder();
         builder.Append(HeaderParserUtility.QuoteValueIfNeeded(this.name));
         builder.Append(": ");
-        bool first = true;
+        var first = true;
         foreach (NamedAddress groupAddress in this.groupAddresses) {
           if (!first) {
             builder.Append(", ");
@@ -149,7 +149,7 @@ tokener.GetTokens());
         displayName = address;
       }
       if (address == null) {
-        throw new ArgumentNullException("address");
+        throw new ArgumentNullException(nameof(address));
       }
       this.name = displayName;
       this.groupAddresses = new List<NamedAddress>();
@@ -235,7 +235,7 @@ tokener.GetTokens());
       this.groupAddresses = new List<NamedAddress>(mailboxes);
     }
 
-    private IList<NamedAddress> groupAddresses;
+    private readonly IList<NamedAddress> groupAddresses;
 
     /// <summary>Gets a read-only list of addresses that make up the group,
     /// if this object represents a group, or an empty list

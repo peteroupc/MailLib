@@ -7,7 +7,7 @@ using PeterO.Text;
 namespace PeterO.Text.Encoders {
  internal class EncodingSingleByte : ICharacterEncoding {
    private class Decoder : ICharacterDecoder {
-      private int[] codepoints;
+      private readonly int[] codepoints;
 
       public Decoder(int[] codepoints) {
         this.codepoints = codepoints;
@@ -20,7 +20,7 @@ namespace PeterO.Text.Encoders {
   }
 
    private class Encoder : ICharacterEncoder {
-      private int[] codepoints;
+      private readonly int[] codepoints;
 
       public Encoder(int[] codepoints) {
         this.codepoints = codepoints;
@@ -46,10 +46,10 @@ namespace PeterO.Text.Encoders {
     }
   }
 
-   private Encoder encoder;
-   private Decoder decoder;
+    private readonly Encoder encoder;
+    private readonly Decoder decoder;
 
-  public EncodingSingleByte(int[] codepoints) {
+    public EncodingSingleByte(int[] codepoints) {
         if (codepoints == null) {
   throw new ArgumentNullException("codepoints");
 }

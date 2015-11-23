@@ -569,7 +569,7 @@ whitespaceStart)+(whitespaceEnd - whitespaceStart)));
         }
         whitespaceStart = index;
         // Read to nonwhitespace
-        index = HeaderParser.ParseFWS(str, index, endIndex, null);
+        index = HeaderParser.ParseFWS(str, index, endIndex);
         whitespaceEnd = index;
         if (builder.length() == 0 && oldIndex == 0 && index == str.length()) {
           // Nothing to replace, and the whole String
@@ -829,7 +829,7 @@ EncodedWordContext.Phrase);
           builderPhrase.append(str.substring(index, (index)+(index2 - index)));
           index = index2;
         }
-        index2 = HeaderParser.ParseFWS(str, index, endIndex, null);
+        index2 = HeaderParser.ParseFWS(str, index, endIndex);
         if (index2 == endIndex) {
           encoder.AddString(builderPhrase.toString());
           encoder.FinalizeEncoding();

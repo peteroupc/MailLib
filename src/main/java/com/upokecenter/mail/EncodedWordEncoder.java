@@ -12,8 +12,8 @@ import com.upokecenter.util.*;
   final class EncodedWordEncoder {
     private static final String HexChars = "0123456789ABCDEF";
 
-    private StringBuilder currentWord;
-    private StringBuilder fullString;
+    private final StringBuilder currentWord;
+    private final StringBuilder fullString;
     private int spaceCount;
 
     // Doesn't add a space to the beginning of

@@ -12,8 +12,25 @@ namespace MailLibTest {
     }
     [TestMethod]
     public void TestEncodeToBytes() {
-      //ArgNull(Encodings.EncodeToBytes(null, Encodings.UTF8);
-      //ArgNull(Encodings.EncodeToBytes("test",null);
+      try {
+        ICharacterInput ici = null;
+ Encodings.EncodeToBytes(ici, Encodings.UTF8);
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ Encodings.EncodeToBytes("test",null);
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException ex) {
+Console.WriteLine(ex.Message);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
     }
     [TestMethod]
     public void TestEncodeToWriter() {
@@ -95,7 +112,8 @@ namespace MailLibTest {
       try {
  Encodings.StringToInput(null, 0, 0);
 Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
+} catch (ArgumentNullException ex) {
+Console.WriteLine(ex.Message);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -103,7 +121,8 @@ throw new InvalidOperationException(String.Empty, ex);
       try {
  Encodings.StringToInput("t",-1,1);
 Assert.Fail("Should have failed");
-} catch (ArgumentException) {
+} catch (ArgumentException ex) {
+Console.WriteLine(ex.Message);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -111,7 +130,8 @@ throw new InvalidOperationException(String.Empty, ex);
       try {
  Encodings.StringToInput("t",5,1);
 Assert.Fail("Should have failed");
-} catch (ArgumentException) {
+} catch (ArgumentException ex) {
+Console.WriteLine(ex.Message);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -119,7 +139,8 @@ throw new InvalidOperationException(String.Empty, ex);
       try {
  Encodings.StringToInput("t",0,-1);
 Assert.Fail("Should have failed");
-} catch (ArgumentException) {
+} catch (ArgumentException ex) {
+Console.WriteLine(ex.Message);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -127,7 +148,8 @@ throw new InvalidOperationException(String.Empty, ex);
       try {
  Encodings.StringToInput("t",0,5);
 Assert.Fail("Should have failed");
-} catch (ArgumentException) {
+} catch (ArgumentException ex) {
+Console.WriteLine(ex.Message);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -135,7 +157,8 @@ throw new InvalidOperationException(String.Empty, ex);
       try {
  Encodings.StringToInput("tt",1,2);
 Assert.Fail("Should have failed");
-} catch (ArgumentException) {
+} catch (ArgumentException ex) {
+Console.WriteLine(ex.Message);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);

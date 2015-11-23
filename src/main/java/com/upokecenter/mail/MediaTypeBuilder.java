@@ -17,7 +17,7 @@ import com.upokecenter.util.*;
   public final class MediaTypeBuilder {
     private String type;
     private String subtype;
-    private Map<String, String> parameters;
+    private final Map<String, String> parameters;
 
     /**
      * Gets this value's top-level type.

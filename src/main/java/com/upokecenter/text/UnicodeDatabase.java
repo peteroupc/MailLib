@@ -11,7 +11,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 private UnicodeDatabase() {
 }
     private static ByteData classes;
-    private static Object classesSyncRoot = new Object();
+    private static final Object classesSyncRoot = new Object();
 
     public static int GetCombiningClass(int cp) {
       synchronized (classesSyncRoot) {
@@ -21,7 +21,7 @@ private UnicodeDatabase() {
     }
 
     private static ByteData idnaCat;
-    private static Object idnaCatSyncRoot = new Object();
+    private static final Object idnaCatSyncRoot = new Object();
 
     public static int GetIdnaCategory(int cp) {
       synchronized (idnaCatSyncRoot) {
@@ -31,7 +31,7 @@ private UnicodeDatabase() {
     }
 
     private static ByteData combmark;
-    private static Object valueCmSyncRoot = new Object();
+    private static final Object valueCmSyncRoot = new Object();
 
     public static boolean IsCombiningMark(int cp) {
       synchronized (valueCmSyncRoot) {
@@ -44,7 +44,7 @@ private UnicodeDatabase() {
     private static ByteData stablenfd;
     private static ByteData stablenfkc;
     private static ByteData stablenfkd;
-    private static Object stableSyncRoot = new Object();
+    private static final Object stableSyncRoot = new Object();
 
     public static boolean IsStableCodePoint(int cp, Normalization form) {
       synchronized (stableSyncRoot) {
@@ -127,7 +127,7 @@ int offset) {
 
     private static int pairsLength;
     private static int[] pairs;
-    private static Object pairsSyncRoot = new Object();
+    private static final Object pairsSyncRoot = new Object();
 
     private static void EnsurePairs() {
       synchronized (pairsSyncRoot) {

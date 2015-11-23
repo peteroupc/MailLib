@@ -70,8 +70,8 @@ import com.upokecenter.text.encoders.*;
 private Encodings() {
 }
     private static class DecoderToInputClass implements ICharacterInput {
-      private IByteReader stream;
-      private ICharacterDecoder reader;
+      private final IByteReader stream;
+      private final ICharacterDecoder reader;
 
       public DecoderToInputClass (ICharacterDecoder reader, IByteReader stream) {
         this.reader = reader;
@@ -138,7 +138,7 @@ private Encodings() {
       }
     }
 
-    private static Map<String, String> charsetAliases =
+    private static final Map<String, String> charsetAliases =
         CreateAliasMap();
 
     /**
@@ -752,7 +752,7 @@ byte[] bytes) {
       if (bytes == null) {
         throw new NullPointerException("bytes");
       }
-      return DecodeToString(enc, DataIO.ToTransform(bytes));
+      return DecodeToString(enc, DataIO.ToByteReader(bytes));
     }
 
     /**
@@ -810,7 +810,7 @@ int length) {
         throw new IllegalArgumentException("bytes's length minus " + offset + " (" +
           (bytes.length - offset) + ") is less than " + length);
       }
-      return DecodeToString(enc, DataIO.ToTransform(bytes, offset, length));
+      return DecodeToString(enc, DataIO.ToByteReader(bytes, offset, length));
     }
 
     /**

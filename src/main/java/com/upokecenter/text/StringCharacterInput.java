@@ -11,9 +11,9 @@ import com.upokecenter.util.*;
 
   class StringCharacterInput implements ICharacterInput
   {
-    private String str;
+    private final String str;
     private int index;
-    private int endIndex;
+    private final int endIndex;
 
     public StringCharacterInput (String str) {
       if (str == null) {

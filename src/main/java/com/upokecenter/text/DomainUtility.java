@@ -189,7 +189,8 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
       return outputLength;
     }
 
-    private static int[] valueDigitValues = { -1, -1, -1, -1, -1, -1, -1,
+ private static final int[] valueDigitValues = { -1, -1, -1, -1, -1, -1,
+      -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,

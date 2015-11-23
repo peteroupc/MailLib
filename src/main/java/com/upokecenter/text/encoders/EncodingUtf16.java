@@ -7,10 +7,10 @@ import com.upokecenter.text.*;
 
   public class EncodingUtf16 implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
-      private DecoderState state;
+      private final DecoderState state;
       private int lead;
       private int surrogate;
-      private boolean bigEndian;
+      private final boolean bigEndian;
 
       public Decoder (boolean bigEndian) {
         this.bigEndian = bigEndian;
@@ -56,17 +56,15 @@ import com.upokecenter.text.*;
           }
           if ((code & 0xfc00) == 0xd800) {
             this.surrogate = code;
-          } else if ((code & 0xfc00) == 0xdc00) {
-            return -2;
           } else {
-            return code;
-          }
+ return (code & 0xfc00) == 0xdc00 ? -2 : code;
+}
         }
       }
     }
 
     private static class Encoder implements ICharacterEncoder {
-      private boolean bigEndian;
+      private final boolean bigEndian;
 
       public Encoder (boolean bigEndian) {
         this.bigEndian = bigEndian;

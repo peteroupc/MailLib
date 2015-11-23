@@ -109,9 +109,9 @@ import com.upokecenter.text.*;
           }
           if (index == 0 || str.charAt(index - 1) == 0x20 || str.charAt(index - 1) == 0x09 ||
               str.charAt(index - 1) == 0x0d) {
-         String
-  wl="End of line, whitespace, or start of message before colon" ;
-  System.out.println(wl);
+            String
+     wl = "End of line, whitespace, or start of message before colon";
+            System.out.println(wl);
             return false;
           }
           if (str.charAt(index + 1) != 0x20) {
@@ -210,14 +210,14 @@ import com.upokecenter.text.*;
       return sb.toString();
     }
 
-    private void TestParseDomain(String str, String expected) {
+    private static void TestParseDomain(String str, String expected) {
       if (!(str.length() == (Integer)Reflect.InvokeStatic(MailNamespace() +
                     ".HeaderParser", "ParseDomain", str, 0, str.length(), null)))Assert.fail();
       Assert.assertEquals(expected, (String)Reflect.InvokeStatic(MailNamespace() +
                     ".HeaderParserUtility", "ParseDomain", str, 0, str.length()));
     }
 
-    private void TestParseLocalPart(String str, String expected) {
+    private static void TestParseLocalPart(String str, String expected) {
       if (!(str.length() == (Integer)Reflect.InvokeStatic(MailNamespace() +
                  ".HeaderParser" , "ParseLocalPart" , str, 0, str.length(),
                     null)))Assert.fail();
@@ -299,7 +299,8 @@ import com.upokecenter.text.*;
         Reflect.Construct(MailNamespace() + ".Address", null, "example.com");
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -307,7 +308,8 @@ import com.upokecenter.text.*;
         Reflect.Construct(MailNamespace() + ".Address", "local", null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -316,17 +318,18 @@ import com.upokecenter.text.*;
                     EncodingTest.Repeat("local", 200), "example.com");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
     }
 
     static Object Transform(String str) {
-      return DataIO.ToTransform(DataUtilities.GetUtf8Bytes(str, true));
+      return DataIO.ToByteReader(DataUtilities.GetUtf8Bytes(str, true));
     }
 
-    private void TestBase64Decode(byte[] expected, String input) {
+    private static void TestBase64Decode(byte[] expected, String input) {
       String msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: base64\r\n\r\n" + input;
@@ -334,7 +337,8 @@ import com.upokecenter.text.*;
       AssertEqual(expected, msg.GetBody());
     }
 
-    private void TestDecodeQuotedPrintable(String input, String expected) {
+ private static void TestDecodeQuotedPrintable(String input, String
+      expected) {
       String msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
@@ -349,7 +353,8 @@ import com.upokecenter.text.*;
       try {
         MessageTest.MessageFromString(msgString);
       } catch (MessageDataException ex) {
-      } catch (Exception ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
@@ -1139,7 +1144,7 @@ import com.upokecenter.text.*;
       TestBase64Decode(new byte[] { (byte)255, 1, 3  }, "/wED");
     }
 
-    private void TestPercentEncodingOne(String expected, String input) {
+    private static void TestPercentEncodingOne(String expected, String input) {
       ContentDisposition cd = ContentDisposition.Parse(
         "inline; filename*=utf-8''" + input);
       Assert.assertEquals(expected, cd.GetParameter("filename"));
@@ -1169,7 +1174,7 @@ import com.upokecenter.text.*;
                     s).toString();
     }
 
-    private void TestDowngradeDSNOne(String expected, String actual) {
+    private static void TestDowngradeDSNOne(String expected, String actual) {
       Assert.assertEquals(expected, (String)Reflect.InvokeStatic(MailNamespace() +
                     ".Message", "DowngradeRecipientHeaderValue", actual));
       String dsn;
@@ -1179,16 +1184,13 @@ import com.upokecenter.text.*;
       boolean encap = (expected.startsWith("=?"));
       dsn = "X-Ignore: X\r\n\r\nOriginal-Recipient: " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
-      if (encap) expectedDSN = "X-Ignore: X\r\n\r\n" +
+      expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
         WrapHeader("Downgraded-Original-Recipient: " + expected) +
         "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
-        "\r\nX-Ignore: Y\r\n\r\n";
-      else {
-        expectedDSN = "X-Ignore: X\r\n\r\n" +
+        "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
           WrapHeader("Original-Recipient: " + expected) + "\r\n" +
           WrapHeader("Final-Recipient: " + expected) +
           "\r\nX-Ignore: Y\r\n\r\n";
-      }
       bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
              "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn,
                     true));
@@ -1215,16 +1217,13 @@ import com.upokecenter.text.*;
       AssertUtf8Equal(expectedBytes, bytes);
       dsn = "X-Ignore: X\r\n\r\nOriginal-recipient : " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
-      if (encap) expectedDSN = "X-Ignore: X\r\n\r\n" +
+      expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
         WrapHeader("Downgraded-Original-Recipient: " + expected) +
         "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
-        "\r\nX-Ignore: Y\r\n\r\n";
-      else {
-        expectedDSN = "X-Ignore: X\r\n\r\n" +
+        "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
           WrapHeader("Original-recipient : " + expected) + "\r\n" +
           WrapHeader("Final-Recipient: " + expected) +
           "\r\nX-Ignore: Y\r\n\r\n";
-      }
       bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
              "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn,
                     true));
@@ -1439,38 +1438,49 @@ import com.upokecenter.text.*;
         msg.GetHeader("from"));
     }
 
+    private static void TestDecodeStructured(String ex, String input) {
+      String str = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
+       "Content-Language: " + input + "\r\n\r\nBody";
+      Message msg = MessageTest.MessageFromString(str);
+      System.out.println(msg.GetHeader("content-language"));
+      Assert.assertEquals(ex, msg.GetHeader("content-language"));
+    }
+
+    private static void TestDecodeUnstructured(String ex, String input) {
+      String str = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
+       "Subject: " + input + "\r\n\r\nBody";
+      Message msg = MessageTest.MessageFromString(str);
+      System.out.println(msg.GetHeader("subject"));
+      Assert.assertEquals(ex, msg.GetHeader("subject"));
+    }
+
+    @Test
+    public void TestDecodeStruc() {
+      TestDecodeStructured("", "(comment) en");
+    }
+
     public static void TestEncodedWordsOne(String expected, String input) {
       String par = "(";
-      Assert.assertEquals(expected, Reflect.InvokeStatic(MailNamespace() +
-                    ".Rfc2047", "DecodeEncodedWords", input, 0, input.length(),
-                Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext",
-                    "Unstructured")));
-      Assert.assertEquals(
+      TestDecodeUnstructured(expected, input);
+      TestDecodeStructured(
         "(" + expected + ") en",
-        DecodeHeaderField("content-language", "(" + input + ") en"));
-      Assert.assertEquals(" (" + expected + ") en",
-                 DecodeHeaderField("content-language" , " (" + input +
-                    ") en"));
-      Assert.assertEquals(" " + par + "comment " + par + "cmt " + expected +
-                    ")comment) en",
-              DecodeHeaderField("content-language" , " (comment (cmt " +
-                input + ")comment) en"));
-      Assert.assertEquals(
+        "(" + input + ") en");
+      TestDecodeStructured(" (" + expected + ") en"," (" + input +
+                    ") en");
+      TestDecodeStructured(" " + par + "comment " + par + "cmt " + expected +
+                ")comment) en"," (comment (cmt " + input + ")comment) en");
+      TestDecodeStructured(
         " " + par + "comment " + par + "=?bad?= " + expected + ")comment) en",
-        DecodeHeaderField("content-language", " (comment (=?bad?= " + input +
-                    ")comment) en"));
-      Assert.assertEquals(
+        " (comment (=?bad?= " + input + ")comment) en");
+      TestDecodeStructured(
         " " + par + "comment " + par + "" + expected + ")comment) en",
-        DecodeHeaderField("content-language", " (comment (" + input +
-                    ")comment) en"));
-      Assert.assertEquals(
-        " (" + expected + "()) en", DecodeHeaderField("content-language",
-                    " (" + input + "()) en"));
-      Assert.assertEquals(
+        " (comment (" + input + ")comment) en");
+      TestDecodeStructured(
+        " (" + expected + "()) en",
+        " (" + input + "()) en");
+      TestDecodeStructured(
         " en (" + expected + ")",
-        DecodeHeaderField("content-language", " en (" + input + ")"));
-      Assert.assertEquals(expected,
-                    DecodeHeaderField("subject", input));
+        " en (" + input + ")");
     }
 
     @Test
@@ -1558,12 +1568,6 @@ import com.upokecenter.text.*;
       return (String)Reflect.Invoke(Reflect.InvokeStatic(MailNamespace() +
                     ".HeaderFieldParsers", "GetParser", name),
                     "DowngradeFieldValue", value);
-    }
-
-    private static String DecodeHeaderField(String name, String value) {
-      return (String)Reflect.Invoke(Reflect.InvokeStatic(MailNamespace() +
-                    ".HeaderFieldParsers", "GetParser", name),
-                    "DecodeEncodedWords", value);
     }
 
     @Test
@@ -1764,7 +1768,7 @@ import com.upokecenter.text.*;
       }
     }
 
-    private void TestParseCommentStrictCore(String input) {
+    private static void TestParseCommentStrictCore(String input) {
       Assert.assertEquals(input, input.length(), Reflect.InvokeStatic(MailNamespace() +
                     ".HeaderParserUtility", "ParseCommentStrict", input, 0,
                     input.length()));
@@ -2012,7 +2016,7 @@ TestEncodedWordsPhrase("xy (sss)",
       AssertEqual(bytes, msg.GetBody(), input);
     }
 
-    private byte[] RandomBytes(java.util.Random rnd) {
+    private static byte[] RandomBytes(java.util.Random rnd) {
       int count = 10 + rnd.nextInt(350);
       byte[] arr = new byte[count];
       for (int i = 0; i < count; ++i) {

@@ -78,8 +78,8 @@ namespace PeterO.Text {
     /// email messages.</para></summary>
   public static class Encodings {
     private class DecoderToInputClass : ICharacterInput {
-      private IByteReader stream;
-      private ICharacterDecoder reader;
+      private readonly IByteReader stream;
+      private readonly ICharacterDecoder reader;
 
       public DecoderToInputClass(ICharacterDecoder reader, IByteReader stream) {
         this.reader = reader;
@@ -132,7 +132,7 @@ namespace PeterO.Text {
           throw new ArgumentException("buffer's length minus " + offset + " (" +
             (buffer.Length - offset) + ") is less than " + length);
         }
-        int count = 0;
+        var count = 0;
         for (var i = 0; i < length; ++i) {
           int c = this.ReadChar();
           if (c == -1) {
@@ -146,7 +146,7 @@ namespace PeterO.Text {
       }
     }
 
-    private static IDictionary<string, string> charsetAliases =
+    private static readonly IDictionary<string, string> charsetAliases =
         CreateAliasMap();
 
     /// <summary>Character encoding object for the UTF-8 character
@@ -162,7 +162,7 @@ namespace PeterO.Text {
       if (string.IsNullOrEmpty(str)) {
         return str;
       }
-      int index = 0;
+      var index = 0;
       int valueSLength = str.Length;
       while (index < valueSLength) {
         char c = str[index];
@@ -787,7 +787,7 @@ byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException("bytes");
       }
-      return DecodeToString(enc, DataIO.ToTransform(bytes));
+      return DecodeToString(enc, DataIO.ToByteReader(bytes));
     }
 
     /// <summary>Reads a portion of a byte array from a data source and
@@ -848,7 +848,7 @@ int length) {
         throw new ArgumentException("bytes's length minus " + offset + " (" +
           (bytes.Length - offset) + ") is less than " + length);
       }
-      return DecodeToString(enc, DataIO.ToTransform(bytes, offset, length));
+      return DecodeToString(enc, DataIO.ToByteReader(bytes, offset, length));
     }
 
     /// <summary>Reads Unicode characters from a text string and writes

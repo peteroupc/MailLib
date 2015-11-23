@@ -21,14 +21,14 @@ namespace PeterO.Mail.Transforms {
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
-    private IByteReader input;
+    private readonly IByteReader input;
     private int lineCharCount;
-    private bool lenientLineBreaks;
-    private byte[] buffer;
+    private readonly bool lenientLineBreaks;
+    private readonly byte[] buffer;
     private int bufferIndex;
     private int bufferCount;
-    private int maxLineLength;
-    private bool checkStrictEncoding;
+    private readonly int maxLineLength;
+    private readonly bool checkStrictEncoding;
     private int paddingCount;
 
     public Base64Transform(
@@ -64,10 +64,10 @@ bool checkStrictEncoding) {
         ret &= 0xff;
         return ret;
       }
-      int value = 0;
-      int count = 0;
-      int lastByte = 0;
-      bool ungetting = false;
+      var value = 0;
+      var count = 0;
+      var lastByte = 0;
+      var ungetting = false;
       while (count < 4) {
         int c = lastByte = ungetting ? lastByte : this.input.ReadByte();
         ungetting = false;

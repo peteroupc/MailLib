@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ArrayWriter.cs" />
     <Compile Include="DataIO.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IByteWriter.cs" />
     <Compile Include="IWriter.cs" />
     <Compile Include="Mail\Transforms\TransformWithUnget.cs" />
@@ -127,6 +128,9 @@
     <Compile Include="Text\PartialListCharacterInput.cs" />
     <Compile Include="Text\StringCharacterInput.cs" />
     <Compile Include="Text\UnicodeDatabase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!--

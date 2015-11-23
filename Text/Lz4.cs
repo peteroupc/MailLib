@@ -18,10 +18,10 @@ namespace PeterO.Text {
     /// <exception cref='ArgumentNullException'>The parameter "output" is
     /// null.</exception>
     public static byte[] Decompress(byte[] input) {
-      int index = 0;
+      var index = 0;
       var copy = new byte[16];
       var output = new byte[8 + (input.Length * 3 / 2)];
-      int outputPos = 0;
+      var outputPos = 0;
       while (index < input.Length) {
         int b = input[index];
         int literalLength = (b >> 4) & 15;

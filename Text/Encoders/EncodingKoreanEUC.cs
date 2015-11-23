@@ -7,7 +7,7 @@ using PeterO.Text;
 namespace PeterO.Text.Encoders {
   internal class EncodingKoreanEUC : ICharacterEncoding {
     private class Decoder : ICharacterDecoder {
-      private DecoderState state;
+      private readonly DecoderState state;
       private int lead;
 
       public Decoder() {
@@ -26,7 +26,7 @@ namespace PeterO.Text.Encoders {
             return -1;
           }
           if (this.lead != 0) {
-            int c = -1;
+            var c = -1;
             if (b >= 0x41 && b <= 0xfe) {
               c = ((this.lead - 0x81) * 190) + (b - 0x41);
               c = Korean.IndexToCodePoint(c);

@@ -7,7 +7,7 @@ import com.upokecenter.text.*;
 
   public class EncodingReplacement implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
-      private int replacement = 0;
+      private int replacement;
 
       public int ReadChar(IByteReader transform) {
         if (this.replacement == 0) {

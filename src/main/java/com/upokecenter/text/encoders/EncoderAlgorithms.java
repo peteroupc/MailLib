@@ -10,7 +10,7 @@ import com.upokecenter.text.*;
     private static class DecodeWithFallbackDecoder implements ICharacterDecoder,
       ICharacterEncoding {
       private boolean bomChecked;
-      private DecoderState state;
+      private final DecoderState state;
       private ICharacterDecoder decoder;
 
       public DecodeWithFallbackDecoder (ICharacterEncoding encoding) {
@@ -47,12 +47,16 @@ import com.upokecenter.text.*;
             this.decoder = new EncodingUtf16().GetDecoder();
           } else {
             // No BOM found
-            if (bufferCount == 1) {
-              this.state.PrependOne(buffer[0]);
-            } else if (bufferCount == 2) {
-              this.state.PrependTwo(buffer[0], buffer[1]);
-            } else if (bufferCount == 3) {
-              this.state.PrependThree(buffer[0], buffer[1], buffer[2]);
+            switch (bufferCount) {
+              case 1:
+                this.state.PrependOne(buffer[0]);
+                break;
+              case 2:
+                this.state.PrependTwo(buffer[0], buffer[1]);
+                break;
+              case 3:
+                this.state.PrependThree(buffer[0], buffer[1], buffer[2]);
+                break;
             }
           }
         }
@@ -70,10 +74,10 @@ import com.upokecenter.text.*;
     }
 
     private static class BomBufferedTransform implements IByteReader {
-      private int[] buffer;
+      private final int[] buffer;
       private int bufferOffset;
       private int bufferCount;
-      private IByteReader transform;
+      private final IByteReader transform;
       private boolean bomChecked;
 
       public BomBufferedTransform (IByteReader transform) {

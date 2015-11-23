@@ -7,11 +7,11 @@ import com.upokecenter.text.*;
 
   public class EncodingISO2022JP implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
-      private int machineState = 0;
-      private int outputState = 0;
-      private int lead = 0;
-      private int output = 0;
-      private DecoderState state;
+      private int machineState;
+      private int outputState;
+      private int lead;
+      private int output;
+      private final DecoderState state;
 
       public Decoder () {
         this.state = new DecoderState(2);
@@ -106,11 +106,7 @@ import com.upokecenter.text.*;
                 int p = (lead - 0x21) * 94 + (b - 0x21);
                 // NOTE: Only JIS0208 now supported here
                 int c = Jis0208.IndexToCodePoint(p);
-                if (c < 0) {
-                  return -2;
-                } else {
-                  return c;
-                }
+                return c < 0 ? -2 : c;
               } else {
                 machineState = 4;
                 return -2;
@@ -157,7 +153,7 @@ import com.upokecenter.text.*;
     }
 
     private static class Encoder implements ICharacterEncoder {
-      private int encoderState = 0;
+      private int encoderState;
 
       public Encoder () {
       }

@@ -18,8 +18,8 @@ import com.upokecenter.text.*;
   final class QuotedPrintableEncoder implements ICharacterEncoder {
     private static final String HexAlphabet = "0123456789ABCDEF";
     private int lineCount;
-    private int lineBreakMode;
-    private boolean unlimitedLineLength;
+    private final int lineBreakMode;
+    private final boolean unlimitedLineLength;
 
     // lineBreakMode:
     // 0 - no line breaks
@@ -28,22 +28,6 @@ import com.upokecenter.text.*;
     public QuotedPrintableEncoder (int lineBreakMode, boolean unlimitedLineLength) {
       this.lineBreakMode = lineBreakMode;
       this.unlimitedLineLength = unlimitedLineLength;
-    }
-
-    private int IncrementLineCount(IWriter output, int length) {
-      if (!this.unlimitedLineLength) {
-        if (this.lineCount + length > 75) {
-          // 76 including the final '='
-          output.write(0x3d);
-          output.write(0x0d);
-          output.write(0x0a);
-          this.lineCount = length;
-          return 3;
-        } else {
-          this.lineCount += length;
-        }
-      }
-      return 0;
     }
 
     private int IncrementAndAppend(IWriter output, String appendStr) {

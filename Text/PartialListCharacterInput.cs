@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace PeterO.Text {
   internal sealed class PartialListCharacterInput : ICharacterInput {
     private int pos;
-    private int endPos;
-    private IList<int> ilist;
+    private readonly int endPos;
+    private readonly IList<int> ilist;
 
     public PartialListCharacterInput(IList<int> ilist, int start, int length) {
       if (ilist == null) {
@@ -68,7 +68,7 @@ namespace PeterO.Text {
         return 0;
       }
       int size = this.endPos;
-      int count = 0;
+      var count = 0;
       while (this.pos < size && unitCount > 0) {
         buf[offset] = this.ilist[this.pos];
         ++offset;

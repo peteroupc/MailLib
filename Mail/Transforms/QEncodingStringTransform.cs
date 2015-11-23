@@ -11,7 +11,7 @@ using PeterO.Mail;
 
 namespace PeterO.Mail.Transforms {
   internal sealed class QEncodingStringTransform : IByteReader {
-    private String input;
+    private readonly String input;
     private int inputIndex;
     private byte[] buffer;
     private int bufferIndex;
@@ -106,13 +106,7 @@ namespace PeterO.Mail.Transforms {
           // with the ASCII substitute character
           return 0x1a;
         }
-        if (c == '_') {
-          // Underscore, use space
-          return ' ';
-        } else {
-          // printable ASCII, return that byte
-          return c;
-        }
+        return c == '_' ? ' ' : c;
       }
     }
   }

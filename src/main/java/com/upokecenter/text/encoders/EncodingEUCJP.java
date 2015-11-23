@@ -7,9 +7,9 @@ import com.upokecenter.text.*;
 
   public class EncodingEUCJP implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
-      private DecoderState state;
+      private final DecoderState state;
       private int lead;
-        private boolean jis0212 = false;
+        private boolean jis0212;
 
       public Decoder () {
         this.state = new DecoderState(1);
@@ -47,11 +47,7 @@ import com.upokecenter.text.*;
             if (b < 0xa1 || b == 0xff) {
               this.state.PrependOne(b);
             }
-            if (c < 0) {
-              return -2;
-            } else {
-              return c;
-            }
+            return c < 0 ? -2 : c;
           }
           if (b <= 0x7f) {
             return b;

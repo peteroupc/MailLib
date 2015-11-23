@@ -7,7 +7,7 @@ using PeterO.Text;
 namespace PeterO.Text.Encoders {
   internal class EncodingBig5 : ICharacterEncoding {
     private class Decoder : ICharacterDecoder {
-      private DecoderState state;
+      private readonly DecoderState state;
       private int lead;
 
       public Decoder() {
@@ -30,7 +30,7 @@ namespace PeterO.Text.Encoders {
             return -1;
           }
           if (this.lead != 0) {
-            int c = -1;
+            var c = -1;
             int o = (b < 0x7f) ? 0x40 : 0x62;
             if ((b >= 0x40 && b <= 0x7e) || (b >= 0xa1 && b <= 0xfe)) {
               c = ((this.lead - 0x81) * 157) + (b - o);

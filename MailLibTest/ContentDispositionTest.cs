@@ -53,7 +53,8 @@ namespace MailLibTest {
       try {
  ContentDisposition.Parse(null);
 Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
+} catch(ArgumentNullException ex) {
+Console.WriteLine(ex.Message);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);

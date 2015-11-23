@@ -77,9 +77,9 @@ import com.upokecenter.text.*;
     private static final int EncodingBase64 = 2;
     private static final boolean UseLenientLineBreaks = true;
 
-    private List<String> headers;
+    private final List<String> headers;
 
-    private List<Message> parts;
+    private final List<Message> parts;
 
     /**
      * Gets a list of all the parts of this message. This list is editable. This
@@ -477,7 +477,7 @@ public final void setSubject(String value) {
         }
         return Encodings.DecodeToString(
           charset,
-          DataIO.ToTransform(this.body));
+          DataIO.ToByteReader(this.body));
       }
 
     /**
@@ -493,7 +493,7 @@ public final void setSubject(String value) {
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
-      IByteReader transform = DataIO.ToTransform(stream);
+      IByteReader transform = DataIO.ToByteReader(stream);
       // if (useLenientLineBreaks) {
       // TODO: Might not be correct if the transfer
       // encoding turns out to be binary
@@ -515,7 +515,7 @@ public final void setSubject(String value) {
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
-      IByteReader transform = DataIO.ToTransform(bytes);
+      IByteReader transform = DataIO.ToByteReader(bytes);
       this.ReadMessage(transform);
     }
 
@@ -536,10 +536,10 @@ public final void setSubject(String value) {
       this.headers.add("1.0");
     }
 
-    private static java.util.Random msgidRandom = new java.util.Random();
+    private static final java.util.Random msgidRandom = new java.util.Random();
     private static boolean seqFirstTime = true;
     private static int msgidSequence;
-    private static Object sequenceSync = new Object();
+    private static final Object sequenceSync = new Object();
 
     private String GenerateMessageID() {
       long ticks = new java.util.Date().getTime();
@@ -667,8 +667,8 @@ public final void setContentDisposition(ContentDisposition value) {
         ContentDisposition disp = this.contentDisposition;
         return (disp != null) ?
           ContentDisposition.MakeFilename(disp.GetParameter("filename")) :
-        ContentDisposition.MakeFilename(this.contentType.GetParameter("name"
-));
+        ContentDisposition.MakeFilename(this.contentType.GetParameter(
+"name"));
       }
 
     private void ProcessHeaders(boolean assumeMime, boolean digest) {
@@ -695,8 +695,7 @@ public final void setContentDisposition(ContentDisposition value) {
               endIndex,
               value.length(),
               null) == value.length()) ? value.substring(startIndex, (startIndex)+(endIndex -
-                startIndex)) :
-            "";
+                startIndex)) : "";
         }
         mime |= name.equals("mime-version");
         if (value.indexOf("=?") >= 0) {
@@ -825,7 +824,7 @@ public final void setContentDisposition(ContentDisposition value) {
         if (!(
           (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <=
             '9') || c == 0x20 || c == 0x2c || "'()-./+_:=?" .indexOf(c) >=
-                      0)) {
+                    0)) {
           return false;
         }
       }
@@ -1063,13 +1062,11 @@ public final void setContentDisposition(ContentDisposition value) {
                   do {
                     int indexStart4 = index;
                while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index)
-                      ==
-                    9))) {
+                == 9))) {
                     ++index;
                     }
               if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1)
-                      ==
-                    10) {
+                == 10) {
                     index += 2;
                     } else {
                     index = indexStart4; break;
@@ -1087,8 +1084,7 @@ public final void setContentDisposition(ContentDisposition value) {
                     9))) {
                   ++index;
                while (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index)
-                    ==
-                    9))) {
+                == 9))) {
                     ++index;
                   }
                 } else {
@@ -1167,8 +1163,7 @@ public final void setContentDisposition(ContentDisposition value) {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.length()) != value.length()) {
-       throw new
-            IllegalArgumentException("Header field value contains invalid text");
+       throw new IllegalArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.length(), null) != value.length()) {
           throw new
@@ -1250,9 +1245,8 @@ public final void setContentDisposition(ContentDisposition value) {
           allTextBytes = false;
           ++ctlBytes;
         } else if (body[i] == 0x7f ||
-            (body[i] < 0x20 && body[i] != 0x0d && body[i] != 0x0a && body[i]
-                     !=
-                    0x09)) {
+            (body[i] < 0x20 && body[i] != 0x0d && body[i] != 0x0a && body[i]!=
+                0x09)) {
           allTextBytes = false;
           ++ctlBytes;
         } else if (body[i] == (byte)'\r') {
@@ -1406,7 +1400,7 @@ public final void setContentDisposition(ContentDisposition value) {
       return dict;
     }
 
-    private static Map<String, Integer> valueHeaderIndices =
+    private static final Map<String, Integer> valueHeaderIndices =
       MakeHeaderIndices();
 
     private static void AppendAscii(IWriter output, String str) {
@@ -1461,18 +1455,15 @@ public final void setContentDisposition(ContentDisposition value) {
         }
       }
       String topLevel = builder.getTopLevelType();
-      if (topLevel.equals("message") || topLevel.equals("multipart")) {
-        transferEnc = (topLevel.equals("multipart") || (
+      transferEnc = topLevel.equals("message") ||
+        topLevel.equals("multipart") ? (topLevel.equals("multipart") || (
           !builder.getSubType().equals("global") &&
           !builder.getSubType().equals("global-headers") &&
           !builder.getSubType().equals("global-disposition-notification") &&
           !builder.getSubType().equals("global-delivery-status"))) ?
           EncodingSevenBit : TransferEncodingToUse(
             bodyToWrite,
-            depth > 0);
-      } else {
-        transferEnc = TransferEncodingToUse(bodyToWrite, depth > 0);
-      }
+            depth > 0) : TransferEncodingToUse(bodyToWrite, depth > 0);
       String encodingString = "7bit";
       if (transferEnc == EncodingBase64) {
         encodingString = "base64";
@@ -1746,7 +1737,7 @@ public final void setContentDisposition(ContentDisposition value) {
         boolean isUtf8 = typeEnd - index == 5 &&
           (headerValue.charAt(index) & ~0x20) == 'U' && (headerValue.charAt(index +
                1) & ~0x20) == 'T' && (headerValue.charAt(index + 2) & ~0x20) == 'F'
-                      &&
+                    &&
           headerValue.charAt(index + 3) == '-' && headerValue.charAt(index + 4) == '8';
         atomText = HeaderParser.ParseCFWS(
           headerValue,
@@ -1815,7 +1806,6 @@ public final void setContentDisposition(ContentDisposition value) {
     // Parse the delivery status byte array to downgrade
     // the Original-Recipient and Final-Recipient header fields
     static byte[] DowngradeDeliveryStatus(byte[] bytes) {
-      // int lineCount = 0;
       StringBuilder sb = new StringBuilder();
       int index = 0;
       int endIndex = bytes.length;
@@ -1975,14 +1965,9 @@ public final void setContentDisposition(ContentDisposition value) {
               writer.write(bytes, lastIndex, headerNameStart - lastIndex);
             }
             WordWrapEncoder encoder = null;
-            if (status[0] == 2) {
-              encoder = new WordWrapEncoder((origRecipient ?
-                 "Downgraded-Original-Recipient" :
-                      "Downgraded-Final-Recipient"
-) + ":");
-            } else {
-              encoder = new WordWrapEncoder(origFieldName);
-            }
+            encoder = status[0] == 2 ? new WordWrapEncoder((origRecipient ?
+                "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient"
+) + ":") : new WordWrapEncoder(origFieldName);
             encoder.AddString(headerValue);
             byte[] newBytes = DataUtilities.GetUtf8Bytes(
               encoder.toString(),
@@ -2222,9 +2207,8 @@ public final void setContentDisposition(ContentDisposition value) {
           }
           if (!IsWellFormedBoundary(newBoundary)) {
             throw new
-  MessageDataException("Multipart message has an invalid boundary defined: "
-                +
-                    newBoundary);
+  MessageDataException("Multipart message has an invalid boundary defined: "+
+                newBoundary);
           }
         }
         this.boundary = newBoundary;
@@ -2336,29 +2320,34 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       int encoding,
       boolean useLiberalSevenBit) {
       IByteReader transform = new EightBitTransform(stream);
-      if (encoding == EncodingQuotedPrintable) {
-        // NOTE: The max line size is actually 76, but some emails
-        // have lines that exceed this size, so use an unlimited line length
-        // when parsing
-        transform = new QuotedPrintableTransform(stream, false, -1);
-        // transform = new QuotedPrintableTransform(stream, false, 76, true);
-      } else if (encoding == EncodingBase64) {
-        // NOTE: Same as quoted-printable regarding line length
-        transform = new Base64Transform(stream, false, -1, false);
-        // transform = new Base64Transform(stream, false, 76, true);
-      } else if (encoding == EncodingEightBit) {
-        transform = new EightBitTransform(stream);
-      } else if (encoding == EncodingBinary) {
-        transform = stream;
-      } else if (encoding == EncodingSevenBit) {
-        // DEVIATION: Replace 8-bit bytes and null with the
-        // ASCII substitute character (0x1a) for text/plain messages,
-        // non-MIME messages, and the preamble and epilogue of multipart
-        // messages (which will be ignored).
-        transform = useLiberalSevenBit ?
-          ((IByteReader)new LiberalSevenBitTransform(stream)) :
-          ((IByteReader)new SevenBitTransform(stream));
+      switch (encoding) {
+        case EncodingQuotedPrintable:
+          // NOTE: The max line size is actually 76, but some emails
+          // have lines that exceed this size, so use an unlimited line length
+          // when parsing
+          transform = new QuotedPrintableTransform(stream, false, -1);
+          break;
+        case EncodingBase64:
+          // NOTE: Same as quoted-printable regarding line length
+          transform = new Base64Transform(stream, false, -1, false);
+          break;
+        case EncodingEightBit:
+          transform = new EightBitTransform(stream);
+          break;
+        case EncodingBinary:
+          transform = stream;
+          break;
+        case EncodingSevenBit:
+          // DEVIATION: Replace 8-bit bytes and null with the
+          // ASCII substitute character (0x1a) for text/plain messages,
+          // non-MIME messages, and the preamble and epilogue of multipart
+          // messages (which will be ignored).
+          transform = useLiberalSevenBit ?
+            ((IByteReader)new LiberalSevenBitTransform(stream)) :
+            ((IByteReader)new SevenBitTransform(stream));
+          break;
       }
+
       return transform;
     }
 

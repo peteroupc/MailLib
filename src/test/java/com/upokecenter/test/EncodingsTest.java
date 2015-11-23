@@ -13,8 +13,25 @@ import org.junit.Test;
     }
     @Test
     public void TestEncodeToBytes() {
-      //ArgNull(Encodings.EncodeToBytes(null, Encodings.UTF8);
-      //ArgNull(Encodings.EncodeToBytes("test",null);
+      try {
+        ICharacterInput ici = null;
+ Encodings.EncodeToBytes(ici, Encodings.UTF8);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ Encodings.EncodeToBytes("test",null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+System.out.println(ex.getMessage());
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestEncodeToWriter() {
@@ -97,6 +114,7 @@ import org.junit.Test;
  Encodings.StringToInput(null, 0, 0);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -105,6 +123,7 @@ throw new IllegalStateException("", ex);
  Encodings.StringToInput("t",-1,1);
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -113,6 +132,7 @@ throw new IllegalStateException("", ex);
  Encodings.StringToInput("t",5,1);
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -121,6 +141,7 @@ throw new IllegalStateException("", ex);
  Encodings.StringToInput("t",0,-1);
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -129,6 +150,7 @@ throw new IllegalStateException("", ex);
  Encodings.StringToInput("t",0,5);
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -137,6 +159,7 @@ throw new IllegalStateException("", ex);
  Encodings.StringToInput("tt",1,2);
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
+System.out.println(ex.getMessage());
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);

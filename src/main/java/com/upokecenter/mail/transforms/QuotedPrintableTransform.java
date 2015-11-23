@@ -12,16 +12,16 @@ import com.upokecenter.mail.*;
 
   public final class QuotedPrintableTransform implements IByteReader {
     private int lineCharCount;
-    private boolean lenientLineBreaks;
+    private final boolean lenientLineBreaks;
     private byte[] buffer;
     private int bufferIndex;
     private int bufferCount;
-    private boolean checkStrictEncoding;
-    private int maxLineSize;
+    private final boolean checkStrictEncoding;
+    private final int maxLineSize;
 
     private int lastByte;
     private boolean unget;
-    private IByteReader input;
+    private final IByteReader input;
 
     public QuotedPrintableTransform (
 IByteReader input,
@@ -99,7 +99,8 @@ input, lenientLineBreaks, maxLineLength, false);
           // End of stream
           return -1;
         }
-        if (!this.checkStrictEncoding && printable[c]==1 && this.maxLineSize< 0) {
+     if (!this.checkStrictEncoding && printable[c]==1 && this.maxLineSize<
+          0) {
           return c;
         }
         if (c == 0x0d) {

@@ -265,7 +265,7 @@ import com.upokecenter.text.*;
 
     private static class Decoder implements ICharacterDecoder {
       private int gbk1, gbk2, gbk3;
-      private DecoderState state;
+      private final DecoderState state;
 
       public Decoder () {
         this.state = new DecoderState(3);
@@ -344,7 +344,7 @@ import com.upokecenter.text.*;
     }
 
     private static class Encoder implements ICharacterEncoder {
-      private boolean gbk;
+      private final boolean gbk;
 
       public Encoder (boolean gbk) {
         this.gbk = gbk;
@@ -404,7 +404,7 @@ import com.upokecenter.text.*;
       return new Encoder(gbk);
     }
 
-    private ICharacterEncoder enc = GetEncoder2(false);
+    private final ICharacterEncoder enc = GetEncoder2(false);
 
     public ICharacterDecoder GetDecoder() {
       return EncodingGB18030.GetDecoder2();

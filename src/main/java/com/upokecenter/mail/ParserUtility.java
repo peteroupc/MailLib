@@ -71,6 +71,44 @@ prefix.length() >= str.length()) && str.substring(
         str.substring(index));
     }
 
+    public static String CollapseSpaceAndTab(String str) {
+      if (((str) == null || (str).length() == 0)) {
+        return str;
+      }
+      StringBuilder builder = null;
+      int index = 0;
+      while (index < str.length()) {
+        int si = index;
+        char c = str.charAt(index++);
+        boolean isspace = (c == 0x20);
+        int count = 0;
+        while (c == 0x09 || c == 0x20) {
+          ++count;
+          if (index < str.length()) {
+            c = str.charAt(index++);
+          } else {
+            break;
+          }
+        }
+        if (count > 0 && !(isspace && count == 1)) {
+          if (builder == null) {
+            // create the builder lazily, in case
+            // it's rare to pass strings with
+            // spaces (other than a single space)
+            // to this method
+            builder = new StringBuilder();
+            builder.append(str.substring(0, si));
+          }
+          builder.append(' ');
+        } else {
+          if (builder != null) {
+            builder.append(c);
+          }
+        }
+      }
+      return (builder == null) ? str : builder.toString();
+    }
+
     public static String TrimSpaceAndTabRight(String str) {
       if (((str) == null || (str).length() == 0)) {
         return str;

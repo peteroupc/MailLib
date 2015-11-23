@@ -11,7 +11,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   public final class PercentEncodingStringTransform implements IByteReader {
-    private String input;
+    private final String input;
     private int inputIndex;
     private byte[] buffer;
     private int bufferIndex;

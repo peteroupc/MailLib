@@ -171,8 +171,7 @@ namespace PeterO.Mail {
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseAtext(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseAtext(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
         if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
@@ -203,7 +202,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
         for (int i = 0; ; ++i) {
-          int indexTemp2 = ParseAtext(str, index, endIndex, tokener);
+          int indexTemp2 = ParseAtext(str, index, endIndex);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -265,7 +264,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             int indexTemp3 = index;
             do {
               int indexStart3 = index;
-              index = ParseFWS(str, index, endIndex, tokener);
+              index = ParseFWS(str, index, endIndex);
   int tx4 = HeaderParserUtility.ParseCommentLax(str, index, endIndex,
                 tokener);
               if (tx4 == index) {
@@ -288,7 +287,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           if (index == indexStart2) {
             break;
           }
-          index = ParseFWS(str, index, endIndex, tokener);
+          index = ParseFWS(str, index, endIndex);
           indexTemp2 = index;
           index = indexStart2;
         } while (false);
@@ -299,7 +298,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
  tokener.RestoreState(state2);
 }
         for (int i = 0; ; ++i) {
-          indexTemp2 = ParseFWS(str, index, endIndex, tokener);
+          indexTemp2 = ParseFWS(str, index, endIndex);
           if (indexTemp2 == index) {
             if (i < 1) {
               indexTemp = indexStart;
@@ -372,21 +371,20 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseCharset(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseCharset(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
-        if ((index < endIndex && ((str[index] == 33) || ((str[index] >= 35&&
-          str[index] <= 36)) || (str[index] == 38) || (str[index] == 43)||
-          (str[index] == 45) || ((str[index] >= 48 && str[index] <= 57))||
-          ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94&&
-          str[index] <= 126))))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35&&
+          str[index] <= 36) || (str[index] == 38) || (str[index] == 43)||
+          (str[index] == 45) || (str[index] >= 48 && str[index] <= 57)||
+          (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94&&
+          str[index] <= 126))) {
           ++index;
-          while ((index < endIndex && ((str[index] == 33) || ((str[index] >=
-            35 && str[index] <= 36)) || (str[index] == 38) || (str[index] ==
-            43) || (str[index] == 45) || ((str[index] >= 48 && str[index] <=
-            57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index]
-            >= 94 && str[index] <= 126))))) {
+          while (index < endIndex && ((str[index] == 33) || (str[index] >=
+            35 && str[index] <= 36) || (str[index] == 38) || (str[index] ==
+            43) || (str[index] == 45) || (str[index] >= 48 && str[index] <=
+            57) || (str[index] >= 65 && str[index] <= 90) || (str[index]
+            >= 94 && str[index] <= 126))) {
             ++index;
           }
         } else {
@@ -548,7 +546,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
     }
     public static int ParseDesignator(string str, int index, int endIndex,
       ITokener tokener) {
-      return ParseMilitaryString(str, index, endIndex, tokener);
+      return ParseMilitaryString(str, index, endIndex);
     }
     public static int ParseDiagDeprecated(string str, int index, int
       endIndex, ITokener tokener) {
@@ -718,7 +716,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         if (index == indexStart) {
           break;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -741,7 +739,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             int indexTemp3 = index;
             do {
               int indexStart3 = index;
-              int tx4 = ParseLabel(str, index, endIndex, tokener);
+              int tx4 = ParseLabel(str, index, endIndex);
               if (tx4 == index) {
                 break;
               } else {
@@ -773,8 +771,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
               int indexTemp4 = index;
               do {
                 int indexStart4 = index;
-                if (index < endIndex && (((str[index] >= 65 && str[index] <=
-                  90)) || ((str[index] >= 97 && str[index] <= 122)))) {
+                if (index < endIndex && ((str[index] >= 65 && str[index] <=
+                  90) || (str[index] >= 97 && str[index] <= 122))) {
                   ++index;
                 } else {
                   break;
@@ -782,15 +780,15 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                 for (int i4 = 0; ; ++i4) {
                   int indexTemp5 = index;
                   do {
-                    if (index + 1 < endIndex && (((str[index] == 45) &&
-                      (((str[index + 1] >= 65 && str[index + 1] <= 90)) ||
-                      ((str[index + 1] >= 97 && str[index + 1] <= 122)) ||
-                      ((str[index + 1] >= 48 && str[index + 1] <= 57)))))) {
+                    if (index + 1 < endIndex && ((str[index] == 45) &&
+                    ((str[index + 1] >= 65 && str[index + 1] <= 90) ||
+                    (str[index + 1] >= 97 && str[index + 1] <= 122) ||
+                    (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
                     indexTemp5 += 2; break;
                     }
-                    if (index < endIndex && (((str[index] >= 65 &&
-                      str[index] <= 90)) || ((str[index] >= 97 && str[index]
-                      <= 122)) || ((str[index] >= 48 && str[index] <= 57)))) {
+                    if (index < endIndex && ((str[index] >= 65 &&
+                    str[index] <= 90) || (str[index] >= 97 && str[index]
+                    <= 122) || (str[index] >= 48 && str[index] <= 57))) {
                     ++indexTemp5; break;
                     }
                   } while (false);
@@ -821,12 +819,12 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                 } else {
                   break;
                 }
-                while ((index < endIndex && (((str[index] >= 48 &&
-                  str[index] <= 57)) || (str[index] == 45)))) {
+                while (index < endIndex && ((str[index] >= 48 &&
+                  str[index] <= 57) || (str[index] == 45))) {
                   ++index;
                 }
-                if (index < endIndex && (((str[index] >= 65 && str[index] <=
-                  90)) || ((str[index] >= 97 && str[index] <= 122)))) {
+                if (index < endIndex && ((str[index] >= 65 && str[index] <=
+                  90) || (str[index] >= 97 && str[index] <= 122))) {
                   ++index;
                 } else {
                   index = indexStart4; break;
@@ -834,15 +832,15 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                 while (true) {
                   int indexTemp5 = index;
                   do {
-                    if (index + 1 < endIndex && (((str[index] == 45) &&
-                      (((str[index + 1] >= 65 && str[index + 1] <= 90)) ||
-                      ((str[index + 1] >= 97 && str[index + 1] <= 122)) ||
-                      ((str[index + 1] >= 48 && str[index + 1] <= 57)))))) {
+                    if (index + 1 < endIndex && ((str[index] == 45) &&
+                    ((str[index + 1] >= 65 && str[index + 1] <= 90) ||
+                    (str[index + 1] >= 97 && str[index + 1] <= 122) ||
+                    (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
                     indexTemp5 += 2; break;
                     }
-                    if (index < endIndex && (((str[index] >= 65 &&
-                      str[index] <= 90)) || ((str[index] >= 97 && str[index]
-                      <= 122)) || ((str[index] >= 48 && str[index] <= 57)))) {
+                    if (index < endIndex && ((str[index] >= 65 &&
+                    str[index] <= 90) || (str[index] >= 97 && str[index]
+                    <= 122) || (str[index] >= 48 && str[index] <= 57))) {
                     ++indexTemp5; break;
                     }
                   } while (false);
@@ -877,16 +875,16 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         if (tokener != null) {
  tokener.RestoreState(state2);
 }
-        if ((index < endIndex && (((str[index] >= 65 && str[index] <= 90))||
-          ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48&&
-          str[index] <= 57)) || (str[index] == 45) || (str[index] ==
-          95)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+          str[index] <= 57) || (str[index] == 45) || (str[index] ==
+          95))) {
           ++indexTemp;
-          while ((indexTemp < endIndex && (((str[indexTemp] >= 65 &&
-            str[indexTemp] <= 90)) || ((str[indexTemp] >= 97 &&
-            str[indexTemp] <= 122)) || ((str[indexTemp] >= 48 &&
-            str[indexTemp] <= 57)) || (str[indexTemp] == 45) ||
-            (str[indexTemp] == 95)))) {
+          while (indexTemp < endIndex && ((str[indexTemp] >= 65 &&
+            str[indexTemp] <= 90) || (str[indexTemp] >= 97 &&
+            str[indexTemp] <= 122) || (str[indexTemp] >= 48 &&
+            str[indexTemp] <= 57) || (str[indexTemp] == 45) ||
+            (str[indexTemp] == 95))) {
             ++indexTemp;
           }
           break;
@@ -909,11 +907,11 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         } else {
           break;
         }
-        if ((index < endIndex && (((str[index] >= 65 && str[index] <= 90))||
-          ((str[index] >= 97 && str[index] <= 122))))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 97 && str[index] <= 122))) {
           ++index;
-          while ((index < endIndex && (((str[index] >= 65 && str[index] <=
-            90)) || ((str[index] >= 97 && str[index] <= 122))))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <=
+            90) || (str[index] >= 97 && str[index] <= 122))) {
             ++index;
           }
         } else {
@@ -943,7 +941,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             break;
           }
         } while (false);
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -958,17 +956,17 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if ((index < endIndex && ((str[index] == 33) || ((str[index] >= 35&&
-          str[index] <= 36)) || (str[index] == 38) || (str[index] == 43)||
-          ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48&&
-          str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90))||
-          ((str[index] >= 94 && str[index] <= 126))))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35&&
+          str[index] <= 36) || (str[index] == 38) || (str[index] == 43)||
+          (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48&&
+          str[index] <= 57) || (str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 94 && str[index] <= 126))) {
           ++index;
-          while ((index < endIndex && ((str[index] == 33) || ((str[index] >=
-            35 && str[index] <= 36)) || (str[index] == 38) || (str[index] ==
-            43) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index]
-            >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index]
-            <= 90)) || ((str[index] >= 94 && str[index] <= 126))))) {
+          while (index < endIndex && ((str[index] == 33) || (str[index] >=
+            35 && str[index] <= 36) || (str[index] == 38) || (str[index] ==
+            43) || (str[index] >= 45 && str[index] <= 46) || (str[index]
+            >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index]
+            <= 90) || (str[index] >= 94 && str[index] <= 126))) {
             ++index;
           }
         } else {
@@ -1035,8 +1033,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseDistName(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseDistName(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
         if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
@@ -1051,10 +1048,10 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           } else {
             break;
           }
-          while ((index < endIndex && (((str[index] >= 65 && str[index] <=
-            90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-            ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 43)||
-            (str[index] == 45) || (str[index] == 95)))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <=
+            90) || (str[index] >= 97 && str[index] <= 122) ||
+            (str[index] >= 48 && str[index] <= 57) || (str[index] == 43)||
+            (str[index] == 45) || (str[index] == 95))) {
             ++index;
           }
           indexTemp2 = index;
@@ -1151,7 +1148,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             int tx3 = ParseDtext(str, index, endIndex, tokener);
             if (tx3 == index) {
               index = indexStart2; break;
@@ -1169,7 +1166,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
  break;
 }
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         if (index < endIndex && (str[index] == 93)) {
           ++index;
         } else {
@@ -1189,27 +1186,27 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        if (index < endIndex && (((str[index] >= 65 && str[index] <= 90)) ||
-          ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 &&
-          str[index] <= 57)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57))) {
           ++index;
         } else {
           break;
         }
-        index = ParseLdhStr(str, index, endIndex, tokener);
+        index = ParseLdhStr(str, index, endIndex);
         for (int i = 0; ; ++i) {
           int indexTemp2 = index;
           do {
             int indexStart2 = index;
-            if (index + 1 < endIndex && (str[index] == 46) && (((str[index +
-              1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97&&
-              str[index + 1] <= 122)) || ((str[index + 1] >= 48 &&
-              str[index + 1] <= 57)))) {
+            if (index + 1 < endIndex && (str[index] == 46) && ((str[index +
+              1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97&&
+              str[index + 1] <= 122) || (str[index + 1] >= 48 &&
+              str[index + 1] <= 57))) {
               index += 2;
             } else {
               break;
             }
-            index = ParseLdhStr(str, index, endIndex, tokener);
+            index = ParseLdhStr(str, index, endIndex);
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
@@ -1324,7 +1321,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         for (int i = 0; ; ++i) {
-          int indexTemp2 = ParseAtext(str, index, endIndex, tokener);
+          int indexTemp2 = ParseAtext(str, index, endIndex);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -1349,7 +1346,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
               break;
             }
             for (int i2 = 0; ; ++i2) {
-              int indexTemp3 = ParseAtext(str, index, endIndex, tokener);
+              int indexTemp3 = ParseAtext(str, index, endIndex);
               if (indexTemp3 != index) {
                 index = indexTemp3;
               } else {
@@ -1392,7 +1389,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           (str[index] >= 14 && str[index] <= 31) || (str[index] == 127))) {
           ++indexTemp; break;
         }
-        int indexTemp2 = ParseQuotedPair(str, index, endIndex, tokener);
+        int indexTemp2 = ParseQuotedPair(str, index, endIndex);
         if (indexTemp2 != index) {
           indexTemp = indexTemp2; break;
         }
@@ -1440,20 +1437,20 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index < endIndex && (((str[index] >= 65 && str[index] <= 90)) ||
-          ((str[index] >= 97 && str[index] <= 122)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122))) {
           ++index;
         } else {
           index = indexStart; break;
         }
-        if ((index < endIndex && (((str[index] >= 65 && str[index] <= 90))||
-          ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48&&
-          str[index] <= 57)) || (str[index] == 45)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+          str[index] <= 57) || (str[index] == 45))) {
           ++index;
-          while ((index < endIndex && (((str[index] >= 65 && str[index] <=
-            90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-            ((str[index] >= 48 && str[index] <= 57)) || (str[index] ==
-            45)))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <=
+            90) || (str[index] >= 97 && str[index] <= 122) ||
+            (str[index] >= 48 && str[index] <= 57) || (str[index] ==
+            45))) {
             ++index;
           }
         } else {
@@ -1473,8 +1470,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseFWS(string str, int index, int endIndex, ITokener
-      tokener) {
+    public static int ParseFWS(string str, int index, int endIndex) {
       int indexStart = index;
       int indexTemp = index;
       do {
@@ -1517,14 +1513,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if ((index < endIndex && (((str[index] >= 65 && str[index] <= 90))||
-          ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48&&
-          str[index] <= 57)) || (str[index] == 45)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+          str[index] <= 57) || (str[index] == 45))) {
           ++index;
-          while ((index < endIndex && (((str[index] >= 65 && str[index] <=
-            90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-            ((str[index] >= 48 && str[index] <= 57)) || (str[index] ==
-            45)))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <=
+            90) || (str[index] >= 97 && str[index] <= 122) ||
+            (str[index] >= 48 && str[index] <= 57) || (str[index] ==
+            45))) {
             ++index;
           }
         } else {
@@ -1595,7 +1591,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             int indexTemp3 = index;
             do {
               int indexStart3 = index;
-              index = ParseFWS(str, index, endIndex, tokener);
+              index = ParseFWS(str, index, endIndex);
   int tx4 = HeaderParserUtility.ParseCommentLax(str, index, endIndex,
                 tokener);
               if (tx4 == index) {
@@ -1618,7 +1614,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           if (index == indexStart2) {
             break;
           }
-          index = ParseFWS(str, index, endIndex, tokener);
+          index = ParseFWS(str, index, endIndex);
           indexTemp2 = index;
           index = indexStart2;
         } while (false);
@@ -1629,7 +1625,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
  tokener.RestoreState(state2);
 }
         for (int i = 0; ; ++i) {
-          indexTemp2 = ParseFWS(str, index, endIndex, tokener);
+          indexTemp2 = ParseFWS(str, index, endIndex);
           if (indexTemp2 == index) {
             if (i < 1) {
               indexTemp = indexStart;
@@ -1791,7 +1787,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         if (index < endIndex && (str[index] == 60)) {
           ++index;
         } else {
@@ -1803,10 +1799,10 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = ParseFWS(str, index, endIndex, tokener);
-            if (index < endIndex && (((str[index] >= 33 && str[index] <=
-              59)) || (str[index] == 61) || ((str[index] >= 63 && str[index]
-              <= 126)))) {
+            index = ParseFWS(str, index, endIndex);
+            if (index < endIndex && ((str[index] >= 33 && str[index] <=
+              59) || (str[index] == 61) || (str[index] >= 63 && str[index]
+              <= 126))) {
               ++index;
             } else {
               index = indexStart2; break;
@@ -1822,7 +1818,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
  break;
 }
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         if (index < endIndex && (str[index] == 62)) {
           ++index;
         } else {
@@ -1921,20 +1917,20 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if ((index < endIndex && ((str[index] == 33) || ((str[index] >= 35&&
-          str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46))||
-          ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65&&
-          str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126))||
-          ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38&&
-          str[index] <= 39)) || (str[index] == 63)))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35&&
+          str[index] <= 36) || (str[index] >= 45 && str[index] <= 46)||
+          (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65&&
+          str[index] <= 90) || (str[index] >= 94 && str[index] <= 126)||
+          (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38&&
+          str[index] <= 39) || (str[index] == 63))) {
           ++index;
-          while ((index < endIndex && ((str[index] == 33) || ((str[index] >=
-            35 && str[index] <= 36)) || ((str[index] >= 45 && str[index] <=
-            46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index]
-            >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index]
-            <= 126)) || ((str[index] >= 42 && str[index] <= 43)) ||
-            ((str[index] >= 38 && str[index] <= 39)) || (str[index] ==
-            63)))) {
+          while (index < endIndex && ((str[index] == 33) || (str[index] >=
+            35 && str[index] <= 36) || (str[index] >= 45 && str[index] <=
+            46) || (str[index] >= 48 && str[index] <= 57) || (str[index]
+            >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index]
+            <= 126) || (str[index] >= 42 && str[index] <= 43) ||
+            (str[index] >= 38 && str[index] <= 39) || (str[index] ==
+            63))) {
             ++index;
           }
         } else {
@@ -1998,13 +1994,13 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if ((index < endIndex && (((str[index] >= 33 && str[index] <= 59))||
-          (str[index] == 61) || ((str[index] >= 63 && str[index] <=
-          126))))) {
+        if (index < endIndex && ((str[index] >= 33 && str[index] <= 59)||
+          (str[index] == 61) || (str[index] >= 63 && str[index] <=
+          126))) {
           ++index;
-          while ((index < endIndex && (((str[index] >= 33 && str[index] <=
-            59)) || (str[index] == 61) || ((str[index] >= 63 && str[index]
-            <= 126))))) {
+          while (index < endIndex && ((str[index] >= 33 && str[index] <=
+            59) || (str[index] == 61) || (str[index] >= 63 && str[index]
+            <= 126))) {
             ++index;
           }
         } else {
@@ -2025,20 +2021,20 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if ((index < endIndex && ((str[index] == 33) || ((str[index] >= 35&&
-          str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46))||
-          ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65&&
-          str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126))||
-          ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38&&
-          str[index] <= 39)) || (str[index] == 63)))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35&&
+          str[index] <= 36) || (str[index] >= 45 && str[index] <= 46)||
+          (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65&&
+          str[index] <= 90) || (str[index] >= 94 && str[index] <= 126)||
+          (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38&&
+          str[index] <= 39) || (str[index] == 63))) {
           ++index;
-          while ((index < endIndex && ((str[index] == 33) || ((str[index] >=
-            35 && str[index] <= 36)) || ((str[index] >= 45 && str[index] <=
-            46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index]
-            >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index]
-            <= 126)) || ((str[index] >= 42 && str[index] <= 43)) ||
-            ((str[index] >= 38 && str[index] <= 39)) || (str[index] ==
-            63)))) {
+          while (index < endIndex && ((str[index] == 33) || (str[index] >=
+            35 && str[index] <= 36) || (str[index] >= 45 && str[index] <=
+            46) || (str[index] >= 48 && str[index] <= 57) || (str[index]
+            >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index]
+            <= 126) || (str[index] >= 42 && str[index] <= 43) ||
+            (str[index] >= 38 && str[index] <= 39) || (str[index] ==
+            63))) {
             ++index;
           }
         } else {
@@ -2138,13 +2134,13 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if ((index < endIndex && (((str[index] >= 33 && str[index] <= 59))||
-          (str[index] == 61) || ((str[index] >= 63 && str[index] <=
-          126))))) {
+        if (index < endIndex && ((str[index] >= 33 && str[index] <= 59)||
+          (str[index] == 61) || (str[index] >= 63 && str[index] <=
+          126))) {
           ++index;
-          while ((index < endIndex && (((str[index] >= 33 && str[index] <=
-            59)) || (str[index] == 61) || ((str[index] >= 63 && str[index]
-            <= 126))))) {
+          while (index < endIndex && ((str[index] >= 33 && str[index] <=
+            59) || (str[index] == 61) || (str[index] >= 63 && str[index]
+            <= 126))) {
             ++index;
           }
         } else {
@@ -2165,9 +2161,9 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if (index < endIndex && (((str[index] >= 65 && str[index] <= 90)) ||
-          ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 47 &&
-          str[index] <= 57)) || (str[index] == 43) || (str[index] == 61))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 47 &&
+          str[index] <= 57) || (str[index] == 43) || (str[index] == 61))) {
           ++index;
         } else {
           index = indexStart; break;
@@ -2187,14 +2183,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if ((index < endIndex && (((str[index] >= 65 && str[index] <= 90))||
-          ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48&&
-          str[index] <= 57)) || (str[index] == 45)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+          str[index] <= 57) || (str[index] == 45))) {
           ++index;
-          while ((index < endIndex && (((str[index] >= 65 && str[index] <=
-            90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-            ((str[index] >= 48 && str[index] <= 57)) || (str[index] ==
-            45)))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <=
+            90) || (str[index] >= 97 && str[index] <= 122) ||
+            (str[index] >= 48 && str[index] <= 57) || (str[index] ==
+            45))) {
             ++index;
           }
         } else {
@@ -2215,7 +2211,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        int tx2 = ParseRestrictedName(str, index, endIndex, tokener);
+        int tx2 = ParseRestrictedName(str, index, endIndex);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
@@ -2226,7 +2222,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         } else {
           index = indexStart; break;
         }
-        tx2 = ParseRestrictedName(str, index, endIndex, tokener);
+        tx2 = ParseRestrictedName(str, index, endIndex);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
@@ -2276,28 +2272,28 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
     public static int ParseHeaderControl(string str, int index, int
-      endIndex, ITokener tokener) {
+      endIndex) {
       int indexStart = index;
       int indexTemp = index;
       do {
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-          9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+          9))) {
           ++index;
         }
-        if ((index < endIndex && ((str[index] == 33) || ((str[index] >= 35&&
-          str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46))||
-          ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65&&
-          str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126))||
-          ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38&&
-          str[index] <= 39)) || (str[index] == 63)))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35&&
+          str[index] <= 36) || (str[index] >= 45 && str[index] <= 46)||
+          (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65&&
+          str[index] <= 90) || (str[index] >= 94 && str[index] <= 126)||
+          (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38&&
+          str[index] <= 39) || (str[index] == 63))) {
           ++index;
-          while ((index < endIndex && ((str[index] == 33) || ((str[index] >=
-            35 && str[index] <= 36)) || ((str[index] >= 45 && str[index] <=
-            46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index]
-            >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index]
-            <= 126)) || ((str[index] >= 42 && str[index] <= 43)) ||
-            ((str[index] >= 38 && str[index] <= 39)) || (str[index] ==
-            63)))) {
+          while (index < endIndex && ((str[index] == 33) || (str[index] >=
+            35 && str[index] <= 36) || (str[index] >= 45 && str[index] <=
+            46) || (str[index] >= 48 && str[index] <= 57) || (str[index]
+            >= 65 && str[index] <= 90) || (str[index] >= 94 && str[index]
+            <= 126) || (str[index] >= 42 && str[index] <= 43) ||
+            (str[index] >= 38 && str[index] <= 39) || (str[index] ==
+            63))) {
             ++index;
           }
         } else {
@@ -2307,11 +2303,11 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           int indexTemp2 = index;
           do {
             int indexStart2 = index;
-         if ((index < endIndex && ((str[index] == 32) || (str[index] ==
-              9)))) {
+         if (index < endIndex && ((str[index] == 32) || (str[index] ==
+              9))) {
               ++index;
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-                9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+                9))) {
                 ++index;
               }
             } else {
@@ -2335,8 +2331,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
  break;
 }
         }
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-          9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+          9))) {
           ++index;
         }
         indexTemp = index;
@@ -2530,11 +2526,11 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-          9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+          9))) {
           ++index;
         }
-        int tx2 = ParseDistName(str, index, endIndex, tokener);
+        int tx2 = ParseDistName(str, index, endIndex);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
@@ -2546,14 +2542,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             if (index < endIndex && (str[index] == 44)) {
               ++index;
             } else {
               index = indexStart2; break;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
-            int tx3 = ParseDistName(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
+            int tx3 = ParseDistName(str, index, endIndex);
             if (tx3 == index) {
               index = indexStart2; break;
             } else {
@@ -2570,8 +2566,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
  break;
 }
         }
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-          9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+          9))) {
           ++index;
         }
         indexTemp = index;
@@ -2592,20 +2588,20 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
     public static int ParseHeaderEdiintFeatures(string str, int index, int
-      endIndex, ITokener tokener) {
+      endIndex) {
       int indexStart = index;
       int indexTemp = index;
       do {
-        if ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
+        if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
           ++index;
         }
-        if ((index < endIndex && (((str[index] >= 48 && str[index] <= 57))||
-          ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97&&
-          str[index] <= 122)) || (str[index] == 45)))) {
+        if (index < endIndex && ((str[index] >= 48 && str[index] <= 57)||
+          (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97&&
+          str[index] <= 122) || (str[index] == 45))) {
           ++index;
-          while ((index < endIndex && (((str[index] >= 48 && str[index] <=
-            57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index]
-            >= 97 && str[index] <= 122)) || (str[index] == 45)))) {
+          while (index < endIndex && ((str[index] >= 48 && str[index] <=
+            57) || (str[index] >= 65 && str[index] <= 90) || (str[index]
+            >= 97 && str[index] <= 122) || (str[index] == 45))) {
             ++index;
           }
         } else {
@@ -2615,8 +2611,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           int indexTemp2 = index;
           do {
             int indexStart2 = index;
-         if ((index < endIndex && ((str[index] == 32) || (str[index] ==
-              9)))) {
+         if (index < endIndex && ((str[index] == 32) || (str[index] ==
+              9))) {
               ++index;
             }
             if (index < endIndex && (str[index] == 44)) {
@@ -2624,19 +2620,19 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             } else {
               index = indexStart2; break;
             }
-         if ((index < endIndex && ((str[index] == 32) || (str[index] ==
-              9)))) {
+         if (index < endIndex && ((str[index] == 32) || (str[index] ==
+              9))) {
               ++index;
             }
-            if ((index < endIndex && (((str[index] >= 48 && str[index] <=
-              57)) || ((str[index] >= 65 && str[index] <= 90)) ||
-              ((str[index] >= 97 && str[index] <= 122)) || (str[index] ==
-              45)))) {
+            if (index < endIndex && ((str[index] >= 48 && str[index] <=
+              57) || (str[index] >= 65 && str[index] <= 90) ||
+              (str[index] >= 97 && str[index] <= 122) || (str[index] ==
+              45))) {
               ++index;
-              while ((index < endIndex && (((str[index] >= 48 && str[index]
-                <= 57)) || ((str[index] >= 65 && str[index] <= 90)) ||
-                ((str[index] >= 97 && str[index] <= 122)) || (str[index] ==
-                45)))) {
+              while (index < endIndex && ((str[index] >= 48 && str[index]
+                <= 57) || (str[index] >= 65 && str[index] <= 90) ||
+                (str[index] >= 97 && str[index] <= 122) || (str[index] ==
+                45))) {
                 ++index;
               }
             } else {
@@ -2661,7 +2657,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         if (index + 2 < endIndex && str[index] == 49 && str[index + 1] == 46&&
           str[index + 2] == 48) {
           index += 3;
@@ -2804,8 +2800,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         indexTemp2 = index;
         do {
           int indexStart2 = index;
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-            9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+            9))) {
             ++index;
           }
           if (index + 5 < endIndex && (str[index] & ~32) == 80 && (str[index+
@@ -2816,8 +2812,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           } else {
             index = indexStart2; break;
           }
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-            9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+            9))) {
             ++index;
           }
           indexTemp2 = index;
@@ -2853,8 +2849,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       return indexTemp;
     }
     public static int ParseHeaderGenerateDeliveryReport(string str, int
-      index, int endIndex, ITokener tokener) {
-      return ParseFWS(str, index, endIndex, tokener);
+      index, int endIndex) {
+      return ParseFWS(str, index, endIndex);
     }
     public static int ParseHeaderImportance(string str, int index, int
       endIndex, ITokener tokener) {
@@ -2897,7 +2893,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
     }
     public static int ParseHeaderIncompleteCopy(string str, int index, int
       endIndex, ITokener tokener) {
-      return ParseFWS(str, index, endIndex, tokener);
+      return ParseFWS(str, index, endIndex);
     }
     public static int ParseHeaderInjectionDate(string str, int index, int
       endIndex, ITokener tokener) {
@@ -2965,8 +2961,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         } else {
           break;
         }
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-          9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+          9))) {
           ++index;
         }
         int tx2 = ParsePathxmpp(str, index, endIndex, tokener);
@@ -2975,8 +2971,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         } else {
           index = tx2;
         }
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-          9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+          9))) {
           ++index;
         }
         indexTemp = index;
@@ -3052,8 +3048,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             } else {
               break;
             }
-            while ((index < endIndex && (((str[index] >= 65 && str[index] <=
-              90)) || ((str[index] >= 97 && str[index] <= 122))))) {
+            while (index < endIndex && ((str[index] >= 65 && str[index] <=
+              90) || (str[index] >= 97 && str[index] <= 122))) {
               ++index;
             }
             do {
@@ -3065,8 +3061,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                 } else {
                   break;
                 }
-             int tx4 = ParseLanguageDescription(str, index, endIndex,
-                  tokener);
+             int tx4 = ParseLanguageDescription(str, index, endIndex);
                 if (tx4 == index) {
                   index = indexStart3; break;
                 } else {
@@ -3098,7 +3093,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         if (index == indexStart) {
           break;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3143,9 +3138,9 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           int indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             for (int i2 = 0; ; ++i2) {
-              int indexTemp3 = ParseAtext(str, index, endIndex, tokener);
+              int indexTemp3 = ParseAtext(str, index, endIndex);
               if (indexTemp3 != index) {
                 index = indexTemp3;
               } else {
@@ -3158,20 +3153,20 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             if (index == indexStart2) {
               break;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             if (index < endIndex && (str[index] == 46)) {
               ++index;
             } else {
               index = indexStart2; break;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             int tx3 = ParseDotAtomText(str, index, endIndex, tokener);
             if (tx3 == index) {
               index = indexStart2; break;
             } else {
               index = tx3;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
@@ -3203,14 +3198,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        if ((index < endIndex && (((str[index] >= 65 && str[index] <= 90))||
-          ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48&&
-          str[index] <= 57)) || (str[index] == 45)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+          str[index] <= 57) || (str[index] == 45))) {
           ++index;
-          while ((index < endIndex && (((str[index] >= 65 && str[index] <=
-            90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-            ((str[index] >= 48 && str[index] <= 57)) || (str[index] ==
-            45)))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <=
+            90) || (str[index] >= 97 && str[index] <= 122) ||
+            (str[index] >= 48 && str[index] <= 57) || (str[index] ==
+            45))) {
             ++index;
           }
         } else {
@@ -3272,9 +3267,9 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         for (int i = 0; i < 69; ++i) {
-          int indexTemp2 = ParsePsChar(str, index, endIndex, tokener);
+          int indexTemp2 = ParsePsChar(str, index, endIndex);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -3287,7 +3282,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         if (index == indexStart) {
           break;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3301,14 +3296,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
-        int tx2 = ParseNonnegInteger(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
+        int tx2 = ParseNonnegInteger(str, index, endIndex);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
           index = tx2;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3322,7 +3317,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         int tx2 = ParsePrecedence(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;
@@ -3342,14 +3337,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         int tx2 = ParseAddressList(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
           index = tx2;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3363,7 +3358,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         int tx2 = ParseDateTime(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;
@@ -3383,14 +3378,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         int tx2 = ParseMilitaryStringSequence(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
           index = tx2;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3404,14 +3399,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         int tx2 = ParseMilitaryStringSequence(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
           index = tx2;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3425,7 +3420,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         do {
           int indexTemp2 = index;
           do {
@@ -3461,7 +3456,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
               (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 69&&
               (str[index + 3] & ~32) == 82 && (str[index + 4] & ~32) ==
               65 && (str[index + 5] & ~32) == 84 && (str[index + 6] & ~32)
-              == 73 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) == 78) {
+       == 73 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) ==
+                78) {
               indexTemp2 += 9; break;
             }
             if (index + 6 < endIndex && (str[index] & ~32) == 80 &&
@@ -3497,14 +3493,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             } else {
               break;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             int tx3 = ParseMessageTypeParam(str, index, endIndex, tokener);
             if (tx3 == index) {
               index = indexStart2; break;
             } else {
               index = tx3;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             indexTemp2 = index;
             index = indexStart2;
           } while (false);
@@ -3527,9 +3523,9 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         for (int i = 0; i < 69; ++i) {
-          int indexTemp2 = ParsePsChar(str, index, endIndex, tokener);
+          int indexTemp2 = ParsePsChar(str, index, endIndex);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -3542,7 +3538,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         if (index == indexStart) {
           break;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3556,9 +3552,9 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         for (int i = 0; i < 69; ++i) {
-          int indexTemp2 = ParsePsChar(str, index, endIndex, tokener);
+          int indexTemp2 = ParsePsChar(str, index, endIndex);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -3571,7 +3567,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         if (index == indexStart) {
           break;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3585,7 +3581,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         int tx2 = ParseDesignator(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;
@@ -3598,13 +3594,13 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             if (index < endIndex && (str[index] == 59)) {
               ++index;
             } else {
               index = indexStart2; break;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             int tx3 = ParseDesignator(str, index, endIndex, tokener);
             if (tx3 == index) {
               index = indexStart2; break;
@@ -3622,7 +3618,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
  break;
 }
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3636,7 +3632,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         int tx2 = ParseDesignator(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;
@@ -3649,13 +3645,13 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             if (index < endIndex && (str[index] == 59)) {
               ++index;
             } else {
               index = indexStart2; break;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             int tx3 = ParseDesignator(str, index, endIndex, tokener);
             if (tx3 == index) {
               index = indexStart2; break;
@@ -3673,7 +3669,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
  break;
 }
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3687,7 +3683,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         int tx2 = ParsePrecedence(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;
@@ -3707,14 +3703,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         int tx2 = ParseSicSequence(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
           index = tx2;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -3881,7 +3877,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           index = indexStart; break;
         }
         while (true) {
-          int indexTemp2 = ParseText(str, index, endIndex, tokener);
+          int indexTemp2 = ParseText(str, index, endIndex);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -3901,8 +3897,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-          9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+          9))) {
           ++index;
         }
         while (true) {
@@ -3913,22 +3909,22 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
  break;
 }
         }
-        if ((index < endIndex && (((str[index] >= 65 && str[index] <= 90))||
-          ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48&&
-          str[index] <= 57)) || (str[index] == 45) || (str[index] ==
-          95)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+          str[index] <= 57) || (str[index] == 45) || (str[index] ==
+          95))) {
           ++index;
-          while ((index < endIndex && (((str[index] >= 65 && str[index] <=
-            90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-            ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45)||
-            (str[index] == 95)))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <=
+            90) || (str[index] >= 97 && str[index] <= 122) ||
+            (str[index] >= 48 && str[index] <= 57) || (str[index] == 45)||
+            (str[index] == 95))) {
             ++index;
           }
         } else {
           index = indexStart; break;
         }
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-          9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+          9))) {
           ++index;
         }
         indexTemp = index;
@@ -3939,8 +3935,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       return indexTemp;
     }
     public static int ParseHeaderPreventNondeliveryReport(string str, int
-      index, int endIndex, ITokener tokener) {
-      return ParseFWS(str, index, endIndex, tokener);
+      index, int endIndex) {
+      return ParseFWS(str, index, endIndex);
     }
     public static int ParseHeaderPriority(string str, int index, int
       endIndex, ITokener tokener) {
@@ -4044,14 +4040,16 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
               (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 77&&
               (str[index + 3] & ~32) == 80 && (str[index + 4] & ~32) ==
               69 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32)
-              == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) == 82) {
+       == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) ==
+                82) {
               indexTemp2 += 9; break;
             }
             if (index + 8 < endIndex && (str[index] & ~32) == 80 &&
               (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 82&&
               (str[index + 3] & ~32) == 77 && (str[index + 4] & ~32) ==
               69 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32)
-              == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) == 82) {
+       == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) ==
+                82) {
               indexTemp2 += 9; break;
             }
           } while (false);
@@ -4065,7 +4063,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           break;
         }
         for (int i = 0; ; ++i) {
-          int indexTemp2 = ParseFWS(str, index, endIndex, tokener);
+          int indexTemp2 = ParseFWS(str, index, endIndex);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -4090,7 +4088,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
               index = tx3;
             }
             for (int i2 = 0; ; ++i2) {
-              int indexTemp3 = ParseFWS(str, index, endIndex, tokener);
+              int indexTemp3 = ParseFWS(str, index, endIndex);
               if (indexTemp3 != index) {
                 index = indexTemp3;
               } else {
@@ -4192,14 +4190,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         int tx2 = ParseSioLabelParmSeq(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
           index = tx2;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -4213,8 +4211,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
-        int tx2 = ParseSolicitationKeywords(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
+        int tx2 = ParseSolicitationKeywords(str, index, endIndex);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
@@ -4303,21 +4301,21 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           do {
             int indexStart2 = index;
             index = ParseCFWS(str, index, endIndex, tokener);
-            if ((index < endIndex && ((str[index] == 33) || ((str[index] >=
-              35 && str[index] <= 36)) || ((str[index] >= 45 && str[index]
-              <= 46)) || ((str[index] >= 48 && str[index] <= 57)) ||
-              ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94&&
-              str[index] <= 126)) || ((str[index] >= 42 && str[index] <=
-              43)) || ((str[index] >= 38 && str[index] <= 39)) ||
-              (str[index] == 63)))) {
+            if (index < endIndex && ((str[index] == 33) || (str[index] >=
+              35 && str[index] <= 36) || (str[index] >= 45 && str[index]
+              <= 46) || (str[index] >= 48 && str[index] <= 57) ||
+              (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94&&
+              str[index] <= 126) || (str[index] >= 42 && str[index] <=
+              43) || (str[index] >= 38 && str[index] <= 39) ||
+              (str[index] == 63))) {
               ++index;
-              while ((index < endIndex && ((str[index] == 33) ||
-                ((str[index] >= 35 && str[index] <= 36)) || ((str[index] >=
-                45 && str[index] <= 46)) || ((str[index] >= 48 && str[index]
-                <= 57)) || ((str[index] >= 65 && str[index] <= 90)) ||
-                ((str[index] >= 94 && str[index] <= 126)) || ((str[index] >=
-                42 && str[index] <= 43)) || ((str[index] >= 38 && str[index]
-                <= 39)) || (str[index] == 63)))) {
+              while (index < endIndex && ((str[index] == 33) ||
+                (str[index] >= 35 && str[index] <= 36) || (str[index] >=
+                45 && str[index] <= 46) || (str[index] >= 48 && str[index]
+                <= 57) || (str[index] >= 65 && str[index] <= 90) ||
+                (str[index] >= 94 && str[index] <= 126) || (str[index] >=
+                42 && str[index] <= 43) || (str[index] >= 38 && str[index]
+                <= 39) || (str[index] == 63))) {
                 ++index;
               }
             } else {
@@ -4334,21 +4332,21 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                   index = indexStart3; break;
                 }
                 index = ParseCFWS(str, index, endIndex, tokener);
-                if ((index < endIndex && ((str[index] == 33) || ((str[index]
-                  >= 35 && str[index] <= 36)) || ((str[index] >= 45 &&
-                  str[index] <= 46)) || ((str[index] >= 48 && str[index] <=
-                  57)) || ((str[index] >= 65 && str[index] <= 90)) ||
-                  ((str[index] >= 94 && str[index] <= 126)) || ((str[index]
-                  >= 42 && str[index] <= 43)) || ((str[index] >= 38 &&
-                  str[index] <= 39)) || (str[index] == 63)))) {
+                if (index < endIndex && ((str[index] == 33) || (str[index]
+                  >= 35 && str[index] <= 36) || (str[index] >= 45 &&
+                  str[index] <= 46) || (str[index] >= 48 && str[index] <=
+                  57) || (str[index] >= 65 && str[index] <= 90) ||
+                  (str[index] >= 94 && str[index] <= 126) || (str[index]
+                  >= 42 && str[index] <= 43) || (str[index] >= 38 &&
+                  str[index] <= 39) || (str[index] == 63))) {
                   ++index;
-                  while ((index < endIndex && ((str[index] == 33) ||
-                    ((str[index] >= 35 && str[index] <= 36)) || ((str[index]
-                    >= 45 && str[index] <= 46)) || ((str[index] >= 48 &&
-                    str[index] <= 57)) || ((str[index] >= 65 && str[index]
-                    <= 90)) || ((str[index] >= 94 && str[index] <= 126)) ||
-                    ((str[index] >= 42 && str[index] <= 43)) || ((str[index]
-                    >= 38 && str[index] <= 39)) || (str[index] == 63)))) {
+                  while (index < endIndex && ((str[index] == 33) ||
+                    (str[index] >= 35 && str[index] <= 36) || (str[index]
+                    >= 45 && str[index] <= 46) || (str[index] >= 48 &&
+                    str[index] <= 57) || (str[index] >= 65 && str[index]
+                    <= 90) || (str[index] >= 94 && str[index] <= 126) ||
+                    (str[index] >= 42 && str[index] <= 43) || (str[index]
+                    >= 38 && str[index] <= 39) || (str[index] == 63))) {
                     ++index;
                   }
                 } else {
@@ -4396,7 +4394,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           int indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             do {
               int indexTemp3 = index;
               do {
@@ -4422,7 +4420,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             if (index == indexStart2) {
               break;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             if (index < endIndex && (str[index] == 59)) {
               ++index;
             } else {
@@ -4480,14 +4478,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
-        if ((index < endIndex && (((str[index] >= 33 && str[index] <= 59))||
-          (str[index] == 61) || ((str[index] >= 63 && str[index] <=
-          126))))) {
+        index = ParseFWS(str, index, endIndex);
+        if (index < endIndex && ((str[index] >= 33 && str[index] <= 59)||
+          (str[index] == 61) || (str[index] >= 63 && str[index] <=
+          126))) {
           ++index;
-          while ((index < endIndex && (((str[index] >= 33 && str[index] <=
-            59)) || (str[index] == 61) || ((str[index] >= 63 && str[index]
-            <= 126))))) {
+          while (index < endIndex && ((str[index] >= 33 && str[index] <=
+            59) || (str[index] == 61) || (str[index] >= 63 && str[index]
+            <= 126))) {
             ++index;
           }
         } else {
@@ -4522,8 +4520,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-          9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+          9))) {
           ++index;
         }
         int tx2 = ParsePathIdentity(str, index, endIndex, tokener);
@@ -4537,7 +4535,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           do {
             int indexStart2 = index;
             for (int i2 = 0; ; ++i2) {
-              int indexTemp3 = ParseFWS(str, index, endIndex, tokener);
+              int indexTemp3 = ParseFWS(str, index, endIndex);
               if (indexTemp3 != index) {
                 index = indexTemp3;
               } else {
@@ -4550,7 +4548,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             if (index == indexStart2) {
               break;
             }
-            int tx3 = ParseNewsgroupName(str, index, endIndex, tokener);
+            int tx3 = ParseNewsgroupName(str, index, endIndex);
             if (tx3 == index) {
               index = indexStart2; break;
             } else {
@@ -4561,13 +4559,13 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             } else {
               index = indexStart2; break;
             }
-            if ((index < endIndex && (((str[index] >= 33 && str[index] <=
-              39)) || ((str[index] >= 41 && str[index] <= 58)) ||
-              ((str[index] >= 60 && str[index] <= 126))))) {
+            if (index < endIndex && ((str[index] >= 33 && str[index] <=
+              39) || (str[index] >= 41 && str[index] <= 58) ||
+              (str[index] >= 60 && str[index] <= 126))) {
               ++index;
-              while ((index < endIndex && (((str[index] >= 33 && str[index]
-                <= 39)) || ((str[index] >= 41 && str[index] <= 58)) ||
-                ((str[index] >= 60 && str[index] <= 126))))) {
+              while (index < endIndex && ((str[index] >= 33 && str[index]
+                <= 39) || (str[index] >= 41 && str[index] <= 58) ||
+                (str[index] >= 60 && str[index] <= 126))) {
                 ++index;
               }
             } else {
@@ -4588,8 +4586,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         if (index == indexStart) {
           break;
         }
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-          9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+          9))) {
           ++index;
         }
         indexTemp = index;
@@ -4629,20 +4627,19 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseKey(string str, int index, int endIndex, ITokener
-      tokener) {
+    public static int ParseKey(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
-        if (index < endIndex && (((str[index] >= 65 && str[index] <= 90)) ||
-          ((str[index] >= 97 && str[index] <= 122)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122))) {
           ++index;
         } else {
           break;
         }
-        while ((index < endIndex && (((str[index] >= 65 && str[index] <=
-          90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index]
-          >= 48 && str[index] <= 57)) || (str[index] == 95) || ((str[index]
-          >= 45 && str[index] <= 46))))) {
+        while (index < endIndex && ((str[index] >= 65 && str[index] <=
+          90) || (str[index] >= 97 && str[index] <= 122) || (str[index]
+          >= 48 && str[index] <= 57) || (str[index] == 95) || (str[index]
+          >= 45 && str[index] <= 46))) {
           ++index;
         }
         indexTemp = index;
@@ -4706,7 +4703,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        int tx2 = ParseKey(str, index, endIndex, tokener);
+        int tx2 = ParseKey(str, index, endIndex);
         if (tx2 == index) {
           break;
         } else {
@@ -4752,13 +4749,12 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseLabel(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseLabel(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
-        if (index < endIndex && (((str[index] >= 65 && str[index] <= 90)) ||
-          ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 &&
-          str[index] <= 57)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57))) {
           ++index;
         } else {
           break;
@@ -4766,15 +4762,15 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         while (true) {
           int indexTemp2 = index;
           do {
-            if (index + 1 < endIndex && (((str[index] == 45) && (((str[index+
-              1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97&&
-              str[index + 1] <= 122)) || ((str[index + 1] >= 48 &&
-              str[index + 1] <= 57)))))) {
+            if (index + 1 < endIndex && ((str[index] == 45) && ((str[index+
+              1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97&&
+              str[index + 1] <= 122) || (str[index + 1] >= 48 &&
+              str[index + 1] <= 57)))) {
               indexTemp2 += 2; break;
             }
-            if (index < endIndex && (((str[index] >= 65 && str[index] <=
-              90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-              ((str[index] >= 48 && str[index] <= 57)))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <=
+              90) || (str[index] >= 97 && str[index] <= 122) ||
+              (str[index] >= 48 && str[index] <= 57))) {
               ++indexTemp2; break;
             }
           } while (false);
@@ -4789,8 +4785,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       return indexTemp;
     }
     public static int ParseLanguageDescription(string str, int index, int
-      endIndex, ITokener tokener) {
-      return ParsePrintablestring(str, index, endIndex, tokener);
+      endIndex) {
+      return ParsePrintablestring(str, index, endIndex);
     }
     public static int ParseLanguageList(string str, int index, int endIndex,
       ITokener tokener) {
@@ -4798,7 +4794,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        int tx2 = ParseLanguageTag(str, index, endIndex, tokener);
+        int tx2 = ParseLanguageTag(str, index, endIndex);
         if (tx2 == index) {
           break;
         } else {
@@ -4817,7 +4813,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
               break;
             }
             index = ParseCFWS(str, index, endIndex, tokener);
-            int tx3 = ParseLanguageTag(str, index, endIndex, tokener);
+            int tx3 = ParseLanguageTag(str, index, endIndex);
             if (tx3 == index) {
               index = indexStart2; break;
             } else {
@@ -4848,7 +4844,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        int tx2 = ParseLanguageRange(str, index, endIndex, tokener);
+        int tx2 = ParseLanguageRange(str, index, endIndex);
         if (tx2 == index) {
           break;
         } else {
@@ -4870,7 +4866,7 @@ if (index + 1 < endIndex && (str[index] & ~32) == 81 && str[index + 1] ==
             } else {
               index = indexStart2; break;
             }
-            int tx3 = ParseQvalue(str, index, endIndex, tokener);
+            int tx3 = ParseQvalue(str, index, endIndex);
             if (tx3 == index) {
               index = indexStart2; break;
             } else {
@@ -4900,15 +4896,15 @@ if (index + 1 < endIndex && (str[index] & ~32) == 81 && str[index + 1] ==
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
     public static int ParseLanguageRange(string str, int index, int
-      endIndex, ITokener tokener) {
+      endIndex) {
       int indexTemp = index;
       do {
         int indexTemp2 = index;
         do {
           int indexStart2 = index;
           for (int i2 = 0; i2 < 8; ++i2) {
-            if ((index < endIndex && (((str[index] >= 65 && str[index] <=
-              90)) || ((str[index] >= 97 && str[index] <= 122))))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <=
+              90) || (str[index] >= 97 && str[index] <= 122))) {
               ++index;
             } else if (i2 < 1) {
               index = indexStart2; break;
@@ -4919,10 +4915,10 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           if (index == indexStart2) {
  break;
 }
-          while ((index + 1 < endIndex && (((str[index] == 45) &&
-            (((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index+
-            1] >= 97 && str[index + 1] <= 122)) || ((str[index + 1] >= 48&&
-            str[index + 1] <= 57))))))) {
+          while ((index + 1 < endIndex && ((str[index] == 45) &&
+            ((str[index + 1] >= 65 && str[index + 1] <= 90) || (str[index+
+            1] >= 97 && str[index + 1] <= 122) || (str[index + 1] >= 48&&
+            str[index + 1] <= 57))))) {
             index += 2;
           }
           indexTemp2 = index;
@@ -4943,19 +4939,18 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseLanguageTag(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseLanguageTag(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
-        if (index < endIndex && (((str[index] >= 65 && str[index] <= 90)) ||
-          ((str[index] >= 97 && str[index] <= 122)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122))) {
           ++index;
         } else {
           break;
         }
-        while ((index < endIndex && (((str[index] >= 65 && str[index] <=
-          90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index]
-          >= 48 && str[index] <= 57)) || (str[index] == 45)))) {
+        while (index < endIndex && ((str[index] >= 65 && str[index] <=
+          90) || (str[index] >= 97 && str[index] <= 122) || (str[index]
+          >= 48 && str[index] <= 57) || (str[index] == 45))) {
           ++index;
         }
         indexTemp = index;
@@ -4999,22 +4994,21 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseLdhStr(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseLdhStr(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
         while (true) {
           int indexTemp2 = index;
           do {
-            if (index + 1 < endIndex && (((str[index] == 45) && (((str[index+
-              1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97&&
-              str[index + 1] <= 122)) || ((str[index + 1] >= 48 &&
-              str[index + 1] <= 57)))))) {
+            if (index + 1 < endIndex && ((str[index] == 45) && ((str[index+
+              1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97&&
+              str[index + 1] <= 122) || (str[index + 1] >= 48 &&
+              str[index + 1] <= 57)))) {
               indexTemp2 += 2; break;
             }
-            if (index < endIndex && (((str[index] >= 65 && str[index] <=
-              90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-              ((str[index] >= 48 && str[index] <= 57)))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <=
+              90) || (str[index] >= 97 && str[index] <= 122) ||
+              (str[index] >= 48 && str[index] <= 57))) {
               ++indexTemp2; break;
             }
           } while (false);
@@ -5119,13 +5113,13 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                   int indexTemp5 = index;
                   do {
                     if (index < endIndex && ((str[index] >= 128 &&
-                      str[index] <= 55295) || (str[index] >= 57344 &&
-                      str[index] <= 65535))) {
+                    str[index] <= 55295) || (str[index] >= 57344 &&
+                    str[index] <= 65535))) {
                     ++indexTemp5; break;
                     }
                     if (index + 1 < endIndex && ((str[index] >= 55296 &&
-                      str[index] <= 56319) && (str[index + 1] >= 56320 &&
-                      str[index + 1] <= 57343))) {
+                    str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                    str[index + 1] <= 57343))) {
                     indexTemp5 += 2; break;
                     }
                   } while (false);
@@ -5144,9 +5138,9 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
               if (indexTemp4 != index) {
                 indexTemp3 = indexTemp4; break;
               }
-              if (index + 1 < endIndex && (((str[index] == 92) &&
-                (((str[index + 1] >= 32 && str[index + 1] <= 126)) ||
-                (str[index + 1] == 9))))) {
+              if (index + 1 < endIndex && ((str[index] == 92) &&
+                ((str[index + 1] >= 32 && str[index + 1] <= 126) ||
+                (str[index + 1] == 9)))) {
                 indexTemp3 += 2; break;
               }
             } while (false);
@@ -5291,8 +5285,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         } else {
           break;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
-        int tx2 = ParseTypeString(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
+        int tx2 = ParseTypeString(str, index, endIndex);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
@@ -5317,7 +5311,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         } else {
           break;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         int tx2 = ParseDomainName(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;
@@ -5343,13 +5337,13 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         } else {
           break;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         if (index < endIndex && (str[index] == 61)) {
           ++index;
         } else {
           index = indexStart; break;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         int tx2 = ParseQuotedMilitaryString(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;
@@ -5370,7 +5364,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         while (true) {
-          int indexTemp2 = ParseLdhStr(str, index, endIndex, tokener);
+          int indexTemp2 = ParseLdhStr(str, index, endIndex);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -5452,7 +5446,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           index = indexStart; break;
         }
         index = ParseCFWS(str, index, endIndex, tokener);
-        tx2 = ParseResult(str, index, endIndex, tokener);
+        tx2 = ParseResult(str, index, endIndex);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
@@ -5472,15 +5466,15 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
     public static int ParseMilitaryString(string str, int index, int
-      endIndex, ITokener tokener) {
+      endIndex) {
       int indexStart = index;
       int indexTemp = index;
       do {
         for (int i = 0; i < 69; ++i) {
           int indexTemp2 = index;
           do {
-          if (index < endIndex && (((str[index] >= 40 && str[index] <=
-              41)))) {
+          if (index < endIndex && (str[index] >= 40 && str[index] <=
+              41)) {
               ++indexTemp2; break;
             }
             if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
@@ -5513,7 +5507,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         for (int i = 0; i < 69; ++i) {
-          int indexTemp2 = ParsePsChar(str, index, endIndex, tokener);
+          int indexTemp2 = ParsePsChar(str, index, endIndex);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -5532,15 +5526,15 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             if (index < endIndex && (str[index] == 59)) {
               ++index;
             } else {
               index = indexStart2; break;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             for (int i2 = 0; i2 < 69; ++i2) {
-              int indexTemp3 = ParsePsChar(str, index, endIndex, tokener);
+              int indexTemp3 = ParsePsChar(str, index, endIndex);
               if (indexTemp3 != index) {
                 index = indexTemp3;
               } else {
@@ -5577,21 +5571,21 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        index = ParseFWS(str, index, endIndex, tokener);
-        if ((index < endIndex && (((str[index] >= 65 && str[index] <= 90))||
-          ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48&&
-          str[index] <= 57)) || (str[index] == 45)))) {
+        index = ParseFWS(str, index, endIndex);
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+          str[index] <= 57) || (str[index] == 45))) {
           ++index;
-          while ((index < endIndex && (((str[index] >= 65 && str[index] <=
-            90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-            ((str[index] >= 48 && str[index] <= 57)) || (str[index] ==
-            45)))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <=
+            90) || (str[index] >= 97 && str[index] <= 122) ||
+            (str[index] >= 48 && str[index] <= 57) || (str[index] ==
+            45))) {
             ++index;
           }
         } else {
           index = indexStart; break;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         indexTemp = index;
       } while (false);
       if (tokener != null && indexTemp == indexStart) {
@@ -5653,7 +5647,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         } else {
           break;
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         int tx2 = ParseCertifierList(str, index, endIndex, tokener);
         if (tx2 == index) {
           index = indexStart; break;
@@ -5693,11 +5687,11 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-          9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+          9))) {
           ++index;
         }
-        int tx2 = ParseNewsgroupName(str, index, endIndex, tokener);
+        int tx2 = ParseNewsgroupName(str, index, endIndex);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
@@ -5709,14 +5703,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             if (index < endIndex && (str[index] == 44)) {
               ++index;
             } else {
               index = indexStart2; break;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
-            int tx3 = ParseNewsgroupName(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
+            int tx3 = ParseNewsgroupName(str, index, endIndex);
             if (tx3 == index) {
               index = indexStart2; break;
             } else {
@@ -5733,8 +5727,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
  break;
 }
         }
-      while ((index < endIndex && ((str[index] == 32) || (str[index] ==
-          9)))) {
+      while (index < endIndex && ((str[index] == 32) || (str[index] ==
+          9))) {
           ++index;
         }
         indexTemp = index;
@@ -5751,18 +5745,18 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
     public static int ParseNewsgroupName(string str, int index, int
-      endIndex, ITokener tokener) {
+      endIndex) {
       int indexTemp = index;
       do {
-        if ((index < endIndex && (((str[index] >= 65 && str[index] <= 90))||
-          ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48&&
-          str[index] <= 57)) || (str[index] == 43) || (str[index] == 45)||
-          (str[index] == 95)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+          str[index] <= 57) || (str[index] == 43) || (str[index] == 45)||
+          (str[index] == 95))) {
           ++index;
-          while ((index < endIndex && (((str[index] >= 65 && str[index] <=
-            90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-            ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 43)||
-            (str[index] == 45) || (str[index] == 95)))) {
+          while (index < endIndex && ((str[index] >= 65 && str[index] <=
+            90) || (str[index] >= 97 && str[index] <= 122) ||
+            (str[index] >= 48 && str[index] <= 57) || (str[index] == 43)||
+            (str[index] == 45) || (str[index] == 95))) {
             ++index;
           }
         } else {
@@ -5777,15 +5771,15 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             } else {
               break;
             }
-            if ((index < endIndex && (((str[index] >= 65 && str[index] <=
-              90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-              ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 43)||
-              (str[index] == 45) || (str[index] == 95)))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <=
+              90) || (str[index] >= 97 && str[index] <= 122) ||
+              (str[index] >= 48 && str[index] <= 57) || (str[index] == 43)||
+              (str[index] == 45) || (str[index] == 95))) {
               ++index;
-              while ((index < endIndex && (((str[index] >= 65 && str[index]
-                <= 90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-                ((str[index] >= 48 && str[index] <= 57)) || (str[index] ==
-                43) || (str[index] == 45) || (str[index] == 95)))) {
+              while (index < endIndex && ((str[index] >= 65 && str[index]
+                <= 90) || (str[index] >= 97 && str[index] <= 122) ||
+                (str[index] >= 48 && str[index] <= 57) || (str[index] ==
+                43) || (str[index] == 45) || (str[index] == 95))) {
                 ++index;
               }
             } else {
@@ -5871,17 +5865,16 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseNodeid(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseNodeid(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
         while (true) {
           int indexTemp2 = index;
           do {
-            if (index < endIndex && (((str[index] >= 65 && str[index] <=
-              90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-              ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 45&&
-              str[index] <= 46)) || (str[index] == 95) || (str[index] ==
+            if (index < endIndex && ((str[index] >= 65 && str[index] <=
+              90) || (str[index] >= 97 && str[index] <= 122) ||
+              (str[index] >= 48 && str[index] <= 57) || (str[index] >= 45&&
+              str[index] <= 46) || (str[index] == 95) || (str[index] ==
               126))) {
               ++indexTemp2; break;
             }
@@ -5894,7 +5887,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
               indexTemp2 += 3; break;
             }
             if (index < endIndex && ((str[index] == 33) || (str[index] ==
-              36) || ((str[index] >= 40 && str[index] <= 44)) || (str[index]
+              36) || (str[index] >= 40 && str[index] <= 44) || (str[index]
               == 59) || (str[index] == 61))) {
               ++indexTemp2; break;
             }
@@ -5916,7 +5909,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
     public static int ParseNonnegInteger(string str, int index, int
-      endIndex, ITokener tokener) {
+      endIndex) {
       int indexTemp = index;
       do {
         if (index < endIndex && (str[index] == 48)) {
@@ -6129,7 +6122,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        int tx2 = ParseLanguageRange(str, index, endIndex, tokener);
+        int tx2 = ParseLanguageRange(str, index, endIndex);
         if (tx2 == index) {
           break;
         } else {
@@ -6158,7 +6151,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             } else {
               index = indexStart2; break;
             }
-            int tx3 = ParseQvalue(str, index, endIndex, tokener);
+            int tx3 = ParseQvalue(str, index, endIndex);
             if (tx3 == index) {
               index = indexStart2; break;
             } else {
@@ -6230,17 +6223,17 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                   int indexTemp5 = index;
                   do {
                     if (index < endIndex && ((str[index] == 0) ||
-                      (str[index] >= 1 && str[index] <= 8) || (str[index] >=
-                      11 && str[index] <= 12) || (str[index] >= 14 &&
-                      str[index] <= 31) || (str[index] == 127) ||
-                      (str[index] >= 33 && str[index] <= 126) || (str[index]
-                      >= 128 && str[index] <= 55295) || (str[index] >= 57344&&
-                      str[index] <= 65535))) {
+                    (str[index] >= 1 && str[index] <= 8) || (str[index] >=
+                    11 && str[index] <= 12) || (str[index] >= 14 &&
+                    str[index] <= 31) || (str[index] == 127) ||
+                    (str[index] >= 33 && str[index] <= 126) || (str[index]
+                    >= 128 && str[index] <= 55295) || (str[index] >= 57344&&
+                    str[index] <= 65535))) {
                     ++indexTemp5; break;
                     }
                     if (index + 1 < endIndex && ((str[index] >= 55296 &&
-                      str[index] <= 56319) && (str[index + 1] >= 56320 &&
-                      str[index + 1] <= 57343))) {
+                    str[index] <= 56319) && (str[index + 1] >= 56320 &&
+                    str[index + 1] <= 57343))) {
                     indexTemp5 += 2; break;
                     }
                   } while (false);
@@ -6249,7 +6242,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                   }
                   int indexStart4 = index;
                   for (int i4 = 0; ; ++i4) {
-                    indexTemp5 = ParseFWS(str, index, endIndex, tokener);
+                    indexTemp5 = ParseFWS(str, index, endIndex);
                     if (indexTemp5 == index) {
                     if (i4 < 1) {
                     indexTemp4 = indexStart4;
@@ -6361,11 +6354,11 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
     public static int ParseOtherSections(string str, int index, int
-      endIndex, ITokener tokener) {
+      endIndex) {
       int indexTemp = index;
       do {
-        if (index + 1 < endIndex && (str[index] == 42) && (((str[index + 1]
-          >= 49 && str[index + 1] <= 57)))) {
+        if (index + 1 < endIndex && (str[index] == 42) && (str[index + 1]
+          >= 49 && str[index + 1] <= 57)) {
           index += 2;
         } else {
           break;
@@ -6400,20 +6393,20 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                 int indexTemp4 = index;
                 do {
                   int indexStart4 = index;
-                  if ((index < endIndex && ((str[index] == 33) ||
-                    ((str[index] >= 35 && str[index] <= 36)) || (str[index]
-                    == 38) || (str[index] == 43) || ((str[index] >= 45 &&
-                    str[index] <= 46)) || ((str[index] >= 48 && str[index]
-                    <= 57)) || ((str[index] >= 65 && str[index] <= 90)) ||
-                    ((str[index] >= 94 && str[index] <= 126))))) {
+                  if (index < endIndex && ((str[index] == 33) ||
+                    (str[index] >= 35 && str[index] <= 36) || (str[index]
+                    == 38) || (str[index] == 43) || (str[index] >= 45 &&
+                    str[index] <= 46) || (str[index] >= 48 && str[index]
+                    <= 57) || (str[index] >= 65 && str[index] <= 90) ||
+                    (str[index] >= 94 && str[index] <= 126))) {
                     ++index;
-                    while ((index < endIndex && ((str[index] == 33) ||
-                      ((str[index] >= 35 && str[index] <= 36)) ||
-                      (str[index] == 38) || (str[index] == 43) ||
-                      ((str[index] >= 45 && str[index] <= 46)) ||
-                      ((str[index] >= 48 && str[index] <= 57)) ||
-                      ((str[index] >= 65 && str[index] <= 90)) ||
-                      ((str[index] >= 94 && str[index] <= 126))))) {
+                    while (index < endIndex && ((str[index] == 33) ||
+                    (str[index] >= 35 && str[index] <= 36) ||
+                    (str[index] == 38) || (str[index] == 43) ||
+                    (str[index] >= 45 && str[index] <= 46) ||
+                    (str[index] >= 48 && str[index] <= 57) ||
+                    (str[index] >= 65 && str[index] <= 90) ||
+                    (str[index] >= 94 && str[index] <= 126))) {
                     ++index;
                     }
                   } else {
@@ -6451,13 +6444,13 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                 int indexTemp4 = index;
                 do {
                   int indexStart4 = index;
-                  index = ParseCharset(str, index, endIndex, tokener);
+                  index = ParseCharset(str, index, endIndex);
                   if (index < endIndex && (str[index] == 39)) {
                     ++index;
                   } else {
                     index = indexStart4; break;
                   }
-                  index = ParseLanguageTag(str, index, endIndex, tokener);
+                  index = ParseLanguageTag(str, index, endIndex);
                   if (index < endIndex && (str[index] == 39)) {
                     ++index;
                   } else {
@@ -6467,21 +6460,21 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                     int indexTemp5 = index;
                     do {
                     if (index + 2 < endIndex && (((str[index] == 37) &&
-                      (((str[index + 1] >= 48 && str[index + 1] <= 57) ||
-                      (str[index + 1] >= 65 && str[index + 1] <= 70) ||
-                      (str[index + 1] >= 97 && str[index + 1] <= 102)) &&
-                      ((str[index + 2] >= 48 && str[index + 2] <= 57) ||
-                      (str[index + 2] >= 65 && str[index + 2] <= 70) ||
-                      (str[index + 2] >= 97 && str[index + 2] <= 102)))))) {
+                    (((str[index + 1] >= 48 && str[index + 1] <= 57) ||
+                    (str[index + 1] >= 65 && str[index + 1] <= 70) ||
+                    (str[index + 1] >= 97 && str[index + 1] <= 102)) &&
+                    ((str[index + 2] >= 48 && str[index + 2] <= 57) ||
+                    (str[index + 2] >= 65 && str[index + 2] <= 70) ||
+                    (str[index + 2] >= 97 && str[index + 2] <= 102)))))) {
                     indexTemp5 += 3; break;
                     }
                     if (index < endIndex && ((str[index] == 33) ||
-                      ((str[index] >= 35 && str[index] <= 36)) ||
-                      (str[index] == 38) || (str[index] == 43) ||
-                      ((str[index] >= 45 && str[index] <= 46)) ||
-                      ((str[index] >= 48 && str[index] <= 57)) ||
-                      ((str[index] >= 65 && str[index] <= 90)) ||
-                      ((str[index] >= 94 && str[index] <= 126)))) {
+                    (str[index] >= 35 && str[index] <= 36) ||
+                    (str[index] == 38) || (str[index] == 43) ||
+                    (str[index] >= 45 && str[index] <= 46) ||
+                    (str[index] >= 48 && str[index] <= 57) ||
+                    (str[index] >= 65 && str[index] <= 90) ||
+                    (str[index] >= 94 && str[index] <= 126))) {
                     ++indexTemp5; break;
                     }
                     } while (false);
@@ -6520,26 +6513,26 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                 int indexTemp4 = index;
                 do {
                   int indexStart4 = index;
-                  if ((index < endIndex && ((str[index] == 33) ||
-                    ((str[index] >= 35 && str[index] <= 36)) || (str[index]
-                    == 38) || (str[index] == 43) || ((str[index] >= 45 &&
-                    str[index] <= 46)) || ((str[index] >= 48 && str[index]
-                    <= 57)) || ((str[index] >= 65 && str[index] <= 90)) ||
-                    ((str[index] >= 94 && str[index] <= 126))))) {
+                  if (index < endIndex && ((str[index] == 33) ||
+                    (str[index] >= 35 && str[index] <= 36) || (str[index]
+                    == 38) || (str[index] == 43) || (str[index] >= 45 &&
+                    str[index] <= 46) || (str[index] >= 48 && str[index]
+                    <= 57) || (str[index] >= 65 && str[index] <= 90) ||
+                    (str[index] >= 94 && str[index] <= 126))) {
                     ++index;
-                    while ((index < endIndex && ((str[index] == 33) ||
-                      ((str[index] >= 35 && str[index] <= 36)) ||
-                      (str[index] == 38) || (str[index] == 43) ||
-                      ((str[index] >= 45 && str[index] <= 46)) ||
-                      ((str[index] >= 48 && str[index] <= 57)) ||
-                      ((str[index] >= 65 && str[index] <= 90)) ||
-                      ((str[index] >= 94 && str[index] <= 126))))) {
+                    while (index < endIndex && ((str[index] == 33) ||
+                    (str[index] >= 35 && str[index] <= 36) ||
+                    (str[index] == 38) || (str[index] == 43) ||
+                    (str[index] >= 45 && str[index] <= 46) ||
+                    (str[index] >= 48 && str[index] <= 57) ||
+                    (str[index] >= 65 && str[index] <= 90) ||
+                    (str[index] >= 94 && str[index] <= 126))) {
                     ++index;
                     }
                   } else {
                     break;
                   }
-                  int tx5 = ParseOtherSections(str, index, endIndex, tokener);
+                  int tx5 = ParseOtherSections(str, index, endIndex);
                   if (tx5 == index) {
                     index = indexStart4; break;
                   } else {
@@ -6580,11 +6573,11 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                     indexTemp4 += 3; break;
                   }
                   if (index < endIndex && ((str[index] == 33) ||
-                    ((str[index] >= 35 && str[index] <= 36)) || (str[index]
-                    == 38) || (str[index] == 43) || ((str[index] >= 45 &&
-                    str[index] <= 46)) || ((str[index] >= 48 && str[index]
-                    <= 57)) || ((str[index] >= 65 && str[index] <= 90)) ||
-                    ((str[index] >= 94 && str[index] <= 126)))) {
+                    (str[index] >= 35 && str[index] <= 36) || (str[index]
+                    == 38) || (str[index] == 43) || (str[index] >= 45 &&
+                    str[index] <= 46) || (str[index] >= 48 && str[index]
+                    <= 57) || (str[index] >= 65 && str[index] <= 90) ||
+                    (str[index] >= 94 && str[index] <= 126))) {
                     ++indexTemp4; break;
                   }
                 } while (false);
@@ -6678,7 +6671,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             int indexTemp3 = index;
             do {
               int indexStart3 = index;
-              int tx4 = ParseLabel(str, index, endIndex, tokener);
+              int tx4 = ParseLabel(str, index, endIndex);
               if (tx4 == index) {
                 break;
               } else {
@@ -6710,8 +6703,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
               int indexTemp4 = index;
               do {
                 int indexStart4 = index;
-                if (index < endIndex && (((str[index] >= 65 && str[index] <=
-                  90)) || ((str[index] >= 97 && str[index] <= 122)))) {
+                if (index < endIndex && ((str[index] >= 65 && str[index] <=
+                  90) || (str[index] >= 97 && str[index] <= 122))) {
                   ++index;
                 } else {
                   break;
@@ -6719,15 +6712,15 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                 for (int i4 = 0; ; ++i4) {
                   int indexTemp5 = index;
                   do {
-                    if (index + 1 < endIndex && (((str[index] == 45) &&
-                      (((str[index + 1] >= 65 && str[index + 1] <= 90)) ||
-                      ((str[index + 1] >= 97 && str[index + 1] <= 122)) ||
-                      ((str[index + 1] >= 48 && str[index + 1] <= 57)))))) {
+                    if (index + 1 < endIndex && ((str[index] == 45) &&
+                    ((str[index + 1] >= 65 && str[index + 1] <= 90) ||
+                    (str[index + 1] >= 97 && str[index + 1] <= 122) ||
+                    (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
                     indexTemp5 += 2; break;
                     }
-                    if (index < endIndex && (((str[index] >= 65 &&
-                      str[index] <= 90)) || ((str[index] >= 97 && str[index]
-                      <= 122)) || ((str[index] >= 48 && str[index] <= 57)))) {
+                    if (index < endIndex && ((str[index] >= 65 &&
+                    str[index] <= 90) || (str[index] >= 97 && str[index]
+                    <= 122) || (str[index] >= 48 && str[index] <= 57))) {
                     ++indexTemp5; break;
                     }
                   } while (false);
@@ -6758,12 +6751,12 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                 } else {
                   break;
                 }
-                while ((index < endIndex && (((str[index] >= 48 &&
-                  str[index] <= 57)) || (str[index] == 45)))) {
+                while (index < endIndex && ((str[index] >= 48 &&
+                  str[index] <= 57) || (str[index] == 45))) {
                   ++index;
                 }
-                if (index < endIndex && (((str[index] >= 65 && str[index] <=
-                  90)) || ((str[index] >= 97 && str[index] <= 122)))) {
+                if (index < endIndex && ((str[index] >= 65 && str[index] <=
+                  90) || (str[index] >= 97 && str[index] <= 122))) {
                   ++index;
                 } else {
                   index = indexStart4; break;
@@ -6771,15 +6764,15 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
                 while (true) {
                   int indexTemp5 = index;
                   do {
-                    if (index + 1 < endIndex && (((str[index] == 45) &&
-                      (((str[index + 1] >= 65 && str[index + 1] <= 90)) ||
-                      ((str[index + 1] >= 97 && str[index + 1] <= 122)) ||
-                      ((str[index + 1] >= 48 && str[index + 1] <= 57)))))) {
+                    if (index + 1 < endIndex && ((str[index] == 45) &&
+                    ((str[index + 1] >= 65 && str[index + 1] <= 90) ||
+                    (str[index + 1] >= 97 && str[index + 1] <= 122) ||
+                    (str[index + 1] >= 48 && str[index + 1] <= 57)))) {
                     indexTemp5 += 2; break;
                     }
-                    if (index < endIndex && (((str[index] >= 65 &&
-                      str[index] <= 90)) || ((str[index] >= 97 && str[index]
-                      <= 122)) || ((str[index] >= 48 && str[index] <= 57)))) {
+                    if (index < endIndex && ((str[index] >= 65 &&
+                    str[index] <= 90) || (str[index] >= 97 && str[index]
+                    <= 122) || (str[index] >= 48 && str[index] <= 57))) {
                     ++indexTemp5; break;
                     }
                   } while (false);
@@ -6814,16 +6807,16 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         if (tokener != null) {
  tokener.RestoreState(state2);
 }
-        if ((index < endIndex && (((str[index] >= 65 && str[index] <= 90))||
-          ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48&&
-          str[index] <= 57)) || (str[index] == 45) || (str[index] ==
-          95)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48&&
+          str[index] <= 57) || (str[index] == 45) || (str[index] ==
+          95))) {
           ++indexTemp;
-          while ((indexTemp < endIndex && (((str[indexTemp] >= 65 &&
-            str[indexTemp] <= 90)) || ((str[indexTemp] >= 97 &&
-            str[indexTemp] <= 122)) || ((str[indexTemp] >= 48 &&
-            str[indexTemp] <= 57)) || (str[indexTemp] == 45) ||
-            (str[indexTemp] == 95)))) {
+          while (indexTemp < endIndex && ((str[indexTemp] >= 65 &&
+            str[indexTemp] <= 90) || (str[indexTemp] >= 97 &&
+            str[indexTemp] <= 122) || (str[indexTemp] >= 48 &&
+            str[indexTemp] <= 57) || (str[indexTemp] == 45) ||
+            (str[indexTemp] == 95))) {
             ++indexTemp;
           }
           break;
@@ -6852,7 +6845,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
             } else {
               index = tx3;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             do {
               int indexTemp3 = index;
               do {
@@ -6951,7 +6944,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           do {
             int indexStart2 = index;
             while (true) {
-              int indexTemp3 = ParseNodeid(str, index, endIndex, tokener);
+              int indexTemp3 = ParseNodeid(str, index, endIndex);
               if (indexTemp3 != index) {
                 index = indexTemp3;
               } else {
@@ -6973,7 +6966,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           }
         } while (false);
         while (true) {
-          int indexTemp2 = ParseRegName(str, index, endIndex, tokener);
+          int indexTemp2 = ParseRegName(str, index, endIndex);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -6990,7 +6983,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
               break;
             }
             while (true) {
-              int indexTemp3 = ParseResid(str, index, endIndex, tokener);
+              int indexTemp3 = ParseResid(str, index, endIndex);
               if (indexTemp3 != index) {
                 index = indexTemp3;
               } else {
@@ -7053,8 +7046,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         for (int i = 0; ; ++i) {
           int indexTemp2 = index;
           do {
-            if (index < endIndex && (((str[index] >= 65 && str[index] <=
-              90)) || ((str[index] >= 97 && str[index] <= 122)))) {
+            if (index < endIndex && ((str[index] >= 65 && str[index] <=
+              90) || (str[index] >= 97 && str[index] <= 122))) {
               ++indexTemp2; break;
             }
             if (index < endIndex && ((str[index] >= 48 && str[index] <= 57)||
@@ -7115,7 +7108,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       do {
         int indexTemp2 = index;
         for (int i = 0; ; ++i) {
-          indexTemp2 = ParseAtext(str, index, endIndex, tokener);
+          indexTemp2 = ParseAtext(str, index, endIndex);
           if (indexTemp2 == index) {
             if (i < 1) {
               indexTemp = indexStart;
@@ -7273,7 +7266,8 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
               (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 77&&
               (str[index + 3] & ~32) == 69 && (str[index + 4] & ~32) ==
               68 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32)
-              == 65 && (str[index + 7] & ~32) == 84 && (str[index + 8] & ~32) == 69) {
+       == 65 && (str[index + 7] & ~32) == 84 && (str[index + 8] & ~32) ==
+                69) {
               indexTemp2 += 9; break;
             }
             if (index + 4 < endIndex && (str[index] & ~32) == 70 &&
@@ -7314,14 +7308,14 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
     public static int ParsePrintablestring(string str, int index, int
-      endIndex, ITokener tokener) {
+      endIndex) {
       int indexTemp = index;
       do {
         while (true) {
           int indexTemp2 = index;
           do {
-          if (index < endIndex && (((str[index] >= 40 && str[index] <=
-              41)))) {
+          if (index < endIndex && (str[index] >= 40 && str[index] <=
+              41)) {
               ++indexTemp2; break;
             }
             if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
@@ -7347,8 +7341,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseProperty(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseProperty(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
         if (index + 7 < endIndex && (str[index] & ~32) == 77 && (str[index +
@@ -7369,7 +7362,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        int tx2 = ParsePtype(str, index, endIndex, tokener);
+        int tx2 = ParsePtype(str, index, endIndex);
         if (tx2 == index) {
           break;
         } else {
@@ -7382,7 +7375,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           index = indexStart; break;
         }
         index = ParseCFWS(str, index, endIndex, tokener);
-        tx2 = ParseProperty(str, index, endIndex, tokener);
+        tx2 = ParseProperty(str, index, endIndex);
         if (tx2 == index) {
           index = indexStart; break;
         } else {
@@ -7413,11 +7406,10 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParsePsChar(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParsePsChar(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
-        if (index < endIndex && (((str[index] >= 40 && str[index] <= 41)))) {
+        if (index < endIndex && (str[index] >= 40 && str[index] <= 41)) {
           ++indexTemp; break;
         }
         if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
@@ -7435,8 +7427,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParsePtype(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParsePtype(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
         if (index + 3 < endIndex && (str[index] & ~32) == 83 && (str[index +
@@ -7468,23 +7459,23 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         do {
           int indexTemp2 = index;
           do {
-            if ((index < endIndex && ((str[index] == 33) || ((str[index] >=
-              35 && str[index] <= 36)) || ((str[index] >= 45 && str[index]
-              <= 46)) || ((str[index] >= 48 && str[index] <= 57)) ||
-              ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94&&
-              str[index] <= 126)) || ((str[index] >= 42 && str[index] <=
-              43)) || ((str[index] >= 38 && str[index] <= 39)) ||
-              (str[index] == 63)))) {
+            if (index < endIndex && ((str[index] == 33) || (str[index] >=
+              35 && str[index] <= 36) || (str[index] >= 45 && str[index]
+              <= 46) || (str[index] >= 48 && str[index] <= 57) ||
+              (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94&&
+              str[index] <= 126) || (str[index] >= 42 && str[index] <=
+              43) || (str[index] >= 38 && str[index] <= 39) ||
+              (str[index] == 63))) {
               ++indexTemp2;
-              while ((indexTemp2 < endIndex && ((str[indexTemp2] == 33) ||
-                ((str[indexTemp2] >= 35 && str[indexTemp2] <= 36)) ||
-                ((str[indexTemp2] >= 45 && str[indexTemp2] <= 46)) ||
-                ((str[indexTemp2] >= 48 && str[indexTemp2] <= 57)) ||
-                ((str[indexTemp2] >= 65 && str[indexTemp2] <= 90)) ||
-                ((str[indexTemp2] >= 94 && str[indexTemp2] <= 126)) ||
-                ((str[indexTemp2] >= 42 && str[indexTemp2] <= 43)) ||
-                ((str[indexTemp2] >= 38 && str[indexTemp2] <= 39)) ||
-                (str[indexTemp2] == 63)))) {
+              while (indexTemp2 < endIndex && ((str[indexTemp2] == 33) ||
+                (str[indexTemp2] >= 35 && str[indexTemp2] <= 36) ||
+                (str[indexTemp2] >= 45 && str[indexTemp2] <= 46) ||
+                (str[indexTemp2] >= 48 && str[indexTemp2] <= 57) ||
+                (str[indexTemp2] >= 65 && str[indexTemp2] <= 90) ||
+                (str[indexTemp2] >= 94 && str[indexTemp2] <= 126) ||
+                (str[indexTemp2] >= 42 && str[indexTemp2] <= 43) ||
+                (str[indexTemp2] >= 38 && str[indexTemp2] <= 39) ||
+                (str[indexTemp2] == 63))) {
                 ++indexTemp2;
               }
               break;
@@ -7567,7 +7558,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
           indexTemp += 2; break;
         }
-        int indexTemp2 = ParseQuotedPair(str, index, endIndex, tokener);
+        int indexTemp2 = ParseQuotedPair(str, index, endIndex);
         if (indexTemp2 != index) {
           indexTemp = indexTemp2; break;
         }
@@ -7589,7 +7580,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           break;
         }
         for (int i = 0; i < 69; ++i) {
-          int indexTemp2 = ParsePsChar(str, index, endIndex, tokener);
+          int indexTemp2 = ParsePsChar(str, index, endIndex);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -7620,8 +7611,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseQuotedPair(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseQuotedPair(string str, int index, int endIndex) {
       int indexStart = index;
       int indexTemp = index;
       do {
@@ -7682,7 +7672,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             int tx3 = ParseQcontent(str, index, endIndex, tokener);
             if (tx3 == index) {
               index = indexStart2; break;
@@ -7700,7 +7690,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
  break;
 }
         }
-        index = ParseFWS(str, index, endIndex, tokener);
+        index = ParseFWS(str, index, endIndex);
         if (index < endIndex && (str[index] == 34)) {
           ++index;
         } else {
@@ -7724,8 +7714,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseQvalue(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseQvalue(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
         int indexTemp2 = index;
@@ -7880,17 +7869,16 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseRegName(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseRegName(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
         while (true) {
           int indexTemp2 = index;
           do {
-            if (index < endIndex && (((str[index] >= 65 && str[index] <=
-              90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-              ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 45&&
-              str[index] <= 46)) || (str[index] == 95) || (str[index] ==
+            if (index < endIndex && ((str[index] >= 65 && str[index] <=
+              90) || (str[index] >= 97 && str[index] <= 122) ||
+              (str[index] >= 48 && str[index] <= 57) || (str[index] >= 45&&
+              str[index] <= 46) || (str[index] == 95) || (str[index] ==
               126))) {
               ++indexTemp2; break;
             }
@@ -7903,7 +7891,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
               indexTemp2 += 3; break;
             }
             if (index < endIndex && ((str[index] == 33) || (str[index] ==
-              36) || ((str[index] >= 38 && str[index] <= 44)) || (str[index]
+              36) || (str[index] >= 38 && str[index] <= 44) || (str[index]
               == 59) || (str[index] == 61))) {
               ++indexTemp2; break;
             }
@@ -7956,17 +7944,17 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        if ((index < endIndex && ((str[index] == 33) || ((str[index] >= 35&&
-          str[index] <= 36)) || (str[index] == 38) || (str[index] == 43)||
-          ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48&&
-          str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90))||
-          ((str[index] >= 94 && str[index] <= 126))))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35&&
+          str[index] <= 36) || (str[index] == 38) || (str[index] == 43)||
+          (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48&&
+          str[index] <= 57) || (str[index] >= 65 && str[index] <= 90)||
+          (str[index] >= 94 && str[index] <= 126))) {
           ++index;
-          while ((index < endIndex && ((str[index] == 33) || ((str[index] >=
-            35 && str[index] <= 36)) || (str[index] == 38) || (str[index] ==
-            43) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index]
-            >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index]
-            <= 90)) || ((str[index] >= 94 && str[index] <= 126))))) {
+          while (index < endIndex && ((str[index] == 33) || (str[index] >=
+            35 && str[index] <= 36) || (str[index] == 38) || (str[index] ==
+            43) || (str[index] >= 45 && str[index] <= 46) || (str[index]
+            >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index]
+            <= 90) || (str[index] >= 94 && str[index] <= 126))) {
             ++index;
           }
         } else {
@@ -7986,23 +7974,22 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseResid(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseResid(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
         while (true) {
           int indexTemp2 = index;
           do {
-            if (index < endIndex && (((str[index] >= 65 && str[index] <=
-              90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-              ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 45&&
-              str[index] <= 46)) || (str[index] == 95) || (str[index] ==
+            if (index < endIndex && ((str[index] >= 65 && str[index] <=
+              90) || (str[index] >= 97 && str[index] <= 122) ||
+              (str[index] >= 48 && str[index] <= 57) || (str[index] >= 45&&
+              str[index] <= 46) || (str[index] == 95) || (str[index] ==
               126))) {
               ++indexTemp2; break;
             }
             if (index < endIndex && ((str[index] == 33) || (str[index] ==
-              36) || ((str[index] >= 38 && str[index] <= 44)) ||
-              ((str[index] >= 58 && str[index] <= 59)) || (str[index] ==
+              36) || (str[index] >= 38 && str[index] <= 44) ||
+              (str[index] >= 58 && str[index] <= 59) || (str[index] ==
               61))) {
               ++indexTemp2; break;
             }
@@ -8111,23 +8098,23 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
     public static int ParseRestrictedName(string str, int index, int
-      endIndex, ITokener tokener) {
+      endIndex) {
       int indexTemp = index;
       do {
-        if (index < endIndex && (((str[index] >= 65 && str[index] <= 90)) ||
-          ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 &&
-          str[index] <= 57)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
+          str[index] <= 57))) {
           ++index;
         } else {
           break;
         }
         for (int i = 0; i < 126; ++i) {
-          if ((index < endIndex && (((str[index] >= 65 && str[index] <= 90))||
-            ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >=
-            48 && str[index] <= 57)) || (str[index] == 33) || ((str[index]
-            >= 35 && str[index] <= 36)) || (str[index] == 38) ||
-            ((str[index] >= 94 && str[index] <= 95)) || ((str[index] >= 45&&
-            str[index] <= 46)) || (str[index] == 43)))) {
+          if (index < endIndex && ((str[index] >= 65 && str[index] <= 90)||
+            (str[index] >= 97 && str[index] <= 122) || (str[index] >=
+            48 && str[index] <= 57) || (str[index] == 33) || (str[index]
+            >= 35 && str[index] <= 36) || (str[index] == 38) ||
+            (str[index] >= 94 && str[index] <= 95) || (str[index] >= 45&&
+            str[index] <= 46) || (str[index] == 43))) {
             ++index;
           } else {
  break;
@@ -8143,8 +8130,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseResult(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseResult(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
         if (index + 3 < endIndex && (str[index] & ~32) == 80 && (str[index +
@@ -8187,7 +8173,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         if (index + 1 < endIndex && str[index] == 42 && str[index + 1] == 48) {
           indexTemp += 2; break;
         }
-        int indexTemp2 = ParseOtherSections(str, index, endIndex, tokener);
+        int indexTemp2 = ParseOtherSections(str, index, endIndex);
         if (indexTemp2 != index) {
           indexTemp = indexTemp2; break;
         }
@@ -8204,7 +8190,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int indexTemp = index;
       do {
         for (int i = 0; i < 8; ++i) {
-          int indexTemp2 = ParsePsChar(str, index, endIndex, tokener);
+          int indexTemp2 = ParsePsChar(str, index, endIndex);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -8223,15 +8209,15 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             if (index < endIndex && (str[index] == 59)) {
               ++index;
             } else {
               index = indexStart2; break;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             for (int i2 = 0; i2 < 8; ++i2) {
-              int indexTemp3 = ParsePsChar(str, index, endIndex, tokener);
+              int indexTemp3 = ParsePsChar(str, index, endIndex);
               if (indexTemp3 != index) {
                 index = indexTemp3;
               } else {
@@ -8278,13 +8264,13 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
           int indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             if (index < endIndex && (str[index] == 59)) {
               ++index;
             } else {
               index = indexStart2; break;
             }
-            index = ParseFWS(str, index, endIndex, tokener);
+            index = ParseFWS(str, index, endIndex);
             int tx3 = ParseSioLabelParmSeq(str, index, endIndex, tokener);
             if (tx3 == index) {
               index = indexStart2; break;
@@ -8314,36 +8300,36 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
     public static int ParseSolicitationKeywords(string str, int index, int
-      endIndex, ITokener tokener) {
+      endIndex) {
       int indexTemp = index;
       do {
-        if (index < endIndex && (((str[index] >= 65 && str[index] <= 90)) ||
-          ((str[index] >= 97 && str[index] <= 122)))) {
+        if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+          (str[index] >= 97 && str[index] <= 122))) {
           ++index;
         } else {
           break;
         }
-        while ((index < endIndex && (((str[index] >= 45 && str[index] <=
-          46)) || (str[index] == 95) || ((str[index] >= 65 && str[index] <=
-          90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index]
-          >= 48 && str[index] <= 58))))) {
+        while (index < endIndex && ((str[index] >= 45 && str[index] <=
+          46) || (str[index] == 95) || (str[index] >= 65 && str[index] <=
+          90) || (str[index] >= 97 && str[index] <= 122) || (str[index]
+          >= 48 && str[index] <= 58))) {
           ++index;
         }
         while (true) {
           int indexTemp2 = index;
           do {
             int indexStart2 = index;
-            if (index + 1 < endIndex && (str[index] == 44) && (((str[index +
-              1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97&&
-              str[index + 1] <= 122)))) {
+            if (index + 1 < endIndex && (str[index] == 44) && ((str[index +
+              1] >= 65 && str[index + 1] <= 90) || (str[index + 1] >= 97&&
+              str[index + 1] <= 122))) {
               index += 2;
             } else {
               break;
             }
-            while ((index < endIndex && (((str[index] >= 45 && str[index] <=
-              46)) || (str[index] == 95) || ((str[index] >= 65 && str[index]
-              <= 90)) || ((str[index] >= 97 && str[index] <= 122)) ||
-              ((str[index] >= 48 && str[index] <= 58))))) {
+            while (index < endIndex && ((str[index] >= 45 && str[index] <=
+              46) || (str[index] == 95) || (str[index] >= 65 && str[index]
+              <= 90) || (str[index] >= 97 && str[index] <= 122) ||
+              (str[index] >= 48 && str[index] <= 58))) {
               ++index;
             }
             indexTemp2 = index;
@@ -8369,8 +8355,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseText(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseText(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
         if (index < endIndex && ((str[index] >= 1 && str[index] <= 9) ||
@@ -8476,8 +8461,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
 "CA1801",
 Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
 #endif
-    public static int ParseTypeString(string str, int index, int endIndex,
-      ITokener tokener) {
+    public static int ParseTypeString(string str, int index, int endIndex) {
       int indexTemp = index;
       do {
         if (index + 2 < endIndex && (str[index] & ~32) == 65 && (str[index +
@@ -8502,22 +8486,22 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
       int state = (tokener != null) ? tokener.GetState() : 0;
       int indexTemp = index;
       do {
-        if ((index < endIndex && ((str[index] == 33) || ((str[index] >= 35&&
-          str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46))||
-          ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65&&
-          str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126))||
-          ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38&&
-          str[index] <= 39)) || (str[index] == 63)))) {
+        if (index < endIndex && ((str[index] == 33) || (str[index] >= 35&&
+          str[index] <= 36) || (str[index] >= 45 && str[index] <= 46)||
+          (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65&&
+          str[index] <= 90) || (str[index] >= 94 && str[index] <= 126)||
+          (str[index] >= 42 && str[index] <= 43) || (str[index] >= 38&&
+          str[index] <= 39) || (str[index] == 63))) {
           ++indexTemp;
-          while ((indexTemp < endIndex && ((str[indexTemp] == 33) ||
-            ((str[indexTemp] >= 35 && str[indexTemp] <= 36)) ||
-            ((str[indexTemp] >= 45 && str[indexTemp] <= 46)) ||
-            ((str[indexTemp] >= 48 && str[indexTemp] <= 57)) ||
-            ((str[indexTemp] >= 65 && str[indexTemp] <= 90)) ||
-            ((str[indexTemp] >= 94 && str[indexTemp] <= 126)) ||
-            ((str[indexTemp] >= 42 && str[indexTemp] <= 43)) ||
-            ((str[indexTemp] >= 38 && str[indexTemp] <= 39)) ||
-            (str[indexTemp] == 63)))) {
+          while (indexTemp < endIndex && ((str[indexTemp] == 33) ||
+            (str[indexTemp] >= 35 && str[indexTemp] <= 36) ||
+            (str[indexTemp] >= 45 && str[indexTemp] <= 46) ||
+            (str[indexTemp] >= 48 && str[indexTemp] <= 57) ||
+            (str[indexTemp] >= 65 && str[indexTemp] <= 90) ||
+            (str[indexTemp] >= 94 && str[indexTemp] <= 126) ||
+            (str[indexTemp] >= 42 && str[indexTemp] <= 43) ||
+            (str[indexTemp] >= 38 && str[indexTemp] <= 39) ||
+            (str[indexTemp] == 63))) {
             ++indexTemp;
           }
           break;
@@ -8588,7 +8572,7 @@ Justification = "Tokener argument appears for consistency with other Parse* meth
         do {
           int indexStart2 = index;
           for (int i2 = 0; ; ++i2) {
-            int indexTemp3 = ParseFWS(str, index, endIndex, tokener);
+            int indexTemp3 = ParseFWS(str, index, endIndex);
             if (indexTemp3 != index) {
               index = indexTemp3;
             } else {

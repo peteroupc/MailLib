@@ -244,12 +244,12 @@ int index) {
     private int lastStableIndex;
     private int endIndex;
     private int[] buffer;
-    private boolean compatMode;
-    private Normalization form;
+    private final boolean compatMode;
+    private final Normalization form;
     private int processedIndex;
     private int flushIndex;
-    private ICharacterInput iterator;
-    private List<Integer> characterList;
+    private final ICharacterInput iterator;
+    private final List<Integer> characterList;
     private int characterListPos;
 
     /**
@@ -535,16 +535,8 @@ form)) {
           return false;
         }
         boolean isStable = false;
-        if ((c & mask) == c && (i + 1 == charList.size() || (charList.get(i + 1)&
-          mask) == charList.get(i + 1))) {
-          // Quick check for an ASCII character followed by another
-          // ASCII character (or Latin-1 in NFC) or the end of String.
-          // Treat the first character as stable
-          // in this situation.
-          isStable = true;
-        } else {
-          isStable = IsStableCodePoint(c, form);
-        }
+   isStable = (c & mask) == c && (i + 1 == charList.size() || (charList.get(i +
+          1) & mask) == charList.get(i + 1)) ? true : IsStableCodePoint(c, form);
         if (nonStableStart < 0 && !isStable) {
           // First non-stable code point in a row
           nonStableStart = i;
@@ -573,7 +565,7 @@ form)) {
       return true;
     }
 
-    private int[] readbuffer = new int[1];
+    private final int[] readbuffer = new int[1];
 
     /**
      * Reads a Unicode character from a data source.

@@ -25,13 +25,13 @@ namespace PeterO.Text.Encoders {
       };
 
     private class Decoder : ICharacterDecoder {
-      private DecoderState state;
-      private int alphavalue = 0;
-      private int base64value = 0;
-      private CodeUnitAppender appender;
-      private int base64count = 0;
+      private readonly DecoderState state;
+      private int alphavalue;
+      private int base64value;
+      private readonly CodeUnitAppender appender;
+      private int base64count;
       // 0: not in base64; 1: start of base 64; 2: continuing base64
-      private int machineState = 0;
+      private int machineState;
 
       public Decoder() {
         this.state = new DecoderState(4);

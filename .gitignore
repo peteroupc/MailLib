@@ -6,14 +6,14 @@ cache/
 TestResults/
 CBORTest/bin/
 CBORTest/obj/
-CBORTest/OpenCover/
+packages/
+OpenCover/
 *.Cache
 *.sdsettings
 js/*.ht*
 js/DecTest.*
 ProfilingSessions/
 coverage.xml
-CBORTest/ProfilingSessions/
 .project
 .classpath
 *.shf*
@@ -22,5 +22,4 @@ CBORTest/ProfilingSessions/
 *.suo
 *.log
 .pmd
-CBORTest/ExtensiveTest.*
 /target

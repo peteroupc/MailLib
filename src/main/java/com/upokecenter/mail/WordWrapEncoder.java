@@ -10,9 +10,9 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
   final class WordWrapEncoder {
     private static final int MaxLineLength = 76;
     private String lastSpaces;
-    private StringBuilder fullString;
+    private final StringBuilder fullString;
     private int lineLength;
-    private boolean collapseSpaces;
+    private final boolean collapseSpaces;
     private boolean haveNonwhitespace;
 
     public WordWrapEncoder (String c) {

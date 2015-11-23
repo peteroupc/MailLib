@@ -17,8 +17,8 @@ namespace PeterO.Mail {
   internal sealed class QuotedPrintableEncoder : ICharacterEncoder {
     private const string HexAlphabet = "0123456789ABCDEF";
     private int lineCount;
-    private int lineBreakMode;
-    private bool unlimitedLineLength;
+    private readonly int lineBreakMode;
+    private readonly bool unlimitedLineLength;
 
     // lineBreakMode:
     // 0 - no line breaks
@@ -29,24 +29,8 @@ namespace PeterO.Mail {
       this.unlimitedLineLength = unlimitedLineLength;
     }
 
-    private int IncrementLineCount(IWriter output, int length) {
-      if (!this.unlimitedLineLength) {
-        if (this.lineCount + length > 75) {
-          // 76 including the final '='
-          output.WriteByte(0x3d);
-          output.WriteByte(0x0d);
-          output.WriteByte(0x0a);
-          this.lineCount = length;
-          return 3;
-        } else {
-          this.lineCount += length;
-        }
-      }
-      return 0;
-    }
-
     private int IncrementAndAppend(IWriter output, string appendStr) {
-      int count = 0;
+      var count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + appendStr.Length > 75) {
           // 76 including the final '='
@@ -71,7 +55,7 @@ IWriter output,
 char b1,
 char b2,
 char b3) {
-      int count = 0;
+      var count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + 3 > 75) {
           // 76 including the final '='
@@ -115,7 +99,7 @@ char b3) {
   if (output == null) {
     throw new ArgumentNullException("output");
   }
-      int count = 0;
+      var count = 0;
       if (c >= 0) {
         c &= 0xff;
       }

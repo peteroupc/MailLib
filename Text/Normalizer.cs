@@ -37,7 +37,7 @@ namespace PeterO.Text {
       return NormalizingCharacterInput.Normalize(str, form);
     }
 
-    private NormalizingCharacterInput nci;
+    private readonly NormalizingCharacterInput nci;
 
     /// <summary>Initializes a new instance of the Normalizer
     /// class.</summary>

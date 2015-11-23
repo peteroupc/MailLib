@@ -208,7 +208,7 @@ int index) {
       if (length < 2) {
         return length;
       }
-      int starterPos = 0;
+      var starterPos = 0;
       int retval = length;
       int starter = array[0];
       int last = UnicodeDatabase.GetCombiningClass(starter);
@@ -216,7 +216,7 @@ int index) {
         last = 256;
       }
       int endPos = 0 + length;
-      bool composed = false;
+      var composed = false;
       for (int decompPos = 0; decompPos < endPos; ++decompPos) {
         int ch = array[decompPos];
         int valuecc = UnicodeDatabase.GetCombiningClass(ch);
@@ -265,7 +265,7 @@ int index) {
         last = valuecc;
       }
       if (composed) {
-        int j = 0;
+        var j = 0;
         for (int i = 0; i < endPos; ++i) {
           if (array[i] != 0x110000) {
             array[j++] = array[i];
@@ -306,7 +306,7 @@ int index) {
       var norm = new NormalizingCharacterInput(str, form);
       var buffer = new int[64];
       IList<int> ret = new List<int>(24);
-      int count = 0;
+      var count = 0;
       while ((count = norm.Read(buffer, 0, buffer.Length)) > 0) {
         for (int i = 0; i < count; ++i) {
           ret.Add(buffer[i]);
@@ -318,12 +318,12 @@ int index) {
     private int lastStableIndex;
     private int endIndex;
     private int[] buffer;
-    private bool compatMode;
-    private Normalization form;
+    private readonly bool compatMode;
+    private readonly Normalization form;
     private int processedIndex;
     private int flushIndex;
-    private ICharacterInput iterator;
-    private IList<int> characterList;
+    private readonly ICharacterInput iterator;
+    private readonly IList<int> characterList;
     private int characterListPos;
 
     /// <summary>Initializes a new instance of the
@@ -438,7 +438,7 @@ Normalization form) {
         throw new ArgumentNullException("chars");
       }
       IList<int> list = new List<int>();
-      int ch = 0;
+      var ch = 0;
       while ((ch = chars.ReadChar()) >= 0) {
         if ((ch & 0x1ff800) == 0xd800) {
           return false;
@@ -453,7 +453,7 @@ IList<int> charList,
 int start,
 int length,
 Normalization form) {
-      int i = 0;
+      var i = 0;
       foreach (int ch in NormalizingCharacterInput.GetChars(
         new PartialListCharacterInput(charList, start, length),
         form)) {
@@ -501,7 +501,7 @@ Normalization form) {
       if ((str) == null) {
   throw new ArgumentNullException("str");
 }
-      int nonStableStart = -1;
+      var nonStableStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       for (int i = 0; i < str.Length; ++i) {
         int c = str[i];
@@ -513,7 +513,7 @@ Normalization form) {
           // unpaired surrogate
           return false;
         }
-        bool isStable = false;
+        var isStable = false;
         if ((c & mask) == c && (i + 1 == str.Length || (str[i + 1] & mask)
           == str[i + 1])) {
           // Quick check for an ASCII character followed by another
@@ -566,7 +566,7 @@ form)) {
      start,
      length,
      form);
-      int ch = 0;
+      var ch = 0;
       while ((ch = norm.ReadChar()) >= 0) {
         int c = charString[i];
         if ((c & 0x1ffc00) == 0xd800 && i + 1 < charString.Length &&
@@ -596,7 +596,7 @@ form)) {
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='charList'/> is null.</exception>
     public static bool IsNormalized(IList<int> charList, Normalization form) {
-      int nonStableStart = -1;
+      var nonStableStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       if (charList == null) {
         throw new ArgumentNullException("charList");
@@ -606,17 +606,9 @@ form)) {
         if (c < 0 || c > 0x10ffff || ((c & 0x1ff800) == 0xd800)) {
           return false;
         }
-        bool isStable = false;
-        if ((c & mask) == c && (i + 1 == charList.Count || (charList[i + 1 ]&
-          mask) == charList[i + 1])) {
-          // Quick check for an ASCII character followed by another
-          // ASCII character (or Latin-1 in NFC) or the end of string.
-          // Treat the first character as stable
-          // in this situation.
-          isStable = true;
-        } else {
-          isStable = IsStableCodePoint(c, form);
-        }
+        var isStable = false;
+   isStable = (c & mask) == c && (i + 1 == charList.Count || (charList[i +
+          1] & mask) == charList[i + 1]) ? true : IsStableCodePoint(c, form);
         if (nonStableStart < 0 && !isStable) {
           // First non-stable code point in a row
           nonStableStart = i;
@@ -645,7 +637,7 @@ form)) {
       return true;
     }
 
-    private int[] readbuffer = new int[1];
+    private readonly int[] readbuffer = new int[1];
 
     /// <summary>Reads a Unicode character from a data source.</summary>
     /// <returns>Either a Unicode code point (from 0-0xd7ff or from 0xe000
@@ -728,8 +720,8 @@ this.characterList.Count) ? -1 :
       if (length == 0) {
         return 0;
       }
-      int total = 0;
-      int count = 0;
+      var total = 0;
+      var count = 0;
       if (this.processedIndex == this.flushIndex && this.flushIndex == 0) {
         while (total < length) {
           int c = this.GetNextChar();
@@ -819,7 +811,7 @@ Math.Min(this.processedIndex - this.flushIndex, length - total));
     }
 
     private bool LoadMoreData() {
-      bool done = false;
+      var done = false;
       while (!done) {
         this.buffer = this.buffer ?? (new int[32]);
         // Fill buffer with decompositions until the buffer is full
@@ -839,7 +831,7 @@ this.endIndex);
         // Check for the last stable code point if the
         // end of the string is not reached yet
         if (!this.endOfString) {
-          bool haveNewStable = false;
+          var haveNewStable = false;
           // NOTE: lastStableIndex begins at -1
           for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
             // Console.WriteLine("stable({0:X4})=" +

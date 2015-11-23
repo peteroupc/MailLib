@@ -60,7 +60,7 @@ namespace PeterO.Mail {
     /// <summary>Returns the hash code for this instance.</summary>
     /// <returns>A 32-bit signed integer.</returns>
     public override int GetHashCode() {
-      int hashCode = 632580499;
+      var hashCode = 632580499;
       unchecked {
         if (this.topLevelType != null) {
           hashCode += 632580503 * this.topLevelType.GetHashCode();
@@ -183,7 +183,7 @@ string type,
           return i2;
         }
         index = i2;
-        i2 = HeaderParser.ParseQuotedPair(s, index, endIndex, null);
+        i2 = HeaderParser.ParseQuotedPair(s, index, endIndex);
         return i2;
       }
       throw new ArgumentException(rule.ToString());
@@ -291,9 +291,9 @@ QuotedStringRule rule) {
 string name,
 string str,
 StringBuilder sb) {
-      int length = 1;
-      int contin = 0;
-      string hex = "0123456789ABCDEF";
+      var length = 1;
+      var contin = 0;
+      const string hex = "0123456789ABCDEF";
       length += name.Length + 12;
       const int MaxLength = 76;
       if (sb.Length + name.Length + 9 + (str.Length * 3) <= MaxLength) {
@@ -308,8 +308,8 @@ StringBuilder sb) {
       } else {
         sb.Append(name + "*0*=utf-8''");
       }
-      bool first = true;
-      int index = 0;
+      var first = true;
+      var index = 0;
       while (index < str.Length) {
         int c = str[index];
         if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length &&
@@ -445,7 +445,7 @@ StringBuilder sb) {
         sb.Append("\"\"");
         return true;
       }
-      bool simple = true;
+      var simple = true;
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
         if (!(c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=".IndexOf(c) < 0)) {
@@ -529,7 +529,7 @@ int endIndex,
 StringBuilder builder,
 bool httpRules) {
       int i = index;
-      string specials = "()<>@,;:\\\"/[]?=";
+      const string specials = "()<>@,;:\\\"/[]?=";
       while (i < endIndex) {
         char c = str[i];
         if (c <= 0x20 || c >= 0x7f || (c == (c & 0x7f) &&
@@ -619,7 +619,7 @@ int index,
 int endIndex,
 StringBuilder builder) {
       int i = index;
-      int count = 0;
+      var count = 0;
       while (i < endIndex) {
         char c = str[i];
         // See RFC6838
@@ -691,7 +691,7 @@ Justification="This method has different semantics from " +
       // -- ecmascript, javascript, html
       //
       // XML formats (no default assumed if charset is absent, according
-      // to revision of XML media type specification):
+      // to RFC7303, the revision of the XML media type specification):
       // -- xml, xml-external-parsed-entity,
       // vnd.in3d.3dml*, vnd.iptc.newsml, vnd.iptc.nitf, vnd.ms-mediapackage,
       // vnd.net2phone.commcenter.command, vnd.radisys.msml-basic-layout,
@@ -881,7 +881,9 @@ ICharacterEncoding charset) {
           ICharacterEncoding charsetUsed = GetRfc2231Charset(
             (asterisk == name.Length - 3) ? value : null);
           parameters.Remove(name);
-          int pindex = 1;
+          var pindex = 1;
+          var builder = new StringBuilder();
+          builder.Append(realValue);
           // search for name*1 or name*1*, then name*2 or name*2*,
           // and so on
           while (true) {
@@ -891,24 +893,25 @@ ICharacterEncoding charset) {
             string continEncoded = contin + "*";
             if (parameters.ContainsKey(contin)) {
               // Unencoded continuation
-              realValue += parameters[contin];
+              builder.Append(parameters[contin]);
               parameters.Remove(contin);
             } else if (parameters.ContainsKey(continEncoded)) {
               // Encoded continuation
- string newEnc = DecodeRfc2231Encoding(
-parameters[continEncoded],
-charsetUsed);
+              string newEnc = DecodeRfc2231Encoding(
+             parameters[continEncoded],
+             charsetUsed);
               if (newEnc == null) {
                 // Contains a quote character in the encoding, so illegal
                 return false;
               }
-              realValue += newEnc;
+              builder.Append(newEnc);
               parameters.Remove(continEncoded);
             } else {
               break;
             }
             ++pindex;
           }
+          realValue = builder.ToString();
           // NOTE: Overrides the name without continuations
           parameters[realName] = realValue;
         }
@@ -954,15 +957,12 @@ string str,
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipOws
-        if (httpRules) {
-          index = skipOws(str, index, endIndex);
-        } else {
-          index = HeaderParser.ParseCFWS(
+    index = httpRules ? skipOws(str, index, endIndex) :
+          HeaderParser.ParseCFWS(
             str,
             index,
             endIndex,
             null);
-        }
         if (index >= endIndex) {
           // No more parameters
           return httpRules || ExpandRfc2231Extensions(parameters);
@@ -971,15 +971,12 @@ string str,
           return false;
         }
         ++index;
-        if (httpRules) {
-          index = skipOws(str, index, endIndex);
-        } else {
-          index = HeaderParser.ParseCFWS(
+    index = httpRules ? skipOws(str, index, endIndex) :
+          HeaderParser.ParseCFWS(
 str,
 index,
 endIndex,
 null);
-        }
         var builder = new StringBuilder();
         // NOTE: RFC6838 restricts the format of parameter names to the same
         // syntax as types and subtypes, but this syntax is incompatible with
@@ -1067,7 +1064,7 @@ null);
 
     private bool ParseMediaType(string str) {
       const bool HttpRules = false;
-      int index = 0;
+      var index = 0;
       if (str == null) {
         throw new ArgumentNullException("str");
       }

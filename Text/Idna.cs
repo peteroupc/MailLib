@@ -41,9 +41,9 @@ namespace PeterO.Text {
     private static ByteData bidiClasses;
     private static ByteData joiningTypes;
     private static ByteData scripts;
-    private static object bidiClassesSync = new Object();
-    private static object joiningTypesSync = new Object();
-    private static object scriptsSync = new Object();
+    private static readonly object bidiClassesSync = new Object();
+    private static readonly object joiningTypesSync = new Object();
+    private static readonly object scriptsSync = new Object();
 
     internal static int CodePointBefore(string str, int index) {
       if (str == null) {
@@ -140,7 +140,7 @@ namespace PeterO.Text {
       // Assumes that the character at the given index
       // is Zero-Width Non-Joiner
       // Check the left
-      bool found = false;
+      var found = false;
       int oldIndex = index;
       while (index > 0) {
         int ch = CodePointBefore(str, index);
@@ -202,7 +202,7 @@ namespace PeterO.Text {
       }
       var builder = new StringBuilder();
       string retval = null;
-      int lastIndex = 0;
+      var lastIndex = 0;
       for (int i = 0; i < value.Length; ++i) {
         char c = value[i];
         if (c == '.') {
@@ -244,7 +244,7 @@ value.Length);
         return false;
       }
       bool bidiRule = HasRtlCharacters(str);
-      int lastIndex = 0;
+      var lastIndex = 0;
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
         if (c == '.') {
@@ -274,7 +274,7 @@ bidiRule);
       }
       int len = str.Length;
       var c = (char)0;
-      bool hasUpperCase = false;
+      var hasUpperCase = false;
       for (int i = 0; i < len; ++i) {
         c = str[i];
         if (c >= 'A' && c <= 'Z') {
@@ -306,7 +306,7 @@ bool bidiRule) {
       }
       bool maybeALabel = str.Length >= 4 && (str[0] == 'x' || str[0] == 'X') &&
         (str[1] == 'n' || str[1] == 'N') && str[2] == '-' && str[3] == '-';
-      bool allLDH = true;
+      var allLDH = true;
       for (int i = 0; i < str.Length; ++i) {
     if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'
 ) ||
@@ -382,9 +382,9 @@ bool bidiRule) {
         return false;
       }
       int ch;
-      bool first = true;
-      bool haveContextual = false;
-      bool rtl = false;
+      var first = true;
+      var haveContextual = false;
+      var rtl = false;
       int bidiClass;
       for (int i = 0; i < str.Length; ++i) {
         ch = CodePointAt(str, i);
@@ -413,11 +413,11 @@ bool bidiRule) {
         first = false;
       }
       if (haveContextual) {
-        bool regArabDigits = false;
-        bool extArabDigits = false;
-        bool haveKatakanaMiddleDot = false;
-        bool haveKanaOrHan = false;
-        int lastChar = 0;
+        var regArabDigits = false;
+        var extArabDigits = false;
+        var haveKatakanaMiddleDot = false;
+        var haveKanaOrHan = false;
+        var lastChar = 0;
         for (int i = 0; i < str.Length; ++i) {
           int thisChar = CodePointAt(str, i);
           if (thisChar >= 0x660 && thisChar <= 0x669) {
@@ -495,7 +495,7 @@ bool bidiRule) {
       }
       // Bidi Rule
       if (bidiRule) {
-        bool found = false;
+        var found = false;
         for (int i = str.Length; i > 0; --i) {
           int c = CodePointBefore(str, i);
           if (c >= 0x10000) {
@@ -522,8 +522,8 @@ bool bidiRule) {
         if (!found) {
           return false;
         }
-        bool haveEN = false;
-        bool haveAN = false;
+        var haveEN = false;
+        var haveAN = false;
         for (int i = 0; i < str.Length; ++i) {
           int c = CodePointAt(str, i);
           if (c >= 0x10000) {

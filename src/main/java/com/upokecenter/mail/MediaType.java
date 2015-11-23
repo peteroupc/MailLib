@@ -179,7 +179,7 @@ String type,
           return i2;
         }
         index = i2;
-        i2 = HeaderParser.ParseQuotedPair(s, index, endIndex, null);
+        i2 = HeaderParser.ParseQuotedPair(s, index, endIndex);
         return i2;
       }
       throw new IllegalArgumentException(rule.toString());
@@ -684,7 +684,7 @@ StringBuilder builder) {
       // -- ecmascript, javascript, html
       //
       // XML formats (no default assumed if charset is absent, according
-      // to revision of XML media type specification):
+      // to RFC7303, the revision of the XML media type specification):
       // -- xml, xml-external-parsed-entity,
       // vnd.in3d.3dml*, vnd.iptc.newsml, vnd.iptc.nitf, vnd.ms-mediapackage,
       // vnd.net2phone.commcenter.command, vnd.radisys.msml-basic-layout,
@@ -875,6 +875,8 @@ ICharacterEncoding charset) {
             (asterisk == name.length() - 3) ? value : null);
           parameters.remove(name);
           int pindex = 1;
+          StringBuilder builder = new StringBuilder();
+          builder.append(realValue);
           // search for name*1 or name*1*, then name*2 or name*2*,
           // and so on
           while (true) {
@@ -882,24 +884,25 @@ ICharacterEncoding charset) {
             String continEncoded = contin + "*";
             if (parameters.containsKey(contin)) {
               // Unencoded continuation
-              realValue += parameters.get(contin);
+              builder.append(parameters.get(contin));
               parameters.remove(contin);
             } else if (parameters.containsKey(continEncoded)) {
               // Encoded continuation
- String newEnc = DecodeRfc2231Encoding(
-parameters.get(continEncoded),
-charsetUsed);
+              String newEnc = DecodeRfc2231Encoding(
+             parameters.get(continEncoded),
+             charsetUsed);
               if (newEnc == null) {
                 // Contains a quote character in the encoding, so illegal
                 return false;
               }
-              realValue += newEnc;
+              builder.append(newEnc);
               parameters.remove(continEncoded);
             } else {
               break;
             }
             ++pindex;
           }
+          realValue = builder.toString();
           // NOTE: Overrides the name without continuations
           parameters.put(realName, realValue);
         }
@@ -945,15 +948,12 @@ String str,
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipOws
-        if (httpRules) {
-          index = skipOws(str, index, endIndex);
-        } else {
-          index = HeaderParser.ParseCFWS(
+    index = httpRules ? skipOws(str, index, endIndex) :
+          HeaderParser.ParseCFWS(
             str,
             index,
             endIndex,
             null);
-        }
         if (index >= endIndex) {
           // No more parameters
           return httpRules || ExpandRfc2231Extensions(parameters);
@@ -962,15 +962,12 @@ String str,
           return false;
         }
         ++index;
-        if (httpRules) {
-          index = skipOws(str, index, endIndex);
-        } else {
-          index = HeaderParser.ParseCFWS(
+    index = httpRules ? skipOws(str, index, endIndex) :
+          HeaderParser.ParseCFWS(
 str,
 index,
 endIndex,
 null);
-        }
         StringBuilder builder = new StringBuilder();
         // NOTE: RFC6838 restricts the format of parameter names to the same
         // syntax as types and subtypes, but this syntax is incompatible with

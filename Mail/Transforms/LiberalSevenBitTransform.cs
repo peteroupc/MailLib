@@ -12,7 +12,7 @@ using PeterO.Mail;
 namespace PeterO.Mail.Transforms {
   // A seven-bit transform used for text/plain data
   internal sealed class LiberalSevenBitTransform : IByteReader {
-    private IByteReader input;
+    private readonly IByteReader input;
 
     public LiberalSevenBitTransform(IByteReader stream) {
       this.input = stream;

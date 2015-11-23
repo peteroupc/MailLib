@@ -12,9 +12,9 @@ namespace PeterO.Mail {
   internal sealed class WordWrapEncoder {
     private const int MaxLineLength = 76;
     private string lastSpaces;
-    private StringBuilder fullString;
+    private readonly StringBuilder fullString;
     private int lineLength;
-    private bool collapseSpaces;
+    private readonly bool collapseSpaces;
     private bool haveNonwhitespace;
 
     public WordWrapEncoder(string c) : this(c, true) {
@@ -76,7 +76,7 @@ namespace PeterO.Mail {
 
     private static string FoldSubstring(string str, int index, int length) {
       int endIndex = index + length;
-      bool nonSpace = false;
+      var nonSpace = false;
       for (int i = index; i < endIndex; ++i) {
         if (str[i] != 0x20 && str[i] != 0x09) {
           nonSpace = true;
@@ -96,7 +96,7 @@ namespace PeterO.Mail {
     }
 
     public WordWrapEncoder AddString(string str) {
-      int wordStart = 0;
+      var wordStart = 0;
       for (int j = 0; j < str.Length; ++j) {
         int c = str[j];
         if (c == 0x20 || c == 0x09 || (c == 0x0d && j + 1 < str.Length &&
