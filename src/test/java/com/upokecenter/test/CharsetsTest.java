@@ -35,7 +35,7 @@ import com.upokecenter.text.*;
       Assert.assertEquals(expected, Encodings.DecodeToString(charset, bytes));
     }
 
-    private void TestEncodingRoundTrip(String str, ICharacterEncoding
+    private static void TestEncodingRoundTrip(String str, ICharacterEncoding
       encoding) {
       byte[] bytes;
       String str2;
@@ -401,8 +401,7 @@ stringTemp);
       ICharacterDecoder decoder = enc.GetDecoder();
       ArrayList<Integer> list = new ArrayList<Integer>();
       ArrayWriter aw = new ArrayWriter();
-      // for (int i = 0; i < 0x110000; ++i) {
-      for (int i = 58850; i < 58855; ++i) {
+      for (int i = 0; i < 0x110000; ++i) {
       if (i >= 0xd800 && i < 0xe000) {
           continue;
         }

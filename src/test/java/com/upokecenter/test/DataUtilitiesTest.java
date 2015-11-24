@@ -376,85 +376,84 @@ System.out.println(ex.getMessage());
       Assert.assertEquals(6, DataUtilities.GetUtf8Length("\u3000\u3000", true));
       Assert.assertEquals(6, DataUtilities.GetUtf8Length("\ud800\ud800", true));
       Assert.assertEquals(-1, DataUtilities.GetUtf8Length("\ud800\ud800", false));
-      long numberTemp;
       {
-        numberTemp = DataUtilities.GetUtf8Length("\ud800", false);
+        long numberTemp = DataUtilities.GetUtf8Length("\ud800", false);
         Assert.assertEquals(-1, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\udc00", false);
+        long numberTemp = DataUtilities.GetUtf8Length("\udc00", false);
         Assert.assertEquals(-1, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\ud800X", false);
+        long numberTemp = DataUtilities.GetUtf8Length("\ud800X", false);
         Assert.assertEquals(-1, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\udc00X", false);
+        long numberTemp = DataUtilities.GetUtf8Length("\udc00X", false);
         Assert.assertEquals(-1, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800", false);
+        long numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800", false);
         Assert.assertEquals(-1, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800", false);
+        long numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800", false);
         Assert.assertEquals(-1, numberTemp);
       }
       {
-    numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800\udc00" , false);
+    long numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800\udc00" , false);
         Assert.assertEquals(-1, numberTemp);
       }
       {
-    numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800\udc00" , false);
+    long numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800\udc00" , false);
         Assert.assertEquals(-1, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\udc00\udc00", false);
+        long numberTemp = DataUtilities.GetUtf8Length("\udc00\udc00", false);
         Assert.assertEquals(-1, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\ud800\udc00", false);
+        long numberTemp = DataUtilities.GetUtf8Length("\ud800\udc00", false);
         Assert.assertEquals(4, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\ud800", true);
+        long numberTemp = DataUtilities.GetUtf8Length("\ud800", true);
         Assert.assertEquals(3, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\udc00", true);
+        long numberTemp = DataUtilities.GetUtf8Length("\udc00", true);
         Assert.assertEquals(3, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\ud800X", true);
+        long numberTemp = DataUtilities.GetUtf8Length("\ud800X", true);
         Assert.assertEquals(4, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\udc00X", true);
+        long numberTemp = DataUtilities.GetUtf8Length("\udc00X", true);
         Assert.assertEquals(4, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800", true);
+        long numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800", true);
         Assert.assertEquals(6, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800", true);
+        long numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800", true);
         Assert.assertEquals(6, numberTemp);
       }
       {
-     numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800\udc00" , true);
+     long numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800\udc00" , true);
         Assert.assertEquals(7, numberTemp);
       }
       {
-     numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800\udc00" , true);
+     long numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800\udc00" , true);
         Assert.assertEquals(7, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\udc00\udc00", true);
+        long numberTemp = DataUtilities.GetUtf8Length("\udc00\udc00", true);
         Assert.assertEquals(6, numberTemp);
       }
       {
-        numberTemp = DataUtilities.GetUtf8Length("\ud800\udc00", false);
+        long numberTemp = DataUtilities.GetUtf8Length("\ud800\udc00", false);
         Assert.assertEquals(4, numberTemp);
       }
     }
@@ -764,7 +763,8 @@ System.out.println(ex.getMessage());
       }
       List<byte[]> illegalSeqs = GenerateIllegalUtf8Sequences();
       for (byte[] seq : illegalSeqs) {
-        java.io.ByteArrayInputStream ms = null;
+        {
+java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(seq);
 
@@ -781,7 +781,9 @@ System.out.println(ex.getMessage());
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 }
-        java.io.ByteArrayInputStream ms2 = null;
+}
+        {
+java.io.ByteArrayInputStream ms2 = null;
 try {
 ms2 = new java.io.ByteArrayInputStream(seq);
 
@@ -797,6 +799,7 @@ ms2 = new java.io.ByteArrayInputStream(seq);
 }
 finally {
 try { if (ms2 != null)ms2.close(); } catch (java.io.IOException ex) {}
+}
 }
       }
     }

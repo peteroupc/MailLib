@@ -18,6 +18,9 @@ import com.upokecenter.text.*;
   final class IdentityEncoder implements ICharacterEncoder
   {
     public int Encode(int c, IWriter s) {
+      if ((s) == null) {
+  throw new NullPointerException("s");
+}
       if (c < 0) {
  return -1;
 }

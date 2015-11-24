@@ -149,7 +149,7 @@ tokener.GetTokens());
         displayName = address;
       }
       if (address == null) {
-        throw new ArgumentNullException(nameof(address));
+        throw new ArgumentNullException("address");
       }
       this.name = displayName;
       this.groupAddresses = new List<NamedAddress>();

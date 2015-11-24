@@ -1137,6 +1137,12 @@ null);
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
+#if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+      "Microsoft.Security",
+      "CA2104",
+      Justification="This instance is immutable")]
+#endif
     /// <summary>Specifies the media type "application/octet-stream", used
     /// for arbitrary binary data.</summary>
     public static readonly MediaType ApplicationOctetStream =

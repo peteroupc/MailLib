@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="ArrayWriter.cs" />
     <Compile Include="DataIO.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IByteWriter.cs" />
     <Compile Include="IWriter.cs" />
     <Compile Include="Mail\Transforms\TransformWithUnget.cs" />

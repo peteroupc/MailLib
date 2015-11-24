@@ -1690,7 +1690,7 @@ System.out.println(ex.getMessage());
     }
 
     // @Test
-    public void TestMessageMergeFields() {
+    public static void TestMessageMergeFields() {
       String msg;
       msg = "From: x1@example.com\r\nFrom: x2@example.com\r\n\r\n";
       msg =
@@ -1856,7 +1856,7 @@ System.out.println(ex.getMessage());
 throw new IllegalStateException("", ex);
 }
     }
-    private void TestFileNameOne(String input, String expected) {
+    private static void TestFileNameOne(String input, String expected) {
       Message msg;
       String str="From: x@example.com\r\nMIME-Version: 1.0\r\n" +
  "Content-Type: text/plain\r\nContent-Disposition: inline; filename=" +

@@ -682,6 +682,13 @@ this.treeValue);
     // <param name='array'>A T[] object.</param>
     // <param name='arrayIndex'>Starting index to copy to.</param>
     public void CopyTo(T[] array, int arrayIndex) {
+      if ((array) == null) {
+  throw new ArgumentNullException("array");
+}
+      if (arrayIndex < 0) {
+  throw new ArgumentException("arrayIndex (" + arrayIndex +
+    ") is less than " + 0);
+}
       if (this.treeValue != null) {
         RBCell t = this.treeValue.leftmost();
         while (t != null && arrayIndex < array.Length) {

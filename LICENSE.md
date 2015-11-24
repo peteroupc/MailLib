@@ -1,4 +1,4 @@
-Written by Peter O. in 2013-2014.  In the public domain.
+﻿Written by Peter O. in 2013-2014.  In the public domain.
 
 Public domain dedication: [http://creativecommons.org/publicdomain/zero/1.0/](http://creativecommons.org/publicdomain/zero/1.0/)
 
@@ -8,10 +8,10 @@ There is one exception, shown below:
 
 The following files were generated using data from the Unicode Character Database (UCD).
 
-Text/NormalizationData.cs
-Text/IdnaData.cs
-src/com/upokecenter/text/NormalizationData.java
-src/com/upokecenter/text/IdnaData.java
+* Text/NormalizationData.cs
+* Text/IdnaData.cs
+* src/main/java/com/upokecenter/text/NormalizationData.java
+* src/main/java/com/upokecenter/text/IdnaData.java
 
 In accordance with the license found at <http://www.unicode.org/copyright.html> Exhibit 1, the
 copyright notice for the UCD is shown below.  Those files are available under that license.
@@ -20,7 +20,7 @@ copyright notice for the UCD is shown below.  Those files are available under th
 
 COPYRIGHT AND PERMISSION NOTICE
 
-Copyright � 1991-2014 Unicode, Inc. All rights reserved.
+Copyright &copy; 1991-2014 Unicode, Inc. All rights reserved.
 Distributed under the Terms of Use in
 [http://www.unicode.org/copyright.html.](http://www.unicode.org/copyright.html.)
 

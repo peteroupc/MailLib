@@ -8,6 +8,9 @@ namespace PeterO.Text.Encoders {
   internal class EncodingAscii : ICharacterEncoding {
     private class Decoder : ICharacterDecoder {
       public int ReadChar(IByteReader transform) {
+        if ((transform) == null) {
+  throw new ArgumentNullException("transform");
+}
         int b = transform.ReadByte();
         return (b < 0) ? (-1) : ((b < 0x80) ? b : -2);
       }
@@ -17,6 +20,9 @@ namespace PeterO.Text.Encoders {
       public int Encode(
       int c,
       IWriter output) {
+        if ((output) == null) {
+  throw new ArgumentNullException("output");
+}
         if (c < 0) {
           return -1;
         }

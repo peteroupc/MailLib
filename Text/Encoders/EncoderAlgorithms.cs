@@ -19,6 +19,9 @@ namespace PeterO.Text.Encoders {
       }
 
       public int ReadChar(IByteReader input) {
+        if ((input) == null) {
+  throw new ArgumentNullException("input");
+}
         if (!this.bomChecked) {
           var c = 0;
           var buffer = new int[3];

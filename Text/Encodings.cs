@@ -1023,7 +1023,16 @@ int length) {
     /// ResolveAlias method. Can be null.</param>
     /// <returns>An ICharacterEncoding object.</returns>
     public static ICharacterEncoding GetEncoding(string name) {
-      return GetEncoding(name, false);
+      return GetEncoding(name, false, false);
+    }
+
+   /// <summary>Returns a character encoding from the given
+    /// name.</summary>
+    /// <param name='name'>A string naming a character encoding. See the
+    /// ResolveAlias method. Can be null.</param>
+    /// <returns>An ICharacterEncoding object.</returns>
+    public static ICharacterEncoding GetEncoding(string name, bool forEmail) {
+      return GetEncoding(name, forEmail, false);
     }
 
     /// <summary>Returns a character encoding from the given
@@ -1033,13 +1042,23 @@ int length) {
     /// <param name='forEmail'>If false, uses the encoding resolution rules
     /// in the Encoding Standard. If true, uses modified rules as described
     /// in the ResolveAliasForEmail method.</param>
+    /// <param name='allowReplacement'>If true, allows the label
+    /// <c>replacement</c> to return the replacement encoding.</param>
     /// <returns>An object that enables encoding and decoding text in the
     /// given character encoding. Returns null if the name is null or
     /// empty, or if it names an unrecognized or unsupported
     /// encoding.</returns>
-    public static ICharacterEncoding GetEncoding(string name, bool forEmail) {
+    public static ICharacterEncoding GetEncoding(string name, bool forEmail,
+      bool allowReplacement) {
       if (String.IsNullOrEmpty(name)) {
         return null;
+      }
+      if(allowReplacement){
+        name = TrimAsciiWhite(name);
+        name = DataUtilities.ToLowerCaseAscii(name);
+        if(name.Equals("replacement")){
+          return new EncodingReplacement();
+        }
       }
       name = forEmail ? ResolveAliasForEmail(name) :
         ResolveAlias(name);

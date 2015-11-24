@@ -12,12 +12,24 @@ public interface ICharacterEncoding {
     /// initial state. If the encoder is stateless, multiple calls of this
     /// method can return the same encoder.</summary>
     /// <returns>A character encoder object.</returns>
-  ICharacterEncoder GetEncoder();
+    #if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
+      "CA1024:UsePropertiesWhereAppropriate",
+      Justification =
+        "Some implementations can return the same object, others won't.")]
+#endif
+    ICharacterEncoder GetEncoder();
 
     /// <summary>Creates a decoder for this character encoding with initial
     /// state. If the decoder is stateless, multiple calls of this method
     /// can return the same decoder.</summary>
     /// <returns>A character decoder object.</returns>
-  ICharacterDecoder GetDecoder();
+#if CODE_ANALYSIS
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
+      "CA1024:UsePropertiesWhereAppropriate",
+      Justification =
+        "Some implementations can return the same object, others won't.")]
+#endif
+    ICharacterDecoder GetDecoder();
 }
 }

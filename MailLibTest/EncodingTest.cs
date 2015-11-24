@@ -1403,9 +1403,10 @@ Console.WriteLine(ex.Message);
       TestDecodeQuotedPrintable("te \t\r\n", "te\r\n");
     }
     //[TestMethod]
-    public void TestLenientQuotedPrintable() {
+    public static void TestLenientQuotedPrintable() {
       // Ignore for now, Message constructor currently uses
-      // non-lenient quoted-printable parsing
+      // quoted-printable parsing that's not lenient on
+      // line break formats
       TestDecodeQuotedPrintable("te\rst", "te\r\nst");
       TestDecodeQuotedPrintable("te\nst", "te\r\nst");
       TestDecodeQuotedPrintable("te \t\nst", "te\r\nst");

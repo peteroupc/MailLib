@@ -54,7 +54,15 @@ namespace PeterO.Mail {
     /// <paramref name='x'/> is less than <paramref name='y'/>, or a
     /// positive number if <paramref name='x'/> is greater than <paramref
     /// name='y'/>.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='x'/> or <paramref name='y'/> is null.</exception>
     public int Compare(int[] x, int[] y) {
+      if ((x) == null) {
+  throw new ArgumentNullException("x");
+}
+      if ((y) == null) {
+  throw new ArgumentNullException("y");
+}
       // Sort by their start indexes
       if (x[1] == y[1]) {
         // Sort by their token numbers

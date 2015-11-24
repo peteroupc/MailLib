@@ -34,7 +34,7 @@ namespace MailLibTest {
       Assert.AreEqual(expected, Encodings.DecodeToString(charset, bytes));
     }
 
-    private void TestEncodingRoundTrip(string str, ICharacterEncoding
+    private static void TestEncodingRoundTrip(string str, ICharacterEncoding
       encoding) {
       byte[] bytes;
       string str2;
@@ -400,8 +400,7 @@ stringTemp);
       ICharacterDecoder decoder = enc.GetDecoder();
       var list = new List<int>();
       var aw = new ArrayWriter();
-      // for (var i = 0; i < 0x110000; ++i) {
-      for (var i = 58850; i < 58855; ++i) {
+      for (var i = 0; i < 0x110000; ++i) {
       if (i >= 0xd800 && i < 0xe000) {
           continue;
         }

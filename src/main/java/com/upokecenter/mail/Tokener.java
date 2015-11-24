@@ -44,8 +44,15 @@ import java.util.*;
      * @return Zero if both values are equal; a negative number if {@code x} is
      * less than {@code y}, or a positive number if {@code x} is greater
      * than {@code y}.
+     * @throws NullPointerException The parameter {@code x} or {@code y} is null.
      */
     public int compare(int[] x, int[] y) {
+      if ((x) == null) {
+  throw new NullPointerException("x");
+}
+      if ((y) == null) {
+  throw new NullPointerException("y");
+}
       // Sort by their start indexes
       if (x[1] == y[1]) {
         // Sort by their token numbers

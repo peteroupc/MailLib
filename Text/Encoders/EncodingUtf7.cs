@@ -272,7 +272,7 @@ namespace PeterO.Text.Encoders {
     }
 
     private class Encoder : ICharacterEncoder {
-      private int Base64Char(int c, IWriter output) {
+      private static int Base64Char(int c, IWriter output) {
         if (c <= 0xffff) {
           int byte1 = (c >> 8) & 0xff;
           int byte2 = c & 0xff;
@@ -325,7 +325,7 @@ namespace PeterO.Text.Encoders {
           return 2;
         }
         return (c >= 0x110000 || (c >= 0xd800 && c < 0xe000)) ? (-2) :
-          this.Base64Char(c, output);
+          Base64Char(c, output);
       }
     }
 
