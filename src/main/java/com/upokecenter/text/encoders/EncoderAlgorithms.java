@@ -19,6 +19,9 @@ import com.upokecenter.text.*;
       }
 
       public int ReadChar(IByteReader input) {
+        if ((input) == null) {
+  throw new NullPointerException("input");
+}
         if (!this.bomChecked) {
           int c = 0;
           int[] buffer = new int[3];

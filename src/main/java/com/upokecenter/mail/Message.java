@@ -598,7 +598,8 @@ public final void setSubject(String value) {
           (this.getContentType().getSubType().equals("rfc822") ||
            this.getContentType().getSubType().equals("news") ||
            this.getContentType().getSubType().equals("global"))) {
-        java.io.ByteArrayInputStream ms = null;
+        {
+java.io.ByteArrayInputStream ms = null;
 try {
 ms = new java.io.ByteArrayInputStream(this.body);
 
@@ -606,6 +607,7 @@ ms = new java.io.ByteArrayInputStream(this.body);
 }
 finally {
 try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+}
 }
       }
       return null;
@@ -630,8 +632,8 @@ public final void setContentType(MediaType value) {
         if (!this.getContentType().equals(value)) {
           this.contentType = value;
           if (!value.isMultipart()) {
-            List<Message> parts = this.getParts();
-            parts.clear();
+            List<Message> thisParts = this.getParts();
+            thisParts.clear();
           }
           this.SetHeader("content-type", this.contentType.toString());
         }
@@ -1407,14 +1409,13 @@ public final void setContentDisposition(ContentDisposition value) {
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
         if (c >= 0x80) {
-          throw new MessageDataException("ascii expected");
+          throw new MessageDataException("ASCII expected");
         }
         output.write((byte)c);
       }
     }
 
     private void Generate(IWriter output, int depth) {
-      StringBuilder sb = new StringBuilder();
       boolean haveMimeVersion = false;
       boolean haveContentEncoding = false;
       boolean haveContentType = false;

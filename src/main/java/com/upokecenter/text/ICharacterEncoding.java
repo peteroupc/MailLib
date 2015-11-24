@@ -14,7 +14,8 @@ public interface ICharacterEncoding {
      * same encoder.
      * @return A character encoder object.
      */
-  ICharacterEncoder GetEncoder();
+
+    ICharacterEncoder GetEncoder();
 
     /**
      * Creates a decoder for this character encoding with initial state. If the
@@ -22,5 +23,6 @@ public interface ICharacterEncoding {
      * same decoder.
      * @return A character decoder object.
      */
-  ICharacterDecoder GetDecoder();
+
+    ICharacterDecoder GetDecoder();
 }

@@ -1697,7 +1697,7 @@ Console.WriteLine(ex.Message);
     }
 
     // [TestMethod]
-    public void TestMessageMergeFields() {
+    public static void TestMessageMergeFields() {
       string msg;
       msg = "From: x1@example.com\r\nFrom: x2@example.com\r\n\r\n";
       msg =
@@ -1864,7 +1864,7 @@ Console.WriteLine(ex.Message);
 throw new InvalidOperationException(String.Empty, ex);
 }
     }
-    private void TestFileNameOne(string input, string expected) {
+    private static void TestFileNameOne(string input, string expected) {
       Message msg;
       String str="From: x@example.com\r\nMIME-Version: 1.0\r\n" +
  "Content-Type: text/plain\r\nContent-Disposition: inline; filename=" +

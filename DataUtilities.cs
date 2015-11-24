@@ -320,7 +320,7 @@ int surrogateBehavior) {
       if (str == null) {
         return null;
       }
-      int len = str.Length;
+      var len = str.Length;
       var c = (char)0;
       var hasUpperCase = false;
       for (var i = 0; i < len; ++i) {
@@ -677,8 +677,8 @@ bool replace) {
       var cp = 0;
       var bytesSeen = 0;
       var bytesNeeded = 0;
-      int lower = 0x80;
-      int upper = 0xbf;
+      var lower = 0x80;
+      var upper = 0xbf;
       int pointer = offset;
       int endpointer = offset + bytesCount;
       while (pointer < endpointer) {
@@ -785,8 +785,7 @@ Stream stream,
 int bytesCount,
 bool replace) {
       var builder = new StringBuilder();
-      int retval = DataUtilities.ReadUtf8(stream, bytesCount, builder, replace);
-      if (retval == -1) {
+      if (DataUtilities.ReadUtf8(stream, bytesCount, builder, replace) == -1) {
         throw new IOException(
        "Unpaired surrogate code point found.",
        new DecoderFallbackException());
@@ -829,8 +828,8 @@ bool replace) {
       var cp = 0;
       var bytesSeen = 0;
       var bytesNeeded = 0;
-      int lower = 0x80;
-      int upper = 0xbf;
+      var lower = 0x80;
+      var upper = 0xbf;
       var pointer = 0;
       while (pointer < bytesCount || bytesCount < 0) {
         int b = stream.ReadByte();

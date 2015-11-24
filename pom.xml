@@ -76,9 +76,8 @@
 	</properties>
 	<licenses>
 		<license>
-			<name>CC0 Universal</name>
 			<distribution>repo</distribution>
-			<url>http://www.creativecommons.org/publicdomain/zero/1.0/</url>
+			<url>https://github.com/peteroupc/MailLib/blob/master/LICENSE.md</url>
 		</license>
 	</licenses>
   <build>

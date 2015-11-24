@@ -659,8 +659,8 @@ namespace PeterO.Mail {
         if (!this.ContentType.Equals(value)) {
           this.contentType = value;
           if (!value.IsMultipart) {
-            IList<Message> parts = this.Parts;
-            parts.Clear();
+            IList<Message> thisParts = this.Parts;
+            thisParts.Clear();
           }
           this.SetHeader("content-type", this.contentType.ToString());
         }
@@ -1445,14 +1445,13 @@ namespace PeterO.Mail {
       for (var i = 0; i < str.Length; ++i) {
         char c = str[i];
         if (c >= 0x80) {
-          throw new MessageDataException("ascii expected");
+          throw new MessageDataException("ASCII expected");
         }
         output.WriteByte((byte)c);
       }
     }
 
     private void Generate(IWriter output, int depth) {
-      var sb = new StringBuilder();
       var haveMimeVersion = false;
       var haveContentEncoding = false;
       var haveContentType = false;
@@ -1701,8 +1700,8 @@ namespace PeterO.Mail {
       var cp = 0;
       var bytesSeen = 0;
       var bytesNeeded = 0;
-      int lower = 0x80;
-      int upper = 0xbf;
+      var lower = 0x80;
+      var upper = 0xbf;
       var read = 0;
       while (true) {
         int b = stream.ReadByte();

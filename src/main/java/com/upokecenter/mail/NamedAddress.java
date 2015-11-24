@@ -145,7 +145,7 @@ tokener.GetTokens());
         displayName = address;
       }
       if (address == null) {
-        throw new NullPointerException(nameof(address));
+        throw new NullPointerException("address");
       }
       this.name = displayName;
       this.groupAddresses = new ArrayList<NamedAddress>();

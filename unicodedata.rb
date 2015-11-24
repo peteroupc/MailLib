@@ -953,7 +953,7 @@ f.puts(fileHeader)
 fjs.puts(fileHeader)
 f.puts("// Character data required for IDNA2008 (RFC 5890-5894)")
 f.puts("namespace PeterO.Text {")
-f.puts("  internal class IdnaData {")
+f.puts("  internal static class IdnaData {")
 final="readonly"
 bidi=getMutexProp("cache/DerivedBidiClass.txt")
 bidivalues=%w( L R AL EN ES ET AN CS NSM BN ON B S WS
