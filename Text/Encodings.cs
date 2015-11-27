@@ -1026,10 +1026,11 @@ int length) {
       return GetEncoding(name, false, false);
     }
 
-   /// <summary>Returns a character encoding from the given
+    /// <summary>Returns a character encoding from the given
     /// name.</summary>
     /// <param name='name'>A string naming a character encoding. See the
     /// ResolveAlias method. Can be null.</param>
+    /// <param name='forEmail'>A Boolean object.</param>
     /// <returns>An ICharacterEncoding object.</returns>
     public static ICharacterEncoding GetEncoding(string name, bool forEmail) {
       return GetEncoding(name, forEmail, false);
@@ -1053,10 +1054,10 @@ int length) {
       if (String.IsNullOrEmpty(name)) {
         return null;
       }
-      if(allowReplacement){
+      if (allowReplacement) {
         name = TrimAsciiWhite(name);
         name = DataUtilities.ToLowerCaseAscii(name);
-        if(name.Equals("replacement")){
+        if (name.Equals("replacement")) {
           return new EncodingReplacement();
         }
       }

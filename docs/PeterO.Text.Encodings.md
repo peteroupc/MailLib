@@ -322,7 +322,28 @@ Returns a character encoding from the given name.
 
  * <i>name</i>: A string naming a character encoding. See the ResolveAlias method. Can be null.
 
+ * <i>forEmail</i>: A Boolean object.
+
+<b>Returns:</b>
+
+An ICharacterEncoding object.
+
+### GetEncoding
+
+    public static PeterO.Text.ICharacterEncoding GetEncoding(
+        string name,
+        bool forEmail,
+        bool allowReplacement);
+
+Returns a character encoding from the given name.
+
+<b>Parameters:</b>
+
+ * <i>name</i>: A string naming a character encoding. See the ResolveAlias method. Can be null.
+
  * <i>forEmail</i>: If false, uses the encoding resolution rules in the Encoding Standard. If true, uses modified rules as described in the ResolveAliasForEmail method.
+
+ * <i>allowReplacement</i>: If true, allows the label `replacement`  to return the replacement encoding.
 
 <b>Returns:</b>
 
