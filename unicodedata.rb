@@ -687,7 +687,7 @@ end
 def jsbytes(name, arr)
   ret="#{name} = [\n";
   ret+=linebrokenjoin(arr)+"\n"
-  ret+="];\n" # if(typeof Uint8Array!='undefined')NormalizationData.#{name} = new Uint8Array(#{name});\n"
+  ret+="];\n"
 end
 def getChunkedFunctions(arr, name, chunkSize)
   j=0

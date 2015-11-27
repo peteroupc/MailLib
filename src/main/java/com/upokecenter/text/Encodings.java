@@ -984,7 +984,18 @@ int length) {
      * @return An ICharacterEncoding object.
      */
     public static ICharacterEncoding GetEncoding(String name) {
-      return GetEncoding(name, false);
+      return GetEncoding(name, false, false);
+    }
+
+    /**
+     * Returns a character encoding from the given name.
+     * @param name A string naming a character encoding. See the ResolveAlias
+     * method. Can be null.
+     * @param forEmail A Boolean object.
+     * @return An ICharacterEncoding object.
+     */
+    public static ICharacterEncoding GetEncoding(String name, boolean forEmail) {
+      return GetEncoding(name, forEmail, false);
     }
 
     /**
@@ -994,13 +1005,23 @@ int length) {
      * @param forEmail If false, uses the encoding resolution rules in the Encoding
      * Standard. If true, uses modified rules as described in the
      * ResolveAliasForEmail method.
+     * @param allowReplacement If true, allows the label {@code replacement} to
+     * return the replacement encoding.
      * @return An object that enables encoding and decoding text in the given
      * character encoding. Returns null if the name is null or empty, or if
      * it names an unrecognized or unsupported encoding.
      */
-    public static ICharacterEncoding GetEncoding(String name, boolean forEmail) {
+    public static ICharacterEncoding GetEncoding(String name, boolean forEmail,
+      boolean allowReplacement) {
       if (((name) == null || (name).length() == 0)) {
         return null;
+      }
+      if (allowReplacement) {
+        name = TrimAsciiWhite(name);
+        name = DataUtilities.ToLowerCaseAscii(name);
+        if (name.equals("replacement")) {
+          return new EncodingReplacement();
+        }
       }
       name = forEmail ? ResolveAliasForEmail(name) :
         ResolveAlias(name);
