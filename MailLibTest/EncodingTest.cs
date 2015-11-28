@@ -1461,7 +1461,7 @@ Console.WriteLine(ex.Message);
 
     [TestMethod]
     public void TestDecodeStruc() {
-      TestDecodeStructured("", "(comment) en");
+      TestDecodeStructured("(comment) en", "(comment) en");
     }
 
     public static void TestEncodedWordsOne(string expected, string input) {
@@ -1470,21 +1470,21 @@ Console.WriteLine(ex.Message);
       TestDecodeStructured(
         "(" + expected + ") en",
         "(" + input + ") en");
-      TestDecodeStructured(" (" + expected + ") en"," (" + input +
+      TestDecodeStructured(" " + expected + ") en"," (" + input +
                     ") en");
-      TestDecodeStructured(" " + par + "comment " + par + "cmt " + expected +
+      TestDecodeStructured(par + "comment " + par + "cmt " + expected +
                 ")comment) en"," (comment (cmt " + input + ")comment) en");
       TestDecodeStructured(
-        " " + par + "comment " + par + "=?bad?= " + expected + ")comment) en",
+        par + "comment " + par + "=?bad?= " + expected + ")comment) en",
         " (comment (=?bad?= " + input + ")comment) en");
       TestDecodeStructured(
-        " " + par + "comment " + par + String.Empty + expected + ")comment) en",
+        par + "comment " + par + String.Empty + expected + ")comment) en",
         " (comment (" + input + ")comment) en");
       TestDecodeStructured(
-        " (" + expected + "()) en",
+        "(" + expected + "()) en",
         " (" + input + "()) en");
       TestDecodeStructured(
-        " en (" + expected + ")",
+        "en (" + expected + ")",
         " en (" + input + ")");
     }
 

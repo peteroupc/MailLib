@@ -1457,7 +1457,7 @@ System.out.println(ex.getMessage());
 
     @Test
     public void TestDecodeStruc() {
-      TestDecodeStructured("", "(comment) en");
+      TestDecodeStructured("(comment) en", "(comment) en");
     }
 
     public static void TestEncodedWordsOne(String expected, String input) {
@@ -1466,21 +1466,21 @@ System.out.println(ex.getMessage());
       TestDecodeStructured(
         "(" + expected + ") en",
         "(" + input + ") en");
-      TestDecodeStructured(" (" + expected + ") en"," (" + input +
+      TestDecodeStructured(" " + expected + ") en"," (" + input +
                     ") en");
-      TestDecodeStructured(" " + par + "comment " + par + "cmt " + expected +
+      TestDecodeStructured(par + "comment " + par + "cmt " + expected +
                 ")comment) en"," (comment (cmt " + input + ")comment) en");
       TestDecodeStructured(
-        " " + par + "comment " + par + "=?bad?= " + expected + ")comment) en",
+        par + "comment " + par + "=?bad?= " + expected + ")comment) en",
         " (comment (=?bad?= " + input + ")comment) en");
       TestDecodeStructured(
-        " " + par + "comment " + par + "" + expected + ")comment) en",
+        par + "comment " + par + "" + expected + ")comment) en",
         " (comment (" + input + ")comment) en");
       TestDecodeStructured(
-        " (" + expected + "()) en",
+        "(" + expected + "()) en",
         " (" + input + "()) en");
       TestDecodeStructured(
-        " en (" + expected + ")",
+        "en (" + expected + ")",
         " en (" + input + ")");
     }
 

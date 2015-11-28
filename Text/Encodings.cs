@@ -489,10 +489,10 @@ namespace PeterO.Text {
     /// <list type='bullet'>
     /// <item><c>us-ascii</c> - ASCII 7-bit encoding, rather than an alias
     /// to <c>windows-1252</c>, as specified in the Encoding
-    /// Standard</item>
+    /// Standard.</item>
     /// <item><c>iso-8859-1</c> - Latin-1 8-bit encoding, rather than an
     /// alias to <c>windows-1252</c>, as specified in the Encoding
-    /// Standard</item>
+    /// Standard.</item>
     /// <item><c>utf-7</c> - UTF-7 (7-bit universal character
     /// set)</item></list>.</param>
     /// <returns>A standardized name for the encoding. Returns the empty
@@ -1072,7 +1072,7 @@ int length) {
       if (name.Equals("iso-8859-1")) {
         return (ICharacterEncoding)(new EncodingLatinOne());
       }
-      if (name.Equals("utf-7") || name.Equals("unicode-1-1-utf-7")) {
+      if (name.Equals("utf-7")) {
         return (ICharacterEncoding)(new EncodingUtf7());
       }
       if (name.Equals("windows-1252")) {

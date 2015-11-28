@@ -39,32 +39,53 @@ namespace PeterO.Text {
       }
     }
 
-    private static ByteData stablenfc;
-    private static ByteData stablenfd;
-    private static ByteData stablenfkc;
-    private static ByteData stablenfkd;
-    private static readonly Object stableSyncRoot = new Object();
+    private static ByteData qcsnfc;
+    private static ByteData qcsnfd;
+    private static ByteData qcsnfkc;
+    private static ByteData qcsnfkd;
+    private static readonly Object qcsSyncRoot = new Object();
 
-    public static bool IsStableCodePoint(int cp, Normalization form) {
-      lock (stableSyncRoot) {
+    public static bool IsQuickCheckStarter(int cp, Normalization form) {
+      // Code points for which QuickCheck = YES and with a combining
+      // class of 0
+      ByteData bd = null;
+      if (form == Normalization.NFC &&
+      (cp < NormalizationData.QCSNFCMin || cp >
+          NormalizationData.QCSNFCMax)) {
+        return true;
+      }
+      if (form == Normalization.NFD &&
+      (cp < NormalizationData.QCSNFDMin || cp >
+          NormalizationData.QCSNFDMax)) {
+        return true;
+      }
+      if (form == Normalization.NFKC &&
+    (cp < NormalizationData.QCSNFKCMin || cp >
+          NormalizationData.QCSNFKCMax)) {
+        return true;
+      }
+      if (form == Normalization.NFKD &&
+    (cp < NormalizationData.QCSNFKDMin || cp >
+          NormalizationData.QCSNFKDMax)) {
+        return true;
+      }
+      lock (qcsSyncRoot) {
         if (form == Normalization.NFC) {
-     stablenfc = stablenfc ?? ByteData.Decompress(NormalizationData.StableNFC);
-          return stablenfc.GetBoolean(cp);
+          bd = qcsnfc = qcsnfc ?? ByteData.Decompress(NormalizationData.QCSNFC);
         }
         if (form == Normalization.NFD) {
-     stablenfd = stablenfd ?? ByteData.Decompress(NormalizationData.StableNFD);
-          return stablenfd.GetBoolean(cp);
+          bd = qcsnfd = qcsnfd ?? ByteData.Decompress(NormalizationData.QCSNFD);
         }
         if (form == Normalization.NFKC) {
-  stablenfkc = stablenfkc ?? ByteData.Decompress(NormalizationData.StableNFKC);
-          return stablenfkc.GetBoolean(cp);
+      bd = qcsnfkc = qcsnfkc ??
+            ByteData.Decompress(NormalizationData.QCSNFKC);
         }
         if (form == Normalization.NFKD) {
-  stablenfkd = stablenfkd ?? ByteData.Decompress(NormalizationData.StableNFKD);
-          return stablenfkd.GetBoolean(cp);
+      bd = qcsnfkd = qcsnfkd ??
+            ByteData.Decompress(NormalizationData.QCSNFKD);
         }
-        return false;
       }
+      return (bd != null && bd.GetBoolean(cp));
     }
 
     private static int[] decomps;

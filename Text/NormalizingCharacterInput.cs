@@ -17,6 +17,31 @@ namespace PeterO.Text {
     /// test and convert text strings for normalization. This is similar to
     /// the Normalizer class, except it implements the ICharacterInput
     /// interface.</para>
+    /// <para>The Unicode Standard includes characters, such as an acute
+    /// accent, that can be combined with other characters to make new
+    /// characters. For example, the letter E combines with an acute accent
+    /// to make E-acute (&#xc9;). In some cases, the combined form
+    /// (E-acute) should be treated as equivalent to the uncombined form (E
+    /// plus acute). For this reason, the standard defines four
+    /// <i>normalization forms</i> that convert strings to a single
+    /// equivalent form:</para>
+    /// <list>
+    /// <item><b>NFD</b> (Normalization Form D) decomposes combined forms
+    /// to their constituent characters (E plus acute, for example). This
+    /// is called canonical decomposition.</item>
+    /// <item><b>NFC</b> does canonical decomposition, then combines
+    /// certain constituent characters to their composites (E-acute, for
+    /// example). This is called canonical composition.</item>
+    /// <item>Two normalization forms, <b>NFKC</b> and <b>NFKD</b>, are
+    /// similar to NFC and NFD, except they also "decompose" certain
+    /// characters, such as ligatures, font or positional variants, and
+    /// subscripts, whose visual distinction can matter in some contexts.
+    /// This is called compatibility decomposition.</item>
+    /// <item>The four normalization forms also enforce a standardized
+    /// order for combining marks, since they can otherwise appear in an
+    /// arbitrary order.</item></list>
+    /// <para>For more information, see Standard Annex 15 at
+    /// http://www.unicode.org/reports/tr15/ .</para>
     /// <para>NOTICE: While this class's source code is in the public
     /// domain, the class uses an internal class, called NormalizationData,
     /// that includes data derived from the Unicode Character Database. In
@@ -124,47 +149,14 @@ int index) {
       return DecompToBufferInternal(ch, compat, buffer, index);
     }
 
-    internal static bool IsStableCodePoint(int cp, Normalization form) {
-      // Exclude YOD and HIRIQ because of Corrigendum 2
-      return UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 &&
-        cp != 0x5d9;
-    }
-
     internal static void ReorderBuffer(int[] buffer, int index, int length) {
       int i;
-#if DEBUG
-      if (buffer == null) {
-        throw new ArgumentNullException("buffer");
-      }
-      if (index < 0) {
-        throw new ArgumentException("index (" + index + ") is less than " +
-            "0");
-      }
-      if (index > buffer.Length) {
-        throw new ArgumentException("index (" + index + ") is more than " +
-          buffer.Length);
-      }
-      if (length < 0) {
-        throw new ArgumentException("length (" + length + ") is less than " +
-              "0");
-      }
-      if (length > buffer.Length) {
-        throw new ArgumentException("length (" + length + ") is more than " +
-          buffer.Length);
-      }
-      if (buffer.Length - index < length) {
-        throw new ArgumentException("buffer's length minus " + index + " (" +
-          (buffer.Length - index) + ") is less than " + length);
-      }
-#endif
-
       if (length < 2) {
         return;
       }
       bool changed;
       do {
         changed = false;
-        // Console.WriteLine(ToString(buffer, index, length));
         int lead = UnicodeDatabase.GetCombiningClass(buffer[index]);
         int trail;
         for (i = 1; i < length; ++i) {
@@ -174,9 +166,6 @@ int index) {
             int c = buffer[offset - 1];
             buffer[offset - 1] = buffer[offset];
             buffer[offset] = c;
-            // Console.WriteLine("lead= {0:X4} ccc=" + lead);
-            // Console.WriteLine("trail={0:X4} ccc=" + trail);
-            // Console.WriteLine("now "+ToString(buffer,index,length));
             changed = true;
             // Lead is now at trail's position
           } else {
@@ -187,24 +176,6 @@ int index) {
     }
 
     internal static int ComposeBuffer(int[] array, int length) {
-#if DEBUG
-      if (array == null) {
-        throw new ArgumentNullException("array");
-      }
-      if (length < 0) {
-        throw new ArgumentException("length (" + length + ") is less than " +
-              "0");
-      }
-      if (length > array.Length) {
-        throw new ArgumentException("length (" + length + ") is more than " +
-          array.Length);
-      }
-      if (array.Length < length) {
-        throw new ArgumentException("array's length (" + array.Length +
-          ") is less than " + length);
-      }
-#endif
-
       if (length < 2) {
         return length;
       }
@@ -315,7 +286,7 @@ int index) {
       return ret;
     }
 
-    private int lastStableIndex;
+    private int lastQcsIndex;
     private int endIndex;
     private int[] buffer;
     private readonly bool compatMode;
@@ -323,8 +294,6 @@ int index) {
     private int processedIndex;
     private int flushIndex;
     private readonly ICharacterInput iterator;
-    private readonly IList<int> characterList;
-    private int characterListPos;
 
     /// <summary>Initializes a new instance of the
     /// NormalizingCharacterInput class using Normalization Form
@@ -366,15 +335,8 @@ Normalization.NFC) {
     /// name='characterList'/> is null.</exception>
     public NormalizingCharacterInput(
 IList<int> characterList,
-Normalization form) {
-      if (characterList == null) {
-        throw new ArgumentNullException("characterList");
-      }
-      this.lastStableIndex = -1;
-      this.characterList = characterList;
-      this.form = form;
-    this.compatMode = form == Normalization.NFKC || form ==
-        Normalization.NFKD;
+Normalization form) :
+  this(new PartialListCharacterInput(characterList), form) {
     }
 
     /// <summary>Initializes a new instance of the
@@ -416,9 +378,10 @@ Normalization form) {
       if (stream == null) {
         throw new ArgumentNullException("stream");
       }
-      this.lastStableIndex = -1;
+      this.lastQcsIndex = -1;
       this.iterator = stream;
       this.form = form;
+      this.lastCharBuffer = new int[2];
     this.compatMode = form == Normalization.NFKC || form ==
         Normalization.NFKD;
     }
@@ -501,8 +464,9 @@ Normalization form) {
       if ((str) == null) {
   throw new ArgumentNullException("str");
 }
-      var nonStableStart = -1;
+      var nonQcsStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
+      var lastQcs = 0;
       for (int i = 0; i < str.Length; ++i) {
         int c = str[i];
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
@@ -513,41 +477,46 @@ Normalization form) {
           // unpaired surrogate
           return false;
         }
-        var isStable = false;
+        var isQcs = false;
         if ((c & mask) == c && (i + 1 == str.Length || (str[i + 1] & mask)
           == str[i + 1])) {
-          // Quick check for an ASCII character followed by another
+          // Quick check for an ASCII character (or Latin-1 in NFC) followed
+          // by another
           // ASCII character (or Latin-1 in NFC) or the end of string.
-          // Treat the first character as stable
+          // Treat the first character as QCS
           // in this situation.
-          isStable = true;
+          isQcs = true;
         } else {
-          isStable = NormalizingCharacterInput.IsStableCodePoint(c, form);
+ isQcs = (c >= 0xf0000) ? (true) : (UnicodeDatabase.IsQuickCheckStarter(c,
+   form));
+}
+        if (isQcs) {
+          lastQcs = i;
         }
-        if (nonStableStart < 0 && !isStable) {
-          // First non-stable code point in a row
-          nonStableStart = i;
-        } else if (nonStableStart >= 0 && isStable) {
-          // We have at least one non-stable code point,
+        if (nonQcsStart < 0 && !isQcs) {
+          // First non-quick-check starter in a row
+          nonQcsStart = lastQcs;
+        } else if (nonQcsStart >= 0 && isQcs) {
+          // We have at least one non-quick-check-starter,
           // normalize these code points.
           if (!NormalizeAndCheckString(
          str,
-         nonStableStart,
-         i - nonStableStart,
+         nonQcsStart,
+         i - nonQcsStart,
          form)) {
             return false;
           }
-          nonStableStart = -1;
+          nonQcsStart = -1;
         }
         if (c >= 0x10000) {
           ++i;
         }
       }
-      if (nonStableStart >= 0) {
+      if (nonQcsStart >= 0) {
         if (!NormalizeAndCheckString(
 str,
-nonStableStart,
-str.Length - nonStableStart,
+nonQcsStart,
+str.Length - nonQcsStart,
 form)) {
           return false;
         }
@@ -596,7 +565,8 @@ form)) {
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='charList'/> is null.</exception>
     public static bool IsNormalized(IList<int> charList, Normalization form) {
-      var nonStableStart = -1;
+      var nonQcsStart = -1;
+      var lastQcs = 0;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       if (charList == null) {
         throw new ArgumentNullException("charList");
@@ -606,30 +576,34 @@ form)) {
         if (c < 0 || c > 0x10ffff || ((c & 0x1ff800) == 0xd800)) {
           return false;
         }
-        var isStable = false;
-   isStable = (c & mask) == c && (i + 1 == charList.Count || (charList[i +
-          1] & mask) == charList[i + 1]) ? true : IsStableCodePoint(c, form);
-        if (nonStableStart < 0 && !isStable) {
-          // First non-stable code point in a row
-          nonStableStart = i;
-        } else if (nonStableStart >= 0 && isStable) {
-          // We have at least one non-stable code point,
+        var isQcs = false;
+   isQcs = (c & mask) == c && (i + 1 == charList.Count || (charList[i +
+          1] & mask) == charList[i + 1]) ? true :
+          UnicodeDatabase.IsQuickCheckStarter(c, form);
+        if (isQcs) {
+          lastQcs = i;
+        }
+        if (nonQcsStart < 0 && !isQcs) {
+          // First non-quick-check starter in a row
+          nonQcsStart = lastQcs;
+        } else if (nonQcsStart >= 0 && isQcs) {
+          // We have at least one non-quick-check starter,
           // normalize these code points.
   if (!NormalizeAndCheck(
 charList,
-nonStableStart,
-i - nonStableStart,
+nonQcsStart,
+i - nonQcsStart,
 form)) {
             return false;
           }
-          nonStableStart = -1;
+          nonQcsStart = -1;
         }
       }
-      if (nonStableStart >= 0) {
+      if (nonQcsStart >= 0) {
         if (!NormalizeAndCheck(
 charList,
-nonStableStart,
-charList.Count - nonStableStart,
+nonQcsStart,
+charList.Count - nonQcsStart,
 form)) {
           return false;
         }
@@ -649,30 +623,41 @@ form)) {
     }
 
     private bool endOfString;
-    private int lastChar = -1;
-    private bool ungetting;
+    private int[] lastCharBuffer;
+    private int lastCharPos;
 
-    private void Unget() {
-      this.ungetting = true;
+    private void PrependOne(int c) {
+      if (lastCharPos + 1 > lastCharBuffer.Length) {
+        var newbuffer = new int[lastCharPos + 8];
+        Array.Copy(lastCharBuffer, 0, newbuffer, 0, lastCharPos);
+        lastCharBuffer = newbuffer;
+      }
+      lastCharBuffer[lastCharPos++] = c;
+    }
+
+    private void PrependTwo(int c1, int c2) {
+      if (lastCharPos + 2 > lastCharBuffer.Length) {
+        var newbuffer = new int[lastCharPos + 8];
+        Array.Copy(lastCharBuffer, 0, newbuffer, 0, lastCharPos);
+        lastCharBuffer = newbuffer;
+      }
+      lastCharBuffer[lastCharPos++] = c2;
+      lastCharBuffer[lastCharPos++] = c1;
     }
 
     private int GetNextChar() {
       int ch;
-      if (this.ungetting) {
-        ch = this.lastChar;
-        this.ungetting = false;
+      if (this.lastCharPos>0) {
+        --this.lastCharPos;
+        ch = this.lastCharBuffer[this.lastCharPos];
         return ch;
       }
-      ch = (this.iterator == null) ? ((this.characterListPos >=
-this.characterList.Count) ? -1 :
-          this.characterList[this.characterListPos++]) :
-        this.iterator.ReadChar();
+      ch = this.iterator.ReadChar();
       if (ch < 0) {
         this.endOfString = true;
       } else if (ch > 0x10ffff || ((ch & 0x1ff800) == 0xd800)) {
         throw new ArgumentException("Invalid character: " + ch);
       }
-      this.lastChar = ch;
       return ch;
     }
 
@@ -728,12 +713,28 @@ this.characterList.Count) ? -1 :
           if (c < 0) {
             return (total == 0) ? -1 : total;
           }
-          if (IsStableCodePoint(c, this.form)) {
-            chars[index] = c;
-            ++total;
-            ++index;
+          if (UnicodeDatabase.IsQuickCheckStarter(c, this.form)) {
+            if (this.form == Normalization.NFD ||
+            this.form == Normalization.NFKD) {
+              chars[index] = c;
+              ++total;
+              ++index;
+            } else {
+              while (total < length) {
+                int c2 = this.GetNextChar();
+                if (c2 < 0) {
+                  chars[index] = c;
+                  ++total;
+                  return total;
+                } else {
+                  this.PrependTwo(c, c2);
+                  break;
+                }
+              }
+              break;
+            }
           } else {
-            this.Unget();
+            this.PrependOne(c);
             break;
           }
         }
@@ -742,8 +743,6 @@ this.characterList.Count) ? -1 :
         }
       }
       do {
-        // Console.WriteLine("indexes=" + this.processedIndex + " " +
-        // this.flushIndex + ", length=" + length + " total=" + total);
         count = Math.Min(this.processedIndex - this.flushIndex, length - total);
         if (count < 0) {
           count = 0;
@@ -755,42 +754,59 @@ this.characterList.Count) ? -1 :
         index += count;
         total += count;
         this.flushIndex += count;
-        // Try to fill buffer with stable code points,
+        bool decompForm = (this.form == Normalization.NFD ||
+            this.form == Normalization.NFKD);
+        // Try to fill buffer with quick-check starters,
         // as an optimization
         while (total < length) {
-          // charbufpos, charbufend);
           int c = this.GetNextChar();
           if (c < 0) {
             this.endOfString = true;
             break;
           }
-          if (IsStableCodePoint(c, this.form)) {
-            chars[index++] = c;
-            ++total;
+          if (UnicodeDatabase.IsQuickCheckStarter(c, this.form)) {
+            if (decompForm) {
+              chars[index] = c;
+              ++total;
+              ++index;
+            } else {
+              while (total < length) {
+                int c2 = this.GetNextChar();
+                if (c2 < 0) {
+                  chars[index] = c;
+                  ++total;
+                  return total;
+                } else {
+                  this.PrependTwo(c, c2);
+                  break;
+                }
+              }
+              break;
+            }
           } else {
-            this.Unget();
+            this.PrependOne(c);
             break;
           }
         }
         // Ensure that more data is available
         if (total < length && this.flushIndex == this.processedIndex) {
-          if (this.lastStableIndex > 0) {
+          if (this.lastQcsIndex > 0) {
             // Move unprocessed data to the beginning of
             // the buffer
             #if DEBUG
-            if (this.endIndex < this.lastStableIndex) {
-              throw new ArgumentException("endIndex less than lastStableIndex");
+            if (this.endIndex < this.lastQcsIndex) {
+              throw new ArgumentException("endIndex less than lastQcsIndex");
             }
             #endif
             Array.Copy(
 this.buffer,
-this.lastStableIndex,
+this.lastQcsIndex,
 this.buffer,
 0,
-this.buffer.Length - this.lastStableIndex);
+this.buffer.Length - this.lastQcsIndex);
             // Console.WriteLine("endIndex=" + (this.endIndex));
-            this.endIndex -= this.lastStableIndex;
-            this.lastStableIndex = 0;
+            this.endIndex -= this.lastQcsIndex;
+            this.lastQcsIndex = 0;
           } else {
             this.endIndex = 0;
           }
@@ -828,23 +844,37 @@ this.compatMode,
 this.buffer,
 this.endIndex);
         }
-        // Check for the last stable code point if the
+        // Check for the last quick-check starter if the
         // end of the string is not reached yet
         if (!this.endOfString) {
-          var haveNewStable = false;
-          // NOTE: lastStableIndex begins at -1
-          for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
-            // Console.WriteLine("stable({0:X4})=" +
-            // (IsStableCodePoint(this.buffer[i], this.form)));
-            if (IsStableCodePoint(this.buffer[i], this.form)) {
-              this.lastStableIndex = i;
-              haveNewStable = true;
-              break;
+          var haveNewQcs = false;
+          // NOTE: lastQcsIndex begins at -1
+          bool decompForm = (this.form == Normalization.NFD ||
+            this.form == Normalization.NFKD);
+          var nextIsQCS = false;
+          for (int i = this.endIndex - 1; i > this.lastQcsIndex; --i) {
+          if (UnicodeDatabase.IsQuickCheckStarter(this.buffer[i],
+              this.form)) {
+              if (decompForm) {
+                this.lastQcsIndex = i;
+                haveNewQcs = true;
+                break;
+              } else if (i + 1 < this.endIndex && (nextIsQCS ||
+         UnicodeDatabase.IsQuickCheckStarter(this.buffer[i + 1],
+                 this.form))) {
+                this.lastQcsIndex = i;
+                haveNewQcs = true;
+                break;
+              } else {
+                nextIsQCS = true;
+              }
+            } else {
+              nextIsQCS = false;
             }
           }
-          if (!haveNewStable || this.lastStableIndex <= 0) {
-            // No stable code point was found (or last stable
-            // code point is at beginning of buffer), increase
+          if (!haveNewQcs || this.lastQcsIndex <= 0) {
+            // No quick-check starter was found (or last quick-check
+            // starter is at beginning of buffer), increase
             // the buffer size
             var newBuffer = new int[(this.buffer.Length + 4) * 2];
             Array.Copy(this.buffer, 0, newBuffer, 0, this.buffer.Length);
@@ -853,7 +883,7 @@ this.endIndex);
           }
         } else {
           // End of string
-          this.lastStableIndex = this.endIndex;
+          this.lastQcsIndex = this.endIndex;
         }
         done = true;
       }
@@ -863,14 +893,14 @@ this.endIndex);
       }
       this.flushIndex = 0;
       // Canonical reordering
-      ReorderBuffer(this.buffer, 0, this.lastStableIndex);
+      ReorderBuffer(this.buffer, 0, this.lastQcsIndex);
       if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
         // Composition
         this.processedIndex = ComposeBuffer(
 this.buffer,
-this.lastStableIndex);
+this.lastQcsIndex);
       } else {
-        this.processedIndex = this.lastStableIndex;
+        this.processedIndex = this.lastQcsIndex;
       }
       return true;
     }

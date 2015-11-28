@@ -22,7 +22,7 @@ namespace PeterO.Mail {
     /// optional list of parameters. For example, the media type
     /// <c>text/plain; charset = utf-8</c> is a text media type ("text"),
     /// namely, a plain text type ("plain"), and the parameters say that
-    /// that the data uses the character set UTF-8, a form of Unicode
+    /// the data uses the character set UTF-8, a form of Unicode
     /// ("charset=utf-8"). Other top-level types include "audio", "video",
     /// and "application".</para>
     /// <para>This type is immutable, meaning its values can't be changed

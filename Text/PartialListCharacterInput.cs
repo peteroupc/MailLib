@@ -6,6 +6,7 @@ namespace PeterO.Text {
     private int pos;
     private readonly int endPos;
     private readonly IList<int> ilist;
+    private IList<int> characterList;
 
     public PartialListCharacterInput(IList<int> ilist, int start, int length) {
       if (ilist == null) {
@@ -34,6 +35,15 @@ namespace PeterO.Text {
       this.ilist = ilist;
       this.pos = start;
       this.endPos = start + length;
+    }
+
+    public PartialListCharacterInput(IList<int> ilist) {
+      if ((ilist) == null) {
+  throw new ArgumentNullException("ilist");
+}
+      this.ilist = ilist;
+      this.pos = 0;
+      this.endPos = ilist.Count;
     }
 
     public int ReadChar() {

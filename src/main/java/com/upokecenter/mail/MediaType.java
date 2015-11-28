@@ -19,10 +19,10 @@ import com.upokecenter.text.*;
      * subtype (the specific type), and an optional list of parameters. For
      * example, the media type <code>text/plain; charset = utf-8</code> is a text
      * media type ("text"), namely, a plain text type ("plain"), and the
-     * parameters say that that the data uses the character set UTF-8, a
-     * form of Unicode ("charset=utf-8"). Other top-level types include
-     * "audio", "video", and "application".</p> <p>This type is immutable,
-     * meaning its values can't be changed once it' s created. To create a
+     * parameters say that the data uses the character set UTF-8, a form of
+     * Unicode ("charset=utf-8"). Other top-level types include "audio",
+     * "video", and "application".</p> <p>This type is immutable, meaning
+     * its values can't be changed once it' s created. To create a
      * changeable media type object, use the MediaTypeBuilder class.</p>
      */
   public final class MediaType {

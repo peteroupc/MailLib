@@ -419,11 +419,10 @@ stringTemp);
       while (encoder.Encode(-1, aw) >= 0) {
       }
       IByteReader reader = DataIO.ToByteReader(aw.ToArray());
-      for (int i = 0; i < list.size(); ++i) {
-        int ch = list.get(i);
+      for (Object ch : list) {
         int c = decoder.ReadChar(reader);
         if (c != ch) {
-          Assert.fail(name+": expected "+ch+", was "+c);
+          Assert.fail(name + ": expected " + ch + ", was " + c);
         }
       }
     }

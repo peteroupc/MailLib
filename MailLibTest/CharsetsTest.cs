@@ -418,11 +418,10 @@ stringTemp);
       while (encoder.Encode(-1, aw) >= 0) {
       }
       IByteReader reader = DataIO.ToByteReader(aw.ToArray());
-      for (var i = 0; i < list.Count; ++i) {
-        int ch = list[i];
+      foreach (var ch in list) {
         int c = decoder.ReadChar(reader);
         if (c != ch) {
-          Assert.Fail(name+": expected "+ch+", was "+c);
+          Assert.Fail(name + ": expected " + ch + ", was " + c);
         }
       }
     }

@@ -40,32 +40,51 @@ private UnicodeDatabase() {
       }
     }
 
-    private static ByteData stablenfc;
-    private static ByteData stablenfd;
-    private static ByteData stablenfkc;
-    private static ByteData stablenfkd;
-    private static final Object stableSyncRoot = new Object();
+    private static ByteData qcsnfc;
+    private static ByteData qcsnfd;
+    private static ByteData qcsnfkc;
+    private static ByteData qcsnfkd;
+    private static final Object qcsSyncRoot = new Object();
 
-    public static boolean IsStableCodePoint(int cp, Normalization form) {
-      synchronized (stableSyncRoot) {
+    public static boolean IsQuickCheckStarter(int cp, Normalization form) {
+      // Code points for which QuickCheck = YES and with a combining
+      // class of 0
+      ByteData bd = null;
+      if (form == Normalization.NFC &&
+      (cp < NormalizationData.QCSNFCMin || cp >
+          NormalizationData.QCSNFCMax)) {
+        return true;
+      }
+      if (form == Normalization.NFD &&
+      (cp < NormalizationData.QCSNFDMin || cp >
+          NormalizationData.QCSNFDMax)) {
+        return true;
+      }
+      if (form == Normalization.NFKC &&
+    (cp < NormalizationData.QCSNFKCMin || cp >
+          NormalizationData.QCSNFKCMax)) {
+        return true;
+      }
+      if (form == Normalization.NFKD &&
+    (cp < NormalizationData.QCSNFKDMin || cp >
+          NormalizationData.QCSNFKDMax)) {
+        return true;
+      }
+      synchronized (qcsSyncRoot) {
         if (form == Normalization.NFC) {
-     stablenfc = (stablenfc == null) ? (ByteData.Decompress(NormalizationData.StableNFC)) : stablenfc;
-          return stablenfc.GetBoolean(cp);
+          bd = qcsnfc = (qcsnfc == null) ? (ByteData.Decompress(NormalizationData.QCSNFC)) : qcsnfc;
         }
         if (form == Normalization.NFD) {
-     stablenfd = (stablenfd == null) ? (ByteData.Decompress(NormalizationData.StableNFD)) : stablenfd;
-          return stablenfd.GetBoolean(cp);
+          bd = qcsnfd = (qcsnfd == null) ? (ByteData.Decompress(NormalizationData.QCSNFD)) : qcsnfd;
         }
         if (form == Normalization.NFKC) {
-  stablenfkc = (stablenfkc == null) ? (ByteData.Decompress(NormalizationData.StableNFKC)) : stablenfkc;
-          return stablenfkc.GetBoolean(cp);
+      bd = qcsnfkc = (qcsnfkc == null) ? (ByteData.Decompress(NormalizationData.QCSNFKC)) : qcsnfkc;
         }
         if (form == Normalization.NFKD) {
-  stablenfkd = (stablenfkd == null) ? (ByteData.Decompress(NormalizationData.StableNFKD)) : stablenfkd;
-          return stablenfkd.GetBoolean(cp);
+      bd = qcsnfkd = (qcsnfkd == null) ? (ByteData.Decompress(NormalizationData.QCSNFKD)) : qcsnfkd;
         }
-        return false;
       }
+      return (bd != null && bd.GetBoolean(cp));
     }
 
     private static int[] decomps;
