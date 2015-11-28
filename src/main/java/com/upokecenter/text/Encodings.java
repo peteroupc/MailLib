@@ -468,9 +468,9 @@ private Encodings() {
      * the encodings mentioned in ResolveAlias, the following additional
      * encodings are supported:. <ul> <li> {@code us-ascii} - ASCII 7-bit
      * encoding, rather than an alias to {@code windows-1252}, as specified
-     * in the Encoding Standard</li> <li> {@code iso-8859-1} - Latin-1 8-bit
+     * in the Encoding Standard.</li> <li> {@code iso-8859-1} - Latin-1 8-bit
      * encoding, rather than an alias to {@code windows-1252}, as specified
-     * in the Encoding Standard</li> <li> {@code utf-7} - UTF-7 (7-bit
+     * in the Encoding Standard.</li> <li> {@code utf-7} - UTF-7 (7-bit
      * universal character set)</li></ul>.
      * @return A standardized name for the encoding. Returns the empty string if
      * {@code name} is null or empty, or if the encoding name is
@@ -1034,7 +1034,7 @@ int length) {
       if (name.equals("iso-8859-1")) {
         return (ICharacterEncoding)(new EncodingLatinOne());
       }
-      if (name.equals("utf-7") || name.equals("unicode-1-1-utf-7")) {
+      if (name.equals("utf-7")) {
         return (ICharacterEncoding)(new EncodingUtf7());
       }
       if (name.equals("windows-1252")) {

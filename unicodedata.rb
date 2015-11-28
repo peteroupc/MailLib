@@ -62,6 +62,28 @@ def getJoiningTypes(file)
   return ret
 end
 
+def getQCNonYes(file,name)
+  ret={}
+  File.open(file,"rb"){|f|
+    while !f.eof?
+      ln=f.gets.gsub(/^\s+|\s+$/,"").gsub(/\s*\#.*$/,"")
+      if ln[/^([A-Fa-f0-9]+)\.\.([A-Fa-f0-9]+)\s*;\s*#{name}\s*;\s*(N|M)\b/]
+        #p ln
+        a=$1.to_i(16)
+        b=$2.to_i(16)
+        for i in a..b
+         ret[i]=true
+        end
+      elsif ln[/^([A-Fa-f0-9]+)\s*;\s*#{name}\s*;\s*(N|M)\b/]
+        #p ln
+        a=$1.to_i(16)
+        ret[a]=true
+      end
+    end
+  }
+  return ret
+end
+
 def getMutexProp(file)
   # Reads a file where all the properties are
   # mutually exclusive
@@ -274,6 +296,13 @@ module Normalizer
   @@compatDecompMappings=nil
   @@foundInDecompMapping=nil
   @@maxAffectedCodePoint=nil
+  @@quickChecks={}
+  @@quickCheckNames={
+   :NFD=>"NFD_QC",
+   :NFC=>"NFC_QC",
+   :NFKC=>"NFKC_QC",
+   :NFKD=>"NFKD_QC"
+  }
   def self.normalize(chars,form)
     return chars if chars.length==1 && @@maxAffectedCodePoint && chars[0]>@@maxAffectedCodePoint
     return chars if chars.length==1 && (chars[0]>=0xF0000 && chars[0]<=0x10FFFF)
@@ -284,9 +313,15 @@ module Normalizer
     chars=compose(chars,form)
     return chars
   end
-  def self.isStable(ch,form)
-    return true if @@maxAffectedCodePoint && ch>@@maxAffectedCodePoint
+  def self.isQCS(ch,form)
     return true if ch>=0xf0000 || (ch>=0xd800 && ch<=0xdfff)
+    return true if @@maxAffectedCodePoint && ch>@@maxAffectedCodePoint
+    if !@@quickChecks[form]
+      @@quickChecks[form]=getQCNonYes(
+        "cache/DerivedNormalizationProps.txt",@@quickCheckNames[form])
+    end
+    return !@@quickChecks[form][ch] && UnicodeDatabase.getCombiningClass(ch) == 0
+#=begin
     if ch>=0xac00 && ch<0xac00+11172
       # Special case for Hangul syllables
       return false if form==:NFD || form==:NFKD
@@ -333,6 +368,7 @@ module Normalizer
       end
    end
    return false
+#=end
   end
   def self.decomposeChar(ch,form)
     if(ch>=0xAC00 && ch<0xAC00+11172)
@@ -838,38 +874,32 @@ fjs.puts("]; if(typeof Uint32Array!='undefined')NormalizationData.DecompMappings
 fjs.puts("NormalizationData.CompatDecompMappings = [")
 fjs.puts(linebrokenjoin(compatdecomps))
 fjs.puts("]; if(typeof Uint32Array!='undefined')NormalizationData.CompatDecompMappings = new Uint32Array(NormalizationData.CompatDecompMappings);")
-puts "Finding stable NFC code points..."
-stablenfc=[]
-for i in 0...0x110000; stablenfc.push(Normalizer.isStable(i,:NFC)); end
-f.puts("    public static #{final} byte[] StableNFC = new byte[] {")
-bin=LZ4.compress(toBoolArray(stablenfc))
-f.puts("      "+linebrokenjoinbytes(bin))
-f.puts("    };")
-fjs.puts(jsbytes("NormalizationData['StableNFC']",bin))
-puts "Finding stable NFD code points..."
-stablenfc=[]
-for i in 0...0x110000; stablenfc.push(Normalizer.isStable(i,:NFD)); end
-f.puts("    public static #{final} byte[] StableNFD = new byte[] {")
-bin=LZ4.compress(toBoolArray(stablenfc))
-f.puts("      "+linebrokenjoinbytes(bin))
-f.puts("    };")
-fjs.puts(jsbytes("NormalizationData['StableNFD']",bin))
-puts "Finding stable NFKC code points..."
-stablenfc=[]
-for i in 0...0x110000; stablenfc.push(Normalizer.isStable(i,:NFKC)); end
-f.puts("    public static #{final} byte[] StableNFKC = new byte[] {")
-bin=LZ4.compress(toBoolArray(stablenfc))
-f.puts("      "+linebrokenjoinbytes(bin))
-f.puts("    };")
-fjs.puts(jsbytes("NormalizationData['StableNFKC']",bin))
-puts "Finding stable NFKD code points..."
-stablenfc=[]
-for i in 0...0x110000; stablenfc.push(Normalizer.isStable(i,:NFKD)); end
-f.puts("    public static #{final} byte[] StableNFKD = new byte[] {")
-bin=LZ4.compress(toBoolArray(stablenfc))
-f.puts("      "+linebrokenjoinbytes(bin))
-f.puts("    };")
-fjs.puts(jsbytes("NormalizationData['StableNFKD']",bin))
+def getQCSArray(form)
+ qcs=[]
+ minval=-1;maxval=-1
+ for i in 0...0x110000
+  qcs.push(Normalizer.isQCS(i,form));
+  minval=i if minval==-1 && !qcs[i]
+  maxval=i if !qcs[i]
+ end
+ return [qcs,minval,maxval]
+end
+def makeQCS(f,fjs,form)
+  namestr=form.to_s
+  qcs=getQCSArray(form)
+  puts "Finding #{namestr} quick-check starters..."
+  f.puts("    public static readonly int QCS#{namestr}Min = #{qcs[1]};")
+  f.puts("    public static readonly int QCS#{namestr}Max = #{qcs[2]};")
+  f.puts("    public static readonly byte[] QCS#{namestr} = new byte[] {")
+  bin=LZ4.compress(toBoolArray(qcs[0]))
+  f.puts("      "+linebrokenjoinbytes(bin))
+  f.puts("    };")
+  fjs.puts(jsbytes("NormalizationData['QCS#{namestr}']",bin))
+end
+makeQCS(f,fjs,:NFC);
+makeQCS(f,fjs,:NFD);
+makeQCS(f,fjs,:NFKC);
+makeQCS(f,fjs,:NFKD);
 f.puts("  }")
 if true
 f.puts("}")
@@ -877,6 +907,7 @@ end
 fjs.puts("if(typeof exports!=='undefined')exports['NormalizationData']=NormalizationData;")
 fjs.puts("if(typeof window!=='undefined')window['NormalizationData']=NormalizationData;")
 }}
+exit
 puts "Generating IDNA data..."
 letterDigits=[]
 idnaCategories=[]

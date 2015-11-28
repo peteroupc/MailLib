@@ -96,26 +96,6 @@ namespace MailLibTest {
       }
     }
 
-    [TestMethod]
-    public void TestIsNormalizedAlmostSurrogates() {
-      Assert.IsTrue(
-NormalizingCharacterInput.IsNormalized(
- new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
-   Normalization.NFC));
-      Assert.IsTrue(
-      NormalizingCharacterInput.IsNormalized(
-       new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
-         Normalization.NFD));
-      Assert.IsTrue(
-      NormalizingCharacterInput.IsNormalized(
-       new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
-         Normalization.NFKC));
-      Assert.IsTrue(
-      NormalizingCharacterInput.IsNormalized(
-       new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
-         Normalization.NFKD));
-    }
-
     private sealed class NormResult {
       private readonly int[] orig;
       private readonly string origstr;

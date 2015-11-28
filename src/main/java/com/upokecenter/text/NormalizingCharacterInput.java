@@ -15,42 +15,63 @@ import com.upokecenter.text.encoders.*;
      * <p>A character input class that implements the Unicode normalization
      * algorithm and contains methods and functionality to test and convert
      * text strings for normalization. This is similar to the Normalizer
-     * class, except it implements the ICharacterInput interface.</p>
-     * <p>NOTICE: While this class's source code is in the public domain,
-     * the class uses an class, called NormalizationData, that
-     * includes data derived from the Unicode Character Database. In case
-     * doing so is required, the permission notice for the Unicode Character
-     * Database is given here:</p> <p>COPYRIGHT AND PERMISSION NOTICE</p>
-     * <p>Copyright (c) 1991-2014 Unicode, Inc. All rights reserved.
-     * Distributed under the Terms of Use in
-     * http://www.unicode.org/copyright.html.</p> <p>Permission is hereby
-     * granted, free of charge, to any person obtaining a copy of the
-     * Unicode data files and any associated documentation (the "Data
-     * Files") or Unicode software and any associated documentation (the
-     * "Software") to deal in the Data Files or Software without
-     * restriction, including without limitation the rights to use, copy,
-     * modify, merge, publish, distribute, and/or sell copies of the Data
-     * Files or Software, and to permit persons to whom the Data Files or
-     * Software are furnished to do so, provided that (a) this copyright and
-     * permission notice appear with all copies of the Data Files or
-     * Software, (b) this copyright and permission notice appear in
-     * associated documentation, and (c) there is clear notice in each
-     * modified Data File or in the Software as well as in the documentation
-     * associated with the Data File(s) or Software that the data or
-     * software has been modified.</p> <p>THE DATA FILES AND SOFTWARE ARE
-     * PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-     * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-     * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY
-     * RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN
-     * THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR
-     * CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
-     * OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE
-     * OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE
-     * USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.</p> <p>Except as
-     * contained in this notice, the name of a copyright holder shall not be
-     * used in advertising or otherwise to promote the sale, use or other
-     * dealings in these Data Files or Software without prior written
-     * authorization of the copyright holder.</p>
+     * class, except it implements the ICharacterInput interface.</p> <p>The
+     * Unicode Standard includes characters, such as an acute accent, that
+     * can be combined with other characters to make new characters. For
+     * example, the letter E combines with an acute accent to make E-acute
+     * (&#xc9;). In some cases, the combined form (E-acute) should be
+     * treated as equivalent to the uncombined form (E plus acute). For this
+     * reason, the standard defines four <i>normalization forms</i> that
+     * convert strings to a single equivalent form:</p> <ul> <li><b>NFD</b>
+     * (Normalization Form D) decomposes combined forms to their constituent
+     * characters (E plus acute, for example). This is called canonical
+     * decomposition.</li> <li><b>NFC</b> does canonical decomposition, then
+     * combines certain constituent characters to their composites (E-acute,
+     * for example). This is called canonical composition.</li> <li>Two
+     * normalization forms, <b>NFKC</b> and <b>NFKD</b>, are similar to NFC
+     * and NFD, except they also "decompose" certain characters, ((such
+     * instanceof ligatures) ? (ligatures)such : null), font or positional
+     * variants, and subscripts, whose visual distinction can matter in some
+     * contexts. This is called compatibility decomposition.</li> <li>The
+     * four normalization forms also enforce a standardized order for
+     * combining marks, since they can otherwise appear in an arbitrary
+     * order.</li></ul> <p>For more information, see Standard Annex 15 at
+     * http://www.unicode.org/reports/tr15/ .</p> <p>NOTICE: While this
+     * class's source code is in the public domain, the class uses an
+     * class, called NormalizationData, that includes data derived
+     * from the Unicode Character Database. In case doing so is required,
+     * the permission notice for the Unicode Character Database is given
+     * here:</p> <p>COPYRIGHT AND PERMISSION NOTICE</p> <p>Copyright (c)
+     * 1991-2014 Unicode, Inc. All rights reserved. Distributed under the
+     * Terms of Use in http://www.unicode.org/copyright.html.</p>
+     * <p>Permission is hereby granted, free of charge, to any person
+     * obtaining a copy of the Unicode data files and any associated
+     * documentation (the "Data Files") or Unicode software and any
+     * associated documentation (the "Software") to deal in the Data Files
+     * or Software without restriction, including without limitation the
+     * rights to use, copy, modify, merge, publish, distribute, and/or sell
+     * copies of the Data Files or Software, and to permit persons to whom
+     * the Data Files or Software are furnished to do so, provided that (a)
+     * this copyright and permission notice appear with all copies of the
+     * Data Files or Software, (b) this copyright and permission notice
+     * appear in associated documentation, and (c) there is clear notice in
+     * each modified Data File or in the Software as well as in the
+     * documentation associated with the Data File(s) or Software that the
+     * data or software has been modified.</p> <p>THE DATA FILES AND
+     * SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+     * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+     * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+     * OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+     * HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY
+     * SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER
+     * RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+     * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+     * CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA FILES OR
+     * SOFTWARE.</p> <p>Except as contained in this notice, the name of a
+     * copyright holder shall not be used in advertising or otherwise to
+     * promote the sale, use or other dealings in these Data Files or
+     * Software without prior written authorization of the copyright
+     * holder.</p>
      */
   public final class NormalizingCharacterInput implements ICharacterInput
   {
@@ -94,22 +115,14 @@ int index) {
       return DecompToBufferInternal(ch, compat, buffer, index);
     }
 
-    static boolean IsStableCodePoint(int cp, Normalization form) {
-      // Exclude YOD and HIRIQ because of Corrigendum 2
-      return UnicodeDatabase.IsStableCodePoint(cp, form) && cp != 0x5b4 &&
-        cp != 0x5d9;
-    }
-
     static void ReorderBuffer(int[] buffer, int index, int length) {
       int i;
-
       if (length < 2) {
         return;
       }
       boolean changed;
       do {
         changed = false;
-        // System.out.println(toString(buffer, index, length));
         int lead = UnicodeDatabase.GetCombiningClass(buffer[index]);
         int trail;
         for (i = 1; i < length; ++i) {
@@ -119,9 +132,6 @@ int index) {
             int c = buffer[offset - 1];
             buffer[offset - 1] = buffer[offset];
             buffer[offset] = c;
-            // System.out.println("lead= {0:X4} ccc=" + lead);
-            // System.out.println("trail={0:X4} ccc=" + trail);
-            // System.out.println("now "+toString(buffer,index,length));
             changed = true;
             // Lead is now at trail's position
           } else {
@@ -241,7 +251,7 @@ int index) {
       return ret;
     }
 
-    private int lastStableIndex;
+    private int lastQcsIndex;
     private int endIndex;
     private int[] buffer;
     private final boolean compatMode;
@@ -249,8 +259,6 @@ int index) {
     private int processedIndex;
     private int flushIndex;
     private final ICharacterInput iterator;
-    private final List<Integer> characterList;
-    private int characterListPos;
 
     /**
      * Initializes a new instance of the NormalizingCharacterInput class using
@@ -295,14 +303,7 @@ input, Normalization.NFC);
     public NormalizingCharacterInput (
 List<Integer> characterList,
 Normalization form) {
-      if (characterList == null) {
-        throw new NullPointerException("characterList");
-      }
-      this.lastStableIndex = -1;
-      this.characterList = characterList;
-      this.form = form;
-    this.compatMode = form == Normalization.NFKC || form ==
-        Normalization.NFKD;
+ this(new PartialListCharacterInput(characterList), form);
     }
 
     /**
@@ -346,9 +347,10 @@ Normalization form) {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
-      this.lastStableIndex = -1;
+      this.lastQcsIndex = -1;
       this.iterator = stream;
       this.form = form;
+      this.lastCharBuffer = new int[2];
     this.compatMode = form == Normalization.NFKC || form ==
         Normalization.NFKD;
     }
@@ -428,8 +430,9 @@ Normalization form) {
       if ((str) == null) {
   throw new NullPointerException("str");
 }
-      int nonStableStart = -1;
+      int nonQcsStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
+      int lastQcs = 0;
       for (int i = 0; i < str.length(); ++i) {
         int c = str.charAt(i);
         if ((c & 0xfc00) == 0xd800 && i + 1 < str.length() &&
@@ -440,41 +443,46 @@ Normalization form) {
           // unpaired surrogate
           return false;
         }
-        boolean isStable = false;
+        boolean isQcs = false;
         if ((c & mask) == c && (i + 1 == str.length() || (str.charAt(i + 1) & mask)
           == str.charAt(i + 1))) {
-          // Quick check for an ASCII character followed by another
+          // Quick check for an ASCII character (or Latin-1 in NFC) followed
+          // by another
           // ASCII character (or Latin-1 in NFC) or the end of String.
-          // Treat the first character as stable
+          // Treat the first character as QCS
           // in this situation.
-          isStable = true;
+          isQcs = true;
         } else {
-          isStable = NormalizingCharacterInput.IsStableCodePoint(c, form);
+ isQcs = (c >= 0xf0000) ? (true) : (UnicodeDatabase.IsQuickCheckStarter(c,
+   form));
+}
+        if (isQcs) {
+          lastQcs = i;
         }
-        if (nonStableStart < 0 && !isStable) {
-          // First non-stable code point in a row
-          nonStableStart = i;
-        } else if (nonStableStart >= 0 && isStable) {
-          // We have at least one non-stable code point,
+        if (nonQcsStart < 0 && !isQcs) {
+          // First non-quick-check starter in a row
+          nonQcsStart = lastQcs;
+        } else if (nonQcsStart >= 0 && isQcs) {
+          // We have at least one non-quick-check-starter,
           // normalize these code points.
           if (!NormalizeAndCheckString(
          str,
-         nonStableStart,
-         i - nonStableStart,
+         nonQcsStart,
+         i - nonQcsStart,
          form)) {
             return false;
           }
-          nonStableStart = -1;
+          nonQcsStart = -1;
         }
         if (c >= 0x10000) {
           ++i;
         }
       }
-      if (nonStableStart >= 0) {
+      if (nonQcsStart >= 0) {
         if (!NormalizeAndCheckString(
 str,
-nonStableStart,
-str.length() - nonStableStart,
+nonQcsStart,
+str.length() - nonQcsStart,
 form)) {
           return false;
         }
@@ -524,7 +532,8 @@ form)) {
      * @throws NullPointerException The parameter {@code charList} is null.
      */
     public static boolean IsNormalized(List<Integer> charList, Normalization form) {
-      int nonStableStart = -1;
+      int nonQcsStart = -1;
+      int lastQcs = 0;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       if (charList == null) {
         throw new NullPointerException("charList");
@@ -534,30 +543,34 @@ form)) {
         if (c < 0 || c > 0x10ffff || ((c & 0x1ff800) == 0xd800)) {
           return false;
         }
-        boolean isStable = false;
-   isStable = (c & mask) == c && (i + 1 == charList.size() || (charList.get(i +
-          1) & mask) == charList.get(i + 1)) ? true : IsStableCodePoint(c, form);
-        if (nonStableStart < 0 && !isStable) {
-          // First non-stable code point in a row
-          nonStableStart = i;
-        } else if (nonStableStart >= 0 && isStable) {
-          // We have at least one non-stable code point,
+        boolean isQcs = false;
+   isQcs = (c & mask) == c && (i + 1 == charList.size() || (charList.get(i +
+          1) & mask) == charList.get(i + 1)) ? true :
+          UnicodeDatabase.IsQuickCheckStarter(c, form);
+        if (isQcs) {
+          lastQcs = i;
+        }
+        if (nonQcsStart < 0 && !isQcs) {
+          // First non-quick-check starter in a row
+          nonQcsStart = lastQcs;
+        } else if (nonQcsStart >= 0 && isQcs) {
+          // We have at least one non-quick-check starter,
           // normalize these code points.
   if (!NormalizeAndCheck(
 charList,
-nonStableStart,
-i - nonStableStart,
+nonQcsStart,
+i - nonQcsStart,
 form)) {
             return false;
           }
-          nonStableStart = -1;
+          nonQcsStart = -1;
         }
       }
-      if (nonStableStart >= 0) {
+      if (nonQcsStart >= 0) {
         if (!NormalizeAndCheck(
 charList,
-nonStableStart,
-charList.size() - nonStableStart,
+nonQcsStart,
+charList.size() - nonQcsStart,
 form)) {
           return false;
         }
@@ -578,30 +591,41 @@ form)) {
     }
 
     private boolean endOfString;
-    private int lastChar = -1;
-    private boolean ungetting;
+    private int[] lastCharBuffer;
+    private int lastCharPos;
 
-    private void Unget() {
-      this.ungetting = true;
+    private void PrependOne(int c) {
+      if (lastCharPos + 1 > lastCharBuffer.length) {
+        int[] newbuffer = new int[lastCharPos + 8];
+        System.arraycopy(lastCharBuffer, 0, newbuffer, 0, lastCharPos);
+        lastCharBuffer = newbuffer;
+      }
+      lastCharBuffer[lastCharPos++] = c;
+    }
+
+    private void PrependTwo(int c1, int c2) {
+      if (lastCharPos + 2 > lastCharBuffer.length) {
+        int[] newbuffer = new int[lastCharPos + 8];
+        System.arraycopy(lastCharBuffer, 0, newbuffer, 0, lastCharPos);
+        lastCharBuffer = newbuffer;
+      }
+      lastCharBuffer[lastCharPos++] = c2;
+      lastCharBuffer[lastCharPos++] = c1;
     }
 
     private int GetNextChar() {
       int ch;
-      if (this.ungetting) {
-        ch = this.lastChar;
-        this.ungetting = false;
+      if (this.lastCharPos>0) {
+        --this.lastCharPos;
+        ch = this.lastCharBuffer[this.lastCharPos];
         return ch;
       }
-      ch = (this.iterator == null) ? ((this.characterListPos >=
-this.characterList.size()) ? -1 :
-          this.characterList.get(this.characterListPos++)) :
-        this.iterator.ReadChar();
+      ch = this.iterator.ReadChar();
       if (ch < 0) {
         this.endOfString = true;
       } else if (ch > 0x10ffff || ((ch & 0x1ff800) == 0xd800)) {
         throw new IllegalArgumentException("Invalid character: " + ch);
       }
-      this.lastChar = ch;
       return ch;
     }
 
@@ -654,12 +678,28 @@ this.characterList.size()) ? -1 :
           if (c < 0) {
             return (total == 0) ? -1 : total;
           }
-          if (IsStableCodePoint(c, this.form)) {
-            chars[index] = c;
-            ++total;
-            ++index;
+          if (UnicodeDatabase.IsQuickCheckStarter(c, this.form)) {
+            if (this.form == Normalization.NFD ||
+            this.form == Normalization.NFKD) {
+              chars[index] = c;
+              ++total;
+              ++index;
+            } else {
+              while (total < length) {
+                int c2 = this.GetNextChar();
+                if (c2 < 0) {
+                  chars[index] = c;
+                  ++total;
+                  return total;
+                } else {
+                  this.PrependTwo(c, c2);
+                  break;
+                }
+              }
+              break;
+            }
           } else {
-            this.Unget();
+            this.PrependOne(c);
             break;
           }
         }
@@ -668,8 +708,6 @@ this.characterList.size()) ? -1 :
         }
       }
       do {
-        // System.out.println("indexes=" + this.processedIndex + " " +
-        // this.flushIndex + ", length=" + length + " total=" + total);
         count = Math.min(this.processedIndex - this.flushIndex, length - total);
         if (count < 0) {
           count = 0;
@@ -681,38 +719,55 @@ this.characterList.size()) ? -1 :
         index += count;
         total += count;
         this.flushIndex += count;
-        // Try to fill buffer with stable code points,
+        boolean decompForm = (this.form == Normalization.NFD ||
+            this.form == Normalization.NFKD);
+        // Try to fill buffer with quick-check starters,
         // as an optimization
         while (total < length) {
-          // charbufpos, charbufend);
           int c = this.GetNextChar();
           if (c < 0) {
             this.endOfString = true;
             break;
           }
-          if (IsStableCodePoint(c, this.form)) {
-            chars[index++] = c;
-            ++total;
+          if (UnicodeDatabase.IsQuickCheckStarter(c, this.form)) {
+            if (decompForm) {
+              chars[index] = c;
+              ++total;
+              ++index;
+            } else {
+              while (total < length) {
+                int c2 = this.GetNextChar();
+                if (c2 < 0) {
+                  chars[index] = c;
+                  ++total;
+                  return total;
+                } else {
+                  this.PrependTwo(c, c2);
+                  break;
+                }
+              }
+              break;
+            }
           } else {
-            this.Unget();
+            this.PrependOne(c);
             break;
           }
         }
         // Ensure that more data is available
         if (total < length && this.flushIndex == this.processedIndex) {
-          if (this.lastStableIndex > 0) {
+          if (this.lastQcsIndex > 0) {
             // Move unprocessed data to the beginning of
             // the buffer
 
             System.arraycopy(
 this.buffer,
-this.lastStableIndex,
+this.lastQcsIndex,
 this.buffer,
 0,
-this.buffer.length - this.lastStableIndex);
+this.buffer.length - this.lastQcsIndex);
             // System.out.println("endIndex=" + (this.endIndex));
-            this.endIndex -= this.lastStableIndex;
-            this.lastStableIndex = 0;
+            this.endIndex -= this.lastQcsIndex;
+            this.lastQcsIndex = 0;
           } else {
             this.endIndex = 0;
           }
@@ -750,23 +805,37 @@ this.compatMode,
 this.buffer,
 this.endIndex);
         }
-        // Check for the last stable code point if the
+        // Check for the last quick-check starter if the
         // end of the String is not reached yet
         if (!this.endOfString) {
-          boolean haveNewStable = false;
-          // NOTE: lastStableIndex begins at -1
-          for (int i = this.endIndex - 1; i > this.lastStableIndex; --i) {
-            // System.out.println("stable({0:X4})=" +
-            // (IsStableCodePoint(this.buffer[i], this.form)));
-            if (IsStableCodePoint(this.buffer[i], this.form)) {
-              this.lastStableIndex = i;
-              haveNewStable = true;
-              break;
+          boolean haveNewQcs = false;
+          // NOTE: lastQcsIndex begins at -1
+          boolean decompForm = (this.form == Normalization.NFD ||
+            this.form == Normalization.NFKD);
+          boolean nextIsQCS = false;
+          for (int i = this.endIndex - 1; i > this.lastQcsIndex; --i) {
+          if (UnicodeDatabase.IsQuickCheckStarter(this.buffer[i],
+              this.form)) {
+              if (decompForm) {
+                this.lastQcsIndex = i;
+                haveNewQcs = true;
+                break;
+              } else if (i + 1 < this.endIndex && (nextIsQCS ||
+         UnicodeDatabase.IsQuickCheckStarter(this.buffer[i + 1],
+                 this.form))) {
+                this.lastQcsIndex = i;
+                haveNewQcs = true;
+                break;
+              } else {
+                nextIsQCS = true;
+              }
+            } else {
+              nextIsQCS = false;
             }
           }
-          if (!haveNewStable || this.lastStableIndex <= 0) {
-            // No stable code point was found (or last stable
-            // code point is at beginning of buffer), increase
+          if (!haveNewQcs || this.lastQcsIndex <= 0) {
+            // No quick-check starter was found (or last quick-check
+            // starter is at beginning of buffer), increase
             // the buffer size
             int[] newBuffer = new int[(this.buffer.length + 4) * 2];
             System.arraycopy(this.buffer, 0, newBuffer, 0, this.buffer.length);
@@ -775,7 +844,7 @@ this.endIndex);
           }
         } else {
           // End of String
-          this.lastStableIndex = this.endIndex;
+          this.lastQcsIndex = this.endIndex;
         }
         done = true;
       }
@@ -785,14 +854,14 @@ this.endIndex);
       }
       this.flushIndex = 0;
       // Canonical reordering
-      ReorderBuffer(this.buffer, 0, this.lastStableIndex);
+      ReorderBuffer(this.buffer, 0, this.lastQcsIndex);
       if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
         // Composition
         this.processedIndex = ComposeBuffer(
 this.buffer,
-this.lastStableIndex);
+this.lastQcsIndex);
       } else {
-        this.processedIndex = this.lastStableIndex;
+        this.processedIndex = this.lastQcsIndex;
       }
       return true;
     }
