@@ -1,34 +1,79 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using PeterO.Mail;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PeterO.Mail;
 namespace MailLibTest {
   [TestClass]
   public partial class DispositionBuilderTest {
     [TestMethod]
     public void TestConstructor() {
-      // not implemented yet
+      string stringNull = null;
+      ContentDisposition dispNull = null;
+      try {
+Assert.AreEqual(null, new DispositionBuilder(stringNull));
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+Assert.AreEqual(null, new DispositionBuilder(dispNull));
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+Assert.AreEqual(null, new DispositionBuilder(String.Empty));
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
     }
     [TestMethod]
     public void TestDispositionType() {
-      // not implemented yet
-    }
-    [TestMethod]
-    public void TestIsMultipart() {
-      // not implemented yet
-    }
-    [TestMethod]
-    public void TestIsText() {
-      // not implemented yet
+      var db = new DispositionBuilder();
+      db.SetDispositionType("inline");
+      Assert.AreEqual("inline", db.DispositionType);
     }
     [TestMethod]
     public void TestRemoveParameter() {
-      // not implemented yet
+      try {
+        new DispositionBuilder().RemoveParameter(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
     }
     [TestMethod]
     public void TestSetDispositionType() {
-      // not implemented yet
+      try {
+        new DispositionBuilder().SetDispositionType(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+      try {
+        new DispositionBuilder().SetDispositionType(String.Empty);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
     }
     [TestMethod]
     public void TestSetParameter() {

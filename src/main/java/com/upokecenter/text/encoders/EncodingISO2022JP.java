@@ -163,7 +163,7 @@ import com.upokecenter.text.*;
         while (true) {
           if (c < 0) {
             if (this.encoderState != 0) {
-              encoderState = 0;
+              this.encoderState = 0;
               output.write((byte)0x1b);
               output.write((byte)0x28);
               output.write((byte)0x42);

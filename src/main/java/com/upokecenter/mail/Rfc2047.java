@@ -40,7 +40,7 @@ private Rfc2047() {
     private static boolean HasSuspiciousTextInStructured(String str) {
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
-        // Has specials, or CTLs other than tab
+        // Has ValueSpecials, or CTLs other than tab
         if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29 ||
           c == 0x3c || c == 0x3e || c == 0x5b || c == 0x5d || c == 0x3a || c
             == 0x3b || c == 0x40 ||
@@ -223,12 +223,12 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
     String str,
     int index,
     int endIndex) {
-      String specials = "()<>@,;:\\\"/[]?=.";
+      String ValueSpecials = "()<>@,;:\\\"/[]?=.";
       int i = index;
       while (i < endIndex) {
         char c = str.charAt(i);
         if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
-          specials.indexOf(c) >= 0)) {
+          ValueSpecials.indexOf(c) >= 0)) {
           break;
         }
         ++i;
@@ -513,7 +513,7 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
                   // that could render the comment syntactically invalid
                   // (the encoded
                   // word could even encode ASCII control characters and
-                  // specials)
+                  // ValueSpecials)
                   if (context == EncodedWordContext.Phrase &&
                     HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;

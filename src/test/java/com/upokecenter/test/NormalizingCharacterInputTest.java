@@ -1,7 +1,5 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
 
-import java.util.*;
-
 import com.upokecenter.text.*;
 import org.junit.Assert;
 import org.junit.Test;

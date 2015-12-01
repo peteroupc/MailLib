@@ -19,7 +19,7 @@ import com.upokecenter.text.*;
       }
 
       public int ReadChar(IByteReader input) {
-        if ((input) == null) {
+        if (input == null) {
   throw new NullPointerException("input");
 }
         if (!this.bomChecked) {

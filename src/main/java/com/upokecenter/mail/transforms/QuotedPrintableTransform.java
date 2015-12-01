@@ -99,8 +99,8 @@ input, lenientLineBreaks, maxLineLength, false);
           // End of stream
           return -1;
         }
-     if (!this.checkStrictEncoding && printable[c]==1 && this.maxLineSize<
-          0) {
+   if (!this.checkStrictEncoding && this.printable[c] == 1 &&
+       this.maxLineSize < 0) {
           return c;
         }
         if (c == 0x0d) {

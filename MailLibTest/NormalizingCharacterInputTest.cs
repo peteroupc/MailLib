@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using PeterO.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -37,7 +36,7 @@ namespace MailLibTest {
 
     [TestMethod]
 public void TestNormalizationAscii() {
-  Random rnd = new Random();
+  var rnd = new Random();
   for (var i = 0; i < 50000; ++i) {
     string str = RandomAscii(rnd);
     // ASCII strings are already normalized
@@ -71,7 +70,7 @@ public void TestNormalizationAscii() {
 
     [TestMethod]
 public void TestNormalizationLatinOne() {
-  Random rnd = new Random();
+  var rnd = new Random();
   for (var i = 0; i < 50000; ++i) {
     string str = RandomLatinOne(rnd);
     // Latin-1 strings are already normalized in NFC

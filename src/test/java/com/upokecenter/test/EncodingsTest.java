@@ -1,7 +1,5 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
 
-import java.util.*;
-
 import com.upokecenter.text.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -98,11 +96,72 @@ throw new IllegalStateException("", ex);
     }
     @Test
     public void TestResolveAlias() {
-      // not implemented yet
+      Assert.assertEquals("", Encodings.ResolveAlias(null));
+      Assert.assertEquals("", Encodings.ResolveAlias(""));
+      {
+String stringTemp = Encodings.ResolveAlias("iso-8859-1");
+Assert.assertEquals(
+"windows-1252",
+stringTemp);
+}
+      {
+String stringTemp = Encodings.ResolveAlias("windows-1252");
+Assert.assertEquals(
+"windows-1252",
+stringTemp);
+}
+      {
+String stringTemp = Encodings.ResolveAlias("us-ascii");
+Assert.assertEquals(
+"windows-1252",
+stringTemp);
+}
+      Assert.assertEquals("", Encodings.ResolveAlias("utf-7"));
+      Assert.assertEquals("", Encodings.ResolveAlias("replacement"));
+      {
+String stringTemp = Encodings.ResolveAlias("hz-gb-2312");
+Assert.assertEquals(
+"replacement",
+stringTemp);
+}
     }
     @Test
     public void TestResolveAliasForEmail() {
-      // not implemented yet
+      Assert.assertEquals("", Encodings.ResolveAliasForEmail(null));
+   Assert.assertEquals("",
+        Encodings.ResolveAliasForEmail(""));
+      {
+String stringTemp = Encodings.ResolveAliasForEmail("iso-8859-1");
+Assert.assertEquals(
+"iso-8859-1",
+stringTemp);
+}
+      {
+String stringTemp = Encodings.ResolveAliasForEmail("windows-1252");
+Assert.assertEquals(
+"windows-1252",
+stringTemp);
+}
+      {
+String stringTemp = Encodings.ResolveAliasForEmail("us-ascii");
+Assert.assertEquals(
+"us-ascii",
+stringTemp);
+}
+      {
+String stringTemp = Encodings.ResolveAliasForEmail("utf-7");
+Assert.assertEquals(
+"utf-7",
+stringTemp);
+}
+  Assert.assertEquals("", Encodings.ResolveAliasForEmail("replacement"
+));
+      {
+String stringTemp = Encodings.ResolveAliasForEmail("hz-gb-2312");
+Assert.assertEquals(
+"replacement",
+stringTemp);
+}
     }
     @Test
     public void TestStringToBytes() {

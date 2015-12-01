@@ -39,7 +39,7 @@ namespace PeterO.Mail {
     private static bool HasSuspiciousTextInStructured(string str) {
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
-        // Has specials, or CTLs other than tab
+        // Has ValueSpecials, or CTLs other than tab
         if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29 ||
           c == 0x3c || c == 0x3e || c == 0x5b || c == 0x5d || c == 0x3a || c
             == 0x3b || c == 0x40 ||
@@ -242,12 +242,12 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
     string str,
     int index,
     int endIndex) {
-      const string specials = "()<>@,;:\\\"/[]?=.";
+      const string ValueSpecials = "()<>@,;:\\\"/[]?=.";
       int i = index;
       while (i < endIndex) {
         char c = str[i];
         if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
-          specials.IndexOf(c) >= 0)) {
+          ValueSpecials.IndexOf(c) >= 0)) {
           break;
         }
         ++i;
@@ -532,7 +532,7 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
                   // that could render the comment syntactically invalid
                   // (the encoded
                   // word could even encode ASCII control characters and
-                  // specials)
+                  // ValueSpecials)
                   if (context == EncodedWordContext.Phrase &&
                     HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using PeterO.Mail;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MailLibTest {
@@ -15,17 +13,21 @@ namespace MailLibTest {
       MediaType mt;
       mt=MediaType.Parse("text/plain");
       {
+{
 string stringTemp = mt.GetCharset();
 Assert.AreEqual(
 "us-ascii",
 stringTemp);
 }
+}
       mt=MediaType.Parse("text/vcard");
       {
+{
 string stringTemp = mt.GetCharset();
 Assert.AreEqual(
 "utf-8",
 stringTemp);
+}
 }
       mt=MediaType.Parse("text/x-unknown");
       Assert.AreEqual(String.Empty, mt.GetCharset());

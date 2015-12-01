@@ -57,10 +57,10 @@ namespace PeterO.Mail {
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='x'/> or <paramref name='y'/> is null.</exception>
     public int Compare(int[] x, int[] y) {
-      if ((x) == null) {
+      if (x == null) {
   throw new ArgumentNullException("x");
 }
-      if ((y) == null) {
+      if (y == null) {
   throw new ArgumentNullException("y");
 }
       // Sort by their start indexes

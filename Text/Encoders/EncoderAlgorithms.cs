@@ -19,7 +19,7 @@ namespace PeterO.Text.Encoders {
       }
 
       public int ReadChar(IByteReader input) {
-        if ((input) == null) {
+        if (input == null) {
   throw new ArgumentNullException("input");
 }
         if (!this.bomChecked) {

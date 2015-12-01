@@ -8,7 +8,7 @@ import com.upokecenter.text.*;
   public class EncodingAscii implements ICharacterEncoding {
     private static class Decoder implements ICharacterDecoder {
       public int ReadChar(IByteReader transform) {
-        if ((transform) == null) {
+        if (transform == null) {
   throw new NullPointerException("transform");
 }
         int b = transform.read();
@@ -20,7 +20,7 @@ import com.upokecenter.text.*;
       public int Encode(
       int c,
       IWriter output) {
-        if ((output) == null) {
+        if (output == null) {
   throw new NullPointerException("output");
 }
         if (c < 0) {

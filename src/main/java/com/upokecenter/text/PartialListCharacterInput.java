@@ -6,7 +6,6 @@ import java.util.*;
     private int pos;
     private final int endPos;
     private final List<Integer> ilist;
-    private List<Integer> characterList;
 
     public PartialListCharacterInput (List<Integer> ilist, int start, int length) {
       if (ilist == null) {
@@ -38,7 +37,7 @@ import java.util.*;
     }
 
     public PartialListCharacterInput (List<Integer> ilist) {
-      if ((ilist) == null) {
+      if (ilist == null) {
   throw new NullPointerException("ilist");
 }
       this.ilist = ilist;

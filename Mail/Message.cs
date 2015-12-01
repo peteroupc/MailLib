@@ -480,7 +480,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets or sets this message's subject.</summary>
-    /// <value>This message&apos;s subject.</value>
+    /// <value>This message&#x27;s subject.</value>
     public string Subject {
       get {
         return this.GetHeader("subject");
@@ -585,9 +585,9 @@ namespace PeterO.Mail {
         seq = unchecked(msgidSequence++);
       }
       string guid = Guid.NewGuid().ToString();
-      const string hex = "0123456789abcdef";
+      const string ValueHex = "0123456789abcdef";
       for (int i = 0; i < 16; ++i) {
-        builder.Append(hex[(int)(ticks & 15)]);
+        builder.Append(ValueHex[(int)(ticks & 15)]);
         ticks >>= 4;
       }
       for (int i = 0; i < guid.Length; ++i) {
@@ -596,7 +596,7 @@ namespace PeterO.Mail {
         }
       }
       for (int i = 0; i < 8; ++i) {
-        builder.Append(hex[seq & 15]);
+        builder.Append(ValueHex[seq & 15]);
         seq >>= 4;
       }
       IList<NamedAddress> addresses = this.FromAddresses;
@@ -607,7 +607,7 @@ namespace PeterO.Mail {
         seq = addresses[0].IsGroup ? addresses[0].Name.GetHashCode() :
           addresses[0].Address.ToString().GetHashCode();
         for (int i = 0; i < 8; ++i) {
-          builder.Append(hex[seq & 15]);
+          builder.Append(ValueHex[seq & 15]);
           seq >>= 4;
         }
         builder.Append(".local.invalid");
@@ -644,7 +644,7 @@ namespace PeterO.Mail {
     private int transferEncoding;
 
     /// <summary>Gets or sets this message's media type.</summary>
-    /// <value>This message&apos;s media type.</value>
+    /// <value>This message&#x27;s media type.</value>
     /// <exception cref='ArgumentNullException'>This value is being set and
     /// "value" is null.</exception>
     public MediaType ContentType {
@@ -670,7 +670,7 @@ namespace PeterO.Mail {
     /// <summary>Gets or sets this message's content disposition. The
     /// content disposition specifies how a user agent should handle or
     /// otherwise display this message.</summary>
-    /// <value>This message&apos;s content disposition, or null if none is
+    /// <value>This message&#x27;s content disposition, or null if none is
     /// specified.</value>
     public ContentDisposition ContentDisposition {
       get {
@@ -683,8 +683,9 @@ namespace PeterO.Mail {
           this.RemoveHeader("content-disposition");
         } else if (!value.Equals(this.contentDisposition)) {
           this.contentDisposition = value;
-     this.SetHeader("content-disposition",
-            this.contentDisposition.ToString());
+     this.SetHeader(
+"content-disposition",
+this.contentDisposition.ToString());
         }
       }
     }
@@ -728,8 +729,9 @@ namespace PeterO.Mail {
               value,
               endIndex,
               value.Length,
-              null) == value.Length) ? value.Substring(startIndex, endIndex -
-                startIndex) : String.Empty;
+              null) == value.Length) ? value.Substring(
+startIndex,
+endIndex - startIndex) : String.Empty;
         }
         mime |= name.Equals("mime-version");
         if (value.IndexOf("=?", StringComparison.Ordinal) >= 0) {
@@ -1282,7 +1284,7 @@ namespace PeterO.Mail {
           allTextBytes = false;
           ++ctlBytes;
         } else if (body[i] == 0x7f ||
-            (body[i] < 0x20 && body[i] != 0x0d && body[i] != 0x0a && body[i]!=
+            (body[i] < 0x20 && body[i] != 0x0d && body[i] != 0x0a && body[i] !=
                 0x09)) {
           allTextBytes = false;
           ++ctlBytes;
@@ -1399,12 +1401,12 @@ namespace PeterO.Mail {
 
     private static string GenerateBoundary(int num) {
       var sb = new StringBuilder();
-      const string hex = "0123456789ABCDEF";
+      const string ValueHex = "0123456789ABCDEF";
       sb.Append("=_Boundary");
       for (int i = 0; i < 4; ++i) {
         int b = (num >> 56) & 255;
-        sb.Append(hex[(b >> 4) & 15]);
-        sb.Append(hex[b & 15]);
+        sb.Append(ValueHex[(b >> 4) & 15]);
+        sb.Append(ValueHex[b & 15]);
         num <<= 8;
       }
       return sb.ToString();
@@ -1650,8 +1652,9 @@ namespace PeterO.Mail {
         AppendAscii(output, "Content-Type: " + builder + "\r\n");
       }
       if (!haveContentEncoding) {
-  AppendAscii(output, "Content-Transfer-Encoding: " + encodingString +
-          "\r\n");
+  AppendAscii(
+output,
+"Content-Transfer-Encoding: " + encodingString + "\r\n");
       }
       ICharacterEncoder bodyEncoder = null;
       switch (transferEnc) {
@@ -1800,7 +1803,7 @@ namespace PeterO.Mail {
           if (isUtf8) {
             // Downgrade the non-ASCII characters in the address
             var builder = new StringBuilder();
-            const string hex = "0123456789ABCDEF";
+            const string ValueHex = "0123456789ABCDEF";
             for (int i = atomText + 1; i < headerValue.Length; ++i) {
               if (headerValue[i] < 0x80) {
                 builder.Append(headerValue[i]);
@@ -1813,7 +1816,7 @@ namespace PeterO.Mail {
                 builder.Append('{');
                 for (int j = 20; j >= 0; j -= 4) {
                   if ((cp >> j) != 0) {
-                    builder.Append(hex[(cp >> j) & 15]);
+                    builder.Append(ValueHex[(cp >> j) & 15]);
                   }
                 }
                 builder.Append('}');
@@ -2259,7 +2262,7 @@ namespace PeterO.Mail {
           }
           if (!IsWellFormedBoundary(newBoundary)) {
             throw new
-  MessageDataException("Multipart message has an invalid boundary defined: "+
+  MessageDataException("Multipart message has an invalid boundary defined: " +
                 newBoundary);
           }
         }

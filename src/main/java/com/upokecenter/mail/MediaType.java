@@ -289,7 +289,7 @@ String str,
 StringBuilder sb) {
       int length = 1;
       int contin = 0;
-      String hex = "0123456789ABCDEF";
+      String ValueHex = "0123456789ABCDEF";
       length += name.length() + 12;
       int MaxLength = 76;
       if (sb.length() + name.length() + 9 + (str.length() * 3) <= MaxLength) {
@@ -347,8 +347,8 @@ StringBuilder sb) {
           }
           first = false;
           sb.append('%');
-          sb.append(hex.charAt((c >> 4) & 15));
-          sb.append(hex.charAt(c & 15));
+          sb.append(ValueHex.charAt((c >> 4) & 15));
+          sb.append(ValueHex.charAt(c & 15));
         } else if (c < 0x800) {
           length += 6;
           if (!first && length + 1 > MaxLength) {
@@ -366,11 +366,11 @@ StringBuilder sb) {
           int w = (byte)(0xc0 | ((c >> 6) & 0x1f));
           int x = (byte)(0x80 | (c & 0x3f));
           sb.append('%');
-          sb.append(hex.charAt((w >> 4) & 15));
-          sb.append(hex.charAt(w & 15));
+          sb.append(ValueHex.charAt((w >> 4) & 15));
+          sb.append(ValueHex.charAt(w & 15));
           sb.append('%');
-          sb.append(hex.charAt((x >> 4) & 15));
-          sb.append(hex.charAt(x & 15));
+          sb.append(ValueHex.charAt((x >> 4) & 15));
+          sb.append(ValueHex.charAt(x & 15));
         } else if (c < 0x10000) {
           length += 9;
           if (!first && length + 1 > MaxLength) {
@@ -389,14 +389,14 @@ StringBuilder sb) {
           int x = (byte)(0x80 | ((c >> 6) & 0x3f));
           int y = (byte)(0x80 | (c & 0x3f));
           sb.append('%');
-          sb.append(hex.charAt((w >> 4) & 15));
-          sb.append(hex.charAt(w & 15));
+          sb.append(ValueHex.charAt((w >> 4) & 15));
+          sb.append(ValueHex.charAt(w & 15));
           sb.append('%');
-          sb.append(hex.charAt((x >> 4) & 15));
-          sb.append(hex.charAt(x & 15));
+          sb.append(ValueHex.charAt((x >> 4) & 15));
+          sb.append(ValueHex.charAt(x & 15));
           sb.append('%');
-          sb.append(hex.charAt((y >> 4) & 15));
-          sb.append(hex.charAt(y & 15));
+          sb.append(ValueHex.charAt((y >> 4) & 15));
+          sb.append(ValueHex.charAt(y & 15));
         } else {
           length += 12;
           if (!first && length + 1 > MaxLength) {
@@ -414,17 +414,17 @@ StringBuilder sb) {
           int y = (byte)(0x80 | ((c >> 6) & 0x3f));
           int z = (byte)(0x80 | (c & 0x3f));
           sb.append('%');
-          sb.append(hex.charAt((w >> 4) & 15));
-          sb.append(hex.charAt(w & 15));
+          sb.append(ValueHex.charAt((w >> 4) & 15));
+          sb.append(ValueHex.charAt(w & 15));
           sb.append('%');
-          sb.append(hex.charAt((x >> 4) & 15));
-          sb.append(hex.charAt(x & 15));
+          sb.append(ValueHex.charAt((x >> 4) & 15));
+          sb.append(ValueHex.charAt(x & 15));
           sb.append('%');
-          sb.append(hex.charAt((y >> 4) & 15));
-          sb.append(hex.charAt(y & 15));
+          sb.append(ValueHex.charAt((y >> 4) & 15));
+          sb.append(ValueHex.charAt(y & 15));
           sb.append('%');
-          sb.append(hex.charAt((z >> 4) & 15));
-          sb.append(hex.charAt(z & 15));
+          sb.append(ValueHex.charAt((z >> 4) & 15));
+          sb.append(ValueHex.charAt(z & 15));
         }
       }
     }
@@ -525,11 +525,11 @@ int endIndex,
 StringBuilder builder,
 boolean httpRules) {
       int i = index;
-      String specials = "()<>@,;:\\\"/[]?=";
+      String ValueSpecials = "()<>@,;:\\\"/[]?=";
       while (i < endIndex) {
         char c = str.charAt(i);
         if (c <= 0x20 || c >= 0x7f || (c == (c & 0x7f) &&
-           specials.indexOf(c) >= 0)) {
+           ValueSpecials.indexOf(c) >= 0)) {
           break;
         }
         if (httpRules && (c == '{' || c == '}')) {

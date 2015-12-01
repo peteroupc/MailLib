@@ -47,10 +47,10 @@ import java.util.*;
      * @throws NullPointerException The parameter {@code x} or {@code y} is null.
      */
     public int compare(int[] x, int[] y) {
-      if ((x) == null) {
+      if (x == null) {
   throw new NullPointerException("x");
 }
-      if ((y) == null) {
+      if (y == null) {
   throw new NullPointerException("y");
 }
       // Sort by their start indexes

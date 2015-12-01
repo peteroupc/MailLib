@@ -8,7 +8,7 @@ namespace PeterO.Text.Encoders {
   internal class EncodingAscii : ICharacterEncoding {
     private class Decoder : ICharacterDecoder {
       public int ReadChar(IByteReader transform) {
-        if ((transform) == null) {
+        if (transform == null) {
   throw new ArgumentNullException("transform");
 }
         int b = transform.ReadByte();
@@ -20,7 +20,7 @@ namespace PeterO.Text.Encoders {
       public int Encode(
       int c,
       IWriter output) {
-        if ((output) == null) {
+        if (output == null) {
   throw new ArgumentNullException("output");
 }
         if (c < 0) {

@@ -556,9 +556,9 @@ public final void setSubject(String value) {
         seq = (msgidSequence++);
       }
       String guid = java.util.UUID.randomUUID().toString();
-      String hex = "0123456789abcdef";
+      String ValueHex = "0123456789abcdef";
       for (int i = 0; i < 16; ++i) {
-        builder.append(hex.charAt((int)(ticks & 15)));
+        builder.append(ValueHex.charAt((int)(ticks & 15)));
         ticks >>= 4;
       }
       for (int i = 0; i < guid.length(); ++i) {
@@ -567,7 +567,7 @@ public final void setSubject(String value) {
         }
       }
       for (int i = 0; i < 8; ++i) {
-        builder.append(hex.charAt(seq & 15));
+        builder.append(ValueHex.charAt(seq & 15));
         seq >>= 4;
       }
       List<NamedAddress> addresses = this.getFromAddresses();
@@ -578,7 +578,7 @@ public final void setSubject(String value) {
         seq = addresses.get(0).isGroup() ? addresses.get(0).getName().hashCode() :
           addresses.get(0).getAddress().toString().hashCode();
         for (int i = 0; i < 8; ++i) {
-          builder.append(hex.charAt(seq & 15));
+          builder.append(ValueHex.charAt(seq & 15));
           seq >>= 4;
         }
         builder.append(".local.invalid");
@@ -653,8 +653,9 @@ public final void setContentDisposition(ContentDisposition value) {
           this.RemoveHeader("content-disposition");
         } else if (!value.equals(this.contentDisposition)) {
           this.contentDisposition = value;
-     this.SetHeader("content-disposition",
-            this.contentDisposition.toString());
+     this.SetHeader(
+"content-disposition",
+this.contentDisposition.toString());
         }
       }
 
@@ -696,8 +697,9 @@ public final void setContentDisposition(ContentDisposition value) {
               value,
               endIndex,
               value.length(),
-              null) == value.length()) ? value.substring(startIndex, (startIndex)+(endIndex -
-                startIndex)) : "";
+              null) == value.length()) ? value.substring(
+startIndex, (
+startIndex)+(endIndex - startIndex)) : "";
         }
         mime |= name.equals("mime-version");
         if (value.indexOf("=?") >= 0) {
@@ -1247,7 +1249,7 @@ public final void setContentDisposition(ContentDisposition value) {
           allTextBytes = false;
           ++ctlBytes;
         } else if (body[i] == 0x7f ||
-            (body[i] < 0x20 && body[i] != 0x0d && body[i] != 0x0a && body[i]!=
+            (body[i] < 0x20 && body[i] != 0x0d && body[i] != 0x0a && body[i] !=
                 0x09)) {
           allTextBytes = false;
           ++ctlBytes;
@@ -1363,12 +1365,12 @@ public final void setContentDisposition(ContentDisposition value) {
 
     private static String GenerateBoundary(int num) {
       StringBuilder sb = new StringBuilder();
-      String hex = "0123456789ABCDEF";
+      String ValueHex = "0123456789ABCDEF";
       sb.append("=_Boundary");
       for (int i = 0; i < 4; ++i) {
         int b = (num >> 56) & 255;
-        sb.append(hex.charAt((b >> 4) & 15));
-        sb.append(hex.charAt(b & 15));
+        sb.append(ValueHex.charAt((b >> 4) & 15));
+        sb.append(ValueHex.charAt(b & 15));
         num <<= 8;
       }
       return sb.toString();
@@ -1605,8 +1607,9 @@ public final void setContentDisposition(ContentDisposition value) {
         AppendAscii(output, "Content-Type: " + builder + "\r\n");
       }
       if (!haveContentEncoding) {
-  AppendAscii(output, "Content-Transfer-Encoding: " + encodingString +
-          "\r\n");
+  AppendAscii(
+output,
+"Content-Transfer-Encoding: " + encodingString + "\r\n");
       }
       ICharacterEncoder bodyEncoder = null;
       switch (transferEnc) {
@@ -1755,7 +1758,7 @@ public final void setContentDisposition(ContentDisposition value) {
           if (isUtf8) {
             // Downgrade the non-ASCII characters in the address
             StringBuilder builder = new StringBuilder();
-            String hex = "0123456789ABCDEF";
+            String ValueHex = "0123456789ABCDEF";
             for (int i = atomText + 1; i < headerValue.length(); ++i) {
               if (headerValue.charAt(i) < 0x80) {
                 builder.append(headerValue.charAt(i));
@@ -1768,7 +1771,7 @@ public final void setContentDisposition(ContentDisposition value) {
                 builder.append('{');
                 for (int j = 20; j >= 0; j -= 4) {
                   if ((cp >> j) != 0) {
-                    builder.append(hex.charAt((cp >> j) & 15));
+                    builder.append(ValueHex.charAt((cp >> j) & 15));
                   }
                 }
                 builder.append('}');
@@ -2208,7 +2211,7 @@ public final void setContentDisposition(ContentDisposition value) {
           }
           if (!IsWellFormedBoundary(newBoundary)) {
             throw new
-  MessageDataException("Multipart message has an invalid boundary defined: "+
+  MessageDataException("Multipart message has an invalid boundary defined: " +
                 newBoundary);
           }
         }

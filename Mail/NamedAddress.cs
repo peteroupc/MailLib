@@ -28,7 +28,9 @@ namespace PeterO.Mail {
 
     /// <summary>Gets the email address associated with this
     /// object.</summary>
-    /// <value>The email address associated with this object.</value>
+    /// <value>The email address associated with this object. This value is
+    /// null if this object represents a group of addresses
+    /// instead.</value>
     public Address Address {
       get {
         return this.address;
@@ -154,6 +156,7 @@ tokener.GetTokens());
       this.name = displayName;
       this.groupAddresses = new List<NamedAddress>();
       this.address = new Address(address);
+      this.isGroup = false;
     }
 
     /// <summary>Initializes a new instance of the NamedAddress
@@ -174,6 +177,7 @@ tokener.GetTokens());
       this.name = displayName;
       this.groupAddresses = new List<NamedAddress>();
       this.address = address;
+      this.isGroup = false;
     }
 
     /// <summary>Initializes a new instance of the NamedAddress class using
@@ -201,6 +205,7 @@ tokener.GetTokens());
       }
       this.groupAddresses = new List<NamedAddress>();
       this.name = displayName;
+      this.isGroup = false;
     }
 
     /// <summary>Initializes a new instance of the NamedAddress class.
@@ -232,6 +237,7 @@ tokener.GetTokens());
           throw new ArgumentException("A mailbox in the list is a group");
         }
       }
+      this.address = null;
       this.groupAddresses = new List<NamedAddress>(mailboxes);
     }
 

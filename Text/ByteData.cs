@@ -4,8 +4,121 @@ namespace PeterO.Text {
   internal sealed class ByteData {
     private readonly byte[] array;
 
+    /// <summary>Decompresses a byte array compressed using the LZ4 format
+    /// (see "LZ4 Format Description" by Y Collet for more
+    /// information).</summary>
+    /// <param name='input'>Input byte array.</param>
+    /// <returns>Decompressed output byte array.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter "output" is
+    /// null.</exception>
+    public static byte[] DecompressLz4(byte[] input) {
+      var index = 0;
+      var copy = new byte[16];
+      var output = new byte[8 + (input.Length * 3 / 2)];
+      var outputPos = 0;
+      while (index < input.Length) {
+        int b = input[index];
+        int literalLength = (b >> 4) & 15;
+        int matchLength = b & 15;
+        ++index;
+        // Literals
+        if (literalLength == 15) {
+          while (index < input.Length) {
+            b = ((int)input[index]) & 0xff;
+            literalLength += b;
+            ++index;
+            if (b != 255) {
+              break;
+            }
+            if (index >= input.Length) {
+              throw new ArgumentException("Invalid LZ4");
+            }
+          }
+        }
+        if (index + literalLength - 1 >= input.Length) {
+          throw new ArgumentException("Invalid LZ4");
+        }
+        if (literalLength > 0) {
+          if (output.Length - outputPos < literalLength) {
+            int newSize = checked(outputPos + literalLength + 1000);
+            var newoutput = new byte[newSize];
+            Array.Copy(output, 0, newoutput, 0, outputPos);
+            output = newoutput;
+          }
+          Array.Copy(input, index, output, outputPos, literalLength);
+          outputPos += literalLength;
+          index += literalLength;
+        }
+        if (index == input.Length) {
+          break;
+        }
+        if (index + 1 >= input.Length) {
+          throw new ArgumentException("Invalid LZ4");
+        }
+        // Match copy
+        int offset = ((int)input[index]) & 0xff;
+        offset |= (((int)input[index + 1]) & 0xff) << 8;
+        index += 2;
+        if (offset == 0) {
+          throw new ArgumentException("Invalid LZ4");
+        }
+        if (matchLength == 15) {
+          while (index < input.Length) {
+            b = ((int)input[index]) & 0xff;
+            matchLength += b;
+            ++index;
+            if (b != 255) {
+              break;
+            }
+            if (index >= input.Length) {
+              throw new ArgumentException("Invalid LZ4");
+            }
+          }
+        }
+        matchLength += 4;
+        int pos = outputPos - offset;
+        if (pos < 0) {
+          throw new ArgumentException("Invalid LZ4");
+        }
+        if (matchLength > offset) {
+          throw new ArgumentException("Invalid LZ4");
+        }
+        if (matchLength > copy.Length) {
+          copy = new byte[matchLength];
+        }
+        if (pos > outputPos) {
+          throw new ArgumentException("pos (" + pos + ") is more than " +
+            output.Length);
+        }
+        if (matchLength < 0) {
+          throw new ArgumentException("matchLength (" + matchLength +
+            ") is less than " + 0);
+        }
+        if (matchLength > outputPos) {
+          throw new ArgumentException("matchLength (" + matchLength +
+            ") is more than " + outputPos);
+        }
+        if (outputPos - pos < matchLength) {
+          throw new ArgumentException("outputPos minus " + pos + " (" +
+            (outputPos - pos) + ") is less than " + matchLength);
+        }
+        Array.Copy(output, pos, copy, 0, matchLength);
+        if (output.Length - outputPos < matchLength) {
+          int newSize = checked(outputPos + matchLength + 1000);
+          var newoutput = new byte[newSize];
+          Array.Copy(output, 0, newoutput, 0, outputPos);
+          output = newoutput;
+        }
+        Array.Copy(copy, 0, output, outputPos, matchLength);
+        outputPos += matchLength;
+      }
+      var ret = new byte[outputPos];
+      Array.Copy(output, 0, ret, 0, outputPos);
+      return ret;
+    }
+
     public static ByteData Decompress(byte[] data) {
-      return new ByteData(Lz4.Decompress(data));
+      return new ByteData(DecompressLz4(data));
     }
 
     public ByteData(byte[] array) {
@@ -24,9 +137,8 @@ namespace PeterO.Text {
         case 0xfe: return false;
         case 0xff: return true;
         default: {
-            int t = cp & 8191;
-            int index = 136 + (b << 10) + (t >> 3);
-            return (this.array[index] & (1 << (t & 7))) > 0;
+            int index = 136 + (b << 10) + ((cp & 8191) >> 3);
+            return (this.array[index] & (1 << (cp & 7))) > 0;
           }
       }
     }

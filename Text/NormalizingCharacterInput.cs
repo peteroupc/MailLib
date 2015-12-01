@@ -42,6 +42,11 @@ namespace PeterO.Text {
     /// arbitrary order.</item></list>
     /// <para>For more information, see Standard Annex 15 at
     /// http://www.unicode.org/reports/tr15/ .</para>
+    /// <para><b>Thread safety:</b> This class is mutable; its properties
+    /// can be changed. None of its instance methods are designed to be
+    /// thread safe. Therefore, access to objects from this class must be
+    /// synchronized if multiple threads can access them at the same
+    /// time.</para>
     /// <para>NOTICE: While this class's source code is in the public
     /// domain, the class uses an internal class, called NormalizationData,
     /// that includes data derived from the Unicode Character Database. In
@@ -80,8 +85,7 @@ namespace PeterO.Text {
     /// sale, use or other dealings in these Data Files or Software without
     /// prior written authorization of the copyright
     /// holder.</para></summary>
-  public sealed class NormalizingCharacterInput : ICharacterInput
-  {
+  public sealed class NormalizingCharacterInput : ICharacterInput {
     internal static int DecompToBufferInternal(
 int ch,
 bool compat,
@@ -246,6 +250,18 @@ int index) {
       return retval;
     }
 
+    private static IList<int> GetChars(ICharacterInput input) {
+      var buffer = new int[64];
+      IList<int> ret = new List<int>(24);
+      var count = 0;
+      while ((count = input.Read(buffer, 0, buffer.Length)) > 0) {
+        for (int i = 0; i < count; ++i) {
+          ret.Add(buffer[i]);
+        }
+      }
+      return ret;
+    }
+
     /// <summary>Gets a list of normalized code points after reading from a
     /// string.</summary>
     /// <param name='str'>A string object.</param>
@@ -258,7 +274,7 @@ int index) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
-      return GetChars(new StringCharacterInput(str), form);
+      return GetChars(new NormalizingCharacterInput(str, form));
     }
 
     /// <summary>Gets a list of normalized code points after reading from a
@@ -274,16 +290,7 @@ int index) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }
-      var norm = new NormalizingCharacterInput(str, form);
-      var buffer = new int[64];
-      IList<int> ret = new List<int>(24);
-      var count = 0;
-      while ((count = norm.Read(buffer, 0, buffer.Length)) > 0) {
-        for (int i = 0; i < count; ++i) {
-          ret.Add(buffer[i]);
-        }
-      }
-      return ret;
+      return GetChars(new NormalizingCharacterInput(str, form));
     }
 
     private int lastQcsIndex;
@@ -309,10 +316,10 @@ int index) {
     /// C.</summary>
     /// <param name='str'>A string specifying the text to
     /// normalize.</param>
-  public NormalizingCharacterInput(
-string str) : this(
-str,
-Normalization.NFC) {
+    public NormalizingCharacterInput(
+  string str) : this(
+  str,
+  Normalization.NFC) {
     }
 
     /// <summary>Initializes a new instance of the
@@ -372,9 +379,9 @@ form) {
     /// normalizing the text.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='stream'/> is null.</exception>
- public NormalizingCharacterInput(
-ICharacterInput stream,
-Normalization form) {
+    public NormalizingCharacterInput(
+   ICharacterInput stream,
+   Normalization form) {
       if (stream == null) {
         throw new ArgumentNullException("stream");
       }
@@ -382,16 +389,16 @@ Normalization form) {
       this.iterator = stream;
       this.form = form;
       this.lastCharBuffer = new int[2];
-    this.compatMode = form == Normalization.NFKC || form ==
-        Normalization.NFKD;
+      this.compatMode = form == Normalization.NFKC || form ==
+          Normalization.NFKD;
     }
 
     /// <summary>Determines whether the text provided by a character input
     /// is normalized.</summary>
     /// <param name='chars'>A object that implements a streamable character
     /// input.</param>
-    /// <param name='form'>Specifies the normalization form to use when
-    /// normalizing the text.</param>
+    /// <param name='form'>Specifies the normalization form to
+    /// check.</param>
     /// <returns>True if the text is normalized; otherwise,
     /// false.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -402,13 +409,18 @@ Normalization form) {
       }
       IList<int> list = new List<int>();
       var ch = 0;
+      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
+      var norm = true;
       while ((ch = chars.ReadChar()) >= 0) {
         if ((ch & 0x1ff800) == 0xd800) {
           return false;
         }
+        if (norm && (ch & mask) != ch) {
+          norm = false;
+        }
         list.Add(ch);
       }
-      return IsNormalized(list, form);
+      return norm || IsNormalized(list, form);
     }
 
     private static bool NormalizeAndCheck(
@@ -461,9 +473,9 @@ Normalization form) {
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static bool IsNormalized(string str, Normalization form) {
-      if ((str) == null) {
-  throw new ArgumentNullException("str");
-}
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
       var nonQcsStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       var lastQcs = 0;
@@ -487,9 +499,11 @@ Normalization form) {
           // in this situation.
           isQcs = true;
         } else {
- isQcs = (c >= 0xf0000) ? (true) : (UnicodeDatabase.IsQuickCheckStarter(c,
-   form));
-}
+        isQcs = (c >= 0xf0000) ? true : (
+UnicodeDatabase.IsQuickCheckStarter(
+c,
+form));
+        }
         if (isQcs) {
           lastQcs = i;
         }
@@ -555,6 +569,22 @@ form)) {
       return i == start + length;
     }
 
+    /// <summary>Determines whether the given array of characters is in the
+    /// given Unicode normalization form.</summary>
+    /// <param name='charArray'>An array of Unicode code points.</param>
+    /// <param name='form'>Specifies the normalization form to use when
+    /// normalizing the text.</param>
+    /// <returns>True if the given list of characters is in the given
+    /// Unicode normalization form; otherwise, false.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter "charList" is
+    /// null.</exception>
+    public static bool IsNormalized(int[] charArray, Normalization form) {
+      if (charArray == null) {
+  throw new ArgumentNullException("charArray");
+}
+      return IsNormalized(new PartialArrayCharacterInput(charArray), form);
+    }
+
     /// <summary>Determines whether the given list of characters is in the
     /// given Unicode normalization form.</summary>
     /// <param name='charList'>A list of Unicode code points.</param>
@@ -577,9 +607,9 @@ form)) {
           return false;
         }
         var isQcs = false;
-   isQcs = (c & mask) == c && (i + 1 == charList.Count || (charList[i +
-          1] & mask) == charList[i + 1]) ? true :
-          UnicodeDatabase.IsQuickCheckStarter(c, form);
+        isQcs = (c & mask) == c && (i + 1 == charList.Count || (charList[i +
+               1] & mask) == charList[i + 1]) ? true :
+               UnicodeDatabase.IsQuickCheckStarter(c, form);
         if (isQcs) {
           lastQcs = i;
         }
@@ -589,11 +619,11 @@ form)) {
         } else if (nonQcsStart >= 0 && isQcs) {
           // We have at least one non-quick-check starter,
           // normalize these code points.
-  if (!NormalizeAndCheck(
-charList,
-nonQcsStart,
-i - nonQcsStart,
-form)) {
+          if (!NormalizeAndCheck(
+        charList,
+        nonQcsStart,
+        i - nonQcsStart,
+        form)) {
             return false;
           }
           nonQcsStart = -1;
@@ -627,27 +657,27 @@ form)) {
     private int lastCharPos;
 
     private void PrependOne(int c) {
-      if (lastCharPos + 1 > lastCharBuffer.Length) {
-        var newbuffer = new int[lastCharPos + 8];
-        Array.Copy(lastCharBuffer, 0, newbuffer, 0, lastCharPos);
-        lastCharBuffer = newbuffer;
+      if (this.lastCharPos + 1 > this.lastCharBuffer.Length) {
+        var newbuffer = new int[this.lastCharPos + 8];
+        Array.Copy(this.lastCharBuffer, 0, newbuffer, 0, this.lastCharPos);
+        this.lastCharBuffer = newbuffer;
       }
-      lastCharBuffer[lastCharPos++] = c;
+      this.lastCharBuffer[this.lastCharPos++] = c;
     }
 
     private void PrependTwo(int c1, int c2) {
-      if (lastCharPos + 2 > lastCharBuffer.Length) {
-        var newbuffer = new int[lastCharPos + 8];
-        Array.Copy(lastCharBuffer, 0, newbuffer, 0, lastCharPos);
-        lastCharBuffer = newbuffer;
+      if (this.lastCharPos + 2 > this.lastCharBuffer.Length) {
+        var newbuffer = new int[this.lastCharPos + 8];
+        Array.Copy(this.lastCharBuffer, 0, newbuffer, 0, this.lastCharPos);
+        this.lastCharBuffer = newbuffer;
       }
-      lastCharBuffer[lastCharPos++] = c2;
-      lastCharBuffer[lastCharPos++] = c1;
+      this.lastCharBuffer[this.lastCharPos++] = c2;
+      this.lastCharBuffer[this.lastCharPos++] = c1;
     }
 
     private int GetNextChar() {
       int ch;
-      if (this.lastCharPos>0) {
+      if (this.lastCharPos > 0) {
         --this.lastCharPos;
         ch = this.lastCharBuffer[this.lastCharPos];
         return ch;
@@ -683,16 +713,16 @@ form)) {
         throw new ArgumentNullException("chars");
       }
       if (index < 0) {
-      throw new ArgumentException("index (" + index + ") is less than " +
-          "0");
+        throw new ArgumentException("index (" + index + ") is less than " +
+            "0");
       }
       if (index > chars.Length) {
         throw new ArgumentException("index (" + index + ") is more than " +
           chars.Length);
       }
       if (length < 0) {
-    throw new ArgumentException("length (" + length + ") is less than " +
-          "0");
+        throw new ArgumentException("length (" + length + ") is less than " +
+              "0");
       }
       if (length > chars.Length) {
         throw new ArgumentException("length (" + length + ") is more than " +
@@ -713,7 +743,7 @@ form)) {
           if (c < 0) {
             return (total == 0) ? -1 : total;
           }
-          if (UnicodeDatabase.IsQuickCheckStarter(c, this.form)) {
+          if (c < 0x80 || UnicodeDatabase.IsQuickCheckStarter(c, this.form)) {
             if (this.form == Normalization.NFD ||
             this.form == Normalization.NFKD) {
               chars[index] = c;
@@ -793,11 +823,11 @@ form)) {
           if (this.lastQcsIndex > 0) {
             // Move unprocessed data to the beginning of
             // the buffer
-            #if DEBUG
+#if DEBUG
             if (this.endIndex < this.lastQcsIndex) {
               throw new ArgumentException("endIndex less than lastQcsIndex");
             }
-            #endif
+#endif
             Array.Copy(
 this.buffer,
 this.lastQcsIndex,
@@ -853,15 +883,18 @@ this.endIndex);
             this.form == Normalization.NFKD);
           var nextIsQCS = false;
           for (int i = this.endIndex - 1; i > this.lastQcsIndex; --i) {
-          if (UnicodeDatabase.IsQuickCheckStarter(this.buffer[i],
-              this.form)) {
+            if (
+  UnicodeDatabase.IsQuickCheckStarter(
+this.buffer[i],
+this.form)) {
               if (decompForm) {
                 this.lastQcsIndex = i;
                 haveNewQcs = true;
                 break;
               } else if (i + 1 < this.endIndex && (nextIsQCS ||
-         UnicodeDatabase.IsQuickCheckStarter(this.buffer[i + 1],
-                 this.form))) {
+         UnicodeDatabase.IsQuickCheckStarter(
+this.buffer[i + 1],
+this.form))) {
                 this.lastQcsIndex = i;
                 haveNewQcs = true;
                 break;
@@ -903,6 +936,38 @@ this.lastQcsIndex);
         this.processedIndex = this.lastQcsIndex;
       }
       return true;
+    }
+
+    private sealed class PartialArrayCharacterInput : ICharacterInput {
+      private readonly int endPos;
+      private readonly int[] array;
+      private int pos;
+
+      public PartialArrayCharacterInput(int[] array, int start, int length) {
+        this.array = array;
+        this.pos = start;
+        this.endPos = start + length;
+      }
+
+      public PartialArrayCharacterInput(int[] array) {
+        this.array = array;
+        this.pos = 0;
+        this.endPos = array.Length;
+      }
+
+      public int ReadChar() {
+        return (this.pos < this.endPos) ? this.array[this.pos++] : (-1);
+      }
+
+      public int Read(int[] buf, int offset, int unitCount) {
+        if (unitCount == 0) {
+          return 0;
+        }
+        int maxsize = Math.Min(unitCount, this.endPos - this.pos);
+        Array.Copy(this.array, this.pos, buf, offset, maxsize);
+        this.pos += maxsize;
+        return maxsize == 0 ? -1 : maxsize;
+      }
     }
   }
 }

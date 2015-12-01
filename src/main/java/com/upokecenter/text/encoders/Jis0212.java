@@ -4,10 +4,12 @@ package com.upokecenter.text.encoders;
 private Jis0212() {
 }
     private static final short[] table = new short[7211];
+
     static {
       System.arraycopy(method0(), 0, table, 0, 4096);
       System.arraycopy(method1(), 0, table, 4096, 3115);
     }
+
     public static int IndexToCodePoint(int index) {
       if (index < 0 || index >= 7211) {
  return -1;
@@ -15,6 +17,7 @@ private Jis0212() {
       int cp = ((int)table[index]) & 0xffff;
       return (cp == 0) ? -1 : cp;
     }
+
     private static short[] method0() {
       return new short[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -436,6 +439,7 @@ private Jis0212() {
         0x746d, 0x746e, 0x7471, 0x7472, 0x7480, 0x7481, 0x7485, 0x7486,
         0x7487, 0x7489, 0x748f, 0x7490, 0x7491, 0x7492, 0x7498, 0x7499 };
     }
+
     private static short[] method1() {
       return new short[] { 0x749a, 0x749c, 0x749f, 0x74a0, 0x74a1, 0x74a3,
         0x74a6, 0x74a8, 0x74a9, 0x74aa, 0x74ab, 0x74ae, 0x74af, 0x74b1,

@@ -189,6 +189,29 @@ The parameter  <i>str</i>
 ### IsNormalized
 
     public static bool IsNormalized(
+        int[] charArray,
+        PeterO.Text.Normalization form);
+
+Determines whether the given array of characters is in the given Unicode normalization form.
+
+<b>Parameters:</b>
+
+ * <i>charArray</i>: An array of Unicode code points.
+
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
+
+<b>Returns:</b>
+
+True if the given list of characters is in the given Unicode normalization form; otherwise, false.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter "charList" is null.
+
+### IsNormalized
+
+    public static bool IsNormalized(
         PeterO.Text.ICharacterInput chars,
         PeterO.Text.Normalization form);
 

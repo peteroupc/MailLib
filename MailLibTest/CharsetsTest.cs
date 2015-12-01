@@ -418,7 +418,8 @@ stringTemp);
       while (encoder.Encode(-1, aw) >= 0) {
       }
       IByteReader reader = DataIO.ToByteReader(aw.ToArray());
-      foreach (var ch in list) {
+      for (var i = 0;i<list.Count; ++i) {
+        int ch = list[i];
         int c = decoder.ReadChar(reader);
         if (c != ch) {
           Assert.Fail(name + ": expected " + ch + ", was " + c);
@@ -485,6 +486,69 @@ stringTemp);
     [TestMethod]
     public void TestUtf8RoundTrip() {
       TestUtfRoundTrip(Encodings.GetEncoding("utf-8", true));
+    }
+
+    public static IList<byte[]> GenerateIllegalUtf8Sequences() {
+      List<byte[]> list = new List<byte[]>();
+      // Generate illegal single bytes
+      for (int i = 0x80; i <= 0xff; ++i) {
+        if (i < 0xc2 || i > 0xf4) {
+          list.Add(new byte[] { (byte)i, 0x80 });
+        }
+        list.Add(new[] { (byte)i });
+      }
+      list.Add(new byte[] { 0xe0, 0xa0 });
+      list.Add(new byte[] { 0xe1, 0x80 });
+      list.Add(new byte[] { 0xef, 0x80 });
+      list.Add(new byte[] { 0xf0, 0x90 });
+      list.Add(new byte[] { 0xf1, 0x80 });
+      list.Add(new byte[] { 0xf3, 0x80 });
+      list.Add(new byte[] { 0xf4, 0x80 });
+      list.Add(new byte[] { 0xf0, 0x90, 0x80 });
+      list.Add(new byte[] { 0xf1, 0x80, 0x80 });
+      list.Add(new byte[] { 0xf3, 0x80, 0x80 });
+      list.Add(new byte[] { 0xf4, 0x80, 0x80 });
+      // Generate illegal multibyte sequences
+      for (int i = 0x00; i <= 0xff; ++i) {
+        if (i < 0x80 || i > 0xbf) {
+          list.Add(new byte[] { 0xc2, (byte)i });
+          list.Add(new byte[] { 0xdf, (byte)i });
+          list.Add(new byte[] { 0xe1, (byte)i, 0x80 });
+          list.Add(new byte[] { 0xef, (byte)i, 0x80 });
+          list.Add(new byte[] { 0xf1, (byte)i, 0x80, 0x80 });
+          list.Add(new byte[] { 0xf3, (byte)i, 0x80, 0x80 });
+          list.Add(new byte[] { 0xe0, 0xa0, (byte)i });
+          list.Add(new byte[] { 0xe1, 0x80, (byte)i });
+          list.Add(new byte[] { 0xef, 0x80, (byte)i });
+          list.Add(new byte[] { 0xf0, 0x90, (byte)i, 0x80 });
+          list.Add(new byte[] { 0xf1, 0x80, (byte)i, 0x80 });
+          list.Add(new byte[] { 0xf3, 0x80, (byte)i, 0x80 });
+          list.Add(new byte[] { 0xf4, 0x80, (byte)i, 0x80 });
+          list.Add(new byte[] { 0xf0, 0x90, 0x80, (byte)i });
+          list.Add(new byte[] { 0xf1, 0x80, 0x80, (byte)i });
+          list.Add(new byte[] { 0xf3, 0x80, 0x80, (byte)i });
+          list.Add(new byte[] { 0xf4, 0x80, 0x80, (byte)i });
+        }
+        if (i < 0xa0 || i > 0xbf) {
+          list.Add(new byte[] { 0xe0, (byte)i, 0x80 });
+        }
+        if (i < 0x90 || i > 0xbf) {
+          list.Add(new byte[] { 0xf0, (byte)i, 0x80, 0x80 });
+        }
+        if (i < 0x80 || i > 0x8f) {
+          list.Add(new byte[] { 0xf4, (byte)i, 0x80, 0x80 });
+        }
+      }
+      return list;
+    }
+
+    [TestMethod]
+    public void TestUtf8IllegalBytes() {
+      foreach(byte[] seq in GenerateIllegalUtf8Sequences()) {
+        string str = Encodings.DecodeToString(Encodings.UTF8, seq);
+        Assert.IsTrue(str.Length>0);
+        Assert.IsTrue(str.IndexOf('\ufffd')==0);
+      }
     }
 
     [TestMethod]

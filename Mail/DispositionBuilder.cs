@@ -18,8 +18,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets or sets this value's disposition type, such value,
     /// such as "inline" or "attachment".</summary>
-    /// <value>This value&apos;s disposition type, such value, such as
-    /// &quot;inline&quot; or &quot;attachment&quot;.</value>
+    /// <value>This value&#x27;s disposition type, such value, such as
+    /// &#x22;inline&#x22; or &#x22;attachment&#x22;.</value>
     public string DispositionType {
       get {
         return this.type;
@@ -53,7 +53,15 @@ namespace PeterO.Mail {
     /// <summary>Initializes a new instance of the DispositionBuilder
     /// class.</summary>
     /// <param name='type'>A string object.</param>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='type'/> is null.</exception>
     public DispositionBuilder(string type) {
+      if (type == null) {
+  throw new ArgumentNullException("type");
+}
+if (type.Length == 0) {
+  throw new ArgumentException("type" + " is empty.");
+}
       this.parameters = new Dictionary<string, string>();
       this.SetDispositionType(type);
     }
@@ -61,6 +69,8 @@ namespace PeterO.Mail {
     /// <summary>Gets a value indicating whether this is a text media
     /// type.</summary>
     /// <value>True if this is a text media type; otherwise, false.</value>
+[Obsolete("Irrelevant for content dispositions; will be removed in the future."
+)]
     public bool IsText {
       get {
         return this.DispositionType.Equals("text");
@@ -71,6 +81,8 @@ namespace PeterO.Mail {
     /// type.</summary>
     /// <value>True if this is a multipart media type; otherwise,
     /// false.</value>
+[Obsolete("Irrelevant for content dispositions; will be removed in the future."
+)]
     public bool IsMultipart {
       get {
         return this.DispositionType.Equals("multipart");

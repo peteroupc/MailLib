@@ -1,56 +1,56 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PeterO.Text;
+package com.upokecenter.test; import com.upokecenter.util.*;
 
-namespace MailLibTest {
-  [TestClass]
+import java.util.*;
+
+import org.junit.Assert;
+import org.junit.Test;
+import com.upokecenter.text.*;
+
   public class NormalizationTest {
-    public static string[] SplitAt(string str, string delimiter) {
+    public static String[] SplitAt(String str, String delimiter) {
       if (delimiter == null) {
-        throw new ArgumentNullException("delimiter");
+        throw new NullPointerException("delimiter");
       }
-      if (delimiter.Length == 0) {
-        throw new ArgumentException("delimiter is empty.");
+      if (delimiter.length() == 0) {
+        throw new IllegalArgumentException("delimiter is empty.");
       }
-      if (string.IsNullOrEmpty(str)) {
-        return new[] { String.Empty };
+      if (((str) == null || (str).length() == 0)) {
+        return new String[] { "" };
       }
-      var index = 0;
-      var first = true;
-      List<string> strings = null;
-      int delimLength = delimiter.Length;
+      int index = 0;
+      boolean first = true;
+      ArrayList<String> strings = null;
+      int delimLength = delimiter.length();
       while (true) {
-        int index2 = str.IndexOf(delimiter, index, StringComparison.Ordinal);
+        int index2 = str.indexOf(delimiter, index);
         if (index2 < 0) {
           if (first) {
-            var strret = new string[1];
+            String[] strret = new String[1];
             strret[0] = str;
             return strret;
           }
-          strings = strings ?? (new List<string>());
-          strings.Add(str.Substring(index));
+          strings = (strings == null) ? ((new ArrayList<String>())) : strings;
+          strings.add(str.substring(index));
           break;
         } else {
           first = false;
-          string newstr = str.Substring(index, (index2) - index);
-          strings = strings ?? (new List<string>());
-          strings.Add(newstr);
+          String newstr = str.substring(index, (index)+((index2) - index));
+          strings = (strings == null) ? ((new ArrayList<String>())) : strings;
+          strings.add(newstr);
           index = index2 + delimLength;
         }
       }
-      return (string[])strings.ToArray();
+      return strings.toArray(new String[] { });
     }
 
-    public static int[] GetCodePoints(string cp) {
-      var index = 0;
-      var state = 0;
-      var codePoint = 0;
-      var retArray = new int[8];
-      var count = 0;
-      while (index <= cp.Length) {
-        int c = (index >= cp.Length) ? -1 : (int)cp[index];
+    public static int[] GetCodePoints(String cp) {
+      int index = 0;
+      int state = 0;
+      int codePoint = 0;
+      int[] retArray = new int[8];
+      int count = 0;
+      while (index <= cp.length()) {
+        int c = (index >= cp.length()) ? -1 : (int)cp.charAt(index);
         ++index;
         switch (state) {
           case 0:
@@ -76,9 +76,9 @@ namespace MailLibTest {
               codePoint <<= 4;
               codePoint |= c - 0x30;
             } else {
-              if (count == retArray.Length) {
-                var newArray = new int[retArray.Length * 2];
-                Array.Copy(retArray, 0, newArray, 0, count);
+              if (count == retArray.length) {
+                int[] newArray = new int[retArray.length * 2];
+                System.arraycopy(retArray, 0, newArray, 0, count);
                 retArray = newArray;
               }
               retArray[count++] = codePoint;
@@ -88,73 +88,73 @@ namespace MailLibTest {
             break;
         }
       }
-      var newArray2 = new int[count];
-      Array.Copy(retArray, 0, newArray2, 0, count);
+      int[] newArray2 = new int[count];
+      System.arraycopy(retArray, 0, newArray2, 0, count);
       return newArray2;
     }
 
-    public static string ToString(int[] array) {
-      var builder = new StringBuilder();
-      var first = true;
-      builder.Append("[");
-      foreach (int v in array) {
+    public static String toString(int[] array) {
+      StringBuilder builder = new StringBuilder();
+      boolean first = true;
+      builder.append("[");
+      for (int v : array) {
         if (!first) {
-          builder.Append(", ");
+          builder.append(", ");
         }
-        builder.Append("" + v);
+        builder.append("" + v);
         first = false;
       }
-      builder.Append("]");
-      return builder.ToString();
+      builder.append("]");
+      return builder.toString();
     }
 
-    public static string ToCodePointString(int[] array) {
-      var builder = new StringBuilder();
-      foreach (int v in array) {
+    public static String ToCodePointString(int[] array) {
+      StringBuilder builder = new StringBuilder();
+      for (int v : array) {
         if (v <= 0xffff) {
-          builder.Append((char)v);
+          builder.append((char)v);
         } else if (v <= 0x10ffff) {
-          builder.Append((char)((((v - 0x10000) >> 10) & 0x3ff) + 0xd800));
-          builder.Append((char)(((v - 0x10000) & 0x3ff) + 0xdc00));
+          builder.append((char)((((v - 0x10000) >> 10) & 0x3ff) + 0xd800));
+          builder.append((char)(((v - 0x10000) & 0x3ff) + 0xdc00));
         }
       }
-      return builder.ToString();
+      return builder.toString();
     }
 
-    public static void AssertEqual(string expectedStr, string actualStr,
-      string msg) {
-      if (!expectedStr.Equals(actualStr)) {
-        Assert.AreEqual(expectedStr, actualStr, msg);
+    public static void AssertEqual(String expectedStr, String actualStr,
+      String msg) {
+      if (!expectedStr.equals(actualStr)) {
+        Assert.assertEquals(msg, expectedStr, actualStr);
       }
     }
-    public static void AssertEqual(int expected, int actual, string msg) {
+    public static void AssertEqual(int expected, int actual, String msg) {
       if (expected != actual) {
-        Assert.AreEqual(expected, actual, msg);
+        Assert.assertEquals(msg, expected, actual);
       }
     }
-    public static void AssertEqual(int[] expected, int[] actual, string msg) {
-      if (expected.Length != actual.Length) {
-        Assert.Fail(
-          "\nexpected: " + ToString(expected) + "\n" + "\nwas:      " +
-            ToString(actual) + "\n" + msg);
+    public static void AssertEqual(int[] expected, int[] actual, String msg) {
+      if (expected.length != actual.length) {
+        Assert.fail(
+          "\nexpected: " + toString(expected) + "\n" + "\nwas:      " +
+            toString(actual) + "\n" + msg);
       }
-      for (int i = 0; i < expected.Length; ++i) {
+      for (int i = 0; i < expected.length; ++i) {
         if (expected[i] != actual[i]) {
-          Assert.Fail("\nexpected: " + ToString(expected) + "\n" +
-                "\nwas:      " + ToString(actual) + "\n" + msg);
+          Assert.fail("\nexpected: " + toString(expected) + "\n" +
+                "\nwas:      " + toString(actual) + "\n" + msg);
         }
       }
     }
 
-    private sealed class NormResult {
-      private readonly int[] orig;
-      private readonly string origstr;
-      private readonly string nfc;
-      private readonly string nfd;
-      private readonly string nfkc;
-      private readonly string nfkd;
-      private readonly string line;
-      public NormResult(string column, string line) {
+    private static final class NormResult {
+      private final int[] orig;
+      private final String origstr;
+      private final String nfc;
+      private final String nfd;
+      private final String nfkc;
+      private final String nfkd;
+      private final String line;
+      public NormResult (String column, String line) {
         this.line = line;
         this.orig = GetCodePoints(column);
         this.origstr = ToCodePointString(this.orig);
@@ -170,80 +170,80 @@ namespace MailLibTest {
             this.nfc,
             Normalization.NFC)) {
           {
-            Assert.Fail(line);
+            Assert.fail(line);
           }
         }
         if (!NormalizingCharacterInput.IsNormalized(
             this.nfd,
             Normalization.NFD)) {
           {
-            Assert.Fail(line);
+            Assert.fail(line);
           }
         }
         if (!NormalizingCharacterInput.IsNormalized(
             this.nfkc,
             Normalization.NFKC)) {
           {
-            Assert.Fail(line);
+            Assert.fail(line);
           }
         }
         if (!NormalizingCharacterInput.IsNormalized(
             this.nfkd,
             Normalization.NFKD)) {
           {
-            Assert.Fail(line);
+            Assert.fail(line);
           }
         }
       }
-      public void AssertNFC(params NormResult[] other) {
-        foreach (NormResult o in other)
+      public void AssertNFC(NormResult... other) {
+        for (NormResult o : other)
           AssertEqual(this.origstr, o.nfc, this.line);
       }
-      public void AssertNFD(params NormResult[] other) {
-        foreach (NormResult o in other)
+      public void AssertNFD(NormResult... other) {
+        for (NormResult o : other)
           AssertEqual(this.origstr, o.nfd, this.line);
       }
-      public void AssertNFKC(params NormResult[] other) {
-        foreach (NormResult o in other)
+      public void AssertNFKC(NormResult... other) {
+        for (NormResult o : other)
           AssertEqual(this.origstr, o.nfkc, this.line);
       }
-      public void AssertNFKD(params NormResult[] other) {
-        foreach (NormResult o in other)
+      public void AssertNFKD(NormResult... other) {
+        for (NormResult o : other)
           AssertEqual(this.origstr, o.nfkd, this.line);
       }
     }
 
-    [TestMethod]
+    @Test
     public void NormTest() {
-      var handled = new bool[0x110000];
-      string[] lines = NetHelper.DownloadOrOpenAllLines(
+      boolean[] handled = new boolean[0x110000];
+      String[] lines = NetHelper.DownloadOrOpenAllLines(
         "http://www.unicode.org/Public/UNIDATA/NormalizationTest.txt",
         "NormalizationTest.txt");
       if ((lines) == null) {
- Assert.Fail();
+ Assert.fail();
  }
-      Assert.IsTrue(lines.Length>0);
-      var part1 = false;
-      foreach(string lineItem in lines) {
-        string line = lineItem;
-        int hash = line.IndexOf("#", StringComparison.Ordinal);
+      if (!(lines.length>0))Assert.fail();
+      boolean part1 = false;
+      for (String lineItem : lines) {
+        String line = lineItem;
+        int hash = line.indexOf("#");
         if (hash >= 0) {
-          line = line.Substring(0, hash);
+          line = line.substring(0, hash);
         }
-        if (line.StartsWith("@", StringComparison.Ordinal)) {
-          part1 = (line.IndexOf("@Part1", StringComparison.Ordinal) == 0);
+        if (line.startsWith("@")) {
+          part1 = (line.indexOf("@Part1") == 0);
           continue;
         }
-        if (line.Length == 0) {
+        if (line.length() == 0) {
           continue;
         }
-        string[] columns = SplitAt(line,";");
+        String[] columns = SplitAt(line,";");
         int[] cps = GetCodePoints(columns[0]);
         if (part1) {
           handled[cps[0]] = true;
         }
-        var nr = new NormResult[5];
-        for (var i = 0; i < 5; ++i) {
+        NormResult[] nr = new NormResult[5];
+        for (int i = 0; i < 5; ++i) {
           nr[i] = new NormResult(columns[i], line);
         }
         nr[1].AssertNFC(nr[0], nr[1], nr[2]);
@@ -255,10 +255,10 @@ namespace MailLibTest {
         nr[3].AssertNFKC(nr[0], nr[1], nr[2]);
         nr[3].AssertNFKC(nr[3], nr[4]);
       }
-      var cptemp = new char[2];
+      char[] cptemp = new char[2];
       // Individual code points that don't appear in Part 1 of the
       // test will normalize to themselves in all four normalization forms
-      for (int i = 0; i < handled.Length; ++i) {
+      for (int i = 0; i < handled.length; ++i) {
         if ((i & 0xf800) == 0xd800) {
           // skip surrogate code points
           continue;
@@ -270,23 +270,23 @@ namespace MailLibTest {
           } else {
             cptemp[0] = (char)i;
           }
-          string cpstr = new String(cptemp, 0, (i >= 0x10000 ? 2 : 1));
-          string imsg = "" + i;
+          String cpstr = new String(cptemp, 0, (i >= 0x10000 ? 2 : 1));
+          String imsg = "" + i;
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                Normalization.NFC)) {
-            Assert.Fail(imsg);
+            Assert.fail(imsg);
           }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                Normalization.NFD)) {
-            Assert.Fail(imsg);
+            Assert.fail(imsg);
           }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                 Normalization.NFKC)) {
-            Assert.Fail(imsg);
+            Assert.fail(imsg);
           }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                 Normalization.NFKD)) {
-            Assert.Fail(imsg);
+            Assert.fail(imsg);
           }
           AssertEqual(cpstr, NormalizingCharacterInput.Normalize(
             cpstr,
@@ -301,4 +301,3 @@ namespace MailLibTest {
       }
     }
   }
-}

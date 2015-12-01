@@ -1,35 +1,80 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
 
-import java.util.*;
-
-import com.upokecenter.mail.*;
 import org.junit.Assert;
 import org.junit.Test;
+import com.upokecenter.mail.*;
 
   public class DispositionBuilderTest {
     @Test
     public void TestConstructor() {
-      // not implemented yet
+      String stringNull = null;
+      ContentDisposition dispNull = null;
+      try {
+Assert.assertEquals(null, new DispositionBuilder(stringNull));
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        System.out.println(ex.getMessage());
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+Assert.assertEquals(null, new DispositionBuilder(dispNull));
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        System.out.println(ex.getMessage());
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+Assert.assertEquals(null, new DispositionBuilder(""));
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+        System.out.println(ex.getMessage());
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestDispositionType() {
-      // not implemented yet
-    }
-    @Test
-    public void TestIsMultipart() {
-      // not implemented yet
-    }
-    @Test
-    public void TestIsText() {
-      // not implemented yet
+      DispositionBuilder db = new DispositionBuilder();
+      db.SetDispositionType("inline");
+      Assert.assertEquals("inline", db.getDispositionType());
     }
     @Test
     public void TestRemoveParameter() {
-      // not implemented yet
+      try {
+        new DispositionBuilder().RemoveParameter(null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        System.out.println(ex.getMessage());
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestSetDispositionType() {
-      // not implemented yet
+      try {
+        new DispositionBuilder().SetDispositionType(null);
+        Assert.fail("Should have failed");
+      } catch (NullPointerException ex) {
+        System.out.println(ex.getMessage());
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
+      try {
+        new DispositionBuilder().SetDispositionType("");
+        Assert.fail("Should have failed");
+      } catch (IllegalArgumentException ex) {
+        System.out.println(ex.getMessage());
+      } catch (Exception ex) {
+        Assert.fail(ex.toString());
+        throw new IllegalStateException("", ex);
+      }
     }
     @Test
     public void TestSetParameter() {

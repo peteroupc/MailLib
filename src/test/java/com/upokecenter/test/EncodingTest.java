@@ -7,13 +7,13 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import java.io.*;
-
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 import com.upokecenter.text.*;
+
+import java.util.*;
 
   public class EncodingTest {
     public static String MailNamespace() {
@@ -210,48 +210,6 @@ import com.upokecenter.text.*;
       return sb.toString();
     }
 
-    private static void TestParseDomain(String str, String expected) {
-      if (!(str.length() == (Integer)Reflect.InvokeStatic(MailNamespace() +
-                    ".HeaderParser", "ParseDomain", str, 0, str.length(), null)))Assert.fail();
-      Assert.assertEquals(expected, (String)Reflect.InvokeStatic(MailNamespace() +
-                    ".HeaderParserUtility", "ParseDomain", str, 0, str.length()));
-    }
-
-    private static void TestParseLocalPart(String str, String expected) {
-      if (!(str.length() == (Integer)Reflect.InvokeStatic(MailNamespace() +
-                 ".HeaderParser" , "ParseLocalPart" , str, 0, str.length(),
-                    null)))Assert.fail();
-      Assert.assertEquals(expected, (String)Reflect.InvokeStatic(MailNamespace() +
-                ".HeaderParserUtility" , "ParseLocalPart" , str, 0,
-                    str.length()));
-    }
-
-    @Test
-    public void TestParseDomainAndLocalPart() {
-      TestParseDomain("x", "x");
-      TestParseLocalPart("x", "x");
-      TestParseLocalPart("\"" + "\"", "");
-      TestParseDomain("x.example", "x.example");
-      TestParseLocalPart("x.example", "x.example");
-      TestParseLocalPart("x.example\ud800\udc00.example.com",
-                    "x.example\ud800\udc00.example.com");
-      TestParseDomain("x.example\ud800\udc00.example.com",
-                    "x.example\ud800\udc00.example.com");
-      TestParseDomain("x.example.com", "x.example.com");
-      TestParseLocalPart("x.example.com", "x.example.com");
-      TestParseLocalPart("\"(not a comment)\"", "(not a comment)");
-      TestParseLocalPart("(comment1) x (comment2)", "x");
-      TestParseLocalPart("(comment1) example (comment2) . (comment3) com",
-                    "example.com");
-      TestParseDomain("(comment1) x (comment2)", "x");
-      TestParseDomain("(comment1) example (comment2) . (comment3) com",
-                    "example.com");
-      TestParseDomain("(comment1) [x] (comment2)", "[x]");
-      TestParseDomain("(comment1) [a.b.c.d] (comment2)", "[a.b.c.d]");
-      TestParseDomain("[]", "[]");
-      TestParseDomain("[a .\r\n b. c.d ]", "[a.b.c.d]");
-    }
-
     public static void TestWordWrapOne(String firstWord, String nextWords,
                     String expected) {
       Object ww = Reflect.Construct(MailNamespace() + ".WordWrapEncoder",
@@ -271,14 +229,23 @@ import com.upokecenter.text.*;
     @Test
     public void TestHeaderFields() {
       String testString =
-
-  "Joe P Customer <customer@example.com>, Jane W Customer <jane@example.com>"
-        ;
-      if (testString.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-                    ".HeaderParser", "ParseMailboxList", testString, 0,
-                    testString.length(), null)) {
-        Assert.fail(testString);
-      }
+       "From: Joe P Customer <customer@example.com>, " +
+       "Jane W Customer <jane@example.com>\r\n\r\nTest";
+      Message msg = MessageTest.MessageFromString(testString);
+      List<NamedAddress> addresses = msg.getFromAddresses();
+      Assert.assertEquals(2, addresses.size());
+      {
+String stringTemp = addresses.get(0).toString();
+Assert.assertEquals(
+"Joe P Customer <customer@example.com>",
+stringTemp);
+}
+      {
+String stringTemp = addresses.get(1).toString();
+Assert.assertEquals(
+"Jane W Customer <jane@example.com>",
+stringTemp);
+}
     }
 
     @Test
@@ -296,29 +263,10 @@ import com.upokecenter.text.*;
     @Test
     public void TestAddressInternal() {
       try {
-        Reflect.Construct(MailNamespace() + ".Address", null, "example.com");
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Construct(MailNamespace() + ".Address", "local", null);
-        Assert.fail("Should have failed");
-      } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Reflect.Construct(MailNamespace() + ".Address",
-                    EncodingTest.Repeat("local", 200), "example.com");
-        Assert.fail("Should have failed");
+Assert.assertEquals(null, new Address(EncodingTest.Repeat("local" , 200) +
+  "@example.com"));
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -353,7 +301,7 @@ System.out.println(ex.getMessage());
       try {
         MessageTest.MessageFromString(msgString);
       } catch (MessageDataException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);

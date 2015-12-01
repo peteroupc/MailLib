@@ -68,8 +68,8 @@ namespace Test {
         DataUtilities.CodePointAt(null, 0);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -83,8 +83,10 @@ Console.WriteLine(ex.Message);
       Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\udc00X", 0));
       Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\ud800\ud800", 0));
       Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\udc00\ud800", 0));
-  Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0));
-  Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0));
+   Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\ud800\ud800\udc00",
+        0));
+   Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\udc00\ud800\udc00",
+        0));
       Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\udc00\udc00", 0));
       Assert.AreEqual(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0));
       Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\ud800", 0, 0));
@@ -93,8 +95,10 @@ Console.WriteLine(ex.Message);
       Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\udc00X", 0, 0));
       Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\ud800\ud800", 0, 0));
       Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\udc00\ud800", 0, 0));
-Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0,0));
-Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,0));
+Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0,
+        0));
+Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,
+        0));
       Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\udc00\udc00", 0, 0));
       Assert.AreEqual(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0, 0));
 
@@ -103,9 +107,11 @@ Assert.AreEqual(0xfffd, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,0));
       Assert.AreEqual(0xd800, DataUtilities.CodePointAt("\ud800X", 0, 1));
       Assert.AreEqual(0xdc00, DataUtilities.CodePointAt("\udc00X", 0, 1));
       Assert.AreEqual(0xd800, DataUtilities.CodePointAt("\ud800\ud800", 0, 1));
-Assert.AreEqual(0xd800, DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0,1));
+Assert.AreEqual(0xd800, DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0,
+        1));
       Assert.AreEqual(0xdc00, DataUtilities.CodePointAt("\udc00\ud800", 0, 1));
-Assert.AreEqual(0xdc00, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,1));
+Assert.AreEqual(0xdc00, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,
+        1));
       Assert.AreEqual(0xdc00, DataUtilities.CodePointAt("\udc00\udc00", 0, 1));
       Assert.AreEqual(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0, 1));
 
@@ -114,9 +120,11 @@ Assert.AreEqual(0xdc00, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,1));
       Assert.AreEqual(-1, DataUtilities.CodePointAt("\ud800X", 0, 2));
       Assert.AreEqual(-1, DataUtilities.CodePointAt("\udc00X", 0, 2));
       Assert.AreEqual(-1, DataUtilities.CodePointAt("\ud800\ud800", 0, 2));
-   Assert.AreEqual(-1, DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0, 2));
+    Assert.AreEqual(-1, DataUtilities.CodePointAt("\ud800\ud800\udc00" , 0,
+        2));
       Assert.AreEqual(-1, DataUtilities.CodePointAt("\udc00\ud800", 0, 2));
-   Assert.AreEqual(-1, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0, 2));
+    Assert.AreEqual(-1, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,
+        2));
       Assert.AreEqual(-1, DataUtilities.CodePointAt("\udc00\udc00", 0, 2));
       Assert.AreEqual(0x10000, DataUtilities.CodePointAt("\ud800\udc00", 0, 2));
     }
@@ -126,8 +134,8 @@ Assert.AreEqual(0xdc00, DataUtilities.CodePointAt("\udc00\ud800\udc00" , 0,1));
         DataUtilities.CodePointBefore(null, 0);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -139,7 +147,7 @@ Console.WriteLine(ex.Message);
       Assert.AreEqual(1, Math.Sign(DataUtilities.CodePointCompare("A", null)));
       Assert.AreEqual(0, Math.Sign(DataUtilities.CodePointCompare(null, null)));
       {
-     long numberTemp = Math.Sign(DataUtilities.CodePointCompare("abc" , "abc"
+        long numberTemp = Math.Sign(DataUtilities.CodePointCompare("abc", "abc"
 ));
         Assert.AreEqual(0, numberTemp);
       }
@@ -179,9 +187,9 @@ DataUtilities.CodePointCompare(
       Assert.IsTrue(
         DataUtilities.CodePointCompare(
           "a\ud800\udc00",
-          "a\ud800\udc00") ==0);
-      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800", "a\ud800") ==0);
-      Assert.IsTrue(DataUtilities.CodePointCompare("a\udc00", "a\udc00") ==0);
+          "a\ud800\udc00") == 0);
+      Assert.IsTrue(DataUtilities.CodePointCompare("a\ud800", "a\ud800") == 0);
+      Assert.IsTrue(DataUtilities.CodePointCompare("a\udc00", "a\udc00") == 0);
       Assert.IsTrue(
         DataUtilities.CodePointCompare(
           "a\ud800\udc00",
@@ -209,8 +217,8 @@ DataUtilities.CodePointCompare(
         DataUtilities.GetUtf8Bytes(null, true);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -218,8 +226,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8Bytes("\ud800", false);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -227,8 +235,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8Bytes("\udc00", false);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -236,8 +244,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8Bytes("\ud800X", false);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -245,8 +253,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8Bytes("\udc00X", false);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -254,8 +262,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8Bytes("\ud800\ud800", false);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -263,8 +271,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8Bytes("\udc00\ud800", false);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -272,8 +280,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8Bytes("\udc00\ud800\udc00", false);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -281,8 +289,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8Bytes("\ud800\ud800\udc00", false);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -290,8 +298,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8Bytes("\udc00\udc00", false);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -335,8 +343,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8Length(null, true);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -345,16 +353,16 @@ Console.WriteLine(ex.Message);
       try {
         DataUtilities.GetUtf8Length(null, true);
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString()); throw new
           InvalidOperationException(String.Empty, ex);
       }
       try {
         DataUtilities.GetUtf8Length(null, false);
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString()); throw new
           InvalidOperationException(String.Empty, ex);
       }
@@ -363,84 +371,85 @@ Console.WriteLine(ex.Message);
       Assert.AreEqual(6, DataUtilities.GetUtf8Length("\u3000\u3000", true));
       Assert.AreEqual(6, DataUtilities.GetUtf8Length("\ud800\ud800", true));
       Assert.AreEqual(-1, DataUtilities.GetUtf8Length("\ud800\ud800", false));
+      long numberTemp;
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\ud800", false);
+        numberTemp = DataUtilities.GetUtf8Length("\ud800", false);
         Assert.AreEqual(-1, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\udc00", false);
+        numberTemp = DataUtilities.GetUtf8Length("\udc00", false);
         Assert.AreEqual(-1, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\ud800X", false);
+        numberTemp = DataUtilities.GetUtf8Length("\ud800X", false);
         Assert.AreEqual(-1, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\udc00X", false);
+        numberTemp = DataUtilities.GetUtf8Length("\udc00X", false);
         Assert.AreEqual(-1, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800", false);
+        numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800", false);
         Assert.AreEqual(-1, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800", false);
+        numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800", false);
         Assert.AreEqual(-1, numberTemp);
       }
       {
-    long numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800\udc00" , false);
+        numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800\udc00", false);
         Assert.AreEqual(-1, numberTemp);
       }
       {
-    long numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800\udc00" , false);
+        numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800\udc00", false);
         Assert.AreEqual(-1, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\udc00\udc00", false);
+        numberTemp = DataUtilities.GetUtf8Length("\udc00\udc00", false);
         Assert.AreEqual(-1, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\ud800\udc00", false);
+        numberTemp = DataUtilities.GetUtf8Length("\ud800\udc00", false);
         Assert.AreEqual(4, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\ud800", true);
+        numberTemp = DataUtilities.GetUtf8Length("\ud800", true);
         Assert.AreEqual(3, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\udc00", true);
+        numberTemp = DataUtilities.GetUtf8Length("\udc00", true);
         Assert.AreEqual(3, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\ud800X", true);
+        numberTemp = DataUtilities.GetUtf8Length("\ud800X", true);
         Assert.AreEqual(4, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\udc00X", true);
+        numberTemp = DataUtilities.GetUtf8Length("\udc00X", true);
         Assert.AreEqual(4, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800", true);
+        numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800", true);
         Assert.AreEqual(6, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800", true);
+        numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800", true);
         Assert.AreEqual(6, numberTemp);
       }
       {
-     long numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800\udc00" , true);
+        numberTemp = DataUtilities.GetUtf8Length("\udc00\ud800\udc00", true);
         Assert.AreEqual(7, numberTemp);
       }
       {
-     long numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800\udc00" , true);
+        numberTemp = DataUtilities.GetUtf8Length("\ud800\ud800\udc00", true);
         Assert.AreEqual(7, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\udc00\udc00", true);
+        numberTemp = DataUtilities.GetUtf8Length("\udc00\udc00", true);
         Assert.AreEqual(6, numberTemp);
       }
       {
-        long numberTemp = DataUtilities.GetUtf8Length("\ud800\udc00", false);
+        numberTemp = DataUtilities.GetUtf8Length("\ud800\udc00", false);
         Assert.AreEqual(4, numberTemp);
       }
     }
@@ -450,8 +459,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8String(null, false);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -459,8 +468,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8String(null, 0, 1, true);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -468,8 +477,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8String(new byte[] { 0 }, -1, 1, true);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -477,8 +486,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8String(new byte[] { 0 }, 2, 1, true);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -486,8 +495,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8String(new byte[] { 0 }, 0, -1, true);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -495,8 +504,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8String(new byte[] { 0 }, 0, 2, true);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -504,8 +513,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.GetUtf8String(new byte[] { 0 }, 1, 1, true);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -535,8 +544,8 @@ Console.WriteLine(ex.Message);
           false);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -546,8 +555,8 @@ Console.WriteLine(ex.Message);
           DataUtilities.GetUtf8String(seq, false);
           Assert.Fail("Should have failed");
         } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+          Console.WriteLine(ex.Message);
+        } catch (Exception ex) {
           Assert.Fail(ex.ToString());
           throw new InvalidOperationException(String.Empty, ex);
         }
@@ -558,8 +567,8 @@ Console.WriteLine(ex.Message);
           DataUtilities.GetUtf8String(seq, 0, seq.Length, false);
           Assert.Fail("Should have failed");
         } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+          Console.WriteLine(ex.Message);
+        } catch (Exception ex) {
           Assert.Fail(ex.ToString());
           throw new InvalidOperationException(String.Empty, ex);
         }
@@ -574,31 +583,37 @@ Console.WriteLine(ex.Message);
         DataUtilities.ReadUtf8(null, 1, null, true);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      var ms = new MemoryStream(new byte[] { 0 });
-      try {
- DataUtilities.ReadUtf8(ms, 1, null, true);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-      ms = new MemoryStream(new byte[] { 0 });
-      try {
- DataUtilities.ReadUtf8(ms, 1, null, false);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+      {
+        using (var ms = new MemoryStream(new byte[] { 0 })) {
+          try {
+            DataUtilities.ReadUtf8(ms, 1, null, true);
+            Assert.Fail("Should have failed");
+          } catch (ArgumentNullException ex) {
+            Console.WriteLine(ex.Message);
+          } catch (Exception ex) {
+            Assert.Fail(ex.ToString());
+            throw new InvalidOperationException(String.Empty, ex);
+          }
+        }
+      }
+      {
+        using (var ms = new MemoryStream(new byte[] { 0 })) {
+          try {
+            DataUtilities.ReadUtf8(ms, 1, null, false);
+            Assert.Fail("Should have failed");
+          } catch (ArgumentNullException ex) {
+            Console.WriteLine(ex.Message);
+          } catch (Exception ex) {
+            Assert.Fail(ex.ToString());
+            throw new InvalidOperationException(String.Empty, ex);
+          }
+        }
+      }
     }
     [TestMethod]
     public void TestReadUtf8FromBytes() {
@@ -607,8 +622,8 @@ throw new InvalidOperationException(String.Empty, ex);
         DataUtilities.WriteUtf8("x", 0, 1, null, true);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -616,8 +631,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.ReadUtf8FromBytes(null, 0, 1, new StringBuilder(), true);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -630,8 +645,8 @@ Console.WriteLine(ex.Message);
           true);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -644,8 +659,8 @@ Console.WriteLine(ex.Message);
           true);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -658,8 +673,8 @@ Console.WriteLine(ex.Message);
           true);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -672,8 +687,8 @@ Console.WriteLine(ex.Message);
           true);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -686,8 +701,8 @@ Console.WriteLine(ex.Message);
           true);
         Assert.Fail("Should have failed");
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -695,8 +710,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.ReadUtf8FromBytes(new byte[] { 0 }, 0, 1, null, false);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -734,8 +749,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.ReadUtf8ToString(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -743,8 +758,8 @@ Console.WriteLine(ex.Message);
         DataUtilities.ReadUtf8ToString(null, 1, true);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -755,8 +770,8 @@ Console.WriteLine(ex.Message);
             DataUtilities.ReadUtf8ToString(ms, -1, false);
             Assert.Fail("Should have failed");
           } catch (IOException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+          } catch (Exception ex) {
             Assert.Fail(ex.ToString());
             throw new InvalidOperationException(String.Empty, ex);
           }
@@ -777,8 +792,8 @@ Console.WriteLine(ex.Message);
     [TestMethod]
     public void TestToLowerCaseAscii() {
       if (DataUtilities.ToLowerCaseAscii(null) != null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       {
         string stringTemp = DataUtilities.ToLowerCaseAscii("abc012-=?");
         Assert.AreEqual(
@@ -796,209 +811,236 @@ Console.WriteLine(ex.Message);
     public void TestWriteUtf8() {
       try {
         {
-           using (var ms = new MemoryStream()) {
-          try {
-            DataUtilities.WriteUtf8("x", null, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
+          using (var ms = new MemoryStream()) {
+            try {
+              DataUtilities.WriteUtf8("x", null, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentNullException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8("x", 0, 1, null, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentNullException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8("x", 0, 1, null, true, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentNullException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8(null, 0, 1, ms, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentNullException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8("x", -1, 1, ms, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8("x", 2, 1, ms, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8("x", 0, -1, ms, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8("x", 0, 2, ms, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8("x", 1, 1, ms, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8(null, 0, 1, ms, true, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentNullException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8("x", -1, 1, ms, true, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8("x", 2, 1, ms, true, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8("x", 0, -1, ms, true, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8("x", 0, 2, ms, true, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8("x", 1, 1, ms, true, true);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8(null, null, false);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentNullException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
+            try {
+              DataUtilities.WriteUtf8(null, ms, false);
+              Assert.Fail("Should have failed");
+            } catch (ArgumentNullException ex) {
+              Console.WriteLine(ex.Message);
+            } catch (Exception ex) {
+              Assert.Fail(ex.ToString());
+              throw new InvalidOperationException(String.Empty, ex);
+            }
           }
-          try {
-            DataUtilities.WriteUtf8("x", 0, 1, null, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8("x", 0, 1, null, true, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8(null, 0, 1, ms, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8("x", -1, 1, ms, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8("x", 2, 1, ms, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8("x", 0, -1, ms, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8("x", 0, 2, ms, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8("x", 1, 1, ms, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8(null, 0, 1, ms, true, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8("x", -1, 1, ms, true, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8("x", 2, 1, ms, true, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8("x", 0, -1, ms, true, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8("x", 0, 2, ms, true, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8("x", 1, 1, ms, true, true);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8(null, null, false);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-          try {
-            DataUtilities.WriteUtf8(null, ms, false);
-            Assert.Fail("Should have failed");
-          } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-            Assert.Fail(ex.ToString());
-            throw new InvalidOperationException(String.Empty, ex);
-          }
-        }
         }
         {
-          var ms = new MemoryStream();
-          DataUtilities.WriteUtf8("0\r1", 0, 3, ms, true, true);
-          TestCommon.AssertByteArraysEqual(
-            new byte[] { 0x30, 0x0d, 0x0a, 0x31 },
-            ms.ToArray());
-          ms = new MemoryStream();
-          DataUtilities.WriteUtf8("0\n1", 0, 3, ms, true, true);
-          TestCommon.AssertByteArraysEqual(
-            new byte[] { 0x30, 0x0d, 0x0a, 0x31 },
-            ms.ToArray());
-          ms = new MemoryStream();
-          DataUtilities.WriteUtf8("0\r\n1", 0, 4, ms, true, true);
-          TestCommon.AssertByteArraysEqual(
-            new byte[] { 0x30, 0x0d, 0x0a, 0x31 },
-            ms.ToArray());
-          ms = new MemoryStream();
-          DataUtilities.WriteUtf8("0\r\r1", 0, 4, ms, true, true);
-          TestCommon.AssertByteArraysEqual(
-            new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
-            ms.ToArray());
-          ms = new MemoryStream();
-          DataUtilities.WriteUtf8("0\n\r1", 0, 4, ms, true, true);
-          TestCommon.AssertByteArraysEqual(
-            new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
-            ms.ToArray());
-          ms = new MemoryStream();
-          DataUtilities.WriteUtf8("0\r\r\n1", 0, 5, ms, true, true);
-          TestCommon.AssertByteArraysEqual(
-            new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
-            ms.ToArray());
-          ms = new MemoryStream();
-          DataUtilities.WriteUtf8("0\n\r\n1", 0, 5, ms, true, true);
-          TestCommon.AssertByteArraysEqual(
-            new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
-            ms.ToArray());
-          ms = new MemoryStream();
-          DataUtilities.WriteUtf8("0\n\n\r1", 0, 5, ms, true, true);
-          TestCommon.AssertByteArraysEqual(
-            new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
-            ms.ToArray());
-          ms = new MemoryStream();
-          DataUtilities.WriteUtf8("0\r\r\r1", 0, 5, ms, true, true);
-          TestCommon.AssertByteArraysEqual(
-            new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
-            ms.ToArray());
+          {
+            using (var ms = new MemoryStream()) {
+              DataUtilities.WriteUtf8("0\r1", 0, 3, ms, true, true);
+              TestCommon.AssertByteArraysEqual(
+                new byte[] { 0x30, 0x0d, 0x0a, 0x31 },
+                ms.ToArray());
+            }
           }
+          {
+            using (var ms = new MemoryStream()) {
+              DataUtilities.WriteUtf8("0\n1", 0, 3, ms, true, true);
+              TestCommon.AssertByteArraysEqual(
+                new byte[] { 0x30, 0x0d, 0x0a, 0x31 },
+                ms.ToArray());
+            }
+          }
+          {
+            using (var ms = new MemoryStream()) {
+              DataUtilities.WriteUtf8("0\r\n1", 0, 4, ms, true, true);
+              TestCommon.AssertByteArraysEqual(
+                new byte[] { 0x30, 0x0d, 0x0a, 0x31 },
+                ms.ToArray());
+            }
+          }
+          {
+            using (var ms = new MemoryStream()) {
+              DataUtilities.WriteUtf8("0\r\r1", 0, 4, ms, true, true);
+              TestCommon.AssertByteArraysEqual(
+                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
+                ms.ToArray());
+            }
+          }
+          {
+            using (var ms = new MemoryStream()) {
+              DataUtilities.WriteUtf8("0\n\r1", 0, 4, ms, true, true);
+              TestCommon.AssertByteArraysEqual(
+                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
+                ms.ToArray());
+            }
+          }
+          {
+            using (var ms = new MemoryStream()) {
+              DataUtilities.WriteUtf8("0\r\r\n1", 0, 5, ms, true, true);
+              TestCommon.AssertByteArraysEqual(
+                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
+                ms.ToArray());
+            }
+          }
+          {
+            using (var ms = new MemoryStream()) {
+              DataUtilities.WriteUtf8("0\n\r\n1", 0, 5, ms, true, true);
+              TestCommon.AssertByteArraysEqual(
+                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
+                ms.ToArray());
+            }
+          }
+          {
+            using (var ms = new MemoryStream()) {
+              DataUtilities.WriteUtf8("0\n\n\r1", 0, 5, ms, true, true);
+              TestCommon.AssertByteArraysEqual(
+                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
+                ms.ToArray());
+            }
+          }
+          {
+            using (var ms = new MemoryStream()) {
+              DataUtilities.WriteUtf8("0\r\r\r1", 0, 5, ms, true, true);
+              TestCommon.AssertByteArraysEqual(
+                new byte[] { 0x30, 0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a, 0x31 },
+                ms.ToArray());
+            }
+          }
+        }
       } catch (Exception ex) {
         throw new InvalidOperationException(ex.Message, ex);
       }

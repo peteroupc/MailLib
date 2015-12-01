@@ -17,7 +17,7 @@ namespace PeterO.Mail {
   internal sealed class IdentityEncoder : ICharacterEncoder
   {
     public int Encode(int c, IWriter s) {
-      if ((s) == null) {
+      if (s == null) {
   throw new ArgumentNullException("s");
 }
       if (c < 0) {

@@ -32,7 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-      <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -61,6 +61,7 @@
     <Compile Include="MediaTypeTest.cs" />
     <Compile Include="MessageTest.cs" />
     <Compile Include="NamedAddressTest.cs" />
+    <Compile Include="NetHelper.cs" />
     <Compile Include="NormalizationTest.cs" />
     <Compile Include="NormalizingCharacterInputTest.cs" />
     <Compile Include="Program.cs" />
@@ -73,18 +74,6 @@
       <Project>{49EE222D-6E5D-4677-9E4D-1286B30E8BAA}</Project>
       <Name>MailLib</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ProfilingSessions\Session20140413_154145.sdps" />
-    <Content Include="ProfilingSessions\Session20140421_013758.sdps" />
-    <Content Include="ProfilingSessions\Session20140423_225349.sdps" />
-    <Content Include="ProfilingSessions\Session20140424_000659.sdps" />
-    <Content Include="ProfilingSessions\Session20140424_083128.sdps" />
-    <Content Include="ProfilingSessions\Session20140424_132151.sdps" />
-    <Content Include="ProfilingSessions\Session20140424_142950.sdps" />
-    <Content Include="ProfilingSessions\Session20140424_145242.sdps" />
-    <Content Include="ProfilingSessions\Session20151120_200527.sdps" />
-    <Content Include="ProfilingSessions\Session20151121_082017.sdps" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

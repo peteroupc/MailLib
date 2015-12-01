@@ -1,7 +1,9 @@
 using System;
+
 namespace PeterO.Text.Encoders {
   internal static class Gb18030 {
     private static readonly short[] table = new short[23940];
+
     static Gb18030() {
       Array.Copy(method0(), 0, table, 0, 4096);
       Array.Copy(method1(), 0, table, 4096, 4096);
@@ -10,6 +12,7 @@ namespace PeterO.Text.Encoders {
       Array.Copy(method4(), 0, table, 16384, 4096);
       Array.Copy(method5(), 0, table, 20480, 3460);
     }
+
     private static readonly int[] indextable ={
 19970, 20496, 0, 256, 20497, 20833, 256, 256, 20835, 21278, 512, 256, 21279,
   21818, 768, 256, 21819, 22210, 1024, 256, 22211, 22608, 1280, 256, 22610,
@@ -45,6 +48,7 @@ namespace PeterO.Text.Encoders {
   256, 40259, 58095, 22784, 256, 40405, 58209, 23040, 256, 40619, 58369,
   23296, 256, 11905, 64041, 23552, 256, 11978, 59492, 23808, 132
 };
+
     public static int CodePointToIndex(int codepoint) {
       if (codepoint < 164 || codepoint > 65509) {
  return -1;
@@ -55,7 +59,7 @@ namespace PeterO.Text.Encoders {
           int startindex = indextable[i + 2];
           int length = indextable[i + 3];
           for (int j = 0; j < length; ++j) {
-            if ((table[j + startindex]) == cps) {
+            if (table[j + startindex] == cps) {
  return j + startindex;
 }
           }
@@ -63,6 +67,7 @@ namespace PeterO.Text.Encoders {
       }
       return -1;
     }
+
     public static int IndexToCodePoint(int index) {
       if (index < 0 || index >= 23940) {
  return -1;
@@ -70,6 +75,7 @@ namespace PeterO.Text.Encoders {
       int cp = ((int)table[index]) & 0xffff;
       return (cp == 0) ? -1 : cp;
     }
+
     private static short[] method0() {
       return new short[] { 0x4e02, 0x4e04, 0x4e05, 0x4e06, 0x4e0f, 0x4e12,
         0x4e17, 0x4e1f, 0x4e20, 0x4e21, 0x4e23, 0x4e26, 0x4e29, 0x4e2e,
@@ -585,6 +591,7 @@ namespace PeterO.Text.Encoders {
         0x67b4, 0x67b9, 0x67ba, 0x67bb, 0x67bc, 0x67bd, 0x67be, 0x67bf,
         0x67c0, 0x67c2 };
     }
+
     private static short[] method1() {
       return new short[] { 0x67c5, 0x67c6, 0x67c7, 0x67c8, 0x67c9, 0x67ca,
         0x67cb, 0x67cc, 0x67cd, 0x67ce, 0x67d5, 0x67d6, 0x67d7, 0x67db,
@@ -1079,6 +1086,7 @@ namespace PeterO.Text.Encoders {
         0x7404, 0x7407, 0x7408, 0x740b, 0x740c, 0x740d, 0x740e, 0x7411,
         0x7412, 0x7413, 0x7414 };
     }
+
     private static short[] method2() {
       return new short[] { 0x7415, 0x7416, 0x7417, 0x7418, 0x7419, 0x741c,
         0x741d, 0x741e, 0x741f, 0x7420, 0x7421, 0x7423, 0x7424, 0x7427,
@@ -1588,6 +1596,7 @@ namespace PeterO.Text.Encoders {
         -32456, -27394, 0x604b, 0x70bc, 0x7ec3, 0x7cae, 0x51c9, 0x6881,
         0x7cb1, -32145, 0x4e24, -28794, -28209, 0x667e };
     }
+
     private static short[] method3() {
       return new short[] { 0x4eae, -29691, 0x64a9, -32694, 0x50da, 0x7597,
         0x71ce, 0x5be5, -28739, 0x6f66, 0x4e86, 0x6482, -27293, 0x5ed6,
@@ -2103,6 +2112,7 @@ namespace PeterO.Text.Encoders {
         -29847, -29846, -29845, -29843, -29842, -29841, -29840, -29839,
         -29838, -29837 };
     }
+
     private static short[] method4() {
       return new short[] { -29836, -29835, -29834, -29833, -29832, -29831,
         -29830, -29829, -29828, -29827, -29826, -29825, -29824, -29823,
@@ -2618,6 +2628,7 @@ namespace PeterO.Text.Encoders {
         0x7173, 0x715c, 0x7168, 0x7145, 0x7172, 0x714a, 0x7178, 0x717a,
         0x7198 };
     }
+
     private static short[] method5() {
       return new short[] { 0x71b3, 0x71b5, 0x71a8, 0x71a0, 0x71e0, 0x71d4,
         0x71e7, 0x71f9, 0x721d, 0x7228, 0x706c, 0x7118, 0x7166, 0x71b9,

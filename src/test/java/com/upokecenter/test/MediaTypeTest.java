@@ -1,7 +1,5 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
 
-import java.util.*;
-
 import com.upokecenter.mail.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,17 +14,21 @@ import org.junit.Test;
       MediaType mt;
       mt=MediaType.Parse("text/plain");
       {
+{
 String stringTemp = mt.GetCharset();
 Assert.assertEquals(
 "us-ascii",
 stringTemp);
 }
+}
       mt=MediaType.Parse("text/vcard");
       {
+{
 String stringTemp = mt.GetCharset();
 Assert.assertEquals(
 "utf-8",
 stringTemp);
+}
 }
       mt=MediaType.Parse("text/x-unknown");
       Assert.assertEquals("", mt.GetCharset());

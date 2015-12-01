@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using PeterO.Mail;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MailLibTest {

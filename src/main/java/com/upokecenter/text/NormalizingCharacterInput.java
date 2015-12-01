@@ -36,11 +36,15 @@ import com.upokecenter.text.encoders.*;
      * four normalization forms also enforce a standardized order for
      * combining marks, since they can otherwise appear in an arbitrary
      * order.</li></ul> <p>For more information, see Standard Annex 15 at
-     * http://www.unicode.org/reports/tr15/ .</p> <p>NOTICE: While this
-     * class's source code is in the public domain, the class uses an
-     * class, called NormalizationData, that includes data derived
-     * from the Unicode Character Database. In case doing so is required,
-     * the permission notice for the Unicode Character Database is given
+     * http://www.unicode.org/reports/tr15/ .</p> <p><b>Thread safety:</b>
+     * This class is mutable; its properties can be changed. None of its
+     * instance methods are designed to be thread safe. Therefore, access to
+     * objects from this class must be synchronized if multiple threads can
+     * access them at the same time.</p> <p>NOTICE: While this class's
+     * source code is in the public domain, the class uses an internal
+     * class, called NormalizationData, that includes data derived from the
+     * Unicode Character Database. In case doing so is required, the
+     * permission notice for the Unicode Character Database is given
      * here:</p> <p>COPYRIGHT AND PERMISSION NOTICE</p> <p>Copyright (c)
      * 1991-2014 Unicode, Inc. All rights reserved. Distributed under the
      * Terms of Use in http://www.unicode.org/copyright.html.</p>
@@ -73,8 +77,7 @@ import com.upokecenter.text.encoders.*;
      * Software without prior written authorization of the copyright
      * holder.</p>
      */
-  public final class NormalizingCharacterInput implements ICharacterInput
-  {
+  public final class NormalizingCharacterInput implements ICharacterInput {
     static int DecompToBufferInternal(
 int ch,
 boolean compat,
@@ -212,6 +215,18 @@ int index) {
       return retval;
     }
 
+    private static List<Integer> GetChars(ICharacterInput input) {
+      int[] buffer = new int[64];
+      List<Integer> ret = new ArrayList<Integer>(24);
+      int count = 0;
+      while ((count = input.Read(buffer, 0, buffer.length)) > 0) {
+        for (int i = 0; i < count; ++i) {
+          ret.add(buffer[i]);
+        }
+      }
+      return ret;
+    }
+
     /**
      * Gets a list of normalized code points after reading from a string.
      * @param str A string object.
@@ -224,7 +239,7 @@ int index) {
       if (str == null) {
         throw new NullPointerException("str");
       }
-      return GetChars(new StringCharacterInput(str), form);
+      return GetChars(new NormalizingCharacterInput(str, form));
     }
 
     /**
@@ -239,16 +254,7 @@ int index) {
       if (str == null) {
         throw new NullPointerException("str");
       }
-      NormalizingCharacterInput norm = new NormalizingCharacterInput(str, form);
-      int[] buffer = new int[64];
-      List<Integer> ret = new ArrayList<Integer>(24);
-      int count = 0;
-      while ((count = norm.Read(buffer, 0, buffer.length)) > 0) {
-        for (int i = 0; i < count; ++i) {
-          ret.add(buffer[i]);
-        }
-      }
-      return ret;
+      return GetChars(new NormalizingCharacterInput(str, form));
     }
 
     private int lastQcsIndex;
@@ -275,10 +281,10 @@ int index) {
      * Normalization Form C.
      * @param str A string specifying the text to normalize.
      */
-  public NormalizingCharacterInput (
-String str) {
+    public NormalizingCharacterInput (
+  String str) {
  this(
-str, Normalization.NFC);
+  str, Normalization.NFC);
     }
 
     /**
@@ -341,9 +347,9 @@ new StringCharacterInput(str, index, length), form);
      * text.
      * @throws NullPointerException The parameter {@code stream} is null.
      */
- public NormalizingCharacterInput (
-ICharacterInput stream,
-Normalization form) {
+    public NormalizingCharacterInput (
+   ICharacterInput stream,
+   Normalization form) {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
@@ -351,15 +357,14 @@ Normalization form) {
       this.iterator = stream;
       this.form = form;
       this.lastCharBuffer = new int[2];
-    this.compatMode = form == Normalization.NFKC || form ==
-        Normalization.NFKD;
+      this.compatMode = form == Normalization.NFKC || form ==
+          Normalization.NFKD;
     }
 
     /**
      * Determines whether the text provided by a character input is normalized.
      * @param chars A object that implements a streamable character input.
-     * @param form Specifies the normalization form to use when normalizing the
-     * text.
+     * @param form Specifies the normalization form to check.
      * @return True if the text is normalized; otherwise, false.
      * @throws NullPointerException The parameter {@code chars} is null.
      */
@@ -369,13 +374,18 @@ Normalization form) {
       }
       List<Integer> list = new ArrayList<Integer>();
       int ch = 0;
+      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
+      boolean norm = true;
       while ((ch = chars.ReadChar()) >= 0) {
         if ((ch & 0x1ff800) == 0xd800) {
           return false;
         }
+        if (norm && (ch & mask) != ch) {
+          norm = false;
+        }
         list.add(ch);
       }
-      return IsNormalized(list, form);
+      return norm || IsNormalized(list, form);
     }
 
     private static boolean NormalizeAndCheck(
@@ -427,9 +437,9 @@ Normalization form) {
      * @throws NullPointerException The parameter {@code str} is null.
      */
     public static boolean IsNormalized(String str, Normalization form) {
-      if ((str) == null) {
-  throw new NullPointerException("str");
-}
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
       int nonQcsStart = -1;
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
       int lastQcs = 0;
@@ -453,9 +463,11 @@ Normalization form) {
           // in this situation.
           isQcs = true;
         } else {
- isQcs = (c >= 0xf0000) ? (true) : (UnicodeDatabase.IsQuickCheckStarter(c,
-   form));
-}
+        isQcs = (c >= 0xf0000) ? true : (
+UnicodeDatabase.IsQuickCheckStarter(
+c,
+form));
+        }
         if (isQcs) {
           lastQcs = i;
         }
@@ -522,6 +534,23 @@ form)) {
     }
 
     /**
+     * Determines whether the given array of characters is in the given Unicode
+     * normalization form.
+     * @param charArray An array of Unicode code points.
+     * @param form Specifies the normalization form to use when normalizing the
+     * text.
+     * @return True if the given list of characters is in the given Unicode
+     * normalization form; otherwise, false.
+     * @throws NullPointerException The parameter "charList" is null.
+     */
+    public static boolean IsNormalized(int[] charArray, Normalization form) {
+      if (charArray == null) {
+  throw new NullPointerException("charArray");
+}
+      return IsNormalized(new PartialArrayCharacterInput(charArray), form);
+    }
+
+    /**
      * Determines whether the given list of characters is in the given Unicode
      * normalization form.
      * @param charList A list of Unicode code points.
@@ -544,9 +573,9 @@ form)) {
           return false;
         }
         boolean isQcs = false;
-   isQcs = (c & mask) == c && (i + 1 == charList.size() || (charList.get(i +
-          1) & mask) == charList.get(i + 1)) ? true :
-          UnicodeDatabase.IsQuickCheckStarter(c, form);
+        isQcs = (c & mask) == c && (i + 1 == charList.size() || (charList.get(i +
+               1) & mask) == charList.get(i + 1)) ? true :
+               UnicodeDatabase.IsQuickCheckStarter(c, form);
         if (isQcs) {
           lastQcs = i;
         }
@@ -556,11 +585,11 @@ form)) {
         } else if (nonQcsStart >= 0 && isQcs) {
           // We have at least one non-quick-check starter,
           // normalize these code points.
-  if (!NormalizeAndCheck(
-charList,
-nonQcsStart,
-i - nonQcsStart,
-form)) {
+          if (!NormalizeAndCheck(
+        charList,
+        nonQcsStart,
+        i - nonQcsStart,
+        form)) {
             return false;
           }
           nonQcsStart = -1;
@@ -595,27 +624,27 @@ form)) {
     private int lastCharPos;
 
     private void PrependOne(int c) {
-      if (lastCharPos + 1 > lastCharBuffer.length) {
-        int[] newbuffer = new int[lastCharPos + 8];
-        System.arraycopy(lastCharBuffer, 0, newbuffer, 0, lastCharPos);
-        lastCharBuffer = newbuffer;
+      if (this.lastCharPos + 1 > this.lastCharBuffer.length) {
+        int[] newbuffer = new int[this.lastCharPos + 8];
+        System.arraycopy(this.lastCharBuffer, 0, newbuffer, 0, this.lastCharPos);
+        this.lastCharBuffer = newbuffer;
       }
-      lastCharBuffer[lastCharPos++] = c;
+      this.lastCharBuffer[this.lastCharPos++] = c;
     }
 
     private void PrependTwo(int c1, int c2) {
-      if (lastCharPos + 2 > lastCharBuffer.length) {
-        int[] newbuffer = new int[lastCharPos + 8];
-        System.arraycopy(lastCharBuffer, 0, newbuffer, 0, lastCharPos);
-        lastCharBuffer = newbuffer;
+      if (this.lastCharPos + 2 > this.lastCharBuffer.length) {
+        int[] newbuffer = new int[this.lastCharPos + 8];
+        System.arraycopy(this.lastCharBuffer, 0, newbuffer, 0, this.lastCharPos);
+        this.lastCharBuffer = newbuffer;
       }
-      lastCharBuffer[lastCharPos++] = c2;
-      lastCharBuffer[lastCharPos++] = c1;
+      this.lastCharBuffer[this.lastCharPos++] = c2;
+      this.lastCharBuffer[this.lastCharPos++] = c1;
     }
 
     private int GetNextChar() {
       int ch;
-      if (this.lastCharPos>0) {
+      if (this.lastCharPos > 0) {
         --this.lastCharPos;
         ch = this.lastCharBuffer[this.lastCharPos];
         return ch;
@@ -648,16 +677,16 @@ form)) {
         throw new NullPointerException("chars");
       }
       if (index < 0) {
-      throw new IllegalArgumentException("index (" + index + ") is less than " +
-          "0");
+        throw new IllegalArgumentException("index (" + index + ") is less than " +
+            "0");
       }
       if (index > chars.length) {
         throw new IllegalArgumentException("index (" + index + ") is more than " +
           chars.length);
       }
       if (length < 0) {
-    throw new IllegalArgumentException("length (" + length + ") is less than " +
-          "0");
+        throw new IllegalArgumentException("length (" + length + ") is less than " +
+              "0");
       }
       if (length > chars.length) {
         throw new IllegalArgumentException("length (" + length + ") is more than " +
@@ -678,7 +707,7 @@ form)) {
           if (c < 0) {
             return (total == 0) ? -1 : total;
           }
-          if (UnicodeDatabase.IsQuickCheckStarter(c, this.form)) {
+          if (c < 0x80 || UnicodeDatabase.IsQuickCheckStarter(c, this.form)) {
             if (this.form == Normalization.NFD ||
             this.form == Normalization.NFKD) {
               chars[index] = c;
@@ -814,15 +843,18 @@ this.endIndex);
             this.form == Normalization.NFKD);
           boolean nextIsQCS = false;
           for (int i = this.endIndex - 1; i > this.lastQcsIndex; --i) {
-          if (UnicodeDatabase.IsQuickCheckStarter(this.buffer[i],
-              this.form)) {
+            if (
+  UnicodeDatabase.IsQuickCheckStarter(
+this.buffer[i],
+this.form)) {
               if (decompForm) {
                 this.lastQcsIndex = i;
                 haveNewQcs = true;
                 break;
               } else if (i + 1 < this.endIndex && (nextIsQCS ||
-         UnicodeDatabase.IsQuickCheckStarter(this.buffer[i + 1],
-                 this.form))) {
+         UnicodeDatabase.IsQuickCheckStarter(
+this.buffer[i + 1],
+this.form))) {
                 this.lastQcsIndex = i;
                 haveNewQcs = true;
                 break;
@@ -864,5 +896,37 @@ this.lastQcsIndex);
         this.processedIndex = this.lastQcsIndex;
       }
       return true;
+    }
+
+    private static final class PartialArrayCharacterInput implements ICharacterInput {
+      private final int endPos;
+      private final int[] array;
+      private int pos;
+
+      public PartialArrayCharacterInput (int[] array, int start, int length) {
+        this.array = array;
+        this.pos = start;
+        this.endPos = start + length;
+      }
+
+      public PartialArrayCharacterInput (int[] array) {
+        this.array = array;
+        this.pos = 0;
+        this.endPos = array.length;
+      }
+
+      public int ReadChar() {
+        return (this.pos < this.endPos) ? this.array[this.pos++] : (-1);
+      }
+
+      public int Read(int[] buf, int offset, int unitCount) {
+        if (unitCount == 0) {
+          return 0;
+        }
+        int maxsize = Math.min(unitCount, this.endPos - this.pos);
+        System.arraycopy(this.array, this.pos, buf, offset, maxsize);
+        this.pos += maxsize;
+        return maxsize == 0 ? -1 : maxsize;
+      }
     }
   }
