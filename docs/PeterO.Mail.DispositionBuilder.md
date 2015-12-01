@@ -32,6 +32,12 @@ Initializes a new instance of the DispositionBuilder class.
 
  * <i>type</i>: A string object.
 
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>type</i>
+ is null.
+
 ### DispositionBuilder Constructor
 
     public DispositionBuilder();
@@ -52,6 +58,8 @@ This value's disposition type, such value, such as "inline" or "attachment".
 
     public bool IsMultipart { get; }
 
+<b>Deprecated.</b> Irrelevant for content dispositions; will be removed in the future.
+
 Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
@@ -61,6 +69,8 @@ True if this is a multipart media type; otherwise, false.
 ### IsText
 
     public bool IsText { get; }
+
+<b>Deprecated.</b> Irrelevant for content dispositions; will be removed in the future.
 
 Gets a value indicating whether this is a text media type.
 
