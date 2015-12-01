@@ -55,8 +55,15 @@ public final void setDispositionType(String value) {
     /**
      * Initializes a new instance of the DispositionBuilder class.
      * @param type A string object.
+     * @throws NullPointerException The parameter {@code type} is null.
      */
     public DispositionBuilder (String type) {
+      if (type == null) {
+  throw new NullPointerException("type");
+}
+if (type.length() == 0) {
+  throw new IllegalArgumentException("type" + " is empty.");
+}
       this.parameters = new HashMap<String, String>();
       this.SetDispositionType(type);
     }
@@ -64,7 +71,9 @@ public final void setDispositionType(String value) {
     /**
      * Gets a value indicating whether this is a text media type.
      * @return True if this is a text media type; otherwise, false.
-     */
+     * @deprecated Irrelevant for content dispositions; will be removed in the future.
+ */
+@Deprecated
     public final boolean isText() {
         return this.getDispositionType().equals("text");
       }
@@ -72,7 +81,9 @@ public final void setDispositionType(String value) {
     /**
      * Gets a value indicating whether this is a multipart media type.
      * @return True if this is a multipart media type; otherwise, false.
-     */
+     * @deprecated Irrelevant for content dispositions; will be removed in the future.
+ */
+@Deprecated
     public final boolean isMultipart() {
         return this.getDispositionType().equals("multipart");
       }

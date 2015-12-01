@@ -138,7 +138,7 @@ Gets the email address associated with this object.
 
 <b>Returns:</b>
 
-The email address associated with this object.
+The email address associated with this object. This value is null if this object represents a group of addresses instead.
 
 ### GroupAddresses
 

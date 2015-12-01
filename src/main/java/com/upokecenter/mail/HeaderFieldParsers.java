@@ -227,8 +227,10 @@ endIndex);
                     if (nonasciiLocalParts) {
                     // At least some of the domains could not
                     // be converted to ASCII
-                    originalGroups = (originalGroups == null) ? (this.ParseGroupLists(originalString, 0,
-                    originalString.length())) : originalGroups;
+                originalGroups = (originalGroups == null) ? (this.ParseGroupLists(
+originalString,
+0,
+originalString.length())) : originalGroups;
                     originalGroupList = originalGroups.get(groupIndex);
                     String groupText = originalGroupList;
                     String displayNameText = str.substring(
@@ -1664,19 +1666,31 @@ endIndex,
 tokener);
       }
     }
+
     private static final class HeaderEesstVersion extends StructuredHeaderField {
-      @Override public int Parse(String str, int index, int endIndex,
-        ITokener tokener) {
-        return HeaderParser.ParseHeaderEesstVersion(str, index, endIndex,
-              tokener);
+      @Override public int Parse(
+String str,
+int index,
+int endIndex,
+ITokener tokener) {
+        return HeaderParser.ParseHeaderEesstVersion(
+str,
+index,
+endIndex,
+tokener);
       }
     }
+
     private static final class HeaderSioLabel extends StructuredHeaderField {
-      @Override public int Parse(String str, int index, int endIndex,
-        ITokener tokener) {
+      @Override public int Parse(
+String str,
+int index,
+int endIndex,
+ITokener tokener) {
         return HeaderParser.ParseHeaderSioLabel(str, index, endIndex, tokener);
       }
     }
+
     private static Map<String, IHeaderFieldParser> fieldMap =
       CreateHeaderFieldList();
 

@@ -9,8 +9,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
 import org.junit.Assert;
 
-import com.upokecenter.util.*;
-
   final class TestCommon {
 private TestCommon() {
 }

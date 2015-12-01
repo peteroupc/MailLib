@@ -121,8 +121,8 @@ byte c4) {
       if (!this.unlimitedLineLength) {
         if (this.lineCount >= 76) {
           // Output CRLF
-          bytes[charCount++]=((byte)0x0d);
-          bytes[charCount++]=((byte)0x0a);
+          bytes[charCount++] = (byte)0x0d;
+          bytes[charCount++] = (byte)0x0a;
           this.lineCount = 0;
         } else if (this.lineCount + 3 >= 76) {
           charCount += this.LineAwareAppend(output, c1);
@@ -133,10 +133,10 @@ byte c4) {
         }
         this.lineCount += 4;
       }
-      bytes[charCount++]=((byte)c1);
-      bytes[charCount++]=((byte)c2);
-      bytes[charCount++]=((byte)c3);
-      bytes[charCount++]=((byte)c4);
+      bytes[charCount++] = (byte)c1;
+      bytes[charCount++] = (byte)c2;
+      bytes[charCount++] = (byte)c3;
+      bytes[charCount++] = (byte)c4;
       output.Write(bytes, 0, charCount);
       return charCount;
     }

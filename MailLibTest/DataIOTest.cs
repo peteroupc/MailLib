@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using PeterO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MailLibTest {
   [TestClass]
   public partial class DataIOTest {
     [TestMethod]
-    public void TestToTransform() {
+    public void TestToByteReader() {
       // not implemented yet
     }
     [TestMethod]

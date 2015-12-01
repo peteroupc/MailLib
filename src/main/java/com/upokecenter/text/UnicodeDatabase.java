@@ -13,6 +13,24 @@ private UnicodeDatabase() {
     private static ByteData classes;
     private static final Object classesSyncRoot = new Object();
 
+    private static ByteData combmark;
+
+    private static int[] decomps;
+
+    private static ByteData idnaCat;
+    private static final Object idnaCatSyncRoot = new Object();
+    private static int[] pairs;
+
+    private static int pairsLength;
+    private static final Object pairsSyncRoot = new Object();
+
+    private static ByteData qcsnfc;
+    private static ByteData qcsnfd;
+    private static ByteData qcsnfkc;
+    private static ByteData qcsnfkd;
+    private static final Object qcsSyncRoot = new Object();
+    private static final Object valueCmSyncRoot = new Object();
+
     public static int GetCombiningClass(int cp) {
       synchronized (classesSyncRoot) {
   classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningClasses)) : classes;
@@ -20,74 +38,33 @@ private UnicodeDatabase() {
       return ((int)classes.GetByte(cp)) & 0xff;
     }
 
-    private static ByteData idnaCat;
-    private static final Object idnaCatSyncRoot = new Object();
-
-    public static int GetIdnaCategory(int cp) {
-      synchronized (idnaCatSyncRoot) {
-        idnaCat = (idnaCat == null) ? (ByteData.Decompress(IdnaData.IdnaCategories)) : idnaCat;
+    public static int GetComposedPair(int first, int second) {
+      if (((first | second) >> 17) != 0) {
+        return -1;
       }
-      return ((int)idnaCat.GetByte(cp)) & 0xff;
+      EnsurePairs();
+      int left = 0;
+      int right = pairsLength - 1;
+      while (left <= right) {
+        int index = (left + right) >> 1;
+        int realIndex = index * 3;
+        if (pairs[realIndex] == first) {
+          if (pairs[realIndex + 1] == second) {
+            return pairs[realIndex + 2];
+          }
+          if (pairs[realIndex + 1] < second) {
+            left = index + 1;
+          } else {
+            right = index - 1;
+          }
+        } else if (pairs[realIndex] < first) {
+          left = index + 1;
+        } else {
+          right = index - 1;
+        }
+      }
+      return -1;
     }
-
-    private static ByteData combmark;
-    private static final Object valueCmSyncRoot = new Object();
-
-    public static boolean IsCombiningMark(int cp) {
-      synchronized (valueCmSyncRoot) {
-        combmark = (combmark == null) ? (ByteData.Decompress(IdnaData.CombiningMarks)) : combmark;
-        return combmark.GetBoolean(cp);
-      }
-    }
-
-    private static ByteData qcsnfc;
-    private static ByteData qcsnfd;
-    private static ByteData qcsnfkc;
-    private static ByteData qcsnfkd;
-    private static final Object qcsSyncRoot = new Object();
-
-    public static boolean IsQuickCheckStarter(int cp, Normalization form) {
-      // Code points for which QuickCheck = YES and with a combining
-      // class of 0
-      ByteData bd = null;
-      if (form == Normalization.NFC &&
-      (cp < NormalizationData.QCSNFCMin || cp >
-          NormalizationData.QCSNFCMax)) {
-        return true;
-      }
-      if (form == Normalization.NFD &&
-      (cp < NormalizationData.QCSNFDMin || cp >
-          NormalizationData.QCSNFDMax)) {
-        return true;
-      }
-      if (form == Normalization.NFKC &&
-    (cp < NormalizationData.QCSNFKCMin || cp >
-          NormalizationData.QCSNFKCMax)) {
-        return true;
-      }
-      if (form == Normalization.NFKD &&
-    (cp < NormalizationData.QCSNFKDMin || cp >
-          NormalizationData.QCSNFKDMax)) {
-        return true;
-      }
-      synchronized (qcsSyncRoot) {
-        if (form == Normalization.NFC) {
-          bd = qcsnfc = (qcsnfc == null) ? (ByteData.Decompress(NormalizationData.QCSNFC)) : qcsnfc;
-        }
-        if (form == Normalization.NFD) {
-          bd = qcsnfd = (qcsnfd == null) ? (ByteData.Decompress(NormalizationData.QCSNFD)) : qcsnfd;
-        }
-        if (form == Normalization.NFKC) {
-      bd = qcsnfkc = (qcsnfkc == null) ? (ByteData.Decompress(NormalizationData.QCSNFKC)) : qcsnfkc;
-        }
-        if (form == Normalization.NFKD) {
-      bd = qcsnfkd = (qcsnfkd == null) ? (ByteData.Decompress(NormalizationData.QCSNFKD)) : qcsnfkd;
-        }
-      }
-      return (bd != null && bd.GetBoolean(cp));
-    }
-
-    private static int[] decomps;
 
     public static int GetDecomposition(
 int cp,
@@ -144,9 +121,60 @@ int offset) {
       return offset;
     }
 
-    private static int pairsLength;
-    private static int[] pairs;
-    private static final Object pairsSyncRoot = new Object();
+    public static int GetIdnaCategory(int cp) {
+      synchronized (idnaCatSyncRoot) {
+        idnaCat = (idnaCat == null) ? (ByteData.Decompress(IdnaData.IdnaCategories)) : idnaCat;
+      }
+      return ((int)idnaCat.GetByte(cp)) & 0xff;
+    }
+
+    public static boolean IsCombiningMark(int cp) {
+      synchronized (valueCmSyncRoot) {
+        combmark = (combmark == null) ? (ByteData.Decompress(IdnaData.CombiningMarks)) : combmark;
+        return combmark.GetBoolean(cp);
+      }
+    }
+
+    public static boolean IsQuickCheckStarter(int cp, Normalization form) {
+      // Code points for which QuickCheck = YES and with a combining
+      // class of 0
+      ByteData bd = null;
+      if (form == Normalization.NFC &&
+      (cp < NormalizationData.QCSNFCMin || cp >
+          NormalizationData.QCSNFCMax)) {
+        return true;
+      }
+      if (form == Normalization.NFD &&
+      (cp < NormalizationData.QCSNFDMin || cp >
+          NormalizationData.QCSNFDMax)) {
+        return true;
+      }
+      if (form == Normalization.NFKC &&
+    (cp < NormalizationData.QCSNFKCMin || cp >
+          NormalizationData.QCSNFKCMax)) {
+        return true;
+      }
+      if (form == Normalization.NFKD &&
+    (cp < NormalizationData.QCSNFKDMin || cp >
+          NormalizationData.QCSNFKDMax)) {
+        return true;
+      }
+      synchronized (qcsSyncRoot) {
+        if (form == Normalization.NFC) {
+          bd = qcsnfc = (qcsnfc == null) ? (ByteData.Decompress(NormalizationData.QCSNFC)) : qcsnfc;
+        }
+        if (form == Normalization.NFD) {
+          bd = qcsnfd = (qcsnfd == null) ? (ByteData.Decompress(NormalizationData.QCSNFD)) : qcsnfd;
+        }
+        if (form == Normalization.NFKC) {
+      bd = qcsnfkc = (qcsnfkc == null) ? (ByteData.Decompress(NormalizationData.QCSNFKC)) : qcsnfkc;
+        }
+        if (form == Normalization.NFKD) {
+      bd = qcsnfkd = (qcsnfkd == null) ? (ByteData.Decompress(NormalizationData.QCSNFKD)) : qcsnfkd;
+        }
+      }
+      return bd != null && bd.GetBoolean(cp);
+    }
 
     private static void EnsurePairs() {
       synchronized (pairsSyncRoot) {
@@ -155,33 +183,5 @@ int offset) {
           pairsLength = pairs.length / 3;
         }
       }
-    }
-
-    public static int GetComposedPair(int first, int second) {
-      if (((first | second) >> 17) != 0) {
-        return -1;
-      }
-      EnsurePairs();
-      int left = 0;
-      int right = pairsLength - 1;
-      while (left <= right) {
-        int index = (left + right) >> 1;
-        int realIndex = index * 3;
-        if (pairs[realIndex] == first) {
-          if (pairs[realIndex + 1] == second) {
-            return pairs[realIndex + 2];
-          }
-          if (pairs[realIndex + 1] < second) {
-            left = index + 1;
-          } else {
-            right = index - 1;
-          }
-        } else if (pairs[realIndex] < first) {
-          left = index + 1;
-        } else {
-          right = index - 1;
-        }
-      }
-      return -1;
     }
   }

@@ -33,8 +33,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets the name of this media type's top-level type (such as
     /// "text" or "audio".</summary>
-    /// <value>The name of this media type&apos;s top-level type (such as
-    /// &quot;text&quot; or &quot;audio&quot;.</value>
+    /// <value>The name of this media type&#x27;s top-level type (such as
+    /// &#x22;text&#x22; or &#x22;audio&#x22;.</value>
     public string TopLevelType {
       get {
         return this.topLevelType;
@@ -79,7 +79,7 @@ namespace PeterO.Mail {
     private string subType;
 
     /// <summary>Gets this media type's subtype.</summary>
-    /// <value>This media type&apos;s subtype.</value>
+    /// <value>This media type&#x27;s subtype.</value>
     public string SubType {
       get {
         return this.subType;
@@ -293,7 +293,7 @@ string str,
 StringBuilder sb) {
       var length = 1;
       var contin = 0;
-      const string hex = "0123456789ABCDEF";
+      const string ValueHex = "0123456789ABCDEF";
       length += name.Length + 12;
       const int MaxLength = 76;
       if (sb.Length + name.Length + 9 + (str.Length * 3) <= MaxLength) {
@@ -352,8 +352,8 @@ StringBuilder sb) {
           }
           first = false;
           sb.Append('%');
-          sb.Append(hex[(c >> 4) & 15]);
-          sb.Append(hex[c & 15]);
+          sb.Append(ValueHex[(c >> 4) & 15]);
+          sb.Append(ValueHex[c & 15]);
         } else if (c < 0x800) {
           length += 6;
           if (!first && length + 1 > MaxLength) {
@@ -371,11 +371,11 @@ StringBuilder sb) {
           int w = (byte)(0xc0 | ((c >> 6) & 0x1f));
           int x = (byte)(0x80 | (c & 0x3f));
           sb.Append('%');
-          sb.Append(hex[(w >> 4) & 15]);
-          sb.Append(hex[w & 15]);
+          sb.Append(ValueHex[(w >> 4) & 15]);
+          sb.Append(ValueHex[w & 15]);
           sb.Append('%');
-          sb.Append(hex[(x >> 4) & 15]);
-          sb.Append(hex[x & 15]);
+          sb.Append(ValueHex[(x >> 4) & 15]);
+          sb.Append(ValueHex[x & 15]);
         } else if (c < 0x10000) {
           length += 9;
           if (!first && length + 1 > MaxLength) {
@@ -394,14 +394,14 @@ StringBuilder sb) {
           int x = (byte)(0x80 | ((c >> 6) & 0x3f));
           int y = (byte)(0x80 | (c & 0x3f));
           sb.Append('%');
-          sb.Append(hex[(w >> 4) & 15]);
-          sb.Append(hex[w & 15]);
+          sb.Append(ValueHex[(w >> 4) & 15]);
+          sb.Append(ValueHex[w & 15]);
           sb.Append('%');
-          sb.Append(hex[(x >> 4) & 15]);
-          sb.Append(hex[x & 15]);
+          sb.Append(ValueHex[(x >> 4) & 15]);
+          sb.Append(ValueHex[x & 15]);
           sb.Append('%');
-          sb.Append(hex[(y >> 4) & 15]);
-          sb.Append(hex[y & 15]);
+          sb.Append(ValueHex[(y >> 4) & 15]);
+          sb.Append(ValueHex[y & 15]);
         } else {
           length += 12;
           if (!first && length + 1 > MaxLength) {
@@ -420,17 +420,17 @@ StringBuilder sb) {
           int y = (byte)(0x80 | ((c >> 6) & 0x3f));
           int z = (byte)(0x80 | (c & 0x3f));
           sb.Append('%');
-          sb.Append(hex[(w >> 4) & 15]);
-          sb.Append(hex[w & 15]);
+          sb.Append(ValueHex[(w >> 4) & 15]);
+          sb.Append(ValueHex[w & 15]);
           sb.Append('%');
-          sb.Append(hex[(x >> 4) & 15]);
-          sb.Append(hex[x & 15]);
+          sb.Append(ValueHex[(x >> 4) & 15]);
+          sb.Append(ValueHex[x & 15]);
           sb.Append('%');
-          sb.Append(hex[(y >> 4) & 15]);
-          sb.Append(hex[y & 15]);
+          sb.Append(ValueHex[(y >> 4) & 15]);
+          sb.Append(ValueHex[y & 15]);
           sb.Append('%');
-          sb.Append(hex[(z >> 4) & 15]);
-          sb.Append(hex[z & 15]);
+          sb.Append(ValueHex[(z >> 4) & 15]);
+          sb.Append(ValueHex[z & 15]);
         }
       }
     }
@@ -529,11 +529,11 @@ int endIndex,
 StringBuilder builder,
 bool httpRules) {
       int i = index;
-      const string specials = "()<>@,;:\\\"/[]?=";
+      const string ValueSpecials = "()<>@,;:\\\"/[]?=";
       while (i < endIndex) {
         char c = str[i];
         if (c <= 0x20 || c >= 0x7f || (c == (c & 0x7f) &&
-           specials.IndexOf(c) >= 0)) {
+           ValueSpecials.IndexOf(c) >= 0)) {
           break;
         }
         if (httpRules && (c == '{' || c == '}')) {
@@ -930,7 +930,7 @@ ICharacterEncoding charset) {
     /// <summary>Gets the top level type and subtype of this media type,
     /// separated by a slash; for example, "text/plain".</summary>
     /// <value>The top level type and subtype of this media type, separated
-    /// by a slash; for example, &quot;text/plain&quot;.</value>
+    /// by a slash; for example, &#x22;text/plain&#x22;.</value>
     public string TypeAndSubType {
       get {
         return this.TopLevelType + "/" + this.SubType;

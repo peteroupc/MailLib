@@ -4,11 +4,13 @@ package com.upokecenter.text.encoders;
 private Jis0208() {
 }
     private static final short[] table = new short[11104];
+
     static {
       System.arraycopy(method0(), 0, table, 0, 4096);
       System.arraycopy(method1(), 0, table, 4096, 4096);
       System.arraycopy(method2(), 0, table, 8192, 2912);
     }
+
     private static final int[] indextable ={
 167, 65509, 0, 256, 913, 65370, 256, 256, 955, 9547, 512, 256, 8470, 13261,
   1024, 256, 19968, 40284, 1280, 256, 19979, 40644, 1536, 256, 19992, 40653,
@@ -23,6 +25,7 @@ private Jis0208() {
   8192, 256, 8560, 65508, 8448, 256, 8470, 65508, 10496, 256, 20008, 64033,
   10752, 256, 35574, 64045, 11008, 96
 };
+
     public static int CodePointToIndex(int codepoint) {
       if (codepoint < 167 || codepoint > 65509) {
  return -1;
@@ -33,7 +36,7 @@ private Jis0208() {
           int startindex = indextable[i + 2];
           int length = indextable[i + 3];
           for (int j = 0; j < length; ++j) {
-            if ((table[j + startindex]) == cps) {
+            if (table[j + startindex] == cps) {
  return j + startindex;
 }
           }
@@ -41,6 +44,7 @@ private Jis0208() {
       }
       return -1;
     }
+
     private static final int[] indextable2 ={
 167, 65509, 0, 256, 913, 65370, 256, 256, 955, 9547, 512, 256, 8470, 13261,
   1024, 256, 19968, 40284, 1280, 256, 19979, 40644, 1536, 256, 19992, 40653,
@@ -54,6 +58,7 @@ private Jis0208() {
   7168, 256, 21202, 40783, 7424, 256, 20956, 40864, 7680, 256, 8470, 65508,
   10496, 256, 20008, 64033, 10752, 256, 35574, 64045, 11008, 96
 };
+
     public static int ShiftJISCodePointToIndex(int codepoint) {
       if (codepoint < 167 || codepoint > 65509) {
  return -1;
@@ -72,6 +77,7 @@ private Jis0208() {
       }
       return -1;
     }
+
     public static int IndexToCodePoint(int index) {
       if (index < 0 || index >= 11104) {
  return -1;
@@ -79,6 +85,7 @@ private Jis0208() {
       int cp = ((int)table[index]) & 0xffff;
       return (cp == 0) ? -1 : cp;
     }
+
     private static short[] method0() {
       return new short[] { 0x3000, 0x3001, 0x3002, -244, -242, 0x30fb, -230,
         -229, -225, -255, 0x309b, 0x309c, 0x00b4, -192, 0x00a8, -194, -29,
@@ -524,6 +531,7 @@ private Jis0208() {
         0x514d, 0x68c9, 0x7dbf, 0x7dec, -26782, -24902, 0x6478, 0x6a21,
         -31998, 0x5984, 0x5b5f, 0x6bdb, 0x731b, 0x76f2, 0x7db2 };
     }
+
     private static short[] method1() {
       return new short[] { -32745, -31591, 0x5132, 0x6728, -24871, 0x76ee,
         0x6762, 0x52ff, -26363, 0x5c24, 0x623b, 0x7c7e, -29520, 0x554f,
@@ -1004,6 +1012,7 @@ private Jis0208() {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0 };
     }
+
     private static short[] method2() {
       return new short[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

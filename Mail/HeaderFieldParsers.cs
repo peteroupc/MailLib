@@ -226,9 +226,10 @@ endIndex);
                     if (nonasciiLocalParts) {
                     // At least some of the domains could not
                     // be converted to ASCII
-                    originalGroups = originalGroups ??
-                this.ParseGroupLists(originalString, 0,
-                    originalString.Length);
+                originalGroups = originalGroups ?? this.ParseGroupLists(
+originalString,
+0,
+originalString.Length);
                     originalGroupList = originalGroups[groupIndex];
                     string groupText = originalGroupList;
                     string displayNameText = str.Substring(
@@ -1681,19 +1682,31 @@ endIndex,
 tokener);
       }
     }
+
     private sealed class HeaderEesstVersion : StructuredHeaderField {
-      public override int Parse(string str, int index, int endIndex,
-        ITokener tokener) {
-        return HeaderParser.ParseHeaderEesstVersion(str, index, endIndex,
-              tokener);
+      public override int Parse(
+string str,
+int index,
+int endIndex,
+ITokener tokener) {
+        return HeaderParser.ParseHeaderEesstVersion(
+str,
+index,
+endIndex,
+tokener);
       }
     }
+
     private sealed class HeaderSioLabel : StructuredHeaderField {
-      public override int Parse(string str, int index, int endIndex,
-        ITokener tokener) {
+      public override int Parse(
+string str,
+int index,
+int endIndex,
+ITokener tokener) {
         return HeaderParser.ParseHeaderSioLabel(str, index, endIndex, tokener);
       }
     }
+
     private static IDictionary<string, IHeaderFieldParser> fieldMap =
       CreateHeaderFieldList();
 

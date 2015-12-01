@@ -80,7 +80,7 @@ prefix.length() >= str.length()) && str.substring(
       while (index < str.length()) {
         int si = index;
         char c = str.charAt(index++);
-        boolean isspace = (c == 0x20);
+        boolean isspace = c == 0x20;
         int count = 0;
         while (c == 0x09 || c == 0x20) {
           ++count;

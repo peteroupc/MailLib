@@ -199,7 +199,7 @@ The parameter  <i>encoding</i>
         this string str,
         PeterO.Text.ICharacterEncoding enc);
 
-Reads Unicode characters from a text string and writes them to a byte array encoded in a given character encoding. When reading the string, any unpaired surrogate characters are replaced with the replacement character (U + FFFD), and when writing to the byte array, any characters that can't be encoded are replaced with the byte 0x3f (the question mark character).In the .NET implementation, this method is implemented as an extension method to any object implementing string and can be called as follows:  `str.EncodeToBytes(enc)` . If the object's class already has a EncodeToBytes method with the same parameters, that method takes precedence over this extension method.
+Reads Unicode characters from a text string and writes them to a byte array encoded in a given character encoding. When reading the string, any unpaired surrogate characters are replaced with the replacement character (U + FFFD), and when writing to the byte array, any characters that can't be encoded are replaced with the byte 0x3f (the question mark character).In the .NET implementation, this method is implemented as an extension method to any String object and can be called as follows: `str.EncodeToBytes(enc)` . If the object's class already has a EncodeToBytes method with the same parameters, that method takes precedence over this extension method.
 
 <b>Parameters:</b>
 
@@ -272,7 +272,7 @@ The parameter  <i>encoding</i>
         PeterO.Text.ICharacterEncoding enc,
         PeterO.IWriter writer);
 
-Converts a text string to bytes and writes the bytes to an output byte writer. When reading the string, any unpaired surrogate characters are replaced with the replacement character (U + FFFD), and when writing to the byte stream, any characters that can't be encoded are replaced with the byte 0x3f (the question mark character).In the .NET implementation, this method is implemented as an extension method to any object implementing string and can be called as follows:  `str.EncodeToBytes(enc, writer)` . If the object's class already has a EncodeToBytes method with the same parameters, that method takes precedence over this extension method.
+Converts a text string to bytes and writes the bytes to an output byte writer. When reading the string, any unpaired surrogate characters are replaced with the replacement character (U + FFFD), and when writing to the byte stream, any characters that can't be encoded are replaced with the byte 0x3f (the question mark character).In the .NET implementation, this method is implemented as an extension method to any String object and can be called as follows: `str.EncodeToBytes(enc, writer)` . If the object's class already has a EncodeToBytes method with the same parameters, that method takes precedence over this extension method.
 
 <b>Parameters:</b>
 
@@ -552,7 +552,7 @@ The parameter  <i>encoding</i>
         int offset,
         int length);
 
-Converts a portion of a text string to a character input. The resulting input can then be used to encode the text to bytes, or to read the string code point by code point, among other things.In the .NET implementation, this method is implemented as an extension method to any object implementing string and can be called as follows:  `str.StringToInput(offset, length)` . If the object's class already has a StringToInput method with the same parameters, that method takes precedence over this extension method.
+Converts a portion of a text string to a character input. The resulting input can then be used to encode the text to bytes, or to read the string code point by code point, among other things. When reading the string, any unpaired surrogate characters are replaced with the replacement character (U + FFFD).In the .NET implementation, this method is implemented as an extension method to any String object and can be called as follows: `str.StringToInput(offset, length)` . If the object's class already has a StringToInput method with the same parameters, that method takes precedence over this extension method.
 
 <b>Parameters:</b>
 

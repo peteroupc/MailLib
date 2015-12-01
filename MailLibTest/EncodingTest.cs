@@ -6,13 +6,14 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
-using System.IO;
 using System.Text;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterO;
 using PeterO.Mail;
 using PeterO.Text;
+
+using System.Collections.Generic;
 
 namespace MailLibTest {
   [TestClass]
@@ -213,48 +214,6 @@ namespace MailLibTest {
       return sb.ToString();
     }
 
-    private static void TestParseDomain(string str, string expected) {
-      Assert.IsTrue(str.Length == (int)Reflect.InvokeStatic(MailNamespace() +
-                    ".HeaderParser", "ParseDomain", str, 0, str.Length, null));
-      Assert.AreEqual(expected, (string)Reflect.InvokeStatic(MailNamespace() +
-                    ".HeaderParserUtility", "ParseDomain", str, 0, str.Length));
-    }
-
-    private static void TestParseLocalPart(string str, string expected) {
-      Assert.IsTrue(str.Length == (int)Reflect.InvokeStatic(MailNamespace() +
-                 ".HeaderParser" , "ParseLocalPart" , str, 0, str.Length,
-                    null));
-      Assert.AreEqual(expected, (string)Reflect.InvokeStatic(MailNamespace() +
-                ".HeaderParserUtility" , "ParseLocalPart" , str, 0,
-                    str.Length));
-    }
-
-    [TestMethod]
-    public void TestParseDomainAndLocalPart() {
-      TestParseDomain("x", "x");
-      TestParseLocalPart("x", "x");
-      TestParseLocalPart("\"" + "\"", String.Empty);
-      TestParseDomain("x.example", "x.example");
-      TestParseLocalPart("x.example", "x.example");
-      TestParseLocalPart("x.example\ud800\udc00.example.com",
-                    "x.example\ud800\udc00.example.com");
-      TestParseDomain("x.example\ud800\udc00.example.com",
-                    "x.example\ud800\udc00.example.com");
-      TestParseDomain("x.example.com", "x.example.com");
-      TestParseLocalPart("x.example.com", "x.example.com");
-      TestParseLocalPart("\"(not a comment)\"", "(not a comment)");
-      TestParseLocalPart("(comment1) x (comment2)", "x");
-      TestParseLocalPart("(comment1) example (comment2) . (comment3) com",
-                    "example.com");
-      TestParseDomain("(comment1) x (comment2)", "x");
-      TestParseDomain("(comment1) example (comment2) . (comment3) com",
-                    "example.com");
-      TestParseDomain("(comment1) [x] (comment2)", "[x]");
-      TestParseDomain("(comment1) [a.b.c.d] (comment2)", "[a.b.c.d]");
-      TestParseDomain("[]", "[]");
-      TestParseDomain("[a .\r\n b. c.d ]", "[a.b.c.d]");
-    }
-
     public static void TestWordWrapOne(string firstWord, string nextWords,
                     string expected) {
       object ww = Reflect.Construct(MailNamespace() + ".WordWrapEncoder",
@@ -274,14 +233,23 @@ namespace MailLibTest {
     [TestMethod]
     public void TestHeaderFields() {
       const string testString =
-
-  "Joe P Customer <customer@example.com>, Jane W Customer <jane@example.com>"
-        ;
-      if (testString.Length != (int)Reflect.InvokeStatic(MailNamespace() +
-                    ".HeaderParser", "ParseMailboxList", testString, 0,
-                    testString.Length, null)) {
-        Assert.Fail(testString);
-      }
+       "From: Joe P Customer <customer@example.com>, " +
+       "Jane W Customer <jane@example.com>\r\n\r\nTest";
+      Message msg = MessageTest.MessageFromString(testString);
+      IList<NamedAddress> addresses = msg.FromAddresses;
+      Assert.AreEqual(2, addresses.Count);
+      {
+string stringTemp = addresses[0].ToString();
+Assert.AreEqual(
+"Joe P Customer <customer@example.com>",
+stringTemp);
+}
+      {
+string stringTemp = addresses[1].ToString();
+Assert.AreEqual(
+"Jane W Customer <jane@example.com>",
+stringTemp);
+}
     }
 
     [TestMethod]
@@ -299,29 +267,10 @@ namespace MailLibTest {
     [TestMethod]
     public void TestAddressInternal() {
       try {
-        Reflect.Construct(MailNamespace() + ".Address", null, "example.com");
-        Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-        Assert.Fail(ex.ToString());
-        throw new InvalidOperationException(String.Empty, ex);
-      }
-      try {
-        Reflect.Construct(MailNamespace() + ".Address", "local", null);
-        Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
-        Assert.Fail(ex.ToString());
-        throw new InvalidOperationException(String.Empty, ex);
-      }
-      try {
-        Reflect.Construct(MailNamespace() + ".Address",
-                    EncodingTest.Repeat("local", 200), "example.com");
-        Assert.Fail("Should have failed");
+Assert.AreEqual(null, new Address(EncodingTest.Repeat("local" , 200) +
+  "@example.com"));
       } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -356,7 +305,7 @@ Console.WriteLine(ex.Message);
       try {
         MessageTest.MessageFromString(msgString);
       } catch (MessageDataException ex) {
-Console.WriteLine(ex.Message);
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);

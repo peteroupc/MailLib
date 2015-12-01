@@ -98,20 +98,20 @@ namespace PeterO.Text.Encoders {
         b1 = (c1 >> 8) & 0xff;
         b2 = c1 & 0xff;
         if (this.bigEndian) {
-          buf[0] = ((byte)b1);
-          buf[1] = ((byte)b2);
+          buf[0] = (byte)b1;
+          buf[1] = (byte)b2;
         } else {
-          buf[0] = ((byte)b2);
-          buf[1] = ((byte)b1);
+          buf[0] = (byte)b2;
+          buf[1] = (byte)b1;
         }
         b1 = (c2 >> 8) & 0xff;
         b2 = c2 & 0xff;
         if (this.bigEndian) {
-          buf[2] = ((byte)b1);
-          buf[3] = ((byte)b2);
+          buf[2] = (byte)b1;
+          buf[3] = (byte)b2;
         } else {
-          buf[2] = ((byte)b2);
-          buf[3] = ((byte)b1);
+          buf[2] = (byte)b2;
+          buf[3] = (byte)b1;
         }
         output.Write(buf, 0, 4);
         return 4;

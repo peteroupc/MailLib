@@ -234,7 +234,7 @@ namespace PeterO.Text.Encoders {
       }
       int cpoffset = gb18030table[v + 1];
       int offset = gb18030table[v];
-      return (cpoffset + pointer - offset);
+      return cpoffset + pointer - offset;
     }
 
   private static int GB18030Pointer(int codepoint) {
@@ -260,7 +260,7 @@ namespace PeterO.Text.Encoders {
       }
     int cpoffset = gb18030table[v + 1];
     int offset = gb18030table[v];
-    return (offset + codepoint - cpoffset);
+    return offset + codepoint - cpoffset;
   }
 
     private class Decoder : ICharacterDecoder {

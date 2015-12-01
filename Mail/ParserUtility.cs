@@ -79,7 +79,7 @@ prefix.Length).Equals(prefix);
       while (index < str.Length) {
         int si = index;
         char c = str[index++];
-        bool isspace = (c == 0x20);
+        bool isspace = c == 0x20;
         var count = 0;
         while (c == 0x09 || c == 0x20) {
           ++count;

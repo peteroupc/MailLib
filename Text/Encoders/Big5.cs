@@ -1,7 +1,9 @@
 using System;
+
 namespace PeterO.Text.Encoders {
   internal static class Big5 {
     private static readonly int[] table = new int[19782];
+
     static Big5() {
       Array.Copy(method0(), 0, table, 0, 4096);
       Array.Copy(method1(), 0, table, 4096, 4096);
@@ -9,6 +11,7 @@ namespace PeterO.Text.Encoders {
       Array.Copy(method3(), 0, table, 12288, 4096);
       Array.Copy(method4(), 0, table, 16384, 3398);
     }
+
     private static readonly int[] indextable ={
 167, 65509, 5024, 256, 711, 65370, 5280, 256, 19981, 31435, 5536, 256,
   20018, 38433, 5792, 256, 20006, 38450, 6048, 256, 22369, 33459, 6304, 256,
@@ -32,6 +35,7 @@ namespace PeterO.Text.Encoders {
   9552, 166622, 18848, 256, 13665, 194708, 19104, 256, 14053, 194726, 19360,
   256, 14021, 168205, 19616, 166
 };
+
     public static int CodePointToIndex(int codepoint) {
       if (codepoint < 167 || codepoint > 194726) {
  return -1;
@@ -59,7 +63,7 @@ namespace PeterO.Text.Encoders {
           int startindex = indextable[i + 2];
           int length = indextable[i + 3];
           for (int j = 0; j < length; ++j) {
-            if ((table[j + startindex]) == codepoint) {
+            if (table[j + startindex] == codepoint) {
  return j + startindex;
 }
           }
@@ -67,6 +71,7 @@ namespace PeterO.Text.Encoders {
       }
       return -1;
     }
+
     public static int IndexToCodePoint(int index) {
       if (index < 0 || index >= 19782) {
  return -1;
@@ -74,6 +79,7 @@ namespace PeterO.Text.Encoders {
       int cp = table[index];
       return (cp == 0) ? -1 : cp;
     }
+
     private static int[] method0() {
       return new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -459,6 +465,7 @@ namespace PeterO.Text.Encoders {
         137797, 138282, 138352, 138412, 138952, 25283, 138965, 139029,
         29080, 26709, 139333, 27113, 14024 };
     }
+
     private static int[] method1() {
       return new int[] { 139900, 140247, 140282, 141098, 141425, 141647,
         33533, 141671, 141715, 142037, 35237, 142056, 36768, 142094, 38840,
@@ -909,6 +916,7 @@ namespace PeterO.Text.Encoders {
         28982, 29038, 28956, 29260, 29316, 29312, 29494, 29477, 29492,
         29481, 29754, 29738, 29747, 29730, 29733 };
     }
+
     private static int[] method2() {
       return new int[] { 29749, 29750, 29748, 29743, 29723, 29734, 29736,
         29989, 29990, 30059, 30058, 30178, 30171, 30179, 30169, 30168,
@@ -1361,6 +1369,7 @@ namespace PeterO.Text.Encoders {
         26605, 26572, 26542, 26598, 26587, 26618, 26569, 26570, 26563,
         26602, 26571, 27432, 27522, 27524, 27574, 27606, 27608 };
     }
+
     private static int[] method3() {
       return new int[] { 27616, 27680, 27681, 27944, 27956, 27949, 27935,
         27964, 27967, 27922, 27914, 27866, 27955, 27908, 27929, 27962,
@@ -1819,6 +1828,7 @@ namespace PeterO.Text.Encoders {
         24168, 24166, 24175, 24297, 24295, 24294, 24296, 24293, 24395,
         24508, 24989, 25000 };
     }
+
     private static int[] method4() {
       return new int[] { 24982, 25029, 25012, 25030, 25025, 25036, 25018,
         25023, 25016, 24972, 25815, 25814, 25808, 25807, 25801, 25789,

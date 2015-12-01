@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using PeterO.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MailLibTest {
@@ -97,11 +95,72 @@ throw new InvalidOperationException(String.Empty, ex);
     }
     [TestMethod]
     public void TestResolveAlias() {
-      // not implemented yet
+      Assert.AreEqual(String.Empty, Encodings.ResolveAlias(null));
+      Assert.AreEqual(String.Empty, Encodings.ResolveAlias(String.Empty));
+      {
+string stringTemp = Encodings.ResolveAlias("iso-8859-1");
+Assert.AreEqual(
+"windows-1252",
+stringTemp);
+}
+      {
+string stringTemp = Encodings.ResolveAlias("windows-1252");
+Assert.AreEqual(
+"windows-1252",
+stringTemp);
+}
+      {
+string stringTemp = Encodings.ResolveAlias("us-ascii");
+Assert.AreEqual(
+"windows-1252",
+stringTemp);
+}
+      Assert.AreEqual(String.Empty, Encodings.ResolveAlias("utf-7"));
+      Assert.AreEqual(String.Empty, Encodings.ResolveAlias("replacement"));
+      {
+string stringTemp = Encodings.ResolveAlias("hz-gb-2312");
+Assert.AreEqual(
+"replacement",
+stringTemp);
+}
     }
     [TestMethod]
     public void TestResolveAliasForEmail() {
-      // not implemented yet
+      Assert.AreEqual(String.Empty, Encodings.ResolveAliasForEmail(null));
+   Assert.AreEqual(String.Empty,
+        Encodings.ResolveAliasForEmail(String.Empty));
+      {
+string stringTemp = Encodings.ResolveAliasForEmail("iso-8859-1");
+Assert.AreEqual(
+"iso-8859-1",
+stringTemp);
+}
+      {
+string stringTemp = Encodings.ResolveAliasForEmail("windows-1252");
+Assert.AreEqual(
+"windows-1252",
+stringTemp);
+}
+      {
+string stringTemp = Encodings.ResolveAliasForEmail("us-ascii");
+Assert.AreEqual(
+"us-ascii",
+stringTemp);
+}
+      {
+string stringTemp = Encodings.ResolveAliasForEmail("utf-7");
+Assert.AreEqual(
+"utf-7",
+stringTemp);
+}
+  Assert.AreEqual(String.Empty, Encodings.ResolveAliasForEmail("replacement"
+));
+      {
+string stringTemp = Encodings.ResolveAliasForEmail("hz-gb-2312");
+Assert.AreEqual(
+"replacement",
+stringTemp);
+}
     }
     [TestMethod]
     public void TestStringToBytes() {

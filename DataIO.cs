@@ -232,6 +232,7 @@ int length) {
       }
       return new WrappedOutputStreamFromByteWriter(output);
     }
+
     private sealed class ByteArrayTransform : IByteReader {
       private readonly byte[] bytes;
       private int offset;

@@ -8,7 +8,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 using System;
 using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PeterO;
 
 namespace Test {
   internal static class TestCommon {

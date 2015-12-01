@@ -74,7 +74,6 @@
     <Compile Include="Text\Encoders\Jis0208.cs" />
     <Compile Include="Text\Encoders\Jis0212.cs" />
     <Compile Include="Text\Encoders\Korean.cs" />
-    <Compile Include="Text\Lz4.cs" />
     <Compile Include="Mail\Address.cs" />
     <Compile Include="Mail\Base64Encoder.cs" />
     <Compile Include="Mail\Transforms\Base64Transform.cs" />
@@ -130,7 +129,5 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!--
   <Import Project="$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets" />
-  -->
 </Project>

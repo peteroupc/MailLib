@@ -29,7 +29,8 @@ import java.util.*;
 
     /**
      * Gets the email address associated with this object.
-     * @return The email address associated with this object.
+     * @return The email address associated with this object. This value is null if
+     * this object represents a group of addresses instead.
      */
     public final Address getAddress() {
         return this.address;
@@ -150,6 +151,7 @@ tokener.GetTokens());
       this.name = displayName;
       this.groupAddresses = new ArrayList<NamedAddress>();
       this.address = new Address(address);
+      this.isGroup = false;
     }
 
     /**
@@ -170,6 +172,7 @@ tokener.GetTokens());
       this.name = displayName;
       this.groupAddresses = new ArrayList<NamedAddress>();
       this.address = address;
+      this.isGroup = false;
     }
 
     /**
@@ -195,6 +198,7 @@ tokener.GetTokens());
       }
       this.groupAddresses = new ArrayList<NamedAddress>();
       this.name = displayName;
+      this.isGroup = false;
     }
 
     /**
@@ -225,6 +229,7 @@ tokener.GetTokens());
           throw new IllegalArgumentException("A mailbox in the list is a group");
         }
       }
+      this.address = null;
       this.groupAddresses = new ArrayList<NamedAddress>(mailboxes);
     }
 

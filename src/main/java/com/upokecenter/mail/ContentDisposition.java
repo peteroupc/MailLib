@@ -387,7 +387,7 @@ strLower.length() >= 4 && strLower.indexOf(
      * @throws NullPointerException The parameter {@code dispoValue} is null.
      */
     public static ContentDisposition Parse(String dispoValue) {
-      if ((dispoValue) == null) {
+      if (dispoValue == null) {
   throw new NullPointerException("dispoValue");
 }
       return Parse(dispoValue, Attachment);
