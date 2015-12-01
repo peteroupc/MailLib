@@ -4,17 +4,19 @@
 
 Contains methods for converting text from one character encoding to another. This class also contains convenience methods for converting strings and other character inputs to bytes.The Encoding Standard, which is a Candidate Recommendation as of early November 2015, defines algorithms for the most common character encodings used on Web pages and recommends the UTF-8 encoding for new specifications and Web pages. Calling the `GetEncoding(name)`  method returns one of the character encodings with the given name under the Encoding Standard.
 
-Now let's define some terms:
+Now let's define some terms.
+
+Encoding Terms
 
  * A code point is a number that identifies a single text character, such as a letter, digit, or symbol.
+
+ * A character set is a set of code points which are each assigned to a single text character. (This may also be called acoded character set.)
 
  * An encoder is a class that converts a sequence of bytes to a sequence of code points in the universal character set (otherwise known under the name Unicode). An encoder implements the `ICharacterEncoder`  interface.
 
  * A decoder is a class that converts a sequence of Unicode code points to a sequence of bytes. A decoder implements the  `ICharacterDecoder`  interface.
 
  * An encoding is a mapping from bytes to universal code points and from universal code points to bytes. An encoding allows access to both an encoder and a decoder and implements the `ICharacterEncoding`  interface.
-
- * A character set is a set of code points which are each assigned to a single text character. (This may also be called acoded character set.)
 
 There are several kinds of encodings:
 
@@ -31,6 +33,16 @@ Getting an Encoding
 The Encoding Standard includes UTF-8, UTF-16, and many legacy encodings, and gives each one of them a name. The `GetEncoding(name)`  method takes a name string and returns an ICharacterEncoding object that implements that encoding, or `null`  if the name is unrecognized.
 
 However, the Encoding Standard is designed to include only encodings commonly used on Web pages, not in other protocols such as email. For email, the Encoding class includes an alternate function  `GetEncoding(name, forEmail)` . Setting `forEmail`  to  `true`  will use rules modified from the Encoding Standard to better suit encoding and decoding text from email messages.
+
+Custom Encodings
+
+Classes that implement the ICharacterEncoder interface can provide additional character encodings not included in the Encoding Standard. Some examples of these include the following:
+
+ * A modified version of UTF-8 used in Java's serialization formats.
+
+ * A modified version of UTF-7 (a universal character encoding using only 7-bit bytes) used in the IMAP email protocol.
+
+(Note that this library doesn't implement either encoding.)
 
 ### UTF8
 
@@ -283,11 +295,31 @@ The parameter  <i>str</i>
         this PeterO.Text.ICharacterEncoding encoding,
         PeterO.IByteReader stream);
 
-Converts a character encoding into a character input stream, given a streamable source of bytes.In the .NET implementation, this method is implemented as an extension method to any object implementing ICharacterEncoding and can be called as follows: "encoding.GetDecoderInput(transform)". If the object's class already has a GetDecoderInput method with the same parameters, that method takes precedence over this extension method.
+Converts a character encoding into a character input stream, given a streamable source of bytes. The input stream doesn't check the first few bytes for a byte-order mark indicating a Unicode encoding such as UTF-8 before using the character encoding's decoder.In the .NET implementation, this method is implemented as an extension method to any object implementing ICharacterEncoding and can be called as follows: "encoding.GetDecoderInput(transform)". If the object's class already has a GetDecoderInput method with the same parameters, that method takes precedence over this extension method.
 
 <b>Parameters:</b>
 
  * <i>encoding</i>: Encoding that exposes a decoder to be converted into a character input stream. If the decoder returns -2 (indicating a decode error), the character input stream handles the error by returning a replacement character in its place.
+
+ * <i>stream</i>: Byte stream to convert into Unicode characters.
+
+<b>Returns:</b>
+
+An ICharacterInput object.
+
+### GetDecoderInputSkipBom
+
+    public static PeterO.Text.ICharacterInput GetDecoderInputSkipBom(
+        this PeterO.Text.ICharacterEncoding encoding,
+        PeterO.IByteReader stream);
+
+Converts a character encoding into a character input stream, given a streamable source of bytes. But if the input stream starts with a UTF-8 or UTF-16 byte order mark, the input is decoded as UTF-8 or UTF-16, as the case may be, rather than the given character encoding.This method implements the "decode" algorithm specified in the Encoding standard.
+
+In the .NET implementation, this method is implemented as an extension method to any object implementing ICharacterEncoding and can be called as follows: "encoding.GetDecoderInput(transform)". If the object's class already has a GetDecoderInput method with the same parameters, that method takes precedence over this extension method.
+
+<b>Parameters:</b>
+
+ * <i>encoding</i>: Encoding object that exposes a decoder to be converted into a character input stream. If the decoder returns -2 (indicating a decode error), the character input stream handles the error by returning a replacement character in its place.
 
  * <i>stream</i>: Byte stream to convert into Unicode characters.
 
@@ -430,6 +462,8 @@ Resolves a character encoding's name to a standard form.
  *  `big5`  : legacy traditional Chinese encoding
 
  *  `euc-kr`  : legacy Korean encoding
+
+The  `utf-8` ,  `utf-16le` , and  `utf-16be` encodings don't encode a byte-order mark at the start of the text (doing so is not recommended for  `utf-8` , while `utf-16le`  and  `utf-16be`  are encoding schemes that treat the byte-order mark character U + FEFF as an ordinary character, as opposed to the UTF-16 encoding form). The Encoding Standard aliases `utf-16`  to  `utf-16le`  "to deal with deployed content".
 
 .
 
