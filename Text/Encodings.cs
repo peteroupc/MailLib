@@ -23,43 +23,45 @@ namespace PeterO.Text {
     /// <item>A <b>character set</b> is a set of code points which are each
     /// assigned to a single text character. (This may also be called a
     /// <i>coded character set</i>.)</item></list>
-    /// <item>An <b>encoder</b> is a class that converts a sequence of
-    /// bytes to a sequence of code points in the universal character set
-    /// (otherwise known under the name Unicode). An encoder implements the
-    /// <c>ICharacterEncoder</c> interface.</item>
-    /// <item>A <b>decoder</b> is a class that converts a sequence of
-    /// Unicode code points to a sequence of bytes. A decoder implements
-    /// the <c>ICharacterDecoder</c> interface.</item>
-    /// <item>An <b>encoding</b> is a mapping from bytes to universal code
-    /// points and from universal code points to bytes. An encoding allows
-    /// access to both an encoder and a decoder and implements the
-    /// <c>ICharacterEncoding</c> interface.</item>
-    /// <para>There are several kinds of encodings:</para>
+    /// <item>A <b>character encoding</b> is a mapping from a sequence of
+    /// code points (from one or more character sets) to a sequence of
+    /// bytes and vice versa.</item>
+    /// <item><b>ASCII</b> is a 128-code-point character set that includes
+    /// the English letters and digits, common punctuation and symbols, and
+    /// control characters. As used here, its code points match the code
+    /// points 0 to 127 in the Unicode Standard.</item>
+    /// <para>There are several kinds of character encodings:</para>
     /// <list>
     /// <item><b>Single-byte encodings</b> define a character set that
-    /// assigns one code point to one byte. For example, the ISO 8859
-    /// encodings and <c>windows-1252</c> are single-byte encodings. ASCII
-    /// is also a single-byte encoding, although its character set only
+    /// assigns one code point to one byte. Thus, they can have a maximum
+    /// of 256 code points. For example:</item>
+    /// <item>(a) ISO 8859 encodings and <c>windows-1252</c>.</item>
+    /// <item>(b) ASCII is a single-byte encoding whose character set only
     /// uses the lower 7 bits of an eight-bit byte. In the Encoding
     /// Standard, all single-byte encodings use the ASCII characters as the
-    /// first 128 code points of their character sets. (Here, ASCII is the
-    /// same as the International Reference Version of the ISO 646
-    /// standard.)</item>
-    /// <item><b>Multi-byte encodings</b> define a character set that
-    /// assigns some or all code points to several bytes. (They can include
-    /// multiple character sets, such as single-byte ASCII and a multi-byte
-    /// Chinese character set.) For example, most legacy East Asian
-    /// encodings, such as <c>shift_jis</c>, <c>gbk</c>, and <c>big5</c>
-    /// are multi-byte encodings, as well as <c>utf-8</c> and UTF-16, which
-    /// both encode the Unicode character set.</item>
-    /// <item><b>Escape-based encodings</b> use escape sequences to encode
-    /// one or more character sets in the same sequence of bytes. Each
-    /// escape sequence "shifts" the bytes that follow into a different
-    /// character set. The best example of an escape-based encoding
-    /// supported in the Encoding Standard is <c>iso-2022-jp</c>, which
-    /// supports several escape sequences that shift into different
-    /// character sets, including a Katakana, a Kanji, and an ASCII
-    /// character set.</item>
+    /// first 128 code points of their character sets.</item>
+    /// <item><b>Multi-byte encodings</b> include code points from one or
+    /// more character sets and assign some or all code points to several
+    /// bytes. For example:</item>
+    /// <item>(a) UTF-16 uses 2 bytes for the most common Unicode code
+    /// points and 4 bytes for supplementary code points.</item>
+    /// <item>(b) <c>utf-8</c> uses 1 byte for ASCII and 2 to 4 bytes for
+    /// the other Unicode code points.</item>
+    /// <item>(c) Most legacy East Asian encodings, such as
+    /// <c>shift_jis</c>, <c>gbk</c>, and <c>big5</c> use 1 byte for
+    /// ASCII (or a slightly modified version) and, usually, 2 or more
+    /// bytes for national standard character sets.</item>
+    /// <item><b>Escape-based encodings</b> are combinations of single-
+    /// and/or multi-byte encodings, and use escape sequences and/or shift
+    /// codes to change which encoding to use for the bytes that follow.
+    /// For example:</item>
+    /// <item>(a) <c>iso-2022-jp</c> supports several escape sequences that
+    /// shift into different encodings, including a Katakana, a Kanji, and
+    /// an ASCII encoding (with ASCII as the default).</item>
+    /// <item>(b) UTF-7 (not included in the Encoding Standard) is a
+    /// Unicode encoding that uses a limited subset of ASCII. The plus
+    /// symbol is used to shift into a modified version of base-64 to
+    /// encode other Unicode code points.</item>
     /// <item>The Encoding Standard also defines a <b>replacement
     /// encoding</b>, which causes a decoding error and is used to alias a
     /// few problematic or unsupported encoding names, such as
@@ -77,15 +79,29 @@ namespace PeterO.Text {
     /// <c>forEmail</c> to <c>true</c> will use rules modified from the
     /// Encoding Standard to better suit encoding and decoding text from
     /// email messages.</para>
+    /// <para><b>Classes for Character Encodings</b></para>
+    /// <para>This Encodings class provides access to common character
+    /// encodings through classes as described below:</para>
+    /// <list type=''>
+    /// <item>An <b>encoder class</b> is a class that converts a sequence
+    /// of bytes to a sequence of code points in the universal character
+    /// set (otherwise known under the name Unicode). An encoder class
+    /// implements the <c>ICharacterEncoder</c> interface.</item>
+    /// <item>A <b>decoder class</b> is a class that converts a sequence of
+    /// Unicode code points to a sequence of bytes. A decoder class
+    /// implements the <c>ICharacterDecoder</c> interface.</item>
+    /// <item>An <b>encoding class</b> allows access to both an encoder
+    /// class and a decoder class and implements the
+    /// <c>ICharacterEncoding</c> interface. The encoder and decoder
+    /// classes should implement the same character encoding.</item></list>
     /// <para><b>Custom Encodings</b></para>
-    /// <para>Classes that implement the ICharacterEncoder interface can
+    /// <para>Classes that implement the ICharacterEncoding interface can
     /// provide additional character encodings not included in the Encoding
     /// Standard. Some examples of these include the following:</para>
     /// <list>
     /// <item>A modified version of UTF-8 used in Java's serialization
     /// formats.</item>
-    /// <item>A modified version of UTF-7 (a universal character encoding
-    /// using only 7-bit bytes) used in the IMAP email
+    /// <item>A modified version of UTF-7 used in the IMAP email
     /// protocol.</item></list>
     /// <para>(Note that this library doesn't implement either
     /// encoding.)</para></summary>
@@ -223,14 +239,14 @@ int length) {
     /// <para>In the .NET implementation, this method is implemented as an
     /// extension method to any object implementing ICharacterInput and can
     /// be called as follows: <c>input.EncodeToBytes(encoding)</c>. If the
-    /// object's class already has a EncodeToBytes method with the same
+    /// object's class already has an EncodeToBytes method with the same
     /// parameters, that method takes precedence over this extension
     /// method.</para></summary>
     /// <param name='input'>An object that implements a stream of universal
     /// code points.</param>
     /// <param name='encoding'>An object that implements a given character
     /// encoding.</param>
-    /// <returns>A byte array.</returns>
+    /// <returns>A byte array containing the encoded text.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoding'/> is null.</exception>
     public static byte[] EncodeToBytes(
@@ -966,8 +982,9 @@ bool allowReplacement) {
       return builder.ToString();
     }
 
-    /// <summary>Resolves a character encoding's name to a standard
-    /// form.</summary>
+    /// <summary>Resolves a character encoding's name to a standard form.
+    /// This involves changing aliases of a character encoding to a
+    /// standardized name.</summary>
     /// <param name='name'>A string that names a given character encoding.
     /// Can be null. Any leading and trailing whitespace is removed and the
     /// name converted to lowercase before resolving the encoding&#x27;s
@@ -1054,7 +1071,7 @@ bool allowReplacement) {
     /// alias to <c>windows-1252</c>, as specified in the Encoding
     /// Standard.</item>
     /// <item><c>utf-7</c> - UTF-7 (7-bit universal character
-    /// set)</item></list>.</param>
+    /// set).</item></list>.</param>
     /// <returns>A standardized name for the encoding. Returns the empty
     /// string if <paramref name='name'/> is null or empty, or if the
     /// encoding name is unsupported.</returns>
@@ -1150,6 +1167,28 @@ bool allowReplacement) {
       return EncodeToBytes(
           new StringCharacterInput(str),
           encoder);
+    }
+
+    /// <summary>Converts a text string to a character input. The resulting
+    /// input can then be used to encode the text to bytes, or to read the
+    /// string code point by code point, among other things. When reading
+    /// the string, any unpaired surrogate characters are replaced with the
+    /// replacement character (U + FFFD).
+    /// <para>In the .NET implementation, this method is implemented as an
+    /// extension method to any String object and can be called as follows:
+    /// <c>str.StringToInput(offset, length)</c>. If the object's class
+    /// already has a StringToInput method with the same parameters, that
+    /// method takes precedence over this extension
+    /// method.</para></summary>
+    /// <param name='str'>A string object.</param>
+    /// <returns>An ICharacterInput object.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='str'/> is null.</exception>
+    public static ICharacterInput StringToInput(this string str) {
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      return StringToInput(str, 0, str.Length);
     }
 
     /// <summary>Converts a portion of a text string to a character input.

@@ -9,7 +9,7 @@ Convenience class that contains static methods for wrapping byte arrays and stre
     public static PeterO.IByteReader ToByteReader(
         this byte[] bytes);
 
-Wraps a byte array into a byte reader. The reader will start at the beginning of the byte array.In the .NET implementation, this method is implemented as an extension method to any object implementing byte[] and can be called as follows:  `bytes.ToByteReader()` . If the object's class already has a ToByteReader method with the same parameters, that method takes precedence over this extension method.
+Wraps a byte array into a byte reader. The reader will start at the beginning of the byte array.In the .NET implementation, this method is implemented as an extension method to any byte array object and can be called as follows:  `bytes.ToByteReader()` . If the object's class already has a ToByteReader method with the same parameters, that method takes precedence over this extension method.
 
 <b>Parameters:</b>
 
@@ -32,7 +32,7 @@ The parameter  <i>bytes</i>
         int offset,
         int length);
 
-Wraps a portion of a byte array into a byte reader object.In the .NET implementation, this method is implemented as an extension method to any object implementing byte[] and can be called as follows:  `bytes.ToByteReader(offset, length)` . If the object's class already has a ToByteReader method with the same parameters, that method takes precedence over this extension method.
+Wraps a portion of a byte array into a byte reader object.In the .NET implementation, this method is implemented as an extension method to any byte array object and can be called as follows:  `bytes.ToByteReader(offset, length)` . If the object's class already has a ToByteReader method with the same parameters, that method takes precedence over this extension method.
 
 <b>Parameters:</b>
 
@@ -89,7 +89,7 @@ The parameter  <i>input</i>
 
 <b>Deprecated.</b> Renamed to ToByteReader.
 
-Wraps a byte array into a byte reader. The reader will start at the beginning of the byte array.In the .NET implementation, this method is implemented as an extension method to any object implementing byte[] and can be called as follows:  `bytes.ToTransform()` . If the object's class already has a ToTransform method with the same parameters, that method takes precedence over this extension method.
+Wraps a byte array into a byte reader. The reader will start at the beginning of the byte array.In the .NET implementation, this method is implemented as an extension method to any byte array object and can be called as follows:  `bytes.ToTransform()` . If the object's class already has a ToTransform method with the same parameters, that method takes precedence over this extension method.
 
 <b>Parameters:</b>
 
@@ -114,7 +114,7 @@ The parameter  <i>bytes</i>
 
 <b>Deprecated.</b> Renamed to ToByteReader.
 
-Wraps a portion of a byte array into a byte reader object.In the .NET implementation, this method is implemented as an extension method to any object implementing byte[] and can be called as follows:  `bytes.ToTransform(offset, length)` . If the object's class already has a ToTransform method with the same parameters, that method takes precedence over this extension method.
+Wraps a portion of a byte array into a byte reader object.In the .NET implementation, this method is implemented as an extension method to any byte array object and can be called as follows:  `bytes.ToTransform(offset, length)` . If the object's class already has a ToTransform method with the same parameters, that method takes precedence over this extension method.
 
 <b>Parameters:</b>
 

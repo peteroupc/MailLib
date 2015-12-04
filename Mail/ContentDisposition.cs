@@ -174,8 +174,9 @@ string type,
     /// value is decoded under RFC 2231 if possible; characters unsuitable
     /// for use in a filename (including the directory separators slash and
     /// backslash) are replaced with underscores; and the filename is
-    /// truncated if it would otherwise be too long. Returns an empty
-    /// string if <paramref name='str'/> is null.</returns>
+    /// truncated if it would otherwise be too long. The returned string
+    /// will be in normalization form C. Returns an empty string if
+    /// <paramref name='str'/> is null.</returns>
     public static string MakeFilename(string str) {
       if (str == null) {
         return String.Empty;
@@ -318,9 +319,9 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
     /// be matched case-insensitively. Can't be null.</param>
     /// <returns>The value of the parameter, or null if the parameter does
     /// not exist.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='name'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// <exception cref="ArgumentException">The parameter <paramref
     /// name='name'/> is empty.</exception>
     public string GetParameter(string name) {
       if (name == null) {
@@ -401,7 +402,7 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
     /// <param name='dispoValue'>A string object.</param>
     /// <returns>A content disposition object, or "Attachment" if <paramref
     /// name='dispoValue'/> is empty or syntactically invalid.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='dispoValue'/> is null.</exception>
     public static ContentDisposition Parse(string dispoValue) {
       if (dispoValue == null) {
@@ -417,7 +418,7 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
     /// <param name='defaultValue'>The value to return in case the
     /// disposition value is syntactically invalid. Can be null.</param>
     /// <returns>A ContentDisposition object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='dispositionValue'/> is null.</exception>
     public static ContentDisposition Parse(
 string dispositionValue,

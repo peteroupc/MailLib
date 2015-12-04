@@ -1,6 +1,10 @@
 using System;
 using PeterO.Text;
+using PeterO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
+using System.Text;
+
 namespace MailLibTest {
   [TestClass]
   public partial class EncodingsTest {
@@ -12,23 +16,23 @@ namespace MailLibTest {
     public void TestEncodeToBytes() {
       try {
         ICharacterInput ici = null;
- Encodings.EncodeToBytes(ici, Encodings.UTF8);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        Encodings.EncodeToBytes(ici, Encodings.UTF8);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+        Console.Write(String.Empty);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- Encodings.EncodeToBytes("test",null);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        Encodings.EncodeToBytes("test", null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+        Console.Write(String.Empty);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
     }
     [TestMethod]
     public void TestEncodeToWriter() {
@@ -98,70 +102,71 @@ throw new InvalidOperationException(String.Empty, ex);
       Assert.AreEqual(String.Empty, Encodings.ResolveAlias(null));
       Assert.AreEqual(String.Empty, Encodings.ResolveAlias(String.Empty));
       {
-string stringTemp = Encodings.ResolveAlias("iso-8859-1");
-Assert.AreEqual(
-"windows-1252",
-stringTemp);
-}
+        string stringTemp = Encodings.ResolveAlias("iso-8859-1");
+        Assert.AreEqual(
+        "windows-1252",
+        stringTemp);
+      }
       {
-string stringTemp = Encodings.ResolveAlias("windows-1252");
-Assert.AreEqual(
-"windows-1252",
-stringTemp);
-}
+        string stringTemp = Encodings.ResolveAlias("windows-1252");
+        Assert.AreEqual(
+        "windows-1252",
+        stringTemp);
+      }
       {
-string stringTemp = Encodings.ResolveAlias("us-ascii");
-Assert.AreEqual(
-"windows-1252",
-stringTemp);
-}
+        string stringTemp = Encodings.ResolveAlias("us-ascii");
+        Assert.AreEqual(
+        "windows-1252",
+        stringTemp);
+      }
       Assert.AreEqual(String.Empty, Encodings.ResolveAlias("utf-7"));
       Assert.AreEqual(String.Empty, Encodings.ResolveAlias("replacement"));
       {
-string stringTemp = Encodings.ResolveAlias("hz-gb-2312");
-Assert.AreEqual(
-"replacement",
-stringTemp);
-}
+        string stringTemp = Encodings.ResolveAlias("hz-gb-2312");
+        Assert.AreEqual(
+        "replacement",
+        stringTemp);
+      }
     }
     [TestMethod]
     public void TestResolveAliasForEmail() {
       Assert.AreEqual(String.Empty, Encodings.ResolveAliasForEmail(null));
-   Assert.AreEqual(String.Empty,
-        Encodings.ResolveAliasForEmail(String.Empty));
+      Assert.AreEqual(String.Empty,
+           Encodings.ResolveAliasForEmail(String.Empty));
       {
-string stringTemp = Encodings.ResolveAliasForEmail("iso-8859-1");
-Assert.AreEqual(
-"iso-8859-1",
-stringTemp);
-}
+        string stringTemp = Encodings.ResolveAliasForEmail("iso-8859-1");
+        Assert.AreEqual(
+        "iso-8859-1",
+        stringTemp);
+      }
       {
-string stringTemp = Encodings.ResolveAliasForEmail("windows-1252");
-Assert.AreEqual(
-"windows-1252",
-stringTemp);
-}
+        string stringTemp = Encodings.ResolveAliasForEmail("windows-1252");
+        Assert.AreEqual(
+        "windows-1252",
+        stringTemp);
+      }
       {
-string stringTemp = Encodings.ResolveAliasForEmail("us-ascii");
-Assert.AreEqual(
-"us-ascii",
-stringTemp);
-}
+        string stringTemp = Encodings.ResolveAliasForEmail("us-ascii");
+        Assert.AreEqual(
+        "us-ascii",
+        stringTemp);
+      }
       {
-string stringTemp = Encodings.ResolveAliasForEmail("utf-7");
-Assert.AreEqual(
-"utf-7",
-stringTemp);
-}
-  Assert.AreEqual(String.Empty, Encodings.ResolveAliasForEmail("replacement"
-));
+        string stringTemp = Encodings.ResolveAliasForEmail("utf-7");
+        Assert.AreEqual(
+        "utf-7",
+        stringTemp);
+      }
+      Assert.AreEqual(String.Empty, Encodings.ResolveAliasForEmail(
+    "replacement"));
       {
-string stringTemp = Encodings.ResolveAliasForEmail("hz-gb-2312");
-Assert.AreEqual(
-"replacement",
-stringTemp);
-}
+        string stringTemp = Encodings.ResolveAliasForEmail("hz-gb-2312");
+        Assert.AreEqual(
+        "replacement",
+        stringTemp);
+      }
     }
+
     [TestMethod]
     public void TestStringToBytes() {
       // not implemented yet
@@ -169,59 +174,59 @@ stringTemp);
     [TestMethod]
     public void TestStringToInput() {
       try {
- Encodings.StringToInput(null, 0, 0);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        Encodings.StringToInput(null, 0, 0);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+        Console.Write(String.Empty);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- Encodings.StringToInput("t",-1,1);
-Assert.Fail("Should have failed");
-} catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        Encodings.StringToInput("t", -1, 1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        Console.Write(String.Empty);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- Encodings.StringToInput("t",5,1);
-Assert.Fail("Should have failed");
-} catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        Encodings.StringToInput("t", 5, 1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        Console.Write(String.Empty);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- Encodings.StringToInput("t",0,-1);
-Assert.Fail("Should have failed");
-} catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        Encodings.StringToInput("t", 0, -1);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        Console.Write(String.Empty);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- Encodings.StringToInput("t",0,5);
-Assert.Fail("Should have failed");
-} catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        Encodings.StringToInput("t", 0, 5);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        Console.Write(String.Empty);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- Encodings.StringToInput("tt",1,2);
-Assert.Fail("Should have failed");
-} catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        Encodings.StringToInput("tt", 1, 2);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        Console.Write(String.Empty);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
     }
   }
 }

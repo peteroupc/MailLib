@@ -12,16 +12,21 @@ import com.upokecenter.text.*;
       private boolean bomChecked;
       private final DecoderState state;
       private ICharacterDecoder decoder;
+      private boolean useOriginal;
 
       public DecodeWithFallbackDecoder (ICharacterEncoding encoding) {
         this.decoder = encoding.GetDecoder();
         this.state = new DecoderState(3);
+        this.useOriginal = false;
       }
 
       public int ReadChar(IByteReader input) {
         if (input == null) {
-  throw new NullPointerException("input");
-}
+          throw new NullPointerException("input");
+        }
+        if (this.useOriginal) {
+          return this.decoder.ReadChar(input);
+        }
         if (!this.bomChecked) {
           int c = 0;
           int[] buffer = new int[3];
@@ -36,20 +41,28 @@ import com.upokecenter.text.*;
           if (bufferCount >= 3 && buffer[0] == 0xef &&
              buffer[1] == 0xbb && buffer[2] == 0xbf) {
             this.decoder = Encodings.UTF8.GetDecoder();
+            this.useOriginal = true;
           } else if (bufferCount >= 2 && buffer[0] == 0xfe &&
             buffer[1] == 0xff) {
             if (bufferCount == 3) {
               this.state.PrependOne(buffer[2]);
+              this.useOriginal = true;
+            } else {
+              this.useOriginal = false;
             }
             this.decoder = new EncodingUtf16BE().GetDecoder();
           } else if (bufferCount >= 2 && buffer[0] == 0xff &&
             buffer[1] == 0xfe) {
             if (bufferCount == 3) {
               this.state.PrependOne(buffer[2]);
+              this.useOriginal = true;
+            } else {
+              this.useOriginal = false;
             }
             this.decoder = new EncodingUtf16().GetDecoder();
           } else {
             // No BOM found
+            this.useOriginal = false;
             switch (bufferCount) {
               case 1:
                 this.state.PrependOne(buffer[0]);
@@ -63,8 +76,9 @@ import com.upokecenter.text.*;
             }
           }
         }
-        return this.decoder.ReadChar(
-          this.state.ToTransformIfBuffered(input));
+        IByteReader br = this.state.ToTransformIfBuffered(input);
+        this.useOriginal = br == input;
+        return this.decoder.ReadChar(br);
       }
 
       public ICharacterEncoder GetEncoder() {

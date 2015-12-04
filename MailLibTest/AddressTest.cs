@@ -21,8 +21,8 @@ namespace MailLibTest {
       try {
         Assert.AreEqual(null, new Address("local=domain.example"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -30,8 +30,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new Address("local@"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -40,8 +40,8 @@ Console.WriteLine(ex.Message);
         Assert.AreEqual(null, new Address(EncodingTest.Repeat("local", 200) +
           "@example.com"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -49,8 +49,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new Address("lo,cal@example.com"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);

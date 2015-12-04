@@ -32,8 +32,7 @@ namespace PeterO.Text {
 
     public static int GetCombiningClass(int cp) {
       lock (classesSyncRoot) {
-  classes = classes ??
-          ByteData.Decompress(NormalizationData.CombiningClasses);
+  classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
       }
       return ((int)classes.GetByte(cp)) & 0xff;
     }
@@ -167,12 +166,10 @@ int offset) {
           bd = qcsnfd = qcsnfd ?? ByteData.Decompress(NormalizationData.QCSNFD);
         }
         if (form == Normalization.NFKC) {
-      bd = qcsnfkc = qcsnfkc ??
-            ByteData.Decompress(NormalizationData.QCSNFKC);
+      bd = qcsnfkc = qcsnfkc ?? ByteData.Decompress(NormalizationData.QCSNFKC);
         }
         if (form == Normalization.NFKD) {
-      bd = qcsnfkd = qcsnfkd ??
-            ByteData.Decompress(NormalizationData.QCSNFKD);
+      bd = qcsnfkd = qcsnfkd ?? ByteData.Decompress(NormalizationData.QCSNFKD);
         }
       }
       return bd != null && bd.GetBoolean(cp);

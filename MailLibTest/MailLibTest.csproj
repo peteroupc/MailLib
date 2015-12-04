@@ -50,6 +50,7 @@
     <Compile Include="AddressTest.cs" />
     <Compile Include="ArrayWriterTest.cs" />
     <Compile Include="CharsetsTest.cs" />
+    <Compile Include="CodePageEncoding.cs" />
     <Compile Include="ContentDispositionTest.cs" />
     <Compile Include="DataIOTest.cs" />
     <Compile Include="DataUtilitiesTest.cs" />

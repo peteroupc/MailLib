@@ -144,7 +144,7 @@ import com.upokecenter.mail.*;
                     true))));
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -154,7 +154,7 @@ System.out.println(ex.getMessage());
                     true))));
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -164,7 +164,7 @@ System.out.println(ex.getMessage());
                     true))));
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -174,7 +174,7 @@ System.out.println(ex.getMessage());
                     true))));
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -417,7 +417,7 @@ System.out.println(ex.getMessage());
         new Message().SetHeader("from", "\"a\r\nb\" <x@example.com>");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -426,7 +426,7 @@ System.out.println(ex.getMessage());
         new Message().SetHeader("from", "\"a\rb\" <x@example.com>");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -435,7 +435,7 @@ System.out.println(ex.getMessage());
         new Message().SetHeader("from", "\"a\r b\" <x@example.com>");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -444,7 +444,7 @@ System.out.println(ex.getMessage());
         new Message().SetHeader("from", "\"a\r\n b\" <x@example.com");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -459,7 +459,7 @@ System.out.println(ex.getMessage());
         new Message().SetHeader("from", "=?utf-8?q?=01?= <x@example.com");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -474,7 +474,7 @@ System.out.println(ex.getMessage());
         new Message().SetHeader("from", "\"a\nb\" <x@example.com>");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -483,7 +483,7 @@ System.out.println(ex.getMessage());
         new Message().SetHeader("from", "\"a\0b\" <x@example.com>");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -501,7 +501,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new Address(""));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -510,7 +510,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new Address("a b@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -519,7 +519,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new NamedAddress("a b@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -528,7 +528,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new NamedAddress("ab.example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -537,7 +537,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new Address("ab@exa mple.example"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -546,7 +546,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new Address("ab@example.com addr"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -586,7 +586,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new Address("Me <me@example.com>"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -595,7 +595,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new Address("Me\u00e0 <me@example.com>"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -604,7 +604,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new Address("\"Me\" <me@example.com>"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -613,7 +613,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new Address("\"Me\u00e0\" <me@example.com>"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -623,7 +623,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new NamedAddress(st));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -708,7 +708,7 @@ System.out.println(ex.getMessage());
         msg.SetHeader(0, (String)null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -717,7 +717,7 @@ System.out.println(ex.getMessage());
         msg.SetHeader(0, null, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -726,7 +726,7 @@ System.out.println(ex.getMessage());
         msg.AddHeader(null, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -735,7 +735,7 @@ System.out.println(ex.getMessage());
         msg.SetHeader(-1, "me@example.com");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -744,7 +744,7 @@ System.out.println(ex.getMessage());
         msg.SetHeader(-1, "To", "me@example.com");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -753,7 +753,7 @@ System.out.println(ex.getMessage());
         msg.GetHeader(-1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -762,7 +762,7 @@ System.out.println(ex.getMessage());
         msg.RemoveHeader(-1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1175,7 +1175,7 @@ String mbox =
         MediaType.TextPlainAscii.GetParameter(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1184,7 +1184,7 @@ System.out.println(ex.getMessage());
         MediaType.TextPlainAscii.GetParameter("");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1193,7 +1193,7 @@ System.out.println(ex.getMessage());
         MediaType.Parse(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1221,7 +1221,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new MediaTypeBuilder(null));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1231,7 +1231,7 @@ System.out.println(ex.getMessage());
         builder.SetTopLevelType(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1240,7 +1240,7 @@ System.out.println(ex.getMessage());
         builder.SetParameter(null, "v");
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1249,7 +1249,7 @@ System.out.println(ex.getMessage());
         builder.SetParameter(null, null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1258,7 +1258,7 @@ System.out.println(ex.getMessage());
         builder.SetParameter("", "v");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1267,7 +1267,7 @@ System.out.println(ex.getMessage());
         builder.SetParameter("v", null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1276,7 +1276,7 @@ System.out.println(ex.getMessage());
         builder.SetTopLevelType("");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1285,7 +1285,7 @@ System.out.println(ex.getMessage());
         builder.SetTopLevelType("e=");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1294,7 +1294,7 @@ System.out.println(ex.getMessage());
         builder.SetTopLevelType("e/e");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1303,7 +1303,7 @@ System.out.println(ex.getMessage());
         new MediaTypeBuilder().SetSubType(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1312,7 +1312,7 @@ System.out.println(ex.getMessage());
         new MediaTypeBuilder().RemoveParameter(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1333,7 +1333,7 @@ System.out.println(ex.getMessage());
         new MediaTypeBuilder().SetSubType("");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1342,7 +1342,7 @@ System.out.println(ex.getMessage());
         new MediaTypeBuilder().SetSubType("x;y");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1351,7 +1351,7 @@ System.out.println(ex.getMessage());
         new MediaTypeBuilder().SetSubType("x/y");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1366,7 +1366,7 @@ System.out.println(ex.getMessage());
         new MediaTypeBuilder().SetParameter("x;y", "v");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1375,7 +1375,7 @@ System.out.println(ex.getMessage());
         new MediaTypeBuilder().SetParameter("x/y", "v");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1500,7 +1500,7 @@ stringTemp);
 Assert.assertEquals(null, new Message((InputStream)null));
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1509,7 +1509,7 @@ throw new IllegalStateException("", ex);
 Assert.assertEquals(null, new Message((byte[])null));
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1543,7 +1543,7 @@ throw new IllegalStateException("", ex);
  msg.setContentType(null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1592,7 +1592,7 @@ throw new IllegalStateException("", ex);
  msg.GetHeader(2);
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1601,7 +1601,7 @@ throw new IllegalStateException("", ex);
         new Message().GetHeader(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1623,7 +1623,7 @@ System.out.println(ex.getMessage());
  msg.RemoveHeader(2);
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1635,7 +1635,7 @@ throw new IllegalStateException("", ex);
         new Message().SetBody(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1649,7 +1649,7 @@ System.out.println(ex.getMessage());
  msg.SetHeader(2,"X-Header2","2");
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1658,7 +1658,7 @@ throw new IllegalStateException("", ex);
  msg.SetHeader(2,"2");
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1667,7 +1667,7 @@ throw new IllegalStateException("", ex);
         msg.SetHeader(1, (String)null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -1685,7 +1685,7 @@ throw new IllegalStateException("", ex);
  msg.SetHtmlBody(null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);

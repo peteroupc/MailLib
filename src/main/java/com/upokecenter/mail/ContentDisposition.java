@@ -170,8 +170,8 @@ String type,
      * under RFC 2231 if possible; characters unsuitable for use in a
      * filename (including the directory separators slash and backslash) are
      * replaced with underscores; and the filename is truncated if it would
-     * otherwise be too long. Returns an empty string if {@code str} is
-     * null.
+     * otherwise be too long. The returned string will be in normalization
+     * form C. Returns an empty string if {@code str} is null.
      */
     public static String MakeFilename(String str) {
       if (str == null) {

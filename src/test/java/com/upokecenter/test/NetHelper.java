@@ -32,7 +32,8 @@ public final class NetHelper {
 
      LineNumberReader reader = null;
      try {
-       reader = new LineNumberReader(new FileReader(file));
+       reader = new LineNumberReader(
+         new BufferedReader(new InputStreamReader(new FileInputStream(file),"utf-8")));
        while(true){
         String line=reader.readLine();
         if(line==null)break;

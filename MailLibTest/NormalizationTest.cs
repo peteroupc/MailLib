@@ -259,7 +259,7 @@ namespace MailLibTest {
       // Individual code points that don't appear in Part 1 of the
       // test will normalize to themselves in all four normalization forms
       for (int i = 0; i < handled.Length; ++i) {
-        if ((i & 0xf800) == 0xd800) {
+        if ((i & 0xfff800) == 0xd800) {
           // skip surrogate code points
           continue;
         }

@@ -144,8 +144,8 @@ namespace MailLibTest {
   MemoryStream(DataUtilities.GetUtf8Bytes("From: me@example.com\r\nDate",
                     true))));
         Assert.Fail("Should have failed");
-      } catch (MessageDataException ex) {
-Console.WriteLine(ex.Message);
+      } catch (MessageDataException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -155,8 +155,8 @@ Console.WriteLine(ex.Message);
   MemoryStream(DataUtilities.GetUtf8Bytes("From: me@example.com\r\nDate\r",
                     true))));
         Assert.Fail("Should have failed");
-      } catch (MessageDataException ex) {
-Console.WriteLine(ex.Message);
+      } catch (MessageDataException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -166,8 +166,8 @@ Console.WriteLine(ex.Message);
                     MemoryStream(DataUtilities.GetUtf8Bytes("Received: from x",
                     true))));
         Assert.Fail("Should have failed");
-      } catch (MessageDataException ex) {
-Console.WriteLine(ex.Message);
+      } catch (MessageDataException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -177,8 +177,8 @@ Console.WriteLine(ex.Message);
   MemoryStream(DataUtilities.GetUtf8Bytes("Received: from x\r",
                     true))));
         Assert.Fail("Should have failed");
-      } catch (MessageDataException ex) {
-Console.WriteLine(ex.Message);
+      } catch (MessageDataException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -421,8 +421,8 @@ Console.WriteLine(ex.Message);
       try {
         new Message().SetHeader("from", "\"a\r\nb\" <x@example.com>");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -430,8 +430,8 @@ Console.WriteLine(ex.Message);
       try {
         new Message().SetHeader("from", "\"a\rb\" <x@example.com>");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -439,8 +439,8 @@ Console.WriteLine(ex.Message);
       try {
         new Message().SetHeader("from", "\"a\r b\" <x@example.com>");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -448,8 +448,8 @@ Console.WriteLine(ex.Message);
       try {
         new Message().SetHeader("from", "\"a\r\n b\" <x@example.com");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -463,8 +463,8 @@ Console.WriteLine(ex.Message);
       try {
         new Message().SetHeader("from", "=?utf-8?q?=01?= <x@example.com");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -478,8 +478,8 @@ Console.WriteLine(ex.Message);
       try {
         new Message().SetHeader("from", "\"a\nb\" <x@example.com>");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -487,8 +487,8 @@ Console.WriteLine(ex.Message);
       try {
         new Message().SetHeader("from", "\"a\0b\" <x@example.com>");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -505,8 +505,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new Address(String.Empty));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -514,8 +514,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new Address("a b@example.com"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -523,8 +523,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new NamedAddress("a b@example.com"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -532,8 +532,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new NamedAddress("ab.example.com"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -541,8 +541,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new Address("ab@exa mple.example"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -550,8 +550,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new Address("ab@example.com addr"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -590,8 +590,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new Address("Me <me@example.com>"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -599,8 +599,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new Address("Me\u00e0 <me@example.com>"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -608,8 +608,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new Address("\"Me\" <me@example.com>"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -617,8 +617,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new Address("\"Me\u00e0\" <me@example.com>"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -627,8 +627,8 @@ Console.WriteLine(ex.Message);
         const string st = "Me <me@example.com>, Fred <fred@example.com>";
         Assert.AreEqual(null, new NamedAddress(st));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -713,8 +713,8 @@ Console.WriteLine(ex.Message);
       try {
         msg.SetHeader(0, (string)null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -722,8 +722,8 @@ Console.WriteLine(ex.Message);
       try {
         msg.SetHeader(0, null, null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -731,8 +731,8 @@ Console.WriteLine(ex.Message);
       try {
         msg.AddHeader(null, null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -740,8 +740,8 @@ Console.WriteLine(ex.Message);
       try {
         msg.SetHeader(-1, "me@example.com");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -749,8 +749,8 @@ Console.WriteLine(ex.Message);
       try {
         msg.SetHeader(-1, "To", "me@example.com");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -758,8 +758,8 @@ Console.WriteLine(ex.Message);
       try {
         msg.GetHeader(-1);
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -767,8 +767,8 @@ Console.WriteLine(ex.Message);
       try {
         msg.RemoveHeader(-1);
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1180,8 +1180,8 @@ const string mbox =
       try {
         MediaType.TextPlainAscii.GetParameter(null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1189,8 +1189,8 @@ Console.WriteLine(ex.Message);
       try {
         MediaType.TextPlainAscii.GetParameter(String.Empty);
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1198,8 +1198,8 @@ Console.WriteLine(ex.Message);
       try {
         MediaType.Parse(null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1226,8 +1226,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new MediaTypeBuilder(null));
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1236,8 +1236,8 @@ Console.WriteLine(ex.Message);
       try {
         builder.SetTopLevelType(null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1245,8 +1245,8 @@ Console.WriteLine(ex.Message);
       try {
         builder.SetParameter(null, "v");
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1254,8 +1254,8 @@ Console.WriteLine(ex.Message);
       try {
         builder.SetParameter(null, null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1263,8 +1263,8 @@ Console.WriteLine(ex.Message);
       try {
         builder.SetParameter(String.Empty, "v");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1272,8 +1272,8 @@ Console.WriteLine(ex.Message);
       try {
         builder.SetParameter("v", null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1281,8 +1281,8 @@ Console.WriteLine(ex.Message);
       try {
         builder.SetTopLevelType(String.Empty);
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1290,8 +1290,8 @@ Console.WriteLine(ex.Message);
       try {
         builder.SetTopLevelType("e=");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1299,8 +1299,8 @@ Console.WriteLine(ex.Message);
       try {
         builder.SetTopLevelType("e/e");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1308,8 +1308,8 @@ Console.WriteLine(ex.Message);
       try {
         new MediaTypeBuilder().SetSubType(null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1317,8 +1317,8 @@ Console.WriteLine(ex.Message);
       try {
         new MediaTypeBuilder().RemoveParameter(null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1338,8 +1338,8 @@ Console.WriteLine(ex.Message);
       try {
         new MediaTypeBuilder().SetSubType(String.Empty);
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1347,8 +1347,8 @@ Console.WriteLine(ex.Message);
       try {
         new MediaTypeBuilder().SetSubType("x;y");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1356,8 +1356,8 @@ Console.WriteLine(ex.Message);
       try {
         new MediaTypeBuilder().SetSubType("x/y");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1371,8 +1371,8 @@ Console.WriteLine(ex.Message);
       try {
         new MediaTypeBuilder().SetParameter("x;y", "v");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1380,8 +1380,8 @@ Console.WriteLine(ex.Message);
       try {
         new MediaTypeBuilder().SetParameter("x/y", "v");
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1506,8 +1506,8 @@ stringTemp);
       try {
 Assert.AreEqual(null, new Message((Stream)null));
 Assert.Fail("Should have failed");
-} catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+} catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -1515,8 +1515,8 @@ throw new InvalidOperationException(String.Empty, ex);
       try {
 Assert.AreEqual(null, new Message((byte[])null));
 Assert.Fail("Should have failed");
-} catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+} catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -1549,8 +1549,8 @@ throw new InvalidOperationException(String.Empty, ex);
       try {
  msg.ContentType = null;
 Assert.Fail("Should have failed");
-} catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+} catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -1598,8 +1598,8 @@ throw new InvalidOperationException(String.Empty, ex);
       try {
  msg.GetHeader(2);
 Assert.Fail("Should have failed");
-} catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+} catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -1607,8 +1607,8 @@ throw new InvalidOperationException(String.Empty, ex);
             try {
         new Message().GetHeader(null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1629,8 +1629,8 @@ Console.WriteLine(ex.Message);
       try {
  msg.RemoveHeader(2);
 Assert.Fail("Should have failed");
-} catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+} catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -1641,8 +1641,8 @@ throw new InvalidOperationException(String.Empty, ex);
       try {
         new Message().SetBody(null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1655,8 +1655,8 @@ Console.WriteLine(ex.Message);
       try {
  msg.SetHeader(2,"X-Header2","2");
 Assert.Fail("Should have failed");
-} catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+} catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -1664,8 +1664,8 @@ throw new InvalidOperationException(String.Empty, ex);
       try {
  msg.SetHeader(2,"2");
 Assert.Fail("Should have failed");
-} catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+} catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -1673,8 +1673,8 @@ throw new InvalidOperationException(String.Empty, ex);
       try {
         msg.SetHeader(1, (string)null);
 Assert.Fail("Should have failed");
-} catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+} catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -1691,8 +1691,8 @@ throw new InvalidOperationException(String.Empty, ex);
       try {
  msg.SetHtmlBody(null);
 Assert.Fail("Should have failed");
-} catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+} catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);

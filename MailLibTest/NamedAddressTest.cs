@@ -10,8 +10,8 @@ namespace MailLibTest {
       try {
         Assert.AreEqual(null, new NamedAddress(String.Empty, (string)null));
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -19,8 +19,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new NamedAddress(String.Empty, (Address)null));
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -28,8 +28,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new NamedAddress("x at example.com"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -37,8 +37,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new NamedAddress("x"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -46,8 +46,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new NamedAddress("x@"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -55,8 +55,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new NamedAddress("@example.com"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -64,8 +64,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new NamedAddress("example.com"));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -73,8 +73,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new Address((string)null));
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -82,8 +82,8 @@ Console.WriteLine(ex.Message);
       try {
         Assert.AreEqual(null, new NamedAddress(String.Empty));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-Console.WriteLine(ex.Message);
+      } catch (ArgumentException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
