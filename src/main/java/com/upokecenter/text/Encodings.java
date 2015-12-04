@@ -19,60 +19,73 @@ import com.upokecenter.text.encoders.*;
      * identifies a single text character, such as a letter, digit, or
      * symbol.</li> <li>A <b>character set</b> is a set of code points which
      * are each assigned to a single text character. (This may also be
-     * called a <i>coded character set</i>.)</li></ul> <li>An <b>encoder</b>
-     * is a class that converts a sequence of bytes to a sequence of code
-     * points in the universal character set (otherwise known under the name
-     * Unicode). An encoder implements the <code>ICharacterEncoder</code>
-     * interface.</li> <li>A <b>decoder</b> is a class that converts a
-     * sequence of Unicode code points to a sequence of bytes. A decoder
-     * implements the <code>ICharacterDecoder</code> interface.</li> <li>An
-     * <b>encoding</b> is a mapping from bytes to universal code points and
-     * from universal code points to bytes. An encoding allows access to
-     * both an encoder and a decoder and implements the
-     * <code>ICharacterEncoding</code> interface.</li> <p>There are several kinds
-     * of encodings:</p> <ul> <li><b>Single-byte encodings</b> define a
-     * character set that assigns one code point to one byte. For example,
-     * the ISO 8859 encodings and <code>windows-1252</code> are single-byte
-     * encodings. ASCII is also a single-byte encoding, although its
-     * character set only uses the lower 7 bits of an eight-bit byte. In the
-     * Encoding Standard, all single-byte encodings use the ASCII characters
-     * as the first 128 code points of their character sets. (Here, ASCII is
-     * the same as the International Reference Version of the ISO 646
-     * standard.)</li> <li><b>Multi-byte encodings</b> define a character
-     * set that assigns some or all code points to several bytes. (They can
-     * include multiple character sets, such as single-byte ASCII and a
-     * multi-byte Chinese character set.) For example, most legacy East
-     * Asian encodings, such as <code>shift_jis</code>, <code>gbk</code>, and
-     * <code>big5</code> are multi-byte encodings, as well as <code>utf-8</code> and
-     * UTF-16, which both encode the Unicode character set.</li>
-     * <li><b>Escape-based encodings</b> use escape sequences to encode one
-     * or more character sets in the same sequence of bytes. Each escape
-     * sequence "shifts" the bytes that follow into a different character
-     * set. The best example of an escape-based encoding supported in the
-     * Encoding Standard is <code>iso-2022-jp</code>, which supports several
-     * escape sequences that shift into different character sets, including
-     * a Katakana, a Kanji, and an ASCII character set.</li> <li>The
-     * Encoding Standard also defines a <b>replacement encoding</b>, which
-     * causes a decoding error and is used to alias a few problematic or
-     * unsupported encoding names, such as <code>hz-gb-2312</code>.</li></ul>
-     * <p><b>Getting an Encoding</b></p> <p>The Encoding Standard includes
-     * UTF-8, UTF-16, and many legacy encodings, and gives each one of them
-     * a name. The <code>GetEncoding(name)</code> method takes a name string and
-     * returns an ICharacterEncoding object that implements that encoding,
-     * or <code>null</code> if the name is unrecognized.</p> <p>However, the
-     * Encoding Standard is designed to include only encodings commonly used
-     * on Web pages, not in other protocols such as email. For email, the
-     * Encoding class includes an alternate function <code>GetEncoding(name,
+     * called a <i>coded character set</i>.)</li></ul> <li>A <b>character
+     * encoding</b> is a mapping from a sequence of code points (from one or
+     * more character sets) to a sequence of bytes and vice versa.</li>
+     * <li><b>ASCII</b> is a 128-code-point character set that includes the
+     * English letters and digits, common punctuation and symbols, and
+     * control characters. As used here, its code points match the code
+     * points 0 to 127 in the Unicode Standard.</li> <p>There are several
+     * kinds of character encodings:</p> <ul> <li><b>Single-byte
+     * encodings</b> define a character set that assigns one code point to
+     * one byte. Thus, they can have a maximum of 256 code points. For
+     * example:</li> <li>(a) ISO 8859 encodings and
+     * <code>windows-1252</code>.</li> <li>(b) ASCII is a single-byte encoding
+     * whose character set only uses the lower 7 bits of an eight-bit byte.
+     * In the Encoding Standard, all single-byte encodings use the ASCII
+     * characters as the first 128 code points of their character sets.</li>
+     * <li><b>Multi-byte encodings</b> include code points from one or more
+     * character sets and assign some or all code points to several bytes.
+     * For example:</li> <li>(a) UTF-16 uses 2 bytes for the most common
+     * Unicode code points and 4 bytes for supplementary code points.</li>
+     * <li>(b) <code>utf-8</code> uses 1 byte for ASCII and 2 to 4 bytes for the
+     * other Unicode code points.</li> <li>(c) Most legacy East Asian
+     * encodings, such as <code>shift_jis</code>, <code>gbk</code>, and <code>big5</code> use
+     * 1 byte for ASCII (or a slightly modified version) and, usually, 2 or
+     * more bytes for national standard character sets.</li>
+     * <li><b>Escape-based encodings</b> are combinations of single- and/or
+     * multi-byte encodings, and use escape sequences and/or shift codes to
+     * change which encoding to use for the bytes that follow. For
+     * example:</li> <li>(a) <code>iso-2022-jp</code> supports several escape
+     * sequences that shift into different encodings, including a Katakana,
+     * a Kanji, and an ASCII encoding (with ASCII as the default).</li>
+     * <li>(b) UTF-7 (not included in the Encoding Standard) is a Unicode
+     * encoding that uses a limited subset of ASCII. The plus symbol is used
+     * to shift into a modified version of base-64 to encode other Unicode
+     * code points.</li> <li>The Encoding Standard also defines a
+     * <b>replacement encoding</b>, which causes a decoding error and is
+     * used to alias a few problematic or unsupported encoding names, such
+     * as <code>hz-gb-2312</code>.</li></ul> <p><b>Getting an Encoding</b></p>
+     * <p>The Encoding Standard includes UTF-8, UTF-16, and many legacy
+     * encodings, and gives each one of them a name. The
+     * <code>GetEncoding(name)</code> method takes a name string and returns an
+     * ICharacterEncoding object that implements that encoding, or
+     * <code>null</code> if the name is unrecognized.</p> <p>However, the Encoding
+     * Standard is designed to include only encodings commonly used on Web
+     * pages, not in other protocols such as email. For email, the Encoding
+     * class includes an alternate function <code>GetEncoding(name,
      * forEmail)</code>. Setting <code>forEmail</code> to <code>true</code> will use rules
      * modified from the Encoding Standard to better suit encoding and
-     * decoding text from email messages.</p> <p><b>Custom Encodings</b></p>
-     * <p>Classes that implement the ICharacterEncoder interface can provide
-     * additional character encodings not included in the Encoding Standard.
-     * Some examples of these include the following:</p> <ul> <li>A modified
+     * decoding text from email messages.</p> <p><b>Classes for Character
+     * Encodings</b></p> <p>This Encodings class provides access to common
+     * character encodings through classes as described below:</p> <ul>
+     * <li>An <b>encoder class</b> is a class that converts a sequence of
+     * bytes to a sequence of code points in the universal character set
+     * (otherwise known under the name Unicode). An encoder class implements
+     * the <code>ICharacterEncoder</code> interface.</li> <li>A <b>decoder
+     * class</b> is a class that converts a sequence of Unicode code points
+     * to a sequence of bytes. A decoder class implements the
+     * <code>ICharacterDecoder</code> interface.</li> <li>An <b>encoding class</b>
+     * allows access to both an encoder class and a decoder class and
+     * implements the <code>ICharacterEncoding</code> interface. The encoder and
+     * decoder classes should implement the same character
+     * encoding.</li></ul> <p><b>Custom Encodings</b></p> <p>Classes that
+     * implement the ICharacterEncoding interface can provide additional
+     * character encodings not included in the Encoding Standard. Some
+     * examples of these include the following:</p> <ul> <li>A modified
      * version of UTF-8 used in Java's serialization formats.</li> <li>A
-     * modified version of UTF-7 (a universal character encoding using only
-     * 7-bit bytes) used in the IMAP email protocol.</li></ul> <p>(Note that
-     * this library doesn't implement either encoding.)</p>
+     * modified version of UTF-7 used in the IMAP email protocol.</li></ul>
+     * <p>(Note that this library doesn't implement either encoding.)</p>
      */
   public final class Encodings {
 private Encodings() {
@@ -208,11 +221,11 @@ int length) {
      * implementation, this method is implemented as an extension method to
      * any object implementing ICharacterInput and can be called as follows:
      * <code>input.EncodeToBytes(encoding)</code>. If the object's class already
-     * has a EncodeToBytes method with the same parameters, that method
+     * has an EncodeToBytes method with the same parameters, that method
      * takes precedence over this extension method.</p>
      * @param input An object that implements a stream of universal code points.
      * @param encoding An object that implements a given character encoding.
-     * @return A byte array.
+     * @return A byte array containing the encoded text.
      * @throws NullPointerException The parameter {@code encoding} is null.
      */
     public static byte[] EncodeToBytes(
@@ -943,7 +956,8 @@ boolean allowReplacement) {
     }
 
     /**
-     * Resolves a character encoding's name to a standard form.
+     * Resolves a character encoding's name to a standard form. This involves
+     * changing aliases of a character encoding to a standardized name.
      * @param name A string that names a given character encoding. Can be null. Any
      * leading and trailing whitespace is removed and the name converted to
      * lowercase before resolving the encoding&#x27;s name. The Encoding
@@ -1014,7 +1028,7 @@ boolean allowReplacement) {
      * in the Encoding Standard.</li> <li> {@code iso-8859-1} - Latin-1 8-bit
      * encoding, rather than an alias to {@code windows-1252}, as specified
      * in the Encoding Standard.</li> <li> {@code utf-7} - UTF-7 (7-bit
-     * universal character set)</li></ul>.
+     * universal character set).</li></ul>.
      * @return A standardized name for the encoding. Returns the empty string if
      * {@code name} is null or empty, or if the encoding name is
      * unsupported.
@@ -1108,6 +1122,27 @@ boolean allowReplacement) {
       return EncodeToBytes(
           new StringCharacterInput(str),
           encoder);
+    }
+
+    /**
+     * Converts a text string to a character input. The resulting input can then be
+     * used to encode the text to bytes, or to read the string code point by
+     * code point, among other things. When reading the string, any unpaired
+     * surrogate characters are replaced with the replacement character (U +
+     * FFFD). <p>In the .NET implementation, this method is implemented as
+     * an extension method to any string object and can be called as
+     * follows: <code>str.StringToInput(offset, length)</code>. If the object's
+     * class already has a StringToInput method with the same parameters,
+     * that method takes precedence over this extension method.</p>
+     * @param str A string object.
+     * @return An ICharacterInput object.
+     * @throws NullPointerException The parameter {@code str} is null.
+     */
+    public static ICharacterInput StringToInput(String str) {
+      if (str == null) {
+        throw new NullPointerException("str");
+      }
+      return StringToInput(str, 0, str.length());
     }
 
     /**

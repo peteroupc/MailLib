@@ -19,11 +19,11 @@ private DataIO() {
     /**
      * Wraps a byte array into a byte reader. The reader will start at the
      * beginning of the byte array. <p>In the .NET implementation, this
-     * method is implemented as an extension method to any object
-     * implementing byte[] and can be called as follows:
-     * <code>bytes.ToByteReader()</code>. If the object's class already has a
-     * ToByteReader method with the same parameters, that method takes
-     * precedence over this extension method.</p>
+     * method is implemented as an extension method to any byte array object
+     * and can be called as follows: <code>bytes.ToByteReader()</code>. If the
+     * object's class already has a ToByteReader method with the same
+     * parameters, that method takes precedence over this extension
+     * method.</p>
      * @param bytes The byte array to wrap.
      * @return A byte reader wrapping the byte array.
      * @throws NullPointerException The parameter {@code bytes} is null.
@@ -38,7 +38,7 @@ private DataIO() {
     /**
      * Wraps a portion of a byte array into a byte reader object. <p>In the .NET
      * implementation, this method is implemented as an extension method to
-     * any object implementing byte[] and can be called as follows:
+     * any byte array object and can be called as follows:
      * <code>bytes.ToByteReader(offset, length)</code>. If the object's class
      * already has a ToByteReader method with the same parameters, that
      * method takes precedence over this extension method.</p>
@@ -105,11 +105,11 @@ int length) {
     /**
      * Wraps a byte array into a byte reader. The reader will start at the
      * beginning of the byte array. <p>In the .NET implementation, this
-     * method is implemented as an extension method to any object
-     * implementing byte[] and can be called as follows:
-     * <code>bytes.ToTransform()</code>. If the object's class already has a
-     * ToTransform method with the same parameters, that method takes
-     * precedence over this extension method.</p>
+     * method is implemented as an extension method to any byte array object
+     * and can be called as follows: <code>bytes.ToTransform()</code>. If the
+     * object's class already has a ToTransform method with the same
+     * parameters, that method takes precedence over this extension
+     * method.</p>
      * @param bytes The byte array to wrap.
      * @return A byte reader wrapping the byte array.
      * @throws NullPointerException The parameter {@code bytes} is null.
@@ -126,7 +126,7 @@ int length) {
     /**
      * Wraps a portion of a byte array into a byte reader object. <p>In the .NET
      * implementation, this method is implemented as an extension method to
-     * any object implementing byte[] and can be called as follows:
+     * any byte array object and can be called as follows:
      * <code>bytes.ToTransform(offset, length)</code>. If the object's class
      * already has a ToTransform method with the same parameters, that
      * method takes precedence over this extension method.</p>

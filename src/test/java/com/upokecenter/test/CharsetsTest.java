@@ -289,9 +289,11 @@ stringTemp);
           ;
       Assert.assertEquals(result, (Encodings.DecodeToString(charset, bytes)));
     }
-
     public static void TestSingleByteRoundTrip(String name) {
-      ICharacterEncoding enc = Encodings.GetEncoding(name, true);
+      TestSingleByteRoundTrip(Encodings.GetEncoding(name, true));
+    }
+
+    public static void TestSingleByteRoundTrip(ICharacterEncoding enc) {
       int[] codepoints = new int[256];
       int[] codesrc = new int[256];
       ICharacterEncoder encoder = enc.GetEncoder();
@@ -305,7 +307,7 @@ stringTemp);
       for (int i = 0; i < 256; ++i) {
         int c = decoder.ReadChar(ib);
         if (c == -1) {
- Assert.fail(name);
+ Assert.fail();
 }
         if (c != -2) {
           codepoints[codetotal] = c;
@@ -317,15 +319,57 @@ stringTemp);
       for (int i = 0; i < codetotal; ++i) {
         int c = encoder.Encode(codepoints[i], aw);
         if (c < 0) {
- Assert.fail(name);
+ Assert.fail();
 }
       }
       bytes = aw.ToArray();
       for (int i = 0; i < codetotal; ++i) {
         int b = ((int)bytes[i]) & 0xff;
         if (b != codesrc[i]) {
-          Assert.assertEquals(name, codesrc[i], b);
+          Assert.assertEquals(codesrc[i], b);
         }
+      }
+    }
+
+    @Test
+    public void TestCodePages() {
+      for (int j = 0; j < SingleByteNames.length; ++j) {
+        System.System.out.println(SingleByteNames[j]);
+        ICharacterEncoding enc = Encodings.GetEncoding(SingleByteNames[j]);
+        ICharacterDecoder dec = enc.GetDecoder();
+        byte[] bytes = new byte[256];
+        int[] ints = new int[256];
+        int count = 0;
+        for (int i = 0; i < 256; ++i) {
+          bytes[i] = (byte)i;
+        }
+        IByteReader reader = DataIO.ToByteReader(bytes);
+        for (int i = 0; i < 256; ++i) {
+          ints[i] = dec.ReadChar(reader);
+          if (ints[i] >= 0) {
+            ++count;
+          }
+        }
+        if (count != 256) {
+ continue;
+}
+        StringBuilder builder = new StringBuilder();
+     builder.append("CODEPAGE 1\nCPINFO 1 0x3f 0x3f\nMBTABLE " + count +
+          "\n");
+        for (int i = 0; i < 256; ++i) {
+          if (ints[i] >= 0) {
+            builder.append(i + " " + ints[i] + "\n");
+          }
+        }
+        builder.append("WCTABLE " + count + "\n");
+        for (int i = 0; i < 256; ++i) {
+          if (ints[i] >= 0) {
+            builder.append(ints[i] + " " + i + "\n");
+          }
+        }
+        builder.append("ENDCODEPAGE\n");
+   CodePageEncoding cpe = new CodePageEncoding(Encodings.StringToInput(builder.toString()));
+        TestSingleByteRoundTrip(cpe);
       }
     }
 

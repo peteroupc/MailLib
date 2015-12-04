@@ -311,6 +311,18 @@ import org.junit.Test;
           stringTemp);
       }
       {
+        stringTemp = ContentDisposition.MakeFilename(".");
+        Assert.assertEquals(
+          "_._",
+          stringTemp);
+      }
+      {
+        stringTemp = ContentDisposition.MakeFilename("..");
+        Assert.assertEquals(
+          "_.._",
+          stringTemp);
+      }
+      {
         stringTemp = ContentDisposition.MakeFilename("fol/der/");
         Assert.assertEquals(
           "fol_der_",
@@ -353,7 +365,7 @@ import org.junit.Test;
  ContentDisposition.Parse(null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);

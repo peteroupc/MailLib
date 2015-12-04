@@ -12,19 +12,31 @@ Encoding Terms
 
  * A character set is a set of code points which are each assigned to a single text character. (This may also be called acoded character set.)
 
- * An encoder is a class that converts a sequence of bytes to a sequence of code points in the universal character set (otherwise known under the name Unicode). An encoder implements the `ICharacterEncoder`  interface.
+ * A character encoding is a mapping from a sequence of code points (from one or more character sets) to a sequence of bytes and vice versa.
 
- * A decoder is a class that converts a sequence of Unicode code points to a sequence of bytes. A decoder implements the  `ICharacterDecoder`  interface.
+ * ASCII is a 128-code-point character set that includes the English letters and digits, common punctuation and symbols, and control characters. As used here, its code points match the code points 0 to 127 in the Unicode Standard.
 
- * An encoding is a mapping from bytes to universal code points and from universal code points to bytes. An encoding allows access to both an encoder and a decoder and implements the `ICharacterEncoding`  interface.
+There are several kinds of character encodings:
 
-There are several kinds of encodings:
+ * Single-byte encodings define a character set that assigns one code point to one byte. Thus, they can have a maximum of 256 code points. For example:
 
- * Single-byte encodings define a character set that assigns one code point to one byte. For example, the ISO 8859 encodings and  `windows-1252`  are single-byte encodings. ASCII is also a single-byte encoding, although its character set only uses the lower 7 bits of an eight-bit byte. In the Encoding Standard, all single-byte encodings use the ASCII characters as the first 128 code points of their character sets. (Here, ASCII is the same as the International Reference Version of the ISO 646 standard.)
+ * (a) ISO 8859 encodings and  `windows-1252` .
 
- * Multi-byte encodings define a character set that assigns some or all code points to several bytes. (They can include multiple character sets, such as single-byte ASCII and a multi-byte Chinese character set.) For example, most legacy East Asian encodings, such as  `shift_jis` ,  `gbk` , and  `big5` are multi-byte encodings, as well as  `utf-8`  and UTF-16, which both encode the Unicode character set.
+ * (b) ASCII is a single-byte encoding whose character set only uses the lower 7 bits of an eight-bit byte. In the Encoding Standard, all single-byte encodings use the ASCII characters as the first 128 code points of their character sets.
 
- * Escape-based encodings use escape sequences to encode one or more character sets in the same sequence of bytes. Each escape sequence "shifts" the bytes that follow into a different character set. The best example of an escape-based encoding supported in the Encoding Standard is  `iso-2022-jp` , which supports several escape sequences that shift into different character sets, including a Katakana, a Kanji, and an ASCII character set.
+ * Multi-byte encodings include code points from one or more character sets and assign some or all code points to several bytes. For example:
+
+ * (a) UTF-16 uses 2 bytes for the most common Unicode code points and 4 bytes for supplementary code points.
+
+ * (b)  `utf-8`  uses 1 byte for ASCII and 2 to 4 bytes for the other Unicode code points.
+
+ * (c) Most legacy East Asian encodings, such as `shift_jis` ,  `gbk` , and  `big5`  use 1 byte for ASCII (or a slightly modified version) and, usually, 2 or more bytes for national standard character sets.
+
+ * Escape-based encodings are combinations of single- and/or multi-byte encodings, and use escape sequences and/or shift codes to change which encoding to use for the bytes that follow. For example:
+
+ * (a)  `iso-2022-jp`  supports several escape sequences that shift into different encodings, including a Katakana, a Kanji, and an ASCII encoding (with ASCII as the default).
+
+ * (b) UTF-7 (not included in the Encoding Standard) is a Unicode encoding that uses a limited subset of ASCII. The plus symbol is used to shift into a modified version of base-64 to encode other Unicode code points.
 
  * The Encoding Standard also defines a replacement encoding, which causes a decoding error and is used to alias a few problematic or unsupported encoding names, such as `hz-gb-2312` .
 
@@ -34,13 +46,23 @@ The Encoding Standard includes UTF-8, UTF-16, and many legacy encodings, and giv
 
 However, the Encoding Standard is designed to include only encodings commonly used on Web pages, not in other protocols such as email. For email, the Encoding class includes an alternate function  `GetEncoding(name, forEmail)` . Setting `forEmail`  to  `true`  will use rules modified from the Encoding Standard to better suit encoding and decoding text from email messages.
 
+Classes for Character Encodings
+
+This Encodings class provides access to common character encodings through classes as described below:
+
+ * An encoder class is a class that converts a sequence of bytes to a sequence of code points in the universal character set (otherwise known under the name Unicode). An encoder class implements the `ICharacterEncoder`  interface.
+
+ * A decoder class is a class that converts a sequence of Unicode code points to a sequence of bytes. A decoder class implements the  `ICharacterDecoder`  interface.
+
+ * An encoding class allows access to both an encoder class and a decoder class and implements the `ICharacterEncoding`  interface. The encoder and decoder classes should implement the same character encoding.
+
 Custom Encodings
 
-Classes that implement the ICharacterEncoder interface can provide additional character encodings not included in the Encoding Standard. Some examples of these include the following:
+Classes that implement the ICharacterEncoding interface can provide additional character encodings not included in the Encoding Standard. Some examples of these include the following:
 
  * A modified version of UTF-8 used in Java's serialization formats.
 
- * A modified version of UTF-7 (a universal character encoding using only 7-bit bytes) used in the IMAP email protocol.
+ * A modified version of UTF-7 used in the IMAP email protocol.
 
 (Note that this library doesn't implement either encoding.)
 
@@ -175,7 +197,7 @@ The parameter  <i>encoder</i>
         this PeterO.Text.ICharacterInput input,
         PeterO.Text.ICharacterEncoding encoding);
 
-Reads Unicode characters from a character input and writes them to a byte array encoded using the given character encoder. When writing to the byte array, any characters that can't be encoded are replaced with the byte 0x3f (the question mark character).In the .NET implementation, this method is implemented as an extension method to any object implementing ICharacterInput and can be called as follows:  `input.EncodeToBytes(encoding)` . If the object's class already has a EncodeToBytes method with the same parameters, that method takes precedence over this extension method.
+Reads Unicode characters from a character input and writes them to a byte array encoded using the given character encoder. When writing to the byte array, any characters that can't be encoded are replaced with the byte 0x3f (the question mark character).In the .NET implementation, this method is implemented as an extension method to any object implementing ICharacterInput and can be called as follows:  `input.EncodeToBytes(encoding)` . If the object's class already has an EncodeToBytes method with the same parameters, that method takes precedence over this extension method.
 
 <b>Parameters:</b>
 
@@ -185,7 +207,7 @@ Reads Unicode characters from a character input and writes them to a byte array 
 
 <b>Returns:</b>
 
-A byte array.
+A byte array containing the encoded text.
 
 <b>Exceptions:</b>
 
@@ -401,7 +423,7 @@ A text string containing the characters read.
     public static string ResolveAlias(
         string name);
 
-Resolves a character encoding's name to a standard form.
+Resolves a character encoding's name to a standard form. This involves changing aliases of a character encoding to a standardized name.
 
 <b>Parameters:</b>
 
@@ -487,9 +509,7 @@ Resolves a character encoding's name to a canonical form, using rules more suita
 
  *  `iso-8859-1`  - Latin-1 8-bit encoding, rather than an alias to  `windows-1252` , as specified in the Encoding Standard.
 
- *  `utf-7`  - UTF-7 (7-bit universal character set)
-
-.
+ *  `utf-7`  - UTF-7 (7-bit universal character set).
 
 <b>Returns:</b>
 
@@ -543,6 +563,27 @@ A byte array containing the string encoded in the given text encoding.
 
  * System.ArgumentNullException:
 The parameter  <i>encoding</i>
+ is null.
+
+### StringToInput
+
+    public static PeterO.Text.ICharacterInput StringToInput(
+        this string str);
+
+Converts a text string to a character input. The resulting input can then be used to encode the text to bytes, or to read the string code point by code point, among other things. When reading the string, any unpaired surrogate characters are replaced with the replacement character (U + FFFD).In the .NET implementation, this method is implemented as an extension method to any String object and can be called as follows: `str.StringToInput(offset, length)` . If the object's class already has a StringToInput method with the same parameters, that method takes precedence over this extension method.
+
+<b>Parameters:</b>
+
+ * <i>str</i>: A string object.
+
+<b>Returns:</b>
+
+An ICharacterInput object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>str</i>
  is null.
 
 ### StringToInput

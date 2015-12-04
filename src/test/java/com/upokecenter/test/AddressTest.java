@@ -23,7 +23,7 @@ import org.junit.Test;
         Assert.assertEquals(null, new Address("local=domain.example"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -32,7 +32,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new Address("local@"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -42,7 +42,7 @@ System.out.println(ex.getMessage());
           "@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -51,7 +51,7 @@ System.out.println(ex.getMessage());
         Assert.assertEquals(null, new Address("lo,cal@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.println(ex.getMessage());
+System.out.print("");
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);

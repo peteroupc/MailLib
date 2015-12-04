@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PeterO;
 using PeterO.Text;
+using System.Text;
+
 namespace MailLibTest {
   [TestClass]
   public class CharsetsTest {
@@ -288,9 +290,11 @@ stringTemp);
           ;
       Assert.AreEqual(result, (Encodings.DecodeToString(charset, bytes)));
     }
-
     public static void TestSingleByteRoundTrip(string name) {
-      ICharacterEncoding enc = Encodings.GetEncoding(name, true);
+      TestSingleByteRoundTrip(Encodings.GetEncoding(name, true));
+    }
+
+    public static void TestSingleByteRoundTrip(ICharacterEncoding enc) {
       var codepoints = new int[256];
       var codesrc = new int[256];
       ICharacterEncoder encoder = enc.GetEncoder();
@@ -304,7 +308,7 @@ stringTemp);
       for (var i = 0; i < 256; ++i) {
         int c = decoder.ReadChar(ib);
         if (c == -1) {
- Assert.Fail(name);
+ Assert.Fail();
 }
         if (c != -2) {
           codepoints[codetotal] = c;
@@ -316,15 +320,58 @@ stringTemp);
       for (var i = 0; i < codetotal; ++i) {
         int c = encoder.Encode(codepoints[i], aw);
         if (c < 0) {
- Assert.Fail(name);
+ Assert.Fail();
 }
       }
       bytes = aw.ToArray();
       for (var i = 0; i < codetotal; ++i) {
         int b = ((int)bytes[i]) & 0xff;
         if (b != codesrc[i]) {
-          Assert.AreEqual(codesrc[i], b, name);
+          Assert.AreEqual(codesrc[i], b);
         }
+      }
+    }
+
+    [TestMethod]
+    public void TestCodePages() {
+      for (var j = 0; j < SingleByteNames.Length; ++j) {
+        System.Console.WriteLine(SingleByteNames[j]);
+        ICharacterEncoding enc = Encodings.GetEncoding(SingleByteNames[j]);
+        ICharacterDecoder dec = enc.GetDecoder();
+        var bytes = new byte[256];
+        var ints = new int[256];
+        var count = 0;
+        for (var i = 0; i < 256; ++i) {
+          bytes[i] = (byte)i;
+        }
+        IByteReader reader = DataIO.ToByteReader(bytes);
+        for (var i = 0; i < 256; ++i) {
+          ints[i] = dec.ReadChar(reader);
+          if (ints[i] >= 0) {
+            ++count;
+          }
+        }
+        if (count != 256) {
+ continue;
+}
+        var builder = new StringBuilder();
+     builder.Append("CODEPAGE 1\nCPINFO 1 0x3f 0x3f\nMBTABLE " + count +
+          "\n");
+        for (var i = 0; i < 256; ++i) {
+          if (ints[i] >= 0) {
+            builder.Append(i + " " + ints[i] + "\n");
+          }
+        }
+        builder.Append("WCTABLE " + count + "\n");
+        for (var i = 0; i < 256; ++i) {
+          if (ints[i] >= 0) {
+            builder.Append(ints[i] + " " + i + "\n");
+          }
+        }
+        builder.Append("ENDCODEPAGE\n");
+   var cpe = new
+          CodePageEncoding(Encodings.StringToInput(builder.ToString()));
+        TestSingleByteRoundTrip(cpe);
       }
     }
 

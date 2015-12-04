@@ -11,27 +11,27 @@ namespace MailLibTest {
       try {
 Assert.AreEqual(null, new DispositionBuilder(stringNull));
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-        Console.WriteLine(ex.Message);
-      } catch (Exception ex) {
+      } catch (ArgumentNullException) {
+        Console.Write(String.Empty);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
 Assert.AreEqual(null, new DispositionBuilder(dispNull));
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-        Console.WriteLine(ex.Message);
-      } catch (Exception ex) {
+      } catch (ArgumentNullException) {
+        Console.Write(String.Empty);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
 Assert.AreEqual(null, new DispositionBuilder(String.Empty));
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-        Console.WriteLine(ex.Message);
-      } catch (Exception ex) {
+      } catch (ArgumentException) {
+        Console.Write(String.Empty);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -47,9 +47,9 @@ Assert.AreEqual(null, new DispositionBuilder(String.Empty));
       try {
         new DispositionBuilder().RemoveParameter(null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-        Console.WriteLine(ex.Message);
-      } catch (Exception ex) {
+      } catch (ArgumentNullException) {
+        Console.Write(String.Empty);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -59,18 +59,18 @@ Assert.AreEqual(null, new DispositionBuilder(String.Empty));
       try {
         new DispositionBuilder().SetDispositionType(null);
         Assert.Fail("Should have failed");
-      } catch (ArgumentNullException ex) {
-        Console.WriteLine(ex.Message);
-      } catch (Exception ex) {
+      } catch (ArgumentNullException) {
+        Console.Write(String.Empty);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
         new DispositionBuilder().SetDispositionType(String.Empty);
         Assert.Fail("Should have failed");
-      } catch (ArgumentException ex) {
-        Console.WriteLine(ex.Message);
-      } catch (Exception ex) {
+      } catch (ArgumentException) {
+        Console.Write(String.Empty);
+} catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }

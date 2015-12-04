@@ -321,54 +321,6 @@ module Normalizer
         "cache/DerivedNormalizationProps.txt",@@quickCheckNames[form])
     end
     return !@@quickChecks[form][ch] && UnicodeDatabase.getCombiningClass(ch) == 0
-#=begin
-    if ch>=0xac00 && ch<0xac00+11172
-      # Special case for Hangul syllables
-      return false if form==:NFD || form==:NFKD
-      if (ch-0xAC00)%28!=0
-         # This is an LVT Hangul syllable
-        return true
-      else
-         # This is an LV Hangul syllable; this is not stable since
-         # a T jamo may follow it
-        return false
-      end
-    else
-      return false if UnicodeDatabase.getCombiningClass(ch)!=0
-      return true if UnicodeDatabase.getGeneralCategory(ch)=="Cn"
-      result=normalize([ch],form)
-      return false if result.length!=1 || result[0]!=ch
-    end
-    return true if form==:NFD || form==:NFKD
-    if !$DecompMappings[ch] && (ch<0xac00 || ch>=0xac00+11172)
-      return true if @@foundInDecompMapping && !@@foundInDecompMapping[ch]
-      # NOTE: No Hangul syllables occur in decomposition
-      # mappings
-      if !@@foundInDecompMapping
-        @@foundInDecompMapping={}
-        @@canonDecompMappings={}
-        @@compatDecompMappings={}
-        for k in $DecompMappings
-          for m in k[1]
-           compat=$DecompTypes[k[0]]
-           compat=(compat!=nil && compat.length>0)
-           @@foundInDecompMapping[m]=true
-           @@canonDecompMappings[m]=true
-           @@compatDecompMappings[m]=true if compat
-          end
-        end
-      end
-      return !@@canonDecompMappings[ch]
-    end
-    if !@@maxAffectedCodePoint
-      @@maxAffectedCodePoint=0
-      for k in $DecompMappings
-        next if !k[1]
-        @@maxAffectedCodePoint=[k[0],@@maxAffectedCodePoint].concat(k[1]).max
-      end
-   end
-   return false
-#=end
   end
   def self.decomposeChar(ch,form)
     if(ch>=0xAC00 && ch<0xAC00+11172)

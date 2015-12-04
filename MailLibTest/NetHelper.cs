@@ -23,7 +23,7 @@ namespace MailLibTest {
           }
         }
       }
-      return File.ReadAllLines(cachedPath);
+      return File.ReadAllLines(cachedPath, System.Text.Encoding.UTF8);
     }
   }
 }

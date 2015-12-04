@@ -127,7 +127,7 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         return endIndex - index;
       }
       while (h < codePointLength) {
-        int min = 0x110000;
+        var min = 0x110000;
         tmpIndex = firstIndex;
         while (tmpIndex < endIndex) {
           int c = CodePointAt(str, tmpIndex, endIndex);
@@ -433,7 +433,7 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
         builder.Append('-');
       }
       while (h < codePointLength) {
-        int min = 0x110000;
+        var min = 0x110000;
         tmpIndex = firstIndex;
         while (tmpIndex < endIndex) {
           int c = Idna.CodePointAt(str, tmpIndex);

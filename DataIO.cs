@@ -16,10 +16,10 @@ namespace PeterO {
     /// <summary>Wraps a byte array into a byte reader. The reader will
     /// start at the beginning of the byte array.
     /// <para>In the .NET implementation, this method is implemented as an
-    /// extension method to any object implementing byte[] and can be
-    /// called as follows: <c>bytes.ToByteReader()</c>. If the object's
-    /// class already has a ToByteReader method with the same parameters,
-    /// that method takes precedence over this extension
+    /// extension method to any byte array object and can be called as
+    /// follows: <c>bytes.ToByteReader()</c>. If the object's class
+    /// already has a ToByteReader method with the same parameters, that
+    /// method takes precedence over this extension
     /// method.</para></summary>
     /// <param name='bytes'>The byte array to wrap.</param>
     /// <returns>A byte reader wrapping the byte array.</returns>
@@ -34,9 +34,9 @@ namespace PeterO {
 
     /// <summary>Wraps a portion of a byte array into a byte reader object.
     /// <para>In the .NET implementation, this method is implemented as an
-    /// extension method to any object implementing byte[] and can be
-    /// called as follows: <c>bytes.ToByteReader(offset, length)</c>. If
-    /// the object's class already has a ToByteReader method with the same
+    /// extension method to any byte array object and can be called as
+    /// follows: <c>bytes.ToByteReader(offset, length)</c>. If the
+    /// object's class already has a ToByteReader method with the same
     /// parameters, that method takes precedence over this extension
     /// method.</para></summary>
     /// <param name='bytes'>The byte array to wrap.</param>
@@ -105,11 +105,10 @@ int length) {
     /// <summary>Wraps a byte array into a byte reader. The reader will
     /// start at the beginning of the byte array.
     /// <para>In the .NET implementation, this method is implemented as an
-    /// extension method to any object implementing byte[] and can be
-    /// called as follows: <c>bytes.ToTransform()</c>. If the object's
-    /// class already has a ToTransform method with the same parameters,
-    /// that method takes precedence over this extension
-    /// method.</para></summary>
+    /// extension method to any byte array object and can be called as
+    /// follows: <c>bytes.ToTransform()</c>. If the object's class already
+    /// has a ToTransform method with the same parameters, that method
+    /// takes precedence over this extension method.</para></summary>
     /// <param name='bytes'>The byte array to wrap.</param>
     /// <returns>A byte reader wrapping the byte array.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -124,10 +123,10 @@ int length) {
 
     /// <summary>Wraps a portion of a byte array into a byte reader object.
     /// <para>In the .NET implementation, this method is implemented as an
-    /// extension method to any object implementing byte[] and can be
-    /// called as follows: <c>bytes.ToTransform(offset, length)</c>. If
-    /// the object's class already has a ToTransform method with the same
-    /// parameters, that method takes precedence over this extension
+    /// extension method to any byte array object and can be called as
+    /// follows: <c>bytes.ToTransform(offset, length)</c>. If the object's
+    /// class already has a ToTransform method with the same parameters,
+    /// that method takes precedence over this extension
     /// method.</para></summary>
     /// <param name='bytes'>The byte array to wrap.</param>
     /// <param name='offset'>A zero-based index showing where the desired

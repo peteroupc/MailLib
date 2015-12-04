@@ -269,7 +269,7 @@ stringTemp);
       try {
 Assert.AreEqual(null, new Address(EncodingTest.Repeat("local" , 200) +
   "@example.com"));
-      } catch (ArgumentException ex) {
+      } catch (ArgumentException) {
 Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
@@ -304,7 +304,7 @@ Console.Write(String.Empty);
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
       try {
         MessageTest.MessageFromString(msgString);
-      } catch (MessageDataException ex) {
+      } catch (MessageDataException) {
 Console.Write(String.Empty);
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());

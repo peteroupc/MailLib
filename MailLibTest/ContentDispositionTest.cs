@@ -310,6 +310,18 @@ namespace MailLibTest {
           stringTemp);
       }
       {
+        stringTemp = ContentDisposition.MakeFilename(".");
+        Assert.AreEqual(
+          "_._",
+          stringTemp);
+      }
+      {
+        stringTemp = ContentDisposition.MakeFilename("..");
+        Assert.AreEqual(
+          "_.._",
+          stringTemp);
+      }
+      {
         stringTemp = ContentDisposition.MakeFilename("fol/der/");
         Assert.AreEqual(
           "fol_der_",
@@ -351,8 +363,8 @@ namespace MailLibTest {
       try {
  ContentDisposition.Parse(null);
 Assert.Fail("Should have failed");
-} catch (ArgumentNullException ex) {
-Console.WriteLine(ex.Message);
+} catch (ArgumentNullException) {
+Console.Write(String.Empty);
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
