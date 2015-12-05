@@ -46,13 +46,16 @@ namespace PeterO.Text {
     /// portion of "str" ends. The character before this index is the last
     /// character.</param>
     /// <returns>The Punycode length of the encoded string. If the string
-    /// contains non-ASCII characters, returns the Punycode length plus 4
-    /// (the length of the ACE prefix). If there are only ASCII characters,
+    /// contains code points outside the Basic Latin range (U + 0000 to
+    /// U + 007F), returns the Punycode length plus 4
+    /// (the length of the prefix "xn--" , which indicates an
+    /// internationalized domain name). If there are only Basic Latin code
+    /// points,
     /// returns the length of the string. Returns -1 if an overflow error
     /// occurs.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='str'/> is null.</exception>
-    /// <exception cref='ArgumentNullException'>Either <paramref
+    /// <exception cref="ArgumentNullException">Either <paramref
     /// name='index'/> or <paramref name='endIndex'/> is less than 0 or
     /// greater than <paramref name='str'/> 's length, or <paramref
     /// name='index'/> is greater than <paramref name='endIndex'/>

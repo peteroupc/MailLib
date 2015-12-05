@@ -26,39 +26,39 @@ import com.upokecenter.text.encoders.*;
      * vice versa.</li> <li><b>ASCII</b> is a 128-code-point character set
      * that includes the English letters and digits, common punctuation and
      * symbols, and control characters. As used here, its code points match
-     * the code points 0 to 127 in the Unicode Standard.</li></ul> <p>There
-     * are several kinds of character encodings:</p> <ul> <li><b>Single-byte
-     * encodings</b> define a character set that assigns one code point to
-     * one byte. Thus, they can have a maximum of 256 code points. For
-     * example:</li> <li>(a) ISO 8859 encodings and
-     * <code>windows-1252</code>.</li> <li>(b) ASCII is a single-byte encoding
-     * whose character set only uses the lower 7 bits of an eight-bit byte.
-     * In the Encoding Standard, all single-byte encodings use the ASCII
-     * characters as the first 128 code points of their character sets.</li>
-     * <li><b>Multi-byte encodings</b> include code points from one or more
-     * character sets and assign some or all code points to several bytes.
-     * For example:</li> <li>(a) UTF-16 uses 2 bytes for the most common
-     * Unicode code points and 4 bytes for supplementary code points.</li>
-     * <li>(b) <code>utf-8</code> uses 1 byte for ASCII and 2 to 4 bytes for the
-     * other Unicode code points.</li> <li>(c) Most legacy East Asian
-     * encodings, such as <code>shift_jis</code>, <code>gbk</code>, and <code>big5</code> use
-     * 1 byte for ASCII (or a slightly modified version) and, usually, 2 or
-     * more bytes for national standard character sets.</li>
-     * <li><b>Escape-based encodings</b> are combinations of single- and/or
-     * multi-byte encodings, and use escape sequences and/or shift codes to
-     * change which encoding to use for the bytes that follow. For
-     * example:</li> <li>(a) <code>iso-2022-jp</code> supports several escape
-     * sequences that shift into different encodings, including a Katakana,
-     * a Kanji, and an ASCII encoding (with ASCII as the default).</li>
-     * <li>(b) UTF-7 (not included in the Encoding Standard) is a Unicode
-     * encoding that uses a limited subset of ASCII. The plus symbol is used
-     * to shift into a modified version of base-64 to encode other Unicode
-     * code points.</li> <li>The Encoding Standard also defines a
-     * <b>replacement encoding</b>, which causes a decoding error and is
-     * used to alias a few problematic or unsupported encoding names, such
-     * as <code>hz-gb-2312</code>.</li></ul> <p><b>Getting an Encoding</b></p>
-     * <p>The Encoding Standard includes UTF-8, UTF-16, and many legacy
-     * encodings, and gives each one of them a name. The
+     * the code points within the Basic Latin range (0-127 or U + 0000 to U
+     * + 007F) of the Unicode Standard.</li></ul> <p>There are several kinds
+     * of character encodings:</p> <ul> <li><b>Single-byte encodings</b>
+     * define a character set that assigns one code point to one byte. Thus,
+     * they can have a maximum of 256 code points. For example:</li> <li>(a)
+     * ISO 8859 encodings and <code>windows-1252</code>.</li> <li>(b) ASCII is a
+     * single-byte encoding whose character set only uses the lower 7 bits
+     * of an eight-bit byte. In the Encoding Standard, all single-byte
+     * encodings use the ASCII characters as the first 128 code points of
+     * their character sets.</li> <li><b>Multi-byte encodings</b> include
+     * code points from one or more character sets and assign some or all
+     * code points to several bytes. For example:</li> <li>(a) UTF-16 uses 2
+     * bytes for the most common Unicode code points and 4 bytes for
+     * supplementary code points.</li> <li>(b) <code>utf-8</code> uses 1 byte for
+     * ASCII and 2 to 4 bytes for the other Unicode code points.</li>
+     * <li>(c) Most legacy East Asian encodings, such as <code>shift_jis</code>,
+     * <code>gbk</code>, and <code>big5</code> use 1 byte for ASCII (or a slightly
+     * modified version) and, usually, 2 or more bytes for national standard
+     * character sets.</li> <li><b>Escape-based encodings</b> are
+     * combinations of single- and/or multi-byte encodings, and use escape
+     * sequences and/or shift codes to change which encoding to use for the
+     * bytes that follow. For example:</li> <li>(a) <code>iso-2022-jp</code>
+     * supports several escape sequences that shift into different
+     * encodings, including a Katakana, a Kanji, and an ASCII encoding (with
+     * ASCII as the default).</li> <li>(b) UTF-7 (not included in the
+     * Encoding Standard) is a Unicode encoding that uses a limited subset
+     * of ASCII. The plus symbol is used to shift into a modified version of
+     * base-64 to encode other Unicode code points.</li> <li>The Encoding
+     * Standard also defines a <b>replacement encoding</b>, which causes a
+     * decoding error and is used to alias a few problematic or unsupported
+     * encoding names, such as <code>hz-gb-2312</code>.</li></ul> <p><b>Getting an
+     * Encoding</b></p> <p>The Encoding Standard includes UTF-8, UTF-16, and
+     * many legacy encodings, and gives each one of them a name. The
      * <code>GetEncoding(name)</code> method takes a name string and returns an
      * ICharacterEncoding object that implements that encoding, or
      * <code>null</code> if the name is unrecognized.</p> <p>However, the Encoding
@@ -960,6 +960,10 @@ boolean allowReplacement) {
     /**
      * Resolves a character encoding's name to a standard form. This involves
      * changing aliases of a character encoding to a standardized name.
+     * <p>In several Internet standards, this name is known as a "charset"
+     * parameter. In HTML and HTTP, for example, the "charset" parameter
+     * indicates the encoding used to represent text in the HTML page, text
+     * file, etc.</p>
      * @param name A string that names a given character encoding. Can be null. Any
      * leading and trailing whitespace is removed and the name converted to
      * lowercase before resolving the encoding&#x27;s name. The Encoding
@@ -1025,12 +1029,12 @@ boolean allowReplacement) {
      * modified version of the rules in the Encoding Standard to better
      * conform, in some cases, to email standards like MIME. In addition to
      * the encodings mentioned in ResolveAlias, the following additional
-     * encodings are supported:. <ul> <li> {@code us-ascii} - ASCII 7-bit
-     * encoding, rather than an alias to {@code windows-1252}, as specified
-     * in the Encoding Standard.</li> <li> {@code iso-8859-1} - Latin-1 8-bit
-     * encoding, rather than an alias to {@code windows-1252}, as specified
-     * in the Encoding Standard.</li> <li> {@code utf-7} - UTF-7 (7-bit
-     * universal character set).</li></ul>.
+     * encodings are supported:. <ul> <li> {@code us-ascii} - ASCII
+     * single-byte encoding, rather than an alias to {@code windows-1252},
+     * as specified in the Encoding Standard.</li> <li> {@code iso-8859-1} -
+     * Latin-1 single-byte encoding, rather than an alias to {@code
+     * windows-1252}, as specified in the Encoding Standard.</li> <li> {@code
+     * utf-7} - UTF-7 (7-bit universal character set).</li></ul>.
      * @return A standardized name for the encoding. Returns the empty string if
      * {@code name} is null or empty, or if the encoding name is
      * unsupported.

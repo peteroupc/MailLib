@@ -14,59 +14,63 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.transforms.*;
 import com.upokecenter.text.*;
 
-  /**
-   * <p>Represents an email message, and contains methods and properties for
-   * accessing and modifying email message data. This class implements the
-   * Internet Message Format (RFC 5322) and Multipurpose Internet Mail
-   * Extensions (MIME; RFC 2045-2047, RFC 2049).</p> <p><b>Thread
-   * safety:</b> This class is mutable; its properties can be changed. None
-   * of its instance methods are designed to be thread safe. Therefore,
-   * access to objects from this class must be synchronized if multiple
-   * threads can access them at the same time.</p> <p>The following lists
-   * known deviations from the mail specifications (Internet Message Format
-   * and MIME):</p> <ul> <li>The content-transfer-encoding
-   * "quoted-printable" is treated as 7bit instead if it occurs in a message
-   * or body part with content type "multipart/*" or "message/*" (other than
-   * "message/global", "message/global-headers",
-   * "message/global-disposition-notification", or
-   * "message/global-delivery-status").</li> <li>If a message has two or
-   * more Content-Type header fields, it is treated as having a content type
-   * of "application/octet-stream", unless one or more of the header fields
-   * is syntactically invalid.</li> <li>Non-UTF-8 bytes appearing in header
-   * field values are replaced with replacement characters. Moreover, UTF-8
-   * is parsed everywhere in header field values, even in those parts of
-   * some structured header fields where this appears not to be
-   * allowed.</li> <li>The To and Cc header fields are allowed to contain
-   * only comments and whitespace, but these "empty" header fields will be
-   * omitted when generating.</li> <li>There is no line length limit imposed
-   * when parsing quoted-printable or base64 encoded bodies.</li> <li>If the
-   * transfer encoding is absent and the content type is "message/rfc822",
-   * 8-bit bytes are still allowed, despite the default value of "7bit" for
-   * "Content-Transfer-Encoding".</li> <li>In the following cases, if the
-   * transfer encoding is absent or ((declared instanceof 7bit) ?
-   * (7bit)declared : null), 8-bit bytes are still allowed:</li> <li>(a) The
-   * preamble and epilogue of multipart messages, which will be
-   * ignored.</li> <li>(b) If the charset is declared to be
-   * <code>utf-8</code>.</li> <li>(c) If the content type is "text/html" and the
-   * charset is declared to be <code>ascii</code>, <code>us-ascii</code>,
-   * "windows-1252", "windows-1251", or "iso-8859-*" (all single byte
-   * encodings).</li> <li>(d) In non-MIME message bodies and in text/plain
-   * message bodies. Any 8-bit bytes are replaced with the ASCII substitute
-   * character (0x1a).</li> <li>If the first line of the message starts with
-   * the word "From" followed by a space, it is skipped.</li> <li>The name
-   * <code>ascii</code> is treated as a synonym for <code>us-ascii</code>, despite being
-   * a reserved name under RFC 2046. The name <code>cp1252</code> is treated as a
-   * synonym for <code>windows-1252</code> , even though it's not an IANA
-   * registered alias.</li> <li>The following deviations involve encoded
-   * words under RFC 2047:</li> <li>(a) If a sequence of encoded words
-   * decodes to a string with a CTL character (U + 007F, or a character less
-   * than U + 0020 and not TAB) after being converted to Unicode, the
-   * encoded words are left un-decoded.</li> <li>(b) This implementation can
-   * decode an encoded word that uses ISO-2022-JP (the only supported
-   * encoding that uses code switching) even if the encoded word's payload
-   * ends in a different mode from ASCII mode. (Each encoded word still
-   * starts in ASCII mode, though.)</li></ul>
-   */
+    /**
+     * <p>Represents an email message, and contains methods and properties for
+     * accessing and modifying email message data. This class implements the
+     * Internet Message Format (RFC 5322) and Multipurpose Internet Mail
+     * Extensions (MIME; RFC 2045-2047, RFC 2049).</p> <p><b>Thread
+     * safety:</b> This class is mutable; its properties can be changed.
+     * None of its instance methods are designed to be thread safe.
+     * Therefore, access to objects from this class must be synchronized if
+     * multiple threads can access them at the same time.</p> <p>The
+     * following lists known deviations from the mail specifications
+     * (Internet Message Format and MIME):</p> <ul> <li>The
+     * content-transfer-encoding "quoted-printable" is treated as 7bit
+     * instead if it occurs in a message or body part with content type
+     * "multipart/*" or "message/*" (other than "message/global",
+     * "message/global-headers", "message/global-disposition-notification",
+     * or "message/global-delivery-status").</li> <li>If a message has two
+     * or more Content-Type header fields, it is treated as having a content
+     * type of "application/octet-stream", unless one or more of the header
+     * fields is syntactically invalid.</li> <li>Illegal UTF-8 byte
+     * sequences appearing in header field values are replaced with
+     * replacement characters. Moreover, UTF-8 is parsed everywhere in
+     * header field values, even in those parts of some structured header
+     * fields where this appears not to be allowed. (UTF-8 is a character
+     * encoding for the Unicode character set.)</li> <li>The To and Cc
+     * header fields are allowed to contain only comments and whitespace,
+     * but these "empty" header fields will be omitted when generating.</li>
+     * <li>There is no line length limit imposed when parsing
+     * quoted-printable or base64 encoded bodies.</li> <li>If the transfer
+     * encoding is absent and the content type is "message/rfc822" , bytes
+     * with values greater than 127 (called "8-bit bytes" in the rest of
+     * this summary) are still allowed, despite the default value of "7bit"
+     * for "Content-Transfer-Encoding".</li> <li>In the following cases, if
+     * the transfer encoding is absent or ((declared instanceof 7bit) ?
+     * (7bit)declared : null), 8-bit bytes are still allowed:</li> <li>(a)
+     * The preamble and epilogue of multipart messages, which will be
+     * ignored.</li> <li>(b) If the charset is declared to be
+     * <code>utf-8</code>.</li> <li>(c) If the content type is "text/html" and the
+     * charset is declared to be <code>ascii</code>, <code>us-ascii</code>,
+     * "windows-1252", "windows-1251", or "iso-8859-*" (all single byte
+     * encodings).</li> <li>(d) In non-MIME message bodies and in text/plain
+     * message bodies. Any 8-bit bytes are replaced with the substitute
+     * character byte (0x1a).</li> <li>If the first line of the message
+     * starts with the word "From" followed by a space, it is skipped.</li>
+     * <li>The name <code>ascii</code> is treated as a synonym for
+     * <code>us-ascii</code>, despite being a reserved name under RFC 2046. The
+     * name <code>cp1252</code> is treated as a synonym for <code>windows-1252</code> ,
+     * even though it's not an IANA registered alias.</li> <li>The following
+     * deviations involve encoded words under RFC 2047:</li> <li>(a) If a
+     * sequence of encoded words decodes to a string with a CTL character (U
+     * + 007F, or a character less than U + 0020 and not TAB) after being
+     * converted to Unicode, the encoded words are left un-decoded.</li>
+     * <li>(b) This implementation can decode an encoded word that uses
+     * ISO-2022-JP (the only supported encoding that uses code switching)
+     * even if the encoded word's payload ends in a different mode from
+     * "ASCII mode". (Each encoded word still starts in that mode,
+     * though.)</li></ul>
+     */
   public final class Message {
     private static final int EncodingBase64 = 2;
     private static final int EncodingBinary = 4;
@@ -331,13 +335,14 @@ public final void setSubject(String value) {
 
     /**
      * Generates this message's data in text form. <p>The generated message will
-     * always be 7-bit ASCII, and the transfer encoding will always be 7bit,
-     * quoted-printable, or base64 (the declared transfer encoding for this
-     * message will be ignored).</p> <p>The following applies to the From,
-     * To, Cc, and Bcc header fields. If the header field exists, but has an
-     * invalid syntax or has no addresses, this method will generate a
-     * synthetic header field with the display-name set to the contents of
-     * all of the header fields with the same name, and the address set to
+     * have only Basic Latin code points (U + 0000 to U + 007F), and the
+     * transfer encoding will always be 7bit, quoted-printable, or base64
+     * (the declared transfer encoding for this message will be
+     * ignored).</p> <p>The following applies to the From, To, Cc, and Bcc
+     * header fields. If the header field exists, but has an invalid syntax
+     * or has no addresses, this method will generate a synthetic header
+     * field with the display-name set to the contents of all of the header
+     * fields with the same name, and the address set to
      * <code>me@[header-name]-address.invalid</code> as the address (a
      * <code>.invalid</code> address is a reserved address that can never belong
      * to anyone). The generated message should always have a From header
@@ -410,8 +415,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     /**
-     * Gets the first instance of the header field with the specified name,
-     * comparing the field name in an ASCII case-insensitive manner.
+     * Gets the first instance of the header field with the specified name, using a
+     * basic case-insensitive comparison. (Two strings are equal in such a
+     * comparison, if they match after converting the basic-upper case
+     * letters A to Z (U + 0041 to U + 005A) in both strings to lower
+     * case.).
      * @param name The name of a header field.
      * @return The value of the first header field with that name, or null if there
      * is none.
@@ -456,7 +464,10 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Removes all instances of the given header field from this message. If this
      * is a multipart message, the header field is not removed from its body
-     * part headers.
+     * part headers. A basic case-insensitive comparison is used. (Two
+     * strings are equal in such a comparison, if they match after
+     * converting the basic-upper case letters A to Z (U + 0041 to U + 005A)
+     * in both strings to lower case.).
      * @param name The name of the header field to remove.
      * @return This instance.
      * @throws NullPointerException The parameter {@code name} is null.
@@ -1198,13 +1209,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
                   do {
                     int indexStart4 = index;
                   while (index < endIndex && ((str.charAt(index) == 32) ||
-                      (str.charAt(index)
-                    == 9))) {
+                (str.charAt(index) == 9))) {
                     ++index;
                     }
                  if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index +
-                      1)
-                    == 10) {
+                1) == 10) {
                     index += 2;
                     } else {
                     index = indexStart4; break;
@@ -1753,8 +1762,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.length()) != value.length()) {
-       throw new
-            IllegalArgumentException("Header field value contains invalid text");
+       throw new IllegalArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.length(), null) != value.length()) {
           throw new
@@ -2387,20 +2395,20 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     private static class MessageStackEntry {
       private final Message message;
 
-      /**
-       * Gets an internal value.
-       * @return An internal value.
-       */
+    /**
+     * Gets an internal value.
+     * @return An internal value.
+     */
       public final Message getMessage() {
           return this.message;
         }
 
       private final String boundary;
 
-      /**
-       * Gets an internal value.
-       * @return An internal value.
-       */
+    /**
+     * Gets an internal value.
+     * @return An internal value.
+     */
       public final String getBoundary() {
           return this.boundary;
         }

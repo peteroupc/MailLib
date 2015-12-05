@@ -15,70 +15,74 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-  /// <summary>
-  /// <para>Represents an email message, and contains methods and
-  /// properties for accessing and modifying email message data. This
-  /// class implements the Internet Message Format (RFC 5322) and
-  /// Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC
-  /// 2049).</para>
-  /// <para><b>Thread safety:</b> This class is mutable; its properties
-  /// can be changed. None of its instance methods are designed to be
-  /// thread safe. Therefore, access to objects from this class must be
-  /// synchronized if multiple threads can access them at the same
-  /// time.</para>
-  /// <para>The following lists known deviations from the mail
-  /// specifications (Internet Message Format and MIME):</para>
-  /// <list type=''>
-  /// <item>The content-transfer-encoding "quoted-printable" is treated
-  /// as 7bit instead if it occurs in a message or body part with content
-  /// type "multipart/*" or "message/*" (other than "message/global",
-  /// "message/global-headers",
-  /// "message/global-disposition-notification", or
-  /// "message/global-delivery-status").</item>
-  /// <item>If a message has two or more Content-Type header fields, it
-  /// is treated as having a content type of "application/octet-stream",
-  /// unless one or more of the header fields is syntactically
-  /// invalid.</item>
-  /// <item>Non-UTF-8 bytes appearing in header field values are replaced
-  /// with replacement characters. Moreover, UTF-8 is parsed everywhere
-  /// in header field values, even in those parts of some structured
-  /// header fields where this appears not to be allowed.</item>
-  /// <item>The To and Cc header fields are allowed to contain only
-  /// comments and whitespace, but these "empty" header fields will be
-  /// omitted when generating.</item>
-  /// <item>There is no line length limit imposed when parsing
-  /// quoted-printable or base64 encoded bodies.</item>
-  /// <item>If the transfer encoding is absent and the content type is
-  /// "message/rfc822", 8-bit bytes are still allowed, despite the
-  /// default value of "7bit" for "Content-Transfer-Encoding".</item>
-  /// <item>In the following cases, if the transfer encoding is absent or
-  /// declared as 7bit, 8-bit bytes are still allowed:</item>
-  /// <item>(a) The preamble and epilogue of multipart messages, which
-  /// will be ignored.</item>
-  /// <item>(b) If the charset is declared to be <c>utf-8</c>.</item>
-  /// <item>(c) If the content type is "text/html" and the charset is
-  /// declared to be <c>ascii</c>, <c>us-ascii</c>, "windows-1252",
-  /// "windows-1251", or "iso-8859-*" (all single byte encodings).</item>
-  /// <item>(d) In non-MIME message bodies and in text/plain message
-  /// bodies. Any 8-bit bytes are replaced with the ASCII substitute
-  /// character (0x1a).</item>
-  /// <item>If the first line of the message starts with the word "From"
-  /// followed by a space, it is skipped.</item>
-  /// <item>The name <c>ascii</c> is treated as a synonym for
-  /// <c>us-ascii</c>, despite being a reserved name under RFC 2046. The
-  /// name <c>cp1252</c> is treated as a synonym for <c>windows-1252</c>
-  /// , even though it's not an IANA registered alias.</item>
-  /// <item>The following deviations involve encoded words under RFC
-  /// 2047:</item>
-  /// <item>(a) If a sequence of encoded words decodes to a string with a
-  /// CTL character (U + 007F, or a character less than U + 0020 and not
-  /// TAB) after being converted to Unicode, the encoded words are left
-  /// un-decoded.</item>
-  /// <item>(b) This implementation can decode an encoded word that uses
-  /// ISO-2022-JP (the only supported encoding that uses code switching)
-  /// even if the encoded word's payload ends in a different mode from
-  /// ASCII mode. (Each encoded word still starts in ASCII mode,
-  /// though.)</item></list></summary>
+    /// <summary>
+    /// <para>Represents an email message, and contains methods and
+    /// properties for accessing and modifying email message data. This
+    /// class implements the Internet Message Format (RFC 5322) and
+    /// Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC
+    /// 2049).</para>
+    /// <para><b>Thread safety:</b> This class is mutable; its properties
+    /// can be changed. None of its instance methods are designed to be
+    /// thread safe. Therefore, access to objects from this class must be
+    /// synchronized if multiple threads can access them at the same
+    /// time.</para>
+    /// <para>The following lists known deviations from the mail
+    /// specifications (Internet Message Format and MIME):</para>
+    /// <list type=''>
+    /// <item>The content-transfer-encoding "quoted-printable" is treated
+    /// as 7bit instead if it occurs in a message or body part with content
+    /// type "multipart/*" or "message/*" (other than "message/global",
+    /// "message/global-headers",
+    /// "message/global-disposition-notification", or
+    /// "message/global-delivery-status").</item>
+    /// <item>If a message has two or more Content-Type header fields, it
+    /// is treated as having a content type of "application/octet-stream",
+    /// unless one or more of the header fields is syntactically
+    /// invalid.</item>
+    /// <item>Illegal UTF-8 byte sequences appearing in header field values
+    /// are replaced with replacement characters. Moreover, UTF-8 is parsed
+    /// everywhere in header field values, even in those parts of some
+    /// structured header fields where this appears not to be allowed.
+    /// (UTF-8 is a character encoding for the Unicode character
+    /// set.)</item>
+    /// <item>The To and Cc header fields are allowed to contain only
+    /// comments and whitespace, but these "empty" header fields will be
+    /// omitted when generating.</item>
+    /// <item>There is no line length limit imposed when parsing
+    /// quoted-printable or base64 encoded bodies.</item>
+    /// <item>If the transfer encoding is absent and the content type is
+    /// "message/rfc822" , bytes with values greater than 127 (called
+    /// "8-bit bytes" in the rest of this summary) are still allowed,
+    /// despite the default value of "7bit" for
+    /// "Content-Transfer-Encoding".</item>
+    /// <item>In the following cases, if the transfer encoding is absent or
+    /// declared as 7bit, 8-bit bytes are still allowed:</item>
+    /// <item>(a) The preamble and epilogue of multipart messages, which
+    /// will be ignored.</item>
+    /// <item>(b) If the charset is declared to be <c>utf-8</c>.</item>
+    /// <item>(c) If the content type is "text/html" and the charset is
+    /// declared to be <c>ascii</c>, <c>us-ascii</c>, "windows-1252",
+    /// "windows-1251", or "iso-8859-*" (all single byte encodings).</item>
+    /// <item>(d) In non-MIME message bodies and in text/plain message
+    /// bodies. Any 8-bit bytes are replaced with the substitute character
+    /// byte (0x1a).</item>
+    /// <item>If the first line of the message starts with the word "From"
+    /// followed by a space, it is skipped.</item>
+    /// <item>The name <c>ascii</c> is treated as a synonym for
+    /// <c>us-ascii</c>, despite being a reserved name under RFC 2046. The
+    /// name <c>cp1252</c> is treated as a synonym for <c>windows-1252</c>
+    /// , even though it's not an IANA registered alias.</item>
+    /// <item>The following deviations involve encoded words under RFC
+    /// 2047:</item>
+    /// <item>(a) If a sequence of encoded words decodes to a string with a
+    /// CTL character (U + 007F, or a character less than U + 0020 and not
+    /// TAB) after being converted to Unicode, the encoded words are left
+    /// un-decoded.</item>
+    /// <item>(b) This implementation can decode an encoded word that uses
+    /// ISO-2022-JP (the only supported encoding that uses code switching)
+    /// even if the encoded word's payload ends in a different mode from
+    /// "ASCII mode". (Each encoded word still starts in that mode,
+    /// though.)</item></list></summary>
   public sealed class Message {
     private const int EncodingBase64 = 2;
     private const int EncodingBinary = 4;
@@ -109,7 +113,7 @@ namespace PeterO.Mail {
     /// <summary>Initializes a new instance of the Message class. Reads
     /// from the given Stream object to initialize the message.</summary>
     /// <param name='stream'>A readable data stream.</param>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='stream'/> is null.</exception>
     public Message(Stream stream) {
       if (stream == null) {
@@ -130,7 +134,7 @@ namespace PeterO.Mail {
     /// <summary>Initializes a new instance of the Message class. Reads
     /// from the given byte array to initialize the message.</summary>
     /// <param name='bytes'>A readable data stream.</param>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
     public Message(byte[] bytes) {
       if (bytes == null) {
@@ -225,7 +229,7 @@ namespace PeterO.Mail {
 
     /// <summary>Gets or sets this message's media type.</summary>
     /// <value>This message&#x27;s media type.</value>
-    /// <exception cref="ArgumentNullException">This value is being set and
+    /// <exception cref='ArgumentNullException'>This value is being set and
     /// "value" is null.</exception>
     public MediaType ContentType {
       get {
@@ -330,9 +334,9 @@ namespace PeterO.Mail {
     /// the header field, such as "From" or "Content-ID". The value is the
     /// header field's value.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentNullException">The key or value of
+    /// <exception cref='ArgumentNullException'>The key or value of
     /// <paramref name='header'/> is null.</exception>
-    /// <exception cref="ArgumentException">The header field name is too
+    /// <exception cref='ArgumentException'>The header field name is too
     /// long or contains an invalid character, or the header field's value
     /// is syntactically invalid.</exception>
     public Message AddHeader(KeyValuePair<string, string> header) {
@@ -345,9 +349,9 @@ namespace PeterO.Mail {
     /// "Content-ID".</param>
     /// <param name='value'>Value of the header field.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> or <paramref name='value'/> is null.</exception>
-    /// <exception cref="ArgumentException">The header field name is too
+    /// <exception cref='ArgumentException'>The header field name is too
     /// long or contains an invalid character, or the header field's value
     /// is syntactically invalid.</exception>
     public Message AddHeader(string name, string value) {
@@ -358,10 +362,10 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Generates this message's data in text form.
-    /// <para>The generated message will always be 7-bit ASCII, and the
-    /// transfer encoding will always be 7bit, quoted-printable, or base64
-    /// (the declared transfer encoding for this message will be
-    /// ignored).</para>
+    /// <para>The generated message will have only Basic Latin code points
+    /// (U + 0000 to U + 007F), and the transfer encoding will always be
+    /// 7bit, quoted-printable, or base64 (the declared transfer encoding
+    /// for this message will be ignored).</para>
     /// <para>The following applies to the From, To, Cc, and Bcc header
     /// fields. If the header field exists, but has an invalid syntax or
     /// has no addresses, this method will generate a synthetic header
@@ -380,8 +384,8 @@ namespace PeterO.Mail {
       return DataUtilities.GetUtf8String(aw.ToArray(), false);
     }
 
-    /// <summary>Gets the byte array for this message's body.
-    /// This method doesn't make a copy of that byte array.</summary>
+    /// <summary>Gets the byte array for this message's body. This method
+    /// doesn't make a copy of that byte array.</summary>
     /// <returns>A byte array.</returns>
     public byte[] GetBody() {
       return this.body;
@@ -417,7 +421,7 @@ namespace PeterO.Mail {
     /// <returns>A KeyValuePair object. The key is the name of the header
     /// field, such as "From" or "Content-ID". The value is the header
     /// field's value.</returns>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='index'/> is 0 or at least as high as the number of header
     /// fields.</exception>
     public KeyValuePair<string, string> GetHeader(int index) {
@@ -436,12 +440,14 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets the first instance of the header field with the
-    /// specified name, comparing the field name in an ASCII
-    /// case-insensitive manner.</summary>
+    /// specified name, using a basic case-insensitive comparison. (Two
+    /// strings are equal in such a comparison, if they match after
+    /// converting the basic-upper case letters A to Z (U + 0041 to U +
+    /// 005A) in both strings to lower case.).</summary>
     /// <param name='name'>The name of a header field.</param>
     /// <returns>The value of the first header field with that name, or
     /// null if there is none.</returns>
-    /// <exception cref="ArgumentNullException">Name is null.</exception>
+    /// <exception cref='ArgumentNullException'>Name is null.</exception>
     public string GetHeader(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -460,7 +466,7 @@ namespace PeterO.Mail {
     /// <param name='index'>Zero-based index of the header field to
     /// set.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='index'/> is 0 or at least as high as the number of header
     /// fields.</exception>
     public Message RemoveHeader(int index) {
@@ -480,10 +486,13 @@ namespace PeterO.Mail {
 
     /// <summary>Removes all instances of the given header field from this
     /// message. If this is a multipart message, the header field is not
-    /// removed from its body part headers.</summary>
+    /// removed from its body part headers. A basic case-insensitive
+    /// comparison is used. (Two strings are equal in such a comparison, if
+    /// they match after converting the basic-upper case letters A to Z (U
+    /// + 0041 to U + 005A) in both strings to lower case.).</summary>
     /// <param name='name'>The name of the header field to remove.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
     public Message RemoveHeader(string name) {
       if (name == null) {
@@ -501,10 +510,10 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Sets the body of this message to the given byte
-    /// array. This method doesn't make a copy of that byte array.</summary>
+    /// <summary>Sets the body of this message to the given byte array.
+    /// This method doesn't make a copy of that byte array.</summary>
     /// <param name='bytes'>A byte array.</param>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
     public void SetBody(byte[] bytes) {
       if (bytes == null) {
@@ -521,12 +530,12 @@ namespace PeterO.Mail {
     /// the header field, such as "From" or "Content-ID". The value is the
     /// header field's value.</param>
     /// <returns>A Message object.</returns>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='index'/> is 0 or at least as high as the number of header
     /// fields; or, the header field name is too long or contains an
     /// invalid character, or the header field's value is syntactically
     /// invalid.</exception>
-    /// <exception cref="ArgumentNullException">The key or value of
+    /// <exception cref='ArgumentNullException'>The key or value of
     /// <paramref name='header'/> is null.</exception>
     public Message SetHeader(int index, KeyValuePair<string, string> header) {
       return this.SetHeader(index, header.Key, header.Value);
@@ -540,12 +549,12 @@ namespace PeterO.Mail {
     /// "Content-ID".</param>
     /// <param name='value'>Value of the header field.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='index'/> is 0 or at least as high as the number of header
     /// fieldss; or, the header field name is too long or contains an
     /// invalid character, or the header field's value is syntactically
     /// invalid.</exception>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> or <paramref name='value'/> is null.</exception>
     public Message SetHeader(int index, string name, string value) {
       if (index < 0) {
@@ -569,12 +578,12 @@ namespace PeterO.Mail {
     /// set.</param>
     /// <param name='value'>Value of the header field.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='index'/> is 0 or at least as high as the number of header
     /// fieldss; or, the header field name is too long or contains an
     /// invalid character, or the header field's value is syntactically
     /// invalid.</exception>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='value'/> is null.</exception>
     public Message SetHeader(int index, string value) {
       if (index < 0) {
@@ -593,18 +602,17 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Sets the value of this message's header field. If a header
-    /// field with the same name exists, its value is replaced.
-    /// If the header field's name occurs more than once, only the first
-    /// instance of the header field is replaced.
-    /// </summary>
+    /// field with the same name exists, its value is replaced. If the
+    /// header field's name occurs more than once, only the first instance
+    /// of the header field is replaced.</summary>
     /// <param name='name'>The name of a header field, such as "from" or
     /// "subject".</param>
     /// <param name='value'>The header field's value.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentException">The header field name is too
+    /// <exception cref='ArgumentException'>The header field name is too
     /// long or contains an invalid character, or the header field's value
     /// is syntactically invalid.</exception>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> or <paramref name='value'/> is null.</exception>
     public Message SetHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
@@ -627,7 +635,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string consisting of the message in HTML
     /// format.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public Message SetHtmlBody(string str) {
       if (str == null) {
@@ -649,7 +657,7 @@ namespace PeterO.Mail {
     /// <param name='html'>A string consisting of the HTML version of the
     /// message.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='text'/> or <paramref name='html'/> is null.</exception>
     public Message SetTextAndHtml(string text, string html) {
       if (text == null) {
@@ -679,7 +687,7 @@ namespace PeterO.Mail {
     /// <param name='str'>A string consisting of the message in plain text
     /// format.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public Message SetTextBody(string str) {
       if (str == null) {
@@ -1228,13 +1236,11 @@ namespace PeterO.Mail {
                   do {
                     int indexStart4 = index;
                   while (index < endIndex && ((str[index] == 32) ||
-                      (str[index]
-                    == 9))) {
+                (str[index] == 9))) {
                     ++index;
                     }
                  if (index + 1 < endIndex && str[index] == 13 && str[index +
-                      1]
-                    == 10) {
+                1] == 10) {
                     index += 2;
                     } else {
                     index = indexStart4; break;
@@ -1783,8 +1789,7 @@ namespace PeterO.Mail {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
-       throw new
-            ArgumentException("Header field value contains invalid text");
+       throw new ArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.Length, null) != value.Length) {
           throw new
@@ -2454,8 +2459,8 @@ endIndex - startIndex) : String.Empty;
     private class MessageStackEntry {
       private readonly Message message;
 
-      /// <summary>Gets an internal value.</summary>
-      /// <value>An internal value.</value>
+    /// <summary>Gets an internal value.</summary>
+    /// <value>An internal value.</value>
       public Message Message {
         get {
           return this.message;
@@ -2464,8 +2469,8 @@ endIndex - startIndex) : String.Empty;
 
       private readonly string boundary;
 
-      /// <summary>Gets an internal value.</summary>
-      /// <value>An internal value.</value>
+    /// <summary>Gets an internal value.</summary>
+    /// <value>An internal value.</value>
       public string Boundary {
         get {
           return this.boundary;

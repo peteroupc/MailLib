@@ -8,8 +8,8 @@ using PeterO.Text.Encoders;
 namespace PeterO.Text {
     /// <summary>Contains methods for converting text from one character
     /// encoding to another. This class also contains convenience methods
-    /// for converting strings and other character inputs to sequences
-    /// of bytes.
+    /// for converting strings and other character inputs to sequences of
+    /// bytes.
     /// <para>The Encoding Standard, which is a Candidate Recommendation as
     /// of early November 2015, defines algorithms for the most common
     /// character encodings used on Web pages and recommends the UTF-8
@@ -31,7 +31,8 @@ namespace PeterO.Text {
     /// <item><b>ASCII</b> is a 128-code-point character set that includes
     /// the English letters and digits, common punctuation and symbols, and
     /// control characters. As used here, its code points match the code
-    /// points 0 to 127 in the Unicode Standard.</item></list>
+    /// points within the Basic Latin range (0-127 or U + 0000 to U + 007F)
+    /// of the Unicode Standard.</item></list>
     /// <para>There are several kinds of character encodings:</para>
     /// <list>
     /// <item><b>Single-byte encodings</b> define a character set that
@@ -130,7 +131,7 @@ namespace PeterO.Text {
     /// <param name='transform'>An object that implements a byte
     /// stream.</param>
     /// <returns>The converted string.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoding'/> or <paramref name='transform'/> is
     /// null.</exception>
     public static string DecodeToString(
@@ -159,7 +160,7 @@ namespace PeterO.Text {
     /// <param name='enc'>An ICharacterEncoding object.</param>
     /// <param name='bytes'>A byte array.</param>
     /// <returns>A string consisting of the decoded text.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='enc'/> or <paramref name='bytes'/> is null.</exception>
     public static string DecodeToString(
 this ICharacterEncoding enc,
@@ -193,9 +194,9 @@ byte[] bytes) {
     /// of <paramref name='bytes'/> (but not more than <paramref
     /// name='bytes'/> 's length).</param>
     /// <returns>A string consisting of the decoded text.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='enc'/> or <paramref name='bytes'/> is null.</exception>
-    /// <exception cref="ArgumentException">Either <paramref
+    /// <exception cref='ArgumentException'>Either <paramref
     /// name='offset'/> or <paramref name='length'/> is less than 0 or
     /// greater than <paramref name='bytes'/> 's length, or <paramref
     /// name='bytes'/> 's length minus <paramref name='offset'/> is less
@@ -250,7 +251,7 @@ int length) {
     /// <param name='encoding'>An object that implements a given character
     /// encoding.</param>
     /// <returns>A byte array containing the encoded text.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoding'/> is null.</exception>
     public static byte[] EncodeToBytes(
       this ICharacterInput input,
@@ -276,7 +277,7 @@ int length) {
     /// <param name='encoder'>An object that implements a character
     /// encoder.</param>
     /// <returns>A byte array.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoder'/> or <paramref name='input'/> is null.</exception>
     public static byte[] EncodeToBytes(
       this ICharacterInput input,
@@ -317,7 +318,7 @@ int length) {
     /// <param name='enc'>An object implementing a character encoding
     /// (gives access to an encoder and a decoder).</param>
     /// <returns>A byte array.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> or <paramref name='enc'/> is null.</exception>
     public static byte[] EncodeToBytes(
 this string str,
@@ -348,7 +349,7 @@ ICharacterEncoding enc) {
     /// encoding.</param>
     /// <param name='writer'>A byte writer to write the encoded bytes
     /// to.</param>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoding'/> is null.</exception>
     public static void EncodeToWriter(
       this ICharacterInput input,
@@ -376,7 +377,7 @@ ICharacterEncoding enc) {
     /// encoder.</param>
     /// <param name='writer'>A byte writer to write the encoded bytes
     /// to.</param>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoder'/> or <paramref name='input'/> is null.</exception>
     public static void EncodeToWriter(
       this ICharacterInput input,
@@ -421,7 +422,7 @@ ICharacterEncoding enc) {
     /// (gives access to an encoder and a decoder).</param>
     /// <param name='writer'>A byte writer where the encoded bytes will be
     /// written to.</param>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> or <paramref name='enc'/> is null.</exception>
     public static void EncodeToWriter(
 this string str,
@@ -987,7 +988,11 @@ bool allowReplacement) {
 
     /// <summary>Resolves a character encoding's name to a standard form.
     /// This involves changing aliases of a character encoding to a
-    /// standardized name.</summary>
+    /// standardized name.
+    /// <para>In several Internet standards, this name is known as a
+    /// "charset" parameter. In HTML and HTTP, for example, the "charset"
+    /// parameter indicates the encoding used to represent text in the HTML
+    /// page, text file, etc.</para></summary>
     /// <param name='name'>A string that names a given character encoding.
     /// Can be null. Any leading and trailing whitespace is removed and the
     /// name converted to lowercase before resolving the encoding&#x27;s
@@ -1067,11 +1072,11 @@ bool allowReplacement) {
     /// addition to the encodings mentioned in ResolveAlias, the following
     /// additional encodings are supported:.
     /// <list type='bullet'>
-    /// <item><c>us-ascii</c> - ASCII 7-bit encoding, rather than an alias
-    /// to <c>windows-1252</c>, as specified in the Encoding
-    /// Standard.</item>
-    /// <item><c>iso-8859-1</c> - Latin-1 8-bit encoding, rather than an
+    /// <item><c>us-ascii</c> - ASCII single-byte encoding, rather than an
     /// alias to <c>windows-1252</c>, as specified in the Encoding
+    /// Standard.</item>
+    /// <item><c>iso-8859-1</c> - Latin-1 single-byte encoding, rather than
+    /// an alias to <c>windows-1252</c>, as specified in the Encoding
     /// Standard.</item>
     /// <item><c>utf-7</c> - UTF-7 (7-bit universal character
     /// set).</item></list>.</param>
@@ -1128,7 +1133,7 @@ bool allowReplacement) {
     /// <param name='str'>A string to be encoded into a byte array.</param>
     /// <returns>A byte array containing the string encoded in the given
     /// text encoding.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoding'/> is null.</exception>
     public static byte[] StringToBytes(
       this ICharacterEncoding encoding,
@@ -1156,7 +1161,7 @@ bool allowReplacement) {
     /// <param name='str'>A text string to encode into a byte
     /// array.</param>
     /// <returns>A byte array.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='encoder'/> or <paramref name='str'/> is null.</exception>
     public static byte[] StringToBytes(
       this ICharacterEncoder encoder,
@@ -1185,7 +1190,7 @@ bool allowReplacement) {
     /// method.</para></summary>
     /// <param name='str'>A string object.</param>
     /// <returns>An ICharacterInput object.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static ICharacterInput StringToInput(this string str) {
       if (str == null) {
@@ -1212,9 +1217,9 @@ bool allowReplacement) {
     /// portion of <paramref name='str'/> (but not more than <paramref
     /// name='str'/> 's length).</param>
     /// <returns>An ICharacterInput object.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
-    /// <exception cref="ArgumentException">Either <paramref
+    /// <exception cref='ArgumentException'>Either <paramref
     /// name='offset'/> or <paramref name='length'/> is less than 0 or
     /// greater than <paramref name='str'/> 's length, or <paramref
     /// name='str'/> 's length minus <paramref name='offset'/> is less than
@@ -1533,9 +1538,9 @@ int length) {
     /// of <paramref name='buffer'/> (but not more than <paramref
     /// name='buffer'/> 's length).</param>
     /// <returns>A 32-bit signed integer.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='buffer'/> is null.</exception>
-    /// <exception cref="ArgumentException">Either <paramref
+    /// <exception cref='ArgumentException'>Either <paramref
     /// name='offset'/> or <paramref name='length'/> is less than 0 or
     /// greater than <paramref name='buffer'/> 's length, or <paramref
     /// name='buffer'/> 's length minus <paramref name='offset'/> is less
