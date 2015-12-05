@@ -8,25 +8,26 @@ import com.upokecenter.text.encoders.*;
     /**
      * Contains methods for converting text from one character encoding to another.
      * This class also contains convenience methods for converting strings
-     * and other character inputs to bytes. <p>The Encoding Standard, which
-     * is a Candidate Recommendation as of early November 2015, defines
-     * algorithms for the most common character encodings used on Web pages
-     * and recommends the UTF-8 encoding for new specifications and Web
-     * pages. Calling the <code>GetEncoding(name)</code> method returns one of the
-     * character encodings with the given name under the Encoding
+     * and other character inputs to sequences of bytes. <p>The Encoding
+     * Standard, which is a Candidate Recommendation as of early November
+     * 2015, defines algorithms for the most common character encodings used
+     * on Web pages and recommends the UTF-8 encoding for new specifications
+     * and Web pages. Calling the <code>GetEncoding(name)</code> method returns
+     * one of the character encodings with the given name under the Encoding
      * Standard.</p> <p>Now let's define some terms.</p> <p><b>Encoding
      * Terms</b></p> <ul> <li>A <b>code point</b> is a number that
      * identifies a single text character, such as a letter, digit, or
      * symbol.</li> <li>A <b>character set</b> is a set of code points which
      * are each assigned to a single text character. (This may also be
-     * called a <i>coded character set</i>.)</li></ul> <li>A <b>character
-     * encoding</b> is a mapping from a sequence of code points (from one or
-     * more character sets) to a sequence of bytes and vice versa.</li>
-     * <li><b>ASCII</b> is a 128-code-point character set that includes the
-     * English letters and digits, common punctuation and symbols, and
-     * control characters. As used here, its code points match the code
-     * points 0 to 127 in the Unicode Standard.</li> <p>There are several
-     * kinds of character encodings:</p> <ul> <li><b>Single-byte
+     * called a <i>coded character set</i>.) As used here, character sets
+     * don't define the in-memory representation of those code points.</li>
+     * <li>A <b>character encoding</b> is a mapping from a sequence of code
+     * points (from one or more character sets) to a sequence of bytes and
+     * vice versa.</li> <li><b>ASCII</b> is a 128-code-point character set
+     * that includes the English letters and digits, common punctuation and
+     * symbols, and control characters. As used here, its code points match
+     * the code points 0 to 127 in the Unicode Standard.</li></ul> <p>There
+     * are several kinds of character encodings:</p> <ul> <li><b>Single-byte
      * encodings</b> define a character set that assigns one code point to
      * one byte. Thus, they can have a maximum of 256 code points. For
      * example:</li> <li>(a) ISO 8859 encodings and
@@ -91,7 +92,8 @@ import com.upokecenter.text.encoders.*;
 private Encodings() {
 }
     /**
-     * Character encoding object for the UTF-8 character encoding.
+     * Character encoding object for the UTF-8 character encoding, which represents
+     * each code point in the universal character set using 1 to 4 bytes.
      */
     public static final ICharacterEncoding UTF8 = new EncodingUtf8();
 
@@ -970,7 +972,7 @@ boolean allowReplacement) {
      * x-user-defined}</li> <li>The special-purpose encoding {@code
      * replacement}, which this function returns only if one of several
      * aliases are passed to it, as defined in the Encoding Standard.</li>
-     * <li>28 legacy single-byte encodings: <ul> <li> {@code windows-1252} -
+     * <li>28 legacy single-byte encodings: <ul> <li> {@code windows-1252} :
      * Western Europe (Note: The Encoding Standard aliases the names {@code
      * us-ascii} and {@code iso-8859-1} to {@code windows-1252}, which
      * specifies a different character set from either; it differs from

@@ -21,7 +21,7 @@ private TestCommon() {
       sb.append("new byte[] { ");
       for (int i = 0; i < bytes.length; ++i) {
         if (i > 0) {
-          sb.append(",");  }
+          sb.append(", ");  }
         if ((bytes[i] & 0x80) != 0) {
           sb.append("(byte)0x");
         } else {
@@ -32,6 +32,74 @@ private TestCommon() {
       }
       sb.append("}");
       return sb.toString();
+    }
+
+    private static void ReverseChars(char[] chars, int offset, int length) {
+      int half = length >> 1;
+      int right = offset + length - 1;
+      for (int i = 0; i < half; i++, right--) {
+        char value = chars[offset + i];
+        chars[offset + i] = chars[right];
+        chars[right] = value;
+      }
+    }
+
+    private static String Digits = "0123456789";
+
+    public static String LongToString(long longValue) {
+      if (longValue == Long.MIN_VALUE) {
+ return "-9223372036854775808";
+}
+      if (longValue == 0L) {
+ return "0";
+}
+      boolean neg = longValue < 0;
+      char[] chars = new char[24];
+      int count = 0;
+      if (neg) {
+        chars[0] = '-';
+        ++count;
+        longValue = -longValue;
+      }
+      while (longValue != 0) {
+        char digit = Digits.charAt((int)(longValue % 10));
+        chars[count++] = digit;
+        longValue /= 10;
+      }
+      if (neg) {
+        ReverseChars(chars, 1, count - 1);
+      } else {
+        ReverseChars(chars, 0, count);
+      }
+      return new String(chars, 0, count);
+    }
+
+    public static String IntToString(int value) {
+      if (value == Integer.MIN_VALUE) {
+ return "-2147483648";
+}
+      if (value == 0) {
+ return "0";
+}
+      boolean neg = value < 0;
+      char[] chars = new char[24];
+      int count = 0;
+      if (neg) {
+        chars[0] = '-';
+        ++count;
+        value = -value;
+      }
+      while (value != 0) {
+        char digit = Digits.charAt((int)(value % 10));
+        chars[count++] = digit;
+        value /= 10;
+      }
+      if (neg) {
+        ReverseChars(chars, 1, count - 1);
+      } else {
+        ReverseChars(chars, 0, count);
+      }
+      return new String(chars, 0, count);
     }
 
     private static boolean ByteArraysEqual(byte[] arr1, byte[] arr2) {
@@ -83,6 +151,19 @@ o2));
 o,
 o2));
         }
+        // At least check that hashCode doesn't throw
+        try {
+ o.hashCode();
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        try {
+ o2.hashCode();
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
       }
     }
   }

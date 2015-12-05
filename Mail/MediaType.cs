@@ -771,7 +771,7 @@ Justification="This method has different semantics from " +
     /// compared case-insensitively.</param>
     /// <returns>The value of the parameter as a string, or null if the
     /// parameter doesn't exist.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='name'/> is null.</exception>
     public string GetParameter(string name) {
       if (name == null) {
@@ -1169,7 +1169,7 @@ null);
     /// <param name='defaultValue'>The media type to return if the string
     /// is syntactically invalid. Can be null.</param>
     /// <returns>A MediaType object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='str'/> is null.</exception>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {

@@ -345,35 +345,37 @@ import com.upokecenter.text.*;
       private int defaultUCS;
 
       private static final class UCSMapping {
-        private int[] map;
+        private int[] array;
         public UCSMapping () {
-          map = new int[256];
-          for (int i = 0; i < map.length; ++i) {
-            map.put(i, -2);
+          array = new int[256];
+          for (int i = 0; i < array.length; ++i) {
+            array[i] = -2;
           }
         }
         public int GetMapping(int ucs) {
-          return (ucs < 0 || ucs > map.length) ? (-2) : (map.get(ucs));
+    return (ucs < 0 || ucs > array.length) ? (-2) :
+            (array[ucs]);
         }
         public void AddMapping(int ucs, int value) {
-          if (ucs >= map.length) {
-            int[] newmap = null;
+          if (ucs >= array.length) {
+            int[] newarray = null;
             if (ucs >= 0x30000) {
-              newmap = new int[Math.max(ucs + 0x1000, 0x110000)];
+              newarray = new int[Math.max(ucs + 0x1000, 0x110000)];
             } else if (ucs >= 0x10000) {
-              newmap = new int[0x30000];
+              newarray = new int[0x30000];
             } else if (ucs >= 0x3000) {
-              newmap = new int[0x10000];
+              newarray = new int[0x10000];
             } else if (ucs >= 0x100) {
-              newmap = new int[0x3000];
+              newarray = new int[0x3000];
             }
-            System.arraycopy(map, 0, newmap, 0, map.length);
-            for (int i = map.length; i < newmap.length; ++i) {
-              newmap.put(i, -2);
+          System.arraycopy(array, 0, newarray, 0,
+              array.length);
+            for (int i = array.length; i < newarray.length; ++i) {
+              newarray[i] = -2;
             }
-            map = newmap;
+            array = newarray;
           }
-          map.put(ucs, value);
+          array[ucs] = value;
         }
       }
 
@@ -475,8 +477,7 @@ import com.upokecenter.text.*;
                 for (int i = 0; i < lineCount; ++i) {
                   int ucs = token.ExpectCodePoint();
                   int nativeValue = (byteCount == 1) ?
-                    token.ExpectByteOnSameLine() :
-                    token.ExpectUInt16OnSameLine();
+                token.ExpectByteOnSameLine() : token.ExpectUInt16OnSameLine();
                   ucsToBytes.AddMapping(ucs, nativeValue);
                   token.SkipToLine();
                 }

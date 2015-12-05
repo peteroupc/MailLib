@@ -1100,7 +1100,6 @@ System.out.print("");
 
     @Test
     public void TestPercentEncoding() {
-      ICharacterEncoding utf8 = Encodings.GetEncoding("utf-8");
       TestPercentEncodingOne("test\u00be", "test%c2%be");
       TestPercentEncodingOne("tesA", "tes%41");
       TestPercentEncodingOne("tesa", "tes%61");
@@ -1205,99 +1204,96 @@ System.out.print("");
         ("(\u00be) rfc822; x@x\u00be\uff20.example"));
     }
 
+    private static boolean IsValidLanguageTag(String str) {
+      return (boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
+                    ".ParserUtility", "IsValidLanguageTag", str);
+    }
+
     @Test
     public void TestLanguageTags() {
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "en-a-bb-x-y-z")))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "0-xx-xx"))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "9-xx-xx"))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "a-xx-xx"))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "x-xx-xx")))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                  ".ParserUtility" , "IsValidLanguageTag",
+      if (!(IsValidLanguageTag("en-a-bb-x-y-z")))Assert.fail();
+      if (IsValidLanguageTag(
+                    "0-xx-xx"))Assert.fail();
+      if (IsValidLanguageTag(
+                    "9-xx-xx"))Assert.fail();
+      if (IsValidLanguageTag(
+                    "a-xx-xx"))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "x-xx-xx")))Assert.fail();
+      if (!(IsValidLanguageTag(
                     "en-US-u-islamcal")))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-              ".ParserUtility" , "IsValidLanguageTag",
-                    "zh-CN-a-myext-x-private"
-)))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-              ".ParserUtility" , "IsValidLanguageTag",
+      if (!(IsValidLanguageTag(
+"zh-CN-a-myext-x-private")))Assert.fail();
+      if (!(IsValidLanguageTag(
                     "en-a-myext-b-another")))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "de-419-DE"))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "a-DE"))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-              ".ParserUtility" , "IsValidLanguageTag",
+      if (IsValidLanguageTag(
+                    "de-419-DE"))Assert.fail();
+      if (IsValidLanguageTag(
+                    "a-DE"))Assert.fail();
+      if (IsValidLanguageTag(
                     "ar-a-aaa-b-bbb-a-ccc"))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "en")))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "qbb-us")))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "zh-yue")))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "en-us")))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "e0-us"))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "en-gb-1999")))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "en-gb-1999-1998")))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "en-gb-1999-1999"))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "en-gb-oed")))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "sr-Latn-RS")))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "x-aaaaaaaaa-y-z"))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "x-aaaaaaaa-y-z")))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "a-b-x-y-z"))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "a-bb-xx-yy-zz"))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "a-bb-x-y-z"))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "a-x-y-z"))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "x-x-y-z")))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "i-lojban"))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "i-klingon")))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "art-lojban")))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "sgn-be-fr")))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "no-bok")))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "z-xx-xx"))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag",
+      if (!(IsValidLanguageTag(
+                    "en")))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "qbb-us")))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "zh-yue")))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "en-us")))Assert.fail();
+      if (IsValidLanguageTag(
+                    "e0-us"))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "en-gb-1999")))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "en-gb-1999-1998")))Assert.fail();
+      if (IsValidLanguageTag(
+                    "en-gb-1999-1999"))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "en-gb-oed")))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "sr-Latn-RS")))Assert.fail();
+      if (IsValidLanguageTag(
+                    "x-aaaaaaaaa-y-z"))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "x-aaaaaaaa-y-z")))Assert.fail();
+      if (IsValidLanguageTag(
+                    "a-b-x-y-z"))Assert.fail();
+      if (IsValidLanguageTag(
+                    "a-bb-xx-yy-zz"))Assert.fail();
+      if (IsValidLanguageTag(
+                    "a-bb-x-y-z"))Assert.fail();
+      if (IsValidLanguageTag(
+                    "a-x-y-z"))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "x-x-y-z")))Assert.fail();
+      if (IsValidLanguageTag(
+                    "i-lojban"))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "i-klingon")))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "art-lojban")))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "sgn-be-fr")))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "no-bok")))Assert.fail();
+      if (IsValidLanguageTag(
+                    "z-xx-xx"))Assert.fail();
+      if (!(IsValidLanguageTag(
                     "en-aaa-bbbb-x-xxx-yyy-zzz")))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-               ".ParserUtility" , "IsValidLanguageTag",
-                    "en-aaa-bbbb-x-x-y-z")))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb"))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb-ccc"))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbbb")))Assert.fail();
-      if (!((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbbb-cc")))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb-"))Assert.fail();
-      if ((boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", "en-aaa-bbb-ccc-"))Assert.fail();
+      if (!(IsValidLanguageTag(
+                   "en-aaa-bbbb-x-x-y-z")))Assert.fail();
+      if (IsValidLanguageTag(
+                    "en-aaa-bbb"))Assert.fail();
+      if (IsValidLanguageTag(
+                    "en-aaa-bbb-ccc"))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "en-aaa-bbbb")))Assert.fail();
+      if (!(IsValidLanguageTag(
+                    "en-aaa-bbbb-cc")))Assert.fail();
+      if (IsValidLanguageTag(
+                    "en-aaa-bbb-"))Assert.fail();
+      if (IsValidLanguageTag(
+                    "en-aaa-bbb-ccc-"))Assert.fail();
     }
 
     @Test(timeout = 5000)
@@ -1391,7 +1387,6 @@ System.out.print("");
       String str = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
        "Content-Language: " + input + "\r\n\r\nBody";
       Message msg = MessageTest.MessageFromString(str);
-      System.out.println(msg.GetHeader("content-language"));
       Assert.assertEquals(ex, msg.GetHeader("content-language"));
     }
 
@@ -1399,8 +1394,15 @@ System.out.print("");
       String str = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
        "Subject: " + input + "\r\n\r\nBody";
       Message msg = MessageTest.MessageFromString(str);
-      System.out.println(msg.GetHeader("subject"));
       Assert.assertEquals(ex, msg.GetHeader("subject"));
+    }
+
+    @Test
+    public void TestHeaderParsingRfc2047() {
+      String tmp = "=?utf-8?q??=\r\n \r\nX-Ignore: 1";
+      TestDecodeUnstructured("=?utf-8?q??= ", tmp);
+      tmp = "=?utf-8?q??=\r\n \r\n ABC";
+      TestDecodeUnstructured("=?utf-8?q??=  ABC", tmp);
     }
 
     @Test
@@ -1414,8 +1416,9 @@ System.out.print("");
       TestDecodeStructured(
         "(" + expected + ") en",
         "(" + input + ") en");
-      TestDecodeStructured(" " + expected + ") en"," (" + input +
-                    ") en");
+      TestDecodeStructured(
+        "(" + expected + ") en",
+        " (" + input + ") en");
       TestDecodeStructured(par + "comment " + par + "cmt " + expected +
                 ")comment) en"," (comment (cmt " + input + ")comment) en");
       TestDecodeStructured(
@@ -1810,76 +1813,81 @@ TestEncodedWordsPhrase("xy (sss)",
                     "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
     }
 
-    @Test
-    public void TestHeaderParsingRfc2047() {
-      String tmp = "=?utf-8?q??=\r\n \r\nABC";
-      Assert.assertEquals(tmp, (String)Reflect.InvokeStatic(MailNamespace() +
-                    ".Rfc2047", "DecodeEncodedWords", tmp, 0, tmp.length(),
-                Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext",
-                    "Unstructured")));
-      tmp = "=?utf-8?q??=\r\n \r\n ABC";
-      Assert.assertEquals(tmp, (String)Reflect.InvokeStatic(MailNamespace() +
-                    ".Rfc2047", "DecodeEncodedWords", tmp, 0, tmp.length(),
-                Reflect.GetFieldStatic(MailNamespace() + ".EncodedWordContext",
-                    "Unstructured")));
-    }
-
     @Test(timeout = 5000)
     public void TestHeaderParsing() {
       String tmp;
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>;";
-      if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                    null)) {
-        Assert.fail(tmp);
-      }
+      Message msg = new Message();
+      try {
+ msg.SetHeader("to",tmp);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      tmp = "\"Me\" <1234>";
       // just a local part in address
-      if (0 != (Integer)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser",
-                    "ParseHeaderFrom", "\"Me\" <1234>", 0, 11, null)) {
-        Assert.fail(tmp);
-      }
+      try {
+ msg.SetHeader("to",tmp);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
       tmp = "<x@x.invalid>";
-      if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                    null)) {
-        Assert.fail(tmp);
-      }
+      try {
+ msg.SetHeader("to",tmp);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
       tmp = "<x y@x.invalid>";  // local part is not a dot-atom
-      if (0 != (Integer)Reflect.InvokeStatic(MailNamespace() + ".HeaderParser",
-                    "ParseHeaderTo", tmp, 0, tmp.length(), null)) {
-        Assert.fail(tmp);
-      }
+      try {
+ msg.SetHeader("to",tmp);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
       tmp = " <x@x.invalid>";
-      if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                    null)) {
-        Assert.fail(tmp);
-      }
+      try {
+ msg.SetHeader("to",tmp);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
       // Group syntax
       tmp = "G:;";
-      if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                    null)) {
-        Assert.fail(tmp);
-      }
+      try {
+ msg.SetHeader("to",tmp);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
       tmp = "G:a <x@x.example>;";
-      if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                    null)) {
-        Assert.fail(tmp);
-      }
+      try {
+ msg.SetHeader("to",tmp);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
       tmp = " A Xxxxx: ;";
-      if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                    null)) {
-        Assert.fail(tmp);
-      }
+      try {
+ msg.SetHeader("to",tmp);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>, y@y.example, Ww <z@z.invalid>;";
-      if (tmp.length() != (Integer)Reflect.InvokeStatic(MailNamespace() +
-                 ".HeaderParser" , "ParseHeaderTo" , tmp, 0, tmp.length(),
-                    null)) {
-        Assert.fail(tmp);
-      }
+      try {
+ msg.SetHeader("to",tmp);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
 
     public static void TestQuotedPrintableRoundTrip(byte[] bytes) {
@@ -2009,13 +2017,9 @@ TestEncodedWordsPhrase("xy (sss)",
 
     @Test
     public void TestReceivedHeader() {
-      Object parser = Reflect.InvokeStatic(MailNamespace() +
-                    ".HeaderFieldParsers", "GetParser", "received");
-      String test =
-        "from x.y.example by a.b.example; Thu, 31 Dec 2012 00:00:00 -0100";
-      if (test.length() != (Integer)Reflect.Invoke(parser, "Parse", test, 0,
-                    test.length(), null)) {
-        Assert.fail(test);
-      }
+      Message msg = new Message();
+      String tmp =
+        "from x.y.example by a.b.example; Thu, 31 Dec 2012 00:00:00 -0100" ;
+      msg.SetHeader("received", tmp);
     }
   }

@@ -8,7 +8,8 @@ using PeterO.Text.Encoders;
 namespace PeterO.Text {
     /// <summary>Contains methods for converting text from one character
     /// encoding to another. This class also contains convenience methods
-    /// for converting strings and other character inputs to bytes.
+    /// for converting strings and other character inputs to sequences
+    /// of bytes.
     /// <para>The Encoding Standard, which is a Candidate Recommendation as
     /// of early November 2015, defines algorithms for the most common
     /// character encodings used on Web pages and recommends the UTF-8
@@ -22,14 +23,15 @@ namespace PeterO.Text {
     /// character, such as a letter, digit, or symbol.</item>
     /// <item>A <b>character set</b> is a set of code points which are each
     /// assigned to a single text character. (This may also be called a
-    /// <i>coded character set</i>.)</item></list>
+    /// <i>coded character set</i>.) As used here, character sets don't
+    /// define the in-memory representation of those code points.</item>
     /// <item>A <b>character encoding</b> is a mapping from a sequence of
     /// code points (from one or more character sets) to a sequence of
     /// bytes and vice versa.</item>
     /// <item><b>ASCII</b> is a 128-code-point character set that includes
     /// the English letters and digits, common punctuation and symbols, and
     /// control characters. As used here, its code points match the code
-    /// points 0 to 127 in the Unicode Standard.</item>
+    /// points 0 to 127 in the Unicode Standard.</item></list>
     /// <para>There are several kinds of character encodings:</para>
     /// <list>
     /// <item><b>Single-byte encodings</b> define a character set that
@@ -107,7 +109,8 @@ namespace PeterO.Text {
     /// encoding.)</para></summary>
   public static class Encodings {
     /// <summary>Character encoding object for the UTF-8 character
-    /// encoding.</summary>
+    /// encoding, which represents each code point in the universal
+    /// character set using 1 to 4 bytes.</summary>
     public static readonly ICharacterEncoding UTF8 = new EncodingUtf8();
 
     private static readonly IDictionary<string, string> charsetAliases =
@@ -127,7 +130,7 @@ namespace PeterO.Text {
     /// <param name='transform'>An object that implements a byte
     /// stream.</param>
     /// <returns>The converted string.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='encoding'/> or <paramref name='transform'/> is
     /// null.</exception>
     public static string DecodeToString(
@@ -156,7 +159,7 @@ namespace PeterO.Text {
     /// <param name='enc'>An ICharacterEncoding object.</param>
     /// <param name='bytes'>A byte array.</param>
     /// <returns>A string consisting of the decoded text.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='enc'/> or <paramref name='bytes'/> is null.</exception>
     public static string DecodeToString(
 this ICharacterEncoding enc,
@@ -190,9 +193,9 @@ byte[] bytes) {
     /// of <paramref name='bytes'/> (but not more than <paramref
     /// name='bytes'/> 's length).</param>
     /// <returns>A string consisting of the decoded text.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='enc'/> or <paramref name='bytes'/> is null.</exception>
-    /// <exception cref='ArgumentException'>Either <paramref
+    /// <exception cref="ArgumentException">Either <paramref
     /// name='offset'/> or <paramref name='length'/> is less than 0 or
     /// greater than <paramref name='bytes'/> 's length, or <paramref
     /// name='bytes'/> 's length minus <paramref name='offset'/> is less
@@ -247,7 +250,7 @@ int length) {
     /// <param name='encoding'>An object that implements a given character
     /// encoding.</param>
     /// <returns>A byte array containing the encoded text.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='encoding'/> is null.</exception>
     public static byte[] EncodeToBytes(
       this ICharacterInput input,
@@ -273,7 +276,7 @@ int length) {
     /// <param name='encoder'>An object that implements a character
     /// encoder.</param>
     /// <returns>A byte array.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='encoder'/> or <paramref name='input'/> is null.</exception>
     public static byte[] EncodeToBytes(
       this ICharacterInput input,
@@ -314,7 +317,7 @@ int length) {
     /// <param name='enc'>An object implementing a character encoding
     /// (gives access to an encoder and a decoder).</param>
     /// <returns>A byte array.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='str'/> or <paramref name='enc'/> is null.</exception>
     public static byte[] EncodeToBytes(
 this string str,
@@ -345,7 +348,7 @@ ICharacterEncoding enc) {
     /// encoding.</param>
     /// <param name='writer'>A byte writer to write the encoded bytes
     /// to.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='encoding'/> is null.</exception>
     public static void EncodeToWriter(
       this ICharacterInput input,
@@ -373,7 +376,7 @@ ICharacterEncoding enc) {
     /// encoder.</param>
     /// <param name='writer'>A byte writer to write the encoded bytes
     /// to.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='encoder'/> or <paramref name='input'/> is null.</exception>
     public static void EncodeToWriter(
       this ICharacterInput input,
@@ -418,7 +421,7 @@ ICharacterEncoding enc) {
     /// (gives access to an encoder and a decoder).</param>
     /// <param name='writer'>A byte writer where the encoded bytes will be
     /// written to.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='str'/> or <paramref name='enc'/> is null.</exception>
     public static void EncodeToWriter(
 this string str,
@@ -1002,7 +1005,7 @@ bool allowReplacement) {
     /// as defined in the Encoding Standard.</item>
     /// <item>28 legacy single-byte encodings:
     /// <list type='bullet'>
-    /// <item><c>windows-1252</c> - Western Europe (Note: The Encoding
+    /// <item><c>windows-1252</c> : Western Europe (Note: The Encoding
     /// Standard aliases the names <c>us-ascii</c> and <c>iso-8859-1</c> to
     /// <c>windows-1252</c>, which specifies a different character set
     /// from either; it differs from <c>iso-8859-1</c> by assigning
@@ -1125,7 +1128,7 @@ bool allowReplacement) {
     /// <param name='str'>A string to be encoded into a byte array.</param>
     /// <returns>A byte array containing the string encoded in the given
     /// text encoding.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='encoding'/> is null.</exception>
     public static byte[] StringToBytes(
       this ICharacterEncoding encoding,
@@ -1153,7 +1156,7 @@ bool allowReplacement) {
     /// <param name='str'>A text string to encode into a byte
     /// array.</param>
     /// <returns>A byte array.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='encoder'/> or <paramref name='str'/> is null.</exception>
     public static byte[] StringToBytes(
       this ICharacterEncoder encoder,
@@ -1182,7 +1185,7 @@ bool allowReplacement) {
     /// method.</para></summary>
     /// <param name='str'>A string object.</param>
     /// <returns>An ICharacterInput object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='str'/> is null.</exception>
     public static ICharacterInput StringToInput(this string str) {
       if (str == null) {
@@ -1209,9 +1212,9 @@ bool allowReplacement) {
     /// portion of <paramref name='str'/> (but not more than <paramref
     /// name='str'/> 's length).</param>
     /// <returns>An ICharacterInput object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='str'/> is null.</exception>
-    /// <exception cref='ArgumentException'>Either <paramref
+    /// <exception cref="ArgumentException">Either <paramref
     /// name='offset'/> or <paramref name='length'/> is less than 0 or
     /// greater than <paramref name='str'/> 's length, or <paramref
     /// name='str'/> 's length minus <paramref name='offset'/> is less than
@@ -1530,9 +1533,9 @@ int length) {
     /// of <paramref name='buffer'/> (but not more than <paramref
     /// name='buffer'/> 's length).</param>
     /// <returns>A 32-bit signed integer.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='buffer'/> is null.</exception>
-    /// <exception cref='ArgumentException'>Either <paramref
+    /// <exception cref="ArgumentException">Either <paramref
     /// name='offset'/> or <paramref name='length'/> is less than 0 or
     /// greater than <paramref name='buffer'/> 's length, or <paramref
     /// name='buffer'/> 's length minus <paramref name='offset'/> is less
