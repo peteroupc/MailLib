@@ -19,11 +19,11 @@ import com.upokecenter.text.*;
      * subtype (the specific type), and an optional list of parameters. For
      * example, the media type <code>text/plain; charset = utf-8</code> is a text
      * media type ("text"), namely, a plain text type ("plain"), and the
-     * parameters say that the data uses the character set UTF-8, a form of
-     * Unicode ("charset=utf-8"). Other top-level types include "audio",
-     * "video", and "application".</p> <p>This type is immutable, meaning
-     * its values can't be changed once it' s created. To create a
-     * changeable media type object, use the MediaTypeBuilder class.</p>
+     * parameters say that the data uses UTF-8, a Unicode character encoding
+     * ("charset=utf-8"). Other top-level types include "audio", "video",
+     * and "application".</p> <p>This type is immutable, meaning its values
+     * can't be changed once it' s created. To create a changeable media
+     * type object, use the MediaTypeBuilder class.</p>
      */
   public final class MediaType {
     private String topLevelType;
@@ -645,13 +645,15 @@ StringBuilder builder) {
     }
 
     /**
-     * Gets this media type's charset parameter.
-     * @return Returns the charset parameter, converted to ASCII lower-case, if it
-     * exists, or "us-ascii" if the media type is ill-formed (RFC2045 sec.
-     * 5.2), or if the media type is "text/plain" and doesn't have a charset
-     * parameter (see RFC2046), or the default charset, if any, for the
-     * media type if the charset parameter is absent. Returns an empty
-     * string in all other cases.
+     * Gets this media type's "charset" parameter, naming a character encoding used
+     * to represent text in the data that uses this media type.
+     * @return If the "charset" parameter exists, returns that parameter with the
+     * basic upper-case letters A to Z (U + 0041 to U + 005A) converted to
+     * lower case. Returns "us-ascii" instead if the media type is
+     * ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain"
+     * and doesn't have a "charset" parameter (see RFC2046), or the default
+     * value for that parameter, if any, for the media type if the "charset"
+     * parameter is absent. Returns an empty string in all other cases.
      */
 
     public String GetCharset() {
@@ -759,7 +761,8 @@ StringBuilder builder) {
     }
 
     /**
-     * Gets the value of a parameter in this media type, such as "charset".
+     * Gets the value of a parameter in this media type, such as "charset" or
+     * "format".
      * @param name Name of the parameter to get. The name is compared
      * case-insensitively.
      * @return The value of the parameter as a string, or null if the parameter
@@ -1090,8 +1093,8 @@ null);
     }
 
     /**
-     * Specifies the media type "text/plain" and the charset "US-ASCII", used for
-     * plain text data.
+     * Specifies the media type "text/plain" and the "charset" parameter
+     * "US-ASCII", used for plain text data.
      */
     public static final MediaType TextPlainAscii =
       new MediaTypeBuilder(
@@ -1100,8 +1103,8 @@ null);
         "us-ascii").ToMediaType();
 
     /**
-     * Specifies the media type "text/plain" and the charset "utf-8", used for
-     * Unicode plain text data.
+     * Specifies the media type "text/plain" and the "charset" parameter "utf-8",
+     * used for Unicode plain text data.
      */
     public static final MediaType TextPlainUtf8 =
       new MediaTypeBuilder(

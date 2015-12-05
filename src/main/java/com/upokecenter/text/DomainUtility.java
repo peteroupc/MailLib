@@ -46,9 +46,11 @@ private DomainUtility() {
      * @param endIndex Zero-based index showing where the desired portion of "str"
      * ends. The character before this index is the last character.
      * @return The Punycode length of the encoded string. If the string contains
-     * non-ASCII characters, returns the Punycode length plus 4 (the length
-     * of the ACE prefix). If there are only ASCII characters, returns the
-     * length of the string. Returns -1 if an overflow error occurs.
+     * code points outside the Basic Latin range (U + 0000 to U + 007F),
+     * returns the Punycode length plus 4 (the length of the prefix "xn--",
+     * which indicates an internationalized domain name). If there are only
+     * Basic Latin code points, returns the length of the string. Returns -1
+     * if an overflow error occurs.
      * @throws NullPointerException The parameter {@code str} is null.
      * @throws NullPointerException Either {@code index} or {@code endIndex} is
      * less than 0 or greater than {@code str} 's length, or {@code index}

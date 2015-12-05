@@ -22,7 +22,7 @@ namespace PeterO.Mail {
     /// optional list of parameters. For example, the media type
     /// <c>text/plain; charset = utf-8</c> is a text media type ("text"),
     /// namely, a plain text type ("plain"), and the parameters say that
-    /// the data uses the character set UTF-8, a form of Unicode
+    /// the data uses UTF-8, a Unicode character encoding
     /// ("charset=utf-8"). Other top-level types include "audio", "video",
     /// and "application".</para>
     /// <para>This type is immutable, meaning its values can't be changed
@@ -648,13 +648,17 @@ StringBuilder builder) {
       return i;
     }
 
-    /// <summary>Gets this media type's charset parameter.</summary>
-    /// <returns>Returns the charset parameter, converted to ASCII
-    /// lower-case, if it exists, or "us-ascii" if the media type is
-    /// ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain"
-    /// and doesn't have a charset parameter (see RFC2046), or the default
-    /// charset, if any, for the media type if the charset parameter is
-    /// absent. Returns an empty string in all other cases.</returns>
+    /// <summary>Gets this media type's "charset" parameter, naming a
+    /// character encoding used to represent text in the data that uses
+    /// this media type.</summary>
+    /// <returns>If the "charset" parameter exists, returns that parameter
+    /// with the basic upper-case letters A to Z (U + 0041 to U + 005A)
+    /// converted to lower case. Returns "us-ascii" instead if the media
+    /// type is ill-formed (RFC2045 sec. 5.2), or if the media type is
+    /// "text/plain" and doesn't have a "charset" parameter (see RFC2046),
+    /// or the default value for that parameter, if any, for the media type
+    /// if the "charset" parameter is absent. Returns an empty string in
+    /// all other cases.</returns>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design", "CA1024",
@@ -766,12 +770,12 @@ Justification="This method has different semantics from " +
     }
 
     /// <summary>Gets the value of a parameter in this media type, such as
-    /// "charset".</summary>
+    /// "charset" or "format".</summary>
     /// <param name='name'>Name of the parameter to get. The name is
     /// compared case-insensitively.</param>
     /// <returns>The value of the parameter as a string, or null if the
     /// parameter doesn't exist.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
     public string GetParameter(string name) {
       if (name == null) {
@@ -1104,8 +1108,8 @@ null);
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "text/plain" and the charset
-    /// "US-ASCII", used for plain text data.</summary>
+    /// <summary>Specifies the media type "text/plain" and the "charset"
+    /// parameter "US-ASCII", used for plain text data.</summary>
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder(
 "text",
@@ -1118,8 +1122,8 @@ null);
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "text/plain" and the charset
-    /// "utf-8", used for Unicode plain text data.</summary>
+    /// <summary>Specifies the media type "text/plain" and the "charset"
+    /// parameter "utf-8", used for Unicode plain text data.</summary>
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
 "text",
@@ -1169,7 +1173,7 @@ null);
     /// <param name='defaultValue'>The media type to return if the string
     /// is syntactically invalid. Can be null.</param>
     /// <returns>A MediaType object.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {

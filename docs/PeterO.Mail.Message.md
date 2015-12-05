@@ -267,7 +267,7 @@ The message can't be generated.
 
     public byte[] GetBody();
 
-Gets the byte array for this message's body.
+Gets the byte array for this message's body. This method doesn't make a copy of that byte array.
 
 <b>Returns:</b>
 
@@ -371,7 +371,7 @@ The parameter  <i>name</i>
     public void SetBody(
         byte[] bytes);
 
-Sets the body of this message to the given byte array.
+Sets the body of this message to the given byte array. This method doesn't make a copy of that byte array.
 
 <b>Parameters:</b>
 
@@ -477,7 +477,7 @@ The key or value of <i>header</i>
         string name,
         string value);
 
-Sets the value of this message's header field. If a header field with the same name exists, its value is replaced.
+Sets the value of this message's header field. If a header field with the same name exists, its value is replaced. If the header field's name occurs more than once, only the first instance of the header field is replaced.
 
 <b>Parameters:</b>
 

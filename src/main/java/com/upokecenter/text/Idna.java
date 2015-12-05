@@ -10,13 +10,14 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     /**
      * <p>Contains methods that implement Internationalized Domain Names in
      * Applications (IDNA). IDNA enables using a wider range of letters,
-     * numbers, and certain other characters in domain names.</p> <p>NOTICE:
-     * While this class's source code is in the public domain, the class
-     * uses two internal classes, called <code>NormalizationData</code> and
-     * <code>IdnaData</code>, that include data derived from the Unicode Character
-     * Database. See the documentation for the NormalizingCharacterInput
-     * class for the permission notice for the Unicode Character
-     * Database.</p>
+     * numbers, and certain other characters in domain names. This class
+     * implements the 2008 revision of IDNA, also known as IDNA2008.</p>
+     * <p>NOTICE: While this class's source code is in the public domain,
+     * the class uses two internal classes, called <code>NormalizationData</code>
+     * and <code>IdnaData</code>, that include data derived from the Unicode
+     * Character Database. See the documentation for the
+     * NormalizingCharacterInput class for the permission notice for the
+     * Unicode Character Database.</p>
      */
   public final class Idna {
 private Idna() {
@@ -189,9 +190,9 @@ private Idna() {
     /**
      * Tries to encode each label of a domain name into Punycode.
      * @param value A domain name.
-     * @return The domain name where each label with non-ASCII characters is
-     * encoded into Punycode. Labels where this is not possible remain
-     * unchanged.
+     * @return The domain name where each label with code points outside the Basic
+     * Latin range (U + 0000 to U + 007F) is encoded into Punycode. Labels
+     * where this is not possible remain unchanged.
      * @throws NullPointerException Value is null.
      */
     public static String EncodeDomainName(String value) {

@@ -2,7 +2,7 @@
 
     public static class Encodings
 
-Contains methods for converting text from one character encoding to another. This class also contains convenience methods for converting strings and other character inputs to bytes.The Encoding Standard, which is a Candidate Recommendation as of early November 2015, defines algorithms for the most common character encodings used on Web pages and recommends the UTF-8 encoding for new specifications and Web pages. Calling the `GetEncoding(name)`  method returns one of the character encodings with the given name under the Encoding Standard.
+Contains methods for converting text from one character encoding to another. This class also contains convenience methods for converting strings and other character inputs to sequences of bytes.The Encoding Standard, which is a Candidate Recommendation as of early November 2015, defines algorithms for the most common character encodings used on Web pages and recommends the UTF-8 encoding for new specifications and Web pages. Calling the `GetEncoding(name)`  method returns one of the character encodings with the given name under the Encoding Standard.
 
 Now let's define some terms.
 
@@ -10,7 +10,7 @@ Encoding Terms
 
  * A code point is a number that identifies a single text character, such as a letter, digit, or symbol.
 
- * A character set is a set of code points which are each assigned to a single text character. (This may also be called acoded character set.)
+ * A character set is a set of code points which are each assigned to a single text character. (This may also be called acoded character set.) As used here, character sets don't define the in-memory representation of those code points.
 
  * A character encoding is a mapping from a sequence of code points (from one or more character sets) to a sequence of bytes and vice versa.
 
@@ -70,7 +70,7 @@ Classes that implement the ICharacterEncoding interface can provide additional c
 
     public static readonly PeterO.Text.ICharacterEncoding UTF8;
 
-Character encoding object for the UTF-8 character encoding.
+Character encoding object for the UTF-8 character encoding, which represents each code point in the universal character set using 1 to 4 bytes.
 
 ### DecodeToString
 
@@ -441,7 +441,7 @@ Resolves a character encoding's name to a standard form. This involves changing 
 
  * 28 legacy single-byte encodings:
 
- *  `windows-1252`  - Western Europe (Note: The Encoding Standard aliases the names  `us-ascii`  and  `iso-8859-1`  to `windows-1252` , which specifies a different character set from either; it differs from  `iso-8859-1`  by assigning different characters to some bytes from 0x80 to 0x9F. The Encoding Standard does this for compatibility with existing Web pages.)
+ *  `windows-1252`  : Western Europe (Note: The Encoding Standard aliases the names  `us-ascii`  and  `iso-8859-1`  to `windows-1252` , which specifies a different character set from either; it differs from  `iso-8859-1`  by assigning different characters to some bytes from 0x80 to 0x9F. The Encoding Standard does this for compatibility with existing Web pages.)
 
  *  `iso-8859-2` ,  `windows-1250`  : Central Europe
 

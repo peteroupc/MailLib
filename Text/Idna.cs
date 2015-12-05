@@ -12,8 +12,9 @@ namespace PeterO.Text {
     /// <summary>
     /// <para>Contains methods that implement Internationalized Domain
     /// Names in Applications (IDNA). IDNA enables using a wider range of
-    /// letters, numbers, and certain other characters in domain
-    /// names.</para>
+    /// letters, numbers, and certain other characters in domain names.
+    /// This class implements the 2008 revision of IDNA, also known as
+    /// IDNA2008.</para>
     /// <para>NOTICE: While this class's source code is in the public
     /// domain, the class uses two internal classes, called
     /// <c>NormalizationData</c> and <c>IdnaData</c>, that include data
@@ -189,8 +190,9 @@ namespace PeterO.Text {
     /// <summary>Tries to encode each label of a domain name into
     /// Punycode.</summary>
     /// <param name='value'>A domain name.</param>
-    /// <returns>The domain name where each label with non-ASCII characters
-    /// is encoded into Punycode. Labels where this is not possible remain
+    /// <returns>The domain name where each label with code points outside
+    /// the Basic Latin range (U + 0000 to U + 007F) is encoded into
+    /// Punycode. Labels where this is not possible remain
     /// unchanged.</returns>
     /// <exception cref='ArgumentNullException'>Value is null.</exception>
     public static string EncodeDomainName(string value) {

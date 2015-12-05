@@ -105,10 +105,11 @@ namespace PeterO.Mail {
     /// upper or lower case), a series of bytes in the character encoding,
     /// further encoded using B or Q encoding, and finally "?=". B encoding
     /// uses Base64, while in Q encoding, spaces are changed to "_", equals
-    /// are changed to "=3D" , and most bytes other than ASCII letters and
-    /// digits are changed to "=" followed by their 2-digit hexadecimal
-    /// form. An encoded word's maximum length is 75 characters. See the
-    /// second example.</para>.</param>
+    /// are changed to "=3D" , and most bytes other than the basic digits 0
+    /// to 9 (0x30 to 0x39) and the basic digits A to Z(0x41 to 0x5a) are
+    /// changed to "=" followed by their 2-digit hexadecimal form. An
+    /// encoded word's maximum length is 75 characters. See the second
+    /// example.</para>.</param>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='address'/> is null.</exception>
     /// <exception cref='ArgumentException'>The named address has an
