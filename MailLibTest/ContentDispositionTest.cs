@@ -50,6 +50,36 @@ namespace MailLibTest {
           stringTemp);
       }
       {
+        stringTemp =
+          ContentDisposition.MakeFilename("=?utf=?utf-8?q?test?=");
+        Assert.AreEqual(
+          "=_utftest",
+          stringTemp);
+      }
+        stringTemp =
+          ContentDisposition.MakeFilename("=?utf-8?q=?utf-8?q?test?=");
+        Assert.AreEqual(
+          "=_utf-8_qtest",
+          stringTemp);
+      stringTemp =
+        ContentDisposition.MakeFilename("=?utf-8?=?utf-8?q?test?=");
+      Assert.AreEqual(
+        "=_utf-8_test",
+        stringTemp);
+      stringTemp =
+        ContentDisposition.MakeFilename("=?utf-8?q?t=?utf-8?q?test?=");
+      Assert.AreEqual(
+        "ttest",
+        stringTemp);
+      {
+        stringTemp =
+          ContentDisposition.MakeFilename("=?utf-8?q?long_filename?=");
+        Assert.AreEqual(
+          "long filename",
+          stringTemp);
+      }
+
+      {
         stringTemp = ContentDisposition.MakeFilename("utf-8'en'hello%2Etxt");
         Assert.AreEqual(
           "hello.txt",
@@ -145,7 +175,7 @@ namespace MailLibTest {
       {
         stringTemp = ContentDisposition.MakeFilename("=?x-unknown");
         Assert.AreEqual(
-          "_",
+          "=_x-unknown",
           stringTemp);
       }
       {

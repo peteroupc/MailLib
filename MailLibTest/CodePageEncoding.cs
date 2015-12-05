@@ -346,35 +346,37 @@ namespace MailLibTest {
       private int defaultUCS;
 
       private sealed class UCSMapping {
-        private int[] map;
+        private int[] array;
         public UCSMapping() {
-          map = new int[256];
-          for (var i = 0; i < map.Length; ++i) {
-            map[i] = -2;
+          array = new int[256];
+          for (var i = 0; i < array.Length; ++i) {
+            array[i] = -2;
           }
         }
         public int GetMapping(int ucs) {
-          return (ucs < 0 || ucs > map.Length) ? (-2) : (map[ucs]);
+    return (ucs < 0 || ucs > array.Length) ? (-2) :
+            (array[ucs]);
         }
         public void AddMapping(int ucs, int value) {
-          if (ucs >= map.Length) {
-            int[] newmap = null;
+          if (ucs >= array.Length) {
+            int[] newarray = null;
             if (ucs >= 0x30000) {
-              newmap = new int[Math.Max(ucs + 0x1000, 0x110000)];
+              newarray = new int[Math.Max(ucs + 0x1000, 0x110000)];
             } else if (ucs >= 0x10000) {
-              newmap = new int[0x30000];
+              newarray = new int[0x30000];
             } else if (ucs >= 0x3000) {
-              newmap = new int[0x10000];
+              newarray = new int[0x10000];
             } else if (ucs >= 0x100) {
-              newmap = new int[0x3000];
+              newarray = new int[0x3000];
             }
-            Array.Copy(map, 0, newmap, 0, map.Length);
-            for (var i = map.Length; i < newmap.Length; ++i) {
-              newmap[i] = -2;
+          Array.Copy(array, 0, newarray, 0,
+              array.Length);
+            for (var i = array.Length; i < newarray.Length; ++i) {
+              newarray[i] = -2;
             }
-            map = newmap;
+            array = newarray;
           }
-          map[ucs] = value;
+          array[ucs] = value;
         }
       }
 
@@ -478,8 +480,7 @@ namespace MailLibTest {
                 for (int i = 0; i < lineCount; ++i) {
                   int ucs = token.ExpectCodePoint();
                   int nativeValue = (byteCount == 1) ?
-                    token.ExpectByteOnSameLine() :
-                    token.ExpectUInt16OnSameLine();
+                token.ExpectByteOnSameLine() : token.ExpectUInt16OnSameLine();
                   ucsToBytes.AddMapping(ucs, nativeValue);
                   token.SkipToLine();
                 }

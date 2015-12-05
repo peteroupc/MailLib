@@ -7,6 +7,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Test;
 using PeterO;
 using PeterO.Text;
 using System.Text;
@@ -335,7 +336,6 @@ stringTemp);
     [TestMethod]
     public void TestCodePages() {
       for (var j = 0; j < SingleByteNames.Length; ++j) {
-        System.Console.WriteLine(SingleByteNames[j]);
         ICharacterEncoding enc = Encodings.GetEncoding(SingleByteNames[j]);
         ICharacterDecoder dec = enc.GetDecoder();
         var bytes = new byte[256];
@@ -355,22 +355,23 @@ stringTemp);
  continue;
 }
         var builder = new StringBuilder();
-     builder.Append("CODEPAGE 1\nCPINFO 1 0x3f 0x3f\nMBTABLE " + count +
-          "\n");
+     builder.Append("CODEPAGE 1\nCPINFO 1 0x3f 0x3f\nMBTABLE " +
+          TestCommon.IntToString(count)+ "\n");
         for (var i = 0; i < 256; ++i) {
           if (ints[i] >= 0) {
-            builder.Append(i + " " + ints[i] + "\n");
+            builder.Append(TestCommon.IntToString(i) + " " +
+              TestCommon.IntToString(ints[i]) + "\n");
           }
         }
         builder.Append("WCTABLE " + count + "\n");
         for (var i = 0; i < 256; ++i) {
           if (ints[i] >= 0) {
-            builder.Append(ints[i] + " " + i + "\n");
+            builder.Append(TestCommon.IntToString(ints[i]) + " " +
+              TestCommon.IntToString(i) + "\n");
           }
         }
         builder.Append("ENDCODEPAGE\n");
-   var cpe = new
-          CodePageEncoding(Encodings.StringToInput(builder.ToString()));
+   var cpe = new CodePageEncoding(Encodings.StringToInput(builder.ToString()));
         TestSingleByteRoundTrip(cpe);
       }
     }

@@ -9,6 +9,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import java.util.*;
 import org.junit.Assert;
 import org.junit.Test;
+using Test;
 import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
@@ -334,7 +335,6 @@ stringTemp);
     @Test
     public void TestCodePages() {
       for (int j = 0; j < SingleByteNames.length; ++j) {
-        System.System.out.println(SingleByteNames[j]);
         ICharacterEncoding enc = Encodings.GetEncoding(SingleByteNames[j]);
         ICharacterDecoder dec = enc.GetDecoder();
         byte[] bytes = new byte[256];
@@ -354,17 +354,19 @@ stringTemp);
  continue;
 }
         StringBuilder builder = new StringBuilder();
-     builder.append("CODEPAGE 1\nCPINFO 1 0x3f 0x3f\nMBTABLE " + count +
-          "\n");
+     builder.append("CODEPAGE 1\nCPINFO 1 0x3f 0x3f\nMBTABLE " +
+          TestCommon.IntToString(count)+ "\n");
         for (int i = 0; i < 256; ++i) {
           if (ints[i] >= 0) {
-            builder.append(i + " " + ints[i] + "\n");
+            builder.append(TestCommon.IntToString(i) + " " +
+              TestCommon.IntToString(ints[i]) + "\n");
           }
         }
         builder.append("WCTABLE " + count + "\n");
         for (int i = 0; i < 256; ++i) {
           if (ints[i] >= 0) {
-            builder.append(ints[i] + " " + i + "\n");
+            builder.append(TestCommon.IntToString(ints[i]) + " " +
+              TestCommon.IntToString(i) + "\n");
           }
         }
         builder.append("ENDCODEPAGE\n");

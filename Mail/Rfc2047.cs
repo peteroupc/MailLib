@@ -65,8 +65,8 @@ namespace PeterO.Mail {
           str.Length);
       }
       if (endIndex < 0) {
-      throw new ArgumentException("endIndex (" + endIndex +
-          ") is less than " + "0");
+        throw new ArgumentException("endIndex (" + endIndex +
+            ") is less than " + "0");
       }
       if (endIndex > str.Length) {
         throw new ArgumentException("endIndex (" + endIndex +
@@ -291,12 +291,16 @@ int endIndex) {
         return str.Substring(index, endIndex - index);
       }
       var builder = new StringBuilder();
-      while (index < endIndex) {
+      while (index <= endIndex) {
         switch (state) {
           case 0:
             // normal
-        if (str[index] == '=' && index + 1 < endIndex && str[index + 1] == '?'
-) {
+            if (index >= endIndex) {
+              ++index;
+              break;
+            }
+            if (str[index] == '=' && index + 1 < endIndex &&
+              str[index + 1] == '?') {
               wordStart = index;
               state = 1;
               index += 2;
@@ -307,6 +311,11 @@ int endIndex) {
             break;
           case 1:
             // charset
+            if (index >= endIndex) {
+              state = 0;
+              index = charsetStart;
+              break;
+            }
             if (str[index] == '?') {
               charsetEnd = index;
               state = 2;
@@ -317,6 +326,11 @@ int endIndex) {
             break;
           case 2:
             // encoding
+            if (index >= endIndex) {
+              state = 0;
+              index = charsetStart;
+              break;
+            }
             if ((str[index] == 'b' || str[index] == 'B') && index + 1 <
               endIndex && str[index + 1] == '?') {
               encoding = 1;
@@ -336,11 +350,17 @@ int endIndex) {
             break;
           case 3:
             // data
-      if (str[index] == '?' && index + 1 < endIndex && str[index + 1] == '='
+            if (index >= endIndex) {
+              state = 0;
+              index = charsetStart;
+              break;
+            }
+         if (str[index] == '?' && index + 1 < endIndex && str[index + 1] ==
+              '='
 ) {
-       string charset = str.Substring(
-charsetStart,
-charsetEnd - charsetStart);
+              string charset = str.Substring(
+       charsetStart,
+       charsetEnd - charsetStart);
               string data = str.Substring(dataStart, index - dataStart);
               state = 0;
               index += 2;
@@ -483,8 +503,9 @@ EncodedWordContext context) {
   index,
   afterLast,
   context == EncodedWordContext.Comment);
-if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
-                i2 + 2 == afterLast) {
+if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '='
+                    &&
+                    i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
                     i2 += 2;
                   }
@@ -537,8 +558,9 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
                     HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
                   } else {
-                  hasSuspiciousText |= context == EncodedWordContext.Comment &&
-                HasSuspiciousTextInComments(decodedWord);
+                  hasSuspiciousText |= context == EncodedWordContext.Comment
+                      &&
+                  HasSuspiciousTextInComments(decodedWord);
                   }
                   wordsWereDecoded = true;
                 }
@@ -704,8 +726,9 @@ string str,
       // Get each relevant token sorted by starting index
       foreach (int[] token in tokens) {
         var hasCFWS = false;
-    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
-          token[2] >= index && token[2] <= endIndex)) {
+    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex
+          &&
+              token[2] >= index && token[2] <= endIndex)) {
           continue;
         }
         if (token[0] == HeaderParserUtility.TokenComment && withComments) {
@@ -893,8 +916,8 @@ EncodedWordContext.Phrase);
           str.Length);
       }
       if (endIndex < 0) {
-      throw new ArgumentException("endIndex (" + endIndex +
-          ") is less than " + "0");
+        throw new ArgumentException("endIndex (" + endIndex +
+            ") is less than " + "0");
       }
       if (endIndex > str.Length) {
         throw new ArgumentException("endIndex (" + endIndex +
@@ -926,8 +949,9 @@ IList<int[]> tokens) {
       int lastIndex = index;
       var builder = new StringBuilder();
       foreach (int[] token in tokens) {
-    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
-          token[2] >= index && token[2] <= endIndex)) {
+    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex
+          &&
+              token[2] >= index && token[2] <= endIndex)) {
           continue;
         }
         if (token[0] == HeaderParserUtility.TokenComment) {

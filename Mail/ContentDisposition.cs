@@ -119,6 +119,7 @@ string type,
           // Remove start of encoded word
           inEncodedWord = true;
           index += 2;
+          int start = index;
           var qmarks = 0;
           // skip charset and encoding
           while (index < str.Length) {
@@ -132,7 +133,14 @@ string type,
               ++index;
             }
           }
-          inEncodedWord = true;
+          if (qmarks == 2) {
+            inEncodedWord = true;
+          } else {
+            inEncodedWord = false;
+            sb.Append('=');
+            sb.Append('?');
+            index = start;
+          }
         } else if (inEncodedWord && index + 1 < str.Length && str[index] ==
           '?' && str[index + 1] == '=') {
           // End of encoded word
@@ -319,9 +327,9 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
     /// be matched case-insensitively. Can't be null.</param>
     /// <returns>The value of the parameter, or null if the parameter does
     /// not exist.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='name'/> is empty.</exception>
     public string GetParameter(string name) {
       if (name == null) {
@@ -402,7 +410,7 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
     /// <param name='dispoValue'>A string object.</param>
     /// <returns>A content disposition object, or "Attachment" if <paramref
     /// name='dispoValue'/> is empty or syntactically invalid.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='dispoValue'/> is null.</exception>
     public static ContentDisposition Parse(string dispoValue) {
       if (dispoValue == null) {
@@ -418,7 +426,7 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
     /// <param name='defaultValue'>The value to return in case the
     /// disposition value is syntactically invalid. Can be null.</param>
     /// <returns>A ContentDisposition object.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='dispositionValue'/> is null.</exception>
     public static ContentDisposition Parse(
 string dispositionValue,

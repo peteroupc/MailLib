@@ -272,12 +272,16 @@ int endIndex) {
         return str.substring(index, (index)+(endIndex - index));
       }
       StringBuilder builder = new StringBuilder();
-      while (index < endIndex) {
+      while (index <= endIndex) {
         switch (state) {
           case 0:
             // normal
-        if (str.charAt(index) == '=' && index + 1 < endIndex && str.charAt(index + 1) == '?'
-) {
+            if (index >= endIndex) {
+              ++index;
+              break;
+            }
+            if (str.charAt(index) == '=' && index + 1 < endIndex &&
+              str.charAt(index + 1) == '?') {
               wordStart = index;
               state = 1;
               index += 2;
@@ -288,6 +292,11 @@ int endIndex) {
             break;
           case 1:
             // charset
+            if (index >= endIndex) {
+              state = 0;
+              index = charsetStart;
+              break;
+            }
             if (str.charAt(index) == '?') {
               charsetEnd = index;
               state = 2;
@@ -298,6 +307,11 @@ int endIndex) {
             break;
           case 2:
             // encoding
+            if (index >= endIndex) {
+              state = 0;
+              index = charsetStart;
+              break;
+            }
             if ((str.charAt(index) == 'b' || str.charAt(index) == 'B') && index + 1 <
               endIndex && str.charAt(index + 1) == '?') {
               encoding = 1;
@@ -317,11 +331,17 @@ int endIndex) {
             break;
           case 3:
             // data
-      if (str.charAt(index) == '?' && index + 1 < endIndex && str.charAt(index + 1) == '='
+            if (index >= endIndex) {
+              state = 0;
+              index = charsetStart;
+              break;
+            }
+         if (str.charAt(index) == '?' && index + 1 < endIndex && str.charAt(index + 1) ==
+              '='
 ) {
-       String charset = str.substring(
-charsetStart, (
-charsetStart)+(charsetEnd - charsetStart));
+              String charset = str.substring(
+       charsetStart, (
+       charsetStart)+(charsetEnd - charsetStart));
               String data = str.substring(dataStart, (dataStart)+(index - dataStart));
               state = 0;
               index += 2;
@@ -464,8 +484,9 @@ EncodedWordContext context) {
   index,
   afterLast,
   context == EncodedWordContext.Comment);
-if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 + 1) == '=' &&
-                i2 + 2 == afterLast) {
+if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 + 1) == '='
+                    &&
+                    i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
                     i2 += 2;
                   }
@@ -518,8 +539,9 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
                     HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
                   } else {
-                  hasSuspiciousText |= context == EncodedWordContext.Comment &&
-                HasSuspiciousTextInComments(decodedWord);
+                  hasSuspiciousText |= context == EncodedWordContext.Comment
+                      &&
+                  HasSuspiciousTextInComments(decodedWord);
                   }
                   wordsWereDecoded = true;
                 }
@@ -683,8 +705,9 @@ String str,
       // Get each relevant token sorted by starting index
       for (int[] token : tokens) {
         boolean hasCFWS = false;
-    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
-          token[2] >= index && token[2] <= endIndex)) {
+    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex
+          &&
+              token[2] >= index && token[2] <= endIndex)) {
           continue;
         }
         if (token[0] == HeaderParserUtility.TokenComment && withComments) {
@@ -872,8 +895,8 @@ EncodedWordContext.Phrase);
           str.length());
       }
       if (endIndex < 0) {
-      throw new IllegalArgumentException("endIndex (" + endIndex +
-          ") is less than " + "0");
+        throw new IllegalArgumentException("endIndex (" + endIndex +
+            ") is less than " + "0");
       }
       if (endIndex > str.length()) {
         throw new IllegalArgumentException("endIndex (" + endIndex +
@@ -905,8 +928,9 @@ List<int[]> tokens) {
       int lastIndex = index;
       StringBuilder builder = new StringBuilder();
       for (int[] token : tokens) {
-    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
-          token[2] >= index && token[2] <= endIndex)) {
+    if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex
+          &&
+              token[2] >= index && token[2] <= endIndex)) {
           continue;
         }
         if (token[0] == HeaderParserUtility.TokenComment) {

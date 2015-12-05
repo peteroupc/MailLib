@@ -119,6 +119,7 @@ String type,
           // Remove start of encoded word
           inEncodedWord = true;
           index += 2;
+          int start = index;
           int qmarks = 0;
           // skip charset and encoding
           while (index < str.length()) {
@@ -132,7 +133,14 @@ String type,
               ++index;
             }
           }
-          inEncodedWord = true;
+          if (qmarks == 2) {
+            inEncodedWord = true;
+          } else {
+            inEncodedWord = false;
+            sb.append('=');
+            sb.append('?');
+            index = start;
+          }
         } else if (inEncodedWord && index + 1 < str.length() && str.charAt(index) ==
           '?' && str.charAt(index + 1) == '=') {
           // End of encoded word

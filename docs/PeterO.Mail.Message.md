@@ -219,6 +219,9 @@ The parameter  <i>name</i>
  or  <i>value</i>
  is null.
 
+ * System.ArgumentException:
+The header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
+
 ### AddHeader
 
     public PeterO.Mail.Message AddHeader(
@@ -239,6 +242,9 @@ This instance.
  * System.ArgumentNullException:
 The key or value of <i>header</i>
  is null.
+
+ * System.ArgumentException:
+The header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
 
 ### Generate
 
@@ -402,7 +408,7 @@ This instance.
 
  * System.ArgumentException:
 The parameter  <i>index</i>
- is 0 or at least as high as the number of header fields.
+ is 0 or at least as high as the number of header fieldss; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
 
  * System.ArgumentNullException:
 The parameter  <i>name</i>
@@ -431,7 +437,7 @@ This instance.
 
  * System.ArgumentException:
 The parameter  <i>index</i>
- is 0 or at least as high as the number of header fields.
+ is 0 or at least as high as the number of header fieldss; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
 
  * System.ArgumentNullException:
 The parameter  <i>value</i>
@@ -459,11 +465,7 @@ A Message object.
 
  * System.ArgumentException:
 The parameter  <i>index</i>
- is 0 or at least as high as the number of header fields.
-
- * System.ArgumentException:
-The parameter  <i>index</i>
- is 0 or at least as high as the number of header fields.
+ is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
 
  * System.ArgumentNullException:
 The key or value of <i>header</i>

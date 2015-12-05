@@ -51,6 +51,36 @@ import org.junit.Test;
           stringTemp);
       }
       {
+        stringTemp =
+          ContentDisposition.MakeFilename("=?utf=?utf-8?q?test?=");
+        Assert.assertEquals(
+          "=_utftest",
+          stringTemp);
+      }
+        stringTemp =
+          ContentDisposition.MakeFilename("=?utf-8?q=?utf-8?q?test?=");
+        Assert.assertEquals(
+          "=_utf-8_qtest",
+          stringTemp);
+      stringTemp =
+        ContentDisposition.MakeFilename("=?utf-8?=?utf-8?q?test?=");
+      Assert.assertEquals(
+        "=_utf-8_test",
+        stringTemp);
+      stringTemp =
+        ContentDisposition.MakeFilename("=?utf-8?q?t=?utf-8?q?test?=");
+      Assert.assertEquals(
+        "ttest",
+        stringTemp);
+      {
+        stringTemp =
+          ContentDisposition.MakeFilename("=?utf-8?q?long_filename?=");
+        Assert.assertEquals(
+          "long filename",
+          stringTemp);
+      }
+
+      {
         stringTemp = ContentDisposition.MakeFilename("utf-8'en'hello%2Etxt");
         Assert.assertEquals(
           "hello.txt",
@@ -146,7 +176,7 @@ import org.junit.Test;
       {
         stringTemp = ContentDisposition.MakeFilename("=?x-unknown");
         Assert.assertEquals(
-          "_",
+          "=_x-unknown",
           stringTemp);
       }
       {

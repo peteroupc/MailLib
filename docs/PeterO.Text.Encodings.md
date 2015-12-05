@@ -50,7 +50,7 @@ Classes for Character Encodings
 
 This Encodings class provides access to common character encodings through classes as described below:
 
- * An encoder class is a class that converts a sequence of bytes to a sequence of code points in the universal character set (otherwise known under the name Unicode). An encoder class implements the `ICharacterEncoder`  interface.
+ * An encoder class is a class that converts a sequence of bytes to a sequence of code points in the universal character set (otherwise known under the name Unicode). An encoder class implements the  `ICharacterEncoder`  interface.
 
  * A decoder class is a class that converts a sequence of Unicode code points to a sequence of bytes. A decoder class implements the  `ICharacterDecoder`  interface.
 
@@ -510,6 +510,8 @@ Resolves a character encoding's name to a canonical form, using rules more suita
  *  `iso-8859-1`  - Latin-1 8-bit encoding, rather than an alias to  `windows-1252` , as specified in the Encoding Standard.
 
  *  `utf-7`  - UTF-7 (7-bit universal character set).
+
+.
 
 <b>Returns:</b>
 
