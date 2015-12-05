@@ -9,7 +9,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 import java.util.*;
 import org.junit.Assert;
 import org.junit.Test;
-using Test;
 import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
