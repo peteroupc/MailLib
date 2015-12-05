@@ -442,7 +442,7 @@ namespace PeterO.Mail {
     /// <summary>Gets the first instance of the header field with the
     /// specified name, using a basic case-insensitive comparison. (Two
     /// strings are equal in such a comparison, if they match after
-    /// converting the basic-upper case letters A to Z (U + 0041 to U +
+    /// converting the basic upper-case letters A to Z (U + 0041 to U +
     /// 005A) in both strings to lower case.).</summary>
     /// <param name='name'>The name of a header field.</param>
     /// <returns>The value of the first header field with that name, or
@@ -488,7 +488,7 @@ namespace PeterO.Mail {
     /// message. If this is a multipart message, the header field is not
     /// removed from its body part headers. A basic case-insensitive
     /// comparison is used. (Two strings are equal in such a comparison, if
-    /// they match after converting the basic-upper case letters A to Z (U
+    /// they match after converting the basic upper-case letters A to Z (U
     /// + 0041 to U + 005A) in both strings to lower case.).</summary>
     /// <param name='name'>The name of the header field to remove.</param>
     /// <returns>This instance.</returns>
