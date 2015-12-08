@@ -12,13 +12,13 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * If a message has two or more Content-Type header fields, it is treated as having a content type of "application/octet-stream", unless one or more of the header fields is syntactically invalid.
 
- * Non-UTF-8 bytes appearing in header field values are replaced with replacement characters. Moreover, UTF-8 is parsed everywhere in header field values, even in those parts of some structured header fields where this appears not to be allowed.
+ * Illegal UTF-8 byte sequences appearing in header field values are replaced with replacement characters. Moreover, UTF-8 is parsed everywhere in header field values, even in those parts of some structured header fields where this appears not to be allowed. (UTF-8 is a character encoding for the Unicode character set.)
 
  * The To and Cc header fields are allowed to contain only comments and whitespace, but these "empty" header fields will be omitted when generating.
 
  * There is no line length limit imposed when parsing quoted-printable or base64 encoded bodies.
 
- * If the transfer encoding is absent and the content type is "message/rfc822", 8-bit bytes are still allowed, despite the default value of "7bit" for "Content-Transfer-Encoding".
+ * If the transfer encoding is absent and the content type is "message/rfc822" , bytes with values greater than 127 (called "8-bit bytes" in the rest of this summary) are still allowed, despite the default value of "7bit" for "Content-Transfer-Encoding".
 
  * In the following cases, if the transfer encoding is absent or declared as 7bit, 8-bit bytes are still allowed:
 
@@ -28,7 +28,7 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * (c) If the content type is "text/html" and the charset is declared to be  `ascii` ,  `us-ascii` , "windows-1252", "windows-1251", or "iso-8859-*" (all single byte encodings).
 
- * (d) In non-MIME message bodies and in text/plain message bodies. Any 8-bit bytes are replaced with the ASCII substitute character (0x1a).
+ * (d) In non-MIME message bodies and in text/plain message bodies. Any 8-bit bytes are replaced with the substitute character byte (0x1a).
 
  * If the first line of the message starts with the word "From" followed by a space, it is skipped.
 
@@ -38,7 +38,7 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * (a) If a sequence of encoded words decodes to a string with a CTL character (U + 007F, or a character less than U + 0020 and not TAB) after being converted to Unicode, the encoded words are left un-decoded.
 
- * (b) This implementation can decode an encoded word that uses ISO-2022-JP (the only supported encoding that uses code switching) even if the encoded word's payload ends in a different mode from ASCII mode. (Each encoded word still starts in ASCII mode, though.)
+ * (b) This implementation can decode an encoded word that uses ISO-2022-JP (the only supported encoding that uses code switching) even if the encoded word's payload ends in a different mode from "ASCII mode". (Each encoded word still starts in that mode, though.)
 
 ### Message Constructor
 
@@ -250,7 +250,7 @@ The header field name is too long or contains an invalid character, or the heade
 
     public string Generate();
 
-Generates this message's data in text form.The generated message will always be 7-bit ASCII, and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
+Generates this message's data in text form.The generated message will have only Basic Latin code points (U + 0000 to U + 007F), and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
 
 The following applies to the From, To, Cc, and Bcc header fields. If the header field exists, but has an invalid syntax or has no addresses, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to `me@[header-name]-address.invalid`  as the address (a `.invalid`  address is a reserved address that can never belong to anyone). The generated message should always have a From header field.
 
@@ -288,7 +288,7 @@ A message object if this object's content type is "message/rfc822" , "message/ne
     public string GetHeader(
         string name);
 
-Gets the first instance of the header field with the specified name, comparing the field name in an ASCII case-insensitive manner.
+Gets the first instance of the header field with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
 
 <b>Parameters:</b>
 
@@ -350,7 +350,7 @@ The parameter  <i>index</i>
     public PeterO.Mail.Message RemoveHeader(
         string name);
 
-Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers.
+Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
 
 <b>Parameters:</b>
 

@@ -103,9 +103,9 @@ import java.util.*;
      * Q encoding, and finally "?=". B encoding uses Base64, while in Q
      * encoding, spaces are changed to "_", equals are changed to "=3D",
      * and most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and
-     * the basic digits A to Z(0x41 to 0x5a) are changed to "=" followed by
-     * their 2-digit hexadecimal form. An encoded word's maximum length is
-     * 75 characters. See the second example.</p>.
+     * the basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed
+     * to "=" followed by their 2-digit hexadecimal form. An encoded word's
+     * maximum length is 75 characters. See the second example.</p>.
      * @throws NullPointerException The parameter {@code address} is null.
      * @throws IllegalArgumentException The named address has an invalid syntax.
      */

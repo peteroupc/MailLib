@@ -155,6 +155,13 @@ import org.junit.Test;
       }
       {
         stringTemp =
+          ContentDisposition.MakeFilename("  =?utf-8*en?q?___hello.txt___?=  ");
+        Assert.assertEquals(
+          "hello.txt",
+          stringTemp);
+      }
+      {
+        stringTemp =
           ContentDisposition.MakeFilename("=?iso-8859-1?q?a=E7=E3o.txt?=");
         Assert.assertEquals(
           "a\u00e7\u00e3o.txt",

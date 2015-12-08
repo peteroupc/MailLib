@@ -12,9 +12,9 @@ Encoding Terms
 
  * A character set is a set of code points which are each assigned to a single text character. (This may also be called acoded character set.) As used here, character sets don't define the in-memory representation of those code points.
 
- * A character encoding is a mapping from a sequence of code points (from one or more character sets) to a sequence of bytes and vice versa.
+ * A character encoding is a mapping from a sequence of code points, in one or more specific character sets, to a sequence of bytes and vice versa.
 
- * ASCII is a 128-code-point character set that includes the English letters and digits, common punctuation and symbols, and control characters. As used here, its code points match the code points 0 to 127 in the Unicode Standard.
+ * ASCII is a 128-code-point character set that includes the English letters and digits, common punctuation and symbols, and control characters. As used here, its code points match the code points within the Basic Latin range (0-127 or U + 0000 to U + 007F) of the Unicode Standard.
 
 There are several kinds of character encodings:
 
@@ -22,7 +22,7 @@ There are several kinds of character encodings:
 
  * (a) ISO 8859 encodings and  `windows-1252` .
 
- * (b) ASCII is a single-byte encoding whose character set only uses the lower 7 bits of an eight-bit byte. In the Encoding Standard, all single-byte encodings use the ASCII characters as the first 128 code points of their character sets.
+ * (b) ASCII is usually used as a single-byte encoding where each code point fits in the lower 7 bits of an eight-bit byte. In the Encoding Standard, all single-byte encodings use the ASCII characters as the first 128 code points of their character sets.
 
  * Multi-byte encodings include code points from one or more character sets and assign some or all code points to several bytes. For example:
 
@@ -423,7 +423,7 @@ A text string containing the characters read.
     public static string ResolveAlias(
         string name);
 
-Resolves a character encoding's name to a standard form. This involves changing aliases of a character encoding to a standardized name.
+Resolves a character encoding's name to a standard form. This involves changing aliases of a character encoding to a standardized name.In several Internet standards, this name is known as a "charset" parameter. In HTML and HTTP, for example, the "charset" parameter indicates the encoding used to represent text in the HTML page, text file, etc.
 
 <b>Parameters:</b>
 
@@ -485,7 +485,7 @@ Resolves a character encoding's name to a standard form. This involves changing 
 
  *  `euc-kr`  : legacy Korean encoding
 
-The  `utf-8` ,  `utf-16le` , and  `utf-16be` encodings don't encode a byte-order mark at the start of the text (doing so is not recommended for  `utf-8` , while `utf-16le`  and  `utf-16be`  are encoding schemes that treat the byte-order mark character U + FEFF as an ordinary character, as opposed to the UTF-16 encoding form). The Encoding Standard aliases `utf-16`  to  `utf-16le`  "to deal with deployed content".
+The  `utf-8` ,  `utf-16le` , and  `utf-16be` encodings don't encode a byte-order mark at the start of the text (doing so is not recommended for  `utf-8` , while in  `utf-16le`  and  `utf-16be` , the byte-order mark character U + FEFF is treated as an ordinary character, unlike in to the UTF-16 encoding form). The Encoding Standard aliases `utf-16`  to  `utf-16le`  "to deal with deployed content".
 
 .
 
@@ -505,9 +505,9 @@ Resolves a character encoding's name to a canonical form, using rules more suita
 
  * <i>name</i>: A string naming a character encoding. Can be null. Uses a modified version of the rules in the Encoding Standard to better conform, in some cases, to email standards like MIME. In addition to the encodings mentioned in ResolveAlias, the following additional encodings are supported:.
 
- *  `us-ascii`  - ASCII 7-bit encoding, rather than an alias to  `windows-1252` , as specified in the Encoding Standard.
+ *  `us-ascii`  - ASCII single-byte encoding, rather than an alias to  `windows-1252` , as specified in the Encoding Standard.
 
- *  `iso-8859-1`  - Latin-1 8-bit encoding, rather than an alias to  `windows-1252` , as specified in the Encoding Standard.
+ *  `iso-8859-1`  - Latin-1 single-byte encoding, rather than an alias to  `windows-1252` , as specified in the Encoding Standard.
 
  *  `utf-7`  - UTF-7 (7-bit universal character set).
 

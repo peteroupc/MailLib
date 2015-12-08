@@ -22,17 +22,18 @@ import com.upokecenter.text.encoders.*;
      * called a <i>coded character set</i>.) As used here, character sets
      * don't define the in-memory representation of those code points.</li>
      * <li>A <b>character encoding</b> is a mapping from a sequence of code
-     * points (from one or more character sets) to a sequence of bytes and
-     * vice versa.</li> <li><b>ASCII</b> is a 128-code-point character set
-     * that includes the English letters and digits, common punctuation and
-     * symbols, and control characters. As used here, its code points match
-     * the code points within the Basic Latin range (0-127 or U + 0000 to U
-     * + 007F) of the Unicode Standard.</li></ul> <p>There are several kinds
-     * of character encodings:</p> <ul> <li><b>Single-byte encodings</b>
-     * define a character set that assigns one code point to one byte. Thus,
-     * they can have a maximum of 256 code points. For example:</li> <li>(a)
-     * ISO 8859 encodings and <code>windows-1252</code>.</li> <li>(b) ASCII is a
-     * single-byte encoding whose character set only uses the lower 7 bits
+     * points, in one or more specific character sets, to a sequence of
+     * bytes and vice versa.</li> <li><b>ASCII</b> is a 128-code-point
+     * character set that includes the English letters and digits, common
+     * punctuation and symbols, and control characters. As used here, its
+     * code points match the code points within the Basic Latin range (0-127
+     * or U + 0000 to U + 007F) of the Unicode Standard.</li></ul> <p>There
+     * are several kinds of character encodings:</p> <ul> <li><b>Single-byte
+     * encodings</b> define a character set that assigns one code point to
+     * one byte. Thus, they can have a maximum of 256 code points. For
+     * example:</li> <li>(a) ISO 8859 encodings and
+     * <code>windows-1252</code>.</li> <li>(b) ASCII is usually used as a
+     * single-byte encoding where each code point fits in the lower 7 bits
      * of an eight-bit byte. In the Encoding Standard, all single-byte
      * encodings use the ASCII characters as the first 128 code points of
      * their character sets.</li> <li><b>Multi-byte encodings</b> include
@@ -1003,11 +1004,11 @@ boolean allowReplacement) {
      * <li> {@code euc-kr} : legacy Korean encoding</li></ul> <p>The {@code
      * utf-8}, {@code utf-16le}, and {@code utf-16be} encodings don't encode
      * a byte-order mark at the start of the text (doing so is not
-     * recommended for {@code utf-8}, while {@code utf-16le} and {@code
-     * utf-16be} are encoding schemes that treat the byte-order mark
-     * character U + FEFF as an ordinary character, as opposed to the UTF-16
-     * encoding form). The Encoding Standard aliases {@code utf-16} to
-     * {@code utf-16le} "to deal with deployed content".</p>.
+     * recommended for {@code utf-8}, while in {@code utf-16le} and {@code
+     * utf-16be}, the byte-order mark character U + FEFF is treated as an
+     * ordinary character, unlike in to the UTF-16 encoding form). The
+     * Encoding Standard aliases {@code utf-16} to {@code utf-16le} "to deal
+     * with deployed content".</p> .
      * @return A standardized name for the encoding. Returns the empty string if
      * {@code name} is null or empty, or if the encoding name is
      * unsupported.
