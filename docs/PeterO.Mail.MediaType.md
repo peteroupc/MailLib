@@ -4,7 +4,7 @@
 
 Specifies what kind of data a message body is.
 
-A media type consists of a top-level type (the general category of the data), a subtype (the specific type), and an optional list of parameters. For example, the media type `text/plain; charset = utf-8`  is a text media type ("text"), namely, a plain text type ("plain"), and the parameters say that the data uses the character set UTF-8, a form of Unicode ("charset=utf-8"). Other top-level types include "audio", "video", and "application".
+A media type consists of a top-level type (the general category of the data), a subtype (the specific type), and an optional list of parameters. For example, the media type `text/plain; charset = utf-8`  is a text media type ("text"), namely, a plain text type ("plain"), and the parameters say that the data uses UTF-8, a Unicode character encoding ("charset=utf-8"). Other top-level types include "audio", "video", and "application".
 
 This type is immutable, meaning its values can't be changed once it' s created. To create a changeable media type object, use the MediaTypeBuilder class.
 
@@ -24,13 +24,13 @@ Specifies the media type "message/rfc822" , used for Internet mail messages.
 
     public static readonly PeterO.Mail.MediaType TextPlainAscii;
 
-Specifies the media type "text/plain" and the charset "US-ASCII", used for plain text data.
+Specifies the media type "text/plain" and the "charset" parameter "US-ASCII", used for plain text data.
 
 ### TextPlainUtf8
 
     public static readonly PeterO.Mail.MediaType TextPlainUtf8;
 
-Specifies the media type "text/plain" and the charset "utf-8", used for Unicode plain text data.
+Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for Unicode plain text data.
 
 ### IsMultipart
 
@@ -111,11 +111,11 @@ True if this object and another object are equal; otherwise, false.
 
     public string GetCharset();
 
-Gets this media type's charset parameter.
+Gets this media type's "charset" parameter, naming a character encoding used to represent text in the data that uses this media type.
 
 <b>Returns:</b>
 
-Returns the charset parameter, converted to ASCII lower-case, if it exists, or "us-ascii" if the media type is ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain" and doesn't have a charset parameter (see RFC2046), or the default charset, if any, for the media type if the charset parameter is absent. Returns an empty string in all other cases.
+If the "charset" parameter exists, returns that parameter with the basic upper-case letters A to Z (U + 0041 to U + 005A) converted to lower case. Returns "us-ascii" instead if the media type is ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain" and doesn't have a "charset" parameter (see RFC2046), or the default value for that parameter, if any, for the media type if the "charset" parameter is absent. Returns an empty string in all other cases.
 
 ### GetHashCode
 
@@ -132,7 +132,7 @@ A 32-bit signed integer.
     public string GetParameter(
         string name);
 
-Gets the value of a parameter in this media type, such as "charset".
+Gets the value of a parameter in this media type, such as "charset" or "format".
 
 <b>Parameters:</b>
 

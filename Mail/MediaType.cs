@@ -7,7 +7,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
 
 using PeterO;
@@ -287,6 +286,46 @@ QuotedStringRule rule) {
       return startIndex;  // not a valid quoted-string
     }
 
+    private static void ReverseChars(char[] chars, int offset, int length) {
+      int half = length >> 1;
+      int right = offset + length - 1;
+      for (var i = 0; i < half; i++, right--) {
+        char value = chars[offset + i];
+        chars[offset + i] = chars[right];
+        chars[right] = value;
+      }
+    }
+
+    private static string valueDigits = "0123456789";
+
+    private static string IntToString(int value) {
+      if (value == Int32.MinValue) {
+        return "-2147483648";
+      }
+      if (value == 0) {
+        return "0";
+      }
+      bool neg = value < 0;
+      var chars = new char[24];
+      var count = 0;
+      if (neg) {
+        chars[0] = '-';
+        ++count;
+        value = -value;
+      }
+      while (value != 0) {
+        char digit = valueDigits[(int)(value % 10)];
+        chars[count++] = digit;
+        value /= 10;
+      }
+      if (neg) {
+        ReverseChars(chars, 1, count - 1);
+      } else {
+        ReverseChars(chars, 0, count);
+      }
+      return new String(chars, 0, count);
+    }
+
     private static void AppendComplexParamValue(
 string name,
 string str,
@@ -329,8 +368,7 @@ StringBuilder sb) {
             sb.Append(";\r\n ");
             first = true;
             ++contin;
-            string continString = name + "*" + Convert.ToString((int)contin,
-              CultureInfo.InvariantCulture) + "*=";
+            string continString = name + "*" + IntToString(contin) + "*=";
             sb.Append(continString);
             length = 1 + continString.Length;
             ++length;
@@ -343,8 +381,7 @@ StringBuilder sb) {
             sb.Append(";\r\n ");
             first = true;
             ++contin;
-            string continString = name + "*" +
-              Convert.ToString((int)contin, CultureInfo.InvariantCulture) +
+            string continString = name + "*" + IntToString(contin) +
               "*=";
             sb.Append(continString);
             length = 1 + continString.Length;
@@ -360,8 +397,7 @@ StringBuilder sb) {
             sb.Append(";\r\n ");
             first = true;
             ++contin;
-            string continString = name + "*" +
-              Convert.ToString((int)contin, CultureInfo.InvariantCulture) +
+            string continString = name + "*" + IntToString(contin) +
               "*=";
             sb.Append(continString);
             length = 1 + continString.Length;
@@ -382,8 +418,7 @@ StringBuilder sb) {
             sb.Append(";\r\n ");
             first = true;
             ++contin;
-            string continString = name + "*" +
-              Convert.ToString((int)contin, CultureInfo.InvariantCulture) +
+            string continString = name + "*" + IntToString(contin) +
               "*=";
             sb.Append(continString);
             length = 1 + continString.Length;
@@ -408,8 +443,7 @@ StringBuilder sb) {
             sb.Append(";\r\n ");
             first = true;
             ++contin;
-            string continString = name + "*" + Convert.ToString((int)contin,
-              CultureInfo.InvariantCulture) + "*=";
+            string continString = name + "*" + IntToString(contin) + "*=";
             sb.Append(continString);
             length = 1 + continString.Length;
             length += 12;
@@ -891,9 +925,7 @@ ICharacterEncoding charset) {
           // search for name*1 or name*1*, then name*2 or name*2*,
           // and so on
           while (true) {
-            string contin = realName + "*" + Convert.ToString(
-              (int)pindex,
-              CultureInfo.InvariantCulture);
+            string contin = realName + "*" + IntToString(pindex);
             string continEncoded = contin + "*";
             if (parameters.ContainsKey(contin)) {
               // Unencoded continuation

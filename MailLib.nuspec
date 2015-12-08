@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
     <id>PeterO.MailLib</id>
@@ -41,5 +41,17 @@ Version 0.8.0:
     <copyright>Written by Peter O. in 2013-2015.  Any copyright is released to the Public Domain.
     (This applies to all the source code except the normalization and IDNA data.  See https://github.com/peteroupc/MailLib/LICENSE.md for details.)</copyright>
     <tags>email mail mime parser charset charsets</tags>
+    <dependencies>
+      <group targetFramework="dotnet">
+        <dependency id="System.Globalization" version="4.0.0" />
+        <dependency id="System.Collections" version="4.0.0" />
+        <dependency id="System.Diagnostics.Debug" version="4.0.0" />
+        <dependency id="System.IO" version="4.0.0" />
+        <dependency id="System.Runtime" version="4.0.0" />
+        <dependency id="System.Runtime.Extensions" version="4.0.0" />
+        <dependency id="System.Text.Encoding" version="4.0.0" />
+        <dependency id="System.Threading" version="4.0.0" />
+      </group>
+    </dependencies>
   </metadata>
 </package>

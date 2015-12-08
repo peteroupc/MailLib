@@ -417,7 +417,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     /**
      * Gets the first instance of the header field with the specified name, using a
      * basic case-insensitive comparison. (Two strings are equal in such a
-     * comparison, if they match after converting the basic-upper case
+     * comparison, if they match after converting the basic upper-case
      * letters A to Z (U + 0041 to U + 005A) in both strings to lower
      * case.).
      * @param name The name of a header field.
@@ -466,7 +466,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * is a multipart message, the header field is not removed from its body
      * part headers. A basic case-insensitive comparison is used. (Two
      * strings are equal in such a comparison, if they match after
-     * converting the basic-upper case letters A to Z (U + 0041 to U + 005A)
+     * converting the basic upper-case letters A to Z (U + 0041 to U + 005A)
      * in both strings to lower case.).
      * @param name The name of the header field to remove.
      * @return This instance.
