@@ -485,7 +485,7 @@ Resolves a character encoding's name to a standard form. This involves changing 
 
  *  `euc-kr`  : legacy Korean encoding
 
-The  `utf-8` ,  `utf-16le` , and  `utf-16be` encodings don't encode a byte-order mark at the start of the text (doing so is not recommended for  `utf-8` , while in  `utf-16le`  and  `utf-16be` , the byte-order mark character U + FEFF is treated as an ordinary character, unlike in to the UTF-16 encoding form). The Encoding Standard aliases `utf-16`  to  `utf-16le`  "to deal with deployed content".
+The  `utf-8` ,  `utf-16le` , and  `utf-16be` encodings don't encode a byte-order mark at the start of the text (doing so is not recommended for  `utf-8` , while in `utf-16le`  and  `utf-16be` , the byte-order mark character U + FEFF is treated as an ordinary character, unlike in to the UTF-16 encoding form). The Encoding Standard aliases  `utf-16` to  `utf-16le`  "to deal with deployed content".
 
 .
 

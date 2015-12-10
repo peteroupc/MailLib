@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{080E86D9-44D1-4B2A-B8F8-A0934D741BD1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PeterO</RootNamespace>
+    <AssemblyName>MailLib</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\MailLib.xml</DocumentationFile>
+    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\MailLib.xml</DocumentationFile>
+    <DefineConstants>TRACE;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\ArrayWriter.cs">
+      <Link>ArrayWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\DataIO.cs">
+      <Link>DataIO.cs</Link>
+    </Compile>
+    <Compile Include="..\DataUtilities.cs">
+      <Link>DataUtilities.cs</Link>
+    </Compile>
+    <Compile Include="..\IByteReader.cs">
+      <Link>IByteReader.cs</Link>
+    </Compile>
+    <Compile Include="..\IByteWriter.cs">
+      <Link>IByteWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\IWriter.cs">
+      <Link>IWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Address.cs">
+      <Link>Mail\Address.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Base64Encoder.cs">
+      <Link>Mail\Base64Encoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\CollectionUtilities.cs">
+      <Link>Mail\CollectionUtilities.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\ContentDisposition.cs">
+      <Link>Mail\ContentDisposition.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\DebugUtility.cs">
+      <Link>Mail\DebugUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\DispositionBuilder.cs">
+      <Link>Mail\DispositionBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\EncodedWordContext.cs">
+      <Link>Mail\EncodedWordContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\EncodedWordEncoder.cs">
+      <Link>Mail\EncodedWordEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\HeaderFieldParsers.cs">
+      <Link>Mail\HeaderFieldParsers.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\HeaderParser.cs">
+      <Link>Mail\HeaderParser.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\HeaderParserUtility.cs">
+      <Link>Mail\HeaderParserUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\IdentityEncoder.cs">
+      <Link>Mail\IdentityEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\IHeaderFieldParser.cs">
+      <Link>Mail\IHeaderFieldParser.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\ITokener.cs">
+      <Link>Mail\ITokener.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\MediaType.cs">
+      <Link>Mail\MediaType.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\MediaTypeBuilder.cs">
+      <Link>Mail\MediaTypeBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Message.cs">
+      <Link>Mail\Message.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\MessageDataException.cs">
+      <Link>Mail\MessageDataException.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\NamedAddress.cs">
+      <Link>Mail\NamedAddress.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\ParserUtility.cs">
+      <Link>Mail\ParserUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\QuotedPrintableEncoder.cs">
+      <Link>Mail\QuotedPrintableEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Rfc2047.cs">
+      <Link>Mail\Rfc2047.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Tokener.cs">
+      <Link>Mail\Tokener.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Transforms\Base64Transform.cs">
+      <Link>Mail\Transforms\Base64Transform.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Transforms\BEncodingStringTransform.cs">
+      <Link>Mail\Transforms\BEncodingStringTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Transforms\BoundaryCheckerTransform.cs">
+      <Link>Mail\Transforms\BoundaryCheckerTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Transforms\EightBitTransform.cs">
+      <Link>Mail\Transforms\EightBitTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Transforms\LiberalSevenBitTransform.cs">
+      <Link>Mail\Transforms\LiberalSevenBitTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Transforms\PercentEncodingStringTransform.cs">
+      <Link>Mail\Transforms\PercentEncodingStringTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Transforms\QEncodingStringTransform.cs">
+      <Link>Mail\Transforms\QEncodingStringTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Transforms\QuotedPrintableTransform.cs">
+      <Link>Mail\Transforms\QuotedPrintableTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Transforms\SevenBitTransform.cs">
+      <Link>Mail\Transforms\SevenBitTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\Transforms\TransformWithUnget.cs">
+      <Link>Mail\Transforms\TransformWithUnget.cs</Link>
+    </Compile>
+    <Compile Include="..\Mail\WordWrapEncoder.cs">
+      <Link>Mail\WordWrapEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\ReadOnlyMap.cs">
+      <Link>ReadOnlyMap.cs</Link>
+    </Compile>
+    <Compile Include="..\RedBlackTree.cs">
+      <Link>RedBlackTree.cs</Link>
+    </Compile>
+    <Compile Include="..\SortedMap.cs">
+      <Link>SortedMap.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\ByteData.cs">
+      <Link>Text\ByteData.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\DomainUtility.cs">
+      <Link>Text\DomainUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\Big5.cs">
+      <Link>Text\Encoders\Big5.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\DecoderState.cs">
+      <Link>Text\Encoders\DecoderState.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncoderAlgorithms.cs">
+      <Link>Text\Encoders\EncoderAlgorithms.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingAscii.cs">
+      <Link>Text\Encoders\EncodingAscii.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingBig5.cs">
+      <Link>Text\Encoders\EncodingBig5.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingEUCJP.cs">
+      <Link>Text\Encoders\EncodingEUCJP.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingGB18030.cs">
+      <Link>Text\Encoders\EncodingGB18030.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingGBK.cs">
+      <Link>Text\Encoders\EncodingGBK.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingISO2022JP.cs">
+      <Link>Text\Encoders\EncodingISO2022JP.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingKoreanEUC.cs">
+      <Link>Text\Encoders\EncodingKoreanEUC.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingLatinOne.cs">
+      <Link>Text\Encoders\EncodingLatinOne.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingReplacement.cs">
+      <Link>Text\Encoders\EncodingReplacement.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingShiftJIS.cs">
+      <Link>Text\Encoders\EncodingShiftJIS.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingSingleByte.cs">
+      <Link>Text\Encoders\EncodingSingleByte.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingUtf16.cs">
+      <Link>Text\Encoders\EncodingUtf16.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingUtf16BE.cs">
+      <Link>Text\Encoders\EncodingUtf16BE.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingUtf7.cs">
+      <Link>Text\Encoders\EncodingUtf7.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingUtf8.cs">
+      <Link>Text\Encoders\EncodingUtf8.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\EncodingXUserDefined.cs">
+      <Link>Text\Encoders\EncodingXUserDefined.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\Gb18030.cs">
+      <Link>Text\Encoders\Gb18030.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\Jis0208.cs">
+      <Link>Text\Encoders\Jis0208.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\Jis0212.cs">
+      <Link>Text\Encoders\Jis0212.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encoders\Korean.cs">
+      <Link>Text\Encoders\Korean.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Encodings.cs">
+      <Link>Text\Encodings.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\ICharacterDecoder.cs">
+      <Link>Text\ICharacterDecoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\ICharacterEncoder.cs">
+      <Link>Text\ICharacterEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\ICharacterEncoding.cs">
+      <Link>Text\ICharacterEncoding.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\ICharacterInput.cs">
+      <Link>Text\ICharacterInput.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Idna.cs">
+      <Link>Text\Idna.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\IdnaData.cs">
+      <Link>Text\IdnaData.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Normalization.cs">
+      <Link>Text\Normalization.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\NormalizationData.cs">
+      <Link>Text\NormalizationData.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\Normalizer.cs">
+      <Link>Text\Normalizer.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\NormalizingCharacterInput.cs">
+      <Link>Text\NormalizingCharacterInput.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\PartialListCharacterInput.cs">
+      <Link>Text\PartialListCharacterInput.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\StringCharacterInput.cs">
+      <Link>Text\StringCharacterInput.cs</Link>
+    </Compile>
+    <Compile Include="..\Text\UnicodeDatabase.cs">
+      <Link>Text\UnicodeDatabase.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
