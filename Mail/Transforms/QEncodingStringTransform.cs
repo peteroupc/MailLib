@@ -106,7 +106,7 @@ namespace PeterO.Mail.Transforms {
           // with the ASCII substitute character
           return 0x1a;
         }
-        return c == '_' ? ' ' : c;
+        return c == '_' ? 0x20 : c;
       }
     }
   }

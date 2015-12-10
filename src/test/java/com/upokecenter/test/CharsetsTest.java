@@ -477,8 +477,10 @@ stringTemp);
     public void TestGBK() {
       TestCJKRoundTrip("gbk");
     }
-    @Test
+    //@Test
     public void TestGB18030RoundTrip() {
+      // TODO: Disabled for now since Encoding Standard
+      // has issues here
       TestCJKRoundTrip("gb18030");
     }
     @Test

@@ -369,8 +369,10 @@ int endIndex) {
               int asterisk = charset.IndexOf('*');
               string decodedWord = null;
               if (asterisk >= 1) {
-                charset = str.Substring(0, asterisk);
+                bool asteriskAtEnd = (asterisk + 1 >= charset.Length);
+                charset = charset.Substring(0, asterisk);
                 // Ignore language parameter after the asterisk
+                acceptedEncodedWord &= (!asteriskAtEnd);
               } else {
                 acceptedEncodedWord &= asterisk != 0;
               }
@@ -521,10 +523,10 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
               // DebugUtility.Log("enctext " + encodedText);
               int asterisk = charset.IndexOf('*');
               if (asterisk >= 1) {
-                charset = str.Substring(0, asterisk);
-                string language = str.Substring(
+                string language = charset.Substring(
             asterisk + 1,
-            str.Length - (asterisk + 1));
+            charset.Length - (asterisk + 1));
+                charset = charset.Substring(0, asterisk);
                 if (!ParserUtility.IsValidLanguageTag(language)) {
                   acceptedEncodedWord = false;
                 }

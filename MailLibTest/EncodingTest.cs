@@ -1817,6 +1817,14 @@ TestEncodedWordsPhrase("xy (sss)",
                     "=?utf-8?Q?" + Repeat("x", 200) + "?=");
       TestEncodedWordsPhrase("=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
                     "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
+      // Language embedded in encoded word
+      TestEncodedWordsOne("x", "=?utf-8*en?Q?x?=");
+      TestEncodedWordsOne("=?x-unknown*en?Q?x?=", "=?x-unknown*en?Q?x?=");
+      TestEncodedWordsOne("x", "=?utf-8*en-us?Q?x?=");
+      TestEncodedWordsOne("x", "=?utf-8*i-default?Q?x?=");
+      TestEncodedWordsOne("=?utf-8*i-unknown?Q?x?=", "=?utf-8*i-unknown?Q?x?=");
+      TestEncodedWordsOne("=?*en?Q?x?=", "=?*en?Q?x?=");
+      TestEncodedWordsOne("=?utf-8*?Q?x?=", "=?utf-8*?Q?x?=");
     }
 
     [TestMethod]
