@@ -45,21 +45,24 @@ import com.upokecenter.text.encoders.*;
      * <li>(c) Most legacy East Asian encodings, such as <code>shift_jis</code>,
      * <code>gbk</code>, and <code>big5</code> use 1 byte for ASCII (or a slightly
      * modified version) and, usually, 2 or more bytes for national standard
-     * character sets.</li> <li><b>Escape-based encodings</b> are
-     * combinations of single- and/or multi-byte encodings, and use escape
-     * sequences and/or shift codes to change which encoding to use for the
-     * bytes that follow. For example:</li> <li>(a) <code>iso-2022-jp</code>
-     * supports several escape sequences that shift into different
-     * encodings, including a Katakana, a Kanji, and an ASCII encoding (with
-     * ASCII as the default).</li> <li>(b) UTF-7 (not included in the
-     * Encoding Standard) is a Unicode encoding that uses a limited subset
-     * of ASCII. The plus symbol is used to shift into a modified version of
-     * base-64 to encode other Unicode code points.</li> <li>The Encoding
-     * Standard also defines a <b>replacement encoding</b>, which causes a
-     * decoding error and is used to alias a few problematic or unsupported
-     * encoding names, such as <code>hz-gb-2312</code>.</li></ul> <p><b>Getting an
-     * Encoding</b></p> <p>The Encoding Standard includes UTF-8, UTF-16, and
-     * many legacy encodings, and gives each one of them a name. The
+     * character sets. In many of these encodings, notably <code>shift_jis</code>,
+     * characters whose code points use one byte traditionally take half the
+     * space of characters whose code points use two bytes.</li>
+     * <li><b>Escape-based encodings</b> are combinations of single- and/or
+     * multi-byte encodings, and use escape sequences and/or shift codes to
+     * change which encoding to use for the bytes that follow. For
+     * example:</li> <li>(a) <code>iso-2022-jp</code> supports several escape
+     * sequences that shift into different encodings, including a Katakana,
+     * a Kanji, and an ASCII encoding (with ASCII as the default).</li>
+     * <li>(b) UTF-7 (not included in the Encoding Standard) is a Unicode
+     * encoding that uses a limited subset of ASCII. The plus symbol is used
+     * to shift into a modified version of base-64 to encode other Unicode
+     * code points.</li> <li>The Encoding Standard also defines a
+     * <b>replacement encoding</b>, which causes a decoding error and is
+     * used to alias a few problematic or unsupported encoding names, such
+     * as <code>hz-gb-2312</code>.</li></ul> <p><b>Getting an Encoding</b></p>
+     * <p>The Encoding Standard includes UTF-8, UTF-16, and many legacy
+     * encodings, and gives each one of them a name. The
      * <code>GetEncoding(name)</code> method takes a name string and returns an
      * ICharacterEncoding object that implements that encoding, or
      * <code>null</code> if the name is unrecognized.</p> <p>However, the Encoding

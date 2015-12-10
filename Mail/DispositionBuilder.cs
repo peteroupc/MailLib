@@ -18,8 +18,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets or sets this value's disposition type, such value,
     /// such as "inline" or "attachment".</summary>
-    /// <value>This value&#x27;s disposition type, such value, such as
-    /// &#x22;inline&#x22; or &#x22;attachment&#x22;.</value>
+    /// <value>This value&apos;s disposition type, such value, such as
+    /// &quot;inline&quot; or &quot;attachment&quot;.</value>
     public string DispositionType {
       get {
         return this.type;

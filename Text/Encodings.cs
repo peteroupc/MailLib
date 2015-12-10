@@ -54,7 +54,10 @@ namespace PeterO.Text {
     /// <item>(c) Most legacy East Asian encodings, such as
     /// <c>shift_jis</c>, <c>gbk</c>, and <c>big5</c> use 1 byte for
     /// ASCII (or a slightly modified version) and, usually, 2 or more
-    /// bytes for national standard character sets.</item>
+    /// bytes for national standard character sets. In many of these
+    /// encodings, notably <c>shift_jis</c>, characters whose code points
+    /// use one byte traditionally take half the space of characters whose
+    /// code points use two bytes.</item>
     /// <item><b>Escape-based encodings</b> are combinations of single-
     /// and/or multi-byte encodings, and use escape sequences and/or shift
     /// codes to change which encoding to use for the bytes that follow.

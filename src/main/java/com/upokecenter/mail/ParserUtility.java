@@ -92,8 +92,8 @@ prefix.length() >= str.length()) && str.substring(
         }
         if (count > 0 && !(isspace && count == 1)) {
           if (builder == null) {
-            // create the builder lazily, in case
-            // it's rare to pass strings with
+            // create the builder lazily, in case it's
+            // rare to pass strings with
             // spaces (other than a single space)
             // to this method
             builder = new StringBuilder();
@@ -231,7 +231,7 @@ StringBuilder sb) {
           >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z'))) {
           index += 2;
           if (index == endIndex) {
-             // case AA
+             // case AA: a 2-letter language
             return true;
           }
           index += 2;
@@ -242,7 +242,7 @@ StringBuilder sb) {
           // Straightforward cases
           if (c1 >= 'a' && c1 <= 'z') {
             ++index;
-            // case AAA
+            // case AAA: a 3-character language
             if (index == endIndex) {
               return true;
             }
@@ -254,7 +254,7 @@ StringBuilder sb) {
               c1 = str.charAt(index);
               c2 = str.charAt(index);
               if ((c1 >= 'a' && c1 <= 'z') && (c2 >= 'a' && c2 <= 'z')) {
-                // case AA-BB or AAA-BB
+                // case AA-BB or AAA-BB: BB is a 2-letter region
                 return true;
               }
             }

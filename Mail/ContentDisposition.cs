@@ -22,8 +22,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a string containing this object's disposition type,
     /// such as "inline" or "attachment".</summary>
-    /// <value>A string containing this object&#x27;s disposition type,
-    /// such as &#x22;inline&#x22; or &#x22;attachment&#x22;.</value>
+    /// <value>A string containing this object&apos;s disposition type,
+    /// such as &quot;inline&quot; or &quot;attachment&quot;.</value>
     public string DispositionType {
       get {
         return this.dispositionType;

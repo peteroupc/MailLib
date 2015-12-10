@@ -18,7 +18,7 @@ namespace PeterO.Mail {
     private readonly IDictionary<string, string> parameters;
 
     /// <summary>Gets or sets this value's top-level type.</summary>
-    /// <value>This value&#x27;s top-level type.</value>
+    /// <value>This value&apos;s top-level type.</value>
     public string TopLevelType {
       get {
         return this.type;
@@ -30,7 +30,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets or sets this value's subtype.</summary>
-    /// <value>This value&#x27;s subtype.</value>
+    /// <value>This value&apos;s subtype.</value>
     public string SubType {
       get {
         return this.subtype;

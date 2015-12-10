@@ -207,7 +207,7 @@ namespace PeterO.Mail {
     /// <summary>Gets or sets this message's content disposition. The
     /// content disposition specifies how a user agent should handle or
     /// otherwise display this message.</summary>
-    /// <value>This message&#x27;s content disposition, or null if none is
+    /// <value>This message&apos;s content disposition, or null if none is
     /// specified.</value>
     public ContentDisposition ContentDisposition {
       get {
@@ -228,7 +228,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets or sets this message's media type.</summary>
-    /// <value>This message&#x27;s media type.</value>
+    /// <value>This message&apos;s media type.</value>
     /// <exception cref='ArgumentNullException'>This value is being set and
     /// "value" is null.</exception>
     public MediaType ContentType {
@@ -307,7 +307,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets or sets this message's subject.</summary>
-    /// <value>This message&#x27;s subject.</value>
+    /// <value>This message&apos;s subject.</value>
     public string Subject {
       get {
         return this.GetHeader("subject");
@@ -1599,7 +1599,7 @@ namespace PeterO.Mail {
                   haveFWS = true;
                 } else {
                   ungetStream.Unget();
-                  // this isn't space or tab; if this is the staart
+                  // this isn't space or tab; if this is the start
                   // of the line, this is no longer FWS
                   if (lineCount == 0) {
                     haveFWS = false;

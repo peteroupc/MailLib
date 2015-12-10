@@ -1572,7 +1572,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
                   haveFWS = true;
                 } else {
                   ungetStream.Unget();
-                  // this isn't space or tab; if this is the staart
+                  // this isn't space or tab; if this is the start
                   // of the line, this is no longer FWS
                   if (lineCount == 0) {
                     haveFWS = false;

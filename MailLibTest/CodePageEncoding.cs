@@ -171,8 +171,14 @@ namespace MailLibTest {
       }
 
       private enum TokenType {
-        Word, Number, LineBreak, End
-      }
+
+        Word,
+
+        Number,
+
+        LineBreak,
+
+        End }
 
       private sealed class TokenReader {
         private int number;

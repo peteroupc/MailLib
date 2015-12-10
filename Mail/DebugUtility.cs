@@ -13,7 +13,12 @@ namespace PeterO {
   internal static class DebugUtility {
     private static MethodInfo GetTypeMethod(Type t, string name, Type[]
       parameters) {
-      return t.GetRuntimeMethod(name, parameters);
+#if NET40
+      return t.GetMethod(name, parameters);
+#else {
+ return t.GetRuntimeMethod(name, parameters);
+}
+#endif
     }
 
     public static void Log(string str) {

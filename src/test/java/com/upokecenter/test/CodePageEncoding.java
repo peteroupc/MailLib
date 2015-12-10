@@ -170,8 +170,13 @@ import com.upokecenter.text.*;
       }
 
       private enum TokenType {
-        Word, Number, LineBreak, End
-      }
+        Word,
+
+        Number,
+
+        LineBreak,
+
+        End }
 
       private static final class TokenReader {
         private int number;
