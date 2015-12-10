@@ -350,8 +350,10 @@ int endIndex) {
               int asterisk = charset.indexOf('*');
               String decodedWord = null;
               if (asterisk >= 1) {
-                charset = str.substring(0, asterisk);
+                boolean asteriskAtEnd = (asterisk + 1 >= charset.length());
+                charset = charset.substring(0, asterisk);
                 // Ignore language parameter after the asterisk
+                acceptedEncodedWord &= (!asteriskAtEnd);
               } else {
                 acceptedEncodedWord &= asterisk != 0;
               }
@@ -502,10 +504,10 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
               // DebugUtility.Log("enctext " + encodedText);
               int asterisk = charset.indexOf('*');
               if (asterisk >= 1) {
-                charset = str.substring(0, asterisk);
-                String language = str.substring(
+                String language = charset.substring(
             asterisk + 1, (
-            asterisk + 1)+(str.length() - (asterisk + 1)));
+            asterisk + 1)+(charset.length() - (asterisk + 1)));
+                charset = charset.substring(0, asterisk);
                 if (!ParserUtility.IsValidLanguageTag(language)) {
                   acceptedEncodedWord = false;
                 }
