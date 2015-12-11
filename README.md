@@ -31,7 +31,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
     <dependency>
       <groupId>com.upokecenter</groupId>
       <artifactId>maillib</artifactId>
-      <version>0.8.1</version>
+      <version>0.9.0</version>
     </dependency>
 
 In other Java-based environments, the library can be referred to by its
@@ -64,6 +64,21 @@ An example of reading an email message from a file:
 
 Release Notes
 ---------
+
+Version 0.9:
+
+- The library now also targets "dotnet", which should make it compatible with platform .NET runtime
+environments such as the upcoming cross-platform "coreclr" runtime.
+- Bug fixes to ensure number-format independence in some cases
+- ContentDisposition.MakeFilename implementation was improved
+- Another overload for GetEncoding was added
+- Additional fixes in character encodings
+- Known issue: The library implements character encodings based on the Encoding Standard
+candidate recommendation.  But several issues have emerged with that spec in the meantime.
+For example, GB18030 currently uses a problematic range table, so that for certain code points designed
+for that table, round-tripping is not possible.  As a result, tests on GB18030 are disabled
+for now.
+
 Version 0.8.1:
 
 - Fixes bugs in character encoding algorithms
