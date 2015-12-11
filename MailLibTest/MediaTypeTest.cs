@@ -1,14 +1,14 @@
-using System;
+using NUnit.Framework;
 using PeterO.Mail;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public partial class MediaTypeTest {
-    [TestMethod]
+    [Test]
     public void TestEquals() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestGetCharset() {
       MediaType mt;
       mt=MediaType.Parse("text/plain");
@@ -32,43 +32,43 @@ stringTemp);
       mt=MediaType.Parse("text/x-unknown");
       Assert.AreEqual(String.Empty, mt.GetCharset());
     }
-    [TestMethod]
+    [Test]
     public void TestGetHashCode() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestGetParameter() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestIsMultipart() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestIsText() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestParameters() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestParse() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestSubType() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestTopLevelType() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestToString() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestTypeAndSubType() {
       // not implemented yet
     }

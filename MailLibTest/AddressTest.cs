@@ -1,8 +1,8 @@
-using System;
+using NUnit.Framework;
 using PeterO.Mail;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public partial class AddressTest {
     private static void TestParseLocalPart(string str, string expected) {
       var na = new NamedAddress("b <" + str + "@example.com>");
@@ -16,7 +16,7 @@ namespace MailLibTest {
       Assert.AreEqual(expected, addr.Domain);
     }
 
-    [TestMethod]
+    [Test]
     public void TestConstructor() {
       try {
         Assert.AreEqual(null, new Address("local=domain.example"));
@@ -56,7 +56,7 @@ Console.Write(String.Empty);
         throw new InvalidOperationException(String.Empty, ex);
       }
     }
-    [TestMethod]
+    [Test]
     public void TestDomain() {
       var addr = new Address("local.local@example.com");
       Assert.AreEqual("example.com",addr.Domain);
@@ -73,7 +73,7 @@ Console.Write(String.Empty);
       TestParseDomain("[]", "[]");
       TestParseDomain("[a .\r\n b. c.d ]", "[a.b.c.d]");
     }
-    [TestMethod]
+    [Test]
     public void TestLocalPart() {
       var addr = new Address("local.local@example.com");
       Assert.AreEqual("local.local", addr.LocalPart);
@@ -88,7 +88,7 @@ Console.Write(String.Empty);
       TestParseLocalPart("(comment1) example (comment2) . (comment3) com",
                     "example.com");
     }
-    [TestMethod]
+    [Test]
     public void TestToString() {
       var addr = new Address("local.local@example.com");
       {

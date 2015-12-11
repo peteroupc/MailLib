@@ -1,13 +1,13 @@
+using NUnit.Framework;
+using PeterO;
+using PeterO.Mail;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PeterO;
-using PeterO.Mail;
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public class MessageTest {
-    [TestMethod]
+    [Test]
     public void TestMediaTypeEncodingSingle() {
       SingleTestMediaTypeEncoding("xyz");
       SingleTestMediaTypeEncoding("xy z");
@@ -19,7 +19,7 @@ namespace MailLibTest {
                     "z");
     }
 
-    [TestMethod]
+    [Test]
     public void TestMediaTypeEncodingRoundTrip() {
       TestMediaTypeRoundTrip("xy" + EncodingTest.Repeat("\"", 20) + "z");
       TestMediaTypeRoundTrip("xy" + EncodingTest.Repeat(" ", 20) + "z");
@@ -56,7 +56,7 @@ namespace MailLibTest {
                     false));
     }
 
-    [TestMethod]
+    [Test]
     public void TestGenerate() {
       var msgids = new List<string>();
       // Tests whether unique Message IDs are generated for each message.
@@ -78,7 +78,7 @@ namespace MailLibTest {
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestContentTypeDefaults() {
       const string start = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
       string msg;
@@ -132,12 +132,12 @@ namespace MailLibTest {
                     MessageFromString(msg).ContentType);
     }
 
-    [TestMethod]
+    [Test]
     public void TestNewMessage() {
       Assert.IsTrue(new Message().ContentType != null);
     }
 
-    [TestMethod]
+    [Test]
     public void TestPrematureEnd() {
       try {
         Assert.AreEqual(null, new Message(new
@@ -185,7 +185,7 @@ Console.Write(String.Empty);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestCharset() {
       {
         string stringTemp = MediaType.Parse("text/plain").GetCharset();
@@ -328,7 +328,7 @@ Console.Write(String.Empty);
       Assert.AreEqual(expected, mt.GetParameter(param));
     }
 
-    [TestMethod]
+    [Test]
     public void TestRfc2231Extensions() {
       TestRfc2231Extension("text/plain; charset=\"utf-8\"", "charset", "utf-8");
       TestRfc2231Extension("text/plain; charset*=us-ascii'en'utf-8",
@@ -416,7 +416,7 @@ Console.Write(String.Empty);
                     mt.ToString());
     }
 
-    [TestMethod]
+    [Test]
     public void TestSetHeader() {
       try {
         new Message().SetHeader("from", "\"a\r\nb\" <x@example.com>");
@@ -495,7 +495,7 @@ Console.Write(String.Empty);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestNamedAddress() {
       Assert.AreEqual("\"Me \" <me@example.com>" , new NamedAddress("Me ",
                     "me@example.com").ToString());
@@ -658,7 +658,7 @@ Console.Write(String.Empty);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestHeaderManip() {
       {
         string stringTemp = MessageFromString(
@@ -775,7 +775,7 @@ Console.Write(String.Empty);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestMessageTests() {
       const string multipart =
         "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n"
@@ -994,7 +994,7 @@ Console.Write(String.Empty);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestMailbox() {
 const string mbox =
         "Me <@example.org,@example.net,@example.com:me@x.example>" ;
@@ -1023,7 +1023,7 @@ const string mbox =
       return false;
     }
 
-    [TestMethod]
+    [Test]
     public void TestBoundaryReading() {
       byte[] body;
       string messageStart = "MIME-Version: 1.0\r\n";
@@ -1175,7 +1175,7 @@ const string mbox =
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
       Assert.AreEqual("Test", msg.Parts[0].Parts[0].BodyString);
     }
-    [TestMethod]
+    [Test]
     public void TestArgumentValidationMediaType() {
       try {
         MediaType.TextPlainAscii.GetParameter(null);
@@ -1220,7 +1220,7 @@ Console.Write(String.Empty);
                 MediaType.Parse("text/plain; charset=us-ascii"
 ).GetHashCode());
     }
-    [TestMethod]
+    [Test]
     public void TestMediaTypeBuilder() {
       MediaTypeBuilder builder;
       try {
@@ -1388,7 +1388,7 @@ Console.Write(String.Empty);
       }
     }
 
-    // [TestMethod]
+    // [Test]
     public static void TestMessageMergeFields() {
       string msg;
       msg = "From: x1@example.com\r\nFrom: x2@example.com\r\n\r\n";
@@ -1438,7 +1438,7 @@ MessageFromString(MessageFromString(msg) .Generate())
       Assert.AreEqual("x2@example.com", msg);
     }
 
-    [TestMethod]
+    [Test]
     public void TestFWSAtSubjectEnd() {
       Message msg;
       const string str = "From: me@example.com\r\nSubject: Test\r\n " +
@@ -1452,7 +1452,7 @@ stringTemp);
 }
     }
 
-    [TestMethod]
+    [Test]
     public void TestMediaTypeArgumentValidationExtra() {
       Assert.IsTrue(MediaType.Parse("text/plain").IsText);
       Assert.IsTrue(MediaType.Parse("multipart/alternative").IsMultipart);
@@ -1472,7 +1472,7 @@ stringTemp);
       Assert.AreEqual("example/x" , MediaType.Parse("example/x; a=b "
 ).TypeAndSubType);
     }
-    [TestMethod]
+    [Test]
     public void TestContentHeadersOnlyInBodyParts() {
       var msg = new Message().SetTextAndHtml("Hello", "Hello");
       msg.SetHeader("x-test", "test");
@@ -1501,7 +1501,7 @@ stringTemp);
       Assert.AreEqual(null, msg.Parts[0].GetHeader("x-test"));
     }
 
-    [TestMethod]
+    [Test]
     public void TestConstructor() {
       try {
 Assert.AreEqual(null, new Message((Stream)null));
@@ -1522,27 +1522,27 @@ Console.Write(String.Empty);
 throw new InvalidOperationException(String.Empty, ex);
 }
     }
-    [TestMethod]
+    [Test]
     public void TestAddHeader() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestBccAddresses() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestBodyString() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestCCAddresses() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestContentDisposition() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestContentType() {
       var msg=new Message().SetTextBody("text");
       msg.ContentType = MediaType.Parse("text/html");
@@ -1569,7 +1569,7 @@ throw new InvalidOperationException(String.Empty, ex);
       msg = MessageFromString(str);
       Assert.AreEqual(expected, msg.FileName);
     }
-    [TestMethod]
+    [Test]
     public void TestFileName() {
       TestFileNameOne("com.txt","com.txt");
       TestFileNameOne("com0.txt","_com0.txt");
@@ -1579,19 +1579,19 @@ throw new InvalidOperationException(String.Empty, ex);
       TestFileNameOne("\"=?utf-8?q?hello=2Etxt?=\"","hello.txt");
       TestFileNameOne("\"utf-8''hello%2Etxt\"","hello.txt");
     }
-    [TestMethod]
+    [Test]
     public void TestFromAddresses() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestGetBody() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestGetBodyMessage() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestGetHeader() {
       const string str = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
       Message msg = MessageFromString(str);
@@ -1614,15 +1614,15 @@ Console.Write(String.Empty);
         throw new InvalidOperationException(String.Empty, ex);
       }
     }
-    [TestMethod]
+    [Test]
     public void TestHeaderFields() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestParts() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestRemoveHeader() {
       const string str = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
       Message msg = MessageFromString(str);
@@ -1636,7 +1636,7 @@ Console.Write(String.Empty);
 throw new InvalidOperationException(String.Empty, ex);
 }
     }
-    [TestMethod]
+    [Test]
     public void TestSetBody() {
       try {
         new Message().SetBody(null);
@@ -1648,7 +1648,7 @@ Console.Write(String.Empty);
         throw new InvalidOperationException(String.Empty, ex);
       }
     }
-    [TestMethod]
+    [Test]
     public void TestSetHeader3() {
       const string str = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
       Message msg = MessageFromString(str);
@@ -1685,7 +1685,7 @@ throw new InvalidOperationException(String.Empty, ex);
                     .SetHeader("subject" , "my subject")
                     .GetHeader("subject"));
     }
-    [TestMethod]
+    [Test]
     public void TestSetHtmlBody() {
       var msg = new Message();
       try {
@@ -1698,19 +1698,19 @@ Console.Write(String.Empty);
 throw new InvalidOperationException(String.Empty, ex);
 }
     }
-    [TestMethod]
+    [Test]
     public void TestSetTextAndHtml() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestSetTextBody() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestSubject() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestToAddresses() {
       // not implemented yet
     }

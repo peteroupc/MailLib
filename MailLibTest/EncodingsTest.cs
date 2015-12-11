@@ -1,18 +1,15 @@
-using System;
+using NUnit.Framework;
 using PeterO.Text;
-using PeterO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
-using System.Text;
+using System;
 
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public partial class EncodingsTest {
-    [TestMethod]
+    [Test]
     public void TestDecodeToString() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestEncodeToBytes() {
       try {
         ICharacterInput ici = null;
@@ -34,15 +31,15 @@ namespace MailLibTest {
         throw new InvalidOperationException(String.Empty, ex);
       }
     }
-    [TestMethod]
+    [Test]
     public void TestEncodeToWriter() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestGetDecoderInput() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestGetEncoding() {
       if ((Encodings.GetEncoding("utf-8")) == null) {
         Assert.Fail();
@@ -93,11 +90,11 @@ namespace MailLibTest {
         Assert.Fail();
       }
     }
-    [TestMethod]
+    [Test]
     public void TestInputToString() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestResolveAlias() {
       Assert.AreEqual(String.Empty, Encodings.ResolveAlias(null));
       Assert.AreEqual(String.Empty, Encodings.ResolveAlias(String.Empty));
@@ -128,7 +125,7 @@ namespace MailLibTest {
         stringTemp);
       }
     }
-    [TestMethod]
+    [Test]
     public void TestResolveAliasForEmail() {
       Assert.AreEqual(String.Empty, Encodings.ResolveAliasForEmail(null));
       Assert.AreEqual(String.Empty,
@@ -167,11 +164,11 @@ namespace MailLibTest {
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestStringToBytes() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestStringToInput() {
       try {
         Encodings.StringToInput(null, 0, 0);

@@ -1,26 +1,26 @@
-using System;
+using NUnit.Framework;
 using PeterO.Mail;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public partial class ContentDispositionTest {
-    [TestMethod]
+    [Test]
     public void TestDispositionType() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestEquals() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestGetHashCode() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestGetParameter() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestIsAttachment() {
       ContentDisposition cd=ContentDisposition.Parse("inline");
       Assert.IsFalse(cd.IsAttachment);
@@ -29,7 +29,7 @@ namespace MailLibTest {
       cd=ContentDisposition.Parse("attachment");
       Assert.IsTrue(cd.IsAttachment);
     }
-    [TestMethod]
+    [Test]
     public void TestIsInline() {
       ContentDisposition cd=ContentDisposition.Parse("inline");
       Assert.IsTrue(cd.IsInline);
@@ -38,7 +38,7 @@ namespace MailLibTest {
       cd=ContentDisposition.Parse("attachment");
       Assert.IsFalse(cd.IsInline);
     }
-    [TestMethod]
+    [Test]
     public void TestMakeFilename() {
       Assert.AreEqual(String.Empty, ContentDisposition.MakeFilename(null));
       string stringTemp;
@@ -414,11 +414,11 @@ namespace MailLibTest {
           stringTemp);
       }
     }
-    [TestMethod]
+    [Test]
     public void TestParameters() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestParse() {
       try {
  ContentDisposition.Parse(null);
@@ -430,7 +430,7 @@ Console.Write(String.Empty);
 throw new InvalidOperationException(String.Empty, ex);
 }
     }
-    [TestMethod]
+    [Test]
     public void TestToString() {
       // not implemented yet
     }

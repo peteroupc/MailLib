@@ -1,9 +1,9 @@
+using NUnit.Framework;
 using PeterO.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public partial class IdnaTest {
-    [TestMethod]
+    [Test]
     public void TestEncodeDomainName() {
       string tmp;
       tmp = "ascii";
@@ -38,7 +38,7 @@ namespace MailLibTest {
         stringTemp);
       }
     }
-    [TestMethod]
+    [Test]
     public void TestIsValidDomainName() {
       Assert.IsTrue(Idna.IsValidDomainName("el\u00b7la", false));
       Assert.IsFalse(Idna.IsValidDomainName("-domain", false));

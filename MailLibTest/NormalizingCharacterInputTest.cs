@@ -1,15 +1,15 @@
+using NUnit.Framework;
+using PeterO.Text;
 using System;
 using System.Text;
-using PeterO.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public partial class NormalizingCharacterInputTest {
-    [TestMethod]
+    [Test]
     public void TestConstructor() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestGetChars() {
       // not implemented yet
     }
@@ -34,7 +34,7 @@ namespace MailLibTest {
       return sb.ToString();
     }
 
-    [TestMethod]
+    [Test]
 public void TestNormalizationAscii() {
   var rnd = new Random();
   for (var i = 0; i < 50000; ++i) {
@@ -68,7 +68,7 @@ public void TestNormalizationAscii() {
   }
 }
 
-    [TestMethod]
+    [Test]
 public void TestNormalizationLatinOne() {
   var rnd = new Random();
   for (var i = 0; i < 50000; ++i) {
@@ -84,7 +84,7 @@ public void TestNormalizationLatinOne() {
   }
 }
 
-    [TestMethod]
+    [Test]
     public void TestIsNormalized() {
       // Additional normalization tests
       Assert.IsFalse(NormalizingCharacterInput.IsNormalized(
@@ -120,11 +120,11 @@ Normalization.NFC));
        new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
          Normalization.NFKD));
     }
-    [TestMethod]
+    [Test]
     public void TestNormalize() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestRead() {
       var nci = new NormalizingCharacterInput("test");
       try {
@@ -183,7 +183,7 @@ Normalization.NFC));
       }
       Assert.AreEqual(1, nci.Read(new int[] { 't', 't' }, 1, 1));
     }
-    [TestMethod]
+    [Test]
     public void TestReadChar() {
       // not implemented yet
     }

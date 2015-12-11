@@ -1,11 +1,11 @@
+using NUnit.Framework;
+using PeterO.Mail;
 using System;
 using System.Collections.Generic;
-using PeterO.Mail;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public partial class NamedAddressTest {
-    [TestMethod]
+    [Test]
     public void TestConstructor() {
       try {
         Assert.AreEqual(null, new NamedAddress(String.Empty, (string)null));
@@ -89,15 +89,15 @@ Console.Write(String.Empty);
         throw new InvalidOperationException(String.Empty, ex);
       }
     }
-    [TestMethod]
+    [Test]
     public void TestAddress() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestGroupAddresses() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestIsGroup() {
       // not implemented yet
       NamedAddress na;
@@ -117,7 +117,7 @@ Console.Write(String.Empty);
       Assert.IsTrue(na.IsGroup);
     }
 
-    [TestMethod]
+    [Test]
     public void TestNamedAddressParse() {
       NamedAddress na;
       IList<NamedAddress> groupAddr;
@@ -271,13 +271,13 @@ stringTemp);
 }
     }
 
-    [TestMethod]
+    [Test]
     public void TestName() {
       NamedAddress na;
       na = new NamedAddress("=?utf-8?q?Me?=", "me@example.com");
       Assert.AreEqual("=?utf-8?q?Me?=", na.Name);
     }
-    [TestMethod]
+    [Test]
     public void TestToString() {
       // not implemented yet
     }

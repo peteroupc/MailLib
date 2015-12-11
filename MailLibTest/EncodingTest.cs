@@ -5,18 +5,16 @@ http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
-using System;
-using System.Text;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using PeterO;
 using PeterO.Mail;
 using PeterO.Text;
-
+using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public class EncodingTest {
     public static string MailNamespace() {
       return typeof(Message).Namespace;
@@ -222,7 +220,7 @@ namespace MailLibTest {
       Assert.AreEqual(expected, ww.ToString());
     }
 
-    [TestMethod]
+    [Test]
     public void TestWordWrap() {
       TestWordWrapOne("Subject:", Repeat("xxxx ", 10) + "y", "Subject: " +
                     Repeat("xxxx ", 10) + "y");
@@ -230,7 +228,7 @@ namespace MailLibTest {
                     Repeat("xxxx ", 9) + "xxxx");
     }
 
-    [TestMethod]
+    [Test]
     public void TestHeaderFields() {
       const string testString =
        "From: Joe P Customer <customer@example.com>, " +
@@ -252,7 +250,7 @@ stringTemp);
 }
     }
 
-    [TestMethod]
+    [Test]
     public void TestPunycodeDecode() {
       {
         var stringTemp = (string)Reflect.InvokeStatic(typeof(Idna).Namespace +
@@ -264,7 +262,7 @@ stringTemp);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestAddressInternal() {
       try {
 Assert.AreEqual(null, new Address(EncodingTest.Repeat("local" , 200) +
@@ -312,7 +310,7 @@ Console.Write(String.Empty);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestBase64() {
       TestBase64Decode(
         new byte[] { 0, 16, 1 }, "ABAB");
@@ -1102,7 +1100,7 @@ Console.Write(String.Empty);
       Assert.AreEqual(expected, cd.GetParameter("filename"));
     }
 
-    [TestMethod]
+    [Test]
     public void TestPercentEncoding() {
       TestPercentEncodingOne("test\u00be", "test%c2%be");
       TestPercentEncodingOne("tesA", "tes%41");
@@ -1182,7 +1180,7 @@ Console.Write(String.Empty);
       AssertUtf8Equal(expectedBytes, bytes);
     }
 
-    [TestMethod]
+    [Test]
     public void TestDowngradeDSN() {
       const string hexstart = "\\x" + "{";
       TestDowngradeDSNOne("utf-8; x@x.example",
@@ -1213,7 +1211,7 @@ Console.Write(String.Empty);
                     ".ParserUtility", "IsValidLanguageTag", str);
     }
 
-    [TestMethod]
+    [Test]
     public void TestLanguageTags() {
       Assert.IsTrue(IsValidLanguageTag("en-a-bb-x-y-z"));
       Assert.IsFalse(IsValidLanguageTag(
@@ -1300,7 +1298,7 @@ Console.Write(String.Empty);
                     "en-aaa-bbb-ccc-"));
     }
 
-    [TestMethod]
+    [Test]
     [Timeout(5000)]
     public void TestDecodeQuotedPrintable() {
       TestDecodeQuotedPrintable("test", "test");
@@ -1338,7 +1336,7 @@ Console.Write(String.Empty);
       TestDecodeQuotedPrintable("te w\r\nst", "te w\r\nst");
       TestDecodeQuotedPrintable("te =\r\nst", "te st");
     }
-    [TestMethod]
+    [Test]
     public void TestSpaceBeforeBreakQuotedPrintable() {
       TestDecodeQuotedPrintable("te \r\nst", "te\r\nst");
       TestDecodeQuotedPrintable("te\t \r\nst", "te\r\nst");
@@ -1347,7 +1345,7 @@ Console.Write(String.Empty);
       TestDecodeQuotedPrintable("te\t \r\n", "te\r\n");
       TestDecodeQuotedPrintable("te \t\r\n", "te\r\n");
     }
-    //[TestMethod]
+    //[Test]
     public static void TestLenientQuotedPrintable() {
       // Ignore for now, Message constructor currently uses
       // quoted-printable parsing that's not lenient on
@@ -1364,7 +1362,7 @@ Console.Write(String.Empty);
       TestDecodeQuotedPrintable("te=\r", "te");
       TestDecodeQuotedPrintable("te=\n", "te");
     }
-    [TestMethod]
+    [Test]
     public void TestNonLenientQuotedPrintable() {
       TestFailQuotedPrintableNonLenient("te\rst");
       TestFailQuotedPrintableNonLenient("te\nst");
@@ -1402,7 +1400,7 @@ Console.Write(String.Empty);
       Assert.AreEqual(ex, msg.GetHeader("subject"));
     }
 
-    [TestMethod]
+    [Test]
     public void TestHeaderParsingRfc2047() {
       string tmp = "=?utf-8?q??=\r\n \r\nX-Ignore: 1";
       TestDecodeUnstructured("=?utf-8?q??= ", tmp);
@@ -1410,7 +1408,7 @@ Console.Write(String.Empty);
       TestDecodeUnstructured("=?utf-8?q??=  ABC", tmp);
     }
 
-    [TestMethod]
+    [Test]
     public void TestDecodeStruc() {
       TestDecodeStructured("(comment) en", "(comment) en");
     }
@@ -1440,7 +1438,7 @@ Console.Write(String.Empty);
         " en (" + input + ")");
     }
 
-    [TestMethod]
+    [Test]
     public void TestEncodedPhrase2() {
       {
         string stringTemp = DowngradeHeaderField("subject",
@@ -1451,7 +1449,7 @@ Console.Write(String.Empty);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestToFieldDowngrading() {
       const string sep = ", ";
       Assert.AreEqual("x <x@example.com>" + sep + "\"X\" <y@example.com>",
@@ -1527,7 +1525,7 @@ Console.Write(String.Empty);
                     "DowngradeFieldValue", value);
     }
 
-    [TestMethod]
+    [Test]
     public void TestCommentsToWords() {
       {
         string stringTemp = EncodeComment("(x)");
@@ -1731,7 +1729,7 @@ Console.Write(String.Empty);
                     input.Length), input);
     }
 
-    [TestMethod]
+    [Test]
     public void TestParseCommentStrict() {
       TestParseCommentStrictCore("(y)");
       TestParseCommentStrictCore("(e\\y)");
@@ -1739,7 +1737,7 @@ Console.Write(String.Empty);
       TestParseCommentStrictCore("()");
       TestParseCommentStrictCore("(x)");
     }
-    [TestMethod]
+    [Test]
     public void TestEncodedWordsReservedChars() {
       // Check decoding of encoded words containing reserved characters
       // such as specials and CTLs:
@@ -1768,7 +1766,7 @@ Console.Write(String.Empty);
                     "=?utf-8?q?me?= \"x:y\"");
     }
 
-    [TestMethod]
+    [Test]
     [Timeout(5000)]
     public void TestEncodedWords() {
       const string par = "(";
@@ -1827,7 +1825,7 @@ TestEncodedWordsPhrase("xy (sss)",
       TestEncodedWordsOne("=?utf-8*?Q?x?=", "=?utf-8*?Q?x?=");
     }
 
-    [TestMethod]
+    [Test]
     [Timeout(5000)]
     public void TestHeaderParsing() {
       string tmp;
@@ -1997,7 +1995,7 @@ throw new InvalidOperationException(String.Empty, ex);
       return arr;
     }
 
-    [TestMethod]
+    [Test]
     public void TestRandomBase64() {
       var rnd = new Random();
       for (var i = 0; i < 5000; ++i) {
@@ -2008,7 +2006,7 @@ throw new InvalidOperationException(String.Empty, ex);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestRandomQuotedPrintable() {
       var rnd = new Random();
       for (var i = 0; i < 5000; ++i) {
@@ -2017,7 +2015,7 @@ throw new InvalidOperationException(String.Empty, ex);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestQuotedPrintableSpecific() {
       TestQuotedPrintableRoundTrip("T\u000best\r\nFrom Me", 2);
       TestQuotedPrintableRoundTrip("T\u000best\r\nGood ", 2);
@@ -2030,7 +2028,7 @@ throw new InvalidOperationException(String.Empty, ex);
       TestQuotedPrintableRoundTrip("T\u000best\r\n.\r\nFrom Me", 2);
     }
 
-    [TestMethod]
+    [Test]
     public void TestReceivedHeader() {
       var msg = new Message();
       string tmp =

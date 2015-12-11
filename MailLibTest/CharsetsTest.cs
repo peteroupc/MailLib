@@ -5,17 +5,17 @@ http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Test;
+using NUnit.Framework;
 using PeterO;
 using PeterO.Text;
+using System.Collections.Generic;
 using System.Text;
+using Test;
 
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public class CharsetsTest {
-    [TestMethod]
+    [Test]
     public void TestShiftJIS() {
       // Adapted from the public domain Gonk test cases
       byte[] bytes;
@@ -46,7 +46,7 @@ namespace MailLibTest {
       Assert.AreEqual(str, str2);
     }
 
-    [TestMethod]
+    [Test]
     public void TestGB18030() {
       ICharacterEncoding encoding = Encodings.GetEncoding("gb18030");
       TestEncodingRoundTrip("\uffff", encoding);
@@ -54,7 +54,7 @@ namespace MailLibTest {
       TestEncodingRoundTrip("\udbff\udfff", encoding);
     }
 
-    [TestMethod]
+    [Test]
     public void TestIso2022JP() {
       byte[] bytes;
       ICharacterEncoding charset = Encodings.GetEncoding("iso-2022-jp");
@@ -168,7 +168,7 @@ stringTemp);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestEucJP() {
       byte[] bytes;
       ICharacterEncoding charset = Encodings.GetEncoding("euc-jp");
@@ -333,7 +333,7 @@ stringTemp);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestCodePages() {
       for (var j = 0; j < SingleByteNames.Length; ++j) {
         ICharacterEncoding enc = Encodings.GetEncoding(SingleByteNames[j]);
@@ -474,38 +474,38 @@ stringTemp);
         }
       }
     }
-    [TestMethod]
+    [Test]
     public void TestGBK() {
       TestCJKRoundTrip("gbk");
     }
-    //[TestMethod]
+    //[Test]
     public void TestGB18030RoundTrip() {
       // TODO: Disabled for now since Encoding Standard
       // has issues here
       TestCJKRoundTrip("gb18030");
     }
-    [TestMethod]
+    [Test]
     public void TestBig5() {
       TestCJKRoundTrip("big5");
     }
-    [TestMethod]
+    [Test]
     public void TestKoreanEUC() {
       TestCJKRoundTrip("euc-kr");
     }
-    [TestMethod]
+    [Test]
     public void TestShiftJISRoundTrip() {
       TestCJKRoundTrip("shift-jis");
     }
-    [TestMethod]
+    [Test]
     public void TestEucJPRoundTrip() {
       TestCJKRoundTrip("euc-jp");
     }
-    [TestMethod]
+    [Test]
     public void TestIso2022JPRoundTrip() {
       TestCJKRoundTrip("iso-2022-jp");
     }
 
-    [TestMethod]
+    [Test]
     public void TestReplacementEncoding() {
       if ((Encodings.GetEncoding("replacement")) != null) {
  Assert.Fail();
@@ -521,19 +521,19 @@ stringTemp);
         Encodings.GetEncoding("utf-8", true).GetDecoder());
     }
 
-    [TestMethod]
+    [Test]
     public void TestSingleByteEncodings() {
       for (var i = 0; i < SingleByteNames.Length; ++i) {
         TestSingleByteRoundTrip(SingleByteNames[i]);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestUtf7RoundTrip() {
       TestUtfRoundTrip(Encodings.GetEncoding("utf-7", true));
     }
 
-    [TestMethod]
+    [Test]
     public void TestUtf8RoundTrip() {
       TestUtfRoundTrip(Encodings.GetEncoding("utf-8", true));
     }
@@ -592,7 +592,7 @@ stringTemp);
       return list;
     }
 
-    [TestMethod]
+    [Test]
     public void TestUtf8IllegalBytes() {
       foreach(byte[] seq in GenerateIllegalUtf8Sequences()) {
         string str = Encodings.DecodeToString(Encodings.UTF8, seq);
@@ -601,12 +601,12 @@ stringTemp);
       }
     }
 
-    [TestMethod]
+    [Test]
     public void TestUtf16LERoundTrip() {
       TestUtfRoundTrip(Encodings.GetEncoding("utf-16le", true));
     }
 
-    [TestMethod]
+    [Test]
     public void TestUtf16BERoundTrip() {
       TestUtfRoundTrip(Encodings.GetEncoding("utf-16be", true));
     }
@@ -617,7 +617,7 @@ stringTemp);
         DataUtilities.GetUtf8Bytes(input, true)));
     }
 
-    [TestMethod]
+    [Test]
     public void TestUtf7() {
       TestUtf7One("\\", "\ufffd");
       TestUtf7One("~", "\ufffd");

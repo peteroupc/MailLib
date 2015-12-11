@@ -1,11 +1,11 @@
+using NUnit.Framework;
+using PeterO.Text;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PeterO.Text;
 
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public class NormalizationTest {
     public static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
@@ -213,7 +213,7 @@ namespace MailLibTest {
       }
     }
 
-    [TestMethod]
+    [Test]
     public void NormTest() {
       var handled = new bool[0x110000];
       string[] lines = NetHelper.DownloadOrOpenAllLines(

@@ -1,12 +1,12 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public partial class DataIOTest {
-    [TestMethod]
+    [Test]
     public void TestToByteReader() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestToWriter() {
       // not implemented yet
     }
