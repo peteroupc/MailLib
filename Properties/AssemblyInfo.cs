@@ -26,4 +26,4 @@ using System.Reflection;
 [assembly: AssemblyProduct("MailLib")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("0.10.0")]
+[assembly: AssemblyVersion("0.9.1")]
