@@ -90,7 +90,6 @@ namespace PeterO.Mail {
     private const int EncodingQuotedPrintable = 1;
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
-    private const bool UseLenientLineBreaks = true;
 
     private static readonly Random msgidRandom = new Random();
     private static int msgidSequence;
@@ -123,11 +122,6 @@ namespace PeterO.Mail {
       this.parts = new List<Message>();
       this.body = new byte[0];
       IByteReader transform = DataIO.ToByteReader(stream);
-      // if (useLenientLineBreaks) {
-      // TODO: Might not be correct if the transfer
-      // encoding turns out to be binary
-      // transform = new LineBreakNormalizeTransform(stream);
-      // }
       this.ReadMessage(transform);
     }
 
@@ -207,7 +201,7 @@ namespace PeterO.Mail {
     /// <summary>Gets or sets this message's content disposition. The
     /// content disposition specifies how a user agent should handle or
     /// otherwise display this message.</summary>
-    /// <value>This message&apos;s content disposition, or null if none is
+    /// <value>This message&#x27;s content disposition, or null if none is
     /// specified.</value>
     public ContentDisposition ContentDisposition {
       get {
@@ -228,7 +222,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets or sets this message's media type.</summary>
-    /// <value>This message&apos;s media type.</value>
+    /// <value>This message&#x27;s media type.</value>
     /// <exception cref='ArgumentNullException'>This value is being set and
     /// "value" is null.</exception>
     public MediaType ContentType {
@@ -307,7 +301,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets or sets this message's subject.</summary>
-    /// <value>This message&apos;s subject.</value>
+    /// <value>This message&#x27;s subject.</value>
     public string Subject {
       get {
         return this.GetHeader("subject");
@@ -2041,7 +2035,6 @@ namespace PeterO.Mail {
     }
 
     private string GenerateMessageID() {
-      long ticks = DateTime.UtcNow.Ticks;
       var builder = new StringBuilder();
       var seq = 0;
       builder.Append("<");
@@ -2054,8 +2047,9 @@ namespace PeterO.Mail {
         }
         seq = unchecked(msgidSequence++);
       }
-      string guid = Guid.NewGuid().ToString();
       const string ValueHex = "0123456789abcdef";
+      string guid = Guid.NewGuid().ToString();
+      long ticks = DateTime.UtcNow.Ticks;
       for (int i = 0; i < 16; ++i) {
         builder.Append(ValueHex[(int)(ticks & 15)]);
         ticks >>= 4;
@@ -2292,7 +2286,7 @@ endIndex - startIndex) : String.Empty;
         baseTransferEncoding,
         true);
       IList<MessageStackEntry> multipartStack = new List<MessageStackEntry>();
-      MessageStackEntry entry = new Message.MessageStackEntry(this);
+      var entry = new MessageStackEntry(this);
       multipartStack.Add(entry);
       boundaryChecker.PushBoundary(entry.Boundary);
       Message leaf = null;
@@ -2300,7 +2294,8 @@ endIndex - startIndex) : String.Empty;
       var bufferCount = 0;
       int bufferLength = buffer.Length;
       this.body = new byte[0];
-      using (var ms = new MemoryStream()) {
+      var aw = new ArrayWriter();
+       {
         while (true) {
           var ch = 0;
           try {
@@ -2308,8 +2303,8 @@ endIndex - startIndex) : String.Empty;
           } catch (MessageDataException ex) {
             string valueExMessage = ex.Message;
 #if DEBUG
-            ms.Write(buffer, 0, bufferCount);
-            buffer = ms.ToArray();
+            aw.Write(buffer, 0, bufferCount);
+            buffer = aw.ToArray();
             string ss = DataUtilities.GetUtf8String(buffer,
                     Math.Max(buffer.Length - 35, 0),
                     Math.Min(buffer.Length, 35),
@@ -2338,16 +2333,16 @@ endIndex - startIndex) : String.Empty;
 #endif
               if (leaf != null) {
                 if (bufferCount > 0) {
-                  ms.Write(buffer, 0, bufferCount);
+                  aw.Write(buffer, 0, bufferCount);
                 }
-                leaf.body = ms.ToArray();
+                leaf.body = aw.ToArray();
                 // Clear for the next body
-                ms.SetLength(0);
+                aw.Clear();
                 bufferCount = 0;
               } else {
                 // Clear for the next body
                 bufferCount = 0;
-                ms.SetLength(0);
+                aw.Clear();
               }
               while (multipartStack.Count > stackCount) {
                 multipartStack.RemoveAt(stackCount);
@@ -2365,7 +2360,7 @@ endIndex - startIndex) : String.Empty;
               // message's list of parts
               parentMessage.Parts.Add(msg);
               multipartStack.Add(entry);
-              ms.SetLength(0);
+              aw.Clear();
               ctype = msg.ContentType;
               leaf = ctype.IsMultipart ? null : msg;
               boundaryChecker.PushBoundary(entry.Boundary);
@@ -2378,17 +2373,17 @@ endIndex - startIndex) : String.Empty;
               // All body parts were read
               if (leaf != null) {
                 if (bufferCount > 0) {
-                  ms.Write(buffer, 0, bufferCount);
+                  aw.Write(buffer, 0, bufferCount);
                   bufferCount = 0;
                 }
-                leaf.body = ms.ToArray();
+                leaf.body = aw.ToArray();
               }
               return;
             }
           } else {
             buffer[bufferCount++] = (byte)ch;
             if (bufferCount >= bufferLength) {
-              ms.Write(buffer, 0, bufferCount);
+              aw.Write(buffer, 0, bufferCount);
               bufferCount = 0;
             }
           }

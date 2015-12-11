@@ -22,8 +22,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a string containing this object's disposition type,
     /// such as "inline" or "attachment".</summary>
-    /// <value>A string containing this object&apos;s disposition type,
-    /// such as &quot;inline&quot; or &quot;attachment&quot;.</value>
+    /// <value>A string containing this object&#x27;s disposition type,
+    /// such as &#x22;inline&#x22; or &#x22;attachment&#x22;.</value>
     public string DispositionType {
       get {
         return this.dispositionType;
@@ -48,14 +48,13 @@ namespace PeterO.Mail {
     /// <returns>A 32-bit hash code.</returns>
     public override int GetHashCode() {
       var hashCode = 632580499;
-      unchecked {
         if (this.dispositionType != null) {
-          hashCode += 632580503 * this.dispositionType.GetHashCode();
+          hashCode = unchecked(hashCode + 632580503 *
+            this.dispositionType.GetHashCode());
         }
         if (this.parameters != null) {
-          hashCode += 632580587 * this.parameters.Count;
+          hashCode = unchecked(hashCode + 632580587 * this.parameters.Count);
         }
-      }
       return hashCode;
     }
     #endregion

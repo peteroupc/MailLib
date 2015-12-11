@@ -1,10 +1,9 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
-
-import java.util.*;
-
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.text.*;
+
+import java.util.*;
 
   public class NormalizationTest {
     public static String[] SplitAt(String str, String delimiter) {

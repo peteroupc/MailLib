@@ -369,10 +369,10 @@ int endIndex) {
               int asterisk = charset.IndexOf('*');
               string decodedWord = null;
               if (asterisk >= 1) {
-                bool asteriskAtEnd = (asterisk + 1 >= charset.Length);
+                bool asteriskAtEnd = asterisk + 1 >= charset.Length;
                 charset = charset.Substring(0, asterisk);
                 // Ignore language parameter after the asterisk
-                acceptedEncodedWord &= (!asteriskAtEnd);
+                acceptedEncodedWord &= !asteriskAtEnd;
               } else {
                 acceptedEncodedWord &= asterisk != 0;
               }
@@ -610,7 +610,7 @@ whitespaceEnd - whitespaceStart));
         }
         whitespaceStart = index;
         // Read to nonwhitespace
-        index = HeaderParser.ParseFWS(str, index, endIndex);
+        index = HeaderParser.ParseFWS(str, index, endIndex, null);
         whitespaceEnd = index;
         if (builder.Length == 0 && oldIndex == 0 && index == str.Length) {
           // Nothing to replace, and the whole string
@@ -872,7 +872,7 @@ EncodedWordContext.Phrase);
           builderPhrase.Append(str.Substring(index, index2 - index));
           index = index2;
         }
-        index2 = HeaderParser.ParseFWS(str, index, endIndex);
+        index2 = HeaderParser.ParseFWS(str, index, endIndex, null);
         if (index2 == endIndex) {
           encoder.AddString(builderPhrase.ToString());
           encoder.FinalizeEncoding();

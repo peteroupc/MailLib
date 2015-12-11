@@ -52,14 +52,13 @@ import com.upokecenter.text.encoders.*;
      */
     @Override public int hashCode() {
       int valueHashCode = 632580499;
-      {
         if (this.dispositionType != null) {
-          valueHashCode += 632580503 * this.dispositionType.hashCode();
+          valueHashCode = (valueHashCode + 632580503 *
+            this.dispositionType.hashCode());
         }
         if (this.parameters != null) {
-          valueHashCode += 632580587 * this.parameters.size();
+          valueHashCode = (valueHashCode + 632580587 * this.parameters.size());
         }
-      }
       return valueHashCode;
     }
 

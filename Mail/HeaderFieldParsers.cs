@@ -111,9 +111,9 @@ endIndex);
                     // startIndex));
                     if (Message.HasTextToEscape(str, startIndex, endIndex)) {
                     string newComment = Rfc2047.EncodeComment(
-            str,
-            startIndex,
-            endIndex);
+              str,
+              startIndex,
+              endIndex);
                     sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
                     sb.Append(newComment);
                     } else {
@@ -184,15 +184,15 @@ endIndex);
                     // in brackets; they are invalid under
                     // "IsValidDomainName" .
                     domain = (
-            Message.HasTextToEscapeIgnoreEncodedWords(
-            domain,
-            0,
-            domain.Length) && Idna.IsValidDomainName(
-            domain,
-            false)) ? Idna.EncodeDomainName(
-            domain) : str.Substring(
-            token2[1],
-            token2[2] - token2[1]);
+                    Message.HasTextToEscapeIgnoreEncodedWords(
+                    domain,
+                    0,
+                    domain.Length) && Idna.IsValidDomainName(
+                    domain,
+                    false)) ? Idna.EncodeDomainName(
+                    domain) : str.Substring(
+                    token2[1],
+                    token2[2] - token2[1]);
                     if (
                     Message.HasTextToEscapeIgnoreEncodedWords(
                     domain,
@@ -203,9 +203,9 @@ endIndex);
                     break;
                     }
                     sb2.Append(
-                   str.Substring(
-                   localLastIndex,
-                   token2[1] - localLastIndex));
+                    str.Substring(
+                    localLastIndex,
+                    token2[1] - localLastIndex));
                     sb2.Append(domain);
                     localLastIndex = token2[2];
                     }
@@ -215,9 +215,9 @@ endIndex);
                     if (!nonasciiLocalParts) {
                     // All of the domains could be converted to ASCII
                     sb2.Append(
-              str.Substring(
-              localLastIndex,
-              endIndex - localLastIndex));
+                  str.Substring(
+                  localLastIndex,
+                  endIndex - localLastIndex));
                     sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
                     sb.Append(sb2.ToString());
                     lastIndex = endIndex;
@@ -226,15 +226,15 @@ endIndex);
                     if (nonasciiLocalParts) {
                     // At least some of the domains could not
                     // be converted to ASCII
-                originalGroups = originalGroups ?? this.ParseGroupLists(
-originalString,
-0,
-originalString.Length);
+                    originalGroups = originalGroups ?? this.ParseGroupLists(
+      originalString,
+      0,
+      originalString.Length);
                     originalGroupList = originalGroups[groupIndex];
                     string groupText = originalGroupList;
                     string displayNameText = str.Substring(
-    startIndex,
-    displayNameEnd - startIndex);
+      startIndex,
+      displayNameEnd - startIndex);
                     string encodedText = displayNameText + " " +
                     Rfc2047.EncodeString(groupText) + " :;";
                     sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
@@ -283,15 +283,15 @@ originalString.Length);
                     // in brackets; they are invalid under
                     // "IsValidDomainName" .
                     domain = (
-            Message.HasTextToEscapeIgnoreEncodedWords(
-            domain,
-            0,
-            domain.Length) && Idna.IsValidDomainName(
-            domain,
-            false)) ? Idna.EncodeDomainName(
-            domain) : str.Substring(
-            token2[1],
-            token2[2] - token2[1]);
+                    Message.HasTextToEscapeIgnoreEncodedWords(
+                    domain,
+                    0,
+                    domain.Length) && Idna.IsValidDomainName(
+                    domain,
+                    false)) ? Idna.EncodeDomainName(
+                    domain) : str.Substring(
+                    token2[1],
+                    token2[2] - token2[1]);
                     if (
                     Message.HasTextToEscapeIgnoreEncodedWords(
                     domain,
@@ -302,9 +302,9 @@ originalString.Length);
                     break;
                     }
                     sb2.Append(
-                   str.Substring(
-                   localLastIndex,
-                   token2[1] - localLastIndex));
+                    str.Substring(
+                    localLastIndex,
+                    token2[1] - localLastIndex));
                     sb2.Append(domain);
                     localLastIndex = token2[2];
                     }
@@ -314,9 +314,9 @@ originalString.Length);
                     if (!nonasciiLocalPart) {
                     // All of the domains could be converted to ASCII
                     sb2.Append(
-              str.Substring(
-              localLastIndex,
-              endIndex - localLastIndex));
+                  str.Substring(
+                  localLastIndex,
+                  endIndex - localLastIndex));
                     sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
                     sb.Append(sb2.ToString());
                     lastIndex = endIndex;
@@ -327,8 +327,8 @@ originalString.Length);
                     sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
                     if (!hasPhrase) {
                     string addrSpec = str.Substring(
-        token[1],
-        token[2] - token[1]);
+            token[1],
+            token[2] - token[1]);
                     string encodedText = " " + Rfc2047.EncodeString(addrSpec) +
                     " :;";
                     sb.Append(encodedText);
@@ -343,14 +343,14 @@ originalString.Length);
                     // append the rest of the string so far up to and
                     // including the phrase
                     sb.Append(
-         str.Substring(
-         lastIndex,
-         angleAddrStart - lastIndex));
+             str.Substring(
+             lastIndex,
+             angleAddrStart - lastIndex));
                     int addrSpecStart = HeaderParser.ParseCFWS(
-    str,
-    angleAddrStart,
-    token[2],
-    null);
+        str,
+        angleAddrStart,
+        token[2],
+        null);
                     if (addrSpecStart < token[2] && str[addrSpecStart] == '<') {
                     ++addrSpecStart;
                     }
@@ -360,15 +360,16 @@ originalString.Length);
                     token[2],
                     null);
                     int addrSpecEnd = HeaderParser.ParseAddrSpec(
-    str,
-    addrSpecStart,
-    token[2],
-    null);
+        str,
+        addrSpecStart,
+        token[2],
+        null);
                     string addrSpec = str.Substring(
                     addrSpecStart,
                     addrSpecEnd - addrSpecStart);
-                    bool endsWithSpace = sb.Length > 0 && (sb[sb.Length - 1]
-                    == 0x20 || sb[sb.Length - 1] == 0x09);
+                    string valueSbString = sb.ToString();
+    bool endsWithSpace = sb.Length > 0 && (valueSbString[valueSbString.Length -
+                1] == 0x20 || valueSbString[valueSbString.Length - 1] == 0x09);
                     string encodedText = (endsWithSpace ? String.Empty : " ") +
                     Rfc2047.EncodeString(addrSpec) + " :;";
                     sb.Append(encodedText);
@@ -688,7 +689,8 @@ ITokener tokener) {
         return HeaderParser.ParseHeaderGenerateDeliveryReport(
 str,
 index,
-endIndex);
+endIndex,
+tokener);
       }
     }
 
@@ -716,7 +718,8 @@ ITokener tokener) {
         return HeaderParser.ParseHeaderPreventNondeliveryReport(
 str,
 index,
-endIndex);
+endIndex,
+tokener);
       }
     }
 
@@ -788,7 +791,7 @@ string str,
 int index,
 int endIndex,
 ITokener tokener) {
-        return HeaderParser.ParseHeaderControl(str, index, endIndex);
+        return HeaderParser.ParseHeaderControl(str, index, endIndex, tokener);
       }
     }
 
@@ -1133,7 +1136,8 @@ ITokener tokener) {
         return HeaderParser.ParseHeaderEdiintFeatures(
       str,
       index,
-      endIndex);
+      endIndex,
+      tokener);
       }
     }
 

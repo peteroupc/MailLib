@@ -350,10 +350,10 @@ int endIndex) {
               int asterisk = charset.indexOf('*');
               String decodedWord = null;
               if (asterisk >= 1) {
-                boolean asteriskAtEnd = (asterisk + 1 >= charset.length());
+                boolean asteriskAtEnd = asterisk + 1 >= charset.length();
                 charset = charset.substring(0, asterisk);
                 // Ignore language parameter after the asterisk
-                acceptedEncodedWord &= (!asteriskAtEnd);
+                acceptedEncodedWord &= !asteriskAtEnd;
               } else {
                 acceptedEncodedWord &= asterisk != 0;
               }
@@ -591,7 +591,7 @@ whitespaceStart)+(whitespaceEnd - whitespaceStart)));
         }
         whitespaceStart = index;
         // Read to nonwhitespace
-        index = HeaderParser.ParseFWS(str, index, endIndex);
+        index = HeaderParser.ParseFWS(str, index, endIndex, null);
         whitespaceEnd = index;
         if (builder.length() == 0 && oldIndex == 0 && index == str.length()) {
           // Nothing to replace, and the whole String
@@ -851,7 +851,7 @@ EncodedWordContext.Phrase);
           builderPhrase.append(str.substring(index, (index)+(index2 - index)));
           index = index2;
         }
-        index2 = HeaderParser.ParseFWS(str, index, endIndex);
+        index2 = HeaderParser.ParseFWS(str, index, endIndex, null);
         if (index2 == endIndex) {
           encoder.AddString(builderPhrase.toString());
           encoder.FinalizeEncoding();

@@ -16,7 +16,7 @@ namespace PeterO {
 #if NET40
       return t.GetMethod(name, parameters);
 #else
-      {
+{
  return t.GetRuntimeMethod(name, parameters);
 }
 #endif

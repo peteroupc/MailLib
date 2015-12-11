@@ -1,11 +1,11 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
-
-import java.util.*;
-import java.io.*;
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
+
+import java.util.*;
+import java.io.*;
 
   public class MessageTest {
     @Test
@@ -181,138 +181,6 @@ System.out.print("");
       }
     }
 
-    @Test
-    public void TestCharset() {
-      {
-        String stringTemp = MediaType.Parse("text/plain").GetCharset();
-        Assert.assertEquals(
-          "us-ascii",
-          stringTemp);
-      }
-      {
-        String stringTemp = MediaType.Parse("TEXT/PLAIN").GetCharset();
-        Assert.assertEquals(
-          "us-ascii",
-          stringTemp);
-      }
-      {
-        String stringTemp = MediaType.Parse("TeXt/PlAiN").GetCharset();
-        Assert.assertEquals(
-          "us-ascii",
-          stringTemp);
-      }
-      {
-        String stringTemp = MediaType.Parse("text/troff").GetCharset();
-        Assert.assertEquals(
-          "us-ascii",
-          stringTemp);
-      }
-      Assert.assertEquals("utf-8" , MediaType.Parse("text/plain; CHARSET=UTF-8"
-).GetCharset());
-      Assert.assertEquals("utf-8" , MediaType.Parse("text/plain; ChArSeT=UTF-8"
-).GetCharset());
-      Assert.assertEquals("utf-8" , MediaType.Parse("text/plain; charset=UTF-8"
-).GetCharset());
-      // Note that MIME implicitly allows whitespace around the equal sign
-      {
-        String stringTemp = MediaType.Parse("text/plain; charset = UTF-8"
-).GetCharset();
-        Assert.assertEquals(
-          "utf-8",
-          stringTemp);
-      }
-      {
-  String stringTemp = MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8"
-).GetCharset();
-        Assert.assertEquals(
-          "utf-8",
-          stringTemp);
-      }
-      {
-        String stringTemp = MediaType.Parse("text/plain; charset='UTF-8'"
-).GetCharset();
-        Assert.assertEquals(
-          "'utf-8'",
-          stringTemp);
-      }
-      {
-        String stringTemp = MediaType.Parse("text/plain; charset=\"UTF-8\""
-).GetCharset();
-        Assert.assertEquals(
-          "utf-8",
-          stringTemp);
-      }
-      {
-        String stringTemp =
-          MediaType.Parse("text/plain; foo=\"\\\"\"; charset=\"UTF-8\""
-).GetCharset();
-        Assert.assertEquals(
-          "utf-8",
-          stringTemp);
-      }
-      {
-        String stringTemp =
-          MediaType.Parse("text/plain; foo=\"; charset=\\\"UTF-8\\\"\""
-).GetCharset();
-        Assert.assertEquals(
-          "us-ascii",
-          stringTemp);
-      }
-      {
-     String stringTemp = MediaType.Parse("text/plain; foo='; charset=\"UTF-8\""
-).GetCharset();
-        Assert.assertEquals(
-          "utf-8",
-          stringTemp);
-      }
-      {
-   String stringTemp = MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\""
-).GetCharset();
-        Assert.assertEquals(
-          "utf-8",
-          stringTemp);
-      }
-      {
-        String stringTemp = MediaType.Parse("text/plain; charset=\"UTF-\\8\""
-).GetCharset();
-        Assert.assertEquals(
-          "utf-8",
-          stringTemp);
-      }
-      {
-        String stringTemp = MediaType.Parse("nana").GetCharset();
-        Assert.assertEquals(
-          "us-ascii",
-          stringTemp);
-      }
-      Assert.assertEquals("", MediaType.Parse("text/xyz").GetCharset());
-      Assert.assertEquals("utf-8" , MediaType.Parse("text/xyz;charset=UTF-8"
-).GetCharset());
-      Assert.assertEquals("utf-8" , MediaType.Parse("text/xyz;charset=utf-8"
-).GetCharset());
-      Assert.assertEquals("" , MediaType.Parse("text/xyz;chabset=utf-8"
-).GetCharset());
-      Assert.assertEquals("utf-8" , MediaType.Parse("text/xml;charset=utf-8"
-).GetCharset());
-      Assert.assertEquals("utf-8" , MediaType.Parse("text/plain;charset=utf-8"
-).GetCharset());
-      {
-  String stringTemp = MediaType.Parse("text/plain;chabset=utf-8"
-).GetCharset();
-        Assert.assertEquals(
-          "us-ascii",
-          stringTemp);
-      }
-      Assert.assertEquals("utf-8" , MediaType.Parse("image/xml;charset=utf-8"
-).GetCharset());
-      Assert.assertEquals("" , MediaType.Parse("image/xml;chabset=utf-8"
-).GetCharset());
-      Assert.assertEquals("utf-8" , MediaType.Parse("image/plain;charset=utf-8"
-).GetCharset());
-      Assert.assertEquals("" , MediaType.Parse("image/plain;chabset=utf-8"
-).GetCharset());
-    }
-
     public static void TestRfc2231Extension(String mtype, String param,
                     String expected) {
       MediaType mt = MediaType.Parse(mtype);
@@ -384,6 +252,10 @@ System.out.print("");
         "text/plain; charset*0*=utf-8''a%20b;charset*1=a%20b",
         "charset",
         "a ba%20b");
+      TestRfc2231Extension(
+         "text/plain; Charset*0*=utf-8''a%20b;cHarset*1=a%20b",
+         "charset",
+         "a ba%20b");
       TestRfc2231Extension(
         "text/plain\r\n (; charset=x;y=\");ChaRseT*=''a%41b-c(\")",
         "charset",
@@ -985,19 +857,6 @@ System.out.print("");
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
-      }
-    }
-
-    @Test
-    public void TestMailbox() {
-String mbox =
-        "Me <@example.org,@example.net,@example.com:me@x.example>" ;
-      NamedAddress result = new NamedAddress(mbox);
-      {
-        String stringTemp = result.toString();
-        Assert.assertEquals(
-          "Me <me@x.example>",
-          stringTemp);
       }
     }
 

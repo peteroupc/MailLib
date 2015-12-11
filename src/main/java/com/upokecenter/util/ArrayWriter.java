@@ -16,6 +16,14 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private byte[] retval;
 
     /**
+     * Offers a fast way to reset the length of the array writer's data to 0.
+     */
+    public void Clear() {
+      this.retvalPos = 0;
+      this.retvalMax = 0;
+    }
+
+    /**
      * Initializes a new instance of the ArrayWriter class.
      */
     public ArrayWriter () {
@@ -42,7 +50,8 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 
     /**
      * Writes an 8-bit byte to the array.
-     * @param byteValue A 32-bit signed integer.
+     * @param byteValue An integer containing the byte to write. Only the lower 8
+     * bits of this value will be used.
      */
     public void write(int byteValue) {
       if (this.retval.length <= this.retvalPos) {

@@ -1,8 +1,7 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
-
-import com.upokecenter.mail.*;
 import org.junit.Assert;
 import org.junit.Test;
+import com.upokecenter.mail.*;
 
   public class ContentDispositionTest {
     @Test
@@ -170,8 +169,8 @@ import org.junit.Test;
       {
         stringTemp =
 
-  ContentDisposition.MakeFilename("  =?utf-8*i-unknown?q?___hello.txt___?=  "
-);
+  ContentDisposition.MakeFilename(
+"  =?utf-8*i-unknown?q?___hello.txt___?=  ");
         Assert.assertEquals(
           "hello.txt",
           stringTemp);

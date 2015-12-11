@@ -112,9 +112,9 @@ endIndex);
                     // startIndex)));
                     if (Message.HasTextToEscape(str, startIndex, endIndex)) {
                     String newComment = Rfc2047.EncodeComment(
-            str,
-            startIndex,
-            endIndex);
+              str,
+              startIndex,
+              endIndex);
                     sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
                     sb.append(newComment);
                     } else {
@@ -185,15 +185,15 @@ endIndex);
                     // in brackets; they are invalid under
                     // "IsValidDomainName" .
                     domain = (
-            Message.HasTextToEscapeIgnoreEncodedWords(
-            domain,
-            0,
-            domain.length()) && Idna.IsValidDomainName(
-            domain,
-            false)) ? Idna.EncodeDomainName(
-            domain) : str.substring(
-            token2[1], (
-            token2[1])+(token2[2] - token2[1]));
+                    Message.HasTextToEscapeIgnoreEncodedWords(
+                    domain,
+                    0,
+                    domain.length()) && Idna.IsValidDomainName(
+                    domain,
+                    false)) ? Idna.EncodeDomainName(
+                    domain) : str.substring(
+                    token2[1], (
+                    token2[1])+(token2[2] - token2[1]));
                     if (
                     Message.HasTextToEscapeIgnoreEncodedWords(
                     domain,
@@ -204,9 +204,9 @@ endIndex);
                     break;
                     }
                     sb2.append(
-                   str.substring(
-                   localLastIndex, (
-                   localLastIndex)+(token2[1] - localLastIndex)));
+                    str.substring(
+                    localLastIndex, (
+                    localLastIndex)+(token2[1] - localLastIndex)));
                     sb2.append(domain);
                     localLastIndex = token2[2];
                     }
@@ -216,9 +216,9 @@ endIndex);
                     if (!nonasciiLocalParts) {
                     // All of the domains could be converted to ASCII
                     sb2.append(
-              str.substring(
-              localLastIndex, (
-              localLastIndex)+(endIndex - localLastIndex)));
+                  str.substring(
+                  localLastIndex, (
+                  localLastIndex)+(endIndex - localLastIndex)));
                     sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
                     sb.append(sb2.toString());
                     lastIndex = endIndex;
@@ -227,15 +227,15 @@ endIndex);
                     if (nonasciiLocalParts) {
                     // At least some of the domains could not
                     // be converted to ASCII
-                originalGroups = (originalGroups == null) ? (this.ParseGroupLists(
-originalString,
-0,
-originalString.length())) : originalGroups;
+                    originalGroups = (originalGroups == null) ? (this.ParseGroupLists(
+      originalString,
+      0,
+      originalString.length())) : originalGroups;
                     originalGroupList = originalGroups.get(groupIndex);
                     String groupText = originalGroupList;
                     String displayNameText = str.substring(
-    startIndex, (
-    startIndex)+(displayNameEnd - startIndex));
+      startIndex, (
+      startIndex)+(displayNameEnd - startIndex));
                     String encodedText = displayNameText + " " +
                     Rfc2047.EncodeString(groupText) + " :;";
                     sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
@@ -284,15 +284,15 @@ originalString.length())) : originalGroups;
                     // in brackets; they are invalid under
                     // "IsValidDomainName" .
                     domain = (
-            Message.HasTextToEscapeIgnoreEncodedWords(
-            domain,
-            0,
-            domain.length()) && Idna.IsValidDomainName(
-            domain,
-            false)) ? Idna.EncodeDomainName(
-            domain) : str.substring(
-            token2[1], (
-            token2[1])+(token2[2] - token2[1]));
+                    Message.HasTextToEscapeIgnoreEncodedWords(
+                    domain,
+                    0,
+                    domain.length()) && Idna.IsValidDomainName(
+                    domain,
+                    false)) ? Idna.EncodeDomainName(
+                    domain) : str.substring(
+                    token2[1], (
+                    token2[1])+(token2[2] - token2[1]));
                     if (
                     Message.HasTextToEscapeIgnoreEncodedWords(
                     domain,
@@ -303,9 +303,9 @@ originalString.length())) : originalGroups;
                     break;
                     }
                     sb2.append(
-                   str.substring(
-                   localLastIndex, (
-                   localLastIndex)+(token2[1] - localLastIndex)));
+                    str.substring(
+                    localLastIndex, (
+                    localLastIndex)+(token2[1] - localLastIndex)));
                     sb2.append(domain);
                     localLastIndex = token2[2];
                     }
@@ -315,9 +315,9 @@ originalString.length())) : originalGroups;
                     if (!nonasciiLocalPart) {
                     // All of the domains could be converted to ASCII
                     sb2.append(
-              str.substring(
-              localLastIndex, (
-              localLastIndex)+(endIndex - localLastIndex)));
+                  str.substring(
+                  localLastIndex, (
+                  localLastIndex)+(endIndex - localLastIndex)));
                     sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
                     sb.append(sb2.toString());
                     lastIndex = endIndex;
@@ -328,8 +328,8 @@ originalString.length())) : originalGroups;
                     sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
                     if (!hasPhrase) {
                     String addrSpec = str.substring(
-        token[1], (
-        token[1])+(token[2] - token[1]));
+            token[1], (
+            token[1])+(token[2] - token[1]));
                     String encodedText = " " + Rfc2047.EncodeString(addrSpec) +
                     " :;";
                     sb.append(encodedText);
@@ -344,14 +344,14 @@ originalString.length())) : originalGroups;
                     // append the rest of the String so far up to and
                     // including the phrase
                     sb.append(
-         str.substring(
-         lastIndex, (
-         lastIndex)+(angleAddrStart - lastIndex)));
+             str.substring(
+             lastIndex, (
+             lastIndex)+(angleAddrStart - lastIndex)));
                     int addrSpecStart = HeaderParser.ParseCFWS(
-    str,
-    angleAddrStart,
-    token[2],
-    null);
+        str,
+        angleAddrStart,
+        token[2],
+        null);
                     if (addrSpecStart < token[2] && str.charAt(addrSpecStart) == '<') {
                     ++addrSpecStart;
                     }
@@ -361,15 +361,16 @@ originalString.length())) : originalGroups;
                     token[2],
                     null);
                     int addrSpecEnd = HeaderParser.ParseAddrSpec(
-    str,
-    addrSpecStart,
-    token[2],
-    null);
+        str,
+        addrSpecStart,
+        token[2],
+        null);
                     String addrSpec = str.substring(
                     addrSpecStart, (
                     addrSpecStart)+(addrSpecEnd - addrSpecStart));
-                    boolean endsWithSpace = sb.length() > 0 && (sb.charAt(sb.length() - 1)
-                    == 0x20 || sb.charAt(sb.length() - 1) == 0x09);
+                    String valueSbString = sb.toString();
+    boolean endsWithSpace = sb.length() > 0 && (valueSbString.charAt(valueSbString.length() -
+                1) == 0x20 || valueSbString.charAt(valueSbString.length() - 1) == 0x09);
                     String encodedText = (endsWithSpace ? "" : " ") +
                     Rfc2047.EncodeString(addrSpec) + " :;";
                     sb.append(encodedText);
@@ -683,7 +684,8 @@ ITokener tokener) {
         return HeaderParser.ParseHeaderGenerateDeliveryReport(
 str,
 index,
-endIndex);
+endIndex,
+tokener);
       }
     }
 
@@ -710,7 +712,8 @@ ITokener tokener) {
         return HeaderParser.ParseHeaderPreventNondeliveryReport(
 str,
 index,
-endIndex);
+endIndex,
+tokener);
       }
     }
 
@@ -782,7 +785,7 @@ String str,
 int index,
 int endIndex,
 ITokener tokener) {
-        return HeaderParser.ParseHeaderControl(str, index, endIndex);
+        return HeaderParser.ParseHeaderControl(str, index, endIndex, tokener);
       }
     }
 
@@ -1125,7 +1128,8 @@ ITokener tokener) {
         return HeaderParser.ParseHeaderEdiintFeatures(
       str,
       index,
-      endIndex);
+      endIndex,
+      tokener);
       }
     }
 

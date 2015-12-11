@@ -171,7 +171,7 @@ int endIndex) {
         StringBuilder builder = new StringBuilder();
         builder.append('[');
         while (index < endIndex) {
-          index = HeaderParser.ParseFWS(str, index, endIndex);
+          index = HeaderParser.ParseFWS(str, index, endIndex, null);
           if (index >= endIndex) {
             break;
           }
@@ -180,7 +180,7 @@ int endIndex) {
           }
           if (str.charAt(index) == '\\') {
             int startQuote = index;
-            index = HeaderParser.ParseQuotedPair(str, index, endIndex);
+            index = HeaderParser.ParseQuotedPair(str, index, endIndex, null);
             if (index == startQuote) {
        builder.append(
 str.substring(
@@ -338,7 +338,7 @@ ITokener tokener) {
           indexTemp2 = index;
           do {
             int indexStart2 = index;
-            index = HeaderParser.ParseFWS(str, index, endIndex);
+            index = HeaderParser.ParseFWS(str, index, endIndex, null);
             do {
               int indexTemp3 = index;
               do {
@@ -355,7 +355,8 @@ ITokener tokener) {
       indexTemp4 = HeaderParser.ParseQuotedPair(
 str,
 index,
-endIndex);
+endIndex,
+null);
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
@@ -391,7 +392,7 @@ endIndex);
             break;
           }
         }
-        index = HeaderParser.ParseFWS(str, index, endIndex);
+        index = HeaderParser.ParseFWS(str, index, endIndex, null);
         if (index < endIndex && str.charAt(index) == 41) {
           // End of current comment
           ++index;

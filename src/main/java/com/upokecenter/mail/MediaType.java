@@ -59,17 +59,17 @@ import com.upokecenter.text.*;
      */
     @Override public int hashCode() {
       int valueHashCode = 632580499;
-      {
         if (this.topLevelType != null) {
-          valueHashCode += 632580503 * this.topLevelType.hashCode();
+  valueHashCode = (valueHashCode + 632580503 *
+            this.topLevelType.hashCode());
         }
         if (this.subType != null) {
-          valueHashCode += 632580563 * this.subType.hashCode();
+       valueHashCode = (valueHashCode + 632580563 *
+            this.subType.hashCode());
         }
         if (this.parameters != null) {
-          valueHashCode += 632580587 * this.parameters.size();
+          valueHashCode = (valueHashCode + 632580587 * this.parameters.size());
         }
-      }
       return valueHashCode;
     }
 
@@ -179,7 +179,7 @@ String type,
           return i2;
         }
         index = i2;
-        i2 = HeaderParser.ParseQuotedPair(s, index, endIndex);
+        i2 = HeaderParser.ParseQuotedPair(s, index, endIndex, null);
         return i2;
       }
       throw new IllegalArgumentException(rule.toString());
@@ -505,8 +505,9 @@ StringBuilder sb) {
     }
 
     static int LastLineStart(StringBuilder sb) {
+      String valueSbString = sb.toString();
       for (int i = sb.length() - 1; i >= 0; --i) {
-        if (sb.charAt(i) == '\n') {
+        if (valueSbString.charAt(i) == '\n') {
           return i + 1;
         }
       }

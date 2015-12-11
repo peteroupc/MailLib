@@ -1,10 +1,7 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
-
-import com.upokecenter.text.*;
-import com.upokecenter.util.*;
 import org.junit.Assert;
 import org.junit.Test;
-import java.io.*;
+import com.upokecenter.text.*;
 
   public class EncodingsTest {
     @Test

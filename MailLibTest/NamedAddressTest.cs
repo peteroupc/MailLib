@@ -279,7 +279,15 @@ stringTemp);
     }
     [Test]
     public void TestToString() {
-      // not implemented yet
+      const string mbox =
+              "Me <@example.org,@example.net,@example.com:me@x.example>";
+      var result = new NamedAddress(mbox);
+      {
+        string stringTemp = result.ToString();
+        Assert.AreEqual(
+          "Me <me@x.example>",
+          stringTemp);
+      }
     }
   }
 }
