@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>PeterO.MailLib</id>
-    <version>0.10.0</version>
+    <version>0.9.1</version>
     <title>MailLib</title>
     <authors>Peter Occil</authors>
     <owners>Peter Occil</owners>
@@ -13,8 +13,10 @@
     A parser and generator of Internet email messages as a Portable Class Library.
     </description>
     <releaseNotes>
+Version 0.9.1:
+- Removed a reference to OpenCover that was apparently left in version 0.9
 Version 0.9:
-- The library now also targets "dotnet", which should make it compatible with platform .NET runtime
+- The C# version of the library now also targets "dotnet", which should make it compatible with platform .NET runtime
 environments such as the upcoming cross-platform "coreclr" runtime.
 - Bug fixes to ensure number-format independence in some cases
 - ContentDisposition.MakeFilename implementation was improved

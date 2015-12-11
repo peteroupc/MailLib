@@ -33,6 +33,8 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
       <artifactId>maillib</artifactId>
       <version>0.9.0</version>
     </dependency>
+    
+(The .NET version is currently version 0.9.1.)
 
 In other Java-based environments, the library can be referred to by its
 group ID (`com.upokecenter`), artifact ID (`maillib`), and version, as given above.
@@ -65,9 +67,13 @@ An example of reading an email message from a file:
 Release Notes
 ---------
 
+Version 0.9.1:
+
+- Removed a reference to OpenCover that was apparently left in version 0.9 (.NET version)
+
 Version 0.9:
 
-- The library now also targets "dotnet", which should make it compatible with platform .NET runtime
+- The C# version of the library now also targets "dotnet", which should make it compatible with platform .NET runtime
 environments such as the upcoming cross-platform "coreclr" runtime.
 - Bug fixes to ensure number-format independence in some cases
 - ContentDisposition.MakeFilename implementation was improved
