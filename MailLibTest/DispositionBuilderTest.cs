@@ -1,10 +1,10 @@
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using PeterO.Mail;
+using System;
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public partial class DispositionBuilderTest {
-    [TestMethod]
+    [Test]
     public void TestConstructor() {
       string stringNull = null;
       ContentDisposition dispNull = null;
@@ -36,13 +36,13 @@ Assert.AreEqual(null, new DispositionBuilder(String.Empty));
         throw new InvalidOperationException(String.Empty, ex);
       }
     }
-    [TestMethod]
+    [Test]
     public void TestDispositionType() {
       var db = new DispositionBuilder();
       db.SetDispositionType("inline");
       Assert.AreEqual("inline", db.DispositionType);
     }
-    [TestMethod]
+    [Test]
     public void TestRemoveParameter() {
       try {
         new DispositionBuilder().RemoveParameter(null);
@@ -54,7 +54,7 @@ Assert.AreEqual(null, new DispositionBuilder(String.Empty));
         throw new InvalidOperationException(String.Empty, ex);
       }
     }
-    [TestMethod]
+    [Test]
     public void TestSetDispositionType() {
       try {
         new DispositionBuilder().SetDispositionType(null);
@@ -75,17 +75,20 @@ Assert.AreEqual(null, new DispositionBuilder(String.Empty));
         throw new InvalidOperationException(String.Empty, ex);
       }
     }
-    [TestMethod]
+    [Test]
     public void TestSetParameter() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestToDisposition() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestToString() {
-      // not implemented yet
+      var disp = new DispositionBuilder();
+      disp.SetDispositionType("attachment");
+      disp.SetParameter("a", "b");
+      Assert.AreEqual("attachment;a=b", disp.ToString());
     }
   }
 }

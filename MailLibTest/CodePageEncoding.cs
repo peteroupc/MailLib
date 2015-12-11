@@ -1,7 +1,7 @@
-using System;
-using System.Text;
 using PeterO;
 using PeterO.Text;
+using System;
+using System.Text;
 
 namespace MailLibTest {
     /// <summary>A character encoding class that implements a code page

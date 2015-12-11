@@ -1,20 +1,20 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public partial class ArrayWriterTest {
-    [TestMethod]
+    [Test]
     public void TestConstructor() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestToArray() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestWrite() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestWriteByte() {
       // not implemented yet
     }

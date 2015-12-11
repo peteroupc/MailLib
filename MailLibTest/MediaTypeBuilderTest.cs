@@ -1,48 +1,48 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 namespace MailLibTest {
-  [TestClass]
+  [TestFixture]
   public partial class MediaTypeBuilderTest {
-    [TestMethod]
+    [Test]
     public void TestConstructor() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestIsMultipart() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestIsText() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestRemoveParameter() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestSetParameter() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestSetSubType() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestSetTopLevelType() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestSubType() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestToMediaType() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestTopLevelType() {
       // not implemented yet
     }
-    [TestMethod]
+    [Test]
     public void TestToString() {
       // not implemented yet
     }
