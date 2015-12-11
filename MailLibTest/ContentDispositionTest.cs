@@ -169,8 +169,8 @@ namespace MailLibTest {
       {
         stringTemp =
 
-  ContentDisposition.MakeFilename("  =?utf-8*i-unknown?q?___hello.txt___?=  "
-);
+  ContentDisposition.MakeFilename(
+"  =?utf-8*i-unknown?q?___hello.txt___?=  ");
         Assert.AreEqual(
           "hello.txt",
           stringTemp);

@@ -185,138 +185,6 @@ Console.Write(String.Empty);
       }
     }
 
-    [Test]
-    public void TestCharset() {
-      {
-        string stringTemp = MediaType.Parse("text/plain").GetCharset();
-        Assert.AreEqual(
-          "us-ascii",
-          stringTemp);
-      }
-      {
-        string stringTemp = MediaType.Parse("TEXT/PLAIN").GetCharset();
-        Assert.AreEqual(
-          "us-ascii",
-          stringTemp);
-      }
-      {
-        string stringTemp = MediaType.Parse("TeXt/PlAiN").GetCharset();
-        Assert.AreEqual(
-          "us-ascii",
-          stringTemp);
-      }
-      {
-        string stringTemp = MediaType.Parse("text/troff").GetCharset();
-        Assert.AreEqual(
-          "us-ascii",
-          stringTemp);
-      }
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/plain; CHARSET=UTF-8"
-).GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/plain; ChArSeT=UTF-8"
-).GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/plain; charset=UTF-8"
-).GetCharset());
-      // Note that MIME implicitly allows whitespace around the equal sign
-      {
-        string stringTemp = MediaType.Parse("text/plain; charset = UTF-8"
-).GetCharset();
-        Assert.AreEqual(
-          "utf-8",
-          stringTemp);
-      }
-      {
-  string stringTemp = MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8"
-).GetCharset();
-        Assert.AreEqual(
-          "utf-8",
-          stringTemp);
-      }
-      {
-        string stringTemp = MediaType.Parse("text/plain; charset='UTF-8'"
-).GetCharset();
-        Assert.AreEqual(
-          "'utf-8'",
-          stringTemp);
-      }
-      {
-        string stringTemp = MediaType.Parse("text/plain; charset=\"UTF-8\""
-).GetCharset();
-        Assert.AreEqual(
-          "utf-8",
-          stringTemp);
-      }
-      {
-        string stringTemp =
-          MediaType.Parse("text/plain; foo=\"\\\"\"; charset=\"UTF-8\""
-).GetCharset();
-        Assert.AreEqual(
-          "utf-8",
-          stringTemp);
-      }
-      {
-        string stringTemp =
-          MediaType.Parse("text/plain; foo=\"; charset=\\\"UTF-8\\\"\""
-).GetCharset();
-        Assert.AreEqual(
-          "us-ascii",
-          stringTemp);
-      }
-      {
-     string stringTemp = MediaType.Parse("text/plain; foo='; charset=\"UTF-8\""
-).GetCharset();
-        Assert.AreEqual(
-          "utf-8",
-          stringTemp);
-      }
-      {
-   string stringTemp = MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\""
-).GetCharset();
-        Assert.AreEqual(
-          "utf-8",
-          stringTemp);
-      }
-      {
-        string stringTemp = MediaType.Parse("text/plain; charset=\"UTF-\\8\""
-).GetCharset();
-        Assert.AreEqual(
-          "utf-8",
-          stringTemp);
-      }
-      {
-        string stringTemp = MediaType.Parse("nana").GetCharset();
-        Assert.AreEqual(
-          "us-ascii",
-          stringTemp);
-      }
-      Assert.AreEqual("", MediaType.Parse("text/xyz").GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/xyz;charset=UTF-8"
-).GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/xyz;charset=utf-8"
-).GetCharset());
-      Assert.AreEqual("" , MediaType.Parse("text/xyz;chabset=utf-8"
-).GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/xml;charset=utf-8"
-).GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/plain;charset=utf-8"
-).GetCharset());
-      {
-  string stringTemp = MediaType.Parse("text/plain;chabset=utf-8"
-).GetCharset();
-        Assert.AreEqual(
-          "us-ascii",
-          stringTemp);
-      }
-      Assert.AreEqual("utf-8" , MediaType.Parse("image/xml;charset=utf-8"
-).GetCharset());
-      Assert.AreEqual("" , MediaType.Parse("image/xml;chabset=utf-8"
-).GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("image/plain;charset=utf-8"
-).GetCharset());
-      Assert.AreEqual("" , MediaType.Parse("image/plain;chabset=utf-8"
-).GetCharset());
-    }
-
     public static void TestRfc2231Extension(string mtype, string param,
                     string expected) {
       MediaType mt = MediaType.Parse(mtype);
@@ -388,6 +256,10 @@ Console.Write(String.Empty);
         "text/plain; charset*0*=utf-8''a%20b;charset*1=a%20b",
         "charset",
         "a ba%20b");
+      TestRfc2231Extension(
+         "text/plain; Charset*0*=utf-8''a%20b;cHarset*1=a%20b",
+         "charset",
+         "a ba%20b");
       TestRfc2231Extension(
         "text/plain\r\n (; charset=x;y=\");ChaRseT*=''a%41b-c(\")",
         "charset",
@@ -991,19 +863,6 @@ Console.Write(String.Empty);
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
-      }
-    }
-
-    [Test]
-    public void TestMailbox() {
-const string mbox =
-        "Me <@example.org,@example.net,@example.com:me@x.example>" ;
-      var result = new NamedAddress(mbox);
-      {
-        string stringTemp = result.ToString();
-        Assert.AreEqual(
-          "Me <me@x.example>",
-          stringTemp);
       }
     }
 

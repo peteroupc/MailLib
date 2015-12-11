@@ -14,6 +14,13 @@ namespace PeterO {
     private int retvalMax;
     private byte[] retval;
 
+    /// <summary>Offers a fast way to reset the length of the array
+    /// writer's data to 0.</summary>
+    public void Clear() {
+      this.retvalPos = 0;
+      this.retvalMax = 0;
+    }
+
     /// <summary>Initializes a new instance of the ArrayWriter
     /// class.</summary>
     public ArrayWriter() : this(16) {
@@ -36,7 +43,8 @@ namespace PeterO {
     }
 
     /// <summary>Writes an 8-bit byte to the array.</summary>
-    /// <param name='byteValue'>A 32-bit signed integer.</param>
+    /// <param name='byteValue'>An integer containing the byte to write.
+    /// Only the lower 8 bits of this value will be used.</param>
     public void WriteByte(int byteValue) {
       if (this.retval.Length <= this.retvalPos) {
         // Array too small, make it grow

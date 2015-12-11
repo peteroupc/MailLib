@@ -32,8 +32,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets the name of this media type's top-level type (such as
     /// "text" or "audio".</summary>
-    /// <value>The name of this media type&apos;s top-level type (such as
-    /// &quot;text&quot; or &quot;audio&quot;.</value>
+    /// <value>The name of this media type&#x27;s top-level type (such as
+    /// &#x22;text&#x22; or &#x22;audio&#x22;.</value>
     public string TopLevelType {
       get {
         return this.topLevelType;
@@ -60,17 +60,17 @@ namespace PeterO.Mail {
     /// <returns>A 32-bit signed integer.</returns>
     public override int GetHashCode() {
       var hashCode = 632580499;
-      unchecked {
         if (this.topLevelType != null) {
-          hashCode += 632580503 * this.topLevelType.GetHashCode();
+  hashCode = unchecked(hashCode + 632580503 *
+            this.topLevelType.GetHashCode());
         }
         if (this.subType != null) {
-          hashCode += 632580563 * this.subType.GetHashCode();
+       hashCode = unchecked(hashCode + 632580563 *
+            this.subType.GetHashCode());
         }
         if (this.parameters != null) {
-          hashCode += 632580587 * this.parameters.Count;
+          hashCode = unchecked(hashCode + 632580587 * this.parameters.Count);
         }
-      }
       return hashCode;
     }
     #endregion
@@ -78,7 +78,7 @@ namespace PeterO.Mail {
     private string subType;
 
     /// <summary>Gets this media type's subtype.</summary>
-    /// <value>This media type&apos;s subtype.</value>
+    /// <value>This media type&#x27;s subtype.</value>
     public string SubType {
       get {
         return this.subType;
@@ -182,7 +182,7 @@ string type,
           return i2;
         }
         index = i2;
-        i2 = HeaderParser.ParseQuotedPair(s, index, endIndex);
+        i2 = HeaderParser.ParseQuotedPair(s, index, endIndex, null);
         return i2;
       }
       throw new ArgumentException(rule.ToString());
@@ -508,8 +508,9 @@ StringBuilder sb) {
     }
 
     internal static int LastLineStart(StringBuilder sb) {
+      string valueSbString = sb.ToString();
       for (int i = sb.Length - 1; i >= 0; --i) {
-        if (sb[i] == '\n') {
+        if (valueSbString[i] == '\n') {
           return i + 1;
         }
       }
@@ -966,7 +967,7 @@ ICharacterEncoding charset) {
     /// <summary>Gets the top level type and subtype of this media type,
     /// separated by a slash; for example, "text/plain".</summary>
     /// <value>The top level type and subtype of this media type, separated
-    /// by a slash; for example, &quot;text/plain&quot;.</value>
+    /// by a slash; for example, &#x22;text/plain&#x22;.</value>
     public string TypeAndSubType {
       get {
         return this.TopLevelType + "/" + this.SubType;

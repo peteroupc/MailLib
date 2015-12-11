@@ -1,8 +1,7 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
-
-import com.upokecenter.mail.*;
 import org.junit.Assert;
 import org.junit.Test;
+import com.upokecenter.mail.*;
 
   public class AddressTest {
     private static void TestParseLocalPart(String str, String expected) {

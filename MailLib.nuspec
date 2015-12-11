@@ -13,29 +13,18 @@
     A parser and generator of Internet email messages as a Portable Class Library.
     </description>
     <releaseNotes>
-Version 0.8.1:
-
-- Fixes bugs in character encoding algorithms
-
-Version 0.8.0:
-
-- New helper classes added:
-- - ArrayWriter
-- -  Data abstraction interfaces IByteWriter, IReader, IWriter
-- -  Encoding namespace, to access character encodings
-- Normalizer class deprecated; use NormalizingCharacterInput
-  instead
-- Updated normalization and IDNA data to Unicode 8.0
-- Fixed wrongly generated data that can make normalization form NFKC
-  behave incorrectly
-- Parses three new structured header fields
-- ContentDisposition.MakeFilename decodes RFC2047 words
-  in more cases and avoids returning unsuitable filenames in more cases
-- Adds byte[] constructor to Message class
-- Be more lenient for some "message/rfc822" bodies
-- Fix bug in header parsing if a header field ends in folding whitespace
-- Some parts of the code were rewritten, such as the Quoted-Printable
-  encoder
+Version 0.9:
+- The library now also targets "dotnet", which should make it compatible with platform .NET runtime
+environments such as the upcoming cross-platform "coreclr" runtime.
+- Bug fixes to ensure number-format independence in some cases
+- ContentDisposition.MakeFilename implementation was improved
+- Another overload for GetEncoding was added
+- Additional fixes in character encodings
+- Known issue: The library implements character encodings based on the Encoding Standard
+candidate recommendation.  But several issues have emerged with that spec in the meantime.
+For example, GB18030 currently uses a problematic range table, so that for certain code points designed
+for that table, round-tripping is not possible.  As a result, tests on GB18030 are disabled
+for now.
    See the project page for release notes on previous versions: https://github.com/peteroupc/MailLib
     </releaseNotes>
     <copyright>Written by Peter O. in 2013-2015.  Any copyright is released to the Public Domain.
@@ -45,11 +34,11 @@ Version 0.8.0:
       <group targetFramework="dotnet">
         <dependency id="System.Globalization" version="4.0.0" />
         <dependency id="System.Text.Encoding" version="4.0.0" />
+        <dependency id="System.Reflection" version="4.0.0" />
+        <dependency id="System.Reflection.Extensions" version="4.0.0" />
         <dependency id="System.Collections" version="4.0.0" />
         <dependency id="System.Diagnostics.Debug" version="4.0.0" />
         <dependency id="System.IO" version="4.0.0" />
-        <dependency id="System.Reflection" version="4.0.0" />
-        <dependency id="System.Reflection.Extensions" version="4.0.0" />
         <dependency id="System.Runtime" version="4.0.0" />
         <dependency id="System.Runtime.Extensions" version="4.0.0" />
         <dependency id="System.Threading" version="4.0.0" />

@@ -1,5 +1,4 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
-
 import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 

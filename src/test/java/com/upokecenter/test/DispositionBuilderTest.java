@@ -1,5 +1,4 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
-
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.mail.*;
@@ -86,6 +85,14 @@ Assert.assertEquals(null, new DispositionBuilder(""));
     }
     @Test
     public void TestToString() {
-      // not implemented yet
+      DispositionBuilder disp = new DispositionBuilder();
+      disp.SetDispositionType("attachment");
+      disp.SetParameter("a", "b");
+      {
+String stringTemp = disp.toString();
+Assert.assertEquals(
+"attachment;a=b",
+stringTemp);
+}
     }
   }

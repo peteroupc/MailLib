@@ -1,9 +1,9 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
-
-import java.util.*;
-import com.upokecenter.mail.*;
 import org.junit.Assert;
 import org.junit.Test;
+import com.upokecenter.mail.*;
+
+import java.util.*;
 
   public class NamedAddressTest {
     @Test
@@ -280,6 +280,14 @@ stringTemp);
     }
     @Test
     public void TestToString() {
-      // not implemented yet
+      String mbox =
+              "Me <@example.org,@example.net,@example.com:me@x.example>";
+      NamedAddress result = new NamedAddress(mbox);
+      {
+        String stringTemp = result.toString();
+        Assert.assertEquals(
+          "Me <me@x.example>",
+          stringTemp);
+      }
     }
   }

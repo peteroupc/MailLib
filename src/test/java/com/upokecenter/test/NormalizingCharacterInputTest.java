@@ -1,8 +1,7 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
-
-import com.upokecenter.text.*;
 import org.junit.Assert;
 import org.junit.Test;
+import com.upokecenter.text.*;
 
   public class NormalizingCharacterInputTest {
     @Test

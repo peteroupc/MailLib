@@ -78,7 +78,6 @@ import com.upokecenter.text.*;
     private static final int EncodingQuotedPrintable = 1;
     private static final int EncodingSevenBit = 0;
     private static final int EncodingUnknown = -1;
-    private static final boolean UseLenientLineBreaks = true;
 
     private static final java.util.Random msgidRandom = new java.util.Random();
     private static int msgidSequence;
@@ -112,11 +111,6 @@ import com.upokecenter.text.*;
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
       IByteReader transform = DataIO.ToByteReader(stream);
-      // if (useLenientLineBreaks) {
-      // TODO: Might not be correct if the transfer
-      // encoding turns out to be binary
-      // transform = new LineBreakNormalizeTransform(stream);
-      // }
       this.ReadMessage(transform);
     }
 
@@ -2005,7 +1999,6 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
     }
 
     private String GenerateMessageID() {
-      long ticks = new java.util.Date().getTime();
       StringBuilder builder = new StringBuilder();
       int seq = 0;
       builder.append("<");
@@ -2018,8 +2011,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         }
         seq = (msgidSequence++);
       }
-      String guid = java.util.UUID.randomUUID().toString();
       String ValueHex = "0123456789abcdef";
+      String guid = java.util.UUID.randomUUID().toString();
+      long ticks = new java.util.Date().getTime();
       for (int i = 0; i < 16; ++i) {
         builder.append(ValueHex.charAt((int)(ticks & 15)));
         ticks >>= 4;
@@ -2250,7 +2244,7 @@ startIndex)+(endIndex - startIndex)) : "";
         baseTransferEncoding,
         true);
       List<MessageStackEntry> multipartStack = new ArrayList<MessageStackEntry>();
-      MessageStackEntry entry = new Message.MessageStackEntry(this);
+      MessageStackEntry entry = new MessageStackEntry(this);
       multipartStack.add(entry);
       boundaryChecker.PushBoundary(entry.getBoundary());
       Message leaf = null;
@@ -2258,10 +2252,8 @@ startIndex)+(endIndex - startIndex)) : "";
       int bufferCount = 0;
       int bufferLength = buffer.length;
       this.body = new byte[0];
-      java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
+      ArrayWriter aw = new ArrayWriter();
+       {
         while (true) {
           int ch = 0;
           try {
@@ -2279,16 +2271,16 @@ ms = new java.io.ByteArrayOutputStream();
 
               if (leaf != null) {
                 if (bufferCount > 0) {
-                  ms.write(buffer, 0, bufferCount);
+                  aw.write(buffer, 0, bufferCount);
                 }
-                leaf.body = ms.toByteArray();
+                leaf.body = aw.ToArray();
                 // Clear for the next body
-                ms.reset();
+                aw.Clear();
                 bufferCount = 0;
               } else {
                 // Clear for the next body
                 bufferCount = 0;
-                ms.reset();
+                aw.Clear();
               }
               while (multipartStack.size() > stackCount) {
                 multipartStack.remove(stackCount);
@@ -2306,7 +2298,7 @@ ms = new java.io.ByteArrayOutputStream();
               // message's list of parts
               parentMessage.getParts().add(msg);
               multipartStack.add(entry);
-              ms.reset();
+              aw.Clear();
               ctype = msg.getContentType();
               leaf = ctype.isMultipart() ? null : msg;
               boundaryChecker.PushBoundary(entry.getBoundary());
@@ -2319,25 +2311,22 @@ ms = new java.io.ByteArrayOutputStream();
               // All body parts were read
               if (leaf != null) {
                 if (bufferCount > 0) {
-                  ms.write(buffer, 0, bufferCount);
+                  aw.write(buffer, 0, bufferCount);
                   bufferCount = 0;
                 }
-                leaf.body = ms.toByteArray();
+                leaf.body = aw.ToArray();
               }
               return;
             }
           } else {
             buffer[bufferCount++] = (byte)ch;
             if (bufferCount >= bufferLength) {
-              ms.write(buffer, 0, bufferCount);
+              aw.write(buffer, 0, bufferCount);
               bufferCount = 0;
             }
           }
         }
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
+      }
     }
 
     private void ReadSimpleBody(IByteReader stream) {

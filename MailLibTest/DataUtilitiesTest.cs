@@ -1,9 +1,9 @@
-using NUnit.Framework;
-using PeterO;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using NUnit.Framework;
+using PeterO;
 
 namespace Test {
   [TestFixture]

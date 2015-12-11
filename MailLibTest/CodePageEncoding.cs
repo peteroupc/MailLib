@@ -171,7 +171,6 @@ namespace MailLibTest {
       }
 
       private enum TokenType {
-
         Word,
 
         Number,

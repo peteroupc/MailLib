@@ -88,7 +88,12 @@ Assert.AreEqual(null, new DispositionBuilder(String.Empty));
       var disp = new DispositionBuilder();
       disp.SetDispositionType("attachment");
       disp.SetParameter("a", "b");
-      Assert.AreEqual("attachment;a=b", disp.ToString());
+      {
+string stringTemp = disp.ToString();
+Assert.AreEqual(
+"attachment;a=b",
+stringTemp);
+}
     }
   }
 }
