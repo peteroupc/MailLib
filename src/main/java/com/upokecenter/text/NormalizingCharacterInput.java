@@ -29,25 +29,24 @@ import com.upokecenter.text.encoders.*;
      * combines certain constituent characters to their composites (E-acute,
      * for example). This is called canonical composition.</li> <li>Two
      * normalization forms, <b>NFKC</b> and <b>NFKD</b>, are similar to NFC
-     * and NFD, except they also "decompose" certain characters, ((such
-     * instanceof ligatures) ? (ligatures)such : null), font or positional
-     * variants, and subscripts, whose visual distinction can matter in some
-     * contexts. This is called compatibility decomposition.</li> <li>The
-     * four normalization forms also enforce a standardized order for
-     * combining marks, since they can otherwise appear in an arbitrary
-     * order.</li></ul> <p>For more information, see Standard Annex 15 at
-     * http://www.unicode.org/reports/tr15/ .</p> <p><b>Thread safety:</b>
-     * This class is mutable; its properties can be changed. None of its
-     * instance methods are designed to be thread safe. Therefore, access to
-     * objects from this class must be synchronized if multiple threads can
-     * access them at the same time.</p> <p>NOTICE: While this class's
-     * source code is in the public domain, the class uses an internal
-     * class, called NormalizationData, that includes data derived from the
-     * Unicode Character Database. In case doing so is required, the
-     * permission notice for the Unicode Character Database is given
-     * here:</p> <p>COPYRIGHT AND PERMISSION NOTICE</p> <p>Copyright (c)
-     * 1991-2014 Unicode, Inc. All rights reserved. Distributed under the
-     * Terms of Use in http://www.unicode.org/copyright.html.</p>
+     * and NFD, except they also "decompose" certain characters, such as
+     * ligatures, font or positional variants, and subscripts, whose visual
+     * distinction can matter in some contexts. This is called compatibility
+     * decomposition.</li> <li>The four normalization forms also enforce a
+     * standardized order for combining marks, since they can otherwise
+     * appear in an arbitrary order.</li></ul> <p>For more information, see
+     * Standard Annex 15 at http://www.unicode.org/reports/tr15/ .</p>
+     * <p><b>Thread safety:</b> This class is mutable; its properties can be
+     * changed. None of its instance methods are designed to be thread safe.
+     * Therefore, access to objects from this class must be synchronized if
+     * multiple threads can access them at the same time.</p> <p>NOTICE:
+     * While this class's source code is in the public domain, the class
+     * uses an class, called NormalizationData, that includes data
+     * derived from the Unicode Character Database. In case doing so is
+     * required, the permission notice for the Unicode Character Database is
+     * given here:</p> <p>COPYRIGHT AND PERMISSION NOTICE</p> <p>Copyright
+     * (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under
+     * the Terms of Use in http://www.unicode.org/copyright.html.</p>
      * <p>Permission is hereby granted, free of charge, to any person
      * obtaining a copy of the Unicode data files and any associated
      * documentation (the "Data Files") or Unicode software and any

@@ -33,7 +33,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
       <artifactId>maillib</artifactId>
       <version>0.9.0</version>
     </dependency>
-    
+
 (The .NET version is currently version 0.9.1.)
 
 In other Java-based environments, the library can be referred to by its

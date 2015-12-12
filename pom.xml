@@ -33,6 +33,8 @@
 						<version>2.9.1</version>
             <configuration>
               <bottom>MailLib for Java documentation, generated in {currentYear}.</bottom>
+              <!-- Exclude certain packages whose classes are only public for convenience -->
+              <excludePackageNames>com.upokecenter.text.encoders,com.upokecenter.mail.transforms</excludePackageNames>
             </configuration>
 						<executions>
 							<execution>
