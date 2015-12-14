@@ -26,7 +26,7 @@ import com.upokecenter.text.*;
         return coder.getNumber();
       }
 
-    public CodePageEncoding (ICharacterInput input) {
+    public CodePageEncoding(ICharacterInput input) {
       this.coder = new CodePageCoder(input);
     }
 
@@ -44,7 +44,7 @@ import com.upokecenter.text.*;
         private int lastByte;
         private boolean unget;
 
-        public InputWithUnget (ICharacterInput stream) {
+        public InputWithUnget(ICharacterInput stream) {
           this.lastByte = -1;
           this.transform = stream;
         }
@@ -182,7 +182,7 @@ import com.upokecenter.text.*;
         private String word;
         private TokenType type;
         private InputWithUnget input;
-        public TokenReader (ICharacterInput ci) {
+        public TokenReader(ICharacterInput ci) {
           this.input = new InputWithUnget(ci);
         }
         public boolean IsWord(String str) {
@@ -350,7 +350,7 @@ import com.upokecenter.text.*;
 
       private static final class UCSMapping {
         private int[] array;
-        public UCSMapping () {
+        public UCSMapping() {
           array = new int[256];
           for (int i = 0; i < array.length; ++i) {
             array[i] = -2;
@@ -387,7 +387,7 @@ import com.upokecenter.text.*;
           return codepageNumber;
         }
 
-      public CodePageCoder (CodePageCoder other) {
+      public CodePageCoder(CodePageCoder other) {
         this.bytesToUCS = other.bytesToUCS;
         this.dbcsToUCS = other.dbcsToUCS;
         this.lastByte = -1;
@@ -398,7 +398,7 @@ import com.upokecenter.text.*;
         this.ucsToBytes = other.ucsToBytes;
       }
 
-      public CodePageCoder (ICharacterInput input) {
+      public CodePageCoder(ICharacterInput input) {
         TokenReader token = new TokenReader(input);
         int state = 0;
         int byteCount = 0;

@@ -24,6 +24,9 @@ namespace PeterO.Mail {
     /// the data uses UTF-8, a Unicode character encoding
     /// ("charset=utf-8"). Other top-level types include "audio", "video",
     /// and "application".</para>
+    /// <para>A media type is sometimes known as a "MIME type", for
+    /// Multipurpose Internet Mail Extensions, the standard that introduced
+    /// media types.</para>
     /// <para>This type is immutable, meaning its values can't be changed
     /// once it' s created. To create a changeable media type object, use
     /// the MediaTypeBuilder class.</para></summary>
