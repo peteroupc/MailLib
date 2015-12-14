@@ -18,7 +18,7 @@ using System.Reflection;
 [assembly: AssemblyCompany("Peter Occil")]
 [assembly:
 
-  AssemblyCopyright("Written by Peter O. in 2013-2014. Any copyright is released to the Public Domain. <http://creativecommons.org/publicdomain/zero/1.0/> "
+  AssemblyCopyright("Written by Peter O. in 2013-2015. Any copyright is released to the Public Domain. <http://creativecommons.org/publicdomain/zero/1.0/> "
   +
 
   "(This applies to all the source code except the normalization and IDNA data. See <https://github.com/peteroupc/MailLib/blob/master/LICENSE.md> for details.)"
@@ -26,4 +26,4 @@ using System.Reflection;
 [assembly: AssemblyProduct("MailLib")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("0.9.1")]
+[assembly: AssemblyVersion("0.10.0")]
