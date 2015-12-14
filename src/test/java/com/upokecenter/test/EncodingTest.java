@@ -272,10 +272,6 @@ System.out.print("");
       }
     }
 
-    static Object Transform(String str) {
-      return DataIO.ToByteReader(DataUtilities.GetUtf8Bytes(str, true));
-    }
-
     private static void TestBase64Decode(byte[] expected, String input) {
       String msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +

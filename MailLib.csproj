@@ -45,39 +45,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ArrayWriter.cs" />
-    <Compile Include="DataIO.cs" />
-    <Compile Include="IByteWriter.cs" />
-    <Compile Include="IWriter.cs" />
     <Compile Include="Mail\Transforms\TransformWithUnget.cs" />
     <Compile Include="DataUtilities.cs" />
-    <Compile Include="Text\Encoders\Big5.cs" />
-    <Compile Include="Text\Encoders\DecoderState.cs" />
-    <Compile Include="Text\Encoders\EncoderAlgorithms.cs" />
-    <Compile Include="Text\Encoders\EncodingAscii.cs" />
-    <Compile Include="Text\Encoders\EncodingBig5.cs" />
-    <Compile Include="Text\Encoders\EncodingEUCJP.cs" />
-    <Compile Include="Text\Encoders\EncodingGB18030.cs" />
-    <Compile Include="Text\Encoders\EncodingGBK.cs" />
-    <Compile Include="Text\Encoders\EncodingISO2022JP.cs" />
-    <Compile Include="Text\Encoders\EncodingKoreanEUC.cs" />
-    <Compile Include="Text\Encoders\EncodingLatinOne.cs" />
-    <Compile Include="Text\Encoders\EncodingReplacement.cs" />
-    <Compile Include="Text\Encodings.cs" />
-    <Compile Include="Text\Encoders\EncodingShiftJIS.cs" />
-    <Compile Include="Text\Encoders\EncodingSingleByte.cs" />
-    <Compile Include="Text\Encoders\EncodingUtf16.cs" />
-    <Compile Include="Text\Encoders\EncodingUtf16BE.cs" />
-    <Compile Include="Text\Encoders\EncodingUtf7.cs" />
-    <Compile Include="Text\Encoders\EncodingUtf8.cs" />
-    <Compile Include="Text\Encoders\EncodingXUserDefined.cs" />
-    <Compile Include="Text\Encoders\Gb18030.cs" />
-    <Compile Include="Text\ICharacterDecoder.cs" />
-    <Compile Include="Text\ICharacterEncoder.cs" />
-    <Compile Include="Text\ICharacterEncoding.cs" />
-    <Compile Include="Text\Encoders\Jis0208.cs" />
-    <Compile Include="Text\Encoders\Jis0212.cs" />
-    <Compile Include="Text\Encoders\Korean.cs" />
     <Compile Include="Mail\Address.cs" />
     <Compile Include="Mail\Base64Encoder.cs" />
     <Compile Include="Mail\Transforms\Base64Transform.cs" />
@@ -97,7 +66,6 @@
     <Compile Include="Mail\HeaderParserUtility.cs" />
     <Compile Include="Mail\IHeaderFieldParser.cs" />
     <Compile Include="Mail\ITokener.cs" />
-    <Compile Include="IByteReader.cs" />
     <Compile Include="Mail\Transforms\LiberalSevenBitTransform.cs" />
     <Compile Include="Mail\MediaType.cs" />
     <Compile Include="Mail\MediaTypeBuilder.cs" />
@@ -118,7 +86,6 @@
     <Compile Include="SortedMap.cs" />
     <Compile Include="Text\ByteData.cs" />
     <Compile Include="Text\DomainUtility.cs" />
-    <Compile Include="Text\ICharacterInput.cs" />
     <Compile Include="Text\Idna.cs" />
     <Compile Include="Text\IdnaData.cs" />
     <Compile Include="Text\NormalizationData.cs" />
@@ -126,19 +93,17 @@
     <Compile Include="Text\NormalizingCharacterInput.cs" />
     <Compile Include="Text\Normalizer.cs" />
     <Compile Include="Text\PartialListCharacterInput.cs" />
-    <Compile Include="Text\StringCharacterInput.cs" />
     <Compile Include="Text\UnicodeDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Encoding, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\PeterO.Encoding.0.10.0\lib\portable-net40+sl50+win+wpa81+wp80\Encoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets" />
-  <Import Project="packages\NuSpec.ReferenceGenerator.1.4.0\build\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\NuSpec.ReferenceGenerator.targets" Condition="Exists('packages\NuSpec.ReferenceGenerator.1.4.0\build\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\NuSpec.ReferenceGenerator.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('packages\NuSpec.ReferenceGenerator.1.4.0\build\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\NuSpec.ReferenceGenerator.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\NuSpec.ReferenceGenerator.1.4.0\build\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\NuSpec.ReferenceGenerator.targets'))" />
-  </Target>
 </Project>

@@ -7,8 +7,6 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 
-import com.upokecenter.text.encoders.*;
-
     /**
      * <p>Implements the Unicode normalization algorithm and contains methods and
      * functionality to test and convert Unicode strings for Unicode
@@ -41,7 +39,7 @@ import com.upokecenter.text.encoders.*;
      * @param str A string object.
      * @param form A Normalization object.
      */
-    public Normalizer (String str, Normalization form) {
+    public Normalizer(String str, Normalization form) {
       this.nci = new NormalizingCharacterInput(str, form);
     }
 

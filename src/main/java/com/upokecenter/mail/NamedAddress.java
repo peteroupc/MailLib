@@ -204,8 +204,8 @@ tokener.GetTokens());
 
     /**
      * Initializes a new instance of the NamedAddress class. Takes a group name and
-     * several named email ((addresses instanceof parameters) ?
-     * (parameters)addresses : null), and forms a group with them.
+     * several named email addresses as parameters, and forms a group with
+     * them.
      * @param groupName The group's name.
      * @param mailboxes A list of named addresses that make up the group.
      * @throws NullPointerException The parameter {@code groupName} or {@code

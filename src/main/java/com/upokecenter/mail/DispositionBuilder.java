@@ -34,7 +34,7 @@ public final void setDispositionType(String value) {
     /**
      * Initializes a new instance of the DispositionBuilder class.
      */
-    public DispositionBuilder () {
+    public DispositionBuilder() {
       this.parameters = new HashMap<String, String>();
       this.type = "attachment";
     }
@@ -44,7 +44,7 @@ public final void setDispositionType(String value) {
      * @param mt A ContentDisposition object.
      * @throws NullPointerException The parameter {@code mt} is null.
      */
-    public DispositionBuilder (ContentDisposition mt) {
+    public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
         throw new NullPointerException("mt");
       }
@@ -57,7 +57,7 @@ public final void setDispositionType(String value) {
      * @param type A string object.
      * @throws NullPointerException The parameter {@code type} is null.
      */
-    public DispositionBuilder (String type) {
+    public DispositionBuilder(String type) {
       if (type == null) {
   throw new NullPointerException("type");
 }

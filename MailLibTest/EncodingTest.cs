@@ -275,10 +275,6 @@ Console.Write(String.Empty);
       }
     }
 
-    internal static object Transform(string str) {
-      return DataIO.ToByteReader(DataUtilities.GetUtf8Bytes(str, true));
-    }
-
     private static void TestBase64Decode(byte[] expected, string input) {
       string msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +

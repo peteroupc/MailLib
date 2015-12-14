@@ -39,6 +39,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Encoding, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PeterO.Encoding.0.10.0\lib\portable-net45+dnxcore50+netcore45+win+wpa81+wp80\Encoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.core, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnitTestAdapter.2.0.0\lib\nunit.core.dll</HintPath>
       <Private>True</Private>
@@ -71,13 +75,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressTest.cs" />
-    <Compile Include="ArrayWriterTest.cs" />
-    <Compile Include="CharsetsTest.cs" />
-    <Compile Include="CodePageEncoding.cs" />
     <Compile Include="ContentDispositionTest.cs" />
-    <Compile Include="DataIOTest.cs" />
     <Compile Include="DispositionBuilderTest.cs" />
-    <Compile Include="EncodingsTest.cs" />
     <Compile Include="EncodingTest.cs" />
     <Compile Include="IdnaTest.cs" />
     <Compile Include="MediaTypeBuilderTest.cs" />
