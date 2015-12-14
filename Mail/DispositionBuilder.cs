@@ -40,7 +40,7 @@ namespace PeterO.Mail {
     /// <summary>Initializes a new instance of the DispositionBuilder
     /// class.</summary>
     /// <param name='mt'>A ContentDisposition object.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='mt'/> is null.</exception>
     public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
@@ -53,7 +53,7 @@ namespace PeterO.Mail {
     /// <summary>Initializes a new instance of the DispositionBuilder
     /// class.</summary>
     /// <param name='type'>A string object.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='type'/> is null.</exception>
     public DispositionBuilder(string type) {
       if (type == null) {
@@ -99,7 +99,7 @@ if (type.Length == 0) {
     /// <summary>Sets the disposition type, such as "inline".</summary>
     /// <param name='str'>A string object.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='str'/> is null.</exception>
     public DispositionBuilder SetDispositionType(string str) {
       if (str == null) {
@@ -121,7 +121,7 @@ if (type.Length == 0) {
     /// <param name='name'>The parameter to remove. The name is compared
     /// case insensitively.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// <exception cref="ArgumentNullException">The parameter <paramref
     /// name='name'/> is null.</exception>
     public DispositionBuilder RemoveParameter(string name) {
       if (name == null) {
@@ -137,9 +137,9 @@ if (type.Length == 0) {
     /// overwritten.</param>
     /// <param name='value'>Value of the parameter to set.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref='ArgumentNullException'>Either <paramref
+    /// <exception cref="ArgumentNullException">Either <paramref
     /// name='value'/> or <paramref name='name'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// <exception cref="ArgumentException">The parameter <paramref
     /// name='name'/> is empty, or it isn't a well-formed parameter
     /// name.</exception>
     public DispositionBuilder SetParameter(string name, string value) {

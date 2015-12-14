@@ -8,8 +8,6 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 using System;
 using System.Collections.Generic;
 
-using PeterO.Text.Encoders;
-
 namespace PeterO.Text {
     /// <summary>
     /// <para>A character input class that implements the Unicode
@@ -359,7 +357,7 @@ string str,
 int index,
 int length,
 Normalization form) : this(
-new StringCharacterInput(str, index, length),
+Encodings.StringToInput(str, index, length),
 form) {
     }
 
@@ -369,7 +367,7 @@ form) {
     /// <param name='form'>Specifies the normalization form to use when
     /// normalizing the text.</param>
     public NormalizingCharacterInput(string str, Normalization form) :
-      this(new StringCharacterInput(str), form) {
+      this(Encodings.StringToInput(str), form) {
     }
 
     /// <summary>Initializes a new instance of the

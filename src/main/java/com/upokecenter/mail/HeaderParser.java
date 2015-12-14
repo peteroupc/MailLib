@@ -225,7 +225,7 @@ ITokener tokener) {
       indexTemp = index;
       do {
         index = ParseCFWS(str, index, endIndex, tokener);
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = ParseAtext(str, index, endIndex, tokener);
           if (indexTemp2 != index) {
             index = indexTemp2;
@@ -298,7 +298,7 @@ ITokener tokener) {
         indexTemp2 = index;
         do {
           indexStart2 = index;
-          for (i2 = 0; ; ++i2) {
+          for (i2 = 0; true; ++i2) {
             indexTemp3 = index;
             do {
               indexStart3 = index;
@@ -338,7 +338,7 @@ tokener);
         if (tokener != null) {
  tokener.RestoreState(state2);
 }
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = ParseFWS(str, index, endIndex, tokener);
           if (indexTemp2 == index) {
             if (i < 1) {
@@ -816,7 +816,7 @@ ITokener tokener) {
         indexTemp2 = index;
         do {
           indexStart2 = index;
-          for (i2 = 0; ; ++i2) {
+          for (i2 = 0; true; ++i2) {
             indexTemp3 = index;
             do {
               indexStart3 = index;
@@ -858,7 +858,7 @@ ITokener tokener) {
                 } else {
                   break;
                 }
-                for (i4 = 0; ; ++i4) {
+                for (i4 = 0; true; ++i4) {
                   indexTemp5 = index;
                   do {
                     if (index + 1 < endIndex && ((str.charAt(index) == 45) &&
@@ -1303,7 +1303,7 @@ ITokener tokener) {
           break;
         }
         index = ParseLdhStr(str, index, endIndex, tokener);
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = index;
           do {
             indexStart2 = index;
@@ -1446,7 +1446,7 @@ ITokener tokener) {
       state = (tokener != null) ? tokener.GetState() : 0;
       indexTemp = index;
       do {
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = ParseAtext(str, index, endIndex, tokener);
           if (indexTemp2 != index) {
             index = indexTemp2;
@@ -1470,7 +1470,7 @@ ITokener tokener) {
             } else {
               break;
             }
-            for (i2 = 0; ; ++i2) {
+            for (i2 = 0; true; ++i2) {
               indexTemp3 = ParseAtext(str, index, endIndex, tokener);
               if (indexTemp3 != index) {
                 index = indexTemp3;
@@ -1614,7 +1614,7 @@ ITokener tokener) {
       indexStart = index;
       indexTemp = index;
       do {
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = index;
           do {
             indexStart2 = index;
@@ -1743,7 +1743,7 @@ ITokener tokener) {
         indexTemp2 = index;
         do {
           indexStart2 = index;
-          for (i2 = 0; ; ++i2) {
+          for (i2 = 0; true; ++i2) {
             indexTemp3 = index;
             do {
               indexStart3 = index;
@@ -1783,7 +1783,7 @@ tokener);
         if (tokener != null) {
  tokener.RestoreState(state2);
 }
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = ParseFWS(str, index, endIndex, tokener);
           if (indexTemp2 == index) {
             if (i < 1) {
@@ -2058,7 +2058,7 @@ ITokener tokener) {
               indexTemp2 = indexTemp3; break;
             }
             indexStart2 = index;
-            for (i2 = 0; ; ++i2) {
+            for (i2 = 0; true; ++i2) {
               indexTemp3 = ParseResinfo(str, index, endIndex, tokener);
               if (indexTemp3 == index) {
                 if (i2 < 1) {
@@ -2694,7 +2694,7 @@ ITokener tokener) {
             index = indexStart2; break;
           }
           index = ParseCFWS(str, index, endIndex, tokener);
-          for (i2 = 0; ; ++i2) {
+          for (i2 = 0; true; ++i2) {
             if (index < endIndex && (str.charAt(index) >= 48 && str.charAt(index) <= 57)) {
               ++index;
             } else if (i2 < 4) {
@@ -2979,7 +2979,7 @@ ITokener tokener) {
             } else {
               index = tx3;
             }
-            for (i2 = 0; ; ++i2) {
+            for (i2 = 0; true; ++i2) {
               indexTemp3 = ParseEncodingKeyword(str, index, endIndex, tokener);
               if (indexTemp3 != index) {
                 index = indexTemp3;
@@ -3012,7 +3012,7 @@ ITokener tokener) {
 }
         }
         index = ParseEncodingCount(str, index, endIndex, tokener);
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = ParseEncodingKeyword(str, index, endIndex, tokener);
           if (indexTemp2 != index) {
             index = indexTemp2;
@@ -3494,7 +3494,7 @@ int i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state,
           do {
             indexStart2 = index;
             index = ParseFWS(str, index, endIndex, tokener);
-            for (i2 = 0; ; ++i2) {
+            for (i2 = 0; true; ++i2) {
               indexTemp3 = ParseAtext(str, index, endIndex, tokener);
               if (indexTemp3 != index) {
                 index = indexTemp3;
@@ -4432,7 +4432,7 @@ int i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state,
           do {
             indexTemp3 = index;
             indexStart2 = index;
-            for (i2 = 0; ; ++i2) {
+            for (i2 = 0; true; ++i2) {
               indexTemp3 = ParseReceivedToken(str, index, endIndex, tokener);
               if (indexTemp3 == index) {
                 if (i2 < 1) {
@@ -4547,7 +4547,7 @@ ITokener tokener) {
         if (index == indexStart) {
           break;
         }
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = ParseFWS(str, index, endIndex, tokener);
           if (indexTemp2 != index) {
             index = indexTemp2;
@@ -4575,7 +4575,7 @@ tokener);
             } else {
               index = tx3;
             }
-            for (i2 = 0; ; ++i2) {
+            for (i2 = 0; true; ++i2) {
               indexTemp3 = ParseFWS(str, index, endIndex, tokener);
               if (indexTemp3 != index) {
                 index = indexTemp3;
@@ -4756,7 +4756,7 @@ ITokener tokener) {
       state = (tokener != null) ? tokener.GetState() : 0;
       indexTemp = index;
       do {
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = index;
           do {
             indexStart2 = index;
@@ -4831,7 +4831,7 @@ ITokener tokener) {
       state = (tokener != null) ? tokener.GetState() : 0;
       indexTemp = index;
       do {
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = index;
           do {
             indexStart2 = index;
@@ -4931,7 +4931,7 @@ ITokener tokener) {
       state = (tokener != null) ? tokener.GetState() : 0;
       indexTemp = index;
       do {
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = index;
           do {
             indexStart2 = index;
@@ -5122,11 +5122,11 @@ ITokener tokener) {
         } else {
           index = tx2;
         }
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = index;
           do {
             indexStart2 = index;
-            for (i2 = 0; ; ++i2) {
+            for (i2 = 0; true; ++i2) {
               indexTemp3 = ParseFWS(str, index, endIndex, tokener);
               if (indexTemp3 != index) {
                 index = indexTemp3;
@@ -6815,7 +6815,7 @@ ITokener tokener) {
       state = (tokener != null) ? tokener.GetState() : 0;
       indexTemp = index;
       do {
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = index;
           do {
             indexStart2 = index;
@@ -6964,7 +6964,7 @@ ITokener tokener) {
               while (index < endIndex && (str.charAt(index) == 13)) {
                 ++index;
               }
-              for (i3 = 0; ; ++i3) {
+              for (i3 = 0; true; ++i3) {
                 indexTemp4 = index;
                 do {
                   indexTemp5 = index;
@@ -6988,7 +6988,7 @@ ITokener tokener) {
                     indexTemp4 = indexTemp5; break;
                   }
                   indexStart4 = index;
-                  for (i4 = 0; ; ++i4) {
+                  for (i4 = 0; true; ++i4) {
                     indexTemp5 = ParseFWS(str, index, endIndex, tokener);
                     if (indexTemp5 == index) {
                     if (i4 < 1) {
@@ -7432,7 +7432,7 @@ ITokener tokener) {
         indexTemp2 = index;
         do {
           indexStart2 = index;
-          for (i2 = 0; ; ++i2) {
+          for (i2 = 0; true; ++i2) {
             indexTemp3 = index;
             do {
               indexStart3 = index;
@@ -7474,7 +7474,7 @@ ITokener tokener) {
                 } else {
                   break;
                 }
-                for (i4 = 0; ; ++i4) {
+                for (i4 = 0; true; ++i4) {
                   indexTemp5 = index;
                   do {
                     if (index + 1 < endIndex && ((str.charAt(index) == 45) &&
@@ -7827,7 +7827,7 @@ ITokener tokener) {
       state = (tokener != null) ? tokener.GetState() : 0;
       indexTemp = index;
       do {
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = index;
           do {
             if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <=
@@ -7896,7 +7896,7 @@ ITokener tokener) {
       indexTemp = index;
       do {
         indexTemp2 = index;
-        for (i = 0; ; ++i) {
+        for (i = 0; true; ++i) {
           indexTemp2 = ParseAtext(str, index, endIndex, tokener);
           if (indexTemp2 == index) {
             if (i < 1) {
@@ -9463,7 +9463,7 @@ ITokener tokener) {
         indexTemp2 = index;
         do {
           indexStart2 = index;
-          for (i2 = 0; ; ++i2) {
+          for (i2 = 0; true; ++i2) {
             indexTemp3 = ParseFWS(str, index, endIndex, tokener);
             if (indexTemp3 != index) {
               index = indexTemp3;

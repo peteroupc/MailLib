@@ -21,7 +21,7 @@ using System.Reflection;
   AssemblyCopyright("Written by Peter O. in 2013-2014. Any copyright is released to the Public Domain. <http://creativecommons.org/publicdomain/zero/1.0/> "
   +
 
-  "(This applies to all the source code except the normalization and IDNA data. See <https://github.com/peteroupc/MailLib/LICENSE.md> for details.)"
+  "(This applies to all the source code except the normalization and IDNA data. See <https://github.com/peteroupc/MailLib/blob/master/LICENSE.md> for details.)"
 )]
 [assembly: AssemblyProduct("MailLib")]
 [assembly: AssemblyTrademark("")]

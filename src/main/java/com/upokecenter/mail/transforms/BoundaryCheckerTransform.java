@@ -179,7 +179,7 @@ int c = this.lastByte = this.ungetting ? this.lastByte :
             this.ungetting = true;
             break;
           }
-          // Console.Write("" + ((char)c));
+          // System.out.print("" + ((char)c));
           ++bytesRead;
           this.ResizeBuffer(bytesRead + bufferStart);
           this.buffer[bytesRead + bufferStart - 1] = (byte)c;

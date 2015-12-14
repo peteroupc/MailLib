@@ -33,7 +33,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
       <artifactId>maillib</artifactId>
       <version>0.9.0</version>
     </dependency>
-    
+
 (The .NET version is currently version 0.9.1.)
 
 In other Java-based environments, the library can be referred to by its
@@ -128,6 +128,7 @@ Written in 2013-2014 by Peter O.
 
 Any copyright is dedicated to the Public Domain.
 [http://creativecommons.org/publicdomain/zero/1.0/](http://creativecommons.org/publicdomain/zero/1.0/)
+(For exceptions, see  [LICENSE.md](https://github.com/peteroupc/MailLib/blob/master/LICENSE.md).)
 
 If you like this, you should donate to Peter O.
-at: [http://peteroupc.github.io/MailLib/](http://peteroupc.github.io/MailLib/)
+at: [http://upokecenter.dreamhosters.com/articles/donate-now-2/](http://upokecenter.dreamhosters.com/articles/donate-now-2/)

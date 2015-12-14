@@ -36,26 +36,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\ArrayWriter.cs">
-      <Link>ArrayWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\DataIO.cs">
-      <Link>DataIO.cs</Link>
-    </Compile>
     <Compile Include="..\DataUtilities.cs">
       <Link>DataUtilities.cs</Link>
-    </Compile>
-    <Compile Include="..\IByteReader.cs">
-      <Link>IByteReader.cs</Link>
-    </Compile>
-    <Compile Include="..\IByteWriter.cs">
-      <Link>IByteWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\IWriter.cs">
-      <Link>IWriter.cs</Link>
     </Compile>
     <Compile Include="..\Mail\Address.cs">
       <Link>Mail\Address.cs</Link>
@@ -177,90 +159,6 @@
     <Compile Include="..\Text\DomainUtility.cs">
       <Link>Text\DomainUtility.cs</Link>
     </Compile>
-    <Compile Include="..\Text\Encoders\Big5.cs">
-      <Link>Text\Encoders\Big5.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\DecoderState.cs">
-      <Link>Text\Encoders\DecoderState.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncoderAlgorithms.cs">
-      <Link>Text\Encoders\EncoderAlgorithms.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingAscii.cs">
-      <Link>Text\Encoders\EncodingAscii.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingBig5.cs">
-      <Link>Text\Encoders\EncodingBig5.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingEUCJP.cs">
-      <Link>Text\Encoders\EncodingEUCJP.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingGB18030.cs">
-      <Link>Text\Encoders\EncodingGB18030.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingGBK.cs">
-      <Link>Text\Encoders\EncodingGBK.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingISO2022JP.cs">
-      <Link>Text\Encoders\EncodingISO2022JP.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingKoreanEUC.cs">
-      <Link>Text\Encoders\EncodingKoreanEUC.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingLatinOne.cs">
-      <Link>Text\Encoders\EncodingLatinOne.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingReplacement.cs">
-      <Link>Text\Encoders\EncodingReplacement.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingShiftJIS.cs">
-      <Link>Text\Encoders\EncodingShiftJIS.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingSingleByte.cs">
-      <Link>Text\Encoders\EncodingSingleByte.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingUtf16.cs">
-      <Link>Text\Encoders\EncodingUtf16.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingUtf16BE.cs">
-      <Link>Text\Encoders\EncodingUtf16BE.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingUtf7.cs">
-      <Link>Text\Encoders\EncodingUtf7.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingUtf8.cs">
-      <Link>Text\Encoders\EncodingUtf8.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\EncodingXUserDefined.cs">
-      <Link>Text\Encoders\EncodingXUserDefined.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\Gb18030.cs">
-      <Link>Text\Encoders\Gb18030.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\Jis0208.cs">
-      <Link>Text\Encoders\Jis0208.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\Jis0212.cs">
-      <Link>Text\Encoders\Jis0212.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encoders\Korean.cs">
-      <Link>Text\Encoders\Korean.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\Encodings.cs">
-      <Link>Text\Encodings.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\ICharacterDecoder.cs">
-      <Link>Text\ICharacterDecoder.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\ICharacterEncoder.cs">
-      <Link>Text\ICharacterEncoder.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\ICharacterEncoding.cs">
-      <Link>Text\ICharacterEncoding.cs</Link>
-    </Compile>
-    <Compile Include="..\Text\ICharacterInput.cs">
-      <Link>Text\ICharacterInput.cs</Link>
-    </Compile>
     <Compile Include="..\Text\Idna.cs">
       <Link>Text\Idna.cs</Link>
     </Compile>
@@ -282,12 +180,18 @@
     <Compile Include="..\Text\PartialListCharacterInput.cs">
       <Link>Text\PartialListCharacterInput.cs</Link>
     </Compile>
-    <Compile Include="..\Text\StringCharacterInput.cs">
-      <Link>Text\StringCharacterInput.cs</Link>
-    </Compile>
     <Compile Include="..\Text\UnicodeDatabase.cs">
       <Link>Text\UnicodeDatabase.cs</Link>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Encoding, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PeterO.Encoding.0.10.0\lib\portable-net40+sl50+win+wpa81+wp80\Encoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
