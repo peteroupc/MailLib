@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
     <id>PeterO.MailLib</id>
@@ -38,10 +38,10 @@ for now.
   <files>
     <file src="bin/Release/MailLib.dll" target="lib/portable-net45+dnxcore50+netcore45+win+wpa81+wp80" />
     <file src="bin/Release/MailLib.xml" target="lib/portable-net45+dnxcore50+netcore45+win+wpa81+wp80" />
-    <file src="bin/ReleaseNet4/MailLib.dll" target="lib/portable-net40+sl50+win+wpa81+wp80" />
-    <file src="bin/ReleaseNet4/MailLib.xml" target="lib/portable-net40+sl50+win+wpa81+wp80" />
+    <file src="bin/ReleaseNet40/MailLib.dll" target="lib/portable-net40+sl50+win+wpa81+wp80" />
+    <file src="bin/ReleaseNet40/MailLib.xml" target="lib/portable-net40+sl50+win+wpa81+wp80" />
   </files>
   <dependencies>
-    <dependency id="PeterO.Encoding" version="0.1.0"/>  
+    <dependency id="PeterO.Encoding" version="0.1.0"/>
   </dependencies>
 </package>

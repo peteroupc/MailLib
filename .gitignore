@@ -9,6 +9,7 @@ CBORTest/obj/
 packages/
 OpenCover/
 *.Cache
+*.nupkg
 *.sdsettings
 js/*.ht*
 js/DecTest.*
