@@ -359,6 +359,8 @@ int length,
 Normalization form) : this(
 Encodings.StringToInput(str, index, length),
 form) {
+  // TODO: StringToInput has different behavior in unpaired
+  // surrogates (returns U+FFFD) than IsNormalized
     }
 
     /// <summary>Initializes a new instance of the
@@ -368,6 +370,8 @@ form) {
     /// normalizing the text.</param>
     public NormalizingCharacterInput(string str, Normalization form) :
       this(Encodings.StringToInput(str), form) {
+  // TODO: StringToInput has different behavior in unpaired
+  // surrogates (returns U+FFFD) than IsNormalized
     }
 
     /// <summary>Initializes a new instance of the

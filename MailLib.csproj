@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{49EE222D-6E5D-4677-9E4D-1286B30E8BAA}</ProjectGuid>
@@ -118,7 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Encoding, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\PeterO.Encoding.0.10.0\lib\portable-net40+sl50+win+wpa81+wp80\Encoding.dll</HintPath>
+      <HintPath>packages\PeterO.Encoding.0.1.0\lib\portable-net40+sl50+win+wpa81+wp80\Encoding.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
