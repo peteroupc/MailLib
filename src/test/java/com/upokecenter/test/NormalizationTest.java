@@ -153,7 +153,7 @@ import java.util.*;
       private final String nfkc;
       private final String nfkd;
       private final String line;
-      public NormResult(String column, String line) {
+      public NormResult (String column, String line) {
         this.line = line;
         this.orig = GetCodePoints(column);
         this.origstr = ToCodePointString(this.orig);
