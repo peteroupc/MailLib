@@ -456,6 +456,30 @@ namespace PeterO.Mail {
       return null;
     }
 
+    /// <summary>Gets an array with the values of all header fields with
+    /// the specified name, using a basic case-insensitive comparison. (Two
+    /// strings are equal in such a comparison, if they match after
+    /// converting the basic upper-case letters A to Z (U + 0041 to U +
+    /// 005A) in both strings to lower case.).</summary>
+    /// <param name='name'>The name of a header field.</param>
+    /// <returns>An array containing the values of all header fields with
+    /// the given name, in the order they appear in the message. The array
+    /// will be empty if no header field has that name.</returns>
+    /// <exception cref='ArgumentNullException'>Name is null.</exception>
+    public string[] GetHeaderArray(string name) {
+      if (name == null) {
+        throw new ArgumentNullException("name");
+      }
+      name = DataUtilities.ToLowerCaseAscii(name);
+      var list = new List<string>();
+      for (int i = 0; i < this.headers.Count; i += 2) {
+        if (this.headers[i].Equals(name)) {
+          list.Add(this.headers[i + 1]);
+        }
+      }
+      return (string[])list.ToArray();
+    }
+
     /// <summary>Removes a header field by index.</summary>
     /// <param name='index'>Zero-based index of the header field to
     /// set.</param>

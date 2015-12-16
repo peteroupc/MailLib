@@ -6,6 +6,8 @@ Specifies what kind of data a message body is.
 
 A media type consists of a top-level type (the general category of the data), a subtype (the specific type), and an optional list of parameters. For example, the media type `text/plain; charset = utf-8`  is a text media type ("text"), namely, a plain text type ("plain"), and the parameters say that the data uses UTF-8, a Unicode character encoding ("charset=utf-8"). Other top-level types include "audio", "video", and "application".
 
+A media type is sometimes known as a "MIME type", for Multipurpose Internet Mail Extensions, the standard that introduced media types.
+
 This type is immutable, meaning its values can't be changed once it' s created. To create a changeable media type object, use the MediaTypeBuilder class.
 
 ### ApplicationOctetStream
