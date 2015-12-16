@@ -34,7 +34,7 @@ namespace PeterO.Mail {
     private string topLevelType;
 
     /// <summary>Gets the name of this media type's top-level type (such as
-    /// "text" or "audio".</summary>
+    /// "text" or "audio").</summary>
     /// <value>The name of this media type&#x27;s top-level type (such as
     /// &#x22;text&#x22; or &#x22;audio&#x22;.</value>
     public string TopLevelType {
