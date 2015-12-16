@@ -325,6 +325,8 @@ int length,
 Normalization form) {
  this(
 Encodings.StringToInput(str, index, length), form);
+  // TODO: StringToInput has different behavior in unpaired
+  // surrogates (returns U + FFFD) than IsNormalized
     }
 
     /**
@@ -335,6 +337,8 @@ Encodings.StringToInput(str, index, length), form);
      */
     public NormalizingCharacterInput (String str, Normalization form) {
  this(Encodings.StringToInput(str), form);
+  // TODO: StringToInput has different behavior in unpaired
+  // surrogates (returns U + FFFD) than IsNormalized
     }
 
     /**

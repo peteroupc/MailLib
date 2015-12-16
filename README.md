@@ -1,6 +1,9 @@
 MailLib
 =======
 
+[![NuGet Status](http://img.shields.io/nuget/v/PeterO.MailLib.svg?style=flat)](https://www.nuget.org/packages/PeterO.MailLib)
+[![Maven Central](https://img.shields.io/maven-central/v/com.upokecenter/maillib.svg?style=plastic)](https://search.maven.org/#search|ga|1|g%3A%22com.upokecenter%22%20AND%20a%3A%22maillib%22)
+
 **Download source code: [ZIP file](https://github.com/peteroupc/MailLib/archive/master.zip)**
 
 If you like this software, consider donating to me at this link: [http://upokecenter.dreamhosters.com/articles/donate-now-2/](http://upokecenter.dreamhosters.com/articles/donate-now-2/)
