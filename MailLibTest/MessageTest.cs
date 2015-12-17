@@ -19,6 +19,15 @@ namespace MailLibTest {
                     "z");
     }
 
+    public static string MessageGenerate(Message msg) {
+      if ((msg) == null) {
+ Assert.Fail();
+ }
+      string ret = msg.Generate();
+      Assert.AreEqual(2,EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""));
+      return ret;
+    }
+
     [Test]
     public void TestMediaTypeEncodingRoundTrip() {
       TestMediaTypeRoundTrip("xy" + EncodingTest.Repeat("\"", 20) + "z");
@@ -39,8 +48,10 @@ namespace MailLibTest {
     }
 
     internal static Message MessageFromString(string str) {
-      return new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(str,
-                    true)));
+      var msgobj = new Message(DataUtilities.GetUtf8Bytes(str,
+                    true));
+      MessageGenerate(msgobj);
+      return msgobj;
     }
 
     private static void TestMediaTypeRoundTrip(string str) {
@@ -49,11 +60,9 @@ namespace MailLibTest {
       Assert.IsFalse(mtstring.Contains("\r\n\r\n"));
       Assert.IsFalse(mtstring.Contains("\r\n \r\n"));
       Assert.AreEqual(str, MediaType.Parse(mtstring).GetParameter("z"));
-      var mtmessage = new Message(new MemoryStream(
-        DataUtilities.GetUtf8Bytes("MIME-Version: 1.0\r\nContent-Type: " +
-                    mtstring + "\r\n\r\n" , true)));
-      Assert.IsTrue(EncodingTest.IsGoodAsciiMessageFormat(mtmessage.Generate(),
-                    false));
+      var mtmessage = MessageFromString("MIME-Version: 1.0\r\nContent-Type: " +
+                    mtstring + "\r\n\r\n");
+      MessageGenerate(mtmessage);
     }
 
     [Test]
@@ -61,16 +70,15 @@ namespace MailLibTest {
       var msgids = new List<string>();
       // Tests whether unique Message IDs are generated for each message.
       for (int i = 0; i < 1000; ++i) {
-        string msgtext = new Message().SetHeader(
+        string msgtext = MessageGenerate(new Message().SetHeader(
           "from",
           "me@example.com")
-          .SetTextBody("Hello world.").Generate();
-        if (!EncodingTest.IsGoodAsciiMessageFormat(msgtext, false)) {
+          .SetTextBody("Hello world."));
+ if (EncodingTest.IsGoodAsciiMessageFormat(msgtext, false,"TestGenerate"
+) != 2) {
           Assert.Fail("Bad message format generated");
         }
-        string msgid = new Message(new
-                    MemoryStream(DataUtilities.GetUtf8Bytes(msgtext,
-                    true))).GetHeader("message-id");
+        string msgid = MessageFromString(msgtext).GetHeader("message-id");
         if (msgids.Contains(msgid)) {
           Assert.Fail(msgid);
         }
@@ -139,49 +147,23 @@ namespace MailLibTest {
 
     [Test]
     public void TestPrematureEnd() {
-      try {
-        Assert.AreEqual(null, new Message(new
-  MemoryStream(DataUtilities.GetUtf8Bytes("From: me@example.com\r\nDate",
-                    true))));
-        Assert.Fail("Should have failed");
-      } catch (MessageDataException) {
-Console.Write(String.Empty);
-} catch (Exception ex) {
-        Assert.Fail(ex.ToString());
-        throw new InvalidOperationException(String.Empty, ex);
-      }
-      try {
-        Assert.AreEqual(null, new Message(new
-  MemoryStream(DataUtilities.GetUtf8Bytes("From: me@example.com\r\nDate\r",
-                    true))));
-        Assert.Fail("Should have failed");
-      } catch (MessageDataException) {
-Console.Write(String.Empty);
-} catch (Exception ex) {
-        Assert.Fail(ex.ToString());
-        throw new InvalidOperationException(String.Empty, ex);
-      }
-      try {
-        Assert.AreEqual(null, new Message(new
-                    MemoryStream(DataUtilities.GetUtf8Bytes("Received: from x",
-                    true))));
-        Assert.Fail("Should have failed");
-      } catch (MessageDataException) {
-Console.Write(String.Empty);
-} catch (Exception ex) {
-        Assert.Fail(ex.ToString());
-        throw new InvalidOperationException(String.Empty, ex);
-      }
-      try {
-        Assert.AreEqual(null, new Message(new
-  MemoryStream(DataUtilities.GetUtf8Bytes("Received: from x\r",
-                    true))));
-        Assert.Fail("Should have failed");
-      } catch (MessageDataException) {
-Console.Write(String.Empty);
-} catch (Exception ex) {
-        Assert.Fail(ex.ToString());
-        throw new InvalidOperationException(String.Empty, ex);
+      string[] messages = {
+        "From: me@example.com\r\nDate",
+        "From: me@example.com\r\nDate\r",
+        "Received: from x",
+        "Received: from x\r"
+      };
+      foreach(string msgstr in messages) {
+        try {
+          byte[] data = DataUtilities.GetUtf8Bytes(msgstr, true);
+          Assert.AreEqual(null, new Message(data));
+          Assert.Fail("Should have failed");
+        } catch (MessageDataException) {
+          Console.Write(String.Empty);
+        } catch (Exception ex) {
+          Assert.Fail(ex.ToString());
+          throw new InvalidOperationException(String.Empty, ex);
+        }
       }
     }
 
@@ -895,8 +877,7 @@ Console.Write(String.Empty);
       message += "--b1--\r\n";
       message += "Epilogue";
       Message msg;
-      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
       {
         string stringTemp = msg.ContentType.GetParameter("boundary");
@@ -916,8 +897,7 @@ Console.Write(String.Empty);
       message += "--b2--\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
       Assert.AreEqual("Test", msg.Parts[0].Parts[0].BodyString);
@@ -927,8 +907,7 @@ Console.Write(String.Empty);
       message += "Test\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual("Test", msg.Parts[0].BodyString);
       // No CRLF before first boundary
@@ -939,8 +918,7 @@ Console.Write(String.Empty);
       message += "Test\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual("Test", msg.Parts[0].BodyString);
       // Base64 body part
@@ -950,8 +928,7 @@ Console.Write(String.Empty);
       message += "ABABXX==\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
       {
         string stringTemp = msg.ContentType.GetParameter("boundary");
@@ -974,8 +951,7 @@ Console.Write(String.Empty);
       message += "ABABXX==\r\n\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
       {
         string stringTemp = msg.ContentType.GetParameter("boundary");
@@ -1001,8 +977,7 @@ Console.Write(String.Empty);
       message += "--b2--\r\n\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
       {
         string stringTemp = msg.ContentType.GetParameter("boundary");
@@ -1028,8 +1003,7 @@ Console.Write(String.Empty);
       message += "--b2--\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new MemoryStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
       Assert.AreEqual("Test", msg.Parts[0].Parts[0].BodyString);
@@ -1312,6 +1286,15 @@ stringTemp);
     }
 
     [Test]
+    public void TestEmptyGroup() {
+      Message msg;
+      const string str = "From: me@example.com\r\nTo: empty-group:;" +
+        "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
+        "\r\n\r\nBody";
+      msg = MessageFromString(str);
+    }
+
+    [Test]
     public void TestMediaTypeArgumentValidationExtra() {
       Assert.IsTrue(MediaType.Parse("text/plain").IsText);
       Assert.IsTrue(MediaType.Parse("multipart/alternative").IsMultipart);
@@ -1348,9 +1331,7 @@ stringTemp);
           "test",
           stringTemp);
       }
-      msg = new Message(new
-               MemoryStream(DataUtilities.GetUtf8Bytes(msg.Generate(),
-                    true)));
+      msg = MessageFromString(msg.Generate());
       {
         string stringTemp = msg.GetHeader("x-test");
         Assert.AreEqual(

@@ -97,9 +97,9 @@ char b3) {
     public int Encode(
       int c,
       IWriter output) {
-  if (output == null) {
-    throw new NullPointerException("output");
-  }
+      if (output == null) {
+        throw new NullPointerException("output");
+      }
       int count = 0;
       if (c >= 0) {
         c &= 0xff;
@@ -137,7 +137,7 @@ char b3) {
               } else if (c == 0x46 && this.lineCount == 0) {
                 this.machineState = 3;
                 return count;
-              } else if (c == 0x09) {
+              } else if (c == 0x20) {
                 this.machineState = 7;
                 return count;
               } else if ((c >= 'A' && c <= 'Z') ||
@@ -243,80 +243,83 @@ HexAlphabet.charAt(c & 15));
               }
             }
           case 7: {
-            // Space
-            if (c < 0) {
-              count += this.IncrementAndAppend(output, "=20");
-              return count;
-            } else if (this.lineBreakMode == 2 && c == 0x0a) {
-              count += this.IncrementAndAppend(output, "=20\r\n");
-              this.lineCount = 0;
-              return count;
-            } else if (this.lineBreakMode == 2 && c == 0x0d) {
-              this.machineState = 8;
-              return count;
-            } else if (this.lineBreakMode == 2) {
-              count += this.IncrementAndAppendChar(output, ' ');
-              this.machineState = 0;
-              continue;
-            } else if (this.lineBreakMode == 1 && c == 0x0d) {
-              this.machineState = 8;
-              return count;
-            } else if (this.lineBreakMode == 1 && c == 0x0a) {
-              count += this.IncrementAndAppend(output, "=20");
-              this.machineState = 0;
-              continue;
-            } else {
-              count += this.IncrementAndAppendChar(output, ' ');
-              this.machineState = 0;
-              continue;
-            }
+              // Space
+              if (c < 0) {
+                count += this.IncrementAndAppend(output, "=20");
+                return count;
+              } else if (this.lineBreakMode == 2 && c == 0x0a) {
+                count += this.IncrementAndAppend(output, "=20\r\n");
+                this.lineCount = 0;
+                return count;
+              } else if (this.lineBreakMode == 2 && c == 0x0d) {
+                this.machineState = 8;
+                return count;
+              } else if (this.lineBreakMode == 2) {
+                count += this.IncrementAndAppendChar(output, ' ');
+                this.machineState = 0;
+                continue;
+              } else if (this.lineBreakMode == 1 && c == 0x0d) {
+                this.machineState = 8;
+                return count;
+              } else if (this.lineBreakMode == 1 && c == 0x0a) {
+                count += this.IncrementAndAppend(output, "=20");
+                this.machineState = 0;
+                continue;
+              } else {
+                count += this.IncrementAndAppendChar(output, ' ');
+                this.machineState = 0;
+                continue;
+              }
             }
           case 8: {
-            // Space, CR
-            if (c < 0) {
-              if (this.lineBreakMode == 2) {
-                // Space, linebreak, EOF
-                count += this.IncrementAndAppend(output, "=20\r\n");
-                this.machineState = 0;
-                return count;
-              } else if (this.lineBreakMode == 1) {
-                // Space, CR, EOF
+              // Space, CR
+              if (c < 0) {
+                if (this.lineBreakMode == 2) {
+                  // Space, linebreak, EOF
+                  count += this.IncrementAndAppend(output, "=20\r\n");
+                  this.lineCount = 0;
+                  this.machineState = 0;
+                  return count;
+                } else if (this.lineBreakMode == 1) {
+                  // Space, CR, EOF
+                  count += this.IncrementAndAppend(output, "=20");
+                  count += this.IncrementAndAppend(output, "=0D");
+                  count += this.IncrementAndAppend(output, "\r\n");
+                  this.lineCount = 0;
+                  this.machineState = 0;
+                  return count;
+                } else {
+                  // Space, CR, EOF
+                  count += this.IncrementAndAppend(output, "=20");
+                  count += this.IncrementAndAppend(output, "=0D");
+                  count += this.IncrementAndAppend(output, "=0A");
+                  this.machineState = 0;
+                  return count;
+                }
+              } else if (c == 0x0a) {
+                if (this.lineBreakMode == 2 || this.lineBreakMode == 1) {
+                  // Space, linebreak, EOF
+                  count += this.IncrementAndAppend(output, "=20\r\n");
+                  this.lineCount = 0;
+                  this.machineState = 0;
+                  return count;
+                } else {
+                  // Space, CR, EOF
+                  count += this.IncrementAndAppend(output, "=20");
+                  count += this.IncrementAndAppend(output, "=0D");
+                  count += this.IncrementAndAppend(output, "=0A");
+                  this.machineState = 0;
+                  return count;
+                }
+              } else if (c == 0x0d) {
                 count += this.IncrementAndAppend(output, "=20");
-                count += this.IncrementAndAppend(output, "=0D");
-                count += this.IncrementAndAppend(output, "\r\n");
                 this.machineState = 0;
-                return count;
+                continue;
               } else {
-                // Space, CR, EOF
-                count += this.IncrementAndAppend(output, "=20");
-                count += this.IncrementAndAppend(output, "=0D");
-                count += this.IncrementAndAppend(output, "=0A");
+                count += this.IncrementAndAppendChar(output, ' ');
                 this.machineState = 0;
-                return count;
+                continue;
               }
-            } else if (c == 0x0a) {
-              if (this.lineBreakMode == 2 || this.lineBreakMode == 1) {
-                // Space, linebreak, EOF
-                count += this.IncrementAndAppend(output, "=20\r\n");
-                this.machineState = 0;
-                return count;
-              } else {
-                // Space, CR, EOF
-                count += this.IncrementAndAppend(output, "=20");
-                count += this.IncrementAndAppend(output, "=0D");
-                count += this.IncrementAndAppend(output, "=0A");
-                this.machineState = 0;
-                return count;
-              }
-            } else if (c == 0x0d) {
-              count += this.IncrementAndAppend(output, "=20");
-              this.machineState = 0;
-              continue;
-            } else {
-              count += this.IncrementAndAppendChar(output, ' ');
-              this.machineState = 0;
-              continue;
-            }
             }
         }
       }

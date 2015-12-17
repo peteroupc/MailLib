@@ -412,8 +412,7 @@ endIndex);
         }
         sb.Append(str.Substring(lastIndex, str.Length - lastIndex));
         string ret = sb.ToString();
-        ret = ParserUtility.TrimSpaceAndTab(ret);
-        ret = ParserUtility.CollapseSpaceAndTab(ret);
+        ret = ParserUtility.TrimAndCollapseSpaceAndTab(ret);
         return ret;
       }
 

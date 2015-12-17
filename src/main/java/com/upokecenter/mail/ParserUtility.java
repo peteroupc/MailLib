@@ -71,12 +71,23 @@ prefix.length() >= str.length()) && str.substring(
         str.substring(index));
     }
 
-    public static String CollapseSpaceAndTab(String str) {
+    public static String TrimAndCollapseSpaceAndTab(String str) {
       if (((str) == null || (str).length() == 0)) {
         return str;
       }
       StringBuilder builder = null;
       int index = 0;
+      // Skip leading whitespace, if any
+      while (index < str.length()) {
+        char c = str.charAt(index);
+        if (c == 0x09 || c == 0x20) {
+          builder = (builder == null) ? ((new StringBuilder())) : builder;
+          ++index;
+        } else {
+          break;
+        }
+      }
+      var leadIndex = index;
       while (index < str.length()) {
         int si = index;
         char c = str.charAt(index++);
@@ -90,16 +101,15 @@ prefix.length() >= str.length()) && str.substring(
             break;
           }
         }
-        if (count > 0 && !(isspace && count == 1)) {
+        if (count > 0) {
           if (builder == null) {
-            // create the builder lazily, in case it's
-            // rare to pass strings with
-            // spaces (other than a single space)
-            // to this method
             builder = new StringBuilder();
-            builder.append(str.substring(0, si));
+            builder.append(str.substring(leadIndex, (leadIndex)+(si)));
           }
-          builder.append(' ');
+          if (c != 0x09 && c != 0x20) {
+            builder.append(' ');
+            builder.append(c);
+          }
         } else {
           if (builder != null) {
             builder.append(c);

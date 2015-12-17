@@ -162,7 +162,7 @@ String type,
     }
 
     /**
-     * Converts a filename from the Content-Disposition header to a suitable name
+     * Converts a file name from the Content-Disposition header to a suitable name
      * for saving data to a file. <p>Examples:</p>
      * <p>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt" (RFC 2047
      * encoding)</p> <p>"=?utf-8?q?long_filename?=" -&gt; "long filename"
@@ -176,15 +176,17 @@ String type,
      * frequently in Content-Disposition filenames); the value is decoded
      * under RFC 2231 if possible; characters unsuitable for use in a
      * filename (including the directory separators slash and backslash) are
-     * replaced with underscores; and the filename is truncated if it would
-     * otherwise be too long. The returned string will be in normalization
-     * form C. Returns an empty string if {@code str} is null.
+     * replaced with underscores; spaces and tabs are collapsed to a single
+     * space; leading and trailing spaces and tabs are removed; and the
+     * filename is truncated if it would otherwise be too long. The returned
+     * string will be in normalization form C. Returns an empty string if
+     * {@code str} is null.
      */
     public static String MakeFilename(String str) {
       if (str == null) {
         return "";
       }
-      str = ParserUtility.TrimSpaceAndTab(str);
+      str = ParserUtility.TrimAndCollapseSpaceAndTab(str);
       if (str.indexOf("=?") >= 0) {
         // May contain encoded words, which are very frequent
         // in Content-Disposition filenames (they would appear quoted
@@ -218,7 +220,7 @@ str.substring(
           }
         }
       }
-      str = ParserUtility.TrimSpaceAndTab(str);
+      str = ParserUtility.TrimAndCollapseSpaceAndTab(str);
       if (str.length() == 0) {
         return "_";
       }
@@ -266,7 +268,7 @@ str.substring(
         }
       }
       str = builder.toString();
-      str = ParserUtility.TrimSpaceAndTab(str);
+      str = ParserUtility.TrimAndCollapseSpaceAndTab(str);
       if (str.length() == 0) {
         return "_";
       }

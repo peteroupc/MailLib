@@ -47,8 +47,8 @@ import java.util.*;
       return sb.toString();
     }
 
-    static boolean IsGoodAsciiMessageFormat(String str, boolean
-                    hasMessageType) {
+    static int IsGoodAsciiMessageFormat(String str, boolean
+      hasMessageType, String fn) {
       int lineLength = 0;
       int wordLength = 0;
       int index = 0;
@@ -58,25 +58,28 @@ import java.util.*;
       boolean hasNonWhiteSpace = false;
       boolean startsWithSpace = false;
       boolean hasLongWord = false;
+      boolean meetsLineLength = true;
       if (index == endIndex) {
-        System.out.println("Message is empty");
-        return false;
+        System.out.println(fn + ":\n--Message is empty");
+        return 0;
       }
       while (index < endIndex) {
-        char c = str.charAt(index);
+        var c = str.charAt(index);
         if (index == 0 && (c == 0x20 || c == 0x09)) {
-          System.out.println("Starts with whitespace");
-          return false;
+          System.out.println(fn + ":\n--Starts with whitespace");
+          return 0;
         }
         if (c >= 0x80) {
           StringBuilder builder = new StringBuilder();
           String hex = "0123456789ABCDEF";
+          builder.append(fn);
+          builder.append(": ");
           builder.append("Non-ASCII character (0x");
           builder.append(hex.charAt(((int)c >> 4) & 15));
           builder.append(hex.charAt(((int)c) & 15));
           builder.append(")");
-          System.out.println(builder.toString());
-          return false;
+          //System.out.println(builder.toString());
+          return 0;
         }
         if (c == '\r' && index + 1 < endIndex && str.charAt(index + 1) == '\n') {
           index += 2;
@@ -84,42 +87,63 @@ import java.util.*;
             // Start of the body
             headers = false;
           } else if (headers && !hasNonWhiteSpace) {
-            System.out.println("Line has only whitespace");
-            return false;
+            System.out.println(fn + ":\n--Line has only whitespace");
+            return 0;
           }
           lineLength = 0;
           wordLength = 0;
-          colon = false;
           hasNonWhiteSpace = false;
           hasLongWord = false;
-          startsWithSpace = false;
           startsWithSpace |= index < endIndex && (str.charAt(index) == ' ' ||
-                    str.charAt(index) == '\t');
+            str.charAt(index) == '\t');
+          if (!startsWithSpace) {
+            colon = false;
+          }
           continue;
         }
         if (c == '\r' || c == '\n') {
-          System.out.println("Bare CR or bare LF");
-          return false;
+          System.out.println(fn + ":\n--Bare CR or bare LF");
+          return 0;
         }
-        if (headers && c == ':' && !colon && !startsWithSpace) {
+        if (c == ':' && headers && !colon && !startsWithSpace) {
           if (index + 1 >= endIndex) {
-            System.out.println("Colon at end");
-            return false;
+            System.out.println(fn + ":\n--Colon at end");
+            return 0;
           }
           if (index == 0 || str.charAt(index - 1) == 0x20 || str.charAt(index - 1) == 0x09 ||
-              str.charAt(index - 1) == 0x0d) {
-            String
-     wl = "End of line, whitespace, or start of message before colon";
-            System.out.println(wl);
-            return false;
+            str.charAt(index - 1) == 0x0d) {
+            System.out.println(fn +
+  ":\n--End of line, whitespace, or start of message before colon");
+            return 0;
           }
           if (str.charAt(index + 1) != 0x20) {
-            String test = str.substring(Math.max(index + 2 - 30, 0), (Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
-  System.out.println("No space after header name and colon: (0x {0:X2}) [" +
-                    test + "] " + index);
-            return false;
+            var test = str.substring(Math.max(index + 2 - 30, 0), (Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
+            System.out.println(fn +
+              ":\n--No space after header name and colon: (" +
+              str.charAt(index + 1) + ") [" + test + "] " + index);
+            return 0;
           }
           colon = true;
+        }
+        if (c == 0) {
+          StringBuilder builder = new StringBuilder();
+          String hex = "0123456789ABCDEF";
+          builder.append(fn + ": CTL in message (0x");
+          builder.append(hex.charAt(((int)c >> 4) & 15));
+          builder.append(hex.charAt(((int)c) & 15));
+          builder.append(")");
+          System.out.println(builder.toString());
+          return 0;
+        }
+        if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
+          StringBuilder builder = new StringBuilder();
+          String hex = "0123456789ABCDEF";
+          builder.append(fn + ": CTL in header (0x");
+          builder.append(hex.charAt(((int)c >> 4) & 15));
+          builder.append(hex.charAt(((int)c) & 15));
+          builder.append(")");
+          System.out.println(builder.toString());
+          return 0;
         }
         if (c == '\t' || c == 0x20) {
           ++lineLength;
@@ -129,27 +153,7 @@ import java.util.*;
           ++wordLength;
           hasNonWhiteSpace = true;
           hasLongWord |= (wordLength > 77) || (lineLength == wordLength &&
-                    wordLength > 78);
-        }
-        if (c == 0) {
-          StringBuilder builder = new StringBuilder();
-          String hex = "0123456789ABCDEF";
-          builder.append("CTL in message (0x");
-          builder.append(hex.charAt(((int)c >> 4) & 15));
-          builder.append(hex.charAt(((int)c) & 15));
-          builder.append(")");
-          System.out.println(builder.toString());
-          return false;
-        }
-        if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
-          StringBuilder builder = new StringBuilder();
-          String hex = "0123456789ABCDEF";
-          builder.append("CTL in header (0x");
-          builder.append(hex.charAt(((int)c >> 4) & 15));
-          builder.append(hex.charAt(((int)c) & 15));
-          builder.append(")");
-          System.out.println(builder.toString());
-          return false;
+            wordLength > 78);
         }
         int maxLineLength = 998;
         if (!headers && (!hasLongWord && !hasMessageType)) {
@@ -159,13 +163,17 @@ import java.util.*;
           maxLineLength = 78;
         }
         if (lineLength > maxLineLength) {
-          System.out.println("Line length exceeded (" + maxLineLength + " " +
-                    (str.substring(index - 78,(index - 78)+(78))) + ")");
-          return false;
+          if (lineLength > 998) {
+            //System.out.println(fn + ":\n--Line length exceeded (" +
+            // maxLineLength + " " +
+            //  (str.substring(index - 78,(index - 78)+(78))) + ")");
+            return 0;
+          }
+          meetsLineLength = false;
         }
         ++index;
       }
-      return true;
+      return meetsLineLength ? 2 : 1;
     }
 
     public static String toString(byte[] array) {
