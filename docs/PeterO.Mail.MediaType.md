@@ -78,7 +78,7 @@ This media type's subtype.
 
     public string TopLevelType { get; }
 
-Gets the name of this media type's top-level type (such as "text" or "audio".
+Gets the name of this media type's top-level type (such as "text" or "audio").
 
 <b>Returns:</b>
 

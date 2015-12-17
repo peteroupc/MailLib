@@ -10,7 +10,7 @@ If you like this software, consider donating to me at this link: [http://upokece
 
 ----
 
-A portable library in C# and Java for parsing Internet mail messages.
+A portable library in C# and Java for parsing and generating Internet mail messages.
 
 Documentation
 ------------

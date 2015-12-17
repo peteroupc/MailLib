@@ -22,8 +22,8 @@ namespace PeterO.Mail {
 
     /// <summary>Gets a string containing this object's disposition type,
     /// such as "inline" or "attachment".</summary>
-    /// <value>A string containing this object&#x27;s disposition type,
-    /// such as &#x22;inline&#x22; or &#x22;attachment&#x22;.</value>
+    /// <value>A string containing this object&apos;s disposition type,
+    /// such as &quot;inline&quot; or &quot;attachment&quot;.</value>
     public string DispositionType {
       get {
         return this.dispositionType;
@@ -161,8 +161,8 @@ string type,
       return sb.ToString();
     }
 
-    /// <summary>Converts a filename from the Content-Disposition header to
-    /// a suitable name for saving data to a file.
+    /// <summary>Converts a file name from the Content-Disposition header
+    /// to a suitable name for saving data to a file.
     /// <para>Examples:</para>
     /// <para>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt" (RFC 2047
     /// encoding)</para>
@@ -180,15 +180,17 @@ string type,
     /// they occur so frequently in Content-Disposition filenames); the
     /// value is decoded under RFC 2231 if possible; characters unsuitable
     /// for use in a filename (including the directory separators slash and
-    /// backslash) are replaced with underscores; and the filename is
-    /// truncated if it would otherwise be too long. The returned string
-    /// will be in normalization form C. Returns an empty string if
-    /// <paramref name='str'/> is null.</returns>
+    /// backslash) are replaced with underscores; spaces and tabs are
+    /// collapsed to a single space; leading and trailing spaces and tabs
+    /// are removed; and the filename is truncated if it would otherwise be
+    /// too long. The returned string will be in normalization form C.
+    /// Returns an empty string if <paramref name='str'/> is
+    /// null.</returns>
     public static string MakeFilename(string str) {
       if (str == null) {
         return String.Empty;
       }
-      str = ParserUtility.TrimSpaceAndTab(str);
+      str = ParserUtility.TrimAndCollapseSpaceAndTab(str);
       if (str.IndexOf("=?", StringComparison.Ordinal) >= 0) {
         // May contain encoded words, which are very frequent
         // in Content-Disposition filenames (they would appear quoted
@@ -222,7 +224,7 @@ str.IndexOf('\'')));
           }
         }
       }
-      str = ParserUtility.TrimSpaceAndTab(str);
+      str = ParserUtility.TrimAndCollapseSpaceAndTab(str);
       if (str.Length == 0) {
         return "_";
       }
@@ -270,7 +272,7 @@ str.IndexOf('\'')));
         }
       }
       str = builder.ToString();
-      str = ParserUtility.TrimSpaceAndTab(str);
+      str = ParserUtility.TrimAndCollapseSpaceAndTab(str);
       if (str.Length == 0) {
         return "_";
       }
@@ -326,9 +328,9 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
     /// be matched case-insensitively. Can't be null.</param>
     /// <returns>The value of the parameter, or null if the parameter does
     /// not exist.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='name'/> is empty.</exception>
     public string GetParameter(string name) {
       if (name == null) {
@@ -409,7 +411,7 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
     /// <param name='dispoValue'>A string object.</param>
     /// <returns>A content disposition object, or "Attachment" if <paramref
     /// name='dispoValue'/> is empty or syntactically invalid.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='dispoValue'/> is null.</exception>
     public static ContentDisposition Parse(string dispoValue) {
       if (dispoValue == null) {
@@ -425,7 +427,7 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
     /// <param name='defaultValue'>The value to return in case the
     /// disposition value is syntactically invalid. Can be null.</param>
     /// <returns>A ContentDisposition object.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='dispositionValue'/> is null.</exception>
     public static ContentDisposition Parse(
 string dispositionValue,

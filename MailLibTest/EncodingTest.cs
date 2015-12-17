@@ -48,36 +48,39 @@ namespace MailLibTest {
       return sb.ToString();
     }
 
-    internal static bool IsGoodAsciiMessageFormat(string str, bool
-                    hasMessageType) {
+    internal static int IsGoodAsciiMessageFormat(string str, bool
+      hasMessageType, string fn) {
       var lineLength = 0;
       var wordLength = 0;
       var index = 0;
-      int endIndex = str.Length;
+      var endIndex = str.Length;
       var headers = true;
       var colon = false;
       var hasNonWhiteSpace = false;
       var startsWithSpace = false;
       var hasLongWord = false;
+      var meetsLineLength = true;
       if (index == endIndex) {
-        Console.WriteLine("Message is empty");
-        return false;
+        Console.WriteLine(fn + ":\n--Message is empty");
+        return 0;
       }
       while (index < endIndex) {
-        char c = str[index];
+        var c = str[index];
         if (index == 0 && (c == 0x20 || c == 0x09)) {
-          Console.WriteLine("Starts with whitespace");
-          return false;
+          Console.WriteLine(fn + ":\n--Starts with whitespace");
+          return 0;
         }
         if (c >= 0x80) {
           var builder = new StringBuilder();
           const string hex = "0123456789ABCDEF";
+          builder.Append(fn);
+          builder.Append(": ");
           builder.Append("Non-ASCII character (0x");
           builder.Append(hex[((int)c >> 4) & 15]);
           builder.Append(hex[((int)c) & 15]);
           builder.Append(")");
-          Console.WriteLine(builder.ToString());
-          return false;
+          //Console.WriteLine(builder.ToString());
+          return 0;
         }
         if (c == '\r' && index + 1 < endIndex && str[index + 1] == '\n') {
           index += 2;
@@ -85,43 +88,64 @@ namespace MailLibTest {
             // Start of the body
             headers = false;
           } else if (headers && !hasNonWhiteSpace) {
-            Console.WriteLine("Line has only whitespace");
-            return false;
+            Console.WriteLine(fn + ":\n--Line has only whitespace");
+            return 0;
           }
           lineLength = 0;
           wordLength = 0;
-          colon = false;
           hasNonWhiteSpace = false;
           hasLongWord = false;
-          startsWithSpace = false;
           startsWithSpace |= index < endIndex && (str[index] == ' ' ||
-                    str[index] == '\t');
+            str[index] == '\t');
+          if (!startsWithSpace) {
+            colon = false;
+          }
           continue;
         }
         if (c == '\r' || c == '\n') {
-          Console.WriteLine("Bare CR or bare LF");
-          return false;
+          Console.WriteLine(fn + ":\n--Bare CR or bare LF");
+          return 0;
         }
-        if (headers && c == ':' && !colon && !startsWithSpace) {
+        if (c == ':' && headers && !colon && !startsWithSpace) {
           if (index + 1 >= endIndex) {
-            Console.WriteLine("Colon at end");
-            return false;
+            Console.WriteLine(fn + ":\n--Colon at end");
+            return 0;
           }
           if (index == 0 || str[index - 1] == 0x20 || str[index - 1] == 0x09 ||
-              str[index - 1] == 0x0d) {
-            const string
-     wl = "End of line, whitespace, or start of message before colon";
-            Console.WriteLine(wl);
-            return false;
+            str[index - 1] == 0x0d) {
+            Console.WriteLine(fn +
+  ":\n--End of line, whitespace, or start of message before colon");
+            return 0;
           }
           if (str[index + 1] != 0x20) {
-            string test = str.Substring(Math.Max(index + 2 - 30, 0),
-                    Math.Min(index + 2, 30));
-  Console.WriteLine("No space after header name and colon: (0x {0:X2}) [" +
-                    test + "] " + index);
-            return false;
+            var test = str.Substring(Math.Max(index + 2 - 30, 0),
+              Math.Min(index + 2, 30));
+            Console.WriteLine(fn +
+              ":\n--No space after header name and colon: (" +
+              str[index + 1] + ") [" + test + "] " + index);
+            return 0;
           }
           colon = true;
+        }
+        if (c == 0) {
+          var builder = new StringBuilder();
+          const string hex = "0123456789ABCDEF";
+          builder.Append(fn + ": CTL in message (0x");
+          builder.Append(hex[((int)c >> 4) & 15]);
+          builder.Append(hex[((int)c) & 15]);
+          builder.Append(")");
+          Console.WriteLine(builder.ToString());
+          return 0;
+        }
+        if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
+          var builder = new StringBuilder();
+          const string hex = "0123456789ABCDEF";
+          builder.Append(fn + ": CTL in header (0x");
+          builder.Append(hex[((int)c >> 4) & 15]);
+          builder.Append(hex[((int)c) & 15]);
+          builder.Append(")");
+          Console.WriteLine(builder.ToString());
+          return 0;
         }
         if (c == '\t' || c == 0x20) {
           ++lineLength;
@@ -131,27 +155,7 @@ namespace MailLibTest {
           ++wordLength;
           hasNonWhiteSpace = true;
           hasLongWord |= (wordLength > 77) || (lineLength == wordLength &&
-                    wordLength > 78);
-        }
-        if (c == 0) {
-          var builder = new StringBuilder();
-          const string hex = "0123456789ABCDEF";
-          builder.Append("CTL in message (0x");
-          builder.Append(hex[((int)c >> 4) & 15]);
-          builder.Append(hex[((int)c) & 15]);
-          builder.Append(")");
-          Console.WriteLine(builder.ToString());
-          return false;
-        }
-        if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
-          var builder = new StringBuilder();
-          const string hex = "0123456789ABCDEF";
-          builder.Append("CTL in header (0x");
-          builder.Append(hex[((int)c >> 4) & 15]);
-          builder.Append(hex[((int)c) & 15]);
-          builder.Append(")");
-          Console.WriteLine(builder.ToString());
-          return false;
+            wordLength > 78);
         }
         var maxLineLength = 998;
         if (!headers && (!hasLongWord && !hasMessageType)) {
@@ -161,13 +165,17 @@ namespace MailLibTest {
           maxLineLength = 78;
         }
         if (lineLength > maxLineLength) {
-          Console.WriteLine("Line length exceeded (" + maxLineLength + " " +
-                    (str.Substring(index - 78, 78)) + ")");
-          return false;
+          if (lineLength > 998) {
+            //Console.WriteLine(fn + ":\n--Line length exceeded (" +
+            // maxLineLength + " " +
+            //  (str.Substring(index - 78, 78)) + ")");
+            return 0;
+          }
+          meetsLineLength = false;
         }
         ++index;
       }
-      return true;
+      return meetsLineLength ? 2 : 1;
     }
 
     public static String ToString(byte[] array) {

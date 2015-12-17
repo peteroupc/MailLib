@@ -158,7 +158,7 @@ A list of addresses found in the From header field or fields.
 
     public System.Collections.Generic.IList HeaderFields { get; }
 
-Gets a snapshot of the header fields of this message, in the order they were added. For each item in the list, the key is the header field's name and the value is its value.
+Gets a snapshot of the header fields of this message, in the order they were added. For each item in the list, the key is the header field's name (where any basic upper-case letters [U+0041 to U+005A] are converted to lower case) and the value is the header field's value.
 
 <b>Returns:</b>
 
@@ -323,6 +323,26 @@ A KeyValuePair object. The key is the name of the header field, such as "From" o
  * System.ArgumentException:
 The parameter  <i>index</i>
  is 0 or at least as high as the number of header fields.
+
+### GetHeaderArray
+
+    public string[] GetHeaderArray(
+        string name);
+
+Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+
+<b>Parameters:</b>
+
+ * <i>name</i>: The name of a header field.
+
+<b>Returns:</b>
+
+An array containing the values of all header fields with the given name, in the order they appear in the message. The array will be empty if no header field has that name.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+Name is null.
 
 ### RemoveHeader
 

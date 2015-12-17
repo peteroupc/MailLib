@@ -91,6 +91,38 @@ import com.upokecenter.mail.*;
           "hello.txt",
           stringTemp);
       }
+
+      stringTemp =
+  ContentDisposition.MakeFilename(" " + " " + "hello.txt");
+      Assert.assertEquals(
+        "hello.txt",
+        stringTemp);
+      stringTemp =
+  ContentDisposition.MakeFilename("hello" + " " + " " + "txt");
+      Assert.assertEquals(
+        "hello txt",
+        stringTemp);
+      stringTemp =
+  ContentDisposition.MakeFilename("hello.txt" + " " + " ");
+      Assert.assertEquals(
+        "hello.txt",
+        stringTemp);
+      stringTemp =
+  ContentDisposition.MakeFilename(" "  + "hello.txt");
+      Assert.assertEquals(
+        "hello.txt",
+        stringTemp);
+      stringTemp =
+  ContentDisposition.MakeFilename("hello" + " "  + "txt");
+      Assert.assertEquals(
+        "hello txt",
+        stringTemp);
+      stringTemp =
+  ContentDisposition.MakeFilename("hello.txt" + " ");
+      Assert.assertEquals(
+        "hello.txt",
+        stringTemp);
+
       {
         stringTemp =
           ContentDisposition.MakeFilename("=?utf-8?q?___hello.txt___?=");
@@ -98,9 +130,23 @@ import com.upokecenter.mail.*;
           "hello.txt",
           stringTemp);
       }
-      {
         stringTemp =
-          ContentDisposition.MakeFilename("com0.txt");
+          ContentDisposition.MakeFilename("=?utf-8?q?a?= =?utf-8?q?b?=");
+        Assert.assertEquals(
+          "ab",
+          stringTemp);
+        stringTemp =
+          ContentDisposition.MakeFilename("=?utf-8?q?a?= =?x-unknown?q?b?=");
+        Assert.assertEquals(
+          "a b",
+          stringTemp);
+        stringTemp =
+          ContentDisposition.MakeFilename("a" + " " + " " + " " + "b");
+        Assert.assertEquals(
+          "a b",
+          stringTemp);
+      {
+        stringTemp = ContentDisposition.MakeFilename("com0.txt");
         Assert.assertEquals("_com0.txt", stringTemp);
       }
       {

@@ -248,9 +248,11 @@ public final void setContentType(MediaType value) {
       }
 
     /**
-     * Gets a snapshot of the header fields of this message, in the order they were
-     * added. For each item in the list, the key is the header field's name
-     * and the value is its value.
+     * Gets a snapshot of the header fields of this message, in the order in which
+     * they appear in the message. For each item in the list, the key is the
+     * header field's name (where any basic upper-case letters [U+0041 to U
+     * + 005A] are converted to lower case) and the value is the header
+     * field's value.
      * @return A snapshot of the header fields of this message.
      */
     public final List<Map.Entry<String, String>> getHeaderFields() {
@@ -365,23 +367,11 @@ public final void setSubject(String value) {
      */
 
     public Message GetBodyMessage() {
-      if (this.getContentType().getTopLevelType().equals("message") &&
+      return (this.getContentType().getTopLevelType().equals("message") &&
           (this.getContentType().getSubType().equals("rfc822") ||
            this.getContentType().getSubType().equals("news") ||
-           this.getContentType().getSubType().equals("global"))) {
-        {
-java.io.ByteArrayInputStream ms = null;
-try {
-ms = new java.io.ByteArrayInputStream(this.body);
-
-          return new Message(ms);
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
-}
-      }
-      return null;
+           this.getContentType().getSubType().equals("global"))) ? (new
+             Message(this.body)) : (null);
     }
 
     /**
@@ -544,9 +534,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * @param value Value of the header field.
      * @return This instance.
      * @throws IllegalArgumentException The parameter {@code index} is 0 or at least as
-     * high as the number of header fieldss; or, the header field name is
-     * too long or contains an invalid character, or the header field's
-     * value is syntactically invalid.
+     * high as the number of header fields; or, the header field name is too
+     * long or contains an invalid character, or the header field's value is
+     * syntactically invalid.
      * @throws NullPointerException The parameter {@code name} or {@code value} is
      * null.
      */
@@ -572,9 +562,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
      * @param value Value of the header field.
      * @return This instance.
      * @throws IllegalArgumentException The parameter {@code index} is 0 or at least as
-     * high as the number of header fieldss; or, the header field name is
-     * too long or contains an invalid character, or the header field's
-     * value is syntactically invalid.
+     * high as the number of header fields; or, the header field name is too
+     * long or contains an invalid character, or the header field's value is
+     * syntactically invalid.
      * @throws NullPointerException The parameter {@code value} is null.
      */
     public Message SetHeader(int index, String value) {
@@ -623,7 +613,8 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     /**
      * Sets the body of this message to the specified string in HTML format. The
-     * character sequences CR, LF, and CR/LF will be converted to CR/LF line
+     * character sequences CR (carriage return, "\r", U+000D), LF (line
+     * feed, "\n" , U+000A), and CR/LF will be converted to CR/LF line
      * breaks. Unpaired surrogate code points will be replaced with
      * replacement characters.
      * @param str A string consisting of the message in HTML format.
@@ -642,8 +633,9 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     /**
      * Sets the body of this message to a multipart body with plain text and HTML
-     * versions of the same message. The character sequences CR, LF, and
-     * CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code
+     * versions of the same message. The character sequences CR (carriage
+     * return, "\r" , U+000D), LF (line feed, "\n", U + 000A), and CR/LF
+     * will be converted to CR/LF line breaks. Unpaired surrogate code
      * points will be replaced with replacement characters.
      * @param text A string consisting of the plain text version of the message.
      * @param html A string consisting of the HTML version of the message.
@@ -674,9 +666,11 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
 
     /**
      * Sets the body of this message to the specified plain text string. The
-     * character sequences CR, LF, and CR/LF will be converted to CR/LF line
+     * character sequences CR (carriage return, "\r" , U+000D), LF (line
+     * feed, "\n" , U+000A), and CR/LF will be converted to CR/LF line
      * breaks. Unpaired surrogate code points will be replaced with
-     * replacement characters.
+     * replacement characters. This method changes this message's media type
+     * to plain text.
      * @param str A string consisting of the message in plain text format.
      * @return This instance.
      * @throws NullPointerException The parameter {@code str} is null.
@@ -1797,6 +1791,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
       boolean haveContentType = false;
       boolean haveContentDisp = false;
       boolean haveMsgId = false;
+      boolean haveFrom = false;
       boolean[] haveHeaders = new boolean[11];
       byte[] bodyToWrite = this.body;
       MediaTypeBuilder builder = new MediaTypeBuilder(this.getContentType());
@@ -1826,8 +1821,10 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           } else if (builder.getSubType().equals("delivery-status") &&
                     !msgCanBeUnencoded) {
             builder.SetSubType("global-delivery-status");
-          } else if (!msgCanBeUnencoded) {
-            throw new MessageDataException("Message body can't be encoded");
+          } else if (!msgCanBeUnencoded && !builder.getSubType().equals("global") &&
+            !builder.getSubType().equals("global-disposition-notification") &&
+            !builder.getSubType().equals("global-delivery-status") &&
+            !builder.getSubType().equals("global-headers")) {
           }
         }
       }
@@ -1873,6 +1870,12 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
           }
           haveContentEncoding = true;
           value = encodingString;
+        } else if (name.equals("from")) {
+          if (haveFrom) {
+            // Already outputted, continue
+            continue;
+          }
+          haveFrom = true;
         }
         if (
           depth > 0 && (
@@ -1964,7 +1967,7 @@ try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
         }
         AppendAscii(output, "\r\n");
       }
-      if (true && depth == 0) {
+      if (!haveFrom && depth == 0) {
         // Output a synthetic From field if it doesn't
         // exist and this isn't a body part
         AppendAscii(output, "From: me@author-address.invalid\r\n");

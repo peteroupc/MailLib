@@ -413,8 +413,7 @@ endIndex);
         }
         sb.append(str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)));
         String ret = sb.toString();
-        ret = ParserUtility.TrimSpaceAndTab(ret);
-        ret = ParserUtility.CollapseSpaceAndTab(ret);
+        ret = ParserUtility.TrimAndCollapseSpaceAndTab(ret);
         return ret;
       }
 

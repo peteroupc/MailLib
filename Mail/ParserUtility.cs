@@ -70,12 +70,23 @@ prefix.Length).Equals(prefix);
         str.Substring(index));
     }
 
-    public static string CollapseSpaceAndTab(string str) {
+    public static string TrimAndCollapseSpaceAndTab(string str) {
       if (string.IsNullOrEmpty(str)) {
         return str;
       }
       StringBuilder builder = null;
       var index = 0;
+      // Skip leading whitespace, if any
+      while (index < str.Length) {
+        char c = str[index];
+        if (c == 0x09 || c == 0x20) {
+          builder = builder ?? (new StringBuilder());
+          ++index;
+        } else {
+          break;
+        }
+      }
+      var leadIndex = index;
       while (index < str.Length) {
         int si = index;
         char c = str[index++];
@@ -89,16 +100,15 @@ prefix.Length).Equals(prefix);
             break;
           }
         }
-        if (count > 0 && !(isspace && count == 1)) {
+        if (count > 0) {
           if (builder == null) {
-            // create the builder lazily, in case it's
-            // rare to pass strings with
-            // spaces (other than a single space)
-            // to this method
             builder = new StringBuilder();
-            builder.Append(str.Substring(0, si));
+            builder.Append(str.Substring(leadIndex, si));
           }
-          builder.Append(' ');
+          if (c != 0x09 && c != 0x20) {
+            builder.Append(' ');
+            builder.Append(c);
+          }
         } else {
           if (builder != null) {
             builder.Append(c);

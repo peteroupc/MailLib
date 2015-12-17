@@ -285,6 +285,7 @@ int endIndex) {
       var charsetEnd = -1;
       var dataStart = -1;
       var encoding = 0;
+      var haveSpace = false;
       if (str.IndexOf('=') < 0) {
         // Contains no equal sign, and therefore no
         // encoded words
@@ -313,6 +314,7 @@ int endIndex) {
             // charset
             if (index >= endIndex) {
               state = 0;
+              haveSpace = false;
               index = charsetStart;
               break;
             }
@@ -328,6 +330,7 @@ int endIndex) {
             // encoding
             if (index >= endIndex) {
               state = 0;
+              haveSpace = false;
               index = charsetStart;
               break;
             }
@@ -345,6 +348,7 @@ int endIndex) {
               dataStart = index;
             } else {
               state = 0;
+              haveSpace = false;
               index = charsetStart;
             }
             break;
@@ -352,6 +356,7 @@ int endIndex) {
             // data
             if (index >= endIndex) {
               state = 0;
+              haveSpace = false;
               index = charsetStart;
               break;
             }
@@ -362,7 +367,6 @@ int endIndex) {
        charsetStart,
        charsetEnd - charsetStart);
               string data = str.Substring(dataStart, index - dataStart);
-              state = 0;
               index += 2;
               int endData = index;
               var acceptedEncodedWord = true;
@@ -391,17 +395,44 @@ int endIndex) {
               }
               if (decodedWord == null) {
                 index = charsetStart;
+                haveSpace = false;
+                state = 0;
               } else {
-                builder.Append(str.Substring(markStart, wordStart - markStart));
+                if (!haveSpace) {
+               builder.Append(str.Substring(markStart, wordStart -
+                   markStart));
+                }
                 builder.Append(decodedWord);
+                haveSpace = false;
                 markStart = endData;
+                state = 4;
               }
             } else {
               ++index;
             }
             break;
-          default:
-            throw new InvalidOperationException();
+          case 4:
+            // space after data
+            if (index >= endIndex) {
+              ++index;
+              break;
+            }
+            if (str[index] == '=' && index + 1 < endIndex &&
+              str[index + 1] == '?') {
+              wordStart = index;
+              state = 1;
+              index += 2;
+              charsetStart = index;
+            } else if (str[index]==0x20 || str[index]==0x09) {
+              ++index;
+              haveSpace = true;
+            } else {
+              ++index;
+              state = 0;
+              haveSpace = false;
+            }
+            break;
+          default: throw new InvalidOperationException();
         }
       }
       builder.Append(str.Substring(markStart, str.Length - markStart));

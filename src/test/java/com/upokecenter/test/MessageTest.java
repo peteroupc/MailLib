@@ -20,6 +20,15 @@ import java.io.*;
                     "z");
     }
 
+    public static String MessageGenerate(Message msg) {
+      if ((msg) == null) {
+ Assert.fail();
+ }
+      String ret = msg.Generate();
+      Assert.assertEquals(2,EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""));
+      return ret;
+    }
+
     @Test
     public void TestMediaTypeEncodingRoundTrip() {
       TestMediaTypeRoundTrip("xy" + EncodingTest.Repeat("\"", 20) + "z");
@@ -40,8 +49,10 @@ import java.io.*;
     }
 
     static Message MessageFromString(String str) {
-      return new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(str,
-                    true)));
+      Message msgobj = new Message(DataUtilities.GetUtf8Bytes(str,
+                    true));
+      MessageGenerate(msgobj);
+      return msgobj;
     }
 
     private static void TestMediaTypeRoundTrip(String str) {
@@ -50,11 +61,9 @@ import java.io.*;
       if (mtstring.contains("\r\n\r\n"))Assert.fail();
       if (mtstring.contains("\r\n \r\n"))Assert.fail();
       Assert.assertEquals(str, MediaType.Parse(mtstring).GetParameter("z"));
-      Message mtmessage = new Message(new java.io.ByteArrayInputStream(
-        DataUtilities.GetUtf8Bytes("MIME-Version: 1.0\r\nContent-Type: " +
-                    mtstring + "\r\n\r\n" , true)));
-      if (!(EncodingTest.IsGoodAsciiMessageFormat(mtmessage.Generate(),
-                    false)))Assert.fail();
+      var mtmessage = MessageFromString("MIME-Version: 1.0\r\nContent-Type: " +
+                    mtstring + "\r\n\r\n");
+      MessageGenerate(mtmessage);
     }
 
     @Test
@@ -62,15 +71,15 @@ import java.io.*;
       ArrayList<String> msgids = new ArrayList<String>();
       // Tests whether unique Message IDs are generated for each message.
       for (int i = 0; i < 1000; ++i) {
-        String msgtext = new Message().SetHeader(
+        String msgtext = MessageGenerate(new Message().SetHeader(
           "from",
           "me@example.com")
-          .SetTextBody("Hello world.").Generate();
-        if (!EncodingTest.IsGoodAsciiMessageFormat(msgtext, false)) {
+          .SetTextBody("Hello world."));
+ if (EncodingTest.IsGoodAsciiMessageFormat(msgtext, false,"TestGenerate"
+) != 2) {
           Assert.fail("Bad message format generated");
         }
-        String msgid = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(msgtext,
-                    true))).GetHeader("message-id");
+        String msgid = MessageFromString(msgtext).GetHeader("message-id");
         if (msgids.contains(msgid)) {
           Assert.fail(msgid);
         }
@@ -139,45 +148,23 @@ import java.io.*;
 
     @Test
     public void TestPrematureEnd() {
-      try {
-        Assert.assertEquals(null, new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes("From: me@example.com\r\nDate",
-                    true))));
-        Assert.fail("Should have failed");
-      } catch (MessageDataException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Assert.assertEquals(null, new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes("From: me@example.com\r\nDate\r",
-                    true))));
-        Assert.fail("Should have failed");
-      } catch (MessageDataException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Assert.assertEquals(null, new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes("Received: from x",
-                    true))));
-        Assert.fail("Should have failed");
-      } catch (MessageDataException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
-      }
-      try {
-        Assert.assertEquals(null, new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes("Received: from x\r",
-                    true))));
-        Assert.fail("Should have failed");
-      } catch (MessageDataException ex) {
-System.out.print("");
-} catch (Exception ex) {
-        Assert.fail(ex.toString());
-        throw new IllegalStateException("", ex);
+      String[] messages = {
+        "From: me@example.com\r\nDate",
+        "From: me@example.com\r\nDate\r",
+        "Received: from x",
+        "Received: from x\r"
+      };
+      for (String msgstr : messages) {
+        try {
+          byte[] data = DataUtilities.GetUtf8Bytes(msgstr, true);
+          Assert.assertEquals(null, new Message(data));
+          Assert.fail("Should have failed");
+        } catch (MessageDataException ex) {
+          System.out.print("");
+        } catch (Exception ex) {
+          Assert.fail(ex.toString());
+          throw new IllegalStateException("", ex);
+        }
       }
     }
 
@@ -889,8 +876,7 @@ System.out.print("");
       message += "--b1--\r\n";
       message += "Epilogue";
       Message msg;
-      msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
       {
         String stringTemp = msg.getContentType().GetParameter("boundary");
@@ -910,8 +896,7 @@ System.out.print("");
       message += "--b2--\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
       Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
@@ -921,8 +906,7 @@ System.out.print("");
       message += "Test\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
       // No CRLF before first boundary
@@ -933,8 +917,7 @@ System.out.print("");
       message += "Test\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
       // Base64 body part
@@ -944,8 +927,7 @@ System.out.print("");
       message += "ABABXX==\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
       {
         String stringTemp = msg.getContentType().GetParameter("boundary");
@@ -968,8 +950,7 @@ System.out.print("");
       message += "ABABXX==\r\n\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
       {
         String stringTemp = msg.getContentType().GetParameter("boundary");
@@ -995,8 +976,7 @@ System.out.print("");
       message += "--b2--\r\n\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
       {
         String stringTemp = msg.getContentType().GetParameter("boundary");
@@ -1022,8 +1002,7 @@ System.out.print("");
       message += "--b2--\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(message,
-                    true)));
+      msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
       Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
@@ -1306,6 +1285,15 @@ stringTemp);
     }
 
     @Test
+    public void TestEmptyGroup() {
+      Message msg;
+      String str = "From: me@example.com\r\nTo: empty-group:;" +
+        "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
+        "\r\n\r\nBody";
+      msg = MessageFromString(str);
+    }
+
+    @Test
     public void TestMediaTypeArgumentValidationExtra() {
       if (!(MediaType.Parse("text/plain").isText()))Assert.fail();
       if (!(MediaType.Parse("multipart/alternative").isMultipart()))Assert.fail();
@@ -1342,8 +1330,7 @@ stringTemp);
           "test",
           stringTemp);
       }
-      msg = new Message(new java.io.ByteArrayInputStream(DataUtilities.GetUtf8Bytes(msg.Generate(),
-                    true)));
+      msg = MessageFromString(msg.Generate());
       {
         String stringTemp = msg.GetHeader("x-test");
         Assert.assertEquals(

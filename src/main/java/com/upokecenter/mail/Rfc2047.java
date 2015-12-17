@@ -266,6 +266,7 @@ int endIndex) {
       int charsetEnd = -1;
       int dataStart = -1;
       int encoding = 0;
+      boolean haveSpace = false;
       if (str.indexOf('=') < 0) {
         // Contains no equal sign, and therefore no
         // encoded words
@@ -294,6 +295,7 @@ int endIndex) {
             // charset
             if (index >= endIndex) {
               state = 0;
+              haveSpace = false;
               index = charsetStart;
               break;
             }
@@ -309,6 +311,7 @@ int endIndex) {
             // encoding
             if (index >= endIndex) {
               state = 0;
+              haveSpace = false;
               index = charsetStart;
               break;
             }
@@ -326,6 +329,7 @@ int endIndex) {
               dataStart = index;
             } else {
               state = 0;
+              haveSpace = false;
               index = charsetStart;
             }
             break;
@@ -333,6 +337,7 @@ int endIndex) {
             // data
             if (index >= endIndex) {
               state = 0;
+              haveSpace = false;
               index = charsetStart;
               break;
             }
@@ -343,7 +348,6 @@ int endIndex) {
        charsetStart, (
        charsetStart)+(charsetEnd - charsetStart));
               String data = str.substring(dataStart, (dataStart)+(index - dataStart));
-              state = 0;
               index += 2;
               int endData = index;
               boolean acceptedEncodedWord = true;
@@ -372,17 +376,44 @@ int endIndex) {
               }
               if (decodedWord == null) {
                 index = charsetStart;
+                haveSpace = false;
+                state = 0;
               } else {
-                builder.append(str.substring(markStart, (markStart)+(wordStart - markStart)));
+                if (!haveSpace) {
+               builder.append(str.substring(markStart, (markStart)+(wordStart -
+                   markStart)));
+                }
                 builder.append(decodedWord);
+                haveSpace = false;
                 markStart = endData;
+                state = 4;
               }
             } else {
               ++index;
             }
             break;
-          default:
-            throw new IllegalStateException();
+          case 4:
+            // space after data
+            if (index >= endIndex) {
+              ++index;
+              break;
+            }
+            if (str.charAt(index) == '=' && index + 1 < endIndex &&
+              str.charAt(index + 1) == '?') {
+              wordStart = index;
+              state = 1;
+              index += 2;
+              charsetStart = index;
+            } else if (str.charAt(index) == 0x20 || str.charAt(index) == 0x09) {
+              ++index;
+              haveSpace = true;
+            } else {
+              ++index;
+              state = 0;
+              haveSpace = false;
+            }
+            break;
+          default: throw new IllegalStateException();
         }
       }
       builder.append(str.substring(markStart, (markStart)+(str.length() - markStart)));

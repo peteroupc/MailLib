@@ -201,7 +201,7 @@ namespace PeterO.Mail {
     /// <summary>Gets or sets this message's content disposition. The
     /// content disposition specifies how a user agent should handle or
     /// otherwise display this message.</summary>
-    /// <value>This message&#x27;s content disposition, or null if none is
+    /// <value>This message&apos;s content disposition, or null if none is
     /// specified.</value>
     public ContentDisposition ContentDisposition {
       get {
@@ -222,7 +222,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets or sets this message's media type.</summary>
-    /// <value>This message&#x27;s media type.</value>
+    /// <value>This message&apos;s media type.</value>
     /// <exception cref='ArgumentNullException'>This value is being set and
     /// "value" is null.</exception>
     public MediaType ContentType {
@@ -272,8 +272,10 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets a snapshot of the header fields of this message, in
-    /// the order they were added. For each item in the list, the key is
-    /// the header field's name and the value is its value.</summary>
+    /// the order in which they appear in the message. For each item in the
+    /// list, the key is the header field's name (where any basic
+    /// upper-case letters [U+0041 to U + 005A] are converted to lower
+    /// case) and the value is the header field's value.</summary>
     /// <value>A snapshot of the header fields of this message.</value>
     public IList<KeyValuePair<string, string>> HeaderFields {
       get {
@@ -301,7 +303,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets or sets this message's subject.</summary>
-    /// <value>This message&#x27;s subject.</value>
+    /// <value>This message&apos;s subject.</value>
     public string Subject {
       get {
         return this.GetHeader("subject");
@@ -397,15 +399,11 @@ namespace PeterO.Mail {
       Justification="This method may throw MessageDataException among other things - making it too heavyweight to be a property." )]
 #endif
     public Message GetBodyMessage() {
-      if (this.ContentType.TopLevelType.Equals("message") &&
+      return (this.ContentType.TopLevelType.Equals("message") &&
           (this.ContentType.SubType.Equals("rfc822") ||
            this.ContentType.SubType.Equals("news") ||
-           this.ContentType.SubType.Equals("global"))) {
-        using (var ms = new MemoryStream(this.body)) {
-          return new Message(ms);
-        }
-      }
-      return null;
+           this.ContentType.SubType.Equals("global"))) ? (new
+             Message(this.body)) : (null);
     }
 
     /// <summary>Gets the name and value of a header field by
@@ -569,7 +567,7 @@ namespace PeterO.Mail {
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='index'/> is 0 or at least as high as the number of header
-    /// fieldss; or, the header field name is too long or contains an
+    /// fields; or, the header field name is too long or contains an
     /// invalid character, or the header field's value is syntactically
     /// invalid.</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -598,7 +596,7 @@ namespace PeterO.Mail {
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='index'/> is 0 or at least as high as the number of header
-    /// fieldss; or, the header field name is too long or contains an
+    /// fields; or, the header field name is too long or contains an
     /// invalid character, or the header field's value is syntactically
     /// invalid.</exception>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -647,9 +645,10 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Sets the body of this message to the specified string in
-    /// HTML format. The character sequences CR, LF, and CR/LF will be
-    /// converted to CR/LF line breaks. Unpaired surrogate code points will
-    /// be replaced with replacement characters.</summary>
+    /// HTML format. The character sequences CR (carriage return, "\r",
+    /// U+000D), LF (line feed, "\n" , U+000A), and CR/LF will be converted
+    /// to CR/LF line breaks. Unpaired surrogate code points will be
+    /// replaced with replacement characters.</summary>
     /// <param name='str'>A string consisting of the message in HTML
     /// format.</param>
     /// <returns>This instance.</returns>
@@ -667,7 +666,8 @@ namespace PeterO.Mail {
 
     /// <summary>Sets the body of this message to a multipart body with
     /// plain text and HTML versions of the same message. The character
-    /// sequences CR, LF, and CR/LF will be converted to CR/LF line breaks.
+    /// sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n",
+    /// U + 000A), and CR/LF will be converted to CR/LF line breaks.
     /// Unpaired surrogate code points will be replaced with replacement
     /// characters.</summary>
     /// <param name='text'>A string consisting of the plain text version of
@@ -699,9 +699,11 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Sets the body of this message to the specified plain text
-    /// string. The character sequences CR, LF, and CR/LF will be converted
+    /// string. The character sequences CR (carriage return, "\r" ,
+    /// U+000D), LF (line feed, "\n" , U+000A), and CR/LF will be converted
     /// to CR/LF line breaks. Unpaired surrogate code points will be
-    /// replaced with replacement characters.</summary>
+    /// replaced with replacement characters. This method changes this
+    /// message's media type to plain text.</summary>
     /// <param name='str'>A string consisting of the message in plain text
     /// format.</param>
     /// <returns>This instance.</returns>
@@ -1823,6 +1825,7 @@ namespace PeterO.Mail {
       var haveContentType = false;
       var haveContentDisp = false;
       var haveMsgId = false;
+      var haveFrom = false;
       var haveHeaders = new bool[11];
       byte[] bodyToWrite = this.body;
       var builder = new MediaTypeBuilder(this.ContentType);
@@ -1852,8 +1855,18 @@ namespace PeterO.Mail {
           } else if (builder.SubType.Equals("delivery-status") &&
                     !msgCanBeUnencoded) {
             builder.SetSubType("global-delivery-status");
-          } else if (!msgCanBeUnencoded) {
-            throw new MessageDataException("Message body can't be encoded");
+          } else if (!msgCanBeUnencoded && !builder.SubType.Equals("global") &&
+            !builder.SubType.Equals("global-disposition-notification") &&
+            !builder.SubType.Equals("global-delivery-status") &&
+            !builder.SubType.Equals("global-headers")) {
+#if DEBUG
+            throw new MessageDataException("Message body can't be encoded: " +
+              builder.ToString() + ", " + this.ContentType);
+#else
+{
+ throw new MessageDataException("Message body can't be encoded");
+}
+#endif
           }
         }
       }
@@ -1899,6 +1912,12 @@ namespace PeterO.Mail {
           }
           haveContentEncoding = true;
           value = encodingString;
+        } else if (name.Equals("from")) {
+          if (haveFrom) {
+            // Already outputted, continue
+            continue;
+          }
+          haveFrom = true;
         }
         if (
           depth > 0 && (
@@ -1999,7 +2018,7 @@ namespace PeterO.Mail {
         }
         AppendAscii(output, "\r\n");
       }
-      if (true && depth == 0) {
+      if (!haveFrom && depth == 0) {
         // Output a synthetic From field if it doesn't
         // exist and this isn't a body part
         AppendAscii(output, "From: me@author-address.invalid\r\n");

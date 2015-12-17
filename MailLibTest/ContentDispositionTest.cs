@@ -91,6 +91,38 @@ namespace MailLibTest {
           "hello.txt",
           stringTemp);
       }
+
+      stringTemp =
+  ContentDisposition.MakeFilename(" " + " " + "hello.txt");
+      Assert.AreEqual(
+        "hello.txt",
+        stringTemp);
+      stringTemp =
+  ContentDisposition.MakeFilename("hello" + " " + " " + "txt");
+      Assert.AreEqual(
+        "hello txt",
+        stringTemp);
+      stringTemp =
+  ContentDisposition.MakeFilename("hello.txt" + " " + " ");
+      Assert.AreEqual(
+        "hello.txt",
+        stringTemp);
+      stringTemp =
+  ContentDisposition.MakeFilename(" "  + "hello.txt");
+      Assert.AreEqual(
+        "hello.txt",
+        stringTemp);
+      stringTemp =
+  ContentDisposition.MakeFilename("hello" + " "  + "txt");
+      Assert.AreEqual(
+        "hello txt",
+        stringTemp);
+      stringTemp =
+  ContentDisposition.MakeFilename("hello.txt" + " ");
+      Assert.AreEqual(
+        "hello.txt",
+        stringTemp);
+
       {
         stringTemp =
           ContentDisposition.MakeFilename("=?utf-8?q?___hello.txt___?=");
@@ -98,9 +130,23 @@ namespace MailLibTest {
           "hello.txt",
           stringTemp);
       }
-      {
         stringTemp =
-          ContentDisposition.MakeFilename("com0.txt");
+          ContentDisposition.MakeFilename("=?utf-8?q?a?= =?utf-8?q?b?=");
+        Assert.AreEqual(
+          "ab",
+          stringTemp);
+        stringTemp =
+          ContentDisposition.MakeFilename("=?utf-8?q?a?= =?x-unknown?q?b?=");
+        Assert.AreEqual(
+          "a b",
+          stringTemp);
+        stringTemp =
+          ContentDisposition.MakeFilename("a" + " " + " " + " " + "b");
+        Assert.AreEqual(
+          "a b",
+          stringTemp);
+      {
+        stringTemp = ContentDisposition.MakeFilename("com0.txt");
         Assert.AreEqual("_com0.txt", stringTemp);
       }
       {
