@@ -246,10 +246,12 @@ HexAlphabet.charAt(c & 15));
               // Space
               if (c < 0) {
                 count += this.IncrementAndAppend(output, "=20");
+                this.machineState = 0;
                 return count;
               } else if (this.lineBreakMode == 2 && c == 0x0a) {
                 count += this.IncrementAndAppend(output, "=20\r\n");
                 this.lineCount = 0;
+                this.machineState = 0;
                 return count;
               } else if (this.lineBreakMode == 2 && c == 0x0d) {
                 this.machineState = 8;

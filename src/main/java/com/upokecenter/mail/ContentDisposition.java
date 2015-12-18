@@ -240,6 +240,9 @@ str.substring(
         if (c >= 0x10000) {
           ++i;
         }
+        if (c < 0) {
+          c = 0xfffd;
+        }
         if (c == (int)'\t') {
           // Replace tab with space
           builder.append(' ');

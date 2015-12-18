@@ -158,7 +158,7 @@ A list of addresses found in the From header field or fields.
 
     public System.Collections.Generic.IList HeaderFields { get; }
 
-Gets a snapshot of the header fields of this message, in the order they were added. For each item in the list, the key is the header field's name (where any basic upper-case letters [U+0041 to U+005A] are converted to lower case) and the value is the header field's value.
+Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic upper-case letters [U+0041 to U + 005A] are converted to lower case) and the value is the header field's value.
 
 <b>Returns:</b>
 
@@ -428,7 +428,7 @@ This instance.
 
  * System.ArgumentException:
 The parameter  <i>index</i>
- is 0 or at least as high as the number of header fieldss; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
+ is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
 
  * System.ArgumentNullException:
 The parameter  <i>name</i>
@@ -457,7 +457,7 @@ This instance.
 
  * System.ArgumentException:
 The parameter  <i>index</i>
- is 0 or at least as high as the number of header fieldss; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
+ is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
 
  * System.ArgumentNullException:
 The parameter  <i>value</i>
@@ -524,7 +524,7 @@ The parameter  <i>name</i>
     public PeterO.Mail.Message SetHtmlBody(
         string str);
 
-Sets the body of this message to the specified string in HTML format. The character sequences CR, LF, and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
+Sets the body of this message to the specified string in HTML format. The character sequences CR (carriage return, "\r", U+000D), LF (line feed, "\n" , U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
 
 <b>Parameters:</b>
 
@@ -546,7 +546,7 @@ The parameter  <i>str</i>
         string text,
         string html);
 
-Sets the body of this message to a multipart body with plain text and HTML versions of the same message. The character sequences CR, LF, and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
+Sets the body of this message to a multipart body with plain text and HTML versions of the same message. The character sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n", U + 000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
 
 <b>Parameters:</b>
 
@@ -570,7 +570,7 @@ The parameter  <i>text</i>
     public PeterO.Mail.Message SetTextBody(
         string str);
 
-Sets the body of this message to the specified plain text string. The character sequences CR, LF, and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
+Sets the body of this message to the specified plain text string. The character sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n" , U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters. This method changes this message's media type to plain text.
 
 <b>Parameters:</b>
 
