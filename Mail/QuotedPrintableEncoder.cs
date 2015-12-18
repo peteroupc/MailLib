@@ -313,11 +313,13 @@ HexAlphabet[c & 15]);
                   return count;
                 }
               } else if (c == 0x0d) {
-                count += this.IncrementAndAppend(output, "=20");
+                count += this.IncrementAndAppendChar(output, ' ');
+                count += this.IncrementAndAppend(output, "=0D");
                 this.machineState = 0;
                 continue;
               } else {
                 count += this.IncrementAndAppendChar(output, ' ');
+                count += this.IncrementAndAppend(output, "=0D");
                 this.machineState = 0;
                 continue;
               }

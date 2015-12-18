@@ -147,7 +147,11 @@ import com.upokecenter.text.*;
       this.headers.add("1.0");
     }
 
-    private Message SetCurrentDate() {
+    /**
+     * Sets this message's Date header field to the current time as its value.
+     * @return This object.
+     */
+    public Message SetCurrentDate() {
       return this.SetHeader(
         "date",
         GetDateString(DateTimeUtilities.GetCurrentLocalTime()));
@@ -277,7 +281,8 @@ import com.upokecenter.text.*;
 
     /**
      * Gets this message's content disposition. The content disposition specifies
-     * how a user agent should handle or otherwise display this message.
+     * how a user agent should handle or otherwise display this message. Can
+     * be set to null.
      * @return This message's content disposition, or null if none is specified.
      */
     public final ContentDisposition getContentDisposition() {
@@ -389,7 +394,9 @@ public final void setSubject(String value) {
       }
 
     /**
-     * Adds a header field to the end of the message's header.
+     * Adds a header field to the end of the message's header. <p>Updates the
+     * ContentType and ContentDisposition properties if those header fields
+     * have been modified by this method.</p>
      * @param header A Map.Entry object. The key is the name of the header
      * field, such as "From" or "Content-ID". The value is the header
      * field's value.
@@ -404,7 +411,9 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Adds a header field to the end of the message's header.
+     * Adds a header field to the end of the message's header. <p>Updates the
+     * ContentType and ContentDisposition properties if those header fields
+     * have been modified by this method.</p>
      * @param name Name of a header field, such as "From" or "Content-ID".
      * @param value Value of the header field.
      * @return This instance.
@@ -416,9 +425,10 @@ public final void setSubject(String value) {
      */
     public Message AddHeader(String name, String value) {
       name = ValidateHeaderField(name, value);
-      this.headers.add(name);
-      this.headers.add(value);
-      return this;
+      int index = this.headers.size() / 2;
+      this.headers.add("");
+      this.headers.add("");
+      return this.SetHeader(index, name, value);
     }
 
     /**
@@ -543,7 +553,9 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Removes a header field by index.
+     * Removes a header field by index. <p>Updates the ContentType and
+     * ContentDisposition properties if those header fields have been
+     * modified by this method.</p>
      * @param index Zero-based index of the header field to set.
      * @return This instance.
      * @throws IllegalArgumentException The parameter {@code index} is 0 or at least as
@@ -559,8 +571,14 @@ public final void setSubject(String value) {
                     ") is not less than " + (this.headers.size()
                     / 2));
       }
+      String name = this.headers.get(index * 2);
       this.headers.remove(index * 2);
       this.headers.remove(index * 2);
+      if (name.equals("content-type")) {
+        this.contentType = MediaType.TextPlainAscii;
+      } else if (name.equals("content-disposition")) {
+        this.contentDisposition = null;
+      }
       return this;
     }
 
@@ -570,7 +588,9 @@ public final void setSubject(String value) {
      * part headers. A basic case-insensitive comparison is used. (Two
      * strings are equal in such a comparison, if they match after
      * converting the basic upper-case letters A to Z (U + 0041 to U + 005A)
-     * in both strings to lower case.).
+     * in both strings to lower case.). <p>Updates the ContentType and
+     * ContentDisposition properties if those header fields have been
+     * modified by this method.</p> s.
      * @param name The name of the header field to remove.
      * @return This instance.
      * @throws NullPointerException The parameter {@code name} is null.
@@ -587,6 +607,11 @@ public final void setSubject(String value) {
           this.headers.remove(i);
           i -= 2;
         }
+      }
+      if (name.equals("content-type")) {
+        this.contentType = MediaType.TextPlainAscii;
+      } else if (name.equals("content-disposition")) {
+        this.contentDisposition = null;
       }
       return this;
     }
@@ -605,7 +630,9 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Sets the name and value of a header field by index.
+     * Sets the name and value of a header field by index. <p>Updates the
+     * ContentType and ContentDisposition properties if those header fields
+     * have been modified by this method.</p>
      * @param index Zero-based index of the header field to set.
      * @param header A Map.Entry object. The key is the name of the header
      * field, such as "From" or "Content-ID". The value is the header
@@ -622,7 +649,9 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Sets the name and value of a header field by index.
+     * Sets the name and value of a header field by index. <p>Updates the
+     * ContentType and ContentDisposition properties if those header fields
+     * have been modified by this method.</p>
      * @param index Zero-based index of the header field to set.
      * @param name Name of a header field, such as "From" or "Content-ID".
      * @param value Value of the header field.
@@ -647,11 +676,18 @@ public final void setSubject(String value) {
       name = ValidateHeaderField(name, value);
       this.headers.set(index * 2, name);
       this.headers.set((index * 2) + 1, value);
+      if (name.equals("content-type")) {
+        this.contentType = MediaType.Parse(value);
+      } else if (name.equals("content-disposition")) {
+        this.contentDisposition = ContentDisposition.Parse(value);
+      }
       return this;
     }
 
     /**
      * Sets the value of a header field by index without changing its name.
+     * <p>Updates the ContentType and ContentDisposition properties if those
+     * header fields have been modified by this method.</p>
      * @param index Zero-based index of the header field to set.
      * @param value Value of the header field.
      * @return This instance.
@@ -671,17 +707,16 @@ public final void setSubject(String value) {
                     ") is not less than " + (this.headers.size()
                     / 2));
       }
-      String name = ValidateHeaderField(this.headers.get(index * 2), value);
-      this.headers.set(index * 2, name);
-      this.headers.set((index * 2) + 1, value);
-      return this;
+      return this.SetHeader(index, this.headers.get(index * 2), value);
     }
 
     /**
      * Sets the value of this message's header field. If a header field with the
      * same name exists, its value is replaced. If the header field's name
      * occurs more than once, only the first instance of the header field is
-     * replaced.
+     * replaced. <p>Updates the ContentType and ContentDisposition
+     * properties if those header fields have been modified by this
+     * method.</p>
      * @param name The name of a header field, such as "from" or "subject".
      * @param value The header field's value.
      * @return This instance.
@@ -694,15 +729,16 @@ public final void setSubject(String value) {
     public Message SetHeader(String name, String value) {
       name = ValidateHeaderField(name, value);
       // Add the header field
+      int index = 0;
       for (int i = 0; i < this.headers.size(); i += 2) {
         if (this.headers.get(i).equals(name)) {
-          this.headers.set(i + 1, value);
-          return this;
+          return this.SetHeader(index, name, value);
         }
+        ++index;
       }
-      this.headers.add(name);
-      this.headers.add(value);
-      return this;
+      this.headers.add("");
+      this.headers.add("");
+      return this.SetHeader(index, name, value);
     }
 
     /**
@@ -750,7 +786,7 @@ public final void setSubject(String value) {
       Message textMessage = new Message().SetTextBody(text);
       Message htmlMessage = new Message().SetHtmlBody(html);
       this.contentType =
-        MediaType.Parse("multipart/alternative; boundary=\"=_boundary\"");
+  MediaType.Parse("multipart/alternative; boundary=\"=_Boundary00000000\"");
       List<Message> messageParts = this.getParts();
       messageParts.clear();
       messageParts.add(textMessage);
@@ -1034,11 +1070,14 @@ public final void setSubject(String value) {
             } else {
               writer.write(bytes, lastIndex, headerNameStart - lastIndex);
             }
-            WordWrapEncoder encoder = null;
-            encoder = status[0] == 2 ? new WordWrapEncoder((origRecipient ?
-                "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient"
-) + ":") : new WordWrapEncoder(origFieldName);
-            encoder.AddString(headerValue);
+            WordWrapEncoder encoder = new WordWrapEncoder(true);
+            String field = (origRecipient ?
+        "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient") +
+                  ": " ;
+            if (status[0] != 2) {
+ field = origFieldName + " ";
+}
+            encoder.AddString(field + headerValue);
             byte[] newBytes = DataUtilities.GetUtf8Bytes(
               encoder.toString(),
               true);
@@ -1052,10 +1091,6 @@ public final void setSubject(String value) {
         bytes = writer.ToArray();
       }
       return bytes;
-    }
-
-    static String DowngradeRecipientHeaderValue(String headerValue) {
-      return DowngradeRecipientHeaderValue(headerValue, null);
     }
 
     static String DowngradeRecipientHeaderValue(
@@ -1247,7 +1282,7 @@ public final void setSubject(String value) {
           chunkLength = 0;
         } else {
           ++chunkLength;
-          if (chunkLength > 997) {
+          if (chunkLength > 998) {
             return true;
           }
         }
@@ -1577,7 +1612,7 @@ public final void setSubject(String value) {
             }
             sb.append((char)c);
           } else if (!first && c == ':') {
-            if (lineCount > 997) {
+            if (lineCount >= 999) {
               // 998 characters includes the colon and whitespace
               throw new MessageDataException("Header field name too long");
             }
@@ -2044,25 +2079,15 @@ public final void setSubject(String value) {
             }
           }
           boolean haveDquote = downgraded.indexOf('"') >= 0;
-          WordWrapEncoder encoder = new WordWrapEncoder(
-            Capitalize(name) + ": ",
-            !haveDquote);
-          encoder.AddString(downgraded);
+          WordWrapEncoder encoder = new WordWrapEncoder(!haveDquote);
+          encoder.AddString(Capitalize(name) + ": " + downgraded);
           String newValue = encoder.toString();
-          if (newValue.indexOf(": ") < 0) {
-            throw new MessageDataException("No colon+space: " + newValue);
-          }
           AppendAscii(output, newValue);
         } else {
           boolean haveDquote = value.indexOf('"') >= 0;
-          WordWrapEncoder encoder = new WordWrapEncoder(
-            Capitalize(name) + ": ",
-            !haveDquote);
-          encoder.AddString(value);
+          WordWrapEncoder encoder = new WordWrapEncoder(!haveDquote);
+          encoder.AddString(Capitalize(name) + ": " + value);
           String newValue = encoder.toString();
-          if (newValue.indexOf(": ") < 0) {
-            throw new MessageDataException("No colon+space: " + newValue);
-          }
           AppendAscii(output, newValue);
         }
         AppendAscii(output, "\r\n");
