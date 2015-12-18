@@ -63,6 +63,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DateTimeUtilities.cs" />
     <Compile Include="Mail\Transforms\TransformWithUnget.cs" />
     <Compile Include="DataUtilities.cs" />
     <Compile Include="Mail\Address.cs" />

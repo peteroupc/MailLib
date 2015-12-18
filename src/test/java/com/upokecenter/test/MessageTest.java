@@ -1420,7 +1420,10 @@ throw new IllegalStateException("", ex);
     }
     @Test
     public void TestFromAddresses() {
-      // not implemented yet
+      String str = "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
+      Message msg = MessageFromString(str);
+      Message genmsg = MessageFromString(MessageGenerate(msg));
+      Assert.assertEquals(1, msg.getFromAddresses().size());
     }
     @Test
     public void TestGetBody() {

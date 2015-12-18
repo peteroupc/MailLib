@@ -157,6 +157,99 @@ namespace PeterO.Mail {
       this.headers.Add("1.0");
     }
 
+    private Message SetCurrentDate() {
+      return this.SetHeader(
+        "date",
+        GetDateString(DateTimeUtilities.GetCurrentLocalTime()));
+    }
+
+    private static void ReverseChars(char[] chars, int offset, int length) {
+      int half = length >> 1;
+      int right = offset + length - 1;
+      for (var i = 0; i < half; i++, right--) {
+        char value = chars[offset + i];
+        chars[offset + i] = chars[right];
+        chars[right] = value;
+      }
+    }
+
+    private static string Digits = "0123456789";
+
+    private static string IntToString(int value) {
+      if (value == Int32.MinValue) {
+        return "-2147483648";
+      }
+      if (value == 0) {
+        return "0";
+      }
+      bool neg = value < 0;
+      var chars = new char[24];
+      var count = 0;
+      if (neg) {
+        chars[0] = '-';
+        ++count;
+        value = -value;
+      }
+      while (value != 0) {
+        char digit = Digits[(int)(value % 10)];
+        chars[count++] = digit;
+        value /= 10;
+      }
+      if (neg) {
+        ReverseChars(chars, 1, count - 1);
+      } else {
+        ReverseChars(chars, 0, count);
+      }
+      return new String(chars, 0, count);
+    }
+
+    private static string[] DaysOfWeek = {
+      "","Sun","Mon","Tue","Wed","Thu","Fri","Sat"
+    };
+
+    private static string[] Months = {
+      "","Jan","Feb","Mar","Apr","May","Jun","Jul",
+      "Aug","Sep","Oct","Nov","Dec"
+    };
+
+    private static string GetDateString(int[] dateTime) {
+      int dow = DateTimeUtilities.GetDayOfWeek(dateTime);
+      if (dow == 0) {
+        throw new ArgumentException("invalid day of week");
+      }
+      string dayString = DaysOfWeek[dow];
+      string monthString = Months[dateTime[1]];
+      var sb = new StringBuilder();
+      sb.Append(dayString);
+      sb.Append(", ");
+      sb.Append((char)('0' + ((dateTime[2] / 10)%10)));
+      sb.Append((char)('0' + (dateTime[2] % 10)));
+      sb.Append(' ');
+      sb.Append(monthString);
+      sb.Append(' ');
+      sb.Append(IntToString(dateTime[0]));
+      sb.Append(' ');
+      sb.Append((char)('0' + ((dateTime[3] / 10) % 10)));
+      sb.Append((char)('0' + (dateTime[3] % 10)));
+      sb.Append(':');
+      sb.Append((char)('0' + ((dateTime[4] / 10) % 10)));
+      sb.Append((char)('0' + (dateTime[4] % 10)));
+      sb.Append(':');
+      sb.Append((char)('0' + ((dateTime[5] / 10) % 10)));
+      sb.Append((char)('0' + (dateTime[5] % 10)));
+      sb.Append(' ');
+      int offset = dateTime[7];
+      sb.Append((offset< 0) ? '-' : '+');
+      offset = Math.Abs(offset);
+      int hours = (offset / 60) % 24;
+      int minutes = (offset % 60);
+      sb.Append((char)('0' + ((hours / 10) % 10)));
+      sb.Append((char)('0' + ((hours) % 10)));
+      sb.Append((char)('0' + ((minutes / 10) % 10)));
+      sb.Append((char)('0' + (minutes % 10)));
+      return sb.ToString();
+    }
+
     /// <summary>Gets a list of addresses found in the BCC header field or
     /// fields.</summary>
     /// <value>A list of addresses found in the BCC header field or
@@ -274,7 +367,7 @@ namespace PeterO.Mail {
     /// <summary>Gets a snapshot of the header fields of this message, in
     /// the order in which they appear in the message. For each item in the
     /// list, the key is the header field's name (where any basic
-    /// upper-case letters [U+0041 to U + 005A] are converted to lower
+    /// upper-case letters [U + 0041 to U + 005A] are converted to lower
     /// case) and the value is the header field's value.</summary>
     /// <value>A snapshot of the header fields of this message.</value>
     public IList<KeyValuePair<string, string>> HeaderFields {
@@ -370,7 +463,9 @@ namespace PeterO.Mail {
     /// <c>me@[header-name]-address.invalid</c> as the address (a
     /// <c>.invalid</c> address is a reserved address that can never belong
     /// to anyone). The generated message should always have a From header
-    /// field.</para></summary>
+    /// field.</para>
+    /// <para>If a Date header field doesn't exist, a Date field will be
+    /// generated using the current local time.</para></summary>
     /// <returns>The generated message.</returns>
     /// <exception cref='MessageDataException'>The message can't be
     /// generated.</exception>
@@ -699,11 +794,11 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Sets the body of this message to the specified plain text
-    /// string. The character sequences CR (carriage return, "\r" ,
-    /// U+000D), LF (line feed, "\n" , U+000A), and CR/LF will be converted
-    /// to CR/LF line breaks. Unpaired surrogate code points will be
-    /// replaced with replacement characters. This method changes this
-    /// message's media type to plain text.</summary>
+    /// string. The character sequences CR (carriage return, "\r", U+000D),
+    /// LF (line feed, "\n" , U+000A), and CR/LF will be converted to CR/LF
+    /// line breaks. Unpaired surrogate code points will be replaced with
+    /// replacement characters. This method changes this message's media
+    /// type to plain text.</summary>
     /// <param name='str'>A string consisting of the message in plain text
     /// format.</param>
     /// <returns>This instance.</returns>
@@ -1826,6 +1921,7 @@ namespace PeterO.Mail {
       var haveContentDisp = false;
       var haveMsgId = false;
       var haveFrom = false;
+      var haveDate = false;
       var haveHeaders = new bool[11];
       byte[] bodyToWrite = this.body;
       var builder = new MediaTypeBuilder(this.ContentType);
@@ -1912,6 +2008,11 @@ namespace PeterO.Mail {
           }
           haveContentEncoding = true;
           value = encodingString;
+        } else if (name.Equals("date")) {
+          if (haveDate) {
+            continue;
+          }
+          haveDate = true;
         } else if (name.Equals("from")) {
           if (haveFrom) {
             // Already outputted, continue
@@ -2022,6 +2123,13 @@ namespace PeterO.Mail {
         // Output a synthetic From field if it doesn't
         // exist and this isn't a body part
         AppendAscii(output, "From: me@author-address.invalid\r\n");
+      }
+      if (!haveDate && depth == 0) {
+        AppendAscii(output, "Date: ");
+        AppendAscii(
+          output,
+          GetDateString(DateTimeUtilities.GetCurrentLocalTime()));
+        AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
         AppendAscii(output, "Message-ID: ");

@@ -1421,7 +1421,10 @@ throw new InvalidOperationException(String.Empty, ex);
     }
     [Test]
     public void TestFromAddresses() {
-      // not implemented yet
+      string str = "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
+      Message msg = MessageFromString(str);
+      Message genmsg = MessageFromString(MessageGenerate(msg));
+      Assert.AreEqual(1, msg.FromAddresses.Count);
     }
     [Test]
     public void TestGetBody() {
