@@ -117,11 +117,13 @@ namespace MailLibTest {
   ":\n--End of line, whitespace, or start of message before colon");
             return 0;
           }
-          if (str[index + 1] != 0x20) {
+          if (str[index + 1] != 0x20 &&
+            !(str[index + 1] == 0x0d && index + 2 < str.Length && str[index+
+              2] == 0x0a)) {
             var test = str.Substring(Math.Max(index + 2 - 30, 0),
               Math.Min(index + 2, 30));
             Console.WriteLine(fn +
-              ":\n--No space after header name and colon: (" +
+              ":\n--No space/line break after header name and colon: (" +
               str[index + 1] + ") [" + test + "] " + index);
             return 0;
           }
@@ -168,7 +170,7 @@ namespace MailLibTest {
           if (lineLength > 998) {
             //Console.WriteLine(fn + ":\n--Line length exceeded (" +
             // maxLineLength + " " +
-            //  (str.Substring(index - 78, 78)) + ")");
+            //  (str.Substring(index - 78, 78)) + ", " + lineLength + ")");
             return 0;
           }
           meetsLineLength = false;
@@ -220,20 +222,12 @@ namespace MailLibTest {
       return sb.ToString();
     }
 
-    public static void TestWordWrapOne(string firstWord, string nextWords,
-                    string expected) {
-      object ww = Reflect.Construct(MailNamespace() + ".WordWrapEncoder",
-                    firstWord);
-      Reflect.Invoke(ww, "AddString", nextWords);
-      Assert.AreEqual(expected, ww.ToString());
-    }
-
     [Test]
     public void TestWordWrap() {
-      TestWordWrapOne("Subject:", Repeat("xxxx ", 10) + "y", "Subject: " +
-                    Repeat("xxxx ", 10) + "y");
-      TestWordWrapOne("Subject:", Repeat("xxxx ", 10), "Subject: " +
-                    Repeat("xxxx ", 9) + "xxxx");
+      MessageTest.MessageFromString("From: x@example.com\r\n" +
+        "Subject: " + Repeat("xxxx ", 10) + "y\r\n\r\nBody");
+      MessageTest.MessageFromString("From: x@example.com\r\n" +
+        "Subject: " + Repeat("xxxx ", 10) + "\r\n\r\nBody");
     }
 
     [Test]
@@ -245,17 +239,17 @@ namespace MailLibTest {
       IList<NamedAddress> addresses = msg.FromAddresses;
       Assert.AreEqual(2, addresses.Count);
       {
-string stringTemp = addresses[0].ToString();
-Assert.AreEqual(
-"Joe P Customer <customer@example.com>",
-stringTemp);
-}
+        string stringTemp = addresses[0].ToString();
+        Assert.AreEqual(
+        "Joe P Customer <customer@example.com>",
+        stringTemp);
+      }
       {
-string stringTemp = addresses[1].ToString();
-Assert.AreEqual(
-"Jane W Customer <jane@example.com>",
-stringTemp);
-}
+        string stringTemp = addresses[1].ToString();
+        Assert.AreEqual(
+        "Jane W Customer <jane@example.com>",
+        stringTemp);
+      }
     }
 
     [Test]
@@ -273,11 +267,11 @@ stringTemp);
     [Test]
     public void TestAddressInternal() {
       try {
-Assert.AreEqual(null, new Address(EncodingTest.Repeat("local" , 200) +
-  "@example.com"));
+        Assert.AreEqual(null, new Address(EncodingTest.Repeat("local", 200) +
+          "@example.com"));
       } catch (ArgumentException) {
-Console.Write(String.Empty);
-} catch (Exception ex) {
+        Console.Write(String.Empty);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -291,8 +285,8 @@ Console.Write(String.Empty);
       AssertEqual(expected, msg.GetBody());
     }
 
- private static void TestDecodeQuotedPrintable(string input, string
-      expected) {
+    private static void TestDecodeQuotedPrintable(string input, string
+         expected) {
       string msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
@@ -307,8 +301,8 @@ Console.Write(String.Empty);
       try {
         MessageTest.MessageFromString(msgString);
       } catch (MessageDataException) {
-Console.Write(String.Empty);
-} catch (Exception ex) {
+        Console.Write(String.Empty);
+      } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
@@ -1123,13 +1117,18 @@ Console.Write(String.Empty);
 
     private static string WrapHeader(string s) {
       return Reflect.Invoke(Reflect.Construct(MailNamespace() +
-                    ".WordWrapEncoder", String.Empty), "AddString",
+                    ".WordWrapEncoder", true), "AddString",
                     s).ToString();
     }
 
+    private static byte[] DowngradeDeliveryStatus(string str) {
+      Message msg = MessageTest.MessageFromString(
+  "From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n" + "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
+      msg = MessageTest.MessageFromString(MessageTest.MessageGenerate(msg));
+      return msg.GetBody();
+    }
+
     private static void TestDowngradeDSNOne(string expected, string actual) {
-      Assert.AreEqual(expected, (string)Reflect.InvokeStatic(MailNamespace() +
-                    ".Message", "DowngradeRecipientHeaderValue", actual));
       string dsn;
       string expectedDSN;
       byte[] bytes;
@@ -1144,9 +1143,7 @@ Console.Write(String.Empty);
           WrapHeader("Original-Recipient: " + expected) + "\r\n" +
           WrapHeader("Final-Recipient: " + expected) +
           "\r\nX-Ignore: Y\r\n\r\n";
-      bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
-             "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn,
-                    true));
+      bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
       dsn = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\nOriginal-Recipient: " +
@@ -1163,9 +1160,7 @@ Console.Write(String.Empty);
           WrapHeader("Final-Recipient: " + expected) +
           "\r\nX-Ignore: Y\r\n\r\n";
       }
-      bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
-             "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn,
-                    true));
+      bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
       dsn = "X-Ignore: X\r\n\r\nOriginal-recipient : " + actual +
@@ -1177,9 +1172,7 @@ Console.Write(String.Empty);
           WrapHeader("Original-recipient : " + expected) + "\r\n" +
           WrapHeader("Final-Recipient: " + expected) +
           "\r\nX-Ignore: Y\r\n\r\n";
-      bytes = (byte[])Reflect.InvokeStatic(MailNamespace() + ".Message",
-             "DowngradeDeliveryStatus" , DataUtilities.GetUtf8Bytes(dsn,
-                    true));
+      bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
     }
@@ -1427,7 +1420,7 @@ Console.Write(String.Empty);
         "(" + expected + ") en",
         " (" + input + ") en");
       TestDecodeStructured(par + "comment " + par + "cmt " + expected +
-                ")comment) en"," (comment (cmt " + input + ")comment) en");
+                ")comment) en", " (comment (cmt " + input + ")comment) en");
       TestDecodeStructured(
         par + "comment " + par + "=?bad?= " + expected + ")comment) en",
         " (comment (=?bad?= " + input + ")comment) en");
@@ -1489,8 +1482,8 @@ Console.Write(String.Empty);
            DowngradeHeaderField("to",
                     "g: x@example.com, x@e\u00e1.example;"));
       {
-  string stringTemp = DowngradeHeaderField("sender",
-          "x <x@e\u00e1.example>");
+        string stringTemp = DowngradeHeaderField("sender",
+                "x <x@e\u00e1.example>");
         Assert.AreEqual(
           "x <x@xn--e-ufa.example>",
           stringTemp);
@@ -1580,8 +1573,8 @@ Console.Write(String.Empty);
           stringTemp);
       }
       {
- string stringTemp = DowngradeHeaderField("from",
-          "(tes\u00bet) x@x.example");
+        string stringTemp = DowngradeHeaderField("from",
+                 "(tes\u00bet) x@x.example");
         Assert.AreEqual(
           "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
           stringTemp);
@@ -1670,8 +1663,8 @@ Console.Write(String.Empty);
           stringTemp);
       }
       {
- string stringTemp = DowngradeHeaderField("from",
-          "Tes\u00bet <x@x.example>");
+        string stringTemp = DowngradeHeaderField("from",
+                 "Tes\u00bet <x@x.example>");
         Assert.AreEqual(
           "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
           stringTemp);
@@ -1786,8 +1779,8 @@ Console.Write(String.Empty);
       TestEncodedWordsPhrase("\"=?bad1?= y =?bad3?=\"",
                     "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
       TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
-TestEncodedWordsPhrase("xy (sss)",
-        "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
+      TestEncodedWordsPhrase("xy (sss)",
+              "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
       TestEncodedWordsPhrase("x (sss) y",
                     "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
       TestEncodedWordsPhrase("x (z) y",
@@ -1836,75 +1829,75 @@ TestEncodedWordsPhrase("xy (sss)",
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>;";
       var msg = new Message();
       try {
- msg.SetHeader("to",tmp);
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader("to", tmp);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       tmp = "\"Me\" <1234>";
       // just a local part in address
       try {
- msg.SetHeader("to",tmp);
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-Console.Write(String.Empty);
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader("to", tmp);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        Console.Write(String.Empty);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       tmp = "<x@x.invalid>";
       try {
- msg.SetHeader("to",tmp);
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader("to", tmp);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       tmp = "<x y@x.invalid>";  // local part is not a dot-atom
       try {
- msg.SetHeader("to",tmp);
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-Console.Write(String.Empty);
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader("to", tmp);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        Console.Write(String.Empty);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       tmp = " <x@x.invalid>";
       try {
- msg.SetHeader("to",tmp);
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader("to", tmp);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       // Group syntax
       tmp = "G:;";
       try {
- msg.SetHeader("to",tmp);
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader("to", tmp);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       tmp = "G:a <x@x.example>;";
       try {
- msg.SetHeader("to",tmp);
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader("to", tmp);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       tmp = " A Xxxxx: ;";
       try {
- msg.SetHeader("to",tmp);
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader("to", tmp);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>, y@y.example, Ww <z@z.invalid>;";
       try {
- msg.SetHeader("to",tmp);
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetHeader("to", tmp);
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
     }
 
     public static void TestQuotedPrintableRoundTrip(byte[] bytes) {
@@ -1934,8 +1927,8 @@ throw new InvalidOperationException(String.Empty, ex);
     }
 
     public static string EncodeB64(byte[] bytes, int mode) {
-      bool a=(mode%2) == 1;
-      bool b=(mode%4) == 1;
+      bool a = (mode % 2) == 1;
+      bool b = (mode % 4) == 1;
       object enc = Reflect.Construct(
         MailNamespace() + ".Base64Encoder",
         a,
@@ -2021,6 +2014,14 @@ throw new InvalidOperationException(String.Empty, ex);
 
     [Test]
     public void TestQuotedPrintableSpecific() {
+      TestQuotedPrintableRoundTrip("T \rA", 0);
+      TestQuotedPrintableRoundTrip("T \rA", 1);
+      TestQuotedPrintableRoundTrip("T \r\rA", 0);
+      TestQuotedPrintableRoundTrip("T \r\rA", 1);
+      TestQuotedPrintableRoundTrip("T \r\r A", 0);
+      TestQuotedPrintableRoundTrip("T \r\r A", 1);
+      TestQuotedPrintableRoundTrip("T \r\r\nA", 0);
+      TestQuotedPrintableRoundTrip("T \r\r\nA", 1);
       TestQuotedPrintableRoundTrip("T\u000best\r\nFrom Me", 2);
       TestQuotedPrintableRoundTrip("T\u000best\r\nGood ", 2);
       TestQuotedPrintableRoundTrip("T\u000best\r\nFrom ", 2);
@@ -2036,7 +2037,7 @@ throw new InvalidOperationException(String.Empty, ex);
     public void TestReceivedHeader() {
       var msg = new Message();
       string tmp =
-        "from x.y.example by a.b.example; Thu, 31 Dec 2012 00:00:00 -0100" ;
+        "from x.y.example by a.b.example; Thu, 31 Dec 2012 00:00:00 -0100";
       msg.SetHeader("received", tmp);
     }
   }

@@ -17,30 +17,17 @@ namespace PeterO.Mail {
     private readonly bool collapseSpaces;
     private bool haveNonwhitespace;
 
-    public WordWrapEncoder(string c) : this(c, true) {
-    }
-
-    public WordWrapEncoder(string c, bool collapseSpaces) {
-      if (c == null) {
-        throw new ArgumentNullException("c");
-      }
+    public WordWrapEncoder(bool collapseSpaces) {
       this.fullString = new StringBuilder();
-      this.fullString.Append(c);
       this.collapseSpaces = collapseSpaces;
-      if (this.fullString.Length >= MaxLineLength) {
-        this.fullString.Append("\r\n");
-        this.lastSpaces = " ";
-        this.haveNonwhitespace = false;
-      } else {
-        this.haveNonwhitespace = true;  // assume have nonwhitespace
-        this.lastSpaces = c.Length == 0 ? String.Empty : " ";
-        this.lineLength = this.fullString.Length;
-      }
+      this.haveNonwhitespace = true;  // assume have nonwhitespace
+      this.lastSpaces = String.Empty;
+      this.lineLength = this.fullString.Length;
     }
 
     private void AppendSpaces(string str) {
-   if (this.lineLength + this.lastSpaces.Length + str.Length >
-        MaxLineLength) {
+      if (this.lineLength + this.lastSpaces.Length + str.Length >
+           MaxLineLength) {
         // Too big to fit the current line
         this.lastSpaces = " ";
       } else {
@@ -49,14 +36,18 @@ namespace PeterO.Mail {
     }
 
     private void AppendWord(string str) {
-   if (this.lineLength + this.lastSpaces.Length + str.Length >
+      if (this.lineLength + this.lastSpaces.Length + str.Length >
         MaxLineLength) {
         if (this.haveNonwhitespace) {
           // Too big to fit the current line,
           // create a new line (but only if the current
           // line isn't all whitespace)
-          this.fullString.Append("\r\n");
-          this.lastSpaces = " ";
+          if (this.fullString.Length > 0) {
+            this.fullString.Append("\r\n");
+            this.lastSpaces = " ";
+          } else {
+            this.lastSpaces = String.Empty;
+          }
           this.haveNonwhitespace = false;
           this.lineLength = 0;
         } else {

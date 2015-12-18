@@ -15,31 +15,17 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     private final boolean collapseSpaces;
     private boolean haveNonwhitespace;
 
-    public WordWrapEncoder (String c) {
- this(c, true);
-    }
-
-    public WordWrapEncoder (String c, boolean collapseSpaces) {
-      if (c == null) {
-        throw new NullPointerException("c");
-      }
+    public WordWrapEncoder (boolean collapseSpaces) {
       this.fullString = new StringBuilder();
-      this.fullString.append(c);
       this.collapseSpaces = collapseSpaces;
-      if (this.fullString.length() >= MaxLineLength) {
-        this.fullString.append("\r\n");
-        this.lastSpaces = " ";
-        this.haveNonwhitespace = false;
-      } else {
-        this.haveNonwhitespace = true;  // assume have nonwhitespace
-        this.lastSpaces = c.length() == 0 ? "" : " ";
-        this.lineLength = this.fullString.length();
-      }
+      this.haveNonwhitespace = true;  // assume have nonwhitespace
+      this.lastSpaces = "";
+      this.lineLength = this.fullString.length();
     }
 
     private void AppendSpaces(String str) {
-   if (this.lineLength + this.lastSpaces.length() + str.length() >
-        MaxLineLength) {
+      if (this.lineLength + this.lastSpaces.length() + str.length() >
+           MaxLineLength) {
         // Too big to fit the current line
         this.lastSpaces = " ";
       } else {
@@ -48,14 +34,18 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     }
 
     private void AppendWord(String str) {
-   if (this.lineLength + this.lastSpaces.length() + str.length() >
+      if (this.lineLength + this.lastSpaces.length() + str.length() >
         MaxLineLength) {
         if (this.haveNonwhitespace) {
           // Too big to fit the current line,
           // create a new line (but only if the current
           // line isn't all whitespace)
-          this.fullString.append("\r\n");
-          this.lastSpaces = " ";
+          if (this.fullString.length() > 0) {
+            this.fullString.append("\r\n");
+            this.lastSpaces = " ";
+          } else {
+            this.lastSpaces = "";
+          }
           this.haveNonwhitespace = false;
           this.lineLength = 0;
         } else {

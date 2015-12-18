@@ -113,7 +113,7 @@ A list of addresses found in the CC header field or fields.
 
     public PeterO.Mail.ContentDisposition ContentDisposition { get; set;}
 
-Gets or sets this message's content disposition. The content disposition specifies how a user agent should handle or otherwise display this message.
+Gets or sets this message's content disposition. The content disposition specifies how a user agent should handle or otherwise display this message. Can be set to null.
 
 <b>Returns:</b>
 
@@ -158,7 +158,7 @@ A list of addresses found in the From header field or fields.
 
     public System.Collections.Generic.IList HeaderFields { get; }
 
-Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic upper-case letters [U+0041 to U + 005A] are converted to lower case) and the value is the header field's value.
+Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic upper-case letters [U + 0041 to U + 005A] are converted to lower case) and the value is the header field's value.
 
 <b>Returns:</b>
 
@@ -200,7 +200,7 @@ A list of addresses found in the To header field or fields.
         string name,
         string value);
 
-Adds a header field to the end of the message's header.
+Adds a header field to the end of the message's header.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
 
 <b>Parameters:</b>
 
@@ -227,7 +227,7 @@ The header field name is too long or contains an invalid character, or the heade
     public PeterO.Mail.Message AddHeader(
         System.Collections.Generic.KeyValuePair header);
 
-Adds a header field to the end of the message's header.
+Adds a header field to the end of the message's header.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
 
 <b>Parameters:</b>
 
@@ -253,6 +253,8 @@ The header field name is too long or contains an invalid character, or the heade
 Generates this message's data in text form.The generated message will have only Basic Latin code points (U + 0000 to U + 007F), and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
 
 The following applies to the From, To, Cc, and Bcc header fields. If the header field exists, but has an invalid syntax or has no addresses, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to `me@[header-name]-address.invalid`  as the address (a `.invalid`  address is a reserved address that can never belong to anyone). The generated message should always have a From header field.
+
+If a Date header field doesn't exist, a Date field will be generated using the current local time.
 
 <b>Returns:</b>
 
@@ -349,7 +351,7 @@ Name is null.
     public PeterO.Mail.Message RemoveHeader(
         int index);
 
-Removes a header field by index.
+Removes a header field by index.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
 
 <b>Parameters:</b>
 
@@ -370,7 +372,9 @@ The parameter  <i>index</i>
     public PeterO.Mail.Message RemoveHeader(
         string name);
 
-Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
+
+s.
 
 <b>Parameters:</b>
 
@@ -403,6 +407,16 @@ Sets the body of this message to the given byte array. This method doesn't make 
 The parameter  <i>bytes</i>
  is null.
 
+### SetCurrentDate
+
+    public PeterO.Mail.Message SetCurrentDate();
+
+Sets this message's Date header field to the current time as its value.
+
+<b>Returns:</b>
+
+This object.
+
 ### SetHeader
 
     public PeterO.Mail.Message SetHeader(
@@ -410,7 +424,7 @@ The parameter  <i>bytes</i>
         string name,
         string value);
 
-Sets the name and value of a header field by index.
+Sets the name and value of a header field by index.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
 
 <b>Parameters:</b>
 
@@ -441,7 +455,7 @@ The parameter  <i>name</i>
         int index,
         string value);
 
-Sets the value of a header field by index without changing its name.
+Sets the value of a header field by index without changing its name.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
 
 <b>Parameters:</b>
 
@@ -469,7 +483,7 @@ The parameter  <i>value</i>
         int index,
         System.Collections.Generic.KeyValuePair header);
 
-Sets the name and value of a header field by index.
+Sets the name and value of a header field by index.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
 
 <b>Parameters:</b>
 
@@ -497,7 +511,7 @@ The key or value of <i>header</i>
         string name,
         string value);
 
-Sets the value of this message's header field. If a header field with the same name exists, its value is replaced. If the header field's name occurs more than once, only the first instance of the header field is replaced.
+Sets the value of this message's header field. If a header field with the same name exists, its value is replaced. If the header field's name occurs more than once, only the first instance of the header field is replaced.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
 
 <b>Parameters:</b>
 
@@ -570,7 +584,7 @@ The parameter  <i>text</i>
     public PeterO.Mail.Message SetTextBody(
         string str);
 
-Sets the body of this message to the specified plain text string. The character sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n" , U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters. This method changes this message's media type to plain text.
+Sets the body of this message to the specified plain text string. The character sequences CR (carriage return, "\r", U+000D), LF (line feed, "\n" , U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters. This method changes this message's media type to plain text.
 
 <b>Parameters:</b>
 

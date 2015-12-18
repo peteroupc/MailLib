@@ -157,7 +157,10 @@ namespace PeterO.Mail {
       this.headers.Add("1.0");
     }
 
-    private Message SetCurrentDate() {
+    /// <summary>Sets this message's Date header field to the current time
+    /// as its value.</summary>
+    /// <returns>This object.</returns>
+    public Message SetCurrentDate() {
       return this.SetHeader(
         "date",
         GetDateString(DateTimeUtilities.GetCurrentLocalTime()));
@@ -293,7 +296,7 @@ namespace PeterO.Mail {
 
     /// <summary>Gets or sets this message's content disposition. The
     /// content disposition specifies how a user agent should handle or
-    /// otherwise display this message.</summary>
+    /// otherwise display this message. Can be set to null.</summary>
     /// <value>This message&apos;s content disposition, or null if none is
     /// specified.</value>
     public ContentDisposition ContentDisposition {
@@ -417,8 +420,10 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Adds a header field to the end of the message's
-    /// header.</summary>
+    /// <summary>Adds a header field to the end of the message's header.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
     /// <param name='header'>A KeyValuePair object. The key is the name of
     /// the header field, such as "From" or "Content-ID". The value is the
     /// header field's value.</param>
@@ -432,8 +437,10 @@ namespace PeterO.Mail {
       return this.AddHeader(header.Key, header.Value);
     }
 
-    /// <summary>Adds a header field to the end of the message's
-    /// header.</summary>
+    /// <summary>Adds a header field to the end of the message's header.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
     /// <param name='name'>Name of a header field, such as "From" or
     /// "Content-ID".</param>
     /// <param name='value'>Value of the header field.</param>
@@ -445,9 +452,10 @@ namespace PeterO.Mail {
     /// is syntactically invalid.</exception>
     public Message AddHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
-      this.headers.Add(name);
-      this.headers.Add(value);
-      return this;
+      int index = this.headers.Count / 2;
+      this.headers.Add(String.Empty);
+      this.headers.Add(String.Empty);
+      return this.SetHeader(index, name, value);
     }
 
     /// <summary>Generates this message's data in text form.
@@ -573,7 +581,10 @@ namespace PeterO.Mail {
       return (string[])list.ToArray();
     }
 
-    /// <summary>Removes a header field by index.</summary>
+    /// <summary>Removes a header field by index.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
     /// <param name='index'>Zero-based index of the header field to
     /// set.</param>
     /// <returns>This instance.</returns>
@@ -590,8 +601,14 @@ namespace PeterO.Mail {
                     ") is not less than " + (this.headers.Count
                     / 2));
       }
+      string name = this.headers[index * 2];
       this.headers.RemoveAt(index * 2);
       this.headers.RemoveAt(index * 2);
+      if (name.Equals("content-type")) {
+        this.contentType = MediaType.TextPlainAscii;
+      } else if (name.Equals("content-disposition")) {
+        this.contentDisposition = null;
+      }
       return this;
     }
 
@@ -600,7 +617,10 @@ namespace PeterO.Mail {
     /// removed from its body part headers. A basic case-insensitive
     /// comparison is used. (Two strings are equal in such a comparison, if
     /// they match after converting the basic upper-case letters A to Z (U
-    /// + 0041 to U + 005A) in both strings to lower case.).</summary>
+    /// + 0041 to U + 005A) in both strings to lower case.).
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this method.</para>
+    /// s.</summary>
     /// <param name='name'>The name of the header field to remove.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -618,6 +638,11 @@ namespace PeterO.Mail {
           i -= 2;
         }
       }
+      if (name.Equals("content-type")) {
+        this.contentType = MediaType.TextPlainAscii;
+      } else if (name.Equals("content-disposition")) {
+        this.contentDisposition = null;
+      }
       return this;
     }
 
@@ -633,8 +658,10 @@ namespace PeterO.Mail {
       this.body = bytes;
     }
 
-    /// <summary>Sets the name and value of a header field by
-    /// index.</summary>
+    /// <summary>Sets the name and value of a header field by index.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
     /// <param name='index'>Zero-based index of the header field to
     /// set.</param>
     /// <param name='header'>A KeyValuePair object. The key is the name of
@@ -652,8 +679,10 @@ namespace PeterO.Mail {
       return this.SetHeader(index, header.Key, header.Value);
     }
 
-    /// <summary>Sets the name and value of a header field by
-    /// index.</summary>
+    /// <summary>Sets the name and value of a header field by index.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
     /// <param name='index'>Zero-based index of the header field to
     /// set.</param>
     /// <param name='name'>Name of a header field, such as "From" or
@@ -680,11 +709,19 @@ namespace PeterO.Mail {
       name = ValidateHeaderField(name, value);
       this.headers[index * 2] = name;
       this.headers[(index * 2) + 1] = value;
+      if (name.Equals("content-type")) {
+        this.contentType = MediaType.Parse(value);
+      } else if (name.Equals("content-disposition")) {
+        this.contentDisposition = ContentDisposition.Parse(value);
+      }
       return this;
     }
 
     /// <summary>Sets the value of a header field by index without changing
-    /// its name.</summary>
+    /// its name.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
     /// <param name='index'>Zero-based index of the header field to
     /// set.</param>
     /// <param name='value'>Value of the header field.</param>
@@ -706,16 +743,16 @@ namespace PeterO.Mail {
                     ") is not less than " + (this.headers.Count
                     / 2));
       }
-      string name = ValidateHeaderField(this.headers[index * 2], value);
-      this.headers[index * 2] = name;
-      this.headers[(index * 2) + 1] = value;
-      return this;
+      return this.SetHeader(index, this.headers[index * 2], value);
     }
 
     /// <summary>Sets the value of this message's header field. If a header
     /// field with the same name exists, its value is replaced. If the
     /// header field's name occurs more than once, only the first instance
-    /// of the header field is replaced.</summary>
+    /// of the header field is replaced.
+    /// <para>Updates the ContentType and ContentDisposition properties if
+    /// those header fields have been modified by this
+    /// method.</para></summary>
     /// <param name='name'>The name of a header field, such as "from" or
     /// "subject".</param>
     /// <param name='value'>The header field's value.</param>
@@ -728,15 +765,16 @@ namespace PeterO.Mail {
     public Message SetHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
       // Add the header field
+      var index = 0;
       for (int i = 0; i < this.headers.Count; i += 2) {
         if (this.headers[i].Equals(name)) {
-          this.headers[i + 1] = value;
-          return this;
+          return this.SetHeader(index, name, value);
         }
+        ++index;
       }
-      this.headers.Add(name);
-      this.headers.Add(value);
-      return this;
+      this.headers.Add(String.Empty);
+      this.headers.Add(String.Empty);
+      return this.SetHeader(index, name, value);
     }
 
     /// <summary>Sets the body of this message to the specified string in
@@ -785,7 +823,7 @@ namespace PeterO.Mail {
       var textMessage = new Message().SetTextBody(text);
       var htmlMessage = new Message().SetHtmlBody(html);
       this.contentType =
-        MediaType.Parse("multipart/alternative; boundary=\"=_boundary\"");
+  MediaType.Parse("multipart/alternative; boundary=\"=_Boundary00000000\"");
       IList<Message> messageParts = this.Parts;
       messageParts.Clear();
       messageParts.Add(textMessage);
@@ -1069,11 +1107,14 @@ namespace PeterO.Mail {
             } else {
               writer.Write(bytes, lastIndex, headerNameStart - lastIndex);
             }
-            WordWrapEncoder encoder = null;
-            encoder = status[0] == 2 ? new WordWrapEncoder((origRecipient ?
-                "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient"
-) + ":") : new WordWrapEncoder(origFieldName);
-            encoder.AddString(headerValue);
+            var encoder = new WordWrapEncoder(true);
+            string field = (origRecipient ?
+        "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient") +
+                  ": " ;
+            if (status[0] != 2) {
+ field = origFieldName + " ";
+}
+            encoder.AddString(field + headerValue);
             byte[] newBytes = DataUtilities.GetUtf8Bytes(
               encoder.ToString(),
               true);
@@ -1087,10 +1128,6 @@ namespace PeterO.Mail {
         bytes = writer.ToArray();
       }
       return bytes;
-    }
-
-    internal static string DowngradeRecipientHeaderValue(string headerValue) {
-      return DowngradeRecipientHeaderValue(headerValue, null);
     }
 
     internal static string DowngradeRecipientHeaderValue(
@@ -1282,7 +1319,7 @@ namespace PeterO.Mail {
           chunkLength = 0;
         } else {
           ++chunkLength;
-          if (chunkLength > 997) {
+          if (chunkLength > 998) {
             return true;
           }
         }
@@ -1612,7 +1649,7 @@ namespace PeterO.Mail {
             }
             sb.Append((char)c);
           } else if (!first && c == ':') {
-            if (lineCount > 997) {
+            if (lineCount >= 999) {
               // 998 characters includes the colon and whitespace
               throw new MessageDataException("Header field name too long");
             }
@@ -2096,25 +2133,15 @@ namespace PeterO.Mail {
             }
           }
           bool haveDquote = downgraded.IndexOf('"') >= 0;
-          var encoder = new WordWrapEncoder(
-            Capitalize(name) + ": ",
-            !haveDquote);
-          encoder.AddString(downgraded);
+          var encoder = new WordWrapEncoder(!haveDquote);
+          encoder.AddString(Capitalize(name) + ": " + downgraded);
           string newValue = encoder.ToString();
-          if (newValue.IndexOf(": ", StringComparison.Ordinal) < 0) {
-            throw new MessageDataException("No colon+space: " + newValue);
-          }
           AppendAscii(output, newValue);
         } else {
           bool haveDquote = value.IndexOf('"') >= 0;
-          var encoder = new WordWrapEncoder(
-            Capitalize(name) + ": ",
-            !haveDquote);
-          encoder.AddString(value);
+          var encoder = new WordWrapEncoder(!haveDquote);
+          encoder.AddString(Capitalize(name) + ": " + value);
           string newValue = encoder.ToString();
-          if (newValue.IndexOf(": ", StringComparison.Ordinal) < 0) {
-            throw new MessageDataException("No colon+space: " + newValue);
-          }
           AppendAscii(output, newValue);
         }
         AppendAscii(output, "\r\n");
