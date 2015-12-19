@@ -1120,7 +1120,7 @@ import java.util.*;
 
     private static byte[] DowngradeDeliveryStatus(String str) {
       Message msg = MessageTest.MessageFromString(
-  "From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n" + "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
+  "From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"+ "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
       msg = MessageTest.MessageFromString(MessageTest.MessageGenerate(msg));
       return msg.GetBody();
     }
@@ -1513,9 +1513,18 @@ import java.util.*;
     }
 
     private static String DowngradeHeaderField(String name, String value) {
-      return (String)Reflect.Invoke(Reflect.InvokeStatic(MailNamespace() +
-                    ".HeaderFieldParsers", "GetParser", name),
-                    "DowngradeFieldValue", value);
+      String msgstr = "";
+      msgstr += name + ": " + value + "\r\n";
+      if (!name.equals("from")) {
+        msgstr += "from: x@example.com\r\n";
+      }
+      msgstr += "\r\nBody";
+      Message msg = MessageTest.MessageFromString(msgstr);
+      String gen = MessageTest.MessageGenerate(msg);
+      int io = gen.indexOf('\r');
+      int colon = gen.indexOf(':');
+      gen = gen.substring(colon + 2, (colon + 2)+(io-(colon + 2)));
+      return gen;
     }
 
     @Test
@@ -2008,6 +2017,7 @@ import java.util.*;
 
     @Test
     public void TestQuotedPrintableSpecific() {
+      TestQuotedPrintableRoundTrip("T \r", 1);
       TestQuotedPrintableRoundTrip("T \rA", 0);
       TestQuotedPrintableRoundTrip("T \rA", 1);
       TestQuotedPrintableRoundTrip("T \r\rA", 0);
@@ -2016,6 +2026,9 @@ import java.util.*;
       TestQuotedPrintableRoundTrip("T \r\r A", 1);
       TestQuotedPrintableRoundTrip("T \r\r\nA", 0);
       TestQuotedPrintableRoundTrip("T \r\r\nA", 1);
+      TestQuotedPrintableRoundTrip("T \r", 0);
+      TestQuotedPrintableRoundTrip("T \r\r", 0);
+      TestQuotedPrintableRoundTrip("T \r\r", 1);
       TestQuotedPrintableRoundTrip("T\u000best\r\nFrom Me", 2);
       TestQuotedPrintableRoundTrip("T\u000best\r\nGood ", 2);
       TestQuotedPrintableRoundTrip("T\u000best\r\nFrom ", 2);

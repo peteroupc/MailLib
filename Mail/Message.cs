@@ -2577,7 +2577,8 @@ endIndex - startIndex) : String.Empty;
       var buffer = new byte[8192];
       var bufferCount = 0;
       int bufferLength = buffer.Length;
-      using (var ms = new MemoryStream()) {
+      var aw = new ArrayWriter();
+       {
         while (true) {
           var ch = 0;
           try {
@@ -2585,8 +2586,8 @@ endIndex - startIndex) : String.Empty;
           } catch (MessageDataException ex) {
             string valueExMessage = ex.Message;
 #if DEBUG
-            ms.Write(buffer, 0, bufferCount);
-            buffer = ms.ToArray();
+            aw.Write(buffer, 0, bufferCount);
+            buffer = aw.ToArray();
             string ss = DataUtilities.GetUtf8String(buffer,
                     Math.Max(buffer.Length - 35, 0),
                     Math.Min(buffer.Length, 35),
@@ -2606,14 +2607,14 @@ endIndex - startIndex) : String.Empty;
           }
           buffer[bufferCount++] = (byte)ch;
           if (bufferCount >= bufferLength) {
-            ms.Write(buffer, 0, bufferCount);
+            aw.Write(buffer, 0, bufferCount);
             bufferCount = 0;
           }
         }
         if (bufferCount > 0) {
-          ms.Write(buffer, 0, bufferCount);
+          aw.Write(buffer, 0, bufferCount);
         }
-        this.body = ms.ToArray();
+        this.body = aw.ToArray();
       }
     }
 
