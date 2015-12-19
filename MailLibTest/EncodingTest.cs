@@ -168,10 +168,12 @@ namespace MailLibTest {
         }
         if (lineLength > maxLineLength) {
           if (lineLength > 998) {
-            //Console.WriteLine(fn + ":\n--Line length exceeded (" +
-            // maxLineLength + " " +
-            //  (str.Substring(index - 78, 78)) + ", " + lineLength + ")");
-            return 0;
+            if (headers) return 0;
+            if (!meetsLineLength) {
+              //Console.WriteLine(fn + ":\n--Line length exceeded (" +
+               // maxLineLength + " " +
+                //(str.Substring(index - 78, 78)) + ", " + lineLength + ")");
+            }
           }
           meetsLineLength = false;
         }
