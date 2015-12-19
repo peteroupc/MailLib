@@ -968,7 +968,7 @@ this.lastQcsIndex);
       }
     }
 
-    internal class StringCharacterInput2 : ICharacterInput {
+    private sealed class StringCharacterInput2 : ICharacterInput {
       private readonly string str;
       private int index;
       private readonly int endIndex;

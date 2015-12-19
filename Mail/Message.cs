@@ -884,6 +884,13 @@ namespace PeterO.Mail {
           // Start of a reserved boundary delimiter
           return false;
         }
+        if (lineLength == 0 && checkBoundaryDelimiter && index + 4 < endIndex &&
+            bytes[index] == 'F' && bytes[index + 1] == 'r' &&
+            bytes[index + 2] == 'o' && bytes[index + 3] == 'm' &&
+            bytes[index + 4] == ' ') {
+          // Line starts with "From" followed by space
+          return false;
+        }
         if (c == '\r' && index + 1 < endIndex && bytes[index + 1] == '\n') {
           index += 2;
           if (headers && lineLength == 0) {
