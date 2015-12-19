@@ -2011,7 +2011,6 @@ import java.util.*;
       java.util.Random rnd = new java.util.Random();
       for (int i = 0; i < 5000; ++i) {
         TestQuotedPrintableRoundTrip(RandomBytes(rnd), 0);
-        TestQuotedPrintableRoundTrip(RandomBytes(rnd), 1);
       }
     }
 

@@ -2017,7 +2017,6 @@ namespace MailLibTest {
       var rnd = new Random();
       for (var i = 0; i < 5000; ++i) {
         TestQuotedPrintableRoundTrip(RandomBytes(rnd), 0);
-        TestQuotedPrintableRoundTrip(RandomBytes(rnd), 1);
       }
     }
 

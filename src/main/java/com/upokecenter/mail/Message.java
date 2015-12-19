@@ -149,6 +149,9 @@ import com.upokecenter.text.*;
 
     /**
      * Sets this message's Date header field to the current time as its value.
+     * <p>This method can be used when the message is considered complete
+     * and ready to be generated, for example, using the "Generate()"
+     * method.</p>
      * @return This object.
      */
     public Message SetCurrentDate() {
@@ -444,8 +447,13 @@ public final void setSubject(String value) {
      * <code>me@[header-name]-address.invalid</code> as the address (a
      * <code>.invalid</code> address is a reserved address that can never belong
      * to anyone). The generated message should always have a From header
-     * field.</p> <p>If a Date header field doesn't exist, a Date field will
-     * be generated using the current local time.</p>
+     * field.</p> <p>If a Date and/or Message-ID header field doesn't exist,
+     * a field with that name will be generated (using the current local
+     * time for the Date field).</p> <p>When encoding the message's body, if
+     * the message has a text content type ("text/*"), the line breaks are a
+     * CR byte (carriage return, 0x0d) followed by an LF byte (line feed,
+     * 0x0a), CR alone, or LF alone. If the message has any other content
+     * type, only CR followed by LF is considered a line break.</p>
      * @return The generated message.
      * @throws MessageDataException The message can't be generated.
      */
@@ -1531,8 +1539,8 @@ public final void setSubject(String value) {
       dict.put("resent-to",5);
       dict.put("resent-cc",6);
       dict.put("resent-bcc",7);
-      dict.put("from",8);
-      dict.put("sender",9);
+      dict.put("sender",8);
+      dict.put("resent-from",9);
       dict.put("resent-sender",10);
       return dict;
     }
@@ -1868,6 +1876,7 @@ public final void setSubject(String value) {
             continue;
           }
         } else {
+          // not bare LF
           allTextBytes &= body[i] != (byte)'\n';
         }
         allTextBytes &= lineLength != 0 || i + 2 >= body.length || body[i] !=
@@ -2032,20 +2041,28 @@ public final void setSubject(String value) {
         } else {
           if (valueHeaderIndices.containsKey(name)) {
             int headerIndex = valueHeaderIndices.get(name);
-            if (headerIndex < 8) {
-              // TODO: Handle Sender, Resent-From, Resent-Sender
+            if (headerIndex < 9) {
               if (haveHeaders[headerIndex]) {
                 // Already outputted, continue
                 continue;
               }
               haveHeaders[headerIndex] = true;
               if (!this.IsValidAddressingField(name)) {
-                value =
-  GenerateAddressList(ParseAddresses(this.GetMultipleHeaders(name)));
+                value = GenerateAddressList(
+    ParseAddresses(this.GetMultipleHeaders(name)));
                 if (value.length() == 0) {
                   // No addresses, synthesize a field
                   value = this.SynthesizeField(name);
                 }
+              }
+            }
+            if (headerIndex == 9 || headerIndex == 10) {
+              // Resent-From/Resent-Sender, can appear
+              // more than once
+              value = GenerateAddressList(ParseAddresses(value));
+              if (value.length() == 0) {
+                // No addresses, synthesize a field
+                value = this.SynthesizeField(name);
               }
             }
           }

@@ -158,7 +158,10 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Sets this message's Date header field to the current time
-    /// as its value.</summary>
+    /// as its value.
+    /// <para>This method can be used when the message is considered
+    /// complete and ready to be generated, for example, using the
+    /// "Generate()" method.</para></summary>
     /// <returns>This object.</returns>
     public Message SetCurrentDate() {
       return this.SetHeader(
@@ -472,8 +475,14 @@ namespace PeterO.Mail {
     /// <c>.invalid</c> address is a reserved address that can never belong
     /// to anyone). The generated message should always have a From header
     /// field.</para>
-    /// <para>If a Date header field doesn't exist, a Date field will be
-    /// generated using the current local time.</para></summary>
+    /// <para>If a Date and/or Message-ID header field doesn't exist, a
+    /// field with that name will be generated (using the current local
+    /// time for the Date field).</para>
+    /// <para>When encoding the message's body, if the message has a text
+    /// content type ("text/*"), the line breaks are a CR byte (carriage
+    /// return, 0x0d) followed by an LF byte (line feed, 0x0a), CR alone,
+    /// or LF alone. If the message has any other content type, only CR
+    /// followed by LF is considered a line break.</para></summary>
     /// <returns>The generated message.</returns>
     /// <exception cref='MessageDataException'>The message can't be
     /// generated.</exception>
@@ -1568,8 +1577,8 @@ namespace PeterO.Mail {
       dict["resent-to"] = 5;
       dict["resent-cc"] = 6;
       dict["resent-bcc"] = 7;
-      dict["from"] = 8;
-      dict["sender"] = 9;
+      dict["sender"] = 8;
+      dict["resent-from"] = 9;
       dict["resent-sender"] = 10;
       return dict;
     }
@@ -1905,6 +1914,7 @@ namespace PeterO.Mail {
             continue;
           }
         } else {
+          // not bare LF
           allTextBytes &= body[i] != (byte)'\n';
         }
         allTextBytes &= lineLength != 0 || i + 2 >= body.Length || body[i] !=
@@ -2077,20 +2087,28 @@ namespace PeterO.Mail {
         } else {
           if (valueHeaderIndices.ContainsKey(name)) {
             int headerIndex = valueHeaderIndices[name];
-            if (headerIndex < 8) {
-              // TODO: Handle Sender, Resent-From, Resent-Sender
+            if (headerIndex < 9) {
               if (haveHeaders[headerIndex]) {
                 // Already outputted, continue
                 continue;
               }
               haveHeaders[headerIndex] = true;
               if (!this.IsValidAddressingField(name)) {
-                value =
-  GenerateAddressList(ParseAddresses(this.GetMultipleHeaders(name)));
+                value = GenerateAddressList(
+    ParseAddresses(this.GetMultipleHeaders(name)));
                 if (value.Length == 0) {
                   // No addresses, synthesize a field
                   value = this.SynthesizeField(name);
                 }
+              }
+            }
+            if (headerIndex == 9 || headerIndex == 10) {
+              // Resent-From/Resent-Sender, can appear
+              // more than once
+              value = GenerateAddressList(ParseAddresses(value));
+              if (value.Length == 0) {
+                // No addresses, synthesize a field
+                value = this.SynthesizeField(name);
               }
             }
           }

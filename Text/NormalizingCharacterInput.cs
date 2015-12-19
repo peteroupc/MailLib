@@ -357,10 +357,8 @@ string str,
 int index,
 int length,
 Normalization form) : this(
-Encodings.StringToInput(str, index, length),
+new StringCharacterInput2(str, index, length),
 form) {
-  // TODO: StringToInput has different behavior in unpaired
-  // surrogates (returns U + FFFD) than IsNormalized
     }
 
     /// <summary>Initializes a new instance of the
@@ -369,9 +367,7 @@ form) {
     /// <param name='form'>Specifies the normalization form to use when
     /// normalizing the text.</param>
     public NormalizingCharacterInput(string str, Normalization form) :
-      this(Encodings.StringToInput(str), form) {
-  // TODO: StringToInput has different behavior in unpaired
-  // surrogates (returns U + FFFD) than IsNormalized
+      this(new StringCharacterInput2(str), form) {
     }
 
     /// <summary>Initializes a new instance of the
@@ -969,6 +965,110 @@ this.lastQcsIndex);
         Array.Copy(this.array, this.pos, buf, offset, maxsize);
         this.pos += maxsize;
         return maxsize == 0 ? -1 : maxsize;
+      }
+    }
+
+    internal class StringCharacterInput2 : ICharacterInput {
+      private readonly string str;
+      private int index;
+      private readonly int endIndex;
+
+      public StringCharacterInput2(string str) {
+        if (str == null) {
+          throw new ArgumentNullException("str");
+        }
+        this.str = str;
+        this.endIndex = str.Length;
+      }
+
+      public StringCharacterInput2(string str, int index, int length) {
+        if (str == null) {
+          throw new ArgumentNullException("str");
+        }
+        if (index < 0) {
+          throw new ArgumentException("index (" + index + ") is less than " +
+              "0");
+        }
+        if (index > str.Length) {
+          throw new ArgumentException("index (" + index + ") is more than " +
+            str.Length);
+        }
+        if (length < 0) {
+          throw new ArgumentException("length (" + length + ") is less than " +
+                "0");
+        }
+        if (length > str.Length) {
+          throw new ArgumentException("length (" + length + ") is more than " +
+            str.Length);
+        }
+        if (str.Length - index < length) {
+          throw new ArgumentException("str's length minus " + index + " (" +
+            (str.Length - index) + ") is less than " + length);
+        }
+        this.str = str;
+        this.index = index;
+        this.endIndex = index + length;
+      }
+
+      public int ReadChar() {
+        if (this.index >= this.endIndex) {
+          return -1;
+        }
+        int c = this.str[this.index];
+        if ((c & 0xfc00) == 0xd800 && this.index + 1 < this.str.Length &&
+      this.str[this.index + 1] >= 0xdc00 && this.str[this.index + 1] <=
+              0xdfff) {
+          // Get the Unicode code point for the surrogate pair
+          c = 0x10000 + ((c - 0xd800) << 10) + (this.str[this.index + 1] -
+              0xdc00);
+          ++this.index;
+        } else if ((c & 0xf800) == 0xd800) {
+          // unpaired surrogate, return
+          // a number outside the Unicode range
+          c = 0x110000;
+        }
+        ++this.index;
+        return c;
+      }
+
+      public int Read(int[] chars, int index, int length) {
+        if (chars == null) {
+          throw new ArgumentNullException("chars");
+        }
+        if (index < 0) {
+          throw new ArgumentException("index (" + index + ") is less than " +
+              "0");
+        }
+        if (index > chars.Length) {
+          throw new ArgumentException("index (" + index + ") is more than " +
+            chars.Length);
+        }
+        if (length < 0) {
+          throw new ArgumentException("length (" + length + ") is less than " +
+                "0");
+        }
+        if (length > chars.Length) {
+          throw new ArgumentException("length (" + length + ") is more than " +
+            chars.Length);
+        }
+        if (chars.Length - index < length) {
+          throw new ArgumentException("chars's length minus " + index + " (" +
+            (chars.Length - index) + ") is less than " + length);
+        }
+        if (this.endIndex == this.index) {
+          return -1;
+        }
+        if (length == 0) {
+          return 0;
+        }
+        for (int i = 0; i < length; ++i) {
+          int c = this.ReadChar();
+          if (c == -1) {
+            return (i == 0) ? -1 : i;
+          }
+          chars[index + i] = c;
+        }
+        return length;
       }
     }
   }
