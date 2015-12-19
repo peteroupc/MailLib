@@ -286,7 +286,6 @@ HexAlphabet.charAt(c & 15));
                   // Space, CR, EOF
                   count += this.IncrementAndAppend(output, "=20");
                   count += this.IncrementAndAppend(output, "=0D");
-                  count += this.IncrementAndAppend(output, "\r\n");
                   this.lineCount = 0;
                   this.machineState = 0;
                   return count;
@@ -294,19 +293,18 @@ HexAlphabet.charAt(c & 15));
                   // Space, CR, EOF
                   count += this.IncrementAndAppend(output, "=20");
                   count += this.IncrementAndAppend(output, "=0D");
-                  count += this.IncrementAndAppend(output, "=0A");
                   this.machineState = 0;
                   return count;
                 }
               } else if (c == 0x0a) {
                 if (this.lineBreakMode == 2 || this.lineBreakMode == 1) {
-                  // Space, linebreak, EOF
+                  // Space, linebreak
                   count += this.IncrementAndAppend(output, "=20\r\n");
                   this.lineCount = 0;
                   this.machineState = 0;
                   return count;
                 } else {
-                  // Space, CR, EOF
+                  // Space, CR, LF
                   count += this.IncrementAndAppend(output, "=20");
                   count += this.IncrementAndAppend(output, "=0D");
                   count += this.IncrementAndAppend(output, "=0A");

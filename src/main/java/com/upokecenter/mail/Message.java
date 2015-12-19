@@ -2497,10 +2497,8 @@ startIndex)+(endIndex - startIndex)) : "";
       byte[] buffer = new byte[8192];
       int bufferCount = 0;
       int bufferLength = buffer.length;
-      java.io.ByteArrayOutputStream ms = null;
-try {
-ms = new java.io.ByteArrayOutputStream();
-
+      ArrayWriter aw = new ArrayWriter();
+       {
         while (true) {
           int ch = 0;
           try {
@@ -2515,18 +2513,15 @@ ms = new java.io.ByteArrayOutputStream();
           }
           buffer[bufferCount++] = (byte)ch;
           if (bufferCount >= bufferLength) {
-            ms.write(buffer, 0, bufferCount);
+            aw.write(buffer, 0, bufferCount);
             bufferCount = 0;
           }
         }
         if (bufferCount > 0) {
-          ms.write(buffer, 0, bufferCount);
+          aw.write(buffer, 0, bufferCount);
         }
-        this.body = ms.toByteArray();
-}
-finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
-}
+        this.body = aw.ToArray();
+      }
     }
 
     private String SynthesizeField(String name) {
