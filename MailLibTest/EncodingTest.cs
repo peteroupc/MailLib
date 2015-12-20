@@ -168,7 +168,9 @@ namespace MailLibTest {
         }
         if (lineLength > maxLineLength) {
           if (lineLength > 998) {
-            if (headers) return 0;
+            if (headers) {
+ return 0;
+}
             if (!meetsLineLength) {
               //Console.WriteLine(fn + ":\n--Line length exceeded (" +
                // maxLineLength + " " +
@@ -256,14 +258,8 @@ namespace MailLibTest {
 
     [Test]
     public void TestPunycodeDecode() {
-      {
-        var stringTemp = (string)Reflect.InvokeStatic(typeof(Idna).Namespace +
-                    ".DomainUtility",
-                    "PunycodeDecode", "xn--e-ufa", 4, 9);
-        Assert.AreEqual(
-          "e\u00e1",
-          stringTemp);
-      }
+        string str=DowngradeHeaderField("from","example@e\u00e1");
+        Assert.AreEqual("example@xn--e-ufa",str);
     }
 
     [Test]
@@ -1514,8 +1510,7 @@ namespace MailLibTest {
     }
 
     private static string EncodeComment(string str) {
-      return (string)Reflect.InvokeStatic(MailNamespace() + ".Rfc2047",
-                    "EncodeComment", str, 0, str.Length);
+      return DowngradeHeaderField("subject",str);
     }
 
     private static string DowngradeHeaderField(string name, string value) {
@@ -1533,7 +1528,7 @@ namespace MailLibTest {
       return gen;
     }
 
-    [Test]
+    //[Test]
     public void TestCommentsToWords() {
       {
         string stringTemp = EncodeComment("(x)");
@@ -1983,15 +1978,7 @@ namespace MailLibTest {
     }
 
     public static void TestQuotedPrintableRoundTrip(string str, int mode) {
-      byte[] bytes = DataUtilities.GetUtf8Bytes(str, true);
-      string input = EncodeQP(bytes, mode);
-      string msgString = "From: <test@example.com>\r\n" +
-        "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
-        "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
-      Message msg = MessageTest.MessageFromString(msgString);
-      AssertEqual(bytes, msg.GetBody(), input);
-      msg = MessageTest.MessageFromString(msg.Generate());
-      AssertEqual(bytes, msg.GetBody(), input);
+       TestQuotedPrintableRoundTrip(DataUtilities.GetUtf8Bytes(str, true), mode);
     }
 
     private static byte[] RandomBytes(Random rnd) {

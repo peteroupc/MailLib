@@ -18,7 +18,7 @@ at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
     public WordWrapEncoder (boolean collapseSpaces) {
       this.fullString = new StringBuilder();
       this.collapseSpaces = collapseSpaces;
-      this.haveNonwhitespace = true;  // assume have nonwhitespace
+      this.haveNonwhitespace = true;
       this.lastSpaces = "";
       this.lineLength = this.fullString.length();
     }

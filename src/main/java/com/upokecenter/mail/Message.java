@@ -40,35 +40,36 @@ import com.upokecenter.text.*;
      * encoding for the Unicode character set.)</li> <li>The To and Cc
      * header fields are allowed to contain only comments and whitespace,
      * but these "empty" header fields will be omitted when generating.</li>
-     * <li>There is no line length limit imposed when parsing
-     * quoted-printable or base64 encoded bodies.</li> <li>If the transfer
-     * encoding is absent and the content type is "message/rfc822" , bytes
-     * with values greater than 127 (called "8-bit bytes" in the rest of
-     * this summary) are still allowed, despite the default value of "7bit"
-     * for "Content-Transfer-Encoding".</li> <li>In the following cases, if
-     * the transfer encoding is absent or declared as 7bit, 8-bit bytes are
-     * still allowed:</li> <li>(a) The preamble and epilogue of multipart
-     * messages, which will be ignored.</li> <li>(b) If the charset is
-     * declared to be <code>utf-8</code>.</li> <li>(c) If the content type is
-     * "text/html" and the charset is declared to be <code>ascii</code>,
-     * <code>us-ascii</code>, "windows-1252", "windows-1251", or "iso-8859-*" (all
-     * single byte encodings).</li> <li>(d) In non-MIME message bodies and
-     * in text/plain message bodies. Any 8-bit bytes are replaced with the
-     * substitute character byte (0x1a).</li> <li>If the first line of the
-     * message starts with the word "From" followed by a space, it is
-     * skipped.</li> <li>The name <code>ascii</code> is treated as a synonym for
-     * <code>us-ascii</code>, despite being a reserved name under RFC 2046. The
-     * name <code>cp1252</code> is treated as a synonym for <code>windows-1252</code> ,
-     * even though it's not an IANA registered alias.</li> <li>The following
-     * deviations involve encoded words under RFC 2047:</li> <li>(a) If a
-     * sequence of encoded words decodes to a string with a CTL character (U
-     * + 007F, or a character less than U + 0020 and not TAB) after being
-     * converted to Unicode, the encoded words are left un-decoded.</li>
-     * <li>(b) This implementation can decode an encoded word that uses
-     * ISO-2022-JP (the only supported encoding that uses code switching)
-     * even if the encoded word's payload ends in a different mode from
-     * "ASCII mode". (Each encoded word still starts in that mode,
-     * though.)</li></ul>
+     * <li>There is no line length limit imposed when parsing header fields,
+     * except header field names.</li> <li>There is no line length limit
+     * imposed when parsing quoted-printable or base64 encoded bodies.</li>
+     * <li>If the transfer encoding is absent and the content type is
+     * "message/rfc822" , bytes with values greater than 127 (called "8-bit
+     * bytes" in the rest of this summary) are still allowed, despite the
+     * default value of "7bit" for "Content-Transfer-Encoding".</li> <li>In
+     * the following cases, if the transfer encoding is absent or declared
+     * as 7bit, 8-bit bytes are still allowed:</li> <li>(a) The preamble and
+     * epilogue of multipart messages, which will be ignored.</li> <li>(b)
+     * If the charset is declared to be <code>utf-8</code>.</li> <li>(c) If the
+     * content type is "text/html" and the charset is declared to be
+     * <code>ascii</code>, <code>us-ascii</code>, "windows-1252", "windows-1251", or
+     * "iso-8859-*" (all single byte encodings).</li> <li>(d) In non-MIME
+     * message bodies and in text/plain message bodies. Any 8-bit bytes are
+     * replaced with the substitute character byte (0x1a).</li> <li>If the
+     * first line of the message starts with the word "From" followed by a
+     * space, it is skipped.</li> <li>The name <code>ascii</code> is treated as a
+     * synonym for <code>us-ascii</code>, despite being a reserved name under RFC
+     * 2046. The name <code>cp1252</code> is treated as a synonym for
+     * <code>windows-1252</code> , even though it's not an IANA registered
+     * alias.</li> <li>The following deviations involve encoded words under
+     * RFC 2047:</li> <li>(a) If a sequence of encoded words decodes to a
+     * string with a CTL character (U + 007F, or a character less than U +
+     * 0020 and not TAB) after being converted to Unicode, the encoded words
+     * are left un-decoded.</li> <li>(b) This implementation can decode an
+     * encoded word that uses ISO-2022-JP (the only supported encoding that
+     * uses code switching) even if the encoded word's payload ends in a
+     * different mode from "ASCII mode". (Each encoded word still starts in
+     * that mode, though.)</li></ul> ---.
      */
   public final class Message {
     private static final int EncodingBase64 = 2;
@@ -256,10 +257,11 @@ import com.upokecenter.text.*;
       }
 
     /**
-     * Gets the body of this message as a Unicode string.
-     * @return The body of this message as a Unicode string.
+     * Gets the body of this message as a text string.
+     * @return The body of this message as a text string.
      * @throws UnsupportedOperationException This message has no character encoding
-     * declared on it, or the character encoding is not supported.
+     * declared on it (which is usually the case for non-text messages), or
+     * the character encoding is not supported.
      */
     public final String getBodyString() {
         ICharacterEncoding charset = Encodings.GetEncoding(
@@ -598,7 +600,7 @@ public final void setSubject(String value) {
      * converting the basic upper-case letters A to Z (U + 0041 to U + 005A)
      * in both strings to lower case.). <p>Updates the ContentType and
      * ContentDisposition properties if those header fields have been
-     * modified by this method.</p> s.
+     * modified by this method.</p>
      * @param name The name of the header field to remove.
      * @return This instance.
      * @throws NullPointerException The parameter {@code name} is null.
@@ -844,6 +846,13 @@ public final void setSubject(String value) {
             bytes[index + 2] == '=' && bytes[index + 3] == '_' &&
             bytes[index + 4] == 'B') {
           // Start of a reserved boundary delimiter
+          return false;
+        }
+        if (lineLength == 0 && checkBoundaryDelimiter && index + 4 < endIndex &&
+            bytes[index] == 'F' && bytes[index + 1] == 'r' &&
+            bytes[index + 2] == 'o' && bytes[index + 3] == 'm' &&
+            bytes[index + 4] == ' ') {
+          // Line starts with "From" followed by space
           return false;
         }
         if (c == '\r' && index + 1 < endIndex && bytes[index + 1] == '\n') {
@@ -1621,7 +1630,7 @@ public final void setSubject(String value) {
             sb.append((char)c);
           } else if (!first && c == ':') {
             if (lineCount >= 999) {
-              // 998 characters includes the colon and whitespace
+              // 998 characters includes the colon
               throw new MessageDataException("Header field name too long");
             }
             break;

@@ -20,7 +20,7 @@ namespace PeterO.Mail {
     public WordWrapEncoder(bool collapseSpaces) {
       this.fullString = new StringBuilder();
       this.collapseSpaces = collapseSpaces;
-      this.haveNonwhitespace = true;  // assume have nonwhitespace
+      this.haveNonwhitespace = true;
       this.lastSpaces = String.Empty;
       this.lineLength = this.fullString.Length;
     }

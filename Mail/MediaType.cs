@@ -1037,11 +1037,8 @@ null);
           // appear
           // around the equal sign separating an attribute and value, while
           // HTTP explicitly forbids such whitespace
-          index = HeaderParser.ParseCFWS(
-str,
-index,
-endIndex,
-null);
+          index = HeaderParser
+            .ParseCFWS(str, index, endIndex, null);
         }
         if (index >= endIndex) {
           return false;

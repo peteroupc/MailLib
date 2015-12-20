@@ -254,7 +254,9 @@ Generates this message's data in text form.The generated message will have only 
 
 The following applies to the From, To, Cc, and Bcc header fields. If the header field exists, but has an invalid syntax or has no addresses, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to `me@[header-name]-address.invalid`  as the address (a `.invalid`  address is a reserved address that can never belong to anyone). The generated message should always have a From header field.
 
-If a Date header field doesn't exist, a Date field will be generated using the current local time.
+If a Date and/or Message-ID header field doesn't exist, a field with that name will be generated (using the current local time for the Date field).
+
+When encoding the message's body, if the message has a text content type ("text/*"), the line breaks are a CR byte (carriage return, 0x0d) followed by an LF byte (line feed, 0x0a), CR alone, or LF alone. If the message has any other content type, only CR followed by LF is considered a line break.
 
 <b>Returns:</b>
 
@@ -411,7 +413,7 @@ The parameter  <i>bytes</i>
 
     public PeterO.Mail.Message SetCurrentDate();
 
-Sets this message's Date header field to the current time as its value.
+Sets this message's Date header field to the current time as its value.This method can be used when the message is considered complete and ready to be generated, for example, using the "Generate()" method.
 
 <b>Returns:</b>
 
