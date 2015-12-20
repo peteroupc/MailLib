@@ -48,6 +48,8 @@ namespace PeterO.Mail {
     /// <item>The To and Cc header fields are allowed to contain only
     /// comments and whitespace, but these "empty" header fields will be
     /// omitted when generating.</item>
+    /// <item>There is no line length limit imposed when parsing header
+    /// fields, except header field names.</item>
     /// <item>There is no line length limit imposed when parsing
     /// quoted-printable or base64 encoded bodies.</item>
     /// <item>If the transfer encoding is absent and the content type is
@@ -82,7 +84,7 @@ namespace PeterO.Mail {
     /// ISO-2022-JP (the only supported encoding that uses code switching)
     /// even if the encoded word's payload ends in a different mode from
     /// "ASCII mode". (Each encoded word still starts in that mode,
-    /// though.)</item></list></summary>
+    /// though.)</item></list> ---.</summary>
   public sealed class Message {
     private const int EncodingBase64 = 2;
     private const int EncodingBinary = 4;
@@ -266,11 +268,11 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Gets the body of this message as a Unicode
-    /// string.</summary>
-    /// <value>The body of this message as a Unicode string.</value>
+    /// <summary>Gets the body of this message as a text string.</summary>
+    /// <value>The body of this message as a text string.</value>
     /// <exception cref='NotSupportedException'>This message has no
-    /// character encoding declared on it, or the character encoding is not
+    /// character encoding declared on it (which is usually the case for
+    /// non-text messages), or the character encoding is not
     /// supported.</exception>
     public string BodyString {
       get {
@@ -628,8 +630,8 @@ namespace PeterO.Mail {
     /// they match after converting the basic upper-case letters A to Z (U
     /// + 0041 to U + 005A) in both strings to lower case.).
     /// <para>Updates the ContentType and ContentDisposition properties if
-    /// those header fields have been modified by this method.</para>
-    /// s.</summary>
+    /// those header fields have been modified by this
+    /// method.</para></summary>
     /// <param name='name'>The name of the header field to remove.</param>
     /// <returns>This instance.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
@@ -1666,7 +1668,7 @@ namespace PeterO.Mail {
             sb.Append((char)c);
           } else if (!first && c == ':') {
             if (lineCount >= 999) {
-              // 998 characters includes the colon and whitespace
+              // 998 characters includes the colon
               throw new MessageDataException("Header field name too long");
             }
             break;

@@ -1,4 +1,6 @@
 using NUnit.Framework;
+using PeterO.Mail;
+using System;
 namespace MailLibTest {
   [TestFixture]
   public partial class MediaTypeBuilderTest {
@@ -16,11 +18,65 @@ namespace MailLibTest {
     }
     [Test]
     public void TestRemoveParameter() {
-      // not implemented yet
+      var builder = new MediaTypeBuilder();
+      try {
+ builder.RemoveParameter(null);
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
     }
     [Test]
     public void TestSetParameter() {
-      // not implemented yet
+      var builder = new MediaTypeBuilder();
+      builder.SetParameter("a", "b");
+      {
+string stringTemp = builder.ToMediaType().GetParameter("a");
+Assert.AreEqual(
+"b",
+stringTemp);
+}
+      builder.SetParameter("a", "");
+      Assert.AreEqual("", builder.ToMediaType().GetParameter("a"));
+      try {
+ builder.SetParameter(null,"");
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ builder.SetParameter("",null);
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ builder.SetParameter("", "a");
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ builder.SetParameter("a\u00e0", "a");
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
     }
     [Test]
     public void TestSetSubType() {

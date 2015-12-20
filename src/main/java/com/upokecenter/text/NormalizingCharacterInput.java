@@ -927,7 +927,7 @@ this.lastQcsIndex);
       }
     }
 
-    class StringCharacterInput2 implements ICharacterInput {
+    private static final class StringCharacterInput2 implements ICharacterInput {
       private final String str;
       private int index;
       private final int endIndex;

@@ -166,10 +166,14 @@ import java.util.*;
         }
         if (lineLength > maxLineLength) {
           if (lineLength > 998) {
-            //System.out.println(fn + ":\n--Line length exceeded (" +
-            // maxLineLength + " " +
-            //  (str.substring(index - 78,(index - 78)+(78))) + ", " + lineLength + ")");
-            return 0;
+            if (headers) {
+ return 0;
+}
+            if (!meetsLineLength) {
+              //System.out.println(fn + ":\n--Line length exceeded (" +
+               // maxLineLength + " " +
+                //(str.substring(index - 78,(index - 78)+(78))) + ", " + lineLength + ")");
+            }
           }
           meetsLineLength = false;
         }
@@ -251,14 +255,8 @@ import java.util.*;
 
     @Test
     public void TestPunycodeDecode() {
-      {
-        String stringTemp = (String)Reflect.InvokeStatic(Idna.class.getPackage().getName() +
-                    ".DomainUtility",
-                    "PunycodeDecode", "xn--e-ufa", 4, 9);
-        Assert.assertEquals(
-          "e\u00e1",
-          stringTemp);
-      }
+        String str=DowngradeHeaderField("from","example@e\u00e1");
+        Assert.assertEquals("example@xn--e-ufa",str);
     }
 
     @Test
@@ -1508,8 +1506,7 @@ import java.util.*;
     }
 
     private static String EncodeComment(String str) {
-      return (String)Reflect.InvokeStatic(MailNamespace() + ".Rfc2047",
-                    "EncodeComment", str, 0, str.length());
+      return DowngradeHeaderField("subject",str);
     }
 
     private static String DowngradeHeaderField(String name, String value) {
@@ -1527,7 +1524,7 @@ import java.util.*;
       return gen;
     }
 
-    @Test
+    //@Test
     public void TestCommentsToWords() {
       {
         String stringTemp = EncodeComment("(x)");
@@ -1975,15 +1972,7 @@ import java.util.*;
     }
 
     public static void TestQuotedPrintableRoundTrip(String str, int mode) {
-      byte[] bytes = DataUtilities.GetUtf8Bytes(str, true);
-      String input = EncodeQP(bytes, mode);
-      String msgString = "From: <test@example.com>\r\n" +
-        "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
-        "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
-      Message msg = MessageTest.MessageFromString(msgString);
-      AssertEqual(bytes, msg.GetBody(), input);
-      msg = MessageTest.MessageFromString(msg.Generate());
-      AssertEqual(bytes, msg.GetBody(), input);
+       TestQuotedPrintableRoundTrip(DataUtilities.GetUtf8Bytes(str, true), mode);
     }
 
     private static byte[] RandomBytes(java.util.Random rnd) {

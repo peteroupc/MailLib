@@ -105,6 +105,7 @@ endIndex);
             // if extended characters appear in those areas
             switch (phase) {
               case 0: {
+                  // Comment downgrading
                   if (token[0] == HeaderParserUtility.TokenComment) {
                     int startIndex = token[1];
                     endIndex = token[2];
@@ -127,6 +128,7 @@ endIndex);
                   break;
                 }
               case 1: {
+                  // Phrase downgrading
                   if (token[0] == HeaderParserUtility.TokenPhrase) {
                     int startIndex = token[1];
                     endIndex = token[2];
@@ -143,6 +145,7 @@ endIndex);
                   break;
                 }
               case 2: {
+                  // Group downgrading
                   if (token[0] == HeaderParserUtility.TokenGroup) {
                     int startIndex = token[1];
                     endIndex = token[2];
@@ -248,6 +251,7 @@ endIndex);
                   break;
                 }
               case 3: {
+                 // Mailbox downgrading
                   if (token[0] == HeaderParserUtility.TokenMailbox) {
                     int startIndex = token[1];
                     endIndex = token[2];

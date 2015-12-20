@@ -42,7 +42,8 @@ public final void setSubType(String value) {
       }
 
     /**
-     * Initializes a new instance of the MediaTypeBuilder class.
+     * Initializes a new instance of the MediaTypeBuilder class, using the type
+     * "application/octet-stream".
      */
     public MediaTypeBuilder () {
       this.parameters = new HashMap<String, String>();
@@ -51,7 +52,8 @@ public final void setSubType(String value) {
     }
 
     /**
-     * Initializes a new instance of the MediaTypeBuilder class.
+     * Initializes a new instance of the MediaTypeBuilder class using the data from
+     * another media type.
      * @param mt A MediaType object.
      * @throws NullPointerException The parameter {@code mt} is null.
      */
@@ -66,8 +68,8 @@ public final void setSubType(String value) {
 
     /**
      * Initializes a new instance of the MediaTypeBuilder class.
-     * @param type A string object.
-     * @param subtype Another string object.
+     * @param type The media type's top-level type.
+     * @param subtype The media type's subtype.
      */
     public MediaTypeBuilder (String type, String subtype) {
       this.parameters = new HashMap<String, String>();

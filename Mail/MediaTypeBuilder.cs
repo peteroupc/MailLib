@@ -18,7 +18,7 @@ namespace PeterO.Mail {
     private readonly IDictionary<string, string> parameters;
 
     /// <summary>Gets or sets this value's top-level type.</summary>
-    /// <value>This value&#x27;s top-level type.</value>
+    /// <value>This value&apos;s top-level type.</value>
     public string TopLevelType {
       get {
         return this.type;
@@ -30,7 +30,7 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets or sets this value's subtype.</summary>
-    /// <value>This value&#x27;s subtype.</value>
+    /// <value>This value&apos;s subtype.</value>
     public string SubType {
       get {
         return this.subtype;
@@ -41,18 +41,18 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>Initializes a new instance of the MediaTypeBuilder
-    /// class.</summary>
+    /// <summary>Initializes a new instance of the MediaTypeBuilder class,
+    /// using the type "application/octet-stream".</summary>
     public MediaTypeBuilder() {
       this.parameters = new Dictionary<string, string>();
       this.type = "application";
       this.subtype = "octet-stream";
     }
 
-    /// <summary>Initializes a new instance of the MediaTypeBuilder
-    /// class.</summary>
+    /// <summary>Initializes a new instance of the MediaTypeBuilder class
+    /// using the data from another media type.</summary>
     /// <param name='mt'>A MediaType object.</param>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='mt'/> is null.</exception>
     public MediaTypeBuilder(MediaType mt) {
       if (mt == null) {
@@ -65,8 +65,8 @@ namespace PeterO.Mail {
 
     /// <summary>Initializes a new instance of the MediaTypeBuilder
     /// class.</summary>
-    /// <param name='type'>A string object.</param>
-    /// <param name='subtype'>Another string object.</param>
+    /// <param name='type'>The media type's top-level type.</param>
+    /// <param name='subtype'>The media type's subtype.</param>
     public MediaTypeBuilder(string type, string subtype) {
       this.parameters = new Dictionary<string, string>();
       this.SetTopLevelType(type);
@@ -103,9 +103,9 @@ namespace PeterO.Mail {
     /// <param name='str'>A string object naming a top-level type, such as
     /// "text" or "audio".</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='str'/> is syntactically invalid for a top-level
     /// type.</exception>
     public MediaTypeBuilder SetTopLevelType(string str) {
@@ -128,7 +128,7 @@ namespace PeterO.Mail {
     /// <param name='name'>Name of the parameter to remove. The name is
     /// compared case-insensitively.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='name'/> is null.</exception>
     public MediaTypeBuilder RemoveParameter(string name) {
       if (name == null) {
@@ -145,9 +145,9 @@ namespace PeterO.Mail {
     /// <param name='value'>A string object giving the parameter's
     /// value.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='value'/> or <paramref name='name'/> is null.</exception>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='name'/> is empty or syntactically invalid.</exception>
     public MediaTypeBuilder SetParameter(string name, string value) {
       if (value == null) {
@@ -172,9 +172,9 @@ if (MediaType.skipMimeTypeSubtype(name, 0, name.Length, null) !=
     /// .</summary>
     /// <param name='str'>A string object naming a media subtype.</param>
     /// <returns>This instance.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='str'/> is null.</exception>
-    /// <exception cref="ArgumentException">The parameter <paramref
+    /// <exception cref='ArgumentException'>The parameter <paramref
     /// name='str'/> is empty or syntactically invalid.</exception>
     public MediaTypeBuilder SetSubType(string str) {
       if (str == null) {
