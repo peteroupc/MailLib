@@ -1110,12 +1110,6 @@ import java.util.*;
                     DataUtilities.GetUtf8String(actual, true));
     }
 
-    private static String WrapHeader(String s) {
-      return Reflect.Invoke(Reflect.Construct(MailNamespace() +
-                    ".WordWrapEncoder", true), "AddString",
-                    s).toString();
-    }
-
     private static byte[] DowngradeDeliveryStatus(String str) {
       Message msg = MessageTest.MessageFromString(
   "From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"+ "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
@@ -1132,12 +1126,11 @@ import java.util.*;
       dsn = "X-Ignore: X\r\n\r\nOriginal-Recipient: " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
       expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
-        WrapHeader("Downgraded-Original-Recipient: " + expected) +
-        "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
+        ("Downgraded-Original-Recipient: " + expected) +
+        "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
         "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
-          WrapHeader("Original-Recipient: " + expected) + "\r\n" +
-          WrapHeader("Final-Recipient: " + expected) +
-          "\r\nX-Ignore: Y\r\n\r\n";
+          ("Original-Recipient: " + expected) + "\r\n" +
+          ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
@@ -1146,14 +1139,13 @@ import java.util.*;
         "\r\nX-Ignore: Y\r\n\r\n";
       if (encap)
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
-          WrapHeader("Downgraded-Original-Recipient: " + expected) +
-          "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
+          ("Downgraded-Original-Recipient: " + expected) +
+          "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
           "\r\nX-Ignore: Y\r\n\r\n";
       else {
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
-          WrapHeader("Original-Recipient: " + expected) + "\r\n" +
-          WrapHeader("Final-Recipient: " + expected) +
-          "\r\nX-Ignore: Y\r\n\r\n";
+          ("Original-Recipient: " + expected) + "\r\n" +
+          ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       }
       bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
@@ -1161,12 +1153,11 @@ import java.util.*;
       dsn = "X-Ignore: X\r\n\r\nOriginal-recipient : " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
       expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
-        WrapHeader("Downgraded-Original-Recipient: " + expected) +
-        "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
+        ("Downgraded-Original-Recipient: " + expected) +
+        "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
         "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
-          WrapHeader("Original-recipient : " + expected) + "\r\n" +
-          WrapHeader("Final-Recipient: " + expected) +
-          "\r\nX-Ignore: Y\r\n\r\n";
+          ("Original-recipient : " + expected) + "\r\n" +
+          ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
@@ -1188,106 +1179,110 @@ import java.util.*;
         "(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
         ("(\u00be) rfc822; x@x.example"));
       TestDowngradeDSNOne(
-        "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=); x@x.example",
+        "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=);\r\n x@x.example",
         ("(\u00be) rfc822(\u00be); x@x.example"));
       TestDowngradeDSNOne(
-        "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=); x@x" + hexstart + "BE}" + hexstart + "FF20}.example",
+        "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=);\r\n x@x" + hexstart+ "BE}" + hexstart + "FF20}.example",
         ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example"));
       TestDowngradeDSNOne(
-        "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40x=C2=BE=EF=BC=A0=2Eexample?=",
-        ("(\u00be) rfc822; x@x\u00be\uff20.example"));
+        "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40=C2=BE?=",
+        ("(\u00be) rfc822; x@\u00be"));
     }
 
-    private static boolean IsValidLanguageTag(String str) {
-      return (boolean)(Boolean)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", str);
+    private static void TestValidLanguageTag(boolean expectedValid, String str) {
+      if (expectedValid) {
+        TestEncodedWordsOne("x", "=?utf-8*" + str + "?Q?x?=");
+      } else {
+ TestEncodedWordsOne("=?utf-8*" + str + "?Q?x?=" , "=?utf-8*" + str +
+          "?Q?x?=");
+      }
     }
 
     @Test
     public void TestLanguageTags() {
-      if (!(IsValidLanguageTag("en-a-bb-x-y-z")))Assert.fail();
-      if (IsValidLanguageTag(
-                    "0-xx-xx"))Assert.fail();
-      if (IsValidLanguageTag(
-                    "9-xx-xx"))Assert.fail();
-      if (IsValidLanguageTag(
-                    "a-xx-xx"))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "x-xx-xx")))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "en-US-u-islamcal")))Assert.fail();
-      if (!(IsValidLanguageTag(
-"zh-CN-a-myext-x-private")))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "en-a-myext-b-another")))Assert.fail();
-      if (IsValidLanguageTag(
-                    "de-419-DE"))Assert.fail();
-      if (IsValidLanguageTag(
-                    "a-DE"))Assert.fail();
-      if (IsValidLanguageTag(
-                    "ar-a-aaa-b-bbb-a-ccc"))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "en")))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "qbb-us")))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "zh-yue")))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "en-us")))Assert.fail();
-      if (IsValidLanguageTag(
-                    "e0-us"))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "en-gb-1999")))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "en-gb-1999-1998")))Assert.fail();
-      if (IsValidLanguageTag(
-                    "en-gb-1999-1999"))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "en-gb-oed")))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "sr-Latn-RS")))Assert.fail();
-      if (IsValidLanguageTag(
-                    "x-aaaaaaaaa-y-z"))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "x-aaaaaaaa-y-z")))Assert.fail();
-      if (IsValidLanguageTag(
-                    "a-b-x-y-z"))Assert.fail();
-      if (IsValidLanguageTag(
-                    "a-bb-xx-yy-zz"))Assert.fail();
-      if (IsValidLanguageTag(
-                    "a-bb-x-y-z"))Assert.fail();
-      if (IsValidLanguageTag(
-                    "a-x-y-z"))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "x-x-y-z")))Assert.fail();
-      if (IsValidLanguageTag(
-                    "i-lojban"))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "i-klingon")))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "art-lojban")))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "sgn-be-fr")))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "no-bok")))Assert.fail();
-      if (IsValidLanguageTag(
-                    "z-xx-xx"))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "en-aaa-bbbb-x-xxx-yyy-zzz")))Assert.fail();
-      if (!(IsValidLanguageTag(
-                   "en-aaa-bbbb-x-x-y-z")))Assert.fail();
-      if (IsValidLanguageTag(
-                    "en-aaa-bbb"))Assert.fail();
-      if (IsValidLanguageTag(
-                    "en-aaa-bbb-ccc"))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "en-aaa-bbbb")))Assert.fail();
-      if (!(IsValidLanguageTag(
-                    "en-aaa-bbbb-cc")))Assert.fail();
-      if (IsValidLanguageTag(
-                    "en-aaa-bbb-"))Assert.fail();
-      if (IsValidLanguageTag(
-                    "en-aaa-bbb-ccc-"))Assert.fail();
+      TestValidLanguageTag(true,("en-a-bb-x-y-z"));
+      TestValidLanguageTag(false, (
+                    "0-xx-xx"));
+      TestValidLanguageTag(false, (
+                    "9-xx-xx"));
+      TestValidLanguageTag(false, (
+                    "a-xx-xx"));
+      TestValidLanguageTag(true, (
+                    "x-xx-xx"));
+      TestValidLanguageTag(true, (
+                    "en-US-u-islamcal"));
+      TestValidLanguageTag(true, (
+"zh-CN-a-myext-x-private"));
+      TestValidLanguageTag(true, (
+                    "en-a-myext-b-another"));
+      TestValidLanguageTag(false, (
+                    "de-419-DE"));
+      TestValidLanguageTag(false, (
+                    "a-DE"));
+      TestValidLanguageTag(false, (
+                    "ar-a-aaa-b-bbb-a-ccc"));
+      TestValidLanguageTag(true, (
+                    "en"));
+      TestValidLanguageTag(true, (
+                    "qbb-us"));
+      TestValidLanguageTag(true, (
+                    "zh-yue"));
+      TestValidLanguageTag(true, (
+                    "en-us"));
+      TestValidLanguageTag(false, (
+                    "e0-us"));
+      TestValidLanguageTag(true, (
+                    "en-gb-1999"));
+      TestValidLanguageTag(true, (
+                    "en-gb-1999-1998"));
+      TestValidLanguageTag(false, (
+                    "en-gb-1999-1999"));
+      TestValidLanguageTag(true, (
+                    "en-gb-oed"));
+      TestValidLanguageTag(true, (
+                    "sr-Latn-RS"));
+      TestValidLanguageTag(false, (
+                    "x-aaaaaaaaa-y-z"));
+      TestValidLanguageTag(true, (
+                    "x-aaaaaaaa-y-z"));
+      TestValidLanguageTag(false, (
+                    "a-b-x-y-z"));
+      TestValidLanguageTag(false, (
+                    "a-bb-xx-yy-zz"));
+      TestValidLanguageTag(false, (
+                    "a-bb-x-y-z"));
+      TestValidLanguageTag(false, (
+                    "a-x-y-z"));
+      TestValidLanguageTag(true, (
+                    "x-x-y-z"));
+      TestValidLanguageTag(false, (
+                    "i-lojban"));
+      TestValidLanguageTag(true, (
+                    "i-klingon"));
+      TestValidLanguageTag(true, (
+                    "art-lojban"));
+      TestValidLanguageTag(true, (
+                    "sgn-be-fr"));
+      TestValidLanguageTag(true, (
+                    "no-bok"));
+      TestValidLanguageTag(false, (
+                    "z-xx-xx"));
+      TestValidLanguageTag(true, (
+                    "en-aaa-bbbb-x-xxx-yyy-zzz"));
+      TestValidLanguageTag(true, (
+                   "en-aaa-bbbb-x-x-y-z"));
+      TestValidLanguageTag(false, (
+                    "en-aaa-bbb"));
+      TestValidLanguageTag(false, (
+                    "en-aaa-bbb-ccc"));
+      TestValidLanguageTag(true, (
+                    "en-aaa-bbbb"));
+      TestValidLanguageTag(true, (
+                    "en-aaa-bbbb-cc"));
+      TestValidLanguageTag(false, (
+                    "en-aaa-bbb-"));
+      TestValidLanguageTag(false, (
+                    "en-aaa-bbb-ccc-"));
     }
 
     @Test(timeout = 5000)
@@ -1567,6 +1562,9 @@ import java.util.*;
           "()",
           stringTemp);
       }
+    }
+    @Test
+    public void TestCommentsToWords2() {
       {
         String stringTemp = DowngradeHeaderField("from",
                     "(test) x@x.example");
@@ -1723,9 +1721,7 @@ import java.util.*;
     }
 
     private static void TestParseCommentStrictCore(String input) {
-      Assert.assertEquals(input, input.length(), Reflect.InvokeStatic(MailNamespace() +
-                    ".HeaderParserUtility", "ParseCommentStrict", input, 0,
-                    input.length()));
+      TestDecodeStructured(input + " en", input + " en");
     }
 
     @Test
@@ -1900,68 +1896,17 @@ import java.util.*;
       }
     }
 
-    public static void TestQuotedPrintableRoundTrip(byte[] bytes) {
-      TestQuotedPrintableRoundTrip(bytes, 0);
-      TestQuotedPrintableRoundTrip(bytes, 1);
-      TestQuotedPrintableRoundTrip(bytes, 2);
-    }
-
-    public static String EncodeQP(byte[] bytes, int mode) {
-      Object enc = Reflect.Construct(
-        MailNamespace() + ".QuotedPrintableEncoder",
-        mode,
-        false);
-      ICharacterEncoder enc2 = (ICharacterEncoder)enc;
-      int offset = 0;
-      ArrayWriter aw = new ArrayWriter();
-      while (true) {
-        int c = -1;
-        if (offset < bytes.length) {
-          c = ((int)bytes[offset++]) & 0xff;
-        }
-        if (enc2.Encode(c, aw) < 0) {
-          break;
-        }
+    public static void TestEncodedBytesRoundTrip(byte[] bytes, int mode) {
+      StringBuilder builder = new StringBuilder();
+      for (int i = 0; i < bytes.length; ++i) {
+        String hex = "0123456789ABCDEF";
+        byte c = bytes[i];
+        builder.append('=');
+        builder.append(hex.charAt(((int)c >> 4) & 15));
+        builder.append(hex.charAt(((int)c) & 15));
+        builder.append("=\r\n");
       }
-      return DataUtilities.GetUtf8String(aw.ToArray(), true);
-    }
-
-    public static String EncodeB64(byte[] bytes, int mode) {
-      boolean a = (mode % 2) == 1;
-      boolean b = (mode % 4) == 1;
-      Object enc = Reflect.Construct(
-        MailNamespace() + ".Base64Encoder",
-        a,
-        false,
-        b);
-      ICharacterEncoder enc2 = (ICharacterEncoder)enc;
-      int offset = 0;
-      ArrayWriter aw = new ArrayWriter();
-      while (true) {
-        int c = -1;
-        if (offset < bytes.length) {
-          c = ((int)bytes[offset++]) & 0xff;
-        }
-        if (enc2.Encode(c, aw) < 0) {
-          break;
-        }
-      }
-      return DataUtilities.GetUtf8String(aw.ToArray(), true);
-    }
-
-    public static void TestBase64RoundTrip(byte[] bytes, int mode) {
-      String input = EncodeB64(bytes, mode);
-      String msgString = "From: <test@example.com>\r\n" +
-        "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
-        "Content-Transfer-Encoding: base64\r\n\r\n" + input;
-      Message msg = MessageTest.MessageFromString(msgString);
-      AssertEqual(bytes, msg.GetBody(), input);
-      msg = MessageTest.MessageFromString(msg.Generate());
-      AssertEqual(bytes, msg.GetBody(), input);
-    }
-
-    public static void TestQuotedPrintableRoundTrip(byte[] bytes, int mode) {
-      String input = EncodeQP(bytes, mode);
+      String input = builder.toString();
       String msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
@@ -1971,8 +1916,8 @@ import java.util.*;
       AssertEqual(bytes, msg.GetBody(), input);
     }
 
-    public static void TestQuotedPrintableRoundTrip(String str, int mode) {
-       TestQuotedPrintableRoundTrip(DataUtilities.GetUtf8Bytes(str, true), mode);
+    public static void TestEncodedBytesRoundTrip(String str, int mode) {
+       TestEncodedBytesRoundTrip(DataUtilities.GetUtf8Bytes(str, true), mode);
     }
 
     private static byte[] RandomBytes(java.util.Random rnd) {
@@ -1985,47 +1930,36 @@ import java.util.*;
     }
 
     @Test
-    public void TestRandomBase64() {
+    public void TestRandomEncodedBytes() {
       java.util.Random rnd = new java.util.Random();
-      for (int i = 0; i < 5000; ++i) {
-        TestBase64RoundTrip(RandomBytes(rnd), 0);
-        TestBase64RoundTrip(RandomBytes(rnd), 1);
-        TestBase64RoundTrip(RandomBytes(rnd), 2);
-        TestBase64RoundTrip(RandomBytes(rnd), 3);
-      }
-    }
-
-    @Test
-    public void TestRandomQuotedPrintable() {
-      java.util.Random rnd = new java.util.Random();
-      for (int i = 0; i < 5000; ++i) {
-        TestQuotedPrintableRoundTrip(RandomBytes(rnd), 0);
+      for (int i = 0; i < 10000; ++i) {
+        TestEncodedBytesRoundTrip(RandomBytes(rnd), 0);
       }
     }
 
     @Test
     public void TestQuotedPrintableSpecific() {
-      TestQuotedPrintableRoundTrip("T \r", 1);
-      TestQuotedPrintableRoundTrip("T \rA", 0);
-      TestQuotedPrintableRoundTrip("T \rA", 1);
-      TestQuotedPrintableRoundTrip("T \r\rA", 0);
-      TestQuotedPrintableRoundTrip("T \r\rA", 1);
-      TestQuotedPrintableRoundTrip("T \r\r A", 0);
-      TestQuotedPrintableRoundTrip("T \r\r A", 1);
-      TestQuotedPrintableRoundTrip("T \r\r\nA", 0);
-      TestQuotedPrintableRoundTrip("T \r\r\nA", 1);
-      TestQuotedPrintableRoundTrip("T \r", 0);
-      TestQuotedPrintableRoundTrip("T \r\r", 0);
-      TestQuotedPrintableRoundTrip("T \r\r", 1);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nFrom Me", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nGood ", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nFrom ", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nFromMe", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nFroMe", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nFrMe", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nFMe", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\n.\r\nGood ", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\n.\r\nFrom Me", 2);
+      TestEncodedBytesRoundTrip("T \r", 1);
+      TestEncodedBytesRoundTrip("T \rA", 0);
+      TestEncodedBytesRoundTrip("T \rA", 1);
+      TestEncodedBytesRoundTrip("T \r\rA", 0);
+      TestEncodedBytesRoundTrip("T \r\rA", 1);
+      TestEncodedBytesRoundTrip("T \r\r A", 0);
+      TestEncodedBytesRoundTrip("T \r\r A", 1);
+      TestEncodedBytesRoundTrip("T \r\r\nA", 0);
+      TestEncodedBytesRoundTrip("T \r\r\nA", 1);
+      TestEncodedBytesRoundTrip("T \r", 0);
+      TestEncodedBytesRoundTrip("T \r\r", 0);
+      TestEncodedBytesRoundTrip("T \r\r", 1);
+      TestEncodedBytesRoundTrip("T\u000best\r\nFrom Me", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\nGood ", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\nFrom ", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\nFromMe", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\nFroMe", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\nFrMe", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\nFMe", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nGood ", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nFrom Me", 2);
     }
 
     @Test

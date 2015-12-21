@@ -227,6 +227,30 @@ builder,
 QuotedStringRule.Rfc5322);
     }
 
+    private static int ParseFWSLax(
+String str,
+int index,
+int endIndex,
+StringBuilder sb) {
+      while (index < endIndex) {
+        int tmp = index;
+        // Skip CRLF
+        if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1) == 10) {
+          index += 2;
+        }
+        // Add WSP
+        if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) == 9))) {
+          if (sb != null) {
+            sb.append(str.charAt(index));
+          }
+          ++index;
+        } else {
+          return tmp;
+        }
+      }
+      return index;
+    }
+
     private static int skipQuotedString(
 String str,
 int index,
@@ -256,7 +280,7 @@ QuotedStringRule rule) {
           }
         } else if (rule == QuotedStringRule.Rfc5322) {
           // Skip tabs, spaces, and folding whitespace
-          i2 = ParserUtility.ParseFWSLax(str, index, endIndex, builder);
+          i2 = ParseFWSLax(str, index, endIndex, builder);
         }
         index = i2;
         char c = str.charAt(index);
@@ -1031,11 +1055,7 @@ null);
           // appear
           // around the equal sign separating an attribute and value, while
           // HTTP explicitly forbids such whitespace
-          index = HeaderParser.ParseCFWS(
-str,
-index,
-endIndex,
-null);
+          index = HeaderParser .ParseCFWS(str, index, endIndex, null);
         }
         if (index >= endIndex) {
           return false;

@@ -9,7 +9,7 @@ A mutable media type object.
     public MediaTypeBuilder(
         PeterO.Mail.MediaType mt);
 
-Initializes a new instance of the MediaTypeBuilder class.
+Initializes a new instance of the MediaTypeBuilder class using the data from another media type.
 
 <b>Parameters:</b>
 
@@ -31,15 +31,15 @@ Initializes a new instance of the MediaTypeBuilder class.
 
 <b>Parameters:</b>
 
- * <i>type</i>: A string object.
+ * <i>type</i>: The media type's top-level type.
 
- * <i>subtype</i>: Another string object.
+ * <i>subtype</i>: The media type's subtype.
 
 ### MediaTypeBuilder Constructor
 
     public MediaTypeBuilder();
 
-Initializes a new instance of the MediaTypeBuilder class.
+Initializes a new instance of the MediaTypeBuilder class, using the type "application/octet-stream".
 
 ### IsMultipart
 
