@@ -14,41 +14,6 @@ import com.upokecenter.util.*;
   final class ParserUtility {
 private ParserUtility() {
 }
-    public static boolean EndsWith(String str, String suffix, int strStartPos) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      if (suffix == null) {
-        throw new NullPointerException("suffix");
-      }
-      if (strStartPos < 0) {
-        throw new IllegalArgumentException("strStartPos (" + strStartPos +
-          ") is less than " + "0");
-      }
-      if (strStartPos > str.length()) {
-        throw new IllegalArgumentException("strStartPos (" + strStartPos +
-          ") is more than " + str.length());
-      }
-      int endpos = suffix.length() + strStartPos;
-      return (
-endpos <= str.length()) && str.substring(
-strStartPos, (
-strStartPos)+(endpos - strStartPos)).equals(suffix);
-    }
-
-    public static boolean StartsWith(String str, String prefix) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      if (prefix == null) {
-        throw new NullPointerException("prefix");
-      }
-      return (
-prefix.length() >= str.length()) && str.substring(
-0, (
-0)+(prefix.length())).equals(prefix);
-    }
-
     public static String TrimSpaceAndTab(String str) {
       return ((str) == null || (str).length() == 0) ? str :
         TrimSpaceAndTabLeft(TrimSpaceAndTabRight(str));
@@ -119,7 +84,7 @@ prefix.length() >= str.length()) && str.substring(
       return (builder == null) ? str : builder.toString();
     }
 
-    public static String TrimSpaceAndTabRight(String str) {
+    private static String TrimSpaceAndTabRight(String str) {
       if (((str) == null || (str).length() == 0)) {
         return str;
       }
@@ -132,39 +97,6 @@ prefix.length() >= str.length()) && str.substring(
         --index;
       }
       return "";
-    }
-
-    public static boolean IsNullEmptyOrSpaceTabOnly(String str) {
-      return ((
-str) == null || (
-str).length() == 0) || SkipSpaceAndTab(
-str,
-0,
-str.length()) == str.length();
-    }
-
-    public static int ParseFWSLax(
-String str,
-int index,
-int endIndex,
-StringBuilder sb) {
-      while (index < endIndex) {
-        int tmp = index;
-        // Skip CRLF
-        if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index + 1) == 10) {
-          index += 2;
-        }
-        // Add WSP
-        if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) == 9))) {
-          if (sb != null) {
-            sb.append(str.charAt(index));
-          }
-          ++index;
-        } else {
-          return tmp;
-        }
-      }
-      return index;
     }
 
     // Wsp, a.k.a. 1*LWSP-char under RFC 822

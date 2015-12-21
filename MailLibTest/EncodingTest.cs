@@ -1113,12 +1113,6 @@ namespace MailLibTest {
                     DataUtilities.GetUtf8String(actual, true));
     }
 
-    private static string WrapHeader(string s) {
-      return Reflect.Invoke(Reflect.Construct(MailNamespace() +
-                    ".WordWrapEncoder", true), "AddString",
-                    s).ToString();
-    }
-
     private static byte[] DowngradeDeliveryStatus(string str) {
       Message msg = MessageTest.MessageFromString(
   "From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"+ "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
@@ -1135,12 +1129,11 @@ namespace MailLibTest {
       dsn = "X-Ignore: X\r\n\r\nOriginal-Recipient: " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
       expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
-        WrapHeader("Downgraded-Original-Recipient: " + expected) +
-        "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
+        ("Downgraded-Original-Recipient: " + expected) +
+        "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
         "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
-          WrapHeader("Original-Recipient: " + expected) + "\r\n" +
-          WrapHeader("Final-Recipient: " + expected) +
-          "\r\nX-Ignore: Y\r\n\r\n";
+          ("Original-Recipient: " + expected) + "\r\n" +
+          ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
@@ -1149,14 +1142,13 @@ namespace MailLibTest {
         "\r\nX-Ignore: Y\r\n\r\n";
       if (encap)
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
-          WrapHeader("Downgraded-Original-Recipient: " + expected) +
-          "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
+          ("Downgraded-Original-Recipient: " + expected) +
+          "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
           "\r\nX-Ignore: Y\r\n\r\n";
       else {
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
-          WrapHeader("Original-Recipient: " + expected) + "\r\n" +
-          WrapHeader("Final-Recipient: " + expected) +
-          "\r\nX-Ignore: Y\r\n\r\n";
+          ("Original-Recipient: " + expected) + "\r\n" +
+          ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       }
       bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
@@ -1164,12 +1156,11 @@ namespace MailLibTest {
       dsn = "X-Ignore: X\r\n\r\nOriginal-recipient : " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
       expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
-        WrapHeader("Downgraded-Original-Recipient: " + expected) +
-        "\r\n" + WrapHeader("Downgraded-Final-Recipient: " + expected) +
+        ("Downgraded-Original-Recipient: " + expected) +
+        "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
         "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
-          WrapHeader("Original-recipient : " + expected) + "\r\n" +
-          WrapHeader("Final-Recipient: " + expected) +
-          "\r\nX-Ignore: Y\r\n\r\n";
+          ("Original-recipient : " + expected) + "\r\n" +
+          ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
@@ -1191,105 +1182,109 @@ namespace MailLibTest {
         "(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
         ("(\u00be) rfc822; x@x.example"));
       TestDowngradeDSNOne(
-        "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=); x@x.example",
+        "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=);\r\n x@x.example",
         ("(\u00be) rfc822(\u00be); x@x.example"));
       TestDowngradeDSNOne(
-        "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=); x@x" + hexstart + "BE}" + hexstart + "FF20}.example",
+        "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=);\r\n x@x" + hexstart+ "BE}" + hexstart + "FF20}.example",
         ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example"));
       TestDowngradeDSNOne(
-        "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40x=C2=BE=EF=BC=A0=2Eexample?=",
-        ("(\u00be) rfc822; x@x\u00be\uff20.example"));
+        "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40=C2=BE?=",
+        ("(\u00be) rfc822; x@\u00be"));
     }
 
-    private static bool IsValidLanguageTag(string str) {
-      return (bool)Reflect.InvokeStatic(MailNamespace() +
-                    ".ParserUtility", "IsValidLanguageTag", str);
+    private static void TestValidLanguageTag(bool expectedValid, string str) {
+      if (expectedValid) {
+        TestEncodedWordsOne("x", "=?utf-8*" + str + "?Q?x?=");
+      } else {
+ TestEncodedWordsOne("=?utf-8*" + str + "?Q?x?=" , "=?utf-8*" + str +
+          "?Q?x?=");
+      }
     }
 
     [Test]
     public void TestLanguageTags() {
-      Assert.IsTrue(IsValidLanguageTag("en-a-bb-x-y-z"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(true,("en-a-bb-x-y-z"));
+      TestValidLanguageTag(false, (
                     "0-xx-xx"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "9-xx-xx"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "a-xx-xx"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "x-xx-xx"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "en-US-u-islamcal"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
 "zh-CN-a-myext-x-private"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "en-a-myext-b-another"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "de-419-DE"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "a-DE"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "ar-a-aaa-b-bbb-a-ccc"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "en"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "qbb-us"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "zh-yue"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "en-us"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "e0-us"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "en-gb-1999"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "en-gb-1999-1998"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "en-gb-1999-1999"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "en-gb-oed"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "sr-Latn-RS"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "x-aaaaaaaaa-y-z"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "x-aaaaaaaa-y-z"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "a-b-x-y-z"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "a-bb-xx-yy-zz"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "a-bb-x-y-z"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "a-x-y-z"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "x-x-y-z"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "i-lojban"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "i-klingon"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "art-lojban"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "sgn-be-fr"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "no-bok"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "z-xx-xx"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "en-aaa-bbbb-x-xxx-yyy-zzz"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                    "en-aaa-bbbb-x-x-y-z"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "en-aaa-bbb"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "en-aaa-bbb-ccc"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "en-aaa-bbbb"));
-      Assert.IsTrue(IsValidLanguageTag(
+      TestValidLanguageTag(true, (
                     "en-aaa-bbbb-cc"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "en-aaa-bbb-"));
-      Assert.IsFalse(IsValidLanguageTag(
+      TestValidLanguageTag(false, (
                     "en-aaa-bbb-ccc-"));
     }
 
@@ -1571,6 +1566,9 @@ namespace MailLibTest {
           "()",
           stringTemp);
       }
+    }
+    [Test]
+    public void TestCommentsToWords2() {
       {
         string stringTemp = DowngradeHeaderField("from",
                     "(test) x@x.example");
@@ -1727,9 +1725,7 @@ namespace MailLibTest {
     }
 
     private static void TestParseCommentStrictCore(string input) {
-      Assert.AreEqual(input.Length, Reflect.InvokeStatic(MailNamespace() +
-                    ".HeaderParserUtility", "ParseCommentStrict", input, 0,
-                    input.Length), input);
+      TestDecodeStructured(input + " en", input + " en");
     }
 
     [Test]
@@ -1906,68 +1902,17 @@ namespace MailLibTest {
       }
     }
 
-    public static void TestQuotedPrintableRoundTrip(byte[] bytes) {
-      TestQuotedPrintableRoundTrip(bytes, 0);
-      TestQuotedPrintableRoundTrip(bytes, 1);
-      TestQuotedPrintableRoundTrip(bytes, 2);
-    }
-
-    public static string EncodeQP(byte[] bytes, int mode) {
-      object enc = Reflect.Construct(
-        MailNamespace() + ".QuotedPrintableEncoder",
-        mode,
-        false);
-      var enc2 = (ICharacterEncoder)enc;
-      var offset = 0;
-      var aw = new ArrayWriter();
-      while (true) {
-        var c = -1;
-        if (offset < bytes.Length) {
-          c = ((int)bytes[offset++]) & 0xff;
-        }
-        if (enc2.Encode(c, aw) < 0) {
-          break;
-        }
+    public static void TestEncodedBytesRoundTrip(byte[] bytes, int mode) {
+      var builder = new StringBuilder();
+      for (var i = 0; i < bytes.Length; ++i) {
+        const string hex = "0123456789ABCDEF";
+        byte c = bytes[i];
+        builder.Append('=');
+        builder.Append(hex[((int)c >> 4) & 15]);
+        builder.Append(hex[((int)c) & 15]);
+        builder.Append("=\r\n");
       }
-      return DataUtilities.GetUtf8String(aw.ToArray(), true);
-    }
-
-    public static string EncodeB64(byte[] bytes, int mode) {
-      bool a = (mode % 2) == 1;
-      bool b = (mode % 4) == 1;
-      object enc = Reflect.Construct(
-        MailNamespace() + ".Base64Encoder",
-        a,
-        false,
-        b);
-      var enc2 = (ICharacterEncoder)enc;
-      var offset = 0;
-      var aw = new ArrayWriter();
-      while (true) {
-        var c = -1;
-        if (offset < bytes.Length) {
-          c = ((int)bytes[offset++]) & 0xff;
-        }
-        if (enc2.Encode(c, aw) < 0) {
-          break;
-        }
-      }
-      return DataUtilities.GetUtf8String(aw.ToArray(), true);
-    }
-
-    public static void TestBase64RoundTrip(byte[] bytes, int mode) {
-      string input = EncodeB64(bytes, mode);
-      string msgString = "From: <test@example.com>\r\n" +
-        "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
-        "Content-Transfer-Encoding: base64\r\n\r\n" + input;
-      Message msg = MessageTest.MessageFromString(msgString);
-      AssertEqual(bytes, msg.GetBody(), input);
-      msg = MessageTest.MessageFromString(msg.Generate());
-      AssertEqual(bytes, msg.GetBody(), input);
-    }
-
-    public static void TestQuotedPrintableRoundTrip(byte[] bytes, int mode) {
-      string input = EncodeQP(bytes, mode);
+      string input = builder.ToString();
       string msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
@@ -1977,8 +1922,8 @@ namespace MailLibTest {
       AssertEqual(bytes, msg.GetBody(), input);
     }
 
-    public static void TestQuotedPrintableRoundTrip(string str, int mode) {
-       TestQuotedPrintableRoundTrip(DataUtilities.GetUtf8Bytes(str, true), mode);
+    public static void TestEncodedBytesRoundTrip(string str, int mode) {
+       TestEncodedBytesRoundTrip(DataUtilities.GetUtf8Bytes(str, true), mode);
     }
 
     private static byte[] RandomBytes(Random rnd) {
@@ -1991,47 +1936,36 @@ namespace MailLibTest {
     }
 
     [Test]
-    public void TestRandomBase64() {
+    public void TestRandomEncodedBytes() {
       var rnd = new Random();
-      for (var i = 0; i < 5000; ++i) {
-        TestBase64RoundTrip(RandomBytes(rnd), 0);
-        TestBase64RoundTrip(RandomBytes(rnd), 1);
-        TestBase64RoundTrip(RandomBytes(rnd), 2);
-        TestBase64RoundTrip(RandomBytes(rnd), 3);
-      }
-    }
-
-    [Test]
-    public void TestRandomQuotedPrintable() {
-      var rnd = new Random();
-      for (var i = 0; i < 5000; ++i) {
-        TestQuotedPrintableRoundTrip(RandomBytes(rnd), 0);
+      for (var i = 0; i < 10000; ++i) {
+        TestEncodedBytesRoundTrip(RandomBytes(rnd), 0);
       }
     }
 
     [Test]
     public void TestQuotedPrintableSpecific() {
-      TestQuotedPrintableRoundTrip("T \r", 1);
-      TestQuotedPrintableRoundTrip("T \rA", 0);
-      TestQuotedPrintableRoundTrip("T \rA", 1);
-      TestQuotedPrintableRoundTrip("T \r\rA", 0);
-      TestQuotedPrintableRoundTrip("T \r\rA", 1);
-      TestQuotedPrintableRoundTrip("T \r\r A", 0);
-      TestQuotedPrintableRoundTrip("T \r\r A", 1);
-      TestQuotedPrintableRoundTrip("T \r\r\nA", 0);
-      TestQuotedPrintableRoundTrip("T \r\r\nA", 1);
-      TestQuotedPrintableRoundTrip("T \r", 0);
-      TestQuotedPrintableRoundTrip("T \r\r", 0);
-      TestQuotedPrintableRoundTrip("T \r\r", 1);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nFrom Me", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nGood ", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nFrom ", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nFromMe", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nFroMe", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nFrMe", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\nFMe", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\n.\r\nGood ", 2);
-      TestQuotedPrintableRoundTrip("T\u000best\r\n.\r\nFrom Me", 2);
+      TestEncodedBytesRoundTrip("T \r", 1);
+      TestEncodedBytesRoundTrip("T \rA", 0);
+      TestEncodedBytesRoundTrip("T \rA", 1);
+      TestEncodedBytesRoundTrip("T \r\rA", 0);
+      TestEncodedBytesRoundTrip("T \r\rA", 1);
+      TestEncodedBytesRoundTrip("T \r\r A", 0);
+      TestEncodedBytesRoundTrip("T \r\r A", 1);
+      TestEncodedBytesRoundTrip("T \r\r\nA", 0);
+      TestEncodedBytesRoundTrip("T \r\r\nA", 1);
+      TestEncodedBytesRoundTrip("T \r", 0);
+      TestEncodedBytesRoundTrip("T \r\r", 0);
+      TestEncodedBytesRoundTrip("T \r\r", 1);
+      TestEncodedBytesRoundTrip("T\u000best\r\nFrom Me", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\nGood ", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\nFrom ", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\nFromMe", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\nFroMe", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\nFrMe", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\nFMe", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nGood ", 2);
+      TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nFrom Me", 2);
     }
 
     [Test]

@@ -13,41 +13,6 @@ using PeterO;
 
 namespace PeterO.Mail {
   internal static class ParserUtility {
-    public static bool EndsWith(string str, string suffix, int strStartPos) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      if (suffix == null) {
-        throw new ArgumentNullException("suffix");
-      }
-      if (strStartPos < 0) {
-        throw new ArgumentException("strStartPos (" + strStartPos +
-          ") is less than " + "0");
-      }
-      if (strStartPos > str.Length) {
-        throw new ArgumentException("strStartPos (" + strStartPos +
-          ") is more than " + str.Length);
-      }
-      int endpos = suffix.Length + strStartPos;
-      return (
-endpos <= str.Length) && str.Substring(
-strStartPos,
-endpos - strStartPos).Equals(suffix);
-    }
-
-    public static bool StartsWith(string str, string prefix) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      if (prefix == null) {
-        throw new ArgumentNullException("prefix");
-      }
-      return (
-prefix.Length >= str.Length) && str.Substring(
-0,
-prefix.Length).Equals(prefix);
-    }
-
     public static string TrimSpaceAndTab(string str) {
       return string.IsNullOrEmpty(str) ? str :
         TrimSpaceAndTabLeft(TrimSpaceAndTabRight(str));
@@ -118,7 +83,7 @@ prefix.Length).Equals(prefix);
       return (builder == null) ? str : builder.ToString();
     }
 
-    public static string TrimSpaceAndTabRight(string str) {
+    private static string TrimSpaceAndTabRight(string str) {
       if (string.IsNullOrEmpty(str)) {
         return str;
       }
@@ -131,38 +96,6 @@ prefix.Length).Equals(prefix);
         --index;
       }
       return String.Empty;
-    }
-
-    public static bool IsNullEmptyOrSpaceTabOnly(string str) {
-      return String.IsNullOrEmpty(
-str) || SkipSpaceAndTab(
-str,
-0,
-str.Length) == str.Length;
-    }
-
-    public static int ParseFWSLax(
-string str,
-int index,
-int endIndex,
-StringBuilder sb) {
-      while (index < endIndex) {
-        int tmp = index;
-        // Skip CRLF
-        if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
-          index += 2;
-        }
-        // Add WSP
-        if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
-          if (sb != null) {
-            sb.Append(str[index]);
-          }
-          ++index;
-        } else {
-          return tmp;
-        }
-      }
-      return index;
     }
 
     // Wsp, a.k.a. 1*LWSP-char under RFC 822

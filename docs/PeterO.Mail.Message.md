@@ -16,6 +16,8 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * The To and Cc header fields are allowed to contain only comments and whitespace, but these "empty" header fields will be omitted when generating.
 
+ * There is no line length limit imposed when parsing header fields, except header field names.
+
  * There is no line length limit imposed when parsing quoted-printable or base64 encoded bodies.
 
  * If the transfer encoding is absent and the content type is "message/rfc822" , bytes with values greater than 127 (called "8-bit bytes" in the rest of this summary) are still allowed, despite the default value of "7bit" for "Content-Transfer-Encoding".
@@ -39,6 +41,8 @@ The following lists known deviations from the mail specifications (Internet Mess
  * (a) If a sequence of encoded words decodes to a string with a CTL character (U + 007F, or a character less than U + 0020 and not TAB) after being converted to Unicode, the encoded words are left un-decoded.
 
  * (b) This implementation can decode an encoded word that uses ISO-2022-JP (the only supported encoding that uses code switching) even if the encoded word's payload ends in a different mode from "ASCII mode". (Each encoded word still starts in that mode, though.)
+
+ ---.
 
 ### Message Constructor
 
@@ -88,16 +92,16 @@ A list of addresses found in the BCC header field or fields.
 
     public string BodyString { get; }
 
-Gets the body of this message as a Unicode string.
+Gets the body of this message as a text string.
 
 <b>Returns:</b>
 
-The body of this message as a Unicode string.
+The body of this message as a text string.
 
 <b>Exceptions:</b>
 
  * System.NotSupportedException:
-This message has no character encoding declared on it, or the character encoding is not supported.
+This message has no character encoding declared on it (which is usually the case for non-text messages), or the character encoding is not supported.
 
 ### CCAddresses
 
@@ -375,8 +379,6 @@ The parameter  <i>index</i>
         string name);
 
 Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
-
-s.
 
 <b>Parameters:</b>
 
