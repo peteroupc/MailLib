@@ -255,7 +255,7 @@ StringBuilder sb) {
 String str,
 int index,
 int endIndex,
-StringBuilder builder,  // receives the unescaped version of the _string
+StringBuilder builder,  // receives the unescaped version of the String
 QuotedStringRule rule) {
       int startIndex = index;
       int valueBLength = (builder == null) ? 0 : builder.length();
@@ -1189,7 +1189,10 @@ null);
     }
 
     /**
-     * Parses a media type string and returns a media type object.
+     * Parses a media type string and returns a media type object. This method
+     * checks the syntactic validity of the string, but not whether it has
+     * all parameters it's required to have or whether the parameters
+     * themselves are set to valid values for the parameter.
      * @param mediaTypeValue A string object representing a media type. This media
      * type can include parameters.
      * @return A media type object, or text/plain if {@code mediaTypeValue} is
@@ -1201,7 +1204,10 @@ null);
 
     /**
      * Parses a media type string and returns a media type object, or the default
-     * value if the string is invalid.
+     * value if the string is invalid. This method checks the syntactic
+     * validity of the string, but not whether it has all parameters it's
+     * required to have or whether the parameters themselves are set to
+     * valid values for the parameter.
      * @param str A string object representing a media type. This media type can
      * include parameters.
      * @param defaultValue The media type to return if the string is syntactically
