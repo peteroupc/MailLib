@@ -1896,7 +1896,7 @@ import java.util.*;
       }
     }
 
-    public static void TestEncodedBytesRoundTrip(byte[] bytes, int mode) {
+    public static String ToQPString(byte[] bytes) {
       StringBuilder builder = new StringBuilder();
       for (int i = 0; i < bytes.length; ++i) {
         String hex = "0123456789ABCDEF";
@@ -1906,18 +1906,43 @@ import java.util.*;
         builder.append(hex.charAt(((int)c) & 15));
         builder.append("=\r\n");
       }
-      String input = builder.toString();
-      String msgString = "From: <test@example.com>\r\n" +
-        "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
+      return builder.toString();
+    }
+
+    public static void TestEncodedBytesRoundTrip(byte[] bytes, boolean text) {
+      String input = ToQPString(bytes);
+      String msgString;
+      Message msg;
+      MediaType mediatype = MediaType.Parse(
+        text ? "text/plain;charset=iso-8859-1" : "application/octet-stream");
+      msgString = "From: <test@example.com>\r\n" +
+        "MIME-Version: 1.0\r\n" + "Content-Type: " + mediatype + "s\r\n" +
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
-      Message msg = MessageTest.MessageFromString(msgString);
+      msg = MessageTest.MessageFromString(msgString);
       AssertEqual(bytes, msg.GetBody(), input);
       msg = MessageTest.MessageFromString(msg.Generate());
       AssertEqual(bytes, msg.GetBody(), input);
+      // Test SetBody
+      msg = new Message();
+      msg.setContentType(mediatype);
+      msg.SetBody(bytes);
+      msg = MessageTest.MessageFromString(msg.Generate());
+      AssertEqual(bytes, msg.GetBody(), input);
+      // Test Multipart
+      msg.setContentType(MediaType.Parse("multipart/mixed"));
+      Message part = new Message();
+      part.setContentType(mediatype);
+      part.SetBody(bytes);
+      msg.getParts().Add(part);
+      msg = MessageTest.MessageFromString(msg.Generate());
+      part = msg.getParts().get(0);
+      AssertEqual(bytes, part.GetBody(), input);
     }
 
-    public static void TestEncodedBytesRoundTrip(String str, int mode) {
-       TestEncodedBytesRoundTrip(DataUtilities.GetUtf8Bytes(str, true), mode);
+    public static void TestEncodedBytesRoundTrip(String str) {
+      TestEncodedBytesRoundTrip(DataUtilities.GetUtf8Bytes(str, true), false);
+   TestEncodedBytesRoundTrip(DataUtilities.GetUtf8Bytes(str, true,
+        true), true);
     }
 
     private static byte[] RandomBytes(java.util.Random rnd) {
@@ -1933,33 +1958,46 @@ import java.util.*;
     public void TestRandomEncodedBytes() {
       java.util.Random rnd = new java.util.Random();
       for (int i = 0; i < 10000; ++i) {
-        TestEncodedBytesRoundTrip(RandomBytes(rnd), 0);
+        byte[] bytes = RandomBytes(rnd);
+        TestEncodedBytesRoundTrip(bytes, false);
       }
     }
 
     @Test
-    public void TestQuotedPrintableSpecific() {
-      TestEncodedBytesRoundTrip("T \r", 1);
-      TestEncodedBytesRoundTrip("T \rA", 0);
-      TestEncodedBytesRoundTrip("T \rA", 1);
-      TestEncodedBytesRoundTrip("T \r\rA", 0);
-      TestEncodedBytesRoundTrip("T \r\rA", 1);
-      TestEncodedBytesRoundTrip("T \r\r A", 0);
-      TestEncodedBytesRoundTrip("T \r\r A", 1);
-      TestEncodedBytesRoundTrip("T \r\r\nA", 0);
-      TestEncodedBytesRoundTrip("T \r\r\nA", 1);
-      TestEncodedBytesRoundTrip("T \r", 0);
-      TestEncodedBytesRoundTrip("T \r\r", 0);
-      TestEncodedBytesRoundTrip("T \r\r", 1);
-      TestEncodedBytesRoundTrip("T\u000best\r\nFrom Me", 2);
-      TestEncodedBytesRoundTrip("T\u000best\r\nGood ", 2);
-      TestEncodedBytesRoundTrip("T\u000best\r\nFrom ", 2);
-      TestEncodedBytesRoundTrip("T\u000best\r\nFromMe", 2);
-      TestEncodedBytesRoundTrip("T\u000best\r\nFroMe", 2);
-      TestEncodedBytesRoundTrip("T\u000best\r\nFrMe", 2);
-      TestEncodedBytesRoundTrip("T\u000best\r\nFMe", 2);
-      TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nGood ", 2);
-      TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nFrom Me", 2);
+    public void TestEncodedBytesSpecific() {
+      TestEncodedBytesRoundTrip("T \r");
+      TestEncodedBytesRoundTrip("T \rA");
+      TestEncodedBytesRoundTrip("T \r\rA");
+      TestEncodedBytesRoundTrip("T \r\r A");
+      TestEncodedBytesRoundTrip("T \r\r\nA");
+      TestEncodedBytesRoundTrip("T \r");
+      TestEncodedBytesRoundTrip("T \r\r");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFrom Me");
+      TestEncodedBytesRoundTrip("T\u000best\r\nGood ");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFrom ");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFromMe");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFroMe");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFrMe");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFMe");
+      TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nGood ");
+      TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nFrom Me");
+      TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nFrom Me\r\n");
+      TestEncodedBytesRoundTrip(
+        "The Best\r\n--=_Boundary00000000\r\nAnother");
+      TestEncodedBytesRoundTrip(
+        "The Best\r\n.\r\nAnother");
+      TestEncodedBytesRoundTrip(
+        "The Best\r\n.\rAnother");
+      TestEncodedBytesRoundTrip(
+        "The Best\r\n.");
+      TestEncodedBytesRoundTrip(
+        "The Best\r\n--=_Boundary00000000--\r\nAnother");
+      TestEncodedBytesRoundTrip(
+        "The Best\r\n--=_Bomb\r\nAnother");
+      TestEncodedBytesRoundTrip(
+        "The Best\r\n--Boundary\r\nAnother");
+      TestEncodedBytesRoundTrip(
+        "The Best\r\n--Boundary--\r\nAnother");
     }
 
     @Test

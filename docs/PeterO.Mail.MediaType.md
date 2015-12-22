@@ -155,7 +155,7 @@ The parameter  <i>name</i>
     public static PeterO.Mail.MediaType Parse(
         string mediaTypeValue);
 
-Parses a media type string and returns a media type object.
+Parses a media type string and returns a media type object. This method checks the syntactic validity of the string, but not whether it has all parameters it's required to have or whether the parameters themselves are set to valid values for the parameter.
 
 <b>Parameters:</b>
 
@@ -172,7 +172,7 @@ A media type object, or text/plain if  <i>mediaTypeValue</i>
         string str,
         PeterO.Mail.MediaType defaultValue);
 
-Parses a media type string and returns a media type object, or the default value if the string is invalid.
+Parses a media type string and returns a media type object, or the default value if the string is invalid. This method checks the syntactic validity of the string, but not whether it has all parameters it's required to have or whether the parameters themselves are set to valid values for the parameter.
 
 <b>Parameters:</b>
 

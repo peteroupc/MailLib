@@ -660,13 +660,15 @@ namespace PeterO.Mail {
     /// <summary>Sets the body of this message to the given byte array.
     /// This method doesn't make a copy of that byte array.</summary>
     /// <param name='bytes'>A byte array.</param>
+    /// <returns>This object.</returns>
     /// <exception cref='ArgumentNullException'>The parameter <paramref
     /// name='bytes'/> is null.</exception>
-    public void SetBody(byte[] bytes) {
+    public Message SetBody(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException("bytes");
       }
       this.body = bytes;
+      return this;
     }
 
     /// <summary>Sets the name and value of a header field by index.
@@ -886,11 +888,21 @@ namespace PeterO.Mail {
           // Start of a reserved boundary delimiter
           return false;
         }
-        if (lineLength == 0 && checkBoundaryDelimiter && index + 4 < endIndex &&
+        if (lineLength == 0 && index + 4 < endIndex &&
             bytes[index] == 'F' && bytes[index + 1] == 'r' &&
             bytes[index + 2] == 'o' && bytes[index + 3] == 'm' &&
             bytes[index + 4] == ' ') {
           // Line starts with "From" followed by space
+          return false;
+        }
+        if (lineLength == 0 && index + 1 < endIndex &&
+            bytes[index] == '.' && bytes[index + 1] == '\r') {
+          // Dot line
+          return false;
+        }
+        if (lineLength == 0 && index + 1 == endIndex &&
+            bytes[index] == '.') {
+          // Dot line
           return false;
         }
         if (c == '\r' && index + 1 < endIndex && bytes[index + 1] == '\n') {
@@ -1897,6 +1909,12 @@ namespace PeterO.Mail {
       var lineLength = 0;
       bool allTextBytes = !isBodyPart;
       for (int i = 0; i < lengthCheck; ++i) {
+        if (highBytes + ctlBytes > 100 && i == 300) {
+          return EncodingBase64;
+        }
+        if (highBytes + ctlBytes > 10 && i == 300) {
+          return EncodingQuotedPrintable;
+        }
         if ((body[i] & 0x80) != 0) {
           ++highBytes;
           allTextBytes = false;
@@ -2153,9 +2171,8 @@ namespace PeterO.Mail {
   MessageDataException("Header field still has non-Ascii or controls: " +
                     name + " " + value);
 #else
-              // throw new
-              //
-  // MessageDataException("Header field still has non-Ascii or controls");
+               throw new MessageDataException(
+                 "Header field still has non-Ascii or controls");
 #endif
             }
           }
@@ -2186,7 +2203,7 @@ namespace PeterO.Mail {
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
-        AppendAscii(output, "Message-ID: ");
+        AppendAscii(output, "Message-ID:\r\n ");
         AppendAscii(output, this.GenerateMessageID());
         AppendAscii(output, "\r\n");
       }

@@ -27,18 +27,12 @@ namespace PeterO.Mail {
           "0");
       }
       #endif
-      // if (tokenStack.Count != state) {
-      // Console.WriteLine("Rolling back from " + tokenStack.Count + " to "
-      // + state);
-      // }
       while (state < this.tokenStack.Count) {
         this.tokenStack.RemoveAt(state);
       }
     }
 
     public void Commit(int token, int startIndex, int endIndex) {
-      // Console.WriteLine("Committing token " + token + ", size now " +
-      // (tokenStack.Count + 1));
       this.tokenStack.Add(new[] { token, startIndex, endIndex });
     }
 

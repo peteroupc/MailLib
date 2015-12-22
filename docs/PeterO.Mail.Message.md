@@ -396,7 +396,7 @@ The parameter  <i>name</i>
 
 ### SetBody
 
-    public void SetBody(
+    public PeterO.Mail.Message SetBody(
         byte[] bytes);
 
 Sets the body of this message to the given byte array. This method doesn't make a copy of that byte array.
@@ -404,6 +404,10 @@ Sets the body of this message to the given byte array. This method doesn't make 
 <b>Parameters:</b>
 
  * <i>bytes</i>: A byte array.
+
+<b>Returns:</b>
+
+This object.
 
 <b>Exceptions:</b>
 

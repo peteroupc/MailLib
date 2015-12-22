@@ -630,13 +630,15 @@ public final void setSubject(String value) {
      * Sets the body of this message to the given byte array. This method doesn't
      * make a copy of that byte array.
      * @param bytes A byte array.
+     * @return This object.
      * @throws NullPointerException The parameter {@code bytes} is null.
      */
-    public void SetBody(byte[] bytes) {
+    public Message SetBody(byte[] bytes) {
       if (bytes == null) {
         throw new NullPointerException("bytes");
       }
       this.body = bytes;
+      return this;
     }
 
     /**
@@ -848,11 +850,21 @@ public final void setSubject(String value) {
           // Start of a reserved boundary delimiter
           return false;
         }
-        if (lineLength == 0 && checkBoundaryDelimiter && index + 4 < endIndex &&
+        if (lineLength == 0 && index + 4 < endIndex &&
             bytes[index] == 'F' && bytes[index + 1] == 'r' &&
             bytes[index + 2] == 'o' && bytes[index + 3] == 'm' &&
             bytes[index + 4] == ' ') {
           // Line starts with "From" followed by space
+          return false;
+        }
+        if (lineLength == 0 && index + 1 < endIndex &&
+            bytes[index] == '.' && bytes[index + 1] == '\r') {
+          // Dot line
+          return false;
+        }
+        if (lineLength == 0 && index + 1 == endIndex &&
+            bytes[index] == '.') {
+          // Dot line
           return false;
         }
         if (c == '\r' && index + 1 < endIndex && bytes[index + 1] == '\n') {
@@ -1859,6 +1871,12 @@ public final void setSubject(String value) {
       int lineLength = 0;
       boolean allTextBytes = !isBodyPart;
       for (int i = 0; i < lengthCheck; ++i) {
+        if (highBytes + ctlBytes > 100 && i == 300) {
+          return EncodingBase64;
+        }
+        if (highBytes + ctlBytes > 10 && i == 300) {
+          return EncodingQuotedPrintable;
+        }
         if ((body[i] & 0x80) != 0) {
           ++highBytes;
           allTextBytes = false;
@@ -2131,7 +2149,7 @@ public final void setSubject(String value) {
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
-        AppendAscii(output, "Message-ID: ");
+        AppendAscii(output, "Message-ID:\r\n ");
         AppendAscii(output, this.GenerateMessageID());
         AppendAscii(output, "\r\n");
       }

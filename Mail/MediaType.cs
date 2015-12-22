@@ -259,7 +259,7 @@ StringBuilder sb) {
 string str,
 int index,
 int endIndex,
-StringBuilder builder,  // receives the unescaped version of the _string
+StringBuilder builder,  // receives the unescaped version of the string
 QuotedStringRule rule) {
       int startIndex = index;
       int valueBLength = (builder == null) ? 0 : builder.Length;
@@ -1212,7 +1212,10 @@ null);
     }
 
     /// <summary>Parses a media type string and returns a media type
-    /// object.</summary>
+    /// object. This method checks the syntactic validity of the string,
+    /// but not whether it has all parameters it's required to have or
+    /// whether the parameters themselves are set to valid values for the
+    /// parameter.</summary>
     /// <param name='mediaTypeValue'>A string object representing a media
     /// type. This media type can include parameters.</param>
     /// <returns>A media type object, or text/plain if <paramref
@@ -1223,7 +1226,10 @@ null);
     }
 
     /// <summary>Parses a media type string and returns a media type
-    /// object, or the default value if the string is invalid.</summary>
+    /// object, or the default value if the string is invalid. This method
+    /// checks the syntactic validity of the string, but not whether it has
+    /// all parameters it's required to have or whether the parameters
+    /// themselves are set to valid values for the parameter.</summary>
     /// <param name='str'>A string object representing a media type. This
     /// media type can include parameters.</param>
     /// <param name='defaultValue'>The media type to return if the string

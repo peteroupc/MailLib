@@ -17,18 +17,12 @@ import java.util.*;
     }
 
     public void RestoreState(int state) {
-      // if (tokenStack.size() != state) {
-      // System.out.println("Rolling back from " + tokenStack.size() + " to "
-      // + state);
-      // }
       while (state < this.tokenStack.size()) {
         this.tokenStack.remove(state);
       }
     }
 
     public void Commit(int token, int startIndex, int endIndex) {
-      // System.out.println("Committing token " + token + ", size now " +
-      // (tokenStack.size() + 1));
       this.tokenStack.add(new int[] { token, startIndex, endIndex });
     }
 
