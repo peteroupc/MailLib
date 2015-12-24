@@ -181,6 +181,8 @@ String type,
      * filename is truncated if it would otherwise be too long. The returned
      * string will be in normalization form C. Returns an empty string if
      * {@code str} is null.
+     * @throws NullPointerException The parameter "name" or {@code str} or
+     * "dispoValue" or "dispositionValue" is null.
      */
     public static String MakeFilename(String str) {
       if (str == null) {
@@ -227,7 +229,7 @@ str.substring(
       StringBuilder builder = new StringBuilder();
       // Replace unsuitable characters for filenames
       // and make sure the filename's
-      // length doesn't exceed 250. (A few additional characters
+      // length doesn't exceed 243. (A few additional characters
       // may be added later on.)
       // NOTE: Even if there are directory separators (backslash
       // and forward slash), the filename is not treated as a
@@ -235,7 +237,7 @@ str.substring(
       // 2183); as a result, the directory separators
       // will be treated as unsuitable characters for filenames
       // and are handled below.
-      for (int i = 0; i < str.length() && builder.length() < 250; ++i) {
+      for (int i = 0; i < str.length() && builder.length() < 243; ++i) {
         int c = DataUtilities.CodePointAt(str, i);
         if (c >= 0x10000) {
           ++i;
@@ -243,8 +245,11 @@ str.substring(
         if (c < 0) {
           c = 0xfffd;
         }
-        if (c == (int)'\t') {
-          // Replace tab with space
+        if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
+   c == 0x180e || c == 0x1680 || (c >= 0x2000 && c <= 0x200b) || c == 0x205f
+            ||
+          c == 0x202f || c == 0xfeff) {
+          // Replace space-like characters (including tab) with space
           builder.append(' ');
         } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||
           c == '?' || c == '|' ||
@@ -254,13 +259,16 @@ str.substring(
           // reserved by Windows,
           // backslash, forward slash, ASCII controls, and C1 controls).
           builder.append('_');
+        } else if (c == 0x85 || c == 0x2028 || c == 0x2029) {
+          // line break characters
+          builder.append('_');
         } else if (c == '%') {
           // Treat percent ((character instanceof unsuitable) ? (unsuitable)character : null), even though it can occur
           // in a Windows filename, since it's used in MS-DOS and Windows
           // in environment variable placeholders
           builder.append('_');
         } else {
-          if (builder.length() < 249 || c < 0x10000) {
+          if (builder.length() < 242 || c < 0x10000) {
             if (c <= 0xffff) {
               builder.append((char)c);
             } else if (c <= 0x10ffff) {
@@ -282,7 +290,7 @@ str.substring(
       String strLower = DataUtilities.ToLowerCaseAscii(str);
       if (
 strLower.equals(
-"nul") ||
+"nul") || strLower.equals("clock$") ||
 strLower.indexOf(
 "nul.") == 0 || strLower.equals(
 "prn") ||
@@ -303,10 +311,17 @@ strLower.length() >= 4 && strLower.indexOf(
         // Reserved filenames on Windows
         str = "_" + str;
       }
-      if (str.charAt(0) == '~' || str.charAt(0) == '-') {
+      if (strLower.charAt(0)=='{' && strLower.length()>1 && strLower.charAt(1) >= '0' &&
+            strLower.charAt(1) <= '1') {
+        str = "_" + str;
+      }
+      if (str.charAt(0) == '~' || str.charAt(0) == '-' || str.charAt(0) == '$') {
         // Home folder convention (tilde).
         // Filenames starting with hyphens can also be
-        // problematic especially in Unix-based systems
+        // problematic especially in Unix-based systems,
+        // and filenames starting with dollar sign can
+        // be misinterpreted if they're treated as expansion
+        // symbols
         str = "_" + str;
       }
       if (str.charAt(0) == '.') {

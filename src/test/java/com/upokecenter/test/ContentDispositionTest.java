@@ -38,6 +38,7 @@ import com.upokecenter.mail.*;
       cd=ContentDisposition.Parse("attachment");
       if (cd.isInline())Assert.fail();
     }
+
     @Test
     public void TestMakeFilename() {
       Assert.assertEquals("", ContentDisposition.MakeFilename(null));
