@@ -2,8 +2,10 @@ using System;
 
 namespace PeterO {
   internal static class DateTimeUtilities {
-    private static int[] totdays = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 };
-    private static int[] numdays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    private static int[] totdays = {0, 31, 59, 90, 120, 151, 181, 212, 243,
+      273, 304, 334 };
+    private static int[] numdays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31,
+      30, 31 };
 
     public static int GetDayOfWeek(int[] dateTime) {
       // Based on public-domain code which was
@@ -67,12 +69,11 @@ namespace PeterO {
       ret[4] = dt.Minute;
       ret[5] = dt.Second;
       ret[6] = dt.Millisecond;
-    ret[7] =
-        (int)Math.Round(TimeZoneInfo.Local.GetUtcOffset(dt).TotalMinutes);
+    ret[7] = (int)Math.Round(TimeZoneInfo.Local.GetUtcOffset(dt).TotalMinutes);
       return ret;
     }
 
-    public static int[] GetCurrentUtcTime() {
+    public static int[] GetCurrentUniversalTime() {
       var ret = new int[8];
       DateTime dt = DateTime.UtcNow;
       ret[0] = dt.Year;

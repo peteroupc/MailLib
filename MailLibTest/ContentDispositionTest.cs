@@ -38,6 +38,7 @@ namespace MailLibTest {
       cd=ContentDisposition.Parse("attachment");
       Assert.IsFalse(cd.IsInline);
     }
+
     [Test]
     public void TestMakeFilename() {
       Assert.AreEqual(String.Empty, ContentDisposition.MakeFilename(null));

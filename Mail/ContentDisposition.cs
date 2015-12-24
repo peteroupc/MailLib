@@ -186,6 +186,9 @@ string type,
     /// too long. The returned string will be in normalization form C.
     /// Returns an empty string if <paramref name='str'/> is
     /// null.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter "name" or
+    /// <paramref name='str'/> or "dispoValue" or "dispositionValue" is
+    /// null.</exception>
     public static string MakeFilename(string str) {
       if (str == null) {
         return String.Empty;
@@ -231,7 +234,7 @@ str.IndexOf('\'')));
       var builder = new StringBuilder();
       // Replace unsuitable characters for filenames
       // and make sure the filename's
-      // length doesn't exceed 250. (A few additional characters
+      // length doesn't exceed 243. (A few additional characters
       // may be added later on.)
       // NOTE: Even if there are directory separators (backslash
       // and forward slash), the filename is not treated as a
@@ -239,7 +242,7 @@ str.IndexOf('\'')));
       // 2183); as a result, the directory separators
       // will be treated as unsuitable characters for filenames
       // and are handled below.
-      for (int i = 0; i < str.Length && builder.Length < 250; ++i) {
+      for (int i = 0; i < str.Length && builder.Length < 243; ++i) {
         int c = DataUtilities.CodePointAt(str, i);
         if (c >= 0x10000) {
           ++i;
@@ -247,8 +250,11 @@ str.IndexOf('\'')));
         if (c < 0) {
           c = 0xfffd;
         }
-        if (c == (int)'\t') {
-          // Replace tab with space
+        if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
+   c == 0x180e || c == 0x1680 || (c >= 0x2000 && c <= 0x200b) || c == 0x205f
+            ||
+          c == 0x202f || c == 0xfeff) {
+          // Replace space-like characters (including tab) with space
           builder.Append(' ');
         } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||
           c == '?' || c == '|' ||
@@ -258,13 +264,16 @@ str.IndexOf('\'')));
           // reserved by Windows,
           // backslash, forward slash, ASCII controls, and C1 controls).
           builder.Append('_');
+        } else if (c == 0x85 || c == 0x2028 || c == 0x2029) {
+          // line break characters
+          builder.Append('_');
         } else if (c == '%') {
           // Treat percent character as unsuitable, even though it can occur
           // in a Windows filename, since it's used in MS-DOS and Windows
           // in environment variable placeholders
           builder.Append('_');
         } else {
-          if (builder.Length < 249 || c < 0x10000) {
+          if (builder.Length < 242 || c < 0x10000) {
             if (c <= 0xffff) {
               builder.Append((char)c);
             } else if (c <= 0x10ffff) {
@@ -286,7 +295,7 @@ str.IndexOf('\'')));
       string strLower = DataUtilities.ToLowerCaseAscii(str);
       if (
 strLower.Equals(
-"nul") ||
+"nul") || strLower.Equals("clock$") ||
 strLower.IndexOf(
 "nul.",
 StringComparison.Ordinal) == 0 || strLower.Equals(
@@ -313,10 +322,17 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
         // Reserved filenames on Windows
         str = "_" + str;
       }
-      if (str[0] == '~' || str[0] == '-') {
+      if (strLower[0]=='{' && strLower.Length>1 && strLower[1] >= '0' &&
+            strLower[1] <= '1') {
+        str = "_" + str;
+      }
+      if (str[0] == '~' || str[0] == '-' || str[0] == '$') {
         // Home folder convention (tilde).
         // Filenames starting with hyphens can also be
-        // problematic especially in Unix-based systems
+        // problematic especially in Unix-based systems,
+        // and filenames starting with dollar sign can
+        // be misinterpreted if they're treated as expansion
+        // symbols
         str = "_" + str;
       }
       if (str[0] == '.') {

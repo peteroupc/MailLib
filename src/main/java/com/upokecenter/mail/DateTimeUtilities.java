@@ -61,7 +61,7 @@ final class DateTimeUtilities {
       return (addon % 7) + 1;  /* the remainder after dividing by 7
                         gives the day of week */
   }
-  public static int[] GetCurrentUtcTime(){
+  public static int[] GetCurrentUniversalTime(){
     Calendar c=Calendar.getInstance(TimeZone.getTimeZone("GMT"),
         Locale.US);
     c.setTimeInMillis(new Date().getTime());
@@ -71,7 +71,9 @@ final class DateTimeUtilities {
         c.get(Calendar.DAY_OF_MONTH),
         c.get(Calendar.HOUR_OF_DAY),
         c.get(Calendar.MINUTE),
-        c.get(Calendar.SECOND),
+        // In some Java implementations, maybe, the second
+        // might go beyond 59 due to leap seconds.
+        Math.min(59,c.get(Calendar.SECOND)),
         c.get(Calendar.MILLISECOND),
         0 // Time zone offset always 0 for GMT/UTC
     };
@@ -85,7 +87,9 @@ final class DateTimeUtilities {
         c.get(Calendar.DAY_OF_MONTH),
         c.get(Calendar.HOUR_OF_DAY),
         c.get(Calendar.MINUTE),
-        c.get(Calendar.SECOND),
+        // In some Java implementations, maybe, the second
+        // might go beyond 59 due to leap seconds.
+        Math.min(59,c.get(Calendar.SECOND)),
         c.get(Calendar.MILLISECOND),
         // Don't use ZONE_OFFSET, since it apparently
         // doesn't change after setTimeInMillis changes
