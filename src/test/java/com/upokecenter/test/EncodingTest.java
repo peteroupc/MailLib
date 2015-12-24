@@ -59,12 +59,14 @@ import java.util.*;
       boolean startsWithSpace = false;
       boolean hasLongWord = false;
       boolean meetsLineLength = true;
+        char c;
+        String test;
       if (index == endIndex) {
         System.out.println(fn + ":\n--Message is empty");
         return 0;
       }
       while (index < endIndex) {
-        var c = str.charAt(index);
+        c = str.charAt(index);
         if (index == 0 && (c == 0x20 || c == 0x09)) {
           System.out.println(fn + ":\n--Starts with whitespace");
           return 0;
@@ -119,7 +121,7 @@ import java.util.*;
           if (str.charAt(index + 1) != 0x20 &&
             !(str.charAt(index + 1) == 0x0d && index + 2 < str.length() && str.charAt(index+
               2) == 0x0a)) {
-            var test = str.substring(Math.max(index + 2 - 30, 0), (Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
+            test = str.substring(Math.max(index + 2 - 30, 0), (Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
             System.out.println(fn +
               ":\n--No space/line break after header name and colon: (" +
               str.charAt(index + 1) + ") [" + test + "] " + index);
@@ -191,7 +193,7 @@ import java.util.*;
         if (!first) {
           builder.append(", ");
         }
-        builder.append(Integer.toString((int)vi));
+        builder.append(TestCommon.IntToString(vi));
         first = false;
       }
       builder.append("]");
@@ -1933,7 +1935,8 @@ import java.util.*;
       Message part = new Message();
       part.setContentType(mediatype);
       part.SetBody(bytes);
-      msg.getParts().Add(part);
+      List<Message> parts = msg.getParts();
+      parts.add(part);
       msg = MessageTest.MessageFromString(msg.Generate());
       part = msg.getParts().get(0);
       AssertEqual(bytes, part.GetBody(), input);

@@ -19,6 +19,7 @@ namespace PeterO.Mail {
       }
       StringBuilder builder = null;
       var index = 0;
+      int leadIndex;
       // Skip leading whitespace, if any
       while (index < str.Length) {
         char c = str[index];
@@ -29,7 +30,7 @@ namespace PeterO.Mail {
           break;
         }
       }
-      var leadIndex = index;
+      leadIndex = index;
       while (index < str.Length) {
         int si = index;
         char c = str[index++];

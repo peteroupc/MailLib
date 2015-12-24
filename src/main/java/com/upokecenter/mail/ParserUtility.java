@@ -20,6 +20,7 @@ private ParserUtility() {
       }
       StringBuilder builder = null;
       int index = 0;
+      int leadIndex;
       // Skip leading whitespace, if any
       while (index < str.length()) {
         char c = str.charAt(index);
@@ -30,7 +31,7 @@ private ParserUtility() {
           break;
         }
       }
-      var leadIndex = index;
+      leadIndex = index;
       while (index < str.length()) {
         int si = index;
         char c = str.charAt(index++);

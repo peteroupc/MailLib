@@ -71,7 +71,8 @@ Assert.assertEquals(ret,2,EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""))
       if (mtstring.contains("\r\n\r\n"))Assert.fail();
       if (mtstring.contains("\r\n \r\n"))Assert.fail();
       Assert.assertEquals(str, MediaType.Parse(mtstring).GetParameter("z"));
-      var mtmessage = MessageFromString("MIME-Version: 1.0\r\nContent-Type: " +
+  Message mtmessage =
+        MessageFromString("MIME-Version: 1.0\r\nContent-Type: " +
                     mtstring + "\r\n\r\n");
       MessageGenerate(mtmessage);
     }
@@ -1643,9 +1644,9 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     @Test
     public void TestBodyString() {
-      Message msg = new Message()
-       .SetTextBody("Test");
-      msg.setContentType(MediaType.Parse("text/plain);charset=x-unknown");
+      Message msg = new Message().SetTextBody("Test");
+      String mtype="text/plain;charset=x-unknown";
+      msg.setContentType(MediaType.Parse(mtype));
       try {
         msg.getBodyString().toString();
         Assert.fail("Should have failed");

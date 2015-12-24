@@ -510,10 +510,10 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Gets the date and time extracted from this message's Date
-    /// header field. Each element of the array (starting from 0) is as
-    /// follows:
+    /// header field (as though GetHeader("date") were called). Each
+    /// element of the array (starting from 0) is as follows:
     /// <list>
-    /// <item>0 - The year. For example, a value 2000 means 2000
+    /// <item>0 - The year. For example, the value 2000 means 2000
     /// C.E.</item>
     /// <item>1 - Month of the year, from 1 (January) through 12
     /// (December).</item>
@@ -550,7 +550,7 @@ namespace PeterO.Mail {
     /// <param name='dateTime'>An array containing eight elements. Each
     /// element of the array (starting from 0) is as follows:
     /// <list>
-    /// <item>0 - The year. For example, a value 2000 means 2000
+    /// <item>0 - The year. For example, the value 2000 means 2000
     /// C.E.</item>
     /// <item>1 - Month of the year, from 1 (January) through 12
     /// (December).</item>

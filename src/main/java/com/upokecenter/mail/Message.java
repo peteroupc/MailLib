@@ -483,20 +483,21 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Gets the date and time extracted from this message's Date header field. Each
-     * element of the array (starting from 0) is as follows: <ul> <li>0 -
-     * The year. For example, a value 2000 means 2000 C.E.</li> <li>1 -
-     * Month of the year, from 1 (January) through 12 (December).</li> <li>2
-     * - Day of the month, from 1 through 31.</li> <li>3 - Hour of the day,
-     * from 0 through 23.</li> <li>4 - Minute of the hour, from 0 through
-     * 59.</li> <li>5 - Second of the minute, from 0 through 60 (this value
-     * can go up to 60 to accommodate leap seconds). (Leap seconds are
-     * additional seconds added to adjust international atomic time, or TAI,
-     * to an approximation of astronomical time known as coordinated
-     * universal time, or UTC.)</li> <li>6 - Milliseconds of the second,
-     * from 0 through 999. Will always be 0.</li> <li>7 - Number of minutes
-     * to subtract from this date and time to get global time. This number
-     * can be positive or negative.</li></ul>
+     * Gets the date and time extracted from this message's Date header field (as
+     * though GetHeader("date") were called). Each element of the array
+     * (starting from 0) is as follows: <ul> <li>0 - The year. For example,
+     * the value 2000 means 2000 C.E.</li> <li>1 - Month of the year, from 1
+     * (January) through 12 (December).</li> <li>2 - Day of the month, from
+     * 1 through 31.</li> <li>3 - Hour of the day, from 0 through 23.</li>
+     * <li>4 - Minute of the hour, from 0 through 59.</li> <li>5 - Second of
+     * the minute, from 0 through 60 (this value can go up to 60 to
+     * accommodate leap seconds). (Leap seconds are additional seconds added
+     * to adjust international atomic time, or TAI, to an approximation of
+     * astronomical time known as coordinated universal time, or UTC.)</li>
+     * <li>6 - Milliseconds of the second, from 0 through 999. Will always
+     * be 0.</li> <li>7 - Number of minutes to subtract from this date and
+     * time to get global time. This number can be positive or
+     * negative.</li></ul>
      * @return An array containing eight elements. Returns null if the Date header
      * doesn't exist, if the Date field is syntactically or semantically
      * invalid, or if the field's year would overflow a 32-bit signed
@@ -517,8 +518,8 @@ public final void setSubject(String value) {
      * Sets this message's Date header field to the given date and time.
      * @param dateTime An array containing eight elements. Each element of the
      * array (starting from 0) is as follows: <ul> <li>0 - The year. For
-     * example, a value 2000 means 2000 C.E.</li> <li>1 - Month of the year,
-     * from 1 (January) through 12 (December).</li> <li>2 - Day of the
+     * example, the value 2000 means 2000 C.E.</li> <li>1 - Month of the
+     * year, from 1 (January) through 12 (December).</li> <li>2 - Day of the
      * month, from 1 through 31.</li> <li>3 - Hour of the day, from 0
      * through 23.</li> <li>4 - Minute of the hour, from 0 through 59.</li>
      * <li>5 - Second of the minute, from 0 through 60 (this value can go up

@@ -6,7 +6,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
 */
-package com.upokecenter.util;
+package com.upokecenter.mail;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -23,7 +23,7 @@ final class DateTimeUtilities {
   private static int[] numdays =
       {31,28,31,30,31,30,31,31,30,31,30,31};
 
-    public static bool IsValidDateTime(int[] dateTime) {
+    public static boolean IsValidDateTime(int[] dateTime) {
       if (dateTime == null || dateTime.length < 8) {
         return false;
       }
@@ -51,7 +51,7 @@ final class DateTimeUtilities {
  return false;
 }
       }
-      return (dateTime[3]<0 || dateTime[4]<0 || dateTime[5]<0 ||
+      return !(dateTime[3]<0 || dateTime[4]<0 || dateTime[5]<0 ||
         dateTime[3]>= 24 || dateTime[4]>= 60 || dateTime[5]>= 61 ||dateTime[6]<0 ||
         dateTime[6]>= 1000 || dateTime[7]<=-1440 ||
         dateTime[7] >= 1440);
@@ -114,6 +114,7 @@ final class DateTimeUtilities {
   }
   public static int[] GetCurrentLocalTime(){
     Calendar c=Calendar.getInstance();
+    long date=new Date().getTime();
     c.setTimeInMillis(date);
     return new int[]{
         c.get(Calendar.YEAR),
