@@ -12,6 +12,7 @@ using PeterO.Text;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Test;
 
 namespace MailLibTest {
   [TestFixture]
@@ -60,12 +61,14 @@ namespace MailLibTest {
       var startsWithSpace = false;
       var hasLongWord = false;
       var meetsLineLength = true;
+        char c;
+        string test;
       if (index == endIndex) {
         Console.WriteLine(fn + ":\n--Message is empty");
         return 0;
       }
       while (index < endIndex) {
-        var c = str[index];
+        c = str[index];
         if (index == 0 && (c == 0x20 || c == 0x09)) {
           Console.WriteLine(fn + ":\n--Starts with whitespace");
           return 0;
@@ -120,7 +123,7 @@ namespace MailLibTest {
           if (str[index + 1] != 0x20 &&
             !(str[index + 1] == 0x0d && index + 2 < str.Length && str[index+
               2] == 0x0a)) {
-            var test = str.Substring(Math.Max(index + 2 - 30, 0),
+            test = str.Substring(Math.Max(index + 2 - 30, 0),
               Math.Min(index + 2, 30));
             Console.WriteLine(fn +
               ":\n--No space/line break after header name and colon: (" +
@@ -193,8 +196,7 @@ namespace MailLibTest {
         if (!first) {
           builder.Append(", ");
         }
-        builder.Append(Convert.ToString((int)vi,
-                    System.Globalization.CultureInfo.InvariantCulture));
+        builder.Append(TestCommon.IntToString(vi));
         first = false;
       }
       builder.Append("]");
@@ -1939,7 +1941,8 @@ namespace MailLibTest {
       var part = new Message();
       part.ContentType = mediatype;
       part.SetBody(bytes);
-      msg.Parts.Add(part);
+      IList<Message> parts = msg.Parts;
+      parts.Add(part);
       msg = MessageTest.MessageFromString(msg.Generate());
       part = msg.Parts[0];
       AssertEqual(bytes, part.GetBody(), input);
