@@ -806,6 +806,224 @@ Assert.assertEquals(ret,2,EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""))
     }
 
     @Test
+    public void TestGetDate() {
+      Message msg = new Message();
+      int[] date;
+      msg.SetHeader("date", "Sat, 1 Jan 2000 12:34:56 +1034");
+      date = msg.GetDate();
+      Assert.assertEquals(2000, date[0]);
+      Assert.assertEquals(1, date[1]);
+      Assert.assertEquals(1, date[2]);
+      Assert.assertEquals(12, date[3]);
+      Assert.assertEquals(34, date[4]);
+      Assert.assertEquals(56, date[5]);
+      Assert.assertEquals(0, date[6]);
+      Assert.assertEquals(10*60 + 34, date[7]);
+      msg.SetHeader("date", "Mon, 1 Jan 1900 23:59:60 -1034");
+      date = msg.GetDate();
+      Assert.assertEquals(1900, date[0]);
+      Assert.assertEquals(1, date[1]);
+      Assert.assertEquals(1, date[2]);
+      Assert.assertEquals(23, date[3]);
+      Assert.assertEquals(59, date[4]);
+      Assert.assertEquals(60, date[5]);
+      Assert.assertEquals(0, date[6]);
+      Assert.assertEquals(-(10 * 60 + 34), date[7]);
+      msg.SetHeader("date", "Sun, 1 Jan 2000 12:34:56 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.fail();
+ }
+      msg.SetHeader("date", "1 Jan 2000 12:34:56 +1034");
+      date = msg.GetDate();
+      Assert.assertEquals(2000, date[0]);
+      Assert.assertEquals(1, date[1]);
+      Assert.assertEquals(1, date[2]);
+      msg.SetHeader("date", "32 Jan 2000 12:34:56 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.fail();
+ }
+      msg.SetHeader("date", "30 Feb 2000 12:34:56 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.fail();
+ }
+      msg.SetHeader("date", "1 Feb 999999999999999999999 12:34:56 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.fail();
+ }
+      msg.SetHeader("date", "1 Jan 2000 24:34:56 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.fail();
+ }
+      msg.SetHeader("date", "1 Jan 2000 01:60:56 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.fail();
+ }
+      msg.SetHeader("date", "1 Jan 2000 01:01:61 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.fail();
+ }
+      msg.SetHeader("date", "1 Jan 2000 01:01:01 +1099");
+      if ((msg.GetDate()) != null) {
+ Assert.fail();
+ }
+    }
+
+    @Test
+    public void TestSetDate() {
+      Message msg = new Message();
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, 0 });
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { -1, 1, 1, 0, 0, 0, 0, 0 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 0, 1, 0, 0, 0, 0, 0 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 13, 1, 0, 0, 0, 0, 0 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 0, 0, 0, 0, 0, 0 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 32, 0, 0, 0, 0, 0 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, -5, 0, 0, 0, 0 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 24, 0, 0, 0, 0 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, -1, 0, 0, 0 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 60, 0, 0, 0 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, -1, 0, 0 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 61, 0, 0 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, -1, 0 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 1000, 0 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, -1440 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, 1440 });
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+System.out.print("");
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    }
+
+    @Test
     public void TestBoundaryReading() {
       byte[] body;
       String messageStart = "MIME-Version: 1.0\r\n";
@@ -1333,8 +1551,8 @@ MessageFromString(MessageFromString(msg).Generate())
         throw new IllegalStateException("", ex);
       }
       try {
-  MessageConstructOnly("From: x@example.com\r\nSub ject: Test\r\n\r\nBody"
-);
+  MessageConstructOnly(
+"From: x@example.com\r\nSub ject: Test\r\n\r\nBody");
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
         System.out.print("");

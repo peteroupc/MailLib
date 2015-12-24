@@ -166,9 +166,7 @@ namespace PeterO.Mail {
     /// "Generate()" method.</para></summary>
     /// <returns>This object.</returns>
     public Message SetCurrentDate() {
-      return this.SetHeader(
-        "date",
-        GetDateString(DateTimeUtilities.GetCurrentLocalTime()));
+      return SetDate(DateTimeUtilities.GetCurrentLocalTime());
     }
 
     private static void ReverseChars(char[] chars, int offset, int length) {
@@ -212,7 +210,7 @@ namespace PeterO.Mail {
     }
 
     private static string[] DaysOfWeek = {
-      "","Sun","Mon","Tue","Wed","Thu","Fri","Sat"
+      "Sun","Mon","Tue","Wed","Thu","Fri","Sat"
     };
 
     private static string[] Months = {
@@ -221,9 +219,13 @@ namespace PeterO.Mail {
     };
 
     private static string GetDateString(int[] dateTime) {
+      if (!DateTimeUtilities.IsValidDateTime(dateTime) ||
+        dateTime[0]< 0) {
+        throw new ArgumentException("Invalid date and time");
+      }
       int dow = DateTimeUtilities.GetDayOfWeek(dateTime);
-      if (dow == 0) {
-        throw new ArgumentException("invalid day of week");
+      if (dow < 0) {
+        throw new ArgumentException("Invalid date and time");
       }
       string dayString = DaysOfWeek[dow];
       string monthString = Months[dateTime[1]];
@@ -235,7 +237,13 @@ namespace PeterO.Mail {
       sb.Append(' ');
       sb.Append(monthString);
       sb.Append(' ');
-      sb.Append(IntToString(dateTime[0]));
+      string yearString = IntToString(dateTime[0]);
+      if (yearString.Length < 4) {
+        for (int i = 0; i < 4 - yearString.Length; ++i) {
+          sb.Append('0');
+        }
+      }
+      sb.Append(yearString);
       sb.Append(' ');
       sb.Append((char)('0' + ((dateTime[3] / 10) % 10)));
       sb.Append((char)('0' + (dateTime[3] % 10)));
@@ -499,6 +507,85 @@ namespace PeterO.Mail {
     /// <returns>A byte array.</returns>
     public byte[] GetBody() {
       return this.body;
+    }
+
+    /// <summary>Gets the date and time extracted from this message's Date
+    /// header field. Each element of the array (starting from 0) is as
+    /// follows:
+    /// <list>
+    /// <item>0 - The year. For example, a value 2000 means 2000
+    /// C.E.</item>
+    /// <item>1 - Month of the year, from 1 (January) through 12
+    /// (December).</item>
+    /// <item>2 - Day of the month, from 1 through 31.</item>
+    /// <item>3 - Hour of the day, from 0 through 23.</item>
+    /// <item>4 - Minute of the hour, from 0 through 59.</item>
+    /// <item>5 - Second of the minute, from 0 through 60 (this value can
+    /// go up to 60 to accommodate leap seconds). (Leap seconds are
+    /// additional seconds added to adjust international atomic time, or
+    /// TAI, to an approximation of astronomical time known as coordinated
+    /// universal time, or UTC.)</item>
+    /// <item>6 - Milliseconds of the second, from 0 through 999. Will
+    /// always be 0.</item>
+    /// <item>7 - Number of minutes to subtract from this date and time to
+    /// get global time. This number can be positive or
+    /// negative.</item></list></summary>
+    /// <returns>An array containing eight elements. Returns null if the
+    /// Date header doesn't exist, if the Date field is syntactically or
+    /// semantically invalid, or if the field's year would overflow a
+    /// 32-bit signed integer.</returns>
+    public int[] GetDate() {
+      string field = this.GetHeader("date");
+      if (field == null) {
+ return null;
+}
+      var date = new int[8];
+      return
+        (HeaderParserUtility.ParseHeaderExpandedDate(field, 0, field.Length,
+        date) != 0) ? (date) : (null);
+    }
+
+    /// <summary>Sets this message's Date header field to the given date
+    /// and time.</summary>
+    /// <param name='dateTime'>An array containing eight elements. Each
+    /// element of the array (starting from 0) is as follows:
+    /// <list>
+    /// <item>0 - The year. For example, a value 2000 means 2000
+    /// C.E.</item>
+    /// <item>1 - Month of the year, from 1 (January) through 12
+    /// (December).</item>
+    /// <item>2 - Day of the month, from 1 through 31.</item>
+    /// <item>3 - Hour of the day, from 0 through 23.</item>
+    /// <item>4 - Minute of the hour, from 0 through 59.</item>
+    /// <item>5 - Second of the minute, from 0 through 60 (this value can
+    /// go up to 60 to accommodate leap seconds). (Leap seconds are
+    /// additional seconds added to adjust international atomic time, or
+    /// TAI, to an approximation of astronomical time known as coordinated
+    /// universal time, or UTC.)</item>
+    /// <item>6 - Milliseconds of the second, from 0 through 999. This
+    /// value is not used to generate the date string, but must still be
+    /// valid.</item>
+    /// <item>7 - Number of minutes to subtract from this date and time to
+    /// get global time. This number can be positive or
+    /// negative.</item></list>.</param>
+    /// <returns>This object.</returns>
+    /// <exception cref='ArgumentException'>The parameter <paramref
+    /// name='dateTime'/> contains fewer than eight elements, contains
+    /// invalid values, or contains a year less than 0.</exception>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='dateTime'/> is null.</exception>
+    public Message SetDate(int[] dateTime) {
+      if ((dateTime) == null) {
+  throw new ArgumentNullException("dateTime");
+}
+      if (!DateTimeUtilities.IsValidDateTime(dateTime)) {
+        throw new ArgumentException("Invalid date and time");
+      }
+      if (dateTime[0] < 0) {
+        throw new ArgumentException("Invalid year: " +
+          IntToString(dateTime[0]));
+      }
+      return this.SetHeader("date", GetDateString(dateTime));
     }
 
     /// <summary>Returns the mail message contained in this message's
@@ -1235,8 +1322,10 @@ namespace PeterO.Mail {
             // Encapsulated
             status[0] = 2;
           }
+          int spaceAndTabEnd = ParserUtility.SkipSpaceAndTab(origValue, 0,
+            origValue.Length);
           return
-            Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTabLeft(origValue));
+            Rfc2047.EncodeString(origValue.Substring(spaceAndTabEnd));
         }
         if (status != null) {
           // Downgraded

@@ -23,6 +23,40 @@ final class DateTimeUtilities {
   private static int[] numdays =
       {31,28,31,30,31,30,31,31,30,31,30,31};
 
+    public static bool IsValidDateTime(int[] dateTime) {
+      if (dateTime == null || dateTime.length < 8) {
+        return false;
+      }
+      if (dateTime[1]<1 || dateTime[1] > 12 || dateTime[2]< 1) {
+        return false;
+      }
+      int yr = dateTime[0];
+      yr %= 400;
+      if (yr < 0) {
+        yr += 400;
+      }
+   boolean leap = (((((yr % 4) == 0) && ((yr % 100) != 0)) || ((yr % 400) ==
+        0)));
+      if (dateTime[1] == 4 || dateTime[1] == 6 || dateTime[1] == 9 ||
+        dateTime[1] == 11) {
+        if (dateTime[2] > 30) {
+ return false;
+}
+      } else if (dateTime[1] == 2) {
+        if (dateTime[2] > (leap ? 29 : 28)) {
+ return false;
+}
+      } else {
+        if (dateTime[2] > 31) {
+ return false;
+}
+      }
+      return (dateTime[3]<0 || dateTime[4]<0 || dateTime[5]<0 ||
+        dateTime[3]>= 24 || dateTime[4]>= 60 || dateTime[5]>= 61 ||dateTime[6]<0 ||
+        dateTime[6]>= 1000 || dateTime[7]<=-1440 ||
+        dateTime[7] >= 1440);
+    }
+
   public static int GetDayOfWeek(int[] dateTime){
 // Based on public-domain code which was
       // written by Paul Edwards in 1993
@@ -55,13 +89,13 @@ final class DateTimeUtilities {
       addon += da;      /* the day of week advances for each day */
                         /* Now as we all know, 2000-01-01 is a Saturday.  Using this
                         as our reference point, and the knowledge that we want to
-                        return [1..7] for Sunday..Saturday [changed from 0..6 --PO],
+                        return 0..6 for Sunday..Saturday,
                         we find out that we need to compensate by adding 6. */
       addon += 6;
-      return (addon % 7) + 1;  /* the remainder after dividing by 7
+      return (addon % 7);  /* the remainder after dividing by 7
                         gives the day of week */
   }
-  public static int[] GetCurrentUniversalTime(){
+  public static int[] GetCurrentGlobalTime(){
     Calendar c=Calendar.getInstance(TimeZone.getTimeZone("GMT"),
         Locale.US);
     c.setTimeInMillis(new Date().getTime());
@@ -72,8 +106,8 @@ final class DateTimeUtilities {
         c.get(Calendar.HOUR_OF_DAY),
         c.get(Calendar.MINUTE),
         // In some Java implementations, maybe, the second
-        // might go beyond 59 due to leap seconds.
-        Math.min(59,c.get(Calendar.SECOND)),
+        // might go beyond 60 due to leap seconds.
+        Math.min(60,c.get(Calendar.SECOND)),
         c.get(Calendar.MILLISECOND),
         0 // Time zone offset always 0 for GMT/UTC
     };
@@ -88,8 +122,8 @@ final class DateTimeUtilities {
         c.get(Calendar.HOUR_OF_DAY),
         c.get(Calendar.MINUTE),
         // In some Java implementations, maybe, the second
-        // might go beyond 59 due to leap seconds.
-        Math.min(59,c.get(Calendar.SECOND)),
+        // might go beyond 60 due to leap seconds.
+        Math.min(60,c.get(Calendar.SECOND)),
         c.get(Calendar.MILLISECOND),
         // Don't use ZONE_OFFSET, since it apparently
         // doesn't change after setTimeInMillis changes

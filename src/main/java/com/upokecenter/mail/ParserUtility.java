@@ -14,28 +14,6 @@ import com.upokecenter.util.*;
   final class ParserUtility {
 private ParserUtility() {
 }
-    public static String TrimSpaceAndTab(String str) {
-      return ((str) == null || (str).length() == 0) ? str :
-        TrimSpaceAndTabLeft(TrimSpaceAndTabRight(str));
-    }
-
-    public static String TrimSpaceAndTabLeft(String str) {
-      if (((str) == null || (str).length() == 0)) {
-        return str;
-      }
-      int index = 0;
-      int valueSLength = str.length();
-      while (index < valueSLength) {
-        char c = str.charAt(index);
-        if (c != 0x09 && c != 0x20) {
-          break;
-        }
-        ++index;
-      }
-      return (index == valueSLength) ? "" : ((index == 0) ? str :
-        str.substring(index));
-    }
-
     public static String TrimAndCollapseSpaceAndTab(String str) {
       if (((str) == null || (str).length() == 0)) {
         return str;
@@ -84,15 +62,33 @@ private ParserUtility() {
       return (builder == null) ? str : builder.toString();
     }
 
-    private static String TrimSpaceAndTabRight(String str) {
+    public static String TrimSpaceAndTab(String str) {
       if (((str) == null || (str).length() == 0)) {
         return str;
       }
-      int index = str.length() - 1;
+      int index = 0;
+      int valueSLength = str.length();
+      while (index < valueSLength) {
+        char c = str.charAt(index);
+        if (c != 0x09 && c != 0x20) {
+          break;
+        }
+        ++index;
+      }
+      if (index == valueSLength) {
+ return "";
+}
+      int indexStart = index;
+      index = str.length() - 1;
       while (index >= 0) {
         char c = str.charAt(index);
         if (c != 0x09 && c != 0x20) {
-          return str.substring(0, index + 1);
+          int indexEnd = index + 1;
+          if (indexEnd == indexStart) {
+ return "";
+}
+          return (indexEnd == str.length() && indexStart == 0) ? (str) :
+            (str.substring(indexStart, (indexStart)+(indexEnd-indexStart)));
         }
         --index;
       }

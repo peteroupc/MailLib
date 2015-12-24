@@ -156,9 +156,7 @@ import com.upokecenter.text.*;
      * @return This object.
      */
     public Message SetCurrentDate() {
-      return this.SetHeader(
-        "date",
-        GetDateString(DateTimeUtilities.GetCurrentLocalTime()));
+      return SetDate(DateTimeUtilities.GetCurrentLocalTime());
     }
 
     private static void ReverseChars(char[] chars, int offset, int length) {
@@ -202,7 +200,7 @@ import com.upokecenter.text.*;
     }
 
     private static String[] DaysOfWeek = {
-      "","Sun","Mon","Tue","Wed","Thu","Fri","Sat"
+      "Sun","Mon","Tue","Wed","Thu","Fri","Sat"
     };
 
     private static String[] Months = {
@@ -211,9 +209,13 @@ import com.upokecenter.text.*;
     };
 
     private static String GetDateString(int[] dateTime) {
+      if (!DateTimeUtilities.IsValidDateTime(dateTime) ||
+        dateTime[0]< 0) {
+        throw new IllegalArgumentException("Invalid date and time");
+      }
       int dow = DateTimeUtilities.GetDayOfWeek(dateTime);
-      if (dow == 0) {
-        throw new IllegalArgumentException("invalid day of week");
+      if (dow < 0) {
+        throw new IllegalArgumentException("Invalid date and time");
       }
       String dayString = DaysOfWeek[dow];
       String monthString = Months[dateTime[1]];
@@ -225,7 +227,13 @@ import com.upokecenter.text.*;
       sb.append(' ');
       sb.append(monthString);
       sb.append(' ');
-      sb.append(IntToString(dateTime[0]));
+      String yearString = IntToString(dateTime[0]);
+      if (yearString.length() < 4) {
+        for (int i = 0; i < 4 - yearString.length(); ++i) {
+          sb.append('0');
+        }
+      }
+      sb.append(yearString);
       sb.append(' ');
       sb.append((char)('0' + ((dateTime[3] / 10) % 10)));
       sb.append((char)('0' + (dateTime[3] % 10)));
@@ -472,6 +480,74 @@ public final void setSubject(String value) {
      */
     public byte[] GetBody() {
       return this.body;
+    }
+
+    /**
+     * Gets the date and time extracted from this message's Date header field. Each
+     * element of the array (starting from 0) is as follows: <ul> <li>0 -
+     * The year. For example, a value 2000 means 2000 C.E.</li> <li>1 -
+     * Month of the year, from 1 (January) through 12 (December).</li> <li>2
+     * - Day of the month, from 1 through 31.</li> <li>3 - Hour of the day,
+     * from 0 through 23.</li> <li>4 - Minute of the hour, from 0 through
+     * 59.</li> <li>5 - Second of the minute, from 0 through 60 (this value
+     * can go up to 60 to accommodate leap seconds). (Leap seconds are
+     * additional seconds added to adjust international atomic time, or TAI,
+     * to an approximation of astronomical time known as coordinated
+     * universal time, or UTC.)</li> <li>6 - Milliseconds of the second,
+     * from 0 through 999. Will always be 0.</li> <li>7 - Number of minutes
+     * to subtract from this date and time to get global time. This number
+     * can be positive or negative.</li></ul>
+     * @return An array containing eight elements. Returns null if the Date header
+     * doesn't exist, if the Date field is syntactically or semantically
+     * invalid, or if the field's year would overflow a 32-bit signed
+     * integer.
+     */
+    public int[] GetDate() {
+      String field = this.GetHeader("date");
+      if (field == null) {
+ return null;
+}
+      int[] date = new int[8];
+      return
+        (HeaderParserUtility.ParseHeaderExpandedDate(field, 0, field.length(),
+        date) != 0) ? (date) : (null);
+    }
+
+    /**
+     * Sets this message's Date header field to the given date and time.
+     * @param dateTime An array containing eight elements. Each element of the
+     * array (starting from 0) is as follows: <ul> <li>0 - The year. For
+     * example, a value 2000 means 2000 C.E.</li> <li>1 - Month of the year,
+     * from 1 (January) through 12 (December).</li> <li>2 - Day of the
+     * month, from 1 through 31.</li> <li>3 - Hour of the day, from 0
+     * through 23.</li> <li>4 - Minute of the hour, from 0 through 59.</li>
+     * <li>5 - Second of the minute, from 0 through 60 (this value can go up
+     * to 60 to accommodate leap seconds). (Leap seconds are additional
+     * seconds added to adjust international atomic time, or TAI, to an
+     * approximation of astronomical time known as coordinated universal
+     * time, or UTC.)</li> <li>6 - Milliseconds of the second, from 0
+     * through 999. This value is not used to generate the date string, but
+     * must still be valid.</li> <li>7 - Number of minutes to subtract from
+     * this date and time to get global time. This number can be positive or
+     * negative.</li></ul>.
+     * @return This object.
+     * @throws IllegalArgumentException The parameter {@code dateTime} contains fewer than
+     * eight elements, contains invalid values, or contains a year less than
+     * 0.
+     * @throws NullPointerException The parameter {@code dateTime} is null.
+     */
+    public Message SetDate(int[] dateTime) {
+      if ((dateTime) == null) {
+  throw new NullPointerException("dateTime");
+}
+      if (!DateTimeUtilities.IsValidDateTime(dateTime)) {
+        throw new IllegalArgumentException("Invalid date and time");
+      }
+      if (dateTime[0] < 0) {
+        throw new IllegalArgumentException("Invalid year: " +
+          IntToString(dateTime[0]));
+      }
+      return this.SetHeader("date", GetDateString(dateTime));
     }
 
     /**
@@ -1197,8 +1273,10 @@ public final void setSubject(String value) {
             // Encapsulated
             status[0] = 2;
           }
+          int spaceAndTabEnd = ParserUtility.SkipSpaceAndTab(origValue, 0,
+            origValue.length());
           return
-            Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTabLeft(origValue));
+            Rfc2047.EncodeString(origValue.substring(spaceAndTabEnd));
         }
         if (status != null) {
           // Downgraded

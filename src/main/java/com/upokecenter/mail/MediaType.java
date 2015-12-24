@@ -250,7 +250,6 @@ StringBuilder sb) {
       }
       return index;
     }
-
     private static int skipQuotedString(
 String str,
 int index,
