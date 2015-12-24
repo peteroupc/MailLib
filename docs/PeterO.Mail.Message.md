@@ -291,6 +291,16 @@ Returns the mail message contained in this message's body.
 
 A message object if this object's content type is "message/rfc822" , "message/news", or "message/global", or null otherwise.
 
+### GetDate
+
+    public int[] GetDate();
+
+Gets the date and time extracted from this message's Date header field.
+
+<b>Returns:</b>
+
+An array containing eight elements. Returns null if the Date header doesn't exist, if the Date field is syntactically or semantically invalid, or if the field's year would overflow a 32-bit signed integer. If an array is returned, each element of the array (starting from 0) is as follows:.
+
 ### GetHeader
 
     public string GetHeader(
@@ -424,6 +434,49 @@ Sets this message's Date header field to the current time as its value.This meth
 <b>Returns:</b>
 
 This object.
+
+### SetDate
+
+    public PeterO.Mail.Message SetDate(
+        int[] dateTime);
+
+Sets this message's Date header field to the given date and time.
+
+<b>Parameters:</b>
+
+ * <i>dateTime</i>: An array containing eight elements. Each element of the array (starting from 0) is as follows:
+
+ * 0 - The year. For example, a value 2000 means 2000 C.E.
+
+ * 1 - Month of the year, from 1 (January) through 12 (December).
+
+ * 2 - Day of the month, from 1 through 31.
+
+ * 3 - Hour of the day, from 0 through 23.
+
+ * 4 - Minute of the hour, from 0 through 59.
+
+ * 5 - Second of the minute, from 0 through 60 (this value can go up to 60 to accommodate leap seconds). (Leap seconds are additional seconds added to adjust international atomic time, or TAI, to an approximation of astronomical time known as coordinated universal time, or UTC.)
+
+ * 6 - Milliseconds of the second, from 0 through 999. This value is not used to generate the date string, but must still be valid.
+
+ * 7 - Number of minutes to subtract from this date and time to get global time. This number can be positive or negative.
+
+.
+
+<b>Returns:</b>
+
+This object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+The parameter  <i>dateTime</i>
+ contains fewer than eight elements, contains invalid values, or contains a year less than 0.
+
+ * System.ArgumentNullException:
+The parameter  <i>dateTime</i>
+ is null.
 
 ### SetHeader
 

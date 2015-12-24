@@ -808,6 +808,224 @@ Assert.AreEqual(2, EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""),
     }
 
     [Test]
+    public void TestGetDate() {
+      var msg = new Message();
+      int[] date;
+      msg.SetHeader("date", "Sat, 1 Jan 2000 12:34:56 +1034");
+      date = msg.GetDate();
+      Assert.AreEqual(2000, date[0]);
+      Assert.AreEqual(1, date[1]);
+      Assert.AreEqual(1, date[2]);
+      Assert.AreEqual(12, date[3]);
+      Assert.AreEqual(34, date[4]);
+      Assert.AreEqual(56, date[5]);
+      Assert.AreEqual(0, date[6]);
+      Assert.AreEqual(10*60 + 34, date[7]);
+      msg.SetHeader("date", "Mon, 1 Jan 1900 23:59:60 -1034");
+      date = msg.GetDate();
+      Assert.AreEqual(1900, date[0]);
+      Assert.AreEqual(1, date[1]);
+      Assert.AreEqual(1, date[2]);
+      Assert.AreEqual(23, date[3]);
+      Assert.AreEqual(59, date[4]);
+      Assert.AreEqual(60, date[5]);
+      Assert.AreEqual(0, date[6]);
+      Assert.AreEqual(-(10 * 60 + 34), date[7]);
+      msg.SetHeader("date", "Sun, 1 Jan 2000 12:34:56 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.Fail();
+ }
+      msg.SetHeader("date", "1 Jan 2000 12:34:56 +1034");
+      date = msg.GetDate();
+      Assert.AreEqual(2000, date[0]);
+      Assert.AreEqual(1, date[1]);
+      Assert.AreEqual(1, date[2]);
+      msg.SetHeader("date", "32 Jan 2000 12:34:56 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.Fail();
+ }
+      msg.SetHeader("date", "30 Feb 2000 12:34:56 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.Fail();
+ }
+      msg.SetHeader("date", "1 Feb 999999999999999999999 12:34:56 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.Fail();
+ }
+      msg.SetHeader("date", "1 Jan 2000 24:34:56 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.Fail();
+ }
+      msg.SetHeader("date", "1 Jan 2000 01:60:56 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.Fail();
+ }
+      msg.SetHeader("date", "1 Jan 2000 01:01:61 +1034");
+      if ((msg.GetDate()) != null) {
+ Assert.Fail();
+ }
+      msg.SetHeader("date", "1 Jan 2000 01:01:01 +1099");
+      if ((msg.GetDate()) != null) {
+ Assert.Fail();
+ }
+    }
+
+    [Test]
+    public void TestSetDate() {
+      var msg = new Message();
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, 0 });
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(null);
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { -1, 1, 1, 0, 0, 0, 0, 0 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 0, 1, 0, 0, 0, 0, 0 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 13, 1, 0, 0, 0, 0, 0 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 0, 0, 0, 0, 0, 0 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 32, 0, 0, 0, 0, 0 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, -5, 0, 0, 0, 0 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 24, 0, 0, 0, 0 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, -1, 0, 0, 0 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 60, 0, 0, 0 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, -1, 0, 0 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 61, 0, 0 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, -1, 0 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 1000, 0 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, -1440 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, 1440 });
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+Console.Write(String.Empty);
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+    }
+
+    [Test]
     public void TestBoundaryReading() {
       byte[] body;
       string messageStart = "MIME-Version: 1.0\r\n";
@@ -1335,8 +1553,8 @@ MessageFromString(MessageFromString(msg).Generate())
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-  MessageConstructOnly("From: x@example.com\r\nSub ject: Test\r\n\r\nBody"
-);
+  MessageConstructOnly(
+"From: x@example.com\r\nSub ject: Test\r\n\r\nBody");
         Assert.Fail("Should have failed");
       } catch (MessageDataException) {
         Console.Write(String.Empty);

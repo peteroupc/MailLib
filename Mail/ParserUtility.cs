@@ -13,28 +13,6 @@ using PeterO;
 
 namespace PeterO.Mail {
   internal static class ParserUtility {
-    public static string TrimSpaceAndTab(string str) {
-      return string.IsNullOrEmpty(str) ? str :
-        TrimSpaceAndTabLeft(TrimSpaceAndTabRight(str));
-    }
-
-    public static string TrimSpaceAndTabLeft(string str) {
-      if (string.IsNullOrEmpty(str)) {
-        return str;
-      }
-      var index = 0;
-      int valueSLength = str.Length;
-      while (index < valueSLength) {
-        char c = str[index];
-        if (c != 0x09 && c != 0x20) {
-          break;
-        }
-        ++index;
-      }
-      return (index == valueSLength) ? String.Empty : ((index == 0) ? str :
-        str.Substring(index));
-    }
-
     public static string TrimAndCollapseSpaceAndTab(string str) {
       if (string.IsNullOrEmpty(str)) {
         return str;
@@ -83,15 +61,33 @@ namespace PeterO.Mail {
       return (builder == null) ? str : builder.ToString();
     }
 
-    private static string TrimSpaceAndTabRight(string str) {
+    public static string TrimSpaceAndTab(string str) {
       if (string.IsNullOrEmpty(str)) {
         return str;
       }
-      int index = str.Length - 1;
+      var index = 0;
+      int valueSLength = str.Length;
+      while (index < valueSLength) {
+        char c = str[index];
+        if (c != 0x09 && c != 0x20) {
+          break;
+        }
+        ++index;
+      }
+      if (index == valueSLength) {
+ return String.Empty;
+}
+      int indexStart = index;
+      index = str.Length - 1;
       while (index >= 0) {
         char c = str[index];
         if (c != 0x09 && c != 0x20) {
-          return str.Substring(0, index + 1);
+          int indexEnd = index + 1;
+          if (indexEnd == indexStart) {
+ return String.Empty;
+}
+          return (indexEnd == str.Length && indexStart == 0) ? (str) :
+            (str.Substring(indexStart, indexEnd-indexStart));
         }
         --index;
       }
