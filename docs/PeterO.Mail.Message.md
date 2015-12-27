@@ -38,7 +38,7 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * The following deviations involve encoded words under RFC 2047:
 
- * (a) If a sequence of encoded words decodes to a string with a CTL character (U + 007F, or a character less than U + 0020 and not TAB) after being converted to Unicode, the encoded words are left un-decoded.
+ * (a) If a sequence of encoded words decodes to a string with a CTL character (U+007F, or a character less than U+0020 and not TAB) after being converted to Unicode, the encoded words are left un-decoded.
 
  * (b) This implementation can decode an encoded word that uses ISO-2022-JP (the only supported encoding that uses code switching) even if the encoded word's payload ends in a different mode from "ASCII mode". (Each encoded word still starts in that mode, though.)
 
@@ -162,7 +162,7 @@ A list of addresses found in the From header field or fields.
 
     public System.Collections.Generic.IList HeaderFields { get; }
 
-Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic upper-case letters [U + 0041 to U + 005A] are converted to lower case) and the value is the header field's value.
+Gets a snapshot of the header fields of this message, in the order in which they appear in the message. For each item in the list, the key is the header field's name (where any basic upper-case letters [U+0041 to U+005A] are converted to lower case) and the value is the header field's value.
 
 <b>Returns:</b>
 
@@ -231,30 +231,11 @@ The header field name is too long or contains an invalid character, or the heade
     public PeterO.Mail.Message AddHeader(
         System.Collections.Generic.KeyValuePair header);
 
-Adds a header field to the end of the message's header.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
-
-<b>Parameters:</b>
-
- * <i>header</i>: A KeyValuePair object. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
-
-<b>Returns:</b>
-
-This instance.
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The key or value of <i>header</i>
- is null.
-
- * System.ArgumentException:
-The header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
-
 ### Generate
 
     public string Generate();
 
-Generates this message's data in text form.The generated message will have only Basic Latin code points (U + 0000 to U + 007F), and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
+Generates this message's data in text form.The generated message will have only Basic Latin code points (U+0000 to U+007F), and the transfer encoding will always be 7bit, quoted-printable, or base64 (the declared transfer encoding for this message will be ignored).
 
 The following applies to the From, To, Cc, and Bcc header fields. If the header field exists, but has an invalid syntax or has no addresses, this method will generate a synthetic header field with the display-name set to the contents of all of the header fields with the same name, and the address set to `me@[header-name]-address.invalid`  as the address (a `.invalid`  address is a reserved address that can never belong to anyone). The generated message should always have a From header field.
 
@@ -322,7 +303,7 @@ An array containing eight elements. Returns null if the Date header doesn't exis
     public string GetHeader(
         string name);
 
-Gets the first instance of the header field with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+Gets the first instance of the header field with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U + 005A) in both strings to lower case.).
 
 <b>Parameters:</b>
 
@@ -363,7 +344,7 @@ The parameter  <i>index</i>
     public string[] GetHeaderArray(
         string name);
 
-Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U + 005A) in both strings to lower case.).
 
 <b>Parameters:</b>
 
@@ -404,7 +385,7 @@ The parameter  <i>index</i>
     public PeterO.Mail.Message RemoveHeader(
         string name);
 
-Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
+Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U+005A) in both strings to lower case.).Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
 
 <b>Parameters:</b>
 
@@ -560,28 +541,6 @@ The parameter  <i>value</i>
         int index,
         System.Collections.Generic.KeyValuePair header);
 
-Sets the name and value of a header field by index.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
-
-<b>Parameters:</b>
-
- * <i>index</i>: Zero-based index of the header field to set.
-
- * <i>header</i>: A KeyValuePair object. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
-
-<b>Returns:</b>
-
-A Message object.
-
-<b>Exceptions:</b>
-
- * System.ArgumentException:
-The parameter  <i>index</i>
- is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
-
- * System.ArgumentNullException:
-The key or value of <i>header</i>
- is null.
-
 ### SetHeader
 
     public PeterO.Mail.Message SetHeader(
@@ -637,7 +596,7 @@ The parameter  <i>str</i>
         string text,
         string html);
 
-Sets the body of this message to a multipart body with plain text and HTML versions of the same message. The character sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n", U + 000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
+Sets the body of this message to a multipart body with plain text and HTML versions of the same message. The character sequences CR (carriage return, "\r" , U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
 
 <b>Parameters:</b>
 
