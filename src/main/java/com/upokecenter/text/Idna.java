@@ -191,8 +191,8 @@ private Idna() {
      * Tries to encode each label of a domain name into Punycode.
      * @param value A domain name.
      * @return The domain name where each label with code points outside the Basic
-     * Latin range (U + 0000 to U + 007F) is encoded into Punycode. Labels
-     * where this is not possible remain unchanged.
+     * Latin range (U + 0000 to U + 007F) is encoded into Punycode. Labels where
+     * this is not possible remain unchanged.
      * @throws NullPointerException Value is null.
      */
     public static String EncodeDomainName(String value) {

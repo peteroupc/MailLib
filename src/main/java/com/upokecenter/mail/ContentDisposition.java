@@ -246,9 +246,8 @@ str.substring(
           c = 0xfffd;
         }
         if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
-   c == 0x180e || c == 0x1680 || (c >= 0x2000 && c <= 0x200b) || c == 0x205f
-            ||
-          c == 0x202f || c == 0xfeff) {
+   c == 0x180e || c == 0x1680 || (c >= 0x2000 && c <= 0x200b) || c == 0x205f||
+            c == 0x202f || c == 0xfeff) {
           // Replace space-like characters (including tab) with space
           builder.append(' ');
         } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||

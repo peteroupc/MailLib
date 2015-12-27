@@ -44,9 +44,8 @@ namespace PeterO {
       }
     }
 
-    /// <summary>Gets a value indicating whether this dictionary is
-    /// read-only.</summary>
-    /// <value>Always true.</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.ReadOnlyMap`2.IsReadOnly"]'/>
     public bool IsReadOnly {
       get {
         return true;

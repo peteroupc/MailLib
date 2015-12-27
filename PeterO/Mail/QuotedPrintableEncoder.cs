@@ -13,7 +13,8 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>Encodes binary data into Quoted Printable.</summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.QuotedPrintableEncoder"]'/>
   internal sealed class QuotedPrintableEncoder : ICharacterEncoder {
     private const string HexAlphabet = "0123456789ABCDEF";
     private int lineCount;

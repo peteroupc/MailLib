@@ -1,5 +1,7 @@
 bin/
 obj/
+*.diagsession
+*.vspx
 .settings/
 Help/
 cache/

@@ -9,18 +9,8 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-    /// <summary>
-    /// <para>Contains methods that implement Internationalized Domain
-    /// Names in Applications (IDNA). IDNA enables using a wider range of
-    /// letters, numbers, and certain other characters in domain names.
-    /// This class implements the 2008 revision of IDNA, also known as
-    /// IDNA2008.</para>
-    /// <para>NOTICE: While this class's source code is in the public
-    /// domain, the class uses two internal classes, called
-    /// <c>NormalizationData</c> and <c>IdnaData</c>, that include data
-    /// derived from the Unicode Character Database. See the documentation
-    /// for the NormalizingCharacterInput class for the permission notice
-    /// for the Unicode Character Database.</para></summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Text.Idna"]'/>
   public static class Idna {
     private const int Unassigned = 0;
     // PValid = 1;
@@ -187,14 +177,8 @@ namespace PeterO.Text {
       return false;
     }
 
-    /// <summary>Tries to encode each label of a domain name into
-    /// Punycode.</summary>
-    /// <param name='value'>A domain name.</param>
-    /// <returns>The domain name where each label with code points outside
-    /// the Basic Latin range (U + 0000 to U + 007F) is encoded into
-    /// Punycode. Labels where this is not possible remain
-    /// unchanged.</returns>
-    /// <exception cref='ArgumentNullException'>Value is null.</exception>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.Idna.EncodeDomainName(System.String)"]'/>
     public static string EncodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException("value");
@@ -233,14 +217,8 @@ value.Length);
       return builder.ToString();
     }
 
-    /// <summary>Determines whether the given string is a syntactically
-    /// valid domain name.</summary>
-    /// <param name='str'>A string object.</param>
-    /// <param name='lookupRules'>If true, uses rules to apply when looking
-    /// up the string as a domain name. If false, uses rules to apply when
-    /// registering the string as a domain name.</param>
-    /// <returns>True if the given string is a syntactically valid domain
-    /// name; otherwise; false.</returns>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.Idna.IsValidDomainName(System.String,System.Boolean)"]'/>
     public static bool IsValidDomainName(string str, bool lookupRules) {
       if (String.IsNullOrEmpty(str)) {
         return false;

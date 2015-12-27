@@ -12,22 +12,21 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>Represents an email address.</summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.Address"]'/>
   public class Address {
     private readonly string localPart;
 
-    /// <summary>Gets the local part of this email address (the part before
-    /// the "@" sign).</summary>
-    /// <value>The local part of this email address (the part before the
-    /// &quot;@&quot; sign).</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Address.LocalPart"]'/>
     public string LocalPart {
       get {
         return this.localPart;
       }
     }
 
-    /// <summary>Converts this address object to a text string.</summary>
-    /// <returns>A string representation of this object.</returns>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Address.ToString"]'/>
     public override string ToString() {
       if (this.localPart.Length > 0 &&
           HeaderParser.ParseDotAtomText(
@@ -94,25 +93,16 @@ null) == this.localPart.Length) {
 
     private readonly string domain;
 
-    /// <summary>Gets the domain of this email address (the part after the
-    /// "@" sign).</summary>
-    /// <value>The domain of this email address (the part after the
-    /// &quot;@&quot; sign).</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Address.Domain"]'/>
     public string Domain {
       get {
         return this.domain;
       }
     }
 
-    /// <summary>Initializes a new instance of the Address class.</summary>
-    /// <param name='addressValue'>An email address.</param>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='addressValue'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The email address contains
-    /// invalid syntax. For example, it doesn't contain an '@' sign or
-    /// either side of the '@' contains invalid characters, the address is
-    /// too long, or the address contains comments (text within
-    /// parentheses).</exception>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Address.#ctor(System.String)"]'/>
     public Address(string addressValue) {
       if (addressValue == null) {
         throw new ArgumentNullException("addressValue");

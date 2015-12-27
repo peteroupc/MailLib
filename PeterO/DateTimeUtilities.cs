@@ -36,9 +36,8 @@ namespace PeterO {
 }
       }
       return !(dateTime[3]<0 || dateTime[4]<0 || dateTime[5]<0 ||
-    dateTime[3]>= 24 || dateTime[4]>= 60 || dateTime[5]>= 61 ||dateTime[6]<0
-          ||
-        dateTime[6]>= 1000 || dateTime[7]<=-1440 ||
+    dateTime[3]>= 24 || dateTime[4]>= 60 || dateTime[5]>= 61 ||dateTime[6]<0||
+          dateTime[6]>= 1000 || dateTime[7]<=-1440 ||
         dateTime[7] >= 1440);
     }
 

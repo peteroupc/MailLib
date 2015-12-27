@@ -13,17 +13,13 @@ using PeterO.Text;
 using PeterO.Text.Encoders;
 
 namespace PeterO.Mail {
-    /// <summary>Specifies how a message body should be displayed or
-    /// handled by a mail user agent. This type is immutable; its contents
-    /// can't be changed after it's created. To create a changeable
-    /// disposition object, use the DispositionBuilder class.</summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.ContentDisposition"]'/>
   public class ContentDisposition {
     private string dispositionType;
 
-    /// <summary>Gets a string containing this object's disposition type,
-    /// such as "inline" or "attachment".</summary>
-    /// <value>A string containing this object&apos;s disposition type,
-    /// such as &quot;inline&quot; or &quot;attachment&quot;.</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.DispositionType"]'/>
     public string DispositionType {
       get {
         return this.dispositionType;
@@ -31,10 +27,8 @@ namespace PeterO.Mail {
     }
 
     #region Equals and GetHashCode implementation
-    /// <summary>Determines whether this object and another object are
-    /// equal.</summary>
-    /// <param name='obj'>An arbitrary object.</param>
-    /// <returns>True if the objects are equal; otherwise, false.</returns>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Equals(System.Object)"]'/>
     public override bool Equals(object obj) {
       var other = obj as ContentDisposition;
       if (other == null) {
@@ -44,8 +38,8 @@ namespace PeterO.Mail {
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
-    /// <summary>Returns the hash code for this instance.</summary>
-    /// <returns>A 32-bit hash code.</returns>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetHashCode"]'/>
     public override int GetHashCode() {
       var hashCode = 632580499;
         if (this.dispositionType != null) {
@@ -59,20 +53,16 @@ namespace PeterO.Mail {
     }
     #endregion
 
-    /// <summary>Gets a value indicating whether the disposition type is
-    /// inline.</summary>
-    /// <value>True if the disposition type is inline; otherwise,
-    /// false.</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsInline"]'/>
     public bool IsInline {
       get {
         return this.dispositionType.Equals("inline");
       }
     }
 
-    /// <summary>Gets a value indicating whether the disposition type is
-    /// attachment.</summary>
-    /// <value>True if the disposition type is attachment; otherwise,
-    /// false.</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsAttachment"]'/>
     public bool IsAttachment {
       get {
         return this.dispositionType.Equals("attachment");
@@ -89,18 +79,16 @@ string type,
 
     private SortedMap<string, string> parameters;
 
-    /// <summary>Gets a list of parameter names associated with this object
-    /// and their values.</summary>
-    /// <value>A read-only list of parameter names associated with this
-    /// object and their values. The names will be sorted.</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.Parameters"]'/>
     public IDictionary<string, string> Parameters {
       get {
         return new ReadOnlyMap<string, string>(this.parameters);
       }
     }
 
-    /// <summary>Converts this object to a text string.</summary>
-    /// <returns>A string representation of this object.</returns>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.ToString"]'/>
     public override string ToString() {
       var sb = new StringBuilder();
       sb.Append(this.dispositionType);
@@ -161,34 +149,8 @@ string type,
       return sb.ToString();
     }
 
-    /// <summary>Converts a file name from the Content-Disposition header
-    /// to a suitable name for saving data to a file.
-    /// <para>Examples:</para>
-    /// <para>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt" (RFC 2047
-    /// encoding)</para>
-    /// <para>"=?utf-8?q?long_filename?=" -&gt; "long filename" (RFC 2047
-    /// encoding)</para>
-    /// <para>"utf-8'en'hello%2Etxt" -&gt; "hello.txt" (RFC 2231
-    /// encoding)</para>
-    /// <para>"nul.txt" -&gt; "_nul.txt" (Reserved name)</para>
-    /// <para>"dir1/dir2/file" -&gt; "dir1_dir2_file" (Directory
-    /// separators)</para></summary>
-    /// <param name='str'>A string representing a file name. Can be
-    /// null.</param>
-    /// <returns>A string with the converted version of the file name.
-    /// Among other things, encoded words under RFC 2047 are decoded (since
-    /// they occur so frequently in Content-Disposition filenames); the
-    /// value is decoded under RFC 2231 if possible; characters unsuitable
-    /// for use in a filename (including the directory separators slash and
-    /// backslash) are replaced with underscores; spaces and tabs are
-    /// collapsed to a single space; leading and trailing spaces and tabs
-    /// are removed; and the filename is truncated if it would otherwise be
-    /// too long. The returned string will be in normalization form C.
-    /// Returns an empty string if <paramref name='str'/> is
-    /// null.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter "name" or
-    /// <paramref name='str'/> or "dispoValue" or "dispositionValue" is
-    /// null.</exception>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)"]'/>
     public static string MakeFilename(string str) {
       if (str == null) {
         return String.Empty;
@@ -251,9 +213,8 @@ str.IndexOf('\'')));
           c = 0xfffd;
         }
         if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
-   c == 0x180e || c == 0x1680 || (c >= 0x2000 && c <= 0x200b) || c == 0x205f
-            ||
-          c == 0x202f || c == 0xfeff) {
+   c == 0x180e || c == 0x1680 || (c >= 0x2000 && c <= 0x200b) || c == 0x205f||
+            c == 0x202f || c == 0xfeff) {
           // Replace space-like characters (including tab) with space
           builder.Append(' ');
         } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||
@@ -342,15 +303,8 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
       return NormalizingCharacterInput.Normalize(str, Normalization.NFC);
     }
 
-    /// <summary>Gets a parameter from this disposition object.</summary>
-    /// <param name='name'>The name of the parameter to get. The name will
-    /// be matched case-insensitively. Can't be null.</param>
-    /// <returns>The value of the parameter, or null if the parameter does
-    /// not exist.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='name'/> is null.</exception>
-    /// <exception cref='ArgumentException'>The parameter <paramref
-    /// name='name'/> is empty.</exception>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)"]'/>
     public string GetParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -410,7 +364,8 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>The content disposition value "attachment".</summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Attachment"]'/>
     public static readonly ContentDisposition Attachment = Build("attachment");
 
     #if CODE_ANALYSIS
@@ -419,19 +374,15 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>The content disposition value "inline".</summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Inline"]'/>
     public static readonly ContentDisposition Inline = Build("inline");
 
     private ContentDisposition() {
     }
 
-    /// <summary>Parses a content disposition string and returns a content
-    /// disposition object.</summary>
-    /// <param name='dispoValue'>A string object.</param>
-    /// <returns>A content disposition object, or "Attachment" if <paramref
-    /// name='dispoValue'/> is empty or syntactically invalid.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='dispoValue'/> is null.</exception>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String)"]'/>
     public static ContentDisposition Parse(string dispoValue) {
       if (dispoValue == null) {
   throw new ArgumentNullException("dispoValue");
@@ -439,15 +390,8 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
       return Parse(dispoValue, Attachment);
     }
 
-    /// <summary>Creates a new content disposition object from the value of
-    /// a Content-Disposition header field.</summary>
-    /// <param name='dispositionValue'>A string object that should be the
-    /// value of a Content-Disposition header field.</param>
-    /// <param name='defaultValue'>The value to return in case the
-    /// disposition value is syntactically invalid. Can be null.</param>
-    /// <returns>A ContentDisposition object.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='dispositionValue'/> is null.</exception>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String,PeterO.Mail.ContentDisposition)"]'/>
     public static ContentDisposition Parse(
 string dispositionValue,
 ContentDisposition defaultValue) {

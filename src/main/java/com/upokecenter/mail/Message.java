@@ -63,9 +63,9 @@ import com.upokecenter.text.*;
      * <code>windows-1252</code> , even though it's not an IANA registered
      * alias.</li> <li>The following deviations involve encoded words under
      * RFC 2047:</li> <li>(a) If a sequence of encoded words decodes to a
-     * string with a CTL character (U + 007F, or a character less than U +
-     * 0020 and not TAB) after being converted to Unicode, the encoded words
-     * are left un-decoded.</li> <li>(b) This implementation can decode an
+     * string with a CTL character (U + 007F, or a character less than U + 0020
+     * and not TAB) after being converted to Unicode, the encoded words are
+     * left un-decoded.</li> <li>(b) This implementation can decode an
      * encoded word that uses ISO-2022-JP (the only supported encoding that
      * uses code switching) even if the encoded word's payload ends in a
      * different mode from "ASCII mode". (Each encoded word still starts in
@@ -361,7 +361,7 @@ public final void setContentType(MediaType value) {
     /**
      * Gets a snapshot of the header fields of this message, in the order in which
      * they appear in the message. For each item in the list, the key is the
-     * header field's name (where any basic upper-case letters [U + 0041 to
+     * header field's name (where any basic upper-case letters [U+0041 to
      * U + 005A] are converted to lower case) and the value is the header
      * field's value.
      * @return A snapshot of the header fields of this message.
@@ -592,8 +592,7 @@ public final void setSubject(String value) {
      * Gets the first instance of the header field with the specified name, using a
      * basic case-insensitive comparison. (Two strings are equal in such a
      * comparison, if they match after converting the basic upper-case
-     * letters A to Z (U + 0041 to U + 005A) in both strings to lower
-     * case.).
+     * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
      * @param name The name of a header field.
      * @return The value of the first header field with that name, or null if there
      * is none.
@@ -617,8 +616,8 @@ public final void setSubject(String value) {
      * Gets an array with the values of all header fields with the specified name,
      * using a basic case-insensitive comparison. (Two strings are equal in
      * such a comparison, if they match after converting the basic
-     * upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
-     * lower case.).
+     * upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower
+     * case.).
      * @param name The name of a header field.
      * @return An array containing the values of all header fields with the given
      * name, in the order they appear in the message. The array will be
@@ -674,8 +673,8 @@ public final void setSubject(String value) {
      * is a multipart message, the header field is not removed from its body
      * part headers. A basic case-insensitive comparison is used. (Two
      * strings are equal in such a comparison, if they match after
-     * converting the basic upper-case letters A to Z (U + 0041 to U + 005A)
-     * in both strings to lower case.). <p>Updates the ContentType and
+     * converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in
+     * both strings to lower case.). <p>Updates the ContentType and
      * ContentDisposition properties if those header fields have been
      * modified by this method.</p>
      * @param name The name of the header field to remove.
@@ -853,9 +852,9 @@ public final void setSubject(String value) {
     /**
      * Sets the body of this message to a multipart body with plain text and HTML
      * versions of the same message. The character sequences CR (carriage
-     * return, "\r" , U+000D), LF (line feed, "\n", U + 000A), and CR/LF
-     * will be converted to CR/LF line breaks. Unpaired surrogate code
-     * points will be replaced with replacement characters.
+     * return, "\r" , U+000D), LF (line feed, "\n", U+000A), and CR/LF will
+     * be converted to CR/LF line breaks. Unpaired surrogate code points
+     * will be replaced with replacement characters.
      * @param text A string consisting of the plain text version of the message.
      * @param html A string consisting of the HTML version of the message.
      * @return This instance.

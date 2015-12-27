@@ -11,7 +11,8 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Text {
-    /// <summary>Utility methods for domain names.</summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Text.DomainUtility"]'/>
   internal static class DomainUtility {
     private static int CodePointAt(string str, int index, int endIndex) {
       if (str == null) {
@@ -36,28 +37,8 @@ namespace PeterO.Text {
       return c;
     }
 
-    /// <summary>Gets the Punycode length of a string (Punycode is defined
-    /// in RFC 3492).</summary>
-    /// <param name='str'>A string containing the desired portion to get
-    /// the length for.</param>
-    /// <param name='index'>Zero-based index showing where the desired
-    /// portion of "str" begins.</param>
-    /// <param name='endIndex'>Zero-based index showing where the desired
-    /// portion of "str" ends. The character before this index is the last
-    /// character.</param>
-    /// <returns>The Punycode length of the encoded string. If the string
-    /// contains code points outside the Basic Latin range (U + 0000 to U +
-    /// 007F), returns the Punycode length plus 4 (the length of the prefix
-    /// "xn--" , which indicates an internationalized domain name). If
-    /// there are only Basic Latin code points, returns the length of the
-    /// string. Returns -1 if an overflow error occurs.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='str'/> is null.</exception>
-    /// <exception cref='ArgumentNullException'>Either <paramref
-    /// name='index'/> or <paramref name='endIndex'/> is less than 0 or
-    /// greater than <paramref name='str'/> 's length, or <paramref
-    /// name='index'/> is greater than <paramref name='endIndex'/>
-    /// .</exception>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.DomainUtility.PunycodeLength(System.String,System.Int32,System.Int32)"]'/>
     public static int PunycodeLength(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");

@@ -295,9 +295,9 @@ A message object if this object's content type is "message/rfc822" , "message/ne
 
     public int[] GetDate();
 
-Gets the date and time extracted from this message's Date header field. Each element of the array (starting from 0) is as follows:
+Gets the date and time extracted from this message's Date header field (as though GetHeader("date") were called). Each element of the array (starting from 0) is as follows:
 
- * 0 - The year. For example, a value 2000 means 2000 C.E.
+ * 0 - The year. For example, the value 2000 means 2000 C.E.
 
  * 1 - Month of the year, from 1 (January) through 12 (December).
 
@@ -462,7 +462,7 @@ Sets this message's Date header field to the given date and time.
 
  * <i>dateTime</i>: An array containing eight elements. Each element of the array (starting from 0) is as follows:
 
- * 0 - The year. For example, a value 2000 means 2000 C.E.
+ * 0 - The year. For example, the value 2000 means 2000 C.E.
 
  * 1 - Month of the year, from 1 (January) through 12 (December).
 
