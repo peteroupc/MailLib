@@ -19,7 +19,7 @@ Tries to encode each label of a domain name into Punycode.
 
 <b>Returns:</b>
 
-The domain name where each label with code points outside the Basic Latin range (U + 0000 to U + 007F) is encoded into Punycode. Labels where this is not possible remain unchanged.
+The domain name where each label with code points outside the Basic Latin range (U+0000 to U+007F) is encoded into Punycode. Labels where this is not possible remain unchanged.
 
 <b>Exceptions:</b>
 
