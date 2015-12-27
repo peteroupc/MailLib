@@ -14,7 +14,7 @@ using PeterO;
 namespace PeterO.Mail {
   internal static class ParserUtility {
     public static string TrimAndCollapseSpaceAndTab(string str) {
-      if (string.IsNullOrEmpty(str)) {
+      if (String.IsNullOrEmpty(str)) {
         return str;
       }
       StringBuilder builder = null;
@@ -63,7 +63,7 @@ namespace PeterO.Mail {
     }
 
     public static string TrimSpaceAndTab(string str) {
-      if (string.IsNullOrEmpty(str)) {
+      if (String.IsNullOrEmpty(str)) {
         return str;
       }
       var index = 0;
@@ -107,20 +107,8 @@ namespace PeterO.Mail {
       return index;
     }
 
-    /// <summary>Splits a string by a delimiter. If the string ends with
-    /// the delimiter, the result will end with an empty string. If the
-    /// string begins with the delimiter, the result will start with an
-    /// empty string.</summary>
-    /// <param name='str'>A string to split.</param>
-    /// <param name='delimiter'>A string to signal where each substring
-    /// begins and ends.</param>
-    /// <returns>An array containing strings that are split by the
-    /// delimiter. If the string to split is null or empty, returns an
-    /// array whose sole element is the empty string.</returns>
-    /// <exception cref='ArgumentException'>Delimiter is null or
-    /// empty.</exception>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='delimiter'/> is null.</exception>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ParserUtility.SplitAt(System.String,System.String)"]'/>
     public static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
         throw new ArgumentNullException("delimiter");
@@ -128,7 +116,7 @@ namespace PeterO.Mail {
       if (delimiter.Length == 0) {
         throw new ArgumentException("delimiter is empty.");
       }
-      if (string.IsNullOrEmpty(str)) {
+      if (String.IsNullOrEmpty(str)) {
         return new[] { String.Empty };
       }
       var index = 0;

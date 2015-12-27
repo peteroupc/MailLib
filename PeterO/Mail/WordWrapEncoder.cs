@@ -118,8 +118,8 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <summary>Converts this object to a text string.</summary>
-    /// <returns>A string representation of this object.</returns>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.WordWrapEncoder.ToString"]'/>
     public override string ToString() {
       return this.fullString.ToString();
     }

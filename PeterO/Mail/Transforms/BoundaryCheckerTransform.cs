@@ -383,10 +383,8 @@ if (this.bufferCount != 0) {
       this.started = true;  // in case a boundary delimiter immediately starts
     }
 
-    /// <summary>Gets a value indicating whether a new body part was
-    /// detected.</summary>
-    /// <value>True if a new body part was detected; otherwise,
-    /// false.</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart"]'/>
     public bool HasNewBodyPart {
       get {
         return this.hasNewBodyPart;

@@ -1,4 +1,4 @@
-* [PeterO.DataUtilities](PeterO.DataUtilities.md) - Contains methods useful for reading and writing strings.
+* [PeterO.DataUtilities](PeterO.DataUtilities.md) -
  * [PeterO.Mail.Address](PeterO.Mail.Address.md) - Represents an email address.
  * [PeterO.Mail.ContentDisposition](PeterO.Mail.ContentDisposition.md) - Specifies how a message body should be displayed or             handled by a mail user agent.
  * [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) - Description of DispositionBuilder.

@@ -14,7 +14,7 @@ namespace MailLibTest {
       if (delimiter.Length == 0) {
         throw new ArgumentException("delimiter is empty.");
       }
-      if (string.IsNullOrEmpty(str)) {
+      if (String.IsNullOrEmpty(str)) {
         return new[] { String.Empty };
       }
       var index = 0;

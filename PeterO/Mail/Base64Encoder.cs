@@ -13,7 +13,8 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>Encodes binary data in Base64.</summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.Base64Encoder"]'/>
   internal sealed class Base64Encoder : ICharacterEncoder
   {
     private static readonly byte[] Base64Classic = {

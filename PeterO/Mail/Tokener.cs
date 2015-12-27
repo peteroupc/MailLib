@@ -41,15 +41,8 @@ namespace PeterO.Mail {
       return this.tokenStack;
     }
 
-    /// <summary>Compares one integer array with another.</summary>
-    /// <param name='x'>An integer array.</param>
-    /// <param name='y'>An integer array. (2).</param>
-    /// <returns>Zero if both values are equal; a negative number if
-    /// <paramref name='x'/> is less than <paramref name='y'/>, or a
-    /// positive number if <paramref name='x'/> is greater than <paramref
-    /// name='y'/>.</returns>
-    /// <exception cref='ArgumentNullException'>The parameter <paramref
-    /// name='x'/> or <paramref name='y'/> is null.</exception>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Tokener.Compare(System.Int32[],System.Int32[])"]'/>
     public int Compare(int[] x, int[] y) {
       if (x == null) {
   throw new ArgumentNullException("x");

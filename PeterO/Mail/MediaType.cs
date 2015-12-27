@@ -14,29 +14,13 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <summary>
-    /// <para>Specifies what kind of data a message body is.</para>
-    /// <para>A media type consists of a top-level type (the general
-    /// category of the data), a subtype (the specific type), and an
-    /// optional list of parameters. For example, the media type
-    /// <c>text/plain; charset = utf-8</c> is a text media type ("text"),
-    /// namely, a plain text type ("plain"), and the parameters say that
-    /// the data uses UTF-8, a Unicode character encoding
-    /// ("charset=utf-8"). Other top-level types include "audio", "video",
-    /// and "application".</para>
-    /// <para>A media type is sometimes known as a "MIME type", for
-    /// Multipurpose Internet Mail Extensions, the standard that introduced
-    /// media types.</para>
-    /// <para>This type is immutable, meaning its values can't be changed
-    /// once it' s created. To create a changeable media type object, use
-    /// the MediaTypeBuilder class.</para></summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]'/>
   public sealed class MediaType {
     private string topLevelType;
 
-    /// <summary>Gets the name of this media type's top-level type (such as
-    /// "text" or "audio").</summary>
-    /// <value>The name of this media type&#x27;s top-level type (such as
-    /// &#x22;text&#x22; or &#x22;audio&#x22;.</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.TopLevelType"]'/>
     public string TopLevelType {
       get {
         return this.topLevelType;
@@ -44,11 +28,8 @@ namespace PeterO.Mail {
     }
 
     #region Equals and GetHashCode implementation
-    /// <summary>Determines whether this object and another object are
-    /// equal.</summary>
-    /// <param name='obj'>An arbitrary object.</param>
-    /// <returns>True if this object and another object are equal;
-    /// otherwise, false.</returns>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Equals(System.Object)"]'/>
     public override bool Equals(object obj) {
       var other = obj as MediaType;
       if (other == null) {
@@ -59,8 +40,8 @@ namespace PeterO.Mail {
           CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
-    /// <summary>Returns the hash code for this instance.</summary>
-    /// <returns>A 32-bit signed integer.</returns>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetHashCode"]'/>
     public override int GetHashCode() {
       var hashCode = 632580499;
         if (this.topLevelType != null) {
@@ -80,27 +61,24 @@ namespace PeterO.Mail {
 
     private string subType;
 
-    /// <summary>Gets this media type's subtype.</summary>
-    /// <value>This media type&#x27;s subtype.</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.SubType"]'/>
     public string SubType {
       get {
         return this.subType;
       }
     }
 
-    /// <summary>Gets a value indicating whether this is a text media type
-    /// ("text/*").</summary>
-    /// <value>True if this is a text media type; otherwise, false.</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.IsText"]'/>
     public bool IsText {
       get {
         return this.TopLevelType.Equals("text");
       }
     }
 
-    /// <summary>Gets a value indicating whether this is a multipart media
-    /// type.</summary>
-    /// <value>True if this is a multipart media type; otherwise,
-    /// false.</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.IsMultipart"]'/>
     public bool IsMultipart {
       get {
         return this.TopLevelType.Equals("multipart");
@@ -119,10 +97,8 @@ string type,
 
     private SortedMap<string, string> parameters;
 
-    /// <summary>Gets a sorted list of the parameters contained in this
-    /// media type object.</summary>
-    /// <value>A list of the parameters contained in this media type
-    /// object, sorted by name.</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.Parameters"]'/>
     public IDictionary<string, string> Parameters {
       get {
         return new ReadOnlyMap<string, string>(this.parameters);
@@ -130,11 +106,12 @@ string type,
     }
 
     internal enum QuotedStringRule {
-    /// <summary>Use HTTP rules for quoted strings.</summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Http"]'/>
       Http,
 
-    /// <summary>Use Internet Message Format rules for quoted
-    /// strings.</summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Rfc5322"]'/>
       Rfc5322
     }
 
@@ -572,8 +549,8 @@ IDictionary<string, string>
       }
     }
 
-    /// <summary>Converts this object to a text string.</summary>
-    /// <returns>A string representation of this object.</returns>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToString"]'/>
     public override string ToString() {
       var sb = new StringBuilder();
       sb.Append(this.topLevelType);
@@ -709,17 +686,8 @@ StringBuilder builder) {
       return i;
     }
 
-    /// <summary>Gets this media type's "charset" parameter, naming a
-    /// character encoding used to represent text in the data that uses
-    /// this media type.</summary>
-    /// <returns>If the "charset" parameter exists, returns that parameter
-    /// with the basic upper-case letters A to Z (U + 0041 to U + 005A)
-    /// converted to lower case. Returns "us-ascii" instead if the media
-    /// type is ill-formed (RFC2045 sec. 5.2), or if the media type is
-    /// "text/plain" and doesn't have a "charset" parameter (see RFC2046),
-    /// or the default value for that parameter, if any, for the media type
-    /// if the "charset" parameter is absent. Returns an empty string in
-    /// all other cases.</returns>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetCharset"]'/>
     #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design", "CA1024",
@@ -830,14 +798,8 @@ Justification="This method has different semantics from " +
       return String.Empty;
     }
 
-    /// <summary>Gets the value of a parameter in this media type, such as
-    /// "charset" or "format".</summary>
-    /// <param name='name'>Name of the parameter to get. The name is
-    /// compared case-insensitively.</param>
-    /// <returns>The value of the parameter as a string, or null if the
-    /// parameter doesn't exist.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
-    /// name='name'/> is null.</exception>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetParameter(System.String)"]'/>
     public string GetParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -990,10 +952,8 @@ ICharacterEncoding charset) {
       return true;
     }
 
-    /// <summary>Gets the top level type and subtype of this media type,
-    /// separated by a slash; for example, "text/plain".</summary>
-    /// <value>The top level type and subtype of this media type, separated
-    /// by a slash; for example, &#x22;text/plain&#x22;.</value>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaType.TypeAndSubType"]'/>
     public string TypeAndSubType {
       get {
         return this.TopLevelType + "/" + this.SubType;
@@ -1163,8 +1123,8 @@ null);
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "text/plain" and the "charset"
-    /// parameter "US-ASCII", used for plain text data.</summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.TextPlainAscii"]'/>
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder(
 "text",
@@ -1177,8 +1137,8 @@ null);
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "text/plain" and the "charset"
-    /// parameter "utf-8", used for Unicode plain text data.</summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.TextPlainUtf8"]'/>
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
 "text",
@@ -1191,8 +1151,8 @@ null);
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <summary>Specifies the media type "message/rfc822" , used for
-    /// Internet mail messages.</summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.MessageRfc822"]'/>
     public static readonly MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
 
@@ -1202,40 +1162,22 @@ null);
       "CA2104",
       Justification="This instance is immutable")]
 #endif
-    /// <summary>Specifies the media type "application/octet-stream", used
-    /// for arbitrary binary data.</summary>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.ApplicationOctetStream"]'/>
     public static readonly MediaType ApplicationOctetStream =
       new MediaTypeBuilder("application", "octet-stream").ToMediaType();
 
     private MediaType() {
     }
 
-    /// <summary>Parses a media type string and returns a media type
-    /// object. This method checks the syntactic validity of the string,
-    /// but not whether it has all parameters it's required to have or
-    /// whether the parameters themselves are set to valid values for the
-    /// parameter.</summary>
-    /// <param name='mediaTypeValue'>A string object representing a media
-    /// type. This media type can include parameters.</param>
-    /// <returns>A media type object, or text/plain if <paramref
-    /// name='mediaTypeValue'/> is empty or syntactically
-    /// invalid.</returns>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Parse(System.String)"]'/>
     public static MediaType Parse(string mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);
     }
 
-    /// <summary>Parses a media type string and returns a media type
-    /// object, or the default value if the string is invalid. This method
-    /// checks the syntactic validity of the string, but not whether it has
-    /// all parameters it's required to have or whether the parameters
-    /// themselves are set to valid values for the parameter.</summary>
-    /// <param name='str'>A string object representing a media type. This
-    /// media type can include parameters.</param>
-    /// <param name='defaultValue'>The media type to return if the string
-    /// is syntactically invalid. Can be null.</param>
-    /// <returns>A MediaType object.</returns>
-    /// <exception cref="ArgumentNullException">The parameter <paramref
-    /// name='str'/> is null.</exception>
+    /// <include file='docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Parse(System.String,PeterO.Mail.MediaType)"]'/>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {
         throw new ArgumentNullException("str");
