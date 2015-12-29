@@ -331,7 +331,7 @@ Gets the name and value of a header field by index.
 
 <b>Returns:</b>
 
-A KeyValuePair object. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
+A key/value pair. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
 
 <b>Exceptions:</b>
 

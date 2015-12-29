@@ -1,4 +1,4 @@
-* [PeterO.DataUtilities](PeterO.DataUtilities.md) - Contains methods useful for reading and writing strings.
+* [PeterO.DataUtilities](PeterO.DataUtilities.md) -
  * [PeterO.Mail.Address](PeterO.Mail.Address.md) -
  * [PeterO.Mail.ContentDisposition](PeterO.Mail.ContentDisposition.md) -
  * [PeterO.Mail.DispositionBuilder](PeterO.Mail.DispositionBuilder.md) -

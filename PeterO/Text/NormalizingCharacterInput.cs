@@ -67,12 +67,12 @@ int index) {
 
       if (ch >= 0xac00 && ch < 0xac00 + 11172) {
         // Hangul syllable
-        int valueSIndex = ch - 0xac00;
-        int trail = 0x11a7 + (valueSIndex % 28);
-        buffer[index++] = 0x1100 + (valueSIndex / 588);
-        buffer[index++] = 0x1161 + ((valueSIndex % 588) / 28);
-        if (trail != 0x11a7) {
-          buffer[index++] = trail;
+        int syllable = ch - 0xac00;
+        int trail = (syllable % 28);
+        buffer[index++] = 0x1100 + (syllable / 588);
+        buffer[index++] = 0x1161 + ((syllable % 588) / 28);
+        if (trail != 0) {
+          buffer[index++] = 0x11a7 + trail;
         }
         return index;
       }
@@ -97,7 +97,6 @@ int index) {
             buffer[offset - 1] = buffer[offset];
             buffer[offset] = c;
             changed = true;
-            // Lead is now at trail's position
           } else {
             lead = trail;
           }

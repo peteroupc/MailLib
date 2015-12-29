@@ -32,7 +32,7 @@ Specifies the media type "text/plain" and the "charset" parameter "US-ASCII", us
 
     public static readonly PeterO.Mail.MediaType TextPlainUtf8;
 
-Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for Unicode plain text data.
+Specifies the media type "text/plain" and the "charset" parameter "utf-8", used for plain text data that may contain characters outside the basic Latin range (U+0000 to U+007F).
 
 ### IsMultipart
 
