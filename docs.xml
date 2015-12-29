@@ -2,7 +2,20 @@
 <doc name="T:PeterO.DataUtilities">
 <summary>Contains methods useful for reading and writing strings.
             It is designed to have no dependencies other than the basic runtime
-            class library.</summary>
+            class library.
+            <para>In C# and Java, text strings are represented as sequences
+            of 16-bit values called <c>char</c>s.  These sequences
+            are well-formed under the UTF-16 encoding form of Unicode, except if they
+            contain unpaired surrogate code points.  (A surrogate code point is used
+            to encode supplementary characters, those with code points U+10000 or
+            higher, in UTF-16.  A surrogate pair is a high surrogate [U+D800 to U+DBFF]
+            followed by a low surrogate [U+DC00 to U+DFFF]. An unpaired surrogate
+            code point is a surrogate not appearing in a surrogate pair.)
+            Many of the methods in this class allow setting the behavior to follow
+            when unpaired surrogate code points are found in text strings, such as
+            throwing an error or treating the unpaired surrogate as a replacement
+            character (U+FFFD).</para>
+            </summary>
 </doc>
 <doc name="M:PeterO.DataUtilities.CodePointAt(System.String,System.Int32)">
 <summary>Gets the Unicode code point at the given index of the
@@ -636,7 +649,8 @@
 </doc>
 <doc name="F:PeterO.Mail.MediaType.TextPlainUtf8">
 <summary>Specifies the media type "text/plain" and the "charset"
-            parameter "utf-8", used for Unicode plain text data.</summary>
+            parameter "utf-8", used for plain text data that may contain
+            characters outside the basic Latin range (U+0000 to U+007F).</summary>
 </doc>
 <doc name="M:PeterO.Mail.MediaType.ToString">
 <summary>Converts this object to a text string.</summary>
@@ -831,7 +845,7 @@
             <para>Updates the ContentType and ContentDisposition properties if
             those header fields have been modified by this
             method.</para></summary>
-            <param name='header'>A KeyValuePair object. The key is the name of
+            <param name='header'>A key/value pair. The key is the name of
             the header field, such as "From" or "Content-ID". The value is the
             header field's value.</param>
             <returns>This instance.</returns>
@@ -973,7 +987,7 @@
             index.</summary>
             <param name='index'>Zero-based index of the header field to
             get.</param>
-            <returns>A KeyValuePair object. The key is the name of the header
+            <returns>A key/value pair. The key is the name of the header
             field, such as "From" or "Content-ID". The value is the header
             field's value.</returns>
             <exception cref='T:System.ArgumentException'>The parameter <paramref name='index'/> is 0 or at least as high as the number of header
@@ -1102,7 +1116,7 @@
             method.</para></summary>
             <param name='index'>Zero-based index of the header field to
             set.</param>
-            <param name='header'>A KeyValuePair object. The key is the name of
+            <param name='header'>A key/value pair. The key is the name of
             the header field, such as "From" or "Content-ID". The value is the
             header field's value.</param>
             <returns>A Message object.</returns>
