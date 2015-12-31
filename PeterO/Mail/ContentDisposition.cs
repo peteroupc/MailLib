@@ -13,13 +13,13 @@ using PeterO.Text;
 using PeterO.Text.Encoders;
 
 namespace PeterO.Mail {
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.ContentDisposition"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.ContentDisposition"]/*'/>
   public class ContentDisposition {
     private string dispositionType;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.DispositionType"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.DispositionType"]/*'/>
     public string DispositionType {
       get {
         return this.dispositionType;
@@ -27,8 +27,8 @@ namespace PeterO.Mail {
     }
 
     #region Equals and GetHashCode implementation
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Equals(System.Object)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Equals(System.Object)"]/*'/>
     public override bool Equals(object obj) {
       var other = obj as ContentDisposition;
       if (other == null) {
@@ -38,8 +38,8 @@ namespace PeterO.Mail {
         CollectionUtilities.MapEquals(this.parameters, other.parameters);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetHashCode"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetHashCode"]/*'/>
     public override int GetHashCode() {
       var hashCode = 632580499;
         if (this.dispositionType != null) {
@@ -53,16 +53,16 @@ namespace PeterO.Mail {
     }
     #endregion
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsInline"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsInline"]/*'/>
     public bool IsInline {
       get {
         return this.dispositionType.Equals("inline");
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsAttachment"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsAttachment"]/*'/>
     public bool IsAttachment {
       get {
         return this.dispositionType.Equals("attachment");
@@ -79,16 +79,16 @@ string type,
 
     private SortedMap<string, string> parameters;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.Parameters"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.Parameters"]/*'/>
     public IDictionary<string, string> Parameters {
       get {
         return new ReadOnlyMap<string, string>(this.parameters);
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.ToString"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.ToString"]/*'/>
     public override string ToString() {
       var sb = new StringBuilder();
       sb.Append(this.dispositionType);
@@ -149,8 +149,8 @@ string type,
       return sb.ToString();
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)"]/*'/>
     public static string MakeFilename(string str) {
       if (str == null) {
         return String.Empty;
@@ -213,7 +213,7 @@ str.IndexOf('\'')));
           c = 0xfffd;
         }
         if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
-   c == 0x180e || c == 0x1680 || (c >= 0x2000 && c <= 0x200b) || c == 0x205f||
+   c == 0x180e || c == 0x1680 || (c >= 0x2000 && c <= 0x200b) || c == 0x205f ||
             c == 0x202f || c == 0xfeff) {
           // Replace space-like characters (including tab) with space
           builder.Append(' ');
@@ -283,7 +283,7 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
         // Reserved filenames on Windows
         str = "_" + str;
       }
-      if (strLower[0]=='{' && strLower.Length>1 && strLower[1] >= '0' &&
+      if (strLower[0] == '{' && strLower.Length > 1 && strLower[1] >= '0' &&
             strLower[1] <= '1') {
         str = "_" + str;
       }
@@ -303,8 +303,8 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
       return NormalizingCharacterInput.Normalize(str, Normalization.NFC);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)"]/*'/>
     public string GetParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -364,8 +364,8 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Attachment"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Attachment"]/*'/>
     public static readonly ContentDisposition Attachment = Build("attachment");
 
     #if CODE_ANALYSIS
@@ -374,15 +374,15 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
       "CA2104",
       Justification="This instance is immutable")]
     #endif
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Inline"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Inline"]/*'/>
     public static readonly ContentDisposition Inline = Build("inline");
 
     private ContentDisposition() {
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String)"]/*'/>
     public static ContentDisposition Parse(string dispoValue) {
       if (dispoValue == null) {
   throw new ArgumentNullException("dispoValue");
@@ -390,8 +390,8 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
       return Parse(dispoValue, Attachment);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String,PeterO.Mail.ContentDisposition)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String,PeterO.Mail.ContentDisposition)"]/*'/>
     public static ContentDisposition Parse(
 string dispositionValue,
 ContentDisposition defaultValue) {

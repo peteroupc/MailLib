@@ -21,8 +21,11 @@ namespace PeterO.Mail {
     internal const int TokenLocalPart = 8;
     internal const int TokenDomain = 9;
 
-    public static int ParseHeaderExpandedDate(string str, int index, int
-      endIndex, int[] ret) {
+    public static int ParseHeaderExpandedDate(
+string str,
+int index,
+int endIndex,
+int[] ret) {
       int i, i3, indexStart, indexStart2, indexStart3, indexTemp,
         indexTemp2, indexTemp3, indexTemp4;
       int dayOfWeek = -1, day = -1, month = -1, year = -1, hour = -1, minute
@@ -110,7 +113,7 @@ namespace PeterO.Mail {
         for (i = 0; i < 2; ++i) {
           if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
             day *= 10;
-            day += ((int)(str[index])) - 48;
+            day += ((int)str[index]) - 48;
             if (day == 0) {
               return indexStart;
             }
@@ -201,12 +204,12 @@ namespace PeterO.Mail {
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         yearDigits = 0;
         year = 0;
-        if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57)||
+        if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
           (str[index + 1] >= 48 && str[index + 1] <= 57))) {
           year *= 10;
-          year += ((int)(str[index])) - 48;
+          year += ((int)str[index]) - 48;
           year *= 10;
-          year += ((int)(str[index + 1])) - 48;
+          year += ((int)str[index + 1]) - 48;
           index += 2;
           yearDigits += 2;
         } else {
@@ -218,12 +221,12 @@ namespace PeterO.Mail {
             // year would overflow
             return indexStart;
           }
-          year = (year * 10);
+          year *= 10;
           if (year > Int32.MaxValue - 10) {
             // year would overflow
             return indexStart;
           }
-          year = (year + ((int)(str[index])) - 48);
+          year += ((int)str[index]) - 48;
           ++index;
         }
         if (yearDigits == 3 || (yearDigits == 2 && year >= 50)) {
@@ -248,12 +251,12 @@ namespace PeterO.Mail {
         }
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         hour = minute = second = 0;
-        if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57)||
+        if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
           (str[index + 1] >= 48 && str[index + 1] <= 57))) {
           hour *= 10;
-          hour += ((int)(str[index])) - 48;
+          hour += ((int)str[index]) - 48;
           hour *= 10;
-          hour += ((int)(str[index + 1])) - 48;
+          hour += ((int)str[index + 1]) - 48;
           if (hour >= 24) {
             return indexStart;
           }
@@ -268,12 +271,12 @@ namespace PeterO.Mail {
           index = indexStart; break;
         }
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-        if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57)||
+        if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
           (str[index + 1] >= 48 && str[index + 1] <= 57))) {
           minute *= 10;
-          minute += ((int)(str[index])) - 48;
+          minute += ((int)str[index]) - 48;
           minute *= 10;
-          minute += ((int)(str[index + 1])) - 48;
+          minute += ((int)str[index + 1]) - 48;
           if (minute >= 60) {
             return indexStart;
           }
@@ -297,9 +300,9 @@ namespace PeterO.Mail {
             if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <=
               57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
               second *= 10;
-              second += ((int)(str[index])) - 48;
+              second += ((int)str[index]) - 48;
               second *= 10;
-              second += ((int)(str[index + 1])) - 48;
+              second += ((int)str[index + 1]) - 48;
               if (second >= 61) {
                 return indexStart;
               }
@@ -339,14 +342,14 @@ namespace PeterO.Mail {
               var minus = false;
           if (index < endIndex && ((str[index] == 43) || (str[index] ==
                 45))) {
-                minus = (str[index] == 45);
+                minus = str[index] == 45;
                 ++index;
               } else {
                 index = indexStart3; break;
               }
               if (index + 3 < endIndex && ((str[index] >= 48 && str[index]
                 <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57) ||
-                (str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index+
+                (str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index +
                 3] >= 48 && str[index + 3] <= 57))) {
        int offsethr = ((int)str[index] - 48) * 10 + ((int)str[index + 1] -
                   48);
@@ -355,7 +358,7 @@ namespace PeterO.Mail {
                 if (offsetmin >= 60) {
                   return indexStart;
                 }
-                offset = offsethr * 60 + offsetmin;
+                offset = (offsethr * 60) + offsetmin;
                 offset %= 1440;
                 if (minus) {
  offset = -offset;

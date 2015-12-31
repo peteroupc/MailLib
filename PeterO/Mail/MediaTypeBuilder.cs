@@ -11,15 +11,15 @@ using System.Collections.Generic;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.MediaTypeBuilder"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.MediaTypeBuilder"]/*'/>
   public sealed class MediaTypeBuilder {
     private string type;
     private string subtype;
     private readonly IDictionary<string, string> parameters;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.MediaTypeBuilder.TopLevelType"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaTypeBuilder.TopLevelType"]/*'/>
     public string TopLevelType {
       get {
         return this.type;
@@ -30,8 +30,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.MediaTypeBuilder.SubType"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaTypeBuilder.SubType"]/*'/>
     public string SubType {
       get {
         return this.subtype;
@@ -42,16 +42,16 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.#ctor"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.#ctor"]/*'/>
     public MediaTypeBuilder() {
       this.parameters = new Dictionary<string, string>();
       this.type = "application";
       this.subtype = "octet-stream";
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.#ctor(PeterO.Mail.MediaType)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.#ctor(PeterO.Mail.MediaType)"]/*'/>
     public MediaTypeBuilder(MediaType mt) {
       if (mt == null) {
         throw new ArgumentNullException("mt");
@@ -61,38 +61,38 @@ namespace PeterO.Mail {
       this.subtype = mt.SubType;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.#ctor(System.String,System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.#ctor(System.String,System.String)"]/*'/>
     public MediaTypeBuilder(string type, string subtype) {
       this.parameters = new Dictionary<string, string>();
       this.SetTopLevelType(type);
       this.SetSubType(subtype);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.MediaTypeBuilder.IsText"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaTypeBuilder.IsText"]/*'/>
     public bool IsText {
       get {
         return this.TopLevelType.Equals("text");
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.MediaTypeBuilder.IsMultipart"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.MediaTypeBuilder.IsMultipart"]/*'/>
     public bool IsMultipart {
       get {
         return this.TopLevelType.Equals("multipart");
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.ToMediaType"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.ToMediaType"]/*'/>
     public MediaType ToMediaType() {
       return new MediaType(this.type, this.subtype, this.parameters);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.SetTopLevelType(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.SetTopLevelType(System.String)"]/*'/>
     public MediaTypeBuilder SetTopLevelType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -108,8 +108,8 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.RemoveParameter(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.RemoveParameter(System.String)"]/*'/>
     public MediaTypeBuilder RemoveParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -118,8 +118,8 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.SetParameter(System.String,System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.SetParameter(System.String,System.String)"]/*'/>
     public MediaTypeBuilder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException("value");
@@ -139,8 +139,8 @@ if (MediaType.skipMimeTypeSubtype(name, 0, name.Length, null) !=
       return this;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.SetSubType(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.SetSubType(System.String)"]/*'/>
     public MediaTypeBuilder SetSubType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -156,8 +156,8 @@ if (MediaType.skipMimeTypeSubtype(name, 0, name.Length, null) !=
       return this;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.ToString"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.ToString"]/*'/>
     public override string ToString() {
       return this.ToMediaType().ToString();
     }

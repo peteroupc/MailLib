@@ -55,12 +55,24 @@ Assert.AreEqual(
           "us-ascii",
           stringTemp);
       }
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/plain; CHARSET=UTF-8"
-).GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/plain; ChArSeT=UTF-8"
-).GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/plain; charset=UTF-8"
-).GetCharset());
+      {
+object objectTemp = "utf-8" ;
+object objectTemp2 = MediaType.Parse("text/plain; CHARSET=UTF-8"
+).GetCharset();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
+      {
+object objectTemp = "utf-8" ;
+object objectTemp2 = MediaType.Parse("text/plain; ChArSeT=UTF-8"
+).GetCharset();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
+      {
+object objectTemp = "utf-8" ;
+object objectTemp2 = MediaType.Parse("text/plain; charset=UTF-8"
+).GetCharset();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
       // Note that MIME implicitly allows whitespace around the equal sign
       {
         string stringTemp = MediaType.Parse("text/plain; charset = UTF-8"
@@ -134,16 +146,36 @@ Assert.AreEqual(
           stringTemp);
       }
       Assert.AreEqual("", MediaType.Parse("text/xyz").GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/xyz;charset=UTF-8"
-).GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/xyz;charset=utf-8"
-).GetCharset());
-      Assert.AreEqual("" , MediaType.Parse("text/xyz;chabset=utf-8"
-).GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/xml;charset=utf-8"
-).GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("text/plain;charset=utf-8"
-).GetCharset());
+      {
+object objectTemp = "utf-8" ;
+object objectTemp2 = MediaType.Parse("text/xyz;charset=UTF-8"
+).GetCharset();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
+      {
+object objectTemp = "utf-8" ;
+object objectTemp2 = MediaType.Parse("text/xyz;charset=utf-8"
+).GetCharset();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
+      {
+object objectTemp = "" ;
+object objectTemp2 = MediaType.Parse("text/xyz;chabset=utf-8"
+).GetCharset();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
+      {
+object objectTemp = "utf-8" ;
+object objectTemp2 = MediaType.Parse("text/xml;charset=utf-8"
+).GetCharset();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
+      {
+object objectTemp = "utf-8" ;
+object objectTemp2 = MediaType.Parse("text/plain;charset=utf-8"
+).GetCharset();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
       {
   string stringTemp = MediaType.Parse("text/plain;chabset=utf-8"
 ).GetCharset();
@@ -151,14 +183,30 @@ Assert.AreEqual(
           "us-ascii",
           stringTemp);
       }
-      Assert.AreEqual("utf-8" , MediaType.Parse("image/xml;charset=utf-8"
-).GetCharset());
-      Assert.AreEqual("" , MediaType.Parse("image/xml;chabset=utf-8"
-).GetCharset());
-      Assert.AreEqual("utf-8" , MediaType.Parse("image/plain;charset=utf-8"
-).GetCharset());
-      Assert.AreEqual("" , MediaType.Parse("image/plain;chabset=utf-8"
-).GetCharset());
+      {
+object objectTemp = "utf-8" ;
+object objectTemp2 = MediaType.Parse("image/xml;charset=utf-8"
+).GetCharset();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
+      {
+object objectTemp = "" ;
+object objectTemp2 = MediaType.Parse("image/xml;chabset=utf-8"
+).GetCharset();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
+      {
+object objectTemp = "utf-8" ;
+object objectTemp2 = MediaType.Parse("image/plain;charset=utf-8"
+).GetCharset();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
+      {
+object objectTemp = "" ;
+object objectTemp2 = MediaType.Parse("image/plain;chabset=utf-8"
+).GetCharset();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
     }
     [Test]
     public void TestGetHashCode() {

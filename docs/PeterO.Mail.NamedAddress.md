@@ -9,7 +9,7 @@ Represents an email address and a name for that address. Can represent a group o
     public NamedAddress(
         string address);
 
-Initializes a new instance of the NamedAddress class. Examples:
+Initializes a new instance of the class. Examples:
 
  *  `john@example.com`
 
@@ -25,14 +25,14 @@ Initializes a new instance of the NamedAddress class. Examples:
 
 <b>Parameters:</b>
 
- * <i>address</i>: A string object identifying a single email address or a group of email addresses. Comments, or text within parentheses, can appear. Multiple email addresses are not allowed unless they appear in the group syntax given above. Encoded words under RFC 2047 that appear within comments or display names will be decoded.An RFC 2047 encoded word consists of "=?", a character encoding name, such as  `utf-8` , either "?B?" or "?Q?" (in upper or lower case), a series of bytes in the character encoding, further encoded using B or Q encoding, and finally "?=". B encoding uses Base64, while in Q encoding, spaces are changed to "_", equals are changed to "=3D" , and most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to "=" followed by their 2-digit hexadecimal form. An encoded word's maximum length is 75 characters. See the second example.
+ * <i>address</i>: A text string identifying a single email address or a group of email addresses. Comments, or text within parentheses, can appear. Multiple email addresses are not allowed unless they appear in the group syntax given above. Encoded words under RFC 2047 that appear within comments or display names will be decoded.An RFC 2047 encoded word consists of "=?", a character encoding name, such as  `utf-8` , either "?B?" or "?Q?" (in upper or lower case), a series of bytes in the character encoding, further encoded using B or Q encoding, and finally "?=". B encoding uses Base64, while in Q encoding, spaces are changed to "_", equals are changed to "=3D", and most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to "=" followed by their 2-digit hexadecimal form. An encoded word's maximum length is 75 characters. See the second example.
 
 .
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>address</i>
+The parameter <i>address</i>
  is null.
 
  * System.ArgumentException:
@@ -44,18 +44,18 @@ The named address has an invalid syntax.
         string displayName,
         PeterO.Mail.Address address);
 
-Initializes a new instance of the NamedAddress class.
+Initializes a new instance of the class.
 
 <b>Parameters:</b>
 
- * <i>displayName</i>: A string object. If this value is null or empty, uses the email address as the display name. Encoded words under RFC 2047 will not be decoded.
+ * <i>displayName</i>: A text string. If this value is null or empty, uses the email address as the display name. Encoded words under RFC 2047 will not be decoded.
 
  * <i>address</i>: An email address.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>address</i>
+The parameter <i>address</i>
  is null.
 
 ### NamedAddress Constructor
@@ -64,7 +64,7 @@ The parameter  <i>address</i>
         string displayName,
         string address);
 
-Initializes a new instance of the NamedAddress class using the given display name and email address.
+Initializes a new instance of the class using the given display name and email address.
 
 <b>Parameters:</b>
 
@@ -75,7 +75,7 @@ Initializes a new instance of the NamedAddress class using the given display nam
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>address</i>
+The parameter <i>address</i>
  is null.
 
  * System.ArgumentException:
@@ -88,11 +88,11 @@ The display name or address has an invalid syntax.
         string localPart,
         string domain);
 
-Initializes a new instance of the NamedAddress class using the given name and an email address made up of its local part and domain.
+Initializes a new instance of the class using the given name and an email address made up of its local part and domain.
 
 <b>Parameters:</b>
 
- * <i>displayName</i>: A string object. If this value is null or empty, uses the email address as the display name.
+ * <i>displayName</i>: A text string. If this value is null or empty, uses the email address as the display name.
 
  * <i>localPart</i>: The local part of the email address (before the "@").
 
@@ -101,7 +101,7 @@ Initializes a new instance of the NamedAddress class using the given name and an
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>localPart</i>
+The parameter <i>localPart</i>
  or  <i>domain</i>
  is null.
 

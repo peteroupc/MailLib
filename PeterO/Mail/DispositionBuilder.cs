@@ -11,14 +11,14 @@ using System.Collections.Generic;
 using PeterO;
 
 namespace PeterO.Mail {
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.DispositionBuilder"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.DispositionBuilder"]/*'/>
   public class DispositionBuilder {
-    private string type;
     private readonly IDictionary<string, string> parameters;
+    private string type;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.DispositionType"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.DispositionType"]/*'/>
     public string DispositionType {
       get {
         return this.type;
@@ -29,15 +29,15 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.#ctor"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.#ctor"]/*'/>
     public DispositionBuilder() {
       this.parameters = new Dictionary<string, string>();
       this.type = "attachment";
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.#ctor(PeterO.Mail.ContentDisposition)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.#ctor(PeterO.Mail.ContentDisposition)"]/*'/>
     public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
         throw new ArgumentNullException("mt");
@@ -46,8 +46,8 @@ namespace PeterO.Mail {
       this.type = mt.DispositionType;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.#ctor(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.#ctor(System.String)"]/*'/>
     public DispositionBuilder(string type) {
       if (type == null) {
   throw new ArgumentNullException("type");
@@ -59,8 +59,8 @@ if (type.Length == 0) {
       this.SetDispositionType(type);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.IsText"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.IsText"]/*'/>
 [Obsolete("Irrelevant for content dispositions; will be removed in the future."
 )]
     public bool IsText {
@@ -69,8 +69,8 @@ if (type.Length == 0) {
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.IsMultipart"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.DispositionBuilder.IsMultipart"]/*'/>
 [Obsolete("Irrelevant for content dispositions; will be removed in the future."
 )]
     public bool IsMultipart {
@@ -79,14 +79,14 @@ if (type.Length == 0) {
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.ToDisposition"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.ToDisposition"]/*'/>
     public ContentDisposition ToDisposition() {
       return new ContentDisposition(this.type, this.parameters);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.SetDispositionType(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.SetDispositionType(System.String)"]/*'/>
     public DispositionBuilder SetDispositionType(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -102,8 +102,8 @@ if (type.Length == 0) {
       return this;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.RemoveParameter(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.RemoveParameter(System.String)"]/*'/>
     public DispositionBuilder RemoveParameter(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -112,8 +112,8 @@ if (type.Length == 0) {
       return this;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.SetParameter(System.String,System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.SetParameter(System.String,System.String)"]/*'/>
     public DispositionBuilder SetParameter(string name, string value) {
       if (value == null) {
         throw new ArgumentNullException("value");
@@ -133,8 +133,8 @@ if (MediaType.skipMimeTypeSubtype(name, 0, name.Length, null) !=
       return this;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.ToString"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.ToString"]/*'/>
     public override string ToString() {
       return this.ToDisposition().ToString();
     }

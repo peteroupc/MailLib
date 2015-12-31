@@ -264,8 +264,12 @@ import java.util.*;
     @Test
     public void TestAddressInternal() {
       try {
-        Assert.assertEquals(null, new Address(EncodingTest.Repeat("local", 200) +
-          "@example.com"));
+        {
+Object objectTemp = null;
+Object objectTemp2 = new Address(EncodingTest.Repeat("local", 200) +
+          "@example.com");
+Assert.assertEquals(objectTemp, objectTemp2);
+}
       } catch (IllegalArgumentException ex) {
         System.out.print("");
       } catch (Exception ex) {
@@ -1173,8 +1177,12 @@ import java.util.*;
       TestDowngradeDSNOne(
         "utf-8; x@x" + hexstart + "BE}.example",
         ("utf-8; x@x\u00be.example"));
-      TestDowngradeDSNOne("utf-8; x@x" + hexstart + "BE}" + hexstart +
-                    "FF20}.example", ("utf-8; x@x\u00be\uff20.example"));
+      {
+Object objectTemp = "utf-8; x@x" + hexstart + "BE}" + hexstart +
+                    "FF20}.example";
+Object objectTemp2 = ("utf-8; x@x\u00be\uff20.example");
+TestDowngradeDSNOne(objectTemp, objectTemp2);
+}
       TestDowngradeDSNOne("(=?utf-8?Q?=C2=BE?=) utf-8; x@x.example",
                     ("(\u00be) utf-8; x@x.example"));
       TestDowngradeDSNOne(
@@ -1195,7 +1203,7 @@ import java.util.*;
       if (expectedValid) {
         TestEncodedWordsOne("x", "=?utf-8*" + str + "?Q?x?=");
       } else {
- TestEncodedWordsOne("=?utf-8*" + str + "?Q?x?=" , "=?utf-8*" + str +
+ TestEncodedWordsOne("=?utf-8*" + str + "?Q?x?=", "=?utf-8*" + str +
           "?Q?x?=");
       }
     }
@@ -1203,88 +1211,172 @@ import java.util.*;
     @Test
     public void TestLanguageTags() {
       TestValidLanguageTag(true,("en-a-bb-x-y-z"));
-      TestValidLanguageTag(false, (
-                    "0-xx-xx"));
+      {
+Object objectTemp = false;
+Object objectTemp2 = (
+                    "0-xx-xx");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(false, (
                     "9-xx-xx"));
-      TestValidLanguageTag(false, (
-                    "a-xx-xx"));
+      {
+Object objectTemp = false;
+Object objectTemp2 = (
+                    "a-xx-xx");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(true, (
                     "x-xx-xx"));
-      TestValidLanguageTag(true, (
-                    "en-US-u-islamcal"));
+      {
+Object objectTemp = true;
+Object objectTemp2 = (
+                    "en-US-u-islamcal");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(true, (
 "zh-CN-a-myext-x-private"));
-      TestValidLanguageTag(true, (
-                    "en-a-myext-b-another"));
+      {
+Object objectTemp = true;
+Object objectTemp2 = (
+                    "en-a-myext-b-another");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(false, (
                     "de-419-DE"));
-      TestValidLanguageTag(false, (
-                    "a-DE"));
+      {
+Object objectTemp = false;
+Object objectTemp2 = (
+                    "a-DE");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(false, (
                     "ar-a-aaa-b-bbb-a-ccc"));
-      TestValidLanguageTag(true, (
-                    "en"));
+      {
+Object objectTemp = true;
+Object objectTemp2 = (
+                    "en");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(true, (
                     "qbb-us"));
-      TestValidLanguageTag(true, (
-                    "zh-yue"));
+      {
+Object objectTemp = true;
+Object objectTemp2 = (
+                    "zh-yue");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(true, (
                     "en-us"));
-      TestValidLanguageTag(false, (
-                    "e0-us"));
+      {
+Object objectTemp = false;
+Object objectTemp2 = (
+                    "e0-us");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(true, (
                     "en-gb-1999"));
-      TestValidLanguageTag(true, (
-                    "en-gb-1999-1998"));
+      {
+Object objectTemp = true;
+Object objectTemp2 = (
+                    "en-gb-1999-1998");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(false, (
                     "en-gb-1999-1999"));
-      TestValidLanguageTag(true, (
-                    "en-gb-oed"));
+      {
+Object objectTemp = true;
+Object objectTemp2 = (
+                    "en-gb-oed");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(true, (
                     "sr-Latn-RS"));
-      TestValidLanguageTag(false, (
-                    "x-aaaaaaaaa-y-z"));
+      {
+Object objectTemp = false;
+Object objectTemp2 = (
+                    "x-aaaaaaaaa-y-z");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(true, (
                     "x-aaaaaaaa-y-z"));
-      TestValidLanguageTag(false, (
-                    "a-b-x-y-z"));
+      {
+Object objectTemp = false;
+Object objectTemp2 = (
+                    "a-b-x-y-z");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(false, (
                     "a-bb-xx-yy-zz"));
-      TestValidLanguageTag(false, (
-                    "a-bb-x-y-z"));
+      {
+Object objectTemp = false;
+Object objectTemp2 = (
+                    "a-bb-x-y-z");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(false, (
                     "a-x-y-z"));
-      TestValidLanguageTag(true, (
-                    "x-x-y-z"));
+      {
+Object objectTemp = true;
+Object objectTemp2 = (
+                    "x-x-y-z");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(false, (
                     "i-lojban"));
-      TestValidLanguageTag(true, (
-                    "i-klingon"));
+      {
+Object objectTemp = true;
+Object objectTemp2 = (
+                    "i-klingon");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(true, (
                     "art-lojban"));
-      TestValidLanguageTag(true, (
-                    "sgn-be-fr"));
+      {
+Object objectTemp = true;
+Object objectTemp2 = (
+                    "sgn-be-fr");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(true, (
                     "no-bok"));
-      TestValidLanguageTag(false, (
-                    "z-xx-xx"));
+      {
+Object objectTemp = false;
+Object objectTemp2 = (
+                    "z-xx-xx");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(true, (
                     "en-aaa-bbbb-x-xxx-yyy-zzz"));
-      TestValidLanguageTag(true, (
-                   "en-aaa-bbbb-x-x-y-z"));
+      {
+Object objectTemp = true;
+Object objectTemp2 = (
+                   "en-aaa-bbbb-x-x-y-z");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(false, (
                     "en-aaa-bbb"));
-      TestValidLanguageTag(false, (
-                    "en-aaa-bbb-ccc"));
+      {
+Object objectTemp = false;
+Object objectTemp2 = (
+                    "en-aaa-bbb-ccc");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(true, (
                     "en-aaa-bbbb"));
-      TestValidLanguageTag(true, (
-                    "en-aaa-bbbb-cc"));
+      {
+Object objectTemp = true;
+Object objectTemp2 = (
+                    "en-aaa-bbbb-cc");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
       TestValidLanguageTag(false, (
                     "en-aaa-bbb-"));
-      TestValidLanguageTag(false, (
-                    "en-aaa-bbb-ccc-"));
+      {
+Object objectTemp = false;
+Object objectTemp2 = (
+                    "en-aaa-bbb-ccc-");
+TestValidLanguageTag(objectTemp, objectTemp2);
+}
     }
 
     @Test(timeout = 5000)
@@ -1440,21 +1532,33 @@ import java.util.*;
     @Test
     public void TestToFieldDowngrading() {
       String sep = ", ";
-      Assert.assertEquals("x <x@example.com>" + sep + "\"X\" <y@example.com>",
-       DowngradeHeaderField("to",
-                    "x <x@example.com>, \"X\" <y@example.com>"));
-      Assert.assertEquals("x <x@example.com>" + sep +
-               "=?utf-8?Q?=C2=BE?= <y@example.com>",
-                    DowngradeHeaderField("to",
-                    "x <x@example.com>, \u00be <y@example.com>"));
-      Assert.assertEquals("x <x@example.com>" + sep +
-                    "=?utf-8?Q?=C2=BE?= <y@example.com>",
-  DowngradeHeaderField("to",
-                    "x <x@example.com>, \"\u00be\" <y@example.com>"));
-      Assert.assertEquals(
-   "x <x@example.com>" + sep + "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>",
-        DowngradeHeaderField("to",
-                    "x <x@example.com>, x\u00e1 x x\u00e1 <y@example.com>"));
+      {
+Object objectTemp = "x <x@example.com>" + sep + "\"X\" <y@example.com>";
+Object objectTemp2 = DowngradeHeaderField("to",
+                    "x <x@example.com>, \"X\" <y@example.com>");
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+      {
+Object objectTemp = "x <x@example.com>" + sep +
+               "=?utf-8?Q?=C2=BE?= <y@example.com>";
+Object objectTemp2 = DowngradeHeaderField("to",
+                    "x <x@example.com>, \u00be <y@example.com>");
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+      {
+Object objectTemp = "x <x@example.com>" + sep +
+                    "=?utf-8?Q?=C2=BE?= <y@example.com>";
+Object objectTemp2 = DowngradeHeaderField("to",
+                    "x <x@example.com>, \"\u00be\" <y@example.com>");
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+      {
+Object objectTemp = "x <x@example.com>" + sep +
+  "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>" ;
+Object objectTemp2 = DowngradeHeaderField("to",
+                    "x <x@example.com>, x\u00e1 x x\u00e1 <y@example.com>");
+Assert.assertEquals(objectTemp, objectTemp2);
+}
       {
         String stringTemp = DowngradeHeaderField("to",
                     "g: x@example.com, x\u00e1y@example.com;");
@@ -1469,9 +1573,12 @@ import java.util.*;
           "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;",
           stringTemp);
       }
-      Assert.assertEquals("g: x@example.com" + sep + "x@xn--e-ufa.example;",
-           DowngradeHeaderField("to",
-                    "g: x@example.com, x@e\u00e1.example;"));
+      {
+Object objectTemp = "g: x@example.com" + sep + "x@xn--e-ufa.example;";
+Object objectTemp2 = DowngradeHeaderField("to",
+                    "g: x@example.com, x@e\u00e1.example;");
+Assert.assertEquals(objectTemp, objectTemp2);
+}
       {
         String stringTemp = DowngradeHeaderField("sender",
                 "x <x@e\u00e1.example>");
@@ -1944,8 +2051,12 @@ import java.util.*;
 
     public static void TestEncodedBytesRoundTrip(String str) {
       TestEncodedBytesRoundTrip(DataUtilities.GetUtf8Bytes(str, true), false);
-   TestEncodedBytesRoundTrip(DataUtilities.GetUtf8Bytes(str, true,
-        true), true);
+   {
+Object objectTemp = DataUtilities.GetUtf8Bytes(str, true,
+        true);
+Object objectTemp2 = true;
+TestEncodedBytesRoundTrip(objectTemp, objectTemp2);
+}
     }
 
     private static byte[] RandomBytes(java.util.Random rnd) {

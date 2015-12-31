@@ -9,7 +9,7 @@ Represents an email address.
     public Address(
         string addressValue);
 
-Initializes a new instance of the Address class.
+Initializes a new instance of the class.
 
 <b>Parameters:</b>
 
@@ -18,7 +18,7 @@ Initializes a new instance of the Address class.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>addressValue</i>
+The parameter <i>addressValue</i>
  is null.
 
  * System.ArgumentException:

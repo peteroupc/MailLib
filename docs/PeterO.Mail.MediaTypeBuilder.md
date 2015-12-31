@@ -9,7 +9,7 @@ A mutable media type object.
     public MediaTypeBuilder(
         PeterO.Mail.MediaType mt);
 
-Initializes a new instance of the MediaTypeBuilder class using the data from another media type.
+Initializes a new instance of the class using the data from another media type.
 
 <b>Parameters:</b>
 
@@ -18,7 +18,7 @@ Initializes a new instance of the MediaTypeBuilder class using the data from ano
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>mt</i>
+The parameter <i>mt</i>
  is null.
 
 ### MediaTypeBuilder Constructor
@@ -27,7 +27,7 @@ The parameter  <i>mt</i>
         string type,
         string subtype);
 
-Initializes a new instance of the MediaTypeBuilder class.
+Initializes a new instance of the class.
 
 <b>Parameters:</b>
 
@@ -39,7 +39,7 @@ Initializes a new instance of the MediaTypeBuilder class.
 
     public MediaTypeBuilder();
 
-Initializes a new instance of the MediaTypeBuilder class, using the type "application/octet-stream".
+Initializes a new instance of the class, using the type "application/octet-stream".
 
 ### IsMultipart
 
@@ -99,7 +99,7 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>name</i>
+The parameter <i>name</i>
  is null.
 
 ### SetParameter
@@ -114,7 +114,7 @@ Sets a parameter's name and value for this media type.
 
  * <i>name</i>: Name of the parameter to set, such as "charset". The name is compared case-insensitively.
 
- * <i>value</i>: A string object giving the parameter's value.
+ * <i>value</i>: A text string giving the parameter's value.
 
 <b>Returns:</b>
 
@@ -123,12 +123,12 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>value</i>
+The parameter <i>value</i>
  or  <i>name</i>
  is null.
 
  * System.ArgumentException:
-The parameter  <i>name</i>
+The parameter <i>name</i>
  is empty or syntactically invalid.
 
 ### SetSubType
@@ -140,7 +140,7 @@ Sets this media type's subtype, such as "plain" or "xml" .
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object naming a media subtype.
+ * <i>str</i>: A text string naming a media subtype.
 
 <b>Returns:</b>
 
@@ -149,11 +149,11 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is null.
 
  * System.ArgumentException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is empty or syntactically invalid.
 
 ### SetTopLevelType
@@ -165,7 +165,7 @@ Sets this media type's top-level type.
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object naming a top-level type, such as "text" or "audio".
+ * <i>str</i>: A text string naming a top-level type, such as "text" or "audio".
 
 <b>Returns:</b>
 
@@ -174,11 +174,11 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is null.
 
  * System.ArgumentException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is syntactically invalid for a top-level type.
 
 ### ToMediaType

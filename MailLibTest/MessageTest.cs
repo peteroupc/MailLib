@@ -283,10 +283,18 @@ Assert.AreEqual(2, EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""),
 
     [Test]
     public void TestNamedAddress() {
-      Assert.AreEqual("\"Me \" <me@example.com>", new NamedAddress("Me ",
-                    "me@example.com").ToString());
-      Assert.AreEqual("\" Me\" <me@example.com>", new NamedAddress(" Me",
-                    "me@example.com").ToString());
+      {
+object objectTemp = "\"Me \" <me@example.com>";
+object objectTemp2 = new NamedAddress("Me ",
+                    "me@example.com").ToString();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
+      {
+object objectTemp = "\" Me\" <me@example.com>";
+object objectTemp2 = new NamedAddress(" Me",
+                    "me@example.com").ToString();
+Assert.AreEqual(objectTemp, objectTemp2);
+}
 
       try {
         Assert.AreEqual(null, new Address(String.Empty));

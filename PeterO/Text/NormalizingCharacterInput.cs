@@ -9,8 +9,8 @@ using System;
 using System.Collections.Generic;
 
 namespace PeterO.Text {
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Text.NormalizingCharacterInput"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Text.NormalizingCharacterInput"]/*'/>
   public sealed class NormalizingCharacterInput : ICharacterInput {
     internal static int DecompToBufferInternal(
 int ch,
@@ -68,7 +68,7 @@ int index) {
       if (ch >= 0xac00 && ch < 0xac00 + 11172) {
         // Hangul syllable
         int syllable = ch - 0xac00;
-        int trail = (syllable % 28);
+        int trail = syllable % 28;
         buffer[index++] = 0x1100 + (syllable / 588);
         buffer[index++] = 0x1161 + ((syllable % 588) / 28);
         if (trail != 0) {
@@ -187,8 +187,8 @@ int index) {
       return ret;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(System.String,PeterO.Text.Normalization)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(System.String,PeterO.Text.Normalization)"]/*'/>
     public static IList<int> GetChars(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -196,8 +196,8 @@ int index) {
       return GetChars(new NormalizingCharacterInput(str, form));
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
     public static IList<int> GetChars(ICharacterInput str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -214,30 +214,30 @@ int index) {
     private int flushIndex;
     private readonly ICharacterInput iterator;
 
-    /// <include file='docs.xml'
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList
     /// {System.Int32})"]'/>
     public NormalizingCharacterInput(IList<int> characterList) :
       this(characterList, Normalization.NFC) {
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String)"]/*'/>
     public NormalizingCharacterInput(
   string str) : this(
   str,
   Normalization.NFC) {
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput)"]/*'/>
     public NormalizingCharacterInput(
 ICharacterInput input) : this(
 input,
 Normalization.NFC) {
     }
 
-    /// <include file='docs.xml'
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList
     /// {System.Int32},PeterO.Text.Normalization)"]'/>
     public NormalizingCharacterInput(
@@ -246,8 +246,8 @@ Normalization form) :
   this(new PartialListCharacterInput(characterList), form) {
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)"]/*'/>
     public NormalizingCharacterInput(
 string str,
 int index,
@@ -257,14 +257,14 @@ new StringCharacterInput2(str, index, length),
 form) {
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)"]/*'/>
     public NormalizingCharacterInput(string str, Normalization form) :
       this(new StringCharacterInput2(str), form) {
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
     public NormalizingCharacterInput(
    ICharacterInput stream,
    Normalization form) {
@@ -279,8 +279,8 @@ form) {
           Normalization.NFKD;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(ICharacterInput chars, Normalization form) {
       if (chars == null) {
         throw new ArgumentNullException("chars");
@@ -321,8 +321,8 @@ Normalization form) {
       return true;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.Normalize(System.String,PeterO.Text.Normalization)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
     public static string Normalize(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -334,8 +334,8 @@ Normalization form) {
         new NormalizingCharacterInput(str, form));
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.String,PeterO.Text.Normalization)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(string str, Normalization form) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -433,8 +433,8 @@ form)) {
       return i == start + length;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(int[] charArray, Normalization form) {
       if (charArray == null) {
   throw new ArgumentNullException("charArray");
@@ -442,7 +442,7 @@ form)) {
       return IsNormalized(new PartialArrayCharacterInput(charArray), form);
     }
 
-    /// <include file='docs.xml'
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Collections.Generic.IList
     /// {System.Int32},PeterO.Text.Normalization)"]'/>
     public static bool IsNormalized(IList<int> charList, Normalization form) {
@@ -494,8 +494,8 @@ form)) {
 
     private readonly int[] readbuffer = new int[1];
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.ReadChar"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.ReadChar"]/*'/>
     public int ReadChar() {
       int r = this.Read(this.readbuffer, 0, 1);
       return r == 1 ? this.readbuffer[0] : -1;
@@ -540,8 +540,8 @@ form)) {
       return ch;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.Read(System.Int32[],System.Int32,System.Int32)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
         throw new ArgumentNullException("chars");

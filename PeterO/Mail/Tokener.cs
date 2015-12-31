@@ -41,8 +41,8 @@ namespace PeterO.Mail {
       return this.tokenStack;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Tokener.Compare(System.Int32[],System.Int32[])"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Tokener.Compare(System.Int32[],System.Int32[])"]/*'/>
     public int Compare(int[] x, int[] y) {
       if (x == null) {
   throw new ArgumentNullException("x");

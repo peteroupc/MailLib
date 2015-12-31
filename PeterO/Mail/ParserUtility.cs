@@ -87,8 +87,8 @@ namespace PeterO.Mail {
           if (indexEnd == indexStart) {
  return String.Empty;
 }
-          return (indexEnd == str.Length && indexStart == 0) ? (str) :
-            (str.Substring(indexStart, indexEnd-indexStart));
+          return (indexEnd == str.Length && indexStart == 0) ? str :
+            str.Substring(indexStart, indexEnd - indexStart);
         }
         --index;
       }
@@ -107,8 +107,8 @@ namespace PeterO.Mail {
       return index;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.ParserUtility.SplitAt(System.String,System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ParserUtility.SplitAt(System.String,System.String)"]/*'/>
     public static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
         throw new ArgumentNullException("delimiter");

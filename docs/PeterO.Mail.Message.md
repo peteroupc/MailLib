@@ -20,7 +20,7 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * There is no line length limit imposed when parsing quoted-printable or base64 encoded bodies.
 
- * If the transfer encoding is absent and the content type is "message/rfc822" , bytes with values greater than 127 (called "8-bit bytes" in the rest of this summary) are still allowed, despite the default value of "7bit" for "Content-Transfer-Encoding".
+ * If the transfer encoding is absent and the content type is "message/rfc822", bytes with values greater than 127 (called "8-bit bytes" in the rest of this summary) are still allowed, despite the default value of "7bit" for "Content-Transfer-Encoding".
 
  * In the following cases, if the transfer encoding is absent or declared as 7bit, 8-bit bytes are still allowed:
 
@@ -49,7 +49,7 @@ The following lists known deviations from the mail specifications (Internet Mess
     public Message(
         byte[] bytes);
 
-Initializes a new instance of the Message class. Reads from the given byte array to initialize the message.
+Initializes a new instance of the class. Reads from the given byte array to initialize the message.
 
 <b>Parameters:</b>
 
@@ -58,7 +58,7 @@ Initializes a new instance of the Message class. Reads from the given byte array
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>bytes</i>
+The parameter <i>bytes</i>
  is null.
 
 ### Message Constructor
@@ -66,7 +66,7 @@ The parameter  <i>bytes</i>
     public Message(
         System.IO.Stream stream);
 
-Initializes a new instance of the Message class. Reads from the given Stream object to initialize the message.
+Initializes a new instance of the class. Reads from the given Stream object to initialize the message.
 
 <b>Parameters:</b>
 
@@ -75,7 +75,7 @@ Initializes a new instance of the Message class. Reads from the given Stream obj
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>stream</i>
+The parameter <i>stream</i>
  is null.
 
 ### BccAddresses
@@ -219,7 +219,7 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>name</i>
+The parameter <i>name</i>
  or  <i>value</i>
  is null.
 
@@ -270,7 +270,7 @@ Returns the mail message contained in this message's body.
 
 <b>Returns:</b>
 
-A message object if this object's content type is "message/rfc822" , "message/news", or "message/global", or null otherwise.
+A message object if this object's content type is "message/rfc822", "message/news", or "message/global", or null otherwise.
 
 ### GetDate
 
@@ -303,7 +303,7 @@ An array containing eight elements. Returns null if the Date header doesn't exis
     public string GetHeader(
         string name);
 
-Gets the first instance of the header field with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U + 005A) in both strings to lower case.).
+Gets the first instance of the header field with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
 
 <b>Parameters:</b>
 
@@ -336,7 +336,7 @@ A key/value pair. The key is the name of the header field, such as "From" or "Co
 <b>Exceptions:</b>
 
  * System.ArgumentException:
-The parameter  <i>index</i>
+The parameter <i>index</i>
  is 0 or at least as high as the number of header fields.
 
 ### GetHeaderArray
@@ -344,7 +344,7 @@ The parameter  <i>index</i>
     public string[] GetHeaderArray(
         string name);
 
-Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U + 005A) in both strings to lower case.).
+Gets an array with the values of all header fields with the specified name, using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
 
 <b>Parameters:</b>
 
@@ -377,7 +377,7 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentException:
-The parameter  <i>index</i>
+The parameter <i>index</i>
  is 0 or at least as high as the number of header fields.
 
 ### RemoveHeader
@@ -385,7 +385,7 @@ The parameter  <i>index</i>
     public PeterO.Mail.Message RemoveHeader(
         string name);
 
-Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U+005A) in both strings to lower case.).Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
+Removes all instances of the given header field from this message. If this is a multipart message, the header field is not removed from its body part headers. A basic case-insensitive comparison is used. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
 
 <b>Parameters:</b>
 
@@ -398,7 +398,7 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>name</i>
+The parameter <i>name</i>
  is null.
 
 ### SetBody
@@ -419,7 +419,7 @@ This object.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>bytes</i>
+The parameter <i>bytes</i>
  is null.
 
 ### SetCurrentDate
@@ -468,11 +468,11 @@ This object.
 <b>Exceptions:</b>
 
  * System.ArgumentException:
-The parameter  <i>dateTime</i>
+The parameter <i>dateTime</i>
  contains fewer than eight elements, contains invalid values, or contains a year less than 0.
 
  * System.ArgumentNullException:
-The parameter  <i>dateTime</i>
+The parameter <i>dateTime</i>
  is null.
 
 ### SetHeader
@@ -499,11 +499,11 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentException:
-The parameter  <i>index</i>
+The parameter <i>index</i>
  is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
 
  * System.ArgumentNullException:
-The parameter  <i>name</i>
+The parameter <i>name</i>
  or  <i>value</i>
  is null.
 
@@ -528,11 +528,11 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentException:
-The parameter  <i>index</i>
+The parameter <i>index</i>
  is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
 
  * System.ArgumentNullException:
-The parameter  <i>value</i>
+The parameter <i>value</i>
  is null.
 
 ### SetHeader
@@ -565,7 +565,7 @@ This instance.
 The header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
 
  * System.ArgumentNullException:
-The parameter  <i>name</i>
+The parameter <i>name</i>
  or  <i>value</i>
  is null.
 
@@ -574,7 +574,7 @@ The parameter  <i>name</i>
     public PeterO.Mail.Message SetHtmlBody(
         string str);
 
-Sets the body of this message to the specified string in HTML format. The character sequences CR (carriage return, "\r", U+000D), LF (line feed, "\n" , U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
+Sets the body of this message to the specified string in HTML format. The character sequences CR (carriage return, "\r", U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters.
 
 <b>Parameters:</b>
 
@@ -587,7 +587,7 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is null.
 
 ### SetTextAndHtml
@@ -611,7 +611,7 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>text</i>
+The parameter <i>text</i>
  or  <i>html</i>
  is null.
 
@@ -620,7 +620,7 @@ The parameter  <i>text</i>
     public PeterO.Mail.Message SetTextBody(
         string str);
 
-Sets the body of this message to the specified plain text string. The character sequences CR (carriage return, "\r", U+000D), LF (line feed, "\n" , U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters. This method changes this message's media type to plain text.
+Sets the body of this message to the specified plain text string. The character sequences CR (carriage return, "\r", U+000D), LF (line feed, "\n", U+000A), and CR/LF will be converted to CR/LF line breaks. Unpaired surrogate code points will be replaced with replacement characters. This method changes this message's media type to plain text.
 
 <b>Parameters:</b>
 
@@ -633,5 +633,5 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is null.

@@ -11,8 +11,8 @@ using System.Text;
 using PeterO;
 
 namespace PeterO.Text {
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Text.DomainUtility"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Text.DomainUtility"]/*'/>
   internal static class DomainUtility {
     private static int CodePointAt(string str, int index, int endIndex) {
       if (str == null) {
@@ -37,8 +37,8 @@ namespace PeterO.Text {
       return c;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.DomainUtility.PunycodeLength(System.String,System.Int32,System.Int32)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.DomainUtility.PunycodeLength(System.String,System.Int32,System.Int32)"]/*'/>
     public static int PunycodeLength(string str, int index, int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -174,7 +174,7 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
       return outputLength;
     }
 
- private static readonly int[] valueDigitValues = { -1, -1, -1, -1, -1, -1,
+ private static readonly int[] ValueDigitValues = { -1, -1, -1, -1, -1, -1,
       -1,
       -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1,
@@ -259,7 +259,7 @@ throw new ArgumentException("endIndex (" + endIndex + ") is less than " +
           if (c >= 0x80) {
             return null;
           }
-          int digit = valueDigitValues[(int)c];
+          int digit = ValueDigitValues[(int)c];
           if (digit < 0) {
             return null;
           }

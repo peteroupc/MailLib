@@ -9,7 +9,7 @@ Description of DispositionBuilder.
     public DispositionBuilder(
         PeterO.Mail.ContentDisposition mt);
 
-Initializes a new instance of the DispositionBuilder class.
+Initializes a new instance of the class.
 
 <b>Parameters:</b>
 
@@ -18,7 +18,7 @@ Initializes a new instance of the DispositionBuilder class.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>mt</i>
+The parameter <i>mt</i>
  is null.
 
 ### DispositionBuilder Constructor
@@ -26,23 +26,23 @@ The parameter  <i>mt</i>
     public DispositionBuilder(
         string type);
 
-Initializes a new instance of the DispositionBuilder class.
+Initializes a new instance of the class.
 
 <b>Parameters:</b>
 
- * <i>type</i>: A string object.
+ * <i>type</i>: A text string.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>type</i>
+The parameter <i>type</i>
  is null.
 
 ### DispositionBuilder Constructor
 
     public DispositionBuilder();
 
-Initializes a new instance of the DispositionBuilder class.
+Initializes a new instance of the class.
 
 ### DispositionType
 
@@ -96,7 +96,7 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>name</i>
+The parameter <i>name</i>
  is null.
 
 ### SetDispositionType
@@ -108,7 +108,7 @@ Sets the disposition type, such as "inline".
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object.
+ * <i>str</i>: A text string.
 
 <b>Returns:</b>
 
@@ -117,7 +117,7 @@ This instance.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is null.
 
 ### SetParameter
@@ -146,7 +146,7 @@ Either  <i>value</i>
  is null.
 
  * System.ArgumentException:
-The parameter  <i>name</i>
+The parameter <i>name</i>
  is empty, or it isn't a well-formed parameter name.
 
 ### ToDisposition

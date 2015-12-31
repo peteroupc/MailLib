@@ -12,21 +12,21 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.Address"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.Address"]/*'/>
   public class Address {
     private readonly string localPart;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Address.LocalPart"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Address.LocalPart"]/*'/>
     public string LocalPart {
       get {
         return this.localPart;
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Address.ToString"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Address.ToString"]/*'/>
     public override string ToString() {
       if (this.localPart.Length > 0 &&
           HeaderParser.ParseDotAtomText(
@@ -93,16 +93,16 @@ null) == this.localPart.Length) {
 
     private readonly string domain;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Address.Domain"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Address.Domain"]/*'/>
     public string Domain {
       get {
         return this.domain;
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Address.#ctor(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Address.#ctor(System.String)"]/*'/>
     public Address(string addressValue) {
       if (addressValue == null) {
         throw new ArgumentNullException("addressValue");
