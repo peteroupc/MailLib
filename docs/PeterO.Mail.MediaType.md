@@ -20,7 +20,7 @@ Specifies the media type "application/octet-stream", used for arbitrary binary d
 
     public static readonly PeterO.Mail.MediaType MessageRfc822;
 
-Specifies the media type "message/rfc822" , used for Internet mail messages.
+Specifies the media type "message/rfc822", used for Internet mail messages.
 
 ### TextPlainAscii
 
@@ -147,7 +147,7 @@ The value of the parameter as a string, or null if the parameter doesn't exist.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>name</i>
+The parameter <i>name</i>
  is null.
 
 ### Parse
@@ -159,7 +159,7 @@ Parses a media type string and returns a media type object. This method checks t
 
 <b>Parameters:</b>
 
- * <i>mediaTypeValue</i>: A string object representing a media type. This media type can include parameters.
+ * <i>mediaTypeValue</i>: A text string representing a media type. This media type can include parameters.
 
 <b>Returns:</b>
 
@@ -176,7 +176,7 @@ Parses a media type string and returns a media type object, or the default value
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object representing a media type. This media type can include parameters.
+ * <i>str</i>: A text string representing a media type. This media type can include parameters.
 
  * <i>defaultValue</i>: The media type to return if the string is syntactically invalid. Can be null.
 
@@ -187,7 +187,7 @@ A MediaType object.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is null.
 
 ### ToString

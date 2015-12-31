@@ -4,6 +4,7 @@ namespace PeterO {
   internal static class DateTimeUtilities {
     private static int[] totdays = {0, 31, 59, 90, 120, 151, 181, 212, 243,
       273, 304, 334 };
+
     private static int[] numdays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31,
       30, 31 };
 
@@ -11,7 +12,7 @@ namespace PeterO {
       if (dateTime == null || dateTime.Length < 8) {
         return false;
       }
-      if (dateTime[1]<1 || dateTime[1] > 12 || dateTime[2]< 1) {
+      if (dateTime[1 ]<1 || dateTime[1] > 12 || dateTime[2]< 1) {
         return false;
       }
       int yr = dateTime[0];
@@ -35,9 +36,9 @@ namespace PeterO {
  return false;
 }
       }
-      return !(dateTime[3]<0 || dateTime[4]<0 || dateTime[5]<0 ||
-    dateTime[3]>= 24 || dateTime[4]>= 60 || dateTime[5]>= 61 ||dateTime[6]<0||
-          dateTime[6]>= 1000 || dateTime[7]<=-1440 ||
+      return !(dateTime[3 ]<0 || dateTime[4]<0 || dateTime[5]<0 ||
+ dateTime[3] >= 24 || dateTime[4] >= 60 || dateTime[5] >= 61 ||dateTime[6 ]<0||
+          dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         dateTime[7] >= 1440);
     }
 
@@ -54,7 +55,7 @@ namespace PeterO {
  yr += 400;
 }
       // is the current year a leap year?
-      if (((((yr % 4) == 0) && ((yr % 100) != 0)) || ((yr % 400) == 0))) {
+      if ((((yr % 4) == 0) && ((yr % 100) != 0)) || ((yr % 400) == 0)) {
         leap = true;
       } else {
  leap = false;
@@ -84,12 +85,12 @@ namespace PeterO {
       addon += totdays[mo - 1]; /* The day of the week increases by
                 the number of days in all the months up till now */
       addon += da;  // the day of week advances for each day
-                    /* Now as we all know, 2000-01-01 is a Saturday.  Using this
+                    /* Now as we all know, 2000-01-01 is a Saturday. Using this
                     as our reference point, and the knowledge that we want to
                     return 0..6 for Sunday..Saturday,
                     we find out that we need to compensate by adding 6. */
       addon += 6;
-      return (addon % 7);  /* the remainder after dividing by 7
+      return addon % 7; /* the remainder after dividing by 7
                     gives the day of week */
     }
 

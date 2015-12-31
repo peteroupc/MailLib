@@ -15,8 +15,8 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.Message"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
   public sealed class Message {
     private const int EncodingBase64 = 2;
     private const int EncodingBinary = 4;
@@ -25,26 +25,27 @@ namespace PeterO.Mail {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
 
-    private static readonly Random msgidRandom = new Random();
-    private static int msgidSequence;
-    private static bool seqFirstTime = true;
-    private static readonly object sequenceSync = new Object();
+    private static readonly Random ValueMsgidRandom = new Random();
+    private static readonly object ValueSequenceSync = new Object();
 
-    private static readonly IDictionary<string, int> valueHeaderIndices =
+    private static readonly IDictionary<string, int> ValueHeaderIndices =
       MakeHeaderIndices();
 
+    private readonly IList<string> headers;
+
+    private readonly IList<Message> parts;
+
+    private static int msgidSequence;
+    private static bool seqFirstTime = true;
     private byte[] body;
     private ContentDisposition contentDisposition;
 
     private MediaType contentType;
 
-    private readonly IList<string> headers;
-
-    private readonly IList<Message> parts;
     private int transferEncoding;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.IO.Stream)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.IO.Stream)"]/*'/>
     public Message(Stream stream) {
       if (stream == null) {
         throw new ArgumentNullException("stream");
@@ -56,8 +57,8 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.Byte[])"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.Byte[])"]/*'/>
     public Message(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException("bytes");
@@ -69,8 +70,8 @@ namespace PeterO.Mail {
       this.ReadMessage(transform);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor"]/*'/>
     public Message() {
       this.headers = new List<string>();
       this.parts = new List<Message>();
@@ -84,10 +85,10 @@ namespace PeterO.Mail {
       this.headers.Add("1.0");
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetCurrentDate"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetCurrentDate"]/*'/>
     public Message SetCurrentDate() {
-      return SetDate(DateTimeUtilities.GetCurrentLocalTime());
+      return this.SetDate(DateTimeUtilities.GetCurrentLocalTime());
     }
 
     private static void ReverseChars(char[] chars, int offset, int length) {
@@ -100,7 +101,7 @@ namespace PeterO.Mail {
       }
     }
 
-    private static string Digits = "0123456789";
+    private static string valueDigits = "0123456789";
 
     private static string IntToString(int value) {
       if (value == Int32.MinValue) {
@@ -118,7 +119,7 @@ namespace PeterO.Mail {
         value = -value;
       }
       while (value != 0) {
-        char digit = Digits[(int)(value % 10)];
+        char digit = valueDigits[(int)(value % 10)];
         chars[count++] = digit;
         value /= 10;
       }
@@ -130,30 +131,30 @@ namespace PeterO.Mail {
       return new String(chars, 0, count);
     }
 
-    private static string[] DaysOfWeek = {
-      "Sun","Mon","Tue","Wed","Thu","Fri","Sat"
+    private static string[] valueDaysOfWeek = {
+      "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
     };
 
-    private static string[] Months = {
-      "","Jan","Feb","Mar","Apr","May","Jun","Jul",
-      "Aug","Sep","Oct","Nov","Dec"
+    private static string[] valueMonths = {
+      String.Empty, "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+      "Aug", "Sep", "Oct", "Nov", "Dec"
     };
 
     private static string GetDateString(int[] dateTime) {
       if (!DateTimeUtilities.IsValidDateTime(dateTime) ||
-        dateTime[0]< 0) {
+        dateTime[0 ]< 0) {
         throw new ArgumentException("Invalid date and time");
       }
       int dow = DateTimeUtilities.GetDayOfWeek(dateTime);
       if (dow < 0) {
         throw new ArgumentException("Invalid date and time");
       }
-      string dayString = DaysOfWeek[dow];
-      string monthString = Months[dateTime[1]];
+      string dayString = valueDaysOfWeek[dow];
+      string monthString = valueMonths[dateTime[1]];
       var sb = new StringBuilder();
       sb.Append(dayString);
       sb.Append(", ");
-      sb.Append((char)('0' + ((dateTime[2] / 10)%10)));
+      sb.Append((char)('0' + ((dateTime[2] / 10) %10)));
       sb.Append((char)('0' + (dateTime[2] % 10)));
       sb.Append(' ');
       sb.Append(monthString);
@@ -176,27 +177,27 @@ namespace PeterO.Mail {
       sb.Append((char)('0' + (dateTime[5] % 10)));
       sb.Append(' ');
       int offset = dateTime[7];
-      sb.Append((offset< 0) ? '-' : '+');
+      sb.Append((offset < 0) ? '-' : '+');
       offset = Math.Abs(offset);
       int hours = (offset / 60) % 24;
-      int minutes = (offset % 60);
+      int minutes = offset % 60;
       sb.Append((char)('0' + ((hours / 10) % 10)));
-      sb.Append((char)('0' + ((hours) % 10)));
+      sb.Append((char)('0' + (hours % 10)));
       sb.Append((char)('0' + ((minutes / 10) % 10)));
       sb.Append((char)('0' + (minutes % 10)));
       return sb.ToString();
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.BccAddresses"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.BccAddresses"]/*'/>
     public IList<NamedAddress> BccAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("bcc"));
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.BodyString"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.BodyString"]/*'/>
     public string BodyString {
       get {
         ICharacterEncoding charset = Encodings.GetEncoding(
@@ -212,16 +213,16 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.CCAddresses"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.CCAddresses"]/*'/>
     public IList<NamedAddress> CCAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("cc"));
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.ContentDisposition"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.ContentDisposition"]/*'/>
     public ContentDisposition ContentDisposition {
       get {
         return this.contentDisposition;
@@ -240,8 +241,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.ContentType"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.ContentType"]/*'/>
     public MediaType ContentType {
       get {
         return this.contentType;
@@ -262,8 +263,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.FileName"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.FileName"]/*'/>
     public string FileName {
       get {
         ContentDisposition disp = this.contentDisposition;
@@ -274,16 +275,16 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.FromAddresses"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.FromAddresses"]/*'/>
     public IList<NamedAddress> FromAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("from"));
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.HeaderFields"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.HeaderFields"]/*'/>
     public IList<KeyValuePair<string, string>> HeaderFields {
       get {
         var list = new List<KeyValuePair<string, string>>();
@@ -297,16 +298,16 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.Parts"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.Parts"]/*'/>
     public IList<Message> Parts {
       get {
         return this.parts;
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.Subject"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.Subject"]/*'/>
     public string Subject {
       get {
         return this.GetHeader("subject");
@@ -317,23 +318,23 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.ToAddresses"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.ToAddresses"]/*'/>
     public IList<NamedAddress> ToAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("to"));
       }
     }
 
-    /// <include file='docs.xml'
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair
     /// {System.String,System.String})"]'/>
     public Message AddHeader(KeyValuePair<string, string> header) {
       return this.AddHeader(header.Key, header.Value);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.String,System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.String,System.String)"]/*'/>
     public Message AddHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
       int index = this.headers.Count / 2;
@@ -342,22 +343,22 @@ namespace PeterO.Mail {
       return this.SetHeader(index, name, value);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.Generate"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.Generate"]/*'/>
     public string Generate() {
       var aw = new ArrayWriter();
       this.Generate(aw, 0);
       return DataUtilities.GetUtf8String(aw.ToArray(), false);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetBody"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetBody"]/*'/>
     public byte[] GetBody() {
       return this.body;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetDate"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetDate"]/*'/>
     public int[] GetDate() {
       string field = this.GetHeader("date");
       if (field == null) {
@@ -365,14 +366,18 @@ namespace PeterO.Mail {
 }
       var date = new int[8];
       return
-        (HeaderParserUtility.ParseHeaderExpandedDate(field, 0, field.Length,
-        date) != 0) ? (date) : (null);
+        (
+HeaderParserUtility.ParseHeaderExpandedDate(
+field,
+0,
+field.Length,
+date) != 0) ? date : null;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetDate(System.Int32[])"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetDate(System.Int32[])"]/*'/>
     public Message SetDate(int[] dateTime) {
-      if ((dateTime) == null) {
+      if (dateTime == null) {
   throw new ArgumentNullException("dateTime");
 }
       if (!DateTimeUtilities.IsValidDateTime(dateTime)) {
@@ -385,24 +390,24 @@ namespace PeterO.Mail {
       return this.SetHeader("date", GetDateString(dateTime));
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetBodyMessage"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetBodyMessage"]/*'/>
 #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design",
       "CA1024",
-      Justification="This method may throw MessageDataException among other things - making it too heavyweight to be a property." )]
+      Justification="This method may throw MessageDataException among other things - making it too heavyweight to be a property.")]
 #endif
     public Message GetBodyMessage() {
       return (this.ContentType.TopLevelType.Equals("message") &&
           (this.ContentType.SubType.Equals("rfc822") ||
            this.ContentType.SubType.Equals("news") ||
            this.ContentType.SubType.Equals("global"))) ? (new
-             Message(this.body)) : (null);
+             Message(this.body)) : null;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.Int32)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.Int32)"]/*'/>
     public KeyValuePair<string, string> GetHeader(int index) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -418,8 +423,8 @@ namespace PeterO.Mail {
         this.headers[index + 1]);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.String)"]/*'/>
     public string GetHeader(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -434,8 +439,8 @@ namespace PeterO.Mail {
       return null;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeaderArray(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeaderArray(System.String)"]/*'/>
     public string[] GetHeaderArray(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -450,8 +455,8 @@ namespace PeterO.Mail {
       return (string[])list.ToArray();
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.Int32)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.Int32)"]/*'/>
     public Message RemoveHeader(int index) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -473,8 +478,8 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.String)"]/*'/>
     public Message RemoveHeader(string name) {
       if (name == null) {
         throw new ArgumentNullException("name");
@@ -496,8 +501,8 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetBody(System.Byte[])"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetBody(System.Byte[])"]/*'/>
     public Message SetBody(byte[] bytes) {
       if (bytes == null) {
         throw new ArgumentNullException("bytes");
@@ -506,15 +511,15 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='docs.xml'
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.Collections.Generic.KeyValuePair
     /// {System.String,System.String})"]'/>
     public Message SetHeader(int index, KeyValuePair<string, string> header) {
       return this.SetHeader(index, header.Key, header.Value);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String,System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String,System.String)"]/*'/>
     public Message SetHeader(int index, string name, string value) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -536,8 +541,8 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String)"]/*'/>
     public Message SetHeader(int index, string value) {
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -551,8 +556,8 @@ namespace PeterO.Mail {
       return this.SetHeader(index, this.headers[index * 2], value);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.String,System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.String,System.String)"]/*'/>
     public Message SetHeader(string name, string value) {
       name = ValidateHeaderField(name, value);
       // Add the header field
@@ -568,8 +573,8 @@ namespace PeterO.Mail {
       return this.SetHeader(index, name, value);
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHtmlBody(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHtmlBody(System.String)"]/*'/>
     public Message SetHtmlBody(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -580,8 +585,8 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndHtml(System.String,System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndHtml(System.String,System.String)"]/*'/>
     public Message SetTextAndHtml(string text, string html) {
       if (text == null) {
         throw new ArgumentNullException("text");
@@ -603,8 +608,8 @@ namespace PeterO.Mail {
       return this;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextBody(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextBody(System.String)"]/*'/>
     public Message SetTextBody(string str) {
       if (str == null) {
         throw new ArgumentNullException("str");
@@ -890,7 +895,7 @@ namespace PeterO.Mail {
             var encoder = new WordWrapEncoder(true);
             string field = (origRecipient ?
         "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient") +
-                  ": " ;
+                  ": ";
             if (status[0] != 2) {
  field = origFieldName + " ";
 }
@@ -985,10 +990,11 @@ namespace PeterO.Mail {
             // Encapsulated
             status[0] = 2;
           }
-          int spaceAndTabEnd = ParserUtility.SkipSpaceAndTab(origValue, 0,
-            origValue.Length);
-          return
-            Rfc2047.EncodeString(origValue.Substring(spaceAndTabEnd));
+          int spaceAndTabEnd = ParserUtility.SkipSpaceAndTab(
+origValue,
+0,
+origValue.Length);
+          return Rfc2047.EncodeString(origValue.Substring(spaceAndTabEnd));
         }
         if (status != null) {
           // Downgraded
@@ -1864,8 +1870,8 @@ namespace PeterO.Mail {
           }
           haveMsgId = true;
         } else {
-          if (valueHeaderIndices.ContainsKey(name)) {
-            int headerIndex = valueHeaderIndices[name];
+          if (ValueHeaderIndices.ContainsKey(name)) {
+            int headerIndex = ValueHeaderIndices[name];
             if (headerIndex < 9) {
               if (haveHeaders[headerIndex]) {
                 // Already outputted, continue
@@ -2012,11 +2018,11 @@ namespace PeterO.Mail {
       var builder = new StringBuilder();
       var seq = 0;
       builder.Append("<");
-      lock (sequenceSync) {
+      lock (ValueSequenceSync) {
         if (seqFirstTime) {
-          msgidSequence = msgidRandom.Next(65536);
+          msgidSequence = ValueMsgidRandom.Next(65536);
           msgidSequence <<= 16;
-          msgidSequence |= msgidRandom.Next(65536);
+          msgidSequence |= ValueMsgidRandom.Next(65536);
           seqFirstTime = false;
         }
         seq = unchecked(msgidSequence++);
@@ -2429,8 +2435,8 @@ endIndex - startIndex) : String.Empty;
     private class MessageStackEntry {
       private readonly Message message;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
       public Message Message {
         get {
           return this.message;
@@ -2439,8 +2445,8 @@ endIndex - startIndex) : String.Empty;
 
       private readonly string boundary;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
       public string Boundary {
         get {
           return this.boundary;

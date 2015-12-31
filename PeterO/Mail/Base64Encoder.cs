@@ -13,10 +13,9 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.Base64Encoder"]'/>
-  internal sealed class Base64Encoder : ICharacterEncoder
-  {
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.Base64Encoder"]/*'/>
+  internal sealed class Base64Encoder : ICharacterEncoder {
     private static readonly byte[] Base64Classic = {
   0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d,
   0x4e, 0x4f, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a,
@@ -25,35 +24,18 @@ namespace PeterO.Mail {
         0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x2b, 0x2f
       };
 
-    private int lineCount;
-    private int quantumCount;
+    private readonly byte[] alphabet;
+    private readonly bool lenientLineBreaks;
+
+    private readonly bool padding;
+    private readonly bool unlimitedLineLength;
     private int byte1;
     private int byte2;
-    private readonly bool padding;
-    private readonly bool lenientLineBreaks;
-    private bool haveCR;
-    private readonly bool unlimitedLineLength;
-    private readonly byte[] alphabet;
 
     private bool finalized;
-
-    private static byte[] StringAlphabetToBytes(string alphabetString) {
-      if (alphabetString == null) {
-        throw new ArgumentNullException("alphabet");
-      }
-      if (alphabetString.Length != 64) {
-      throw new ArgumentException("alphabet.Length (" + alphabetString.Length +
-          ") is not equal to 64");
-      }
-      var alphabet = new byte[64];
-      for (var i = 0; i < alphabetString.Length; ++i) {
-        if (alphabetString[i] >= 0x100) {
- throw new ArgumentException("alphabet string contains a non-Latin1 character");
-}
-        alphabet[i] = (byte)alphabetString[i];
-      }
-      return alphabet;
-    }
+    private bool haveCR;
+    private int lineCount;
+    private int quantumCount;
 
     public Base64Encoder(
 bool padding,
@@ -65,7 +47,7 @@ unlimitedLineLength,
 Base64Classic) {
     }
 
-        public Base64Encoder(
+    public Base64Encoder(
 bool padding,
 bool lenientLineBreaks,
 bool unlimitedLineLength,
@@ -96,50 +78,55 @@ byte[] alphabet) {
       this.alphabet = alphabet;
     }
 
-    private int LineAwareAppend(IWriter output, byte c) {
-      var charCount = 0;
-      if (!this.unlimitedLineLength) {
-        if (this.lineCount >= 76) {
-          output.WriteByte((byte)0x0d);
-          output.WriteByte((byte)0x0a);
-          charCount += 2;
-          this.lineCount = 0;
-        }
-        ++this.lineCount;
+    public int Encode(int b, IWriter output) {
+      if (b < 0) {
+        return this.finalized ? (-1) : this.FinalizeEncoding(output);
       }
-      output.WriteByte((byte)c);
-      return 1 + charCount;
+      b &= 0xff;
+      var count = 0;
+      if (this.lenientLineBreaks) {
+        if (b == 0x0d) {
+          // CR
+          this.haveCR = true;
+          count += this.AddByteInternal(output, (byte)0x0d);
+          count += this.AddByteInternal(output, (byte)0x0a);
+          return count;
+        }
+        if (b == 0x0a && !this.haveCR) {
+          // bare LF
+          if (this.haveCR) {
+            // Do nothing, this is an LF that follows CR
+            this.haveCR = false;
+          } else {
+            count += this.AddByteInternal(output, (byte)0x0d);
+            count += this.AddByteInternal(output, (byte)0x0a);
+            this.haveCR = false;
+          }
+          return count;
+        }
+      }
+      count += this.AddByteInternal(output, (byte)b);
+      this.haveCR = false;
+      return count;
     }
 
-    private int LineAwareAppendFour(
-IWriter output,
-byte c1,
-byte c2,
-byte c3,
-byte c4) {
-      var charCount = 0;
-      var bytes = new byte[6];
-      if (!this.unlimitedLineLength) {
-        if (this.lineCount >= 76) {
-          // Output CRLF
-          bytes[charCount++] = (byte)0x0d;
-          bytes[charCount++] = (byte)0x0a;
-          this.lineCount = 0;
-        } else if (this.lineCount + 3 >= 76) {
-          charCount += this.LineAwareAppend(output, c1);
-          charCount += this.LineAwareAppend(output, c2);
-          charCount += this.LineAwareAppend(output, c3);
-          charCount += this.LineAwareAppend(output, c4);
-          return charCount;
-        }
-        this.lineCount += 4;
+    private static byte[] StringAlphabetToBytes(string alphabetString) {
+      if (alphabetString == null) {
+        throw new ArgumentNullException("alphabet");
       }
-      bytes[charCount++] = (byte)c1;
-      bytes[charCount++] = (byte)c2;
-      bytes[charCount++] = (byte)c3;
-      bytes[charCount++] = (byte)c4;
-      output.Write(bytes, 0, charCount);
-      return charCount;
+      if (alphabetString.Length != 64) {
+      throw new ArgumentException("alphabet.Length (" +
+          alphabetString.Length + ") is not equal to 64");
+      }
+      var alphabet = new byte[64];
+      for (var i = 0; i < alphabetString.Length; ++i) {
+        if (alphabetString[i] >= 0x100) {
+throw new
+  ArgumentException("alphabet string contains a non-Latin1 character");
+        }
+        alphabet[i] = (byte)alphabetString[i];
+      }
+      return alphabet;
     }
 
     private int AddByteInternal(IWriter output, byte b) {
@@ -187,7 +174,7 @@ output,
         byte c1 = this.alphabet[(this.byte1 >> 2) & 63];
         byte c2 = this.alphabet[((this.byte1 & 3) << 4)];
         if (this.padding) {
-       count += this.LineAwareAppendFour(output, c1, c2, (byte)'=' , (byte)'='
+         count += this.LineAwareAppendFour(output, c1, c2, (byte)'=', (byte)'='
 );
         } else {
           count += this.LineAwareAppend(output, c1);
@@ -202,36 +189,50 @@ output,
       return count;
     }
 
-    public int Encode(int b, IWriter output) {
-      if (b < 0) {
-        return this.finalized ? (-1) : this.FinalizeEncoding(output);
-      }
-      b &= 0xff;
-      var count = 0;
-      if (this.lenientLineBreaks) {
-        if (b == 0x0d) {
-          // CR
-          this.haveCR = true;
-          count += this.AddByteInternal(output, (byte)0x0d);
-          count += this.AddByteInternal(output, (byte)0x0a);
-          return count;
+    private int LineAwareAppend(IWriter output, byte c) {
+      var charCount = 0;
+      if (!this.unlimitedLineLength) {
+        if (this.lineCount >= 76) {
+          output.WriteByte((byte)0x0d);
+          output.WriteByte((byte)0x0a);
+          charCount += 2;
+          this.lineCount = 0;
         }
-        if (b == 0x0a && !this.haveCR) {
-          // bare LF
-          if (this.haveCR) {
-            // Do nothing, this is an LF that follows CR
-            this.haveCR = false;
-          } else {
-            count += this.AddByteInternal(output, (byte)0x0d);
-            count += this.AddByteInternal(output, (byte)0x0a);
-            this.haveCR = false;
-          }
-          return count;
-        }
+        ++this.lineCount;
       }
-      count += this.AddByteInternal(output, (byte)b);
-      this.haveCR = false;
-      return count;
+      output.WriteByte((byte)c);
+      return 1 + charCount;
+    }
+
+    private int LineAwareAppendFour(
+IWriter output,
+byte c1,
+byte c2,
+byte c3,
+byte c4) {
+      var charCount = 0;
+      var bytes = new byte[6];
+      if (!this.unlimitedLineLength) {
+        if (this.lineCount >= 76) {
+          // Output CRLF
+          bytes[charCount++] = (byte)0x0d;
+          bytes[charCount++] = (byte)0x0a;
+          this.lineCount = 0;
+        } else if (this.lineCount + 3 >= 76) {
+          charCount += this.LineAwareAppend(output, c1);
+          charCount += this.LineAwareAppend(output, c2);
+          charCount += this.LineAwareAppend(output, c3);
+          charCount += this.LineAwareAppend(output, c4);
+          return charCount;
+        }
+        this.lineCount += 4;
+      }
+      bytes[charCount++] = (byte)c1;
+      bytes[charCount++] = (byte)c2;
+      bytes[charCount++] = (byte)c3;
+      bytes[charCount++] = (byte)c4;
+      output.Write(bytes, 0, charCount);
+      return charCount;
     }
   }
 }

@@ -99,11 +99,11 @@ The value of the parameter, or null if the parameter does not exist.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>name</i>
+The parameter <i>name</i>
  is null.
 
  * System.ArgumentException:
-The parameter  <i>name</i>
+The parameter <i>name</i>
  is empty.
 
 ### MakeFilename
@@ -135,8 +135,8 @@ A string with the converted version of the file name. Among other things, encode
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter "name" or <i>str</i>
- or "dispoValue" or "dispositionValue" is null.
+The parameter <i>str</i>
+ is null.
 
 ### Parse
 
@@ -148,7 +148,7 @@ Creates a new content disposition object from the value of a Content-Disposition
 
 <b>Parameters:</b>
 
- * <i>dispositionValue</i>: A string object that should be the value of a Content-Disposition header field.
+ * <i>dispositionValue</i>: A text string that should be the value of a Content-Disposition header field.
 
  * <i>defaultValue</i>: The value to return in case the disposition value is syntactically invalid. Can be null.
 
@@ -159,7 +159,7 @@ A ContentDisposition object.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>dispositionValue</i>
+The parameter <i>dispositionValue</i>
  is null.
 
 ### Parse
@@ -171,7 +171,7 @@ Parses a content disposition string and returns a content disposition object.
 
 <b>Parameters:</b>
 
- * <i>dispoValue</i>: A string object.
+ * <i>dispoValue</i>: A text string.
 
 <b>Returns:</b>
 
@@ -181,7 +181,7 @@ A content disposition object, or "Attachment" if  <i>dispoValue</i>
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>dispoValue</i>
+The parameter <i>dispoValue</i>
  is null.
 
 ### ToString

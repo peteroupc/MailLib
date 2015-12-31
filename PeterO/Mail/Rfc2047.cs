@@ -399,8 +399,10 @@ int endIndex) {
                 state = 0;
               } else {
                 if (!haveSpace) {
-               builder.Append(str.Substring(markStart, wordStart -
-                   markStart));
+               builder.Append(
+str.Substring(
+markStart,
+wordStart - markStart));
                 }
                 builder.Append(decodedWord);
                 haveSpace = false;
@@ -423,7 +425,7 @@ int endIndex) {
               state = 1;
               index += 2;
               charsetStart = index;
-            } else if (str[index]==0x20 || str[index]==0x09) {
+            } else if (str[index] == 0x20 || str[index] == 0x09) {
               ++index;
               haveSpace = true;
             } else {

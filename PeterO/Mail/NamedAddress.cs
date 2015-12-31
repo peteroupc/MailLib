@@ -10,13 +10,13 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace PeterO.Mail {
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.NamedAddress"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.NamedAddress"]/*'/>
   public class NamedAddress {
     private readonly string name;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.Name"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.Name"]/*'/>
     public string Name {
       get {
         return this.name;
@@ -25,8 +25,8 @@ namespace PeterO.Mail {
 
     private readonly Address address;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.Address"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.Address"]/*'/>
     public Address Address {
       get {
         return this.address;
@@ -35,16 +35,16 @@ namespace PeterO.Mail {
 
     private readonly bool isGroup;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.IsGroup"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.IsGroup"]/*'/>
     public bool IsGroup {
       get {
         return this.isGroup;
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ToString"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ToString"]/*'/>
     public override string ToString() {
       if (this.isGroup) {
         var builder = new StringBuilder();
@@ -78,8 +78,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String)"]/*'/>
     public NamedAddress(string address) {
       if (address == null) {
         throw new ArgumentNullException("address");
@@ -103,8 +103,8 @@ tokener.GetTokens());
       this.isGroup = na.isGroup;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String)"]/*'/>
     public NamedAddress(string displayName, string address) {
       if (String.IsNullOrEmpty(displayName)) {
         displayName = address;
@@ -118,8 +118,8 @@ tokener.GetTokens());
       this.isGroup = false;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,PeterO.Mail.Address)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,PeterO.Mail.Address)"]/*'/>
     public NamedAddress(string displayName, Address address) {
       if (address == null) {
         throw new ArgumentNullException("address");
@@ -133,8 +133,8 @@ tokener.GetTokens());
       this.isGroup = false;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String,System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String,System.String)"]/*'/>
     public NamedAddress(string displayName, string localPart, string domain) {
       if (localPart == null) {
         throw new ArgumentNullException("localPart");
@@ -151,7 +151,7 @@ tokener.GetTokens());
       this.isGroup = false;
     }
 
-    /// <include file='docs.xml'
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.Collections.Generic.IList
     /// {PeterO.Mail.NamedAddress})"]'/>
     public NamedAddress(string groupName, IList<NamedAddress> mailboxes) {
@@ -177,8 +177,8 @@ tokener.GetTokens());
 
     private readonly IList<NamedAddress> groupAddresses;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.GroupAddresses"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.GroupAddresses"]/*'/>
     public IList<NamedAddress> GroupAddresses {
       get {
         return new

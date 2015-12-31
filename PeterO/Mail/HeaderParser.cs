@@ -188,7 +188,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseAtext(
 string str,
@@ -419,7 +419,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseCharset(
 string str,
@@ -1135,7 +1135,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseDistName(
 string str,
@@ -1622,7 +1622,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseFWS(
 string str,
@@ -2526,7 +2526,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseHeaderControl(
 string str,
@@ -2890,7 +2890,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseHeaderEdiintFeatures(
 string str,
@@ -5255,7 +5255,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseKey(
 string str,
@@ -5391,7 +5391,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseLabel(
 string str,
@@ -5556,7 +5556,7 @@ if (index + 1 < endIndex && (str[index] & ~32) == 81 && str[index + 1] ==
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseLanguageRange(
 string str,
@@ -5604,7 +5604,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseLanguageTag(
 string str,
@@ -5668,7 +5668,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseLdhStr(
 string str,
@@ -6194,7 +6194,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseMilitaryString(
 string str,
@@ -6507,7 +6507,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseNewsgroupName(
 string str,
@@ -6646,7 +6646,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseNodeid(
 string str,
@@ -6694,7 +6694,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseNonnegInteger(
 string str,
@@ -7176,7 +7176,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseOtherSections(
 string str,
@@ -8186,7 +8186,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParsePrintablestring(
 string str,
@@ -8224,7 +8224,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseProperty(
 string str,
@@ -8298,7 +8298,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParsePsChar(
 string str,
@@ -8323,7 +8323,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParsePtype(
 string str,
@@ -8527,7 +8527,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseQuotedPair(
 string str,
@@ -8639,7 +8639,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseQvalue(
 string str,
@@ -8809,7 +8809,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseRegName(
 string str,
@@ -8929,7 +8929,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseResid(
 string str,
@@ -9062,7 +9062,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseRestrictedName(
 string str,
@@ -9099,7 +9099,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseResult(
 string str,
@@ -9287,7 +9287,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseSolicitationKeywords(
 string str,
@@ -9351,7 +9351,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseText(
 string str,
@@ -9471,7 +9471,7 @@ ITokener tokener) {
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
 "Microsoft.Usage",
 "CA1801",
-Justification = "Tokener argument appears for consistency with other Parse* methods defined here." )]
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
     public static int ParseTypeString(
 string str,

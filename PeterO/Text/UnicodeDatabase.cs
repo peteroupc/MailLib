@@ -10,28 +10,28 @@ using System;
 namespace PeterO.Text {
   internal static class UnicodeDatabase {
     private static ByteData classes;
-    private static readonly Object classesSyncRoot = new Object();
+    private static readonly Object ValueClassesSyncRoot = new Object();
 
     private static ByteData combmark;
 
     private static int[] decomps;
 
     private static ByteData idnaCat;
-    private static readonly Object idnaCatSyncRoot = new Object();
+    private static readonly Object ValueIdnaCatSyncRoot = new Object();
     private static int[] pairs;
 
     private static int pairsLength;
-    private static readonly Object pairsSyncRoot = new Object();
+    private static readonly Object ValuePairsSyncRoot = new Object();
 
     private static ByteData qcsnfc;
     private static ByteData qcsnfd;
     private static ByteData qcsnfkc;
     private static ByteData qcsnfkd;
-    private static readonly Object qcsSyncRoot = new Object();
-    private static readonly Object valueCmSyncRoot = new Object();
+    private static readonly Object ValueQcsSyncRoot = new Object();
+    private static readonly Object ValueCmSyncRoot = new Object();
 
     public static int GetCombiningClass(int cp) {
-      lock (classesSyncRoot) {
+      lock (ValueClassesSyncRoot) {
   classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
       }
       return ((int)classes.GetByte(cp)) & 0xff;
@@ -121,14 +121,14 @@ int offset) {
     }
 
     public static int GetIdnaCategory(int cp) {
-      lock (idnaCatSyncRoot) {
+      lock (ValueIdnaCatSyncRoot) {
         idnaCat = idnaCat ?? ByteData.Decompress(IdnaData.IdnaCategories);
       }
       return ((int)idnaCat.GetByte(cp)) & 0xff;
     }
 
     public static bool IsCombiningMark(int cp) {
-      lock (valueCmSyncRoot) {
+      lock (ValueCmSyncRoot) {
         combmark = combmark ?? ByteData.Decompress(IdnaData.CombiningMarks);
         return combmark.GetBoolean(cp);
       }
@@ -158,7 +158,7 @@ int offset) {
           NormalizationData.QCSNFKDMax)) {
         return true;
       }
-      lock (qcsSyncRoot) {
+      lock (ValueQcsSyncRoot) {
         if (form == Normalization.NFC) {
           bd = qcsnfc = qcsnfc ?? ByteData.Decompress(NormalizationData.QCSNFC);
         }
@@ -176,7 +176,7 @@ int offset) {
     }
 
     private static void EnsurePairs() {
-      lock (pairsSyncRoot) {
+      lock (ValuePairsSyncRoot) {
         if (pairs == null) {
           pairs = NormalizationData.ComposedPairs;
           pairsLength = pairs.Length / 3;

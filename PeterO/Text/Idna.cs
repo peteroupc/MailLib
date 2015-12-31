@@ -9,8 +9,8 @@ using System;
 using System.Text;
 
 namespace PeterO.Text {
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Text.Idna"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Text.Idna"]/*'/>
   public static class Idna {
     private const int Unassigned = 0;
     // PValid = 1;
@@ -32,9 +32,9 @@ namespace PeterO.Text {
     private static ByteData bidiClasses;
     private static ByteData joiningTypes;
     private static ByteData scripts;
-    private static readonly object bidiClassesSync = new Object();
-    private static readonly object joiningTypesSync = new Object();
-    private static readonly object scriptsSync = new Object();
+    private static readonly object ValueBidiClassesSync = new Object();
+    private static readonly object ValueJoiningTypesSync = new Object();
+    private static readonly object ValueScriptsSync = new Object();
 
     internal static int CodePointBefore(string str, int index) {
       if (str == null) {
@@ -76,7 +76,7 @@ namespace PeterO.Text {
 
     internal static int GetBidiClass(int ch) {
       ByteData table = null;
-      lock (bidiClassesSync) {
+      lock (ValueBidiClassesSync) {
         bidiClasses = bidiClasses ?? ByteData.Decompress(IdnaData.BidiClasses);
         table = bidiClasses;
       }
@@ -85,7 +85,7 @@ namespace PeterO.Text {
 
     private static int GetJoiningType(int ch) {
       ByteData table = null;
-      lock (joiningTypesSync) {
+      lock (ValueJoiningTypesSync) {
      joiningTypes = joiningTypes ?? ByteData.Decompress(IdnaData.JoiningTypes);
         table = joiningTypes;
       }
@@ -94,7 +94,7 @@ namespace PeterO.Text {
 
     private static int GetScript(int ch) {
       ByteData table = null;
-      lock (scriptsSync) {
+      lock (ValueScriptsSync) {
         scripts = scripts ?? ByteData.Decompress(IdnaData.IdnaRelevantScripts);
         table = scripts;
       }
@@ -177,8 +177,8 @@ namespace PeterO.Text {
       return false;
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.Idna.EncodeDomainName(System.String)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.Idna.EncodeDomainName(System.String)"]/*'/>
     public static string EncodeDomainName(string value) {
       if (value == null) {
         throw new ArgumentNullException("value");
@@ -217,8 +217,8 @@ value.Length);
       return builder.ToString();
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.Idna.IsValidDomainName(System.String,System.Boolean)"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.Idna.IsValidDomainName(System.String,System.Boolean)"]/*'/>
     public static bool IsValidDomainName(string str, bool lookupRules) {
       if (String.IsNullOrEmpty(str)) {
         return false;

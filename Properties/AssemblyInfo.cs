@@ -12,7 +12,7 @@ using System.Reflection;
 [assembly:
 
   AssemblyDescription(
-  "A parser and generator of Internet email messages as a Portable Class Library." )]
+  "A parser and generator of Internet email messages as a Portable Class Library.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: CLSCompliant(true)]
 [assembly: AssemblyCompany("Peter Occil")]

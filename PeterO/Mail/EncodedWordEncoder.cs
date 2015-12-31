@@ -182,8 +182,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.EncodedWordEncoder.ToString"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.EncodedWordEncoder.ToString"]/*'/>
     public override string ToString() {
       return this.fullString.ToString();
     }

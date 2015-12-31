@@ -14,11 +14,11 @@ NOTICE: While this class's source code is in the public domain, the class uses a
         string str,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the Normalizer class.
+Initializes a new instance of the class.
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object.
+ * <i>str</i>: A text string.
 
  * <i>form</i>: A Normalization object.
 
@@ -62,7 +62,7 @@ The parameter  <i>str</i>
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is null.
 
 ### Read
@@ -90,15 +90,15 @@ The number of Unicode code points read, or 0 if the end of the source is reached
 
  * System.ArgumentException:
 Either  <i>index</i>
-or  <i>length</i>
- is less than 0 or greater than <i>chars</i>
+ or  <i>length</i>
+ is less than 0 or greater than  <i>chars</i>
  's length, or  <i>chars</i>
  's length minus  <i>index</i>
  is less than  <i>length</i>
 .
 
  * System.ArgumentNullException:
-The parameter  <i>chars</i>
+The parameter <i>chars</i>
  is null.
 
 ### ReadChar

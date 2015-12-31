@@ -4,8 +4,8 @@ namespace PeterO.Text {
   internal sealed class ByteData {
     private readonly byte[] array;
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.ByteData.DecompressLz4(System.Byte[])"]'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.ByteData.DecompressLz4(System.Byte[])"]/*'/>
     public static byte[] DecompressLz4(byte[] input) {
       var index = 0;
       var copy = new byte[16];

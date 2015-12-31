@@ -36,7 +36,7 @@ Except as contained in this notice, the name of a copyright holder shall not be 
     public NormalizingCharacterInput(
         PeterO.Text.ICharacterInput input);
 
-Initializes a new instance of the NormalizingCharacterInput class using Normalization Form C.
+Initializes a new instance of the class using Normalization Form C.
 
 <b>Parameters:</b>
 
@@ -48,7 +48,7 @@ Initializes a new instance of the NormalizingCharacterInput class using Normaliz
         PeterO.Text.ICharacterInput stream,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the NormalizingCharacterInput class.
+Initializes a new instance of the class.
 
 <b>Parameters:</b>
 
@@ -59,7 +59,7 @@ Initializes a new instance of the NormalizingCharacterInput class.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>stream</i>
+The parameter <i>stream</i>
  is null.
 
 ### NormalizingCharacterInput Constructor
@@ -67,7 +67,7 @@ The parameter  <i>stream</i>
     public NormalizingCharacterInput(
         string str);
 
-Initializes a new instance of the NormalizingCharacterInput class using Normalization Form C.
+Initializes a new instance of the class using Normalization Form C.
 
 <b>Parameters:</b>
 
@@ -81,18 +81,18 @@ Initializes a new instance of the NormalizingCharacterInput class using Normaliz
         int length,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the NormalizingCharacterInput class. Uses a portion of a string as the input.
+Initializes a new instance of the class. Uses a portion of a string as the input.
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object.
+ * <i>str</i>: A text string.
 
  * <i>index</i>: A zero-based index showing where the desired portion of  <i>str</i>
  begins.
 
  * <i>length</i>: The number of elements in the desired portion of  <i>str</i>
  (but not more than  <i>str</i>
- 's length).
+'s length).
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
@@ -102,11 +102,11 @@ Initializes a new instance of the NormalizingCharacterInput class. Uses a portio
         string str,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the NormalizingCharacterInput class.
+Initializes a new instance of the class.
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object.
+ * <i>str</i>: A text string.
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
@@ -142,7 +142,7 @@ A list of the normalized Unicode characters.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is null.
 
 ### GetChars
@@ -155,7 +155,7 @@ Gets a list of normalized code points after reading from a string.
 
 <b>Parameters:</b>
 
- * <i>str</i>: A string object.
+ * <i>str</i>: A text string.
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
@@ -166,7 +166,7 @@ A list of the normalized Unicode characters.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is null.
 
 ### IsNormalized
@@ -213,7 +213,7 @@ True if the text is normalized; otherwise, false.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>chars</i>
+The parameter <i>chars</i>
  is null.
 
 ### IsNormalized
@@ -237,7 +237,7 @@ True if the given string is in the given Unicode normalization form; otherwise, 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is null.
 
 ### IsNormalized
@@ -268,7 +268,7 @@ The parameter  <i>str</i>
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>str</i>
+The parameter <i>str</i>
  is null.
 
 ### Read
@@ -298,13 +298,13 @@ The number of Unicode code points read, or 0 if the end of the source is reached
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>chars</i>
+The parameter <i>chars</i>
  is null.
 
  * System.ArgumentException:
 Either  <i>index</i>
-or  <i>length</i>
- is less than 0 or greater than <i>chars</i>
+ or  <i>length</i>
+ is less than 0 or greater than  <i>chars</i>
  's length, or  <i>chars</i>
  's length minus  <i>index</i>
  is less than  <i>length</i>

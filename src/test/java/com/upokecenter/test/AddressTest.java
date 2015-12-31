@@ -37,8 +37,12 @@ System.out.print("");
         throw new IllegalStateException("", ex);
       }
       try {
-        Assert.assertEquals(null, new Address(EncodingTest.Repeat("local", 200) +
-          "@example.com"));
+        {
+Object objectTemp = null;
+Object objectTemp2 = new Address(EncodingTest.Repeat("local", 200) +
+          "@example.com");
+Assert.assertEquals(objectTemp, objectTemp2);
+}
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
 System.out.print("");

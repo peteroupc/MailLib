@@ -282,10 +282,18 @@ Assert.assertEquals(ret,2,EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""))
 
     @Test
     public void TestNamedAddress() {
-      Assert.assertEquals("\"Me \" <me@example.com>", new NamedAddress("Me ",
-                    "me@example.com").toString());
-      Assert.assertEquals("\" Me\" <me@example.com>", new NamedAddress(" Me",
-                    "me@example.com").toString());
+      {
+Object objectTemp = "\"Me \" <me@example.com>";
+Object objectTemp2 = new NamedAddress("Me ",
+                    "me@example.com").toString();
+Assert.assertEquals(objectTemp, objectTemp2);
+}
+      {
+Object objectTemp = "\" Me\" <me@example.com>";
+Object objectTemp2 = new NamedAddress(" Me",
+                    "me@example.com").toString();
+Assert.assertEquals(objectTemp, objectTemp2);
+}
 
       try {
         Assert.assertEquals(null, new Address(""));

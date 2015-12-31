@@ -383,8 +383,8 @@ if (this.bufferCount != 0) {
       this.started = true;  // in case a boundary delimiter immediately starts
     }
 
-    /// <include file='docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart"]'/>
+    /// <include file='../../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart"]/*'/>
     public bool HasNewBodyPart {
       get {
         return this.hasNewBodyPart;

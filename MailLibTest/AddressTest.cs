@@ -37,8 +37,12 @@ Console.Write(String.Empty);
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-        Assert.AreEqual(null, new Address(EncodingTest.Repeat("local", 200) +
-          "@example.com"));
+        {
+object objectTemp = null;
+object objectTemp2 = new Address(EncodingTest.Repeat("local", 200) +
+          "@example.com");
+Assert.AreEqual(objectTemp, objectTemp2);
+}
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
 Console.Write(String.Empty);
