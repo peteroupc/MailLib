@@ -14,7 +14,7 @@ NOTICE: While this class's source code is in the public domain, the class uses a
         string str,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the class.
+Initializes a new instance of the  class.
 
 <b>Parameters:</b>
 

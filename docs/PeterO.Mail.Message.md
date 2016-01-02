@@ -49,7 +49,7 @@ The following lists known deviations from the mail specifications (Internet Mess
     public Message(
         byte[] bytes);
 
-Initializes a new instance of the class. Reads from the given byte array to initialize the message.
+Initializes a new instance of the  class. Reads from the given byte array to initialize the message.
 
 <b>Parameters:</b>
 
@@ -66,7 +66,7 @@ The parameter <i>bytes</i>
     public Message(
         System.IO.Stream stream);
 
-Initializes a new instance of the class. Reads from the given Stream object to initialize the message.
+Initializes a new instance of the  class. Reads from the given Stream object to initialize the message.
 
 <b>Parameters:</b>
 

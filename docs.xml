@@ -323,8 +323,7 @@
 <summary>Represents an email address.</summary>
 </doc>
 <doc name="M:PeterO.Mail.Address.#ctor(System.String)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.Address'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Address'/> class.</summary>
             <param name='addressValue'>An email address.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='addressValue'/> is null.</exception>
@@ -466,19 +465,16 @@
 <summary>Description of DispositionBuilder.</summary>
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.#ctor">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.DispositionBuilder'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.DispositionBuilder'/> class.</summary>
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.#ctor(PeterO.Mail.ContentDisposition)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.DispositionBuilder'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.DispositionBuilder'/> class.</summary>
             <param name='mt'>A ContentDisposition object.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='mt'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.#ctor(System.String)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.DispositionBuilder'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.DispositionBuilder'/> class.</summary>
             <param name='type'>A text string.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='type'/> is null.</exception>
@@ -700,21 +696,18 @@
 <summary>A mutable media type object.</summary>
 </doc>
 <doc name="M:PeterO.Mail.MediaTypeBuilder.#ctor">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.MediaTypeBuilder'/> class, using the type
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MediaTypeBuilder'/> class, using the type
             "application/octet-stream".</summary>
 </doc>
 <doc name="M:PeterO.Mail.MediaTypeBuilder.#ctor(PeterO.Mail.MediaType)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.MediaTypeBuilder'/> class using the data from another
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MediaTypeBuilder'/> class using the data from another
             media type.</summary>
             <param name='mt'>A MediaType object.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='mt'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Mail.MediaTypeBuilder.#ctor(System.String,System.String)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.MediaTypeBuilder'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MediaTypeBuilder'/> class.</summary>
             <param name='type'>The media type's top-level type.</param>
             <param name='subtype'>The media type's subtype.</param>
 </doc>
@@ -864,21 +857,18 @@
             though.)</item></list> ---.</summary>
 </doc>
 <doc name="M:PeterO.Mail.Message.#ctor">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.Message'/> class. The message will be plain text and
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. The message will be plain text and
             have an artificial From address.</summary>
 </doc>
 <doc name="M:PeterO.Mail.Message.#ctor(System.Byte[])">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.Message'/> class. Reads from the given byte array to
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. Reads from the given byte array to
             initialize the message.</summary>
             <param name='bytes'>A readable data stream.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='bytes'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Mail.Message.#ctor(System.IO.Stream)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.Message'/> class. Reads from the given Stream object to
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. Reads from the given Stream object to
             initialize the message.</summary>
             <param name='stream'>A readable data stream.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
@@ -1292,18 +1282,15 @@
             syntax.</summary>
 </doc>
 <doc name="M:PeterO.Mail.MessageDataException.#ctor">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.MessageDataException'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MessageDataException'/> class.</summary>
 </doc>
 <doc name="M:PeterO.Mail.MessageDataException.#ctor(System.String)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.MessageDataException'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MessageDataException'/> class.</summary>
             <param name='message'>A string to use as the exception
             message.</param>
 </doc>
 <doc name="M:PeterO.Mail.MessageDataException.#ctor(System.String,System.Exception)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.MessageDataException'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MessageDataException'/> class.</summary>
             <param name='message'>A string to use as the exception
             message.</param>
             <param name='innerException'>An Exception object.</param>
@@ -1313,8 +1300,7 @@
             Can represent a group of email addresses instead.</summary>
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.NamedAddress'/> class. Examples:
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class. Examples:
             <list>
             <item><c>john@example.com</c></item>
             <item><c>"John Doe" &lt;john@example.com&gt;</c></item>
@@ -1345,8 +1331,7 @@
             an invalid syntax.</exception>
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String,PeterO.Mail.Address)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.NamedAddress'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class.</summary>
             <param name='displayName'>A text string. If this value is null or
             empty, uses the email address as the display name. Encoded words
             under RFC 2047 will not be decoded.</param>
@@ -1367,8 +1352,7 @@
             group.</exception>
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.NamedAddress'/> class using the given display name and
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given display name and
             email address.</summary>
             <param name='displayName'>The address's display name. Can be null
             or empty, in which case the email address is used instead. Encoded
@@ -1380,8 +1364,7 @@
             address has an invalid syntax.</exception>
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String,System.String)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Mail.NamedAddress'/> class using the given name and an email
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given name and an email
             address made up of its local part and domain.</summary>
             <param name='displayName'>A text string. If this value is null or
             empty, uses the email address as the display name.</param>
@@ -1582,8 +1565,7 @@
             Database.</para></summary>
 </doc>
 <doc name="M:PeterO.Text.Normalizer.#ctor(System.String,PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Text.Normalizer'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Text.Normalizer'/> class.</summary>
             <param name='str'>A text string.</param>
             <param name='form'>A Normalization object.</param>
 </doc>
@@ -1704,14 +1686,12 @@
             holder.</para></summary>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using Normalization
+<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using Normalization
             Form C.</summary>
             <param name='input'>An ICharacterInput object.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.</summary>
             <param name='stream'>An ICharacterInput object.</param>
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
@@ -1733,22 +1713,19 @@
             <exception cref='T:System.ArgumentNullException'>The parameter <paramref name='characterList'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using Normalization
+<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using Normalization
             Form C.</summary>
             <param name='str'>A string specifying the text to
             normalize.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.</summary>
             <param name='str'>A text string.</param>
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the
-            <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class. Uses a portion of a
+<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class. Uses a portion of a
             string as the input.</summary>
             <param name='str'>A text string.</param>
             <param name='index'>A zero-based index showing where the desired
