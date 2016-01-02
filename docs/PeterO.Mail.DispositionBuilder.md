@@ -9,7 +9,7 @@ Description of DispositionBuilder.
     public DispositionBuilder(
         PeterO.Mail.ContentDisposition mt);
 
-Initializes a new instance of the class.
+Initializes a new instance of the  class.
 
 <b>Parameters:</b>
 
@@ -26,7 +26,7 @@ The parameter <i>mt</i>
     public DispositionBuilder(
         string type);
 
-Initializes a new instance of the class.
+Initializes a new instance of the  class.
 
 <b>Parameters:</b>
 
@@ -42,7 +42,7 @@ The parameter <i>type</i>
 
     public DispositionBuilder();
 
-Initializes a new instance of the class.
+Initializes a new instance of the  class.
 
 ### DispositionType
 

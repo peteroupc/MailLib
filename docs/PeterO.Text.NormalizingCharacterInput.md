@@ -36,7 +36,7 @@ Except as contained in this notice, the name of a copyright holder shall not be 
     public NormalizingCharacterInput(
         PeterO.Text.ICharacterInput input);
 
-Initializes a new instance of the class using Normalization Form C.
+Initializes a new instance of the  class using Normalization Form C.
 
 <b>Parameters:</b>
 
@@ -48,7 +48,7 @@ Initializes a new instance of the class using Normalization Form C.
         PeterO.Text.ICharacterInput stream,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the class.
+Initializes a new instance of the  class.
 
 <b>Parameters:</b>
 
@@ -67,7 +67,7 @@ The parameter <i>stream</i>
     public NormalizingCharacterInput(
         string str);
 
-Initializes a new instance of the class using Normalization Form C.
+Initializes a new instance of the  class using Normalization Form C.
 
 <b>Parameters:</b>
 
@@ -81,7 +81,7 @@ Initializes a new instance of the class using Normalization Form C.
         int length,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the class. Uses a portion of a string as the input.
+Initializes a new instance of the  class. Uses a portion of a string as the input.
 
 <b>Parameters:</b>
 
@@ -102,7 +102,7 @@ Initializes a new instance of the class. Uses a portion of a string as the input
         string str,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the class.
+Initializes a new instance of the  class.
 
 <b>Parameters:</b>
 
