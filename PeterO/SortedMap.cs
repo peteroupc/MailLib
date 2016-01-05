@@ -9,8 +9,9 @@ using System;
 using System.Collections.Generic;
 
 namespace PeterO {
-    /// <include file='../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.SortedMap`2"]/*'/>
+    // <summary>A dictionary sorted by key.</summary>
+    // <typeparam name='T1'>The type of each key.</typeparam>
+    // <typeparam name='T2'>The type of each value.</typeparam>
   internal class SortedMap<T1, T2> : IDictionary<T1, T2> {
     private readonly RedBlackTree<KeyValuePair<T1, T2>> tree;
     private static readonly IComparer<KeyValuePair<T1, T2>> ValueComp = new
@@ -120,8 +121,9 @@ out kvp)) {
       }
     }
 
-    /// <include file='../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.SortedMap`2.IsReadOnly"]/*'/>
+    // <summary>Gets a value indicating whether this map is
+    // read-only.</summary>
+    // <value>Always false.</value>
     public bool IsReadOnly {
       get {
         return false;
