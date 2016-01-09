@@ -215,8 +215,7 @@ int index) {
     private readonly ICharacterInput iterator;
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList
-    /// {System.Int32})"]'/>
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32})"]/*'/>
     public NormalizingCharacterInput(IList<int> characterList) :
       this(characterList, Normalization.NFC) {
     }
@@ -238,8 +237,7 @@ Normalization.NFC) {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList
-    /// {System.Int32},PeterO.Text.Normalization)"]'/>
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
     public NormalizingCharacterInput(
 IList<int> characterList,
 Normalization form) :
@@ -443,8 +441,7 @@ form)) {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Collections.Generic.IList
-    /// {System.Int32},PeterO.Text.Normalization)"]'/>
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(IList<int> charList, Normalization form) {
       var nonQcsStart = -1;
       var lastQcs = 0;

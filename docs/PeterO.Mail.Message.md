@@ -231,6 +231,25 @@ The header field name is too long or contains an invalid character, or the heade
     public PeterO.Mail.Message AddHeader(
         System.Collections.Generic.KeyValuePair header);
 
+Adds a header field to the end of the message's header.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
+
+<b>Parameters:</b>
+
+ * <i>header</i>: A key/value pair. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
+
+<b>Returns:</b>
+
+This instance.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The key or value of <i>header</i>
+ is null.
+
+ * System.ArgumentException:
+The header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
+
 ### Generate
 
     public string Generate();
@@ -540,6 +559,28 @@ The parameter <i>value</i>
     public PeterO.Mail.Message SetHeader(
         int index,
         System.Collections.Generic.KeyValuePair header);
+
+Sets the name and value of a header field by index.Updates the ContentType and ContentDisposition properties if those header fields have been modified by this method.
+
+<b>Parameters:</b>
+
+ * <i>index</i>: Zero-based index of the header field to set.
+
+ * <i>header</i>: A key/value pair. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
+
+<b>Returns:</b>
+
+A Message object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentException:
+The parameter  <i>index</i>
+ is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
+
+ * System.ArgumentNullException:
+The key or value of <i>header</i>
+ is null.
 
 ### SetHeader
 

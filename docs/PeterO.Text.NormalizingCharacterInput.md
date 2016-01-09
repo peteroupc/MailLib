@@ -115,11 +115,31 @@ Initializes a new instance of the  class.
     public NormalizingCharacterInput(
         System.Collections.Generic.IList characterList);
 
+Initializes a new instance of the  class using Normalization Form C.
+
+<b>Parameters:</b>
+
+ * <i>characterList</i>: A list of Unicode code points specifying the text to normalize.
+
 ### NormalizingCharacterInput Constructor
 
     public NormalizingCharacterInput(
         System.Collections.Generic.IList characterList,
         PeterO.Text.Normalization form);
+
+Initializes a new instance of the  class using the given normalization form.
+
+<b>Parameters:</b>
+
+ * <i>characterList</i>: An IList object.
+
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>characterList</i>
+ is null.
 
 ### GetChars
 
@@ -245,6 +265,24 @@ The parameter <i>str</i>
     public static bool IsNormalized(
         System.Collections.Generic.IList charList,
         PeterO.Text.Normalization form);
+
+Determines whether the given list of characters is in the given Unicode normalization form.
+
+<b>Parameters:</b>
+
+ * <i>charList</i>: A list of Unicode code points.
+
+ * <i>form</i>: Specifies the normalization form to use when normalizing the text.
+
+<b>Returns:</b>
+
+True if the given list of characters is in the given Unicode normalization form; otherwise, false.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>charList</i>
+ is null.
 
 ### Normalize
 
