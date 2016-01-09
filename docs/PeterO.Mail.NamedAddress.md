@@ -111,6 +111,25 @@ The parameter <i>localPart</i>
         string groupName,
         System.Collections.Generic.IList mailboxes);
 
+Initializes a new instance of the  class. Takes a group name and several named email addresses as parameters, and forms a group with them.
+
+<b>Parameters:</b>
+
+ * <i>groupName</i>: The group's name.
+
+ * <i>mailboxes</i>: A list of named addresses that make up the group.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter  <i>groupName</i>
+ or  <i>mailboxes</i>
+ is null.
+
+ * System.ArgumentException:
+The parameter  <i>groupName</i>
+ is empty, or an item in the list is itself a group.
+
 ### Address
 
     public PeterO.Mail.Address Address { get; }

@@ -9,6 +9,7 @@ Specifies what kind of data a message body is.
 Represents an email message, and contains methods and             properties for accessing and modifying email message data.
  * [PeterO.Mail.MessageDataException](PeterO.Mail.MessageDataException.md) - Exception thrown when a message has invalid             syntax.
  * [PeterO.Mail.NamedAddress](PeterO.Mail.NamedAddress.md) - Represents an email address and a name for that address.
+ * [PeterO.SortedMap&lt;T1, T2&gt;](PeterO.SortedMap-T1-T2.md) - A dictionary sorted by key.
  * [PeterO.Text.Idna](PeterO.Text.Idna.md) -
 Contains methods that implement Internationalized Domain             Names in Applications (IDNA).
  * [PeterO.Text.Normalization](PeterO.Text.Normalization.md) - Represents a Unicode normalization form.

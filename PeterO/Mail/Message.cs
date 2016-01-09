@@ -327,8 +327,7 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair
-    /// {System.String,System.String})"]'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair{System.String,System.String})"]/*'/>
     public Message AddHeader(KeyValuePair<string, string> header) {
       return this.AddHeader(header.Key, header.Value);
     }
@@ -512,8 +511,7 @@ date) != 0) ? date : null;
     }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.Collections.Generic.KeyValuePair
-    /// {System.String,System.String})"]'/>
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.Collections.Generic.KeyValuePair{System.String,System.String})"]/*'/>
     public Message SetHeader(int index, KeyValuePair<string, string> header) {
       return this.SetHeader(index, header.Key, header.Value);
     }
