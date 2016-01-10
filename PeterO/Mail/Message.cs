@@ -648,14 +648,9 @@ date) != 0) ? date : null;
           // Line starts with "From" followed by space
           return false;
         }
-        if (lineLength == 0 && index + 1 < endIndex &&
-            bytes[index] == '.' && bytes[index + 1] == '\r') {
-          // Dot line
-          return false;
-        }
-        if (lineLength == 0 && index + 1 == endIndex &&
+        if (lineLength == 0 && index < endIndex &&
             bytes[index] == '.') {
-          // Dot line
+          // Dot at beginning of line
           return false;
         }
         if (c == '\r' && index + 1 < endIndex && bytes[index + 1] == '\n') {
@@ -1700,8 +1695,8 @@ origValue.Length);
           // not bare LF
           allTextBytes &= body[i] != (byte)'\n';
         }
-        allTextBytes &= lineLength != 0 || i + 2 >= body.Length || body[i] !=
-          '.' || body[i + 1] != '\r' || body[i + 2] != '\n';
+        allTextBytes &= lineLength != 0 || i >= body.Length || body[i] !=
+          '.';
         allTextBytes &= lineLength != 0 || i + 4 >= body.Length || body[i] !=
           'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3] !=
           'm' || body[i + 4] != ' ';
