@@ -1115,7 +1115,9 @@ import java.util.*;
 
     private static byte[] DowngradeDeliveryStatus(String str) {
       Message msg =
-  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"+
+
+  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"
+    +
         "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
       msg = MessageTest.MessageFromString(MessageTest.MessageGenerate(msg));
       return msg.GetBody();
@@ -1185,13 +1187,20 @@ import java.util.*;
       TestDowngradeDSNOne("(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
         ("(\u00be) rfc822; x@x.example"));
 
-  TestDowngradeDSNOne("(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=);\r\n x@x.example"
-        ,
-        ("(\u00be) rfc822(\u00be); x@x.example"));
+  {
+Object objectTemp =
+  "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=);\r\n x@x.example"
+        ;
+Object objectTemp2 = ("(\u00be) rfc822(\u00be); x@x.example");
+TestDowngradeDSNOne(objectTemp, objectTemp2);
+}
 
-  TestDowngradeDSNOne("(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=);\r\n x@x"+
-        hexstart + "BE}" + hexstart + "FF20}.example",
-        ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example"));
+  {
+Object objectTemp = "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=);\r\n x@x"+
+        hexstart + "BE}" + hexstart + "FF20}.example";
+Object objectTemp2 = ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example");
+TestDowngradeDSNOne(objectTemp, objectTemp2);
+}
       TestDowngradeDSNOne("=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40=C2=BE?=",
         ("(\u00be) rfc822; x@\u00be"));
     }
@@ -1519,17 +1528,24 @@ TestValidLanguageTag(objectTemp, objectTemp2);
         String stringTemp = DowngradeHeaderField("to",
                     "g: x@example.com, x\u00e1y@example.com;");
 
-  Assert.assertEquals("g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;"
-          ,
-          stringTemp);
+  {
+Object objectTemp =
+  "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;"
+          ;
+Object objectTemp2 = stringTemp;
+Assert.assertEquals(objectTemp, objectTemp2);
+}
       }
       {
         String stringTemp = DowngradeHeaderField("to",
                     "g: x@example.com, x@\u0300.example;");
 
-  Assert.assertEquals("g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;"
-          ,
-          stringTemp);
+  {
+Object objectTemp = "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;"
+          ;
+Object objectTemp2 = stringTemp;
+Assert.assertEquals(objectTemp, objectTemp2);
+}
       }
       {
         String objectTemp = "g: x@example.com" + sep + "x@xn--e-ufa.example;";
@@ -1685,17 +1701,24 @@ TestValidLanguageTag(objectTemp, objectTemp2);
       {
         String stringTemp = DowngradeHeaderField("from",
                     "(comment) \"Tes\u00bet   Subject\" <x@x.example>");
-  Assert.assertEquals("(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>"
-          ,
-          stringTemp);
+  {
+Object objectTemp = "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>"
+          ;
+Object objectTemp2 = stringTemp;
+Assert.assertEquals(objectTemp, objectTemp2);
+}
       }
       {
         String stringTemp = DowngradeHeaderField("from",
                     "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
 
-  Assert.assertEquals("(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>"
-          ,
-          stringTemp);
+  {
+Object objectTemp =
+  "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>"
+          ;
+Object objectTemp2 = stringTemp;
+Assert.assertEquals(objectTemp, objectTemp2);
+}
       }
       {
         String stringTemp = DowngradeHeaderField("from",
@@ -2020,14 +2043,17 @@ TestValidLanguageTag(objectTemp, objectTemp2);
       TestEncodedBytesRoundTrip("T\u000best\r\nFrMe");
       TestEncodedBytesRoundTrip("T\u000best\r\nFMe");
       TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nGood ");
+      TestEncodedBytesRoundTrip("T\u000best\r\n.From Me");
+      TestEncodedBytesRoundTrip("T\u000best\r\n..From Me");
+      TestEncodedBytesRoundTrip("T\u000best\r\n...From Me");
       TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nFrom Me");
       TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nFrom Me\r\n");
       TestEncodedBytesRoundTrip("The Best\r\n--=_Boundary00000000\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n.\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n.\rAnother");
       TestEncodedBytesRoundTrip("The Best\r\n.");
-  TestEncodedBytesRoundTrip("The Best\r\n--=_Boundary00000000--\r\nAnother"
-);
+  TestEncodedBytesRoundTrip(
+"The Best\r\n--=_Boundary00000000--\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n--=_Bomb\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n--Boundary\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n--Boundary--\r\nAnother");

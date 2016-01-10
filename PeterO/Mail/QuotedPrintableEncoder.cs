@@ -132,8 +132,7 @@ char b3) {
               } else if (c == 0x3d) {
                 return count + this.IncrementAndAppend(output, "=3D");
               } else if (c == 0x2e && this.lineCount == 0) {
-                this.machineState = 2;
-                return count;
+                return count + this.IncrementAndAppend(output, "=2E");
               } else if (c == 0x46 && this.lineCount == 0) {
                 this.machineState = 3;
                 return count;
@@ -176,16 +175,6 @@ HexAlphabet[c & 15]);
                   continue;
                 }
               }
-            }
-          case 2: {
-              // Dot at beginning of line
-              if (c == 0x0d || c == 0x0a) {
-                count += this.IncrementAndAppend(output, "=2E");
-              } else {
-                count += this.IncrementAndAppendChar(output, (char)0x2e);
-              }
-              this.machineState = 0;
-              continue;
             }
           case 3: {
               // Capital F at beginning of line
