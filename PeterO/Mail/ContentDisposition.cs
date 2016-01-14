@@ -74,10 +74,10 @@ string type,
  IDictionary<string,
  string> parameters) {
       this.dispositionType = type;
-      this.parameters = new SortedMap<string, string>(parameters);
+      this.parameters = new Dictionary<string, string>(parameters);
     }
 
-    private SortedMap<string, string> parameters;
+    private Dictionary<string, string> parameters;
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.Parameters"]/*'/>
@@ -353,7 +353,7 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
 
     private static ContentDisposition Build(string name) {
       var dispo = new ContentDisposition();
-      dispo.parameters = new SortedMap<string, string>();
+      dispo.parameters = new Dictionary<string, string>();
       dispo.dispositionType = name;
       return dispo;
     }
@@ -399,7 +399,7 @@ ContentDisposition defaultValue) {
         throw new ArgumentNullException("dispositionValue");
       }
       var dispo = new ContentDisposition();
-      dispo.parameters = new SortedMap<string, string>();
+      dispo.parameters = new Dictionary<string, string>();
       return (!dispo.ParseDisposition(dispositionValue)) ? defaultValue : dispo;
     }
   }

@@ -92,10 +92,10 @@ string type,
       string> parameters) {
       this.topLevelType = type;
       this.subType = subtype;
-      this.parameters = new SortedMap<string, string>(parameters);
+      this.parameters = new Dictionary<string, string>(parameters);
     }
 
-    private SortedMap<string, string> parameters;
+    private Dictionary<string, string> parameters;
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.MediaType.Parameters"]/*'/>
@@ -526,7 +526,9 @@ IDictionary<string, string>
       parameters,
  StringBuilder sb) {
       var tmp = new StringBuilder();
-      foreach (string key in parameters.Keys) {
+      var keylist = new List<string>(parameters.Keys);
+      keylist.Sort();
+      foreach (string key in keylist) {
         int lineIndex = LastLineStart(sb);
         string name = key;
         string value = parameters[key];
@@ -880,7 +882,8 @@ ICharacterEncoding charset) {
       if (parameters.Count == 0) {
         return true;
       }
-      IList<string> keyList = new List<string>(parameters.Keys);
+      var keyList = new List<string>(parameters.Keys);
+      keyList.Sort();
       foreach (string name in keyList) {
         if (!parameters.ContainsKey(name)) {
           continue;
@@ -1184,7 +1187,7 @@ null);
         throw new ArgumentNullException("str");
       }
       var mt = new MediaType();
-      mt.parameters = new SortedMap<string, string>();
+      mt.parameters = new Dictionary<string, string>();
       if (!mt.ParseMediaType(str)) {
         #if DEBUG
         // Console.WriteLine("Unparsable: " + str);

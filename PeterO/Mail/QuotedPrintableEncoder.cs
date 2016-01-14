@@ -38,16 +38,23 @@ namespace PeterO.Mail {
           output.WriteByte(0x3d);
           output.WriteByte(0x0d);
           output.WriteByte(0x0a);
-          this.lineCount = appendStr.Length;
+          this.lineCount = 0;
           count += 3;
-        } else {
-          this.lineCount += appendStr.Length;
         }
       }
       for (int i = 0; i < appendStr.Length; ++i) {
-        output.WriteByte((byte)appendStr[i]);
+        if (i==0 && this.lineCount == 0 && appendStr[i] == '.') {
+          output.WriteByte((byte)'=');
+          output.WriteByte((byte)'2');
+          output.WriteByte((byte)'E');
+          this.lineCount += 2;
+          count += 2;
+        } else {
+          output.WriteByte((byte)appendStr[i]);
+        }
         ++count;
       }
+      this.lineCount += appendStr.Length;
       return count;
     }
 
@@ -63,33 +70,54 @@ char b3) {
           output.WriteByte(0x3d);
           output.WriteByte(0x0d);
           output.WriteByte(0x0a);
-          this.lineCount = 3;
+          this.lineCount = 0;
           count += 3;
-        } else {
-          this.lineCount += 3;
         }
       }
-      output.WriteByte((byte)b1);
+      if (this.lineCount==0 && b1=='.') {
+        output.WriteByte((byte)'=');
+        output.WriteByte((byte)'2');
+        output.WriteByte((byte)'E');
+        this.lineCount += 2;
+        count += 2;
+      } else {
+        output.WriteByte((byte)b1);
+      }
       output.WriteByte((byte)b2);
       output.WriteByte((byte)b3);
+      this.lineCount += 3;
       count += 3;
       return count;
     }
 
     private int IncrementAndAppendChar(IWriter output, char ch) {
+      var count = 1;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + 1 > 75) {
           // 76 including the final '='
-          var buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)ch };
+          byte[] buf;
+          if (ch == '.') {
+            buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)'=',
+            (byte)'2', (byte)'E' };
+          } else {
+            buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)ch };
+          }
           output.Write(buf, 0, buf.Length);
-          this.lineCount = 1;
-          return 4;
-        } else {
-          ++this.lineCount;
+          this.lineCount = buf.Length - 3;
+          return buf.Length;
         }
       }
-      output.WriteByte((byte)ch);
-      return 1;
+      if (this.lineCount == 0 && ch == '.') {
+        output.WriteByte((byte)'=');
+        output.WriteByte((byte)'2');
+        output.WriteByte((byte)'E');
+        this.lineCount += 2;
+        count += 2;
+      } else {
+        output.WriteByte((byte)ch);
+      }
+      ++this.lineCount;
+      return count;
     }
 
     private int machineState;
