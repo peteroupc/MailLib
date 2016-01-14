@@ -1119,9 +1119,8 @@ namespace MailLibTest {
     private static byte[] DowngradeDeliveryStatus(string str) {
       Message msg =
 
-  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"
-    +
-        "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
+  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"+
+    "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
       msg = MessageTest.MessageFromString(MessageTest.MessageGenerate(msg));
       return msg.GetBody();
     }
@@ -1190,20 +1189,22 @@ namespace MailLibTest {
       TestDowngradeDSNOne("(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
         ("(\u00be) rfc822; x@x.example"));
 
-  {
-object objectTemp =
+      {
+        string stringTemp =
   "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=);\r\n x@x.example"
         ;
-object objectTemp2 = ("(\u00be) rfc822(\u00be); x@x.example");
-TestDowngradeDSNOne(objectTemp, objectTemp2);
-}
+        string stringTemp2 = ("(\u00be) rfc822(\u00be); x@x.example");
+        TestDowngradeDSNOne(stringTemp, stringTemp2);
+      }
 
-  {
-object objectTemp = "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=);\r\n x@x"+
-        hexstart + "BE}" + hexstart + "FF20}.example";
-object objectTemp2 = ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example");
-TestDowngradeDSNOne(objectTemp, objectTemp2);
-}
+      {
+string stringTemp =
+          "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=);\r\n x@x" +
+                hexstart + "BE}" + hexstart + "FF20}.example";
+      string stringTemp2 =
+          ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example");
+        TestDowngradeDSNOne(stringTemp, stringTemp2);
+      }
       TestDowngradeDSNOne("=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40=C2=BE?=",
         ("(\u00be) rfc822; x@\u00be"));
     }
@@ -1238,11 +1239,10 @@ TestDowngradeDSNOne(objectTemp, objectTemp2);
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
       {
-object objectTemp = true;
-object objectTemp2 = (
-"zh-CN-a-myext-x-private");
-TestValidLanguageTag(objectTemp, objectTemp2);
-}
+        string stringTemp2 = (
+        "zh-CN-a-myext-x-private");
+        TestValidLanguageTag(true, stringTemp2);
+      }
       {
         var objectTemp = true;
         string objectTemp2 = ("en-a-myext-b-another");
@@ -1532,24 +1532,25 @@ TestValidLanguageTag(objectTemp, objectTemp2);
         string stringTemp = DowngradeHeaderField("to",
                     "g: x@example.com, x\u00e1y@example.com;");
 
-  {
-object objectTemp =
-  "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;"
-          ;
-object objectTemp2 = stringTemp;
-Assert.AreEqual(objectTemp, objectTemp2);
-}
+        {
+          object objectTemp =
+            "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;"
+                    ;
+          object objectTemp2 = stringTemp;
+          Assert.AreEqual(objectTemp, objectTemp2);
+        }
       }
       {
         string stringTemp = DowngradeHeaderField("to",
                     "g: x@example.com, x@\u0300.example;");
 
-  {
-object objectTemp = "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;"
-          ;
-object objectTemp2 = stringTemp;
-Assert.AreEqual(objectTemp, objectTemp2);
-}
+        {
+          object objectTemp =
+            "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;"
+                    ;
+          object objectTemp2 = stringTemp;
+          Assert.AreEqual(objectTemp, objectTemp2);
+        }
       }
       {
         string objectTemp = "g: x@example.com" + sep + "x@xn--e-ufa.example;";
@@ -1676,13 +1677,13 @@ Assert.AreEqual(objectTemp, objectTemp2);
         string stringTemp = DowngradeHeaderField("from",
                     "(comment) Tes\u00bet Subject <x@x.example>");
   Assert.AreEqual("(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-          stringTemp);
+                stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
                     "(comment) Test Sub\u00beject <x@x.example>");
   Assert.AreEqual("(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-          stringTemp);
+                stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
@@ -1694,41 +1695,42 @@ Assert.AreEqual(objectTemp, objectTemp2);
         string stringTemp = DowngradeHeaderField("from",
                     "(comment) \"Tes\u00bet Subject\" <x@x.example>");
   Assert.AreEqual("(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-          stringTemp);
+                stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
                     "(comment) \"Test Sub\u00beject\" <x@x.example>");
   Assert.AreEqual("(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-          stringTemp);
+                stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from",
                     "(comment) \"Tes\u00bet   Subject\" <x@x.example>");
-  {
-object objectTemp = "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>"
-          ;
-object objectTemp2 = stringTemp;
-Assert.AreEqual(objectTemp, objectTemp2);
-}
+        {
+ object objectTemp =
+            "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>"
+                    ;
+          object objectTemp2 = stringTemp;
+          Assert.AreEqual(objectTemp, objectTemp2);
+        }
       }
       {
         string stringTemp = DowngradeHeaderField("from",
                     "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
 
-  {
-object objectTemp =
-  "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>"
-          ;
-object objectTemp2 = stringTemp;
-Assert.AreEqual(objectTemp, objectTemp2);
-}
+        {
+          object objectTemp =
+            "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>"
+                    ;
+          object objectTemp2 = stringTemp;
+          Assert.AreEqual(objectTemp, objectTemp2);
+        }
       }
       {
         string stringTemp = DowngradeHeaderField("from",
                     "\"Tes\u00bet Subject\" (comment) <x@x.example>");
   Assert.AreEqual("=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-          stringTemp);
+                stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from", "Test <x@x.example>");
@@ -1781,7 +1783,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         string stringTemp = DowngradeHeaderField("from",
                     "\"Tes\u00bet Subject\" (comment) <x@x.example>");
   Assert.AreEqual("=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-          stringTemp);
+                stringTemp);
       }
     }
 
@@ -2058,8 +2060,8 @@ Assert.AreEqual(objectTemp, objectTemp2);
       TestEncodedBytesRoundTrip("The Best\r\n.\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n.\rAnother");
       TestEncodedBytesRoundTrip("The Best\r\n.");
-  TestEncodedBytesRoundTrip(
-"The Best\r\n--=_Boundary00000000--\r\nAnother");
+      TestEncodedBytesRoundTrip(
+    "The Best\r\n--=_Boundary00000000--\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n--=_Bomb\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n--Boundary\r\nAnother");
       TestEncodedBytesRoundTrip("The Best\r\n--Boundary--\r\nAnother");

@@ -104,8 +104,6 @@
     <Compile Include="PeterO\Mail\WordWrapEncoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PeterO\ReadOnlyMap.cs" />
-    <Compile Include="PeterO\RedBlackTree.cs" />
-    <Compile Include="PeterO\SortedMap.cs" />
     <Compile Include="PeterO\Text\ByteData.cs" />
     <Compile Include="PeterO\Text\DomainUtility.cs" />
     <Compile Include="PeterO\Text\Idna.cs" />
