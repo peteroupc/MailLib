@@ -42,4 +42,4 @@ Determines whether the given string is a syntactically valid domain name.
 
 <b>Returns:</b>
 
-True if the given string is a syntactically valid domain name; otherwise; false.
+ `true`  if the given string is a syntactically valid domain name; otherwise; false.

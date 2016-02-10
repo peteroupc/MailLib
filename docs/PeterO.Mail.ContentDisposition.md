@@ -34,7 +34,7 @@ Gets a value indicating whether the disposition type is attachment.
 
 <b>Returns:</b>
 
-True if the disposition type is attachment; otherwise, false.
+ `true`  if the disposition type is attachment, otherwise,  `false` .
 
 ### IsInline
 
@@ -44,7 +44,7 @@ Gets a value indicating whether the disposition type is inline.
 
 <b>Returns:</b>
 
-True if the disposition type is inline; otherwise, false.
+ `true`  if the disposition type is inline, otherwise,  `false` .
 
 ### Parameters
 
@@ -69,7 +69,7 @@ Determines whether this object and another object are equal.
 
 <b>Returns:</b>
 
-True if the objects are equal; otherwise, false.
+ `true`  if the objects are equal, otherwise,  `false` .
 
 ### GetHashCode
 
