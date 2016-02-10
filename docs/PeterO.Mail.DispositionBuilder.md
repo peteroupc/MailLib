@@ -64,7 +64,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
-True if this is a multipart media type; otherwise, false.
+ `true`  if this is a multipart media type, otherwise,  `false` .
 
 ### IsText
 
@@ -76,7 +76,7 @@ Gets a value indicating whether this is a text media type.
 
 <b>Returns:</b>
 
-True if this is a text media type; otherwise, false.
+ `true`  if this is a text media type, otherwise,  `false` .
 
 ### RemoveParameter
 

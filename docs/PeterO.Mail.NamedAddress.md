@@ -158,7 +158,7 @@ Gets a value indicating whether this represents a group of addresses rather than
 
 <b>Returns:</b>
 
-True if this represents a group of addresses; otherwise, false.
+ `true`  if this represents a group of addresses, otherwise,  `false` .
 
 ### Name
 

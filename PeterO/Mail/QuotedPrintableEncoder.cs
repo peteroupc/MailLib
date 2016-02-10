@@ -43,7 +43,7 @@ namespace PeterO.Mail {
         }
       }
       for (int i = 0; i < appendStr.Length; ++i) {
-        if (i==0 && this.lineCount == 0 && appendStr[i] == '.') {
+        if (i == 0 && this.lineCount == 0 && appendStr[i] == '.') {
           output.WriteByte((byte)'=');
           output.WriteByte((byte)'2');
           output.WriteByte((byte)'E');
@@ -74,7 +74,7 @@ char b3) {
           count += 3;
         }
       }
-      if (this.lineCount==0 && b1=='.') {
+      if (this.lineCount == 0 && b1 == '.') {
         output.WriteByte((byte)'=');
         output.WriteByte((byte)'2');
         output.WriteByte((byte)'E');

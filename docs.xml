@@ -371,7 +371,7 @@
 <summary>Determines whether this object and another object are
             equal.</summary>
             <param name='obj'>An arbitrary object.</param>
-            <returns>True if the objects are equal; otherwise, false.</returns>
+            <returns><c>true</c> if the objects are equal, otherwise, <c>false</c>.</returns>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.GetHashCode">
 <summary>Returns the hash code for this instance.</summary>
@@ -394,14 +394,12 @@
 <doc name="P:PeterO.Mail.ContentDisposition.IsAttachment">
 <summary>Gets a value indicating whether the disposition type is
             attachment.</summary>
-            <value>True if the disposition type is attachment; otherwise,
-            false.</value>
+            <value><c>true</c> if the disposition type is attachment, otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.ContentDisposition.IsInline">
 <summary>Gets a value indicating whether the disposition type is
             inline.</summary>
-            <value>True if the disposition type is inline; otherwise,
-            false.</value>
+            <value><c>true</c> if the disposition type is inline, otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)">
 <summary>Converts a file name from the Content-Disposition header
@@ -488,13 +486,12 @@
 <doc name="P:PeterO.Mail.DispositionBuilder.IsMultipart">
 <summary>Gets a value indicating whether this is a multipart media
             type.</summary>
-            <value>True if this is a multipart media type; otherwise,
-            false.</value>
+            <value><c>true</c> if this is a multipart media type, otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.DispositionBuilder.IsText">
 <summary>Gets a value indicating whether this is a text media
             type.</summary>
-            <value>True if this is a text media type; otherwise, false.</value>
+            <value><c>true</c> if this is a text media type, otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.RemoveParameter(System.String)">
 <summary>Removes a parameter from this content disposition. Does
@@ -580,8 +577,7 @@
 <summary>Determines whether this object and another object are
             equal.</summary>
             <param name='obj'>An arbitrary object.</param>
-            <returns>True if this object and another object are equal;
-            otherwise, false.</returns>
+            <returns><c>true</c> if this object and another object are equal, otherwise, <c>false</c>.</returns>
 </doc>
 <doc name="M:PeterO.Mail.MediaType.GetCharset">
 <summary>Gets this media type's "charset" parameter, naming a
@@ -613,13 +609,12 @@
 <doc name="P:PeterO.Mail.MediaType.IsMultipart">
 <summary>Gets a value indicating whether this is a multipart media
             type.</summary>
-            <value>True if this is a multipart media type; otherwise,
-            false.</value>
+            <value><c>true</c> if this is a multipart media type, otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.MediaType.IsText">
 <summary>Gets a value indicating whether this is a text media type
             ("text/*").</summary>
-            <value>True if this is a text media type; otherwise, false.</value>
+            <value><c>true</c> if this is a text media type, otherwise, <c>false</c>.</value>
 </doc>
 <doc name="F:PeterO.Mail.MediaType.MessageRfc822">
 <summary>Specifies the media type "message/rfc822", used for
@@ -714,13 +709,12 @@
 <doc name="P:PeterO.Mail.MediaTypeBuilder.IsMultipart">
 <summary>Gets a value indicating whether this is a multipart media
             type.</summary>
-            <value>True if this is a multipart media type; otherwise,
-            false.</value>
+            <value><c>true</c> if this is a multipart media type, otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.MediaTypeBuilder.IsText">
 <summary>Gets a value indicating whether this is a text media
             type.</summary>
-            <value>True if this is a text media type; otherwise, false.</value>
+            <value><c>true</c> if this is a text media type, otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.MediaTypeBuilder.RemoveParameter(System.String)">
 <summary>Removes a parameter from this builder object. Does nothing
@@ -1340,7 +1334,7 @@
             <paramref name='address'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.Collections.Generic.IList{PeterO.Mail.NamedAddress})">
-<summary>Initializes a new instance of the <see cref='NamedAddress'/> class.
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class.
             Takes a group name and several named email addresses as parameters,
             and forms a group with them.</summary>
             <param name='groupName'>The group's name.</param>
@@ -1393,8 +1387,7 @@
 <doc name="P:PeterO.Mail.NamedAddress.IsGroup">
 <summary>Gets a value indicating whether this represents a group of
             addresses rather than a single address.</summary>
-            <value>True if this represents a group of addresses; otherwise,
-            false.</value>
+            <value><c>true</c> if this represents a group of addresses, otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.NamedAddress.Name">
 <summary>Gets the display name for this email address (or the email
@@ -1437,8 +1430,7 @@
 <doc name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart">
 <summary>Gets a value indicating whether a new body part was
             detected.</summary>
-            <value>True if a new body part was detected; otherwise,
-            false.</value>
+            <value><c>true</c> if a new body part was detected, otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.WordWrapEncoder.ToString">
 <summary>Converts this object to a text string.</summary>
@@ -1531,7 +1523,7 @@
             <param name='lookupRules'>If true, uses rules to apply when looking
             up the string as a domain name. If false, uses rules to apply when
             registering the string as a domain name.</param>
-            <returns>True if the given string is a syntactically valid domain
+            <returns><c>true</c> if the given string is a syntactically valid domain
             name; otherwise; false.</returns>
 </doc>
 <doc name="T:PeterO.Text.Normalization">
@@ -1573,8 +1565,7 @@
 <summary>Returns whether this string is normalized.</summary>
             <param name='str'>The string to check.</param>
             <param name='form'>A Normalization object.</param>
-            <returns>True if this string is normalized; otherwise,
-            false.</returns>
+            <returns><c>true</c> if this string is normalized, otherwise, <c>false</c>.</returns>
 </doc>
 <doc name="M:PeterO.Text.Normalizer.Normalize(System.String,PeterO.Text.Normalization)">
 <summary>Converts a string to the given Unicode normalization
@@ -1699,13 +1690,13 @@
             <paramref name='stream'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32})">
-<summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class using Normalization Form
+<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using Normalization Form
             C.</summary>
             <param name='characterList'>A list of Unicode code points
             specifying the text to normalize.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class using the given normalization
+<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using the given normalization
             form.</summary>
             <param name='characterList'>An IList object.</param>
             <param name='form'>Specifies the normalization form to use when
@@ -1764,8 +1755,7 @@
             input.</param>
             <param name='form'>Specifies the normalization form to
             check.</param>
-            <returns>True if the text is normalized; otherwise,
-            false.</returns>
+            <returns><c>true</c> if the text is normalized, otherwise, <c>false</c>.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='chars'/> is null.</exception>
 </doc>
@@ -1775,8 +1765,8 @@
             <param name='charList'>A list of Unicode code points.</param>
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
-            <returns>True if the given list of characters is in the given
-            Unicode normalization form; otherwise, false.</returns>
+            <returns><c>true</c> if the given list of characters is in the given
+            Unicode normalization form, otherwise, <c>false</c>.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter <paramref name='charList'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)">
@@ -1785,8 +1775,8 @@
             <param name='charArray'>An array of Unicode code points.</param>
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
-            <returns>True if the given list of characters is in the given
-            Unicode normalization form; otherwise, false.</returns>
+            <returns><c>true</c> if the given list of characters is in the given
+            Unicode normalization form, otherwise, <c>false</c>.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             "charList" is null.</exception>
 </doc>
@@ -1796,8 +1786,8 @@
             <param name='str'>An arbitrary string.</param>
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
-            <returns>True if the given string is in the given Unicode
-            normalization form; otherwise, false.</returns>
+            <returns><c>true</c> if the given string is in the given Unicode
+            normalization form, otherwise, <c>false</c>.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
 </doc>

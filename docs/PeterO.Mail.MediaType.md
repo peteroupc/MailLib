@@ -42,7 +42,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
-True if this is a multipart media type; otherwise, false.
+ `true`  if this is a multipart media type, otherwise,  `false` .
 
 ### IsText
 
@@ -52,7 +52,7 @@ Gets a value indicating whether this is a text media type ("text/*").
 
 <b>Returns:</b>
 
-True if this is a text media type; otherwise, false.
+ `true`  if this is a text media type, otherwise,  `false` .
 
 ### Parameters
 
@@ -107,7 +107,7 @@ Determines whether this object and another object are equal.
 
 <b>Returns:</b>
 
-True if this object and another object are equal; otherwise, false.
+ `true`  if this object and another object are equal, otherwise,  `false` .
 
 ### GetCharset
 
