@@ -82,6 +82,7 @@
     <Compile Include="ContentDispositionTest.cs" />
     <Compile Include="DispositionBuilderTest.cs" />
     <Compile Include="EncodingTest.cs" />
+    <Compile Include="FastRandom.cs" />
     <Compile Include="IdnaTest.cs" />
     <Compile Include="MediaTypeBuilderTest.cs" />
     <Compile Include="MediaTypeTest.cs" />

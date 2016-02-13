@@ -36,9 +36,9 @@ Returns whether this string is normalized.
 
  * <i>form</i>: A Normalization object.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
- `true`  if this string is normalized, otherwise,  `false` .
+ `true`  if this string is normalized, otherwise, false .
 
 ### Normalize
 
@@ -54,7 +54,7 @@ Converts a string to the given Unicode normalization form.
 
  * <i>form</i>: The Unicode normalization form to convert to.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 The parameter  <i>str</i>
  converted to the given normalization form.
@@ -82,7 +82,7 @@ Reads a sequence of Unicode code points from a data source.
 
  * <i>length</i>: Maximum number of code points to write.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 The number of Unicode code points read, or 0 if the end of the source is reached.
 
@@ -107,6 +107,6 @@ The parameter <i>chars</i>
 
 Reads a Unicode character from a data source.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), or the value -1 indicating the end of the source.

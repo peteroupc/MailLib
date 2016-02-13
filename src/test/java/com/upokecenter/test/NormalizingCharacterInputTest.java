@@ -13,21 +13,21 @@ import com.upokecenter.text.*;
       // not implemented yet
     }
 
-    public static String RandomAscii(java.util.Random rnd) {
-      int length = rnd.nextInt(50) + 1;
+    public static String RandomAscii(FastRandom rnd) {
+      int length = rnd.NextValue(50) + 1;
       StringBuilder sb = new StringBuilder();
       for (int i = 0;i< length; ++i) {
-        char c = (char)rnd.nextInt(128);
+        char c = (char)rnd.NextValue(128);
         sb.append(c);
       }
       return sb.toString();
     }
 
-    public static String RandomLatinOne(java.util.Random rnd) {
-      int length = rnd.nextInt(50) + 1;
+    public static String RandomLatinOne(FastRandom rnd) {
+      int length = rnd.NextValue(50) + 1;
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < length; ++i) {
-        char c = (char)rnd.nextInt(256);
+        char c = (char)rnd.NextValue(256);
         sb.append(c);
       }
       return sb.toString();
@@ -35,7 +35,7 @@ import com.upokecenter.text.*;
 
     @Test
 public void TestNormalizationAscii() {
-  java.util.Random rnd = new java.util.Random();
+  FastRandom rnd = new FastRandom();
   for (int i = 0; i < 50000; ++i) {
     String str = RandomAscii(rnd);
     // ASCII strings are already normalized
@@ -69,7 +69,7 @@ public void TestNormalizationAscii() {
 
     @Test
 public void TestNormalizationLatinOne() {
-  java.util.Random rnd = new java.util.Random();
+  FastRandom rnd = new FastRandom();
   for (int i = 0; i < 50000; ++i) {
     String str = RandomLatinOne(rnd);
     // Latin-1 strings are already normalized in NFC

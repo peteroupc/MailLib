@@ -15,7 +15,7 @@ The Unicode Standard includes characters, such as an acute accent, that can be c
 
  * The four normalization forms also enforce a standardized order for combining marks, since they can otherwise appear in an arbitrary order.
 
-For more information, see Standard Annex 15 at [http://www.unicode.org/reports/tr15/](http://www.unicode.org/reports/tr15/) .
+For more information, see Standard Annex 15 at http://www.unicode.org/reports/tr15/ .
 
 Thread safety: This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
 
@@ -23,7 +23,7 @@ NOTICE: While this class's source code is in the public domain, the class uses a
 
 COPYRIGHT AND PERMISSION NOTICE
 
-Copyright (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under the Terms of Use in [http://www.unicode.org/copyright.html.](http://www.unicode.org/copyright.html.)
+Copyright (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of the Unicode data files and any associated documentation (the "Data Files") or Unicode software and any associated documentation (the "Software") to deal in the Data Files or Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, and/or sell copies of the Data Files or Software, and to permit persons to whom the Data Files or Software are furnished to do so, provided that (a) this copyright and permission notice appear with all copies of the Data Files or Software, (b) this copyright and permission notice appear in associated documentation, and (c) there is clear notice in each modified Data File or in the Software as well as in the documentation associated with the Data File(s) or Software that the data or software has been modified.
 
@@ -138,7 +138,7 @@ Initializes a new instance of the  class using the given normalization form.
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>characterList</i>
+The parameter <i>characterList</i>
  is null.
 
 ### GetChars
@@ -155,7 +155,7 @@ Gets a list of normalized code points after reading from a character stream.
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A list of the normalized Unicode characters.
 
@@ -179,7 +179,7 @@ Gets a list of normalized code points after reading from a string.
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A list of the normalized Unicode characters.
 
@@ -203,9 +203,9 @@ Determines whether the given array of characters is in the given Unicode normali
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
- `true`  if the given list of characters is in the given Unicode normalization form, otherwise,  `false` .
+ `true`  if the given list of characters is in the given Unicode normalization form, otherwise, false .
 
 <b>Exceptions:</b>
 
@@ -226,9 +226,9 @@ Determines whether the text provided by a character input is normalized.
 
  * <i>form</i>: Specifies the normalization form to check.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
- `true`  if the text is normalized, otherwise,  `false` .
+ `true`  if the text is normalized, otherwise, false .
 
 <b>Exceptions:</b>
 
@@ -250,9 +250,9 @@ Determines whether the given string is in the given Unicode normalization form.
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
- `true`  if the given string is in the given Unicode normalization form, otherwise,  `false` .
+ `true`  if the given string is in the given Unicode normalization form, otherwise, false .
 
 <b>Exceptions:</b>
 
@@ -274,14 +274,14 @@ Determines whether the given list of characters is in the given Unicode normaliz
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
- `true`  if the given list of characters is in the given Unicode normalization form, otherwise,  `false` .
+ `true`  if the given list of characters is in the given Unicode normalization form, otherwise, false .
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>charList</i>
+The parameter <i>charList</i>
  is null.
 
 ### Normalize
@@ -298,7 +298,7 @@ Converts a string to the given Unicode normalization form.
 
  * <i>form</i>: The Unicode normalization form to convert to.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 The parameter  <i>str</i>
  converted to the given normalization form.
@@ -329,7 +329,7 @@ Reads a sequence of Unicode code points from a data source.
  (but not more than  <i>chars</i>
  's length).
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 The number of Unicode code points read, or 0 if the end of the source is reached.
 
@@ -354,6 +354,6 @@ Either  <i>index</i>
 
 Reads a Unicode character from a data source.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 Either a Unicode code point (from 0-0xd7ff or from 0xe000 to 0x10ffff), or the value -1 indicating the end of the source.

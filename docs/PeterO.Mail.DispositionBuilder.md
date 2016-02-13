@@ -64,7 +64,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
- `true`  if this is a multipart media type, otherwise,  `false` .
+ `true`  if this is a multipart media type; otherwise,  `false` .
 
 ### IsText
 
@@ -76,7 +76,7 @@ Gets a value indicating whether this is a text media type.
 
 <b>Returns:</b>
 
- `true`  if this is a text media type, otherwise,  `false` .
+ `true`  if this is a text media type; otherwise,  `false` .
 
 ### RemoveParameter
 
@@ -89,7 +89,7 @@ Removes a parameter from this content disposition. Does nothing if the parameter
 
  * <i>name</i>: The parameter to remove. The name is compared case insensitively.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -110,7 +110,7 @@ Sets the disposition type, such as "inline".
 
  * <i>str</i>: A text string.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -134,7 +134,7 @@ Sets a parameter of this content disposition.
 
  * <i>value</i>: Value of the parameter to set.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -155,7 +155,7 @@ The parameter <i>name</i>
 
 Converts this object to an immutable ContentDisposition object.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A MediaType object.
 
@@ -165,6 +165,6 @@ A MediaType object.
 
 Converts this object to a text string.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A string representation of this object.

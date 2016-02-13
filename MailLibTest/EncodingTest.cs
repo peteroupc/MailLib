@@ -1119,7 +1119,8 @@ namespace MailLibTest {
     private static byte[] DowngradeDeliveryStatus(string str) {
       Message msg =
 
-  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"+
+  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"
+    +
     "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
       msg = MessageTest.MessageFromString(MessageTest.MessageGenerate(msg));
       return msg.GetBody();
@@ -1201,8 +1202,7 @@ namespace MailLibTest {
 string stringTemp =
           "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=);\r\n x@x" +
                 hexstart + "BE}" + hexstart + "FF20}.example";
-      string stringTemp2 =
-          ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example");
+      string stringTemp2 = ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example");
         TestDowngradeDSNOne(stringTemp, stringTemp2);
       }
       TestDowngradeDSNOne("=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40=C2=BE?=",
@@ -1707,8 +1707,7 @@ string stringTemp =
         string stringTemp = DowngradeHeaderField("from",
                     "(comment) \"Tes\u00bet   Subject\" <x@x.example>");
         {
- object objectTemp =
-            "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>"
+ object objectTemp = "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>"
                     ;
           object objectTemp2 = stringTemp;
           Assert.AreEqual(objectTemp, objectTemp2);
@@ -2016,18 +2015,18 @@ string stringTemp =
       }
     }
 
-    private static byte[] RandomBytes(Random rnd) {
-      int count = 10 + rnd.Next(350);
+    private static byte[] RandomBytes(FastRandom rnd) {
+      int count = 10 + rnd.NextValue(350);
       var arr = new byte[count];
       for (var i = 0; i < count; ++i) {
-        arr[i] = (byte)rnd.Next(0x100);
+        arr[i] = (byte)rnd.NextValue(0x100);
       }
       return arr;
     }
 
     [Test]
     public void TestRandomEncodedBytes() {
-      var rnd = new Random();
+      var rnd = new FastRandom();
       for (var i = 0; i < 10000; ++i) {
         byte[] bytes = RandomBytes(rnd);
         TestEncodedBytesRoundTrip(bytes, false);

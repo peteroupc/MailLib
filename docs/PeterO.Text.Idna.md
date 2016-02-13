@@ -17,7 +17,7 @@ Tries to encode each label of a domain name into Punycode.
 
  * <i>value</i>: A domain name.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 The domain name where each label with code points outside the Basic Latin range (U+0000 to U+007F) is encoded into Punycode. Labels where this is not possible remain unchanged.
 
@@ -40,6 +40,6 @@ Determines whether the given string is a syntactically valid domain name.
 
  * <i>lookupRules</i>: If true, uses rules to apply when looking up the string as a domain name. If false, uses rules to apply when registering the string as a domain name.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
  `true`  if the given string is a syntactically valid domain name; otherwise; false.

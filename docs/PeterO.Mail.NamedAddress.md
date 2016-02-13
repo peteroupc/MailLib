@@ -122,12 +122,12 @@ Initializes a new instance of the  class. Takes a group name and several named e
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The parameter  <i>groupName</i>
+The parameter <i>groupName</i>
  or  <i>mailboxes</i>
  is null.
 
  * System.ArgumentException:
-The parameter  <i>groupName</i>
+The parameter <i>groupName</i>
  is empty, or an item in the list is itself a group.
 
 ### Address
@@ -158,7 +158,7 @@ Gets a value indicating whether this represents a group of addresses rather than
 
 <b>Returns:</b>
 
- `true`  if this represents a group of addresses, otherwise,  `false` .
+ `true`  if this represents a group of addresses; otherwise,  `false` .
 
 ### Name
 
@@ -176,6 +176,6 @@ The display name for this email address.
 
 Converts this object to a text string.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A string representation of this object.

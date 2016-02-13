@@ -49,7 +49,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
- `true`  if this is a multipart media type, otherwise,  `false` .
+ `true`  if this is a multipart media type; otherwise,  `false` .
 
 ### IsText
 
@@ -59,7 +59,7 @@ Gets a value indicating whether this is a text media type.
 
 <b>Returns:</b>
 
- `true`  if this is a text media type, otherwise,  `false` .
+ `true`  if this is a text media type; otherwise,  `false` .
 
 ### SubType
 
@@ -92,7 +92,7 @@ Removes a parameter from this builder object. Does nothing if the parameter's na
 
  * <i>name</i>: Name of the parameter to remove. The name is compared case-insensitively.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -116,7 +116,7 @@ Sets a parameter's name and value for this media type.
 
  * <i>value</i>: A text string giving the parameter's value.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -142,7 +142,7 @@ Sets this media type's subtype, such as "plain" or "xml" .
 
  * <i>str</i>: A text string naming a media subtype.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -167,7 +167,7 @@ Sets this media type's top-level type.
 
  * <i>str</i>: A text string naming a top-level type, such as "text" or "audio".
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -187,7 +187,7 @@ The parameter <i>str</i>
 
 Converts this builder to an immutable media type object.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A MediaType object.
 
@@ -197,6 +197,6 @@ A MediaType object.
 
 Converts this object to a text string.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A string representation of this object.

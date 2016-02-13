@@ -50,6 +50,6 @@ The local part of this email address (the part before the "@" sign).
 
 Converts this address object to a text string.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A string representation of this object.
