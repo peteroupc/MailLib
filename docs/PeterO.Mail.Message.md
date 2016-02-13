@@ -212,7 +212,7 @@ Adds a header field to the end of the message's header.Updates the ContentType a
 
  * <i>value</i>: Value of the header field.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -237,14 +237,14 @@ Adds a header field to the end of the message's header.Updates the ContentType a
 
  * <i>header</i>: A key/value pair. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
 <b>Exceptions:</b>
 
  * System.ArgumentNullException:
-The key or value of <i>header</i>
+The key or value of  <i>header</i>
  is null.
 
  * System.ArgumentException:
@@ -262,7 +262,7 @@ If a Date and/or Message-ID header field doesn't exist, a field with that name w
 
 When encoding the message's body, if the message has a text content type ("text/*"), the line breaks are a CR byte (carriage return, 0x0d) followed by an LF byte (line feed, 0x0a), CR alone, or LF alone. If the message has any other content type, only CR followed by LF is considered a line break.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 The generated message.
 
@@ -277,7 +277,7 @@ The message can't be generated.
 
 Gets the byte array for this message's body. This method doesn't make a copy of that byte array.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A byte array.
 
@@ -287,7 +287,7 @@ A byte array.
 
 Returns the mail message contained in this message's body.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A message object if this object's content type is "message/rfc822", "message/news", or "message/global", or null otherwise.
 
@@ -313,7 +313,7 @@ Gets the date and time extracted from this message's Date header field (as thoug
 
  * 7 - Number of minutes to subtract from this date and time to get global time. This number can be positive or negative.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 An array containing eight elements. Returns null if the Date header doesn't exist, if the Date field is syntactically or semantically invalid, or if the field's year would overflow a 32-bit signed integer.
 
@@ -328,7 +328,7 @@ Gets the first instance of the header field with the specified name, using a bas
 
  * <i>name</i>: The name of a header field.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 The value of the first header field with that name, or null if there is none.
 
@@ -348,7 +348,7 @@ Gets the name and value of a header field by index.
 
  * <i>index</i>: Zero-based index of the header field to get.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A key/value pair. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
 
@@ -369,7 +369,7 @@ Gets an array with the values of all header fields with the specified name, usin
 
  * <i>name</i>: The name of a header field.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 An array containing the values of all header fields with the given name, in the order they appear in the message. The array will be empty if no header field has that name.
 
@@ -389,7 +389,7 @@ Removes a header field by index.Updates the ContentType and ContentDisposition p
 
  * <i>index</i>: Zero-based index of the header field to set.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -410,7 +410,7 @@ Removes all instances of the given header field from this message. If this is a 
 
  * <i>name</i>: The name of the header field to remove.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -431,7 +431,7 @@ Sets the body of this message to the given byte array. This method doesn't make 
 
  * <i>bytes</i>: A byte array.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This object.
 
@@ -447,7 +447,7 @@ The parameter <i>bytes</i>
 
 Sets this message's Date header field to the current time as its value.This method can be used when the message is considered complete and ready to be generated, for example, using the "Generate()" method.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This object.
 
@@ -480,7 +480,7 @@ Sets this message's Date header field to the given date and time.
 
 .
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This object.
 
@@ -511,7 +511,7 @@ Sets the name and value of a header field by index.Updates the ContentType and C
 
  * <i>value</i>: Value of the header field.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -540,7 +540,7 @@ Sets the value of a header field by index without changing its name.Updates the 
 
  * <i>value</i>: Value of the header field.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -568,18 +568,18 @@ Sets the name and value of a header field by index.Updates the ContentType and C
 
  * <i>header</i>: A key/value pair. The key is the name of the header field, such as "From" or "Content-ID". The value is the header field's value.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A Message object.
 
 <b>Exceptions:</b>
 
  * System.ArgumentException:
-The parameter  <i>index</i>
+The parameter <i>index</i>
  is 0 or at least as high as the number of header fields; or, the header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
 
  * System.ArgumentNullException:
-The key or value of <i>header</i>
+The key or value of  <i>header</i>
  is null.
 
 ### SetHeader
@@ -596,7 +596,7 @@ Sets the value of this message's header field. If a header field with the same n
 
  * <i>value</i>: The header field's value.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -621,7 +621,7 @@ Sets the body of this message to the specified string in HTML format. The charac
 
  * <i>str</i>: A string consisting of the message in HTML format.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -645,7 +645,7 @@ Sets the body of this message to a multipart body with plain text and HTML versi
 
  * <i>html</i>: A string consisting of the HTML version of the message.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 
@@ -667,7 +667,7 @@ Sets the body of this message to the specified plain text string. The character 
 
  * <i>str</i>: A string consisting of the message in plain text format.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 This instance.
 

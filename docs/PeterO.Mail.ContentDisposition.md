@@ -34,7 +34,7 @@ Gets a value indicating whether the disposition type is attachment.
 
 <b>Returns:</b>
 
- `true`  if the disposition type is attachment, otherwise,  `false` .
+ `true`  if the disposition type is attachment; otherwise,  `false` .
 
 ### IsInline
 
@@ -44,7 +44,7 @@ Gets a value indicating whether the disposition type is inline.
 
 <b>Returns:</b>
 
- `true`  if the disposition type is inline, otherwise,  `false` .
+ `true`  if the disposition type is inline; otherwise,  `false` .
 
 ### Parameters
 
@@ -67,9 +67,9 @@ Determines whether this object and another object are equal.
 
  * <i>obj</i>: An arbitrary object.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
- `true`  if the objects are equal, otherwise,  `false` .
+ `true`  if the objects are equal, otherwise, false .
 
 ### GetHashCode
 
@@ -77,7 +77,7 @@ Determines whether this object and another object are equal.
 
 Returns the hash code for this instance.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A 32-bit hash code.
 
@@ -92,7 +92,7 @@ Gets a parameter from this disposition object.
 
  * <i>name</i>: The name of the parameter to get. The name will be matched case-insensitively. Can't be null.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 The value of the parameter, or null if the parameter does not exist.
 
@@ -127,7 +127,7 @@ Converts a file name from the Content-Disposition header to a suitable name for 
 
  * <i>str</i>: A string representing a file name. Can be null.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A string with the converted version of the file name. Among other things, encoded words under RFC 2047 are decoded (since they occur so frequently in Content-Disposition filenames); the value is decoded under RFC 2231 if possible; characters unsuitable for use in a filename (including the directory separators slash and backslash) are replaced with underscores; spaces and tabs are collapsed to a single space; leading and trailing spaces and tabs are removed; and the filename is truncated if it would otherwise be too long. The returned string will be in normalization form C. Returns an empty string if  <i>str</i>
  is null.
@@ -152,7 +152,7 @@ Creates a new content disposition object from the value of a Content-Disposition
 
  * <i>defaultValue</i>: The value to return in case the disposition value is syntactically invalid. Can be null.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A ContentDisposition object.
 
@@ -173,7 +173,7 @@ Parses a content disposition string and returns a content disposition object.
 
  * <i>dispoValue</i>: A text string.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A content disposition object, or "Attachment" if  <i>dispoValue</i>
  is empty or syntactically invalid.
@@ -190,6 +190,6 @@ The parameter <i>dispoValue</i>
 
 Converts this object to a text string.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A string representation of this object.

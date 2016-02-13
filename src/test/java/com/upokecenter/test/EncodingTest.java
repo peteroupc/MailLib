@@ -1116,7 +1116,8 @@ import java.util.*;
     private static byte[] DowngradeDeliveryStatus(String str) {
       Message msg =
 
-  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"+
+  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"
+    +
     "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
       msg = MessageTest.MessageFromString(MessageTest.MessageGenerate(msg));
       return msg.GetBody();
@@ -1198,8 +1199,7 @@ import java.util.*;
 String stringTemp =
           "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=);\r\n x@x" +
                 hexstart + "BE}" + hexstart + "FF20}.example";
-      String stringTemp2 =
-          ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example");
+      String stringTemp2 = ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example");
         TestDowngradeDSNOne(stringTemp, stringTemp2);
       }
       TestDowngradeDSNOne("=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40=C2=BE?=",
@@ -1703,8 +1703,7 @@ String stringTemp =
         String stringTemp = DowngradeHeaderField("from",
                     "(comment) \"Tes\u00bet   Subject\" <x@x.example>");
         {
- Object objectTemp =
-            "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>"
+ Object objectTemp = "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>"
                     ;
           Object objectTemp2 = stringTemp;
           Assert.assertEquals(objectTemp, objectTemp2);
@@ -2010,18 +2009,18 @@ String stringTemp =
       }
     }
 
-    private static byte[] RandomBytes(java.util.Random rnd) {
-      int count = 10 + rnd.nextInt(350);
+    private static byte[] RandomBytes(FastRandom rnd) {
+      int count = 10 + rnd.NextValue(350);
       byte[] arr = new byte[count];
       for (int i = 0; i < count; ++i) {
-        arr[i] = (byte)rnd.nextInt(0x100);
+        arr[i] = (byte)rnd.NextValue(0x100);
       }
       return arr;
     }
 
     @Test
     public void TestRandomEncodedBytes() {
-      java.util.Random rnd = new java.util.Random();
+      FastRandom rnd = new FastRandom();
       for (int i = 0; i < 10000; ++i) {
         byte[] bytes = RandomBytes(rnd);
         TestEncodedBytesRoundTrip(bytes, false);

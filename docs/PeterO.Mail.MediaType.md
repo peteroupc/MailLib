@@ -42,7 +42,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
- `true`  if this is a multipart media type, otherwise,  `false` .
+ `true`  if this is a multipart media type; otherwise,  `false` .
 
 ### IsText
 
@@ -52,7 +52,7 @@ Gets a value indicating whether this is a text media type ("text/*").
 
 <b>Returns:</b>
 
- `true`  if this is a text media type, otherwise,  `false` .
+ `true`  if this is a text media type; otherwise,  `false` .
 
 ### Parameters
 
@@ -105,9 +105,9 @@ Determines whether this object and another object are equal.
 
  * <i>obj</i>: An arbitrary object.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
- `true`  if this object and another object are equal, otherwise,  `false` .
+ `true`  if this object and another object are equal, otherwise, false .
 
 ### GetCharset
 
@@ -115,7 +115,7 @@ Determines whether this object and another object are equal.
 
 Gets this media type's "charset" parameter, naming a character encoding used to represent text in the data that uses this media type.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 If the "charset" parameter exists, returns that parameter with the basic upper-case letters A to Z (U+0041 to U+005A) converted to lower case. Returns "us-ascii" instead if the media type is ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain" and doesn't have a "charset" parameter (see RFC2046), or the default value for that parameter, if any, for the media type if the "charset" parameter is absent. Returns an empty string in all other cases.
 
@@ -125,7 +125,7 @@ If the "charset" parameter exists, returns that parameter with the basic upper-c
 
 Returns the hash code for this instance.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A 32-bit signed integer.
 
@@ -140,7 +140,7 @@ Gets the value of a parameter in this media type, such as "charset" or "format".
 
  * <i>name</i>: Name of the parameter to get. The name is compared case-insensitively.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 The value of the parameter as a string, or null if the parameter doesn't exist.
 
@@ -161,7 +161,7 @@ Parses a media type string and returns a media type object. This method checks t
 
  * <i>mediaTypeValue</i>: A text string representing a media type. This media type can include parameters.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A media type object, or text/plain if  <i>mediaTypeValue</i>
  is empty or syntactically invalid.
@@ -180,7 +180,7 @@ Parses a media type string and returns a media type object, or the default value
 
  * <i>defaultValue</i>: The media type to return if the string is syntactically invalid. Can be null.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A MediaType object.
 
@@ -196,6 +196,6 @@ The parameter <i>str</i>
 
 Converts this object to a text string.
 
-<b>Returns:</b>
+<b>Return Value:</b>
 
 A string representation of this object.

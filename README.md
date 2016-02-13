@@ -15,7 +15,7 @@ A portable library in C# and Java for parsing and generating Internet mail messa
 Documentation
 ------------
 
-See the [Wiki](https://github.com/peteroupc/MailLib/wiki) for Java API documentation.
+**See the [Java API documentation](https://peteroupc.github.io/MailLib/api/).**
 
 **See the [C# (.NET) API documentation](https://peteroupc.github.io/MailLib/docs/).**
 

@@ -2,6 +2,7 @@ using NUnit.Framework;
 using PeterO.Text;
 using System;
 using System.Text;
+using Test;
 namespace MailLibTest {
   [TestFixture]
   public partial class NormalizingCharacterInputTest {
@@ -14,21 +15,21 @@ namespace MailLibTest {
       // not implemented yet
     }
 
-    public static string RandomAscii(Random rnd) {
-      int length = rnd.Next(50) + 1;
+    public static string RandomAscii(FastRandom rnd) {
+      int length = rnd.NextValue(50) + 1;
       var sb = new StringBuilder();
       for (var i = 0;i< length; ++i) {
-        var c = (char)rnd.Next(128);
+        var c = (char)rnd.NextValue(128);
         sb.Append(c);
       }
       return sb.ToString();
     }
 
-    public static string RandomLatinOne(Random rnd) {
-      int length = rnd.Next(50) + 1;
+    public static string RandomLatinOne(FastRandom rnd) {
+      int length = rnd.NextValue(50) + 1;
       var sb = new StringBuilder();
       for (var i = 0; i < length; ++i) {
-        var c = (char)rnd.Next(256);
+        var c = (char)rnd.NextValue(256);
         sb.Append(c);
       }
       return sb.ToString();
@@ -36,7 +37,7 @@ namespace MailLibTest {
 
     [Test]
 public void TestNormalizationAscii() {
-  var rnd = new Random();
+  var rnd = new FastRandom();
   for (var i = 0; i < 50000; ++i) {
     string str = RandomAscii(rnd);
     // ASCII strings are already normalized
@@ -70,7 +71,7 @@ public void TestNormalizationAscii() {
 
     [Test]
 public void TestNormalizationLatinOne() {
-  var rnd = new Random();
+  var rnd = new FastRandom();
   for (var i = 0; i < 50000; ++i) {
     string str = RandomLatinOne(rnd);
     // Latin-1 strings are already normalized in NFC

@@ -58,8 +58,9 @@
             string.</param>
             <returns>The Unicode code point at the previous position. Returns
             -1 if <paramref name='index'/> is 0 or less, or is greater than the
-            string's length. Returns the replacement character (U+FFFD) if the
-            previous character is an unpaired surrogate code point.</returns>
+            string's length. Returns the replacement character (U+FFFD) if
+            the previous character is an unpaired surrogate code
+            point.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
 </doc>
@@ -371,7 +372,8 @@
 <summary>Determines whether this object and another object are
             equal.</summary>
             <param name='obj'>An arbitrary object.</param>
-            <returns><c>true</c> if the objects are equal, otherwise, <c>false</c>.</returns>
+            <returns><c>true</c> if the objects are equal, otherwise, false
+            .</returns>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.GetHashCode">
 <summary>Returns the hash code for this instance.</summary>
@@ -394,12 +396,14 @@
 <doc name="P:PeterO.Mail.ContentDisposition.IsAttachment">
 <summary>Gets a value indicating whether the disposition type is
             attachment.</summary>
-            <value><c>true</c> if the disposition type is attachment, otherwise, <c>false</c>.</value>
+            <value><c>true</c> if the
+            disposition type is attachment; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.ContentDisposition.IsInline">
 <summary>Gets a value indicating whether the disposition type is
             inline.</summary>
-            <value><c>true</c> if the disposition type is inline, otherwise, <c>false</c>.</value>
+            <value><c>true</c> if the disposition
+            type is inline; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)">
 <summary>Converts a file name from the Content-Disposition header
@@ -486,12 +490,14 @@
 <doc name="P:PeterO.Mail.DispositionBuilder.IsMultipart">
 <summary>Gets a value indicating whether this is a multipart media
             type.</summary>
-            <value><c>true</c> if this is a multipart media type, otherwise, <c>false</c>.</value>
+            <value><c>true</c> if this is a
+            multipart media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.DispositionBuilder.IsText">
 <summary>Gets a value indicating whether this is a text media
             type.</summary>
-            <value><c>true</c> if this is a text media type, otherwise, <c>false</c>.</value>
+            <value><c>true</c> if this is a text
+            media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.RemoveParameter(System.String)">
 <summary>Removes a parameter from this content disposition. Does
@@ -577,7 +583,8 @@
 <summary>Determines whether this object and another object are
             equal.</summary>
             <param name='obj'>An arbitrary object.</param>
-            <returns><c>true</c> if this object and another object are equal, otherwise, <c>false</c>.</returns>
+            <returns><c>true</c> if this object and another object are equal,
+            otherwise, false .</returns>
 </doc>
 <doc name="M:PeterO.Mail.MediaType.GetCharset">
 <summary>Gets this media type's "charset" parameter, naming a
@@ -609,12 +616,14 @@
 <doc name="P:PeterO.Mail.MediaType.IsMultipart">
 <summary>Gets a value indicating whether this is a multipart media
             type.</summary>
-            <value><c>true</c> if this is a multipart media type, otherwise, <c>false</c>.</value>
+            <value><c>true</c> if this is a
+            multipart media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.MediaType.IsText">
 <summary>Gets a value indicating whether this is a text media type
             ("text/*").</summary>
-            <value><c>true</c> if this is a text media type, otherwise, <c>false</c>.</value>
+            <value><c>true</c> if this is a text media type; otherwise, <c>false</c>
+            .</value>
 </doc>
 <doc name="F:PeterO.Mail.MediaType.MessageRfc822">
 <summary>Specifies the media type "message/rfc822", used for
@@ -695,8 +704,8 @@
             "application/octet-stream".</summary>
 </doc>
 <doc name="M:PeterO.Mail.MediaTypeBuilder.#ctor(PeterO.Mail.MediaType)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MediaTypeBuilder'/> class using the data from another
-            media type.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MediaTypeBuilder'/> class using the data
+            from another media type.</summary>
             <param name='mt'>A MediaType object.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='mt'/> is null.</exception>
@@ -709,12 +718,14 @@
 <doc name="P:PeterO.Mail.MediaTypeBuilder.IsMultipart">
 <summary>Gets a value indicating whether this is a multipart media
             type.</summary>
-            <value><c>true</c> if this is a multipart media type, otherwise, <c>false</c>.</value>
+            <value><c>true</c> if this is a
+            multipart media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.MediaTypeBuilder.IsText">
 <summary>Gets a value indicating whether this is a text media
             type.</summary>
-            <value><c>true</c> if this is a text media type, otherwise, <c>false</c>.</value>
+            <value><c>true</c> if this is a text
+            media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.MediaTypeBuilder.RemoveParameter(System.String)">
 <summary>Removes a parameter from this builder object. Does nothing
@@ -851,19 +862,19 @@
             though.)</item></list> ---.</summary>
 </doc>
 <doc name="M:PeterO.Mail.Message.#ctor">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. The message will be plain text and
-            have an artificial From address.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. The message will be
+            plain text and have an artificial From address.</summary>
 </doc>
 <doc name="M:PeterO.Mail.Message.#ctor(System.Byte[])">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. Reads from the given byte array to
-            initialize the message.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. Reads from the given
+            byte array to initialize the message.</summary>
             <param name='bytes'>A readable data stream.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='bytes'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Mail.Message.#ctor(System.IO.Stream)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. Reads from the given Stream object to
-            initialize the message.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. Reads from the given
+            Stream object to initialize the message.</summary>
             <param name='stream'>A readable data stream.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='stream'/> is null.</exception>
@@ -873,15 +884,15 @@
             <para>Updates the ContentType and ContentDisposition properties if
             those header fields have been modified by this
             method.</para></summary>
-            <param name='header'>A key/value pair. The key is the name of
-            the header field, such as "From" or "Content-ID". The value is the
+            <param name='header'>A key/value pair. The key is the name of the
+            header field, such as "From" or "Content-ID". The value is the
             header field's value.</param>
             <returns>This instance.</returns>
-            <exception cref='T:System.ArgumentNullException'>The key or value of
-            <paramref name='header'/> is null.</exception>
-            <exception cref='T:System.ArgumentException'>The header field name is too
-            long or contains an invalid character, or the header field's value
-            is syntactically invalid.</exception>
+            <exception cref='T:System.ArgumentNullException'>The key or value
+            of <paramref name='header'/> is null.</exception>
+            <exception cref='T:System.ArgumentException'>The header field name
+            is too long or contains an invalid character, or the header field's
+            value is syntactically invalid.</exception>
 </doc>
 <doc name="M:PeterO.Mail.Message.AddHeader(System.String,System.String)">
 <summary>Adds a header field to the end of the message's header.
@@ -1152,16 +1163,17 @@
             method.</para></summary>
             <param name='index'>Zero-based index of the header field to
             set.</param>
-            <param name='header'>A key/value pair. The key is the name of
-            the header field, such as "From" or "Content-ID". The value is the
+            <param name='header'>A key/value pair. The key is the name of the
+            header field, such as "From" or "Content-ID". The value is the
             header field's value.</param>
             <returns>A Message object.</returns>
-            <exception cref='T:System.ArgumentException'>The parameter <paramref name='index'/> is 0 or at least as high as the number of header
-            fields; or, the header field name is too long or contains an
+            <exception cref='T:System.ArgumentException'>The parameter
+            <paramref name='index'/> is 0 or at least as high as the number of
+            header fields; or, the header field name is too long or contains an
             invalid character, or the header field's value is syntactically
             invalid.</exception>
-            <exception cref='T:System.ArgumentNullException'>The key or value of
-            <paramref name='header'/> is null.</exception>
+            <exception cref='T:System.ArgumentNullException'>The key or value
+            of <paramref name='header'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Mail.Message.SetHeader(System.Int32,System.String)">
 <summary>Sets the value of a header field by index without changing
@@ -1334,20 +1346,22 @@
             <paramref name='address'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.Collections.Generic.IList{PeterO.Mail.NamedAddress})">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class.
-            Takes a group name and several named email addresses as parameters,
-            and forms a group with them.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class. Takes a group name
+            and several named email addresses as parameters, and forms a group
+            with them.</summary>
             <param name='groupName'>The group's name.</param>
             <param name='mailboxes'>A list of named addresses that make up the
             group.</param>
-            <exception cref='T:System.ArgumentNullException'>The parameter <paramref name='groupName'/> or <paramref name='mailboxes'/> is
+            <exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='groupName'/> or <paramref name='mailboxes'/> is
             null.</exception>
-            <exception cref='T:System.ArgumentException'>The parameter <paramref name='groupName'/> is empty, or an item in the list is itself a
-            group.</exception>
+            <exception cref='T:System.ArgumentException'>The parameter
+            <paramref name='groupName'/> is empty, or an item in the list is
+            itself a group.</exception>
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given display name and
-            email address.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given
+            display name and email address.</summary>
             <param name='displayName'>The address's display name. Can be null
             or empty, in which case the email address is used instead. Encoded
             words under RFC 2047 will not be decoded.</param>
@@ -1358,8 +1372,9 @@
             address has an invalid syntax.</exception>
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String,System.String)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given name and an email
-            address made up of its local part and domain.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given name
+            and an email address made up of its local part and
+            domain.</summary>
             <param name='displayName'>A text string. If this value is null or
             empty, uses the email address as the display name.</param>
             <param name='localPart'>The local part of the email address (before
@@ -1387,7 +1402,8 @@
 <doc name="P:PeterO.Mail.NamedAddress.IsGroup">
 <summary>Gets a value indicating whether this represents a group of
             addresses rather than a single address.</summary>
-            <value><c>true</c> if this represents a group of addresses, otherwise, <c>false</c>.</value>
+            <value><c>true</c> if this represents a group of
+            addresses; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.NamedAddress.Name">
 <summary>Gets the display name for this email address (or the email
@@ -1430,7 +1446,8 @@
 <doc name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart">
 <summary>Gets a value indicating whether a new body part was
             detected.</summary>
-            <value><c>true</c> if a new body part was detected, otherwise, <c>false</c>.</value>
+            <value><c>true</c> if a new body part
+            was detected; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.WordWrapEncoder.ToString">
 <summary>Converts this object to a text string.</summary>
@@ -1442,21 +1459,36 @@
             <value>Always true.</value>
 </doc>
 <doc name="T:PeterO.SortedMap`2">
-<summary>A dictionary sorted by key. It is here because the
-            Portable Class Library subset used by CBOR doesn't include the
-            System.Collections.Generic.SortedDictionary class.</summary>
-            <typeparam name='T1'>The type of each key.</typeparam>
-            <typeparam name='T2'>The type of each value.</typeparam>
+<summary>
+      A dictionary sorted by key. It is here because the Portable Class Library
+      subset used by CBOR doesn't include the
+      System.Collections.Generic.SortedDictionary class.
+    </summary>
+    <typeparam name='T1'>
+      The type of each key.
+    </typeparam>
+    <typeparam name='T2'>
+      The type of each value.
+    </typeparam>
 </doc>
 <doc name="M:PeterO.SortedMap`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">
-<summary>Copies this object's elements to another array.</summary>
-            <param name='array'>An array of KeyValuePair.</param>
-            <param name='arrayIndex'>Index into the array to copy to.</param>
+<summary>
+      Copies this object's elements to another array.
+    </summary>
+    <param name='array'>
+      An array of KeyValuePair.
+    </param>
+    <param name='arrayIndex'>
+      Index into the array to copy to.
+    </param>
 </doc>
 <doc name="P:PeterO.SortedMap`2.IsReadOnly">
-<summary>Gets a value indicating whether this map is
-            read-only.</summary>
-            <value>Always false.</value>
+<summary>
+      Gets a value indicating whether this map is read-only.
+    </summary>
+    <value>
+      Always false.
+    </value>
 </doc>
 <doc name="M:PeterO.Text.ByteData.DecompressLz4(System.Byte[])">
 <summary>Decompresses a byte array compressed using the LZ4 format
@@ -1565,7 +1597,8 @@
 <summary>Returns whether this string is normalized.</summary>
             <param name='str'>The string to check.</param>
             <param name='form'>A Normalization object.</param>
-            <returns><c>true</c> if this string is normalized, otherwise, <c>false</c>.</returns>
+            <returns><c>true</c> if this string is normalized, otherwise, false
+            .</returns>
 </doc>
 <doc name="M:PeterO.Text.Normalizer.Normalize(System.String,PeterO.Text.Normalization)">
 <summary>Converts a string to the given Unicode normalization
@@ -1677,8 +1710,8 @@
             holder.</para></summary>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using Normalization
-            Form C.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using
+            Normalization Form C.</summary>
             <param name='input'>An ICharacterInput object.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)">
@@ -1690,22 +1723,23 @@
             <paramref name='stream'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32})">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using Normalization Form
-            C.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using
+            Normalization Form C.</summary>
             <param name='characterList'>A list of Unicode code points
             specifying the text to normalize.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using the given normalization
-            form.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using
+            the given normalization form.</summary>
             <param name='characterList'>An IList object.</param>
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
-            <exception cref='T:System.ArgumentNullException'>The parameter <paramref name='characterList'/> is null.</exception>
+            <exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='characterList'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using Normalization
-            Form C.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using
+            Normalization Form C.</summary>
             <param name='str'>A string specifying the text to
             normalize.</param>
 </doc>
@@ -1716,8 +1750,8 @@
             normalizing the text.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class. Uses a portion of a
-            string as the input.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class. Uses a
+            portion of a string as the input.</summary>
             <param name='str'>A text string.</param>
             <param name='index'>A zero-based index showing where the desired
             portion of <paramref name='str'/> begins.</param>
@@ -1755,7 +1789,8 @@
             input.</param>
             <param name='form'>Specifies the normalization form to
             check.</param>
-            <returns><c>true</c> if the text is normalized, otherwise, <c>false</c>.</returns>
+            <returns><c>true</c> if the text is normalized, otherwise, false
+            .</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='chars'/> is null.</exception>
 </doc>
@@ -1766,8 +1801,9 @@
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
             <returns><c>true</c> if the given list of characters is in the given
-            Unicode normalization form, otherwise, <c>false</c>.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter <paramref name='charList'/> is null.</exception>
+            Unicode normalization form, otherwise, false .</returns>
+            <exception cref='T:System.ArgumentNullException'>The parameter
+            <paramref name='charList'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)">
 <summary>Determines whether the given array of characters is in the
@@ -1776,7 +1812,7 @@
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
             <returns><c>true</c> if the given list of characters is in the given
-            Unicode normalization form, otherwise, <c>false</c>.</returns>
+            Unicode normalization form, otherwise, false .</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             "charList" is null.</exception>
 </doc>
@@ -1787,7 +1823,7 @@
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
             <returns><c>true</c> if the given string is in the given Unicode
-            normalization form, otherwise, <c>false</c>.</returns>
+            normalization form, otherwise, false .</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
 </doc>

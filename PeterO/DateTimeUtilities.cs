@@ -12,7 +12,7 @@ namespace PeterO {
       if (dateTime == null || dateTime.Length < 8) {
         return false;
       }
-      if (dateTime[1 ] <1 || dateTime[1] > 12 || dateTime[2]<< 1) {
+      if (dateTime[1] < 1 || dateTime[1] > 12 || dateTime[2] < 1) {
         return false;
       }
       int yr = dateTime[0];
@@ -36,9 +36,10 @@ namespace PeterO {
  return false;
 }
       }
-      return !(dateTime[3 ] <0 || dateTime[4]<< || dateTime[5]<0 ||
-dateTime[3] >= 24 || dateTime[4] >= 60 || dateTime[5] >= 61 ||dateTime[6 ]
-  <0| || dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
+      return !(dateTime[3 ] < 0 || dateTime[4] < 0 || dateTime[5] < 0 ||
+dateTime[3] >= 24 || dateTime[4] >= 60 || dateTime[5] >= 61 ||
+dateTime[6] < 0 ||
+dateTime[6] >= 1000 || dateTime[7] <= -1440 ||
         dateTime[7] >= 1440);
     }
 
