@@ -2,9 +2,9 @@
 
     @Deprecated public final class Normalizer extends Object
 
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
-<div class='block'><span class='deprecationComment'>Use NormalizingCharacterInput instead; that class is much more flexible than
- Normalizer.</span></div>
+<strong>Deprecated.</strong>&nbsp;
+<div class='block'><i>Use NormalizingCharacterInput instead; that class is much more flexible than
+ Normalizer.</i></div>
 
 ## Methods
 
@@ -34,7 +34,7 @@
 
 ### Normalizer
     public Normalizer(String str, Normalization form)
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -44,7 +44,7 @@
 
 ### Normalizer
     public Normalizer(String str, Normalization form)
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -54,7 +54,7 @@
 
 ### Normalize
     public static String Normalize(String str, Normalization form)
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -72,7 +72,7 @@
 
 ### IsNormalized
     public static boolean IsNormalized(String str, Normalization form)
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Parameters:**
 
@@ -86,7 +86,7 @@
 
 ### ReadChar
     public int ReadChar()
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Returns:**
 
@@ -95,7 +95,7 @@
 
 ### Read
     public int Read(int[] chars, int index, int length)
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;
+Deprecated.&nbsp;
 
 **Parameters:**
 

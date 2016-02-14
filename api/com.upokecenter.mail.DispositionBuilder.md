@@ -88,7 +88,7 @@ Gets this value's disposition type, such value, such as "inline" or
     public final void setDispositionType(String value)
 ### isText
     @Deprecated public final boolean isText()
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;<span class='deprecationComment'>Irrelevant for content dispositions; will be removed in the future.</span>
+Deprecated.&nbsp;<i>Irrelevant for content dispositions; will be removed in the future.</i>
 
 **Returns:**
 
@@ -96,7 +96,7 @@ Gets this value's disposition type, such value, such as "inline" or
 
 ### isMultipart
     @Deprecated public final boolean isMultipart()
-<span class='deprecatedLabel'>Deprecated.</span>&nbsp;<span class='deprecationComment'>Irrelevant for content dispositions; will be removed in the future.</span>
+Deprecated.&nbsp;<i>Irrelevant for content dispositions; will be removed in the future.</i>
 
 **Returns:**
 
