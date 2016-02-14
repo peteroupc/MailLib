@@ -4,7 +4,7 @@
 
 Represents an email message, and contains methods and properties for accessing and modifying email message data. This class implements the Internet Message Format (RFC 5322) and Multipurpose Internet Mail Extensions (MIME; RFC 2045-2047, RFC 2049).
 
-Thread safety: This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
+<b>Thread safety:</b> This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
 
 The following lists known deviations from the mail specifications (Internet Message Format and MIME):
 
@@ -49,7 +49,7 @@ The following lists known deviations from the mail specifications (Internet Mess
     public Message(
         byte[] bytes);
 
-Initializes a new instance of the  class. Reads from the given byte array to initialize the message.
+Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the given byte array to initialize the message.
 
 <b>Parameters:</b>
 
@@ -66,7 +66,7 @@ The parameter <i>bytes</i>
     public Message(
         System.IO.Stream stream);
 
-Initializes a new instance of the  class. Reads from the given Stream object to initialize the message.
+Initializes a new instance of the [PeterO.Mail.Message](PeterO.Mail.Message.md) class. Reads from the given Stream object to initialize the message.
 
 <b>Parameters:</b>
 

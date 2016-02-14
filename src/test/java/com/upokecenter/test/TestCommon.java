@@ -130,9 +130,7 @@ private TestCommon() {
       if (o.equals(o2)) {
         if (!o2.equals(o)) {
           Assert.fail(
-String.format(java.util.Locale.US,"%s equals %s but not vice versa",
-o,
-o2));
+("" + o + " equals " + o2 + " but not vice versa"));
         }
         // Test for the guarantee that equal objects
         // must have equal hash codes
@@ -140,15 +138,11 @@ o2));
           // Don't use Assert.assertEquals directly because it has
           // quite a lot of overhead
           Assert.fail(
-String.format(java.util.Locale.US,"%s and %s don't have equal hash codes",
-o,
-o2));
+("" + o + " and " + o2 + " don't have equal hash codes"));
         }
       } else {
         if (o2.equals(o)) {
-          Assert.fail(String.format(java.util.Locale.US,"%s does not equal %s but not vice versa",
-o,
-o2));
+          Assert.fail(("" + o + " does not equal " + o2 + " but not vice versa"));
         }
         // At least check that hashCode doesn't throw
         try {

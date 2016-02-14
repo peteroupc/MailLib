@@ -5,19 +5,19 @@
 
 A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the Normalizer class, except it implements the ICharacterInput interface.
 
-The Unicode Standard includes characters, such as an acute accent, that can be combined with other characters to make new characters. For example, the letter E combines with an acute accent to make E-acute (É). In some cases, the combined form (E-acute) should be treated as equivalent to the uncombined form (E plus acute). For this reason, the standard defines fournormalization forms that convert strings to a single equivalent form:
+The Unicode Standard includes characters, such as an acute accent, that can be combined with other characters to make new characters. For example, the letter E combines with an acute accent to make E-acute (É). In some cases, the combined form (E-acute) should be treated as equivalent to the uncombined form (E plus acute). For this reason, the standard defines four<i>normalization forms</i> that convert strings to a single equivalent form:
 
- * NFD (Normalization Form D) decomposes combined forms to their constituent characters (E plus acute, for example). This is called canonical decomposition.
+ * <b>NFD</b> (Normalization Form D) decomposes combined forms to their constituent characters (E plus acute, for example). This is called canonical decomposition.
 
- * NFC does canonical decomposition, then combines certain constituent characters to their composites (E-acute, for example). This is called canonical composition.
+ * <b>NFC</b> does canonical decomposition, then combines certain constituent characters to their composites (E-acute, for example). This is called canonical composition.
 
- * Two normalization forms, NFKC and NFKD, are similar to NFC and NFD, except they also "decompose" certain characters, such as ligatures, font or positional variants, and subscripts, whose visual distinction can matter in some contexts. This is called compatibility decomposition.
+ * Two normalization forms, <b>NFKC</b> and <b>NFKD</b>, are similar to NFC and NFD, except they also "decompose" certain characters, such as ligatures, font or positional variants, and subscripts, whose visual distinction can matter in some contexts. This is called compatibility decomposition.
 
  * The four normalization forms also enforce a standardized order for combining marks, since they can otherwise appear in an arbitrary order.
 
 For more information, see Standard Annex 15 at http://www.unicode.org/reports/tr15/ .
 
-Thread safety: This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
+<b>Thread safety:</b> This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
 
 NOTICE: While this class's source code is in the public domain, the class uses an internal class, called NormalizationData, that includes data derived from the Unicode Character Database. In case doing so is required, the permission notice for the Unicode Character Database is given here:
 
@@ -36,7 +36,7 @@ Except as contained in this notice, the name of a copyright holder shall not be 
     public NormalizingCharacterInput(
         PeterO.Text.ICharacterInput input);
 
-Initializes a new instance of the  class using Normalization Form C.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using Normalization Form C.
 
 <b>Parameters:</b>
 
@@ -48,7 +48,7 @@ Initializes a new instance of the  class using Normalization Form C.
         PeterO.Text.ICharacterInput stream,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the  class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
 <b>Parameters:</b>
 
@@ -67,7 +67,7 @@ The parameter <i>stream</i>
     public NormalizingCharacterInput(
         string str);
 
-Initializes a new instance of the  class using Normalization Form C.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using Normalization Form C.
 
 <b>Parameters:</b>
 
@@ -81,7 +81,7 @@ Initializes a new instance of the  class using Normalization Form C.
         int length,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the  class. Uses a portion of a string as the input.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class. Uses a portion of a string as the input.
 
 <b>Parameters:</b>
 
@@ -102,7 +102,7 @@ Initializes a new instance of the  class. Uses a portion of a string as the inpu
         string str,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the  class.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
 
 <b>Parameters:</b>
 
@@ -115,7 +115,7 @@ Initializes a new instance of the  class.
     public NormalizingCharacterInput(
         System.Collections.Generic.IList characterList);
 
-Initializes a new instance of the  class using Normalization Form C.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using Normalization Form C.
 
 <b>Parameters:</b>
 
@@ -127,7 +127,7 @@ Initializes a new instance of the  class using Normalization Form C.
         System.Collections.Generic.IList characterList,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the  class using the given normalization form.
+Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using the given normalization form.
 
 <b>Parameters:</b>
 

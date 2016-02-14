@@ -130,11 +130,7 @@ namespace Test {
       if (o.Equals(o2)) {
         if (!o2.Equals(o)) {
           Assert.Fail(
-String.Format(
-CultureInfo.InvariantCulture,
-"{0} equals {1} but not vice versa",
-o,
-o2));
+("" + o + " equals " + o2 + " but not vice versa"));
         }
         // Test for the guarantee that equal objects
         // must have equal hash codes
@@ -142,19 +138,11 @@ o2));
           // Don't use Assert.AreEqual directly because it has
           // quite a lot of overhead
           Assert.Fail(
-String.Format(
-CultureInfo.InvariantCulture,
-"{0} and {1} don't have equal hash codes",
-o,
-o2));
+("" + o + " and " + o2 + " don't have equal hash codes"));
         }
       } else {
         if (o2.Equals(o)) {
-          Assert.Fail(String.Format(
-CultureInfo.InvariantCulture,
-"{0} does not equal {1} but not vice versa",
-o,
-o2));
+          Assert.Fail(("" + o + " does not equal " + o2 + " but not vice versa"));
         }
         // At least check that GetHashCode doesn't throw
         try {

@@ -9,7 +9,7 @@ Represents an email address.
     public Address(
         string addressValue);
 
-Initializes a new instance of the  class.
+Initializes a new instance of the [PeterO.Mail.Address](PeterO.Mail.Address.md) class.
 
 <b>Parameters:</b>
 
