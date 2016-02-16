@@ -6,8 +6,8 @@ If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
 using System;
-using System.Text;
 using System.IO;
+using System.Text;
 
 using PeterO;
 using PeterO.Text;

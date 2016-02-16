@@ -6,6 +6,16 @@ using System;
 
 namespace PeterO.Text {
   internal static class NormalizationData {
+    public const int QCSNFKDMin = 160;
+    public const int QCSNFKDMax = 195101;
+
+    public const int QCSNFCMin = 768;
+    public const int QCSNFCMax = 195101;
+    public const int QCSNFKCMin = 160;
+    public const int QCSNFKCMax = 195101;
+
+    public const int QCSNFDMin = 192;
+    public const int QCSNFDMax = 195101;
     public static readonly int[] ComposedPairs = GetComposedPairs();
 
     private static int[] GetComposedPairs0() {
@@ -3577,8 +3587,6 @@ namespace PeterO.Text {
       21213, 12309, 12308, 25943, 12309 };
     }
 
-    public const int QCSNFCMin = 768;
-    public const int QCSNFCMax = 195101;
     public static readonly byte[] QCSNFC = new byte[] { (byte)0xf3, 9, 0, 1,
       (byte)0xff, (byte)0xff, (byte)0xff, 2, (byte)0xff, 3, 4,
       (byte)0xff, (byte)0xff, 5, (byte)0xff, 6, 7, 8, (byte)0xff,
@@ -3681,8 +3689,6 @@ namespace PeterO.Text {
         16,
       0, 116, 30, 15, (byte)0xff, 0, (byte)0xa5, 16, (byte)0xff };
 
-    public const int QCSNFDMin = 192;
-    public const int QCSNFDMax = 195101;
     public static readonly byte[] QCSNFD = new byte[] { (byte)0xf3, 9, 0, 1,
       (byte)0xff, (byte)0xff, (byte)0xff, 2, 3, 4, 5, (byte)0xff,
       (byte)0xff, 6, (byte)0xff, 7, 8, 9, (byte)0xff, (byte)0xff,
@@ -3819,8 +3825,6 @@ namespace PeterO.Text {
         (byte)0xc0,
       (byte)0xff, 0, (byte)0xa8, 16, (byte)0xff };
 
-    public const int QCSNFKCMin = 160;
-    public const int QCSNFKCMax = 195101;
     public static readonly byte[] QCSNFKC = new byte[] { (byte)0xf3, 9, 0,
       1, (byte)0xff, (byte)0xff, (byte)0xff, 2, (byte)0xff, 3, 4,
       (byte)0xff, (byte)0xff, 5, (byte)0xff, 6, 7, 8, (byte)0xff,
@@ -3969,8 +3973,6 @@ namespace PeterO.Text {
         (byte)0x9c,
       23, 18, 15, (byte)0xff, 0, (byte)0xa6, 16, (byte)0xff };
 
-    public const int QCSNFKDMin = 160;
-    public const int QCSNFKDMax = 195101;
     public static readonly byte[] QCSNFKD = new byte[] { (byte)0xf3, 9, 0,
       1, (byte)0xff, (byte)0xff, (byte)0xff, 2, 3, 4, 5, (byte)0xff,
       (byte)0xff, 6, (byte)0xff, 7, 8, 9, (byte)0xff, (byte)0xff,

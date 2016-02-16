@@ -14,9 +14,9 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.MediaTypeBuilder"]/*'/>
   public sealed class MediaTypeBuilder {
+    private readonly IDictionary<string, string> parameters;
     private string type;
     private string subtype;
-    private readonly IDictionary<string, string> parameters;
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.MediaTypeBuilder.TopLevelType"]/*'/>
@@ -100,7 +100,7 @@ namespace PeterO.Mail {
       if (str.Length == 0) {
         throw new ArgumentException("str is empty.");
       }
-   if (MediaType.skipMimeTypeSubtype(str, 0, str.Length, null) !=
+   if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
         str.Length) {
         throw new ArgumentException("Not a well-formed top level type: " + str);
       }
@@ -130,7 +130,7 @@ namespace PeterO.Mail {
       if (name.Length == 0) {
         throw new ArgumentException("name is empty.");
       }
-if (MediaType.skipMimeTypeSubtype(name, 0, name.Length, null) !=
+if (MediaType.SkipMimeTypeSubtype(name, 0, name.Length, null) !=
         name.Length) {
       throw new ArgumentException("Not a well-formed parameter name: " +
           name);
@@ -148,7 +148,7 @@ if (MediaType.skipMimeTypeSubtype(name, 0, name.Length, null) !=
       if (str.Length == 0) {
         throw new ArgumentException("str is empty.");
       }
-   if (MediaType.skipMimeTypeSubtype(str, 0, str.Length, null) !=
+   if (MediaType.SkipMimeTypeSubtype(str, 0, str.Length, null) !=
         str.Length) {
         throw new ArgumentException("Not a well-formed subtype: " + str);
       }

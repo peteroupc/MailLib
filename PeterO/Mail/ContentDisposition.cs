@@ -43,11 +43,11 @@ namespace PeterO.Mail {
     public override int GetHashCode() {
       var hashCode = 632580499;
         if (this.dispositionType != null) {
-          hashCode = unchecked(hashCode + 632580503 *
-            this.dispositionType.GetHashCode());
+          hashCode = unchecked(hashCode + (632580503 *
+            this.dispositionType.GetHashCode()));
         }
         if (this.parameters != null) {
-          hashCode = unchecked(hashCode + 632580587 * this.parameters.Count);
+          hashCode = unchecked(hashCode + (632580587 * this.parameters.Count));
         }
       return hashCode;
     }
@@ -70,9 +70,8 @@ namespace PeterO.Mail {
     }
 
     internal ContentDisposition(
-string type,
- IDictionary<string,
- string> parameters) {
+ string type,
+ IDictionary<string, string> parameters) {
       this.dispositionType = type;
       this.parameters = new Dictionary<string, string>(parameters);
     }

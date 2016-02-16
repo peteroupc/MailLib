@@ -234,8 +234,8 @@ int[] ret) {
         } else if (yearDigits == 2) {
           year += 2000;
         }
-        bool leap = (((((year % 4) == 0) && ((year % 100) != 0)) || ((year %
-          400) == 0)));
+        bool leap = year % 4 == 0 && (year % 100 != 0 || year %
+          400 == 0);
         if (month == 4 || month == 6 || month == 9 || month == 11) {
           if (day > 30) {
  return indexStart;
@@ -325,7 +325,7 @@ int[] ret) {
             indexTemp3 = index;
             do {
               indexStart3 = index;
-              for (i3 = 0; ; ++i3) {
+              for (i3 = 0; true; ++i3) {
                 indexTemp4 = HeaderParser.ParseFWS(str, index, endIndex, null);
                 if (indexTemp4 != index) {
                   index = indexTemp4;
@@ -351,10 +351,10 @@ int[] ret) {
                 <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57) ||
                 (str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index +
                 3] >= 48 && str[index + 3] <= 57))) {
-       int offsethr = ((int)str[index] - 48) * 10 + ((int)str[index + 1] -
-                  48);
-  int offsetmin = ((int)str[index + 2] - 48) * 10 + ((int)str[index + 3] -
-                  48);
+       int offsethr = (((int)str[index] - 48) * 10) +
+                ((int)str[index + 1] - 48);
+  int offsetmin = (((int)str[index + 2] - 48) * 10) +
+                ((int)str[index + 3] - 48);
                 if (offsetmin >= 60) {
                   return indexStart;
                 }
@@ -611,7 +611,7 @@ int endIndex) {
         if (index == start) {
           if (index < endIndex && str[index] == '"') {
             // it's a quoted string instead
-            index = MediaType.skipQuotedString(str, index, endIndex, builder);
+            index = MediaType.SkipQuotedString(str, index, endIndex, builder);
           } else {
             break;
           }

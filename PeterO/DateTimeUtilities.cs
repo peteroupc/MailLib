@@ -2,10 +2,12 @@ using System;
 
 namespace PeterO {
   internal static class DateTimeUtilities {
-    private static int[] totdays = {0, 31, 59, 90, 120, 151, 181, 212, 243,
+    private static int[] totdays = {
+      0, 31, 59, 90, 120, 151, 181, 212, 243,
       273, 304, 334 };
 
-    private static int[] numdays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31,
+    private static int[] numdays = {
+      31, 28, 31, 30, 31, 30, 31, 31, 30, 31,
       30, 31 };
 
     public static bool IsValidDateTime(int[] dateTime) {
@@ -20,8 +22,8 @@ namespace PeterO {
       if (yr < 0) {
         yr += 400;
       }
-   bool leap = (((((yr % 4) == 0) && ((yr % 100) != 0)) || ((yr % 400) ==
-        0)));
+   bool leap = yr % 4 == 0 && (yr % 100 != 0 ||
+        yr % 400 == 0);
       if (dateTime[1] == 4 || dateTime[1] == 6 || dateTime[1] == 9 ||
         dateTime[1] == 11) {
         if (dateTime[2] > 30) {
@@ -36,7 +38,7 @@ namespace PeterO {
  return false;
 }
       }
-      return !(dateTime[3 ] < 0 || dateTime[4] < 0 || dateTime[5] < 0 ||
+      return !(dateTime[3] < 0 || dateTime[4] < 0 || dateTime[5] < 0 ||
 dateTime[3] >= 24 || dateTime[4] >= 60 || dateTime[5] >= 61 ||
 dateTime[6] < 0 ||
 dateTime[6] >= 1000 || dateTime[7] <= -1440 ||

@@ -360,9 +360,8 @@ int endIndex) {
               index = charsetStart;
               break;
             }
-         if (str[index] == '?' && index + 1 < endIndex && str[index + 1] ==
-              '='
-) {
+         if (str[index] == '?' && index + 1 < endIndex &&
+              str[index + 1] == '=') {
               string charset = str.Substring(
        charsetStart,
        charsetEnd - charsetStart);
@@ -843,7 +842,7 @@ EncodedWordContext.Phrase);
             builder.Append(' ');
             appendSpace = false;
           }
-          int tokenIndex = MediaType.skipQuotedString(
+          int tokenIndex = MediaType.SkipQuotedString(
          str,
          token[1],
          token[2],
@@ -890,7 +889,7 @@ EncodedWordContext.Phrase);
       while (index < endIndex) {
         if (str[index] == '"') {
           // Quoted string
-          index = MediaType.skipQuotedString(
+          index = MediaType.SkipQuotedString(
    str,
    index,
    endIndex,

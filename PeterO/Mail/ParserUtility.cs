@@ -201,7 +201,7 @@ str.Substring(startIndex, endIndex - startIndex),
           }
           var splitIndex = 0;
           int splitLength = splitString.Length;
-          int len = lengthIfAllAlpha(splitString[splitIndex]);
+          int len = LengthIfAllAlpha(splitString[splitIndex]);
           if (len < 2 || len > 8) {
             return false;
           }
@@ -210,7 +210,7 @@ str.Substring(startIndex, endIndex - startIndex),
             // skip optional extended language subtags
             for (int i = 0; i < 3; ++i) {
               if (splitIndex < splitLength &&
-                lengthIfAllAlpha(splitString[splitIndex]) == 3) {
+                LengthIfAllAlpha(splitString[splitIndex]) == 3) {
                 if (i >= 1) {
                   // point 4 in section 2.2.2 renders two or
                   // more extended language subtags invalid
@@ -224,22 +224,22 @@ str.Substring(startIndex, endIndex - startIndex),
           }
           // optional script
           if (splitIndex < splitLength &&
-            lengthIfAllAlpha(splitString[splitIndex]) == 4) {
+            LengthIfAllAlpha(splitString[splitIndex]) == 4) {
             ++splitIndex;
           }
           // optional region
           if (splitIndex < splitLength &&
-            lengthIfAllAlpha(splitString[splitIndex]) == 2) {
+            LengthIfAllAlpha(splitString[splitIndex]) == 2) {
             ++splitIndex;
           } else if (splitIndex < splitLength &&
-            lengthIfAllDigit(splitString[splitIndex]) == 3) {
+            LengthIfAllDigit(splitString[splitIndex]) == 3) {
             ++splitIndex;
           }
           // variant, any number
           IList<string> variants = null;
           while (splitIndex < splitLength) {
             string curString = splitString[splitIndex];
-            len = lengthIfAllAlphaNum(curString);
+            len = LengthIfAllAlphaNum(curString);
             if (len >= 5 && len <= 8) {
               variants = variants ?? (new List<string>());
               if (!variants.Contains(curString)) {
@@ -250,8 +250,8 @@ str.Substring(startIndex, endIndex - startIndex),
          return false;
               }
               ++splitIndex;
-         } else if (len == 4 && (curString[0] >= '0' && curString[0] <= '9'
-)) {
+         } else if (len == 4 &&
+              (curString[0] >= '0' && curString[0] <= '9')) {
               variants = variants ?? (new List<string>());
               if (!variants.Contains(curString)) {
                 variants.Add(curString);
@@ -272,7 +272,7 @@ str.Substring(startIndex, endIndex - startIndex),
           while (splitIndex < splitLength) {
             string curString = splitString[splitIndex];
             int curIndex = splitIndex;
-            if (lengthIfAllAlphaNum(curString) == 1 &&
+            if (LengthIfAllAlphaNum(curString) == 1 &&
                     !curString.Equals("x")) {
               variants = variants ?? (new List<string>());
               if (!variants.Contains(curString)) {
@@ -284,7 +284,7 @@ str.Substring(startIndex, endIndex - startIndex),
               var havetoken = false;
               while (splitIndex < splitLength) {
                 curString = splitString[splitIndex];
-                len = lengthIfAllAlphaNum(curString);
+                len = LengthIfAllAlphaNum(curString);
                 if (len >= 2 && len <= 8) {
                   havetoken = true;
                   ++splitIndex;
@@ -307,7 +307,7 @@ str.Substring(startIndex, endIndex - startIndex),
               ++splitIndex;
               var havetoken = false;
               while (splitIndex < splitLength) {
-                len = lengthIfAllAlphaNum(splitString[splitIndex]);
+                len = LengthIfAllAlphaNum(splitString[splitIndex]);
                 if (len >= 1 && len <= 8) {
                   havetoken = true;
                   ++splitIndex;
@@ -369,7 +369,7 @@ str.Substring(startIndex, endIndex - startIndex),
       return false;
     }
 
-    private static int lengthIfAllAlpha(string str) {
+    private static int LengthIfAllAlpha(string str) {
       int len = (str == null) ? 0 : str.Length;
       for (int i = 0; i < len; ++i) {
         char c1 = str[i];
@@ -380,7 +380,7 @@ str.Substring(startIndex, endIndex - startIndex),
       return len;
     }
 
-    private static int lengthIfAllAlphaNum(string str) {
+    private static int LengthIfAllAlphaNum(string str) {
       int len = (str == null) ? 0 : str.Length;
       for (int i = 0; i < len; ++i) {
         char c1 = str[i];
@@ -392,7 +392,7 @@ str.Substring(startIndex, endIndex - startIndex),
       return len;
     }
 
-    private static int lengthIfAllDigit(string str) {
+    private static int LengthIfAllDigit(string str) {
       int len = (str == null) ? 0 : str.Length;
       for (int i = 0; i < len; ++i) {
         char c1 = str[i];

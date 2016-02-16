@@ -22,13 +22,13 @@ namespace PeterO.Mail.Transforms {
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
     private readonly IByteReader input;
-    private int lineCharCount;
     private readonly bool lenientLineBreaks;
     private readonly byte[] buffer;
-    private int bufferIndex;
-    private int bufferCount;
     private readonly int maxLineLength;
     private readonly bool checkStrictEncoding;
+    private int lineCharCount;
+    private int bufferIndex;
+    private int bufferCount;
     private int paddingCount;
 
     public Base64Transform(

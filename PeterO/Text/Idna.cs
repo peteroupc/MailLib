@@ -29,12 +29,12 @@ namespace PeterO.Text {
     private const int BidiClassBN = 9;
     private const int BidiClassON = 10;
 
-    private static ByteData bidiClasses;
-    private static ByteData joiningTypes;
-    private static ByteData scripts;
     private static readonly object ValueBidiClassesSync = new Object();
     private static readonly object ValueJoiningTypesSync = new Object();
     private static readonly object ValueScriptsSync = new Object();
+    private static ByteData bidiClasses;
+    private static ByteData joiningTypes;
+    private static ByteData scripts;
 
     internal static int CodePointBefore(string str, int index) {
       if (str == null) {
@@ -288,8 +288,7 @@ bool bidiRule) {
         (str[1] == 'n' || str[1] == 'N') && str[2] == '-' && str[3] == '-';
       var allLDH = true;
       for (int i = 0; i < str.Length; ++i) {
-    if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'
-) ||
+    if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z') ||
                 (str[i] >= '0' && str[i] <= '9') || str[i] == '-') {
           // LDH character
           continue;

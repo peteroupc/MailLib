@@ -174,8 +174,12 @@ output,
         byte c1 = this.alphabet[(this.byte1 >> 2) & 63];
         byte c2 = this.alphabet[((this.byte1 & 3) << 4)];
         if (this.padding) {
-         count += this.LineAwareAppendFour(output, c1, c2, (byte)'=', (byte)'='
-);
+         count += this.LineAwareAppendFour(
+           output,
+           c1,
+           c2,
+           (byte)'=',
+           (byte)'=');
         } else {
           count += this.LineAwareAppend(output, c1);
           count += this.LineAwareAppend(output, c2);

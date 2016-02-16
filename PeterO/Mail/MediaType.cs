@@ -17,6 +17,7 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
   public sealed class MediaType {
+    private const string AttrNameSpecials = "()<>@,;:\\\"/[]?='%*";
     private string topLevelType;
 
     /// <include file='../../docs.xml'
@@ -45,15 +46,15 @@ namespace PeterO.Mail {
     public override int GetHashCode() {
       var hashCode = 632580499;
         if (this.topLevelType != null) {
-  hashCode = unchecked(hashCode + 632580503 *
-            this.topLevelType.GetHashCode());
+  hashCode = unchecked(hashCode + (632580503 *
+            this.topLevelType.GetHashCode()));
         }
         if (this.subType != null) {
-       hashCode = unchecked(hashCode + 632580563 *
-            this.subType.GetHashCode());
+       hashCode = unchecked(hashCode + (632580563 *
+            this.subType.GetHashCode()));
         }
         if (this.parameters != null) {
-          hashCode = unchecked(hashCode + 632580587 * this.parameters.Count);
+          hashCode = unchecked(hashCode + (632580587 * this.parameters.Count));
         }
       return hashCode;
     }
@@ -88,8 +89,7 @@ namespace PeterO.Mail {
     internal MediaType(
 string type,
  string subtype,
- IDictionary<string,
-      string> parameters) {
+ IDictionary<string, string> parameters) {
       this.topLevelType = type;
       this.subType = subtype;
       this.parameters = new Dictionary<string, string>(parameters);
@@ -115,7 +115,7 @@ string type,
       Rfc5322
     }
 
-    private static int skipQtextOrQuotedPair(
+    private static int SkipQtextOrQuotedPair(
       string s,
       int index,
       int endIndex,
@@ -131,7 +131,7 @@ string type,
         if (c < 0x100 && c >= 0x21 && c != 0x7F && c != '\\' && c != '"') {
           return index + 1;
         }
-        i2 = skipQuotedPair(s, index, endIndex);
+        i2 = SkipQuotedPair(s, index, endIndex);
         return i2;
       }
       if (rule == QuotedStringRule.Rfc5322) {
@@ -169,7 +169,7 @@ string type,
     }
 
     // quoted-pair (RFC5322 sec. 3.2.1)
-    internal static int skipQuotedPair(string s, int index, int endIndex) {
+    internal static int SkipQuotedPair(string s, int index, int endIndex) {
       if (index + 1 < endIndex && s[index] == '\\') {
         char c = s[index + 1];
         // Non-ASCII (allowed in internationalized email headers under RFC6532)
@@ -195,12 +195,12 @@ string type,
     }
 
     // quoted-string (RFC5322 sec. 3.2.4)
-    internal static int skipQuotedString(
+    internal static int SkipQuotedString(
 string s,
 int index,
 int endIndex,
 StringBuilder builder) {
-return skipQuotedString(
+return SkipQuotedString(
 s,
 index,
 endIndex,
@@ -232,7 +232,7 @@ StringBuilder sb) {
       return index;
     }
 
-    private static int skipQuotedString(
+    private static int SkipQuotedString(
 string str,
 int index,
 int endIndex,
@@ -271,7 +271,7 @@ QuotedStringRule rule) {
           return index;
         }
         int oldIndex = index;
-        index = skipQtextOrQuotedPair(str, index, endIndex, rule);
+        index = SkipQtextOrQuotedPair(str, index, endIndex, rule);
         if (index == oldIndex) {
           if (builder != null) {
             builder.Remove(valueBLength, (builder.Length)-valueBLength);
@@ -522,8 +522,7 @@ StringBuilder sb) {
     }
 
     internal static void AppendParameters(
-IDictionary<string, string>
-      parameters,
+IDictionary<string, string> parameters,
  StringBuilder sb) {
       var tmp = new StringBuilder();
       var keylist = new List<string>(parameters.Keys);
@@ -601,7 +600,7 @@ bool httpRules) {
       while (i < endIndex) {
         char c = str[i];
         if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
-          "()<>@,;:\\\"/[]?='%*" .IndexOf(c) >= 0)) {
+          AttrNameSpecials.IndexOf(c) >= 0)) {
           break;
         }
         if (builder != null) {
@@ -654,13 +653,14 @@ bool httpRules) {
       return i;
     }
 
-    internal static int skipMimeTypeSubtype(
+    internal static int SkipMimeTypeSubtype(
 string str,
 int index,
 int endIndex,
 StringBuilder builder) {
       int i = index;
       var count = 0;
+      string specials = "!#$&-^_.+";
       while (i < endIndex) {
         char c = str[i];
         // See RFC6838
@@ -671,7 +671,7 @@ StringBuilder builder) {
           }
           ++i;
           ++count;
-    } else if (count > 0 && (c == (c & 0x7F) && "!#$&-^_.+" .IndexOf(c) >=
+    } else if (count > 0 && (c == (c & 0x7f) && specials.IndexOf(c) >=
           0)) {
           if (builder != null) {
             builder.Append(c);
@@ -691,12 +691,12 @@ StringBuilder builder) {
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetCharset"]/*'/>
-    #if CODE_ANALYSIS
+#if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design", "CA1024",
 Justification="This method has different semantics from " +
         "GetParameter(\"charset\").")]
-    #endif
+#endif
     public string GetCharset() {
       // NOTE: RFC6657 changed the rules for the default charset in text
       // media types,
@@ -948,7 +948,7 @@ ICharacterEncoding charset) {
       foreach (string name in parameters.Keys) {
         // Check parameter names using stricter format
         // in RFC6838
-        if (skipMimeTypeSubtype(name, 0, name.Length, null) != name.Length) {
+        if (SkipMimeTypeSubtype(name, 0, name.Length, null) != name.Length) {
           // Illegal parameter name, so use default media type
           return false;
         }
@@ -964,7 +964,7 @@ ICharacterEncoding charset) {
       }
     }
 
-    internal static int skipOws(string s, int index, int endIndex) {
+    internal static int SkipOws(string s, int index, int endIndex) {
       int i2 = index;
       while (i2 < endIndex) {
         if (s[i2] == 0x09 || s[i2] == 0x20) {
@@ -984,7 +984,7 @@ string str,
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipOws
-    index = httpRules ? skipOws(str, index, endIndex) :
+    index = httpRules ? SkipOws(str, index, endIndex) :
           HeaderParser.ParseCFWS(
             str,
             index,
@@ -998,7 +998,7 @@ string str,
           return false;
         }
         ++index;
-    index = httpRules ? skipOws(str, index, endIndex) :
+    index = httpRules ? SkipOws(str, index, endIndex) :
           HeaderParser.ParseCFWS(
 str,
 index,
@@ -1024,7 +1024,7 @@ null);
           // appear
           // around the equal sign separating an attribute and value, while
           // HTTP explicitly forbids such whitespace
-          index = HeaderParser .ParseCFWS(str, index, endIndex, null);
+          index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         }
         if (index >= endIndex) {
           return false;
@@ -1056,7 +1056,7 @@ null);
         // string
         if (attribute[attribute.Length - 1] != '*') {
           // try getting the value quoted
-          qs = skipQuotedString(
+          qs = SkipQuotedString(
             str,
             index,
             endIndex,
@@ -1093,14 +1093,14 @@ null);
       }
       int endIndex = str.Length;
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      int i = skipMimeTypeSubtype(str, index, endIndex, null);
+      int i = SkipMimeTypeSubtype(str, index, endIndex, null);
       if (i == index || i >= endIndex || str[i] != '/') {
         return false;
       }
       this.topLevelType =
         DataUtilities.ToLowerCaseAscii(str.Substring(index, i - index));
       ++i;
-      int i2 = skipMimeTypeSubtype(str, i, endIndex, null);
+      int i2 = SkipMimeTypeSubtype(str, i, endIndex, null);
       if (i == i2) {
         return false;
       }
@@ -1132,7 +1132,8 @@ null);
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder(
 "text",
-"plain").SetParameter("charset",
+"plain").SetParameter(
+        "charset",
         "us-ascii").ToMediaType();
 
     #if CODE_ANALYSIS
@@ -1146,7 +1147,8 @@ null);
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
 "text",
-"plain").SetParameter("charset",
+"plain").SetParameter(
+        "charset",
         "utf-8").ToMediaType();
 
     #if CODE_ANALYSIS

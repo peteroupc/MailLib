@@ -1,3 +1,4 @@
+package com.upokecenter.test;
 /*
 Written by Peter O. in 2013-2016.
 Any copyright is dedicated to the Public Domain.
@@ -5,41 +6,41 @@ http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
-using System;
 
-namespace Test {
-    /// <summary>The system&#x27;s random number generator will be called
-    /// many times during testing. Unfortunately it can be very slow. So we
-    /// use this wrapper class.</summary>
+    /**
+     * The system&#x27;s random number generator will be called many times during
+     * testing. Unfortunately it can be very slow. So we use this wrapper
+     * class.
+     */
   public class FastRandom {
-    private const int ReseedCount = 495;
+    private static final int ReseedCount = 495;
 
-    private readonly Random rand;
-    private readonly Random rand2;
+    private final java.util.Random rand;
+    private final java.util.Random rand2;
     private int count;
-    private static readonly object ValueSeedsLock = new Object();
+    private static final Object ValueSeedsLock = new Object();
 
     private int w = 521288629;
     private int z = 362436069;
     private long s0, s1;
     private int lastRand = 0;
-    private bool haveLastRand = false;
-    private static readonly int[] ValueSeeds = new int[32];
+    private boolean haveLastRand = false;
+    private static final int[] ValueSeeds = new int[32];
 
     private static void AddSeed(int seed) {
-      lock (ValueSeedsLock) {
+      synchronized (ValueSeedsLock) {
         if (seedIndex == -1) {
           seedIndex = 0;
         }
         ValueSeeds[seedIndex] ^= seed;
-        seedCount = Math.Max(seedCount, seedIndex + 1);
+        seedCount = Math.max(seedCount, seedIndex + 1);
         ++seedIndex;
-        seedIndex %= ValueSeeds.Length;
+        seedIndex %= ValueSeeds.length;
       }
     }
 
     private static int GetSeed() {
-      lock (ValueSeedsLock) {
+      synchronized (ValueSeedsLock) {
         if (seedCount == 0) {
           return 0;
         }
@@ -56,15 +57,15 @@ namespace Test {
 
     public FastRandom() {
       int randseed = GetSeed();
-      this.rand = (randseed == 0) ? (new Random()) : (new Random(randseed));
-      int randseed2 = unchecked(GetSeed() ^ SysRandNext(this.rand, this.rand));
-      this.rand2 = (randseed2 == 0) ? (new Random()) : (new Random(randseed2));
+      this.rand = (randseed == 0) ? (new java.util.Random()) : (new java.util.Random(randseed));
+      int randseed2 = (GetSeed() ^ SysRandNext(this.rand, this.rand));
+      this.rand2 = (randseed2 == 0) ? (new java.util.Random()) : (new java.util.Random(randseed2));
       this.count = ReseedCount;
     }
 
-    private static int SysRandNext(Random randA, Random randB) {
-      int ret = randA.Next(0x10000);
-      ret |= randB.Next(0x10000) << 16;
+    private static int SysRandNext(java.util.Random randA, java.util.Random randB) {
+      int ret = randA.nextInt(0x10000);
+      ret |= randB.nextInt(0x10000) << 16;
       return ret;
     }
 
@@ -76,8 +77,8 @@ namespace Test {
         int w = this.w, z = this.z;
         // Use George Marsaglia's multiply-with-carry
         // algorithm.
-        this.z = z = unchecked((36969 * (z & 65535)) + ((z >> 16) & 0xffff));
-        this.w = w = unchecked((18000 * (w & 65535)) + ((z >> 16) & 0xffff));
+        this.z = z = ((36969 * (z & 65535)) + ((z >> 16) & 0xffff));
+        this.w = w = ((18000 * (w & 65535)) + ((z >> 16) & 0xffff));
         return ((z << 16) | (w & 65535)) & mask;
       } else {
         // Adapted from public domain code from Sebastiano
@@ -85,28 +86,29 @@ namespace Test {
         // http://xorshift.di.unimi.it/xorshift128plus.c
         long z1 = this.s0;
         long z0 = this.s1;
-        z1 = unchecked(z1 ^ (z1 << 23));
+        z1 = (z1 ^ (z1 << 23));
         long a = (z1 >> 18) & 0x3fffffffffffL;
         long b = (z0 >> 5) & 0x7ffffffffffffffL;
         this.s0 = z0;
         this.s1 = z1 ^ z0 ^ a ^ b;
-        b = unchecked(this.s1 + z0);
-        this.lastRand = unchecked((int)(b >> 32));
+        b = (this.s1 + z0);
+        this.lastRand = ((int)(b >> 32));
         this.haveLastRand = true;
-        return unchecked((int)b) & mask;
+        return ((int)b) & mask;
       }
     }
 
-    /// <summary>Generates a random number.</summary>
-    /// <param name='v'>The return value will be 0 or greater, and less
-    /// than this number.</param>
-    /// <returns>A 32-bit signed integer.</returns>
+    /**
+     * Generates a random number.
+     * @param v The return value will be 0 or greater, and less than this number.
+     * @return A 32-bit signed integer.
+     */
     public int NextValue(int v) {
       if (v <= 1) {
         if (v == 1) {
           return 0;
         }
-        throw new ArgumentException(
+        throw new IllegalArgumentException(
           "v (" + v + ") is not greater than 0");
       }
       if (this.count >= ReseedCount) {
@@ -114,7 +116,7 @@ namespace Test {
         // every once in a while, to reseed
         this.count = 0;
         if (this.rand != null) {
-          // Console.WriteLine("reseed");
+          // System.out.println("reseed");
           int seed = SysRandNext(this.rand, this.rand2);
           this.z ^= seed;
           seed = SysRandNext(this.rand2, this.rand);
@@ -132,7 +134,7 @@ namespace Test {
           }
           seed = SysRandNext(this.rand, this.rand2);
           AddSeed(seed);
-          return this.rand.Next(v);
+          return this.rand.nextInt(v);
         }
       }
       ++this.count;
@@ -145,7 +147,7 @@ namespace Test {
       if (v == 0x100) {
         return this.NextValueInternal(0xff);
       }
-      int maxExclusive = (Int32.MaxValue / v) * v;
+      int maxExclusive = (Integer.MAX_VALUE / v) * v;
       while (true) {
         int vi = this.NextValueInternal(0x7fffffff);
         if (vi < maxExclusive) {
@@ -154,4 +156,3 @@ namespace Test {
       }
     }
   }
-}

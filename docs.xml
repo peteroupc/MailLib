@@ -58,9 +58,8 @@
             string.</param>
             <returns>The Unicode code point at the previous position. Returns
             -1 if <paramref name='index'/> is 0 or less, or is greater than the
-            string's length. Returns the replacement character (U+FFFD) if
-            the previous character is an unpaired surrogate code
-            point.</returns>
+            string's length. Returns the replacement character (U+FFFD) if the
+            previous character is an unpaired surrogate code point.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
 </doc>
@@ -84,7 +83,8 @@
 </doc>
 <doc name="M:PeterO.DataUtilities.CodePointCompare(System.String,System.String)">
 <summary>Compares two strings in Unicode code point order. Unpaired
-            surrogates are treated as individual code points.</summary>
+            surrogate code points are treated as individual code
+            points.</summary>
             <param name='strA'>The first string. Can be null.</param>
             <param name='strB'>The second string. Can be null.</param>
             <returns>A value indicating which string is " less" or " greater" .
@@ -372,8 +372,7 @@
 <summary>Determines whether this object and another object are
             equal.</summary>
             <param name='obj'>An arbitrary object.</param>
-            <returns><c>true</c> if the objects are equal, otherwise, false
-            .</returns>
+            <returns><c>true</c> if the objects are equal; otherwise, <c>false</c>.</returns>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.GetHashCode">
 <summary>Returns the hash code for this instance.</summary>
@@ -396,27 +395,25 @@
 <doc name="P:PeterO.Mail.ContentDisposition.IsAttachment">
 <summary>Gets a value indicating whether the disposition type is
             attachment.</summary>
-            <value><c>true</c> if the
-            disposition type is attachment; otherwise, <c>false</c>.</value>
+            <value><c>true</c> If the disposition type is attachment; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.ContentDisposition.IsInline">
 <summary>Gets a value indicating whether the disposition type is
             inline.</summary>
-            <value><c>true</c> if the disposition
-            type is inline; otherwise, <c>false</c>.</value>
+            <value><c>true</c> If the disposition type is inline; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)">
 <summary>Converts a file name from the Content-Disposition header
             to a suitable name for saving data to a file.
             <para>Examples:</para>
-            <para>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt" (RFC 2047
+            <para><c>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt"</c> (RFC 2047
             encoding)</para>
-            <para>"=?utf-8?q?long_filename?=" -&gt; "long filename" (RFC 2047
+            <para><c>"=?utf-8?q?long_filename?=" -&gt; "long filename"</c> (RFC
+            2047 encoding)</para>
+            <para><c>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"</c> (RFC 2231
             encoding)</para>
-            <para>"utf-8'en'hello%2Etxt" -&gt; "hello.txt" (RFC 2231
-            encoding)</para>
-            <para>"nul.txt" -&gt; "_nul.txt" (Reserved name)</para>
-            <para>"dir1/dir2/file" -&gt; "dir1_dir2_file" (Directory
+            <para><c>"nul.txt" -&gt; "_nul.txt"</c> (Reserved name)</para>
+            <para><c>"dir1/dir2/file" -&gt; "dir1_dir2_file"</c> (Directory
             separators)</para></summary>
             <param name='str'>A string representing a file name. Can be
             null.</param>
@@ -490,14 +487,12 @@
 <doc name="P:PeterO.Mail.DispositionBuilder.IsMultipart">
 <summary>Gets a value indicating whether this is a multipart media
             type.</summary>
-            <value><c>true</c> if this is a
-            multipart media type; otherwise, <c>false</c>.</value>
+            <value><c>true</c> If this is a multipart media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.DispositionBuilder.IsText">
 <summary>Gets a value indicating whether this is a text media
             type.</summary>
-            <value><c>true</c> if this is a text
-            media type; otherwise, <c>false</c>.</value>
+            <value><c>true</c> If this is a text media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.RemoveParameter(System.String)">
 <summary>Removes a parameter from this content disposition. Does
@@ -583,8 +578,7 @@
 <summary>Determines whether this object and another object are
             equal.</summary>
             <param name='obj'>An arbitrary object.</param>
-            <returns><c>true</c> if this object and another object are equal,
-            otherwise, false .</returns>
+            <returns><c>true</c> if this object and another object are equal; otherwise, <c>false</c>.</returns>
 </doc>
 <doc name="M:PeterO.Mail.MediaType.GetCharset">
 <summary>Gets this media type's "charset" parameter, naming a
@@ -592,12 +586,12 @@
             this media type.</summary>
             <returns>If the "charset" parameter exists, returns that parameter
             with the basic upper-case letters A to Z (U+0041 to U+005A)
-            converted to lower case. Returns "us-ascii" instead if the media
-            type is ill-formed (RFC2045 sec. 5.2), or if the media type is
-            "text/plain" and doesn't have a "charset" parameter (see RFC2046),
-            or the default value for that parameter, if any, for the media type
-            if the "charset" parameter is absent. Returns an empty string in
-            all other cases.</returns>
+            converted to lower case. Returns <c>"us-ascii"</c> instead if the
+            media type is ill-formed (RFC2045 sec. 5.2), or if the media type
+            is "text/plain" and doesn't have a "charset" parameter (see
+            RFC2046), or the default value for that parameter, if any, for the
+            media type if the "charset" parameter is absent. Returns an empty
+            string in all other cases.</returns>
 </doc>
 <doc name="M:PeterO.Mail.MediaType.GetHashCode">
 <summary>Returns the hash code for this instance.</summary>
@@ -616,14 +610,12 @@
 <doc name="P:PeterO.Mail.MediaType.IsMultipart">
 <summary>Gets a value indicating whether this is a multipart media
             type.</summary>
-            <value><c>true</c> if this is a
-            multipart media type; otherwise, <c>false</c>.</value>
+            <value><c>true</c> If this is a multipart media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.MediaType.IsText">
 <summary>Gets a value indicating whether this is a text media type
             ("text/*").</summary>
-            <value><c>true</c> if this is a text media type; otherwise, <c>false</c>
-            .</value>
+            <value><c>true</c> If this is a text media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="F:PeterO.Mail.MediaType.MessageRfc822">
 <summary>Specifies the media type "message/rfc822", used for
@@ -718,14 +710,12 @@
 <doc name="P:PeterO.Mail.MediaTypeBuilder.IsMultipart">
 <summary>Gets a value indicating whether this is a multipart media
             type.</summary>
-            <value><c>true</c> if this is a
-            multipart media type; otherwise, <c>false</c>.</value>
+            <value><c>true</c> If this is a multipart media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.MediaTypeBuilder.IsText">
 <summary>Gets a value indicating whether this is a text media
             type.</summary>
-            <value><c>true</c> if this is a text
-            media type; otherwise, <c>false</c>.</value>
+            <value><c>true</c> If this is a text media type; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.MediaTypeBuilder.RemoveParameter(System.String)">
 <summary>Removes a parameter from this builder object. Does nothing
@@ -1402,8 +1392,7 @@
 <doc name="P:PeterO.Mail.NamedAddress.IsGroup">
 <summary>Gets a value indicating whether this represents a group of
             addresses rather than a single address.</summary>
-            <value><c>true</c> if this represents a group of
-            addresses; otherwise, <c>false</c>.</value>
+            <value><c>true</c> If this represents a group of addresses; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.NamedAddress.Name">
 <summary>Gets the display name for this email address (or the email
@@ -1446,8 +1435,7 @@
 <doc name="P:PeterO.Mail.Transforms.BoundaryCheckerTransform.HasNewBodyPart">
 <summary>Gets a value indicating whether a new body part was
             detected.</summary>
-            <value><c>true</c> if a new body part
-            was detected; otherwise, <c>false</c>.</value>
+            <value><c>true</c> If a new body part was detected; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="M:PeterO.Mail.WordWrapEncoder.ToString">
 <summary>Converts this object to a text string.</summary>
@@ -1508,10 +1496,10 @@
             <param name='str'>A string containing the desired portion to get
             the length for.</param>
             <param name='index'>Zero-based index showing where the desired
-            portion of "str" begins.</param>
+            portion of <paramref name='str'/> begins.</param>
             <param name='endIndex'>Zero-based index showing where the desired
-            portion of "str" ends. The character before this index is the last
-            character.</param>
+            portion of <paramref name='str'/> ends. The character before this
+            index is the last character.</param>
             <returns>The Punycode length of the encoded string. If the string
             contains code points outside the Basic Latin range (U+0000 to U+007F), returns the Punycode length plus 4 (the length of the prefix
             "xn--", which indicates an internationalized domain name). If there
@@ -1555,8 +1543,8 @@
             <param name='lookupRules'>If true, uses rules to apply when looking
             up the string as a domain name. If false, uses rules to apply when
             registering the string as a domain name.</param>
-            <returns><c>true</c> if the given string is a syntactically valid domain
-            name; otherwise; false.</returns>
+            <returns><c>true</c> if the given string is a syntactically valid
+            domain name; otherwise; false.</returns>
 </doc>
 <doc name="T:PeterO.Text.Normalization">
 <summary>Represents a Unicode normalization form.</summary>
@@ -1597,8 +1585,7 @@
 <summary>Returns whether this string is normalized.</summary>
             <param name='str'>The string to check.</param>
             <param name='form'>A Normalization object.</param>
-            <returns><c>true</c> if this string is normalized, otherwise, false
-            .</returns>
+            <returns><c>true</c> if this string is normalized; otherwise, <c>false</c>.</returns>
 </doc>
 <doc name="M:PeterO.Text.Normalizer.Normalize(System.String,PeterO.Text.Normalization)">
 <summary>Converts a string to the given Unicode normalization
@@ -1622,7 +1609,7 @@
             <returns>The number of Unicode code points read, or 0 if the end of
             the source is reached.</returns>
             <exception cref='T:System.ArgumentException'>Either <paramref name='index'/> or <paramref name='length'/> is less than 0 or
-            greater than <paramref name='chars'/> 's length, or <paramref name='chars'/> 's length minus <paramref name='index'/> is less
+            greater than <paramref name='chars'/> 's length, or <paramref name='chars'/> ' s length minus <paramref name='index'/> is less
             than <paramref name='length'/>.</exception>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='chars'/> is null.</exception>
@@ -1664,7 +1651,7 @@
             order for combining marks, since they can otherwise appear in an
             arbitrary order.</item></list>
             <para>For more information, see Standard Annex 15 at
-            http://www.unicode.org/reports/tr15/ .</para>
+            <c>http://www.unicode.org/reports/tr15/</c>.</para>
             <para><b>Thread safety:</b> This class is mutable; its properties
             can be changed. None of its instance methods are designed to be
             thread safe. Therefore, access to objects from this class must be
@@ -1789,8 +1776,7 @@
             input.</param>
             <param name='form'>Specifies the normalization form to
             check.</param>
-            <returns><c>true</c> if the text is normalized, otherwise, false
-            .</returns>
+            <returns><c>true</c> if the text is normalized; otherwise, <c>false</c>.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='chars'/> is null.</exception>
 </doc>
@@ -1800,8 +1786,8 @@
             <param name='charList'>A list of Unicode code points.</param>
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
-            <returns><c>true</c> if the given list of characters is in the given
-            Unicode normalization form, otherwise, false .</returns>
+            <returns><c>true</c> if the given list of characters is in the
+            given Unicode normalization form; otherwise, <c>false</c>.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='charList'/> is null.</exception>
 </doc>
@@ -1811,8 +1797,8 @@
             <param name='charArray'>An array of Unicode code points.</param>
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
-            <returns><c>true</c> if the given list of characters is in the given
-            Unicode normalization form, otherwise, false .</returns>
+            <returns><c>true</c> if the given list of characters is in the
+            given Unicode normalization form; otherwise, <c>false</c>.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             "charList" is null.</exception>
 </doc>
@@ -1823,7 +1809,7 @@
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
             <returns><c>true</c> if the given string is in the given Unicode
-            normalization form, otherwise, false .</returns>
+            normalization form; otherwise, <c>false</c>.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
 </doc>
@@ -1851,7 +1837,7 @@
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='chars'/> is null.</exception>
             <exception cref='T:System.ArgumentException'>Either <paramref name='index'/> or <paramref name='length'/> is less than 0 or
-            greater than <paramref name='chars'/> 's length, or <paramref name='chars'/> 's length minus <paramref name='index'/> is less
+            greater than <paramref name='chars'/> 's length, or <paramref name='chars'/> ' s length minus <paramref name='index'/> is less
             than <paramref name='length'/>.</exception>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.ReadChar">
