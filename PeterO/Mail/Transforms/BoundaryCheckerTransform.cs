@@ -13,6 +13,7 @@ using PeterO.Mail;
 namespace PeterO.Mail.Transforms {
   internal sealed class BoundaryCheckerTransform : IByteReader {
     private readonly IByteReader input;
+    private readonly List<string> boundaries;
     private bool ungetting;
     private int lastByte;
     private byte[] buffer;
@@ -22,7 +23,6 @@ namespace PeterO.Mail.Transforms {
     private bool readingHeaders;
     private bool hasNewBodyPart;
     private bool endOfStream;
-    private readonly List<string> boundaries;
 
     private void ResizeBuffer(int size) {
       this.buffer = this.buffer ?? (new byte[size + 10]);
@@ -150,8 +150,9 @@ int c = this.lastByte = this.ungetting ? this.lastByte :
       // whether to emit the CRLF before the "--".
       #if DEBUG
 if (this.bufferCount != 0) {
-        throw new ArgumentException("this.bufferCount (" + this.bufferCount+
-          ") is not equal to " + "0");
+        string msg = "this.bufferCount (" + this.bufferCount +
+          ") is not equal to " + "0";
+        throw new ArgumentException(msg);
       }
       #endif
 
@@ -358,8 +359,8 @@ if (this.bufferCount != 0) {
         throw new ArgumentException("doesn't satisfy !this.hasNewBodyPart");
       }
       if (!this.bufferCount.Equals(0)) {
-        throw new ArgumentException("this.bufferCount (" + this.bufferCount+
-          ") is not equal to " + "0");
+        throw new ArgumentException("this.bufferCount (" +
+          this.bufferCount + ") is not equal to " + "0");
       }
       #endif
 
@@ -373,8 +374,8 @@ if (this.bufferCount != 0) {
         throw new ArgumentException("doesn't satisfy this.readingHeaders");
       }
       if (!this.bufferCount.Equals(0)) {
-        throw new ArgumentException("this.bufferCount (" + this.bufferCount+
-          ") is not equal to " + "0");
+        throw new ArgumentException("this.bufferCount (" +
+          this.bufferCount + ") is not equal to " + "0");
       }
       #endif
 

@@ -9,26 +9,26 @@ using System;
 
 namespace PeterO.Text {
   internal static class UnicodeDatabase {
-    private static ByteData classes;
     private static readonly Object ValueClassesSyncRoot = new Object();
+    private static readonly Object ValueIdnaCatSyncRoot = new Object();
+    private static readonly Object ValuePairsSyncRoot = new Object();
+    private static readonly Object ValueQcsSyncRoot = new Object();
+    private static readonly Object ValueCmSyncRoot = new Object();
+    private static ByteData classes;
 
     private static ByteData combmark;
 
     private static int[] decomps;
 
     private static ByteData idnaCat;
-    private static readonly Object ValueIdnaCatSyncRoot = new Object();
     private static int[] pairs;
 
     private static int pairsLength;
-    private static readonly Object ValuePairsSyncRoot = new Object();
 
     private static ByteData qcsnfc;
     private static ByteData qcsnfd;
     private static ByteData qcsnfkc;
     private static ByteData qcsnfkd;
-    private static readonly Object ValueQcsSyncRoot = new Object();
-    private static readonly Object ValueCmSyncRoot = new Object();
 
     public static int GetCombiningClass(int cp) {
       lock (ValueClassesSyncRoot) {

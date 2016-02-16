@@ -15,7 +15,7 @@ The Unicode Standard includes characters, such as an acute accent, that can be c
 
  * The four normalization forms also enforce a standardized order for combining marks, since they can otherwise appear in an arbitrary order.
 
-For more information, see Standard Annex 15 at http://www.unicode.org/reports/tr15/ .
+For more information, see Standard Annex 15 at `http://www.unicode.org/reports/tr15/` .
 
 <b>Thread safety:</b> This class is mutable; its properties can be changed. None of its instance methods are designed to be thread safe. Therefore, access to objects from this class must be synchronized if multiple threads can access them at the same time.
 
@@ -344,7 +344,7 @@ Either  <i>index</i>
  or  <i>length</i>
  is less than 0 or greater than  <i>chars</i>
  's length, or  <i>chars</i>
- 's length minus  <i>index</i>
+ ' s length minus  <i>index</i>
  is less than  <i>length</i>
 .
 

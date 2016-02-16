@@ -142,7 +142,7 @@ namespace PeterO.Mail {
 
     private static string GetDateString(int[] dateTime) {
       if (!DateTimeUtilities.IsValidDateTime(dateTime) ||
-        dateTime[0 ]< 0) {
+        dateTime[0] < 0) {
         throw new ArgumentException("Invalid date and time");
       }
       int dow = DateTimeUtilities.GetDayOfWeek(dateTime);
@@ -154,7 +154,7 @@ namespace PeterO.Mail {
       var sb = new StringBuilder();
       sb.Append(dayString);
       sb.Append(", ");
-      sb.Append((char)('0' + ((dateTime[2] / 10) %10)));
+      sb.Append((char)('0' + ((dateTime[2] / 10) % 10)));
       sb.Append((char)('0' + (dateTime[2] % 10)));
       sb.Append(' ');
       sb.Append(monthString);
@@ -364,13 +364,11 @@ namespace PeterO.Mail {
  return null;
 }
       var date = new int[8];
-      return
-        (
-HeaderParserUtility.ParseHeaderExpandedDate(
+      return HeaderParserUtility.ParseHeaderExpandedDate(
 field,
 0,
 field.Length,
-date) != 0) ? date : null;
+date) != 0 ? date : null;
     }
 
     /// <include file='../../docs.xml'
@@ -1682,8 +1680,7 @@ origValue.Length);
             // bare CR
             allTextBytes = false;
           } else if (i > 0 && (body[i - 1] == (byte)' ' || body[i - 1] ==
-                 (byte)'\t'
-)) {
+                 (byte)'\t')) {
             // Space followed immediately by CRLF
             allTextBytes = false;
           } else {
@@ -2101,7 +2098,7 @@ origValue.Length);
           // NOTE: Actually "token", but all known transfer encoding values
           // fit the same syntax as the stricter one for top-level types and
           // subtypes
-          int endIndex = MediaType.skipMimeTypeSubtype(
+          int endIndex = MediaType.SkipMimeTypeSubtype(
             value,
             startIndex,
             value.Length,
@@ -2278,10 +2275,11 @@ endIndex - startIndex) : String.Empty;
 #if DEBUG
             aw.Write(buffer, 0, bufferCount);
             buffer = aw.ToArray();
-            string ss = DataUtilities.GetUtf8String(buffer,
-                    Math.Max(buffer.Length - 35, 0),
-                    Math.Min(buffer.Length, 35),
-                    true);
+            string ss = DataUtilities.GetUtf8String(
+              buffer,
+              Math.Max(buffer.Length - 35, 0),
+              Math.Min(buffer.Length, 35),
+              true);
             ss = String.Empty;
             string transferEnc = (leaf ?? this)
               .GetHeader("content-transfer-encoding");
@@ -2383,10 +2381,11 @@ endIndex - startIndex) : String.Empty;
 #if DEBUG
             aw.Write(buffer, 0, bufferCount);
             buffer = aw.ToArray();
-            string ss = DataUtilities.GetUtf8String(buffer,
-                    Math.Max(buffer.Length - 35, 0),
-                    Math.Min(buffer.Length, 35),
-                    true);
+            string ss = DataUtilities.GetUtf8String(
+              buffer,
+              Math.Max(buffer.Length - 35, 0),
+              Math.Min(buffer.Length, 35),
+              true);
             ss = String.Empty;
             string transferEnc = this.GetHeader("content-transfer-encoding");
             valueExMessage += " [" + ss + "] [type=" + (this.ContentType ??

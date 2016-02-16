@@ -17,9 +17,9 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="T:PeterO.Mail.QuotedPrintableEncoder"]/*'/>
   internal sealed class QuotedPrintableEncoder : ICharacterEncoder {
     private const string HexAlphabet = "0123456789ABCDEF";
-    private int lineCount;
     private readonly int lineBreakMode;
     private readonly bool unlimitedLineLength;
+    private int lineCount;
 
     // lineBreakMode:
     // 0 - no line breaks

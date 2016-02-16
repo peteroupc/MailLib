@@ -361,10 +361,10 @@ Normalization form) {
           // in this situation.
           isQcs = true;
         } else {
-        isQcs = (c >= 0xf0000) ? true : (
+        isQcs = (c >= 0xf0000) ? true :
 UnicodeDatabase.IsQuickCheckStarter(
 c,
-form));
+form);
         }
         if (isQcs) {
           lastQcs = i;
@@ -615,8 +615,8 @@ form)) {
         index += count;
         total += count;
         this.flushIndex += count;
-        bool decompForm = (this.form == Normalization.NFD ||
-            this.form == Normalization.NFKD);
+        bool decompForm = this.form == Normalization.NFD ||
+            this.form == Normalization.NFKD;
         // Try to fill buffer with quick-check starters,
         // as an optimization
         while (total < length) {
@@ -710,8 +710,8 @@ this.endIndex);
         if (!this.endOfString) {
           var haveNewQcs = false;
           // NOTE: lastQcsIndex begins at -1
-          bool decompForm = (this.form == Normalization.NFD ||
-            this.form == Normalization.NFKD);
+          bool decompForm = this.form == Normalization.NFD ||
+            this.form == Normalization.NFKD;
           var nextIsQCS = false;
           for (int i = this.endIndex - 1; i > this.lastQcsIndex; --i) {
             if (
@@ -803,8 +803,8 @@ this.lastQcsIndex);
 
     private sealed class StringCharacterInput2 : ICharacterInput {
       private readonly string str;
-      private int index;
       private readonly int endIndex;
+      private int index;
 
       public StringCharacterInput2(string str) {
         if (str == null) {

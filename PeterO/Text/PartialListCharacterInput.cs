@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace PeterO.Text {
   internal sealed class PartialListCharacterInput : ICharacterInput {
-    private int pos;
     private readonly int endPos;
     private readonly IList<int> ilist;
+    private int pos;
 
     public PartialListCharacterInput(IList<int> ilist, int start, int length) {
       if (ilist == null) {

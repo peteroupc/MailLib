@@ -5,27 +5,29 @@ http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://upokecenter.dreamhosters.com/articles/donate-now-2/
  */
-#if DEBUG
+// #if DEBUG
 using System;
 using System.Reflection;
 
 namespace PeterO {
   internal static class DebugUtility {
-    private static MethodInfo GetTypeMethod(Type t, string name, Type[]
-      parameters) {
+    private static MethodInfo GetTypeMethod(
+      Type t,
+      string name,
+      Type[] parameters) {
 #if NET40
       return t.GetMethod(name, parameters);
 #else
 {
- return t.GetRuntimeMethod(name, parameters);
-}
+        return t.GetRuntimeMethod(name, parameters);
+      }
 #endif
     }
 
     public static void Log(string str) {
       Type type = Type.GetType("System.Console");
-      var types = new[] { typeof(String) };
-      GetTypeMethod(type,"WriteLine", types).Invoke(
+      var types = new[] { typeof(string) };
+      GetTypeMethod(type, "WriteLine", types).Invoke(
         type,
         new object[] { str });
     }
@@ -35,4 +37,4 @@ namespace PeterO {
     }
   }
 }
-#endif
+// #endif

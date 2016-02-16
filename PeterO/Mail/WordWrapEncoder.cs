@@ -11,10 +11,10 @@ using System.Text;
 namespace PeterO.Mail {
   internal sealed class WordWrapEncoder {
     private const int MaxLineLength = 76;
-    private string lastSpaces;
     private readonly StringBuilder fullString;
-    private int lineLength;
     private readonly bool collapseSpaces;
+    private string lastSpaces;
+    private int lineLength;
     private bool haveNonwhitespace;
 
     public WordWrapEncoder(bool collapseSpaces) {

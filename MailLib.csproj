@@ -76,7 +76,7 @@
     <Compile Include="PeterO\Mail\Transforms\BoundaryCheckerTransform.cs" />
     <Compile Include="PeterO\Mail\CollectionUtilities.cs" />
     <Compile Include="PeterO\Mail\ContentDisposition.cs" />
-    <Compile Include="PeterO\Mail\DebugUtility.cs" />
+    <Compile Include="PeterO\DebugUtility.cs" />
     <Compile Include="PeterO\Mail\DispositionBuilder.cs" />
     <Compile Include="PeterO\Mail\Transforms\EightBitTransform.cs" />
     <Compile Include="PeterO\Mail\EncodedWordContext.cs" />

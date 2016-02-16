@@ -42,7 +42,7 @@ Gets a value indicating whether this is a multipart media type.
 
 <b>Returns:</b>
 
- `true`  if this is a multipart media type; otherwise,  `false` .
+ `true`  If this is a multipart media type; otherwise, . `false` .
 
 ### IsText
 
@@ -52,7 +52,7 @@ Gets a value indicating whether this is a text media type ("text/*").
 
 <b>Returns:</b>
 
- `true`  if this is a text media type; otherwise,  `false` .
+ `true`  If this is a text media type; otherwise, . `false` .
 
 ### Parameters
 
@@ -117,7 +117,7 @@ Gets this media type's "charset" parameter, naming a character encoding used to 
 
 <b>Return Value:</b>
 
-If the "charset" parameter exists, returns that parameter with the basic upper-case letters A to Z (U+0041 to U+005A) converted to lower case. Returns "us-ascii" instead if the media type is ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain" and doesn't have a "charset" parameter (see RFC2046), or the default value for that parameter, if any, for the media type if the "charset" parameter is absent. Returns an empty string in all other cases.
+If the "charset" parameter exists, returns that parameter with the basic upper-case letters A to Z (U+0041 to U+005A) converted to lower case. Returns  `"us-ascii"`  instead if the media type is ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain" and doesn't have a "charset" parameter (see RFC2046), or the default value for that parameter, if any, for the media type if the "charset" parameter is absent. Returns an empty string in all other cases.
 
 ### GetHashCode
 
