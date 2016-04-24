@@ -22,7 +22,7 @@ namespace MailLibTest {
         Assert.AreEqual(null, new Address("local=domain.example"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -31,7 +31,7 @@ Console.Write(String.Empty);
         Assert.AreEqual(null, new Address("local@"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -45,7 +45,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
 }
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -54,7 +54,7 @@ Console.Write(String.Empty);
         Assert.AreEqual(null, new Address("lo,cal@example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -98,8 +98,8 @@ Console.Write(String.Empty);
       {
 string stringTemp = addr.ToString();
 Assert.AreEqual(
-"local.local@example.com",
-stringTemp);
+  "local.local@example.com",
+  stringTemp);
 }
     }
   }

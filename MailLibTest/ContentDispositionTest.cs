@@ -217,7 +217,7 @@ namespace MailLibTest {
         stringTemp =
 
   ContentDisposition.MakeFilename(
-"  =?utf-8*i-unknown?q?___hello.txt___?=  ");
+  "  =?utf-8*i-unknown?q?___hello.txt___?=  ");
         Assert.AreEqual(
           "hello.txt",
           stringTemp);
@@ -471,7 +471,7 @@ namespace MailLibTest {
  ContentDisposition.Parse(null);
 Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);

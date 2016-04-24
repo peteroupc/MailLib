@@ -194,8 +194,8 @@ namespace PeterO.Mail {
           }
           // More complex cases
           string[] splitString = SplitAt(
-str.Substring(startIndex, endIndex - startIndex),
-"-");
+  str.Substring(startIndex, endIndex - startIndex),
+  "-");
           if (splitString.Length == 0) {
             return false;
           }

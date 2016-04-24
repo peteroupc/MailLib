@@ -327,9 +327,9 @@ private const string PunycodeAlphabet =
     }
 
     internal static string PunycodeEncodePortion(
-string str,
-int index,
-int endIndex) {
+  string str,
+  int index,
+  int endIndex) {
       if (str == null) {
         throw new ArgumentNullException("str");
       }

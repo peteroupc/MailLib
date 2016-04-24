@@ -38,31 +38,31 @@ namespace PeterO.Mail {
     private int quantumCount;
 
     public Base64Encoder(
-bool padding,
-bool lenientLineBreaks,
-bool unlimitedLineLength) : this(
-padding,
-lenientLineBreaks,
-unlimitedLineLength,
-Base64Classic) {
+  bool padding,
+  bool lenientLineBreaks,
+  bool unlimitedLineLength) : this(
+  padding,
+  lenientLineBreaks,
+  unlimitedLineLength,
+  Base64Classic) {
     }
 
     public Base64Encoder(
-bool padding,
-bool lenientLineBreaks,
-bool unlimitedLineLength,
-string alphabetString) : this(
-padding,
-lenientLineBreaks,
-unlimitedLineLength,
-StringAlphabetToBytes(alphabetString)) {
+  bool padding,
+  bool lenientLineBreaks,
+  bool unlimitedLineLength,
+  string alphabetString) : this(
+  padding,
+  lenientLineBreaks,
+  unlimitedLineLength,
+  StringAlphabetToBytes(alphabetString)) {
     }
 
     public Base64Encoder(
-bool padding,
-bool lenientLineBreaks,
-bool unlimitedLineLength,
-byte[] alphabet) {
+  bool padding,
+  bool lenientLineBreaks,
+  bool unlimitedLineLength,
+  byte[] alphabet) {
       if (alphabet == null) {
         throw new ArgumentNullException("alphabet");
       }
@@ -133,7 +133,7 @@ throw new
       int ib = ((int)b) & 0xff;
       if (this.quantumCount == 2) {
         int ret = this.LineAwareAppendFour(
-output,
+  output,
           this.alphabet[(this.byte1 >> 2) & 63],
  this.alphabet[((this.byte1 & 3) << 4) + ((this.byte2 >> 4) & 15)],
           this.alphabet[((this.byte2 & 15) << 2) + ((ib >> 6) & 3)],
@@ -209,11 +209,11 @@ output,
     }
 
     private int LineAwareAppendFour(
-IWriter output,
-byte c1,
-byte c2,
-byte c3,
-byte c4) {
+  IWriter output,
+  byte c1,
+  byte c2,
+  byte c3,
+  byte c4) {
       var charCount = 0;
       var bytes = new byte[6];
       if (!this.unlimitedLineLength) {

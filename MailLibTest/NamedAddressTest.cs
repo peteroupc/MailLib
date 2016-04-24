@@ -11,7 +11,7 @@ namespace MailLibTest {
         Assert.AreEqual(null, new NamedAddress(String.Empty, (string)null));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -20,7 +20,7 @@ Console.Write(String.Empty);
         Assert.AreEqual(null, new NamedAddress(String.Empty, (Address)null));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -29,7 +29,7 @@ Console.Write(String.Empty);
         Assert.AreEqual(null, new NamedAddress("x at example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -38,7 +38,7 @@ Console.Write(String.Empty);
         Assert.AreEqual(null, new NamedAddress("x"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -47,7 +47,7 @@ Console.Write(String.Empty);
         Assert.AreEqual(null, new NamedAddress("x@"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -56,7 +56,7 @@ Console.Write(String.Empty);
         Assert.AreEqual(null, new NamedAddress("@example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -65,7 +65,7 @@ Console.Write(String.Empty);
         Assert.AreEqual(null, new NamedAddress("example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -74,7 +74,7 @@ Console.Write(String.Empty);
         Assert.AreEqual(null, new Address((string)null));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -83,7 +83,7 @@ Console.Write(String.Empty);
         Assert.AreEqual(null, new NamedAddress(String.Empty));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-Console.Write(String.Empty);
+new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -127,14 +127,14 @@ Console.Write(String.Empty);
       {
 string stringTemp = na.Address.ToString();
 Assert.AreEqual(
-"me@example.com",
-stringTemp);
+  "me@example.com",
+  stringTemp);
 }
       {
 string stringTemp = na.ToString();
 Assert.AreEqual(
-"me@example.com",
-stringTemp);
+  "me@example.com",
+  stringTemp);
 }
       na = new NamedAddress("John's Office <me@example.com>");
       Assert.AreEqual("John's Office", na.Name);
@@ -144,8 +144,8 @@ stringTemp);
       {
 string stringTemp = na.Address.ToString();
 Assert.AreEqual(
-"me@example.com",
-stringTemp);
+  "me@example.com",
+  stringTemp);
 }
     na = new NamedAddress("(comment) Me (comment) <me@example.com> (comment)");
       Assert.AreEqual("Me", na.Name);
@@ -153,8 +153,8 @@ stringTemp);
       {
 string stringTemp = na.Address.ToString();
 Assert.AreEqual(
-"me@example.com",
-stringTemp);
+  "me@example.com",
+  stringTemp);
 }
       na = new NamedAddress("=?utf-8?q?Me?= <me@example.com>");
       Assert.AreEqual("Me", na.Name);
@@ -162,14 +162,14 @@ stringTemp);
       {
 string stringTemp = na.Address.ToString();
 Assert.AreEqual(
-"me@example.com",
-stringTemp);
+  "me@example.com",
+  stringTemp);
 }
       {
 string stringTemp = na.ToString();
 Assert.AreEqual(
-"Me <me@example.com>",
-stringTemp);
+  "Me <me@example.com>",
+  stringTemp);
 }
    na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
                   "me@example.com>");
@@ -178,14 +178,14 @@ stringTemp);
       {
 string stringTemp = na.Address.ToString();
 Assert.AreEqual(
-"me@example.com",
-stringTemp);
+  "me@example.com",
+  stringTemp);
 }
       {
 string stringTemp = na.ToString();
 Assert.AreEqual(
-"John's Office <me@example.com>",
-stringTemp);
+  "John's Office <me@example.com>",
+  stringTemp);
 }
       na = new NamedAddress("\"Me\" <me@example.com>");
       Assert.AreEqual("Me", na.Name);
@@ -193,14 +193,14 @@ stringTemp);
       {
 string stringTemp = na.Address.ToString();
 Assert.AreEqual(
-"me@example.com",
-stringTemp);
+  "me@example.com",
+  stringTemp);
 }
       {
 string stringTemp = na.ToString();
 Assert.AreEqual(
-"Me <me@example.com>",
-stringTemp);
+  "Me <me@example.com>",
+  stringTemp);
 }
       //------------
       na = new NamedAddress("Group: \"Me\" <me@example.com>;");
@@ -212,8 +212,8 @@ stringTemp);
       {
 string stringTemp = na.Address.ToString();
 Assert.AreEqual(
-"me@example.com",
-stringTemp);
+  "me@example.com",
+  stringTemp);
 }
       na = new
   NamedAddress("Group: \"Me\" <me@example.com>, Fred <fred@example.com>;");
@@ -230,16 +230,16 @@ string stringTemp = na.ToString();
       {
 string stringTemp = na.Address.ToString();
 Assert.AreEqual(
-"me@example.com",
-stringTemp);
+  "me@example.com",
+  stringTemp);
 }
       na = groupAddr[1];
       Assert.AreEqual("Fred", na.Name);
       {
 string stringTemp = na.Address.ToString();
 Assert.AreEqual(
-"fred@example.com",
-stringTemp);
+  "fred@example.com",
+  stringTemp);
 }
       //------------
 na = new
@@ -258,16 +258,16 @@ string stringTemp = na.ToString();
       {
 string stringTemp = na.Address.ToString();
 Assert.AreEqual(
-"me@example.com",
-stringTemp);
+  "me@example.com",
+  stringTemp);
 }
       na = groupAddr[1];
       Assert.AreEqual("somebody@example.com", na.Name);
       {
 string stringTemp = na.Address.ToString();
 Assert.AreEqual(
-"somebody@example.com",
-stringTemp);
+  "somebody@example.com",
+  stringTemp);
 }
     }
 

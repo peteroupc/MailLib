@@ -206,9 +206,9 @@ namespace PeterO.Text {
         }
       }
   retval = DomainUtility.PunycodeEncodePortion(
-value,
-lastIndex,
-value.Length);
+  value,
+  lastIndex,
+  value.Length);
       if (retval == null) {
         builder.Append(value.Substring(lastIndex, value.Length - lastIndex));
       } else {
@@ -233,19 +233,18 @@ value.Length);
             return false;
           }
           if (!IsValidLabel(
-str.Substring(lastIndex, i - lastIndex),
-lookupRules,
-bidiRule)) {
+  str.Substring(lastIndex, i - lastIndex),
+  lookupRules,
+  bidiRule)) {
             return false;
           }
           lastIndex = i + 1;
         }
       }
-      return (str.Length != lastIndex) &&
-        IsValidLabel(
-str.Substring(lastIndex, str.Length - lastIndex),
-lookupRules,
-bidiRule);
+      return (str.Length != lastIndex) && IsValidLabel(
+  str.Substring(lastIndex, str.Length - lastIndex),
+  lookupRules,
+  bidiRule);
     }
 
     private static string ToLowerCaseAscii(string str) {
@@ -278,9 +277,9 @@ bidiRule);
     }
 
 private static bool IsValidLabel(
-string str,
-bool lookupRules,
-bool bidiRule) {
+  string str,
+  bool lookupRules,
+  bool bidiRule) {
       if (String.IsNullOrEmpty(str)) {
         return false;
       }
@@ -333,9 +332,9 @@ bool bidiRule) {
     }
 
     private static bool IsValidULabel(
-string str,
-bool lookupRules,
-bool bidiRule) {
+  string str,
+  bool lookupRules,
+  bool bidiRule) {
       if (String.IsNullOrEmpty(str)) {
         return false;
       }

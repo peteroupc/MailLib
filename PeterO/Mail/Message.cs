@@ -271,7 +271,7 @@ namespace PeterO.Mail {
         return (disp != null) ?
           ContentDisposition.MakeFilename(disp.GetParameter("filename")) :
         ContentDisposition.MakeFilename(this.contentType.GetParameter(
-"name"));
+  "name"));
       }
     }
 
@@ -365,10 +365,10 @@ namespace PeterO.Mail {
 }
       var date = new int[8];
       return HeaderParserUtility.ParseHeaderExpandedDate(
-field,
-0,
-field.Length,
-date) != 0 ? date : null;
+  field,
+  0,
+  field.Length,
+  date) != 0 ? date : null;
     }
 
     /// <include file='../../docs.xml'
@@ -982,9 +982,9 @@ date) != 0 ? date : null;
             status[0] = 2;
           }
           int spaceAndTabEnd = ParserUtility.SkipSpaceAndTab(
-origValue,
-0,
-origValue.Length);
+  origValue,
+  0,
+  origValue.Length);
           return Rfc2047.EncodeString(origValue.Substring(spaceAndTabEnd));
         }
         if (status != null) {
@@ -2109,8 +2109,8 @@ origValue.Length);
               endIndex,
               value.Length,
               null) == value.Length) ? value.Substring(
-startIndex,
-endIndex - startIndex) : String.Empty;
+  startIndex,
+  endIndex - startIndex) : String.Empty;
         }
         mime |= name.Equals("mime-version");
         if (value.IndexOf("=?", StringComparison.Ordinal) >= 0) {

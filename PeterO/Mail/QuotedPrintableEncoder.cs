@@ -59,10 +59,10 @@ namespace PeterO.Mail {
     }
 
     private int IncrementAndAppendChars(
-IWriter output,
-char b1,
-char b2,
-char b3) {
+  IWriter output,
+  char b1,
+  char b2,
+  char b3) {
       var count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + 3 > 75) {
@@ -173,10 +173,10 @@ char b3) {
                 return count + this.IncrementAndAppendChar(output, (char)c);
               } else {
                 count += this.IncrementAndAppendChars(
-output,
-(char)0x3d,
-HexAlphabet[(c >> 4) & 15],
-HexAlphabet[c & 15]);
+  output,
+  (char)0x3d,
+  HexAlphabet[(c >> 4) & 15],
+  HexAlphabet[c & 15]);
                 return count;
               }
             }

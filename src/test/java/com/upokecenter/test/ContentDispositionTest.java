@@ -217,7 +217,7 @@ import com.upokecenter.mail.*;
         stringTemp =
 
   ContentDisposition.MakeFilename(
-"  =?utf-8*i-unknown?q?___hello.txt___?=  ");
+  "  =?utf-8*i-unknown?q?___hello.txt___?=  ");
         Assert.assertEquals(
           "hello.txt",
           stringTemp);
@@ -471,7 +471,7 @@ import com.upokecenter.mail.*;
  ContentDisposition.Parse(null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);

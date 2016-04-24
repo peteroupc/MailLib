@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace PeterO.Mail {
   internal static class CollectionUtilities {
     public static bool MapEquals<TKey, TValue>(
-IDictionary<TKey, TValue> mapA,
+  IDictionary<TKey, TValue> mapA,
  IDictionary<TKey, TValue> mapB) {
       if (mapA == null) {
         return mapB == null;

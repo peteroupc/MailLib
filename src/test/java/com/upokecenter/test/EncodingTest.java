@@ -269,7 +269,7 @@ import java.util.*;
           Assert.assertEquals(objectTemp, objectTemp2);
         }
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -300,7 +300,7 @@ import java.util.*;
       try {
         MessageTest.MessageFromString(msgString);
       } catch (MessageDataException ex) {
-        System.out.print("");
+        new Object();
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1896,7 +1896,7 @@ String stringTemp =
         msg.SetHeader("to", tmp);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -1913,7 +1913,7 @@ String stringTemp =
         msg.SetHeader("to", tmp);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -2009,18 +2009,18 @@ String stringTemp =
       }
     }
 
-    private static byte[] RandomBytes(FastRandom rnd) {
-      int count = 10 + rnd.NextValue(350);
+    private static byte[] RandomBytes(RandomGenerator rnd) {
+      int count = 10 + rnd.UniformInt(350);
       byte[] arr = new byte[count];
       for (int i = 0; i < count; ++i) {
-        arr[i] = (byte)rnd.NextValue(0x100);
+        arr[i] = (byte)rnd.UniformInt(0x100);
       }
       return arr;
     }
 
     @Test
     public void TestRandomEncodedBytes() {
-      FastRandom rnd = new FastRandom();
+      RandomGenerator rnd = new RandomGenerator();
       for (int i = 0; i < 10000; ++i) {
         byte[] bytes = RandomBytes(rnd);
         TestEncodedBytesRoundTrip(bytes, false);
