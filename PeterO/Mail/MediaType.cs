@@ -87,7 +87,7 @@ namespace PeterO.Mail {
     }
 
     internal MediaType(
-string type,
+  string type,
  string subtype,
  IDictionary<string, string> parameters) {
       this.topLevelType = type;
@@ -196,23 +196,23 @@ string type,
 
     // quoted-string (RFC5322 sec. 3.2.4)
     internal static int SkipQuotedString(
-string s,
-int index,
-int endIndex,
-StringBuilder builder) {
+  string s,
+  int index,
+  int endIndex,
+  StringBuilder builder) {
 return SkipQuotedString(
-s,
-index,
-endIndex,
-builder,
-QuotedStringRule.Rfc5322);
+  s,
+  index,
+  endIndex,
+  builder,
+  QuotedStringRule.Rfc5322);
     }
 
     private static int ParseFWSLax(
-string str,
-int index,
-int endIndex,
-StringBuilder sb) {
+  string str,
+  int index,
+  int endIndex,
+  StringBuilder sb) {
       while (index < endIndex) {
         int tmp = index;
         // Skip CRLF
@@ -233,11 +233,11 @@ StringBuilder sb) {
     }
 
     private static int SkipQuotedString(
-string str,
-int index,
-int endIndex,
-StringBuilder builder,  // receives the unescaped version of the string
-QuotedStringRule rule) {
+  string str,
+  int index,
+  int endIndex,
+  StringBuilder builder,  // receives the unescaped version of the string
+  QuotedStringRule rule) {
       int startIndex = index;
       int valueBLength = (builder == null) ? 0 : builder.Length;
       index = (rule != QuotedStringRule.Rfc5322) ? index :
@@ -331,9 +331,9 @@ QuotedStringRule rule) {
     }
 
     private static void AppendComplexParamValue(
-string name,
-string str,
-StringBuilder sb) {
+  string name,
+  string str,
+  StringBuilder sb) {
       var length = 1;
       var contin = 0;
       const string ValueHex = "0123456789ABCDEF";
@@ -474,9 +474,9 @@ StringBuilder sb) {
     }
 
     private static bool AppendSimpleParamValue(
-string name,
-string str,
-StringBuilder sb) {
+  string name,
+  string str,
+  StringBuilder sb) {
       sb.Append(name);
       sb.Append('=');
       if (str.Length == 0) {
@@ -522,7 +522,7 @@ StringBuilder sb) {
     }
 
     internal static void AppendParameters(
-IDictionary<string, string> parameters,
+  IDictionary<string, string> parameters,
  StringBuilder sb) {
       var tmp = new StringBuilder();
       var keylist = new List<string>(parameters.Keys);
@@ -563,11 +563,11 @@ IDictionary<string, string> parameters,
     }
 
     internal static int SkipMimeToken(
-string str,
-int index,
-int endIndex,
-StringBuilder builder,
-bool httpRules) {
+  string str,
+  int index,
+  int endIndex,
+  StringBuilder builder,
+  bool httpRules) {
       int i = index;
       const string ValueSpecials = "()<>@,;:\\\"/[]?=";
       while (i < endIndex) {
@@ -654,10 +654,10 @@ bool httpRules) {
     }
 
     internal static int SkipMimeTypeSubtype(
-string str,
-int index,
-int endIndex,
-StringBuilder builder) {
+  string str,
+  int index,
+  int endIndex,
+  StringBuilder builder) {
       int i = index;
       var count = 0;
       string specials = "!#$&-^_.+";
@@ -694,7 +694,7 @@ StringBuilder builder) {
 #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Design", "CA1024",
-Justification="This method has different semantics from " +
+  Justification="This method has different semantics from " +
         "GetParameter(\"charset\").")]
 #endif
     public string GetCharset() {
@@ -827,8 +827,8 @@ Justification="This method has different semantics from " +
       }
       string charset = value.Substring(0, firstQuote);
       string language = value.Substring(
-firstQuote + 1,
-secondQuote - (firstQuote + 1));
+  firstQuote + 1,
+  secondQuote - (firstQuote + 1));
       if (language.Length > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
         return null;
@@ -855,8 +855,8 @@ secondQuote - (firstQuote + 1));
       }
       string charset = value.Substring(0, firstQuote);
       string language = value.Substring(
-firstQuote + 1,
-secondQuote - (firstQuote + 1));
+  firstQuote + 1,
+  secondQuote - (firstQuote + 1));
       if (language.Length > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
         return Encodings.GetEncoding("us-ascii", true);
@@ -867,8 +867,8 @@ secondQuote - (firstQuote + 1));
     }
 
   private static string DecodeRfc2231Encoding(
-string value,
-ICharacterEncoding charset) {
+  string value,
+  ICharacterEncoding charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.IndexOf('\'');
@@ -976,7 +976,7 @@ ICharacterEncoding charset) {
     }
 
     internal static bool ParseParameters(
-string str,
+  string str,
       int index,
  int endIndex,
       bool httpRules,
@@ -1000,10 +1000,10 @@ string str,
         ++index;
     index = httpRules ? SkipOws(str, index, endIndex) :
           HeaderParser.ParseCFWS(
-str,
-index,
-endIndex,
-null);
+  str,
+  index,
+  endIndex,
+  null);
         var builder = new StringBuilder();
         // NOTE: RFC6838 restricts the format of parameter names to the same
         // syntax as types and subtypes, but this syntax is incompatible with
@@ -1041,10 +1041,10 @@ null);
         if (!httpRules) {
           // See note above on whitespace around the equal sign
           index = HeaderParser.ParseCFWS(
-str,
-index,
-endIndex,
-null);
+  str,
+  index,
+  endIndex,
+  null);
         }
         if (index >= endIndex) {
           // No more parameters
@@ -1131,8 +1131,8 @@ null);
     /// path='docs/doc[@name="F:PeterO.Mail.MediaType.TextPlainAscii"]/*'/>
     public static readonly MediaType TextPlainAscii =
       new MediaTypeBuilder(
-"text",
-"plain").SetParameter(
+  "text",
+  "plain").SetParameter(
         "charset",
         "us-ascii").ToMediaType();
 
@@ -1146,8 +1146,8 @@ null);
     /// path='docs/doc[@name="F:PeterO.Mail.MediaType.TextPlainUtf8"]/*'/>
     public static readonly MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
-"text",
-"plain").SetParameter(
+  "text",
+  "plain").SetParameter(
         "charset",
         "utf-8").ToMediaType();
 

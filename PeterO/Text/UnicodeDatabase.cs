@@ -66,10 +66,10 @@ namespace PeterO.Text {
     }
 
     public static int GetDecomposition(
-int cp,
-bool compat,
-int[] buffer,
-int offset) {
+  int cp,
+  bool compat,
+  int[] buffer,
+  int offset) {
       if (cp < 0x80) {
         // ASCII characters have no decomposition
         buffer[offset++] = cp;

@@ -256,10 +256,10 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
     }
 
     private static int SkipEncodedText(
-string str,
-int index,
-int endIndex,
-bool inComments) {
+  string str,
+  int index,
+  int endIndex,
+  bool inComments) {
       int i = index;
       while (i < endIndex) {
         char c = str[i];
@@ -275,9 +275,9 @@ bool inComments) {
     }
 
     public static string DecodeEncodedWordsLenient(
-string str,
-int index,
-int endIndex) {
+  string str,
+  int index,
+  int endIndex) {
       var state = 0;
       var markStart = 0;
       var wordStart = 0;
@@ -399,9 +399,9 @@ int endIndex) {
               } else {
                 if (!haveSpace) {
                builder.Append(
-str.Substring(
-markStart,
-wordStart - markStart));
+  str.Substring(
+  markStart,
+  wordStart - markStart));
                 }
                 builder.Append(decodedWord);
                 haveSpace = false;
@@ -441,10 +441,10 @@ wordStart - markStart));
     }
 
     public static string DecodeEncodedWords(
-string str,
-int index,
-int endIndex,
-EncodedWordContext context) {
+  string str,
+  int index,
+  int endIndex,
+  EncodedWordContext context) {
       if (endIndex - index < 9) {
         // Too short for encoded words to appear
         return str.Substring(index, endIndex - index);
@@ -614,9 +614,9 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
           // Append whitespace as long as it doesn't occur between two
           // encoded words
           builder.Append(
-str.Substring(
-whitespaceStart,
-whitespaceEnd - whitespaceStart));
+  str.Substring(
+  whitespaceStart,
+  whitespaceEnd - whitespaceStart));
         }
         if (startParen) {
           builder.Append('(');
@@ -661,20 +661,20 @@ whitespaceEnd - whitespaceStart));
       }
       string retval = builder.ToString();
       if (
-wordsWereDecoded && (
-hasSuspiciousText || (
-retval.IndexOf(
-"=?",
-StringComparison.Ordinal) >= 0 && retval.IndexOf(
-"?=",
-StringComparison.Ordinal) >= 0))) {
+  wordsWereDecoded && (
+  hasSuspiciousText || (
+  retval.IndexOf(
+  "=?",
+  StringComparison.Ordinal) >= 0 && retval.IndexOf(
+  "?=",
+  StringComparison.Ordinal) >= 0))) {
         if (context == EncodedWordContext.Comment) {
           string wrappedComment = "(" + retval + ")";
           if (
-HeaderParserUtility.ParseCommentStrict(
-wrappedComment,
-0,
-wrappedComment.Length) != wrappedComment.Length) {
+  HeaderParserUtility.ParseCommentStrict(
+  wrappedComment,
+  0,
+  wrappedComment.Length) != wrappedComment.Length) {
             // Comment is syntactically invalid after decoding, so
             // don't decode any of the encoded words
             return str.Substring(start, endIndex - start);
@@ -692,9 +692,9 @@ wrappedComment.Length) != wrappedComment.Length) {
     }
 
     private static bool FollowedByEndOrLinearWhitespace(
-string str,
-int index,
-int endIndex) {
+  string str,
+  int index,
+  int endIndex) {
       if (index == endIndex) {
         return true;
       }
@@ -713,9 +713,9 @@ int endIndex) {
     }
 
     private static int IndexOfNextPossibleEncodedWord(
-string str,
-int index,
-int endIndex) {
+  string str,
+  int index,
+  int endIndex) {
       int cws = HeaderParser.ParseCFWS(str, index, endIndex, null);
       if (cws == index) {
         // No linear whitespace
@@ -737,7 +737,7 @@ int endIndex) {
     }
 
     public static string DecodePhraseText(
-string str,
+  string str,
       int index,
  int endIndex,
       IList<int[]> tokens,
@@ -767,10 +767,10 @@ string str,
           int startIndex = token[1];
           builder.Append(str.Substring(lastIndex, startIndex + 1 - lastIndex));
           string newComment = Rfc2047.DecodeEncodedWords(
-str,
-startIndex + 1,
-token[2] - 1,
-EncodedWordContext.Comment);
+  str,
+  startIndex + 1,
+  token[2] - 1,
+  EncodedWordContext.Comment);
           builder.Append(newComment);
           lastIndex = token[2] - 1;
         } else if (token[0] == HeaderParserUtility.TokenPhraseAtom ||
@@ -827,10 +827,10 @@ EncodedWordContext.Comment);
             builder.Append(str.Substring(wordStart, wordEnd - wordStart));
           } else {
             string replacement = Rfc2047.DecodeEncodedWords(
-str,
-wordStart,
-wordEnd,
-EncodedWordContext.Phrase);
+  str,
+  wordStart,
+  wordEnd,
+  EncodedWordContext.Phrase);
             builder.Append(replacement);
           }
           hasCFWS = HeaderParser.ParseCFWS(str, wordEnd, endIndex, null) !=
@@ -963,10 +963,10 @@ EncodedWordContext.Phrase);
     }
 
     public static string EncodePhraseText(
-string str,
-int index,
-int endIndex,
-IList<int[]> tokens) {
+  string str,
+  int index,
+  int endIndex,
+  IList<int[]> tokens) {
       // Assumes the value matches the production "phrase",
       // and assumes that endIndex is the end of all whitespace
       // found after the phrase. Doesn't encode text within comments.

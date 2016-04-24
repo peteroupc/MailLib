@@ -38,10 +38,10 @@ namespace PeterO.Mail.Transforms {
     private bool unget;
 
     public QuotedPrintableTransform(
-IByteReader input,
-bool lenientLineBreaks,
-int maxLineSize,
-bool checkStrictEncoding) {
+  IByteReader input,
+  bool lenientLineBreaks,
+  int maxLineSize,
+  bool checkStrictEncoding) {
       this.maxLineSize = maxLineSize;
       this.lenientLineBreaks = lenientLineBreaks;
       this.checkStrictEncoding = checkStrictEncoding;
@@ -50,19 +50,18 @@ bool checkStrictEncoding) {
     }
 
     public QuotedPrintableTransform(
-IByteReader input,
-bool lenientLineBreaks) : this(input, lenientLineBreaks, 76, false) {
+  IByteReader input,
+  bool lenientLineBreaks) : this(input, lenientLineBreaks, 76, false) {
     }
 
     public QuotedPrintableTransform(
-IByteReader input,
-bool lenientLineBreaks,
-int maxLineLength) :
-      this(
-input,
-lenientLineBreaks,
-maxLineLength,
-false) {
+  IByteReader input,
+  bool lenientLineBreaks,
+  int maxLineLength) : this(
+  input,
+  lenientLineBreaks,
+  maxLineLength,
+  false) {
     }
 
     private void ResizeBuffer(int size) {

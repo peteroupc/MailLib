@@ -272,7 +272,7 @@ namespace MailLibTest {
           Assert.AreEqual(objectTemp, objectTemp2);
         }
       } catch (ArgumentException) {
-        Console.Write(String.Empty);
+        new Object();
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -303,7 +303,7 @@ namespace MailLibTest {
       try {
         MessageTest.MessageFromString(msgString);
       } catch (MessageDataException) {
-        Console.Write(String.Empty);
+        new Object();
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1902,7 +1902,7 @@ string stringTemp =
         msg.SetHeader("to", tmp);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        Console.Write(String.Empty);
+        new Object();
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1919,7 +1919,7 @@ string stringTemp =
         msg.SetHeader("to", tmp);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        Console.Write(String.Empty);
+        new Object();
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2015,18 +2015,18 @@ string stringTemp =
       }
     }
 
-    private static byte[] RandomBytes(FastRandom rnd) {
-      int count = 10 + rnd.NextValue(350);
+    private static byte[] RandomBytes(RandomGenerator rnd) {
+      int count = 10 + rnd.UniformInt(350);
       var arr = new byte[count];
       for (var i = 0; i < count; ++i) {
-        arr[i] = (byte)rnd.NextValue(0x100);
+        arr[i] = (byte)rnd.UniformInt(0x100);
       }
       return arr;
     }
 
     [Test]
     public void TestRandomEncodedBytes() {
-      var rnd = new FastRandom();
+      var rnd = new RandomGenerator();
       for (var i = 0; i < 10000; ++i) {
         byte[] bytes = RandomBytes(rnd);
         TestEncodedBytesRoundTrip(bytes, false);

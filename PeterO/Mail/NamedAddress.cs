@@ -90,10 +90,10 @@ namespace PeterO.Mail {
         throw new ArgumentException("Address has an invalid syntax.");
       }
       NamedAddress na = HeaderParserUtility.ParseAddress(
-address,
-0,
-address.Length,
-tokener.GetTokens());
+  address,
+  0,
+  address.Length,
+  tokener.GetTokens());
       if (na == null) {
         throw new ArgumentException("Address has an invalid syntax.");
       }

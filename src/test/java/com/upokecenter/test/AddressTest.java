@@ -22,7 +22,7 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address("local=domain.example"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -31,7 +31,7 @@ System.out.print("");
         Assert.assertEquals(null, new Address("local@"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -45,7 +45,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
 }
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -54,7 +54,7 @@ System.out.print("");
         Assert.assertEquals(null, new Address("lo,cal@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -98,8 +98,8 @@ System.out.print("");
       {
 String stringTemp = addr.toString();
 Assert.assertEquals(
-"local.local@example.com",
-stringTemp);
+  "local.local@example.com",
+  stringTemp);
 }
     }
   }

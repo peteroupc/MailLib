@@ -87,7 +87,7 @@ namespace PeterO.Text {
         }
         if (matchLength < 0) {
           throw new ArgumentException("matchLength (" + matchLength +
-            ") is less than " + 0);
+            ") is less than 0");
         }
         if (matchLength > outputPos) {
           throw new ArgumentException("matchLength (" + matchLength +

@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using PeterO;
 using PeterO.Text;
 using System;
 using System.Text;
@@ -15,21 +16,21 @@ namespace MailLibTest {
       // not implemented yet
     }
 
-    public static string RandomAscii(FastRandom rnd) {
-      int length = rnd.NextValue(50) + 1;
+    public static string RandomAscii(RandomGenerator rnd) {
+      int length = rnd.UniformInt(50) + 1;
       var sb = new StringBuilder();
       for (var i = 0;i< length; ++i) {
-        var c = (char)rnd.NextValue(128);
+        var c = (char)rnd.UniformInt(128);
         sb.Append(c);
       }
       return sb.ToString();
     }
 
-    public static string RandomLatinOne(FastRandom rnd) {
-      int length = rnd.NextValue(50) + 1;
+    public static string RandomLatinOne(RandomGenerator rnd) {
+      int length = rnd.UniformInt(50) + 1;
       var sb = new StringBuilder();
       for (var i = 0; i < length; ++i) {
-        var c = (char)rnd.NextValue(256);
+        var c = (char)rnd.UniformInt(256);
         sb.Append(c);
       }
       return sb.ToString();
@@ -37,7 +38,7 @@ namespace MailLibTest {
 
     [Test]
 public void TestNormalizationAscii() {
-  var rnd = new FastRandom();
+  var rnd = new RandomGenerator();
   for (var i = 0; i < 50000; ++i) {
     string str = RandomAscii(rnd);
     // ASCII strings are already normalized
@@ -71,7 +72,7 @@ public void TestNormalizationAscii() {
 
     [Test]
 public void TestNormalizationLatinOne() {
-  var rnd = new FastRandom();
+  var rnd = new RandomGenerator();
   for (var i = 0; i < 50000; ++i) {
     string str = RandomLatinOne(rnd);
     // Latin-1 strings are already normalized in NFC
@@ -99,15 +100,15 @@ public void TestNormalizationLatinOne() {
           Normalization.NFC);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-        Console.Write(String.Empty);
+        new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       Assert.IsTrue(
-NormalizingCharacterInput.IsNormalized(
-new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
-Normalization.NFC));
+  NormalizingCharacterInput.IsNormalized(
+  new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+  Normalization.NFC));
       Assert.IsTrue(
       NormalizingCharacterInput.IsNormalized(
        new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
@@ -132,7 +133,7 @@ Normalization.NFC));
         nci.Read(null, 0, 0);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-        Console.Write(String.Empty);
+        new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -141,7 +142,7 @@ Normalization.NFC));
         nci.Read(new int[] { 't' }, -1, 1);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        Console.Write(String.Empty);
+        new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -150,7 +151,7 @@ Normalization.NFC));
         nci.Read(new int[] { 't' }, 5, 1);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        Console.Write(String.Empty);
+        new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -159,7 +160,7 @@ Normalization.NFC));
         nci.Read(new int[] { 't' }, 0, -1);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        Console.Write(String.Empty);
+        new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -168,7 +169,7 @@ Normalization.NFC));
         nci.Read(new int[] { 't' }, 0, 5);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        Console.Write(String.Empty);
+        new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -177,7 +178,7 @@ Normalization.NFC));
         nci.Read(new int[] { 't', 't' }, 1, 2);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        Console.Write(String.Empty);
+        new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);

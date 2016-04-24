@@ -32,15 +32,15 @@ namespace PeterO.Mail.Transforms {
     private int paddingCount;
 
     public Base64Transform(
-IByteReader input,
-bool lenientLineBreaks) : this(input, lenientLineBreaks, 76, false) {
+  IByteReader input,
+  bool lenientLineBreaks) : this(input, lenientLineBreaks, 76, false) {
     }
 
     public Base64Transform(
-IByteReader input,
-bool lenientLineBreaks,
-int maxLineLength,
-bool checkStrictEncoding) {
+  IByteReader input,
+  bool lenientLineBreaks,
+  int maxLineLength,
+  bool checkStrictEncoding) {
       this.input = input;
       this.maxLineLength = maxLineLength;
       this.lenientLineBreaks = lenientLineBreaks;

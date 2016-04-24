@@ -163,9 +163,9 @@ namespace PeterO.Mail {
         // the parameter's value "should be used as a
         // basis for the actual filename, where possible."
         str = Rfc2047.DecodeEncodedWordsLenient(
-str,
-0,
-str.Length);
+  str,
+  0,
+  str.Length);
         if (str.IndexOf("=?", StringComparison.Ordinal) >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
@@ -177,9 +177,9 @@ str.Length);
         // RFC 2231 encoding, even though all the examples in that RFC
         // show unquoted use of this encoding.
         string charset = Encodings.ResolveAliasForEmail(
-str.Substring(
-0,
-str.IndexOf('\'')));
+  str.Substring(
+  0,
+  str.IndexOf('\'')));
         if (!String.IsNullOrEmpty(charset)) {
           string newstr = MediaType.DecodeRfc2231Extension(str);
           if (!String.IsNullOrEmpty(newstr)) {
@@ -254,30 +254,30 @@ str.IndexOf('\'')));
       }
       string strLower = DataUtilities.ToLowerCaseAscii(str);
       if (
-strLower.Equals(
-"nul") || strLower.Equals("clock$") ||
+  strLower.Equals(
+  "nul") || strLower.Equals("clock$") ||
 strLower.IndexOf(
-"nul.",
-StringComparison.Ordinal) == 0 || strLower.Equals(
-"prn") ||
+  "nul.",
+  StringComparison.Ordinal) == 0 || strLower.Equals(
+  "prn") ||
 strLower.IndexOf(
-"prn.",
-StringComparison.Ordinal) == 0 || strLower.Equals(
-"aux") ||
+  "prn.",
+  StringComparison.Ordinal) == 0 || strLower.Equals(
+  "aux") ||
 strLower.IndexOf(
-"aux.",
-StringComparison.Ordinal) == 0 || strLower.Equals(
-"con") ||
+  "aux.",
+  StringComparison.Ordinal) == 0 || strLower.Equals(
+  "con") ||
 strLower.IndexOf(
-"con.",
-StringComparison.Ordinal) == 0 || (
-strLower.Length >= 4 && strLower.IndexOf(
-"lpt",
-StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
+  "con.",
+  StringComparison.Ordinal) == 0 || (
+  strLower.Length >= 4 && strLower.IndexOf(
+  "lpt",
+  StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
        strLower[3] <= '9') || (strLower.Length >= 4 &&
               strLower.IndexOf(
-"com",
-StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
+  "com",
+  StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
             strLower[3] <= '9')) {
         // Reserved filenames on Windows
         str = "_" + str;
@@ -392,8 +392,8 @@ StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String,PeterO.Mail.ContentDisposition)"]/*'/>
     public static ContentDisposition Parse(
-string dispositionValue,
-ContentDisposition defaultValue) {
+  string dispositionValue,
+  ContentDisposition defaultValue) {
       if (dispositionValue == null) {
         throw new ArgumentNullException("dispositionValue");
       }

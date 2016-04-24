@@ -12,7 +12,7 @@ namespace MailLibTest {
 Assert.AreEqual(null, new DispositionBuilder(stringNull));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-        Console.Write(String.Empty);
+        new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -21,7 +21,7 @@ Assert.AreEqual(null, new DispositionBuilder(stringNull));
 Assert.AreEqual(null, new DispositionBuilder(dispNull));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-        Console.Write(String.Empty);
+        new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -30,7 +30,7 @@ Assert.AreEqual(null, new DispositionBuilder(dispNull));
 Assert.AreEqual(null, new DispositionBuilder(String.Empty));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        Console.Write(String.Empty);
+        new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -48,7 +48,7 @@ Assert.AreEqual(null, new DispositionBuilder(String.Empty));
         new DispositionBuilder().RemoveParameter(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-        Console.Write(String.Empty);
+        new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -60,7 +60,7 @@ Assert.AreEqual(null, new DispositionBuilder(String.Empty));
         new DispositionBuilder().SetDispositionType(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-        Console.Write(String.Empty);
+        new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -69,7 +69,7 @@ Assert.AreEqual(null, new DispositionBuilder(String.Empty));
         new DispositionBuilder().SetDispositionType(String.Empty);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        Console.Write(String.Empty);
+        new Object();
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -91,8 +91,8 @@ Assert.AreEqual(null, new DispositionBuilder(String.Empty));
       {
 string stringTemp = disp.ToString();
 Assert.AreEqual(
-"attachment;a=b",
-stringTemp);
+  "attachment;a=b",
+  stringTemp);
 }
     }
   }

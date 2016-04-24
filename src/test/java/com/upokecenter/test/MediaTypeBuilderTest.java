@@ -23,7 +23,7 @@ import com.upokecenter.mail.*;
  builder.RemoveParameter(null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -36,8 +36,8 @@ throw new IllegalStateException("", ex);
       {
 String stringTemp = builder.ToMediaType().GetParameter("a");
 Assert.assertEquals(
-"b",
-stringTemp);
+  "b",
+  stringTemp);
 }
       builder.SetParameter("a", "");
       Assert.assertEquals("", builder.ToMediaType().GetParameter("a"));
@@ -45,7 +45,7 @@ stringTemp);
  builder.SetParameter(null,"");
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -54,7 +54,7 @@ throw new IllegalStateException("", ex);
  builder.SetParameter("",null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -63,7 +63,7 @@ throw new IllegalStateException("", ex);
  builder.SetParameter("", "a");
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
@@ -72,7 +72,7 @@ throw new IllegalStateException("", ex);
  builder.SetParameter("a\u00e0", "a");
 Assert.fail("Should have failed");
 } catch (IllegalArgumentException ex) {
-System.out.print("");
+new Object();
 } catch (Exception ex) {
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);

@@ -22,10 +22,10 @@ namespace PeterO.Mail {
     internal const int TokenDomain = 9;
 
     public static int ParseHeaderExpandedDate(
-string str,
-int index,
-int endIndex,
-int[] ret) {
+  string str,
+  int index,
+  int endIndex,
+  int[] ret) {
       int i, i3, indexStart, indexStart2, indexStart3, indexTemp,
         indexTemp2, indexTemp3, indexTemp4;
       int dayOfWeek = -1, day = -1, month = -1, year = -1, hour = -1, minute
@@ -575,9 +575,9 @@ int[] ret) {
     }
 
     private static string ParseDotAtomAfterCFWS(
-string str,
-int index,
-int endIndex) {
+  string str,
+  int index,
+  int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a dot-atom
       var builder = new StringBuilder();
@@ -599,9 +599,9 @@ int endIndex) {
     }
 
     private static string ParseDotWordAfterCFWS(
-string str,
-int index,
-int endIndex) {
+  string str,
+  int index,
+  int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a word separated by dots
       var builder = new StringBuilder();
@@ -655,9 +655,9 @@ int endIndex) {
             index = HeaderParser.ParseQuotedPair(str, index, endIndex, null);
             if (index == startQuote) {
        builder.Append(
-str.Substring(
-startQuote + 1,
-index - (startQuote + 1)));
+  str.Substring(
+  startQuote + 1,
+  index - (startQuote + 1)));
             } else {
               ++index;
             }
@@ -674,10 +674,10 @@ index - (startQuote + 1)));
     }
 
     public static IList<NamedAddress> ParseAddressList(
-string str,
-int index,
-int endIndex,
-IList<int[]> tokens) {
+  string str,
+  int index,
+  int endIndex,
+  IList<int[]> tokens) {
       int lastIndex = index;
       IList<NamedAddress> addresses = new List<NamedAddress>();
       for (int i = 0; i < tokens.Count; ++i) {
@@ -698,10 +698,10 @@ IList<int[]> tokens) {
     }
 
     public static NamedAddress ParseAddress(
-string str,
-int index,
-int endIndex,
-IList<int[]> tokens) {
+  string str,
+  int index,
+  int endIndex,
+  IList<int[]> tokens) {
       int lastIndex = index;
       for (int i = 0; i < tokens.Count; ++i) {
         int tokenIndex = tokens[i][1];
@@ -720,10 +720,10 @@ IList<int[]> tokens) {
     }
 
     public static NamedAddress ParseGroup(
-string str,
-int index,
-int endIndex,
-IList<int[]> tokens) {
+  string str,
+  int index,
+  int endIndex,
+  IList<int[]> tokens) {
       string displayName = null;
       var haveDisplayName = false;
       IList<NamedAddress> mailboxes = new List<NamedAddress>();
@@ -752,10 +752,10 @@ IList<int[]> tokens) {
     }
 
     public static NamedAddress ParseMailbox(
-string str,
-int index,
-int endIndex,
-IList<int[]> tokens) {
+  string str,
+  int index,
+  int endIndex,
+  IList<int[]> tokens) {
       string displayName = null;
       string localPart = null;
       string domain = null;
@@ -799,10 +799,10 @@ IList<int[]> tokens) {
 
     // Parses a comment using the obsolete syntax.
     internal static int ParseCommentLax(
-string str,
-int index,
-int endIndex,
-ITokener tokener) {
+  string str,
+  int index,
+  int endIndex,
+  ITokener tokener) {
       int indexStart = index;
       var depth = 0;
       if (index < endIndex && (str[index] == 40)) {
@@ -833,10 +833,10 @@ ITokener tokener) {
                 }
                 int indexTemp4;
       indexTemp4 = HeaderParser.ParseQuotedPair(
-str,
-index,
-endIndex,
-null);
+  str,
+  index,
+  endIndex,
+  null);
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
@@ -898,9 +898,9 @@ null);
 
     // Parses a comment without using the obsolete syntax.
   internal static int ParseCommentStrict(
-string str,
-int index,
-int endIndex) {
+  string str,
+  int index,
+  int endIndex) {
       if (index < endIndex && (str[index] == 40)) {
         ++index;
       } else {

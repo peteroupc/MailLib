@@ -1,6 +1,7 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
 import org.junit.Assert;
 import org.junit.Test;
+import com.upokecenter.util.*;
 import com.upokecenter.text.*;
 
   public class NormalizingCharacterInputTest {
@@ -13,21 +14,21 @@ import com.upokecenter.text.*;
       // not implemented yet
     }
 
-    public static String RandomAscii(FastRandom rnd) {
-      int length = rnd.NextValue(50) + 1;
+    public static String RandomAscii(RandomGenerator rnd) {
+      int length = rnd.UniformInt(50) + 1;
       StringBuilder sb = new StringBuilder();
       for (int i = 0;i< length; ++i) {
-        char c = (char)rnd.NextValue(128);
+        char c = (char)rnd.UniformInt(128);
         sb.append(c);
       }
       return sb.toString();
     }
 
-    public static String RandomLatinOne(FastRandom rnd) {
-      int length = rnd.NextValue(50) + 1;
+    public static String RandomLatinOne(RandomGenerator rnd) {
+      int length = rnd.UniformInt(50) + 1;
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < length; ++i) {
-        char c = (char)rnd.NextValue(256);
+        char c = (char)rnd.UniformInt(256);
         sb.append(c);
       }
       return sb.toString();
@@ -35,7 +36,7 @@ import com.upokecenter.text.*;
 
     @Test
 public void TestNormalizationAscii() {
-  FastRandom rnd = new FastRandom();
+  RandomGenerator rnd = new RandomGenerator();
   for (int i = 0; i < 50000; ++i) {
     String str = RandomAscii(rnd);
     // ASCII strings are already normalized
@@ -69,7 +70,7 @@ public void TestNormalizationAscii() {
 
     @Test
 public void TestNormalizationLatinOne() {
-  FastRandom rnd = new FastRandom();
+  RandomGenerator rnd = new RandomGenerator();
   for (int i = 0; i < 50000; ++i) {
     String str = RandomLatinOne(rnd);
     // Latin-1 strings are already normalized in NFC
@@ -97,15 +98,15 @@ public void TestNormalizationLatinOne() {
           Normalization.NFC);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
       if (!(
-NormalizingCharacterInput.IsNormalized(
-new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
-Normalization.NFC)))Assert.fail();
+  NormalizingCharacterInput.IsNormalized(
+  new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+  Normalization.NFC)))Assert.fail();
       if (!(
       NormalizingCharacterInput.IsNormalized(
        new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
@@ -130,7 +131,7 @@ Normalization.NFC)))Assert.fail();
         nci.Read(null, 0, 0);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -139,7 +140,7 @@ Normalization.NFC)))Assert.fail();
         nci.Read(new int[] { 't' }, -1, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -148,7 +149,7 @@ Normalization.NFC)))Assert.fail();
         nci.Read(new int[] { 't' }, 5, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -157,7 +158,7 @@ Normalization.NFC)))Assert.fail();
         nci.Read(new int[] { 't' }, 0, -1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -166,7 +167,7 @@ Normalization.NFC)))Assert.fail();
         nci.Read(new int[] { 't' }, 0, 5);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -175,7 +176,7 @@ Normalization.NFC)))Assert.fail();
         nci.Read(new int[] { 't', 't' }, 1, 2);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);

@@ -130,7 +130,7 @@ namespace Test {
       if (o.Equals(o2)) {
         if (!o2.Equals(o)) {
           Assert.Fail(
-("" + o + " equals " + o2 + " but not vice versa"));
+  ("" + o + " equals " + o2 + " but not vice versa"));
         }
         // Test for the guarantee that equal objects
         // must have equal hash codes
@@ -138,11 +138,11 @@ namespace Test {
           // Don't use Assert.AreEqual directly because it has
           // quite a lot of overhead
           Assert.Fail(
-("" + o + " and " + o2 + " don't have equal hash codes"));
+  ("" + o + " and " + o2 + " don't have equal hash codes"));
         }
       } else {
         if (o2.Equals(o)) {
-          Assert.Fail(("" + o + " does not equal " + o2 + " but not vice versa"));
+          Assert.Fail("" + o + " does not equal " + o2 + " but not vice versa");
         }
         // At least check that GetHashCode doesn't throw
         try {

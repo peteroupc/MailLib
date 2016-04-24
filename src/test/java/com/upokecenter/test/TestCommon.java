@@ -130,7 +130,7 @@ private TestCommon() {
       if (o.equals(o2)) {
         if (!o2.equals(o)) {
           Assert.fail(
-("" + o + " equals " + o2 + " but not vice versa"));
+  ("" + o + " equals " + o2 + " but not vice versa"));
         }
         // Test for the guarantee that equal objects
         // must have equal hash codes
@@ -138,11 +138,11 @@ private TestCommon() {
           // Don't use Assert.assertEquals directly because it has
           // quite a lot of overhead
           Assert.fail(
-("" + o + " and " + o2 + " don't have equal hash codes"));
+  ("" + o + " and " + o2 + " don't have equal hash codes"));
         }
       } else {
         if (o2.equals(o)) {
-          Assert.fail(("" + o + " does not equal " + o2 + " but not vice versa"));
+          Assert.fail("" + o + " does not equal " + o2 + " but not vice versa");
         }
         // At least check that hashCode doesn't throw
         try {

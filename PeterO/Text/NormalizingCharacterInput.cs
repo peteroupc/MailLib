@@ -13,10 +13,10 @@ namespace PeterO.Text {
     /// path='docs/doc[@name="T:PeterO.Text.NormalizingCharacterInput"]/*'/>
   public sealed class NormalizingCharacterInput : ICharacterInput {
     internal static int DecompToBufferInternal(
-int ch,
-bool compat,
-int[] buffer,
-int index) {
+  int ch,
+  bool compat,
+  int[] buffer,
+  int index) {
 #if DEBUG
       if (buffer == null) {
         throw new ArgumentNullException("buffer");
@@ -47,10 +47,10 @@ int index) {
     }
 
     internal static int DecompToBuffer(
-int ch,
-bool compat,
-int[] buffer,
-int index) {
+  int ch,
+  bool compat,
+  int[] buffer,
+  int index) {
 #if DEBUG
       if (buffer == null) {
         throw new ArgumentNullException("buffer");
@@ -231,28 +231,28 @@ int index) {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput)"]/*'/>
     public NormalizingCharacterInput(
-ICharacterInput input) : this(
-input,
-Normalization.NFC) {
+  ICharacterInput input) : this(
+  input,
+  Normalization.NFC) {
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
     public NormalizingCharacterInput(
-IList<int> characterList,
-Normalization form) :
+  IList<int> characterList,
+  Normalization form) :
   this(new PartialListCharacterInput(characterList), form) {
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)"]/*'/>
     public NormalizingCharacterInput(
-string str,
-int index,
-int length,
-Normalization form) : this(
-new StringCharacterInput2(str, index, length),
-form) {
+  string str,
+  int index,
+  int length,
+  Normalization form) : this(
+  new StringCharacterInput2(str, index, length),
+  form) {
     }
 
     /// <include file='../../docs.xml'
@@ -300,10 +300,10 @@ form) {
     }
 
     private static bool NormalizeAndCheck(
-IList<int> charList,
-int start,
-int length,
-Normalization form) {
+  IList<int> charList,
+  int start,
+  int length,
+  Normalization form) {
       var i = 0;
       foreach (int ch in NormalizingCharacterInput.GetChars(
         new PartialListCharacterInput(charList, start, length),
@@ -363,8 +363,8 @@ Normalization form) {
         } else {
         isQcs = (c >= 0xf0000) ? true :
 UnicodeDatabase.IsQuickCheckStarter(
-c,
-form);
+  c,
+  form);
         }
         if (isQcs) {
           lastQcs = i;
@@ -390,10 +390,10 @@ form);
       }
       if (nonQcsStart >= 0) {
         if (!NormalizeAndCheckString(
-str,
-nonQcsStart,
-str.Length - nonQcsStart,
-form)) {
+  str,
+  nonQcsStart,
+  str.Length - nonQcsStart,
+  form)) {
           return false;
         }
       }
@@ -479,10 +479,10 @@ form)) {
       }
       if (nonQcsStart >= 0) {
         if (!NormalizeAndCheck(
-charList,
-nonQcsStart,
-charList.Count - nonQcsStart,
-form)) {
+  charList,
+  nonQcsStart,
+  charList.Count - nonQcsStart,
+  form)) {
           return false;
         }
       }
@@ -660,11 +660,11 @@ form)) {
             }
 #endif
             Array.Copy(
-this.buffer,
-this.lastQcsIndex,
-this.buffer,
-0,
-this.buffer.Length - this.lastQcsIndex);
+  this.buffer,
+  this.lastQcsIndex,
+  this.buffer,
+  0,
+  this.buffer.Length - this.lastQcsIndex);
             // Console.WriteLine("endIndex=" + (this.endIndex));
             this.endIndex -= this.lastQcsIndex;
             this.lastQcsIndex = 0;
@@ -678,8 +678,8 @@ this.buffer.Length - this.lastQcsIndex);
       } while (total < length);
       // Fill buffer with processed code points
       count = Math.Max(
-0,
-Math.Min(this.processedIndex - this.flushIndex, length - total));
+  0,
+  Math.Min(this.processedIndex - this.flushIndex, length - total));
       Array.Copy(this.buffer, this.flushIndex, chars, index, count);
       index += count;
       total += count;
@@ -700,10 +700,10 @@ Math.Min(this.processedIndex - this.flushIndex, length - total));
             break;
           }
           this.endIndex = DecompToBuffer(
-c,
-this.compatMode,
-this.buffer,
-this.endIndex);
+  c,
+  this.compatMode,
+  this.buffer,
+  this.endIndex);
         }
         // Check for the last quick-check starter if the
         // end of the string is not reached yet
@@ -716,16 +716,16 @@ this.endIndex);
           for (int i = this.endIndex - 1; i > this.lastQcsIndex; --i) {
             if (
   UnicodeDatabase.IsQuickCheckStarter(
-this.buffer[i],
-this.form)) {
+  this.buffer[i],
+  this.form)) {
               if (decompForm) {
                 this.lastQcsIndex = i;
                 haveNewQcs = true;
                 break;
               } else if (i + 1 < this.endIndex && (nextIsQCS ||
          UnicodeDatabase.IsQuickCheckStarter(
-this.buffer[i + 1],
-this.form))) {
+  this.buffer[i + 1],
+  this.form))) {
                 this.lastQcsIndex = i;
                 haveNewQcs = true;
                 break;
@@ -761,8 +761,8 @@ this.form))) {
       if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
         // Composition
         this.processedIndex = ComposeBuffer(
-this.buffer,
-this.lastQcsIndex);
+  this.buffer,
+  this.lastQcsIndex);
       } else {
         this.processedIndex = this.lastQcsIndex;
       }

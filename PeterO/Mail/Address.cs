@@ -30,10 +30,10 @@ namespace PeterO.Mail {
     public override string ToString() {
       if (this.localPart.Length > 0 &&
           HeaderParser.ParseDotAtomText(
-this.localPart,
-0,
-this.localPart.Length,
-null) == this.localPart.Length) {
+  this.localPart,
+  0,
+  this.localPart.Length,
+  null) == this.localPart.Length) {
         return this.localPart + "@" + this.domain;
       } else {
         var sb = new StringBuilder();
@@ -63,16 +63,16 @@ null) == this.localPart.Length) {
         // so get its A-label length
         domainLength =
   checked(
-(
-int)DataUtilities.GetUtf8Length(
-Idna.EncodeDomainName(this.domain),
-true));
+  (
+  int)DataUtilities.GetUtf8Length(
+  Idna.EncodeDomainName(this.domain),
+  true));
       }
       if (this.localPart.Length > 0 && HeaderParser.ParseDotAtomText(
-this.localPart,
-0,
-this.localPart.Length,
-null) == this.localPart.Length) {
+  this.localPart,
+  0,
+  this.localPart.Length,
+  null) == this.localPart.Length) {
         return this.localPart.Length + domainLength + 1;
       } else {
         // two quotes, at sign, and domain length
@@ -114,10 +114,10 @@ null) == this.localPart.Length) {
         throw new ArgumentException("Address doesn't contain a '@' sign");
       }
       int localPartEnd = HeaderParser.ParseLocalPartNoCfws(
-addressValue,
-0,
-addressValue.Length,
-null);
+  addressValue,
+  0,
+  addressValue.Length,
+  null);
       if (localPartEnd == 0) {
         throw new ArgumentException("Invalid local part");
       }
@@ -129,21 +129,21 @@ null);
         throw new ArgumentException("Expected domain after '@'");
       }
       int domainEnd = HeaderParser.ParseDomainNoCfws(
-addressValue,
-localPartEnd + 1,
-addressValue.Length,
-null);
+  addressValue,
+  localPartEnd + 1,
+  addressValue.Length,
+  null);
       if (domainEnd != addressValue.Length) {
         throw new ArgumentException("Invalid domain");
       }
       this.localPart = HeaderParserUtility.ParseLocalPart(
-addressValue,
-0,
-localPartEnd);
+  addressValue,
+  0,
+  localPartEnd);
       this.domain = HeaderParserUtility.ParseDomain(
-addressValue,
-localPartEnd + 1,
-addressValue.Length);
+  addressValue,
+  localPartEnd + 1,
+  addressValue.Length);
       // Check length restrictions.
       if (this.StringLength() > 997) {
         // Maximum character length per line for an Internet message is 998;

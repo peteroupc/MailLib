@@ -36,10 +36,10 @@ for now.
     <tags>email mail mime parser charset charsets</tags>
   </metadata>
   <files>
-    <file src="bin/Release/MailLib.dll" target="lib/portable-net45+dnxcore50+netcore45+win+wpa81+wp80" />
-    <file src="bin/Release/MailLib.xml" target="lib/portable-net45+dnxcore50+netcore45+win+wpa81+wp80" />
-    <file src="bin/ReleaseNet40/MailLib.dll" target="lib/portable-net40+sl50+win+wpa81+wp80" />
-    <file src="bin/ReleaseNet40/MailLib.xml" target="lib/portable-net40+sl50+win+wpa81+wp80" />
+    <file src="bin/Release/MailLib.dll" target="lib/portable-net45+dnxcore50+netcore45+win+wpa81+wp8" />
+    <file src="bin/Release/MailLib.xml" target="lib/portable-net45+dnxcore50+netcore45+win+wpa81+wp8" />
+    <file src="bin/ReleaseNet40/MailLib.dll" target="lib/portable-net40+sl5+win+wpa81+wp8" />
+    <file src="bin/ReleaseNet40/MailLib.xml" target="lib/portable-net40+sl5+win+wpa81+wp8" />
   </files>
   <dependencies>
     <dependency id="PeterO.Encoding" version="0.1.0"/>

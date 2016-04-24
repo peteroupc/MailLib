@@ -12,7 +12,7 @@ import com.upokecenter.mail.*;
 Assert.assertEquals(null, new DispositionBuilder(stringNull));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -21,7 +21,7 @@ Assert.assertEquals(null, new DispositionBuilder(stringNull));
 Assert.assertEquals(null, new DispositionBuilder(dispNull));
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -30,7 +30,7 @@ Assert.assertEquals(null, new DispositionBuilder(dispNull));
 Assert.assertEquals(null, new DispositionBuilder(""));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -48,7 +48,7 @@ Assert.assertEquals(null, new DispositionBuilder(""));
         new DispositionBuilder().RemoveParameter(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -60,7 +60,7 @@ Assert.assertEquals(null, new DispositionBuilder(""));
         new DispositionBuilder().SetDispositionType(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -69,7 +69,7 @@ Assert.assertEquals(null, new DispositionBuilder(""));
         new DispositionBuilder().SetDispositionType("");
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        System.out.print("");
+        new Object();
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -91,8 +91,8 @@ Assert.assertEquals(null, new DispositionBuilder(""));
       {
 String stringTemp = disp.toString();
 Assert.assertEquals(
-"attachment;a=b",
-stringTemp);
+  "attachment;a=b",
+  stringTemp);
 }
     }
   }
