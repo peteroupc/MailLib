@@ -82,8 +82,8 @@
     <Compile Include="ContentDispositionTest.cs" />
     <Compile Include="DispositionBuilderTest.cs" />
     <Compile Include="EncodingTest.cs" />
-    <Compile Include="FastRandom.cs" />
     <Compile Include="IdnaTest.cs" />
+    <Compile Include="IRandomGen.cs" />
     <Compile Include="MediaTypeBuilderTest.cs" />
     <Compile Include="MediaTypeTest.cs" />
     <Compile Include="MessageTest.cs" />
@@ -93,9 +93,10 @@
     <Compile Include="NormalizingCharacterInputTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomGenerator.cs" />
     <Compile Include="Reflect.cs" />
     <Compile Include="TestCommon.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="XorShift128Plus.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MailLib.csproj">
