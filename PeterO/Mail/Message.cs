@@ -2004,6 +2004,60 @@ namespace PeterO.Mail {
       }
     }
 
+    internal static byte[] TimeEntropy(int size) {
+      // This routine was inspired by the HAVEG entropy
+      // harvester, but is not exactly the same as it.
+      int st = unchecked((int)DateTime.Now.Ticks);
+      var b = 0;
+      var bytes = new byte[size];
+      for (var k = 0; k < 30; ++k) {
+        st = unchecked((int)(st + (int)DateTime.Now.Ticks));
+        for (var j = 0; j < bytes.Length; ++j) {
+          for (var i = 0; i < 8; ++i) {
+            int ticks = unchecked((int)(st + (int)DateTime.Now.Ticks));
+            if ((ticks & (1 << i)) != 0) {
+              ticks >>= 1; ticks = unchecked(ticks + 54287);
+              if ((ticks & (1 << i)) != 0) {
+                ticks >>= 1; ticks = unchecked(ticks + 54287);
+                if ((ticks & (1 << i)) != 0) {
+                  ticks >>= 1; ticks = unchecked(ticks + 54287);
+                  if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                  }
+                }
+              }
+            }
+            ticks = unchecked((int)(ticks + st + (int)DateTime.Now.Ticks + 1));
+            b <<= 1;
+            b |= ticks & 1;
+          }
+          bytes[j] ^= unchecked((byte)b);
+        }
+      }
+      return bytes;
+    }
+
     private string GenerateMessageID() {
       var builder = new StringBuilder();
       var seq = 0;
@@ -2018,16 +2072,15 @@ namespace PeterO.Mail {
         seq = unchecked(msgidSequence++);
       }
       const string ValueHex = "0123456789abcdef";
-      string guid = Guid.NewGuid().ToString();
+      byte[] ent = TimeEntropy(16);
       long ticks = DateTime.UtcNow.Ticks;
       for (int i = 0; i < 16; ++i) {
         builder.Append(ValueHex[(int)(ticks & 15)]);
         ticks >>= 4;
       }
-      for (int i = 0; i < guid.Length; ++i) {
-        if (guid[i] != '-') {
-          builder.Append(guid[i]);
-        }
+      for (int i = 0; i < 16; ++i) {
+        builder.Append(ValueHex[(int)(ent[i] & 15)]);
+        builder.Append(ValueHex[(int)((ent[i]>>4) & 15)]);
       }
       for (int i = 0; i < 8; ++i) {
         builder.Append(ValueHex[seq & 15]);
@@ -2047,6 +2100,7 @@ namespace PeterO.Mail {
         builder.Append(".local.invalid");
       }
       builder.Append(">");
+      // DebugUtility.Log(builder.ToString());
       return builder.ToString();
     }
 

@@ -96,6 +96,7 @@
     <Compile Include="RandomGenerator.cs" />
     <Compile Include="Reflect.cs" />
     <Compile Include="TestCommon.cs" />
+    <Compile Include="UnitTest1.cs" />
     <Compile Include="XorShift128Plus.cs" />
   </ItemGroup>
   <ItemGroup>

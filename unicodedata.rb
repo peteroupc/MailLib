@@ -741,7 +741,7 @@ fileHeader+=(" Licensed under the Unicode License\n")
 fileHeader+=(" (see LICENSE.md in the source code root or visit\n")
 fileHeader+=(" http://www.unicode.org/copyright.html Exhibit 1). */\n")
 File.open("NormalizationData.js","wb"){|fjs|
-File.open("Text/NormalizationData.cs","wb"){|f|
+File.open("PeterO/Text/NormalizationData.cs","wb"){|f|
 f.puts(fileHeader)
 fjs.puts(fileHeader)
 fjs.puts("var NormalizationData = {};\n")
@@ -859,7 +859,6 @@ end
 fjs.puts("if(typeof exports!=='undefined')exports['NormalizationData']=NormalizationData;")
 fjs.puts("if(typeof window!=='undefined')window['NormalizationData']=NormalizationData;")
 }}
-exit
 puts "Generating IDNA data..."
 letterDigits=[]
 idnaCategories=[]
@@ -931,7 +930,7 @@ for i in 0...0x110000
 end
 
 File.open("IdnaData.js","wb"){|fjs|
-File.open("Text/IdnaData.cs","wb"){|f|
+File.open("PeterO/Text/IdnaData.cs","wb"){|f|
 f.puts(fileHeader)
 fjs.puts(fileHeader)
 f.puts("// Character data required for IDNA2008 (RFC 5890-5894)")
