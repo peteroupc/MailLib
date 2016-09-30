@@ -62,9 +62,8 @@ namespace PeterO.Mail {
         // "domain" is a domain name, and not an address literal,
         // so get its A-label length
         domainLength =
-  checked(
-  (
-  int)DataUtilities.GetUtf8Length(
+  checked((int)
+  DataUtilities.GetUtf8Length(
   Idna.EncodeDomainName(this.domain),
   true));
       }
