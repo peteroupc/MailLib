@@ -8,16 +8,19 @@
     <RootNamespace>PeterO</RootNamespace>
     <AssemblyName>MailLib</AssemblyName>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <RunCodeAnalysis>False</RunCodeAnalysis>
     <CodeAnalysisRules>-Microsoft.Design#CA1017;-Microsoft.Design#CA1020;-Microsoft.Design#CA1032;-Microsoft.Design#CA2210;-Microsoft.Globalization#CA1303;-Microsoft.Usage#CA2209;-Microsoft.Usage#CA2236;-Microsoft.Usage#CA2237</CodeAnalysisRules>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
     <OutputPath>bin\Debug\</OutputPath>
@@ -41,6 +44,7 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
     <OutputPath>bin\Release\</OutputPath>
@@ -120,11 +124,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Encoding, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\PeterO.Encoding.0.1.0\lib\portable-net40+sl50+win+wpa81+wp80\Encoding.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Encoding">
+      <HintPath>packages\PeterO.Encoding.0.1.0\lib\portable-net40+sl50+win+wpa81+wp8\Encoding.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\StyleCop\v4.7\StyleCop.targets" />
 </Project>
