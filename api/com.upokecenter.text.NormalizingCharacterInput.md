@@ -25,7 +25,7 @@
  decomposition.</li> <li>The four normalization forms also enforce a
  standardized order for combining marks, since they can otherwise
  appear in an arbitrary order.</li></ul> <p>For more information, see
- Standard Annex 15 at http://www.unicode.org/reports/tr15/ .</p>
+ Standard Annex 15 at [http://www.unicode.org/reports/tr15/](http://www.unicode.org/reports/tr15/) .</p>
  <p><b>Thread safety:</b> This class is mutable; its properties can be
  changed. None of its instance methods are designed to be thread safe.
  Therefore, access to objects from this class must be synchronized if
@@ -36,7 +36,7 @@
  required, the permission notice for the Unicode Character Database is
  given here:</p> <p>COPYRIGHT AND PERMISSION NOTICE</p> <p>Copyright
  (c) 1991-2014 Unicode, Inc. All rights reserved. Distributed under
- the Terms of Use in http://www.unicode.org/copyright.html.</p>
+ the Terms of Use in [http://www.unicode.org/copyright.html.</p>](http://www.unicode.org/copyright.html.</p>)
  <p>Permission is hereby granted, free of charge, to any person
  obtaining a copy of the Unicode data files and any associated
  documentation (the "Data Files") or Unicode software and any
