@@ -1464,11 +1464,10 @@ MessageFromString(MessageFromString(msg).Generate())
 
     @Test
     public void TestEmptyGroup() {
-      Message msg;
       String str = "From: me@example.com\r\nTo: empty-group:;" +
         "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
         "\r\n\r\nBody";
-      msg = MessageFromString(str);
+      MessageFromString(str);
     }
 
     @Test
@@ -1713,7 +1712,7 @@ MessageFromString(MessageFromString(msg).Generate())
     public void TestFromAddresses() {
       String str = "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
       Message msg = MessageFromString(str);
-      Message genmsg = MessageFromString(MessageGenerate(msg));
+      MessageFromString(MessageGenerate(msg));
       Assert.assertEquals(1, msg.getFromAddresses().size());
     }
     @Test
