@@ -42,7 +42,31 @@ namespace MailLibTest {
     [Test]
     public void TestMakeFilename() {
       Assert.AreEqual(String.Empty, ContentDisposition.MakeFilename(null));
-      string stringTemp;
+      {
+string stringTemp = ContentDisposition.MakeFilename ("hello. txt");
+Assert.AreEqual(
+  "hello._txt",
+  stringTemp);
+}
+      {
+string stringTemp = ContentDisposition.MakeFilename ("hello .txt");
+Assert.AreEqual(
+  "hello_.txt",
+  stringTemp);
+}
+            {
+string stringTemp = ContentDisposition.MakeFilename ("hello . txt");
+Assert.AreEqual(
+  "hello_._txt",
+  stringTemp);
+}
+ {
+string stringTemp = ContentDisposition.MakeFilename ("hello._");
+Assert.AreEqual(
+  "hello._",
+  stringTemp);
+}
+ string stringTemp;
       {
         stringTemp =
           ContentDisposition.MakeFilename("=?utf-8?q?long_filename?=");

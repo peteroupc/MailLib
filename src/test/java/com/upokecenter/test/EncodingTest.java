@@ -59,6 +59,7 @@ import java.util.*;
       boolean startsWithSpace = false;
       boolean hasLongWord = false;
       boolean meetsLineLength = true;
+      boolean mllmessage = false;
       char c;
       String test;
       if (index == endIndex) {
@@ -169,12 +170,16 @@ import java.util.*;
         if (lineLength > maxLineLength) {
           if (lineLength > 998) {
             if (headers) {
+              System.out.println (fn + ":\n--Line length exceeded in header (" +
+                    maxLineLength + " " +
+                    (str.Substring (index - 78, 78)) + ", " + lineLength + ")");
               return 0;
             }
-            if (!meetsLineLength) {
-              //System.out.println(fn + ":\n--Line length exceeded (" +
-              // maxLineLength + " " +
-              //(str.substring(index - 78,(index - 78)+(78))) + ", " + lineLength + ")");
+            if (!meetsLineLength && !mllmessage) {
+              System.out.println(fn + ":\n--Line length exceeded (" +
+               maxLineLength + " " +
+               (str.substring(index - 78,(index - 78)+(78))) + ", " + lineLength + ")");
+              mllmessage = true;
             }
           }
           meetsLineLength = false;
@@ -1824,59 +1829,63 @@ String stringTemp =
     @Test(timeout = 5000)
     public void TestEncodedWords() {
       String par = "(";
-      TestEncodedWordsPhrase("(sss) y", "(sss) =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase("tes=dxx", "=?us-ascii?q?tes=dxx?=");
-      TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase("=?bad1?= =?bad2?= =?bad3?=",
+        TestEncodedWordsPhrase ("(sss) y", "(sss) =?us-ascii?q?y?=");
+        TestEncodedWordsPhrase ("tes=dxx", "=?us-ascii?q?tes=dxx?=");
+        TestEncodedWordsPhrase ("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
+        TestEncodedWordsPhrase ("=?bad1?= =?bad2?= =?bad3?=",
                     "=?bad1?= =?bad2?= =?bad3?=");
-      // quoted because one word was decoded
-      TestEncodedWordsPhrase("\"y =?bad2?= =?bad3?=\"",
+        // quoted because one word was decoded
+        TestEncodedWordsPhrase ("\"y =?bad2?= =?bad3?=\"",
                     "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
-      // quoted because one word was decoded
-      TestEncodedWordsPhrase("\"=?bad1?= y =?bad3?=\"",
+        // quoted because one word was decoded
+        TestEncodedWordsPhrase ("\"=?bad1?= y =?bad3?=\"",
                     "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
-      TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase("xy (sss)",
-              "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
-      TestEncodedWordsPhrase("x (sss) y",
+        TestEncodedWordsPhrase ("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
+        TestEncodedWordsPhrase ("xy (sss)",
+                "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
+        TestEncodedWordsPhrase ("x (sss) y",
                     "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase("x (z) y",
+        TestEncodedWordsPhrase ("x (z) y",
                     "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
-      TestEncodedWordsPhrase("=?us-ascii?q?x?=" + par + "sss)=?us-ascii?q?y?=",
+     TestEncodedWordsPhrase ("=?us-ascii?q?x?=" + par +
+          "sss)=?us-ascii?q?y?=",
                     "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
-      TestEncodedWordsPhrase("=?us-ascii?q?x?=" + par + "z)=?us-ascii?q?y?=",
+        TestEncodedWordsPhrase ("=?us-ascii?q?x?=" + par + "z)=?us-ascii?q?y?=",
                     "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
-      TestEncodedWordsPhrase("=?us-ascii?q?x?=" + par + "z) y",
+        TestEncodedWordsPhrase ("=?us-ascii?q?x?=" + par + "z) y",
                     "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
-      TestEncodedWordsOne("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
-      TestEncodedWordsOne("abcde abcde", "abcde abcde");
-      TestEncodedWordsOne("abcde", "abcde");
-      TestEncodedWordsOne("abcde", "=?utf-8?Q?abcde?=");
-      TestEncodedWordsOne("=?utf-8?Q?abcde?=extra", "=?utf-8?Q?abcde?=extra");
-      TestEncodedWordsOne("abcde ", "=?utf-8?Q?abcde?= ");
-      TestEncodedWordsOne("ab\u00a0de", "=?utf-8?Q?ab=C2=A0de?=");
-      TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
-      TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
-      TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
-      TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
-      TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
-      TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
-      TestEncodedWordsOne("abc de", "=?utf-8?Q?abc=20de?=");
-      TestEncodedWordsOne("abc de", "=?utf-8?Q?abc_de?=");
-      TestEncodedWordsOne("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
-      TestEncodedWordsOne("=?x-undefined?q?abcde?=", "=?x-undefined?q?abcde?=");
-      TestEncodedWordsOne("=?utf-8?Q?" + Repeat("x", 200) + "?=",
-                    "=?utf-8?Q?" + Repeat("x", 200) + "?=");
-      TestEncodedWordsPhrase("=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
+        TestEncodedWordsOne ("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
+        TestEncodedWordsOne ("abcde abcde", "abcde abcde");
+        TestEncodedWordsOne ("abcde", "abcde");
+        TestEncodedWordsOne ("abcde", "=?utf-8?Q?abcde?=");
+      TestEncodedWordsOne ("=?utf-8?Q?abcde?=extra",
+          "=?utf-8?Q?abcde?=extra");
+        TestEncodedWordsOne ("abcde ", "=?utf-8?Q?abcde?= ");
+        TestEncodedWordsOne ("ab\u00a0de", "=?utf-8?Q?ab=C2=A0de?=");
+        TestEncodedWordsOne ("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
+        TestEncodedWordsOne ("x y", "x =?utf-8?Q?y?=");
+        TestEncodedWordsOne ("x y", "x =?utf-8?Q?y?=");
+        TestEncodedWordsOne ("x y", "=?utf-8?Q?x?= y");
+        TestEncodedWordsOne ("x y", "=?utf-8?Q?x?= y");
+        TestEncodedWordsOne ("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
+        TestEncodedWordsOne ("abc de", "=?utf-8?Q?abc=20de?=");
+        TestEncodedWordsOne ("abc de", "=?utf-8?Q?abc_de?=");
+        TestEncodedWordsOne ("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
+    TestEncodedWordsOne ("=?x-undefined?q?abcde?=",
+          "=?x-undefined?q?abcde?=");
+        TestEncodedWordsOne ("=?utf-8?Q?" + Repeat ("x", 200) + "?=",
+                    "=?utf-8?Q?" + Repeat ("x", 200) + "?=");
+     TestEncodedWordsPhrase ("=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
                     "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
-      // Language embedded in encoded word
-      TestEncodedWordsOne("x", "=?utf-8*en?Q?x?=");
-      TestEncodedWordsOne("=?x-unknown*en?Q?x?=", "=?x-unknown*en?Q?x?=");
-      TestEncodedWordsOne("x", "=?utf-8*en-us?Q?x?=");
-      TestEncodedWordsOne("x", "=?utf-8*i-default?Q?x?=");
-      TestEncodedWordsOne("=?utf-8*i-unknown?Q?x?=", "=?utf-8*i-unknown?Q?x?=");
-      TestEncodedWordsOne("=?*en?Q?x?=", "=?*en?Q?x?=");
-      TestEncodedWordsOne("=?utf-8*?Q?x?=", "=?utf-8*?Q?x?=");
+        // Language embedded in encoded word
+        TestEncodedWordsOne ("x", "=?utf-8*en?Q?x?=");
+        TestEncodedWordsOne ("=?x-unknown*en?Q?x?=", "=?x-unknown*en?Q?x?=");
+        TestEncodedWordsOne ("x", "=?utf-8*en-us?Q?x?=");
+        TestEncodedWordsOne ("x", "=?utf-8*i-default?Q?x?=");
+    TestEncodedWordsOne ("=?utf-8*i-unknown?Q?x?=",
+          "=?utf-8*i-unknown?Q?x?=");
+        TestEncodedWordsOne ("=?*en?Q?x?=", "=?*en?Q?x?=");
+        TestEncodedWordsOne ("=?utf-8*?Q?x?=", "=?utf-8*?Q?x?=");
     }
 
     @Test(timeout = 5000)
@@ -2018,7 +2027,7 @@ String stringTemp =
       return arr;
     }
 
-    @Test
+    @Test(timeout = 100000)
     public void TestRandomEncodedBytes() {
       RandomGenerator rnd = new RandomGenerator();
       for (int i = 0; i < 10000; ++i) {

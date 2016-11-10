@@ -154,6 +154,7 @@ namespace PeterO.Mail {
       if (str == null) {
         return String.Empty;
       }
+      // TODO: Avoid space before or after last dot
       str = ParserUtility.TrimAndCollapseSpaceAndTab(str);
       if (str.IndexOf("=?", StringComparison.Ordinal) >= 0) {
         // May contain encoded words, which are very frequent
@@ -299,7 +300,30 @@ strLower.IndexOf(
         // Starts with period; may be hidden in some configurations
         str = "_" + str;
       }
-      return NormalizingCharacterInput.Normalize(str, Normalization.NFC);
+      for (var i = str.Length-1; i >= 0; --i) {
+        if (str [i] == '.') {
+          bool spaceAfter = (i + 1 < str.Length && str [i + 1] == 0x20);
+          bool spaceBefore = (i > 0 && str [i - 1] == 0x20);
+          if (spaceAfter && spaceBefore) {
+            str = str.Substring (0, i - 1) + "_._" + str.Substring (i + 2);
+          } else if (spaceAfter) {
+            str = str.Substring (0, i) + "._" + str.Substring (i + 2);
+          } else if (spaceBefore) {
+            str = str.Substring (0, i - 1) + "_." + str.Substring (i + 1);
+          }
+          break;
+        }
+      }
+      str = NormalizingCharacterInput.Normalize(str, Normalization.NFC);
+      if (str.Length > 255) {
+        char c = str [255];
+        var newLength = 255;
+        if ((c & 0xfc00) == 0xdc00) {
+          --newLength;
+        }
+        str = str.Substring (0, newLength);
+      }
+      return str;
     }
 
     /// <include file='../../docs.xml'

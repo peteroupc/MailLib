@@ -2007,14 +2007,14 @@ namespace PeterO.Mail {
     internal static byte[] TimeEntropy(int size) {
       // This routine was inspired by the HAVEG entropy
       // harvester, but is not exactly the same as it.
-      int st = unchecked((int)DateTime.Now.Ticks);
+      int st = unchecked((int)DateTime.UtcNow.Ticks);
       var b = 0;
       var bytes = new byte[size];
       for (var k = 0; k < 30; ++k) {
         st = unchecked((int)(st + (int)DateTime.Now.Ticks));
         for (var j = 0; j < bytes.Length; ++j) {
           for (var i = 0; i < 8; ++i) {
-            int ticks = unchecked((int)(st + (int)DateTime.Now.Ticks));
+            int ticks = unchecked((int)(st + (int)DateTime.UtcNow.Ticks));
             if ((ticks & (1 << i)) != 0) {
               ticks >>= 1; ticks = unchecked(ticks + 54287);
               if ((ticks & (1 << i)) != 0) {
@@ -2048,7 +2048,8 @@ namespace PeterO.Mail {
                 }
               }
             }
-            ticks = unchecked((int)(ticks + st + (int)DateTime.Now.Ticks + 1));
+         ticks = unchecked((int)(ticks + st + (int)DateTime.UtcNow.Ticks +
+              1));
             b <<= 1;
             b |= ticks & 1;
           }
