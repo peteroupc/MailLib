@@ -42,7 +42,31 @@ import com.upokecenter.mail.*;
     @Test
     public void TestMakeFilename() {
       Assert.assertEquals("", ContentDisposition.MakeFilename(null));
-      String stringTemp;
+      {
+String stringTemp = ContentDisposition.MakeFilename ("hello. txt");
+Assert.assertEquals(
+  "hello._txt",
+  stringTemp);
+}
+      {
+String stringTemp = ContentDisposition.MakeFilename ("hello .txt");
+Assert.assertEquals(
+  "hello_.txt",
+  stringTemp);
+}
+            {
+String stringTemp = ContentDisposition.MakeFilename ("hello . txt");
+Assert.assertEquals(
+  "hello_._txt",
+  stringTemp);
+}
+ {
+String stringTemp = ContentDisposition.MakeFilename ("hello._");
+Assert.assertEquals(
+  "hello._",
+  stringTemp);
+}
+ String stringTemp;
       {
         stringTemp =
           ContentDisposition.MakeFilename("=?utf-8?q?long_filename?=");
