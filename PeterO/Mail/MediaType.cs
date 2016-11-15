@@ -20,6 +20,9 @@ namespace PeterO.Mail {
     private const string AttrNameSpecials = "()<>@,;:\\\"/[]?='%*";
     private string topLevelType;
 
+    private static readonly ICharacterEncoding USAsciiEncoding =
+      Encodings.GetEncoding("us-ascii", true);
+
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.MediaType.TopLevelType"]/*'/>
     public string TopLevelType {
@@ -702,11 +705,11 @@ return SkipQuotedString(
       // media types,
       // so that there is no default charset for as yet undefined media
       // types. However,
-      // media types defined before this RFC are grandfathered from the
-      // rule: those
+      // media types defined before this RFC (July 2012) are grandfathered
+      // from the rule: those
       // media types "that fail to specify how the charset is determined" still
-      // have US-ASCII as default. The text media types defined as of Nov. 20,
-      // 2015, are listed below:
+      // have US-ASCII as default. The text media types defined as of Nov. 12,
+      // 2016, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -721,7 +724,7 @@ return SkipQuotedString(
       // vnd.motorola.reflex,
       // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript,
       // vnd.dvb.subtitle,
-      // vnd.fly, rtf, rfc822-headers
+      // vnd.fly, rtf, rfc822-headers, prs.prop.logic, vnd.ascii-art****
       //
       // Special procedure defined for charset detection:
       // -- ecmascript, javascript, html
@@ -767,7 +770,8 @@ return SkipQuotedString(
       // ** No explicit default, but says that "[t]he charset supported
       // by this revision of iCalendar is UTF-8."
       // *** Default is UTF-8 "if 8-bit bytes are encountered" (even if
-      // none are found, though, a 7-bit ASCII text is still also UTF-8)
+      // none are found, though, a 7-bit ASCII text is still also UTF-8).
+      // **** Content containing non-ASCII bytes "should be rejected".
       string param = this.GetParameter("charset");
       if (param != null) {
         return DataUtilities.ToLowerCaseAscii(param);
@@ -835,23 +839,23 @@ return SkipQuotedString(
       }
       string paramValue = value.Substring(secondQuote + 1);
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
-      cs = cs ?? Encodings.GetEncoding("us-ascii", true);
+      cs = cs ?? USAsciiEncoding;
       return DecodeRfc2231Encoding(paramValue, cs);
     }
 
     private static ICharacterEncoding GetRfc2231Charset(string value) {
       if (value == null) {
-        return Encodings.GetEncoding("us-ascii", true);
+        return USAsciiEncoding;
       }
       int firstQuote = value.IndexOf('\'');
       if (firstQuote < 0) {
         // not a valid encoded parameter
-        return Encodings.GetEncoding("us-ascii", true);
+        return USAsciiEncoding;
       }
       int secondQuote = value.IndexOf('\'', firstQuote + 1);
       if (secondQuote < 0) {
         // not a valid encoded parameter
-        return Encodings.GetEncoding("us-ascii", true);
+        return USAsciiEncoding;
       }
       string charset = value.Substring(0, firstQuote);
       string language = value.Substring(
@@ -859,10 +863,10 @@ return SkipQuotedString(
   secondQuote - (firstQuote + 1));
       if (language.Length > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
-        return Encodings.GetEncoding("us-ascii", true);
+        return USAsciiEncoding;
       }
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
-      cs = cs ?? Encodings.GetEncoding("us-ascii", true);
+      cs = cs ?? USAsciiEncoding;
       return cs;
     }
 

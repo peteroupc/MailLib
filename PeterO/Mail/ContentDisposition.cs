@@ -154,7 +154,6 @@ namespace PeterO.Mail {
       if (str == null) {
         return String.Empty;
       }
-      // TODO: Avoid space before or after last dot
       str = ParserUtility.TrimAndCollapseSpaceAndTab(str);
       if (str.IndexOf("=?", StringComparison.Ordinal) >= 0) {
         // May contain encoded words, which are very frequent
@@ -213,8 +212,8 @@ namespace PeterO.Mail {
           c = 0xfffd;
         }
         if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
-   c == 0x180e || c == 0x1680 || (c >= 0x2000 && c <= 0x200b) || c == 0x205f ||
-            c == 0x202f || c == 0xfeff) {
+   c == 0x180e || c == 0x1680 ||
+   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff) {
           // Replace space-like characters (including tab) with space
           builder.Append(' ');
         } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||
@@ -225,8 +224,8 @@ namespace PeterO.Mail {
           // reserved by Windows,
           // backslash, forward slash, ASCII controls, and C1 controls).
           builder.Append('_');
-        } else if (c == 0x85 || c == 0x2028 || c == 0x2029) {
-          // line break characters
+        } else if (c == 0x2028 || c == 0x2029) {
+          // line break characters (0x85 is already included above)
           builder.Append('_');
         } else if (c == '%') {
           // Treat percent character as unsuitable, even though it can occur
@@ -300,6 +299,7 @@ strLower.IndexOf(
         // Starts with period; may be hidden in some configurations
         str = "_" + str;
       }
+      // Avoid space before and after last dot
       for (var i = str.Length-1; i >= 0; --i) {
         if (str [i] == '.') {
           bool spaceAfter = (i + 1 < str.Length && str [i + 1] == 0x20);
@@ -315,6 +315,7 @@ strLower.IndexOf(
         }
       }
       str = NormalizingCharacterInput.Normalize(str, Normalization.NFC);
+      // Ensure length is 255 or less
       if (str.Length > 255) {
         char c = str [255];
         var newLength = 255;

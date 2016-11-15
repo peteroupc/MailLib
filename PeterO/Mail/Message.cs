@@ -844,7 +844,7 @@ namespace PeterO.Mail {
                   haveFWS = true;
                 } else {
                   --index;
-                  // this isn't space or tab; if this is the staart
+                  // this isn't space or tab; if this is the start
                   // of the line, this is no longer FWS
                   if (lineStart) {
                     haveFWS = false;
