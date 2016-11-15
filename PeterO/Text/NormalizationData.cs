@@ -3,11 +3,9 @@
  (see LICENSE.md in the source code root or visit
  http://www.unicode.org/copyright.html Exhibit 1). */
 using System;
-
 namespace PeterO.Text {
   internal static class NormalizationData {
     public static readonly int[] ComposedPairs = GetComposedPairs();
-
     private static int[] GetComposedPairs0() {
       return new int[] { 60, 824, 8814, 61, 824, 8800, 62, 824, 8815, 65,
         768, 192, 65, 769, 193, 65, 770,
@@ -391,13 +389,11 @@ namespace PeterO.Text {
         71087, 71098,
       71097, 71087, 71099 };
     }
-
     private static int[] GetComposedPairs() {
       var ret = new int[2820];
       Array.Copy(GetComposedPairs0(), 0, ret, 0, 2820);
       return ret;
     }
-
     public static readonly byte[] CombiningClasses = new byte[] {
       (byte)0xf0, 23, 0, (byte)0x80, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6,
       0, 7, 0,
@@ -550,9 +546,7 @@ namespace PeterO.Text {
   14, (byte)0xc0, 15, (byte)0xd3, 24, (byte)0xff, (byte)0xc7, 4, 84, 5, 15,
         68,
       3, 94, 15, (byte)0x87, 16, (byte)0xa2, 16, 0 };
-
     public static readonly int[] DecompMappings = GetDecompMappings();
-
     private static int[] GetDecompMappings0() {
       return new int[] { 5722, 160, 12582944, 168, 41943040, 170, 12583009,
         175, 41943042, 178, 12582962,
@@ -1342,7 +1336,6 @@ namespace PeterO.Text {
         12972, 12613347,
       12973, 12603137, 12974, 12618951, 12975 };
     }
-
     private static int[] GetDecompMappings1() {
       return new int[] { 12604244, 12976, 12605724, 12977, 41943844, 12978,
         41943846, 12979, 41943848,
@@ -2150,7 +2143,6 @@ namespace PeterO.Text {
         119898,
       12583021, 119899, 12583022, 119900 };
     }
-
     private static int[] GetDecompMappings2() {
       return new int[] { 12583023, 119901, 12583024, 119902, 12583025,
         119903, 12583026, 119904, 12583027,
@@ -2960,7 +2952,6 @@ namespace PeterO.Text {
         776,
       959, 769, 965, 769, 969, 769, 978, 769, 978, 776, 1045, 768, 1045 };
     }
-
     private static int[] GetDecompMappings3() {
       return new int[] { 776, 1043, 769, 1030, 776, 1050, 769, 1048, 768,
         1059, 774, 1048, 774, 1080, 774,
@@ -3167,7 +3158,6 @@ namespace PeterO.Text {
       119226, 119141, 119227, 119150, 119228, 119150, 119227, 119151,
         119228, 119151 };
     }
-
     private static int[] GetDecompMappings() {
       var ret = new int[13495];
       Array.Copy(GetDecompMappings0(), 0, ret, 0, 4000);
@@ -3176,10 +3166,8 @@ namespace PeterO.Text {
       Array.Copy(GetDecompMappings3(), 0, ret, 12000, 1495);
       return ret;
     }
-
  public static readonly int[] CompatDecompMappings =
       GetCompatDecompMappings();
-
     private static int[] GetCompatDecompMappings() {
       return new int[] { 32, 776, 32, 772, 32, 769, 32, 807, 49, 8260, 52,
         49, 8260, 50, 51, 8260, 52,
@@ -3583,7 +3571,6 @@ namespace PeterO.Text {
         12309, 12308,
       21213, 12309, 12308, 25943, 12309 };
     }
-
     public const int QCSNFCMin = 768;
     public const int QCSNFCMax = 195101;
     public static readonly byte[] QCSNFC = new byte[] { (byte)0xf3, 9, 0, 1,
@@ -3689,7 +3676,6 @@ namespace PeterO.Text {
  23, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xd4, 15, 33, 0,
         14,
       16, 0, 116, 30, 15, (byte)0xff, 0, (byte)0xa5, 16, (byte)0xff };
-
     public const int QCSNFDMin = 192;
     public const int QCSNFDMax = 195101;
     public static readonly byte[] QCSNFD = new byte[] { (byte)0xf3, 9, 0, 1,
@@ -3830,7 +3816,6 @@ namespace PeterO.Text {
         (byte)0xff,
       (byte)0xb3, 15, 79, 28, 48, 31, (byte)0xc0, (byte)0xff, 0, (byte)0xa8,
         16, (byte)0xff };
-
     public const int QCSNFKCMin = 160;
     public const int QCSNFKCMax = 195101;
     public static readonly byte[] QCSNFKC = new byte[] { (byte)0xf3, 9, 0,
@@ -3982,7 +3967,6 @@ namespace PeterO.Text {
       (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xb8, 15, (byte)0x9c, 23,
         18, 15, (byte)0xff,
       0, (byte)0xa6, 16, (byte)0xff };
-
     public const int QCSNFKDMin = 160;
     public const int QCSNFKDMax = 195101;
     public static readonly byte[] QCSNFKD = new byte[] { (byte)0xf3, 9, 0,
