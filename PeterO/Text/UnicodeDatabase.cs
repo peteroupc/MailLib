@@ -1,5 +1,5 @@
 /*
-Written by Peter O. in 2014.
+Written by Peter O. in 2014-2016.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -77,40 +77,45 @@ namespace PeterO.Text {
       }
       decomps = NormalizationData.DecompMappings;
       var left = 0;
-      int right = decomps[0] - 1;
+      int right = (decomps.Length >> 1) - 1;
       while (left <= right) {
         int index = (left + right) >> 1;
-        int realIndex = 1 + (index << 1);
-        if (decomps[realIndex] == cp) {
-          int data = decomps[realIndex + 1];
+        int realIndex = (index << 1);
+        int dri = decomps [realIndex];
+        int dricp = dri & 0x1fffff;
+        if (dricp == cp) {
+          int data = dri;
+          int data1 = decomps[realIndex + 1];
           if ((data & (1 << 23)) > 0 && !compat) {
             buffer[offset++] = cp;
             return offset;
           }
           if ((data & (1 << 22)) > 0) {
             // Singleton
-            buffer[offset++] = data & 0x1fffff;
+            buffer[offset++] = data1;
             return offset;
           }
-          int size = data >> 24;
-          if (size > 0) {
-            if ((data & (1 << 23)) > 0) {
-              realIndex = data & 0x1fffff;
-              Array.Copy(
-                NormalizationData.CompatDecompMappings,
+          if ((data & (1 << 24)) > 0) {
+            // Pair of two BMP code points
+           buffer[offset++] = data1 & 0xffff;
+           buffer[offset++] = (data1 >> 16) & 0xffff;
+           return offset;
+          }
+          // Complex case
+          int size = data1 >> 24;
+          if (size <= 0) {
+ throw new InvalidOperationException();
+}
+          realIndex = data1 & 0x1fffff;
+          Array.Copy(
+                NormalizationData.ComplexDecompMappings,
                 realIndex,
                 buffer,
                 offset,
                 size);
-            } else {
-              realIndex = 1 + (decomps[0] << 1) + (data & 0x1fffff);
-              Array.Copy(decomps, realIndex, buffer, offset, size);
-            }
-            buffer[offset] &= 0x1fffff;
-          }
           return offset + size;
         }
-        if (decomps[realIndex] < cp) {
+        if (dricp < cp) {
           left = index + 1;
         } else {
           right = index - 1;
