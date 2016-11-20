@@ -248,12 +248,9 @@ namespace PeterO.Mail {
       if (str.Length == 0) {
         return "_";
       }
-      if (str[str.Length - 1] == '.') {
-        // Ends in a dot
-        str += "_";
-      }
       string strLower = DataUtilities.ToLowerCaseAscii(str);
-      if (
+      // Reserved filenames on Windows
+      bool reservedFilename =
   strLower.Equals(
   "nul") || strLower.Equals("clock$") ||
 strLower.IndexOf(
@@ -278,25 +275,20 @@ strLower.IndexOf(
               strLower.IndexOf(
   "com",
   StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
-            strLower[3] <= '9')) {
-        // Reserved filenames on Windows
-        str = "_" + str;
-      }
-      if (strLower[0] == '{' && strLower.Length > 1 && strLower[1] >= '0' &&
-            strLower[1] <= '1') {
-        str = "_" + str;
-      }
-      if (str[0] == '~' || str[0] == '-' || str[0] == '$') {
+            strLower[3] <= '9');
+      bool bracketDigit = strLower[0] == '{' && strLower.Length > 1 &&
+            strLower[1] >= '0' && strLower[1] <= '9';
         // Home folder convention (tilde).
         // Filenames starting with hyphens can also be
         // problematic especially in Unix-based systems,
         // and filenames starting with dollar sign can
         // be misinterpreted if they're treated as expansion
         // symbols
-        str = "_" + str;
-      }
-      if (str[0] == '.') {
-        // Starts with period; may be hidden in some configurations
+     bool homeFolder = str[0] == '~' || str[0] == '-' || str[0] == '$';
+     // Starts with period; may be hidden in some configurations
+     bool period = str[0] == '.';
+      if (reservedFilename || bracketDigit || homeFolder ||
+           period) {
         str = "_" + str;
       }
       // Avoid space before and after last dot
@@ -315,14 +307,20 @@ strLower.IndexOf(
         }
       }
       str = NormalizingCharacterInput.Normalize(str, Normalization.NFC);
-      // Ensure length is 255 or less
-      if (str.Length > 255) {
-        char c = str [255];
-        var newLength = 255;
+      // Ensure length is 254 or less
+      if (str.Length > 254) {
+        char c = str [254];
+        var newLength = 254;
         if ((c & 0xfc00) == 0xdc00) {
           --newLength;
         }
         str = str.Substring (0, newLength);
+      }
+      if (str[str.Length - 1] == '.' || str[str.Length - 1] == '~') {
+        // Ends in a dot or tilde (a file whose name ends with
+        // the latter may be treated as
+        // a backup file especially in Unix-based systems).
+        str += "_";
       }
       return str;
     }
