@@ -19,7 +19,51 @@ import java.util.*;
       return Message.class.getPackage().getName();
     }
 
-    public static String EscapeString(String str) {
+        public static String RandomString(RandomGenerator rnd) {
+            int count = 10 + rnd.UniformInt(350);
+            StringBuilder sb = new StringBuilder();
+            int ui;
+            String problemChars = " \t\u0000\u0010\u001b\u001f" +
+              "\u007f\u008f\u009f%\\/*?|:<>\"\u0028\u0029" +
+              "\u00a0\u3000\u180e\u1680\u2000\u200b\u205f\u202f\ufeff" +
+               "\ufffe\uffff\ufdd0\ufdef";
+            for (int i = 0; i < count; ++i) {
+                int ch = 0;
+                ui = rnd.UniformInt (100);
+                if (ui < 2) {
+                    ch = rnd.UniformInt (0x110000);
+                } else if (ui < 4) {
+                    ch = rnd.UniformInt (0x10000);
+                } else if (ui < 10) {
+                    ch = rnd.UniformInt (0x3000);
+                } else if (ui < 80) {
+                    ch = 0x20 + rnd.UniformInt (0x5f);
+                } else if (ui < 83) {
+                    ch = 0x20;
+                } else if (ui < 86) {
+                    ch = (char)'.';
+                } else {
+                    ui = rnd.UniformInt (problemChars.length());
+                    ch = problemChars.get(ui);
+                }
+                if ((ch & 0xf800) == 0xd800) {
+                    ch &= 0xff;
+                }
+                if (ch < 0x10000) {
+                    sb.append ((char)ch);
+                } else {
+                    ch -= 0x10000;
+                    int lead = (ch >> 10) + 0xd800;
+                    int trail = (ch & 0x3ff) + 0xdc00;
+                    sb.append ((char)lead);
+                    sb.append ((char)trail);
+                }
+            }
+            String ret = sb.toString();
+            return ret;
+        }
+
+        public static String EscapeString(String str) {
       String hex = "0123456789abcdef";
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < str.length(); ++i) {

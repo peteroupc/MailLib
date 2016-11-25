@@ -1,6 +1,9 @@
 using NUnit.Framework;
+using PeterO;
+using PeterO.Text;
 using PeterO.Mail;
 using System;
+using System.Text;
 namespace MailLibTest {
   [TestFixture]
   public partial class ContentDispositionTest {
@@ -39,10 +42,154 @@ namespace MailLibTest {
       Assert.IsFalse(cd.IsInline);
     }
 
+private static string MakeQEncoding(string str) {
+  byte[] bytes = DataUtilities.GetUtf8Bytes(str, false);
+  StringBuilder sb = new StringBuilder();
+  string hex="0123456789ABCDEF";
+  sb.Append("=?utf-8?q?");
+  for (var i = 0;i<bytes.Length; ++i) {
+    int b=((int)bytes[i]) & 0xff;
+    if (b == 0x32) {
+      sb.Append('_');
+    } else if ((b>= 'A' && b<= 'Z') || (b>= 'a' && b<= 'z') ||
+      (b>= '0' && b<= '9')) {
+      sb.Append((char)b);
+    } else {
+      sb.Append('=');
+      sb.Append(hex[(b >> 4) & 15]);
+      sb.Append(hex[b & 15]);
+    }
+  }
+  sb.Append("?=");
+  return sb.ToString();
+}
+private static string MakeRfc2231Encoding(string str) {
+  byte[] bytes = DataUtilities.GetUtf8Bytes(str, false);
+  StringBuilder sb = new StringBuilder();
+  string hex="0123456789ABCDEF";
+  sb.Append("utf-8''");
+  for (var i = 0;i<bytes.Length; ++i) {
+    int b=((int)bytes[i]) & 0xff;
+    if ((b>= 'A' && b<= 'Z') || (b>= 'a' && b<= 'z') ||
+      (b>= '0' && b<= '9')) {
+      sb.Append((char)b);
+    } else {
+      sb.Append('%');
+      sb.Append(hex[(b >> 4) & 15]);
+      sb.Append(hex[b & 15]);
+    }
+  }
+  return sb.ToString();
+}
+    private static string RandomString(RandomGenerator rnd) {
+      string ret = EncodingTest.RandomString (rnd);
+     int ui = rnd.UniformInt (100);
+ if (ui< 20) {
+   ret = MakeQEncoding(ret);
+ } else if (ui< 25) {
+   ret = MakeRfc2231Encoding(ret);
+ }
+ return ret;
+}
+private bool IsGoodFilename(string str) {
+ if (str == null || str.Length == 0 || str.Length>255) {
+  return false;
+ }
+ if (str[str.Length - 1] == '.' || str[str.Length - 1] == '~') {
+   return false;
+ }
+            string strLower = DataUtilities.ToLowerCaseAscii (str);
+    bool bracketDigit = str[0] == '{' && str.Length > 1 &&
+            str[1] >= '0' && str[1] <= '9';
+     bool homeFolder = str[0] == '~' || str[0] == '-' || str[0] == '$';
+     bool period = str[0] == '.';
+     bool beginEndSpace = str[0] == 0x20 || str[str.Length-1]==0x20;
+      if (bracketDigit || homeFolder || period || beginEndSpace) {
+        str = "_" + str;
+      }
+      // Reserved filenames on Windows
+      bool reservedFilename =
+  strLower.Equals(
+  "nul") || strLower.Equals("clock$") ||
+strLower.IndexOf(
+  "nul.",
+  StringComparison.Ordinal) == 0 || strLower.Equals(
+  "prn") ||
+strLower.IndexOf(
+  "prn.",
+  StringComparison.Ordinal) == 0 || strLower.Equals(
+  "aux") ||
+strLower.IndexOf(
+  "aux.",
+  StringComparison.Ordinal) == 0 || strLower.Equals(
+  "con") ||
+strLower.IndexOf(
+  "con.",
+  StringComparison.Ordinal) == 0 || (
+  strLower.Length >= 4 && strLower.IndexOf(
+  "lpt",
+  StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
+       strLower[3] <= '9') || (strLower.Length >= 4 &&
+              strLower.IndexOf(
+  "com",
+  StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
+            strLower[3] <= '9');
+ if (reservedFilename) {
+ return false;
+}
+ for (var i = 0;i<str.Length; ++i) {
+  char c = str[i];
+  if (c<0x20 || (c >= 0x7f && c <= 0x9f) ||
+    c=='%' || c==0x2028 || c==0x2029 ||
+    c == '\\' || c == '/' || c == '*' ||
+    c == '?' || c == '|' ||
+    c == ':' || c == '<' || c == '>' || c == '"'  ||
+    c == 0xa0 || c == 0x3000 ||
+   c == 0x180e || c == 0x1680 ||
+   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff ||
+   (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
+   return false;
+  }
+ }
+      // Avoid space before and after last dot
+      for (var i = str.Length-1; i >= 0; --i) {
+        if (str [i] == '.') {
+          bool spaceAfter = (i + 1 < str.Length && str [i + 1] == 0x20);
+          bool spaceBefore = (i > 0 && str [i - 1] == 0x20);
+          if (spaceAfter || spaceBefore) {
+               return false;
+          }
+          break;
+        }
+      }
+ return (!NormalizingCharacterInput.IsNormalized(
+   str,
+   Normalization.NFC));
+}
+
     [Test]
     public void TestMakeFilename() {
 string stringTemp;
+var rnd = new RandomGenerator();
        Assert.AreEqual(String.Empty, ContentDisposition.MakeFilename(null));
+       {
+string stringTemp = ContentDisposition.MakeFilename(String.Empty);
+Assert.AreEqual(
+  "_",
+  stringTemp);
+}
+Assert.IsTrue (IsGoodFilename (ContentDisposition.MakeFilename (
+        "utf-8''%2A%EF%AB%87%EC%A5%B2%2B67%20Tqd%20R%E3%80%80%2E")));
+      for (var i = 0; i < 1000000; ++i) {
+  string str = RandomString(rnd);
+  string filename = ContentDisposition.MakeFilename(str);
+  if (!IsGoodFilename(filename)) {
+    Assert.Fail("str_____="+EncodingTest.EscapeString(str)+"\n"+
+                   "filename="+EncodingTest.EscapeString(filename)+"\n"+
+  "Assert.IsTrue(IsGoodFilename(ContentDisposition.MakeFilename(\n" +
+            "  \""+EncodingTest.EscapeString(str)+"\")));");
+  }
+}
       {
 stringTemp = ContentDisposition.MakeFilename ("hello. txt");
 Assert.AreEqual(

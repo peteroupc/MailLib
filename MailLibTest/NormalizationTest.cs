@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using PeterO.Text;
+using PeterO;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -144,6 +145,48 @@ namespace MailLibTest {
                 "\nwas:      " + ToString(actual) + "\n" + msg);
         }
       }
+    }
+
+    private void TestIdempotent (string str, Normalization norm) {
+      bool isForm = NormalizingCharacterInput.IsNormalized (str, norm);
+      string newStr = NormalizingCharacterInput.Normalize (str, norm);
+      if (isForm) {
+        Assert.AreEqual (str, newStr, EncodingTest.EscapeString (str));
+      }
+      if (!NormalizingCharacterInput.IsNormalized (newStr, norm)) {
+        Assert.Fail (EncodingTest.EscapeString (str));
+      }
+      if (!isForm) {
+        string newStr2 = NormalizingCharacterInput.Normalize (newStr, norm);
+        Assert.AreEqual (newStr, newStr2, EncodingTest.EscapeString (str));
+      }
+    }
+
+    [Test]
+    public void NormTestRandom () {
+      var rand = new RandomGenerator();
+      for (var i = 0; i < 1000000; ++i) {
+        string str = EncodingTest.RandomString (rand);
+                TestIdempotent (str, Normalization.NFC);
+                TestIdempotent (str, Normalization.NFD);
+                TestIdempotent (str, Normalization.NFKC);
+                TestIdempotent (str, Normalization.NFKD);
+}
+    }
+
+    [Test]
+    public void NormTestSpecific() {
+      string str = "_\ufac7\uc972+67 Tqd R_.";
+            {
+string stringTemp = NormalizingCharacterInput.Normalize (str,
+  Normalization.NFC);
+Assert.AreEqual(
+  "_\u96e3\uc972+67 Tqd R_.",
+  stringTemp);
+}
+      Assert.IsFalse (
+        NormalizingCharacterInput.IsNormalized(str, Normalization.NFC));
+      TestIdempotent (str, Normalization.NFC);
     }
 
     private sealed class NormResult {

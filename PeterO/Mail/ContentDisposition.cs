@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Text;
 using PeterO;
 using PeterO.Text;
-using PeterO.Text.Encoders;
 
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
@@ -227,6 +226,9 @@ namespace PeterO.Mail {
         } else if (c == 0x2028 || c == 0x2029) {
           // line break characters (0x85 is already included above)
           builder.Append('_');
+        } else if ((c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
+          // noncharacters
+          builder.Append('_');
         } else if (c == '%') {
           // Treat percent character as unsuitable, even though it can occur
           // in a Windows filename, since it's used in MS-DOS and Windows
@@ -276,9 +278,9 @@ strLower.IndexOf(
   "com",
   StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
             strLower[3] <= '9');
-      bool bracketDigit = strLower[0] == '{' && strLower.Length > 1 &&
-            strLower[1] >= '0' && strLower[1] <= '9';
-        // Home folder convention (tilde).
+      bool bracketDigit = str [0] == '{' && str.Length > 1 &&
+            str [1] >= '0' && str [1] <= '9';
+      // Home folder convention (tilde).
         // Filenames starting with hyphens can also be
         // problematic especially in Unix-based systems,
         // and filenames starting with dollar sign can
@@ -320,9 +322,44 @@ strLower.IndexOf(
         // Ends in a dot or tilde (a file whose name ends with
         // the latter may be treated as
         // a backup file especially in Unix-based systems).
+        // NOTE: Although concatenation of two NFC strings
+        // doesn't necessarily lead to an NFC string, this
+        // particular concatenation doesn't disturb the NFC
+        // status of the string.
         str += "_";
       }
       return str;
+    }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='str'>Not documented yet.</param>
+    /// <returns>A string object.</returns>
+    public static string EscapeString(string str) {
+      const string hex = "0123456789abcdef";
+      var sb = new StringBuilder();
+      for (int i = 0; i < str.Length; ++i) {
+        char c = str[i];
+        if (c == 0x09) {
+          sb.Append("\\t");
+        } else if (c == 0x0d) {
+          sb.Append("\\r");
+        } else if (c == 0x0a) {
+          sb.Append("\\n");
+        } else if (c == 0x22) {
+          sb.Append("\\\"");
+        } else if (c == 0x5c) {
+          sb.Append("\\\\");
+        } else if (c < 0x20 || c >= 0x7f) {
+          sb.Append("\\u");
+          sb.Append(hex[(c >> 12) & 15]);
+          sb.Append(hex[(c >> 8) & 15]);
+          sb.Append(hex[(c >> 4) & 15]);
+          sb.Append(hex[(c) & 15]);
+        } else {
+          sb.Append(c);
+        }
+      }
+      return sb.ToString();
     }
 
     /// <include file='../../docs.xml'

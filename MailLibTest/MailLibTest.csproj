@@ -68,13 +68,13 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
     </Reference>
-    <Reference Include="Encoding">
-      <HintPath>..\packages\PeterO.Encoding.0.1.0\lib\portable-net45+dnxcore50+netcore45+win+wpa81+wp80\Encoding.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="Encoding">
+      <HintPath>..\packages\PeterO.Encoding.0.2.0\lib\portable-net45+dnxcore50+netcore45+win+wpa81+wp80\Encoding.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressTest.cs" />
@@ -95,7 +95,6 @@
     <Compile Include="RandomGenerator.cs" />
     <Compile Include="Reflect.cs" />
     <Compile Include="TestCommon.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="XorShift128Plus.cs" />
   </ItemGroup>
   <ItemGroup>
