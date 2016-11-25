@@ -41,6 +41,9 @@ namespace PeterO.Text {
       if (((first | second) >> 17) != 0) {
         return -1;
       }
+      if (first < 0x80 && second < 0x80) {
+        return -1;
+      }
       EnsurePairs();
       var left = 0;
       int right = pairsLength - 1;

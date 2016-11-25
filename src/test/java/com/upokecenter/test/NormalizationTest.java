@@ -2,6 +2,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.text.*;
+import com.upokecenter.util.*;
 
 import java.util.*;
 
@@ -143,6 +144,48 @@ import java.util.*;
                 "\nwas:      " + toString(actual) + "\n" + msg);
         }
       }
+    }
+
+    private void TestIdempotent(String str, Normalization norm) {
+      boolean isForm = NormalizingCharacterInput.IsNormalized (str, norm);
+      String newStr = NormalizingCharacterInput.Normalize (str, norm);
+      if (isForm) {
+        Assert.assertEquals (str, newStr, EncodingTest.EscapeString (str));
+      }
+      if (!NormalizingCharacterInput.IsNormalized (newStr, norm)) {
+        Assert.fail (EncodingTest.EscapeString (str));
+      }
+      if (!isForm) {
+        String newStr2 = NormalizingCharacterInput.Normalize (newStr, norm);
+        Assert.assertEquals (newStr, newStr2, EncodingTest.EscapeString (str));
+      }
+    }
+
+    @Test
+    public void NormTestRandom() {
+      RandomGenerator rand = new RandomGenerator();
+      for (int i = 0; i < 1000000; ++i) {
+        String str = EncodingTest.RandomString (rand);
+                TestIdempotent (str, Normalization.NFC);
+                TestIdempotent (str, Normalization.NFD);
+                TestIdempotent (str, Normalization.NFKC);
+                TestIdempotent (str, Normalization.NFKD);
+}
+    }
+
+    @Test
+    public void NormTestSpecific() {
+      String str = "_\ufac7\uc972+67 Tqd R_.";
+            {
+String stringTemp = NormalizingCharacterInput.Normalize (str,
+  Normalization.NFC);
+Assert.assertEquals(
+  "_\u96e3\uc972+67 Tqd R_.",
+  stringTemp);
+}
+      Assert.IsFalse (
+        NormalizingCharacterInput.IsNormalized(str, Normalization.NFC));
+      TestIdempotent (str, Normalization.NFC);
     }
 
     private static final class NormResult {

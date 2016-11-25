@@ -1,6 +1,8 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
 import org.junit.Assert;
 import org.junit.Test;
+import com.upokecenter.util.*;
+import com.upokecenter.text.*;
 import com.upokecenter.mail.*;
 
   public class ContentDispositionTest {
@@ -39,10 +41,148 @@ import com.upokecenter.mail.*;
       if (cd.isInline())Assert.fail();
     }
 
+private static String MakeQEncoding(String str) {
+  byte[] bytes = DataUtilities.GetUtf8Bytes(str, false);
+  StringBuilder sb = new StringBuilder();
+  String hex="0123456789ABCDEF";
+  sb.append("=?utf-8?q?");
+  for (int i = 0;i<bytes.length; ++i) {
+    int b=((int)bytes[i]) & 0xff;
+    if (b == 0x32) {
+      sb.append('_');
+    } else if ((b>= 'A' && b<= 'Z') || (b>= 'a' && b<= 'z') ||
+      (b>= '0' && b<= '9')) {
+      sb.append((char)b);
+    } else {
+      sb.append('=');
+      sb.append(hex.charAt((b >> 4) & 15));
+      sb.append(hex.charAt(b & 15));
+    }
+  }
+  sb.append("?=");
+  return sb.toString();
+}
+private static String MakeRfc2231Encoding(String str) {
+  byte[] bytes = DataUtilities.GetUtf8Bytes(str, false);
+  StringBuilder sb = new StringBuilder();
+  String hex="0123456789ABCDEF";
+  sb.append("utf-8''");
+  for (int i = 0;i<bytes.length; ++i) {
+    int b=((int)bytes[i]) & 0xff;
+    if ((b>= 'A' && b<= 'Z') || (b>= 'a' && b<= 'z') ||
+      (b>= '0' && b<= '9')) {
+      sb.append((char)b);
+    } else {
+      sb.append('%');
+      sb.append(hex.charAt((b >> 4) & 15));
+      sb.append(hex.charAt(b & 15));
+    }
+  }
+  return sb.toString();
+}
+    private static String RandomString(RandomGenerator rnd) {
+      String ret = EncodingTest.RandomString (rnd);
+     int ui = rnd.UniformInt (100);
+ if (ui< 20) {
+   ret = MakeQEncoding(ret);
+ } else if (ui< 25) {
+   ret = MakeRfc2231Encoding(ret);
+ }
+ return ret;
+}
+private boolean IsGoodFilename(String str) {
+ if (str == null || str.length() == 0 || str.length()>255) {
+  return false;
+ }
+ if (str.charAt(str.length() - 1) == '.' || str.charAt(str.length() - 1) == '~') {
+   return false;
+ }
+            String strLower = DataUtilities.ToLowerCaseAscii (str);
+    boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&
+            str.charAt(1) >= '0' && str.charAt(1) <= '9';
+     boolean homeFolder = str.charAt(0) == '~' || str.charAt(0) == '-' || str.charAt(0) == '$';
+     boolean period = str.charAt(0) == '.';
+     boolean beginEndSpace = str.charAt(0) == 0x20 || str.charAt(str.length()-1) == 0x20;
+      if (bracketDigit || homeFolder || period || beginEndSpace) {
+        str = "_" + str;
+      }
+      // Reserved filenames on Windows
+      boolean reservedFilename =
+  strLower.equals(
+  "nul") || strLower.equals("clock$") ||
+strLower.indexOf(
+  "nul.") == 0 || strLower.equals(
+  "prn") ||
+strLower.indexOf(
+  "prn.") == 0 || strLower.equals(
+  "aux") ||
+strLower.indexOf(
+  "aux.") == 0 || strLower.equals(
+  "con") ||
+strLower.indexOf(
+  "con.") == 0 || (
+  strLower.length() >= 4 && strLower.indexOf(
+  "lpt") == 0 && strLower.charAt(3) >= '0' &&
+       strLower.charAt(3) <= '9') || (strLower.length() >= 4 &&
+              strLower.indexOf(
+  "com") == 0 && strLower.charAt(3) >= '0' &&
+            strLower.charAt(3) <= '9');
+ if (reservedFilename) {
+ return false;
+}
+ for (int i = 0;i<str.length(); ++i) {
+  char c = str.charAt(i);
+  if (c<0x20 || (c >= 0x7f && c <= 0x9f) ||
+    c=='%' || c==0x2028 || c==0x2029 ||
+    c == '\\' || c == '/' || c == '*' ||
+    c == '?' || c == '|' ||
+    c == ':' || c == '<' || c == '>' || c == '"'  ||
+    c == 0xa0 || c == 0x3000 ||
+   c == 0x180e || c == 0x1680 ||
+   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff ||
+   (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
+   return false;
+  }
+ }
+      // Avoid space before and after last dot
+      for (var i = str.length()-1; i >= 0; --i) {
+        if (str.get(i) == '.') {
+          boolean spaceAfter = (i + 1 < str.length() && str.get(i + 1) == 0x20);
+          boolean spaceBefore = (i > 0 && str.get(i - 1) == 0x20);
+          if (spaceAfter || spaceBefore) {
+               return false;
+          }
+          break;
+        }
+      }
+ return (!NormalizingCharacterInput.IsNormalized(
+   str,
+   Normalization.NFC));
+}
+
     @Test
     public void TestMakeFilename() {
 String stringTemp;
+RandomGenerator rnd = new RandomGenerator();
        Assert.assertEquals("", ContentDisposition.MakeFilename(null));
+       {
+String stringTemp = ContentDisposition.MakeFilename("");
+Assert.assertEquals(
+  "_",
+  stringTemp);
+}
+Assert.assertTrue (IsGoodFilename (ContentDisposition.MakeFilename (
+        "utf-8''%2A%EF%AB%87%EC%A5%B2%2B67%20Tqd%20R%E3%80%80%2E")));
+      for (int i = 0; i < 1000000; ++i) {
+  String str = RandomString(rnd);
+  String filename = ContentDisposition.MakeFilename(str);
+  if (!IsGoodFilename(filename)) {
+    Assert.fail("str_____="+EncodingTest.EscapeString(str)+"\n"+
+                   "filename="+EncodingTest.EscapeString(filename)+"\n"+
+  "Assert.assertTrue(IsGoodFilename(ContentDisposition.MakeFilename(\n" +
+            "  \""+EncodingTest.EscapeString(str)+"\")));");
+  }
+}
       {
 stringTemp = ContentDisposition.MakeFilename ("hello. txt");
 Assert.assertEquals(
