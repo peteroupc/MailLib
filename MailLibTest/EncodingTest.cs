@@ -2082,6 +2082,9 @@ string stringTemp =
     public void TestRandomEncodedBytes() {
       var rnd = new RandomGenerator();
       for (var i = 0; i < 10000; ++i) {
+        if (i % 100 == 0) {
+          Console.WriteLine (i);
+        }
         byte[] bytes = RandomBytes(rnd);
         TestEncodedBytesRoundTrip(bytes, false);
       }
