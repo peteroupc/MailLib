@@ -165,7 +165,7 @@ namespace MailLibTest {
     [Test]
     public void NormTestRandom () {
       var rand = new RandomGenerator();
-      for (var i = 0; i < 1000000; ++i) {
+      for (var i = 0; i < 100000; ++i) {
         string str = EncodingTest.RandomString (rand);
                 TestIdempotent (str, Normalization.NFC);
                 TestIdempotent (str, Normalization.NFD);
@@ -187,6 +187,10 @@ Assert.AreEqual(
       Assert.IsFalse (
         NormalizingCharacterInput.IsNormalized(str, Normalization.NFC));
       TestIdempotent (str, Normalization.NFC);
+            str = "_\u96e3\uc972+67 Tqd R_._";
+            Assert.IsTrue (
+        NormalizingCharacterInput.IsNormalized (str, Normalization.NFC));
+            TestIdempotent (str, Normalization.NFC);        
     }
 
     private sealed class NormResult {

@@ -2004,60 +2004,83 @@ namespace PeterO.Mail {
       }
     }
 
-    internal static byte[] TimeEntropy(int size) {
-      // This routine was inspired by the HAVEG entropy
-      // harvester, but is not exactly the same as it.
-      int st = unchecked((int)DateTime.UtcNow.Ticks);
-      var b = 0;
-      var bytes = new byte[size];
-      for (var k = 0; k < 30; ++k) {
-        st = unchecked((int)(st + (int)DateTime.Now.Ticks));
-        for (var j = 0; j < bytes.Length; ++j) {
-          for (var i = 0; i < 8; ++i) {
-            int ticks = unchecked((int)(st + (int)DateTime.UtcNow.Ticks));
-            if ((ticks & (1 << i)) != 0) {
-              ticks >>= 1; ticks = unchecked(ticks + 54287);
-              if ((ticks & (1 << i)) != 0) {
-                ticks >>= 1; ticks = unchecked(ticks + 54287);
-                if ((ticks & (1 << i)) != 0) {
-                  ticks >>= 1; ticks = unchecked(ticks + 54287);
-                  if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+
+        internal static byte [] TimeEntropy (int size)
+        {
+            // This routine was inspired by the HAVEG entropy
+            // harvester, but is not exactly the same as it.
+            int st = unchecked((int)DateTime.UtcNow.Ticks);
+            int sx = st % 100;
+            var b = 0;
+            var badticks = 0;
+            var bytes = new byte [size];
+            for (var k = 0; k < 30; ++k) {
+                var dtt = (sx == 0) ? unchecked((int)DateTime.Now.Ticks) :
+                  unchecked((int)DateTime.UtcNow.Ticks);
+                if (badticks >= 20) {
+                    dtt /= 10;
+                } else if ((dtt & 1) == 0) {
+                    badticks++;
+                } else badticks = 0;
+                st = unchecked((int)st * 31 + dtt);
+                sx++;
+                if (sx >= 100) sx = 0;
+                for (var j = 0; j < bytes.Length; ++j) {
+                    for (var i = 0; i < 8; ++i) {
+                        dtt = (sx == 0) ? unchecked((int)DateTime.Now.Ticks) :
+          unchecked((int)DateTime.UtcNow.Ticks);
+                        if (badticks >= 20) {
+                            dtt /= 10;
+                        } else if ((dtt & 1) == 0) {
+                            badticks++;
+                        } else badticks = 0;
+                        int ticks = unchecked((int)st * 31 + dtt + j);
+                        st = ticks;
+                        sx++;
+                        if (sx >= 100) sx = 0;
+                        if ((ticks & (1 << i)) != 0) {
+                            ticks >>= 1; ticks = unchecked(ticks + 54287);
+                            if ((ticks & (1 << i)) != 0) {
+                                ticks >>= 1; ticks = unchecked(ticks + 54287);
+                                if ((ticks & (1 << i)) != 0) {
+                                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                                    if ((ticks & (1 << i)) != 0) {
+                                        ticks >>= 1; ticks = unchecked(ticks + 54287);
+                                        if ((ticks & (1 << i)) != 0) {
+                                            ticks >>= 1; ticks = unchecked(ticks + 54287);
+                                            if ((ticks & (1 << i)) != 0) {
+                                                ticks >>= 1; ticks = unchecked(ticks + 54287);
+                                                if ((ticks & (1 << i)) != 0) {
+                                                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                                                    if ((ticks & (1 << i)) != 0) {
+                                                        ticks >>= 1; ticks = unchecked(ticks + 54287);
+                                                        if ((ticks & (1 << i)) != 0) {
+                                                            ticks >>= 1; ticks = unchecked(ticks + 54287);
+                                                            if ((ticks & (1 << i)) != 0) {
+                                                                ticks >>= 1; ticks = unchecked(ticks + 54287);
+                                                                if ((ticks & (1 << i)) != 0) {
+                                                                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ticks = unchecked((int)(ticks + st + (int)DateTime.UtcNow.Ticks +
+                             1));
+                        b <<= 1;
+                        b |= ticks & 1;
                     }
-                    }
-                    }
-                    }
-                    }
-                    }
-                    }
-                  }
+                    bytes [j] ^= unchecked((byte)b);
                 }
-              }
             }
-         ticks = unchecked((int)(ticks + st + (int)DateTime.UtcNow.Ticks +
-              1));
-            b <<= 1;
-            b |= ticks & 1;
-          }
-          bytes[j] ^= unchecked((byte)b);
+            return bytes;
         }
-      }
-      return bytes;
-    }
 
     private string GenerateMessageID() {
       var builder = new StringBuilder();

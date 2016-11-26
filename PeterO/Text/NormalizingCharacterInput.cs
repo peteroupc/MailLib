@@ -342,6 +342,7 @@
         if (str == null) {
           throw new ArgumentNullException("str");
         }
+     // DebugUtility.Log (str);
         var nonQcsStart = -1;
         int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
         var lastQcs = 0;
@@ -370,16 +371,18 @@
     c,
     form);
           }
+       // DebugUtility.Log ("ch={0} qcs={1} lastqcs={2} nqs={3}",
+         //                EC (c), isQcs, lastQcs, nonQcsStart);
           if (isQcs) {
             lastQcs = i;
           }
           if (nonQcsStart < 0 && !isQcs) {
             // First non-quick-check starter in a row
-            nonQcsStart = lastQcs;
+            nonQcsStart = i;
           } else if (nonQcsStart >= 0 && isQcs) {
-            // We have at least one non-quick-check-starter,
-            // normalize these code points.
-            if (!NormalizeAndCheckString(
+          // We have at least one non-quick-check-starter,
+          // normalize these code points.
+          if (!NormalizeAndCheckString(
            str,
            nonQcsStart,
            i - nonQcsStart,
@@ -393,7 +396,7 @@
           }
         }
         if (nonQcsStart >= 0) {
-          if (!NormalizeAndCheckString(
+        if (!NormalizeAndCheckString(
     str,
     nonQcsStart,
     str.Length - nonQcsStart,
@@ -468,7 +471,7 @@
           }
           if (nonQcsStart < 0 && !isQcs) {
             // First non-quick-check starter in a row
-            nonQcsStart = lastQcs;
+            nonQcsStart = i;
           } else if (nonQcsStart >= 0 && isQcs) {
             // We have at least one non-quick-check starter,
             // normalize these code points.
