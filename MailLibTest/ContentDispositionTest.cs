@@ -4,34 +4,27 @@ using PeterO.Text;
 using PeterO.Mail;
 using System;
 using System.Text;
-namespace MailLibTest
-{
+namespace MailLibTest {
     [TestFixture]
-    public partial class ContentDispositionTest
-    {
+    public partial class ContentDispositionTest {
         [Test]
-        public void TestDispositionType ()
-        {
+        public void TestDispositionType () {
             // not implemented yet
         }
         [Test]
-        public void TestEquals ()
-        {
+        public void TestEquals () {
             // not implemented yet
         }
         [Test]
-        public void TestGetHashCode ()
-        {
+        public void TestGetHashCode () {
             // not implemented yet
         }
         [Test]
-        public void TestGetParameter ()
-        {
+        public void TestGetParameter () {
             // not implemented yet
         }
         [Test]
-        public void TestIsAttachment ()
-        {
+        public void TestIsAttachment () {
             ContentDisposition cd = ContentDisposition.Parse ("inline");
             Assert.IsFalse (cd.IsAttachment);
             cd = ContentDisposition.Parse ("cd-unknown");
@@ -39,9 +32,7 @@ namespace MailLibTest
             cd = ContentDisposition.Parse ("attachment");
             Assert.IsTrue (cd.IsAttachment);
         }
-        [Test]
-        public void TestIsInline ()
-        {
+        [Test] public void TestIsInline () {
             ContentDisposition cd = ContentDisposition.Parse ("inline");
             Assert.IsTrue (cd.IsInline);
             cd = ContentDisposition.Parse ("cd-unknown");
@@ -50,10 +41,9 @@ namespace MailLibTest
             Assert.IsFalse (cd.IsInline);
         }
 
-        private static string MakeQEncoding (string str)
-        {
+        private static string MakeQEncoding (string str) {
             byte [] bytes = DataUtilities.GetUtf8Bytes (str, false);
-            StringBuilder sb = new StringBuilder ();
+            StringBuilder sb = new StringBuilder();
             string hex = "0123456789ABCDEF";
             sb.Append ("=?utf-8?q?");
             for (var i = 0; i < bytes.Length; ++i) {
@@ -70,12 +60,11 @@ namespace MailLibTest
                 }
             }
             sb.Append ("?=");
-            return sb.ToString ();
+            return sb.ToString();
         }
-        private static string MakeRfc2231Encoding (string str)
-        {
+        private static string MakeRfc2231Encoding (string str) {
             byte [] bytes = DataUtilities.GetUtf8Bytes (str, false);
-            StringBuilder sb = new StringBuilder ();
+            StringBuilder sb = new StringBuilder();
             string hex = "0123456789ABCDEF";
             sb.Append ("utf-8''");
             for (var i = 0; i < bytes.Length; ++i) {
@@ -89,10 +78,9 @@ namespace MailLibTest
                     sb.Append (hex [b & 15]);
                 }
             }
-            return sb.ToString ();
+            return sb.ToString();
         }
-        private static string RandomString (RandomGenerator rnd)
-        {
+        private static string RandomString (RandomGenerator rnd) {
             string ret = EncodingTest.RandomString (rnd);
             int ui = rnd.UniformInt (100);
             if (ui < 20) {
@@ -102,8 +90,7 @@ namespace MailLibTest
             }
             return ret;
         }
-        private bool IsGoodFilename (string str)
-        {
+        private bool IsGoodFilename (string str) {
             if (str == null || str.Length == 0 || str.Length > 255) {
                 return false;
             }
@@ -113,29 +100,26 @@ namespace MailLibTest
             string strLower = DataUtilities.ToLowerCaseAscii (str);
             bool bracketDigit = str [0] == '{' && str.Length > 1 &&
                     str [1] >= '0' && str [1] <= '9';
-            bool homeFolder = str [0] == '~' || str [0] == '-' || str [0] == '$';
+          bool homeFolder = str [0] == '~' || str [0] == '-' || str [0] ==
+              '$' ;
             bool period = str [0] == '.';
-            bool beginEndSpace = str [0] == 0x20 || str [str.Length - 1] == 0x20;
+          bool beginEndSpace = str [0] == 0x20 || str [str.Length - 1] ==
+              0x20;
             if (bracketDigit || homeFolder || period || beginEndSpace) {
                 return false;
             }
             // Reserved filenames on Windows
-            bool reservedFilename =
-        strLower.Equals (
-        "nul") || strLower.Equals ("clock$") ||
-      strLower.IndexOf (
+            bool reservedFilename = strLower.Equals (
+        "nul") || strLower.Equals ("clock$") || strLower.IndexOf (
         "nul.",
         StringComparison.Ordinal) == 0 || strLower.Equals (
-        "prn") ||
-      strLower.IndexOf (
+        "prn") || strLower.IndexOf (
         "prn.",
         StringComparison.Ordinal) == 0 || strLower.Equals (
-        "aux") ||
-      strLower.IndexOf (
+        "aux") || strLower.IndexOf (
         "aux.",
         StringComparison.Ordinal) == 0 || strLower.Equals (
-        "con") ||
-      strLower.IndexOf (
+        "con") || strLower.IndexOf (
         "con.",
         StringComparison.Ordinal) == 0 || (
         strLower.Length >= 4 && strLower.IndexOf (
@@ -153,12 +137,11 @@ namespace MailLibTest
                 char c = str [i];
                 if (c < 0x20 || (c >= 0x7f && c <= 0x9f) ||
                   c == '%' || c == 0x2028 || c == 0x2029 ||
-                  c == '\\' || c == '/' || c == '*' ||
-                  c == '?' || c == '|' ||
+                c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
                   c == ':' || c == '<' || c == '>' || c == '"' ||
-                  c == 0xa0 || c == 0x3000 ||
-                 c == 0x180e || c == 0x1680 ||
-                 (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff ||
+                c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
+   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff
+                   ||
                  (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
                     return false;
                 }
@@ -166,10 +149,11 @@ namespace MailLibTest
             // Avoid space before and after last dot
             for (var i = str.Length - 1; i >= 0; --i) {
                 if (str [i] == '.') {
-                    bool spaceAfter = (i + 1 < str.Length && str [i + 1] == 0x20);
+                 bool spaceAfter = (i + 1 < str.Length && str [i + 1] ==
+                      0x20);
                     bool spaceBefore = (i > 0 && str [i - 1] == 0x20);
                     if (spaceAfter || spaceBefore) {
-                        return false;
+                    return false;
                     }
                     break;
                 }
@@ -179,12 +163,11 @@ namespace MailLibTest
               Normalization.NFC));
         }
 
-        [Test]
-        public void TestMakeFilename ()
-        {
+        [Test] public void TestMakeFilename () {
             string stringTemp;
       var rnd = new RandomGenerator (new XorShift128Plus(false));
-            Assert.AreEqual (String.Empty, ContentDisposition.MakeFilename (null));
+        Assert.AreEqual (String.Empty, ContentDisposition.MakeFilename
+              (null));
             {
                 stringTemp = ContentDisposition.MakeFilename (String.Empty);
                 Assert.AreEqual (
@@ -201,10 +184,11 @@ namespace MailLibTest
                 string str = RandomString (rnd);
                 string filename = ContentDisposition.MakeFilename (str);
                 if (!IsGoodFilename (filename)) {
-                    Assert.Fail ("str_____=" + EncodingTest.EscapeString (str) + "\n" +
-                                   "filename=" + EncodingTest.EscapeString (filename) + "\n" +
-                  "Assert.IsTrue(IsGoodFilename(ContentDisposition.MakeFilename(\n" +
-                            "  \"" + EncodingTest.EscapeString (str) + "\")));");
+            Assert.Fail ("str_____=" + EncodingTest.EscapeString (str) +
+                      "\n" +
+                    "filename=" + EncodingTest.EscapeString (filename) + "\n" +
+  "Assert.IsTrue(IsGoodFilename(ContentDisposition.MakeFilename(\n" +
+                    "  \"" + EncodingTest.EscapeString (str) + "\")));");
                 }
             }
             {
@@ -269,13 +253,15 @@ namespace MailLibTest
             }
 
             {
-                stringTemp = ContentDisposition.MakeFilename ("utf-8'en'hello%2Etxt");
+         stringTemp = ContentDisposition.MakeFilename
+                  ("utf-8'en'hello%2Etxt");
                 Assert.AreEqual (
                   "hello.txt",
                   stringTemp);
             }
             {
-                stringTemp = ContentDisposition.MakeFilename ("=?utf-8?q?hello.txt?=");
+        stringTemp = ContentDisposition.MakeFilename
+                  ("=?utf-8?q?hello.txt?=");
                 Assert.AreEqual (
                   "hello.txt",
                   stringTemp);
@@ -314,7 +300,8 @@ namespace MailLibTest
 
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("=?utf-8?q?___hello.txt___?=");
+               ContentDisposition.MakeFilename
+                    ("=?utf-8?q?___hello.txt___?=");
                 Assert.AreEqual (
                   "hello.txt",
                   stringTemp);
@@ -325,7 +312,8 @@ namespace MailLibTest
               "ab",
               stringTemp);
             stringTemp =
-              ContentDisposition.MakeFilename ("=?utf-8?q?a?= =?x-unknown?q?b?=");
+           ContentDisposition.MakeFilename
+                ("=?utf-8?q?a?= =?x-unknown?q?b?=");
             Assert.AreEqual (
               "a b",
               stringTemp);
@@ -359,18 +347,15 @@ namespace MailLibTest
                 Assert.AreEqual ("_nul.txt", stringTemp);
             }
             {
-                stringTemp =
-                  ContentDisposition.MakeFilename ("prn.txt");
+                stringTemp = ContentDisposition.MakeFilename ("prn.txt");
                 Assert.AreEqual ("_prn.txt", stringTemp);
             }
             {
-                stringTemp =
-                  ContentDisposition.MakeFilename ("aux.txt");
+                stringTemp = ContentDisposition.MakeFilename ("aux.txt");
                 Assert.AreEqual ("_aux.txt", stringTemp);
             }
             {
-                stringTemp =
-                  ContentDisposition.MakeFilename ("con.txt");
+                stringTemp = ContentDisposition.MakeFilename ("con.txt");
                 Assert.AreEqual ("_con.txt", stringTemp);
             }
             {
@@ -382,21 +367,24 @@ namespace MailLibTest
             }
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("  =?utf-8?q?___hello.txt___?=  ");
+           ContentDisposition.MakeFilename
+                    ("  =?utf-8?q?___hello.txt___?=  ");
                 Assert.AreEqual (
                   "hello.txt",
                   stringTemp);
             }
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("  =?utf-8*en?q?___hello.txt___?=  ");
+        ContentDisposition.MakeFilename
+                    ("  =?utf-8*en?q?___hello.txt___?=  ");
                 Assert.AreEqual (
                   "hello.txt",
                   stringTemp);
             }
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("  =?utf-8*?q?___hello.txt___?=  ");
+          ContentDisposition.MakeFilename
+                    ("  =?utf-8*?q?___hello.txt___?=  ");
                 Assert.AreEqual (
                   "___hello.txt___",
                   stringTemp);
@@ -412,20 +400,23 @@ namespace MailLibTest
             }
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("  =?*en?q?___hello.txt___?=  ");
+             ContentDisposition.MakeFilename
+                    ("  =?*en?q?___hello.txt___?=  ");
                 Assert.AreEqual (
                   "___hello.txt___",
                   stringTemp);
             }
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("=?iso-8859-1?q?a=E7=E3o.txt?=");
+             ContentDisposition.MakeFilename
+                    ("=?iso-8859-1?q?a=E7=E3o.txt?=");
                 Assert.AreEqual (
                   "a\u00e7\u00e3o.txt",
                   stringTemp);
             }
             {
-                stringTemp = ContentDisposition.MakeFilename ("a\u00e7\u00e3o.txt");
+           stringTemp = ContentDisposition.MakeFilename
+                  ("a\u00e7\u00e3o.txt");
                 Assert.AreEqual (
                   "a\u00e7\u00e3o.txt",
                   stringTemp);
@@ -451,7 +442,8 @@ namespace MailLibTest
                   stringTemp);
             }
             {
-                stringTemp = ContentDisposition.MakeFilename ("my file\tname\".txt");
+          stringTemp = ContentDisposition.MakeFilename
+                  ("my file\tname\".txt");
                 Assert.AreEqual (
                   "my file name_.txt",
                   stringTemp);
@@ -465,7 +457,8 @@ namespace MailLibTest
             }
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("=?x-unknown?Q?file\ud800name?=");
+            ContentDisposition.MakeFilename
+                    ("=?x-unknown?Q?file\ud800name?=");
                 Assert.AreEqual (
                   "file\ufffdname",
                   stringTemp);
@@ -479,28 +472,32 @@ namespace MailLibTest
             }
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("utf-8'en'file%c2%bename.txt");
+               ContentDisposition.MakeFilename
+                    ("utf-8'en'file%c2%bename.txt");
                 Assert.AreEqual (
                   "file\u00bename.txt",
                   stringTemp);
             }
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("windows-1252'en'file%bename.txt");
+           ContentDisposition.MakeFilename
+                    ("windows-1252'en'file%bename.txt");
                 Assert.AreEqual (
                   "file\u00bename.txt",
                   stringTemp);
             }
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("x-unknown'en'file%c2%bename.txt");
+           ContentDisposition.MakeFilename
+                    ("x-unknown'en'file%c2%bename.txt");
                 Assert.AreEqual (
                   "x-unknown'en'file_c2_bename.txt",
                   stringTemp);
             }
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("utf-8'en-us'file%c2%bename.txt");
+            ContentDisposition.MakeFilename
+                    ("utf-8'en-us'file%c2%bename.txt");
                 Assert.AreEqual (
                   "file\u00bename.txt",
                   stringTemp);
@@ -531,7 +528,8 @@ namespace MailLibTest
                   stringTemp);
             }
             {
-                stringTemp = ContentDisposition.MakeFilename ("myfilename.txt.");
+              stringTemp = ContentDisposition.MakeFilename
+                  ("myfilename.txt.");
                 Assert.AreEqual (
                   "myfilename.txt._",
                   stringTemp);
@@ -580,14 +578,16 @@ namespace MailLibTest
             }
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("my\u0001file\u007fname*.txt");
+               ContentDisposition.MakeFilename
+                    ("my\u0001file\u007fname*.txt");
                 Assert.AreEqual (
                   "my_file_name_.txt",
                   stringTemp);
             }
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("=?utf-8?q?folder\\hello.txt?=");
+             ContentDisposition.MakeFilename
+                    ("=?utf-8?q?folder\\hello.txt?=");
                 Assert.AreEqual (
                   "folder_hello.txt",
                   stringTemp);
@@ -629,7 +629,8 @@ namespace MailLibTest
                   stringTemp);
             }
             {
-                stringTemp = ContentDisposition.MakeFilename ("folder/hello.txt");
+             stringTemp = ContentDisposition.MakeFilename
+                  ("folder/hello.txt");
                 Assert.AreEqual (
                   "folder_hello.txt",
                   stringTemp);
@@ -643,34 +644,28 @@ namespace MailLibTest
             }
             {
                 stringTemp =
-                  ContentDisposition.MakeFilename ("=?x-unknown?q?folder\\hello.txt?=");
+         ContentDisposition.MakeFilename
+                    ("=?x-unknown?q?folder\\hello.txt?=");
                 Assert.AreEqual (
                   "folder_hello.txt",
                   stringTemp);
             }
         }
 
-
-        [Test]
-        public void TestParameters ()
-        {
+        [Test] public void TestParameters () {
         }
-        [Test]
-        public void TestParse ()
-        {
+        [Test] public void TestParse () {
             try {
                 ContentDisposition.Parse (null);
                 Assert.Fail ("Should have failed");
             } catch (ArgumentNullException) {
-                new Object ();
+                new Object();
             } catch (Exception ex) {
-                Assert.Fail (ex.ToString ());
+                Assert.Fail (ex.ToString());
                 throw new InvalidOperationException (String.Empty, ex);
             }
         }
-        [Test]
-        public void TestToString ()
-        {
+        [Test] public void TestToString () {
             // not implemented yet
         }
     }

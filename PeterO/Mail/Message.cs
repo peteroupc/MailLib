@@ -53,7 +53,7 @@ namespace PeterO.Mail {
       this.headers = new List<string>();
       this.parts = new List<Message>();
       this.body = new byte[0];
-      IByteReader transform = DataIO.ToByteReader(stream);
+      IByteReader transform = DataIO.ToReader(stream);
       this.ReadMessage(transform);
     }
 
@@ -66,7 +66,7 @@ namespace PeterO.Mail {
       this.headers = new List<string>();
       this.parts = new List<Message>();
       this.body = new byte[0];
-      IByteReader transform = DataIO.ToByteReader(bytes);
+      IByteReader transform = DataIO.ToReader(bytes);
       this.ReadMessage(transform);
     }
 
@@ -209,7 +209,7 @@ namespace PeterO.Mail {
         }
         return Encodings.DecodeToString(
           charset,
-          DataIO.ToByteReader(this.body));
+          DataIO.ToReader(this.body));
       }
     }
 
@@ -2004,9 +2004,7 @@ namespace PeterO.Mail {
       }
     }
 
-
-        internal static byte [] TimeEntropy (int size)
-        {
+        internal static byte [] TimeEntropy (int size) {
             // This routine was inspired by the HAVEG entropy
             // harvester, but is not exactly the same as it.
             int st = unchecked((int)DateTime.UtcNow.Ticks);
@@ -2020,61 +2018,69 @@ namespace PeterO.Mail {
                 if (badticks >= 20) {
                     dtt /= 10;
                 } else if ((dtt & 1) == 0) {
-                    badticks++;
-                } else badticks = 0;
+                    ++badticks;
+                } else {
+ badticks = 0;
+}
                 st = unchecked((int)st * 31 + dtt);
-                sx++;
-                if (sx >= 100) sx = 0;
+                ++sx;
+                if (sx >= 100) {
+ sx = 0;
+}
                 for (var j = 0; j < bytes.Length; ++j) {
                     for (var i = 0; i < 8; ++i) {
-                        dtt = (sx == 0) ? unchecked((int)DateTime.Now.Ticks) :
+                    dtt = (sx == 0) ? unchecked((int)DateTime.Now.Ticks) :
           unchecked((int)DateTime.UtcNow.Ticks);
-                        if (badticks >= 20) {
-                            dtt /= 10;
-                        } else if ((dtt & 1) == 0) {
-                            badticks++;
-                        } else badticks = 0;
-                        int ticks = unchecked((int)st * 31 + dtt + j);
-                        st = ticks;
-                        sx++;
-                        if (sx >= 100) sx = 0;
-                        if ((ticks & (1 << i)) != 0) {
-                            ticks >>= 1; ticks = unchecked(ticks + 54287);
-                            if ((ticks & (1 << i)) != 0) {
-                                ticks >>= 1; ticks = unchecked(ticks + 54287);
-                                if ((ticks & (1 << i)) != 0) {
-                                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                                    if ((ticks & (1 << i)) != 0) {
-                                        ticks >>= 1; ticks = unchecked(ticks + 54287);
-                                        if ((ticks & (1 << i)) != 0) {
-                                            ticks >>= 1; ticks = unchecked(ticks + 54287);
-                                            if ((ticks & (1 << i)) != 0) {
-                                                ticks >>= 1; ticks = unchecked(ticks + 54287);
-                                                if ((ticks & (1 << i)) != 0) {
-                                                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                                                    if ((ticks & (1 << i)) != 0) {
-                                                        ticks >>= 1; ticks = unchecked(ticks + 54287);
-                                                        if ((ticks & (1 << i)) != 0) {
-                                                            ticks >>= 1; ticks = unchecked(ticks + 54287);
-                                                            if ((ticks & (1 << i)) != 0) {
-                                                                ticks >>= 1; ticks = unchecked(ticks + 54287);
-                                                                if ((ticks & (1 << i)) != 0) {
-                                                                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        ticks = unchecked((int)(ticks + st + (int)DateTime.UtcNow.Ticks +
-                             1));
-                        b <<= 1;
-                        b |= ticks & 1;
+                    if (badticks >= 20) {
+                    dtt /= 10;
+                    } else if ((dtt & 1) == 0) {
+                    ++badticks;
+                    } else {
+ badticks = 0;
+}
+                    int ticks = unchecked((int)st * 31 + dtt + j);
+                    st = ticks;
+                    ++sx;
+                    if (sx >= 100) {
+ sx = 0;
+}
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = unchecked(ticks + 54287);
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+              ticks = unchecked((int)(ticks + st +
+                (int)DateTime.UtcNow.Ticks + 1));
+                    b <<= 1;
+                    b |= ticks & 1;
                     }
                     bytes [j] ^= unchecked((byte)b);
                 }
@@ -2101,7 +2107,7 @@ namespace PeterO.Mail {
         ent = TimeEntropy(16);
       } else {
         ent = new byte[16];
-        for(var i=0;i<ent.Length;i++){
+        for (var i = 0;i<ent.Length; ++i) {
           ent[i]=unchecked((byte)ValueMsgidRandom.Next(256));
         }
       }

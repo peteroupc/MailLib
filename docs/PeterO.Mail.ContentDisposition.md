@@ -34,7 +34,7 @@ Gets a value indicating whether the disposition type is attachment.
 
 <b>Returns:</b>
 
- `true`  If the disposition type is attachment; otherwise, .  `false` .
+ `true`  If the disposition type is attachment; otherwise,  `false` .
 
 ### IsInline
 
@@ -44,7 +44,7 @@ Gets a value indicating whether the disposition type is inline.
 
 <b>Returns:</b>
 
- `true`  If the disposition type is inline; otherwise, . `false` .
+ `true`  If the disposition type is inline; otherwise,  `false` .
 
 ### Parameters
 
@@ -69,7 +69,22 @@ Determines whether this object and another object are equal.
 
 <b>Return Value:</b>
 
- `true`  if the objects are equal, otherwise, false .
+ `true`  if the objects are equal; otherwise,  `false` .
+
+### EscapeString
+
+    public static string EscapeString(
+        string str);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>str</i>: Not documented yet.
+
+<b>Return Value:</b>
+
+A string object.
 
 ### GetHashCode
 

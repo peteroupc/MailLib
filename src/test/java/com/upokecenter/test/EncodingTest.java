@@ -21,7 +21,7 @@ import java.util.*;
 
         public static String RandomString(RandomGenerator rnd) {
             int count = 10 + rnd.UniformInt(350);
-            StringBuilder sb = new StringBuilder();
+      StringBuilder sb = new StringBuilder(count*2);
             int ui;
             String problemChars = " \t\u0000\u0010\u001b\u001f" +
               "\u007f\u008f\u009f%\\/*?|:<>\"\u0028\u0029" +
@@ -2071,10 +2071,13 @@ String stringTemp =
       return arr;
     }
 
-    @Test(timeout = 100000)
+    @Test(timeout = 200000)
     public void TestRandomEncodedBytes() {
       RandomGenerator rnd = new RandomGenerator();
       for (int i = 0; i < 10000; ++i) {
+        if (i % 100 == 0) {
+          System.out.println (i);
+        }
         byte[] bytes = RandomBytes(rnd);
         TestEncodedBytesRoundTrip(bytes, false);
       }

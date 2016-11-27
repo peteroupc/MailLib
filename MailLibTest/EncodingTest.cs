@@ -23,7 +23,7 @@ namespace MailLibTest {
 
         public static string RandomString (RandomGenerator rnd) {
             int count = 10 + rnd.UniformInt(350);
-      StringBuilder sb = new StringBuilder(count*2);
+      var sb = new StringBuilder(count*2);
             int ui;
             string problemChars = " \t\u0000\u0010\u001b\u001f" +
               "\u007f\u008f\u009f%\\/*?|:<>\"\u0028\u0029" +

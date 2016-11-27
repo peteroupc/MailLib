@@ -38,7 +38,7 @@ Returns whether this string is normalized.
 
 <b>Return Value:</b>
 
- `true`  if this string is normalized, otherwise, false .
+ `true`  if this string is normalized; otherwise,  `false` .
 
 ### Normalize
 

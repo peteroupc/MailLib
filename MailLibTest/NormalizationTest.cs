@@ -193,7 +193,7 @@ Assert.AreEqual(
             str = "_\u96e3\uc972+67 Tqd R_._";
             Assert.IsTrue (
         NormalizingCharacterInput.IsNormalized (str, Normalization.NFC));
-            TestIdempotent (str, Normalization.NFC);        
+            TestIdempotent (str, Normalization.NFC);
     }
 
     private sealed class NormResult {
@@ -328,15 +328,15 @@ Assert.AreEqual(
           }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                Normalization.NFD)) {
-                        Assert.Fail (Test.TestCommon.IntToString (i));
+                    Assert.Fail (Test.TestCommon.IntToString (i));
           }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                 Normalization.NFKC)) {
-                        Assert.Fail (Test.TestCommon.IntToString (i));
+                    Assert.Fail (Test.TestCommon.IntToString (i));
  }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                 Normalization.NFKD)) {
-                        Assert.Fail (Test.TestCommon.IntToString (i));
+                    Assert.Fail (Test.TestCommon.IntToString (i));
         }
           string imsg = Test.TestCommon.IntToString (i);
           AssertEqual(cpstr, NormalizingCharacterInput.Normalize(
