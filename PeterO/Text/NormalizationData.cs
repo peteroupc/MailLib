@@ -3,9 +3,11 @@
  (see LICENSE.md in the source code root or visit
  http://www.unicode.org/copyright.html Exhibit 1). */
 using System;
+
 namespace PeterO.Text {
   internal static class NormalizationData {
     public static readonly int[] ComposedPairs = GetComposedPairs();
+
     private static int[] GetComposedPairs0() {
       return new int[] { 60, 824, 8814, 61, 824, 8800, 62, 824, 8815, 65,
         768, 192, 65, 769, 193, 65, 770,
@@ -389,11 +391,13 @@ namespace PeterO.Text {
         71087, 71098,
       71097, 71087, 71099 };
     }
+
     private static int[] GetComposedPairs() {
       var ret = new int[2820];
       Array.Copy(GetComposedPairs0(), 0, ret, 0, 2820);
       return ret;
     }
+
     public static readonly byte[] CombiningClasses = new byte[] {
       (byte)0xf0, 23, 0, (byte)0x80, 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6,
       0, 7, 0,
@@ -546,7 +550,9 @@ namespace PeterO.Text {
   14, (byte)0xc0, 15, (byte)0xd3, 24, (byte)0xff, (byte)0xc7, 4, 84, 5, 15,
         68,
       3, 94, 15, (byte)0x87, 16, (byte)0xa2, 16, 0 };
+
     public static readonly int[] DecompMappings = GetDecompMappings();
+
     private static int[] GetDecompMappings0() {
       return new int[] { 12583072, 32, 25165992, 50855968, 12583082, 97,
         25165999, 50593824, 12583090,
@@ -1444,9 +1450,9 @@ namespace PeterO.Text {
         20013, 12595878,
       19979, 12595879, 24038, 12595880, 21491, 12595881, 21307, 12595882,
         23447, 12595883,
-   23398, 12595884, 30435, 12595885, 20225, 12595886, 36039, 12595887, 21332
-        };
+   23398, 12595884, 30435, 12595885, 20225, 12595886, 36039, 12595887, 21332 };
     }
+
     private static int[] GetDecompMappings1() {
       return new int[] { 12595888, 22812, 25178801, 3538995, 25178802,
         3604531, 25178803, 3670067, 25178804,
@@ -2302,6 +2308,7 @@ namespace PeterO.Text {
         109, 12702811,
       110, 12702812, 111 };
     }
+
     private static int[] GetDecompMappings2() {
       return new int[] { 12702813, 112, 12702814, 113, 12702815, 114,
         12702816, 115, 12702817, 116, 12702818,
@@ -2951,6 +2958,7 @@ namespace PeterO.Text {
         4389402,
       40719, 4389403, 40726, 4389404, 40763, 4389405, 173568 };
     }
+
     private static int[] GetDecompMappings() {
       var ret = new int[11444];
       Array.Copy(GetDecompMappings0(), 0, ret, 0, 4000);
@@ -2958,8 +2966,10 @@ namespace PeterO.Text {
       Array.Copy(GetDecompMappings2(), 0, ret, 8000, 3444);
       return ret;
     }
+
     public static readonly int[] ComplexDecompMappings =
       GetComplexDecompMappings();
+
     private static int[] GetComplexDecompMappings() {
       return new int[] { 49, 8260, 52, 49, 8260, 50, 51, 8260, 52, 46, 46,
         46, 8242, 8242, 8242, 8245,
@@ -3193,6 +3203,7 @@ namespace PeterO.Text {
         12309, 12308,
       21213, 12309, 12308, 25943, 12309 };
     }
+
     public const int QCSNFCMin = 768;
     public const int QCSNFCMax = 195101;
     public static readonly byte[] QCSNFC = new byte[] { (byte)0xf3, 9, 0, 1,
@@ -3298,6 +3309,7 @@ namespace PeterO.Text {
  23, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xd4, 15, 33, 0,
         14,
       16, 0, 116, 30, 15, (byte)0xff, 0, (byte)0xa5, 16, (byte)0xff };
+
     public const int QCSNFDMin = 192;
     public const int QCSNFDMax = 195101;
     public static readonly byte[] QCSNFD = new byte[] { (byte)0xf3, 9, 0, 1,
@@ -3438,6 +3450,7 @@ namespace PeterO.Text {
         (byte)0xff,
       (byte)0xb3, 15, 79, 28, 48, 31, (byte)0xc0, (byte)0xff, 0, (byte)0xa8,
         16, (byte)0xff };
+
     public const int QCSNFKCMin = 160;
     public const int QCSNFKCMax = 195101;
     public static readonly byte[] QCSNFKC = new byte[] { (byte)0xf3, 9, 0,
@@ -3589,6 +3602,7 @@ namespace PeterO.Text {
       (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xb8, 15, (byte)0x9c, 23,
         18, 15, (byte)0xff,
       0, (byte)0xa6, 16, (byte)0xff };
+
     public const int QCSNFKDMin = 160;
     public const int QCSNFKDMax = 195101;
     public static readonly byte[] QCSNFKD = new byte[] { (byte)0xf3, 9, 0,

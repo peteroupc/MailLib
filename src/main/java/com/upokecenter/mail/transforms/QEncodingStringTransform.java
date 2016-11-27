@@ -17,7 +17,7 @@ import com.upokecenter.mail.*;
     private int bufferIndex;
     private int bufferCount;
 
-    public QEncodingStringTransform (String input) {
+    public QEncodingStringTransform(String input) {
       this.input = input;
     }
 

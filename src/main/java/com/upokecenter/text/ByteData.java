@@ -8,7 +8,7 @@ package com.upokecenter.text;
      * Description" by Y Collet for more information).
      * @param input Input byte array.
      * @return Decompressed output byte array.
-     * @throws NullPointerException The parameter "output" is null.
+     * @throws java.lang.NullPointerException The parameter "output" is null.
      */
     public static byte[] DecompressLz4(byte[] input) {
       int index = 0;
@@ -91,7 +91,7 @@ package com.upokecenter.text;
         }
         if (matchLength < 0) {
           throw new IllegalArgumentException("matchLength (" + matchLength +
-            ") is less than " + 0);
+            ") is less than 0");
         }
         if (matchLength > outputPos) {
           throw new IllegalArgumentException("matchLength (" + matchLength +
@@ -120,7 +120,7 @@ package com.upokecenter.text;
       return new ByteData(DecompressLz4(data));
     }
 
-    public ByteData (byte[] array) {
+    public ByteData(byte[] array) {
       this.array = array;
     }
 

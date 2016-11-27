@@ -586,7 +586,7 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
                   // that could render the comment syntactically invalid
                   // (the encoded
                   // word could even encode ASCII control characters and
-                  // ValueSpecials)
+                  // specials)
                   if (context == EncodedWordContext.Phrase &&
                     HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;

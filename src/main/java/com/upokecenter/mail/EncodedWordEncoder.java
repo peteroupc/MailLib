@@ -18,7 +18,7 @@ import com.upokecenter.util.*;
 
     // Doesn't add a space to the beginning of
     // the output
-    public EncodedWordEncoder () {
+    public EncodedWordEncoder() {
       this.currentWord = new StringBuilder();
       this.fullString = new StringBuilder();
     }

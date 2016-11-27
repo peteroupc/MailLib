@@ -6,11 +6,11 @@ Description of DispositionBuilder.
 
 ## Methods
 
-* `DispositionBuilder()`<br>
+* `DispositionBuilder() DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class.
-* `DispositionBuilder(ContentDisposition mt)`<br>
+* `DispositionBuilder(ContentDisposition mt) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class.
-* `DispositionBuilder(String type)`<br>
+* `DispositionBuilder(String type) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class.
 * `String getDispositionType()`<br>
  Gets this value's disposition type, such value, such as "inline" or
@@ -38,21 +38,21 @@ Irrelevant for content dispositions; will be removed in the future.
 
 ## Constructors
 
-* `DispositionBuilder()`<br>
+* `DispositionBuilder() DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class.
-* `DispositionBuilder(ContentDisposition mt)`<br>
+* `DispositionBuilder(ContentDisposition mt) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class.
-* `DispositionBuilder(String type)`<br>
+* `DispositionBuilder(String type) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class.
 
 ## Method Details
 
 ### DispositionBuilder
     public DispositionBuilder()
-Initializes a new instance of the DispositionBuilder class.
+Initializes a new instance of the <code>DispositionBuilder</code> class.
 ### DispositionBuilder
     public DispositionBuilder(ContentDisposition mt)
-Initializes a new instance of the DispositionBuilder class.
+Initializes a new instance of the <code>DispositionBuilder</code> class.
 
 **Parameters:**
 
@@ -64,11 +64,11 @@ Initializes a new instance of the DispositionBuilder class.
 
 ### DispositionBuilder
     public DispositionBuilder(String type)
-Initializes a new instance of the DispositionBuilder class.
+Initializes a new instance of the <code>DispositionBuilder</code> class.
 
 **Parameters:**
 
-* <code>type</code> - A string object.
+* <code>type</code> - A text string.
 
 **Throws:**
 
@@ -92,7 +92,7 @@ Deprecated.&nbsp;Irrelevant for content dispositions; will be removed in the fut
 
 **Returns:**
 
-* True if this is a text media type; otherwise, false.
+* <code>true</code> If this is a text media type; otherwise, <code>false</code>.
 
 ### isMultipart
     @Deprecated public final boolean isMultipart()
@@ -100,7 +100,7 @@ Deprecated.&nbsp;Irrelevant for content dispositions; will be removed in the fut
 
 **Returns:**
 
-* True if this is a multipart media type; otherwise, false.
+* <code>true</code> If this is a multipart media type; otherwise, <code>false</code>.
 
 ### ToDisposition
     public ContentDisposition ToDisposition()
@@ -116,7 +116,7 @@ Sets the disposition type, such as "inline".
 
 **Parameters:**
 
-* <code>str</code> - A string object.
+* <code>str</code> - A text string.
 
 **Returns:**
 
@@ -161,10 +161,11 @@ Sets a parameter of this content disposition.
 
 **Throws:**
 
-* <code>NullPointerException</code> - Either <code>value</code> or <code>name</code> is null.
+* <code>NullPointerException</code> - Either <code>value</code> or <code>name</code> is
+ null.
 
-* <code>IllegalArgumentException</code> - The parameter <code>name</code> is empty, or it isn't a
- well-formed parameter name.
+* <code>IllegalArgumentException</code> - The parameter <code>name</code> is empty, or it
+ isn't a well-formed parameter name.
 
 ### toString
     public String toString()

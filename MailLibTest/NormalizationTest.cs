@@ -2,6 +2,7 @@ using NUnit.Framework;
 using PeterO.Text;
 using PeterO;
 using System;
+using Test;
 using System.Collections.Generic;
 using System.Text;
 
@@ -102,7 +103,7 @@ namespace MailLibTest {
         if (!first) {
           builder.Append(", ");
         }
-        builder.Append(Test.TestCommon.IntToString(v));
+        builder.Append(TestCommon.IntToString(v));
         first = false;
       }
       builder.Append("]");
@@ -324,21 +325,21 @@ Assert.AreEqual(
           string cpstr = new String(cptemp, 0, (i >= 0x10000 ? 2 : 1));
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                Normalization.NFC)) {
-            Assert.Fail(Test.TestCommon.IntToString(i));
+            Assert.Fail(TestCommon.IntToString(i));
           }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                Normalization.NFD)) {
-                    Assert.Fail (Test.TestCommon.IntToString (i));
+                    Assert.Fail (TestCommon.IntToString (i));
           }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                 Normalization.NFKC)) {
-                    Assert.Fail (Test.TestCommon.IntToString (i));
+                    Assert.Fail (TestCommon.IntToString (i));
  }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                 Normalization.NFKD)) {
-                    Assert.Fail (Test.TestCommon.IntToString (i));
+                    Assert.Fail (TestCommon.IntToString (i));
         }
-          string imsg = Test.TestCommon.IntToString (i);
+          string imsg = TestCommon.IntToString (i);
           AssertEqual(cpstr, NormalizingCharacterInput.Normalize(
             cpstr,
             Normalization.NFC), imsg);

@@ -1,6 +1,6 @@
 package com.upokecenter.text;
 /*
-Written by Peter O. in 2014.
+Written by Peter O. in 2014-2016.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -10,29 +10,32 @@ at: http://peteroupc.github.io/
   final class UnicodeDatabase {
 private UnicodeDatabase() {
 }
+    private static final Object ValueClassesSyncRoot = new Object();
+    private static final Object ValueIdnaCatSyncRoot = new Object();
+    private static final Object ValuePairsSyncRoot = new Object();
+    private static final Object ValueQcsSyncRoot = new Object();
+    private static final Object ValueCmSyncRoot = new Object();
     private static ByteData classes;
-    private static final Object classesSyncRoot = new Object();
 
     private static ByteData combmark;
 
     private static int[] decomps;
 
     private static ByteData idnaCat;
-    private static final Object idnaCatSyncRoot = new Object();
     private static int[] pairs;
 
     private static int pairsLength;
-    private static final Object pairsSyncRoot = new Object();
 
     private static ByteData qcsnfc;
     private static ByteData qcsnfd;
     private static ByteData qcsnfkc;
     private static ByteData qcsnfkd;
-    private static final Object qcsSyncRoot = new Object();
-    private static final Object valueCmSyncRoot = new Object();
 
     public static int GetCombiningClass(int cp) {
-      synchronized (classesSyncRoot) {
+      if (cp<0x300 || cp >= 0xe0000) {
+ return 0;
+}
+      synchronized (ValueClassesSyncRoot) {
   classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningClasses)) : classes;
       }
       return ((int)classes.GetByte(cp)) & 0xff;
@@ -40,6 +43,9 @@ private UnicodeDatabase() {
 
     public static int GetComposedPair(int first, int second) {
       if (((first | second) >> 17) != 0) {
+        return -1;
+      }
+      if (first < 0x80 && second < 0x80) {
         return -1;
       }
       EnsurePairs();
@@ -67,10 +73,10 @@ private UnicodeDatabase() {
     }
 
     public static int GetDecomposition(
-int cp,
-boolean compat,
-int[] buffer,
-int offset) {
+  int cp,
+  boolean compat,
+  int[] buffer,
+  int offset) {
       if (cp < 0x80) {
         // ASCII characters have no decomposition
         buffer[offset++] = cp;
@@ -78,40 +84,45 @@ int offset) {
       }
       decomps = NormalizationData.DecompMappings;
       int left = 0;
-      int right = decomps[0] - 1;
+      int right = (decomps.length >> 1) - 1;
       while (left <= right) {
         int index = (left + right) >> 1;
-        int realIndex = 1 + (index << 1);
-        if (decomps[realIndex] == cp) {
-          int data = decomps[realIndex + 1];
+        int realIndex = (index << 1);
+        int dri = decomps [realIndex];
+        int dricp = dri & 0x1fffff;
+        if (dricp == cp) {
+          int data = dri;
+          int data1 = decomps[realIndex + 1];
           if ((data & (1 << 23)) > 0 && !compat) {
             buffer[offset++] = cp;
             return offset;
           }
           if ((data & (1 << 22)) > 0) {
             // Singleton
-            buffer[offset++] = data & 0x1fffff;
+            buffer[offset++] = data1;
             return offset;
           }
-          int size = data >> 24;
-          if (size > 0) {
-            if ((data & (1 << 23)) > 0) {
-              realIndex = data & 0x1fffff;
-              System.arraycopy(
-                NormalizationData.CompatDecompMappings,
+          if ((data & (1 << 24)) > 0) {
+            // Pair of two BMP code points
+           buffer[offset++] = data1 & 0xffff;
+           buffer[offset++] = (data1 >> 16) & 0xffff;
+           return offset;
+          }
+          // Complex case
+          int size = data1 >> 24;
+          if (size <= 0) {
+ throw new IllegalStateException();
+}
+          realIndex = data1 & 0x1fffff;
+          System.arraycopy(
+                NormalizationData.ComplexDecompMappings,
                 realIndex,
                 buffer,
                 offset,
                 size);
-            } else {
-              realIndex = 1 + (decomps[0] << 1) + (data & 0x1fffff);
-              System.arraycopy(decomps, realIndex, buffer, offset, size);
-            }
-            buffer[offset] &= 0x1fffff;
-          }
           return offset + size;
         }
-        if (decomps[realIndex] < cp) {
+        if (dricp < cp) {
           left = index + 1;
         } else {
           right = index - 1;
@@ -122,14 +133,14 @@ int offset) {
     }
 
     public static int GetIdnaCategory(int cp) {
-      synchronized (idnaCatSyncRoot) {
+      synchronized (ValueIdnaCatSyncRoot) {
         idnaCat = (idnaCat == null) ? (ByteData.Decompress(IdnaData.IdnaCategories)) : idnaCat;
       }
       return ((int)idnaCat.GetByte(cp)) & 0xff;
     }
 
     public static boolean IsCombiningMark(int cp) {
-      synchronized (valueCmSyncRoot) {
+      synchronized (ValueCmSyncRoot) {
         combmark = (combmark == null) ? (ByteData.Decompress(IdnaData.CombiningMarks)) : combmark;
         return combmark.GetBoolean(cp);
       }
@@ -159,7 +170,7 @@ int offset) {
           NormalizationData.QCSNFKDMax)) {
         return true;
       }
-      synchronized (qcsSyncRoot) {
+      synchronized (ValueQcsSyncRoot) {
         if (form == Normalization.NFC) {
           bd = qcsnfc = (qcsnfc == null) ? (ByteData.Decompress(NormalizationData.QCSNFC)) : qcsnfc;
         }
@@ -177,7 +188,7 @@ int offset) {
     }
 
     private static void EnsurePairs() {
-      synchronized (pairsSyncRoot) {
+      synchronized (ValuePairsSyncRoot) {
         if (pairs == null) {
           pairs = NormalizationData.ComposedPairs;
           pairsLength = pairs.length / 3;

@@ -22,12 +22,12 @@ import com.upokecenter.mail.*;
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
     private final String input;
-    private int inputIndex;
     private final byte[] buffer;
+    private int inputIndex;
     private int bufferIndex;
     private int bufferCount;
 
-    public BEncodingStringTransform (String input) {
+    public BEncodingStringTransform(String input) {
       if (input == null) {
         throw new NullPointerException("input");
       }

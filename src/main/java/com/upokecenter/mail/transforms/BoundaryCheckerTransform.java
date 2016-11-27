@@ -13,6 +13,7 @@ import com.upokecenter.mail.*;
 
   public final class BoundaryCheckerTransform implements IByteReader {
     private final IByteReader input;
+    private final ArrayList<String> boundaries;
     private boolean ungetting;
     private int lastByte;
     private byte[] buffer;
@@ -22,7 +23,6 @@ import com.upokecenter.mail.*;
     private boolean readingHeaders;
     private boolean hasNewBodyPart;
     private boolean endOfStream;
-    private final ArrayList<String> boundaries;
 
     private void ResizeBuffer(int size) {
       this.buffer = (this.buffer == null) ? ((new byte[size + 10])) : this.buffer;
@@ -35,7 +35,7 @@ import com.upokecenter.mail.*;
       this.bufferIndex = 0;
     }
 
-    public BoundaryCheckerTransform (IByteReader stream) {
+    public BoundaryCheckerTransform(IByteReader stream) {
       this.input = stream;
       this.boundaries = new ArrayList<String>();
       this.started = true;
@@ -356,7 +356,8 @@ int c = this.lastByte = this.ungetting ? this.lastByte :
 
     /**
      * Gets a value indicating whether a new body part was detected.
-     * @return True if a new body part was detected; otherwise, false.
+     * @return {@code true} If a new body part was detected; otherwise, {@code
+     * false}.
      */
     public final boolean getHasNewBodyPart() {
         return this.hasNewBodyPart;

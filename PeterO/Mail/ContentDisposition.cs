@@ -294,7 +294,7 @@ strLower.IndexOf(
         str = "_" + str;
       }
       // Avoid space before and after last dot
-      for (var i = str.Length-1; i >= 0; --i) {
+      for (int i = str.Length-1; i >= 0; --i) {
         if (str [i] == '.') {
           bool spaceAfter = (i + 1 < str.Length && str [i + 1] == 0x20);
           bool spaceBefore = (i > 0 && str [i - 1] == 0x20);
@@ -335,7 +335,7 @@ strLower.IndexOf(
     /// <param name='str'>Not documented yet.</param>
     /// <returns>A string object.</returns>
     public static string EscapeString(string str) {
-      const string hex = "0123456789abcdef";
+      const string ValueHex = "0123456789abcdef";
       var sb = new StringBuilder();
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
@@ -351,10 +351,10 @@ strLower.IndexOf(
           sb.Append("\\\\");
         } else if (c < 0x20 || c >= 0x7f) {
           sb.Append("\\u");
-          sb.Append(hex[(c >> 12) & 15]);
-          sb.Append(hex[(c >> 8) & 15]);
-          sb.Append(hex[(c >> 4) & 15]);
-          sb.Append(hex[(c) & 15]);
+          sb.Append(ValueHex[(c >> 12) & 15]);
+          sb.Append(ValueHex[(c >> 8) & 15]);
+          sb.Append(ValueHex[(c >> 4) & 15]);
+          sb.Append(ValueHex[(c) & 15]);
         } else {
           sb.Append(c);
         }

@@ -44,7 +44,7 @@ import java.util.*;
                     ch = (char)'.';
                 } else {
                     ui = rnd.UniformInt (problemChars.length());
-                    ch = problemChars.get(ui);
+                    ch = problemChars.charAt(ui);
                 }
                 if ((ch & 0xf800) == 0xd800) {
                     ch &= 0xff;
@@ -216,7 +216,7 @@ import java.util.*;
             if (headers) {
               System.out.println (fn + ":\n--Line length exceeded in header (" +
                     maxLineLength + " " +
-                    (str.Substring (index - 78, 78)) + ", " + lineLength + ")");
+                    (str.substring(index - 78,(index - 78)+(78))) + ", " + lineLength + ")");
               return 0;
             }
             if (!meetsLineLength && !mllmessage) {

@@ -15,9 +15,9 @@ import com.upokecenter.util.*;
      * A mutable media type object.
      */
   public final class MediaTypeBuilder {
+    private final Map<String, String> parameters;
     private String type;
     private String subtype;
-    private final Map<String, String> parameters;
 
     /**
      * Gets this value's top-level type.
@@ -42,22 +42,24 @@ public final void setSubType(String value) {
       }
 
     /**
-     * Initializes a new instance of the MediaTypeBuilder class, using the type
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.MediaTypeBuilder} class, using the type
      * "application/octet-stream".
      */
-    public MediaTypeBuilder () {
+    public MediaTypeBuilder() {
       this.parameters = new HashMap<String, String>();
       this.type = "application";
       this.subtype = "octet-stream";
     }
 
     /**
-     * Initializes a new instance of the MediaTypeBuilder class using the data from
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.MediaTypeBuilder} class using the data from
      * another media type.
      * @param mt A MediaType object.
-     * @throws NullPointerException The parameter {@code mt} is null.
+     * @throws java.lang.NullPointerException The parameter {@code mt} is null.
      */
-    public MediaTypeBuilder (MediaType mt) {
+    public MediaTypeBuilder(MediaType mt) {
       if (mt == null) {
         throw new NullPointerException("mt");
       }
@@ -67,11 +69,12 @@ public final void setSubType(String value) {
     }
 
     /**
-     * Initializes a new instance of the MediaTypeBuilder class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.MediaTypeBuilder} class.
      * @param type The media type's top-level type.
      * @param subtype The media type's subtype.
      */
-    public MediaTypeBuilder (String type, String subtype) {
+    public MediaTypeBuilder(String type, String subtype) {
       this.parameters = new HashMap<String, String>();
       this.SetTopLevelType(type);
       this.SetSubType(subtype);
@@ -79,7 +82,7 @@ public final void setSubType(String value) {
 
     /**
      * Gets a value indicating whether this is a text media type.
-     * @return True if this is a text media type; otherwise, false.
+     * @return {@code true} If this is a text media type; otherwise, {@code false}.
      */
     public final boolean isText() {
         return this.getTopLevelType().equals("text");
@@ -87,7 +90,8 @@ public final void setSubType(String value) {
 
     /**
      * Gets a value indicating whether this is a multipart media type.
-     * @return True if this is a multipart media type; otherwise, false.
+     * @return {@code true} If this is a multipart media type; otherwise, {@code
+     * false}.
      */
     public final boolean isMultipart() {
         return this.getTopLevelType().equals("multipart");
@@ -103,12 +107,11 @@ public final void setSubType(String value) {
 
     /**
      * Sets this media type's top-level type.
-     * @param str A string object naming a top-level type, such as "text" or
-     * "audio".
+     * @param str A text string naming a top-level type, such as "text" or "audio".
      * @return This instance.
-     * @throws NullPointerException The parameter {@code str} is null.
-     * @throws IllegalArgumentException The parameter {@code str} is syntactically invalid
-     * for a top-level type.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws IllegalArgumentException The parameter {@code str} is syntactically
+     * invalid for a top-level type.
      */
     public MediaTypeBuilder SetTopLevelType(String str) {
       if (str == null) {
@@ -117,7 +120,7 @@ public final void setSubType(String value) {
       if (str.length() == 0) {
         throw new IllegalArgumentException("str is empty.");
       }
-   if (MediaType.skipMimeTypeSubtype(str, 0, str.length(), null) !=
+   if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
         str.length()) {
         throw new IllegalArgumentException("Not a well-formed top level type: " + str);
       }
@@ -131,7 +134,7 @@ public final void setSubType(String value) {
      * @param name Name of the parameter to remove. The name is compared
      * case-insensitively.
      * @return This instance.
-     * @throws NullPointerException The parameter {@code name} is null.
+     * @throws java.lang.NullPointerException The parameter {@code name} is null.
      */
     public MediaTypeBuilder RemoveParameter(String name) {
       if (name == null) {
@@ -145,10 +148,10 @@ public final void setSubType(String value) {
      * Sets a parameter's name and value for this media type.
      * @param name Name of the parameter to set, such as "charset". The name is
      * compared case-insensitively.
-     * @param value A string object giving the parameter's value.
+     * @param value A text string giving the parameter's value.
      * @return This instance.
-     * @throws NullPointerException The parameter {@code value} or {@code name} is
-     * null.
+     * @throws java.lang.NullPointerException The parameter {@code value} or {@code
+     * name} is null.
      * @throws IllegalArgumentException The parameter {@code name} is empty or
      * syntactically invalid.
      */
@@ -162,7 +165,7 @@ public final void setSubType(String value) {
       if (name.length() == 0) {
         throw new IllegalArgumentException("name is empty.");
       }
-if (MediaType.skipMimeTypeSubtype(name, 0, name.length(), null) !=
+if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
         name.length()) {
       throw new IllegalArgumentException("Not a well-formed parameter name: " +
           name);
@@ -173,9 +176,9 @@ if (MediaType.skipMimeTypeSubtype(name, 0, name.length(), null) !=
 
     /**
      * Sets this media type's subtype, such as "plain" or "xml" .
-     * @param str A string object naming a media subtype.
+     * @param str A text string naming a media subtype.
      * @return This instance.
-     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
      * @throws IllegalArgumentException The parameter {@code str} is empty or
      * syntactically invalid.
      */
@@ -186,7 +189,7 @@ if (MediaType.skipMimeTypeSubtype(name, 0, name.length(), null) !=
       if (str.length() == 0) {
         throw new IllegalArgumentException("str is empty.");
       }
-   if (MediaType.skipMimeTypeSubtype(str, 0, str.length(), null) !=
+   if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
         str.length()) {
         throw new IllegalArgumentException("Not a well-formed subtype: " + str);
       }

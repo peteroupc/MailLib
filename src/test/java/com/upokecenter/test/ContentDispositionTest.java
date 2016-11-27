@@ -6,8 +6,7 @@ import com.upokecenter.text.*;
 import com.upokecenter.mail.*;
 
     public class ContentDispositionTest {
-        @Test
-        public void TestDispositionType() {
+        @Test public void TestDispositionType() {
             // not implemented yet
         }
         @Test
@@ -25,19 +24,19 @@ import com.upokecenter.mail.*;
         @Test
         public void TestIsAttachment() {
             ContentDisposition cd = ContentDisposition.Parse ("inline");
-            Assert.IsFalse (cd.isAttachment());
+            if (cd.isAttachment())Assert.fail();
             cd = ContentDisposition.Parse ("cd-unknown");
-            Assert.IsFalse (cd.isAttachment());
+            if (cd.isAttachment())Assert.fail();
             cd = ContentDisposition.Parse ("attachment");
-            Assert.assertTrue (cd.isAttachment());
+            if (!(cd.isAttachment()))Assert.fail();
         }
         @Test public void TestIsInline() {
             ContentDisposition cd = ContentDisposition.Parse ("inline");
-            Assert.assertTrue (cd.isInline());
+            if (!(cd.isInline()))Assert.fail();
             cd = ContentDisposition.Parse ("cd-unknown");
-            Assert.IsFalse (cd.isInline());
+            if (cd.isInline())Assert.fail();
             cd = ContentDisposition.Parse ("attachment");
-            Assert.IsFalse (cd.isInline());
+            if (cd.isInline())Assert.fail();
         }
 
         private static String MakeQEncoding(String str) {
@@ -54,8 +53,8 @@ import com.upokecenter.mail.*;
                     sb.append ((char)b);
                 } else {
                     sb.append ('=');
-                    sb.append (hex.get((b >> 4) & 15));
-                    sb.append (hex.get(b & 15));
+                    sb.append (hex.charAt((b >> 4) & 15));
+                    sb.append (hex.charAt(b & 15));
                 }
             }
             sb.append ("?=");
@@ -73,8 +72,8 @@ import com.upokecenter.mail.*;
                     sb.append ((char)b);
                 } else {
                     sb.append ('%');
-                    sb.append (hex.get((b >> 4) & 15));
-                    sb.append (hex.get(b & 15));
+                    sb.append (hex.charAt((b >> 4) & 15));
+                    sb.append (hex.charAt(b & 15));
                 }
             }
             return sb.toString();
@@ -93,64 +92,58 @@ import com.upokecenter.mail.*;
             if (str == null || str.length() == 0 || str.length() > 255) {
                 return false;
             }
-            if (str.get(str.length() - 1) == '.' || str.get(str.length() - 1) == '~') {
+            if (str.charAt(str.length() - 1) == '.' || str.charAt(str.length() - 1) == '~') {
                 return false;
             }
             String strLower = DataUtilities.ToLowerCaseAscii (str);
-            boolean bracketDigit = str.get(0) == '{' && str.length() > 1 &&
-                    str.get(1) >= '0' && str.get(1) <= '9';
-          boolean homeFolder = str.get(0) == '~' || str.get(0) == '-' || str.get(0) ==
+            boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&
+                    str.charAt(1) >= '0' && str.charAt(1) <= '9';
+          boolean homeFolder = str.charAt(0) == '~' || str.charAt(0) == '-' || str.charAt(0) ==
               '$' ;
-            boolean period = str.get(0) == '.';
-          boolean beginEndSpace = str.get(0) == 0x20 || str.get(str.length() - 1) ==
+            boolean period = str.charAt(0) == '.';
+          boolean beginEndSpace = str.charAt(0) == 0x20 || str.charAt(str.length() - 1) ==
               0x20;
             if (bracketDigit || homeFolder || period || beginEndSpace) {
                 return false;
             }
             // Reserved filenames on Windows
-            boolean reservedFilename = strLower.equals (
-        "nul") || strLower.equals ("clock$") || strLower.IndexOf (
-        "nul.",
-        StringComparison.Ordinal) == 0 || strLower.equals (
-        "prn") || strLower.IndexOf (
-        "prn.",
-        StringComparison.Ordinal) == 0 || strLower.equals (
-        "aux") || strLower.IndexOf (
-        "aux.",
-        StringComparison.Ordinal) == 0 || strLower.equals (
-        "con") || strLower.IndexOf (
-        "con.",
-        StringComparison.Ordinal) == 0 || (
-        strLower.length() >= 4 && strLower.IndexOf (
-        "lpt",
-        StringComparison.Ordinal) == 0 && strLower.get(3) >= '0' &&
-             strLower.get(3) <= '9') || (strLower.length() >= 4 &&
-                    strLower.IndexOf (
-        "com",
-        StringComparison.Ordinal) == 0 && strLower.get(3) >= '0' &&
-                  strLower.get(3) <= '9');
+            boolean reservedFilename = strLower.equals(
+        "nul") || strLower.equals("clock$") || strLower.indexOf(
+        "nul.") == 0 || strLower.equals(
+        "prn") || strLower.indexOf(
+        "prn.") == 0 || strLower.equals(
+        "aux") || strLower.indexOf(
+        "aux.") == 0 || strLower.equals(
+        "con") || strLower.indexOf(
+        "con.") == 0 || (
+        strLower.length() >= 4 && strLower.indexOf(
+        "lpt") == 0 && strLower.charAt(3) >= '0' &&
+             strLower.charAt(3) <= '9') || (strLower.length() >= 4 &&
+                    strLower.indexOf(
+        "com") == 0 && strLower.charAt(3) >= '0' &&
+                  strLower.charAt(3) <= '9');
             if (reservedFilename) {
                 return false;
             }
-            for (int i = 0; i < str.length(); ++i) {
-                char c = str.get(i);
+            int i;
+            for (i = 0; i < str.length(); ++i) {
+                char c = str.charAt(i);
                 if (c < 0x20 || (c >= 0x7f && c <= 0x9f) ||
                   c == '%' || c == 0x2028 || c == 0x2029 ||
                 c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
                   c == ':' || c == '<' || c == '>' || c == '"' ||
                 c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
-   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff
-                   ||
-                 (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
+   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff||
+                (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
                     return false;
                 }
             }
             // Avoid space before and after last dot
-            for (var i = str.length() - 1; i >= 0; --i) {
-                if (str.get(i) == '.') {
-                 boolean spaceAfter = (i + 1 < str.length() && str.get(i + 1) ==
-                      0x20);
-                    boolean spaceBefore = (i > 0 && str.get(i - 1) == 0x20);
+            for (i = str.length() - 1; i >= 0; --i) {
+                if (str.charAt(i) == '.') {
+                 boolean spaceAfter = (i + 1 < str.length() && str.charAt(i + 1) ==
+                    0x20);
+                    boolean spaceBefore = (i > 0 && str.charAt(i - 1) == 0x20);
                     if (spaceAfter || spaceBefore) {
                     return false;
                     }
@@ -165,8 +158,12 @@ import com.upokecenter.mail.*;
         @Test public void TestMakeFilename () {
             String stringTemp;
       RandomGenerator  rnd = new RandomGenerator (new XorShift128Plus(false));
-        Assert.assertEquals ("", ContentDisposition.MakeFilename
-              (null));
+        {
+Object objectTemp = "";
+Object objectTemp2 = ContentDisposition.MakeFilename
+              (null);
+Assert.assertEquals(objectTemp, objectTemp2);
+}
             {
                 stringTemp = ContentDisposition.MakeFilename ("");
                 Assert.assertEquals (
@@ -175,7 +172,7 @@ import com.upokecenter.mail.*;
             }
             String mfn = ContentDisposition.MakeFilename (
               "utf-8''%2A%EF%AB%87%EC%A5%B2%2B67%20Tqd%20R%E3%80%80%2E");
-            Assert.assertTrue (IsGoodFilename (mfn), mfn);
+            if (!(IsGoodFilename (mfn)))Assert.fail(mfn);
             for (int i = 0; i < 1000000; ++i) {
         if (i % 1000 == 0) {
           System.out.println (i);
@@ -184,7 +181,7 @@ import com.upokecenter.mail.*;
                 String filename = ContentDisposition.MakeFilename (str);
                 if (!IsGoodFilename (filename)) {
             Assert.fail ("str_____=" + EncodingTest.EscapeString (str) +
-                      "\n" +
+                    "\n" +
                     "filename=" + EncodingTest.EscapeString (filename) + "\n" +
   "Assert.assertTrue(IsGoodFilename(ContentDisposition.MakeFilename(\n" +
                     "  \"" + EncodingTest.EscapeString (str) + "\")));");
@@ -299,8 +296,7 @@ import com.upokecenter.mail.*;
 
             {
                 stringTemp =
-               ContentDisposition.MakeFilename
-                    ("=?utf-8?q?___hello.txt___?=");
+               ContentDisposition.MakeFilename ("=?utf-8?q?___hello.txt___?=");
                 Assert.assertEquals (
                   "hello.txt",
                   stringTemp);
@@ -311,8 +307,7 @@ import com.upokecenter.mail.*;
               "ab",
               stringTemp);
             stringTemp =
-           ContentDisposition.MakeFilename
-                ("=?utf-8?q?a?= =?x-unknown?q?b?=");
+           ContentDisposition.MakeFilename ("=?utf-8?q?a?= =?x-unknown?q?b?=");
             Assert.assertEquals (
               "a b",
               stringTemp);
@@ -365,24 +360,21 @@ import com.upokecenter.mail.*;
                   stringTemp);
             }
             {
-                stringTemp =
-           ContentDisposition.MakeFilename
+                stringTemp = ContentDisposition.MakeFilename
                     ("  =?utf-8?q?___hello.txt___?=  ");
                 Assert.assertEquals (
                   "hello.txt",
                   stringTemp);
             }
             {
-                stringTemp =
-        ContentDisposition.MakeFilename
+                stringTemp = ContentDisposition.MakeFilename
                     ("  =?utf-8*en?q?___hello.txt___?=  ");
                 Assert.assertEquals (
                   "hello.txt",
                   stringTemp);
             }
             {
-                stringTemp =
-          ContentDisposition.MakeFilename
+                stringTemp = ContentDisposition.MakeFilename
                     ("  =?utf-8*?q?___hello.txt___?=  ");
                 Assert.assertEquals (
                   "___hello.txt___",
@@ -399,16 +391,14 @@ import com.upokecenter.mail.*;
             }
             {
                 stringTemp =
-             ContentDisposition.MakeFilename
-                    ("  =?*en?q?___hello.txt___?=  ");
+             ContentDisposition.MakeFilename ("  =?*en?q?___hello.txt___?=  ");
                 Assert.assertEquals (
                   "___hello.txt___",
                   stringTemp);
             }
             {
                 stringTemp =
-             ContentDisposition.MakeFilename
-                    ("=?iso-8859-1?q?a=E7=E3o.txt?=");
+             ContentDisposition.MakeFilename ("=?iso-8859-1?q?a=E7=E3o.txt?=");
                 Assert.assertEquals (
                   "a\u00e7\u00e3o.txt",
                   stringTemp);
@@ -456,8 +446,7 @@ import com.upokecenter.mail.*;
             }
             {
                 stringTemp =
-            ContentDisposition.MakeFilename
-                    ("=?x-unknown?Q?file\ud800name?=");
+            ContentDisposition.MakeFilename ("=?x-unknown?Q?file\ud800name?=");
                 Assert.assertEquals (
                   "file\ufffdname",
                   stringTemp);
@@ -470,32 +459,28 @@ import com.upokecenter.mail.*;
                   stringTemp);
             }
             {
-                stringTemp =
-               ContentDisposition.MakeFilename
+                stringTemp = ContentDisposition.MakeFilename
                     ("utf-8'en'file%c2%bename.txt");
                 Assert.assertEquals (
                   "file\u00bename.txt",
                   stringTemp);
             }
             {
-                stringTemp =
-           ContentDisposition.MakeFilename
+                stringTemp = ContentDisposition.MakeFilename
                     ("windows-1252'en'file%bename.txt");
                 Assert.assertEquals (
                   "file\u00bename.txt",
                   stringTemp);
             }
             {
-                stringTemp =
-           ContentDisposition.MakeFilename
+                stringTemp = ContentDisposition.MakeFilename
                     ("x-unknown'en'file%c2%bename.txt");
                 Assert.assertEquals (
                   "x-unknown'en'file_c2_bename.txt",
                   stringTemp);
             }
             {
-                stringTemp =
-            ContentDisposition.MakeFilename
+                stringTemp = ContentDisposition.MakeFilename
                     ("utf-8'en-us'file%c2%bename.txt");
                 Assert.assertEquals (
                   "file\u00bename.txt",
@@ -577,16 +562,14 @@ import com.upokecenter.mail.*;
             }
             {
                 stringTemp =
-               ContentDisposition.MakeFilename
-                    ("my\u0001file\u007fname*.txt");
+               ContentDisposition.MakeFilename ("my\u0001file\u007fname*.txt");
                 Assert.assertEquals (
                   "my_file_name_.txt",
                   stringTemp);
             }
             {
                 stringTemp =
-             ContentDisposition.MakeFilename
-                    ("=?utf-8?q?folder\\hello.txt?=");
+             ContentDisposition.MakeFilename ("=?utf-8?q?folder\\hello.txt?=");
                 Assert.assertEquals (
                   "folder_hello.txt",
                   stringTemp);
@@ -643,8 +626,7 @@ import com.upokecenter.mail.*;
             }
             {
                 stringTemp =
-         ContentDisposition.MakeFilename
-                    ("=?x-unknown?q?folder\\hello.txt?=");
+         ContentDisposition.MakeFilename ("=?x-unknown?q?folder\\hello.txt?=");
                 Assert.assertEquals (
                   "folder_hello.txt",
                   stringTemp);

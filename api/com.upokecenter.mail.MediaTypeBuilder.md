@@ -6,14 +6,14 @@ A mutable media type object.
 
 ## Methods
 
-* `MediaTypeBuilder()`<br>
+* `MediaTypeBuilder() MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class, using the type
  "application/octet-stream".
-* `MediaTypeBuilder(MediaType mt)`<br>
+* `MediaTypeBuilder(MediaType mt) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class using the data from
  another media type.
 * `MediaTypeBuilder(String type,
-                String subtype)`<br>
+                String subtype) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class.
 * `String getSubType()`<br>
  Gets this value's subtype.
@@ -41,25 +41,25 @@ A mutable media type object.
 
 ## Constructors
 
-* `MediaTypeBuilder()`<br>
+* `MediaTypeBuilder() MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class, using the type
  "application/octet-stream".
-* `MediaTypeBuilder(MediaType mt)`<br>
+* `MediaTypeBuilder(MediaType mt) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class using the data from
  another media type.
 * `MediaTypeBuilder(String type,
-                String subtype)`<br>
+                String subtype) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class.
 
 ## Method Details
 
 ### MediaTypeBuilder
     public MediaTypeBuilder()
-Initializes a new instance of the MediaTypeBuilder class, using the type
+Initializes a new instance of the <code>MediaTypeBuilder</code> class, using the type
  "application/octet-stream".
 ### MediaTypeBuilder
     public MediaTypeBuilder(MediaType mt)
-Initializes a new instance of the MediaTypeBuilder class using the data from
+Initializes a new instance of the <code>MediaTypeBuilder</code> class using the data from
  another media type.
 
 **Parameters:**
@@ -72,7 +72,7 @@ Initializes a new instance of the MediaTypeBuilder class using the data from
 
 ### MediaTypeBuilder
     public MediaTypeBuilder(String type, String subtype)
-Initializes a new instance of the MediaTypeBuilder class.
+Initializes a new instance of the <code>MediaTypeBuilder</code> class.
 
 **Parameters:**
 
@@ -106,7 +106,7 @@ Gets a value indicating whether this is a text media type.
 
 **Returns:**
 
-* True if this is a text media type; otherwise, false.
+* <code>true</code> If this is a text media type; otherwise, <code>false</code>.
 
 ### isMultipart
     public final boolean isMultipart()
@@ -114,7 +114,7 @@ Gets a value indicating whether this is a multipart media type.
 
 **Returns:**
 
-* True if this is a multipart media type; otherwise, false.
+* <code>true</code> If this is a multipart media type; otherwise, <code>false</code>.
 
 ### ToMediaType
     public MediaType ToMediaType()
@@ -130,8 +130,7 @@ Sets this media type's top-level type.
 
 **Parameters:**
 
-* <code>str</code> - A string object naming a top-level type, such as "text" or
- "audio".
+* <code>str</code> - A text string naming a top-level type, such as "text" or "audio".
 
 **Returns:**
 
@@ -141,8 +140,8 @@ Sets this media type's top-level type.
 
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
-* <code>IllegalArgumentException</code> - The parameter <code>str</code> is syntactically invalid
- for a top-level type.
+* <code>IllegalArgumentException</code> - The parameter <code>str</code> is syntactically
+ invalid for a top-level type.
 
 ### RemoveParameter
     public MediaTypeBuilder RemoveParameter(String name)
@@ -171,7 +170,7 @@ Sets a parameter's name and value for this media type.
 * <code>name</code> - Name of the parameter to set, such as "charset". The name is
  compared case-insensitively.
 
-* <code>value</code> - A string object giving the parameter's value.
+* <code>value</code> - A text string giving the parameter's value.
 
 **Returns:**
 
@@ -179,8 +178,7 @@ Sets a parameter's name and value for this media type.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>value</code> or <code>name</code> is
- null.
+* <code>NullPointerException</code> - The parameter <code>value</code> or <code>name</code> is null.
 
 * <code>IllegalArgumentException</code> - The parameter <code>name</code> is empty or
  syntactically invalid.
@@ -191,7 +189,7 @@ Sets this media type's subtype, such as "plain" or "xml" .
 
 **Parameters:**
 
-* <code>str</code> - A string object naming a media subtype.
+* <code>str</code> - A text string naming a media subtype.
 
 **Returns:**
 

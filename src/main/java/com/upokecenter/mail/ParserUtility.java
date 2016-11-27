@@ -35,7 +35,6 @@ private ParserUtility() {
       while (index < str.length()) {
         int si = index;
         char c = str.charAt(index++);
-        boolean isspace = c == 0x20;
         int count = 0;
         while (c == 0x09 || c == 0x20) {
           ++count;
@@ -88,8 +87,8 @@ private ParserUtility() {
           if (indexEnd == indexStart) {
  return "";
 }
-          return (indexEnd == str.length() && indexStart == 0) ? (str) :
-            (str.substring(indexStart, (indexStart)+(indexEnd-indexStart)));
+          return (indexEnd == str.length() && indexStart == 0) ? str :
+            str.substring(indexStart, (indexStart)+(indexEnd - indexStart));
         }
         --index;
       }
@@ -118,7 +117,8 @@ private ParserUtility() {
      * string to split is null or empty, returns an array whose sole element
      * is the empty string.
      * @throws IllegalArgumentException Delimiter is null or empty.
-     * @throws NullPointerException The parameter {@code delimiter} is null.
+     * @throws java.lang.NullPointerException The parameter {@code delimiter} is
+     * null.
      */
     public static String[] SplitAt(String str, String delimiter) {
       if (delimiter == null) {
@@ -205,14 +205,14 @@ private ParserUtility() {
           }
           // More complex cases
           String[] splitString = SplitAt(
-str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
-"-");
+  str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
+  "-");
           if (splitString.length == 0) {
             return false;
           }
           int splitIndex = 0;
           int splitLength = splitString.length;
-          int len = lengthIfAllAlpha(splitString[splitIndex]);
+          int len = LengthIfAllAlpha(splitString[splitIndex]);
           if (len < 2 || len > 8) {
             return false;
           }
@@ -221,7 +221,7 @@ str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
             // skip optional extended language subtags
             for (int i = 0; i < 3; ++i) {
               if (splitIndex < splitLength &&
-                lengthIfAllAlpha(splitString[splitIndex]) == 3) {
+                LengthIfAllAlpha(splitString[splitIndex]) == 3) {
                 if (i >= 1) {
                   // point 4 in section 2.2.2 renders two or
                   // more extended language subtags invalid
@@ -235,22 +235,22 @@ str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
           }
           // optional script
           if (splitIndex < splitLength &&
-            lengthIfAllAlpha(splitString[splitIndex]) == 4) {
+            LengthIfAllAlpha(splitString[splitIndex]) == 4) {
             ++splitIndex;
           }
           // optional region
           if (splitIndex < splitLength &&
-            lengthIfAllAlpha(splitString[splitIndex]) == 2) {
+            LengthIfAllAlpha(splitString[splitIndex]) == 2) {
             ++splitIndex;
           } else if (splitIndex < splitLength &&
-            lengthIfAllDigit(splitString[splitIndex]) == 3) {
+            LengthIfAllDigit(splitString[splitIndex]) == 3) {
             ++splitIndex;
           }
           // variant, any number
           List<String> variants = null;
           while (splitIndex < splitLength) {
             String curString = splitString[splitIndex];
-            len = lengthIfAllAlphaNum(curString);
+            len = LengthIfAllAlphaNum(curString);
             if (len >= 5 && len <= 8) {
               variants = (variants == null) ? ((new ArrayList<String>())) : variants;
               if (!variants.contains(curString)) {
@@ -261,8 +261,8 @@ str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
          return false;
               }
               ++splitIndex;
-         } else if (len == 4 && (curString.charAt(0) >= '0' && curString.charAt(0) <= '9'
-)) {
+         } else if (len == 4 &&
+              (curString.charAt(0) >= '0' && curString.charAt(0) <= '9')) {
               variants = (variants == null) ? ((new ArrayList<String>())) : variants;
               if (!variants.contains(curString)) {
                 variants.add(curString);
@@ -283,7 +283,7 @@ str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
           while (splitIndex < splitLength) {
             String curString = splitString[splitIndex];
             int curIndex = splitIndex;
-            if (lengthIfAllAlphaNum(curString) == 1 &&
+            if (LengthIfAllAlphaNum(curString) == 1 &&
                     !curString.equals("x")) {
               variants = (variants == null) ? ((new ArrayList<String>())) : variants;
               if (!variants.contains(curString)) {
@@ -295,7 +295,7 @@ str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
               boolean havetoken = false;
               while (splitIndex < splitLength) {
                 curString = splitString[splitIndex];
-                len = lengthIfAllAlphaNum(curString);
+                len = LengthIfAllAlphaNum(curString);
                 if (len >= 2 && len <= 8) {
                   havetoken = true;
                   ++splitIndex;
@@ -318,7 +318,7 @@ str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
               ++splitIndex;
               boolean havetoken = false;
               while (splitIndex < splitLength) {
-                len = lengthIfAllAlphaNum(splitString[splitIndex]);
+                len = LengthIfAllAlphaNum(splitString[splitIndex]);
                 if (len >= 1 && len <= 8) {
                   havetoken = true;
                   ++splitIndex;
@@ -380,7 +380,7 @@ str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
       return false;
     }
 
-    private static int lengthIfAllAlpha(String str) {
+    private static int LengthIfAllAlpha(String str) {
       int len = (str == null) ? 0 : str.length();
       for (int i = 0; i < len; ++i) {
         char c1 = str.charAt(i);
@@ -391,7 +391,7 @@ str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
       return len;
     }
 
-    private static int lengthIfAllAlphaNum(String str) {
+    private static int LengthIfAllAlphaNum(String str) {
       int len = (str == null) ? 0 : str.length();
       for (int i = 0; i < len; ++i) {
         char c1 = str.charAt(i);
@@ -403,7 +403,7 @@ str.substring(startIndex, (startIndex)+(endIndex - startIndex)),
       return len;
     }
 
-    private static int lengthIfAllDigit(String str) {
+    private static int LengthIfAllDigit(String str) {
       int len = (str == null) ? 0 : str.length();
       for (int i = 0; i < len; ++i) {
         char c1 = str.charAt(i);

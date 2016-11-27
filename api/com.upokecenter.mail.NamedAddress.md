@@ -7,23 +7,25 @@ Represents an email address and a name for that address. Can represent a
 
 ## Methods
 
-* `NamedAddress(String address)`<br>
- Initializes a new instance of the NamedAddress class.
+* `NamedAddress(String address) NamedAddress`<br>
+ Initializes a new instance of the NamedAddress
+ class.
 * `NamedAddress(String displayName,
-            Address address)`<br>
- Initializes a new instance of the NamedAddress class.
+            Address address) NamedAddress`<br>
+ Initializes a new instance of the NamedAddress
+ class.
 * `NamedAddress(String groupName,
             List<NamedAddress> mailboxes)`<br>
- Initializes a new instance of the NamedAddress class.
 * `NamedAddress(String displayName,
-            String address)`<br>
- Initializes a new instance of the NamedAddress class using the given display
- name and email address.
+            String address) NamedAddress`<br>
+ Initializes a new instance of the NamedAddress
+ class using the given display name and email address.
 * `NamedAddress(String displayName,
             String localPart,
-            String domain)`<br>
- Initializes a new instance of the NamedAddress class using the given name
- and an email address made up of its local part and domain.
+            String domain) NamedAddress`<br>
+ Initializes a new instance of the NamedAddress
+ class using the given name and an email address made up of its local
+ part and domain.
 * `Address getAddress()`<br>
  Gets the email address associated with this object.
 * `List<NamedAddress> getGroupAddresses()`<br>
@@ -40,31 +42,33 @@ Represents an email address and a name for that address. Can represent a
 
 ## Constructors
 
-* `NamedAddress(String address)`<br>
- Initializes a new instance of the NamedAddress class.
+* `NamedAddress(String address) NamedAddress`<br>
+ Initializes a new instance of the NamedAddress
+ class.
 * `NamedAddress(String displayName,
-            Address address)`<br>
- Initializes a new instance of the NamedAddress class.
+            Address address) NamedAddress`<br>
+ Initializes a new instance of the NamedAddress
+ class.
 * `NamedAddress(String groupName,
             List<NamedAddress> mailboxes)`<br>
- Initializes a new instance of the NamedAddress class.
 * `NamedAddress(String displayName,
-            String address)`<br>
- Initializes a new instance of the NamedAddress class using the given display
- name and email address.
+            String address) NamedAddress`<br>
+ Initializes a new instance of the NamedAddress
+ class using the given display name and email address.
 * `NamedAddress(String displayName,
             String localPart,
-            String domain)`<br>
- Initializes a new instance of the NamedAddress class using the given name
- and an email address made up of its local part and domain.
+            String domain) NamedAddress`<br>
+ Initializes a new instance of the NamedAddress
+ class using the given name and an email address made up of its local
+ part and domain.
 
 ## Method Details
 
 ### NamedAddress
     public NamedAddress(String address)
-Initializes a new instance of the NamedAddress class. Examples: <ul>
- <li><code>john@example.com</code></li> <li><code>"John Doe"
- &lt;john@example.com&gt;</code></li>
+Initializes a new instance of the <code>NamedAddress</code>
+ class. Examples: <ul> <li><code>john@example.com</code></li> <li><code>"John
+ Doe" &lt;john@example.com&gt;</code></li>
  <li><code>=?utf-8?q?John</code><code>=</code><code>27s_Office?=
  &lt;john@example.com&gt;</code></li> <li><code>John
  &lt;john@example.com&gt;</code></li> <li><code>"Group" : Tom
@@ -72,7 +76,7 @@ Initializes a new instance of the NamedAddress class. Examples: <ul>
 
 **Parameters:**
 
-* <code>address</code> - A string object identifying a single email address or a group
+* <code>address</code> - A text string identifying a single email address or a group
  of email addresses. Comments, or text within parentheses, can appear.
  Multiple email addresses are not allowed unless they appear in the
  group syntax given above. Encoded words under RFC 2047 that appear
@@ -81,10 +85,10 @@ Initializes a new instance of the NamedAddress class. Examples: <ul>
  <code>utf-8</code>, either "?B?" or "?Q?" (in upper or lower case), a
  series of bytes in the character encoding, further encoded using B or
  Q encoding, and finally "?=". B encoding uses Base64, while in Q
- encoding, spaces are changed to "_", equals are changed to "=3D",
- and most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and
- the basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed
- to "=" followed by their 2-digit hexadecimal form. An encoded word's
+ encoding, spaces are changed to "_", equals are changed to "=3D", and
+ most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the
+ basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to
+ "=" followed by their 2-digit hexadecimal form. An encoded word's
  maximum length is 75 characters. See the second example.</p>.
 
 **Throws:**
@@ -95,8 +99,8 @@ Initializes a new instance of the NamedAddress class. Examples: <ul>
 
 ### NamedAddress
     public NamedAddress(String displayName, String address)
-Initializes a new instance of the NamedAddress class using the given display
- name and email address.
+Initializes a new instance of the <code>NamedAddress</code>
+ class using the given display name and email address.
 
 **Parameters:**
 
@@ -110,15 +114,17 @@ Initializes a new instance of the NamedAddress class using the given display
 
 * <code>NullPointerException</code> - The parameter <code>address</code> is null.
 
-* <code>IllegalArgumentException</code> - The display name or address has an invalid syntax.
+* <code>IllegalArgumentException</code> - The display name or address has an invalid
+ syntax.
 
 ### NamedAddress
     public NamedAddress(String displayName, Address address)
-Initializes a new instance of the NamedAddress class.
+Initializes a new instance of the <code>NamedAddress</code>
+ class.
 
 **Parameters:**
 
-* <code>displayName</code> - A string object. If this value is null or empty, uses the
+* <code>displayName</code> - A text string. If this value is null or empty, uses the
  email address as the display name. Encoded words under RFC 2047 will
  not be decoded.
 
@@ -130,12 +136,13 @@ Initializes a new instance of the NamedAddress class.
 
 ### NamedAddress
     public NamedAddress(String displayName, String localPart, String domain)
-Initializes a new instance of the NamedAddress class using the given name
- and an email address made up of its local part and domain.
+Initializes a new instance of the <code>NamedAddress</code>
+ class using the given name and an email address made up of its local
+ part and domain.
 
 **Parameters:**
 
-* <code>displayName</code> - A string object. If this value is null or empty, uses the
+* <code>displayName</code> - A text string. If this value is null or empty, uses the
  email address as the display name.
 
 * <code>localPart</code> - The local part of the email address (before the "@").
@@ -144,27 +151,11 @@ Initializes a new instance of the NamedAddress class using the given name
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>localPart</code> or <code>domain</code> is null.
+* <code>NullPointerException</code> - The parameter <code>localPart</code> or
+ <code>domain</code> is null.
 
 ### NamedAddress
     public NamedAddress(String groupName, List<NamedAddress> mailboxes)
-Initializes a new instance of the NamedAddress class. Takes a group name and
- several named email addresses as parameters, and forms a group with
- them.
-
-**Parameters:**
-
-* <code>groupName</code> - The group's name.
-
-* <code>mailboxes</code> - A list of named addresses that make up the group.
-
-**Throws:**
-
-* <code>NullPointerException</code> - The parameter <code>groupName</code> or <code>mailboxes</code> is null.
-
-* <code>IllegalArgumentException</code> - The parameter <code>groupName</code> is empty, or an
- item in the list is itself a group.
-
 ### getName
     public final String getName()
 Gets the display name for this email address (or the email address's value
@@ -190,7 +181,8 @@ Gets a value indicating whether this represents a group of addresses rather
 
 **Returns:**
 
-* True if this represents a group of addresses; otherwise, false.
+* <code>true</code> If this represents a group of addresses; otherwise,
+ <code>false</code>.
 
 ### toString
     public String toString()

@@ -11,7 +11,6 @@ import java.util.*;
 
 import com.upokecenter.util.*;
 import com.upokecenter.text.*;
-import com.upokecenter.text.encoders.*;
 
     /**
      * Specifies how a message body should be displayed or handled by a mail user
@@ -35,7 +34,7 @@ import com.upokecenter.text.encoders.*;
     /**
      * Determines whether this object and another object are equal.
      * @param obj An arbitrary object.
-     * @return True if the objects are equal; otherwise, false.
+     * @return {@code true} if the objects are equal; otherwise, {@code false}.
      */
     @Override public boolean equals(Object obj) {
       ContentDisposition other = ((obj instanceof ContentDisposition) ? (ContentDisposition)obj : null);
@@ -53,18 +52,19 @@ import com.upokecenter.text.encoders.*;
     @Override public int hashCode() {
       int valueHashCode = 632580499;
         if (this.dispositionType != null) {
-          valueHashCode = (valueHashCode + 632580503 *
-            this.dispositionType.hashCode());
+          valueHashCode = (valueHashCode + (632580503 *
+            this.dispositionType.hashCode()));
         }
         if (this.parameters != null) {
-          valueHashCode = (valueHashCode + 632580587 * this.parameters.size());
+          valueHashCode = (valueHashCode + (632580587 * this.parameters.size()));
         }
       return valueHashCode;
     }
 
     /**
      * Gets a value indicating whether the disposition type is inline.
-     * @return True if the disposition type is inline; otherwise, false.
+     * @return {@code true} If the disposition type is inline; otherwise, {@code
+     * false}.
      */
     public final boolean isInline() {
         return this.dispositionType.equals("inline");
@@ -72,21 +72,21 @@ import com.upokecenter.text.encoders.*;
 
     /**
      * Gets a value indicating whether the disposition type is attachment.
-     * @return True if the disposition type is attachment; otherwise, false.
+     * @return {@code true} If the disposition type is attachment; otherwise,
+     * {@code false}.
      */
     public final boolean isAttachment() {
         return this.dispositionType.equals("attachment");
       }
 
     ContentDisposition(
-String type,
- Map<String,
- String> parameters) {
+ String type,
+ Map<String, String> parameters) {
       this.dispositionType = type;
-      this.parameters = new TreeMap<String, String>(parameters);
+      this.parameters = new HashMap<String, String>(parameters);
     }
 
-    private TreeMap<String, String> parameters;
+    private HashMap<String, String> parameters;
 
     /**
      * Gets a list of parameter names associated with this object and their values.
@@ -164,12 +164,12 @@ String type,
     /**
      * Converts a file name from the Content-Disposition header to a suitable name
      * for saving data to a file. <p>Examples:</p>
-     * <p>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt" (RFC 2047
-     * encoding)</p> <p>"=?utf-8?q?long_filename?=" -&gt; "long filename"
-     * (RFC 2047 encoding)</p> <p>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"
-     * (RFC 2231 encoding)</p> <p>"nul.txt" -&gt; "_nul.txt" (Reserved
-     * name)</p> <p>"dir1/dir2/file" -&gt; "dir1_dir2_file" (Directory
-     * separators)</p>
+     * <p><code>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt"</code> (RFC 2047
+     * encoding)</p> <p><code>"=?utf-8?q?long_filename?=" -&gt; "long
+     * filename"</code> (RFC 2047 encoding)</p> <p><code>"utf-8'en'hello%2Etxt"
+     * -&gt; "hello.txt"</code> (RFC 2231 encoding)</p> <p><code>"nul.txt" -&gt;
+     * "_nul.txt"</code> (Reserved name)</p> <p><code>"dir1/dir2/file" -&gt;
+     * "dir1_dir2_file"</code> (Directory separators)</p>
      * @param str A string representing a file name. Can be null.
      * @return A string with the converted version of the file name. Among other
      * things, encoded words under RFC 2047 are decoded (since they occur so
@@ -181,8 +181,7 @@ String type,
      * filename is truncated if it would otherwise be too long. The returned
      * string will be in normalization form C. Returns an empty string if
      * {@code str} is null.
-     * @throws NullPointerException The parameter "name" or {@code str} or
-     * "dispoValue" or "dispositionValue" is null.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static String MakeFilename(String str) {
       if (str == null) {
@@ -197,9 +196,9 @@ String type,
         // the parameter's value "should be used as a
         // basis for the actual filename, where possible."
         str = Rfc2047.DecodeEncodedWordsLenient(
-str,
-0,
-str.length());
+  str,
+  0,
+  str.length());
         if (str.indexOf("=?") >= 0) {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
@@ -211,9 +210,9 @@ str.length());
         // RFC 2231 encoding, even though all the examples in that RFC
         // show unquoted use of this encoding.
         String charset = Encodings.ResolveAliasForEmail(
-str.substring(
-0, (
-0)+(str.indexOf('\''))));
+  str.substring(
+  0, (
+  0)+(str.indexOf('\''))));
         if (!((charset) == null || (charset).length() == 0)) {
           String newstr = MediaType.DecodeRfc2231Extension(str);
           if (!((newstr) == null || (newstr).length() == 0)) {
@@ -246,8 +245,8 @@ str.substring(
           c = 0xfffd;
         }
         if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
-   c == 0x180e || c == 0x1680 || (c >= 0x2000 && c <= 0x200b) || c == 0x205f||
-            c == 0x202f || c == 0xfeff) {
+   c == 0x180e || c == 0x1680 ||
+   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff) {
           // Replace space-like characters (including tab) with space
           builder.append(' ');
         } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||
@@ -258,8 +257,11 @@ str.substring(
           // reserved by Windows,
           // backslash, forward slash, ASCII controls, and C1 controls).
           builder.append('_');
-        } else if (c == 0x85 || c == 0x2028 || c == 0x2029) {
-          // line break characters
+        } else if (c == 0x2028 || c == 0x2029) {
+          // line break characters (0x85 is already included above)
+          builder.append('_');
+        } else if ((c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
+          // noncharacters
           builder.append('_');
         } else if (c == '%') {
           // Treat percent ((character instanceof unsuitable) ? (unsuitable)character : null), even though it can occur
@@ -282,52 +284,112 @@ str.substring(
       if (str.length() == 0) {
         return "_";
       }
-      if (str.charAt(str.length() - 1) == '.') {
-        // Ends in a dot
-        str += "_";
-      }
       String strLower = DataUtilities.ToLowerCaseAscii(str);
-      if (
-strLower.equals(
-"nul") || strLower.equals("clock$") ||
+      // Reserved filenames on Windows
+      boolean reservedFilename =
+  strLower.equals(
+  "nul") || strLower.equals("clock$") ||
 strLower.indexOf(
-"nul.") == 0 || strLower.equals(
-"prn") ||
+  "nul.") == 0 || strLower.equals(
+  "prn") ||
 strLower.indexOf(
-"prn.") == 0 || strLower.equals(
-"aux") ||
+  "prn.") == 0 || strLower.equals(
+  "aux") ||
 strLower.indexOf(
-"aux.") == 0 || strLower.equals(
-"con") ||
+  "aux.") == 0 || strLower.equals(
+  "con") ||
 strLower.indexOf(
-"con.") == 0 || (
-strLower.length() >= 4 && strLower.indexOf(
-"lpt") == 0 && strLower.charAt(3) >= '0' &&
+  "con.") == 0 || (
+  strLower.length() >= 4 && strLower.indexOf(
+  "lpt") == 0 && strLower.charAt(3) >= '0' &&
        strLower.charAt(3) <= '9') || (strLower.length() >= 4 &&
               strLower.indexOf(
-"com") == 0 && strLower.charAt(3) >= '0' &&
-            strLower.charAt(3) <= '9')) {
-        // Reserved filenames on Windows
-        str = "_" + str;
-      }
-      if (strLower.charAt(0)=='{' && strLower.length()>1 && strLower.charAt(1) >= '0' &&
-            strLower.charAt(1) <= '1') {
-        str = "_" + str;
-      }
-      if (str.charAt(0) == '~' || str.charAt(0) == '-' || str.charAt(0) == '$') {
-        // Home folder convention (tilde).
+  "com") == 0 && strLower.charAt(3) >= '0' &&
+            strLower.charAt(3) <= '9');
+      boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&
+            str.charAt(1) >= '0' && str.charAt(1) <= '9';
+      // Home folder convention (tilde).
         // Filenames starting with hyphens can also be
         // problematic especially in Unix-based systems,
         // and filenames starting with dollar sign can
         // be misinterpreted if they're treated as expansion
         // symbols
+     boolean homeFolder = str.charAt(0) == '~' || str.charAt(0) == '-' || str.charAt(0) == '$';
+     // Starts with period; may be hidden in some configurations
+     boolean period = str.charAt(0) == '.';
+      if (reservedFilename || bracketDigit || homeFolder ||
+           period) {
         str = "_" + str;
       }
-      if (str.charAt(0) == '.') {
-        // Starts with period; may be hidden in some configurations
-        str = "_" + str;
+      // Avoid space before and after last dot
+      for (var i = str.length()-1; i >= 0; --i) {
+        if (str.charAt(i) == '.') {
+          boolean spaceAfter = (i + 1 < str.length() && str.charAt(i + 1) == 0x20);
+          boolean spaceBefore = (i > 0 && str.charAt(i - 1) == 0x20);
+          if (spaceAfter && spaceBefore) {
+            str = str.substring(0,i - 1) + "_._" + str.substring(i + 2);
+          } else if (spaceAfter) {
+            str = str.substring(0,i) + "._" + str.substring(i + 2);
+          } else if (spaceBefore) {
+            str = str.substring(0,i - 1) + "_." + str.substring(i + 1);
+          }
+          break;
+        }
       }
-      return NormalizingCharacterInput.Normalize(str, Normalization.NFC);
+      str = NormalizingCharacterInput.Normalize(str, Normalization.NFC);
+      // Ensure length is 254 or less
+      if (str.length() > 254) {
+        char c = str.charAt(254);
+        int newLength = 254;
+        if ((c & 0xfc00) == 0xdc00) {
+          --newLength;
+        }
+        str = str.substring(0, newLength);
+      }
+      if (str.charAt(str.length() - 1) == '.' || str.charAt(str.length() - 1) == '~') {
+        // Ends in a dot or tilde (a file whose name ends with
+        // the latter may be treated as
+        // a backup file especially in Unix-based systems).
+        // NOTE: Although concatenation of two NFC strings
+        // doesn't necessarily lead to an NFC String, this
+        // particular concatenation doesn't disturb the NFC
+        // status of the String.
+        str += "_";
+      }
+      return str;
+    }
+
+    /**
+     * Not documented yet.
+     * @param str Not documented yet.
+     * @return A string object.
+     */
+    public static String EscapeString(String str) {
+      String ValueHex = "0123456789abcdef";
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < str.length(); ++i) {
+        char c = str.charAt(i);
+        if (c == 0x09) {
+          sb.append("\\t");
+        } else if (c == 0x0d) {
+          sb.append("\\r");
+        } else if (c == 0x0a) {
+          sb.append("\\n");
+        } else if (c == 0x22) {
+          sb.append("\\\"");
+        } else if (c == 0x5c) {
+          sb.append("\\\\");
+        } else if (c < 0x20 || c >= 0x7f) {
+          sb.append("\\u");
+          sb.append(ValueHex.charAt((c >> 12) & 15));
+          sb.append(ValueHex.charAt((c >> 8) & 15));
+          sb.append(ValueHex.charAt((c >> 4) & 15));
+          sb.append(ValueHex.charAt((c) & 15));
+        } else {
+          sb.append(c);
+        }
+      }
+      return sb.toString();
     }
 
     /**
@@ -335,7 +397,7 @@ strLower.length() >= 4 && strLower.indexOf(
      * @param name The name of the parameter to get. The name will be matched
      * case-insensitively. Can't be null.
      * @return The value of the parameter, or null if the parameter does not exist.
-     * @throws NullPointerException The parameter {@code name} is null.
+     * @throws java.lang.NullPointerException The parameter {@code name} is null.
      * @throws IllegalArgumentException The parameter {@code name} is empty.
      */
     public String GetParameter(String name) {
@@ -386,7 +448,7 @@ strLower.length() >= 4 && strLower.indexOf(
 
     private static ContentDisposition Build(String name) {
       ContentDisposition dispo = new ContentDisposition();
-      dispo.parameters = new TreeMap<String, String>();
+      dispo.parameters = new HashMap<String, String>();
       dispo.dispositionType = name;
       return dispo;
     }
@@ -407,10 +469,11 @@ strLower.length() >= 4 && strLower.indexOf(
     /**
      * Parses a content disposition string and returns a content disposition
      * object.
-     * @param dispoValue A string object.
+     * @param dispoValue A text string.
      * @return A content disposition object, or "Attachment" if {@code dispoValue}
      * is empty or syntactically invalid.
-     * @throws NullPointerException The parameter {@code dispoValue} is null.
+     * @throws java.lang.NullPointerException The parameter {@code dispoValue} is
+     * null.
      */
     public static ContentDisposition Parse(String dispoValue) {
       if (dispoValue == null) {
@@ -422,22 +485,22 @@ strLower.length() >= 4 && strLower.indexOf(
     /**
      * Creates a new content disposition object from the value of a
      * Content-Disposition header field.
-     * @param dispositionValue A string object that should be the value of a
+     * @param dispositionValue A text string that should be the value of a
      * Content-Disposition header field.
      * @param defaultValue The value to return in case the disposition value is
      * syntactically invalid. Can be null.
      * @return A ContentDisposition object.
-     * @throws NullPointerException The parameter {@code dispositionValue} is
-     * null.
+     * @throws java.lang.NullPointerException The parameter {@code dispositionValue}
+     * is null.
      */
     public static ContentDisposition Parse(
-String dispositionValue,
-ContentDisposition defaultValue) {
+  String dispositionValue,
+  ContentDisposition defaultValue) {
       if (dispositionValue == null) {
         throw new NullPointerException("dispositionValue");
       }
       ContentDisposition dispo = new ContentDisposition();
-      dispo.parameters = new TreeMap<String, String>();
+      dispo.parameters = new HashMap<String, String>();
       return (!dispo.ParseDisposition(dispositionValue)) ? defaultValue : dispo;
     }
   }

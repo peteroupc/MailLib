@@ -22,26 +22,26 @@ import com.upokecenter.mail.*;
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
     private final IByteReader input;
-    private int lineCharCount;
     private final boolean lenientLineBreaks;
     private final byte[] buffer;
-    private int bufferIndex;
-    private int bufferCount;
     private final int maxLineLength;
     private final boolean checkStrictEncoding;
+    private int lineCharCount;
+    private int bufferIndex;
+    private int bufferCount;
     private int paddingCount;
 
-    public Base64Transform (
-IByteReader input,
-boolean lenientLineBreaks) {
+    public Base64Transform(
+  IByteReader input,
+  boolean lenientLineBreaks) {
  this(input, lenientLineBreaks, 76, false);
     }
 
-    public Base64Transform (
-IByteReader input,
-boolean lenientLineBreaks,
-int maxLineLength,
-boolean checkStrictEncoding) {
+    public Base64Transform(
+  IByteReader input,
+  boolean lenientLineBreaks,
+  int maxLineLength,
+  boolean checkStrictEncoding) {
       this.input = input;
       this.maxLineLength = maxLineLength;
       this.lenientLineBreaks = lenientLineBreaks;

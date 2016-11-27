@@ -31,10 +31,10 @@ import com.upokecenter.text.*;
     @Override public String toString() {
       if (this.localPart.length() > 0 &&
           HeaderParser.ParseDotAtomText(
-this.localPart,
-0,
-this.localPart.length(),
-null) == this.localPart.length()) {
+  this.localPart,
+  0,
+  this.localPart.length(),
+  null) == this.localPart.length()) {
         return this.localPart + "@" + this.domain;
       } else {
         StringBuilder sb = new StringBuilder();
@@ -63,17 +63,16 @@ null) == this.localPart.length()) {
         // "domain" is a domain name, and not an address literal,
         // so get its A-label length
         domainLength =
-  (
-(
-int)DataUtilities.GetUtf8Length(
-Idna.EncodeDomainName(this.domain),
-true));
+  ((int)
+  DataUtilities.GetUtf8Length(
+  Idna.EncodeDomainName(this.domain),
+  true));
       }
       if (this.localPart.length() > 0 && HeaderParser.ParseDotAtomText(
-this.localPart,
-0,
-this.localPart.length(),
-null) == this.localPart.length()) {
+  this.localPart,
+  0,
+  this.localPart.length(),
+  null) == this.localPart.length()) {
         return this.localPart.length() + domainLength + 1;
       } else {
         // two quotes, at sign, and domain length
@@ -103,15 +102,17 @@ null) == this.localPart.length()) {
       }
 
     /**
-     * Initializes a new instance of the Address class.
+     * Initializes a new instance of the {@link com.upokecenter.mail.Address}
+     * class.
      * @param addressValue An email address.
-     * @throws NullPointerException The parameter {@code addressValue} is null.
-     * @throws IllegalArgumentException The email address contains invalid syntax. For
-     * example, it doesn't contain an '@' sign or either side of the '@'
+     * @throws java.lang.NullPointerException The parameter {@code addressValue} is
+     * null.
+     * @throws IllegalArgumentException The email address contains invalid syntax.
+     * For example, it doesn't contain an '@' sign or either side of the '@'
      * contains invalid characters, the address is too long, or the address
      * contains comments (text within parentheses).
      */
-    public Address (String addressValue) {
+    public Address(String addressValue) {
       if (addressValue == null) {
         throw new NullPointerException("addressValue");
       }
@@ -122,10 +123,10 @@ null) == this.localPart.length()) {
         throw new IllegalArgumentException("Address doesn't contain a '@' sign");
       }
       int localPartEnd = HeaderParser.ParseLocalPartNoCfws(
-addressValue,
-0,
-addressValue.length(),
-null);
+  addressValue,
+  0,
+  addressValue.length(),
+  null);
       if (localPartEnd == 0) {
         throw new IllegalArgumentException("Invalid local part");
       }
@@ -137,21 +138,21 @@ null);
         throw new IllegalArgumentException("Expected domain after '@'");
       }
       int domainEnd = HeaderParser.ParseDomainNoCfws(
-addressValue,
-localPartEnd + 1,
-addressValue.length(),
-null);
+  addressValue,
+  localPartEnd + 1,
+  addressValue.length(),
+  null);
       if (domainEnd != addressValue.length()) {
         throw new IllegalArgumentException("Invalid domain");
       }
       this.localPart = HeaderParserUtility.ParseLocalPart(
-addressValue,
-0,
-localPartEnd);
+  addressValue,
+  0,
+  localPartEnd);
       this.domain = HeaderParserUtility.ParseDomain(
-addressValue,
-localPartEnd + 1,
-addressValue.length());
+  addressValue,
+  localPartEnd + 1,
+  addressValue.length());
       // Check length restrictions.
       if (this.StringLength() > 997) {
         // Maximum character length per line for an Internet message is 998;

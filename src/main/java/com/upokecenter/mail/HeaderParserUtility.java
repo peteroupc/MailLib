@@ -22,8 +22,11 @@ private HeaderParserUtility() {
     static final int TokenLocalPart = 8;
     static final int TokenDomain = 9;
 
-    public static int ParseHeaderExpandedDate(String str, int index, int
-      endIndex, int[] ret) {
+    public static int ParseHeaderExpandedDate(
+  String str,
+  int index,
+  int endIndex,
+  int[] ret) {
       int i, i3, indexStart, indexStart2, indexStart3, indexTemp,
         indexTemp2, indexTemp3, indexTemp4;
       int dayOfWeek = -1, day = -1, month = -1, year = -1, hour = -1, minute
@@ -111,7 +114,7 @@ private HeaderParserUtility() {
         for (i = 0; i < 2; ++i) {
           if (index < endIndex && (str.charAt(index) >= 48 && str.charAt(index) <= 57)) {
             day *= 10;
-            day += ((int)(str.charAt(index))) - 48;
+            day += ((int)str.charAt(index)) - 48;
             if (day == 0) {
               return indexStart;
             }
@@ -202,12 +205,12 @@ private HeaderParserUtility() {
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         yearDigits = 0;
         year = 0;
-        if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57)||
+        if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
           (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))) {
           year *= 10;
-          year += ((int)(str.charAt(index))) - 48;
+          year += ((int)str.charAt(index)) - 48;
           year *= 10;
-          year += ((int)(str.charAt(index + 1))) - 48;
+          year += ((int)str.charAt(index + 1)) - 48;
           index += 2;
           yearDigits += 2;
         } else {
@@ -219,12 +222,12 @@ private HeaderParserUtility() {
             // year would overflow
             return indexStart;
           }
-          year = (year * 10);
+          year *= 10;
           if (year > Integer.MAX_VALUE - 10) {
             // year would overflow
             return indexStart;
           }
-          year = (year + ((int)(str.charAt(index))) - 48);
+          year += ((int)str.charAt(index)) - 48;
           ++index;
         }
         if (yearDigits == 3 || (yearDigits == 2 && year >= 50)) {
@@ -232,8 +235,8 @@ private HeaderParserUtility() {
         } else if (yearDigits == 2) {
           year += 2000;
         }
-        boolean leap = (((((year % 4) == 0) && ((year % 100) != 0)) || ((year %
-          400) == 0)));
+        boolean leap = year % 4 == 0 && (year % 100 != 0 || year %
+          400 == 0);
         if (month == 4 || month == 6 || month == 9 || month == 11) {
           if (day > 30) {
  return indexStart;
@@ -249,12 +252,12 @@ private HeaderParserUtility() {
         }
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         hour = minute = second = 0;
-        if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57)||
+        if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
           (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))) {
           hour *= 10;
-          hour += ((int)(str.charAt(index))) - 48;
+          hour += ((int)str.charAt(index)) - 48;
           hour *= 10;
-          hour += ((int)(str.charAt(index + 1))) - 48;
+          hour += ((int)str.charAt(index + 1)) - 48;
           if (hour >= 24) {
             return indexStart;
           }
@@ -269,12 +272,12 @@ private HeaderParserUtility() {
           index = indexStart; break;
         }
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-        if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57)||
+        if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
           (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))) {
           minute *= 10;
-          minute += ((int)(str.charAt(index))) - 48;
+          minute += ((int)str.charAt(index)) - 48;
           minute *= 10;
-          minute += ((int)(str.charAt(index + 1))) - 48;
+          minute += ((int)str.charAt(index + 1)) - 48;
           if (minute >= 60) {
             return indexStart;
           }
@@ -298,9 +301,9 @@ private HeaderParserUtility() {
             if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <=
               57) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))) {
               second *= 10;
-              second += ((int)(str.charAt(index))) - 48;
+              second += ((int)str.charAt(index)) - 48;
               second *= 10;
-              second += ((int)(str.charAt(index + 1))) - 48;
+              second += ((int)str.charAt(index + 1)) - 48;
               if (second >= 61) {
                 return indexStart;
               }
@@ -323,7 +326,7 @@ private HeaderParserUtility() {
             indexTemp3 = index;
             do {
               indexStart3 = index;
-              for (i3 = 0; ; ++i3) {
+              for (i3 = 0; true; ++i3) {
                 indexTemp4 = HeaderParser.ParseFWS(str, index, endIndex, null);
                 if (indexTemp4 != index) {
                   index = indexTemp4;
@@ -340,23 +343,23 @@ private HeaderParserUtility() {
               boolean minus = false;
           if (index < endIndex && ((str.charAt(index) == 43) || (str.charAt(index) ==
                 45))) {
-                minus = (str.charAt(index) == 45);
+                minus = str.charAt(index) == 45;
                 ++index;
               } else {
                 index = indexStart3; break;
               }
               if (index + 3 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index)
                 <= 57) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57) ||
-                (str.charAt(index + 2) >= 48 && str.charAt(index + 2) <= 57) || (str.charAt(index+
+                (str.charAt(index + 2) >= 48 && str.charAt(index + 2) <= 57) || (str.charAt(index +
                 3) >= 48 && str.charAt(index + 3) <= 57))) {
-       int offsethr = ((int)str.charAt(index) - 48) * 10 + ((int)str.charAt(index + 1) -
-                  48);
-  int offsetmin = ((int)str.charAt(index + 2) - 48) * 10 + ((int)str.charAt(index + 3) -
-                  48);
+       int offsethr = (((int)str.charAt(index) - 48) * 10) +
+                ((int)str.charAt(index + 1) - 48);
+  int offsetmin = (((int)str.charAt(index + 2) - 48) * 10) +
+                ((int)str.charAt(index + 3) - 48);
                 if (offsetmin >= 60) {
                   return indexStart;
                 }
-                offset = offsethr * 60 + offsetmin;
+                offset = (offsethr * 60) + offsetmin;
                 offset %= 1440;
                 if (minus) {
  offset = -offset;
@@ -573,9 +576,9 @@ private HeaderParserUtility() {
     }
 
     private static String ParseDotAtomAfterCFWS(
-String str,
-int index,
-int endIndex) {
+  String str,
+  int index,
+  int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a dot-atom
       StringBuilder builder = new StringBuilder();
@@ -597,9 +600,9 @@ int endIndex) {
     }
 
     private static String ParseDotWordAfterCFWS(
-String str,
-int index,
-int endIndex) {
+  String str,
+  int index,
+  int endIndex) {
       // NOTE: Also parses the obsolete syntax of CFWS between parts
       // of a word separated by dots
       StringBuilder builder = new StringBuilder();
@@ -609,7 +612,7 @@ int endIndex) {
         if (index == start) {
           if (index < endIndex && str.charAt(index) == '"') {
             // it's a quoted String instead
-            index = MediaType.skipQuotedString(str, index, endIndex, builder);
+            index = MediaType.SkipQuotedString(str, index, endIndex, builder);
           } else {
             break;
           }
@@ -653,9 +656,9 @@ int endIndex) {
             index = HeaderParser.ParseQuotedPair(str, index, endIndex, null);
             if (index == startQuote) {
        builder.append(
-str.substring(
-startQuote + 1, (
-startQuote + 1)+(index - (startQuote + 1))));
+  str.substring(
+  startQuote + 1, (
+  startQuote + 1)+(index - (startQuote + 1))));
             } else {
               ++index;
             }
@@ -672,10 +675,10 @@ startQuote + 1)+(index - (startQuote + 1))));
     }
 
     public static List<NamedAddress> ParseAddressList(
-String str,
-int index,
-int endIndex,
-List<int[]> tokens) {
+  String str,
+  int index,
+  int endIndex,
+  List<int[]> tokens) {
       int lastIndex = index;
       List<NamedAddress> addresses = new ArrayList<NamedAddress>();
       for (int i = 0; i < tokens.size(); ++i) {
@@ -696,10 +699,10 @@ List<int[]> tokens) {
     }
 
     public static NamedAddress ParseAddress(
-String str,
-int index,
-int endIndex,
-List<int[]> tokens) {
+  String str,
+  int index,
+  int endIndex,
+  List<int[]> tokens) {
       int lastIndex = index;
       for (int i = 0; i < tokens.size(); ++i) {
         int tokenIndex = tokens.get(i)[1];
@@ -718,10 +721,10 @@ List<int[]> tokens) {
     }
 
     public static NamedAddress ParseGroup(
-String str,
-int index,
-int endIndex,
-List<int[]> tokens) {
+  String str,
+  int index,
+  int endIndex,
+  List<int[]> tokens) {
       String displayName = null;
       boolean haveDisplayName = false;
       List<NamedAddress> mailboxes = new ArrayList<NamedAddress>();
@@ -750,10 +753,10 @@ List<int[]> tokens) {
     }
 
     public static NamedAddress ParseMailbox(
-String str,
-int index,
-int endIndex,
-List<int[]> tokens) {
+  String str,
+  int index,
+  int endIndex,
+  List<int[]> tokens) {
       String displayName = null;
       String localPart = null;
       String domain = null;
@@ -789,10 +792,10 @@ List<int[]> tokens) {
 
     // Parses a comment using the obsolete syntax.
     static int ParseCommentLax(
-String str,
-int index,
-int endIndex,
-ITokener tokener) {
+  String str,
+  int index,
+  int endIndex,
+  ITokener tokener) {
       int indexStart = index;
       int depth = 0;
       if (index < endIndex && (str.charAt(index) == 40)) {
@@ -823,10 +826,10 @@ ITokener tokener) {
                 }
                 int indexTemp4;
       indexTemp4 = HeaderParser.ParseQuotedPair(
-str,
-index,
-endIndex,
-null);
+  str,
+  index,
+  endIndex,
+  null);
                 if (indexTemp4 != index) {
                   indexTemp3 = indexTemp4; break;
                 }
@@ -888,9 +891,9 @@ null);
 
     // Parses a comment without using the obsolete syntax.
   static int ParseCommentStrict(
-String str,
-int index,
-int endIndex) {
+  String str,
+  int index,
+  int endIndex) {
       if (index < endIndex && (str.charAt(index) == 40)) {
         ++index;
       } else {

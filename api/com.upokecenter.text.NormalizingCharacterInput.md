@@ -25,7 +25,7 @@
  decomposition.</li> <li>The four normalization forms also enforce a
  standardized order for combining marks, since they can otherwise
  appear in an arbitrary order.</li></ul> <p>For more information, see
- Standard Annex 15 at http://www.unicode.org/reports/tr15/ .</p>
+ Standard Annex 15 at <code>http://www.unicode.org/reports/tr15/</code>.</p>
  <p><b>Thread safety:</b> This class is mutable; its properties can be
  changed. None of its instance methods are designed to be thread safe.
  Therefore, access to objects from this class must be synchronized if
@@ -68,47 +68,67 @@
 
 ## Methods
 
-* `NormalizingCharacterInput(com.upokecenter.text.ICharacterInput input)`<br>
+* `NormalizingCharacterInput(com.upokecenter.text.ICharacterInput input) NormalizingCharacterInput`<br>
  Initializes a new instance of the NormalizingCharacterInput class using
  Normalization Form C.
 * `NormalizingCharacterInput(com.upokecenter.text.ICharacterInput stream,
-                         Normalization form)`<br>
+                         Normalization form) NormalizingCharacterInput`<br>
  Initializes a new instance of the NormalizingCharacterInput class.
 * `NormalizingCharacterInput(List<Integer> characterList)`<br>
- Initializes a new instance of the NormalizingCharacterInput class using
- Normalization Form C.
+ Deprecated.
+Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
+ Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
 * `NormalizingCharacterInput(List<Integer> characterList,
                          Normalization form)`<br>
- Initializes a new instance of the NormalizingCharacterInput class using the
- given normalization form.
-* `NormalizingCharacterInput(String str)`<br>
+ Deprecated.
+Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
+ Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
+* `NormalizingCharacterInput(String str) NormalizingCharacterInput`<br>
  Initializes a new instance of the NormalizingCharacterInput class using
  Normalization Form C.
 * `NormalizingCharacterInput(String str,
                          int index,
                          int length,
-                         Normalization form)`<br>
+                         Normalization form) NormalizingCharacterInput`<br>
  Initializes a new instance of the NormalizingCharacterInput class.
 * `NormalizingCharacterInput(String str,
-                         Normalization form)`<br>
+                         Normalization form) NormalizingCharacterInput`<br>
  Initializes a new instance of the NormalizingCharacterInput class.
-* `static List<Integer> GetChars(com.upokecenter.text.ICharacterInput str,
+* `static List<Integer> GetChars(com.upokecenter.text.ICharacterInput input,
         Normalization form)`<br>
- Gets a list of normalized code points after reading from a character stream.
+ Deprecated.
+Instead of this method, create a NormalizingCharacterInput on the input and
+call ReadChar to get the normalized String's code points.
+ Instead of this method, create a NormalizingCharacterInput on the input and
+call ReadChar to get the normalized String's code points.
 * `static List<Integer> GetChars(String str,
         Normalization form)`<br>
- Gets a list of normalized code points after reading from a string.
+ Deprecated.
+Instead of this method, create a NormalizingCharacterInput on the String and
+call ReadChar to get the normalized String's code points.
+ Instead of this method, create a NormalizingCharacterInput on the String and
+call ReadChar to get the normalized String's code points.
 * `static boolean IsNormalized(com.upokecenter.text.ICharacterInput chars,
             Normalization form)`<br>
  Determines whether the text provided by a character input is normalized.
 * `static boolean IsNormalized(int[] charArray,
             Normalization form)`<br>
- Determines whether the given array of characters is in the given Unicode
- normalization form.
+ Deprecated.
+Either convert the array to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
+ Either convert the array to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
 * `static boolean IsNormalized(List<Integer> charList,
             Normalization form)`<br>
- Determines whether the given list of characters is in the given Unicode
- normalization form.
+ Deprecated.
+Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
+ Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
 * `static boolean IsNormalized(String str,
             Normalization form)`<br>
  Determines whether the given string is in the given Unicode normalization
@@ -125,46 +145,42 @@
 
 ## Constructors
 
-* `NormalizingCharacterInput(com.upokecenter.text.ICharacterInput input)`<br>
+* `NormalizingCharacterInput(com.upokecenter.text.ICharacterInput input) NormalizingCharacterInput`<br>
  Initializes a new instance of the NormalizingCharacterInput class using
  Normalization Form C.
 * `NormalizingCharacterInput(com.upokecenter.text.ICharacterInput stream,
-                         Normalization form)`<br>
+                         Normalization form) NormalizingCharacterInput`<br>
  Initializes a new instance of the NormalizingCharacterInput class.
 * `NormalizingCharacterInput(List<Integer> characterList)`<br>
- Initializes a new instance of the NormalizingCharacterInput class using
- Normalization Form C.
+ Deprecated.
+Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
+ Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
 * `NormalizingCharacterInput(List<Integer> characterList,
                          Normalization form)`<br>
- Initializes a new instance of the NormalizingCharacterInput class using the
- given normalization form.
-* `NormalizingCharacterInput(String str)`<br>
+ Deprecated.
+Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
+ Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
+* `NormalizingCharacterInput(String str) NormalizingCharacterInput`<br>
  Initializes a new instance of the NormalizingCharacterInput class using
  Normalization Form C.
 * `NormalizingCharacterInput(String str,
                          int index,
                          int length,
-                         Normalization form)`<br>
+                         Normalization form) NormalizingCharacterInput`<br>
  Initializes a new instance of the NormalizingCharacterInput class.
 * `NormalizingCharacterInput(String str,
-                         Normalization form)`<br>
+                         Normalization form) NormalizingCharacterInput`<br>
  Initializes a new instance of the NormalizingCharacterInput class.
 
 ## Method Details
 
 ### NormalizingCharacterInput
-    public NormalizingCharacterInput(List<Integer> characterList)
-Initializes a new instance of the NormalizingCharacterInput class using
- Normalization Form C.
-
-**Parameters:**
-
-* <code>characterList</code> - A list of Unicode code points specifying the text to
- normalize.
-
-### NormalizingCharacterInput
     public NormalizingCharacterInput(String str)
-Initializes a new instance of the NormalizingCharacterInput class using
+Initializes a new instance of the <code>NormalizingCharacterInput</code> class using
  Normalization Form C.
 
 **Parameters:**
@@ -173,7 +189,7 @@ Initializes a new instance of the NormalizingCharacterInput class using
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput(com.upokecenter.text.ICharacterInput input)
-Initializes a new instance of the NormalizingCharacterInput class using
+Initializes a new instance of the <code>NormalizingCharacterInput</code> class using
  Normalization Form C.
 
 **Parameters:**
@@ -181,51 +197,44 @@ Initializes a new instance of the NormalizingCharacterInput class using
 * <code>input</code> - An ICharacterInput object.
 
 ### NormalizingCharacterInput
-    public NormalizingCharacterInput(List<Integer> characterList, Normalization form)
-Initializes a new instance of the NormalizingCharacterInput class using the
- given normalization form.
-
-**Parameters:**
-
-* <code>characterList</code> - An List object.
-
-* <code>form</code> - Specifies the normalization form to use when normalizing the
- text.
-
-**Throws:**
-
-* <code>NullPointerException</code> - The parameter <code>characterList</code> is null.
-
+    @Deprecated public NormalizingCharacterInput(List<Integer> characterList)
+Deprecated.&nbsp;Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
+### NormalizingCharacterInput
+    @Deprecated public NormalizingCharacterInput(List<Integer> characterList, Normalization form)
+Deprecated.&nbsp;Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
 ### NormalizingCharacterInput
     public NormalizingCharacterInput(String str, int index, int length, Normalization form)
-Initializes a new instance of the NormalizingCharacterInput class. Uses a
- portion of a string as the input.
+Initializes a new instance of the <code>NormalizingCharacterInput</code> class. Uses a portion
+ of a string as the input.
 
 **Parameters:**
 
-* <code>str</code> - A string object.
+* <code>str</code> - A text string.
 
-* <code>index</code> - A 32-bit signed integer.
+* <code>index</code> - A zero-based index showing where the desired portion of <code>str</code> begins.
 
-* <code>length</code> - A 32-bit signed integer. (2).
+* <code>length</code> - The number of elements in the desired portion of <code>str</code>
+ (but not more than <code>str</code> 's length).
 
 * <code>form</code> - Specifies the normalization form to use when normalizing the
  text.
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput(String str, Normalization form)
-Initializes a new instance of the NormalizingCharacterInput class.
+Initializes a new instance of the <code>NormalizingCharacterInput</code> class.
 
 **Parameters:**
 
-* <code>str</code> - A string object.
+* <code>str</code> - A text string.
 
 * <code>form</code> - Specifies the normalization form to use when normalizing the
  text.
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput(com.upokecenter.text.ICharacterInput stream, Normalization form)
-Initializes a new instance of the NormalizingCharacterInput class.
+Initializes a new instance of the <code>NormalizingCharacterInput</code> class.
 
 **Parameters:**
 
@@ -237,44 +246,6 @@ Initializes a new instance of the NormalizingCharacterInput class.
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>stream</code> is null.
-
-### GetChars
-    public static List<Integer> GetChars(String str, Normalization form)
-Gets a list of normalized code points after reading from a string.
-
-**Parameters:**
-
-* <code>str</code> - A string object.
-
-* <code>form</code> - Specifies the normalization form to use when normalizing the
- text.
-
-**Returns:**
-
-* A list of the normalized Unicode characters.
-
-**Throws:**
-
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
-
-### GetChars
-    public static List<Integer> GetChars(com.upokecenter.text.ICharacterInput str, Normalization form)
-Gets a list of normalized code points after reading from a character stream.
-
-**Parameters:**
-
-* <code>str</code> - An object that implements a stream of Unicode characters.
-
-* <code>form</code> - Specifies the normalization form to use when normalizing the
- text.
-
-**Returns:**
-
-* A list of the normalized Unicode characters.
-
-**Throws:**
-
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### IsNormalized
     public static boolean IsNormalized(com.upokecenter.text.ICharacterInput chars, Normalization form)
@@ -288,7 +259,7 @@ Determines whether the text provided by a character input is normalized.
 
 **Returns:**
 
-* True if the text is normalized; otherwise, false.
+* <code>true</code> if the text is normalized; otherwise, <code>false</code>.
 
 **Throws:**
 
@@ -326,17 +297,57 @@ Determines whether the given string is in the given Unicode normalization
 
 **Returns:**
 
-* True if the given string is in the given Unicode normalization form;
- otherwise, false.
+* <code>true</code> if the given string is in the given Unicode
+ normalization form; otherwise, <code>false</code>.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+
+### GetChars
+    @Deprecated public static List<Integer> GetChars(String str, Normalization form)
+Deprecated.&nbsp;Instead of this method, create a NormalizingCharacterInput on the String and
+call ReadChar to get the normalized String's code points.
+
+**Parameters:**
+
+* <code>str</code> - A text string.
+
+* <code>form</code> - Specifies the normalization form to use when normalizing the
+ text.
+
+**Returns:**
+
+* A list of the normalized Unicode characters.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+
+### GetChars
+    @Deprecated public static List<Integer> GetChars(com.upokecenter.text.ICharacterInput input, Normalization form)
+Deprecated.&nbsp;Instead of this method, create a NormalizingCharacterInput on the input and
+call ReadChar to get the normalized String's code points.
+
+**Parameters:**
+
+* <code>str</code> - An object that implements a stream of Unicode characters.
+
+* <code>form</code> - Specifies the normalization form to use when normalizing the
+ text.
+
+**Returns:**
+
+* A list of the normalized Unicode characters.
 
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### IsNormalized
-    public static boolean IsNormalized(int[] charArray, Normalization form)
-Determines whether the given array of characters is in the given Unicode
- normalization form.
+    @Deprecated public static boolean IsNormalized(int[] charArray, Normalization form)
+Deprecated.&nbsp;Either convert the array to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
 
 **Parameters:**
 
@@ -347,34 +358,17 @@ Determines whether the given array of characters is in the given Unicode
 
 **Returns:**
 
-* True if the given list of characters is in the given Unicode
- normalization form; otherwise, false.
+* <code>true</code> if the given list of characters is in the given Unicode
+ normalization form; otherwise, <code>false</code>.
 
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter "charList" is null.
 
 ### IsNormalized
-    public static boolean IsNormalized(List<Integer> charList, Normalization form)
-Determines whether the given list of characters is in the given Unicode
- normalization form.
-
-**Parameters:**
-
-* <code>charList</code> - A list of Unicode code points.
-
-* <code>form</code> - Specifies the normalization form to use when normalizing the
- text.
-
-**Returns:**
-
-* True if the given list of characters is in the given Unicode
- normalization form; otherwise, false.
-
-**Throws:**
-
-* <code>NullPointerException</code> - The parameter <code>charList</code> is null.
-
+    @Deprecated public static boolean IsNormalized(List<Integer> charList, Normalization form)
+Deprecated.&nbsp;Either convert the list to a String or wrap it in an ICharacterInput and
+ call the corresponding overload instead.
 ### ReadChar
     public int ReadChar()
 Reads a Unicode character from a data source.
@@ -414,6 +408,6 @@ Reads a sequence of Unicode code points from a data source.
 
 * <code>NullPointerException</code> - The parameter <code>chars</code> is null.
 
-* <code>IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is less
- than 0 or greater than <code>chars</code> 's length, or <code>chars</code> 's
- length minus <code>index</code> is less than <code>length</code>.
+* <code>IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is
+ less than 0 or greater than <code>chars</code> 's length, or <code>chars</code>
+ ' s length minus <code>index</code> is less than <code>length</code>.
