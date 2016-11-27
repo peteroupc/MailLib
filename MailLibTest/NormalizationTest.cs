@@ -48,7 +48,7 @@ namespace MailLibTest {
       var index = 0;
       var state = 0;
       var codePoint = 0;
-      var retArray = new int[8];
+      var retArray = new int[cp.Length];
       var count = 0;
       while (index <= cp.Length) {
         int c = (index >= cp.Length) ? -1 : (int)cp[index];
@@ -102,7 +102,7 @@ namespace MailLibTest {
         if (!first) {
           builder.Append(", ");
         }
-        builder.Append("" + v);
+        builder.Append(Test.TestCommon.IntToString(v));
         first = false;
       }
       builder.Append("]");
@@ -150,9 +150,12 @@ namespace MailLibTest {
     private void TestIdempotent (string str, Normalization norm) {
       bool isForm = NormalizingCharacterInput.IsNormalized (str, norm);
       string newStr = NormalizingCharacterInput.Normalize (str, norm);
+      ICharacterInput sci = new CharacterReader (str, false, true);
+            bool isForm2 = NormalizingCharacterInput.IsNormalized (sci, norm);
       if (isForm) {
         Assert.AreEqual (str, newStr, EncodingTest.EscapeString (str));
       }
+      Assert.AreEqual (isForm, isForm2);
       if (!NormalizingCharacterInput.IsNormalized (newStr, norm)) {
         Assert.Fail (EncodingTest.EscapeString (str));
       }
@@ -164,7 +167,7 @@ namespace MailLibTest {
 
     [Test]
     public void NormTestRandom () {
-      var rand = new RandomGenerator();
+      var rand = new RandomGenerator(new XorShift128Plus (false));
       for (var i = 0; i < 100000; ++i) {
         string str = EncodingTest.RandomString (rand);
                 TestIdempotent (str, Normalization.NFC);
@@ -261,6 +264,7 @@ Assert.AreEqual(
     }
 
     [Test]
+    [Timeout(60000)]
     public void NormTest() {
       var handled = new bool[0x110000];
       string[] lines = NetHelper.DownloadOrOpenAllLines(
@@ -318,23 +322,23 @@ Assert.AreEqual(
             cptemp[0] = (char)i;
           }
           string cpstr = new String(cptemp, 0, (i >= 0x10000 ? 2 : 1));
-          string imsg = "" + i;
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                Normalization.NFC)) {
-            Assert.Fail(imsg);
+            Assert.Fail(Test.TestCommon.IntToString(i));
           }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                Normalization.NFD)) {
-            Assert.Fail(imsg);
+                        Assert.Fail (Test.TestCommon.IntToString (i));
           }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                 Normalization.NFKC)) {
-            Assert.Fail(imsg);
-          }
+                        Assert.Fail (Test.TestCommon.IntToString (i));
+ }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                 Normalization.NFKD)) {
-            Assert.Fail(imsg);
-          }
+                        Assert.Fail (Test.TestCommon.IntToString (i));
+        }
+          string imsg = Test.TestCommon.IntToString (i);
           AssertEqual(cpstr, NormalizingCharacterInput.Normalize(
             cpstr,
             Normalization.NFC), imsg);

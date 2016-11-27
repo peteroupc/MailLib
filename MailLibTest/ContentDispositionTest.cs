@@ -183,7 +183,7 @@ namespace MailLibTest
         public void TestMakeFilename ()
         {
             string stringTemp;
-            var rnd = new RandomGenerator ();
+      var rnd = new RandomGenerator (new XorShift128Plus(false));
             Assert.AreEqual (String.Empty, ContentDisposition.MakeFilename (null));
             {
                 stringTemp = ContentDisposition.MakeFilename (String.Empty);
@@ -195,6 +195,9 @@ namespace MailLibTest
               "utf-8''%2A%EF%AB%87%EC%A5%B2%2B67%20Tqd%20R%E3%80%80%2E");
             Assert.IsTrue (IsGoodFilename (mfn), mfn);
             for (var i = 0; i < 1000000; ++i) {
+        if (i % 1000 == 0) {
+          Console.WriteLine (i);
+        }
                 string str = RandomString (rnd);
                 string filename = ContentDisposition.MakeFilename (str);
                 if (!IsGoodFilename (filename)) {
