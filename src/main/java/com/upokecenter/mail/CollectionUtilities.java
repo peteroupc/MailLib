@@ -13,7 +13,7 @@ import java.util.*;
 private CollectionUtilities() {
 }
     public static <TKey, TValue> boolean MapEquals(
-Map<TKey, TValue> mapA,
+  Map<TKey, TValue> mapA,
  Map<TKey, TValue> mapB) {
       if (mapA == null) {
         return mapB == null;

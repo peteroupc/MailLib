@@ -28,7 +28,11 @@ import com.upokecenter.text.*;
      * media type object, use the MediaTypeBuilder class.</p>
      */
   public final class MediaType {
+    private static final String AttrNameSpecials = "()<>@,;:\\\"/[]?='%*";
     private String topLevelType;
+
+    private static final ICharacterEncoding USAsciiEncoding =
+      Encodings.GetEncoding("us-ascii", true);
 
     /**
      * Gets the name of this media type's top-level type (such as "text" or
@@ -43,7 +47,8 @@ import com.upokecenter.text.*;
     /**
      * Determines whether this object and another object are equal.
      * @param obj An arbitrary object.
-     * @return True if this object and another object are equal; otherwise, false.
+     * @return {@code true} if this object and another object are equal; otherwise,
+     * {@code false}.
      */
     @Override public boolean equals(Object obj) {
       MediaType other = ((obj instanceof MediaType) ? (MediaType)obj : null);
@@ -62,15 +67,15 @@ import com.upokecenter.text.*;
     @Override public int hashCode() {
       int valueHashCode = 632580499;
         if (this.topLevelType != null) {
-  valueHashCode = (valueHashCode + 632580503 *
-            this.topLevelType.hashCode());
+  valueHashCode = (valueHashCode + (632580503 *
+            this.topLevelType.hashCode()));
         }
         if (this.subType != null) {
-       valueHashCode = (valueHashCode + 632580563 *
-            this.subType.hashCode());
+       valueHashCode = (valueHashCode + (632580563 *
+            this.subType.hashCode()));
         }
         if (this.parameters != null) {
-          valueHashCode = (valueHashCode + 632580587 * this.parameters.size());
+          valueHashCode = (valueHashCode + (632580587 * this.parameters.size()));
         }
       return valueHashCode;
     }
@@ -87,7 +92,7 @@ import com.upokecenter.text.*;
 
     /**
      * Gets a value indicating whether this is a text media type ("text/*").
-     * @return True if this is a text media type; otherwise, false.
+     * @return {@code true} If this is a text media type; otherwise, {@code false}.
      */
     public final boolean isText() {
         return this.getTopLevelType().equals("text");
@@ -95,23 +100,23 @@ import com.upokecenter.text.*;
 
     /**
      * Gets a value indicating whether this is a multipart media type.
-     * @return True if this is a multipart media type; otherwise, false.
+     * @return {@code true} If this is a multipart media type; otherwise, {@code
+     * false}.
      */
     public final boolean isMultipart() {
         return this.getTopLevelType().equals("multipart");
       }
 
     MediaType(
-String type,
+  String type,
  String subtype,
- Map<String,
-      String> parameters) {
+ Map<String, String> parameters) {
       this.topLevelType = type;
       this.subType = subtype;
-      this.parameters = new TreeMap<String, String>(parameters);
+      this.parameters = new HashMap<String, String>(parameters);
     }
 
-    private TreeMap<String, String> parameters;
+    private HashMap<String, String> parameters;
 
     /**
      * Gets a sorted list of the parameters contained in this media type object.
@@ -134,7 +139,7 @@ String type,
       Rfc5322
     }
 
-    private static int skipQtextOrQuotedPair(
+    private static int SkipQtextOrQuotedPair(
       String s,
       int index,
       int endIndex,
@@ -150,7 +155,7 @@ String type,
         if (c < 0x100 && c >= 0x21 && c != 0x7F && c != '\\' && c != '"') {
           return index + 1;
         }
-        i2 = skipQuotedPair(s, index, endIndex);
+        i2 = SkipQuotedPair(s, index, endIndex);
         return i2;
       }
       if (rule == QuotedStringRule.Rfc5322) {
@@ -188,7 +193,7 @@ String type,
     }
 
     // quoted-pair (RFC5322 sec. 3.2.1)
-    static int skipQuotedPair(String s, int index, int endIndex) {
+    static int SkipQuotedPair(String s, int index, int endIndex) {
       if (index + 1 < endIndex && s.charAt(index) == '\\') {
         char c = s.charAt(index + 1);
         // Non-ASCII (allowed in internationalized email headers under RFC6532)
@@ -214,24 +219,24 @@ String type,
     }
 
     // quoted-String (RFC5322 sec. 3.2.4)
-    static int skipQuotedString(
-String s,
-int index,
-int endIndex,
-StringBuilder builder) {
-return skipQuotedString(
-s,
-index,
-endIndex,
-builder,
-QuotedStringRule.Rfc5322);
+    static int SkipQuotedString(
+  String s,
+  int index,
+  int endIndex,
+  StringBuilder builder) {
+return SkipQuotedString(
+  s,
+  index,
+  endIndex,
+  builder,
+  QuotedStringRule.Rfc5322);
     }
 
     private static int ParseFWSLax(
-String str,
-int index,
-int endIndex,
-StringBuilder sb) {
+  String str,
+  int index,
+  int endIndex,
+  StringBuilder sb) {
       while (index < endIndex) {
         int tmp = index;
         // Skip CRLF
@@ -250,12 +255,13 @@ StringBuilder sb) {
       }
       return index;
     }
-    private static int skipQuotedString(
-String str,
-int index,
-int endIndex,
-StringBuilder builder,  // receives the unescaped version of the String
-QuotedStringRule rule) {
+
+    private static int SkipQuotedString(
+  String str,
+  int index,
+  int endIndex,
+  StringBuilder builder,  // receives the unescaped version of the String
+  QuotedStringRule rule) {
       int startIndex = index;
       int valueBLength = (builder == null) ? 0 : builder.length();
       index = (rule != QuotedStringRule.Rfc5322) ? index :
@@ -289,7 +295,7 @@ QuotedStringRule rule) {
           return index;
         }
         int oldIndex = index;
-        index = skipQtextOrQuotedPair(str, index, endIndex, rule);
+        index = SkipQtextOrQuotedPair(str, index, endIndex, rule);
         if (index == oldIndex) {
           if (builder != null) {
             builder.delete(valueBLength, (valueBLength)+((builder.length())-valueBLength));
@@ -349,9 +355,9 @@ QuotedStringRule rule) {
     }
 
     private static void AppendComplexParamValue(
-String name,
-String str,
-StringBuilder sb) {
+  String name,
+  String str,
+  StringBuilder sb) {
       int length = 1;
       int contin = 0;
       String ValueHex = "0123456789ABCDEF";
@@ -492,9 +498,9 @@ StringBuilder sb) {
     }
 
     private static boolean AppendSimpleParamValue(
-String name,
-String str,
-StringBuilder sb) {
+  String name,
+  String str,
+  StringBuilder sb) {
       sb.append(name);
       sb.append('=');
       if (str.length() == 0) {
@@ -540,11 +546,12 @@ StringBuilder sb) {
     }
 
     static void AppendParameters(
-Map<String, String>
-      parameters,
+  Map<String, String> parameters,
  StringBuilder sb) {
       StringBuilder tmp = new StringBuilder();
-      for (String key : parameters.keySet()) {
+      ArrayList<String> keylist = new ArrayList<String>(parameters.keySet());
+      java.util.Collections.sort(keylist);
+      for (String key : keylist) {
         int lineIndex = LastLineStart(sb);
         String name = key;
         String value = parameters.get(key);
@@ -582,11 +589,11 @@ Map<String, String>
     }
 
     static int SkipMimeToken(
-String str,
-int index,
-int endIndex,
-StringBuilder builder,
-boolean httpRules) {
+  String str,
+  int index,
+  int endIndex,
+  StringBuilder builder,
+  boolean httpRules) {
       int i = index;
       String ValueSpecials = "()<>@,;:\\\"/[]?=";
       while (i < endIndex) {
@@ -619,7 +626,7 @@ boolean httpRules) {
       while (i < endIndex) {
         char c = str.charAt(i);
         if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
-          "()<>@,;:\\\"/[]?='%*" .indexOf(c) >= 0)) {
+          AttrNameSpecials.indexOf(c) >= 0)) {
           break;
         }
         if (builder != null) {
@@ -672,13 +679,14 @@ boolean httpRules) {
       return i;
     }
 
-    static int skipMimeTypeSubtype(
-String str,
-int index,
-int endIndex,
-StringBuilder builder) {
+    static int SkipMimeTypeSubtype(
+  String str,
+  int index,
+  int endIndex,
+  StringBuilder builder) {
       int i = index;
       int count = 0;
+      String specials = "!#$&-^_.+";
       while (i < endIndex) {
         char c = str.charAt(i);
         // See RFC6838
@@ -689,7 +697,7 @@ StringBuilder builder) {
           }
           ++i;
           ++count;
-    } else if (count > 0 && (c == (c & 0x7F) && "!#$&-^_.+" .indexOf(c) >=
+    } else if (count > 0 && (c == (c & 0x7f) && specials.indexOf(c) >=
           0)) {
           if (builder != null) {
             builder.append(c);
@@ -712,11 +720,11 @@ StringBuilder builder) {
      * to represent text in the data that uses this media type.
      * @return If the "charset" parameter exists, returns that parameter with the
      * basic upper-case letters A to Z (U + 0041 to U + 005A) converted to lower
-     * case. Returns "us-ascii" instead if the media type is ill-formed
-     * (RFC2045 sec. 5.2), or if the media type is "text/plain" and doesn't
-     * have a "charset" parameter (see RFC2046), or the default value for
-     * that parameter, if any, for the media type if the "charset" parameter
-     * is absent. Returns an empty string in all other cases.
+     * case. Returns {@code "us-ascii"} instead if the media type is
+     * ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain"
+     * and doesn't have a "charset" parameter (see RFC2046), or the default
+     * value for that parameter, if any, for the media type if the "charset"
+     * parameter is absent. Returns an empty string in all other cases.
      */
 
     public String GetCharset() {
@@ -724,11 +732,11 @@ StringBuilder builder) {
       // media types,
       // so that there is no default charset for as yet undefined media
       // types. However,
-      // media types defined before this RFC are grandfathered from the
-      // rule: those
+      // media types defined before this RFC (July 2012) are grandfathered
+      // from the rule: those
       // media types "that fail to specify how the charset is determined" still
-      // have US-ASCII as default. The text media types defined as of Nov. 20,
-      // 2015, are listed below:
+      // have US-ASCII as default. The text media types defined as of Nov. 12,
+      // 2016, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -743,7 +751,7 @@ StringBuilder builder) {
       // vnd.motorola.reflex,
       // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript,
       // vnd.dvb.subtitle,
-      // vnd.fly, rtf, rfc822-headers
+      // vnd.fly, rtf, rfc822-headers, prs.prop.logic, vnd.ascii-art****
       //
       // Special procedure defined for charset detection:
       // -- ecmascript, javascript, html
@@ -789,7 +797,8 @@ StringBuilder builder) {
       // ** No explicit default, but says that "[t]he charset supported
       // by this revision of iCalendar is UTF-8."
       // *** Default is UTF-8 "if 8-bit bytes are encountered" (even if
-      // none are found, though, a 7-bit ASCII text is still also UTF-8)
+      // none are found, though, a 7-bit ASCII text is still also UTF-8).
+      // **** Content containing non-ASCII bytes "should be rejected".
       String param = this.GetParameter("charset");
       if (param != null) {
         return DataUtilities.ToLowerCaseAscii(param);
@@ -830,7 +839,7 @@ StringBuilder builder) {
      * case-insensitively.
      * @return The value of the parameter as a string, or null if the parameter
      * doesn't exist.
-     * @throws NullPointerException The parameter {@code name} is null.
+     * @throws java.lang.NullPointerException The parameter {@code name} is null.
      */
     public String GetParameter(String name) {
       if (name == null) {
@@ -856,48 +865,48 @@ StringBuilder builder) {
       }
       String charset = value.substring(0, firstQuote);
       String language = value.substring(
-firstQuote + 1, (
-firstQuote + 1)+(secondQuote - (firstQuote + 1)));
+  firstQuote + 1, (
+  firstQuote + 1)+(secondQuote - (firstQuote + 1)));
       if (language.length() > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
         return null;
       }
       String paramValue = value.substring(secondQuote + 1);
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
-      cs = (cs == null) ? (Encodings.GetEncoding("us-ascii", true)) : cs;
+      cs = (cs == null) ? (USAsciiEncoding) : cs;
       return DecodeRfc2231Encoding(paramValue, cs);
     }
 
     private static ICharacterEncoding GetRfc2231Charset(String value) {
       if (value == null) {
-        return Encodings.GetEncoding("us-ascii", true);
+        return USAsciiEncoding;
       }
       int firstQuote = value.indexOf('\'');
       if (firstQuote < 0) {
         // not a valid encoded parameter
-        return Encodings.GetEncoding("us-ascii", true);
+        return USAsciiEncoding;
       }
       int secondQuote = value.indexOf('\'',firstQuote + 1);
       if (secondQuote < 0) {
         // not a valid encoded parameter
-        return Encodings.GetEncoding("us-ascii", true);
+        return USAsciiEncoding;
       }
       String charset = value.substring(0, firstQuote);
       String language = value.substring(
-firstQuote + 1, (
-firstQuote + 1)+(secondQuote - (firstQuote + 1)));
+  firstQuote + 1, (
+  firstQuote + 1)+(secondQuote - (firstQuote + 1)));
       if (language.length() > 0 && !ParserUtility.IsValidLanguageTag(language)) {
         // not a valid language tag
-        return Encodings.GetEncoding("us-ascii", true);
+        return USAsciiEncoding;
       }
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
-      cs = (cs == null) ? (Encodings.GetEncoding("us-ascii", true)) : cs;
+      cs = (cs == null) ? (USAsciiEncoding) : cs;
       return cs;
     }
 
   private static String DecodeRfc2231Encoding(
-String value,
-ICharacterEncoding charset) {
+  String value,
+  ICharacterEncoding charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.indexOf('\'');
@@ -911,7 +920,8 @@ ICharacterEncoding charset) {
       if (parameters.size() == 0) {
         return true;
       }
-      List<String> keyList = new ArrayList<String>(parameters.keySet());
+      ArrayList<String> keyList = new ArrayList<String>(parameters.keySet());
+      java.util.Collections.sort(keyList);
       for (String name : keyList) {
         if (!parameters.containsKey(name)) {
           continue;
@@ -976,7 +986,7 @@ ICharacterEncoding charset) {
       for (String name : parameters.keySet()) {
         // Check parameter names using stricter format
         // in RFC6838
-        if (skipMimeTypeSubtype(name, 0, name.length(), null) != name.length()) {
+        if (SkipMimeTypeSubtype(name, 0, name.length(), null) != name.length()) {
           // Illegal parameter name, so use default media type
           return false;
         }
@@ -994,7 +1004,7 @@ ICharacterEncoding charset) {
         return this.getTopLevelType() + "/" + this.getSubType();
       }
 
-    static int skipOws(String s, int index, int endIndex) {
+    static int SkipOws(String s, int index, int endIndex) {
       int i2 = index;
       while (i2 < endIndex) {
         if (s.charAt(i2) == 0x09 || s.charAt(i2) == 0x20) {
@@ -1006,7 +1016,7 @@ ICharacterEncoding charset) {
     }
 
     static boolean ParseParameters(
-String str,
+  String str,
       int index,
  int endIndex,
       boolean httpRules,
@@ -1014,7 +1024,7 @@ String str,
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipOws
-    index = httpRules ? skipOws(str, index, endIndex) :
+    index = httpRules ? SkipOws(str, index, endIndex) :
           HeaderParser.ParseCFWS(
             str,
             index,
@@ -1028,12 +1038,12 @@ String str,
           return false;
         }
         ++index;
-    index = httpRules ? skipOws(str, index, endIndex) :
+    index = httpRules ? SkipOws(str, index, endIndex) :
           HeaderParser.ParseCFWS(
-str,
-index,
-endIndex,
-null);
+  str,
+  index,
+  endIndex,
+  null);
         StringBuilder builder = new StringBuilder();
         // NOTE: RFC6838 restricts the format of parameter names to the same
         // syntax as types and subtypes, but this syntax is incompatible with
@@ -1054,7 +1064,7 @@ null);
           // appear
           // around the equal sign separating an attribute and value, while
           // HTTP explicitly forbids such whitespace
-          index = HeaderParser .ParseCFWS(str, index, endIndex, null);
+          index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         }
         if (index >= endIndex) {
           return false;
@@ -1071,10 +1081,10 @@ null);
         if (!httpRules) {
           // See note above on whitespace around the equal sign
           index = HeaderParser.ParseCFWS(
-str,
-index,
-endIndex,
-null);
+  str,
+  index,
+  endIndex,
+  null);
         }
         if (index >= endIndex) {
           // No more parameters
@@ -1086,7 +1096,7 @@ null);
         // String
         if (attribute.charAt(attribute.length() - 1) != '*') {
           // try getting the value quoted
-          qs = skipQuotedString(
+          qs = SkipQuotedString(
             str,
             index,
             endIndex,
@@ -1123,14 +1133,14 @@ null);
       }
       int endIndex = str.length();
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-      int i = skipMimeTypeSubtype(str, index, endIndex, null);
+      int i = SkipMimeTypeSubtype(str, index, endIndex, null);
       if (i == index || i >= endIndex || str.charAt(i) != '/') {
         return false;
       }
       this.topLevelType =
         DataUtilities.ToLowerCaseAscii(str.substring(index, (index)+(i - index)));
       ++i;
-      int i2 = skipMimeTypeSubtype(str, i, endIndex, null);
+      int i2 = SkipMimeTypeSubtype(str, i, endIndex, null);
       if (i == i2) {
         return false;
       }
@@ -1157,22 +1167,25 @@ null);
      */
     public static final MediaType TextPlainAscii =
       new MediaTypeBuilder(
-"text",
-"plain").SetParameter("charset",
+  "text",
+  "plain").SetParameter(
+        "charset",
         "us-ascii").ToMediaType();
 
     /**
      * Specifies the media type "text/plain" and the "charset" parameter "utf-8",
-     * used for Unicode plain text data.
+     * used for plain text data that may contain characters outside the
+     * basic Latin range (U + 0000 to U + 007F).
      */
     public static final MediaType TextPlainUtf8 =
       new MediaTypeBuilder(
-"text",
-"plain").SetParameter("charset",
+  "text",
+  "plain").SetParameter(
+        "charset",
         "utf-8").ToMediaType();
 
     /**
-     * Specifies the media type "message/rfc822" , used for Internet mail messages.
+     * Specifies the media type "message/rfc822", used for Internet mail messages.
      */
     public static final MediaType MessageRfc822 =
       new MediaTypeBuilder("message", "rfc822").ToMediaType();
@@ -1192,7 +1205,7 @@ null);
      * checks the syntactic validity of the string, but not whether it has
      * all parameters it's required to have or whether the parameters
      * themselves are set to valid values for the parameter.
-     * @param mediaTypeValue A string object representing a media type. This media
+     * @param mediaTypeValue A text string representing a media type. This media
      * type can include parameters.
      * @return A media type object, or text/plain if {@code mediaTypeValue} is
      * empty or syntactically invalid.
@@ -1207,19 +1220,19 @@ null);
      * validity of the string, but not whether it has all parameters it's
      * required to have or whether the parameters themselves are set to
      * valid values for the parameter.
-     * @param str A string object representing a media type. This media type can
+     * @param str A text string representing a media type. This media type can
      * include parameters.
      * @param defaultValue The media type to return if the string is syntactically
      * invalid. Can be null.
      * @return A MediaType object.
-     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static MediaType Parse(String str, MediaType defaultValue) {
       if (str == null) {
         throw new NullPointerException("str");
       }
       MediaType mt = new MediaType();
-      mt.parameters = new TreeMap<String, String>();
+      mt.parameters = new HashMap<String, String>();
       if (!mt.ParseMediaType(str)) {
 return defaultValue;
       }

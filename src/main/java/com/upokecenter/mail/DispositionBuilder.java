@@ -15,8 +15,8 @@ import com.upokecenter.util.*;
      * Description of DispositionBuilder.
      */
   public class DispositionBuilder {
-    private String type;
     private final Map<String, String> parameters;
+    private String type;
 
     /**
      * Gets this value's disposition type, such value, such as "inline" or
@@ -32,19 +32,21 @@ public final void setDispositionType(String value) {
       }
 
     /**
-     * Initializes a new instance of the DispositionBuilder class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.DispositionBuilder} class.
      */
-    public DispositionBuilder () {
+    public DispositionBuilder() {
       this.parameters = new HashMap<String, String>();
       this.type = "attachment";
     }
 
     /**
-     * Initializes a new instance of the DispositionBuilder class.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.DispositionBuilder} class.
      * @param mt A ContentDisposition object.
-     * @throws NullPointerException The parameter {@code mt} is null.
+     * @throws java.lang.NullPointerException The parameter {@code mt} is null.
      */
-    public DispositionBuilder (ContentDisposition mt) {
+    public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
         throw new NullPointerException("mt");
       }
@@ -53,11 +55,12 @@ public final void setDispositionType(String value) {
     }
 
     /**
-     * Initializes a new instance of the DispositionBuilder class.
-     * @param type A string object.
-     * @throws NullPointerException The parameter {@code type} is null.
+     * Initializes a new instance of the {@link
+     * com.upokecenter.mail.DispositionBuilder} class.
+     * @param type A text string.
+     * @throws java.lang.NullPointerException The parameter {@code type} is null.
      */
-    public DispositionBuilder (String type) {
+    public DispositionBuilder(String type) {
       if (type == null) {
   throw new NullPointerException("type");
 }
@@ -70,7 +73,7 @@ if (type.length() == 0) {
 
     /**
      * Gets a value indicating whether this is a text media type.
-     * @return True if this is a text media type; otherwise, false.
+     * @return {@code true} If this is a text media type; otherwise, {@code false}.
      * @deprecated Irrelevant for content dispositions; will be removed in the future.
  */
 @Deprecated
@@ -80,7 +83,8 @@ if (type.length() == 0) {
 
     /**
      * Gets a value indicating whether this is a multipart media type.
-     * @return True if this is a multipart media type; otherwise, false.
+     * @return {@code true} If this is a multipart media type; otherwise, {@code
+     * false}.
      * @deprecated Irrelevant for content dispositions; will be removed in the future.
  */
 @Deprecated
@@ -98,9 +102,9 @@ if (type.length() == 0) {
 
     /**
      * Sets the disposition type, such as "inline".
-     * @param str A string object.
+     * @param str A text string.
      * @return This instance.
-     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public DispositionBuilder SetDispositionType(String str) {
       if (str == null) {
@@ -109,7 +113,7 @@ if (type.length() == 0) {
       if (str.length() == 0) {
         throw new IllegalArgumentException("str is empty.");
       }
-   if (MediaType.skipMimeTypeSubtype(str, 0, str.length(), null) !=
+   if (MediaType.SkipMimeTypeSubtype(str, 0, str.length(), null) !=
         str.length()) {
         throw new IllegalArgumentException("Not a well-formed type: " + str);
       }
@@ -123,7 +127,7 @@ if (type.length() == 0) {
      * @param name The parameter to remove. The name is compared case
      * insensitively.
      * @return This instance.
-     * @throws NullPointerException The parameter {@code name} is null.
+     * @throws java.lang.NullPointerException The parameter {@code name} is null.
      */
     public DispositionBuilder RemoveParameter(String name) {
       if (name == null) {
@@ -139,9 +143,10 @@ if (type.length() == 0) {
      * (compared case-insensitively), it will be overwritten.
      * @param value Value of the parameter to set.
      * @return This instance.
-     * @throws NullPointerException Either {@code value} or {@code name} is null.
-     * @throws IllegalArgumentException The parameter {@code name} is empty, or it isn't a
-     * well-formed parameter name.
+     * @throws java.lang.NullPointerException Either {@code value} or {@code name} is
+     * null.
+     * @throws IllegalArgumentException The parameter {@code name} is empty, or it
+     * isn't a well-formed parameter name.
      */
     public DispositionBuilder SetParameter(String name, String value) {
       if (value == null) {
@@ -153,7 +158,7 @@ if (type.length() == 0) {
       if (name.length() == 0) {
         throw new IllegalArgumentException("name is empty.");
       }
-if (MediaType.skipMimeTypeSubtype(name, 0, name.length(), null) !=
+if (MediaType.SkipMimeTypeSubtype(name, 0, name.length(), null) !=
         name.length()) {
       throw new IllegalArgumentException("Not a well-formed parameter name: " +
           name);

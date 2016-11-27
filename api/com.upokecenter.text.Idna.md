@@ -47,7 +47,7 @@ Determines whether the given string is a syntactically valid domain name.
 
 **Parameters:**
 
-* <code>str</code> - A string object.
+* <code>str</code> - A text string.
 
 * <code>lookupRules</code> - If true, uses rules to apply when looking up the string
  as a domain name. If false, uses rules to apply when registering the
@@ -55,5 +55,5 @@ Determines whether the given string is a syntactically valid domain name.
 
 **Returns:**
 
-* True if the given string is a syntactically valid domain name;
- otherwise; false.
+* <code>true</code> if the given string is a syntactically valid domain
+ name; otherwise; false.

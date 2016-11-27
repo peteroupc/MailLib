@@ -237,10 +237,10 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
     }
 
     private static int SkipEncodedText(
-String str,
-int index,
-int endIndex,
-boolean inComments) {
+  String str,
+  int index,
+  int endIndex,
+  boolean inComments) {
       int i = index;
       while (i < endIndex) {
         char c = str.charAt(i);
@@ -256,9 +256,9 @@ boolean inComments) {
     }
 
     public static String DecodeEncodedWordsLenient(
-String str,
-int index,
-int endIndex) {
+  String str,
+  int index,
+  int endIndex) {
       int state = 0;
       int markStart = 0;
       int wordStart = 0;
@@ -341,9 +341,8 @@ int endIndex) {
               index = charsetStart;
               break;
             }
-         if (str.charAt(index) == '?' && index + 1 < endIndex && str.charAt(index + 1) ==
-              '='
-) {
+         if (str.charAt(index) == '?' && index + 1 < endIndex &&
+              str.charAt(index + 1) == '=') {
               String charset = str.substring(
        charsetStart, (
        charsetStart)+(charsetEnd - charsetStart));
@@ -380,8 +379,10 @@ int endIndex) {
                 state = 0;
               } else {
                 if (!haveSpace) {
-               builder.append(str.substring(markStart, (markStart)+(wordStart -
-                   markStart)));
+               builder.append(
+  str.substring(
+  markStart, (
+  markStart)+(wordStart - markStart)));
                 }
                 builder.append(decodedWord);
                 haveSpace = false;
@@ -421,10 +422,10 @@ int endIndex) {
     }
 
     public static String DecodeEncodedWords(
-String str,
-int index,
-int endIndex,
-EncodedWordContext context) {
+  String str,
+  int index,
+  int endIndex,
+  EncodedWordContext context) {
       if (endIndex - index < 9) {
         // Too short for encoded words to appear
         return str.substring(index, (index)+(endIndex - index));
@@ -566,7 +567,7 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
                   // that could render the comment syntactically invalid
                   // (the encoded
                   // word could even encode ASCII control characters and
-                  // ValueSpecials)
+                  // specials)
                   if (context == EncodedWordContext.Phrase &&
                     HasSuspiciousTextInStructured(decodedWord)) {
                     hasSuspiciousText = true;
@@ -594,9 +595,9 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
           // Append whitespace as long as it doesn't occur between two
           // encoded words
           builder.append(
-str.substring(
-whitespaceStart, (
-whitespaceStart)+(whitespaceEnd - whitespaceStart)));
+  str.substring(
+  whitespaceStart, (
+  whitespaceStart)+(whitespaceEnd - whitespaceStart)));
         }
         if (startParen) {
           builder.append('(');
@@ -641,18 +642,18 @@ whitespaceStart)+(whitespaceEnd - whitespaceStart)));
       }
       String retval = builder.toString();
       if (
-wordsWereDecoded && (
-hasSuspiciousText || (
-retval.indexOf(
-"=?") >= 0 && retval.indexOf(
-"?=") >= 0))) {
+  wordsWereDecoded && (
+  hasSuspiciousText || (
+  retval.indexOf(
+  "=?") >= 0 && retval.indexOf(
+  "?=") >= 0))) {
         if (context == EncodedWordContext.Comment) {
           String wrappedComment = "(" + retval + ")";
           if (
-HeaderParserUtility.ParseCommentStrict(
-wrappedComment,
-0,
-wrappedComment.length()) != wrappedComment.length()) {
+  HeaderParserUtility.ParseCommentStrict(
+  wrappedComment,
+  0,
+  wrappedComment.length()) != wrappedComment.length()) {
             // Comment is syntactically invalid after decoding, so
             // don't decode any of the encoded words
             return str.substring(start, (start)+(endIndex - start));
@@ -670,9 +671,9 @@ wrappedComment.length()) != wrappedComment.length()) {
     }
 
     private static boolean FollowedByEndOrLinearWhitespace(
-String str,
-int index,
-int endIndex) {
+  String str,
+  int index,
+  int endIndex) {
       if (index == endIndex) {
         return true;
       }
@@ -691,9 +692,9 @@ int endIndex) {
     }
 
     private static int IndexOfNextPossibleEncodedWord(
-String str,
-int index,
-int endIndex) {
+  String str,
+  int index,
+  int endIndex) {
       int cws = HeaderParser.ParseCFWS(str, index, endIndex, null);
       if (cws == index) {
         // No linear whitespace
@@ -715,7 +716,7 @@ int endIndex) {
     }
 
     public static String DecodePhraseText(
-String str,
+  String str,
       int index,
  int endIndex,
       List<int[]> tokens,
@@ -745,10 +746,10 @@ String str,
           int startIndex = token[1];
           builder.append(str.substring(lastIndex, (lastIndex)+(startIndex + 1 - lastIndex)));
           String newComment = Rfc2047.DecodeEncodedWords(
-str,
-startIndex + 1,
-token[2] - 1,
-EncodedWordContext.Comment);
+  str,
+  startIndex + 1,
+  token[2] - 1,
+  EncodedWordContext.Comment);
           builder.append(newComment);
           lastIndex = token[2] - 1;
         } else if (token[0] == HeaderParserUtility.TokenPhraseAtom ||
@@ -805,10 +806,10 @@ EncodedWordContext.Comment);
             builder.append(str.substring(wordStart, (wordStart)+(wordEnd - wordStart)));
           } else {
             String replacement = Rfc2047.DecodeEncodedWords(
-str,
-wordStart,
-wordEnd,
-EncodedWordContext.Phrase);
+  str,
+  wordStart,
+  wordEnd,
+  EncodedWordContext.Phrase);
             builder.append(replacement);
           }
           hasCFWS = HeaderParser.ParseCFWS(str, wordEnd, endIndex, null) !=
@@ -820,7 +821,7 @@ EncodedWordContext.Phrase);
             builder.append(' ');
             appendSpace = false;
           }
-          int tokenIndex = MediaType.skipQuotedString(
+          int tokenIndex = MediaType.SkipQuotedString(
          str,
          token[1],
          token[2],
@@ -867,7 +868,7 @@ EncodedWordContext.Phrase);
       while (index < endIndex) {
         if (str.charAt(index) == '"') {
           // Quoted String
-          index = MediaType.skipQuotedString(
+          index = MediaType.SkipQuotedString(
    str,
    index,
    endIndex,
@@ -941,10 +942,10 @@ EncodedWordContext.Phrase);
     }
 
     public static String EncodePhraseText(
-String str,
-int index,
-int endIndex,
-List<int[]> tokens) {
+  String str,
+  int index,
+  int endIndex,
+  List<int[]> tokens) {
       // Assumes the value matches the production "phrase",
       // and assumes that endIndex is the end of all whitespace
       // found after the phrase. Doesn't encode text within comments.

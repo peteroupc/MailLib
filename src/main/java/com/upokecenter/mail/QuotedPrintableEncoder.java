@@ -17,15 +17,15 @@ import com.upokecenter.text.*;
      */
   final class QuotedPrintableEncoder implements ICharacterEncoder {
     private static final String HexAlphabet = "0123456789ABCDEF";
-    private int lineCount;
     private final int lineBreakMode;
     private final boolean unlimitedLineLength;
+    private int lineCount;
 
     // lineBreakMode:
     // 0 - no line breaks
     // 1 - treat CRLF as a line break
     // 2 - treat CR, LF, and CRLF as a line break
-    public QuotedPrintableEncoder (int lineBreakMode, boolean unlimitedLineLength) {
+    public QuotedPrintableEncoder(int lineBreakMode, boolean unlimitedLineLength) {
       this.lineBreakMode = lineBreakMode;
       this.unlimitedLineLength = unlimitedLineLength;
     }
@@ -38,24 +38,31 @@ import com.upokecenter.text.*;
           output.write(0x3d);
           output.write(0x0d);
           output.write(0x0a);
-          this.lineCount = appendStr.length();
+          this.lineCount = 0;
           count += 3;
-        } else {
-          this.lineCount += appendStr.length();
         }
       }
       for (int i = 0; i < appendStr.length(); ++i) {
-        output.write((byte)appendStr.charAt(i));
+        if (i == 0 && this.lineCount == 0 && appendStr.charAt(i) == '.') {
+          output.write((byte)'=');
+          output.write((byte)'2');
+          output.write((byte)'E');
+          this.lineCount += 2;
+          count += 2;
+        } else {
+          output.write((byte)appendStr.charAt(i));
+        }
         ++count;
       }
+      this.lineCount += appendStr.length();
       return count;
     }
 
     private int IncrementAndAppendChars(
-IWriter output,
-char b1,
-char b2,
-char b3) {
+  IWriter output,
+  char b1,
+  char b2,
+  char b3) {
       int count = 0;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + 3 > 75) {
@@ -63,33 +70,54 @@ char b3) {
           output.write(0x3d);
           output.write(0x0d);
           output.write(0x0a);
-          this.lineCount = 3;
+          this.lineCount = 0;
           count += 3;
-        } else {
-          this.lineCount += 3;
         }
       }
-      output.write((byte)b1);
+      if (this.lineCount == 0 && b1 == '.') {
+        output.write((byte)'=');
+        output.write((byte)'2');
+        output.write((byte)'E');
+        this.lineCount += 2;
+        count += 2;
+      } else {
+        output.write((byte)b1);
+      }
       output.write((byte)b2);
       output.write((byte)b3);
+      this.lineCount += 3;
       count += 3;
       return count;
     }
 
     private int IncrementAndAppendChar(IWriter output, char ch) {
+      int count = 1;
       if (!this.unlimitedLineLength) {
         if (this.lineCount + 1 > 75) {
           // 76 including the final '='
-          byte[] buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)ch  };
+          byte[] buf;
+          if (ch == '.') {
+            buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)'=',
+            (byte)'2', (byte)'E'  };
+          } else {
+            buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)ch  };
+          }
           output.write(buf, 0, buf.length);
-          this.lineCount = 1;
-          return 4;
-        } else {
-          ++this.lineCount;
+          this.lineCount = buf.length - 3;
+          return buf.length;
         }
       }
-      output.write((byte)ch);
-      return 1;
+      if (this.lineCount == 0 && ch == '.') {
+        output.write((byte)'=');
+        output.write((byte)'2');
+        output.write((byte)'E');
+        this.lineCount += 2;
+        count += 2;
+      } else {
+        output.write((byte)ch);
+      }
+      ++this.lineCount;
+      return count;
     }
 
     private int machineState;
@@ -132,8 +160,7 @@ char b3) {
               } else if (c == 0x3d) {
                 return count + this.IncrementAndAppend(output, "=3D");
               } else if (c == 0x2e && this.lineCount == 0) {
-                this.machineState = 2;
-                return count;
+                return count + this.IncrementAndAppend(output, "=2E");
               } else if (c == 0x46 && this.lineCount == 0) {
                 this.machineState = 3;
                 return count;
@@ -146,10 +173,10 @@ char b3) {
                 return count + this.IncrementAndAppendChar(output, (char)c);
               } else {
                 count += this.IncrementAndAppendChars(
-output,
-(char)0x3d,
-HexAlphabet.charAt((c >> 4) & 15),
-HexAlphabet.charAt(c & 15));
+  output,
+  (char)0x3d,
+  HexAlphabet.charAt((c >> 4) & 15),
+  HexAlphabet.charAt(c & 15));
                 return count;
               }
             }
@@ -176,16 +203,6 @@ HexAlphabet.charAt(c & 15));
                   continue;
                 }
               }
-            }
-          case 2: {
-              // Dot at beginning of line
-              if (c == 0x0d || c == 0x0a) {
-                count += this.IncrementAndAppend(output, "=2E");
-              } else {
-                count += this.IncrementAndAppendChar(output, (char)0x2e);
-              }
-              this.machineState = 0;
-              continue;
             }
           case 3: {
               // Capital F at beginning of line

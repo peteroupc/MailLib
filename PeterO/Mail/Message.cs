@@ -2013,7 +2013,7 @@ namespace PeterO.Mail {
             var badticks = 0;
             var bytes = new byte [size];
             for (var k = 0; k < 15; ++k) {
-                var dtt = (sx == 0) ? unchecked((int)DateTime.Now.Ticks) :
+                int dtt = (sx == 0) ? unchecked((int)DateTime.Now.Ticks) :
                   unchecked((int)DateTime.UtcNow.Ticks);
                 if (badticks >= 20) {
                     dtt /= 10;

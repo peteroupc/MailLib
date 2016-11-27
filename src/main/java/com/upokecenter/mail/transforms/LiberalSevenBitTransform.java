@@ -14,7 +14,7 @@ import com.upokecenter.mail.*;
   public final class LiberalSevenBitTransform implements IByteReader {
     private final IByteReader input;
 
-    public LiberalSevenBitTransform (IByteReader stream) {
+    public LiberalSevenBitTransform(IByteReader stream) {
       this.input = stream;
     }
 

@@ -11,23 +11,37 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   public final class QuotedPrintableTransform implements IByteReader {
-    private int lineCharCount;
     private final boolean lenientLineBreaks;
+    private final boolean checkStrictEncoding;
+    private final int maxLineSize;
+    private final IByteReader input;
+
+    private final int[] printable = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    private int lineCharCount;
     private byte[] buffer;
     private int bufferIndex;
     private int bufferCount;
-    private final boolean checkStrictEncoding;
-    private final int maxLineSize;
 
     private int lastByte;
     private boolean unget;
-    private final IByteReader input;
 
-    public QuotedPrintableTransform (
-IByteReader input,
-boolean lenientLineBreaks,
-int maxLineSize,
-boolean checkStrictEncoding) {
+    public QuotedPrintableTransform(
+  IByteReader input,
+  boolean lenientLineBreaks,
+  int maxLineSize,
+  boolean checkStrictEncoding) {
       this.maxLineSize = maxLineSize;
       this.lenientLineBreaks = lenientLineBreaks;
       this.checkStrictEncoding = checkStrictEncoding;
@@ -35,18 +49,18 @@ boolean checkStrictEncoding) {
       this.lastByte = -1;
     }
 
-    public QuotedPrintableTransform (
-IByteReader input,
-boolean lenientLineBreaks) {
+    public QuotedPrintableTransform(
+  IByteReader input,
+  boolean lenientLineBreaks) {
  this(input, lenientLineBreaks, 76, false);
     }
 
-    public QuotedPrintableTransform (
-IByteReader input,
-boolean lenientLineBreaks,
-int maxLineLength) {
+    public QuotedPrintableTransform(
+  IByteReader input,
+  boolean lenientLineBreaks,
+  int maxLineLength) {
  this(
-input, lenientLineBreaks, maxLineLength, false);
+  input, lenientLineBreaks, maxLineLength, false);
     }
 
     private void ResizeBuffer(int size) {
@@ -68,19 +82,6 @@ input, lenientLineBreaks, maxLineLength, false);
       }
       return this.lastByte;
     }
-
-    private final int[] printable = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     public int read() {
       if (this.bufferIndex < this.bufferCount) {

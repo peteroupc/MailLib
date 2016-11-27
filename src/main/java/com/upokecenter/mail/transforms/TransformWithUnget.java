@@ -15,7 +15,7 @@ import com.upokecenter.mail.*;
     private int lastByte;
     private boolean unget;
 
-    public TransformWithUnget (IByteReader stream) {
+    public TransformWithUnget(IByteReader stream) {
       this.lastByte = -1;
       this.transform = stream;
     }

@@ -31,7 +31,7 @@
  except header field names.</li> <li>There is no line length limit
  imposed when parsing quoted-printable or base64 encoded bodies.</li>
  <li>If the transfer encoding is absent and the content type is
- "message/rfc822" , bytes with values greater than 127 (called "8-bit
+ "message/rfc822", bytes with values greater than 127 (called "8-bit
  bytes" in the rest of this summary) are still allowed, despite the
  default value of "7bit" for "Content-Transfer-Encoding".</li> <li>In
  the following cases, if the transfer encoding is absent or declared
@@ -60,12 +60,15 @@
 
 ## Methods
 
-* `Message()`<br>
- Initializes a new instance of the Message class.
-* `Message(byte[] bytes)`<br>
- Initializes a new instance of the Message class.
-* `Message(InputStream stream)`<br>
- Initializes a new instance of the Message class.
+* `Message() Message`<br>
+ Initializes a new instance of the Message
+ class.
+* `Message(byte[] bytes) Message`<br>
+ Initializes a new instance of the Message
+ class.
+* `Message(InputStream stream) Message`<br>
+ Initializes a new instance of the Message
+ class.
 * `Message AddHeader(Map.Entry<String,String> header)`<br>
  Adds a header field to the end of the message's header.
 * `Message AddHeader(String name,
@@ -149,19 +152,22 @@
 
 ## Constructors
 
-* `Message()`<br>
- Initializes a new instance of the Message class.
-* `Message(byte[] bytes)`<br>
- Initializes a new instance of the Message class.
-* `Message(InputStream stream)`<br>
- Initializes a new instance of the Message class.
+* `Message() Message`<br>
+ Initializes a new instance of the Message
+ class.
+* `Message(byte[] bytes) Message`<br>
+ Initializes a new instance of the Message
+ class.
+* `Message(InputStream stream) Message`<br>
+ Initializes a new instance of the Message
+ class.
 
 ## Method Details
 
 ### Message
     public Message(InputStream stream)
-Initializes a new instance of the Message class. Reads from the given InputStream
- object to initialize the message.
+Initializes a new instance of the <code>Message</code>
+ class. Reads from the given InputStream object to initialize the message.
 
 **Parameters:**
 
@@ -173,8 +179,8 @@ Initializes a new instance of the Message class. Reads from the given InputStrea
 
 ### Message
     public Message(byte[] bytes)
-Initializes a new instance of the Message class. Reads from the given byte
- array to initialize the message.
+Initializes a new instance of the <code>Message</code>
+ class. Reads from the given byte array to initialize the message.
 
 **Parameters:**
 
@@ -186,8 +192,9 @@ Initializes a new instance of the Message class. Reads from the given byte
 
 ### Message
     public Message()
-Initializes a new instance of the Message class. The message will be plain
- text and have an artificial From address.
+Initializes a new instance of the <code>Message</code>
+ class. The message will be plain text and have an artificial From
+ address.
 ### SetCurrentDate
     public Message SetCurrentDate()
 Sets this message's Date header field to the current time as its value.
@@ -251,7 +258,8 @@ Gets this message's media type.
 
 **Throws:**
 
-* <code>NullPointerException</code> - This value is being set and "value" is null.
+* <code>NullPointerException</code> - This value is being set and "value" is
+ null.
 
 ### setContentType
     public final void setContentType(MediaType value)
@@ -322,9 +330,9 @@ Adds a header field to the end of the message's header. <p>Updates the
 
 **Parameters:**
 
-* <code>header</code> - A Map.Entry object. The key is the name of the header
- field, such as "From" or "Content-ID". The value is the header
- field's value.
+* <code>header</code> - A key/value pair. The key is the name of the header field,
+ such as "From" or "Content-ID". The value is the header field's
+ value.
 
 **Returns:**
 
@@ -332,11 +340,12 @@ Adds a header field to the end of the message's header. <p>Updates the
 
 **Throws:**
 
-* <code>NullPointerException</code> - The key or value of <code>header</code> is null.
+* <code>NullPointerException</code> - The key or value of <code>header</code> is
+ null.
 
-* <code>IllegalArgumentException</code> - The header field name is too long or contains an
- invalid character, or the header field's value is syntactically
- invalid.
+* <code>IllegalArgumentException</code> - The header field name is too long or
+ contains an invalid character, or the header field's value is
+ syntactically invalid.
 
 ### AddHeader
     public Message AddHeader(String name, String value)
@@ -356,12 +365,11 @@ Adds a header field to the end of the message's header. <p>Updates the
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>name</code> or <code>value</code> is
- null.
+* <code>NullPointerException</code> - The parameter <code>name</code> or <code>value</code> is null.
 
-* <code>IllegalArgumentException</code> - The header field name is too long or contains an
- invalid character, or the header field's value is syntactically
- invalid.
+* <code>IllegalArgumentException</code> - The header field name is too long or
+ contains an invalid character, or the header field's value is
+ syntactically invalid.
 
 ### Generate
     public String Generate()
@@ -391,7 +399,7 @@ Generates this message's data in text form. <p>The generated message will
 
 **Throws:**
 
-* <code>MessageDataException</code> - The message can't be generated.
+* <code>PeterO.Mail.MessageDataException</code> - The message can't be generated.
 
 ### GetBody
     public byte[] GetBody()
@@ -455,9 +463,9 @@ Sets this message's Date header field to the given date and time.
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - The parameter <code>dateTime</code> contains fewer than
- eight elements, contains invalid values, or contains a year less than
- 0.
+* <code>IllegalArgumentException</code> - The parameter <code>dateTime</code> contains
+ fewer than eight elements, contains invalid values, or contains a
+ year less than 0.
 
 * <code>NullPointerException</code> - The parameter <code>dateTime</code> is null.
 
@@ -480,13 +488,13 @@ Gets the name and value of a header field by index.
 
 **Returns:**
 
-* A Map.Entry object. The key is the name of the header field, such
- as "From" or "Content-ID". The value is the header field's value.
+* A key/value pair. The key is the name of the header field, such as
+ "From" or "Content-ID". The value is the header field's value.
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at least as
- high as the number of header fields.
+* <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at
+ least as high as the number of header fields.
 
 ### GetHeader
     public String GetHeader(String name)
@@ -546,8 +554,8 @@ Removes a header field by index. <p>Updates the ContentType and
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at least as
- high as the number of header fields.
+* <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at
+ least as high as the number of header fields.
 
 ### RemoveHeader
     public Message RemoveHeader(String name)
@@ -599,9 +607,9 @@ Sets the name and value of a header field by index. <p>Updates the
 
 * <code>index</code> - Zero-based index of the header field to set.
 
-* <code>header</code> - A Map.Entry object. The key is the name of the header
- field, such as "From" or "Content-ID". The value is the header
- field's value.
+* <code>header</code> - A key/value pair. The key is the name of the header field,
+ such as "From" or "Content-ID". The value is the header field's
+ value.
 
 **Returns:**
 
@@ -609,12 +617,13 @@ Sets the name and value of a header field by index. <p>Updates the
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at least as
- high as the number of header fields; or, the header field name is too
- long or contains an invalid character, or the header field's value is
- syntactically invalid.
+* <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at
+ least as high as the number of header fields; or, the header field
+ name is too long or contains an invalid character, or the header
+ field's value is syntactically invalid.
 
-* <code>NullPointerException</code> - The key or value of <code>header</code> is null.
+* <code>NullPointerException</code> - The key or value of <code>header</code> is
+ null.
 
 ### SetHeader
     public Message SetHeader(int index, String name, String value)
@@ -636,13 +645,12 @@ Sets the name and value of a header field by index. <p>Updates the
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at least as
- high as the number of header fields; or, the header field name is too
- long or contains an invalid character, or the header field's value is
- syntactically invalid.
+* <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at
+ least as high as the number of header fields; or, the header field
+ name is too long or contains an invalid character, or the header
+ field's value is syntactically invalid.
 
-* <code>NullPointerException</code> - The parameter <code>name</code> or <code>value</code> is
- null.
+* <code>NullPointerException</code> - The parameter <code>name</code> or <code>value</code> is null.
 
 ### SetHeader
     public Message SetHeader(int index, String value)
@@ -662,10 +670,10 @@ Sets the value of a header field by index without changing its name.
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at least as
- high as the number of header fields; or, the header field name is too
- long or contains an invalid character, or the header field's value is
- syntactically invalid.
+* <code>IllegalArgumentException</code> - The parameter <code>index</code> is 0 or at
+ least as high as the number of header fields; or, the header field
+ name is too long or contains an invalid character, or the header
+ field's value is syntactically invalid.
 
 * <code>NullPointerException</code> - The parameter <code>value</code> is null.
 
@@ -690,18 +698,17 @@ Sets the value of this message's header field. If a header field with the
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - The header field name is too long or contains an
- invalid character, or the header field's value is syntactically
- invalid.
+* <code>IllegalArgumentException</code> - The header field name is too long or
+ contains an invalid character, or the header field's value is
+ syntactically invalid.
 
-* <code>NullPointerException</code> - The parameter <code>name</code> or <code>value</code> is
- null.
+* <code>NullPointerException</code> - The parameter <code>name</code> or <code>value</code> is null.
 
 ### SetHtmlBody
     public Message SetHtmlBody(String str)
 Sets the body of this message to the specified string in HTML format. The
- character sequences CR (carriage return, "\r", U+000D), LF (line
- feed, "\n" , U+000A), and CR/LF will be converted to CR/LF line
+ character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
+ feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
  breaks. Unpaired surrogate code points will be replaced with
  replacement characters.
 
@@ -721,7 +728,7 @@ Sets the body of this message to the specified string in HTML format. The
     public Message SetTextAndHtml(String text, String html)
 Sets the body of this message to a multipart body with plain text and HTML
  versions of the same message. The character sequences CR (carriage
- return, "\r" , U+000D), LF (line feed, "\n", U+000A), and CR/LF will
+ return, "&#x5c;r" , U+000D), LF (line feed, "&#x5c;n", U+000A), and CR/LF will
  be converted to CR/LF line breaks. Unpaired surrogate code points
  will be replaced with replacement characters.
 
@@ -737,14 +744,13 @@ Sets the body of this message to a multipart body with plain text and HTML
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>text</code> or <code>html</code> is
- null.
+* <code>NullPointerException</code> - The parameter <code>text</code> or <code>html</code> is null.
 
 ### SetTextBody
     public Message SetTextBody(String str)
 Sets the body of this message to the specified plain text string. The
- character sequences CR (carriage return, "\r", U+000D), LF (line
- feed, "\n" , U+000A), and CR/LF will be converted to CR/LF line
+ character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
+ feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
  breaks. Unpaired surrogate code points will be replaced with
  replacement characters. This method changes this message's media type
  to plain text.

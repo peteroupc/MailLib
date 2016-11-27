@@ -18,6 +18,8 @@ Specifies how a message body should be displayed or handled by a mail user
 
 * `boolean equals(Object obj)`<br>
  Determines whether this object and another object are equal.
+* `static String EscapeString(String str)`<br>
+ Not documented yet.
 * `String getDispositionType()`<br>
  Gets a string containing this object's disposition type, such as "inline" or
  "attachment".
@@ -78,7 +80,7 @@ Determines whether this object and another object are equal.
 
 **Returns:**
 
-* True if the objects are equal; otherwise, false.
+* <code>true</code> if the objects are equal; otherwise, <code>false</code>.
 
 ### hashCode
     public int hashCode()
@@ -98,7 +100,7 @@ Gets a value indicating whether the disposition type is inline.
 
 **Returns:**
 
-* True if the disposition type is inline; otherwise, false.
+* <code>true</code> If the disposition type is inline; otherwise, <code>false</code>.
 
 ### isAttachment
     public final boolean isAttachment()
@@ -106,7 +108,8 @@ Gets a value indicating whether the disposition type is attachment.
 
 **Returns:**
 
-* True if the disposition type is attachment; otherwise, false.
+* <code>true</code> If the disposition type is attachment; otherwise,
+ <code>false</code>.
 
 ### getParameters
     public final Map<String,String> getParameters()
@@ -133,12 +136,12 @@ Converts this object to a text string.
     public static String MakeFilename(String str)
 Converts a file name from the Content-Disposition header to a suitable name
  for saving data to a file. <p>Examples:</p>
- <p>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt" (RFC 2047
- encoding)</p> <p>"=?utf-8?q?long_filename?=" -&gt; "long filename"
- (RFC 2047 encoding)</p> <p>"utf-8'en'hello%2Etxt" -&gt; "hello.txt"
- (RFC 2231 encoding)</p> <p>"nul.txt" -&gt; "_nul.txt" (Reserved
- name)</p> <p>"dir1/dir2/file" -&gt; "dir1_dir2_file" (Directory
- separators)</p>
+ <p><code>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt"</code> (RFC 2047
+ encoding)</p> <p><code>"=?utf-8?q?long_filename?=" -&gt; "long
+ filename"</code> (RFC 2047 encoding)</p> <p><code>"utf-8'en'hello%2Etxt"
+ -&gt; "hello.txt"</code> (RFC 2231 encoding)</p> <p><code>"nul.txt" -&gt;
+ "_nul.txt"</code> (Reserved name)</p> <p><code>"dir1/dir2/file" -&gt;
+ "dir1_dir2_file"</code> (Directory separators)</p>
 
 **Parameters:**
 
@@ -159,8 +162,19 @@ Converts a file name from the Content-Disposition header to a suitable name
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter "name" or <code>str</code> or
- "dispoValue" or "dispositionValue" is null.
+* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+
+### EscapeString
+    public static String EscapeString(String str)
+Not documented yet.
+
+**Parameters:**
+
+* <code>str</code> - Not documented yet.
+
+**Returns:**
+
+* A string object.
 
 ### GetParameter
     public String GetParameter(String name)
@@ -188,7 +202,7 @@ Parses a content disposition string and returns a content disposition
 
 **Parameters:**
 
-* <code>dispoValue</code> - A string object.
+* <code>dispoValue</code> - A text string.
 
 **Returns:**
 
@@ -197,7 +211,8 @@ Parses a content disposition string and returns a content disposition
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>dispoValue</code> is null.
+* <code>NullPointerException</code> - The parameter <code>dispoValue</code> is
+ null.
 
 ### Parse
     public static ContentDisposition Parse(String dispositionValue, ContentDisposition defaultValue)
@@ -206,7 +221,7 @@ Creates a new content disposition object from the value of a
 
 **Parameters:**
 
-* <code>dispositionValue</code> - A string object that should be the value of a
+* <code>dispositionValue</code> - A text string that should be the value of a
  Content-Disposition header field.
 
 * <code>defaultValue</code> - The value to return in case the disposition value is
@@ -218,5 +233,5 @@ Creates a new content disposition object from the value of a
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>dispositionValue</code> is
- null.
+* <code>NullPointerException</code> - The parameter <code>dispositionValue</code>
+ is null.

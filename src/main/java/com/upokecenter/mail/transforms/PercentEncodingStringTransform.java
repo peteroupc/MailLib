@@ -17,7 +17,7 @@ import com.upokecenter.mail.*;
     private int bufferIndex;
     private int bufferCount;
 
-    public PercentEncodingStringTransform (String input) {
+    public PercentEncodingStringTransform(String input) {
       this.input = input;
     }
 

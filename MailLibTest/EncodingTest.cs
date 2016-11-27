@@ -219,7 +219,7 @@ namespace MailLibTest {
             if (headers) {
               Console.WriteLine (fn + ":\n--Line length exceeded in header (" +
                     maxLineLength + " " +
-                    (str.Substring (index - 78, 78)) + ", " + lineLength + ")");
+                    (str.Substring(index - 78, 78)) + ", " + lineLength + ")");
               return 0;
             }
             if (!meetsLineLength && !mllmessage) {

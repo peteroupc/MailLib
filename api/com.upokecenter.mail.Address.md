@@ -6,8 +6,9 @@ Represents an email address.
 
 ## Methods
 
-* `Address(String addressValue)`<br>
- Initializes a new instance of the Address class.
+* `Address(String addressValue) Address`<br>
+ Initializes a new instance of the Address
+ class.
 * `String getDomain()`<br>
  Gets the domain of this email address (the part after the "@" sign).
 * `String getLocalPart()`<br>
@@ -17,14 +18,16 @@ Represents an email address.
 
 ## Constructors
 
-* `Address(String addressValue)`<br>
- Initializes a new instance of the Address class.
+* `Address(String addressValue) Address`<br>
+ Initializes a new instance of the Address
+ class.
 
 ## Method Details
 
 ### Address
     public Address(String addressValue)
-Initializes a new instance of the Address class.
+Initializes a new instance of the <code>Address</code>
+ class.
 
 **Parameters:**
 
@@ -32,16 +35,18 @@ Initializes a new instance of the Address class.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>addressValue</code> is null.
+* <code>NullPointerException</code> - The parameter <code>addressValue</code> is
+ null.
 
-* <code>IllegalArgumentException</code> - The email address contains invalid syntax. For
- example, it doesn't contain an '@' sign or either side of the '@'
+* <code>IllegalArgumentException</code> - The email address contains invalid syntax.
+ For example, it doesn't contain an '@' sign or either side of the '@'
  contains invalid characters, the address is too long, or the address
  contains comments (text within parentheses).
 
 ### Address
     public Address(String addressValue)
-Initializes a new instance of the Address class.
+Initializes a new instance of the <code>Address</code>
+ class.
 
 **Parameters:**
 
@@ -49,10 +54,11 @@ Initializes a new instance of the Address class.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>addressValue</code> is null.
+* <code>NullPointerException</code> - The parameter <code>addressValue</code> is
+ null.
 
-* <code>IllegalArgumentException</code> - The email address contains invalid syntax. For
- example, it doesn't contain an '@' sign or either side of the '@'
+* <code>IllegalArgumentException</code> - The email address contains invalid syntax.
+ For example, it doesn't contain an '@' sign or either side of the '@'
  contains invalid characters, the address is too long, or the address
  contains comments (text within parentheses).
 

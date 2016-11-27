@@ -3,11 +3,11 @@ package com.upokecenter.text;
 import java.util.*;
 
   final class PartialListCharacterInput implements ICharacterInput {
-    private int pos;
     private final int endPos;
     private final List<Integer> ilist;
+    private int pos;
 
-    public PartialListCharacterInput (List<Integer> ilist, int start, int length) {
+    public PartialListCharacterInput(List<Integer> ilist, int start, int length) {
       if (ilist == null) {
         throw new NullPointerException("ilist");
       }
@@ -36,7 +36,7 @@ import java.util.*;
       this.endPos = start + length;
     }
 
-    public PartialListCharacterInput (List<Integer> ilist) {
+    public PartialListCharacterInput(List<Integer> ilist) {
       if (ilist == null) {
   throw new NullPointerException("ilist");
 }

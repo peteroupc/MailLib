@@ -9,8 +9,9 @@ Deprecated.&nbsp;
 ## Methods
 
 * `Normalizer(String str,
-          Normalization form)`<br>
- Deprecated.  Initializes a new instance of the Normalizer class.
+          Normalization form) Normalizer`<br>
+ Deprecated.  Initializes a new instance of the Normalizer
+ class.
 * `static boolean IsNormalized(String str,
             Normalization form)`<br>
  Deprecated.  Returns whether this string is normalized.
@@ -27,8 +28,9 @@ Deprecated.&nbsp;
 ## Constructors
 
 * `Normalizer(String str,
-          Normalization form)`<br>
- Deprecated.  Initializes a new instance of the Normalizer class.
+          Normalization form) Normalizer`<br>
+ Deprecated.  Initializes a new instance of the Normalizer
+ class.
 
 ## Method Details
 
@@ -38,7 +40,7 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>str</code> - A string object.
+* <code>str</code> - A text string.
 
 * <code>form</code> - A Normalization object.
 
@@ -48,7 +50,7 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>str</code> - A string object.
+* <code>str</code> - A text string.
 
 * <code>form</code> - A Normalization object.
 
@@ -82,7 +84,7 @@ Deprecated.&nbsp;
 
 **Returns:**
 
-* True if this string is normalized; otherwise, false.
+* <code>true</code> if this string is normalized; otherwise, <code>false</code>.
 
 ### ReadChar
     public int ReadChar()
@@ -112,8 +114,8 @@ Deprecated.&nbsp;
 
 **Throws:**
 
-* <code>IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is less
- than 0 or greater than <code>chars</code> 's length, or <code>chars</code> 's
- length minus <code>index</code> is less than <code>length</code>.
+* <code>IllegalArgumentException</code> - Either <code>index</code> or <code>length</code> is
+ less than 0 or greater than <code>chars</code> 's length, or <code>chars</code>
+ ' s length minus <code>index</code> is less than <code>length</code>.
 
 * <code>NullPointerException</code> - The parameter <code>chars</code> is null.

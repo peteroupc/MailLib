@@ -101,7 +101,7 @@ import java.util.*;
         if (!first) {
           builder.append(", ");
         }
-        builder.append(Test.TestCommon.IntToString(v));
+        builder.append(TestCommon.IntToString(v));
         first = false;
       }
       builder.append("]");
@@ -186,12 +186,12 @@ Assert.assertEquals(
   "_\u96e3\uc972+67 Tqd R_.",
   stringTemp);
 }
-      Assert.IsFalse (
-        NormalizingCharacterInput.IsNormalized(str, Normalization.NFC));
+      if (
+        NormalizingCharacterInput.IsNormalized(str, Normalization.NFC))Assert.fail();
       TestIdempotent (str, Normalization.NFC);
             str = "_\u96e3\uc972+67 Tqd R_._";
-            Assert.assertTrue (
-        NormalizingCharacterInput.IsNormalized (str, Normalization.NFC));
+            if (!(
+        NormalizingCharacterInput.IsNormalized (str, Normalization.NFC)))Assert.fail();
             TestIdempotent (str, Normalization.NFC);
     }
 
@@ -322,21 +322,21 @@ Assert.assertEquals(
           String cpstr = new String(cptemp, 0, (i >= 0x10000 ? 2 : 1));
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                Normalization.NFC)) {
-            Assert.fail(Test.TestCommon.IntToString(i));
+            Assert.fail(TestCommon.IntToString(i));
           }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                Normalization.NFD)) {
-                    Assert.fail (Test.TestCommon.IntToString (i));
+                    Assert.fail (TestCommon.IntToString (i));
           }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                 Normalization.NFKC)) {
-                    Assert.fail (Test.TestCommon.IntToString (i));
+                    Assert.fail (TestCommon.IntToString (i));
  }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                 Normalization.NFKD)) {
-                    Assert.fail (Test.TestCommon.IntToString (i));
+                    Assert.fail (TestCommon.IntToString (i));
         }
-          String imsg = Test.TestCommon.IntToString (i);
+          String imsg = TestCommon.IntToString (i);
           AssertEqual(cpstr, NormalizingCharacterInput.Normalize(
             cpstr,
             Normalization.NFC), imsg);

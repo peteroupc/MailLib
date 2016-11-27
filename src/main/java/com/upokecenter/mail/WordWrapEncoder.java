@@ -9,13 +9,13 @@ at: http://peteroupc.github.io/
 
   final class WordWrapEncoder {
     private static final int MaxLineLength = 76;
-    private String lastSpaces;
     private final StringBuilder fullString;
-    private int lineLength;
     private final boolean collapseSpaces;
+    private String lastSpaces;
+    private int lineLength;
     private boolean haveNonwhitespace;
 
-    public WordWrapEncoder (boolean collapseSpaces) {
+    public WordWrapEncoder(boolean collapseSpaces) {
       this.fullString = new StringBuilder();
       this.collapseSpaces = collapseSpaces;
       this.haveNonwhitespace = true;

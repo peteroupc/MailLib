@@ -110,7 +110,7 @@
         }
         var starterPos = 0;
         int retval = length;
-        //DebugUtility.Log ("buf=" + (EC(array,0,length)));
+        // DebugUtility.Log ("buf=" + (EC(array,0,length)));
         int starter = array[0];
         int last = UnicodeDatabase.GetCombiningClass(starter);
         if (last != 0) {
@@ -165,7 +165,7 @@
           }
           last = valuecc;
         }
-        //DebugUtility.Log ("bufend=" + (EC (array, 0, length)));
+        // DebugUtility.Log ("bufend=" + (EC (array, 0, length)));
         if (composed) {
           var j = 0;
           for (int i = 0; i < endPos; ++i) {
@@ -253,8 +253,9 @@
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
-    public static bool IsNormalized (ICharacterInput chars,
-                Normalization form) {
+    public static bool IsNormalized (
+  ICharacterInput chars,
+  Normalization form) {
       if (chars == null) {
         throw new ArgumentNullException ("chars");
       }
@@ -314,11 +315,12 @@ UnicodeDatabase.IsQuickCheckStarter (
     int length,
     Normalization form) {
         var i = 0;
-            IList<int> ret = new List<int> ();
+            IList<int> ret = new List<int>();
             int ch;
             var input = new NormalizingCharacterInput (
-        new PartialArrayCharacterInput (charArray, start, length), form);
-            while ((ch = input.ReadChar ()) >= 0) {
+        new PartialArrayCharacterInput (charArray, start, length),
+        form);
+            while ((ch = input.ReadChar()) >= 0) {
                 if (i >= length) {
                     return false;
                 }
@@ -445,15 +447,15 @@ UnicodeDatabase.IsQuickCheckStarter (
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(System.String,PeterO.Text.Normalization)"]/*'/>
-      [Obsolete("Instead of this method, create a NormalizingCharacterInput on the string and call ReadChar to get the normalized string's code points.")]
+  [Obsolete("Instead of this method, create a NormalizingCharacterInput on the string and call ReadChar to get the normalized string's code points.")]
       public static IList<int> GetChars(string str, Normalization form) {
         if (str == null) {
           throw new ArgumentNullException("str");
         }
         IList<int> ret = new List<int>();
         int ch;
-        var input=new NormalizingCharacterInput(str, form);
-        while((ch=input.ReadChar())>=0){
+        var input = new NormalizingCharacterInput(str, form);
+        while ((ch = input.ReadChar()) >= 0) {
            ret.Add(ch);
         }
         return ret;
@@ -461,16 +463,17 @@ UnicodeDatabase.IsQuickCheckStarter (
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
-      [Obsolete("Instead of this method, create a NormalizingCharacterInput on the input and call ReadChar to get the normalized string's code points.")]
-   public static IList<int> GetChars(ICharacterInput input, Normalization
-        form) {
+  [Obsolete("Instead of this method, create a NormalizingCharacterInput on the input and call ReadChar to get the normalized string's code points.")]
+   public static IList<int> GetChars(
+  ICharacterInput input,
+  Normalization form) {
         if (input == null) {
           throw new ArgumentNullException("input");
         }
         IList<int> ret = new List<int>();
         int ch;
-        input=new NormalizingCharacterInput(input, form);
-        while((ch=input.ReadChar())>=0){
+        input = new NormalizingCharacterInput(input, form);
+        while ((ch = input.ReadChar()) >= 0) {
            ret.Add(ch);
         }
         return ret;
@@ -490,8 +493,9 @@ UnicodeDatabase.IsQuickCheckStarter (
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
   [Obsolete("Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
       public static bool IsNormalized(IList<int> charList, Normalization form) {
-          return IsNormalized (new PartialListCharacterInput (charList),
-              form);
+          return IsNormalized (
+  new PartialListCharacterInput (charList),
+  form);
      }
 
       private readonly int[] readbuffer = new int[1];
@@ -542,8 +546,7 @@ UnicodeDatabase.IsQuickCheckStarter (
         return ch;
       }
 
-    /*
-      private static string EC (int c) {
+    /* private static string EC (int c) {
               if (c < 0) {
                   return ("<" + c + ">");
               }
@@ -554,7 +557,6 @@ UnicodeDatabase.IsQuickCheckStarter (
         return (c >= 0x7f || c<0x20) ? (String.Format (uesc + "{0:X4}", c)):
           ((c == 0x20) ? ("<space>") : ("<" + ((char)c) + ">"));
           }
-
 
       private static string EC (int[] b, int o, int sz) {
         var sb = new System.Text.StringBuilder();
@@ -638,8 +640,9 @@ UnicodeDatabase.IsQuickCheckStarter (
           }
         }
         do {
-       count = Math.Min(this.processedIndex - this.flushIndex, length -
-            total);
+       count = Math.Min(
+  this.processedIndex - this.flushIndex,
+  length - total);
           if (count < 0) {
             count = 0;
           }
@@ -660,7 +663,7 @@ UnicodeDatabase.IsQuickCheckStarter (
   // and add characters to the output
   // before all the characters in the intermediate
   // buffer have been fully processed
-          while (total < length && processedIndex == endIndex) {
+          while (total < length && this.processedIndex == this.endIndex) {
             int c = this.GetNextChar();
             // DebugUtility.Log ("B read: " + (EC(c)));
             if (c < 0) {

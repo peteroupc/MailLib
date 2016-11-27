@@ -26,7 +26,7 @@ at: http://peteroupc.github.io/
      * @param str An arbitrary string.
      * @param form The Unicode normalization form to convert to.
      * @return The parameter {@code str} converted to the given normalization form.
-     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static String Normalize(String str, Normalization form) {
       return NormalizingCharacterInput.Normalize(str, form);
@@ -35,11 +35,12 @@ at: http://peteroupc.github.io/
     private final NormalizingCharacterInput nci;
 
     /**
-     * Initializes a new instance of the Normalizer class.
-     * @param str A string object.
+     * Initializes a new instance of the {@link com.upokecenter.text.Normalizer}
+     * class.
+     * @param str A text string.
      * @param form A Normalization object.
      */
-    public Normalizer (String str, Normalization form) {
+    public Normalizer(String str, Normalization form) {
       this.nci = new NormalizingCharacterInput(str, form);
     }
 
@@ -47,7 +48,7 @@ at: http://peteroupc.github.io/
      * Returns whether this string is normalized.
      * @param str The string to check.
      * @param form A Normalization object.
-     * @return True if this string is normalized; otherwise, false.
+     * @return {@code true} if this string is normalized; otherwise, {@code false}.
      */
     public static boolean IsNormalized(String str, Normalization form) {
       return NormalizingCharacterInput.IsNormalized(str, form);
@@ -69,10 +70,10 @@ at: http://peteroupc.github.io/
      * @param length Maximum number of code points to write.
      * @return The number of Unicode code points read, or 0 if the end of the
      * source is reached.
-     * @throws IllegalArgumentException Either {@code index} or {@code length} is less
-     * than 0 or greater than {@code chars} 's length, or {@code chars} 's
-     * length minus {@code index} is less than {@code length}.
-     * @throws NullPointerException The parameter {@code chars} is null.
+     * @throws IllegalArgumentException Either {@code index} or {@code length} is
+     * less than 0 or greater than {@code chars} 's length, or {@code chars}
+     * ' s length minus {@code index} is less than {@code length}.
+     * @throws java.lang.NullPointerException The parameter {@code chars} is null.
      */
     public int Read(int[] chars, int index, int length) {
       return this.nci.Read(chars, index, length);

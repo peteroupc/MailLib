@@ -21,13 +21,14 @@
  Specifies the media type "application/octet-stream", used for arbitrary
  binary data.
 * `static MediaType MessageRfc822`<br>
- Specifies the media type "message/rfc822" , used for Internet mail messages.
+ Specifies the media type "message/rfc822", used for Internet mail messages.
 * `static MediaType TextPlainAscii`<br>
  Specifies the media type "text/plain" and the "charset" parameter
  "US-ASCII", used for plain text data.
 * `static MediaType TextPlainUtf8`<br>
  Specifies the media type "text/plain" and the "charset" parameter "utf-8",
- used for Unicode plain text data.
+ used for plain text data that may contain characters outside the
+ basic Latin range (U + 0000 to U + 007F).
 
 ## Methods
 
@@ -73,10 +74,11 @@ Specifies the media type "text/plain" and the "charset" parameter
 ### TextPlainUtf8
     public static final MediaType TextPlainUtf8
 Specifies the media type "text/plain" and the "charset" parameter "utf-8",
- used for Unicode plain text data.
+ used for plain text data that may contain characters outside the
+ basic Latin range (U + 0000 to U + 007F).
 ### MessageRfc822
     public static final MediaType MessageRfc822
-Specifies the media type "message/rfc822" , used for Internet mail messages.
+Specifies the media type "message/rfc822", used for Internet mail messages.
 ### ApplicationOctetStream
     public static final MediaType ApplicationOctetStream
 Specifies the media type "application/octet-stream", used for arbitrary
@@ -107,7 +109,8 @@ Determines whether this object and another object are equal.
 
 **Returns:**
 
-* True if this object and another object are equal; otherwise, false.
+* <code>true</code> if this object and another object are equal; otherwise,
+ <code>false</code>.
 
 ### hashCode
     public int hashCode()
@@ -135,7 +138,7 @@ Gets a value indicating whether this is a text media type ("text/*").
 
 **Returns:**
 
-* True if this is a text media type; otherwise, false.
+* <code>true</code> If this is a text media type; otherwise, <code>false</code>.
 
 ### isMultipart
     public final boolean isMultipart()
@@ -143,7 +146,7 @@ Gets a value indicating whether this is a multipart media type.
 
 **Returns:**
 
-* True if this is a multipart media type; otherwise, false.
+* <code>true</code> If this is a multipart media type; otherwise, <code>false</code>.
 
 ### getParameters
     public final Map<String,String> getParameters()
@@ -175,11 +178,11 @@ Gets this media type's "charset" parameter, naming a character encoding used
 
 * If the "charset" parameter exists, returns that parameter with the
  basic upper-case letters A to Z (U + 0041 to U + 005A) converted to lower
- case. Returns "us-ascii" instead if the media type is ill-formed
- (RFC2045 sec. 5.2), or if the media type is "text/plain" and doesn't
- have a "charset" parameter (see RFC2046), or the default value for
- that parameter, if any, for the media type if the "charset" parameter
- is absent. Returns an empty string in all other cases.
+ case. Returns <code>"us-ascii"</code> instead if the media type is
+ ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain"
+ and doesn't have a "charset" parameter (see RFC2046), or the default
+ value for that parameter, if any, for the media type if the "charset"
+ parameter is absent. Returns an empty string in all other cases.
 
 ### GetParameter
     public String GetParameter(String name)
@@ -219,7 +222,7 @@ Parses a media type string and returns a media type object. This method
 
 **Parameters:**
 
-* <code>mediaTypeValue</code> - A string object representing a media type. This media
+* <code>mediaTypeValue</code> - A text string representing a media type. This media
  type can include parameters.
 
 **Returns:**
@@ -237,7 +240,7 @@ Parses a media type string and returns a media type object, or the default
 
 **Parameters:**
 
-* <code>str</code> - A string object representing a media type. This media type can
+* <code>str</code> - A text string representing a media type. This media type can
  include parameters.
 
 * <code>defaultValue</code> - The media type to return if the string is syntactically

@@ -44,7 +44,7 @@ import com.upokecenter.text.*;
      * except header field names.</li> <li>There is no line length limit
      * imposed when parsing quoted-printable or base64 encoded bodies.</li>
      * <li>If the transfer encoding is absent and the content type is
-     * "message/rfc822" , bytes with values greater than 127 (called "8-bit
+     * "message/rfc822", bytes with values greater than 127 (called "8-bit
      * bytes" in the rest of this summary) are still allowed, despite the
      * default value of "7bit" for "Content-Transfer-Encoding".</li> <li>In
      * the following cases, if the transfer encoding is absent or declared
@@ -79,63 +79,65 @@ import com.upokecenter.text.*;
     private static final int EncodingSevenBit = 0;
     private static final int EncodingUnknown = -1;
 
-    private static final java.util.Random msgidRandom = new java.util.Random();
-    private static int msgidSequence;
-    private static boolean seqFirstTime = true;
-    private static final Object sequenceSync = new Object();
+    private static final java.util.Random ValueMsgidRandom = new java.util.Random();
+    private static final Object ValueSequenceSync = new Object();
 
-    private static final Map<String, Integer> valueHeaderIndices =
+    private static final Map<String, Integer> ValueHeaderIndices =
       MakeHeaderIndices();
 
+    private final List<String> headers;
+
+    private final List<Message> parts;
+
+    private static int msgidSequence;
+    private static boolean seqFirstTime = true;
     private byte[] body;
     private ContentDisposition contentDisposition;
 
     private MediaType contentType;
 
-    private final List<String> headers;
-
-    private final List<Message> parts;
     private int transferEncoding;
 
     /**
-     * Initializes a new instance of the Message class. Reads from the given InputStream
-     * object to initialize the message.
+     * Initializes a new instance of the {@link com.upokecenter.mail.Message}
+     * class. Reads from the given InputStream object to initialize the message.
      * @param stream A readable data stream.
-     * @throws NullPointerException The parameter {@code stream} is null.
+     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
      */
-    public Message (InputStream stream) {
+    public Message(InputStream stream) {
       if (stream == null) {
         throw new NullPointerException("stream");
       }
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
-      IByteReader transform = DataIO.ToByteReader(stream);
+      IByteReader transform = DataIO.ToReader(stream);
       this.ReadMessage(transform);
     }
 
     /**
-     * Initializes a new instance of the Message class. Reads from the given byte
-     * array to initialize the message.
+     * Initializes a new instance of the {@link com.upokecenter.mail.Message}
+     * class. Reads from the given byte array to initialize the message.
      * @param bytes A readable data stream.
-     * @throws NullPointerException The parameter {@code bytes} is null.
+     * @throws java.lang.NullPointerException The parameter {@code bytes} is null.
      */
-    public Message (byte[] bytes) {
+    public Message(byte[] bytes) {
       if (bytes == null) {
         throw new NullPointerException("bytes");
       }
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
-      IByteReader transform = DataIO.ToByteReader(bytes);
+      IByteReader transform = DataIO.ToReader(bytes);
       this.ReadMessage(transform);
     }
 
     /**
-     * Initializes a new instance of the Message class. The message will be plain
-     * text and have an artificial From address.
+     * Initializes a new instance of the {@link com.upokecenter.mail.Message}
+     * class. The message will be plain text and have an artificial From
+     * address.
      */
-    public Message () {
+    public Message() {
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
       this.body = new byte[0];
@@ -156,7 +158,7 @@ import com.upokecenter.text.*;
      * @return This object.
      */
     public Message SetCurrentDate() {
-      return SetDate(DateTimeUtilities.GetCurrentLocalTime());
+      return this.SetDate(DateTimeUtilities.GetCurrentLocalTime());
     }
 
     private static void ReverseChars(char[] chars, int offset, int length) {
@@ -169,7 +171,7 @@ import com.upokecenter.text.*;
       }
     }
 
-    private static String Digits = "0123456789";
+    private static String valueDigits = "0123456789";
 
     private static String IntToString(int value) {
       if (value == Integer.MIN_VALUE) {
@@ -187,7 +189,7 @@ import com.upokecenter.text.*;
         value = -value;
       }
       while (value != 0) {
-        char digit = Digits.charAt((int)(value % 10));
+        char digit = valueDigits.charAt((int)(value % 10));
         chars[count++] = digit;
         value /= 10;
       }
@@ -199,30 +201,30 @@ import com.upokecenter.text.*;
       return new String(chars, 0, count);
     }
 
-    private static String[] DaysOfWeek = {
-      "Sun","Mon","Tue","Wed","Thu","Fri","Sat"
+    private static String[] valueDaysOfWeek = {
+      "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
     };
 
-    private static String[] Months = {
-      "","Jan","Feb","Mar","Apr","May","Jun","Jul",
-      "Aug","Sep","Oct","Nov","Dec"
+    private static String[] valueMonths = {
+      "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+      "Aug", "Sep", "Oct", "Nov", "Dec"
     };
 
     private static String GetDateString(int[] dateTime) {
       if (!DateTimeUtilities.IsValidDateTime(dateTime) ||
-        dateTime[0]< 0) {
+        dateTime[0] < 0) {
         throw new IllegalArgumentException("Invalid date and time");
       }
       int dow = DateTimeUtilities.GetDayOfWeek(dateTime);
       if (dow < 0) {
         throw new IllegalArgumentException("Invalid date and time");
       }
-      String dayString = DaysOfWeek[dow];
-      String monthString = Months[dateTime[1]];
+      String dayString = valueDaysOfWeek[dow];
+      String monthString = valueMonths[dateTime[1]];
       StringBuilder sb = new StringBuilder();
       sb.append(dayString);
       sb.append(", ");
-      sb.append((char)('0' + ((dateTime[2] / 10)%10)));
+      sb.append((char)('0' + ((dateTime[2] / 10) % 10)));
       sb.append((char)('0' + (dateTime[2] % 10)));
       sb.append(' ');
       sb.append(monthString);
@@ -245,12 +247,12 @@ import com.upokecenter.text.*;
       sb.append((char)('0' + (dateTime[5] % 10)));
       sb.append(' ');
       int offset = dateTime[7];
-      sb.append((offset< 0) ? '-' : '+');
+      sb.append((offset < 0) ? '-' : '+');
       offset = Math.abs(offset);
       int hours = (offset / 60) % 24;
-      int minutes = (offset % 60);
+      int minutes = offset % 60;
       sb.append((char)('0' + ((hours / 10) % 10)));
-      sb.append((char)('0' + ((hours) % 10)));
+      sb.append((char)('0' + (hours % 10)));
       sb.append((char)('0' + ((minutes / 10) % 10)));
       sb.append((char)('0' + (minutes % 10)));
       return sb.toString();
@@ -281,7 +283,7 @@ import com.upokecenter.text.*;
         }
         return Encodings.DecodeToString(
           charset,
-          DataIO.ToByteReader(this.body));
+          DataIO.ToReader(this.body));
       }
 
     /**
@@ -316,7 +318,8 @@ public final void setContentDisposition(ContentDisposition value) {
     /**
      * Gets this message's media type.
      * @return This message's media type.
-     * @throws NullPointerException This value is being set and "value" is null.
+     * @throws java.lang.NullPointerException This value is being set and "value" is
+     * null.
      */
     public final MediaType getContentType() {
         return this.contentType;
@@ -347,7 +350,7 @@ public final void setContentType(MediaType value) {
         return (disp != null) ?
           ContentDisposition.MakeFilename(disp.GetParameter("filename")) :
         ContentDisposition.MakeFilename(this.contentType.GetParameter(
-"name"));
+  "name"));
       }
 
     /**
@@ -410,14 +413,15 @@ public final void setSubject(String value) {
      * Adds a header field to the end of the message's header. <p>Updates the
      * ContentType and ContentDisposition properties if those header fields
      * have been modified by this method.</p>
-     * @param header A Map.Entry object. The key is the name of the header
-     * field, such as "From" or "Content-ID". The value is the header
-     * field's value.
+     * @param header A key/value pair. The key is the name of the header field,
+     * such as "From" or "Content-ID". The value is the header field's
+     * value.
      * @return This instance.
-     * @throws NullPointerException The key or value of {@code header} is null.
-     * @throws IllegalArgumentException The header field name is too long or contains an
-     * invalid character, or the header field's value is syntactically
-     * invalid.
+     * @throws java.lang.NullPointerException The key or value of {@code header} is
+     * null.
+     * @throws IllegalArgumentException The header field name is too long or
+     * contains an invalid character, or the header field's value is
+     * syntactically invalid.
      */
     public Message AddHeader(Map.Entry<String, String> header) {
       return this.AddHeader(header.getKey(), header.getValue());
@@ -430,11 +434,11 @@ public final void setSubject(String value) {
      * @param name Name of a header field, such as "From" or "Content-ID".
      * @param value Value of the header field.
      * @return This instance.
-     * @throws NullPointerException The parameter {@code name} or {@code value} is
-     * null.
-     * @throws IllegalArgumentException The header field name is too long or contains an
-     * invalid character, or the header field's value is syntactically
-     * invalid.
+     * @throws java.lang.NullPointerException The parameter {@code name} or {@code
+     * value} is null.
+     * @throws IllegalArgumentException The header field name is too long or
+     * contains an invalid character, or the header field's value is
+     * syntactically invalid.
      */
     public Message AddHeader(String name, String value) {
       name = ValidateHeaderField(name, value);
@@ -465,7 +469,7 @@ public final void setSubject(String value) {
      * 0x0a), CR alone, or LF alone. If the message has any other content
      * type, only CR followed by LF is considered a line break.</p>
      * @return The generated message.
-     * @throws MessageDataException The message can't be generated.
+     * @throws PeterO.Mail.MessageDataException The message can't be generated.
      */
     public String Generate() {
       ArrayWriter aw = new ArrayWriter();
@@ -509,9 +513,11 @@ public final void setSubject(String value) {
  return null;
 }
       int[] date = new int[8];
-      return
-        (HeaderParserUtility.ParseHeaderExpandedDate(field, 0, field.length(),
-        date) != 0) ? (date) : (null);
+      return HeaderParserUtility.ParseHeaderExpandedDate(
+  field,
+  0,
+  field.length(),
+  date) != 0 ? date : null;
     }
 
     /**
@@ -532,13 +538,13 @@ public final void setSubject(String value) {
      * this date and time to get global time. This number can be positive or
      * negative.</li></ul>.
      * @return This object.
-     * @throws IllegalArgumentException The parameter {@code dateTime} contains fewer than
-     * eight elements, contains invalid values, or contains a year less than
-     * 0.
-     * @throws NullPointerException The parameter {@code dateTime} is null.
+     * @throws IllegalArgumentException The parameter {@code dateTime} contains
+     * fewer than eight elements, contains invalid values, or contains a
+     * year less than 0.
+     * @throws java.lang.NullPointerException The parameter {@code dateTime} is null.
      */
     public Message SetDate(int[] dateTime) {
-      if ((dateTime) == null) {
+      if (dateTime == null) {
   throw new NullPointerException("dateTime");
 }
       if (!DateTimeUtilities.IsValidDateTime(dateTime)) {
@@ -562,16 +568,16 @@ public final void setSubject(String value) {
           (this.getContentType().getSubType().equals("rfc822") ||
            this.getContentType().getSubType().equals("news") ||
            this.getContentType().getSubType().equals("global"))) ? (new
-             Message(this.body)) : (null);
+             Message(this.body)) : null;
     }
 
     /**
      * Gets the name and value of a header field by index.
      * @param index Zero-based index of the header field to get.
-     * @return A Map.Entry object. The key is the name of the header field, such
-     * as "From" or "Content-ID". The value is the header field's value.
-     * @throws IllegalArgumentException The parameter {@code index} is 0 or at least as
-     * high as the number of header fields.
+     * @return A key/value pair. The key is the name of the header field, such as
+     * "From" or "Content-ID". The value is the header field's value.
+     * @throws IllegalArgumentException The parameter {@code index} is 0 or at
+     * least as high as the number of header fields.
      */
     public Map.Entry<String, String> GetHeader(int index) {
       if (index < 0) {
@@ -596,7 +602,7 @@ public final void setSubject(String value) {
      * @param name The name of a header field.
      * @return The value of the first header field with that name, or null if there
      * is none.
-     * @throws NullPointerException Name is null.
+     * @throws java.lang.NullPointerException Name is null.
      */
     public String GetHeader(String name) {
       if (name == null) {
@@ -622,7 +628,7 @@ public final void setSubject(String value) {
      * @return An array containing the values of all header fields with the given
      * name, in the order they appear in the message. The array will be
      * empty if no header field has that name.
-     * @throws NullPointerException Name is null.
+     * @throws java.lang.NullPointerException Name is null.
      */
     public String[] GetHeaderArray(String name) {
       if (name == null) {
@@ -644,8 +650,8 @@ public final void setSubject(String value) {
      * modified by this method.</p>
      * @param index Zero-based index of the header field to set.
      * @return This instance.
-     * @throws IllegalArgumentException The parameter {@code index} is 0 or at least as
-     * high as the number of header fields.
+     * @throws IllegalArgumentException The parameter {@code index} is 0 or at
+     * least as high as the number of header fields.
      */
     public Message RemoveHeader(int index) {
       if (index < 0) {
@@ -679,7 +685,7 @@ public final void setSubject(String value) {
      * modified by this method.</p>
      * @param name The name of the header field to remove.
      * @return This instance.
-     * @throws NullPointerException The parameter {@code name} is null.
+     * @throws java.lang.NullPointerException The parameter {@code name} is null.
      */
     public Message RemoveHeader(String name) {
       if (name == null) {
@@ -707,7 +713,7 @@ public final void setSubject(String value) {
      * make a copy of that byte array.
      * @param bytes A byte array.
      * @return This object.
-     * @throws NullPointerException The parameter {@code bytes} is null.
+     * @throws java.lang.NullPointerException The parameter {@code bytes} is null.
      */
     public Message SetBody(byte[] bytes) {
       if (bytes == null) {
@@ -722,15 +728,16 @@ public final void setSubject(String value) {
      * ContentType and ContentDisposition properties if those header fields
      * have been modified by this method.</p>
      * @param index Zero-based index of the header field to set.
-     * @param header A Map.Entry object. The key is the name of the header
-     * field, such as "From" or "Content-ID". The value is the header
-     * field's value.
+     * @param header A key/value pair. The key is the name of the header field,
+     * such as "From" or "Content-ID". The value is the header field's
+     * value.
      * @return A Message object.
-     * @throws IllegalArgumentException The parameter {@code index} is 0 or at least as
-     * high as the number of header fields; or, the header field name is too
-     * long or contains an invalid character, or the header field's value is
-     * syntactically invalid.
-     * @throws NullPointerException The key or value of {@code header} is null.
+     * @throws IllegalArgumentException The parameter {@code index} is 0 or at
+     * least as high as the number of header fields; or, the header field
+     * name is too long or contains an invalid character, or the header
+     * field's value is syntactically invalid.
+     * @throws java.lang.NullPointerException The key or value of {@code header} is
+     * null.
      */
     public Message SetHeader(int index, Map.Entry<String, String> header) {
       return this.SetHeader(index, header.getKey(), header.getValue());
@@ -744,12 +751,12 @@ public final void setSubject(String value) {
      * @param name Name of a header field, such as "From" or "Content-ID".
      * @param value Value of the header field.
      * @return This instance.
-     * @throws IllegalArgumentException The parameter {@code index} is 0 or at least as
-     * high as the number of header fields; or, the header field name is too
-     * long or contains an invalid character, or the header field's value is
-     * syntactically invalid.
-     * @throws NullPointerException The parameter {@code name} or {@code value} is
-     * null.
+     * @throws IllegalArgumentException The parameter {@code index} is 0 or at
+     * least as high as the number of header fields; or, the header field
+     * name is too long or contains an invalid character, or the header
+     * field's value is syntactically invalid.
+     * @throws java.lang.NullPointerException The parameter {@code name} or {@code
+     * value} is null.
      */
     public Message SetHeader(int index, String name, String value) {
       if (index < 0) {
@@ -779,11 +786,11 @@ public final void setSubject(String value) {
      * @param index Zero-based index of the header field to set.
      * @param value Value of the header field.
      * @return This instance.
-     * @throws IllegalArgumentException The parameter {@code index} is 0 or at least as
-     * high as the number of header fields; or, the header field name is too
-     * long or contains an invalid character, or the header field's value is
-     * syntactically invalid.
-     * @throws NullPointerException The parameter {@code value} is null.
+     * @throws IllegalArgumentException The parameter {@code index} is 0 or at
+     * least as high as the number of header fields; or, the header field
+     * name is too long or contains an invalid character, or the header
+     * field's value is syntactically invalid.
+     * @throws java.lang.NullPointerException The parameter {@code value} is null.
      */
     public Message SetHeader(int index, String value) {
       if (index < 0) {
@@ -808,11 +815,11 @@ public final void setSubject(String value) {
      * @param name The name of a header field, such as "from" or "subject".
      * @param value The header field's value.
      * @return This instance.
-     * @throws IllegalArgumentException The header field name is too long or contains an
-     * invalid character, or the header field's value is syntactically
-     * invalid.
-     * @throws NullPointerException The parameter {@code name} or {@code value} is
-     * null.
+     * @throws IllegalArgumentException The header field name is too long or
+     * contains an invalid character, or the header field's value is
+     * syntactically invalid.
+     * @throws java.lang.NullPointerException The parameter {@code name} or {@code
+     * value} is null.
      */
     public Message SetHeader(String name, String value) {
       name = ValidateHeaderField(name, value);
@@ -831,13 +838,13 @@ public final void setSubject(String value) {
 
     /**
      * Sets the body of this message to the specified string in HTML format. The
-     * character sequences CR (carriage return, "\r", U+000D), LF (line
-     * feed, "\n" , U+000A), and CR/LF will be converted to CR/LF line
+     * character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
+     * feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
      * breaks. Unpaired surrogate code points will be replaced with
      * replacement characters.
      * @param str A string consisting of the message in HTML format.
      * @return This instance.
-     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public Message SetHtmlBody(String str) {
       if (str == null) {
@@ -852,14 +859,14 @@ public final void setSubject(String value) {
     /**
      * Sets the body of this message to a multipart body with plain text and HTML
      * versions of the same message. The character sequences CR (carriage
-     * return, "\r" , U+000D), LF (line feed, "\n", U+000A), and CR/LF will
+     * return, "&#x5c;r" , U+000D), LF (line feed, "&#x5c;n", U+000A), and CR/LF will
      * be converted to CR/LF line breaks. Unpaired surrogate code points
      * will be replaced with replacement characters.
      * @param text A string consisting of the plain text version of the message.
      * @param html A string consisting of the HTML version of the message.
      * @return This instance.
-     * @throws NullPointerException The parameter {@code text} or {@code html} is
-     * null.
+     * @throws java.lang.NullPointerException The parameter {@code text} or {@code
+     * html} is null.
      */
     public Message SetTextAndHtml(String text, String html) {
       if (text == null) {
@@ -884,14 +891,14 @@ public final void setSubject(String value) {
 
     /**
      * Sets the body of this message to the specified plain text string. The
-     * character sequences CR (carriage return, "\r", U+000D), LF (line
-     * feed, "\n" , U+000A), and CR/LF will be converted to CR/LF line
+     * character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
+     * feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
      * breaks. Unpaired surrogate code points will be replaced with
      * replacement characters. This method changes this message's media type
      * to plain text.
      * @param str A string consisting of the message in plain text format.
      * @return This instance.
-     * @throws NullPointerException The parameter {@code str} is null.
+     * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public Message SetTextBody(String str) {
       if (str == null) {
@@ -933,14 +940,9 @@ public final void setSubject(String value) {
           // Line starts with "From" followed by space
           return false;
         }
-        if (lineLength == 0 && index + 1 < endIndex &&
-            bytes[index] == '.' && bytes[index + 1] == '\r') {
-          // Dot line
-          return false;
-        }
-        if (lineLength == 0 && index + 1 == endIndex &&
+        if (lineLength == 0 && index < endIndex &&
             bytes[index] == '.') {
-          // Dot line
+          // Dot at beginning of line
           return false;
         }
         if (c == '\r' && index + 1 < endIndex && bytes[index + 1] == '\n') {
@@ -1136,7 +1138,7 @@ public final void setSubject(String value) {
                   haveFWS = true;
                 } else {
                   --index;
-                  // this isn't space or tab; if this is the staart
+                  // this isn't space or tab; if this is the start
                   // of the line, this is no longer FWS
                   if (lineStart) {
                     haveFWS = false;
@@ -1178,7 +1180,7 @@ public final void setSubject(String value) {
             WordWrapEncoder encoder = new WordWrapEncoder(true);
             String field = (origRecipient ?
         "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient") +
-                  ": " ;
+                  ": ";
             if (status[0] != 2) {
  field = origFieldName + " ";
 }
@@ -1273,10 +1275,11 @@ public final void setSubject(String value) {
             // Encapsulated
             status[0] = 2;
           }
-          int spaceAndTabEnd = ParserUtility.SkipSpaceAndTab(origValue, 0,
-            origValue.length());
-          return
-            Rfc2047.EncodeString(origValue.substring(spaceAndTabEnd));
+          int spaceAndTabEnd = ParserUtility.SkipSpaceAndTab(
+  origValue,
+  0,
+  origValue.length());
+          return Rfc2047.EncodeString(origValue.substring(spaceAndTabEnd));
         }
         if (status != null) {
           // Downgraded
@@ -1971,8 +1974,7 @@ public final void setSubject(String value) {
             // bare CR
             allTextBytes = false;
           } else if (i > 0 && (body[i - 1] == (byte)' ' || body[i - 1] ==
-                 (byte)'\t'
-)) {
+                 (byte)'\t')) {
             // Space followed immediately by CRLF
             allTextBytes = false;
           } else {
@@ -1984,8 +1986,8 @@ public final void setSubject(String value) {
           // not bare LF
           allTextBytes &= body[i] != (byte)'\n';
         }
-        allTextBytes &= lineLength != 0 || i + 2 >= body.length || body[i] !=
-          '.' || body[i + 1] != '\r' || body[i + 2] != '\n';
+        allTextBytes &= lineLength != 0 || i >= body.length || body[i] !=
+          '.';
         allTextBytes &= lineLength != 0 || i + 4 >= body.length || body[i] !=
           'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3] !=
           'm' || body[i + 4] != ' ';
@@ -2144,8 +2146,8 @@ public final void setSubject(String value) {
           }
           haveMsgId = true;
         } else {
-          if (valueHeaderIndices.containsKey(name)) {
-            int headerIndex = valueHeaderIndices.get(name);
+          if (ValueHeaderIndices.containsKey(name)) {
+            int headerIndex = ValueHeaderIndices.get(name);
             if (headerIndex < 9) {
               if (haveHeaders[headerIndex]) {
                 // Already outputted, continue
@@ -2280,30 +2282,121 @@ public final void setSubject(String value) {
       }
     }
 
+        static byte [] TimeEntropy (int size) {
+            // This routine was inspired by the HAVEG entropy
+            // harvester, but is not exactly the same as it.
+            int st = ((int)new java.util.Date().getTime());
+            int sx = st % 100;
+            int b = 0;
+            int badticks = 0;
+            byte [] bytes = new byte [size];
+            for (int k = 0; k < 15; ++k) {
+                int dtt = (sx == 0) ? ((int)System.currentTimeMillis()) :
+                  ((int)new java.util.Date().getTime());
+                if (badticks >= 20) {
+                    dtt /= 10;
+                } else if ((dtt & 1) == 0) {
+                    ++badticks;
+                } else {
+ badticks = 0;
+}
+                st = ((int)st * 31 + dtt);
+                ++sx;
+                if (sx >= 100) {
+ sx = 0;
+}
+                for (int j = 0; j < bytes.length; ++j) {
+                    for (int i = 0; i < 8; ++i) {
+                    dtt = (sx == 0) ? ((int)System.currentTimeMillis()) :
+          ((int)new java.util.Date().getTime());
+                    if (badticks >= 20) {
+                    dtt /= 10;
+                    } else if ((dtt & 1) == 0) {
+                    ++badticks;
+                    } else {
+ badticks = 0;
+}
+                    int ticks = ((int)st * 31 + dtt + j);
+                    st = ticks;
+                    ++sx;
+                    if (sx >= 100) {
+ sx = 0;
+}
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = (ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = (ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = (ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = (ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = (ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = (ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = (ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = (ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = (ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = (ticks + 54287);
+                    if ((ticks & (1 << i)) != 0) {
+                    ticks >>= 1; ticks = (ticks + 54287);
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+                    }
+              ticks = ((int)(ticks + st +
+                (int)new java.util.Date().getTime() + 1));
+                    b <<= 1;
+                    b |= ticks & 1;
+                    }
+                    bytes [j] ^= ((byte)b);
+                }
+            }
+            return bytes;
+        }
+
     private String GenerateMessageID() {
       StringBuilder builder = new StringBuilder();
       int seq = 0;
       builder.append("<");
-      synchronized (sequenceSync) {
+      synchronized (ValueSequenceSync) {
         if (seqFirstTime) {
-          msgidSequence = msgidRandom.nextInt(65536);
+          msgidSequence = ValueMsgidRandom.nextInt(65536);
           msgidSequence <<= 16;
-          msgidSequence |= msgidRandom.nextInt(65536);
+          msgidSequence |= ValueMsgidRandom.nextInt(65536);
           seqFirstTime = false;
         }
         seq = (msgidSequence++);
       }
       String ValueHex = "0123456789abcdef";
-      String guid = java.util.UUID.randomUUID().toString();
+      byte[] ent;
+      if (ValueMsgidRandom.nextInt(5) == 0) {
+        ent = TimeEntropy(16);
+      } else {
+        ent = new byte[16];
+        for (int i = 0;i<ent.length; ++i) {
+          ent[i]=((byte)ValueMsgidRandom.nextInt(256));
+        }
+      }
       long ticks = new java.util.Date().getTime();
       for (int i = 0; i < 16; ++i) {
         builder.append(ValueHex.charAt((int)(ticks & 15)));
         ticks >>= 4;
       }
-      for (int i = 0; i < guid.length(); ++i) {
-        if (guid.charAt(i) != '-') {
-          builder.append(guid.charAt(i));
-        }
+      for (int i = 0; i < ent.length; ++i) {
+        builder.append(ValueHex.charAt((int)(ent[i] & 15)));
+        builder.append(ValueHex.charAt((int)((ent[i]>>4) & 15)));
       }
       for (int i = 0; i < 8; ++i) {
         builder.append(ValueHex.charAt(seq & 15));
@@ -2323,6 +2416,7 @@ public final void setSubject(String value) {
         builder.append(".local.invalid");
       }
       builder.append(">");
+      // DebugUtility.Log(builder.toString());
       return builder.toString();
     }
 
@@ -2374,7 +2468,7 @@ public final void setSubject(String value) {
           // NOTE: Actually "token", but all known transfer encoding values
           // fit the same syntax as the stricter one for top-level types and
           // subtypes
-          int endIndex = MediaType.skipMimeTypeSubtype(
+          int endIndex = MediaType.SkipMimeTypeSubtype(
             value,
             startIndex,
             value.length(),
@@ -2385,8 +2479,8 @@ public final void setSubject(String value) {
               endIndex,
               value.length(),
               null) == value.length()) ? value.substring(
-startIndex, (
-startIndex)+(endIndex - startIndex)) : "";
+  startIndex, (
+  startIndex)+(endIndex - startIndex)) : "";
         }
         mime |= name.equals("mime-version");
         if (value.indexOf("=?") >= 0) {
@@ -2679,7 +2773,7 @@ startIndex)+(endIndex - startIndex)) : "";
           return this.boundary;
         }
 
-      public MessageStackEntry (Message msg) {
+      public MessageStackEntry(Message msg) {
         this.message = msg;
         String newBoundary = "";
         MediaType mediaType = msg.getContentType();

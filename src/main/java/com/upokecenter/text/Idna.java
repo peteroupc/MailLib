@@ -39,12 +39,12 @@ private Idna() {
     private static final int BidiClassBN = 9;
     private static final int BidiClassON = 10;
 
+    private static final Object ValueBidiClassesSync = new Object();
+    private static final Object ValueJoiningTypesSync = new Object();
+    private static final Object ValueScriptsSync = new Object();
     private static ByteData bidiClasses;
     private static ByteData joiningTypes;
     private static ByteData scripts;
-    private static final Object bidiClassesSync = new Object();
-    private static final Object joiningTypesSync = new Object();
-    private static final Object scriptsSync = new Object();
 
     static int CodePointBefore(String str, int index) {
       if (str == null) {
@@ -86,7 +86,7 @@ private Idna() {
 
     static int GetBidiClass(int ch) {
       ByteData table = null;
-      synchronized (bidiClassesSync) {
+      synchronized (ValueBidiClassesSync) {
         bidiClasses = (bidiClasses == null) ? (ByteData.Decompress(IdnaData.BidiClasses)) : bidiClasses;
         table = bidiClasses;
       }
@@ -95,7 +95,7 @@ private Idna() {
 
     private static int GetJoiningType(int ch) {
       ByteData table = null;
-      synchronized (joiningTypesSync) {
+      synchronized (ValueJoiningTypesSync) {
      joiningTypes = (joiningTypes == null) ? (ByteData.Decompress(IdnaData.JoiningTypes)) : joiningTypes;
         table = joiningTypes;
       }
@@ -104,7 +104,7 @@ private Idna() {
 
     private static int GetScript(int ch) {
       ByteData table = null;
-      synchronized (scriptsSync) {
+      synchronized (ValueScriptsSync) {
         scripts = (scripts == null) ? (ByteData.Decompress(IdnaData.IdnaRelevantScripts)) : scripts;
         table = scripts;
       }
@@ -193,7 +193,7 @@ private Idna() {
      * @return The domain name where each label with code points outside the Basic
      * Latin range (U + 0000 to U + 007F) is encoded into Punycode. Labels where
      * this is not possible remain unchanged.
-     * @throws NullPointerException Value is null.
+     * @throws java.lang.NullPointerException Value is null.
      */
     public static String EncodeDomainName(String value) {
       if (value == null) {
@@ -222,9 +222,9 @@ private Idna() {
         }
       }
   retval = DomainUtility.PunycodeEncodePortion(
-value,
-lastIndex,
-value.length());
+  value,
+  lastIndex,
+  value.length());
       if (retval == null) {
         builder.append(value.substring(lastIndex, (lastIndex)+(value.length() - lastIndex)));
       } else {
@@ -235,12 +235,12 @@ value.length());
 
     /**
      * Determines whether the given string is a syntactically valid domain name.
-     * @param str A string object.
+     * @param str A text string.
      * @param lookupRules If true, uses rules to apply when looking up the string
      * as a domain name. If false, uses rules to apply when registering the
      * string as a domain name.
-     * @return True if the given string is a syntactically valid domain name;
-     * otherwise; false.
+     * @return {@code true} if the given string is a syntactically valid domain
+     * name; otherwise; false.
      */
     public static boolean IsValidDomainName(String str, boolean lookupRules) {
       if (((str) == null || (str).length() == 0)) {
@@ -256,19 +256,18 @@ value.length());
             return false;
           }
           if (!IsValidLabel(
-str.substring(lastIndex, (lastIndex)+(i - lastIndex)),
-lookupRules,
-bidiRule)) {
+  str.substring(lastIndex, (lastIndex)+(i - lastIndex)),
+  lookupRules,
+  bidiRule)) {
             return false;
           }
           lastIndex = i + 1;
         }
       }
-      return (str.length() != lastIndex) &&
-        IsValidLabel(
-str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)),
-lookupRules,
-bidiRule);
+      return (str.length() != lastIndex) && IsValidLabel(
+  str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)),
+  lookupRules,
+  bidiRule);
     }
 
     private static String ToLowerCaseAscii(String str) {
@@ -301,9 +300,9 @@ bidiRule);
     }
 
 private static boolean IsValidLabel(
-String str,
-boolean lookupRules,
-boolean bidiRule) {
+  String str,
+  boolean lookupRules,
+  boolean bidiRule) {
       if (((str) == null || (str).length() == 0)) {
         return false;
       }
@@ -311,8 +310,7 @@ boolean bidiRule) {
         (str.charAt(1) == 'n' || str.charAt(1) == 'N') && str.charAt(2) == '-' && str.charAt(3) == '-';
       boolean allLDH = true;
       for (int i = 0; i < str.length(); ++i) {
-    if ((str.charAt(i) >= 'a' && str.charAt(i) <= 'z') || (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z'
-) ||
+    if ((str.charAt(i) >= 'a' && str.charAt(i) <= 'z') || (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z') ||
                 (str.charAt(i) >= '0' && str.charAt(i) <= '9') || str.charAt(i) == '-') {
           // LDH character
           continue;
@@ -357,9 +355,9 @@ boolean bidiRule) {
     }
 
     private static boolean IsValidULabel(
-String str,
-boolean lookupRules,
-boolean bidiRule) {
+  String str,
+  boolean lookupRules,
+  boolean bidiRule) {
       if (((str) == null || (str).length() == 0)) {
         return false;
       }

@@ -41,7 +41,8 @@ import java.util.*;
     /**
      * Gets a value indicating whether this represents a group of addresses rather
      * than a single address.
-     * @return True if this represents a group of addresses; otherwise, false.
+     * @return {@code true} If this represents a group of addresses; otherwise,
+     * {@code false}.
      */
     public final boolean isGroup() {
         return this.isGroup;
@@ -85,14 +86,14 @@ import java.util.*;
     }
 
     /**
-     * Initializes a new instance of the NamedAddress class. Examples: <ul>
-     * <li><code>john@example.com</code></li> <li><code>"John Doe"
-     * &lt;john@example.com&gt;</code></li>
+     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
+     * class. Examples: <ul> <li><code>john@example.com</code></li> <li><code>"John
+     * Doe" &lt;john@example.com&gt;</code></li>
      * <li><code>=?utf-8?q?John</code><code>=</code><code>27s_Office?=
      * &lt;john@example.com&gt;</code></li> <li><code>John
      * &lt;john@example.com&gt;</code></li> <li><code>"Group" : Tom
      * &lt;tom@example.com&gt;, Jane &lt;jane@example.com&gt;;</code></li></ul>
-     * @param address A string object identifying a single email address or a group
+     * @param address A text string identifying a single email address or a group
      * of email addresses. Comments, or text within parentheses, can appear.
      * Multiple email addresses are not allowed unless they appear in the
      * group syntax given above. Encoded words under RFC 2047 that appear
@@ -101,15 +102,15 @@ import java.util.*;
      * {@code utf-8}, either "?B?" or "?Q?" (in upper or lower case), a
      * series of bytes in the character encoding, further encoded using B or
      * Q encoding, and finally "?=". B encoding uses Base64, while in Q
-     * encoding, spaces are changed to "_", equals are changed to "=3D",
-     * and most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and
-     * the basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed
-     * to "=" followed by their 2-digit hexadecimal form. An encoded word's
+     * encoding, spaces are changed to "_", equals are changed to "=3D", and
+     * most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the
+     * basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to
+     * "=" followed by their 2-digit hexadecimal form. An encoded word's
      * maximum length is 75 characters. See the second example.</p>.
-     * @throws NullPointerException The parameter {@code address} is null.
+     * @throws java.lang.NullPointerException The parameter {@code address} is null.
      * @throws IllegalArgumentException The named address has an invalid syntax.
      */
-    public NamedAddress (String address) {
+    public NamedAddress(String address) {
       if (address == null) {
         throw new NullPointerException("address");
       }
@@ -119,10 +120,10 @@ import java.util.*;
         throw new IllegalArgumentException("Address has an invalid syntax.");
       }
       NamedAddress na = HeaderParserUtility.ParseAddress(
-address,
-0,
-address.length(),
-tokener.GetTokens());
+  address,
+  0,
+  address.length(),
+  tokener.GetTokens());
       if (na == null) {
         throw new IllegalArgumentException("Address has an invalid syntax.");
       }
@@ -133,16 +134,17 @@ tokener.GetTokens());
     }
 
     /**
-     * Initializes a new instance of the NamedAddress class using the given display
-     * name and email address.
+     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
+     * class using the given display name and email address.
      * @param displayName The address's display name. Can be null or empty, in
      * which case the email address is used instead. Encoded words under RFC
      * 2047 will not be decoded.
      * @param address An email address.
-     * @throws NullPointerException The parameter {@code address} is null.
-     * @throws IllegalArgumentException The display name or address has an invalid syntax.
+     * @throws java.lang.NullPointerException The parameter {@code address} is null.
+     * @throws IllegalArgumentException The display name or address has an invalid
+     * syntax.
      */
-    public NamedAddress (String displayName, String address) {
+    public NamedAddress(String displayName, String address) {
       if (((displayName) == null || (displayName).length() == 0)) {
         displayName = address;
       }
@@ -156,14 +158,15 @@ tokener.GetTokens());
     }
 
     /**
-     * Initializes a new instance of the NamedAddress class.
-     * @param displayName A string object. If this value is null or empty, uses the
+     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
+     * class.
+     * @param displayName A text string. If this value is null or empty, uses the
      * email address as the display name. Encoded words under RFC 2047 will
      * not be decoded.
      * @param address An email address.
-     * @throws NullPointerException The parameter {@code address} is null.
+     * @throws java.lang.NullPointerException The parameter {@code address} is null.
      */
-    public NamedAddress (String displayName, Address address) {
+    public NamedAddress(String displayName, Address address) {
       if (address == null) {
         throw new NullPointerException("address");
       }
@@ -177,16 +180,17 @@ tokener.GetTokens());
     }
 
     /**
-     * Initializes a new instance of the NamedAddress class using the given name
-     * and an email address made up of its local part and domain.
-     * @param displayName A string object. If this value is null or empty, uses the
+     * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
+     * class using the given name and an email address made up of its local
+     * part and domain.
+     * @param displayName A text string. If this value is null or empty, uses the
      * email address as the display name.
      * @param localPart The local part of the email address (before the "@").
      * @param domain The domain of the email address (before the "@").
-     * @throws NullPointerException The parameter {@code localPart} or {@code
-     * domain} is null.
+     * @throws java.lang.NullPointerException The parameter {@code localPart} or
+     * {@code domain} is null.
      */
-    public NamedAddress (String displayName, String localPart, String domain) {
+    public NamedAddress(String displayName, String localPart, String domain) {
       if (localPart == null) {
         throw new NullPointerException("localPart");
       }
@@ -203,17 +207,9 @@ tokener.GetTokens());
     }
 
     /**
-     * Initializes a new instance of the NamedAddress class. Takes a group name and
-     * several named email addresses as parameters, and forms a group with
-     * them.
-     * @param groupName The group's name.
-     * @param mailboxes A list of named addresses that make up the group.
-     * @throws NullPointerException The parameter {@code groupName} or {@code
-     * mailboxes} is null.
-     * @throws IllegalArgumentException The parameter {@code groupName} is empty, or an
-     * item in the list is itself a group.
+     *
      */
-    public NamedAddress (String groupName, List<NamedAddress> mailboxes) {
+    public NamedAddress(String groupName, List<NamedAddress> mailboxes) {
       if (groupName == null) {
         throw new NullPointerException("groupName");
       }
