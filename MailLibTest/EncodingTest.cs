@@ -23,7 +23,7 @@ namespace MailLibTest {
 
         public static string RandomString (RandomGenerator rnd) {
             int count = 10 + rnd.UniformInt(350);
-            StringBuilder sb = new StringBuilder();
+      StringBuilder sb = new StringBuilder(count*2);
             int ui;
             string problemChars = " \t\u0000\u0010\u001b\u001f" +
               "\u007f\u008f\u009f%\\/*?|:<>\"\u0028\u0029" +
@@ -2078,7 +2078,7 @@ string stringTemp =
     }
 
     [Test]
-    [Timeout(100000)]
+    [Timeout(200000)]
     public void TestRandomEncodedBytes() {
       var rnd = new RandomGenerator();
       for (var i = 0; i < 10000; ++i) {

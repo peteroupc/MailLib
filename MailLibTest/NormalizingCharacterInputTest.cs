@@ -105,21 +105,22 @@ public void TestNormalizationLatinOne() {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
+
       Assert.IsTrue(
   NormalizingCharacterInput.IsNormalized(
-  new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+          "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
   Normalization.NFC));
       Assert.IsTrue(
       NormalizingCharacterInput.IsNormalized(
-       new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+          "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
          Normalization.NFD));
       Assert.IsTrue(
       NormalizingCharacterInput.IsNormalized(
-       new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+          "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
          Normalization.NFKC));
       Assert.IsTrue(
       NormalizingCharacterInput.IsNormalized(
-       new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+          "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
          Normalization.NFKD));
     }
     [Test]

@@ -2014,7 +2014,7 @@ namespace PeterO.Mail {
             var b = 0;
             var badticks = 0;
             var bytes = new byte [size];
-            for (var k = 0; k < 30; ++k) {
+            for (var k = 0; k < 15; ++k) {
                 var dtt = (sx == 0) ? unchecked((int)DateTime.Now.Ticks) :
                   unchecked((int)DateTime.UtcNow.Ticks);
                 if (badticks >= 20) {
@@ -2096,13 +2096,21 @@ namespace PeterO.Mail {
         seq = unchecked(msgidSequence++);
       }
       const string ValueHex = "0123456789abcdef";
-      byte[] ent = TimeEntropy(16);
+      byte[] ent;
+      if (ValueMsgidRandom.Next(5) == 0) {
+        ent = TimeEntropy(16);
+      } else {
+        ent = new byte[16];
+        for(var i=0;i<ent.Length;i++){
+          ent[i]=unchecked((byte)ValueMsgidRandom.Next(256));
+        }
+      }
       long ticks = DateTime.UtcNow.Ticks;
       for (int i = 0; i < 16; ++i) {
         builder.Append(ValueHex[(int)(ticks & 15)]);
         ticks >>= 4;
       }
-      for (int i = 0; i < 16; ++i) {
+      for (int i = 0; i < ent.Length; ++i) {
         builder.Append(ValueHex[(int)(ent[i] & 15)]);
         builder.Append(ValueHex[(int)((ent[i]>>4) & 15)]);
       }

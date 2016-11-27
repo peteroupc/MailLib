@@ -110,7 +110,7 @@
         }
         var starterPos = 0;
         int retval = length;
-        // DebugUtility.Log ("buf=" + (EC(array,0,length)));
+        //DebugUtility.Log ("buf=" + (EC(array,0,length)));
         int starter = array[0];
         int last = UnicodeDatabase.GetCombiningClass(starter);
         if (last != 0) {
@@ -165,6 +165,7 @@
           }
           last = valuecc;
         }
+        //DebugUtility.Log ("bufend=" + (EC (array, 0, length)));
         if (composed) {
           var j = 0;
           for (int i = 0; i < endPos; ++i) {
@@ -173,7 +174,6 @@
             }
           }
         }
-        // DebugUtility.Log ("buf=" + (EC (array, 0, retval)));
         return retval;
       }
 
@@ -282,40 +282,70 @@
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
-   public static bool IsNormalized(ICharacterInput chars, Normalization
-        form) {
-        if (chars == null) {
-          throw new ArgumentNullException("chars");
-        }
-        IList<int> list = new List<int>();
-        var ch = 0;
-        int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
-        var norm = true;
-        while ((ch = chars.ReadChar()) >= 0) {
-          if ((ch & 0x1ff800) == 0xd800) {
-            return false;
-          }
-          if (norm && (ch & mask) != ch) {
-            norm = false;
-          }
-          list.Add(ch);
-        }
-        return norm || IsNormalized(list, form);
+    public static bool IsNormalized (ICharacterInput chars,
+                                    Normalization
+         form)
+    {
+      if (chars == null) {
+        throw new ArgumentNullException ("chars");
       }
+      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
+      var listIndex = 0;
+      var array = new int[16];
+      var haveNonQcs = false;
+      while (true) {
+        int c = chars.ReadChar ();
+        if (c < 0) break;
+        if ((c & 0x1ff800) == 0xd800) return false;
+        bool isQcs = (c >= 0xf0000) ? true :
+UnicodeDatabase.IsQuickCheckStarter (
+  c,
+  form);
+
+        if (isQcs) {
+          if (haveNonQcs) {
+            if (!NormalizeAndCheck (
+             array, 0, listIndex,
+             form)) {
+              return false;
+            }
+
+          }
+          listIndex = 0;
+          haveNonQcs = false;
+        } else {
+          haveNonQcs = true;
+        }
+        if (listIndex >= array.Length) {
+          var newArray = new int [array.Length * 2];
+          Array.Copy (array, 0, newArray, 0, listIndex);
+          array = newArray;
+        }
+        array [listIndex++] = c;
+      }
+      if (haveNonQcs) {
+        if (!NormalizeAndCheck (
+                         array, 0, listIndex,
+    form)) {
+          return false;
+        }
+      }
+      return true;
+    }
 
       private static bool NormalizeAndCheck(
-    IList<int> charList,
+    int[] charArray,
     int start,
     int length,
     Normalization form) {
         var i = 0;
         foreach (int ch in NormalizingCharacterInput.GetChars(
-          new PartialListCharacterInput(charList, start, length),
+          new PartialArrayCharacterInput(charArray, start, length),
           form)) {
           if (i >= length) {
             return false;
           }
-          if (ch != charList[start + i]) {
+          if (ch != charArray[start + i]) {
             return false;
           }
           ++i;
@@ -343,9 +373,9 @@
           throw new ArgumentNullException("str");
         }
      // DebugUtility.Log (str);
-        var nonQcsStart = -1;
         int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
-        var lastQcs = 0;
+      var lastQcsIndex = 0;
+        var haveNonQcs = false;
         for (int i = 0; i < str.Length; ++i) {
           int c = str[i];
           if ((c & 0xfc00) == 0xd800 && i + 1 < str.Length &&
@@ -371,35 +401,33 @@
     c,
     form);
           }
-       // DebugUtility.Log ("ch={0} qcs={1} lastqcs={2} nqs={3}",
-         //                EC (c), isQcs, lastQcs, nonQcsStart);
-          if (isQcs) {
-            lastQcs = i;
-          }
-          if (nonQcsStart < 0 && !isQcs) {
-            // First non-quick-check starter in a row
-            nonQcsStart = i;
-          } else if (nonQcsStart >= 0 && isQcs) {
-          // We have at least one non-quick-check-starter,
-          // normalize these code points.
-          if (!NormalizeAndCheckString(
-           str,
-           nonQcsStart,
-           i - nonQcsStart,
-           form)) {
-              return false;
-            }
-            nonQcsStart = -1;
-          }
+        if (isQcs) {
+          if (haveNonQcs) {
+                        if (!NormalizeAndCheckString (
+                         str,
+                         lastQcsIndex,
+                         i - lastQcsIndex,
+                         form)) {
+                            return false;
+                        }
+
+                    }
+          lastQcsIndex = i;
+          haveNonQcs = false;
+        } else {
+          haveNonQcs = true;
+        }
+    //    DebugUtility.Log ("ch={0} qcs={1} lastqcs={2} nqs={3}",
+      //                   EC (c), isQcs, lastQcs, nonQcsStart);
           if (c >= 0x10000) {
             ++i;
           }
         }
-        if (nonQcsStart >= 0) {
+        if (haveNonQcs) {
         if (!NormalizeAndCheckString(
     str,
-    nonQcsStart,
-    str.Length - nonQcsStart,
+    lastQcsIndex,
+    str.Length - lastQcsIndex,
     form)) {
             return false;
           }
@@ -441,7 +469,8 @@
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)"]/*'/>
-      public static bool IsNormalized(int[] charArray, Normalization form) {
+    [Obsolete("Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
+    public static bool IsNormalized(int[] charArray, Normalization form) {
         if (charArray == null) {
     throw new ArgumentNullException("charArray");
   }
@@ -450,52 +479,10 @@
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
+    [Obsolete("Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
       public static bool IsNormalized(IList<int> charList, Normalization form) {
-        var nonQcsStart = -1;
-        var lastQcs = 0;
-        int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
-        if (charList == null) {
-          throw new ArgumentNullException("charList");
-        }
-        for (int i = 0; i < charList.Count; ++i) {
-          int c = charList[i];
-          if (c < 0 || c > 0x10ffff || ((c & 0x1ff800) == 0xd800)) {
-            return false;
-          }
-          var isQcs = false;
-          isQcs = (c & mask) == c && (i + 1 == charList.Count || (charList[i +
-                 1] & mask) == charList[i + 1]) ? true :
-                 UnicodeDatabase.IsQuickCheckStarter(c, form);
-          if (isQcs) {
-            lastQcs = i;
-          }
-          if (nonQcsStart < 0 && !isQcs) {
-            // First non-quick-check starter in a row
-            nonQcsStart = i;
-          } else if (nonQcsStart >= 0 && isQcs) {
-            // We have at least one non-quick-check starter,
-            // normalize these code points.
-            if (!NormalizeAndCheck(
-          charList,
-          nonQcsStart,
-          i - nonQcsStart,
-          form)) {
-              return false;
-            }
-            nonQcsStart = -1;
-          }
-        }
-        if (nonQcsStart >= 0) {
-          if (!NormalizeAndCheck(
-    charList,
-    nonQcsStart,
-    charList.Count - nonQcsStart,
-    form)) {
-            return false;
-          }
-        }
-        return true;
-      }
+            return IsNormalized (new PartialListCharacterInput (charList), form);
+     }
 
       private readonly int[] readbuffer = new int[1];
 
@@ -549,11 +536,12 @@
               if (c < 0) {
                   return ("<" + c + ">");
               }
+      string uesc = "\\u";
               if (c >= 0x10000) {
-                  return String.Format ("\\u {0:X8}", c);
+                  return String.Format (uesc + "{0:X8}", c);
               }
         if (c >= 0x7f || c<0x20) {
-                  return String.Format ("\\u {0:X4}", c);
+                  return String.Format (uesc + "{0:X4}", c);
               }
          return (c == 0x20) ? ("<space>") : (("<" + ((char)c) + ">"));
           }
@@ -807,13 +795,18 @@
         }
         // No data in buffer
         if (this.endIndex == 0) {
+        //        DebugUtility.Log ("no data");
           return false;
         }
         this.flushIndex = 0;
-        // Canonical reordering
-        ReorderBuffer(this.buffer, 0, this.lastQcsIndex);
+//      DebugUtility.Log ("reordering {0} [{1}]",
+  //                      EC (buffer, 0, lastQcsIndex), this.form);
+      // Canonical reordering
+      ReorderBuffer (this.buffer, 0, this.lastQcsIndex);
         if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
           // Composition
+    //    DebugUtility.Log ("composing {0} [{1}]",
+      //                    EC (buffer, 0, lastQcsIndex), this.form);
           this.processedIndex = ComposeBuffer(
     this.buffer,
     this.lastQcsIndex);

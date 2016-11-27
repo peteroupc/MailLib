@@ -11,7 +11,8 @@ using PeterO.Mail;
 namespace MailLibTest {
   class Program {
     public static void Main() {
-      new EncodingTest().TestRandomEncodedBytes();
+//      new ContentDispositionTest().TestMakeFilename();
+      new NormalizationTest().NormTest();
     }
   }
 }

@@ -5,16 +5,52 @@ namespace PeterO {
     /// generator, using Sebastiano Vigna's
     /// <a
     /// href='http://xorshift.di.unimi.it/xorshift128plus.c'>xorshift128+</a>
-    /// RNG as the underlying implementation. This class is safe for
+    /// RNG as the underlying implementation. By default, this class is safe for
     /// concurrent use among multiple threads.</summary>
   public class XorShift128Plus : IRandomGen {
     private long[] s = new long[2];
     private object syncRoot = new Object();
+    private bool threadSafe;
 
-    public XorShift128Plus() {
+    public XorShift128Plus () : this(true)
+        {
+        }
+        public XorShift128Plus(bool threadSafe) {
+      this.threadSafe = threadSafe;
       this.Seed();
     }
-
+    private int GetBytesInternal (byte [] bytes, int offset, int length)
+    {
+            int count = length;
+            while (length >= 8) {
+                long nv = this.NextValue ();
+                bytes [offset++] = unchecked((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = unchecked((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = unchecked((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = unchecked((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = unchecked((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = unchecked((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = unchecked((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = unchecked((byte)nv);
+                length -= 8;
+            }
+            if (length != 0) {
+                long nv = this.NextValue ();
+                while (length > 0) {
+                    bytes [offset++] = unchecked((byte)nv);
+                    nv >>= 8;
+                    --length;
+                }
+            }
+      return count;
+    }
     public int GetBytes(byte[] bytes, int offset, int length) {
       if (bytes == null) {
         throw new ArgumentNullException("bytes");
@@ -39,37 +75,13 @@ namespace PeterO {
         throw new ArgumentException("bytes's length minus " + offset + " (" +
           (bytes.Length - offset) + ") is less than " + length);
       }
-      int count = length;
-      lock (this.syncRoot) {
-        while (length >= 8) {
-          long nv = this.NextValue();
-          bytes[offset++] = unchecked((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = unchecked((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = unchecked((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = unchecked((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = unchecked((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = unchecked((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = unchecked((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = unchecked((byte)nv);
-          length -= 8;
+      if (threadSafe) {
+        lock (this.syncRoot) {
+          return GetBytesInternal (bytes, offset, length);
         }
-        if (length != 0) {
-          long nv = this.NextValue();
-          while (length > 0) {
-            bytes[offset++] = unchecked((byte)nv);
-            nv >>= 8;
-            --length;
-          }
-        }
+      } else {
+        return GetBytesInternal (bytes, offset, length);
       }
-      return count;
     }
 
     // xorshift128 + generator
@@ -86,7 +98,7 @@ namespace PeterO {
     }
 
     private void Seed() {
-      long lb = DateTime.Now.Ticks & 0xffffffffffL;
+      long lb = DateTime.UtcNow.Ticks & 0xffffffffffL;
       this.s[0] =lb;
       lb = 0L;
       this.s[1] = lb;
