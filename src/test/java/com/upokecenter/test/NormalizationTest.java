@@ -47,7 +47,7 @@ import java.util.*;
       int index = 0;
       int state = 0;
       int codePoint = 0;
-      int[] retArray = new int[8];
+      int[] retArray = new int[cp.length()];
       int count = 0;
       while (index <= cp.length()) {
         int c = (index >= cp.length()) ? -1 : (int)cp.charAt(index);
@@ -101,7 +101,7 @@ import java.util.*;
         if (!first) {
           builder.append(", ");
         }
-        builder.append("" + v);
+        builder.append(Test.TestCommon.IntToString(v));
         first = false;
       }
       builder.append("]");
@@ -149,9 +149,12 @@ import java.util.*;
     private void TestIdempotent(String str, Normalization norm) {
       boolean isForm = NormalizingCharacterInput.IsNormalized (str, norm);
       String newStr = NormalizingCharacterInput.Normalize (str, norm);
+      ICharacterInput sci = new CharacterReader (str, false, true);
+            boolean isForm2 = NormalizingCharacterInput.IsNormalized (sci, norm);
       if (isForm) {
         Assert.assertEquals (str, newStr, EncodingTest.EscapeString (str));
       }
+      Assert.assertEquals (isForm, isForm2);
       if (!NormalizingCharacterInput.IsNormalized (newStr, norm)) {
         Assert.fail (EncodingTest.EscapeString (str));
       }
@@ -163,8 +166,8 @@ import java.util.*;
 
     @Test
     public void NormTestRandom() {
-      RandomGenerator rand = new RandomGenerator();
-      for (int i = 0; i < 1000000; ++i) {
+      RandomGenerator rand = new RandomGenerator(new XorShift128Plus (false));
+      for (int i = 0; i < 100000; ++i) {
         String str = EncodingTest.RandomString (rand);
                 TestIdempotent (str, Normalization.NFC);
                 TestIdempotent (str, Normalization.NFD);
@@ -186,6 +189,10 @@ Assert.assertEquals(
       Assert.IsFalse (
         NormalizingCharacterInput.IsNormalized(str, Normalization.NFC));
       TestIdempotent (str, Normalization.NFC);
+            str = "_\u96e3\uc972+67 Tqd R_._";
+            Assert.assertTrue (
+        NormalizingCharacterInput.IsNormalized (str, Normalization.NFC));
+            TestIdempotent (str, Normalization.NFC);
     }
 
     private static final class NormResult {
@@ -255,7 +262,7 @@ Assert.assertEquals(
       }
     }
 
-    @Test
+    @Test(timeout = 60000)
     public void NormTest() {
       boolean[] handled = new boolean[0x110000];
       String[] lines = NetHelper.DownloadOrOpenAllLines(
@@ -313,23 +320,23 @@ Assert.assertEquals(
             cptemp[0] = (char)i;
           }
           String cpstr = new String(cptemp, 0, (i >= 0x10000 ? 2 : 1));
-          String imsg = "" + i;
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                Normalization.NFC)) {
-            Assert.fail(imsg);
+            Assert.fail(Test.TestCommon.IntToString(i));
           }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                Normalization.NFD)) {
-            Assert.fail(imsg);
+                    Assert.fail (Test.TestCommon.IntToString (i));
           }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                 Normalization.NFKC)) {
-            Assert.fail(imsg);
-          }
+                    Assert.fail (Test.TestCommon.IntToString (i));
+ }
           if (!NormalizingCharacterInput.IsNormalized(cpstr,
                 Normalization.NFKD)) {
-            Assert.fail(imsg);
-          }
+                    Assert.fail (Test.TestCommon.IntToString (i));
+        }
+          String imsg = Test.TestCommon.IntToString (i);
           AssertEqual(cpstr, NormalizingCharacterInput.Normalize(
             cpstr,
             Normalization.NFC), imsg);

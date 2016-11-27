@@ -5,25 +5,23 @@ namespace PeterO {
     /// generator, using Sebastiano Vigna's
     /// <a
     /// href='http://xorshift.di.unimi.it/xorshift128plus.c'>xorshift128+</a>
-    /// RNG as the underlying implementation. By default, this class is safe for
-    /// concurrent use among multiple threads.</summary>
+    /// RNG as the underlying implementation. By default, this class is
+    /// safe for concurrent use among multiple threads.</summary>
   public class XorShift128Plus : IRandomGen {
     private long[] s = new long[2];
     private object syncRoot = new Object();
     private bool threadSafe;
 
-    public XorShift128Plus () : this(true)
-        {
+    public XorShift128Plus () : this(true) {
         }
         public XorShift128Plus(bool threadSafe) {
       this.threadSafe = threadSafe;
       this.Seed();
     }
-    private int GetBytesInternal (byte [] bytes, int offset, int length)
-    {
+    private int GetBytesInternal (byte [] bytes, int offset, int length) {
             int count = length;
             while (length >= 8) {
-                long nv = this.NextValue ();
+                long nv = this.NextValue();
                 bytes [offset++] = unchecked((byte)nv);
                 nv >>= 8;
                 bytes [offset++] = unchecked((byte)nv);
@@ -42,7 +40,7 @@ namespace PeterO {
                 length -= 8;
             }
             if (length != 0) {
-                long nv = this.NextValue ();
+                long nv = this.NextValue();
                 while (length > 0) {
                     bytes [offset++] = unchecked((byte)nv);
                     nv >>= 8;

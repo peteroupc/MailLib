@@ -4,17 +4,52 @@ package com.upokecenter.test; import com.upokecenter.util.*;
      * A class that implements a statistically-random byte generator, using
      * Sebastiano Vigna's <a
      * href='http://xorshift.di.unimi.it/xorshift128plus.c'>xorshift128+</a>
-     * RNG as the underlying implementation. This class is safe for
-     * concurrent use among multiple threads.
+     * RNG as the underlying implementation. By default, this class is safe
+     * for concurrent use among multiple threads.
      */
   public class XorShift128Plus implements IRandomGen {
     private long[] s = new long[2];
     private Object syncRoot = new Object();
+    private boolean threadSafe;
 
     public XorShift128Plus() {
+ this(true);
+        }
+        public XorShift128Plus(boolean threadSafe) {
+      this.threadSafe = threadSafe;
       this.Seed();
     }
-
+    private int GetBytesInternal(byte [] bytes, int offset, int length) {
+            int count = length;
+            while (length >= 8) {
+                long nv = this.NextValue();
+                bytes [offset++] = ((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = ((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = ((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = ((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = ((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = ((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = ((byte)nv);
+                nv >>= 8;
+                bytes [offset++] = ((byte)nv);
+                length -= 8;
+            }
+            if (length != 0) {
+                long nv = this.NextValue();
+                while (length > 0) {
+                    bytes [offset++] = ((byte)nv);
+                    nv >>= 8;
+                    --length;
+                }
+            }
+      return count;
+    }
     public int GetBytes(byte[] bytes, int offset, int length) {
       if (bytes == null) {
         throw new NullPointerException("bytes");
@@ -39,37 +74,13 @@ package com.upokecenter.test; import com.upokecenter.util.*;
         throw new IllegalArgumentException("bytes's length minus " + offset + " (" +
           (bytes.length - offset) + ") is less than " + length);
       }
-      int count = length;
-      synchronized (this.syncRoot) {
-        while (length >= 8) {
-          long nv = this.NextValue();
-          bytes[offset++] = ((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = ((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = ((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = ((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = ((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = ((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = ((byte)nv);
-          nv >>= 8;
-          bytes[offset++] = ((byte)nv);
-          length -= 8;
+      if (threadSafe) {
+        synchronized (this.syncRoot) {
+          return GetBytesInternal (bytes, offset, length);
         }
-        if (length != 0) {
-          long nv = this.NextValue();
-          while (length > 0) {
-            bytes[offset++] = ((byte)nv);
-            nv >>= 8;
-            --length;
-          }
-        }
+      } else {
+        return GetBytesInternal (bytes, offset, length);
       }
-      return count;
     }
 
     // xorshift128 + generator
@@ -86,7 +97,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
     }
 
     private void Seed() {
-      long lb = System.currentTimeMillis() & 0xffffffffffL;
+      long lb = new java.util.Date().getTime() & 0xffffffffffL;
       this.s[0] =lb;
       lb = 0L;
       this.s[1] = lb;

@@ -177,37 +177,6 @@
         return retval;
       }
 
-      private static IList<int> GetChars(ICharacterInput input) {
-        var buffer = new int[64];
-        IList<int> ret = new List<int>(24);
-        var count = 0;
-        while ((count = input.Read(buffer, 0, buffer.Length)) > 0) {
-          for (int i = 0; i < count; ++i) {
-            ret.Add(buffer[i]);
-          }
-        }
-        return ret;
-      }
-
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(System.String,PeterO.Text.Normalization)"]/*'/>
-      public static IList<int> GetChars(string str, Normalization form) {
-        if (str == null) {
-          throw new ArgumentNullException("str");
-        }
-        return GetChars(new NormalizingCharacterInput(str, form));
-      }
-
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
-   public static IList<int> GetChars(ICharacterInput str, Normalization
-        form) {
-        if (str == null) {
-          throw new ArgumentNullException("str");
-        }
-        return GetChars(new NormalizingCharacterInput(str, form));
-      }
-
       private int lastQcsIndex;
       private int endIndex;
       private int[] buffer;
@@ -216,12 +185,6 @@
       private int processedIndex;
       private int flushIndex;
       private readonly ICharacterInput iterator;
-
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32})"]/*'/>
-      public NormalizingCharacterInput(IList<int> characterList) :
-        this(characterList, Normalization.NFC) {
-      }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String)"]/*'/>
@@ -240,7 +203,15 @@
       }
 
     /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32})"]/*'/>
+  [Obsolete("Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
+      public NormalizingCharacterInput(IList<int> characterList) :
+        this(characterList, Normalization.NFC) {
+      }
+
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
+  [Obsolete("Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
       public NormalizingCharacterInput(
     IList<int> characterList,
     Normalization form) :
@@ -283,20 +254,21 @@
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized (ICharacterInput chars,
-                                    Normalization
-         form)
-    {
+                Normalization form) {
       if (chars == null) {
         throw new ArgumentNullException ("chars");
       }
-      int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
-      var listIndex = 0;
+       var listIndex = 0;
       var array = new int[16];
       var haveNonQcs = false;
       while (true) {
-        int c = chars.ReadChar ();
-        if (c < 0) break;
-        if ((c & 0x1ff800) == 0xd800) return false;
+        int c = chars.ReadChar();
+        if (c < 0) {
+ break;
+}
+        if ((c & 0x1ff800) == 0xd800) {
+ return false;
+}
         bool isQcs = (c >= 0xf0000) ? true :
 UnicodeDatabase.IsQuickCheckStarter (
   c,
@@ -305,11 +277,12 @@ UnicodeDatabase.IsQuickCheckStarter (
         if (isQcs) {
           if (haveNonQcs) {
             if (!NormalizeAndCheck (
-             array, 0, listIndex,
+             array,
+             0,
+             listIndex,
              form)) {
               return false;
             }
-
           }
           listIndex = 0;
           haveNonQcs = false;
@@ -325,8 +298,10 @@ UnicodeDatabase.IsQuickCheckStarter (
       }
       if (haveNonQcs) {
         if (!NormalizeAndCheck (
-                         array, 0, listIndex,
-    form)) {
+                    array,
+                    0,
+                    listIndex,
+                    form)) {
           return false;
         }
       }
@@ -339,18 +314,20 @@ UnicodeDatabase.IsQuickCheckStarter (
     int length,
     Normalization form) {
         var i = 0;
-        foreach (int ch in NormalizingCharacterInput.GetChars(
-          new PartialArrayCharacterInput(charArray, start, length),
-          form)) {
-          if (i >= length) {
-            return false;
-          }
-          if (ch != charArray[start + i]) {
-            return false;
-          }
-          ++i;
-        }
-        return true;
+            IList<int> ret = new List<int> ();
+            int ch;
+            var input = new NormalizingCharacterInput (
+        new PartialArrayCharacterInput (charArray, start, length), form);
+            while ((ch = input.ReadChar ()) >= 0) {
+                if (i >= length) {
+                    return false;
+                }
+                if (ch != charArray [start + i]) {
+                    return false;
+                }
+                ++i;
+            }
+            return true;
       }
 
     /// <include file='../../docs.xml'
@@ -403,22 +380,21 @@ UnicodeDatabase.IsQuickCheckStarter (
           }
         if (isQcs) {
           if (haveNonQcs) {
-                        if (!NormalizeAndCheckString (
-                         str,
-                         lastQcsIndex,
-                         i - lastQcsIndex,
-                         form)) {
-                            return false;
-                        }
-
+                    if (!NormalizeAndCheckString (
+                    str,
+                    lastQcsIndex,
+                    i - lastQcsIndex,
+                    form)) {
+                    return false;
+                    }
                     }
           lastQcsIndex = i;
           haveNonQcs = false;
         } else {
           haveNonQcs = true;
         }
-    //    DebugUtility.Log ("ch={0} qcs={1} lastqcs={2} nqs={3}",
-      //                   EC (c), isQcs, lastQcs, nonQcsStart);
+    // DebugUtility.Log ("ch=" + (// EC (c)) + " qcs=" + isQcs + " lastqcs="
+    // + lastQcs + " nqs=" + nonQcsStart);
           if (c >= 0x10000) {
             ++i;
           }
@@ -468,20 +444,54 @@ UnicodeDatabase.IsQuickCheckStarter (
       }
 
     /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)"]/*'/>
-    [Obsolete("Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
-    public static bool IsNormalized(int[] charArray, Normalization form) {
-        if (charArray == null) {
-    throw new ArgumentNullException("charArray");
-  }
-        return IsNormalized(new PartialArrayCharacterInput(charArray), form);
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(System.String,PeterO.Text.Normalization)"]/*'/>
+      [Obsolete("Instead of this method, create a NormalizingCharacterInput on the string and call ReadChar to get the normalized string's code points.")]
+      public static IList<int> GetChars(string str, Normalization form) {
+        if (str == null) {
+          throw new ArgumentNullException("str");
+        }
+        IList<int> ret = new List<int>();
+        int ch;
+        var input=new NormalizingCharacterInput(str, form);
+        while((ch=input.ReadChar())>=0){
+           ret.Add(ch);
+        }
+        return ret;
       }
 
     /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
+      [Obsolete("Instead of this method, create a NormalizingCharacterInput on the input and call ReadChar to get the normalized string's code points.")]
+   public static IList<int> GetChars(ICharacterInput input, Normalization
+        form) {
+        if (input == null) {
+          throw new ArgumentNullException("input");
+        }
+        IList<int> ret = new List<int>();
+        int ch;
+        input=new NormalizingCharacterInput(input, form);
+        while((ch=input.ReadChar())>=0){
+           ret.Add(ch);
+        }
+        return ret;
+      }
+
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)"]/*'/>
+  [Obsolete("Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
+    public static bool IsNormalized(int[] charArray, Normalization form) {
+     if (charArray == null) {
+      throw new ArgumentNullException("charArray");
+     }
+     return IsNormalized(new PartialArrayCharacterInput(charArray), form);
+   }
+
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
-    [Obsolete("Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
+  [Obsolete("Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
       public static bool IsNormalized(IList<int> charList, Normalization form) {
-            return IsNormalized (new PartialListCharacterInput (charList), form);
+          return IsNormalized (new PartialListCharacterInput (charList),
+              form);
      }
 
       private readonly int[] readbuffer = new int[1];
@@ -532,6 +542,7 @@ UnicodeDatabase.IsQuickCheckStarter (
         return ch;
       }
 
+    /*
       private static string EC (int c) {
               if (c < 0) {
                   return ("<" + c + ">");
@@ -540,11 +551,20 @@ UnicodeDatabase.IsQuickCheckStarter (
               if (c >= 0x10000) {
                   return String.Format (uesc + "{0:X8}", c);
               }
-        if (c >= 0x7f || c<0x20) {
-                  return String.Format (uesc + "{0:X4}", c);
-              }
-         return (c == 0x20) ? ("<space>") : (("<" + ((char)c) + ">"));
+        return (c >= 0x7f || c<0x20) ? (String.Format (uesc + "{0:X4}", c)):
+          ((c == 0x20) ? ("<space>") : ("<" + ((char)c) + ">"));
           }
+
+
+      private static string EC (int[] b, int o, int sz) {
+        var sb = new System.Text.StringBuilder();
+        for (var i = 0; i < sz; ++i) {
+          sb.Append (EC (b [i + o]));
+        }
+        return sb.ToString();
+      }
+
+    */
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
@@ -623,7 +643,7 @@ UnicodeDatabase.IsQuickCheckStarter (
           if (count < 0) {
             count = 0;
           }
-          // DebugUtility.Log ("B count=" + (count));
+          // DebugUtility.Log ("B count=" + count);
           if (count != 0) {
             // Fill buffer with processed code points
             Array.Copy(this.buffer, this.flushIndex, chars, index, count);
@@ -662,7 +682,8 @@ UnicodeDatabase.IsQuickCheckStarter (
                     return total;
                   } else {
                     this.PrependTwo(c, c2);
-                    // DebugUtility.Log ("B prepending: " + (EC(c)) + ", " + (// EC(c2)));
+                    // DebugUtility.Log ("B prepending: " + (EC(c)) + ", " +
+                    // (// EC(c2)));
                     break;
                   }
                 }
@@ -714,14 +735,6 @@ UnicodeDatabase.IsQuickCheckStarter (
         total += count;
         this.flushIndex += count;
         return (total == 0) ? -1 : total;
-      }
-
-      private static string EC (int[] b, int o, int sz) {
-        var sb = new System.Text.StringBuilder();
-        for (var i = 0; i < sz; ++i) {
-          sb.Append (EC (b [i + o]));
-        }
-        return sb.ToString();
       }
 
       private bool LoadMoreData() {
@@ -795,18 +808,18 @@ UnicodeDatabase.IsQuickCheckStarter (
         }
         // No data in buffer
         if (this.endIndex == 0) {
-        //        DebugUtility.Log ("no data");
+        // DebugUtility.Log ("no data");
           return false;
         }
         this.flushIndex = 0;
-//      DebugUtility.Log ("reordering {0} [{1}]",
-  //                      EC (buffer, 0, lastQcsIndex), this.form);
+// DebugUtility.Log ("reordering " + (// EC (buffer, 0, lastQcsIndex)) +
+// " [" + this.form + "]");
       // Canonical reordering
       ReorderBuffer (this.buffer, 0, this.lastQcsIndex);
         if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
           // Composition
-    //    DebugUtility.Log ("composing {0} [{1}]",
-      //                    EC (buffer, 0, lastQcsIndex), this.form);
+    // DebugUtility.Log ("composing " + (// EC (buffer, 0, lastQcsIndex)) +
+    // " [" + this.form + "]");
           this.processedIndex = ComposeBuffer(
     this.buffer,
     this.lastQcsIndex);
@@ -875,13 +888,11 @@ UnicodeDatabase.IsQuickCheckStarter (
           }
           if (length < 0) {
           throw new ArgumentException("length (" + length +
-              ") is less than " +
-                  "0");
+              ") is less than " + "0");
           }
           if (length > str.Length) {
           throw new ArgumentException("length (" + length +
-              ") is more than " +
-              str.Length);
+              ") is more than " + str.Length);
           }
           if (str.Length - index < length) {
             throw new ArgumentException("str's length minus " + index + " (" +
@@ -927,13 +938,11 @@ UnicodeDatabase.IsQuickCheckStarter (
           }
           if (length < 0) {
           throw new ArgumentException("length (" + length +
-              ") is less than " +
-                  "0");
+              ") is less than " + "0");
           }
           if (length > chars.Length) {
           throw new ArgumentException("length (" + length +
-              ") is more than " +
-              chars.Length);
+              ") is more than " + chars.Length);
           }
           if (chars.Length - index < length) {
             throw new ArgumentException("chars's length minus " + index + " (" +

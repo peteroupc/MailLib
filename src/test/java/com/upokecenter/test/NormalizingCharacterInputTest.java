@@ -103,22 +103,23 @@ public void TestNormalizationLatinOne() {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
+
       if (!(
   NormalizingCharacterInput.IsNormalized(
-  new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
+  "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
   Normalization.NFC)))Assert.fail();
       if (!(
       NormalizingCharacterInput.IsNormalized(
-       new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
-         Normalization.NFD)))Assert.fail();
+  "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+  Normalization.NFD)))Assert.fail();
       if (!(
       NormalizingCharacterInput.IsNormalized(
-       new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
-         Normalization.NFKC)))Assert.fail();
+  "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+  Normalization.NFKC)))Assert.fail();
       if (!(
       NormalizingCharacterInput.IsNormalized(
-       new int[] { 0x1d800, 0x1d900, 0x1da00, 0x1db00, 0x1dc00, 0x1df00 },
-         Normalization.NFKD)))Assert.fail();
+  "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
+  Normalization.NFKD)))Assert.fail();
     }
     @Test
     public void TestNormalize() {
