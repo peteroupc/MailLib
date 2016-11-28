@@ -39,7 +39,7 @@
     <DebugType>None</DebugType>
     <Optimize>True</Optimize>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>NET40;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -116,6 +116,7 @@
     <Compile Include="PeterO\Text\Normalizer.cs" />
     <Compile Include="PeterO\Text\PartialListCharacterInput.cs" />
     <Compile Include="PeterO\Text\UnicodeDatabase.cs" />
+    <Compile Include="PeterO\Text\NormalizerInput.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MailLib.ruleset" />

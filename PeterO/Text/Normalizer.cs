@@ -11,26 +11,26 @@ namespace PeterO.Text {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Text.Normalizer"]/*'/>
   [Obsolete(
-  "Use NormalizingCharacterInput instead; that class is much more flexible than Normalizer.")]
+  "Use NormalizerInput instead; that class is much more flexible than Normalizer.")]
   public sealed class Normalizer {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.Normalizer.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
     public static string Normalize(string str, Normalization form) {
-      return NormalizingCharacterInput.Normalize(str, form);
+      return NormalizerInput.Normalize(str, form);
     }
 
-    private readonly NormalizingCharacterInput nci;
+    private readonly NormalizerInput nci;
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.Normalizer.#ctor(System.String,PeterO.Text.Normalization)"]/*'/>
     public Normalizer(string str, Normalization form) {
-      this.nci = new NormalizingCharacterInput(str, form);
+      this.nci = new NormalizerInput(str, form);
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.Normalizer.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(string str, Normalization form) {
-      return NormalizingCharacterInput.IsNormalized(str, form);
+      return NormalizerInput.IsNormalized(str, form);
     }
 
     /// <include file='../../docs.xml'

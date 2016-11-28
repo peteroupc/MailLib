@@ -322,7 +322,7 @@ strLower.indexOf(
         str = "_" + str;
       }
       // Avoid space before and after last dot
-      for (var i = str.length()-1; i >= 0; --i) {
+      for (int i = str.length()-1; i >= 0; --i) {
         if (str.charAt(i) == '.') {
           boolean spaceAfter = (i + 1 < str.length() && str.charAt(i + 1) == 0x20);
           boolean spaceBefore = (i > 0 && str.charAt(i - 1) == 0x20);
@@ -336,7 +336,7 @@ strLower.indexOf(
           break;
         }
       }
-      str = NormalizingCharacterInput.Normalize(str, Normalization.NFC);
+      str = NormalizerInput.Normalize(str, Normalization.NFC);
       // Ensure length is 254 or less
       if (str.length() > 254) {
         char c = str.charAt(254);

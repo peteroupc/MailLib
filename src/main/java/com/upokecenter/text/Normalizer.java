@@ -16,7 +16,7 @@ at: http://peteroupc.github.io/
      * Character Database. See the documentation for the
      * NormalizingCharacterInput class for the permission notice for the
      * Unicode Character Database.</p>
-     * @deprecated Use NormalizingCharacterInput instead; that class is much more flexible than
+     * @deprecated Use NormalizerInput instead; that class is much more flexible than
 * Normalizer.
  */
 @Deprecated
@@ -29,10 +29,10 @@ at: http://peteroupc.github.io/
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
     public static String Normalize(String str, Normalization form) {
-      return NormalizingCharacterInput.Normalize(str, form);
+      return NormalizerInput.Normalize(str, form);
     }
 
-    private final NormalizingCharacterInput nci;
+    private final NormalizerInput nci;
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.text.Normalizer}
@@ -41,7 +41,7 @@ at: http://peteroupc.github.io/
      * @param form A Normalization object.
      */
     public Normalizer(String str, Normalization form) {
-      this.nci = new NormalizingCharacterInput(str, form);
+      this.nci = new NormalizerInput(str, form);
     }
 
     /**
@@ -51,7 +51,7 @@ at: http://peteroupc.github.io/
      * @return {@code true} if this string is normalized; otherwise, {@code false}.
      */
     public static boolean IsNormalized(String str, Normalization form) {
-      return NormalizingCharacterInput.IsNormalized(str, form);
+      return NormalizerInput.IsNormalized(str, form);
     }
 
     /**

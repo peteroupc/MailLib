@@ -190,9 +190,7 @@ public static int ParseAtext(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp;
-indexStart = index;
- indexTemp = index;
+int indexTemp = index;
  do {
 if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index)
@@ -408,9 +406,7 @@ public static int ParseCharset(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp;
-indexStart = index;
- indexTemp = index;
+int indexTemp = index;
  do {
 if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) >= 35 &&
   str.charAt(index) <= 36) || (str.charAt(index) == 38) || (str.charAt(index) == 43) ||
@@ -1109,8 +1105,7 @@ public static int ParseDistName(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexStart2, indexTemp, indexTemp2;
-indexStart = index;
+int indexStart2, indexTemp, indexTemp2;
  indexTemp = index;
  do {
 if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
@@ -2458,7 +2453,7 @@ public static int ParseHeaderControl(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexStart2, indexTemp, indexTemp2, state2;
+int indexStart, indexStart2, indexTemp, indexTemp2;
 indexStart = index;
  indexTemp = index;
  do {
@@ -2483,7 +2478,7 @@ if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) >= 35 &
  index = indexStart; break;
 }
  while (true) {
-  state2 = indexTemp2 = index;
+  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) == 9))) {
@@ -2800,7 +2795,7 @@ public static int ParseHeaderEdiintFeatures(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexStart2, indexTemp, indexTemp2, state2;
+int indexStart, indexStart2, indexTemp, indexTemp2;
 indexStart = index;
  indexTemp = index;
  do {
@@ -2820,7 +2815,7 @@ if (index < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
  index = indexStart; break;
 }
  while (true) {
-  state2 = indexTemp2 = index;
+  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) == 9))) {
@@ -5390,9 +5385,7 @@ public static int ParseKey(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp;
-indexStart = index;
- indexTemp = index;
+int indexTemp = index;
  do {
 if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122))) {
@@ -5521,8 +5514,7 @@ public static int ParseLabel(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp, indexTemp2;
-indexStart = index;
+int indexTemp, indexTemp2;
  indexTemp = index;
  do {
 if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
@@ -5678,8 +5670,7 @@ public static int ParseLanguageRange(
   int index,
   int endIndex,
   ITokener tokener) {
-int i2, indexStart, indexStart2, indexTemp, indexTemp2;
-indexStart = index;
+int i2, indexStart2, indexTemp, indexTemp2;
  indexTemp = index;
  do {
  indexTemp2 = index;
@@ -5721,9 +5712,7 @@ public static int ParseLanguageTag(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp;
-indexStart = index;
- indexTemp = index;
+int indexTemp = index;
  do {
 if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122))) {
@@ -5781,8 +5770,7 @@ public static int ParseLdhStr(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp, indexTemp2;
-indexStart = index;
+int indexTemp, indexTemp2;
  indexTemp = index;
  do {
  while (true) {
@@ -6594,8 +6582,7 @@ public static int ParseNewsgroupName(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexStart2, indexTemp, indexTemp2, state2;
-indexStart = index;
+int indexStart2, indexTemp, indexTemp2;
  indexTemp = index;
  do {
 if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
@@ -6612,7 +6599,7 @@ if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
  break;
 }
  while (true) {
-  state2 = indexTemp2 = index;
+  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str.charAt(index) == 46)) {
@@ -6727,8 +6714,7 @@ public static int ParseNodeid(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp, indexTemp2;
-indexStart = index;
+int indexTemp, indexTemp2;
  indexTemp = index;
  do {
  while (true) {
@@ -6769,8 +6755,7 @@ public static int ParseNonnegInteger(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexStart2, indexTemp, indexTemp2;
-indexStart = index;
+int indexStart2, indexTemp, indexTemp2;
  indexTemp = index;
  do {
 if (index < endIndex && (str.charAt(index) == 48)) {
@@ -7235,9 +7220,7 @@ public static int ParseOtherSections(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp;
-indexStart = index;
- indexTemp = index;
+int indexTemp = index;
  do {
 if (index + 1 < endIndex && (str.charAt(index) == 42) && (str.charAt(index + 1) >= 49 &&
   str.charAt(index + 1) <= 57)) {
@@ -8205,8 +8188,7 @@ public static int ParsePrintablestring(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp, indexTemp2;
-indexStart = index;
+int indexTemp, indexTemp2;
  indexTemp = index;
  do {
  while (true) {
@@ -8238,9 +8220,7 @@ public static int ParseProperty(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp, indexTemp2;
-indexStart = index;
- indexTemp = index;
+int indexTemp = index;
  do {
 if (index + 7 < endIndex && (str.charAt(index) & ~32) == 77 && (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) == 73 && (str.charAt(index + 3) & ~32) ==
   76&&
@@ -8253,7 +8233,6 @@ if (index + 5 < endIndex && (str.charAt(index) & ~32) == 82 && (str.charAt(index
   (str.charAt(index + 4) & ~32) == 84 && (str.charAt(index + 5) & ~32) == 79) {
  indexTemp += 6; break;
 }
- indexTemp2 = index;
  // Unlimited production in choice
  } while (false);
  return indexTemp;
@@ -8313,9 +8292,7 @@ public static int ParsePsChar(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp;
-indexStart = index;
- indexTemp = index;
+int indexTemp = index;
  do {
 if (index < endIndex && (str.charAt(index) >= 40 && str.charAt(index) <= 41)) {
  ++indexTemp; break;
@@ -8335,9 +8312,7 @@ public static int ParsePtype(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp;
-indexStart = index;
- indexTemp = index;
+int indexTemp = index;
  do {
 if (index + 3 < endIndex && (str.charAt(index) & ~32) == 83 && (str.charAt(index + 1) & ~32) == 77 && (str.charAt(index + 2) & ~32) == 84 && (str.charAt(index + 3) & ~32) ==
   80) {
@@ -8637,8 +8612,7 @@ public static int ParseQvalue(
   int index,
   int endIndex,
   ITokener tokener) {
-int i3, indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3;
-indexStart = index;
+int i3, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3;
  indexTemp = index;
  do {
  indexTemp2 = index;
@@ -8801,8 +8775,7 @@ public static int ParseRegName(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp, indexTemp2;
-indexStart = index;
+int indexTemp, indexTemp2;
  indexTemp = index;
  do {
  while (true) {
@@ -8915,8 +8888,7 @@ public static int ParseResid(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp, indexTemp2;
-indexStart = index;
+int indexTemp, indexTemp2;
  indexTemp = index;
  do {
  while (true) {
@@ -9039,8 +9011,7 @@ public static int ParseRestrictedName(
   int index,
   int endIndex,
   ITokener tokener) {
-int i, indexStart, indexTemp;
-indexStart = index;
+int i, indexTemp;
  indexTemp = index;
  do {
 if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
@@ -9072,9 +9043,7 @@ public static int ParseResult(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp;
-indexStart = index;
- indexTemp = index;
+int indexTemp = index;
  do {
 if (index + 3 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) == 83 && (str.charAt(index + 3) & ~32) ==
   83) {
@@ -9264,8 +9233,7 @@ public static int ParseSolicitationKeywords(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexStart2, indexTemp, indexTemp2, state2;
-indexStart = index;
+int indexStart2, indexTemp, indexTemp2;
  indexTemp = index;
  do {
 if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
@@ -9281,7 +9249,7 @@ while (index < endIndex && ((str.charAt(index) >= 45 && str.charAt(index) <= 46)
  ++index;
 }
  while (true) {
-  state2 = indexTemp2 = index;
+  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index + 1 < endIndex && (str.charAt(index) == 44) && ((str.charAt(index + 1) >= 65 &&
@@ -9323,9 +9291,7 @@ public static int ParseText(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp;
-indexStart = index;
- indexTemp = index;
+int indexTemp = index;
  do {
 if (index < endIndex && ((str.charAt(index) >= 1 && str.charAt(index) <= 9) || (str.charAt(index)
   == 11) || (str.charAt(index) == 12) || (str.charAt(index) >= 14 && str.charAt(index) <= 127) ||
@@ -9439,9 +9405,7 @@ public static int ParseTypeString(
   int index,
   int endIndex,
   ITokener tokener) {
-int indexStart, indexTemp;
-indexStart = index;
- indexTemp = index;
+int indexTemp = index;
  do {
 if (index + 2 < endIndex && (str.charAt(index) & ~32) == 65 && (str.charAt(index + 1) & ~32) == 76 && (str.charAt(index + 2) & ~32) == 76) {
  indexTemp += 3; break;

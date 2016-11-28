@@ -3,7 +3,7 @@
     @Deprecated public final class Normalizer extends Object
 
 Deprecated.&nbsp;
-<div class='block'>Use NormalizingCharacterInput instead; that class is much more flexible than
+<div class='block'>Use NormalizerInput instead; that class is much more flexible than
  Normalizer.</div>
 
 ## Methods

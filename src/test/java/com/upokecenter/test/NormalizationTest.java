@@ -147,20 +147,20 @@ import java.util.*;
     }
 
     private void TestIdempotent(String str, Normalization norm) {
-      boolean isForm = NormalizingCharacterInput.IsNormalized (str, norm);
-      String newStr = NormalizingCharacterInput.Normalize (str, norm);
+      boolean isForm = NormalizerInput.IsNormalized (str, norm);
+      String newStr = NormalizerInput.Normalize (str, norm);
       ICharacterInput sci = new CharacterReader (str, false, true);
-            boolean isForm2 = NormalizingCharacterInput.IsNormalized (sci, norm);
+            boolean isForm2 = NormalizerInput.IsNormalized (sci, norm);
       if (isForm) {
-        Assert.assertEquals (str, newStr, EncodingTest.EscapeString (str));
+        AssertEqual (str, newStr, EncodingTest.EscapeString (str));
       }
       Assert.assertEquals (isForm, isForm2);
-      if (!NormalizingCharacterInput.IsNormalized (newStr, norm)) {
+      if (!NormalizerInput.IsNormalized (newStr, norm)) {
         Assert.fail (EncodingTest.EscapeString (str));
       }
       if (!isForm) {
-        String newStr2 = NormalizingCharacterInput.Normalize (newStr, norm);
-        Assert.assertEquals (newStr, newStr2, EncodingTest.EscapeString (str));
+        String newStr2 = NormalizerInput.Normalize (newStr, norm);
+        AssertEqual (newStr, newStr2, EncodingTest.EscapeString (str));
       }
     }
 
@@ -180,18 +180,18 @@ import java.util.*;
     public void NormTestSpecific() {
       String str = "_\ufac7\uc972+67 Tqd R_.";
             {
-String stringTemp = NormalizingCharacterInput.Normalize (str,
+String stringTemp = NormalizerInput.Normalize (str,
   Normalization.NFC);
 Assert.assertEquals(
   "_\u96e3\uc972+67 Tqd R_.",
   stringTemp);
 }
       if (
-        NormalizingCharacterInput.IsNormalized(str, Normalization.NFC))Assert.fail();
+        NormalizerInput.IsNormalized(str, Normalization.NFC))Assert.fail();
       TestIdempotent (str, Normalization.NFC);
             str = "_\u96e3\uc972+67 Tqd R_._";
             if (!(
-        NormalizingCharacterInput.IsNormalized (str, Normalization.NFC)))Assert.fail();
+        NormalizerInput.IsNormalized (str, Normalization.NFC)))Assert.fail();
             TestIdempotent (str, Normalization.NFC);
     }
 
@@ -207,36 +207,36 @@ Assert.assertEquals(
         this.line = line;
         this.orig = GetCodePoints(column);
         this.origstr = ToCodePointString(this.orig);
-        this.nfc = NormalizingCharacterInput.Normalize(this.origstr,
+        this.nfc = NormalizerInput.Normalize(this.origstr,
           Normalization.NFC);
-        this.nfd = NormalizingCharacterInput.Normalize(this.origstr,
+        this.nfd = NormalizerInput.Normalize(this.origstr,
           Normalization.NFD);
-        this.nfkc = NormalizingCharacterInput.Normalize(this.origstr,
+        this.nfkc = NormalizerInput.Normalize(this.origstr,
           Normalization.NFKC);
-        this.nfkd = NormalizingCharacterInput.Normalize(this.origstr,
+        this.nfkd = NormalizerInput.Normalize(this.origstr,
           Normalization.NFKD);
-        if (!NormalizingCharacterInput.IsNormalized(
+        if (!NormalizerInput.IsNormalized(
             this.nfc,
             Normalization.NFC)) {
           {
             Assert.fail(line);
           }
         }
-        if (!NormalizingCharacterInput.IsNormalized(
+        if (!NormalizerInput.IsNormalized(
             this.nfd,
             Normalization.NFD)) {
           {
             Assert.fail(line);
           }
         }
-        if (!NormalizingCharacterInput.IsNormalized(
+        if (!NormalizerInput.IsNormalized(
             this.nfkc,
             Normalization.NFKC)) {
           {
             Assert.fail(line);
           }
         }
-        if (!NormalizingCharacterInput.IsNormalized(
+        if (!NormalizerInput.IsNormalized(
             this.nfkd,
             Normalization.NFKD)) {
           {
@@ -320,31 +320,31 @@ Assert.assertEquals(
             cptemp[0] = (char)i;
           }
           String cpstr = new String(cptemp, 0, (i >= 0x10000 ? 2 : 1));
-          if (!NormalizingCharacterInput.IsNormalized(cpstr,
+          if (!NormalizerInput.IsNormalized(cpstr,
                Normalization.NFC)) {
             Assert.fail(TestCommon.IntToString(i));
           }
-          if (!NormalizingCharacterInput.IsNormalized(cpstr,
+          if (!NormalizerInput.IsNormalized(cpstr,
                Normalization.NFD)) {
                     Assert.fail (TestCommon.IntToString (i));
           }
-          if (!NormalizingCharacterInput.IsNormalized(cpstr,
+          if (!NormalizerInput.IsNormalized(cpstr,
                 Normalization.NFKC)) {
                     Assert.fail (TestCommon.IntToString (i));
  }
-          if (!NormalizingCharacterInput.IsNormalized(cpstr,
+          if (!NormalizerInput.IsNormalized(cpstr,
                 Normalization.NFKD)) {
                     Assert.fail (TestCommon.IntToString (i));
         }
           String imsg = TestCommon.IntToString (i);
-          AssertEqual(cpstr, NormalizingCharacterInput.Normalize(
+          AssertEqual(cpstr, NormalizerInput.Normalize(
             cpstr,
             Normalization.NFC), imsg);
-          AssertEqual(cpstr, NormalizingCharacterInput.Normalize(cpstr,
+          AssertEqual(cpstr, NormalizerInput.Normalize(cpstr,
               Normalization.NFD), imsg);
-          AssertEqual(cpstr, NormalizingCharacterInput.Normalize(cpstr,
+          AssertEqual(cpstr, NormalizerInput.Normalize(cpstr,
                Normalization.NFKC), imsg);
-          AssertEqual(cpstr, NormalizingCharacterInput.Normalize(cpstr,
+          AssertEqual(cpstr, NormalizerInput.Normalize(cpstr,
                Normalization.NFKD), imsg);
         }
       }

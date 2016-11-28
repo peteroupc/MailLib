@@ -157,7 +157,7 @@ namespace MailLibTest {
                     break;
                 }
             }
-            return (NormalizingCharacterInput.IsNormalized (
+            return (NormalizerInput.IsNormalized (
               str,
               Normalization.NFC));
         }
@@ -182,7 +182,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
             Assert.IsTrue (IsGoodFilename (mfn), mfn);
             for (var i = 0; i < 1000000; ++i) {
         if (i % 1000 == 0) {
-          Console.WriteLine (i);
+          //Console.WriteLine (i);
         }
                 string str = RandomString (rnd);
                 string filename = ContentDisposition.MakeFilename (str);

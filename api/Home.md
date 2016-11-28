@@ -31,13 +31,16 @@ Contains methods that implement Internationalized Domain Names in
  Applications (IDNA).
 
 * [com.upokecenter.text.Normalizer](wiki/com.upokecenter.text.Normalizer) - Deprecated
-Use NormalizingCharacterInput instead; that class is much more flexible than
+Use NormalizerInput instead; that class is much more flexible than
  Normalizer.
 
-* [com.upokecenter.text.NormalizingCharacterInput](wiki/com.upokecenter.text.NormalizingCharacterInput) -
+* [com.upokecenter.text.NormalizerInput](wiki/com.upokecenter.text.NormalizerInput) -
 A character input class that implements the Unicode normalization
  algorithm and contains methods and functionality to test and convert
  text strings for normalization.
+
+* [com.upokecenter.text.NormalizingCharacterInput](wiki/com.upokecenter.text.NormalizingCharacterInput) - Deprecated
+Renamed to NormalizerInput.
 
 * [com.upokecenter.text.Normalization](wiki/com.upokecenter.text.Normalization) -
 Represents a Unicode normalization form.

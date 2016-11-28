@@ -308,7 +308,7 @@ strLower.IndexOf(
           break;
         }
       }
-      str = NormalizingCharacterInput.Normalize(str, Normalization.NFC);
+      str = NormalizerInput.Normalize(str, Normalization.NFC);
       // Ensure length is 254 or less
       if (str.Length > 254) {
         char c = str [254];

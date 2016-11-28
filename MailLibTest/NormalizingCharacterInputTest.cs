@@ -6,7 +6,7 @@ using System.Text;
 using Test;
 namespace MailLibTest {
   [TestFixture]
-  public partial class NormalizingCharacterInputTest {
+  public partial class NormalizerInputTest {
     [Test]
     public void TestConstructor() {
       // not implemented yet
@@ -42,29 +42,29 @@ public void TestNormalizationAscii() {
   for (var i = 0; i < 50000; ++i) {
     string str = RandomAscii(rnd);
     // ASCII strings are already normalized
-    Assert.IsTrue(NormalizingCharacterInput.IsNormalized(
+    Assert.IsTrue(NormalizerInput.IsNormalized(
       str,
       Normalization.NFC));
-    Assert.IsTrue(NormalizingCharacterInput.IsNormalized(
+    Assert.IsTrue(NormalizerInput.IsNormalized(
       str,
       Normalization.NFD));
-    Assert.IsTrue(NormalizingCharacterInput.IsNormalized(
+    Assert.IsTrue(NormalizerInput.IsNormalized(
       str,
       Normalization.NFKC));
-    Assert.IsTrue(NormalizingCharacterInput.IsNormalized(
+    Assert.IsTrue(NormalizerInput.IsNormalized(
       str,
       Normalization.NFKD));
     // ASCII strings normalize to themselves
-    string str2 = NormalizingCharacterInput.Normalize(str,
+    string str2 = NormalizerInput.Normalize(str,
       Normalization.NFC);
     Assert.AreEqual(str, str2);
-    str2 = NormalizingCharacterInput.Normalize(str,
+    str2 = NormalizerInput.Normalize(str,
       Normalization.NFD);
     Assert.AreEqual(str, str2);
-    str2 = NormalizingCharacterInput.Normalize(str,
+    str2 = NormalizerInput.Normalize(str,
       Normalization.NFKC);
     Assert.AreEqual(str, str2);
-    str2 = NormalizingCharacterInput.Normalize(str,
+    str2 = NormalizerInput.Normalize(str,
       Normalization.NFKD);
     Assert.AreEqual(str, str2);
   }
@@ -76,11 +76,11 @@ public void TestNormalizationLatinOne() {
   for (var i = 0; i < 50000; ++i) {
     string str = RandomLatinOne(rnd);
     // Latin-1 strings are already normalized in NFC
-    Assert.IsTrue(NormalizingCharacterInput.IsNormalized(
+    Assert.IsTrue(NormalizerInput.IsNormalized(
       str,
       Normalization.NFC));
     // Latin-1 strings normalize to themselves in NFC
-    string str2 = NormalizingCharacterInput.Normalize(str,
+    string str2 = NormalizerInput.Normalize(str,
       Normalization.NFC);
     Assert.AreEqual(str, str2);
   }
@@ -89,14 +89,14 @@ public void TestNormalizationLatinOne() {
     [Test]
     public void TestIsNormalized() {
       // Additional normalization tests
-      Assert.IsFalse(NormalizingCharacterInput.IsNormalized(
+      Assert.IsFalse(NormalizerInput.IsNormalized(
         "x\u0300\u0323yz",
         Normalization.NFC));
-      Assert.IsFalse(NormalizingCharacterInput.IsNormalized(
+      Assert.IsFalse(NormalizerInput.IsNormalized(
         "x\u0300\u0323",
         Normalization.NFC));
       try {
-        NormalizingCharacterInput.IsNormalized((ICharacterInput)null,
+        NormalizerInput.IsNormalized((ICharacterInput)null,
           Normalization.NFC);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
@@ -107,19 +107,19 @@ public void TestNormalizationLatinOne() {
       }
 
       Assert.IsTrue(
-  NormalizingCharacterInput.IsNormalized(
+  NormalizerInput.IsNormalized(
   "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
   Normalization.NFC));
       Assert.IsTrue(
-      NormalizingCharacterInput.IsNormalized(
+      NormalizerInput.IsNormalized(
   "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
   Normalization.NFD));
       Assert.IsTrue(
-      NormalizingCharacterInput.IsNormalized(
+      NormalizerInput.IsNormalized(
   "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
   Normalization.NFKC));
       Assert.IsTrue(
-      NormalizingCharacterInput.IsNormalized(
+      NormalizerInput.IsNormalized(
   "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
   Normalization.NFKD));
     }
@@ -129,7 +129,7 @@ public void TestNormalizationLatinOne() {
     }
     [Test]
     public void TestRead() {
-      var nci = new NormalizingCharacterInput("test");
+      var nci = new NormalizerInput("test");
       try {
         nci.Read(null, 0, 0);
         Assert.Fail("Should have failed");
