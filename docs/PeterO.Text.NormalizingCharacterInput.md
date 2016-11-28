@@ -115,6 +115,8 @@ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO
     public NormalizingCharacterInput(
         System.Collections.Generic.IList characterList);
 
+<b>Deprecated.</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
+
 Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using Normalization Form C.
 
 <b>Parameters:</b>
@@ -126,6 +128,8 @@ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO
     public NormalizingCharacterInput(
         System.Collections.Generic.IList characterList,
         PeterO.Text.Normalization form);
+
+<b>Deprecated.</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 
 Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using the given normalization form.
 
@@ -144,8 +148,10 @@ The parameter <i>characterList</i>
 ### GetChars
 
     public static System.Collections.Generic.IList GetChars(
-        PeterO.Text.ICharacterInput str,
+        PeterO.Text.ICharacterInput input,
         PeterO.Text.Normalization form);
+
+<b>Deprecated.</b> Instead of this method, create a NormalizingCharacterInput on the input and call ReadChar to get the normalized string's code points.
 
 Gets a list of normalized code points after reading from a character stream.
 
@@ -171,6 +177,8 @@ The parameter <i>str</i>
         string str,
         PeterO.Text.Normalization form);
 
+<b>Deprecated.</b> Instead of this method, create a NormalizingCharacterInput on the string and call ReadChar to get the normalized string's code points.
+
 Gets a list of normalized code points after reading from a string.
 
 <b>Parameters:</b>
@@ -194,6 +202,8 @@ The parameter <i>str</i>
     public static bool IsNormalized(
         int[] charArray,
         PeterO.Text.Normalization form);
+
+<b>Deprecated.</b> Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 
 Determines whether the given array of characters is in the given Unicode normalization form.
 
@@ -265,6 +275,8 @@ The parameter <i>str</i>
     public static bool IsNormalized(
         System.Collections.Generic.IList charList,
         PeterO.Text.Normalization form);
+
+<b>Deprecated.</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 
 Determines whether the given list of characters is in the given Unicode normalization form.
 

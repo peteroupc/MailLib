@@ -2076,7 +2076,7 @@ String stringTemp =
       RandomGenerator rnd = new RandomGenerator();
       for (int i = 0; i < 10000; ++i) {
         if (i % 100 == 0) {
-          System.out.println (i);
+          //System.out.println (i);
         }
         byte[] bytes = RandomBytes(rnd);
         TestEncodedBytesRoundTrip(bytes, false);

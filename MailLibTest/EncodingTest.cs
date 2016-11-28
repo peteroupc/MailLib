@@ -2083,7 +2083,7 @@ string stringTemp =
       var rnd = new RandomGenerator();
       for (var i = 0; i < 10000; ++i) {
         if (i % 100 == 0) {
-          Console.WriteLine (i);
+          //Console.WriteLine (i);
         }
         byte[] bytes = RandomBytes(rnd);
         TestEncodedBytesRoundTrip(bytes, false);

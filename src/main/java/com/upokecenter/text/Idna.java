@@ -379,7 +379,7 @@ private static boolean IsValidLabel(
           return false;
         }
       }
-      if (!NormalizingCharacterInput.IsNormalized(str, Normalization.NFC)) {
+      if (!NormalizerInput.IsNormalized(str, Normalization.NFC)) {
         return false;
       }
       int ch;

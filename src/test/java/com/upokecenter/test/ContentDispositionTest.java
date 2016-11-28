@@ -150,7 +150,7 @@ import com.upokecenter.mail.*;
                     break;
                 }
             }
-            return (NormalizingCharacterInput.IsNormalized (
+            return (NormalizerInput.IsNormalized (
               str,
               Normalization.NFC));
         }
@@ -175,7 +175,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
             if (!(IsGoodFilename (mfn)))Assert.fail(mfn);
             for (int i = 0; i < 1000000; ++i) {
         if (i % 1000 == 0) {
-          System.out.println (i);
+          //System.out.println (i);
         }
                 String str = RandomString (rnd);
                 String filename = ContentDisposition.MakeFilename (str);
