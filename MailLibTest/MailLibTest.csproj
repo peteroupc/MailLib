@@ -89,7 +89,7 @@
     <Compile Include="NamedAddressTest.cs" />
     <Compile Include="NetHelper.cs" />
     <Compile Include="NormalizationTest.cs" />
-    <Compile Include="NormalizingCharacterInputTest.cs" />
+    <Compile Include="NormalizerInputTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomGenerator.cs" />

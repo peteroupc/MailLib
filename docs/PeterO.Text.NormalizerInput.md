@@ -1,9 +1,7 @@
-## PeterO.Text.NormalizingCharacterInput
+## PeterO.Text.NormalizerInput
 
-    public sealed class NormalizingCharacterInput :
+    public sealed class NormalizerInput :
         PeterO.Text.ICharacterInput
-
-<b>Deprecated.</b> Renamed to NormalizerInput.
 
 A character input class that implements the Unicode normalization algorithm and contains methods and functionality to test and convert text strings for normalization. This is similar to the deprecated Normalizer class, except it implements the ICharacterInput interface.
 
@@ -33,24 +31,24 @@ THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
 
 Except as contained in this notice, the name of a copyright holder shall not be used in advertising or otherwise to promote the sale, use or other dealings in these Data Files or Software without prior written authorization of the copyright holder.
 
-### NormalizingCharacterInput Constructor
+### NormalizerInput Constructor
 
-    public NormalizingCharacterInput(
+    public NormalizerInput(
         PeterO.Text.ICharacterInput input);
 
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using Normalization Form C.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class using Normalization Form C.
 
 <b>Parameters:</b>
 
  * <i>input</i>: An ICharacterInput object.
 
-### NormalizingCharacterInput Constructor
+### NormalizerInput Constructor
 
-    public NormalizingCharacterInput(
+    public NormalizerInput(
         PeterO.Text.ICharacterInput stream,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.
 
 <b>Parameters:</b>
 
@@ -64,26 +62,26 @@ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO
 The parameter <i>stream</i>
  is null.
 
-### NormalizingCharacterInput Constructor
+### NormalizerInput Constructor
 
-    public NormalizingCharacterInput(
+    public NormalizerInput(
         string str);
 
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using Normalization Form C.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class using Normalization Form C.
 
 <b>Parameters:</b>
 
  * <i>str</i>: A string specifying the text to normalize.
 
-### NormalizingCharacterInput Constructor
+### NormalizerInput Constructor
 
-    public NormalizingCharacterInput(
+    public NormalizerInput(
         string str,
         int index,
         int length,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class. Uses a portion of a string as the input.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class. Uses a portion of a string as the input.
 
 <b>Parameters:</b>
 
@@ -98,131 +96,19 @@ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
-### NormalizingCharacterInput Constructor
+### NormalizerInput Constructor
 
-    public NormalizingCharacterInput(
+    public NormalizerInput(
         string str,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.
 
 <b>Parameters:</b>
 
  * <i>str</i>: A text string.
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
-
-### NormalizingCharacterInput Constructor
-
-    public NormalizingCharacterInput(
-        System.Collections.Generic.IList characterList);
-
-<b>Deprecated.</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
-
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using Normalization Form C.
-
-<b>Parameters:</b>
-
- * <i>characterList</i>: A list of Unicode code points specifying the text to normalize.
-
-### NormalizingCharacterInput Constructor
-
-    public NormalizingCharacterInput(
-        System.Collections.Generic.IList characterList,
-        PeterO.Text.Normalization form);
-
-<b>Deprecated.</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
-
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using the given normalization form.
-
-<b>Parameters:</b>
-
- * <i>characterList</i>: An IList object.
-
- * <i>form</i>: Specifies the normalization form to use when normalizing the text.
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter <i>characterList</i>
- is null.
-
-### GetChars
-
-    public static System.Collections.Generic.IList GetChars(
-        PeterO.Text.ICharacterInput input,
-        PeterO.Text.Normalization form);
-
-<b>Deprecated.</b> Instead of this method, create a NormalizingCharacterInput on the input and call ReadChar to get the normalized string's code points.
-
-Gets a list of normalized code points after reading from a character stream.
-
-<b>Parameters:</b>
-
- * <i>str</i>: An object that implements a stream of Unicode characters.
-
- * <i>form</i>: Specifies the normalization form to use when normalizing the text.
-
-<b>Return Value:</b>
-
-A list of the normalized Unicode characters.
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter <i>str</i>
- is null.
-
-### GetChars
-
-    public static System.Collections.Generic.IList GetChars(
-        string str,
-        PeterO.Text.Normalization form);
-
-<b>Deprecated.</b> Instead of this method, create a NormalizingCharacterInput on the string and call ReadChar to get the normalized string's code points.
-
-Gets a list of normalized code points after reading from a string.
-
-<b>Parameters:</b>
-
- * <i>str</i>: A text string.
-
- * <i>form</i>: Specifies the normalization form to use when normalizing the text.
-
-<b>Return Value:</b>
-
-A list of the normalized Unicode characters.
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter <i>str</i>
- is null.
-
-### IsNormalized
-
-    public static bool IsNormalized(
-        int[] charArray,
-        PeterO.Text.Normalization form);
-
-<b>Deprecated.</b> Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
-
-Determines whether the given array of characters is in the given Unicode normalization form.
-
-<b>Parameters:</b>
-
- * <i>charArray</i>: An array of Unicode code points.
-
- * <i>form</i>: Specifies the normalization form to use when normalizing the text.
-
-<b>Return Value:</b>
-
- `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false` .
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter "charList" is null.
 
 ### IsNormalized
 
@@ -270,32 +156,6 @@ Determines whether the given string is in the given Unicode normalization form.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>
- is null.
-
-### IsNormalized
-
-    public static bool IsNormalized(
-        System.Collections.Generic.IList charList,
-        PeterO.Text.Normalization form);
-
-<b>Deprecated.</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
-
-Determines whether the given list of characters is in the given Unicode normalization form.
-
-<b>Parameters:</b>
-
- * <i>charList</i>: A list of Unicode code points.
-
- * <i>form</i>: Specifies the normalization form to use when normalizing the text.
-
-<b>Return Value:</b>
-
- `true`  if the given list of characters is in the given Unicode normalization form; otherwise,  `false` .
-
-<b>Exceptions:</b>
-
- * System.ArgumentNullException:
-The parameter <i>charList</i>
  is null.
 
 ### Normalize

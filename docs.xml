@@ -1522,7 +1522,7 @@
             domain, the class uses two internal classes, called
             <c>NormalizationData</c> and <c>IdnaData</c>, that include data
             derived from the Unicode Character Database. See the documentation
-            for the NormalizingCharacterInput class for the permission notice
+            for the NormalizerInput class for the permission notice
             for the Unicode Character Database.</para></summary>
 </doc>
 <doc name="M:PeterO.Text.Idna.EncodeDomainName(System.String)">
@@ -1572,7 +1572,7 @@
             <para>NOTICE: While this class's source code is in the public
             domain, the class uses an internal class, called NormalizationData,
             that includes data derived from the Unicode Character Database. See
-            the documentation for the NormalizingCharacterInput class for the
+            the documentation for the NormalizerInput class for the
             permission notice for the Unicode Character
             Database.</para></summary>
 </doc>

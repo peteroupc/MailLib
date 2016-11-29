@@ -29,7 +29,6 @@ namespace PeterO.Text {
           str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
         // Get the Unicode code point for the surrogate pair
         c = 0x10000 + ((c - 0xd800) << 10) + (str[index + 1] - 0xdc00);
-        ++index;
       } else if ((c & 0xf800) == 0xd800) {
         // unpaired surrogate
         return 0xfffd;

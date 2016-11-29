@@ -10,14 +10,6 @@ Dir.chdir(File.dirname(__FILE__))
 
 require 'net/http'
 
-module Enumerable
- def transform
-   ret=[]
-   self.each{|item| ret.push(yield item) }
-   return ret
- end
-end
-
 def downloadIfNeeded(localFile,remoteUrl)
   if !FileTest.exist?(localFile)
      uri=URI.parse(remoteUrl)
@@ -63,7 +55,7 @@ def getJoiningTypes(file)
   return ret
 end
 
-def getQCNonYes(file,name)
+def getQCNoOrMaybe(file,name)
   ret={}
   File.open(file,"rb"){|f|
     while !f.eof?
@@ -318,7 +310,7 @@ module Normalizer
     return true if ch>=0xf0000 || (ch>=0xd800 && ch<=0xdfff)
     return true if @@maxAffectedCodePoint && ch>@@maxAffectedCodePoint
     if !@@quickChecks[form]
-      @@quickChecks[form]=getQCNonYes(
+      @@quickChecks[form]=getQCNoOrMaybe(
         "cache/DerivedNormalizationProps.txt",@@quickCheckNames[form])
     end
     return !@@quickChecks[form][ch] && UnicodeDatabase.getCombiningClass(ch) == 0
