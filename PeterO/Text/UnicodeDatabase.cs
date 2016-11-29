@@ -87,7 +87,7 @@ namespace PeterO.Text {
       while (left <= right) {
         int index = (left + right) >> 1;
         int realIndex = (index << 1);
-        int dri = decomps [realIndex];
+        int dri = decomps[realIndex];
         int dricp = dri & 0x1fffff;
         if (dricp == cp) {
           int data = dri;

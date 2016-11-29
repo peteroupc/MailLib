@@ -4,7 +4,7 @@
 
 Contains methods that implement Internationalized Domain Names in Applications (IDNA). IDNA enables using a wider range of letters, numbers, and certain other characters in domain names. This class implements the 2008 revision of IDNA, also known as IDNA2008.
 
-NOTICE: While this class's source code is in the public domain, the class uses two internal classes, called `NormalizationData`  and  `IdnaData` , that include data derived from the Unicode Character Database. See the documentation for the NormalizingCharacterInput class for the permission notice for the Unicode Character Database.
+NOTICE: While this class's source code is in the public domain, the class uses two internal classes, called `NormalizationData`  and  `IdnaData` , that include data derived from the Unicode Character Database. See the documentation for the NormalizerInput class for the permission notice for the Unicode Character Database.
 
 ### EncodeDomainName
 

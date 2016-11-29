@@ -229,6 +229,7 @@
         this.lastQcsIndex = -1;
         this.iterator = stream;
         this.form = form;
+  this.readbuffer = new int[1];
         this.lastCharBuffer = new int[2];
         this.compatMode = form == Normalization.NFKC || form ==
             Normalization.NFKD;
@@ -427,7 +428,7 @@ UnicodeDatabase.IsQuickCheckStarter (
         return i == endIndex;
       }
 
-      private readonly int[] readbuffer = new int[1];
+      private readonly int[] readbuffer;
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.ReadChar"]/*'/>
@@ -655,10 +656,6 @@ UnicodeDatabase.IsQuickCheckStarter (
           }
         } while (total < length);
         // Fill buffer with processed code points
-        if (this.processedIndex != this.flushIndex) {
-          // DebugUtility.Log ("Buffer: " + EC (buffer, flushIndex, endIndex
-          // - flushIndex));
-        }
         count = Math.Max(
     0,
     Math.Min(this.processedIndex - this.flushIndex, length - total));

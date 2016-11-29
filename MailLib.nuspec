@@ -13,35 +13,33 @@
     A parser and generator of Internet email messages as a Portable Class Library.
     </description>
     <releaseNotes>
-Version 0.9.2:
-- Removed dependencies
-Version 0.9.1:
-- Removed a reference to OpenCover that was apparently left in version 0.9
-Version 0.9:
-- The C# version of the library now also targets "dotnet", which should make it compatible with platform .NET runtime
-environments such as the upcoming cross-platform "coreclr" runtime.
-- Bug fixes to ensure number-format independence in some cases
-- ContentDisposition.MakeFilename implementation was improved
-- Another overload for GetEncoding was added
-- Additional fixes in character encodings
-- Known issue: The library implements character encodings based on the Encoding Standard
-candidate recommendation.  But several issues have emerged with that spec in the meantime.
-For example, GB18030 currently uses a problematic range table, so that for certain code points designed
-for that table, round-tripping is not possible.  As a result, tests on GB18030 are disabled
-for now.
-   See the project page for release notes on previous versions: https://github.com/peteroupc/MailLib
+
+Version 0.10.0:
+
+- Character encoding conversion library moved out of this library (see [PeterO.Encoding](https://github.com/peteroupc/Encoding); currently uses version 2.0 of that library.
+- Updated normalization and IDNA data to Unicode 9.0
+- Normalization implementation renamed to NormalizerInput from NormalizerCharacterInput; the latter class is now deprecated
+- Add GetHeaderArray, SetDate, and GetDate methods of Message class
+- Add support for parsing several new header fields
+- Date header field is included in generated messages
+- Improve MakeFilename method of ContentDisposition class
+- Fix bugs in Unicode normalization implementation
+- Fixed several bugs and addressed corner cases in message generation, such as Quoted-Printable encoding
+- In the .NET version of the source code, documentation is moved out of the source code and placed into a consolidated XML file
+- SetBody method of Message class now returns the Message object that was edited
+- Other bug fixes
     </releaseNotes>
     <copyright>Written by Peter O. in 2013-2015.  Any copyright is released to the Public Domain.
     (This applies to all the source code except the normalization and IDNA data.  See https://github.com/peteroupc/MailLib/LICENSE.md for details.)</copyright>
     <tags>email mail mime parser charset charsets</tags>
+  <dependencies>
+    <dependency id="PeterO.Encoding" version="0.2.0"/>
+  </dependencies>
   </metadata>
   <files>
-    <file src="bin/Release/MailLib.dll" target="lib/portable-net45+dnxcore50+netcore45+win+wpa81+wp8" />
-    <file src="bin/Release/MailLib.xml" target="lib/portable-net45+dnxcore50+netcore45+win+wpa81+wp8" />
-    <file src="bin/ReleaseNet40/MailLib.dll" target="lib/portable-net40+sl5+win+wpa81+wp8" />
-    <file src="bin/ReleaseNet40/MailLib.xml" target="lib/portable-net40+sl5+win+wpa81+wp8" />
+    <file src="bin/Release/MailLib.dll" target="lib/portable-net45+dnxcore50+netcore45+win+wpa81+wp80" />
+    <file src="bin/Release/MailLib.xml" target="lib/portable-net45+dnxcore50+netcore45+win+wpa81+wp80" />
+    <file src="bin/ReleaseNet40/MailLib.dll" target="lib/portable-net40+sl5+win+wpa81+wp80" />
+    <file src="bin/ReleaseNet40/MailLib.xml" target="lib/portable-net40+sl5+win+wpa81+wp80" />
   </files>
-  <dependencies>
-    <dependency id="PeterO.Encoding" version="0.1.0"/>
-  </dependencies>
 </package>
