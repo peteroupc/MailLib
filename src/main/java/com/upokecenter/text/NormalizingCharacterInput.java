@@ -286,8 +286,8 @@ package com.upokecenter.text;
  */
 @Deprecated
       public static boolean IsNormalized(List<Integer> charList, Normalization form) {
-          return IsNormalized (
-  new PartialListCharacterInput (charList),
+          return IsNormalized(
+  new PartialListCharacterInput(charList),
   form);
      }
 

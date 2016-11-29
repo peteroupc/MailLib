@@ -1637,7 +1637,7 @@ private static final class HeaderXVerificasicurezza extends StructuredHeaderFiel
     private static Map<String, IHeaderFieldParser> CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
       fieldMap = new HashMap<String,
-        IHeaderFieldParser>();fieldMap.put("content-return" ,new
+        IHeaderFieldParser>(); fieldMap.put("content-return",new
         HeaderX400ContentReturn());
 fieldMap.put("x400-content-return",new HeaderX400ContentReturn());
 fieldMap.put("delivery-date",new HeaderDeliveryDate());
@@ -1692,7 +1692,7 @@ fieldMap.put("content-transfer-encoding",new HeaderContentTransferEncoding());
 fieldMap.put("content-type",new HeaderContentType());
 fieldMap.put("date",new HeaderDate());
 fieldMap.put("deferred-delivery",new HeaderDeferredDelivery());
-fieldMap.put("disposition-notification-options" ,new
+fieldMap.put("disposition-notification-options",new
   HeaderDispositionNotificationOptions());
 fieldMap.put("disposition-notification-to",new HeaderDispositionNotificationTo());
 fieldMap.put("mmhs-authorizing-users",new HeaderMmhsAuthorizingUsers());
@@ -1712,25 +1712,25 @@ fieldMap.put("list-id",new HeaderListId());
 fieldMap.put("message-context",new HeaderMessageContext());
 fieldMap.put("message-id",new HeaderMessageId());
 fieldMap.put("mime-version",new HeaderMimeVersion());
-fieldMap.put("mmhs-acp127-message-identifier" ,new
+fieldMap.put("mmhs-acp127-message-identifier",new
   HeaderMmhsAcp127MessageIdentifier());
-fieldMap.put("mmhs-codress-message-indicator" ,new
+fieldMap.put("mmhs-codress-message-indicator",new
   HeaderMmhsCodressMessageIndicator());
 fieldMap.put("mmhs-copy-precedence",new HeaderMmhsCopyPrecedence());
 fieldMap.put("mmhs-exempted-address",new HeaderMmhsExemptedAddress());
-fieldMap.put("mmhs-extended-authorisation-info" ,new
+fieldMap.put("mmhs-extended-authorisation-info",new
   HeaderMmhsExtendedAuthorisationInfo());
 fieldMap.put("mmhs-handling-instructions",new HeaderMmhsHandlingInstructions());
 fieldMap.put("mmhs-message-instructions",new HeaderMmhsMessageInstructions());
 fieldMap.put("mmhs-message-type",new HeaderMmhsMessageType());
 fieldMap.put("mmhs-originator-plad",new HeaderMmhsOriginatorPlad());
 fieldMap.put("mmhs-originator-reference",new HeaderMmhsOriginatorReference());
-fieldMap.put("mmhs-other-recipients-indicator-cc" ,new
+fieldMap.put("mmhs-other-recipients-indicator-cc",new
   HeaderMmhsOtherRecipientsIndicatorCc());
-fieldMap.put("mmhs-other-recipients-indicator-to" ,new
+fieldMap.put("mmhs-other-recipients-indicator-to",new
   HeaderMmhsOtherRecipientsIndicatorTo());
 fieldMap.put("mmhs-primary-precedence",new HeaderMmhsPrimaryPrecedence());
-fieldMap.put("mmhs-subject-indicator-codes" ,new
+fieldMap.put("mmhs-subject-indicator-codes",new
   HeaderMmhsSubjectIndicatorCodes());
 fieldMap.put("mt-priority",new HeaderMtPriority());
 fieldMap.put("obsoletes",new HeaderObsoletes());
@@ -1741,7 +1741,7 @@ fieldMap.put("received",new HeaderReceived());
 fieldMap.put("received-spf",new HeaderReceivedSpf());
 fieldMap.put("references",new HeaderInReplyTo());
 fieldMap.put("reply-to",new HeaderResentTo());
-fieldMap.put("require-recipient-valid-since" ,new
+fieldMap.put("require-recipient-valid-since",new
   HeaderRequireRecipientValidSince());
 fieldMap.put("resent-bcc",new HeaderBcc());
 fieldMap.put("resent-cc",new HeaderResentTo());

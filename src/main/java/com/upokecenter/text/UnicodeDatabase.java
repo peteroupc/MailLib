@@ -32,7 +32,7 @@ private UnicodeDatabase() {
     private static ByteData qcsnfkd;
 
     public static int GetCombiningClass(int cp) {
-      if (cp<0x300 || cp >= 0xe0000) {
+      if (cp < 0x300 || cp >= 0xe0000) {
  return 0;
 }
       synchronized (ValueClassesSyncRoot) {
@@ -88,7 +88,7 @@ private UnicodeDatabase() {
       while (left <= right) {
         int index = (left + right) >> 1;
         int realIndex = (index << 1);
-        int dri = decomps [realIndex];
+        int dri = decomps[realIndex];
         int dricp = dri & 0x1fffff;
         if (dricp == cp) {
           int data = dri;

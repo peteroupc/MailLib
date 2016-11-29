@@ -73,7 +73,7 @@
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
-    public static bool IsNormalized (
+    public static bool IsNormalized(
   ICharacterInput chars,
   Normalization form) {
       return NormalizerInput.IsNormalized(chars, form);
@@ -139,8 +139,8 @@
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)"]/*'/>
   [Obsolete("Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
       public static bool IsNormalized(IList<int> charList, Normalization form) {
-          return IsNormalized (
-  new PartialListCharacterInput (charList),
+          return IsNormalized(
+  new PartialListCharacterInput(charList),
   form);
      }
 

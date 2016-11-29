@@ -322,7 +322,7 @@ strLower.indexOf(
         str = "_" + str;
       }
       // Avoid space before and after last dot
-      for (int i = str.length()-1; i >= 0; --i) {
+      for (int i = str.length() - 1; i >= 0; --i) {
         if (str.charAt(i) == '.') {
           boolean spaceAfter = (i + 1 < str.length() && str.charAt(i + 1) == 0x20);
           boolean spaceBefore = (i > 0 && str.charAt(i - 1) == 0x20);
@@ -357,39 +357,6 @@ strLower.indexOf(
         str += "_";
       }
       return str;
-    }
-
-    /**
-     * Not documented yet.
-     * @param str Not documented yet.
-     * @return A string object.
-     */
-    public static String EscapeString(String str) {
-      String ValueHex = "0123456789abcdef";
-      StringBuilder sb = new StringBuilder();
-      for (int i = 0; i < str.length(); ++i) {
-        char c = str.charAt(i);
-        if (c == 0x09) {
-          sb.append("\\t");
-        } else if (c == 0x0d) {
-          sb.append("\\r");
-        } else if (c == 0x0a) {
-          sb.append("\\n");
-        } else if (c == 0x22) {
-          sb.append("\\\"");
-        } else if (c == 0x5c) {
-          sb.append("\\\\");
-        } else if (c < 0x20 || c >= 0x7f) {
-          sb.append("\\u");
-          sb.append(ValueHex.charAt((c >> 12) & 15));
-          sb.append(ValueHex.charAt((c >> 8) & 15));
-          sb.append(ValueHex.charAt((c >> 4) & 15));
-          sb.append(ValueHex.charAt((c) & 15));
-        } else {
-          sb.append(c);
-        }
-      }
-      return sb.toString();
     }
 
     /**

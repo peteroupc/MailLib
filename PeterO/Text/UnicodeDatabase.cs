@@ -31,7 +31,7 @@ namespace PeterO.Text {
     private static ByteData qcsnfkd;
 
     public static int GetCombiningClass(int cp) {
-      if (cp<0x300 || cp >= 0xe0000) {
+      if (cp < 0x300 || cp >= 0xe0000) {
  return 0;
 }
       lock (ValueClassesSyncRoot) {

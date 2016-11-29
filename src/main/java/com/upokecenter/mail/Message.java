@@ -2282,14 +2282,14 @@ public final void setSubject(String value) {
       }
     }
 
-        static byte [] TimeEntropy (int size) {
+        static byte[] TimeEntropy(int size) {
             // This routine was inspired by the HAVEG entropy
             // harvester, but is not exactly the same as it.
             int st = ((int)new java.util.Date().getTime());
             int sx = st % 100;
             int b = 0;
             int badticks = 0;
-            byte [] bytes = new byte [size];
+            byte[] bytes = new byte[size];
             for (int k = 0; k < 15; ++k) {
                 int dtt = (sx == 0) ? ((int)System.currentTimeMillis()) :
                   ((int)new java.util.Date().getTime());
@@ -2360,7 +2360,7 @@ public final void setSubject(String value) {
                     b <<= 1;
                     b |= ticks & 1;
                     }
-                    bytes [j] ^= ((byte)b);
+                    bytes[j] ^= ((byte)b);
                 }
             }
             return bytes;
@@ -2385,8 +2385,8 @@ public final void setSubject(String value) {
         ent = TimeEntropy(16);
       } else {
         ent = new byte[16];
-        for (int i = 0;i<ent.length; ++i) {
-          ent[i]=((byte)ValueMsgidRandom.nextInt(256));
+        for (int i = 0; i < ent.length; ++i) {
+          ent[i] = ((byte)ValueMsgidRandom.nextInt(256));
         }
       }
       long ticks = new java.util.Date().getTime();
@@ -2396,7 +2396,7 @@ public final void setSubject(String value) {
       }
       for (int i = 0; i < ent.length; ++i) {
         builder.append(ValueHex.charAt((int)(ent[i] & 15)));
-        builder.append(ValueHex.charAt((int)((ent[i]>>4) & 15)));
+        builder.append(ValueHex.charAt((int)((ent[i] >> 4) & 15)));
       }
       for (int i = 0; i < 8; ++i) {
         builder.append(ValueHex.charAt(seq & 15));
