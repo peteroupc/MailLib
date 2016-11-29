@@ -10,10 +10,9 @@
     <projectUrl>https://github.com/peteroupc/MailLib</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-    A parser and generator of Internet email messages as a Portable Class Library.
+    A .NET library for parsing and generating Internet email messages.
     </description>
     <releaseNotes>
-
 Version 0.10.0:
 
 - Character encoding conversion library moved out of this library (see [PeterO.Encoding](https://github.com/peteroupc/Encoding); currently uses version 2.0 of that library.
@@ -29,7 +28,7 @@ Version 0.10.0:
 - SetBody method of Message class now returns the Message object that was edited
 - Other bug fixes
     </releaseNotes>
-    <copyright>Written by Peter O. in 2013-2015.  Any copyright is released to the Public Domain.
+    <copyright>Written by Peter O. in 2013-2016.  Any copyright is released to the Public Domain.
     (This applies to all the source code except the normalization and IDNA data.  See https://github.com/peteroupc/MailLib/LICENSE.md for details.)</copyright>
     <tags>email mail mime parser charset charsets</tags>
   <dependencies>
@@ -37,8 +36,8 @@ Version 0.10.0:
   </dependencies>
   </metadata>
   <files>
-    <file src="bin/Release/MailLib.dll" target="lib/portable-net45+dnxcore50+netcore45+win+wpa81+wp80" />
-    <file src="bin/Release/MailLib.xml" target="lib/portable-net45+dnxcore50+netcore45+win+wpa81+wp80" />
+    <file src="bin/Release/MailLib.dll" target="lib/portable-net45+netcoreapp+netcore45+win+wpa81+wp80" />
+    <file src="bin/Release/MailLib.xml" target="lib/portable-net45+netcoreapp+netcore45+win+wpa81+wp80" />
     <file src="bin/ReleaseNet40/MailLib.dll" target="lib/portable-net40+sl5+win+wpa81+wp80" />
     <file src="bin/ReleaseNet40/MailLib.xml" target="lib/portable-net40+sl5+win+wpa81+wp80" />
   </files>
