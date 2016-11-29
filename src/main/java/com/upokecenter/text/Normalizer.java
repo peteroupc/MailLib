@@ -13,9 +13,9 @@ at: http://peteroupc.github.io/
      * normalization.</p> <p>NOTICE: While this class's source code is in
      * the public domain, the class uses an class, called
      * NormalizationData, that includes data derived from the Unicode
-     * Character Database. See the documentation for the
-     * NormalizingCharacterInput class for the permission notice for the
-     * Unicode Character Database.</p>
+     * Character Database. See the documentation for the NormalizerInput
+     * class for the permission notice for the Unicode Character
+     * Database.</p>
      * @deprecated Use NormalizerInput instead; that class is much more flexible than
 * Normalizer.
  */

@@ -18,8 +18,6 @@ Specifies how a message body should be displayed or handled by a mail user
 
 * `boolean equals(Object obj)`<br>
  Determines whether this object and another object are equal.
-* `static String EscapeString(String str)`<br>
- Not documented yet.
 * `String getDispositionType()`<br>
  Gets a string containing this object's disposition type, such as "inline" or
  "attachment".
@@ -163,18 +161,6 @@ Converts a file name from the Content-Disposition header to a suitable name
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
-
-### EscapeString
-    public static String EscapeString(String str)
-Not documented yet.
-
-**Parameters:**
-
-* <code>str</code> - Not documented yet.
-
-**Returns:**
-
-* A string object.
 
 ### GetParameter
     public String GetParameter(String name)

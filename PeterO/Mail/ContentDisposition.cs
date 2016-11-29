@@ -278,8 +278,8 @@ strLower.IndexOf(
   "com",
   StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
             strLower[3] <= '9');
-      bool bracketDigit = str [0] == '{' && str.Length > 1 &&
-            str [1] >= '0' && str [1] <= '9';
+      bool bracketDigit = str[0] == '{' && str.Length > 1 &&
+            str[1] >= '0' && str[1] <= '9';
       // Home folder convention (tilde).
         // Filenames starting with hyphens can also be
         // problematic especially in Unix-based systems,
@@ -294,16 +294,16 @@ strLower.IndexOf(
         str = "_" + str;
       }
       // Avoid space before and after last dot
-      for (int i = str.Length-1; i >= 0; --i) {
-        if (str [i] == '.') {
-          bool spaceAfter = (i + 1 < str.Length && str [i + 1] == 0x20);
-          bool spaceBefore = (i > 0 && str [i - 1] == 0x20);
+      for (int i = str.Length - 1; i >= 0; --i) {
+        if (str[i] == '.') {
+          bool spaceAfter = (i + 1 < str.Length && str[i + 1] == 0x20);
+          bool spaceBefore = (i > 0 && str[i - 1] == 0x20);
           if (spaceAfter && spaceBefore) {
-            str = str.Substring (0, i - 1) + "_._" + str.Substring (i + 2);
+            str = str.Substring(0, i - 1) + "_._" + str.Substring(i + 2);
           } else if (spaceAfter) {
-            str = str.Substring (0, i) + "._" + str.Substring (i + 2);
+            str = str.Substring(0, i) + "._" + str.Substring(i + 2);
           } else if (spaceBefore) {
-            str = str.Substring (0, i - 1) + "_." + str.Substring (i + 1);
+            str = str.Substring(0, i - 1) + "_." + str.Substring(i + 1);
           }
           break;
         }
@@ -311,12 +311,12 @@ strLower.IndexOf(
       str = NormalizerInput.Normalize(str, Normalization.NFC);
       // Ensure length is 254 or less
       if (str.Length > 254) {
-        char c = str [254];
+        char c = str[254];
         var newLength = 254;
         if ((c & 0xfc00) == 0xdc00) {
           --newLength;
         }
-        str = str.Substring (0, newLength);
+        str = str.Substring(0, newLength);
       }
       if (str[str.Length - 1] == '.' || str[str.Length - 1] == '~') {
         // Ends in a dot or tilde (a file whose name ends with
@@ -329,37 +329,6 @@ strLower.IndexOf(
         str += "_";
       }
       return str;
-    }
-
-    /// <summary>Not documented yet.</summary>
-    /// <param name='str'>Not documented yet.</param>
-    /// <returns>A string object.</returns>
-    public static string EscapeString(string str) {
-      const string ValueHex = "0123456789abcdef";
-      var sb = new StringBuilder();
-      for (int i = 0; i < str.Length; ++i) {
-        char c = str[i];
-        if (c == 0x09) {
-          sb.Append("\\t");
-        } else if (c == 0x0d) {
-          sb.Append("\\r");
-        } else if (c == 0x0a) {
-          sb.Append("\\n");
-        } else if (c == 0x22) {
-          sb.Append("\\\"");
-        } else if (c == 0x5c) {
-          sb.Append("\\\\");
-        } else if (c < 0x20 || c >= 0x7f) {
-          sb.Append("\\u");
-          sb.Append(ValueHex[(c >> 12) & 15]);
-          sb.Append(ValueHex[(c >> 8) & 15]);
-          sb.Append(ValueHex[(c >> 4) & 15]);
-          sb.Append(ValueHex[(c) & 15]);
-        } else {
-          sb.Append(c);
-        }
-      }
-      return sb.ToString();
     }
 
     /// <include file='../../docs.xml'

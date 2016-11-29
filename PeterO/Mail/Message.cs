@@ -2004,14 +2004,14 @@ namespace PeterO.Mail {
       }
     }
 
-        internal static byte [] TimeEntropy (int size) {
+        internal static byte[] TimeEntropy(int size) {
             // This routine was inspired by the HAVEG entropy
             // harvester, but is not exactly the same as it.
             int st = unchecked((int)DateTime.UtcNow.Ticks);
             int sx = st % 100;
             var b = 0;
             var badticks = 0;
-            var bytes = new byte [size];
+            var bytes = new byte[size];
             for (var k = 0; k < 15; ++k) {
                 int dtt = (sx == 0) ? unchecked((int)DateTime.Now.Ticks) :
                   unchecked((int)DateTime.UtcNow.Ticks);
@@ -2082,7 +2082,7 @@ namespace PeterO.Mail {
                     b <<= 1;
                     b |= ticks & 1;
                     }
-                    bytes [j] ^= unchecked((byte)b);
+                    bytes[j] ^= unchecked((byte)b);
                 }
             }
             return bytes;
@@ -2107,8 +2107,8 @@ namespace PeterO.Mail {
         ent = TimeEntropy(16);
       } else {
         ent = new byte[16];
-        for (var i = 0;i<ent.Length; ++i) {
-          ent[i]=unchecked((byte)ValueMsgidRandom.Next(256));
+        for (var i = 0; i < ent.Length; ++i) {
+          ent[i] = unchecked((byte)ValueMsgidRandom.Next(256));
         }
       }
       long ticks = DateTime.UtcNow.Ticks;
@@ -2118,7 +2118,7 @@ namespace PeterO.Mail {
       }
       for (int i = 0; i < ent.Length; ++i) {
         builder.Append(ValueHex[(int)(ent[i] & 15)]);
-        builder.Append(ValueHex[(int)((ent[i]>>4) & 15)]);
+        builder.Append(ValueHex[(int)((ent[i] >> 4) & 15)]);
       }
       for (int i = 0; i < 8; ++i) {
         builder.Append(ValueHex[seq & 15]);

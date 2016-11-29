@@ -1647,7 +1647,7 @@ private sealed class HeaderXVerificasicurezza : StructuredHeaderField {
       CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
       fieldMap = new Dictionary<string,
-        IHeaderFieldParser>();fieldMap["content-return" ] = new
+        IHeaderFieldParser>(); fieldMap["content-return"] = new
         HeaderX400ContentReturn();
 fieldMap["x400-content-return"] = new HeaderX400ContentReturn();
 fieldMap["delivery-date"] = new HeaderDeliveryDate();
@@ -1702,7 +1702,7 @@ fieldMap["content-transfer-encoding"] = new HeaderContentTransferEncoding();
 fieldMap["content-type"] = new HeaderContentType();
 fieldMap["date"] = new HeaderDate();
 fieldMap["deferred-delivery"] = new HeaderDeferredDelivery();
-fieldMap["disposition-notification-options" ] = new
+fieldMap["disposition-notification-options"] = new
   HeaderDispositionNotificationOptions();
 fieldMap["disposition-notification-to"] = new HeaderDispositionNotificationTo();
 fieldMap["mmhs-authorizing-users"] = new HeaderMmhsAuthorizingUsers();
@@ -1722,25 +1722,25 @@ fieldMap["list-id"] = new HeaderListId();
 fieldMap["message-context"] = new HeaderMessageContext();
 fieldMap["message-id"] = new HeaderMessageId();
 fieldMap["mime-version"] = new HeaderMimeVersion();
-fieldMap["mmhs-acp127-message-identifier" ] = new
+fieldMap["mmhs-acp127-message-identifier"] = new
   HeaderMmhsAcp127MessageIdentifier();
-fieldMap["mmhs-codress-message-indicator" ] = new
+fieldMap["mmhs-codress-message-indicator"] = new
   HeaderMmhsCodressMessageIndicator();
 fieldMap["mmhs-copy-precedence"] = new HeaderMmhsCopyPrecedence();
 fieldMap["mmhs-exempted-address"] = new HeaderMmhsExemptedAddress();
-fieldMap["mmhs-extended-authorisation-info" ] = new
+fieldMap["mmhs-extended-authorisation-info"] = new
   HeaderMmhsExtendedAuthorisationInfo();
 fieldMap["mmhs-handling-instructions"] = new HeaderMmhsHandlingInstructions();
 fieldMap["mmhs-message-instructions"] = new HeaderMmhsMessageInstructions();
 fieldMap["mmhs-message-type"] = new HeaderMmhsMessageType();
 fieldMap["mmhs-originator-plad"] = new HeaderMmhsOriginatorPlad();
 fieldMap["mmhs-originator-reference"] = new HeaderMmhsOriginatorReference();
-fieldMap["mmhs-other-recipients-indicator-cc" ] = new
+fieldMap["mmhs-other-recipients-indicator-cc"] = new
   HeaderMmhsOtherRecipientsIndicatorCc();
-fieldMap["mmhs-other-recipients-indicator-to" ] = new
+fieldMap["mmhs-other-recipients-indicator-to"] = new
   HeaderMmhsOtherRecipientsIndicatorTo();
 fieldMap["mmhs-primary-precedence"] = new HeaderMmhsPrimaryPrecedence();
-fieldMap["mmhs-subject-indicator-codes" ] = new
+fieldMap["mmhs-subject-indicator-codes"] = new
   HeaderMmhsSubjectIndicatorCodes();
 fieldMap["mt-priority"] = new HeaderMtPriority();
 fieldMap["obsoletes"] = new HeaderObsoletes();
@@ -1751,7 +1751,7 @@ fieldMap["received"] = new HeaderReceived();
 fieldMap["received-spf"] = new HeaderReceivedSpf();
 fieldMap["references"] = new HeaderInReplyTo();
 fieldMap["reply-to"] = new HeaderResentTo();
-fieldMap["require-recipient-valid-since" ] = new
+fieldMap["require-recipient-valid-since"] = new
   HeaderRequireRecipientValidSince();
 fieldMap["resent-bcc"] = new HeaderBcc();
 fieldMap["resent-cc"] = new HeaderResentTo();

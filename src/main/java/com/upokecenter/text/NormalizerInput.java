@@ -158,10 +158,10 @@ package com.upokecenter.text;
           int valuecc = UnicodeDatabase.GetCombiningClass(ch);
           if (decompPos > 0) {
             int lead = starter - 0x1100;
-            if (0 <= lead && lead < 19) {
+            if (lead >= 0 && lead < 19) {
               // Found Hangul L jamo
               int vowel = ch - 0x1161;
-              if (0 <= vowel && vowel < 21 && (last < valuecc || last == 0)) {
+              if (vowel >= 0 && vowel < 21 && (last < valuecc || last == 0)) {
                 starter = 0xac00 + (((lead * 21) + vowel) * 28);
                 array[starterPos] = starter;
                 array[decompPos] = 0x110000;
@@ -171,10 +171,10 @@ package com.upokecenter.text;
               }
             }
             int syllable = starter - 0xac00;
-            if (0 <= syllable && syllable < 11172 && (syllable % 28) == 0) {
+            if (syllable >= 0 && syllable < 11172 && (syllable % 28) == 0) {
               // Found Hangul LV jamo
               int trail = ch - 0x11a7;
-              if (0 < trail && trail < 28 && (last < valuecc || last == 0)) {
+              if (trail > 0 && trail < 28 && (last < valuecc || last == 0)) {
                 starter += trail;
                 array[starterPos] = starter;
                 array[decompPos] = 0x110000;
@@ -311,7 +311,7 @@ package com.upokecenter.text;
   ICharacterInput chars,
   Normalization form) {
       if (chars == null) {
-        throw new NullPointerException ("chars");
+        throw new NullPointerException("chars");
       }
        int listIndex = 0;
       int[] array = new int[16];
@@ -325,13 +325,13 @@ package com.upokecenter.text;
  return false;
 }
         boolean isQcs = (c >= 0xf0000) ? true :
-UnicodeDatabase.IsQuickCheckStarter (
+UnicodeDatabase.IsQuickCheckStarter(
   c,
   form);
 
         if (isQcs) {
           if (haveNonQcs) {
-            if (!NormalizeAndCheck (
+            if (!NormalizeAndCheck(
              array,
              0,
              listIndex,
@@ -345,14 +345,14 @@ UnicodeDatabase.IsQuickCheckStarter (
           haveNonQcs = true;
         }
         if (listIndex >= array.length) {
-          int [] newArray = new int [array.length * 2];
-          System.arraycopy (array, 0, newArray, 0, listIndex);
+          int[] newArray = new int[array.length * 2];
+          System.arraycopy(array, 0, newArray, 0, listIndex);
           array = newArray;
         }
-        array [listIndex++] = c;
+        array[listIndex++] = c;
       }
       if (haveNonQcs) {
-        if (!NormalizeAndCheck (
+        if (!NormalizeAndCheck(
                     array,
                     0,
                     listIndex,
@@ -370,14 +370,14 @@ UnicodeDatabase.IsQuickCheckStarter (
     Normalization form) {
         int i = 0;
             int ch;
-            NormalizerInput  input = new NormalizerInput (
-        new PartialArrayCharacterInput (charArray, start, length),
+            NormalizerInput input = new NormalizerInput(
+        new PartialArrayCharacterInput(charArray, start, length),
         form);
             while ((ch = input.ReadChar()) >= 0) {
                 if (i >= length) {
                     return false;
                 }
-                if (ch != charArray [start + i]) {
+                if (ch != charArray[start + i]) {
                     return false;
                 }
                 ++i;
@@ -448,7 +448,7 @@ UnicodeDatabase.IsQuickCheckStarter (
           }
         if (isQcs) {
           if (haveNonQcs) {
-                    if (!NormalizeAndCheckString (
+                    if (!NormalizeAndCheckString(
                     str,
                     lastQcsIndex,
                     i - lastQcsIndex,
@@ -838,7 +838,7 @@ UnicodeDatabase.IsQuickCheckStarter (
 // DebugUtility.Log ("reordering " + (// EC (buffer, 0, lastQcsIndex)) +
 // " [" + this.form + "]");
       // Canonical reordering
-      ReorderBuffer (this.buffer, 0, this.lastQcsIndex);
+      ReorderBuffer(this.buffer, 0, this.lastQcsIndex);
         if (this.form == Normalization.NFC || this.form == Normalization.NFKC) {
           // Composition
     // DebugUtility.Log ("composing " + (// EC (buffer, 0, lastQcsIndex)) +
