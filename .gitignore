@@ -13,6 +13,7 @@
 *.userprefs
 *.vspx
 .classpath
+.nuget/
 .pmd
 .project
 .settings/
