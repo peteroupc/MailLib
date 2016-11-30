@@ -1330,16 +1330,15 @@
             to 9 (0x30 to 0x39) and the basic letters A/a to Z/z (0x41 to 0x5a,
             0x61 to 0x7a) are changed to "=" followed by their 2-digit
             hexadecimal form. An encoded word's maximum length is 75
-            characters. See the second example.</para>.</param>
+            characters. See the third example.</para>.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='address'/> is null.</exception>
             <exception cref='T:System.ArgumentException'>The named address has
             an invalid syntax.</exception>
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String,PeterO.Mail.Address)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class.</summary>
-            <param name='displayName'>A text string. If this value is null or
-            empty, uses the email address as the display name. Encoded words
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given display name and email address.</summary>
+            <param name='displayName'>The display name of the email address. Can be null or empty. Encoded words
             under RFC 2047 will not be decoded.</param>
             <param name='address'>An email address.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
@@ -1362,8 +1361,7 @@
 <doc name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String)">
 <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given
             display name and email address.</summary>
-            <param name='displayName'>The address's display name. Can be null
-            or empty, in which case the email address is used instead. Encoded
+            <param name='displayName'>The display name of the email address. Can be null or empty. Encoded
             words under RFC 2047 will not be decoded.</param>
             <param name='address'>An email address.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
@@ -1375,8 +1373,7 @@
 <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.NamedAddress'/> class using the given name
             and an email address made up of its local part and
             domain.</summary>
-            <param name='displayName'>A text string. If this value is null or
-            empty, uses the email address as the display name.</param>
+            <param name='displayName'>The display name of the email address. Can be null or empty.</param>
             <param name='localPart'>The local part of the email address (before
             the "@").</param>
             <param name='domain'>The domain of the email address (before the
@@ -1405,8 +1402,12 @@
             <value><c>true</c> If this represents a group of addresses; otherwise, <c>false</c>.</value>
 </doc>
 <doc name="P:PeterO.Mail.NamedAddress.Name">
-<summary>Gets the display name for this email address (or the email
-            address's value if the display name is absent).</summary>
+<summary>Gets the display name for this email address, or the email
+            address's value if the display name is null. Returns an empty string if the address and display name are null.</summary>
+            <value>The name for this email address.</value>
+</doc>
+<doc name="P:PeterO.Mail.NamedAddress.DisplayName">
+<summary>Gets the display name for this email address. Returns null if the display name is absent.</summary>
             <value>The display name for this email address.</value>
 </doc>
 <doc name="M:PeterO.Mail.NamedAddress.ToString">
@@ -1595,7 +1596,8 @@
 <summary>Returns whether this string is normalized.</summary>
             <param name='str'>The string to check.</param>
             <param name='form'>A Normalization object.</param>
-            <returns><c>true</c> if this string is normalized; otherwise, <c>false</c>.</returns>
+            <returns><c>true</c> if this string is normalized; otherwise, <c>false</c>.
+Returns <c>false</c> if the string contains an unpaired surrogate code point.</returns>
 </doc>
 <doc name="M:PeterO.Text.Normalizer.Normalize(System.String,PeterO.Text.Normalization)">
 <summary>Converts a string to the given Unicode normalization
@@ -1705,156 +1707,6 @@
             sale, use or other dealings in these Data Files or Software without
             prior written authorization of the copyright
             holder.</para></summary>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using
-            Normalization Form C.</summary>
-            <param name='input'>An ICharacterInput object.</param>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.</summary>
-            <param name='stream'>An ICharacterInput object.</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='stream'/> is null.</exception>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32})">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using
-            Normalization Form C.</summary>
-            <param name='characterList'>A list of Unicode code points
-            specifying the text to normalize.</param>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using
-            the given normalization form.</summary>
-            <param name='characterList'>An IList object.</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='characterList'/> is null.</exception>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class using
-            Normalization Form C.</summary>
-            <param name='str'>A string specifying the text to
-            normalize.</param>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class.</summary>
-            <param name='str'>A text string.</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizingCharacterInput'/> class. Uses a
-            portion of a string as the input.</summary>
-            <param name='str'>A text string.</param>
-            <param name='index'>A zero-based index showing where the desired
-            portion of <paramref name='str'/> begins.</param>
-            <param name='length'>The number of elements in the desired portion
-            of <paramref name='str'/> (but not more than <paramref name='str'/>
-            's length).</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)">
-<summary>Gets a list of normalized code points after reading from a
-            character stream.</summary>
-            <param name='str'>An object that implements a stream of Unicode
-            characters.</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-            <returns>A list of the normalized Unicode characters.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='str'/> is null.</exception>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.GetChars(System.String,PeterO.Text.Normalization)">
-<summary>Gets a list of normalized code points after reading from a
-            string.</summary>
-            <param name='str'>A text string.</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-            <returns>A list of the normalized Unicode characters.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='str'/> is null.</exception>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)">
-<summary>Determines whether the text provided by a character input
-            is normalized.</summary>
-            <param name='chars'>A object that implements a streamable character
-            input.</param>
-            <param name='form'>Specifies the normalization form to
-            check.</param>
-            <returns><c>true</c> if the text is normalized; otherwise, <c>false</c>.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='chars'/> is null.</exception>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)">
-<summary>Determines whether the given list of characters is in the
-            given Unicode normalization form.</summary>
-            <param name='charList'>A list of Unicode code points.</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-            <returns><c>true</c> if the given list of characters is in the
-            given Unicode normalization form; otherwise, <c>false</c>.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='charList'/> is null.</exception>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.Int32[],PeterO.Text.Normalization)">
-<summary>Determines whether the given array of characters is in the
-            given Unicode normalization form.</summary>
-            <param name='charArray'>An array of Unicode code points.</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-            <returns><c>true</c> if the given list of characters is in the
-            given Unicode normalization form; otherwise, <c>false</c>.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            "charList" is null.</exception>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.IsNormalized(System.String,PeterO.Text.Normalization)">
-<summary>Determines whether the given string is in the given
-            Unicode normalization form.</summary>
-            <param name='str'>An arbitrary string.</param>
-            <param name='form'>Specifies the normalization form to use when
-            normalizing the text.</param>
-            <returns><c>true</c> if the given string is in the given Unicode
-            normalization form; otherwise, <c>false</c>.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='str'/> is null.</exception>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.Normalize(System.String,PeterO.Text.Normalization)">
-<summary>Converts a string to the given Unicode normalization
-            form.</summary>
-            <param name='str'>An arbitrary string.</param>
-            <param name='form'>The Unicode normalization form to convert
-            to.</param>
-            <returns>The parameter <paramref name='str'/> converted to the
-            given normalization form.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='str'/> is null.</exception>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.Read(System.Int32[],System.Int32,System.Int32)">
-<summary>Reads a sequence of Unicode code points from a data
-            source.</summary>
-            <param name='chars'>Output buffer.</param>
-            <param name='index'>A zero-based index showing where the desired
-            portion of <paramref name='chars'/> begins.</param>
-            <param name='length'>The number of elements in the desired portion
-            of <paramref name='chars'/> (but not more than <paramref name='chars'/> 's length).</param>
-            <returns>The number of Unicode code points read, or 0 if the end of
-            the source is reached.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='chars'/> is null.</exception>
-            <exception cref='T:System.ArgumentException'>Either <paramref name='index'/> or <paramref name='length'/> is less than 0 or
-            greater than <paramref name='chars'/> 's length, or <paramref name='chars'/> ' s length minus <paramref name='index'/> is less
-            than <paramref name='length'/>.</exception>
-</doc>
-<doc name="M:PeterO.Text.NormalizingCharacterInput.ReadChar">
-<summary>Reads a Unicode character from a data source.</summary>
-            <returns>Either a Unicode code point (from 0-0xd7ff or from 0xe000
-            to 0x10ffff), or the value -1 indicating the end of the
-            source.</returns>
 </doc>
 <doc name="T:PeterO.Text.NormalizerInput">
 <summary>
@@ -2045,7 +1897,8 @@
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
             <returns><c>true</c> if the given string is in the given Unicode
-            normalization form; otherwise, <c>false</c>.</returns>
+            normalization form; otherwise, <c>false</c>.
+Returns <c>false</c> if the string contains an unpaired surrogate code point.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
 </doc>
@@ -2057,6 +1910,8 @@
             to.</param>
             <returns>The parameter <paramref name='str'/> converted to the
             given normalization form.</returns>
+            <exception cref='T:System.ArgumentException'>The parameter
+            <paramref name='str'/> contains an unpaired surrogate code point.</exception>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
 </doc>

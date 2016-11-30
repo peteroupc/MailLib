@@ -418,7 +418,7 @@ UnicodeDatabase.IsQuickCheckStarter(
             ++i;
           } else if ((c & 0x1ff800) == 0xd800) {
             // unpaired surrogate
-            c = 0xfffd;
+            return false;
           }
           ++i;
           if (c != ch) {

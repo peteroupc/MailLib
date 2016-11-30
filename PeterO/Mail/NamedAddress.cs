@@ -13,16 +13,29 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.NamedAddress"]/*'/>
   public class NamedAddress {
-    private readonly string name;
+    private readonly string displayName;
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.Name"]/*'/>
     public string Name {
       get {
-        return this.name;
+        if(displayName==null){
+		if(address==null){
+			return String.Empty;
+		}
+	  return address.ToString();
+	}
+        return displayName;
       }
     }
 
+   /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.DisplayName"]/*'/>
+    public string DisplayName {
+		get {
+			return displayName;
+		}
+	}
     private readonly Address address;
 
     /// <include file='../../docs.xml'
@@ -47,8 +60,9 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.ToString"]/*'/>
     public override string ToString() {
       if (this.isGroup) {
+        DebugAssert.NotNull(this.displayName);
         var builder = new StringBuilder();
-        builder.Append(HeaderParserUtility.QuoteValueIfNeeded(this.name));
+        builder.Append(HeaderParserUtility.QuoteValueIfNeeded(this.displayName));
         builder.Append(": ");
         var first = true;
         foreach (NamedAddress groupAddress in this.groupAddresses) {
@@ -61,19 +75,16 @@ namespace PeterO.Mail {
         builder.Append(";");
         return builder.ToString();
       }
-      if (String.IsNullOrEmpty(this.name)) {
+      if (displayName==null) {
         return this.address.ToString();
       } else {
         string addressString = this.address.ToString();
-        if (addressString.Equals(this.name)) {
-          return addressString;
-        }
         if (addressString.Length > 990) {
           // Give some space to ease line wrapping
-          return HeaderParserUtility.QuoteValueIfNeeded(this.name) +
+          return HeaderParserUtility.QuoteValueIfNeeded(this.displayName) +
           " < " + addressString + " >";
         }
-        return HeaderParserUtility.QuoteValueIfNeeded(this.name) +
+        return HeaderParserUtility.QuoteValueIfNeeded(this.displayName) +
         " <" + addressString + ">";
       }
     }
@@ -106,9 +117,6 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String)"]/*'/>
     public NamedAddress(string displayName, string address) {
-      if (String.IsNullOrEmpty(displayName)) {
-        displayName = address;
-      }
       if (address == null) {
         throw new ArgumentNullException("address");
       }
@@ -123,9 +131,6 @@ namespace PeterO.Mail {
     public NamedAddress(string displayName, Address address) {
       if (address == null) {
         throw new ArgumentNullException("address");
-      }
-      if (String.IsNullOrEmpty(displayName)) {
-        displayName = address.ToString();
       }
       this.name = displayName;
       this.groupAddresses = new List<NamedAddress>();
@@ -143,9 +148,6 @@ namespace PeterO.Mail {
         throw new ArgumentNullException("domain");
       }
       this.address = new Address(localPart, domain);
-      if (String.IsNullOrEmpty(displayName)) {
-        displayName = this.address.ToString();
-      }
       this.groupAddresses = new List<NamedAddress>();
       this.name = displayName;
       this.isGroup = false;

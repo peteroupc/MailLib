@@ -270,12 +270,22 @@ Assert.AreEqual(
   stringTemp);
 }
     }
+    [Test]
+    public void TestDisplayName() {
+      NamedAddress na;
+      na = new NamedAddress("=?utf-8?q?Me?=", "me@example.com");
+      Assert.AreEqual("=?utf-8?q?Me?=", na.DisplayName);
+      na = new NamedAddress(null, "me@example.com");
+      Assert.AreEqual(null, na.DisplayName);
+    }
 
     [Test]
     public void TestName() {
       NamedAddress na;
       na = new NamedAddress("=?utf-8?q?Me?=", "me@example.com");
       Assert.AreEqual("=?utf-8?q?Me?=", na.Name);
+      na = new NamedAddress(null, "me@example.com");
+      Assert.AreEqual("me@example.com", na.Name);
     }
     [Test]
     public void TestToString() {
