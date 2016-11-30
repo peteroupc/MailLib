@@ -381,7 +381,9 @@
 <doc name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)">
 <summary>Gets a parameter from this disposition object.</summary>
             <param name='name'>The name of the parameter to get. The name will
-            be matched case-insensitively. Can't be null.</param>
+            be matched using a basic case-insensitive comparison. (Two
+            strings are equal in such a comparison, if they match after
+            converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.). Can't be null.</param>
             <returns>The value of the parameter, or null if the parameter does
             not exist.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
@@ -498,7 +500,9 @@
 <summary>Removes a parameter from this content disposition. Does
             nothing if the parameter's name doesn't exist.</summary>
             <param name='name'>The parameter to remove. The name is compared
-            case insensitively.</param>
+            using a basic case-insensitive comparison. (Two
+            strings are equal in such a comparison, if they match after
+            converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).</param>
             <returns>This instance.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='name'/> is null.</exception>
@@ -513,8 +517,10 @@
 <doc name="M:PeterO.Mail.DispositionBuilder.SetParameter(System.String,System.String)">
 <summary>Sets a parameter of this content disposition.</summary>
             <param name='name'>Name of the parameter to set. If this name
-            already exists (compared case-insensitively), it will be
-            overwritten.</param>
+            already exists (compared using a basic case-insensitive comparison), it will be
+            overwritten. . (Two
+            strings are equal in a basic case-insensitive comparison, if they match after
+            converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.)</param>
             <param name='value'>Value of the parameter to set.</param>
             <returns>This instance.</returns>
             <exception cref='T:System.ArgumentNullException'>Either <paramref name='value'/> or <paramref name='name'/> is null.</exception>
@@ -601,7 +607,7 @@
 <summary>Gets the value of a parameter in this media type, such as
             "charset" or "format".</summary>
             <param name='name'>Name of the parameter to get. The name is
-            compared case-insensitively.</param>
+            compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).</param>
             <returns>The value of the parameter as a string, or null if the
             parameter doesn't exist.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
@@ -721,7 +727,7 @@
 <summary>Removes a parameter from this builder object. Does nothing
             if the parameter's name doesn't exist.</summary>
             <param name='name'>Name of the parameter to remove. The name is
-            compared case-insensitively.</param>
+            compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).</param>
             <returns>This instance.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='name'/> is null.</exception>
@@ -730,7 +736,7 @@
 <summary>Sets a parameter's name and value for this media
             type.</summary>
             <param name='name'>Name of the parameter to set, such as "charset".
-            The name is compared case-insensitively.</param>
+            The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).</param>
             <param name='value'>A text string giving the parameter's
             value.</param>
             <returns>This instance.</returns>
@@ -953,14 +959,18 @@
             (U+0000 to U+007F), and the transfer encoding will always be
             7bit, quoted-printable, or base64 (the declared transfer encoding
             for this message will be ignored).</para>
-            <para>The following applies to the From, To, Cc, and Bcc header
-            fields. If the header field exists, but has an invalid syntax or
-            has no addresses, this method will generate a synthetic header
+            <para>The following applies to the following header
+            fields: From, To, Cc, Bcc, Reply-To, Sender, Resent-To, Resent-From,
+            Resent-Cc, Resent-Bcc, and Resent-Sender. If the header field exists,
+            but has an invalid syntax, has no addresses, or appears more than once,
+            this method will generate a synthetic header
             field with the display-name set to the contents of all of the
             header fields with the same name, and the address set to
             <c>me@[header-name]-address.invalid</c> as the address (a
             <c>.invalid</c> address is a reserved address that can never belong
-            to anyone). The generated message should always have a From header
+            to anyone). (An exception is that the Resent-From and Resent-Sender
+            header fields may appear more than once.) The generated message
+            should always have a From header
             field.</para>
             <para>If a Date and/or Message-ID header field doesn't exist, a
             field with that name will be generated (using the current local

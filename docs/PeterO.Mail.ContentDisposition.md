@@ -71,21 +71,6 @@ Determines whether this object and another object are equal.
 
  `true`  if the objects are equal; otherwise,  `false` .
 
-### EscapeString
-
-    public static string EscapeString(
-        string str);
-
-Not documented yet.
-
-<b>Parameters:</b>
-
- * <i>str</i>: Not documented yet.
-
-<b>Return Value:</b>
-
-A string object.
-
 ### GetHashCode
 
     public override int GetHashCode();
