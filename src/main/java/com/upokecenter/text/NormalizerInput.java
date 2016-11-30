@@ -390,6 +390,8 @@ UnicodeDatabase.IsQuickCheckStarter(
      * @param str An arbitrary string.
      * @param form The Unicode normalization form to convert to.
      * @return The parameter {@code str} converted to the given normalization form.
+     * @throws IllegalArgumentException The parameter {@code str} contains an
+     * unpaired surrogate code point.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
       public static String Normalize(String str, Normalization form) {
@@ -410,7 +412,8 @@ UnicodeDatabase.IsQuickCheckStarter(
      * @param form Specifies the normalization form to use when normalizing the
      * text.
      * @return {@code true} if the given string is in the given Unicode
-     * normalization form; otherwise, {@code false}.
+     * normalization form; otherwise, {@code false}. Returns {@code false}
+     * if the string contains an unpaired surrogate code point.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
       public static boolean IsNormalized(String str, Normalization form) {
@@ -501,7 +504,7 @@ UnicodeDatabase.IsQuickCheckStarter(
             ++i;
           } else if ((c & 0x1ff800) == 0xd800) {
             // unpaired surrogate
-            c = 0xfffd;
+            return false;
           }
           ++i;
           if (c != ch) {

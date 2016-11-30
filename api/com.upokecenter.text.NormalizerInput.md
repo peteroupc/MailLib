@@ -220,6 +220,9 @@ Converts a string to the given Unicode normalization form.
 
 **Throws:**
 
+* <code>IllegalArgumentException</code> - The parameter <code>str</code> contains an
+ unpaired surrogate code point.
+
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### IsNormalized
@@ -237,7 +240,8 @@ Determines whether the given string is in the given Unicode normalization
 **Returns:**
 
 * <code>true</code> if the given string is in the given Unicode
- normalization form; otherwise, <code>false</code>.
+ normalization form; otherwise, <code>false</code>. Returns <code>false</code>
+ if the string contains an unpaired surrogate code point.
 
 **Throws:**
 

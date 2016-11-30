@@ -13,7 +13,7 @@ Represents an email address and a name for that address. Can represent a
 * `NamedAddress(String displayName,
             Address address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
- class.
+ class using the given display name and email address.
 * `NamedAddress(String groupName,
             List<NamedAddress> mailboxes)`<br>
 * `NamedAddress(String displayName,
@@ -28,12 +28,14 @@ Represents an email address and a name for that address. Can represent a
  part and domain.
 * `Address getAddress()`<br>
  Gets the email address associated with this object.
+* `String getDisplayName()`<br>
+ Gets the display name for this email address.
 * `List<NamedAddress> getGroupAddresses()`<br>
  Gets a read-only list of addresses that make up the group, if this object
  represents a group, or an empty list otherwise.
 * `String getName()`<br>
- Gets the display name for this email address (or the email address's value
- if the display name is absent).
+ Gets the display name for this email address, or the email address's value
+ if the display name is null.
 * `boolean isGroup()`<br>
  Gets a value indicating whether this represents a group of addresses rather
  than a single address.
@@ -48,7 +50,7 @@ Represents an email address and a name for that address. Can represent a
 * `NamedAddress(String displayName,
             Address address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
- class.
+ class using the given display name and email address.
 * `NamedAddress(String groupName,
             List<NamedAddress> mailboxes)`<br>
 * `NamedAddress(String displayName,
@@ -89,7 +91,7 @@ Initializes a new instance of the <code>NamedAddress</code>
  most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the
  basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to
  "=" followed by their 2-digit hexadecimal form. An encoded word's
- maximum length is 75 characters. See the second example.</p>.
+ maximum length is 75 characters. See the third example.</p>.
 
 **Throws:**
 
@@ -104,9 +106,8 @@ Initializes a new instance of the <code>NamedAddress</code>
 
 **Parameters:**
 
-* <code>displayName</code> - The address's display name. Can be null or empty, in
- which case the email address is used instead. Encoded words under RFC
- 2047 will not be decoded.
+* <code>displayName</code> - The display name of the email address. Can be null or
+ empty. Encoded words under RFC 2047 will not be decoded.
 
 * <code>address</code> - An email address.
 
@@ -120,13 +121,12 @@ Initializes a new instance of the <code>NamedAddress</code>
 ### NamedAddress
     public NamedAddress(String displayName, Address address)
 Initializes a new instance of the <code>NamedAddress</code>
- class.
+ class using the given display name and email address.
 
 **Parameters:**
 
-* <code>displayName</code> - A text string. If this value is null or empty, uses the
- email address as the display name. Encoded words under RFC 2047 will
- not be decoded.
+* <code>displayName</code> - The display name of the email address. Can be null or
+ empty. Encoded words under RFC 2047 will not be decoded.
 
 * <code>address</code> - An email address.
 
@@ -142,8 +142,8 @@ Initializes a new instance of the <code>NamedAddress</code>
 
 **Parameters:**
 
-* <code>displayName</code> - A text string. If this value is null or empty, uses the
- email address as the display name.
+* <code>displayName</code> - The display name of the email address. Can be null or
+ empty.
 
 * <code>localPart</code> - The local part of the email address (before the "@").
 
@@ -158,8 +158,18 @@ Initializes a new instance of the <code>NamedAddress</code>
     public NamedAddress(String groupName, List<NamedAddress> mailboxes)
 ### getName
     public final String getName()
-Gets the display name for this email address (or the email address's value
- if the display name is absent).
+Gets the display name for this email address, or the email address's value
+ if the display name is null. Returns an empty string if the address
+ and display name are null.
+
+**Returns:**
+
+* The name for this email address.
+
+### getDisplayName
+    public final String getDisplayName()
+Gets the display name for this email address. Returns null if the display
+ name is absent.
 
 **Returns:**
 

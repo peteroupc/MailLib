@@ -437,7 +437,10 @@
 <summary>Gets a list of parameter names associated with this object
             and their values.</summary>
             <value>A read-only list of parameter names associated with this
-            object and their values. The names will be sorted.</value>
+            object and their values.<para>NOTE: Previous versions erroneously
+            stated that the list will be sorted by name.  In fact, the names will not be
+            guaranteed to appear in any particular order; this is at least the
+            case in version 0.10.0.</para></value>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.Parse(System.String)">
 <summary>Parses a content disposition string and returns a content
@@ -628,10 +631,13 @@
             Internet mail messages.</summary>
 </doc>
 <doc name="P:PeterO.Mail.MediaType.Parameters">
-<summary>Gets a sorted list of the parameters contained in this
+<summary>Gets a list of the parameters contained in this
             media type object.</summary>
             <value>A list of the parameters contained in this media type
-            object, sorted by name.</value>
+            object. <para>NOTE: Previous versions erroneously
+            stated that the list will be sorted by name.  In fact, the names will not be
+            guaranteed to appear in any particular order; this is at least the
+            case in version 0.10.0.</para></value>
 </doc>
 <doc name="M:PeterO.Mail.MediaType.Parse(System.String)">
 <summary>Parses a media type string and returns a media type
@@ -1457,38 +1463,7 @@
             read-only.</summary>
             <value>Always true.</value>
 </doc>
-<doc name="T:PeterO.SortedMap`2">
-<summary>
-      A dictionary sorted by key. It is here because the Portable Class Library
-      subset used by CBOR doesn't include the
-      System.Collections.Generic.SortedDictionary class.
-    </summary>
-    <typeparam name='T1'>
-      The type of each key.
-    </typeparam>
-    <typeparam name='T2'>
-      The type of each value.
-    </typeparam>
-</doc>
-<doc name="M:PeterO.SortedMap`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">
-<summary>
-      Copies this object's elements to another array.
-    </summary>
-    <param name='array'>
-      An array of KeyValuePair.
-    </param>
-    <param name='arrayIndex'>
-      Index into the array to copy to.
-    </param>
-</doc>
-<doc name="P:PeterO.SortedMap`2.IsReadOnly">
-<summary>
-      Gets a value indicating whether this map is read-only.
-    </summary>
-    <value>
-      Always false.
-    </value>
-</doc>
+
 <doc name="M:PeterO.Text.ByteData.DecompressLz4(System.Byte[])">
 <summary>Decompresses a byte array compressed using the LZ4 format
             (see "LZ4 Format Description" by Y Collet for more

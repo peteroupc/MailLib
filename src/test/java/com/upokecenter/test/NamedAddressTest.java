@@ -271,12 +271,22 @@ Assert.assertEquals(
   stringTemp);
 }
     }
+    @Test
+    public void TestDisplayName() {
+      NamedAddress na;
+      na = new NamedAddress("=?utf-8?q?Me?=", "me@example.com");
+      Assert.assertEquals("=?utf-8?q?Me?=", na.getDisplayName());
+      na = new NamedAddress(null, "me@example.com");
+      Assert.assertEquals(null, na.getDisplayName());
+    }
 
     @Test
     public void TestName() {
       NamedAddress na;
       na = new NamedAddress("=?utf-8?q?Me?=", "me@example.com");
       Assert.assertEquals("=?utf-8?q?Me?=", na.getName());
+      na = new NamedAddress(null, "me@example.com");
+      Assert.assertEquals("me@example.com", na.getName());
     }
     @Test
     public void TestToString() {

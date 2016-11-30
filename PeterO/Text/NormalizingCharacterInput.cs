@@ -93,7 +93,7 @@
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.GetChars(System.String,PeterO.Text.Normalization)"]/*'/>
-  [Obsolete("Instead of this method, create a NormalizingCharacterInput on the string and call ReadChar to get the normalized string's code points.")]
+  [Obsolete("Instead of this method, create a NormalizerInput on the string and call ReadChar to get the normalized string's code points.")]
       public static IList<int> GetChars(string str, Normalization form) {
         if (str == null) {
           throw new ArgumentNullException("str");
@@ -109,7 +109,7 @@
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
-  [Obsolete("Instead of this method, create a NormalizingCharacterInput on the input and call ReadChar to get the normalized string's code points.")]
+  [Obsolete("Instead of this method, create a NormalizerInput on the input and call ReadChar to get the normalized string's code points.")]
    public static IList<int> GetChars(
   ICharacterInput input,
   Normalization form) {

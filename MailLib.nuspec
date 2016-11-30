@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>PeterO.MailLib</id>
-    <version>0.10.0</version>
+    <version>0.11.0</version>
     <title>MailLib</title>
     <authors>Peter Occil</authors>
     <owners>Peter Occil</owners>
@@ -13,20 +13,10 @@
     A .NET library for parsing and generating Internet email messages.
     </description>
     <releaseNotes>
-Version 0.10.0:
+Version 0.11.0:
 
-- Character encoding conversion library moved out of this library (see [PeterO.Encoding](https://github.com/peteroupc/Encoding); currently uses version 2.0 of that library.
-- Updated normalization and IDNA data to Unicode 9.0
-- Normalization implementation renamed to NormalizerInput from NormalizerCharacterInput; the latter class is now deprecated
-- Add GetHeaderArray, SetDate, and GetDate methods of Message class
-- Add support for parsing several new header fields
-- Date header field is included in generated messages
-- Improve MakeFilename method of ContentDisposition class
-- Fix bugs in Unicode normalization implementation
-- Fixed several bugs and addressed corner cases in message generation, such as Quoted-Printable encoding
-- In the .NET version of the source code, documentation is moved out of the source code and placed into a consolidated XML file
-- SetBody method of Message class now returns the Message object that was edited
-- Other bug fixes
+- Corrected the documentation for MediaType's and ContentDisposition's Parameters properties
+- Added DisplayName property in NamedAddress class
     </releaseNotes>
     <copyright>Written by Peter O. in 2013-2016.  Any copyright is released to the Public Domain.
     (This applies to all the source code except the normalization and IDNA data.  See https://github.com/peteroupc/MailLib/LICENSE.md for details.)</copyright>

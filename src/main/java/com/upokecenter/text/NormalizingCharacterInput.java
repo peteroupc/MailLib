@@ -82,8 +82,8 @@ package com.upokecenter.text;
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizingCharacterInput} class using
-     * Normalization Form C.
+     * com.upokecenter.text.NormalizerInput} class using Normalization Form
+     * C.
      * @param str A string specifying the text to normalize.
      */
       public NormalizingCharacterInput(
@@ -94,8 +94,8 @@ package com.upokecenter.text;
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizingCharacterInput} class using
-     * Normalization Form C.
+     * com.upokecenter.text.NormalizerInput} class using Normalization Form
+     * C.
      * @param input An ICharacterInput object.
      */
       public NormalizingCharacterInput(
@@ -128,8 +128,8 @@ package com.upokecenter.text;
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizingCharacterInput} class. Uses a portion
-     * of a string as the input.
+     * com.upokecenter.text.NormalizerInput} class. Uses a portion of a
+     * string as the input.
      * @param str A text string.
      * @param index A zero-based index showing where the desired portion of {@code
      * str} begins.
@@ -148,7 +148,7 @@ package com.upokecenter.text;
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizingCharacterInput} class.
+     * com.upokecenter.text.NormalizerInput} class.
      * @param str A text string.
      * @param form Specifies the normalization form to use when normalizing the
      * text.
@@ -159,7 +159,7 @@ package com.upokecenter.text;
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizingCharacterInput} class.
+     * com.upokecenter.text.NormalizerInput} class.
      * @param stream An ICharacterInput object.
      * @param form Specifies the normalization form to use when normalizing the
      * text.
@@ -189,6 +189,8 @@ package com.upokecenter.text;
      * @param str An arbitrary string.
      * @param form The Unicode normalization form to convert to.
      * @return The parameter {@code str} converted to the given normalization form.
+     * @throws IllegalArgumentException The parameter {@code str} contains an
+     * unpaired surrogate code point.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
       public static String Normalize(String str, Normalization form) {
@@ -202,7 +204,8 @@ package com.upokecenter.text;
      * @param form Specifies the normalization form to use when normalizing the
      * text.
      * @return {@code true} if the given string is in the given Unicode
-     * normalization form; otherwise, {@code false}.
+     * normalization form; otherwise, {@code false}. Returns {@code false}
+     * if the string contains an unpaired surrogate code point.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
       public static boolean IsNormalized(String str, Normalization form) {
@@ -216,8 +219,8 @@ package com.upokecenter.text;
      * text.
      * @return A list of the normalized Unicode characters.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
-     * @deprecated Instead of this method, create a NormalizingCharacterInput on the String and
- *call ReadChar to get the normalized String's code points.
+     * @deprecated Instead of this method, create a NormalizerInput on the String and call
+ *ReadChar to get the normalized String's code points.
  */
 @Deprecated
       public static List<Integer> GetChars(String str, Normalization form) {
@@ -240,8 +243,8 @@ package com.upokecenter.text;
      * text.
      * @return A list of the normalized Unicode characters.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
-     * @deprecated Instead of this method, create a NormalizingCharacterInput on the input and
- *call ReadChar to get the normalized String's code points.
+     * @deprecated Instead of this method, create a NormalizerInput on the input and call
+ *ReadChar to get the normalized String's code points.
  */
 @Deprecated
    public static List<Integer> GetChars(

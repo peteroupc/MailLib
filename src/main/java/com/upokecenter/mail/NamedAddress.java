@@ -14,17 +14,29 @@ import java.util.*;
      * group of email addresses instead.
      */
   public class NamedAddress {
-    private final String name;
+    private final String displayName;
 
     /**
-     * Gets the display name for this email address (or the email address's value
-     * if the display name is absent).
-     * @return The display name for this email address.
+     * Gets the display name for this email address, or the email address's value
+     * if the display name is null. Returns an empty string if the address
+     * and display name are null.
+     * @return The name for this email address.
      */
     public final String getName() {
-        return this.name;
+        if (displayName == null) {
+    return (address == null) ? ("") : (address.toString());
+  }
+        return displayName;
       }
 
+    /**
+     * Gets the display name for this email address. Returns null if the display
+     * name is absent.
+     * @return The display name for this email address.
+     */
+    public final String getDisplayName() {
+      return displayName;
+    }
     private final Address address;
 
     /**
@@ -55,7 +67,7 @@ import java.util.*;
     @Override public String toString() {
       if (this.isGroup) {
         StringBuilder builder = new StringBuilder();
-        builder.append(HeaderParserUtility.QuoteValueIfNeeded(this.name));
+  builder.append(HeaderParserUtility.QuoteValueIfNeeded(this.displayName));
         builder.append(": ");
         boolean first = true;
         for (NamedAddress groupAddress : this.groupAddresses) {
@@ -68,19 +80,16 @@ import java.util.*;
         builder.append(";");
         return builder.toString();
       }
-      if (((this.name) == null || (this.name).length() == 0)) {
+      if (displayName == null) {
         return this.address.toString();
       } else {
         String addressString = this.address.toString();
-        if (addressString.equals(this.name)) {
-          return addressString;
-        }
         if (addressString.length() > 990) {
           // Give some space to ease line wrapping
-          return HeaderParserUtility.QuoteValueIfNeeded(this.name) +
+          return HeaderParserUtility.QuoteValueIfNeeded(this.displayName) +
           " < " + addressString + " >";
         }
-        return HeaderParserUtility.QuoteValueIfNeeded(this.name) +
+        return HeaderParserUtility.QuoteValueIfNeeded(this.displayName) +
         " <" + addressString + ">";
       }
     }
@@ -106,7 +115,7 @@ import java.util.*;
      * most bytes other than the basic digits 0 to 9 (0x30 to 0x39) and the
      * basic letters A/a to Z/z (0x41 to 0x5a, 0x61 to 0x7a) are changed to
      * "=" followed by their 2-digit hexadecimal form. An encoded word's
-     * maximum length is 75 characters. See the second example.</p>.
+     * maximum length is 75 characters. See the third example.</p>.
      * @throws java.lang.NullPointerException The parameter {@code address} is null.
      * @throws IllegalArgumentException The named address has an invalid syntax.
      */
@@ -136,18 +145,14 @@ import java.util.*;
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
      * class using the given display name and email address.
-     * @param displayName The address's display name. Can be null or empty, in
-     * which case the email address is used instead. Encoded words under RFC
-     * 2047 will not be decoded.
+     * @param displayName The display name of the email address. Can be null or
+     * empty. Encoded words under RFC 2047 will not be decoded.
      * @param address An email address.
      * @throws java.lang.NullPointerException The parameter {@code address} is null.
      * @throws IllegalArgumentException The display name or address has an invalid
      * syntax.
      */
     public NamedAddress(String displayName, String address) {
-      if (((displayName) == null || (displayName).length() == 0)) {
-        displayName = address;
-      }
       if (address == null) {
         throw new NullPointerException("address");
       }
@@ -159,19 +164,15 @@ import java.util.*;
 
     /**
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
-     * class.
-     * @param displayName A text string. If this value is null or empty, uses the
-     * email address as the display name. Encoded words under RFC 2047 will
-     * not be decoded.
+     * class using the given display name and email address.
+     * @param displayName The display name of the email address. Can be null or
+     * empty. Encoded words under RFC 2047 will not be decoded.
      * @param address An email address.
      * @throws java.lang.NullPointerException The parameter {@code address} is null.
      */
     public NamedAddress(String displayName, Address address) {
       if (address == null) {
         throw new NullPointerException("address");
-      }
-      if (((displayName) == null || (displayName).length() == 0)) {
-        displayName = address.toString();
       }
       this.name = displayName;
       this.groupAddresses = new ArrayList<NamedAddress>();
@@ -183,8 +184,8 @@ import java.util.*;
      * Initializes a new instance of the {@link com.upokecenter.mail.NamedAddress}
      * class using the given name and an email address made up of its local
      * part and domain.
-     * @param displayName A text string. If this value is null or empty, uses the
-     * email address as the display name.
+     * @param displayName The display name of the email address. Can be null or
+     * empty.
      * @param localPart The local part of the email address (before the "@").
      * @param domain The domain of the email address (before the "@").
      * @throws java.lang.NullPointerException The parameter {@code localPart} or
@@ -198,9 +199,6 @@ import java.util.*;
         throw new NullPointerException("domain");
       }
       this.address = new Address(localPart, domain);
-      if (((displayName) == null || (displayName).length() == 0)) {
-        displayName = this.address.toString();
-      }
       this.groupAddresses = new ArrayList<NamedAddress>();
       this.name = displayName;
       this.isGroup = false;
