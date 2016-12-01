@@ -23,10 +23,8 @@ import java.util.*;
      * @return The name for this email address.
      */
     public final String getName() {
-        if (displayName == null) {
-    return (address == null) ? ("") : (address.toString());
-  }
-        return displayName;
+ return (this.displayName == null) ? ((this.address == null) ?
+          ("") : (this.address.toString())) : (this.displayName);
       }
 
     /**
@@ -35,8 +33,9 @@ import java.util.*;
      * @return The display name for this email address.
      */
     public final String getDisplayName() {
-      return displayName;
+      return this.displayName;
     }
+
     private final Address address;
 
     /**
@@ -80,7 +79,7 @@ import java.util.*;
         builder.append(";");
         return builder.toString();
       }
-      if (displayName == null) {
+      if (this.displayName == null) {
         return this.address.toString();
       } else {
         String addressString = this.address.toString();
@@ -136,7 +135,7 @@ import java.util.*;
       if (na == null) {
         throw new IllegalArgumentException("Address has an invalid syntax.");
       }
-      this.name = na.name;
+      this.displayName = na.displayName;
       this.address = na.address;
       this.groupAddresses = na.groupAddresses;
       this.isGroup = na.isGroup;
@@ -156,7 +155,7 @@ import java.util.*;
       if (address == null) {
         throw new NullPointerException("address");
       }
-      this.name = displayName;
+      this.displayName = displayName;
       this.groupAddresses = new ArrayList<NamedAddress>();
       this.address = new Address(address);
       this.isGroup = false;
@@ -174,7 +173,7 @@ import java.util.*;
       if (address == null) {
         throw new NullPointerException("address");
       }
-      this.name = displayName;
+      this.displayName = displayName;
       this.groupAddresses = new ArrayList<NamedAddress>();
       this.address = address;
       this.isGroup = false;
@@ -200,7 +199,7 @@ import java.util.*;
       }
       this.address = new Address(localPart, domain);
       this.groupAddresses = new ArrayList<NamedAddress>();
-      this.name = displayName;
+      this.displayName = displayName;
       this.isGroup = false;
     }
 
@@ -218,7 +217,7 @@ import java.util.*;
         throw new NullPointerException("mailboxes");
       }
       this.isGroup = true;
-      this.name = groupName;
+      this.displayName = groupName;
       for (NamedAddress mailbox : mailboxes) {
         if (mailbox.isGroup()) {
           throw new IllegalArgumentException("A mailbox in the list is a group");

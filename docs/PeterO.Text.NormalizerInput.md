@@ -150,7 +150,7 @@ Determines whether the given string is in the given Unicode normalization form.
 
 <b>Return Value:</b>
 
- `true`  if the given string is in the given Unicode normalization form; otherwise,  `false` .
+ `true`  if the given string is in the given Unicode normalization form; otherwise,  `false` . Returns  `false`  if the string contains an unpaired surrogate code point.
 
 <b>Exceptions:</b>
 
@@ -178,6 +178,10 @@ The parameter  <i>str</i>
  converted to the given normalization form.
 
 <b>Exceptions:</b>
+
+ * System.ArgumentException:
+The parameter <i>str</i>
+ contains an unpaired surrogate code point.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>

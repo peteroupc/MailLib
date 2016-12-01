@@ -58,11 +58,11 @@ Gets a value indicating whether this is a text media type ("text/*").
 
     public System.Collections.Generic.IDictionary Parameters { get; }
 
-Gets a sorted list of the parameters contained in this media type object.
+Gets a list of the parameters contained in this media type object.
 
 <b>Returns:</b>
 
-A list of the parameters contained in this media type object, sorted by name.
+A list of the parameters contained in this media type object. NOTE: Previous versions erroneously stated that the list will be sorted by name. In fact, the names will not be guaranteed to appear in any particular order; this is at least the case in version 0.10.0.
 
 ### SubType
 
@@ -138,7 +138,7 @@ Gets the value of a parameter in this media type, such as "charset" or "format".
 
 <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to get. The name is compared case-insensitively.
+ * <i>name</i>: Name of the parameter to get. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
 
 <b>Return Value:</b>
 

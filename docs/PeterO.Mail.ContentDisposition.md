@@ -54,7 +54,7 @@ Gets a list of parameter names associated with this object and their values.
 
 <b>Returns:</b>
 
-A read-only list of parameter names associated with this object and their values. The names will be sorted.
+A read-only list of parameter names associated with this object and their values.NOTE: Previous versions erroneously stated that the list will be sorted by name. In fact, the names will not be guaranteed to appear in any particular order; this is at least the case in version 0.10.0.
 
 ### Equals
 
@@ -90,7 +90,7 @@ Gets a parameter from this disposition object.
 
 <b>Parameters:</b>
 
- * <i>name</i>: The name of the parameter to get. The name will be matched case-insensitively. Can't be null.
+ * <i>name</i>: The name of the parameter to get. The name will be matched using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.). Can't be null.
 
 <b>Return Value:</b>
 

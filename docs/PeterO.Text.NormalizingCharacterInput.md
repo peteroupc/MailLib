@@ -38,7 +38,7 @@ Except as contained in this notice, the name of a copyright holder shall not be 
     public NormalizingCharacterInput(
         PeterO.Text.ICharacterInput input);
 
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using Normalization Form C.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class using Normalization Form C.
 
 <b>Parameters:</b>
 
@@ -50,7 +50,7 @@ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO
         PeterO.Text.ICharacterInput stream,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.
 
 <b>Parameters:</b>
 
@@ -69,7 +69,7 @@ The parameter <i>stream</i>
     public NormalizingCharacterInput(
         string str);
 
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using Normalization Form C.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class using Normalization Form C.
 
 <b>Parameters:</b>
 
@@ -83,7 +83,7 @@ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO
         int length,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class. Uses a portion of a string as the input.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class. Uses a portion of a string as the input.
 
 <b>Parameters:</b>
 
@@ -104,7 +104,7 @@ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO
         string str,
         PeterO.Text.Normalization form);
 
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class.
 
 <b>Parameters:</b>
 
@@ -119,7 +119,7 @@ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO
 
 <b>Deprecated.</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using Normalization Form C.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class using Normalization Form C.
 
 <b>Parameters:</b>
 
@@ -133,7 +133,7 @@ Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO
 
 <b>Deprecated.</b> Either convert the list to a string or wrap it in an ICharacterInput and call the corresponding overload instead.
 
-Initializes a new instance of the [PeterO.Text.NormalizingCharacterInput](PeterO.Text.NormalizingCharacterInput.md) class using the given normalization form.
+Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.NormalizerInput.md) class using the given normalization form.
 
 <b>Parameters:</b>
 
@@ -153,7 +153,7 @@ The parameter <i>characterList</i>
         PeterO.Text.ICharacterInput input,
         PeterO.Text.Normalization form);
 
-<b>Deprecated.</b> Instead of this method, create a NormalizingCharacterInput on the input and call ReadChar to get the normalized string's code points.
+<b>Deprecated.</b> Instead of this method, create a NormalizerInput on the input and call ReadChar to get the normalized string's code points.
 
 Gets a list of normalized code points after reading from a character stream.
 
@@ -179,7 +179,7 @@ The parameter <i>str</i>
         string str,
         PeterO.Text.Normalization form);
 
-<b>Deprecated.</b> Instead of this method, create a NormalizingCharacterInput on the string and call ReadChar to get the normalized string's code points.
+<b>Deprecated.</b> Instead of this method, create a NormalizerInput on the string and call ReadChar to get the normalized string's code points.
 
 Gets a list of normalized code points after reading from a string.
 
@@ -264,7 +264,7 @@ Determines whether the given string is in the given Unicode normalization form.
 
 <b>Return Value:</b>
 
- `true`  if the given string is in the given Unicode normalization form; otherwise,  `false` .
+ `true`  if the given string is in the given Unicode normalization form; otherwise,  `false` . Returns  `false`  if the string contains an unpaired surrogate code point.
 
 <b>Exceptions:</b>
 
@@ -318,6 +318,10 @@ The parameter  <i>str</i>
  converted to the given normalization form.
 
 <b>Exceptions:</b>
+
+ * System.ArgumentException:
+The parameter <i>str</i>
+ contains an unpaired surrogate code point.
 
  * System.ArgumentNullException:
 The parameter <i>str</i>

@@ -19,10 +19,8 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.Name"]/*'/>
     public string Name {
       get {
-        if (displayName == null) {
-    return (address == null) ? (String.Empty) : (address.ToString());
-  }
-        return displayName;
+ return (this.displayName == null) ? ((this.address == null) ?
+          (String.Empty) : (this.address.ToString())) : (this.displayName);
       }
     }
 
@@ -30,9 +28,10 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="P:PeterO.Mail.NamedAddress.DisplayName"]/*'/>
     public string DisplayName {
     get {
-      return displayName;
+      return this.displayName;
     }
   }
+
     private readonly Address address;
 
     /// <include file='../../docs.xml'
@@ -77,7 +76,7 @@ if ((this.displayName) == null) {
         builder.Append(";");
         return builder.ToString();
       }
-      if (displayName == null) {
+      if (this.displayName == null) {
         return this.address.ToString();
       } else {
         string addressString = this.address.ToString();
@@ -110,7 +109,7 @@ if ((this.displayName) == null) {
       if (na == null) {
         throw new ArgumentException("Address has an invalid syntax.");
       }
-      this.name = na.name;
+      this.displayName = na.displayName;
       this.address = na.address;
       this.groupAddresses = na.groupAddresses;
       this.isGroup = na.isGroup;
@@ -122,7 +121,7 @@ if ((this.displayName) == null) {
       if (address == null) {
         throw new ArgumentNullException("address");
       }
-      this.name = displayName;
+      this.displayName = displayName;
       this.groupAddresses = new List<NamedAddress>();
       this.address = new Address(address);
       this.isGroup = false;
@@ -134,7 +133,7 @@ if ((this.displayName) == null) {
       if (address == null) {
         throw new ArgumentNullException("address");
       }
-      this.name = displayName;
+      this.displayName = displayName;
       this.groupAddresses = new List<NamedAddress>();
       this.address = address;
       this.isGroup = false;
@@ -151,7 +150,7 @@ if ((this.displayName) == null) {
       }
       this.address = new Address(localPart, domain);
       this.groupAddresses = new List<NamedAddress>();
-      this.name = displayName;
+      this.displayName = displayName;
       this.isGroup = false;
     }
 
@@ -168,7 +167,7 @@ if ((this.displayName) == null) {
         throw new ArgumentNullException("mailboxes");
       }
       this.isGroup = true;
-      this.name = groupName;
+      this.displayName = groupName;
       foreach (NamedAddress mailbox in mailboxes) {
         if (mailbox.IsGroup) {
           throw new ArgumentException("A mailbox in the list is a group");

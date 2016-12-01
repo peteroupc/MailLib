@@ -313,6 +313,9 @@ module Normalizer
       @@quickChecks[form]=getQCNoOrMaybe(
         "cache/DerivedNormalizationProps.txt",@@quickCheckNames[form])
     end
+    if !@@quickChecks[form][ch] && UnicodeDatabase.getCombiningClass(ch) != 0
+      #p [ch,form,"not QCS",UnicodeDatabase.getCombiningClass(ch)]
+    end
     return !@@quickChecks[form][ch] && UnicodeDatabase.getCombiningClass(ch) == 0
   end
   def self.decomposeChar(ch,form)

@@ -38,7 +38,7 @@ Returns whether this string is normalized.
 
 <b>Return Value:</b>
 
- `true`  if this string is normalized; otherwise,  `false` .
+ `true`  if this string is normalized; otherwise,  `false` . Returns  `false`  if the string contains an unpaired surrogate code point.
 
 ### Normalize
 
