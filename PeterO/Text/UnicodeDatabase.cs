@@ -9,34 +9,27 @@ using System;
 
 namespace PeterO.Text {
   internal static class UnicodeDatabase {
-    private static readonly Object ValueClassesSyncRoot = new Object();
-    private static readonly Object ValueIdnaCatSyncRoot = new Object();
-    private static readonly Object ValuePairsSyncRoot = new Object();
-    private static readonly Object ValueQcsSyncRoot = new Object();
-    private static readonly Object ValueCmSyncRoot = new Object();
-    private static ByteData classes;
+    private static volatile object syncRoot = new Object();
 
-    private static ByteData combmark;
+    private static volatile ByteData classes;
 
-    private static int[] decomps;
+    private static volatile ByteData combmark;
 
-    private static ByteData idnaCat;
-    private static int[] pairs;
-
-    private static int pairsLength;
-
-    private static ByteData qcsnfc;
-    private static ByteData qcsnfd;
-    private static ByteData qcsnfkc;
-    private static ByteData qcsnfkd;
+    private static volatile ByteData idnaCat;
+    private static volatile ByteData qcsnfc;
+    private static volatile ByteData qcsnfd;
+    private static volatile ByteData qcsnfkc;
+    private static volatile ByteData qcsnfkd;
 
     public static int GetCombiningClass(int cp) {
       if (cp < 0x300 || cp >= 0xe0000) {
  return 0;
 }
-      lock (ValueClassesSyncRoot) {
-  classes = classes ?? ByteData.Decompress(NormalizationData.CombiningClasses);
-      }
+  if (classes == null) {
+lock (syncRoot) {
+classes = classes ?? (ByteData.Decompress(NormalizationData.CombiningClasses));
+}
+}
       return ((int)classes.GetByte(cp)) & 0xff;
     }
 
@@ -47,9 +40,9 @@ namespace PeterO.Text {
       if (first < 0x80 && second < 0x80) {
         return -1;
       }
-      EnsurePairs();
+      int[] pairs = NormalizationData.ComposedPairs;
       var left = 0;
-      int right = pairsLength - 1;
+      int right = (pairs.Length / 3) - 1;
       while (left <= right) {
         int index = (left + right) >> 1;
         int realIndex = index * 3;
@@ -81,7 +74,7 @@ namespace PeterO.Text {
         buffer[offset++] = cp;
         return offset;
       }
-      decomps = NormalizationData.DecompMappings;
+      int[] decomps = NormalizationData.DecompMappings;
       var left = 0;
       int right = (decomps.Length >> 1) - 1;
       while (left <= right) {
@@ -132,17 +125,21 @@ namespace PeterO.Text {
     }
 
     public static int GetIdnaCategory(int cp) {
-      lock (ValueIdnaCatSyncRoot) {
-        idnaCat = idnaCat ?? ByteData.Decompress(IdnaData.IdnaCategories);
-      }
+        if (idnaCat == null) {
+lock (syncRoot) {
+idnaCat = idnaCat ?? (ByteData.Decompress(IdnaData.IdnaCategories));
+}
+}
       return ((int)idnaCat.GetByte(cp)) & 0xff;
     }
 
     public static bool IsCombiningMark(int cp) {
-      lock (ValueCmSyncRoot) {
-        combmark = combmark ?? ByteData.Decompress(IdnaData.CombiningMarks);
+        if (combmark == null) {
+lock (syncRoot) {
+combmark = combmark ?? (ByteData.Decompress(IdnaData.CombiningMarks));
+}
+}
         return combmark.GetBoolean(cp);
-      }
     }
 
     public static bool IsQuickCheckStarter(int cp, Normalization form) {
@@ -169,30 +166,39 @@ namespace PeterO.Text {
           NormalizationData.QCSNFKDMax)) {
         return true;
       }
-      lock (ValueQcsSyncRoot) {
         if (form == Normalization.NFC) {
-          bd = qcsnfc = qcsnfc ?? ByteData.Decompress(NormalizationData.QCSNFC);
+          if (qcsnfc == null) {
+lock (syncRoot) {
+qcsnfc = qcsnfc ?? (ByteData.Decompress(NormalizationData.QCSNFC));
+}
+}
+bd = qcsnfc;
         }
         if (form == Normalization.NFD) {
-          bd = qcsnfd = qcsnfd ?? ByteData.Decompress(NormalizationData.QCSNFD);
+          if (qcsnfd == null) {
+lock (syncRoot) {
+qcsnfd = qcsnfd ?? (ByteData.Decompress(NormalizationData.QCSNFD));
+}
+}
+bd = qcsnfd;
         }
         if (form == Normalization.NFKC) {
-      bd = qcsnfkc = qcsnfkc ?? ByteData.Decompress(NormalizationData.QCSNFKC);
+      if (qcsnfkc == null) {
+lock (syncRoot) {
+qcsnfkc = qcsnfkc ?? (ByteData.Decompress(NormalizationData.QCSNFKC));
+}
+}
+bd = qcsnfkc;
         }
         if (form == Normalization.NFKD) {
-      bd = qcsnfkd = qcsnfkd ?? ByteData.Decompress(NormalizationData.QCSNFKD);
+      if (qcsnfkd == null) {
+lock (syncRoot) {
+qcsnfkd = qcsnfkd ?? (ByteData.Decompress(NormalizationData.QCSNFKD));
+}
+}
+bd = qcsnfkd;
         }
-      }
       return bd != null && bd.GetBoolean(cp);
-    }
-
-    private static void EnsurePairs() {
-      lock (ValuePairsSyncRoot) {
-        if (pairs == null) {
-          pairs = NormalizationData.ComposedPairs;
-          pairsLength = pairs.Length / 3;
-        }
-      }
     }
   }
 }

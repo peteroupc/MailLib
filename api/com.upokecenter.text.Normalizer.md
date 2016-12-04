@@ -85,6 +85,8 @@ Deprecated.&nbsp;
 **Returns:**
 
 * <code>true</code> if this string is normalized; otherwise, <code>false</code>.
+ Returns <code>false</code> if the string contains an unpaired surrogate
+ code point.
 
 ### ReadChar
     public int ReadChar()

@@ -131,8 +131,11 @@ public final void setSubType(String value) {
     /**
      * Removes a parameter from this builder object. Does nothing if the
      * parameter's name doesn't exist.
-     * @param name Name of the parameter to remove. The name is compared
-     * case-insensitively.
+     * @param name Name of the parameter to remove. The name is compared using a
+     * basic case-insensitive comparison. (Two strings are equal in such a
+     * comparison, if they match after converting the basic upper-case
+     * letters A to Z (U + 0041 to U + 005A) in both strings to lower
+     * case.).
      * @return This instance.
      * @throws java.lang.NullPointerException The parameter {@code name} is null.
      */
@@ -147,7 +150,10 @@ public final void setSubType(String value) {
     /**
      * Sets a parameter's name and value for this media type.
      * @param name Name of the parameter to set, such as "charset". The name is
-     * compared case-insensitively.
+     * compared using a basic case-insensitive comparison. (Two strings are
+     * equal in such a comparison, if they match after converting the basic
+     * upper-case letters A to Z (U + 0041 to U + 005A) in both strings to
+     * lower case.).
      * @param value A text string giving the parameter's value.
      * @return This instance.
      * @throws java.lang.NullPointerException The parameter {@code value} or {@code

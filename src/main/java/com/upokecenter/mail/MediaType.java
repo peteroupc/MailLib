@@ -29,7 +29,7 @@ import com.upokecenter.text.*;
      */
   public final class MediaType {
     private static final String AttrNameSpecials = "()<>@,;:\\\"/[]?='%*";
-    private String topLevelType;
+    private final String topLevelType;
 
     private static final ICharacterEncoding USAsciiEncoding =
       Encodings.GetEncoding("us-ascii", true);
@@ -80,7 +80,7 @@ import com.upokecenter.text.*;
       return valueHashCode;
     }
 
-    private String subType;
+    private final String subType;
 
     /**
      * Gets this media type's subtype.
@@ -116,12 +116,14 @@ import com.upokecenter.text.*;
       this.parameters = new HashMap<String, String>(parameters);
     }
 
-    private HashMap<String, String> parameters;
+    private final HashMap<String, String> parameters;
 
     /**
-     * Gets a sorted list of the parameters contained in this media type object.
-     * @return A list of the parameters contained in this media type object, sorted
-     * by name.
+     * Gets a list of the parameters contained in this media type object.
+     * @return A list of the parameters contained in this media type object. NOTE:
+     * Previous versions erroneously stated that the list will be sorted by
+     * name. In fact, the names will not be guaranteed to appear in any
+     * particular order; this is at least the case in version 0.10.0.
      */
     public final Map<String, String> getParameters() {
         return java.util.Collections.unmodifiableMap(this.parameters);
@@ -835,8 +837,11 @@ return SkipQuotedString(
     /**
      * Gets the value of a parameter in this media type, such as "charset" or
      * "format".
-     * @param name Name of the parameter to get. The name is compared
-     * case-insensitively.
+     * @param name Name of the parameter to get. The name is compared using a basic
+     * case-insensitive comparison. (Two strings are equal in such a
+     * comparison, if they match after converting the basic upper-case
+     * letters A to Z (U + 0041 to U + 005A) in both strings to lower
+     * case.).
      * @return The value of the parameter as a string, or null if the parameter
      * doesn't exist.
      * @throws java.lang.NullPointerException The parameter {@code name} is null.
@@ -1125,7 +1130,7 @@ return SkipQuotedString(
       }
     }
 
-    private boolean ParseMediaType(String str) {
+    private static MediaType ParseMediaType(String str) {
       boolean HttpRules = false;
       int index = 0;
       if (str == null) {
@@ -1135,30 +1140,37 @@ return SkipQuotedString(
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       int i = SkipMimeTypeSubtype(str, index, endIndex, null);
       if (i == index || i >= endIndex || str.charAt(i) != '/') {
-        return false;
+        return null;
       }
-      this.topLevelType =
+      HashMap<String, String> parameters = new HashMap<String, String>();
+      String topLevelType =
         DataUtilities.ToLowerCaseAscii(str.substring(index, (index)+(i - index)));
       ++i;
       int i2 = SkipMimeTypeSubtype(str, i, endIndex, null);
       if (i == i2) {
-        return false;
+        return null;
       }
-      this.subType = DataUtilities.ToLowerCaseAscii(str.substring(i, (i)+(i2 - i)));
+      String subType = DataUtilities.ToLowerCaseAscii(str.substring(i, (i)+(i2 - i)));
       if (i2 < endIndex) {
         // if not at end
         int i3 = HeaderParser.ParseCFWS(str, i2, endIndex, null);
         if (i3 == endIndex) {
           // at end
-          return true;
+          return new MediaType(topLevelType, subType, parameters);
         }
         if (i3 < endIndex && str.charAt(i3) != ';') {
           // not followed by ";", so not a media type
-          return false;
+          return null;
         }
       }
       index = i2;
-      return ParseParameters(str, index, endIndex, HttpRules, this.parameters);
+      return ParseParameters(
+  str,
+  index,
+  endIndex,
+  HttpRules,
+  parameters) ?
+        new MediaType(topLevelType, subType, parameters) : null;
     }
 
     /**
@@ -1231,11 +1243,7 @@ return SkipQuotedString(
       if (str == null) {
         throw new NullPointerException("str");
       }
-      MediaType mt = new MediaType();
-      mt.parameters = new HashMap<String, String>();
-      if (!mt.ParseMediaType(str)) {
-return defaultValue;
-      }
-      return mt;
+      MediaType mt = ParseMediaType(str);
+      return (mt == null) ? (defaultValue) : mt;
     }
   }

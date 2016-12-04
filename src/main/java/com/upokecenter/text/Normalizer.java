@@ -49,6 +49,8 @@ at: http://peteroupc.github.io/
      * @param str The string to check.
      * @param form A Normalization object.
      * @return {@code true} if this string is normalized; otherwise, {@code false}.
+     * Returns {@code false} if the string contains an unpaired surrogate
+     * code point.
      */
     public static boolean IsNormalized(String str, Normalization form) {
       return NormalizerInput.IsNormalized(str, form);

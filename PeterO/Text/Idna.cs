@@ -29,12 +29,10 @@ namespace PeterO.Text {
     private const int BidiClassBN = 9;
     private const int BidiClassON = 10;
 
-    private static readonly object ValueBidiClassesSync = new Object();
-    private static readonly object ValueJoiningTypesSync = new Object();
-    private static readonly object ValueScriptsSync = new Object();
-    private static ByteData bidiClasses;
-    private static ByteData joiningTypes;
-    private static ByteData scripts;
+    private static volatile object syncRoot = new Object();
+    private static volatile ByteData bidiClasses;
+    private static volatile ByteData joiningTypes;
+    private static volatile ByteData scripts;
 
     internal static int CodePointBefore(string str, int index) {
       if (str == null) {
@@ -76,28 +74,34 @@ namespace PeterO.Text {
 
     internal static int GetBidiClass(int ch) {
       ByteData table = null;
-      lock (ValueBidiClassesSync) {
-        bidiClasses = bidiClasses ?? ByteData.Decompress(IdnaData.BidiClasses);
+        if (bidiClasses == null) {
+lock (syncRoot) {
+bidiClasses = bidiClasses ?? (ByteData.Decompress(IdnaData.BidiClasses));
+}
+}
         table = bidiClasses;
-      }
       return table.GetByte(ch);
     }
 
     private static int GetJoiningType(int ch) {
       ByteData table = null;
-      lock (ValueJoiningTypesSync) {
-     joiningTypes = joiningTypes ?? ByteData.Decompress(IdnaData.JoiningTypes);
+     if (joiningTypes == null) {
+lock (syncRoot) {
+joiningTypes = joiningTypes ?? (ByteData.Decompress(IdnaData.JoiningTypes));
+}
+}
         table = joiningTypes;
-      }
       return table.GetByte(ch);
     }
 
     private static int GetScript(int ch) {
       ByteData table = null;
-      lock (ValueScriptsSync) {
-        scripts = scripts ?? ByteData.Decompress(IdnaData.IdnaRelevantScripts);
+        if (scripts == null) {
+lock (syncRoot) {
+scripts = scripts ?? (ByteData.Decompress(IdnaData.IdnaRelevantScripts));
+}
+}
         table = scripts;
-      }
       return table.GetByte(ch);
     }
 

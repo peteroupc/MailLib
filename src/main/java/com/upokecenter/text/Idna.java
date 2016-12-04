@@ -39,12 +39,10 @@ private Idna() {
     private static final int BidiClassBN = 9;
     private static final int BidiClassON = 10;
 
-    private static final Object ValueBidiClassesSync = new Object();
-    private static final Object ValueJoiningTypesSync = new Object();
-    private static final Object ValueScriptsSync = new Object();
-    private static ByteData bidiClasses;
-    private static ByteData joiningTypes;
-    private static ByteData scripts;
+    private static volatile Object syncRoot = new Object();
+    private static volatile ByteData bidiClasses;
+    private static volatile ByteData joiningTypes;
+    private static volatile ByteData scripts;
 
     static int CodePointBefore(String str, int index) {
       if (str == null) {
@@ -86,28 +84,34 @@ private Idna() {
 
     static int GetBidiClass(int ch) {
       ByteData table = null;
-      synchronized (ValueBidiClassesSync) {
-        bidiClasses = (bidiClasses == null) ? (ByteData.Decompress(IdnaData.BidiClasses)) : bidiClasses;
+        if (bidiClasses == null) {
+synchronized (syncRoot) {
+bidiClasses = (bidiClasses == null) ? ((ByteData.Decompress(IdnaData.BidiClasses))) : bidiClasses;
+}
+}
         table = bidiClasses;
-      }
       return table.GetByte(ch);
     }
 
     private static int GetJoiningType(int ch) {
       ByteData table = null;
-      synchronized (ValueJoiningTypesSync) {
-     joiningTypes = (joiningTypes == null) ? (ByteData.Decompress(IdnaData.JoiningTypes)) : joiningTypes;
+     if (joiningTypes == null) {
+synchronized (syncRoot) {
+joiningTypes = (joiningTypes == null) ? ((ByteData.Decompress(IdnaData.JoiningTypes))) : joiningTypes;
+}
+}
         table = joiningTypes;
-      }
       return table.GetByte(ch);
     }
 
     private static int GetScript(int ch) {
       ByteData table = null;
-      synchronized (ValueScriptsSync) {
-        scripts = (scripts == null) ? (ByteData.Decompress(IdnaData.IdnaRelevantScripts)) : scripts;
+        if (scripts == null) {
+synchronized (syncRoot) {
+scripts = (scripts == null) ? ((ByteData.Decompress(IdnaData.IdnaRelevantScripts))) : scripts;
+}
+}
         table = scripts;
-      }
       return table.GetByte(ch);
     }
 

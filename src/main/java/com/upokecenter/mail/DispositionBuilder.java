@@ -124,8 +124,10 @@ if (type.length() == 0) {
     /**
      * Removes a parameter from this content disposition. Does nothing if the
      * parameter's name doesn't exist.
-     * @param name The parameter to remove. The name is compared case
-     * insensitively.
+     * @param name The parameter to remove. The name is compared using a basic
+     * case-insensitive comparison. (Two strings are equal in such a
+     * comparison, if they match after converting the basic upper-case
+     * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
      * @return This instance.
      * @throws java.lang.NullPointerException The parameter {@code name} is null.
      */
@@ -140,7 +142,10 @@ if (type.length() == 0) {
     /**
      * Sets a parameter of this content disposition.
      * @param name Name of the parameter to set. If this name already exists
-     * (compared case-insensitively), it will be overwritten.
+     * (compared using a basic case-insensitive comparison), it will be
+     * overwritten. . (Two strings are equal in a basic case-insensitive
+     * comparison, if they match after converting the basic upper-case
+     * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.)
      * @param value Value of the parameter to set.
      * @return This instance.
      * @throws java.lang.NullPointerException Either {@code value} or {@code name} is

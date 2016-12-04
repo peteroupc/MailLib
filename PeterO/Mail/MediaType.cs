@@ -18,7 +18,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
   public sealed class MediaType {
     private const string AttrNameSpecials = "()<>@,;:\\\"/[]?='%*";
-    private string topLevelType;
+    private readonly string topLevelType;
 
     private static readonly ICharacterEncoding USAsciiEncoding =
       Encodings.GetEncoding("us-ascii", true);
@@ -63,7 +63,7 @@ namespace PeterO.Mail {
     }
     #endregion
 
-    private string subType;
+    private readonly string subType;
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.MediaType.SubType"]/*'/>
@@ -98,7 +98,7 @@ namespace PeterO.Mail {
       this.parameters = new Dictionary<string, string>(parameters);
     }
 
-    private Dictionary<string, string> parameters;
+    private readonly Dictionary<string, string> parameters;
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.MediaType.Parameters"]/*'/>
@@ -1089,7 +1089,7 @@ return SkipQuotedString(
       }
     }
 
-    private bool ParseMediaType(string str) {
+    private static MediaType ParseMediaType(string str) {
       const bool HttpRules = false;
       var index = 0;
       if (str == null) {
@@ -1099,30 +1099,37 @@ return SkipQuotedString(
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       int i = SkipMimeTypeSubtype(str, index, endIndex, null);
       if (i == index || i >= endIndex || str[i] != '/') {
-        return false;
+        return null;
       }
-      this.topLevelType =
+      var parameters = new Dictionary<string, string>();
+      string topLevelType =
         DataUtilities.ToLowerCaseAscii(str.Substring(index, i - index));
       ++i;
       int i2 = SkipMimeTypeSubtype(str, i, endIndex, null);
       if (i == i2) {
-        return false;
+        return null;
       }
-      this.subType = DataUtilities.ToLowerCaseAscii(str.Substring(i, i2 - i));
+      string subType = DataUtilities.ToLowerCaseAscii(str.Substring(i, i2 - i));
       if (i2 < endIndex) {
         // if not at end
         int i3 = HeaderParser.ParseCFWS(str, i2, endIndex, null);
         if (i3 == endIndex) {
           // at end
-          return true;
+          return new MediaType(topLevelType, subType, parameters);
         }
         if (i3 < endIndex && str[i3] != ';') {
           // not followed by ";", so not a media type
-          return false;
+          return null;
         }
       }
       index = i2;
-      return ParseParameters(str, index, endIndex, HttpRules, this.parameters);
+      return ParseParameters(
+  str,
+  index,
+  endIndex,
+  HttpRules,
+  parameters) ?
+        new MediaType(topLevelType, subType, parameters) : null;
     }
 
     #if CODE_ANALYSIS
@@ -1192,15 +1199,8 @@ return SkipQuotedString(
       if (str == null) {
         throw new ArgumentNullException("str");
       }
-      var mt = new MediaType();
-      mt.parameters = new Dictionary<string, string>();
-      if (!mt.ParseMediaType(str)) {
-        #if DEBUG
-        // Console.WriteLine("Unparsable: " + str);
-        #endif
-return defaultValue;
-      }
-      return mt;
+      MediaType mt = ParseMediaType(str);
+      return mt ?? defaultValue;
     }
   }
 }

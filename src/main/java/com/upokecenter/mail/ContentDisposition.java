@@ -19,7 +19,7 @@ import com.upokecenter.text.*;
      * DispositionBuilder class.
      */
   public class ContentDisposition {
-    private String dispositionType;
+    private final String dispositionType;
 
     /**
      * Gets a string containing this object's disposition type, such as "inline" or
@@ -86,12 +86,15 @@ import com.upokecenter.text.*;
       this.parameters = new HashMap<String, String>(parameters);
     }
 
-    private HashMap<String, String> parameters;
+    private final Map<String, String> parameters;
 
     /**
      * Gets a list of parameter names associated with this object and their values.
      * @return A read-only list of parameter names associated with this object and
-     * their values. The names will be sorted.
+     * their values.getNOTE(): Previous versions erroneously stated that the list
+     * will be sorted by name. In fact, the names will not be guaranteed to
+     * appear in any particular order; this is at least the case in version
+     * 0.10.0.
      */
     public final Map<String, String> getParameters() {
         return java.util.Collections.unmodifiableMap(this.parameters);
@@ -361,8 +364,11 @@ strLower.indexOf(
 
     /**
      * Gets a parameter from this disposition object.
-     * @param name The name of the parameter to get. The name will be matched
-     * case-insensitively. Can't be null.
+     * @param name The name of the parameter to get. The name will be matched using
+     * a basic case-insensitive comparison. (Two strings are equal in such a
+     * comparison, if they match after converting the basic upper-case
+     * letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+     * Can't be null.
      * @return The value of the parameter, or null if the parameter does not exist.
      * @throws java.lang.NullPointerException The parameter {@code name} is null.
      * @throws IllegalArgumentException The parameter {@code name} is empty.
@@ -378,30 +384,33 @@ strLower.indexOf(
       return this.parameters.containsKey(name) ? this.parameters.get(name) : null;
     }
 
-    private boolean ParseDisposition(String str) {
+    private static ContentDisposition ParseDisposition(String str) {
       boolean HttpRules = false;
       int index = 0;
       if (str == null) {
         throw new NullPointerException("str");
       }
       int endIndex = str.length();
+      HashMap<String, String> parameters = new HashMap<String, String>();
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
       int i = MediaType.SkipMimeToken(str, index, endIndex, null, HttpRules);
       if (i == index) {
-        return false;
+        return null;
       }
-      this.dispositionType =
+      String dispositionType =
         DataUtilities.ToLowerCaseAscii(str.substring(index, (index)+(i - index)));
       if (i < endIndex) {
         // if not at end
         int i3 = HeaderParser.ParseCFWS(str, i, endIndex, null);
         if (i3 == endIndex) {
           // at end
-          return true;
+          return new ContentDisposition(
+            dispositionType,
+            parameters);
         }
         if (i3 < endIndex && str.charAt(i3) != ';') {
           // not followed by ";", so not a content disposition
-          return false;
+          return null;
         }
       }
       index = i;
@@ -410,25 +419,28 @@ strLower.indexOf(
         index,
         endIndex,
         HttpRules,
-        this.parameters);
+        parameters) ? new ContentDisposition(
+            dispositionType,
+            parameters) : null;
     }
 
     private static ContentDisposition Build(String name) {
-      ContentDisposition dispo = new ContentDisposition();
-      dispo.parameters = new HashMap<String, String>();
-      dispo.dispositionType = name;
-      return dispo;
+      return new ContentDisposition(
+        name,
+        new HashMap<String, String>());
     }
 
     /**
      * The content disposition value "attachment".
      */
-    public static final ContentDisposition Attachment = Build("attachment");
+    public static final ContentDisposition Attachment =
+      Build("attachment");
 
     /**
      * The content disposition value "inline".
      */
-    public static final ContentDisposition Inline = Build("inline");
+    public static final ContentDisposition Inline =
+      Build("inline");
 
     private ContentDisposition() {
     }
@@ -466,8 +478,7 @@ strLower.indexOf(
       if (dispositionValue == null) {
         throw new NullPointerException("dispositionValue");
       }
-      ContentDisposition dispo = new ContentDisposition();
-      dispo.parameters = new HashMap<String, String>();
-      return (!dispo.ParseDisposition(dispositionValue)) ? defaultValue : dispo;
+      ContentDisposition dispo = ParseDisposition(dispositionValue);
+      return (dispo == null) ? (defaultValue) : dispo;
     }
   }
