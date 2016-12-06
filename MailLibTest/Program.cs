@@ -8,10 +8,11 @@ at: http://peteroupc.github.io/
  using System;
 using System.IO;
 using PeterO.Mail;
+
 namespace MailLibTest {
-  class Program {
+  internal class Program {
     public static void Main() {
-//      new ContentDispositionTest().TestMakeFilename();
+// new ContentDispositionTest().TestMakeFilename();
       new NormalizationTest().NormTest();
     }
   }

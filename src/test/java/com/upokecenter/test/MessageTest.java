@@ -21,11 +21,19 @@ import java.io.*;
     }
 
     public static String MessageGenerate(Message msg) {
-      if ((msg) == null) {
+      if (msg == null) {
         Assert.fail();
       }
       String ret = msg.Generate();
-Assert.assertEquals(ret,2,EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""));
+{
+Object objectTemp = 2;
+Object objectTemp2 = EncodingTest.IsGoodAsciiMessageFormat(
+  ret,
+  false,
+  "");
+String messageTemp = ret;
+Assert.assertEquals(messageTemp, objectTemp, objectTemp2);
+}
       return ret;
     }
 
@@ -53,24 +61,30 @@ Assert.assertEquals(ret,2,EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""))
       }
     }
 
-    static Message MessageFromString(String str) {
-      Message msgobj = new Message(DataUtilities.GetUtf8Bytes(str,
-                    true));
+    static Message MessageFromString(String valueStr) {
+      Message msgobj = new Message(
+  DataUtilities.GetUtf8Bytes(
+  valueStr,
+  true));
       MessageGenerate(msgobj);
       return msgobj;
     }
 
-    static void MessageConstructOnly(String str) {
-      new Message(DataUtilities.GetUtf8Bytes(str,
-                    true));
+    static void MessageConstructOnly(String valueStr) {
+      new Message(
+  DataUtilities.GetUtf8Bytes(
+  valueStr,
+  true));
     }
 
-    private static void TestMediaTypeRoundTrip(String str) {
-      String mtstring = new MediaTypeBuilder("x", "y").SetParameter("z",
-                    str).toString();
+    private static void TestMediaTypeRoundTrip(String valueStr) {
+      String mtstring = new MediaTypeBuilder(
+  "x",
+  "y").SetParameter("z",
+                    valueStr).toString();
       if (mtstring.contains("\r\n\r\n"))Assert.fail();
       if (mtstring.contains("\r\n \r\n"))Assert.fail();
-      Assert.assertEquals(str, MediaType.Parse(mtstring).GetParameter("z"));
+      Assert.assertEquals(valueStr, MediaType.Parse(mtstring).GetParameter("z"));
   Message mtmessage = MessageFromString("MIME-Version: 1.0\r\nContent-Type: " +
                     mtstring + "\r\n\r\n");
       MessageGenerate(mtmessage);
@@ -99,56 +113,69 @@ Assert.assertEquals(ret,2,EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""))
 
     @Test
     public void TestContentTypeDefaults() {
-      String start = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
+      String ValueStart = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
       String msg;
-      msg = start + "\r\n\r\n";
-      Assert.assertEquals(MediaType.TextPlainAscii,
-                    MessageFromString(msg).getContentType());
-      msg = start + "Content-Type: text/html\r\n\r\n";
-      Assert.assertEquals(MediaType.Parse("text/html"),
-                    MessageFromString(msg).getContentType());
-      msg = start + "Content-Type: text/\r\n\r\n";
-      Assert.assertEquals(MediaType.TextPlainAscii,
-                    MessageFromString(msg).getContentType());
-      msg = start + "Content-Type: /html\r\n\r\n";
-      Assert.assertEquals(MediaType.TextPlainAscii,
-                    MessageFromString(msg).getContentType());
+      msg = ValueStart + "\r\n\r\n";
+      Assert.assertEquals(
+  MediaType.TextPlainAscii,
+  MessageFromString(msg).getContentType());
+      msg = ValueStart + "Content-Type: text/html\r\n\r\n";
+      Assert.assertEquals(
+  MediaType.Parse("text/html"),
+  MessageFromString(msg).getContentType());
+      msg = ValueStart + "Content-Type: text/\r\n\r\n";
+      Assert.assertEquals(
+  MediaType.TextPlainAscii,
+  MessageFromString(msg).getContentType());
+      msg = ValueStart + "Content-Type: /html\r\n\r\n";
+      Assert.assertEquals(
+  MediaType.TextPlainAscii,
+  MessageFromString(msg).getContentType());
       // All header fields are syntactically valid
-      msg = start +
+      msg = ValueStart +
 
-  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\n\r\n"
-        ;
-      Assert.assertEquals(MediaType.ApplicationOctetStream,
-                    MessageFromString(msg).getContentType());
-      msg = start +
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\n\r\n";
+
+      Assert.assertEquals(
+  MediaType.ApplicationOctetStream,
+  MessageFromString(msg).getContentType());
+      msg = ValueStart +
 
   "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: text/html\r\n\r\n"
-        ;
-      Assert.assertEquals(MediaType.ApplicationOctetStream,
-                    MessageFromString(msg).getContentType());
+  ;
+
+      Assert.assertEquals(
+  MediaType.ApplicationOctetStream,
+  MessageFromString(msg).getContentType());
       // First header field is syntactically invalid
-      msg = start +
+      msg = ValueStart +
   "Content-Type: /plain;charset=utf-8\r\nContent-Type: image/jpeg\r\n\r\n";
-      Assert.assertEquals(MediaType.TextPlainAscii,
-                    MessageFromString(msg).getContentType());
+      Assert.assertEquals(
+  MediaType.TextPlainAscii,
+  MessageFromString(msg).getContentType());
       // Second header field is syntactically invalid
-      msg = start +
+      msg = ValueStart +
   "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image\r\n\r\n";
-      Assert.assertEquals(MediaType.TextPlainAscii,
-                    MessageFromString(msg).getContentType());
-      msg = start +
+      Assert.assertEquals(
+  MediaType.TextPlainAscii,
+  MessageFromString(msg).getContentType());
+      msg = ValueStart +
 
   "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image\r\nContent-Type: text/html\r\n\r\n"
-        ;
-      Assert.assertEquals(MediaType.TextPlainAscii,
-                    MessageFromString(msg).getContentType());
+  ;
+
+      Assert.assertEquals(
+  MediaType.TextPlainAscii,
+  MessageFromString(msg).getContentType());
       // Third header field is syntactically invalid
-      msg = start +
+      msg = ValueStart +
 
   "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: audio\r\n\r\n"
-        ;
-      Assert.assertEquals(MediaType.TextPlainAscii,
-                    MessageFromString(msg).getContentType());
+  ;
+
+      Assert.assertEquals(
+  MediaType.TextPlainAscii,
+  MessageFromString(msg).getContentType());
     }
 
     @Test
@@ -178,13 +205,15 @@ Assert.assertEquals(ret,2,EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""))
       }
     }
 
-    public static void TestRfc2231Extension(String mtype, String param,
-                    String expected) {
+    public static void TestRfc2231Extension(
+  String mtype,
+  String param,
+  String expected) {
       MediaType mt = MediaType.Parse(mtype);
       Assert.assertEquals(expected, mt.GetParameter(param));
-      String str = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
+      String valueStr = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: " + mtype + "\r\n\r\nTest";
-      Message msg = MessageFromString(str);
+      Message msg = MessageFromString(valueStr);
       mt = msg.getContentType();
       Assert.assertEquals(expected, mt.GetParameter(param));
     }
@@ -192,36 +221,60 @@ Assert.assertEquals(ret,2,EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""))
     @Test
     public void TestRfc2231Extensions() {
       TestRfc2231Extension("text/plain; charset=\"utf-8\"", "charset", "utf-8");
-      TestRfc2231Extension("text/plain; charset*=us-ascii'en'utf-8",
-                    "charset", "utf-8");
-      TestRfc2231Extension("text/plain; charset*=us-ascii''utf-8",
-                    "charset", "utf-8");
-      TestRfc2231Extension("text/plain; charset*='en'utf-8", "charset",
-                    "utf-8");
-      TestRfc2231Extension("text/plain; charset*='i-unknown'utf-8", "charset",
-                    "us-ascii");
-      TestRfc2231Extension("text/plain; charset*=us-ascii'i-unknown'utf-8",
-                    "charset",
-                    "us-ascii");
+      TestRfc2231Extension(
+  "text/plain; charset*=us-ascii'en'utf-8",
+  "charset",
+  "utf-8");
+      TestRfc2231Extension(
+  "text/plain; charset*=us-ascii''utf-8",
+  "charset",
+  "utf-8");
+      TestRfc2231Extension(
+  "text/plain; charset*='en'utf-8",
+  "charset",
+  "utf-8");
+      TestRfc2231Extension(
+  "text/plain; charset*='i-unknown'utf-8",
+  "charset",
+  "us-ascii");
+      TestRfc2231Extension(
+  "text/plain; charset*=us-ascii'i-unknown'utf-8",
+  "charset",
+  "us-ascii");
       TestRfc2231Extension("text/plain; charset*=''utf-8", "charset", "utf-8");
-      TestRfc2231Extension("text/plain; charset*0=a;charset*1=b", "charset",
-                    "ab");
-      TestRfc2231Extension("text/plain; charset*=utf-8''a%20b", "charset",
-                    "a b");
-      TestRfc2231Extension("text/plain; charset*=iso-8859-1''a%a0b",
-                    "charset", "a\u00a0b");
-      TestRfc2231Extension("text/plain; charset*=utf-8''a%c2%a0b",
-                    "charset", "a\u00a0b");
-      TestRfc2231Extension("text/plain; charset*=iso-8859-1''a%a0b",
-                    "charset", "a\u00a0b");
-      TestRfc2231Extension("text/plain; charset*=utf-8''a%c2%a0b",
-                    "charset", "a\u00a0b");
-      TestRfc2231Extension("text/plain; charset*0=\"a\";charset*1=b",
-                    "charset", "ab");
+      TestRfc2231Extension(
+  "text/plain; charset*0=a;charset*1=b",
+  "charset",
+  "ab");
+      TestRfc2231Extension(
+  "text/plain; charset*=utf-8''a%20b",
+  "charset",
+  "a b");
+      TestRfc2231Extension(
+  "text/plain; charset*=iso-8859-1''a%a0b",
+  "charset",
+  "a\u00a0b");
+      TestRfc2231Extension(
+  "text/plain; charset*=utf-8''a%c2%a0b",
+  "charset",
+  "a\u00a0b");
+      TestRfc2231Extension(
+  "text/plain; charset*=iso-8859-1''a%a0b",
+  "charset",
+  "a\u00a0b");
+      TestRfc2231Extension(
+  "text/plain; charset*=utf-8''a%c2%a0b",
+  "charset",
+  "a\u00a0b");
+      TestRfc2231Extension(
+  "text/plain; charset*0=\"a\";charset*1=b",
+  "charset",
+  "ab");
 
-  TestRfc2231Extension("text/plain; charset*0*=utf-8''a%20b;charset*1*=c%20d"
-                ,
-                    "charset", "a bc d");
+  TestRfc2231Extension(
+  "text/plain; charset*0*=utf-8''a%20b;charset*1*=c%20d",
+  "charset",
+  "a bc d");
       TestRfc2231Extension(
         "text/plain; charset*0=ab;charset*1*=iso-8859-1-en-xyz",
         "charset",
@@ -231,18 +284,17 @@ Assert.assertEquals(ret,2,EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""))
         "charset",
         "a biso-8859-1-en-xyz");
 
-      if
-     ((MediaType.Parse("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz"
-                    ,
-                    null)) != null) {
+      if ((
+  MediaType.Parse(
+  "text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
+  null)) != null) {
         Assert.fail();
       }
 
-      if
-
-  ((MediaType.Parse("text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz"
-                    ,
-                    null)) != null) {
+      if ((
+  MediaType.Parse(
+  "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
+  null)) != null) {
         Assert.fail();
       }
       TestRfc2231Extension(
@@ -268,7 +320,9 @@ Assert.assertEquals(ret,2,EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""))
     }
 
     public static void SingleTestMediaTypeEncoding(String value) {
-      MediaType mt = new MediaTypeBuilder("x", "y").SetParameter("z",
+      MediaType mt = new MediaTypeBuilder(
+  "x",
+  "y").SetParameter("z",
                     value).ToMediaType();
       String topLevel = mt.getTopLevelType();
       String sub = mt.getSubType();
@@ -284,14 +338,16 @@ Assert.assertEquals(ret,2,EncodingTest.IsGoodAsciiMessageFormat(ret, false, ""))
     public void TestNamedAddress() {
       {
 Object objectTemp = "\"Me \" <me@example.com>";
-Object objectTemp2 = new NamedAddress("Me ",
-                    "me@example.com").toString();
+Object objectTemp2 = new NamedAddress(
+  "Me ",
+  "me@example.com").toString();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = "\" Me\" <me@example.com>";
-Object objectTemp2 = new NamedAddress(" Me",
-                    "me@example.com").toString();
+Object objectTemp2 = new NamedAddress(
+  " Me",
+  "me@example.com").toString();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
 
@@ -422,8 +478,8 @@ Assert.assertEquals(objectTemp, objectTemp2);
         throw new IllegalStateException("", ex);
       }
       try {
-        String st = "Me <me@example.com>, Fred <fred@example.com>";
-        Assert.assertEquals(null, new NamedAddress(st));
+        String ValueSt = "Me <me@example.com>, Fred <fred@example.com>";
+        Assert.assertEquals(null, new NamedAddress(ValueSt));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
         new Object();
@@ -445,8 +501,9 @@ Assert.assertEquals(objectTemp, objectTemp2);
         "x@example.com",
         stringTemp);
       }
-      Assert.assertEquals("\"(lo cal)\"@example.com",
-                    new Address("\"(lo cal)\"@example.com").toString());
+      Assert.assertEquals(
+  "\"(lo cal)\"@example.com",
+  new Address("\"(lo cal)\"@example.com").toString());
       {
         String stringTemp = new Address("local@example.com").getLocalPart();
         Assert.assertEquals(
@@ -498,7 +555,8 @@ Assert.assertEquals(objectTemp, objectTemp2);
       {
         String stringTemp = MessageFromString(
           "From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-                    "x-comment", "comment").GetHeader(0).getKey();
+                    "x-comment",
+ "comment").GetHeader(0).getKey();
         Assert.assertEquals(
           "x-comment",
           stringTemp);
@@ -506,7 +564,8 @@ Assert.assertEquals(objectTemp, objectTemp2);
       {
         String stringTemp = MessageFromString(
           "From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-                    "x-comment", "comment").GetHeader(0).getValue();
+                    "x-comment",
+ "comment").GetHeader(0).getValue();
         Assert.assertEquals(
           "comment",
           stringTemp);
@@ -579,21 +638,22 @@ Assert.assertEquals(objectTemp, objectTemp2);
 
     @Test
     public void TestMessageTests() {
-      String multipart =
-        "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n"
-        ;
+      String ValueMultipart =
+  "MIME-Version: 1.0\r\nContent-Type: ValueMultipart/mixed; boundary=b\r\n";
+
       String msg;
-      msg = multipart +
+      msg = ValueMultipart +
 
   "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\nContent-Description: description\r\n\r\n\r\n--b--"
-        ;
+  ;
+
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      msg = multipart +
+      msg = ValueMultipart +
         "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\n\r\n\r\n\r\n--b--";
       try {
         MessageFromString(msg);
@@ -601,7 +661,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      msg = multipart +
+      msg = ValueMultipart +
         "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\n\r\n\r\n--b--";
       try {
         MessageFromString(msg);
@@ -612,7 +672,8 @@ Assert.assertEquals(objectTemp, objectTemp2);
       msg =
 
   "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: 8bit\r\n\r\n--b\r\n\r\n\r\n--b--"
-        ;
+  ;
+
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
@@ -622,27 +683,30 @@ Assert.assertEquals(objectTemp, objectTemp2);
       msg =
 
   "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nA"
-        ;
+  ;
+
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      msg = multipart +
+      msg = ValueMultipart +
 
   "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--"
-        ;
+  ;
+
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      msg = multipart +
+      msg = ValueMultipart +
 
   "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: 7bit\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--"
-        ;
+  ;
+
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
@@ -655,12 +719,12 @@ Assert.assertEquals(objectTemp, objectTemp2);
       // The following tests currently fail, since I
       // don't know the best way to handle these cases
       // without being too lenient
-      String multipart =
-        "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n"
-        ;
+      String ValueMultipart =
+  "MIME-Version: 1.0\r\nContent-Type: ValueMultipart/mixed; boundary=b\r\n";
+
       String msg;
       // Multipart message with base64
-      msg = multipart +
+      msg = ValueMultipart +
         "Content-Transfer-Encoding: base64\r\n\r\n--b\r\n\r\n\r\n--b--";
       try {
         MessageFromString(msg);
@@ -672,15 +736,16 @@ Assert.assertEquals(objectTemp, objectTemp2);
       msg =
 
   "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: base64\r\n--b\r\n\r\n\r\n--b--"
-        ;
+  ;
+
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      // Truncated top-level multipart message
-      msg = multipart +
+      // Truncated top-level ValueMultipart message
+      msg = ValueMultipart +
           "\r\n--b\r\nContent-Type: text/plain\r\n\r\nHello World";
       try {
         MessageFromString(msg);
@@ -688,8 +753,8 @@ Assert.assertEquals(objectTemp, objectTemp2);
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      // Truncated top-level multipart message
-      msg = multipart +
+      // Truncated top-level ValueMultipart message
+      msg = ValueMultipart +
         "\r\n--b\r\nContent-Type: text/html\r\n\r\n<b>Hello World</b>";
       try {
         MessageFromString(msg);
@@ -697,8 +762,8 @@ Assert.assertEquals(objectTemp, objectTemp2);
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      // Truncated top-level multipart message
-      msg = multipart + "\r\n--b\r\nContent-Type: text/html\r\n";
+      // Truncated top-level ValueMultipart message
+      msg = ValueMultipart + "\r\n--b\r\nContent-Type: text/html\r\n";
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
@@ -709,10 +774,11 @@ Assert.assertEquals(objectTemp, objectTemp2);
       // so a 7-bit encoding is assumed;
       // From header field contains non-ASCII characters, so
       // would be illegal in a 7-bit encoding
-      msg = multipart +
+      msg = ValueMultipart +
 
   "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\nX\r\n--b--"
-        ;
+  ;
+
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
@@ -721,10 +787,11 @@ Assert.assertEquals(objectTemp, objectTemp2);
       }
       // Message/rfc822 with content-transfer-encoding base64;
       // which is not allowed for this media type
-      msg = multipart +
+      msg = ValueMultipart +
 
   "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: base64\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nXX==\r\n--b--"
-        ;
+  ;
+
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
@@ -735,10 +802,11 @@ Assert.assertEquals(objectTemp, objectTemp2);
       // so a 7-bit encoding is assumed;
       // From header field contains non-ASCII characters, so
       // would be illegal in a 7-bit encoding
-      msg = multipart +
+      msg = ValueMultipart +
 
   "\r\n--b\r\nContent-Type: text/rfc822-headers\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\n--b--"
-        ;
+  ;
+
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
@@ -750,8 +818,8 @@ Assert.assertEquals(objectTemp, objectTemp2);
       // Body contains non-ASCII characters, so
       // would be illegal in a 7-bit encoding
       msg =
-  "Mime-Version: 1.0\r\nContent-Type: text/html; charset=\"\"\r\n\r\n\ufffd"
-        ;
+  "Mime-Version: 1.0\r\nContent-Type: text/html; charset=\"\"\r\n\r\n\ufffd";
+
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
@@ -764,7 +832,8 @@ Assert.assertEquals(objectTemp, objectTemp2);
       msg =
 
   "Mime-Version: 1.0\r\nContent-Type: text/html\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\ufffd"
-        ;
+  ;
+
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
@@ -788,7 +857,8 @@ Assert.assertEquals(objectTemp, objectTemp2);
       msg =
 
   "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\nA"
-        ;
+  ;
+
       try {
         MessageFromString(msg);
       } catch (Exception ex) {
@@ -801,7 +871,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
       if (message.getContentType().getTopLevelType().equals("message")) {
         return (!message.getContentType().getSubType().equals("global")) &&
           ((!message.getContentType().getSubType().equals("global-headers")) &&
-           ((message.getContentType().getSubType().equals("global-delivery-status")) ||
+           (message.getContentType().getSubType().equals("global-delivery-status") ||
             (message.getContentType().getSubType().equals(
               "global-disposition-notification"))));
       }
@@ -826,7 +896,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
       Assert.assertEquals(34, date[4]);
       Assert.assertEquals(56, date[5]);
       Assert.assertEquals(0, date[6]);
-      Assert.assertEquals(10*60 + 34, date[7]);
+      Assert.assertEquals(10 * 60 + 34, date[7]);
       msg.SetHeader("date", "Mon, 1 Jan 1900 23:59:60 -1034");
       date = msg.GetDate();
       Assert.assertEquals(1900, date[0]);
@@ -838,7 +908,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
       Assert.assertEquals(0, date[6]);
       Assert.assertEquals(-(10 * 60 + 34), date[7]);
       msg.SetHeader("date", "Sun, 1 Jan 2000 12:34:56 +1034");
-      if ((msg.GetDate()) != null) {
+      if (msg.GetDate() != null) {
  Assert.fail();
  }
       msg.SetHeader("date", "1 Jan 2000 12:34:56 +1034");
@@ -847,31 +917,31 @@ Assert.assertEquals(objectTemp, objectTemp2);
       Assert.assertEquals(1, date[1]);
       Assert.assertEquals(1, date[2]);
       msg.SetHeader("date", "32 Jan 2000 12:34:56 +1034");
-      if ((msg.GetDate()) != null) {
+      if (msg.GetDate() != null) {
  Assert.fail();
  }
       msg.SetHeader("date", "30 Feb 2000 12:34:56 +1034");
-      if ((msg.GetDate()) != null) {
+      if (msg.GetDate() != null) {
  Assert.fail();
  }
       msg.SetHeader("date", "1 Feb 999999999999999999999 12:34:56 +1034");
-      if ((msg.GetDate()) != null) {
+      if (msg.GetDate() != null) {
  Assert.fail();
  }
       msg.SetHeader("date", "1 Jan 2000 24:34:56 +1034");
-      if ((msg.GetDate()) != null) {
+      if (msg.GetDate() != null) {
  Assert.fail();
  }
       msg.SetHeader("date", "1 Jan 2000 01:60:56 +1034");
-      if ((msg.GetDate()) != null) {
+      if (msg.GetDate() != null) {
  Assert.fail();
  }
       msg.SetHeader("date", "1 Jan 2000 01:01:61 +1034");
-      if ((msg.GetDate()) != null) {
+      if (msg.GetDate() != null) {
  Assert.fail();
  }
       msg.SetHeader("date", "1 Jan 2000 01:01:01 +1099");
-      if ((msg.GetDate()) != null) {
+      if (msg.GetDate() != null) {
  Assert.fail();
  }
     }
@@ -1035,7 +1105,7 @@ throw new IllegalStateException("", ex);
     public void TestBoundaryReading() {
       byte[] body;
       String messageStart = "MIME-Version: 1.0\r\n";
-      messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
+      messageStart += "Content-Type: ValueMultipart/mixed; boundary=b1\r\n\r\n";
       messageStart += "Preamble\r\n";
       messageStart += "--b1\r\n";
       String message = messageStart;
@@ -1045,7 +1115,7 @@ throw new IllegalStateException("", ex);
       message += "Epilogue";
       Message msg;
       msg = MessageFromString(message);
-      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
+      Assert.assertEquals("ValueMultipart", msg.getContentType().getTopLevelType());
       {
         String stringTemp = msg.getContentType().GetParameter("boundary");
         Assert.assertEquals(
@@ -1057,7 +1127,7 @@ throw new IllegalStateException("", ex);
       Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
       // Nested Multipart body part
       message = messageStart;
-      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "Content-Type: ValueMultipart/mixed; boundary=b2\r\n\r\n";
       message += "\r\n--b2\r\n";
       message += "Content-Type: text/plain\r\n\r\n";
       message += "Test\r\n";
@@ -1079,7 +1149,7 @@ throw new IllegalStateException("", ex);
       Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
       // No CRLF before first boundary
       message = "MIME-Version: 1.0\r\n";
-      message += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
+      message += "Content-Type: ValueMultipart/mixed; boundary=b1\r\n\r\n";
       message += "--b1\r\n";
       message += "Content-Type: text/plain\r\n\r\n";
       message += "Test\r\n";
@@ -1096,7 +1166,7 @@ throw new IllegalStateException("", ex);
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
+      Assert.assertEquals("ValueMultipart", msg.getContentType().getTopLevelType());
       {
         String stringTemp = msg.getContentType().GetParameter("boundary");
         Assert.assertEquals(
@@ -1119,7 +1189,7 @@ throw new IllegalStateException("", ex);
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
+      Assert.assertEquals("ValueMultipart", msg.getContentType().getTopLevelType());
       {
         String stringTemp = msg.getContentType().GetParameter("boundary");
         Assert.assertEquals(
@@ -1136,7 +1206,7 @@ throw new IllegalStateException("", ex);
       Assert.assertEquals(4, body.length);
       // Base64 in nested body part
       message = messageStart;
-      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "Content-Type: ValueMultipart/mixed; boundary=b2\r\n\r\n";
       message += "--b2\r\n";
       message += "Content-Type: application/octet-stream\r\n";
       message += "Content-Transfer-Encoding: base64\r\n\r\n";
@@ -1145,7 +1215,7 @@ throw new IllegalStateException("", ex);
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
+      Assert.assertEquals("ValueMultipart", msg.getContentType().getTopLevelType());
       {
         String stringTemp = msg.getContentType().GetParameter("boundary");
         Assert.assertEquals(
@@ -1163,7 +1233,7 @@ throw new IllegalStateException("", ex);
       Assert.assertEquals(4, body.length);
       // Nested Multipart body part II
       message = messageStart;
-      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "Content-Type: ValueMultipart/mixed; boundary=b2\r\n\r\n";
       message += "--b2\r\n";
       message += "Content-Type: text/plain\r\n\r\n";
       message += "Test\r\n";
@@ -1224,8 +1294,9 @@ throw new IllegalStateException("", ex);
         "plain",
         stringTemp);
       }
-      Assert.assertEquals(MediaType.TextPlainAscii,
-                    MediaType.Parse("text/plain; charset=us-ascii"));
+      Assert.assertEquals(
+  MediaType.TextPlainAscii,
+  MediaType.Parse("text/plain; charset=us-ascii"));
       if (!(MediaType.TextPlainAscii.hashCode() ==
                 MediaType.Parse("text/plain; charset=us-ascii"
 ).hashCode()))Assert.fail();
@@ -1451,9 +1522,9 @@ MessageFromString(MessageFromString(msg).Generate())
     @Test
     public void TestFWSAtSubjectEnd() {
       Message msg;
-      String str = "From: me@example.com\r\nSubject: Test\r\n " +
+      String valueStr = "From: me@example.com\r\nSubject: Test\r\n " +
         "\r\nX-Header: Header\r\n\r\nBody";
-      msg = MessageFromString(str);
+      msg = MessageFromString(valueStr);
       {
         String stringTemp = msg.GetHeader("subject");
         Assert.assertEquals(
@@ -1464,16 +1535,16 @@ MessageFromString(MessageFromString(msg).Generate())
 
     @Test
     public void TestEmptyGroup() {
-      String str = "From: me@example.com\r\nTo: empty-group:;" +
+      String valueStr = "From: me@example.com\r\nTo: empty-group:;" +
         "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
         "\r\n\r\nBody";
-      MessageFromString(str);
+      MessageFromString(valueStr);
     }
 
     @Test
     public void TestMediaTypeArgumentValidationExtra() {
       if (!(MediaType.Parse("text/plain").isText()))Assert.fail();
-      if (!(MediaType.Parse("multipart/alternative").isMultipart()))Assert.fail();
+      if (!(MediaType.Parse("ValueMultipart/alternative").isMultipart()))Assert.fail();
       {
         String stringTemp = MediaType.Parse(
                 "example/x ").getTypeAndSubType();
@@ -1481,9 +1552,9 @@ MessageFromString(MessageFromString(msg).Generate())
         "example/x",
         stringTemp);
       }
-      String strtest = "example/x" + "," + " a=b";
+      String ValueStrtest = "example/x" + "," + " a=b";
       {
-        String stringTemp = MediaType.Parse(strtest).getTypeAndSubType();
+        String stringTemp = MediaType.Parse(ValueStrtest).getTypeAndSubType();
         Assert.assertEquals(
           "text/plain",
           stringTemp);
@@ -1569,7 +1640,8 @@ MessageFromString(MessageFromString(msg).Generate())
       }
       try {
     MessageConstructOnly("From: x@example.com\r\nX-" +
-          EncodingTest.Repeat("a",
+          EncodingTest.Repeat(
+  "a",
   2000) + ": Test\r\n\r\nBody");
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
@@ -1580,7 +1652,8 @@ MessageFromString(MessageFromString(msg).Generate())
       }
       try {
     MessageConstructOnly("From: x@example.com\r\nX-" +
-          EncodingTest.Repeat("a",
+          EncodingTest.Repeat(
+  "a",
   996) + ":\r\n Test\r\n\r\nBody");
         Assert.fail("Should have failed");
       } catch (MessageDataException ex) {
@@ -1626,7 +1699,8 @@ MessageFromString(MessageFromString(msg).Generate())
         throw new IllegalStateException("", ex);
       }
       try {
-        MessageFromString("From: x@example.com\r\nX-" + EncodingTest.Repeat("a",
+        MessageFromString(
+  "From: x@example.com\r\nX-" + EncodingTest.Repeat("a",
           995) + ":\r\n Test\r\n\r\nBody");
       } catch (Exception ex) {
         Assert.fail(ex.toString());
@@ -1651,7 +1725,7 @@ MessageFromString(MessageFromString(msg).Generate())
     @Test
     public void TestBodyString() {
       Message msg = new Message().SetTextBody("Test");
-      String mtype="text/plain;charset=x-unknown";
+      String mtype = "text/plain;charset=x-unknown";
       msg.setContentType(MediaType.Parse(mtype));
       try {
         msg.getBodyString().toString();
@@ -1685,17 +1759,18 @@ MessageFromString(MessageFromString(msg).Generate())
         throw new IllegalStateException("", ex);
       }
     }
+
     private static void TestFileNameOne(String input, String expected) {
       Message msg;
-      String str = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+      String valueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
  "Content-Type: text/plain\r\nContent-Disposition: inline; filename=" +
           input + "\r\n\r\nEmpty.";
-      msg = MessageFromString(str);
+      msg = MessageFromString(valueStr);
       Assert.assertEquals(expected, msg.getFileName());
-      str = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+      valueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: text/plain; name=" + input +
         "\r\n\r\nEmpty.";
-      msg = MessageFromString(str);
+      msg = MessageFromString(valueStr);
       Assert.assertEquals(expected, msg.getFileName());
     }
     @Test
@@ -1710,8 +1785,8 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     @Test
     public void TestFromAddresses() {
-      String str = "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
-      Message msg = MessageFromString(str);
+      String valueStr = "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
+      Message msg = MessageFromString(valueStr);
       MessageFromString(MessageGenerate(msg));
       Assert.assertEquals(1, msg.getFromAddresses().size());
     }
@@ -1725,8 +1800,8 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     @Test
     public void TestGetHeader() {
-      String str = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(str);
+      String valueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      Message msg = MessageFromString(valueStr);
       try {
         msg.GetHeader(2);
         Assert.fail("Should have failed");
@@ -1756,8 +1831,8 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     @Test
     public void TestRemoveHeader() {
-      String str = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(str);
+      String valueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      Message msg = MessageFromString(valueStr);
       try {
         msg.RemoveHeader(2);
         Assert.fail("Should have failed");
@@ -1857,8 +1932,8 @@ MessageFromString(MessageFromString(msg).Generate())
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      String str = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(str);
+      String valueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      Message msg = MessageFromString(valueStr);
       try {
         msg.SetHeader(2, "X-Header2", "2");
         Assert.fail("Should have failed");

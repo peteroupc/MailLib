@@ -28,7 +28,7 @@ private UnicodeDatabase() {
 }
   if (classes == null) {
 synchronized (syncRoot) {
-classes = (classes == null) ? ((ByteData.Decompress(NormalizationData.CombiningClasses))) : classes;
+classes = (classes == null) ? (ByteData.Decompress(NormalizationData.CombiningClasses)) : classes;
 }
 }
       return ((int)classes.GetByte(cp)) & 0xff;
@@ -80,7 +80,7 @@ classes = (classes == null) ? ((ByteData.Decompress(NormalizationData.CombiningC
       int right = (decomps.length >> 1) - 1;
       while (left <= right) {
         int index = (left + right) >> 1;
-        int realIndex = (index << 1);
+        int realIndex = index << 1;
         int dri = decomps[realIndex];
         int dricp = dri & 0x1fffff;
         if (dricp == cp) {
@@ -128,7 +128,7 @@ classes = (classes == null) ? ((ByteData.Decompress(NormalizationData.CombiningC
     public static int GetIdnaCategory(int cp) {
         if (idnaCat == null) {
 synchronized (syncRoot) {
-idnaCat = (idnaCat == null) ? ((ByteData.Decompress(IdnaData.IdnaCategories))) : idnaCat;
+idnaCat = (idnaCat == null) ? (ByteData.Decompress(IdnaData.IdnaCategories)) : idnaCat;
 }
 }
       return ((int)idnaCat.GetByte(cp)) & 0xff;
@@ -137,7 +137,7 @@ idnaCat = (idnaCat == null) ? ((ByteData.Decompress(IdnaData.IdnaCategories))) :
     public static boolean IsCombiningMark(int cp) {
         if (combmark == null) {
 synchronized (syncRoot) {
-combmark = (combmark == null) ? ((ByteData.Decompress(IdnaData.CombiningMarks))) : combmark;
+combmark = (combmark == null) ? (ByteData.Decompress(IdnaData.CombiningMarks)) : combmark;
 }
 }
         return combmark.GetBoolean(cp);
@@ -170,7 +170,7 @@ combmark = (combmark == null) ? ((ByteData.Decompress(IdnaData.CombiningMarks)))
         if (form == Normalization.NFC) {
           if (qcsnfc == null) {
 synchronized (syncRoot) {
-qcsnfc = (qcsnfc == null) ? ((ByteData.Decompress(NormalizationData.QCSNFC))) : qcsnfc;
+qcsnfc = (qcsnfc == null) ? (ByteData.Decompress(NormalizationData.QCSNFC)) : qcsnfc;
 }
 }
 bd = qcsnfc;
@@ -178,7 +178,7 @@ bd = qcsnfc;
         if (form == Normalization.NFD) {
           if (qcsnfd == null) {
 synchronized (syncRoot) {
-qcsnfd = (qcsnfd == null) ? ((ByteData.Decompress(NormalizationData.QCSNFD))) : qcsnfd;
+qcsnfd = (qcsnfd == null) ? (ByteData.Decompress(NormalizationData.QCSNFD)) : qcsnfd;
 }
 }
 bd = qcsnfd;
@@ -186,7 +186,7 @@ bd = qcsnfd;
         if (form == Normalization.NFKC) {
       if (qcsnfkc == null) {
 synchronized (syncRoot) {
-qcsnfkc = (qcsnfkc == null) ? ((ByteData.Decompress(NormalizationData.QCSNFKC))) : qcsnfkc;
+qcsnfkc = (qcsnfkc == null) ? (ByteData.Decompress(NormalizationData.QCSNFKC)) : qcsnfkc;
 }
 }
 bd = qcsnfkc;
@@ -194,7 +194,7 @@ bd = qcsnfkc;
         if (form == Normalization.NFKD) {
       if (qcsnfkd == null) {
 synchronized (syncRoot) {
-qcsnfkd = (qcsnfkd == null) ? ((ByteData.Decompress(NormalizationData.QCSNFKD))) : qcsnfkd;
+qcsnfkd = (qcsnfkd == null) ? (ByteData.Decompress(NormalizationData.QCSNFKD)) : qcsnfkd;
 }
 }
 bd = qcsnfkd;

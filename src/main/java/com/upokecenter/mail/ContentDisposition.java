@@ -327,8 +327,8 @@ strLower.indexOf(
       // Avoid space before and after last dot
       for (int i = str.length() - 1; i >= 0; --i) {
         if (str.charAt(i) == '.') {
-          boolean spaceAfter = (i + 1 < str.length() && str.charAt(i + 1) == 0x20);
-          boolean spaceBefore = (i > 0 && str.charAt(i - 1) == 0x20);
+          boolean spaceAfter = i + 1 < str.length() && str.charAt(i + 1) == 0x20;
+          boolean spaceBefore = i > 0 && str.charAt(i - 1) == 0x20;
           if (spaceAfter && spaceBefore) {
             str = str.substring(0,i - 1) + "_._" + str.substring(i + 2);
           } else if (spaceAfter) {

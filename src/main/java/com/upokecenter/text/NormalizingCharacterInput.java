@@ -81,10 +81,9 @@ package com.upokecenter.text;
       private final ICharacterInput nci;
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizerInput} class using Normalization Form
-     * C.
-     * @param str A string specifying the text to normalize.
+     * Initializes a new instance of the <see cref='NormalizingCharacterInput'/>
+     * class.
+     * @param str A public object.
      */
       public NormalizingCharacterInput(
     String str) {
@@ -93,10 +92,9 @@ package com.upokecenter.text;
       }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizerInput} class using Normalization Form
-     * C.
-     * @param input An ICharacterInput object.
+     * Initializes a new instance of the <see cref='NormalizingCharacterInput'/>
+     * class.
+     * @param input A public object.
      */
       public NormalizingCharacterInput(
     ICharacterInput input) {
@@ -106,37 +104,27 @@ package com.upokecenter.text;
 
     /**
      *
-     * @deprecated Either convert the list to a String or wrap it in an ICharacterInput and
-* call the corresponding overload instead.
- */
-@Deprecated
-      public NormalizingCharacterInput(List<Integer> characterList) {
+     */
+        public NormalizingCharacterInput(List<Integer> characterList) {
  this(characterList, Normalization.NFC);
       }
 
     /**
      *
-     * @deprecated Either convert the list to a String or wrap it in an ICharacterInput and
-* call the corresponding overload instead.
- */
-@Deprecated
-      public NormalizingCharacterInput(
+     */
+        public NormalizingCharacterInput(
     List<Integer> characterList,
     Normalization form) {
  this(new PartialListCharacterInput(characterList), form);
       }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizerInput} class. Uses a portion of a
-     * string as the input.
-     * @param str A text string.
-     * @param index A zero-based index showing where the desired portion of {@code
-     * str} begins.
-     * @param length The number of elements in the desired portion of {@code str}
-     * (but not more than {@code str} 's length).
-     * @param form Specifies the normalization form to use when normalizing the
-     * text.
+     * Initializes a new instance of the <see cref='NormalizingCharacterInput'/>
+     * class.
+     * @param str A public object.
+     * @param index A 32-bit signed integer.
+     * @param length Another 32-bit signed integer.
+     * @param form A Normalization object.
      */
       public NormalizingCharacterInput(
     String str,
@@ -147,23 +135,21 @@ package com.upokecenter.text;
       }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizerInput} class.
+     * Initializes a new instance of the <see cref='NormalizingCharacterInput'/>
+     * class.
      * @param str A text string.
-     * @param form Specifies the normalization form to use when normalizing the
-     * text.
+     * @param form A Normalization object.
+     * @throws java.lang.NullPointerException The parameter {@code str} or "input" or
+     * "charArray" is null.
      */
       public NormalizingCharacterInput(String str, Normalization form) {
-       this.nci = new NormalizerInput(str, form);
       }
 
     /**
-     * Initializes a new instance of the {@link
-     * com.upokecenter.text.NormalizerInput} class.
-     * @param stream An ICharacterInput object.
-     * @param form Specifies the normalization form to use when normalizing the
-     * text.
-     * @throws java.lang.NullPointerException The parameter {@code stream} is null.
+     * Initializes a new instance of the <see cref='NormalizingCharacterInput'/>
+     * class.
+     * @param stream A public object.
+     * @param form A Normalization object.
      */
       public NormalizingCharacterInput(
      ICharacterInput stream,

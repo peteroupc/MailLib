@@ -16,7 +16,7 @@ private TestCommon() {
  return "null";
 }
       StringBuilder sb = new StringBuilder();
-      String hex = "0123456789ABCDEF";
+      String ValueHex = "0123456789ABCDEF";
       sb.append("new byte[] { ");
       for (int i = 0; i < bytes.length; ++i) {
         if (i > 0) {
@@ -26,8 +26,8 @@ private TestCommon() {
         } else {
           sb.append("0x");
         }
-        sb.append(hex.charAt((bytes[i] >> 4) & 0xf));
-        sb.append(hex.charAt(bytes[i] & 0xf));
+        sb.append(ValueHex.charAt((bytes[i] >> 4) & 0xf));
+        sb.append(ValueHex.charAt(bytes[i] & 0xf));
       }
       sb.append("}");
       return sb.toString();
@@ -43,7 +43,7 @@ private TestCommon() {
       }
     }
 
-    private static String Digits = "0123456789";
+    private static String valueDigits = "0123456789";
 
     public static String LongToString(long longValue) {
       if (longValue == Long.MIN_VALUE) {
@@ -61,7 +61,7 @@ private TestCommon() {
         longValue = -longValue;
       }
       while (longValue != 0) {
-        char digit = Digits.charAt((int)(longValue % 10));
+        char digit = valueDigits.charAt((int)(longValue % 10));
         chars[count++] = digit;
         longValue /= 10;
       }
@@ -89,7 +89,7 @@ private TestCommon() {
         value = -value;
       }
       while (value != 0) {
-        char digit = Digits.charAt((int)(value % 10));
+        char digit = valueDigits.charAt((int)(value % 10));
         chars[count++] = digit;
         value /= 10;
       }
@@ -130,7 +130,7 @@ private TestCommon() {
       if (o.equals(o2)) {
         if (!o2.equals(o)) {
           Assert.fail(
-  ("" + o + " equals " + o2 + " but not vice versa"));
+  "" + o + " equals " + o2 + " but not vice versa");
         }
         // Test for the guarantee that equal objects
         // must have equal hash codes
@@ -138,11 +138,12 @@ private TestCommon() {
           // Don't use Assert.assertEquals directly because it has
           // quite a lot of overhead
           Assert.fail(
-  ("" + o + " and " + o2 + " don't have equal hash codes"));
+  "" + o + " and " + o2 + " don't have equal hash codes");
         }
       } else {
         if (o2.equals(o)) {
-          Assert.fail("" + o + " does not equal " + o2 + " but not vice versa");
+          Assert.fail("" + o + " does not equal " + o2 +
+            " but not vice versa");
         }
         // At least check that hashCode doesn't throw
         try {

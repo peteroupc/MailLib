@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using PeterO.Mail;
 using System;
+
 namespace MailLibTest {
   [TestFixture]
   public partial class MediaTypeBuilderTest {
@@ -39,10 +40,10 @@ Assert.AreEqual(
   "b",
   stringTemp);
 }
-      builder.SetParameter("a", "");
-      Assert.AreEqual("", builder.ToMediaType().GetParameter("a"));
+      builder.SetParameter("a", String.Empty);
+      Assert.AreEqual(String.Empty, builder.ToMediaType().GetParameter("a"));
       try {
- builder.SetParameter(null,"");
+ builder.SetParameter(null, String.Empty);
 Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
 new Object();
@@ -51,7 +52,7 @@ new Object();
 throw new InvalidOperationException(String.Empty, ex);
 }
       try {
- builder.SetParameter("",null);
+ builder.SetParameter(String.Empty, null);
 Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
 new Object();
@@ -60,7 +61,7 @@ new Object();
 throw new InvalidOperationException(String.Empty, ex);
 }
       try {
- builder.SetParameter("", "a");
+ builder.SetParameter(String.Empty, "a");
 Assert.Fail("Should have failed");
 } catch (ArgumentException) {
 new Object();

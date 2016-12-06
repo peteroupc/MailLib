@@ -2,6 +2,7 @@ using NUnit.Framework;
 using PeterO.Mail;
 using System;
 using System.Collections.Generic;
+
 namespace MailLibTest {
   [TestFixture]
   public partial class NamedAddressTest {
@@ -101,9 +102,9 @@ new Object();
     public void TestIsGroup() {
       // not implemented yet
       NamedAddress na;
-      var naList = new List<NamedAddress>();
-      naList.Add(new NamedAddress("test@example.com"));
-      na=new NamedAddress("test",naList);
+      var valueNaList = new List<NamedAddress>();
+      valueNaList.Add(new NamedAddress("test@example.com"));
+      na = new NamedAddress("test", valueNaList);
       Assert.IsTrue(na.IsGroup);
       na = new NamedAddress("test@example.com");
       Assert.IsFalse(na.IsGroup);
@@ -220,8 +221,9 @@ Assert.AreEqual(
       Assert.IsTrue(na.IsGroup);
       {
 string stringTemp = na.ToString();
-      const string s1 = "Group: Me <me@example.com>, Fred <fred@example.com>;" ;
-        Assert.AreEqual(s1, stringTemp);
+const string ValueS1 =
+        "Group: Me <me@example.com>, Fred <fred@example.com>;";
+        Assert.AreEqual(ValueS1, stringTemp);
 }
       groupAddr = na.GroupAddresses;
       Assert.AreEqual(2, groupAddr.Count);
@@ -248,8 +250,8 @@ na = new
       Assert.IsTrue(na.IsGroup);
       {
 string stringTemp = na.ToString();
-        const string s1 = "Group: Me <me@example.com>, somebody@example.com;";
-        Assert.AreEqual(s1, stringTemp);
+    const string ValueS1 = "Group: Me <me@example.com>, somebody@example.com;";
+        Assert.AreEqual(ValueS1, stringTemp);
 }
       groupAddr = na.GroupAddresses;
       Assert.AreEqual(2, groupAddr.Count);
@@ -289,9 +291,9 @@ Assert.AreEqual(
     }
     [Test]
     public void TestToString() {
-      const string mbox =
+      const string ValueMbox =
               "Me <@example.org,@example.net,@example.com:me@x.example>";
-      var result = new NamedAddress(mbox);
+      var result = new NamedAddress(ValueMbox);
       {
         string stringTemp = result.ToString();
         Assert.AreEqual(

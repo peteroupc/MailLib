@@ -86,7 +86,7 @@ private Idna() {
       ByteData table = null;
         if (bidiClasses == null) {
 synchronized (syncRoot) {
-bidiClasses = (bidiClasses == null) ? ((ByteData.Decompress(IdnaData.BidiClasses))) : bidiClasses;
+bidiClasses = (bidiClasses == null) ? (ByteData.Decompress(IdnaData.BidiClasses)) : bidiClasses;
 }
 }
         table = bidiClasses;
@@ -97,7 +97,7 @@ bidiClasses = (bidiClasses == null) ? ((ByteData.Decompress(IdnaData.BidiClasses
       ByteData table = null;
      if (joiningTypes == null) {
 synchronized (syncRoot) {
-joiningTypes = (joiningTypes == null) ? ((ByteData.Decompress(IdnaData.JoiningTypes))) : joiningTypes;
+joiningTypes = (joiningTypes == null) ? (ByteData.Decompress(IdnaData.JoiningTypes)) : joiningTypes;
 }
 }
         table = joiningTypes;
@@ -108,7 +108,7 @@ joiningTypes = (joiningTypes == null) ? ((ByteData.Decompress(IdnaData.JoiningTy
       ByteData table = null;
         if (scripts == null) {
 synchronized (syncRoot) {
-scripts = (scripts == null) ? ((ByteData.Decompress(IdnaData.IdnaRelevantScripts))) : scripts;
+scripts = (scripts == null) ? (ByteData.Decompress(IdnaData.IdnaRelevantScripts)) : scripts;
 }
 }
         table = scripts;

@@ -12,43 +12,66 @@ namespace PeterO {
     private object syncRoot = new Object();
     private bool threadSafe;
 
-    public XorShift128Plus () : this(true) {
+    /// <summary>Initializes a new instance of the XorShift128Plus
+    /// class.</summary>
+    public XorShift128Plus() : this(true) {
         }
+
+    /// <summary>Initializes a new instance of the XorShift128Plus
+    /// class.</summary>
+    /// <param name='threadSafe'>A Boolean object.</param>
         public XorShift128Plus(bool threadSafe) {
       this.threadSafe = threadSafe;
       this.Seed();
     }
-    private int GetBytesInternal (byte [] bytes, int offset, int length) {
+
+    private int GetBytesInternal(byte[] bytes, int offset, int length) {
             int count = length;
             while (length >= 8) {
                 long nv = this.NextValue();
-                bytes [offset++] = unchecked((byte)nv);
+                bytes[offset++] = unchecked((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = unchecked((byte)nv);
+                bytes[offset++] = unchecked((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = unchecked((byte)nv);
+                bytes[offset++] = unchecked((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = unchecked((byte)nv);
+                bytes[offset++] = unchecked((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = unchecked((byte)nv);
+                bytes[offset++] = unchecked((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = unchecked((byte)nv);
+                bytes[offset++] = unchecked((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = unchecked((byte)nv);
+                bytes[offset++] = unchecked((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = unchecked((byte)nv);
+                bytes[offset++] = unchecked((byte)nv);
                 length -= 8;
             }
             if (length != 0) {
                 long nv = this.NextValue();
                 while (length > 0) {
-                    bytes [offset++] = unchecked((byte)nv);
+                    bytes[offset++] = unchecked((byte)nv);
                     nv >>= 8;
                     --length;
                 }
             }
       return count;
     }
+
+    /// <summary>Not documented yet.</summary>
+    /// <param name='bytes'>Not documented yet.</param>
+    /// <param name='offset'>A zero-based index showing where the desired
+    /// portion of <paramref name='bytes'/> begins.</param>
+    /// <param name='length'>The length, in bytes, of the desired portion
+    /// of <paramref name='bytes'/> (but not more than <paramref
+    /// name='bytes'/> 's length).</param>
+    /// <returns>A 32-bit signed integer.</returns>
+    /// <exception cref='ArgumentNullException'>The parameter <paramref
+    /// name='bytes'/> is null.</exception>
+    /// <exception cref='ArgumentException'>Either <paramref
+    /// name='offset'/> or <paramref name='length'/> is less than 0 or
+    /// greater than <paramref name='bytes'/> 's length, or <paramref
+    /// name='bytes'/> 's length minus <paramref name='offset'/> is less
+    /// than <paramref name='length'/>.</exception>
     public int GetBytes(byte[] bytes, int offset, int length) {
       if (bytes == null) {
         throw new ArgumentNullException("bytes");
@@ -73,12 +96,12 @@ namespace PeterO {
         throw new ArgumentException("bytes's length minus " + offset + " (" +
           (bytes.Length - offset) + ") is less than " + length);
       }
-      if (threadSafe) {
+      if (this.threadSafe) {
         lock (this.syncRoot) {
-          return GetBytesInternal (bytes, offset, length);
+          return this.GetBytesInternal(bytes, offset, length);
         }
       } else {
-        return GetBytesInternal (bytes, offset, length);
+        return this.GetBytesInternal(bytes, offset, length);
       }
     }
 
@@ -97,7 +120,7 @@ namespace PeterO {
 
     private void Seed() {
       long lb = DateTime.UtcNow.Ticks & 0xffffffffffL;
-      this.s[0] =lb;
+      this.s[0] = lb;
       lb = 0L;
       this.s[1] = lb;
       if ((this.s[0] | this.s[1]) == 0) {

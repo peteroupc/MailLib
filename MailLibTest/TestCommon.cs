@@ -16,7 +16,7 @@ namespace Test {
  return "null";
 }
       var sb = new System.Text.StringBuilder();
-      const string hex = "0123456789ABCDEF";
+      const string ValueHex = "0123456789ABCDEF";
       sb.Append("new byte[] { ");
       for (var i = 0; i < bytes.Length; ++i) {
         if (i > 0) {
@@ -26,8 +26,8 @@ namespace Test {
         } else {
           sb.Append("0x");
         }
-        sb.Append(hex[(bytes[i] >> 4) & 0xf]);
-        sb.Append(hex[bytes[i] & 0xf]);
+        sb.Append(ValueHex[(bytes[i] >> 4) & 0xf]);
+        sb.Append(ValueHex[bytes[i] & 0xf]);
       }
       sb.Append("}");
       return sb.ToString();
@@ -43,7 +43,7 @@ namespace Test {
       }
     }
 
-    private static string Digits = "0123456789";
+    private static string valueDigits = "0123456789";
 
     public static string LongToString(long longValue) {
       if (longValue == Int64.MinValue) {
@@ -61,7 +61,7 @@ namespace Test {
         longValue = -longValue;
       }
       while (longValue != 0) {
-        char digit = Digits[(int)(longValue % 10)];
+        char digit = valueDigits[(int)(longValue % 10)];
         chars[count++] = digit;
         longValue /= 10;
       }
@@ -89,7 +89,7 @@ namespace Test {
         value = -value;
       }
       while (value != 0) {
-        char digit = Digits[(int)(value % 10)];
+        char digit = valueDigits[(int)(value % 10)];
         chars[count++] = digit;
         value /= 10;
       }
@@ -130,7 +130,7 @@ namespace Test {
       if (o.Equals(o2)) {
         if (!o2.Equals(o)) {
           Assert.Fail(
-  ("" + o + " equals " + o2 + " but not vice versa"));
+  String.Empty + o + " equals " + o2 + " but not vice versa");
         }
         // Test for the guarantee that equal objects
         // must have equal hash codes
@@ -138,11 +138,12 @@ namespace Test {
           // Don't use Assert.AreEqual directly because it has
           // quite a lot of overhead
           Assert.Fail(
-  ("" + o + " and " + o2 + " don't have equal hash codes"));
+  String.Empty + o + " and " + o2 + " don't have equal hash codes");
         }
       } else {
         if (o2.Equals(o)) {
-          Assert.Fail("" + o + " does not equal " + o2 + " but not vice versa");
+          Assert.Fail(String.Empty + o + " does not equal " + o2 +
+            " but not vice versa");
         }
         // At least check that GetHashCode doesn't throw
         try {

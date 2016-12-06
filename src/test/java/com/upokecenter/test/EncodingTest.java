@@ -21,7 +21,7 @@ import java.util.*;
 
         public static String RandomString(RandomGenerator rnd) {
             int count = 10 + rnd.UniformInt(350);
-      StringBuilder sb = new StringBuilder(count*2);
+      StringBuilder sb = new StringBuilder(count * 2);
             int ui;
             String problemChars = " \t\u0000\u0010\u001b\u001f" +
               "\u007f\u008f\u009f%\\/*?|:<>\"\u0028\u0029" +
@@ -29,34 +29,34 @@ import java.util.*;
                "\ufffe\uffff\ufdd0\ufdef";
             for (int i = 0; i < count; ++i) {
                 int ch = 0;
-                ui = rnd.UniformInt (100);
+                ui = rnd.UniformInt(100);
                 if (ui < 2) {
-                    ch = rnd.UniformInt (0x110000);
+                    ch = rnd.UniformInt(0x110000);
                 } else if (ui < 4) {
-                    ch = rnd.UniformInt (0x10000);
+                    ch = rnd.UniformInt(0x10000);
                 } else if (ui < 10) {
-                    ch = rnd.UniformInt (0x3000);
+                    ch = rnd.UniformInt(0x3000);
                 } else if (ui < 80) {
-                    ch = 0x20 + rnd.UniformInt (0x5f);
+                    ch = 0x20 + rnd.UniformInt(0x5f);
                 } else if (ui < 83) {
                     ch = 0x20;
                 } else if (ui < 86) {
                     ch = (char)'.';
                 } else {
-                    ui = rnd.UniformInt (problemChars.length());
+                    ui = rnd.UniformInt(problemChars.length());
                     ch = problemChars.charAt(ui);
                 }
                 if ((ch & 0xf800) == 0xd800) {
                     ch &= 0xff;
                 }
                 if (ch < 0x10000) {
-                    sb.append ((char)ch);
+                    sb.append((char)ch);
                 } else {
                     ch -= 0x10000;
                     int lead = (ch >> 10) + 0xd800;
                     int trail = (ch & 0x3ff) + 0xdc00;
-                    sb.append ((char)lead);
-                    sb.append ((char)trail);
+                    sb.append((char)lead);
+                    sb.append((char)trail);
                 }
             }
             String ret = sb.toString();
@@ -64,7 +64,7 @@ import java.util.*;
         }
 
         public static String EscapeString(String str) {
-      String hex = "0123456789abcdef";
+      String ValueHex = "0123456789abcdef";
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
@@ -80,10 +80,10 @@ import java.util.*;
           sb.append("\\\\");
         } else if (c < 0x20 || c >= 0x7f) {
           sb.append("\\u");
-          sb.append(hex.charAt((c >> 12) & 15));
-          sb.append(hex.charAt((c >> 8) & 15));
-          sb.append(hex.charAt((c >> 4) & 15));
-          sb.append(hex.charAt((c) & 15));
+          sb.append(ValueHex.charAt((c >> 12) & 15));
+          sb.append(ValueHex.charAt((c >> 8) & 15));
+          sb.append(ValueHex.charAt((c >> 4) & 15));
+          sb.append(ValueHex.charAt(c & 15));
         } else {
           sb.append(c);
         }
@@ -91,8 +91,10 @@ import java.util.*;
       return sb.toString();
     }
 
-    static int IsGoodAsciiMessageFormat(String str, boolean
-      hasMessageType, String fn) {
+    static int IsGoodAsciiMessageFormat(
+  String str,
+  boolean hasMessageType,
+  String fn) {
       int lineLength = 0;
       int wordLength = 0;
       int index = 0;
@@ -118,14 +120,14 @@ import java.util.*;
         }
         if (c >= 0x80) {
           StringBuilder builder = new StringBuilder();
-          String hex = "0123456789ABCDEF";
+          String ValueHex = "0123456789ABCDEF";
           builder.append(fn);
           builder.append(": ");
           builder.append("Non-ASCII character (0x");
-          builder.append(hex.charAt(((int)c >> 4) & 15));
-          builder.append(hex.charAt(((int)c) & 15));
+          builder.append(ValueHex.charAt(((int)c >> 4) & 15));
+          builder.append(ValueHex.charAt(((int)c) & 15));
           builder.append(")");
-          //System.out.println(builder.toString());
+          // System.out.println(builder.toString());
           return 0;
         }
         if (c == '\r' && index + 1 < endIndex && str.charAt(index + 1) == '\n') {
@@ -166,7 +168,9 @@ import java.util.*;
           if (str.charAt(index + 1) != 0x20 &&
             !(str.charAt(index + 1) == 0x0d && index + 2 < str.length() && str.charAt(index +
               2) == 0x0a)) {
-            test = str.substring(Math.max(index + 2 - 30, 0), (Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
+            test = str.substring(
+  Math.max(index + 2 - 30, 0), (
+  Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
             System.out.println(fn +
               ":\n--No space/line break after header name and colon: (" +
               str.charAt(index + 1) + ") [" + test + "] " + index);
@@ -176,20 +180,20 @@ import java.util.*;
         }
         if (c == 0) {
           StringBuilder builder = new StringBuilder();
-          String hex = "0123456789ABCDEF";
+          String ValueHex = "0123456789ABCDEF";
           builder.append(fn + ": CTL in message (0x");
-          builder.append(hex.charAt(((int)c >> 4) & 15));
-          builder.append(hex.charAt(((int)c) & 15));
+          builder.append(ValueHex.charAt(((int)c >> 4) & 15));
+          builder.append(ValueHex.charAt(((int)c) & 15));
           builder.append(")");
           System.out.println(builder.toString());
           return 0;
         }
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
           StringBuilder builder = new StringBuilder();
-          String hex = "0123456789ABCDEF";
+          String ValueHex = "0123456789ABCDEF";
           builder.append(fn + ": CTL in header (0x");
-          builder.append(hex.charAt(((int)c >> 4) & 15));
-          builder.append(hex.charAt(((int)c) & 15));
+          builder.append(ValueHex.charAt(((int)c >> 4) & 15));
+          builder.append(ValueHex.charAt(((int)c) & 15));
           builder.append(")");
           System.out.println(builder.toString());
           return 0;
@@ -214,15 +218,15 @@ import java.util.*;
         if (lineLength > maxLineLength) {
           if (lineLength > 998) {
             if (headers) {
-              System.out.println (fn + ":\n--Line length exceeded in header (" +
+              System.out.println(fn + ":\n--Line length exceeded in header(" +
                     maxLineLength + " " +
-                    (str.substring(index - 78,(index - 78)+(78))) + ", " + lineLength + ")");
+                    str.substring(index - 78,(index - 78)+(78)) + ", " + lineLength + ")");
               return 0;
             }
             if (!meetsLineLength && !mllmessage) {
               System.out.println(fn + ":\n--Line length exceeded (" +
                maxLineLength + " " +
-               (str.substring(index - 78,(index - 78)+(78))) + ", " + lineLength + ")");
+               str.substring(index - 78,(index - 78)+(78)) + ", " + lineLength + ")");
               mllmessage = true;
             }
           }
@@ -252,16 +256,19 @@ import java.util.*;
     public static void AssertEqual(byte[] expectedBytes, byte[] actualBytes) {
       AssertEqual(expectedBytes, actualBytes, "");
     }
-    public static void AssertEqual(byte[] expectedBytes, byte[] actualBytes,
-                    String msg) {
+
+    public static void AssertEqual(
+  byte[] expectedBytes,
+  byte[] actualBytes,
+  String msg) {
       if (expectedBytes.length != actualBytes.length) {
         Assert.fail("\nexpected: " + toString(expectedBytes) + "\n" +
-                    "\nwas:      " + toString(actualBytes) + "\n" + msg);
+                    "\nwas: " + toString(actualBytes) + "\n" + msg);
       }
       for (int i = 0; i < expectedBytes.length; ++i) {
         if (expectedBytes[i] != actualBytes[i]) {
           Assert.fail("\nexpected: " + toString(expectedBytes) + "\n" +
-                    "\nwas:      " + toString(actualBytes) + "\n" + msg);
+                    "\nwas: " + toString(actualBytes) + "\n" + msg);
         }
       }
     }
@@ -284,21 +291,23 @@ import java.util.*;
 
     @Test
     public void TestHeaderFields() {
-      String testString =
+      String ValueTestString =
        "From: Joe P Customer <customer@example.com>, " +
        "Jane W Customer <jane@example.com>\r\n\r\nTest";
-      Message msg = MessageTest.MessageFromString(testString);
+      Message msg = MessageTest.MessageFromString(ValueTestString);
       List<NamedAddress> addresses = msg.getFromAddresses();
       Assert.assertEquals(2, addresses.size());
       {
         String stringTemp = addresses.get(0).toString();
-        Assert.assertEquals("Joe P Customer <customer@example.com>",
-        stringTemp);
+        Assert.assertEquals(
+  "Joe P Customer <customer@example.com>",
+  stringTemp);
       }
       {
         String stringTemp = addresses.get(1).toString();
-        Assert.assertEquals("Jane W Customer <jane@example.com>",
-        stringTemp);
+        Assert.assertEquals(
+  "Jane W Customer <jane@example.com>",
+  stringTemp);
       }
     }
 
@@ -333,8 +342,9 @@ import java.util.*;
       AssertEqual(expected, msg.GetBody());
     }
 
-    private static void TestDecodeQuotedPrintable(String input, String
-         expected) {
+    private static void TestDecodeQuotedPrintable(
+  String input,
+  String expected) {
       String msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
@@ -1152,14 +1162,16 @@ import java.util.*;
       TestPercentEncodingOne("tesA", "tes%41");
       TestPercentEncodingOne("tesa", "tes%61");
       TestPercentEncodingOne("tes\r\na", "tes%0d%0aa");
-      TestPercentEncodingOne("tes%xx",
-        "tes%xx");
+      TestPercentEncodingOne(
+  "tes%xx",
+  "tes%xx");
       TestPercentEncodingOne("tes%dxx", "tes%dxx");
     }
 
     private static void AssertUtf8Equal(byte[] expected, byte[] actual) {
-      Assert.assertEquals(DataUtilities.GetUtf8String(expected, true),
-                    DataUtilities.GetUtf8String(actual, true));
+      Assert.assertEquals(
+  DataUtilities.GetUtf8String(expected, true),
+  DataUtilities.GetUtf8String(actual, true));
     }
 
     private static byte[] DowngradeDeliveryStatus(String str) {
@@ -1177,7 +1189,7 @@ import java.util.*;
       String expectedDSN;
       byte[] bytes;
       byte[] expectedBytes;
-      boolean encap = (expected.startsWith("=?"));
+      boolean encap = expected.startsWith("=?");
       dsn = "X-Ignore: X\r\n\r\nOriginal-Recipient: " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
       expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
@@ -1220,68 +1232,74 @@ import java.util.*;
 
     @Test
     public void TestDowngradeDSN() {
-      String hexstart = "\\x" + "{";
-      TestDowngradeDSNOne("utf-8; x@x.example",
-                    ("utf-8; x@x.example"));
-      TestDowngradeDSNOne("utf-8; x@x" + hexstart + "BE}.example",
-        ("utf-8; x@x\u00be.example"));
+      String ValueHexstart = "\\x" + "{";
+      TestDowngradeDSNOne(
+  "utf-8; x@x.example",
+  "utf-8; x@x.example");
+      TestDowngradeDSNOne(
+  "utf-8; x@x" + ValueHexstart + "BE}.example",
+  "utf-8; x@x\u00be.example");
       {
-        String objectTemp = "utf-8; x@x" + hexstart + "BE}" + hexstart +
-                    "FF20}.example";
-        String objectTemp2 = ("utf-8; x@x\u00be\uff20.example");
+     String objectTemp = "utf-8; x@x" + ValueHexstart + "BE}" +
+          ValueHexstart + "FF20}.example";
+        String objectTemp2 = "utf-8; x@x\u00be\uff20.example";
         TestDowngradeDSNOne(objectTemp, objectTemp2);
       }
-      TestDowngradeDSNOne("(=?utf-8?Q?=C2=BE?=) utf-8; x@x.example",
-                    ("(\u00be) utf-8; x@x.example"));
-      TestDowngradeDSNOne("(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
-        ("(\u00be) rfc822; x@x.example"));
+      TestDowngradeDSNOne(
+  "(=?utf-8?Q?=C2=BE?=) utf-8; x@x.example",
+  "(\u00be) utf-8; x@x.example");
+      TestDowngradeDSNOne(
+  "(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
+  "(\u00be) rfc822; x@x.example");
 
       {
         String stringTemp =
-  "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=);\r\n x@x.example"
-        ;
-        String stringTemp2 = ("(\u00be) rfc822(\u00be); x@x.example");
+  "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=);\r\n x@x.example";
+
+        String stringTemp2 = "(\u00be) rfc822(\u00be); x@x.example";
         TestDowngradeDSNOne(stringTemp, stringTemp2);
       }
 
       {
 String stringTemp =
           "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=);\r\n x@x" +
-                hexstart + "BE}" + hexstart + "FF20}.example";
-      String stringTemp2 = ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example");
+                ValueHexstart + "BE}" + ValueHexstart + "FF20}.example";
+      String stringTemp2 = "(\u00be) utf-8(\u00be); x@x\u00be\uff20.example";
         TestDowngradeDSNOne(stringTemp, stringTemp2);
       }
-      TestDowngradeDSNOne("=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40=C2=BE?=",
-        ("(\u00be) rfc822; x@\u00be"));
+      TestDowngradeDSNOne(
+  "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40=C2=BE?=",
+  "(\u00be) rfc822; x@\u00be");
     }
 
     private static void TestValidLanguageTag(boolean expectedValid, String str) {
       if (expectedValid) {
         TestEncodedWordsOne("x", "=?utf-8*" + str + "?Q?x?=");
       } else {
-        TestEncodedWordsOne("=?utf-8*" + str + "?Q?x?=", "=?utf-8*" + str +
-                 "?Q?x?=");
+        TestEncodedWordsOne(
+  "=?utf-8*" + str + "?Q?x?=",
+  "=?utf-8*" + str + "?Q?x?=");
       }
     }
 
     @Test
     public void TestLanguageTags() {
-      TestValidLanguageTag(true, ("en-a-bb-x-y-z"));
+      TestValidLanguageTag(true, "en-a-bb-x-y-z");
       {
         boolean objectTemp = false;
-        String objectTemp2 = ("0-xx-xx");
+        String objectTemp2 = "0-xx-xx";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("9-xx-xx"));
+      TestValidLanguageTag(false, "9-xx-xx");
       {
         boolean objectTemp = false;
-        String objectTemp2 = ("a-xx-xx");
+        String objectTemp2 = "a-xx-xx";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("x-xx-xx"));
+      TestValidLanguageTag(true, "x-xx-xx");
       {
         boolean objectTemp = true;
-        String objectTemp2 = ("en-US-u-islamcal");
+        String objectTemp2 = "en-US-u-islamcal";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
       {
@@ -1291,114 +1309,115 @@ String stringTemp =
       }
       {
         boolean objectTemp = true;
-        String objectTemp2 = ("en-a-myext-b-another");
+        String objectTemp2 = "en-a-myext-b-another";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("de-419-DE"));
+      TestValidLanguageTag(false, "de-419-DE");
       {
         boolean objectTemp = false;
-        String objectTemp2 = ("a-DE");
+        String objectTemp2 = "a-DE";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("ar-a-aaa-b-bbb-a-ccc"));
+      TestValidLanguageTag(false, "ar-a-aaa-b-bbb-a-ccc");
       {
         boolean objectTemp = true;
-        String objectTemp2 = ("en");
+        String objectTemp2 = "en";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("qbb-us"));
+      TestValidLanguageTag(true, "qbb-us");
       {
         boolean objectTemp = true;
-        String objectTemp2 = ("zh-yue");
+        String objectTemp2 = "zh-yue";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("en-us"));
+      TestValidLanguageTag(true, "en-us");
       {
         boolean objectTemp = false;
-        String objectTemp2 = ("e0-us");
+        String objectTemp2 = "e0-us";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("en-gb-1999"));
+      TestValidLanguageTag(true, "en-gb-1999");
       {
         boolean objectTemp = true;
-        String objectTemp2 = ("en-gb-1999-1998");
+        String objectTemp2 = "en-gb-1999-1998";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("en-gb-1999-1999"));
+      TestValidLanguageTag(false, "en-gb-1999-1999");
       {
         boolean objectTemp = true;
-        String objectTemp2 = ("en-gb-oed");
+        String objectTemp2 = "en-gb-oed";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("sr-Latn-RS"));
+      TestValidLanguageTag(true, "sr-Latn-RS");
       {
         boolean objectTemp = false;
-        String objectTemp2 = ("x-aaaaaaaaa-y-z");
+        String objectTemp2 = "x-aaaaaaaaa-y-z";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("x-aaaaaaaa-y-z"));
+      TestValidLanguageTag(true, "x-aaaaaaaa-y-z");
       {
         boolean objectTemp = false;
-        String objectTemp2 = ("a-b-x-y-z");
+        String objectTemp2 = "a-b-x-y-z";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("a-bb-xx-yy-zz"));
+      TestValidLanguageTag(false, "a-bb-xx-yy-zz");
       {
         boolean objectTemp = false;
-        String objectTemp2 = ("a-bb-x-y-z");
+        String objectTemp2 = "a-bb-x-y-z";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("a-x-y-z"));
+      TestValidLanguageTag(false, "a-x-y-z");
       {
         boolean objectTemp = true;
-        String objectTemp2 = ("x-x-y-z");
+        String objectTemp2 = "x-x-y-z";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("i-lojban"));
+      TestValidLanguageTag(false, "i-lojban");
       {
         boolean objectTemp = true;
-        String objectTemp2 = ("i-klingon");
+        String objectTemp2 = "i-klingon";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("art-lojban"));
+      TestValidLanguageTag(true, "art-lojban");
       {
         boolean objectTemp = true;
-        String objectTemp2 = ("sgn-be-fr");
+        String objectTemp2 = "sgn-be-fr";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("no-bok"));
+      TestValidLanguageTag(true, "no-bok");
       {
         boolean objectTemp = false;
-        String objectTemp2 = ("z-xx-xx");
+        String objectTemp2 = "z-xx-xx";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("en-aaa-bbbb-x-xxx-yyy-zzz"));
+      TestValidLanguageTag(true, "en-aaa-bbbb-x-xxx-yyy-zzz");
       {
         boolean objectTemp = true;
-        String objectTemp2 = ("en-aaa-bbbb-x-x-y-z");
+        String objectTemp2 = "en-aaa-bbbb-x-x-y-z";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("en-aaa-bbb"));
+      TestValidLanguageTag(false, "en-aaa-bbb");
       {
         boolean objectTemp = false;
-        String objectTemp2 = ("en-aaa-bbb-ccc");
+        String objectTemp2 = "en-aaa-bbb-ccc";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("en-aaa-bbbb"));
+      TestValidLanguageTag(true, "en-aaa-bbbb");
       {
         boolean objectTemp = true;
-        String objectTemp2 = ("en-aaa-bbbb-cc");
+        String objectTemp2 = "en-aaa-bbbb-cc";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("en-aaa-bbb-"));
+      TestValidLanguageTag(false, "en-aaa-bbb-");
       {
         boolean objectTemp = false;
-        String objectTemp2 = ("en-aaa-bbb-ccc-");
+        String objectTemp2 = "en-aaa-bbb-ccc-";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
     }
 
     @Test(timeout = 5000)
+
     public void TestDecodeQuotedPrintable() {
       TestDecodeQuotedPrintable("test", "test");
       TestDecodeQuotedPrintable("te \tst", "te \tst");
@@ -1444,7 +1463,7 @@ String stringTemp =
       TestDecodeQuotedPrintable("te\t \r\n", "te\r\n");
       TestDecodeQuotedPrintable("te \t\r\n", "te\r\n");
     }
-    //@Test
+    // @Test
     public static void TestLenientQuotedPrintable() {
       // Ignore for now, Message constructor currently uses
       // quoted-printable parsing that's not lenient on
@@ -1504,7 +1523,7 @@ String stringTemp =
       String tmp = "=?utf-8?q??=\r\n \r\nX-Ignore: 1";
       TestDecodeUnstructured("=?utf-8?q??= ", tmp);
       tmp = "=?utf-8?q??=\r\n \r\n ABC";
-      TestDecodeUnstructured("=?utf-8?q??=  ABC", tmp);
+      TestDecodeUnstructured("=?utf-8?q??= ABC", tmp);
     }
 
     @Test
@@ -1513,119 +1532,145 @@ String stringTemp =
     }
 
     public static void TestEncodedWordsOne(String expected, String input) {
-      String par = "(";
+      String ValuePar = "(";
       TestDecodeUnstructured(expected, input);
-      TestDecodeStructured("(" + expected + ") en",
-        "(" + input + ") en");
-      TestDecodeStructured("(" + expected + ") en",
-        " (" + input + ") en");
-      TestDecodeStructured(par + "comment " + par + "cmt " + expected +
-                ")comment) en", " (comment (cmt " + input + ")comment) en");
       TestDecodeStructured(
-        par + "comment " + par + "=?bad?= " + expected + ")comment) en",
+  "(" + expected + ") en",
+  "(" + input + ") en");
+      TestDecodeStructured(
+  "(" + expected + ") en",
+  " (" + input + ") en");
+      TestDecodeStructured(
+  ValuePar + "comment " + ValuePar + "cmt " + expected + ")comment) en",
+ " (comment (cmt " + input + ")comment) en");
+      TestDecodeStructured(
+     ValuePar + "comment " + ValuePar + "=?bad?= " + expected + ")comment) en",
         " (comment (=?bad?= " + input + ")comment) en");
       TestDecodeStructured(
-        par + "comment " + par + "" + expected + ")comment) en",
+   ValuePar + "comment " + ValuePar + "" + expected + ")comment) en",
         " (comment (" + input + ")comment) en");
-      TestDecodeStructured("(" + expected + "()) en",
-        " (" + input + "()) en");
-      TestDecodeStructured("en (" + expected + ")",
-        " en (" + input + ")");
+      TestDecodeStructured(
+  "(" + expected + "()) en",
+  " (" + input + "()) en");
+      TestDecodeStructured(
+  "en (" + expected + ")",
+  " en (" + input + ")");
     }
 
     @Test
     public void TestEncodedPhrase2() {
       {
-        String stringTemp = DowngradeHeaderField("subject",
-                    "(tes\u00bet) x@x.example");
-        Assert.assertEquals("=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "subject",
+  "(tes\u00bet) x@x.example");
+        Assert.assertEquals(
+  "=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
+  stringTemp);
       }
     }
 
     @Test
     public void TestToFieldDowngrading() {
-      String sep = ", ";
+      String ValueSep = ", ";
       {
-        String objectTemp = "x <x@example.com>" + sep + "\"X\" <y@example.com>";
-        Object objectTemp2 = DowngradeHeaderField("to",
-                    "x <x@example.com>, \"X\" <y@example.com>");
+  String objectTemp = "x <x@example.com>" + ValueSep +
+          "\"X\" <y@example.com>";
+        String strparam = "x <x@example.com>, \"X\" <y@example.com>";
+        Object objectTemp2 = DowngradeHeaderField(
+  "to",
+  strparam);
         Assert.assertEquals(objectTemp, objectTemp2);
       }
-      {
-        String objectTemp = "x <x@example.com>" + sep +
+            {
+                String objectTemp = "x <x@example.com>" + ValueSep +
                     "=?utf-8?Q?=C2=BE?= <y@example.com>";
-        Object objectTemp2 = DowngradeHeaderField("to",
-                    "x <x@example.com>, \u00be <y@example.com>");
-        Assert.assertEquals(objectTemp, objectTemp2);
-      }
-      {
-        String objectTemp = "x <x@example.com>" + sep +
+                String strparam = "x <x@example.com>, \u00be <y@example.com>";
+                Object objectTemp2 = DowngradeHeaderField(
+          "to",
+          strparam);
+                Assert.assertEquals(objectTemp, objectTemp2);
+            }
+            {
+                String objectTemp = "x <x@example.com>" + ValueSep +
                     "=?utf-8?Q?=C2=BE?= <y@example.com>";
-        Object objectTemp2 = DowngradeHeaderField("to",
-                    "x <x@example.com>, \"\u00be\" <y@example.com>");
-        Assert.assertEquals(objectTemp, objectTemp2);
-      }
-      {
-        String objectTemp = "x <x@example.com>" + sep +
-          "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>";
-        Object objectTemp2 = DowngradeHeaderField("to",
-                    "x <x@example.com>, x\u00e1 x x\u00e1 <y@example.com>");
-        Assert.assertEquals(objectTemp, objectTemp2);
-      }
-      {
-        String stringTemp = DowngradeHeaderField("to",
-                    "g: x@example.com, x\u00e1y@example.com;");
+                Object objectTemp2 = DowngradeHeaderField(
+          "to",
+          "x <x@example.com>" + ValueSep + "\"\u00be\" <y@example.com>");
+                Assert.assertEquals(objectTemp, objectTemp2);
+            }
+            {
+                String objectTemp = "x <x@example.com>" + ValueSep +
+                  "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>";
+                Object objectTemp2 = DowngradeHeaderField(
+          "to",
+          "x <x@example.com>" + ValueSep + "x\u00e1 x x\u00e1 <y@example.com>");
+                Assert.assertEquals(objectTemp, objectTemp2);
+            }
+            {
+                String stringTemp = DowngradeHeaderField(
+          "to",
+          "g: x@example.com" + ValueSep + "x\u00e1y@example.com;");
 
-        {
-          Object objectTemp =
-            "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;"
-                    ;
-          Object objectTemp2 = stringTemp;
-          Assert.assertEquals(objectTemp, objectTemp2);
-        }
-      }
-      {
-        String stringTemp = DowngradeHeaderField("to",
-                    "g: x@example.com, x@\u0300.example;");
+                {
+                    Object objectTemp =
+  "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;";
 
-        {
-          Object objectTemp =
-            "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;"
-                    ;
-          Object objectTemp2 = stringTemp;
-          Assert.assertEquals(objectTemp, objectTemp2);
-        }
-      }
-      {
-        String objectTemp = "g: x@example.com" + sep + "x@xn--e-ufa.example;";
-        Object objectTemp2 = DowngradeHeaderField("to",
-                    "g: x@example.com, x@e\u00e1.example;");
-        Assert.assertEquals(objectTemp, objectTemp2);
-      }
-      {
-        String stringTemp = DowngradeHeaderField("sender",
-                "x <x@e\u00e1.example>");
-        Assert.assertEquals("x <x@xn--e-ufa.example>",
+                    Object objectTemp2 = stringTemp;
+                    Assert.assertEquals(objectTemp, objectTemp2);
+                }
+            }
+            {
+                String stringTemp = DowngradeHeaderField(
+          "to",
+          "g: x@example.com" + ValueSep + "x@\u0300.example;");
+
+                {
+                    Object objectTemp =
+  "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;";
+
+                    Object objectTemp2 = stringTemp;
+                    Assert.assertEquals(objectTemp, objectTemp2);
+                }
+            }
+            {
+                String objectTemp = "g: x@example.com" + ValueSep +
+                    "x@xn--e-ufa.example;";
+                Object objectTemp2 = DowngradeHeaderField(
+          "to",
+          "g: x@example.com" + ValueSep + "x@e\u00e1.example;");
+                Assert.assertEquals(objectTemp, objectTemp2);
+            }
+            {
+                String stringTemp = DowngradeHeaderField(
+          "sender",
+          "x <x@e\u00e1.example>");
+                Assert.assertEquals(
+          "x <x@xn--e-ufa.example>",
           stringTemp);
+            }
+            {
+                String stringTemp = DowngradeHeaderField(
+          "sender",
+          "x\u00e1 x x\u00e1 <x@example.com>");
+                Assert.assertEquals(
+          "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
+          stringTemp);
+            }
+            {
+        String stringTemp = DowngradeHeaderField(
+  "sender",
+  "x\u00e1 x x\u00e1 <x@e\u00e1.example>");
+        Assert.assertEquals(
+  "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("sender",
-                    "x\u00e1 x x\u00e1 <x@example.com>");
-        Assert.assertEquals("=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
-          stringTemp);
-      }
-      {
-        String stringTemp = DowngradeHeaderField("sender",
-                    "x\u00e1 x x\u00e1 <x@e\u00e1.example>");
-        Assert.assertEquals("=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
-          stringTemp);
-      }
-      {
-        String stringTemp = DowngradeHeaderField("sender",
-          "x <x\u00e1y@example.com>");
-        Assert.assertEquals("x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "sender",
+  "x <x\u00e1y@example.com>");
+        Assert.assertEquals(
+  "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
+  stringTemp);
       }
     }
 
@@ -1634,7 +1679,7 @@ String stringTemp =
     }
 
     private static String DowngradeHeaderField(String name, String value) {
-      String msgstr = "";
+      var msgstr = "";
       msgstr += name + ": " + value + "\r\n";
       if (!name.equals("from")) {
         msgstr += "from: x@example.com\r\n";
@@ -1648,186 +1693,235 @@ String stringTemp =
       return gen;
     }
 
-    //@Test
+    // @Test
     public void TestCommentsToWords() {
       {
         String stringTemp = EncodeComment("(x)");
-        Assert.assertEquals("(=?utf-8?Q?x?=)",
-          stringTemp);
+        Assert.assertEquals(
+  "(=?utf-8?Q?x?=)",
+  stringTemp);
       }
       {
         String stringTemp = EncodeComment("(x\\y)");
-        Assert.assertEquals("(=?utf-8?Q?xy?=)",
-          stringTemp);
+        Assert.assertEquals(
+  "(=?utf-8?Q?xy?=)",
+  stringTemp);
       }
       {
         String stringTemp = EncodeComment("(x\r\n y)");
-        Assert.assertEquals("(=?utf-8?Q?x_y?=)",
-          stringTemp);
+        Assert.assertEquals(
+  "(=?utf-8?Q?x_y?=)",
+  stringTemp);
       }
       {
         String stringTemp = EncodeComment("(x\u00a0)");
-        Assert.assertEquals("(=?utf-8?Q?x=C2=A0?=)",
-          stringTemp);
+        Assert.assertEquals(
+  "(=?utf-8?Q?x=C2=A0?=)",
+  stringTemp);
       }
       {
         String stringTemp = EncodeComment("(x\\\u00a0)");
-        Assert.assertEquals("(=?utf-8?Q?x=C2=A0?=)",
-          stringTemp);
+        Assert.assertEquals(
+  "(=?utf-8?Q?x=C2=A0?=)",
+  stringTemp);
       }
       Assert.assertEquals("(=?utf-8?Q?x?=())", EncodeComment("(x())"));
-      Assert.assertEquals("(=?utf-8?Q?x?=()=?utf-8?Q?y?=)",
+      Assert.assertEquals(
+  "(=?utf-8?Q?x?=()=?utf-8?Q?y?=)",
                     EncodeComment("(x()y)"));
-      Assert.assertEquals("(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)",
+      Assert.assertEquals(
+  "(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)",
                     EncodeComment("(x(a\\b)y)"));
       {
         String stringTemp = EncodeComment("()");
-        Assert.assertEquals("()",
-          stringTemp);
+        Assert.assertEquals(
+  "()",
+  stringTemp);
       }
     }
     @Test
     public void TestCommentsToWords2() {
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "(test) x@x.example");
-        Assert.assertEquals("(test) x@x.example",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "(test) x@x.example");
+        Assert.assertEquals(
+  "(test) x@x.example",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                 "(tes\u00bet) x@x.example");
-        Assert.assertEquals("(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "(tes\u00bet) x@x.example");
+        Assert.assertEquals(
+  "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("content-language",
-                    "(tes\u00bet) en");
-        Assert.assertEquals("(=?utf-8?Q?tes=C2=BEt?=) en",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "content-language",
+  "(tes\u00bet) en");
+        Assert.assertEquals(
+  "(=?utf-8?Q?tes=C2=BEt?=) en",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "(comment) Test <x@x.example>");
-        Assert.assertEquals("(comment) Test <x@x.example>",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) Test <x@x.example>");
+        Assert.assertEquals(
+  "(comment) Test <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "(comment) Tes\u00bet <x@x.example>");
-        Assert.assertEquals("(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) Tes\u00bet <x@x.example>");
+        Assert.assertEquals(
+  "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "(comment) Tes\u00bet Subject <x@x.example>");
-  Assert.assertEquals("(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-                stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) Tes\u00bet Subject <x@x.example>");
+  Assert.assertEquals(
+  "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "(comment) Test Sub\u00beject <x@x.example>");
-  Assert.assertEquals("(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-                stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) Test Sub\u00beject <x@x.example>");
+  Assert.assertEquals(
+  "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "(comment) \"Tes\u00bet\" <x@x.example>");
-        Assert.assertEquals("(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) \"Tes\u00bet\" <x@x.example>");
+        Assert.assertEquals(
+  "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "(comment) \"Tes\u00bet Subject\" <x@x.example>");
-  Assert.assertEquals("(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-                stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) \"Tes\u00bet Subject\" <x@x.example>");
+  Assert.assertEquals(
+  "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "(comment) \"Test Sub\u00beject\" <x@x.example>");
-  Assert.assertEquals("(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-                stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) \"Test Sub\u00beject\" <x@x.example>");
+  Assert.assertEquals(
+  "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "(comment) \"Tes\u00bet   Subject\" <x@x.example>");
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) \"Tes\u00bet Subject\" <x@x.example>");
         {
- Object objectTemp = "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>"
-                    ;
+ Object objectTemp = "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>";
+
           Object objectTemp2 = stringTemp;
           Assert.assertEquals(objectTemp, objectTemp2);
         }
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
 
         {
           Object objectTemp =
-            "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>"
-                    ;
+            "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>";
+
           Object objectTemp2 = stringTemp;
           Assert.assertEquals(objectTemp, objectTemp2);
         }
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-  Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-                stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "\"Tes\u00bet Subject\" (comment) <x@x.example>");
+  Assert.assertEquals(
+  "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+  stringTemp);
       }
       {
         String stringTemp = DowngradeHeaderField("from", "Test <x@x.example>");
-        Assert.assertEquals("Test <x@x.example>",
-          stringTemp);
+        Assert.assertEquals(
+  "Test <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                 "Tes\u00bet <x@x.example>");
-        Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "Tes\u00bet <x@x.example>");
+        Assert.assertEquals(
+  "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "Tes\u00bet Subject <x@x.example>");
-        Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "Tes\u00bet Subject <x@x.example>");
+        Assert.assertEquals(
+  "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "Test Sub\u00beject <x@x.example>");
-        Assert.assertEquals("=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "Test Sub\u00beject <x@x.example>");
+        Assert.assertEquals(
+  "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "\"Tes\u00bet\" <x@x.example>");
-        Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "\"Tes\u00bet\" <x@x.example>");
+        Assert.assertEquals(
+  "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "\"Tes\u00bet Subject\" <x@x.example>");
-        Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "\"Tes\u00bet Subject\" <x@x.example>");
+        Assert.assertEquals(
+  "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "\"Test Sub\u00beject\" <x@x.example>");
-        Assert.assertEquals("=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "\"Test Sub\u00beject\" <x@x.example>");
+        Assert.assertEquals(
+  "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "\"Tes\u00bet   Subject\" <x@x.example>");
-        Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
-          stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "\"Tes\u00bet Subject\" <x@x.example>");
+        Assert.assertEquals(
+  "=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
+  stringTemp);
       }
       {
-        String stringTemp = DowngradeHeaderField("from",
-                    "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-  Assert.assertEquals("=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-                stringTemp);
+        String stringTemp = DowngradeHeaderField(
+  "from",
+  "\"Tes\u00bet Subject\" (comment) <x@x.example>");
+  Assert.assertEquals(
+  "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+  stringTemp);
       }
     }
 
@@ -1858,81 +1952,100 @@ String stringTemp =
       // Colons and angle brackets
       TestEncodedWordsPhrase("\"x <y:z>\"", "=?utf-8?q?x_=3Cy=3Az=3E?=");
       // Encoded word lookalikes
-      TestEncodedWordsPhrase("\"=?utf-8?q?xyz?=\"",
-        "=?utf-8?q?=3D=3Futf-8=3Fq=3Fxyz=3F=3D?=");
-      TestEncodedWordsPhrase("\"=?utf-8?q?xyz?=\"",
-                    "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
+      TestEncodedWordsPhrase(
+  "\"=?utf-8?q?xyz?=\"",
+  "=?utf-8?q?=3D=3Futf-8=3Fq=3Fxyz=3F=3D?=");
+      TestEncodedWordsPhrase(
+  "\"=?utf-8?q?xyz?=\"",
+  "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
       // Already quoted material
-      TestEncodedWordsPhrase("me (x) \"x:y\"",
-        "=?utf-8?q?me?= (x) \"x:y\"");
+      TestEncodedWordsPhrase(
+  "me (x) \"x:y\"",
+  "=?utf-8?q?me?= (x) \"x:y\"");
       // Already quoted material with a special
-      TestEncodedWordsPhrase("me \"x:y\"",
-                    "=?utf-8?q?me?= \"x:y\"");
+      TestEncodedWordsPhrase(
+  "me \"x:y\"",
+  "=?utf-8?q?me?= \"x:y\"");
     }
 
     @Test(timeout = 5000)
+
     public void TestEncodedWords() {
-      String par = "(";
-        TestEncodedWordsPhrase ("(sss) y", "(sss) =?us-ascii?q?y?=");
-        TestEncodedWordsPhrase ("tes=dxx", "=?us-ascii?q?tes=dxx?=");
-        TestEncodedWordsPhrase ("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
-        TestEncodedWordsPhrase ("=?bad1?= =?bad2?= =?bad3?=",
-                    "=?bad1?= =?bad2?= =?bad3?=");
+      String ValuePar = "(";
+        TestEncodedWordsPhrase("(sss) y", "(sss) =?us-ascii?q?y?=");
+        TestEncodedWordsPhrase("tes=dxx", "=?us-ascii?q?tes=dxx?=");
+        TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
+        TestEncodedWordsPhrase(
+  "=?bad1?= =?bad2?= =?bad3?=",
+  "=?bad1?= =?bad2?= =?bad3?=");
         // quoted because one word was decoded
-        TestEncodedWordsPhrase ("\"y =?bad2?= =?bad3?=\"",
-                    "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
+        TestEncodedWordsPhrase(
+  "\"y =?bad2?= =?bad3?=\"",
+  "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
         // quoted because one word was decoded
-        TestEncodedWordsPhrase ("\"=?bad1?= y =?bad3?=\"",
-                    "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
-        TestEncodedWordsPhrase ("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
-        TestEncodedWordsPhrase ("xy (sss)",
-                "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
-        TestEncodedWordsPhrase ("x (sss) y",
-                    "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
-        TestEncodedWordsPhrase ("x (z) y",
-                    "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
-     TestEncodedWordsPhrase ("=?us-ascii?q?x?=" + par +
-          "sss)=?us-ascii?q?y?=",
+        TestEncodedWordsPhrase(
+  "\"=?bad1?= y =?bad3?=\"",
+  "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
+        TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
+        TestEncodedWordsPhrase(
+  "xy(sss)",
+  "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
+        TestEncodedWordsPhrase(
+  "x(sss) y",
+  "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
+        TestEncodedWordsPhrase(
+  "x(z) y",
+  "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+     TestEncodedWordsPhrase(
+  "=?us-ascii?q?x?=" + ValuePar + "sss)=?us-ascii?q?y?=",
                     "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
-        TestEncodedWordsPhrase ("=?us-ascii?q?x?=" + par + "z)=?us-ascii?q?y?=",
+        TestEncodedWordsPhrase(
+  "=?us-ascii?q?x?=" + ValuePar + "z)=?us-ascii?q?y?=",
                     "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
-        TestEncodedWordsPhrase ("=?us-ascii?q?x?=" + par + "z) y",
+        TestEncodedWordsPhrase(
+  "=?us-ascii?q?x?=" + ValuePar + "z) y",
                     "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
-        TestEncodedWordsOne ("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
-        TestEncodedWordsOne ("abcde abcde", "abcde abcde");
-        TestEncodedWordsOne ("abcde", "abcde");
-        TestEncodedWordsOne ("abcde", "=?utf-8?Q?abcde?=");
-      TestEncodedWordsOne ("=?utf-8?Q?abcde?=extra",
-          "=?utf-8?Q?abcde?=extra");
-        TestEncodedWordsOne ("abcde ", "=?utf-8?Q?abcde?= ");
-        TestEncodedWordsOne ("ab\u00a0de", "=?utf-8?Q?ab=C2=A0de?=");
-        TestEncodedWordsOne ("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
-        TestEncodedWordsOne ("x y", "x =?utf-8?Q?y?=");
-        TestEncodedWordsOne ("x y", "x =?utf-8?Q?y?=");
-        TestEncodedWordsOne ("x y", "=?utf-8?Q?x?= y");
-        TestEncodedWordsOne ("x y", "=?utf-8?Q?x?= y");
-        TestEncodedWordsOne ("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
-        TestEncodedWordsOne ("abc de", "=?utf-8?Q?abc=20de?=");
-        TestEncodedWordsOne ("abc de", "=?utf-8?Q?abc_de?=");
-        TestEncodedWordsOne ("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
-    TestEncodedWordsOne ("=?x-undefined?q?abcde?=",
-          "=?x-undefined?q?abcde?=");
-        TestEncodedWordsOne ("=?utf-8?Q?" + Repeat ("x", 200) + "?=",
-                    "=?utf-8?Q?" + Repeat ("x", 200) + "?=");
-     TestEncodedWordsPhrase ("=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
-                    "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
+        TestEncodedWordsOne("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
+        TestEncodedWordsOne("abcde abcde", "abcde abcde");
+        TestEncodedWordsOne("abcde", "abcde");
+        TestEncodedWordsOne("abcde", "=?utf-8?Q?abcde?=");
+      TestEncodedWordsOne(
+  "=?utf-8?Q?abcde?=extra",
+  "=?utf-8?Q?abcde?=extra");
+        TestEncodedWordsOne("abcde ", "=?utf-8?Q?abcde?= ");
+        TestEncodedWordsOne("ab\u00a0de", "=?utf-8?Q?ab=C2=A0de?=");
+        TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
+        TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
+        TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
+        TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
+        TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
+        TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
+        TestEncodedWordsOne("abc de", "=?utf-8?Q?abc=20de?=");
+        TestEncodedWordsOne("abc de", "=?utf-8?Q?abc_de?=");
+        TestEncodedWordsOne("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
+    TestEncodedWordsOne(
+  "=?x-undefined?q?abcde?=",
+  "=?x-undefined?q?abcde?=");
+        TestEncodedWordsOne(
+  "=?utf-8?Q?" + Repeat("x", 200) + "?=",
+  "=?utf-8?Q?" + Repeat("x", 200) + "?=");
+     TestEncodedWordsPhrase(
+  "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
+  "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
         // Language embedded in encoded word
-        TestEncodedWordsOne ("x", "=?utf-8*en?Q?x?=");
-        TestEncodedWordsOne ("=?x-unknown*en?Q?x?=", "=?x-unknown*en?Q?x?=");
-        TestEncodedWordsOne ("x", "=?utf-8*en-us?Q?x?=");
-        TestEncodedWordsOne ("x", "=?utf-8*i-default?Q?x?=");
-    TestEncodedWordsOne ("=?utf-8*i-unknown?Q?x?=",
-          "=?utf-8*i-unknown?Q?x?=");
-        TestEncodedWordsOne ("=?*en?Q?x?=", "=?*en?Q?x?=");
-        TestEncodedWordsOne ("=?utf-8*?Q?x?=", "=?utf-8*?Q?x?=");
+        TestEncodedWordsOne("x", "=?utf-8*en?Q?x?=");
+        TestEncodedWordsOne("=?x-unknown*en?Q?x?=", "=?x-unknown*en?Q?x?=");
+        TestEncodedWordsOne("x", "=?utf-8*en-us?Q?x?=");
+        TestEncodedWordsOne("x", "=?utf-8*i-default?Q?x?=");
+    TestEncodedWordsOne(
+  "=?utf-8*i-unknown?Q?x?=",
+  "=?utf-8*i-unknown?Q?x?=");
+        TestEncodedWordsOne("=?*en?Q?x?=", "=?*en?Q?x?=");
+        TestEncodedWordsOne("=?utf-8*?Q?x?=", "=?utf-8*?Q?x?=");
     }
 
     @Test(timeout = 5000)
+
     public void TestHeaderParsing() {
       String tmp;
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>;";
@@ -2012,11 +2125,11 @@ String stringTemp =
     public static String ToQPString(byte[] bytes) {
       StringBuilder builder = new StringBuilder();
       for (int i = 0; i < bytes.length; ++i) {
-        String hex = "0123456789ABCDEF";
+        String ValueHex = "0123456789ABCDEF";
         byte c = bytes[i];
         builder.append('=');
-        builder.append(hex.charAt(((int)c >> 4) & 15));
-        builder.append(hex.charAt(((int)c) & 15));
+        builder.append(ValueHex.charAt(((int)c >> 4) & 15));
+        builder.append(ValueHex.charAt(((int)c) & 15));
         builder.append("=\r\n");
       }
       return builder.toString();
@@ -2056,8 +2169,10 @@ String stringTemp =
     public static void TestEncodedBytesRoundTrip(String str) {
       TestEncodedBytesRoundTrip(DataUtilities.GetUtf8Bytes(str, true), false);
       {
-        byte[] objectTemp = DataUtilities.GetUtf8Bytes(str, true,
-                true);
+        byte[] objectTemp = DataUtilities.GetUtf8Bytes(
+  str,
+  true,
+  true);
         TestEncodedBytesRoundTrip(objectTemp, true);
       }
     }
@@ -2072,11 +2187,12 @@ String stringTemp =
     }
 
     @Test(timeout = 200000)
+
     public void TestRandomEncodedBytes() {
       RandomGenerator rnd = new RandomGenerator();
       for (int i = 0; i < 10000; ++i) {
         if (i % 100 == 0) {
-          //System.out.println (i);
+          // System.out.println (i);
         }
         byte[] bytes = RandomBytes(rnd);
         TestEncodedBytesRoundTrip(bytes, false);

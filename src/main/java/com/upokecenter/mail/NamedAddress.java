@@ -24,7 +24,7 @@ import java.util.*;
      */
     public final String getName() {
  return (this.displayName == null) ? ((this.address == null) ?
-          ("") : (this.address.toString())) : (this.displayName);
+          "" : this.address.toString()) : this.displayName;
       }
 
     /**

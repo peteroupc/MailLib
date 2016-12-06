@@ -10,8 +10,9 @@ using System.Net;
 
 namespace MailLibTest {
   internal static class NetHelper {
-    public static string[] DownloadOrOpenAllLines(string location, string
-      cachedPath) {
+    public static string[] DownloadOrOpenAllLines(
+  string location,
+  string cachedPath) {
       if (!File.Exists(cachedPath)) {
         var request = WebRequest.Create(location);
         var response = request.GetResponse();

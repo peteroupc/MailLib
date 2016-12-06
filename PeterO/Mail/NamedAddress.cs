@@ -20,7 +20,7 @@ namespace PeterO.Mail {
     public string Name {
       get {
  return (this.displayName == null) ? ((this.address == null) ?
-          (String.Empty) : (this.address.ToString())) : (this.displayName);
+          String.Empty : this.address.ToString()) : this.displayName;
       }
     }
 
@@ -57,7 +57,7 @@ namespace PeterO.Mail {
     public override string ToString() {
       if (this.isGroup) {
         #if DEBUG
-if ((this.displayName) == null) {
+if (this.displayName == null) {
   throw new ArgumentNullException("this.displayName");
 }
 #endif

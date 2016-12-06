@@ -76,7 +76,7 @@ namespace PeterO.Text {
       ByteData table = null;
         if (bidiClasses == null) {
 lock (syncRoot) {
-bidiClasses = bidiClasses ?? (ByteData.Decompress(IdnaData.BidiClasses));
+bidiClasses = bidiClasses ?? ByteData.Decompress(IdnaData.BidiClasses);
 }
 }
         table = bidiClasses;
@@ -87,7 +87,7 @@ bidiClasses = bidiClasses ?? (ByteData.Decompress(IdnaData.BidiClasses));
       ByteData table = null;
      if (joiningTypes == null) {
 lock (syncRoot) {
-joiningTypes = joiningTypes ?? (ByteData.Decompress(IdnaData.JoiningTypes));
+joiningTypes = joiningTypes ?? ByteData.Decompress(IdnaData.JoiningTypes);
 }
 }
         table = joiningTypes;
@@ -98,7 +98,7 @@ joiningTypes = joiningTypes ?? (ByteData.Decompress(IdnaData.JoiningTypes));
       ByteData table = null;
         if (scripts == null) {
 lock (syncRoot) {
-scripts = scripts ?? (ByteData.Decompress(IdnaData.IdnaRelevantScripts));
+scripts = scripts ?? ByteData.Decompress(IdnaData.IdnaRelevantScripts);
 }
 }
         table = scripts;

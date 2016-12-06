@@ -12,44 +12,67 @@ package com.upokecenter.test; import com.upokecenter.util.*;
     private Object syncRoot = new Object();
     private boolean threadSafe;
 
+    /**
+     * Initializes a new instance of the XorShift128Plus class.
+     */
     public XorShift128Plus() {
  this(true);
         }
+
+    /**
+     * Initializes a new instance of the XorShift128Plus class.
+     * @param threadSafe A Boolean object.
+     */
         public XorShift128Plus(boolean threadSafe) {
       this.threadSafe = threadSafe;
       this.Seed();
     }
-    private int GetBytesInternal(byte [] bytes, int offset, int length) {
+
+    private int GetBytesInternal(byte[] bytes, int offset, int length) {
             int count = length;
             while (length >= 8) {
                 long nv = this.NextValue();
-                bytes [offset++] = ((byte)nv);
+                bytes[offset++] = ((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = ((byte)nv);
+                bytes[offset++] = ((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = ((byte)nv);
+                bytes[offset++] = ((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = ((byte)nv);
+                bytes[offset++] = ((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = ((byte)nv);
+                bytes[offset++] = ((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = ((byte)nv);
+                bytes[offset++] = ((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = ((byte)nv);
+                bytes[offset++] = ((byte)nv);
                 nv >>= 8;
-                bytes [offset++] = ((byte)nv);
+                bytes[offset++] = ((byte)nv);
                 length -= 8;
             }
             if (length != 0) {
                 long nv = this.NextValue();
                 while (length > 0) {
-                    bytes [offset++] = ((byte)nv);
+                    bytes[offset++] = ((byte)nv);
                     nv >>= 8;
                     --length;
                 }
             }
       return count;
     }
+
+    /**
+     * Not documented yet.
+     * @param bytes Not documented yet.
+     * @param offset A zero-based index showing where the desired portion of {@code
+     * bytes} begins.
+     * @param length The length, in bytes, of the desired portion of {@code bytes}
+     * (but not more than {@code bytes} 's length).
+     * @return A 32-bit signed integer.
+     * @throws NullPointerException The parameter {@code bytes} is null.
+     * @throws IllegalArgumentException Either {@code offset} or {@code length} is less
+     * than 0 or greater than {@code bytes} 's length, or {@code bytes} 's
+     * length minus {@code offset} is less than {@code length}.
+     */
     public int GetBytes(byte[] bytes, int offset, int length) {
       if (bytes == null) {
         throw new NullPointerException("bytes");
@@ -74,12 +97,12 @@ package com.upokecenter.test; import com.upokecenter.util.*;
         throw new IllegalArgumentException("bytes's length minus " + offset + " (" +
           (bytes.length - offset) + ") is less than " + length);
       }
-      if (threadSafe) {
+      if (this.threadSafe) {
         synchronized (this.syncRoot) {
-          return GetBytesInternal (bytes, offset, length);
+          return this.GetBytesInternal(bytes, offset, length);
         }
       } else {
-        return GetBytesInternal (bytes, offset, length);
+        return this.GetBytesInternal(bytes, offset, length);
       }
     }
 
@@ -98,7 +121,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
 
     private void Seed() {
       long lb = new java.util.Date().getTime() & 0xffffffffffL;
-      this.s[0] =lb;
+      this.s[0] = lb;
       lb = 0L;
       this.s[1] = lb;
       if ((this.s[0] | this.s[1]) == 0) {

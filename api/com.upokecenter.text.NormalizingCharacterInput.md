@@ -7,36 +7,31 @@ Deprecated.&nbsp;
 
 ## Methods
 
-* `NormalizingCharacterInput(com.upokecenter.text.ICharacterInput input) NormalizerInput`<br>
- Deprecated.  Initializes a new instance of the NormalizerInput class using Normalization Form
- C.
+* `NormalizingCharacterInput(com.upokecenter.text.ICharacterInput input)`<br>
+ Deprecated.  Initializes a new instance of the
+ class.
 * `NormalizingCharacterInput(com.upokecenter.text.ICharacterInput stream,
-                         Normalization form) NormalizerInput`<br>
- Deprecated.  Initializes a new instance of the NormalizerInput class.
+                         Normalization form)`<br>
+ Deprecated.  Initializes a new instance of the
+ class.
 * `NormalizingCharacterInput(List<Integer> characterList)`<br>
  Deprecated.
-Either convert the list to a String or wrap it in an ICharacterInput and
- call the corresponding overload instead.
- Either convert the list to a String or wrap it in an ICharacterInput and
- call the corresponding overload instead.
 * `NormalizingCharacterInput(List<Integer> characterList,
                          Normalization form)`<br>
  Deprecated.
-Either convert the list to a String or wrap it in an ICharacterInput and
- call the corresponding overload instead.
- Either convert the list to a String or wrap it in an ICharacterInput and
- call the corresponding overload instead.
-* `NormalizingCharacterInput(String str) NormalizerInput`<br>
- Deprecated.  Initializes a new instance of the NormalizerInput class using Normalization Form
- C.
+* `NormalizingCharacterInput(String str)`<br>
+ Deprecated.  Initializes a new instance of the
+ class.
 * `NormalizingCharacterInput(String str,
                          int index,
                          int length,
-                         Normalization form) NormalizerInput`<br>
- Deprecated.  Initializes a new instance of the NormalizerInput class.
+                         Normalization form)`<br>
+ Deprecated.  Initializes a new instance of the
+ class.
 * `NormalizingCharacterInput(String str,
-                         Normalization form) NormalizerInput`<br>
- Deprecated.  Initializes a new instance of the NormalizerInput class.
+                         Normalization form)`<br>
+ Deprecated.  Initializes a new instance of the
+ class.
 * `static List<Integer> GetChars(com.upokecenter.text.ICharacterInput input,
         Normalization form)`<br>
  Deprecated.
@@ -84,36 +79,31 @@ Either convert the list to a String or wrap it in an ICharacterInput and
 
 ## Constructors
 
-* `NormalizingCharacterInput(com.upokecenter.text.ICharacterInput input) NormalizerInput`<br>
- Deprecated.  Initializes a new instance of the NormalizerInput class using Normalization Form
- C.
+* `NormalizingCharacterInput(com.upokecenter.text.ICharacterInput input)`<br>
+ Deprecated.  Initializes a new instance of the
+ class.
 * `NormalizingCharacterInput(com.upokecenter.text.ICharacterInput stream,
-                         Normalization form) NormalizerInput`<br>
- Deprecated.  Initializes a new instance of the NormalizerInput class.
+                         Normalization form)`<br>
+ Deprecated.  Initializes a new instance of the
+ class.
 * `NormalizingCharacterInput(List<Integer> characterList)`<br>
  Deprecated.
-Either convert the list to a String or wrap it in an ICharacterInput and
- call the corresponding overload instead.
- Either convert the list to a String or wrap it in an ICharacterInput and
- call the corresponding overload instead.
 * `NormalizingCharacterInput(List<Integer> characterList,
                          Normalization form)`<br>
  Deprecated.
-Either convert the list to a String or wrap it in an ICharacterInput and
- call the corresponding overload instead.
- Either convert the list to a String or wrap it in an ICharacterInput and
- call the corresponding overload instead.
-* `NormalizingCharacterInput(String str) NormalizerInput`<br>
- Deprecated.  Initializes a new instance of the NormalizerInput class using Normalization Form
- C.
+* `NormalizingCharacterInput(String str)`<br>
+ Deprecated.  Initializes a new instance of the
+ class.
 * `NormalizingCharacterInput(String str,
                          int index,
                          int length,
-                         Normalization form) NormalizerInput`<br>
- Deprecated.  Initializes a new instance of the NormalizerInput class.
+                         Normalization form)`<br>
+ Deprecated.  Initializes a new instance of the
+ class.
 * `NormalizingCharacterInput(String str,
-                         Normalization form) NormalizerInput`<br>
- Deprecated.  Initializes a new instance of the NormalizerInput class.
+                         Normalization form)`<br>
+ Deprecated.  Initializes a new instance of the
+ class.
 
 ## Method Details
 
@@ -123,7 +113,7 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>str</code> - A string specifying the text to normalize.
+* <code>str</code> - A public object.
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput(com.upokecenter.text.ICharacterInput input)
@@ -131,31 +121,27 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>input</code> - An ICharacterInput object.
+* <code>input</code> - A public object.
 
 ### NormalizingCharacterInput
-    @Deprecated public NormalizingCharacterInput(List<Integer> characterList)
-Deprecated.&nbsp;Either convert the list to a String or wrap it in an ICharacterInput and
- call the corresponding overload instead.
+    public NormalizingCharacterInput(List<Integer> characterList)
+Deprecated.&nbsp;
 ### NormalizingCharacterInput
-    @Deprecated public NormalizingCharacterInput(List<Integer> characterList, Normalization form)
-Deprecated.&nbsp;Either convert the list to a String or wrap it in an ICharacterInput and
- call the corresponding overload instead.
+    public NormalizingCharacterInput(List<Integer> characterList, Normalization form)
+Deprecated.&nbsp;
 ### NormalizingCharacterInput
     public NormalizingCharacterInput(String str, int index, int length, Normalization form)
 Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - A public object.
 
-* <code>index</code> - A zero-based index showing where the desired portion of <code>str</code> begins.
+* <code>index</code> - A 32-bit signed integer.
 
-* <code>length</code> - The number of elements in the desired portion of <code>str</code>
- (but not more than <code>str</code> 's length).
+* <code>length</code> - Another 32-bit signed integer.
 
-* <code>form</code> - Specifies the normalization form to use when normalizing the
- text.
+* <code>form</code> - A Normalization object.
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput(String str, Normalization form)
@@ -165,8 +151,12 @@ Deprecated.&nbsp;
 
 * <code>str</code> - A text string.
 
-* <code>form</code> - Specifies the normalization form to use when normalizing the
- text.
+* <code>form</code> - A Normalization object.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter <code>str</code> or "input" or
+ "charArray" is null.
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput(com.upokecenter.text.ICharacterInput stream, Normalization form)
@@ -174,14 +164,9 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>stream</code> - An ICharacterInput object.
+* <code>stream</code> - A public object.
 
-* <code>form</code> - Specifies the normalization form to use when normalizing the
- text.
-
-**Throws:**
-
-* <code>NullPointerException</code> - The parameter <code>stream</code> is null.
+* <code>form</code> - A Normalization object.
 
 ### IsNormalized
     public static boolean IsNormalized(com.upokecenter.text.ICharacterInput chars, Normalization form)

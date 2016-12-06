@@ -42,7 +42,7 @@ Assert.assertEquals(
       builder.SetParameter("a", "");
       Assert.assertEquals("", builder.ToMediaType().GetParameter("a"));
       try {
- builder.SetParameter(null,"");
+ builder.SetParameter(null, "");
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
 new Object();
@@ -51,7 +51,7 @@ new Object();
 throw new IllegalStateException("", ex);
 }
       try {
- builder.SetParameter("",null);
+ builder.SetParameter("", null);
 Assert.fail("Should have failed");
 } catch (NullPointerException ex) {
 new Object();

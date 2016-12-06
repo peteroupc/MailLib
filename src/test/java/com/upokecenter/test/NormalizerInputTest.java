@@ -17,7 +17,7 @@ import com.upokecenter.text.*;
     public static String RandomAscii(RandomGenerator rnd) {
       int length = rnd.UniformInt(50) + 1;
       StringBuilder sb = new StringBuilder();
-      for (int i = 0;i< length; ++i) {
+      for (int i = 0; i < length; ++i) {
         char c = (char)rnd.UniformInt(128);
         sb.append(c);
       }
@@ -53,17 +53,21 @@ public void TestNormalizationAscii() {
       str,
       Normalization.NFKD)))Assert.fail();
     // ASCII strings normalize to themselves
-    String str2 = NormalizerInput.Normalize(str,
-      Normalization.NFC);
+    String str2 = NormalizerInput.Normalize(
+  str,
+  Normalization.NFC);
     Assert.assertEquals(str, str2);
-    str2 = NormalizerInput.Normalize(str,
-      Normalization.NFD);
+    str2 = NormalizerInput.Normalize(
+  str,
+  Normalization.NFD);
     Assert.assertEquals(str, str2);
-    str2 = NormalizerInput.Normalize(str,
-      Normalization.NFKC);
+    str2 = NormalizerInput.Normalize(
+  str,
+  Normalization.NFKC);
     Assert.assertEquals(str, str2);
-    str2 = NormalizerInput.Normalize(str,
-      Normalization.NFKD);
+    str2 = NormalizerInput.Normalize(
+  str,
+  Normalization.NFKD);
     Assert.assertEquals(str, str2);
   }
 }
@@ -78,8 +82,9 @@ public void TestNormalizationLatinOne() {
       str,
       Normalization.NFC)))Assert.fail();
     // Latin-1 strings normalize to themselves in NFC
-    String str2 = NormalizerInput.Normalize(str,
-      Normalization.NFC);
+    String str2 = NormalizerInput.Normalize(
+  str,
+  Normalization.NFC);
     Assert.assertEquals(str, str2);
   }
 }
@@ -94,8 +99,9 @@ public void TestNormalizationLatinOne() {
         "x\u0300\u0323",
         Normalization.NFC))Assert.fail();
       try {
-        NormalizerInput.IsNormalized((ICharacterInput)null,
-          Normalization.NFC);
+        NormalizerInput.IsNormalized(
+  (ICharacterInput)null,
+  Normalization.NFC);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         new Object();

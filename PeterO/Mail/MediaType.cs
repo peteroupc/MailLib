@@ -1128,8 +1128,7 @@ return SkipQuotedString(
   index,
   endIndex,
   HttpRules,
-  parameters) ?
-        new MediaType(topLevelType, subType, parameters) : null;
+  parameters) ? new MediaType(topLevelType, subType, parameters) : null;
     }
 
     #if CODE_ANALYSIS

@@ -21,9 +21,9 @@ namespace MailLibTest {
       return typeof(Message).Namespace;
     }
 
-        public static string RandomString (RandomGenerator rnd) {
+        public static string RandomString(RandomGenerator rnd) {
             int count = 10 + rnd.UniformInt(350);
-      var sb = new StringBuilder(count*2);
+      var sb = new StringBuilder(count * 2);
             int ui;
             string problemChars = " \t\u0000\u0010\u001b\u001f" +
               "\u007f\u008f\u009f%\\/*?|:<>\"\u0028\u0029" +
@@ -31,34 +31,34 @@ namespace MailLibTest {
                "\ufffe\uffff\ufdd0\ufdef";
             for (var i = 0; i < count; ++i) {
                 var ch = 0;
-                ui = rnd.UniformInt (100);
+                ui = rnd.UniformInt(100);
                 if (ui < 2) {
-                    ch = rnd.UniformInt (0x110000);
+                    ch = rnd.UniformInt(0x110000);
                 } else if (ui < 4) {
-                    ch = rnd.UniformInt (0x10000);
+                    ch = rnd.UniformInt(0x10000);
                 } else if (ui < 10) {
-                    ch = rnd.UniformInt (0x3000);
+                    ch = rnd.UniformInt(0x3000);
                 } else if (ui < 80) {
-                    ch = 0x20 + rnd.UniformInt (0x5f);
+                    ch = 0x20 + rnd.UniformInt(0x5f);
                 } else if (ui < 83) {
                     ch = 0x20;
                 } else if (ui < 86) {
                     ch = (char)'.';
                 } else {
-                    ui = rnd.UniformInt (problemChars.Length);
-                    ch = problemChars [ui];
+                    ui = rnd.UniformInt(problemChars.Length);
+                    ch = problemChars[ui];
                 }
                 if ((ch & 0xf800) == 0xd800) {
                     ch &= 0xff;
                 }
                 if (ch < 0x10000) {
-                    sb.Append ((char)ch);
+                    sb.Append((char)ch);
                 } else {
                     ch -= 0x10000;
                     int lead = (ch >> 10) + 0xd800;
                     int trail = (ch & 0x3ff) + 0xdc00;
-                    sb.Append ((char)lead);
-                    sb.Append ((char)trail);
+                    sb.Append((char)lead);
+                    sb.Append((char)trail);
                 }
             }
             string ret = sb.ToString();
@@ -66,7 +66,7 @@ namespace MailLibTest {
         }
 
         public static string EscapeString(string str) {
-      const string hex = "0123456789abcdef";
+      const string ValueHex = "0123456789abcdef";
       var sb = new StringBuilder();
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
@@ -82,10 +82,10 @@ namespace MailLibTest {
           sb.Append("\\\\");
         } else if (c < 0x20 || c >= 0x7f) {
           sb.Append("\\u");
-          sb.Append(hex[(c >> 12) & 15]);
-          sb.Append(hex[(c >> 8) & 15]);
-          sb.Append(hex[(c >> 4) & 15]);
-          sb.Append(hex[(c) & 15]);
+          sb.Append(ValueHex[(c >> 12) & 15]);
+          sb.Append(ValueHex[(c >> 8) & 15]);
+          sb.Append(ValueHex[(c >> 4) & 15]);
+          sb.Append(ValueHex[c & 15]);
         } else {
           sb.Append(c);
         }
@@ -93,8 +93,10 @@ namespace MailLibTest {
       return sb.ToString();
     }
 
-    internal static int IsGoodAsciiMessageFormat(string str, bool
-      hasMessageType, string fn) {
+    internal static int IsGoodAsciiMessageFormat(
+  string str,
+  bool hasMessageType,
+  string fn) {
       var lineLength = 0;
       var wordLength = 0;
       var index = 0;
@@ -120,14 +122,14 @@ namespace MailLibTest {
         }
         if (c >= 0x80) {
           var builder = new StringBuilder();
-          const string hex = "0123456789ABCDEF";
+          const string ValueHex = "0123456789ABCDEF";
           builder.Append(fn);
           builder.Append(": ");
           builder.Append("Non-ASCII character (0x");
-          builder.Append(hex[((int)c >> 4) & 15]);
-          builder.Append(hex[((int)c) & 15]);
+          builder.Append(ValueHex[((int)c >> 4) & 15]);
+          builder.Append(ValueHex[((int)c) & 15]);
           builder.Append(")");
-          //Console.WriteLine(builder.ToString());
+          // Console.WriteLine(builder.ToString());
           return 0;
         }
         if (c == '\r' && index + 1 < endIndex && str[index + 1] == '\n') {
@@ -168,8 +170,9 @@ namespace MailLibTest {
           if (str[index + 1] != 0x20 &&
             !(str[index + 1] == 0x0d && index + 2 < str.Length && str[index +
               2] == 0x0a)) {
-            test = str.Substring(Math.Max(index + 2 - 30, 0),
-              Math.Min(index + 2, 30));
+            test = str.Substring(
+  Math.Max(index + 2 - 30, 0),
+  Math.Min(index + 2, 30));
             Console.WriteLine(fn +
               ":\n--No space/line break after header name and colon: (" +
               str[index + 1] + ") [" + test + "] " + index);
@@ -179,20 +182,20 @@ namespace MailLibTest {
         }
         if (c == 0) {
           var builder = new StringBuilder();
-          const string hex = "0123456789ABCDEF";
+          const string ValueHex = "0123456789ABCDEF";
           builder.Append(fn + ": CTL in message (0x");
-          builder.Append(hex[((int)c >> 4) & 15]);
-          builder.Append(hex[((int)c) & 15]);
+          builder.Append(ValueHex[((int)c >> 4) & 15]);
+          builder.Append(ValueHex[((int)c) & 15]);
           builder.Append(")");
           Console.WriteLine(builder.ToString());
           return 0;
         }
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
           var builder = new StringBuilder();
-          const string hex = "0123456789ABCDEF";
+          const string ValueHex = "0123456789ABCDEF";
           builder.Append(fn + ": CTL in header (0x");
-          builder.Append(hex[((int)c >> 4) & 15]);
-          builder.Append(hex[((int)c) & 15]);
+          builder.Append(ValueHex[((int)c >> 4) & 15]);
+          builder.Append(ValueHex[((int)c) & 15]);
           builder.Append(")");
           Console.WriteLine(builder.ToString());
           return 0;
@@ -217,15 +220,15 @@ namespace MailLibTest {
         if (lineLength > maxLineLength) {
           if (lineLength > 998) {
             if (headers) {
-              Console.WriteLine (fn + ":\n--Line length exceeded in header (" +
+              Console.WriteLine(fn + ":\n--Line length exceeded in header(" +
                     maxLineLength + " " +
-                    (str.Substring(index - 78, 78)) + ", " + lineLength + ")");
+                    str.Substring(index - 78, 78) + ", " + lineLength + ")");
               return 0;
             }
             if (!meetsLineLength && !mllmessage) {
               Console.WriteLine(fn + ":\n--Line length exceeded (" +
                maxLineLength + " " +
-               (str.Substring(index - 78, 78)) + ", " + lineLength + ")");
+               str.Substring(index - 78, 78) + ", " + lineLength + ")");
               mllmessage = true;
             }
           }
@@ -255,16 +258,19 @@ namespace MailLibTest {
     public static void AssertEqual(byte[] expectedBytes, byte[] actualBytes) {
       AssertEqual(expectedBytes, actualBytes, String.Empty);
     }
-    public static void AssertEqual(byte[] expectedBytes, byte[] actualBytes,
-                    String msg) {
+
+    public static void AssertEqual(
+  byte[] expectedBytes,
+  byte[] actualBytes,
+  String msg) {
       if (expectedBytes.Length != actualBytes.Length) {
         Assert.Fail("\nexpected: " + ToString(expectedBytes) + "\n" +
-                    "\nwas:      " + ToString(actualBytes) + "\n" + msg);
+                    "\nwas: " + ToString(actualBytes) + "\n" + msg);
       }
       for (int i = 0; i < expectedBytes.Length; ++i) {
         if (expectedBytes[i] != actualBytes[i]) {
           Assert.Fail("\nexpected: " + ToString(expectedBytes) + "\n" +
-                    "\nwas:      " + ToString(actualBytes) + "\n" + msg);
+                    "\nwas: " + ToString(actualBytes) + "\n" + msg);
         }
       }
     }
@@ -287,21 +293,23 @@ namespace MailLibTest {
 
     [Test]
     public void TestHeaderFields() {
-      const string testString =
+      const string ValueTestString =
        "From: Joe P Customer <customer@example.com>, " +
        "Jane W Customer <jane@example.com>\r\n\r\nTest";
-      Message msg = MessageTest.MessageFromString(testString);
+      Message msg = MessageTest.MessageFromString(ValueTestString);
       IList<NamedAddress> addresses = msg.FromAddresses;
       Assert.AreEqual(2, addresses.Count);
       {
         string stringTemp = addresses[0].ToString();
-        Assert.AreEqual("Joe P Customer <customer@example.com>",
-        stringTemp);
+        Assert.AreEqual(
+  "Joe P Customer <customer@example.com>",
+  stringTemp);
       }
       {
         string stringTemp = addresses[1].ToString();
-        Assert.AreEqual("Jane W Customer <jane@example.com>",
-        stringTemp);
+        Assert.AreEqual(
+  "Jane W Customer <jane@example.com>",
+  stringTemp);
       }
     }
 
@@ -336,8 +344,9 @@ namespace MailLibTest {
       AssertEqual(expected, msg.GetBody());
     }
 
-    private static void TestDecodeQuotedPrintable(string input, string
-         expected) {
+    private static void TestDecodeQuotedPrintable(
+  string input,
+  string expected) {
       string msgString = "From: <test@example.com>\r\n" +
         "MIME-Version: 1.0\r\n" + "Content-Type: application/octet-stream\r\n" +
         "Content-Transfer-Encoding: quoted-printable\r\n\r\n" + input;
@@ -1155,14 +1164,16 @@ namespace MailLibTest {
       TestPercentEncodingOne("tesA", "tes%41");
       TestPercentEncodingOne("tesa", "tes%61");
       TestPercentEncodingOne("tes\r\na", "tes%0d%0aa");
-      TestPercentEncodingOne("tes%xx",
-        "tes%xx");
+      TestPercentEncodingOne(
+  "tes%xx",
+  "tes%xx");
       TestPercentEncodingOne("tes%dxx", "tes%dxx");
     }
 
     private static void AssertUtf8Equal(byte[] expected, byte[] actual) {
-      Assert.AreEqual(DataUtilities.GetUtf8String(expected, true),
-                    DataUtilities.GetUtf8String(actual, true));
+      Assert.AreEqual(
+  DataUtilities.GetUtf8String(expected, true),
+  DataUtilities.GetUtf8String(actual, true));
     }
 
     private static byte[] DowngradeDeliveryStatus(string str) {
@@ -1180,7 +1191,7 @@ namespace MailLibTest {
       string expectedDSN;
       byte[] bytes;
       byte[] expectedBytes;
-      bool encap = (expected.StartsWith("=?", StringComparison.Ordinal));
+      bool encap = expected.StartsWith("=?", StringComparison.Ordinal);
       dsn = "X-Ignore: X\r\n\r\nOriginal-Recipient: " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
       expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
@@ -1223,68 +1234,74 @@ namespace MailLibTest {
 
     [Test]
     public void TestDowngradeDSN() {
-      const string hexstart = "\\x" + "{";
-      TestDowngradeDSNOne("utf-8; x@x.example",
-                    ("utf-8; x@x.example"));
-      TestDowngradeDSNOne("utf-8; x@x" + hexstart + "BE}.example",
-        ("utf-8; x@x\u00be.example"));
+      const string ValueHexstart = "\\x" + "{";
+      TestDowngradeDSNOne(
+  "utf-8; x@x.example",
+  "utf-8; x@x.example");
+      TestDowngradeDSNOne(
+  "utf-8; x@x" + ValueHexstart + "BE}.example",
+  "utf-8; x@x\u00be.example");
       {
-        string objectTemp = "utf-8; x@x" + hexstart + "BE}" + hexstart +
-                    "FF20}.example";
-        string objectTemp2 = ("utf-8; x@x\u00be\uff20.example");
+     string objectTemp = "utf-8; x@x" + ValueHexstart + "BE}" +
+          ValueHexstart + "FF20}.example";
+        string objectTemp2 = "utf-8; x@x\u00be\uff20.example";
         TestDowngradeDSNOne(objectTemp, objectTemp2);
       }
-      TestDowngradeDSNOne("(=?utf-8?Q?=C2=BE?=) utf-8; x@x.example",
-                    ("(\u00be) utf-8; x@x.example"));
-      TestDowngradeDSNOne("(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
-        ("(\u00be) rfc822; x@x.example"));
+      TestDowngradeDSNOne(
+  "(=?utf-8?Q?=C2=BE?=) utf-8; x@x.example",
+  "(\u00be) utf-8; x@x.example");
+      TestDowngradeDSNOne(
+  "(=?utf-8?Q?=C2=BE?=) rfc822; x@x.example",
+  "(\u00be) rfc822; x@x.example");
 
       {
         string stringTemp =
-  "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=);\r\n x@x.example"
-        ;
-        string stringTemp2 = ("(\u00be) rfc822(\u00be); x@x.example");
+  "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=);\r\n x@x.example";
+
+        string stringTemp2 = "(\u00be) rfc822(\u00be); x@x.example";
         TestDowngradeDSNOne(stringTemp, stringTemp2);
       }
 
       {
 string stringTemp =
           "(=?utf-8?Q?=C2=BE?=) utf-8(=?utf-8?Q?=C2=BE?=);\r\n x@x" +
-                hexstart + "BE}" + hexstart + "FF20}.example";
-      string stringTemp2 = ("(\u00be) utf-8(\u00be); x@x\u00be\uff20.example");
+                ValueHexstart + "BE}" + ValueHexstart + "FF20}.example";
+      string stringTemp2 = "(\u00be) utf-8(\u00be); x@x\u00be\uff20.example";
         TestDowngradeDSNOne(stringTemp, stringTemp2);
       }
-      TestDowngradeDSNOne("=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40=C2=BE?=",
-        ("(\u00be) rfc822; x@\u00be"));
+      TestDowngradeDSNOne(
+  "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40=C2=BE?=",
+  "(\u00be) rfc822; x@\u00be");
     }
 
     private static void TestValidLanguageTag(bool expectedValid, string str) {
       if (expectedValid) {
         TestEncodedWordsOne("x", "=?utf-8*" + str + "?Q?x?=");
       } else {
-        TestEncodedWordsOne("=?utf-8*" + str + "?Q?x?=", "=?utf-8*" + str +
-                 "?Q?x?=");
+        TestEncodedWordsOne(
+  "=?utf-8*" + str + "?Q?x?=",
+  "=?utf-8*" + str + "?Q?x?=");
       }
     }
 
     [Test]
     public void TestLanguageTags() {
-      TestValidLanguageTag(true, ("en-a-bb-x-y-z"));
+      TestValidLanguageTag(true, "en-a-bb-x-y-z");
       {
         var objectTemp = false;
-        string objectTemp2 = ("0-xx-xx");
+        string objectTemp2 = "0-xx-xx";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("9-xx-xx"));
+      TestValidLanguageTag(false, "9-xx-xx");
       {
         var objectTemp = false;
-        string objectTemp2 = ("a-xx-xx");
+        string objectTemp2 = "a-xx-xx";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("x-xx-xx"));
+      TestValidLanguageTag(true, "x-xx-xx");
       {
         var objectTemp = true;
-        string objectTemp2 = ("en-US-u-islamcal");
+        string objectTemp2 = "en-US-u-islamcal";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
       {
@@ -1294,115 +1311,116 @@ string stringTemp =
       }
       {
         var objectTemp = true;
-        string objectTemp2 = ("en-a-myext-b-another");
+        string objectTemp2 = "en-a-myext-b-another";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("de-419-DE"));
+      TestValidLanguageTag(false, "de-419-DE");
       {
         var objectTemp = false;
-        string objectTemp2 = ("a-DE");
+        string objectTemp2 = "a-DE";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("ar-a-aaa-b-bbb-a-ccc"));
+      TestValidLanguageTag(false, "ar-a-aaa-b-bbb-a-ccc");
       {
         var objectTemp = true;
-        string objectTemp2 = ("en");
+        string objectTemp2 = "en";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("qbb-us"));
+      TestValidLanguageTag(true, "qbb-us");
       {
         var objectTemp = true;
-        string objectTemp2 = ("zh-yue");
+        string objectTemp2 = "zh-yue";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("en-us"));
+      TestValidLanguageTag(true, "en-us");
       {
         var objectTemp = false;
-        string objectTemp2 = ("e0-us");
+        string objectTemp2 = "e0-us";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("en-gb-1999"));
+      TestValidLanguageTag(true, "en-gb-1999");
       {
         var objectTemp = true;
-        string objectTemp2 = ("en-gb-1999-1998");
+        string objectTemp2 = "en-gb-1999-1998";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("en-gb-1999-1999"));
+      TestValidLanguageTag(false, "en-gb-1999-1999");
       {
         var objectTemp = true;
-        string objectTemp2 = ("en-gb-oed");
+        string objectTemp2 = "en-gb-oed";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("sr-Latn-RS"));
+      TestValidLanguageTag(true, "sr-Latn-RS");
       {
         var objectTemp = false;
-        string objectTemp2 = ("x-aaaaaaaaa-y-z");
+        string objectTemp2 = "x-aaaaaaaaa-y-z";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("x-aaaaaaaa-y-z"));
+      TestValidLanguageTag(true, "x-aaaaaaaa-y-z");
       {
         var objectTemp = false;
-        string objectTemp2 = ("a-b-x-y-z");
+        string objectTemp2 = "a-b-x-y-z";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("a-bb-xx-yy-zz"));
+      TestValidLanguageTag(false, "a-bb-xx-yy-zz");
       {
         var objectTemp = false;
-        string objectTemp2 = ("a-bb-x-y-z");
+        string objectTemp2 = "a-bb-x-y-z";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("a-x-y-z"));
+      TestValidLanguageTag(false, "a-x-y-z");
       {
         var objectTemp = true;
-        string objectTemp2 = ("x-x-y-z");
+        string objectTemp2 = "x-x-y-z";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("i-lojban"));
+      TestValidLanguageTag(false, "i-lojban");
       {
         var objectTemp = true;
-        string objectTemp2 = ("i-klingon");
+        string objectTemp2 = "i-klingon";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("art-lojban"));
+      TestValidLanguageTag(true, "art-lojban");
       {
         var objectTemp = true;
-        string objectTemp2 = ("sgn-be-fr");
+        string objectTemp2 = "sgn-be-fr";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("no-bok"));
+      TestValidLanguageTag(true, "no-bok");
       {
         var objectTemp = false;
-        string objectTemp2 = ("z-xx-xx");
+        string objectTemp2 = "z-xx-xx";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("en-aaa-bbbb-x-xxx-yyy-zzz"));
+      TestValidLanguageTag(true, "en-aaa-bbbb-x-xxx-yyy-zzz");
       {
         var objectTemp = true;
-        string objectTemp2 = ("en-aaa-bbbb-x-x-y-z");
+        string objectTemp2 = "en-aaa-bbbb-x-x-y-z";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("en-aaa-bbb"));
+      TestValidLanguageTag(false, "en-aaa-bbb");
       {
         var objectTemp = false;
-        string objectTemp2 = ("en-aaa-bbb-ccc");
+        string objectTemp2 = "en-aaa-bbb-ccc";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(true, ("en-aaa-bbbb"));
+      TestValidLanguageTag(true, "en-aaa-bbbb");
       {
         var objectTemp = true;
-        string objectTemp2 = ("en-aaa-bbbb-cc");
+        string objectTemp2 = "en-aaa-bbbb-cc";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
-      TestValidLanguageTag(false, ("en-aaa-bbb-"));
+      TestValidLanguageTag(false, "en-aaa-bbb-");
       {
         var objectTemp = false;
-        string objectTemp2 = ("en-aaa-bbb-ccc-");
+        string objectTemp2 = "en-aaa-bbb-ccc-";
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
     }
 
     [Test]
     [Timeout(5000)]
+
     public void TestDecodeQuotedPrintable() {
       TestDecodeQuotedPrintable("test", "test");
       TestDecodeQuotedPrintable("te \tst", "te \tst");
@@ -1448,7 +1466,7 @@ string stringTemp =
       TestDecodeQuotedPrintable("te\t \r\n", "te\r\n");
       TestDecodeQuotedPrintable("te \t\r\n", "te\r\n");
     }
-    //[Test]
+    // [Test]
     public static void TestLenientQuotedPrintable() {
       // Ignore for now, Message constructor currently uses
       // quoted-printable parsing that's not lenient on
@@ -1508,7 +1526,7 @@ string stringTemp =
       string tmp = "=?utf-8?q??=\r\n \r\nX-Ignore: 1";
       TestDecodeUnstructured("=?utf-8?q??= ", tmp);
       tmp = "=?utf-8?q??=\r\n \r\n ABC";
-      TestDecodeUnstructured("=?utf-8?q??=  ABC", tmp);
+      TestDecodeUnstructured("=?utf-8?q??= ABC", tmp);
     }
 
     [Test]
@@ -1517,119 +1535,145 @@ string stringTemp =
     }
 
     public static void TestEncodedWordsOne(string expected, string input) {
-      const string par = "(";
+      const string ValuePar = "(";
       TestDecodeUnstructured(expected, input);
-      TestDecodeStructured("(" + expected + ") en",
-        "(" + input + ") en");
-      TestDecodeStructured("(" + expected + ") en",
-        " (" + input + ") en");
-      TestDecodeStructured(par + "comment " + par + "cmt " + expected +
-                ")comment) en", " (comment (cmt " + input + ")comment) en");
       TestDecodeStructured(
-        par + "comment " + par + "=?bad?= " + expected + ")comment) en",
+  "(" + expected + ") en",
+  "(" + input + ") en");
+      TestDecodeStructured(
+  "(" + expected + ") en",
+  " (" + input + ") en");
+      TestDecodeStructured(
+  ValuePar + "comment " + ValuePar + "cmt " + expected + ")comment) en",
+ " (comment (cmt " + input + ")comment) en");
+      TestDecodeStructured(
+     ValuePar + "comment " + ValuePar + "=?bad?= " + expected + ")comment) en",
         " (comment (=?bad?= " + input + ")comment) en");
       TestDecodeStructured(
-        par + "comment " + par + String.Empty + expected + ")comment) en",
+   ValuePar + "comment " + ValuePar + String.Empty + expected + ")comment) en",
         " (comment (" + input + ")comment) en");
-      TestDecodeStructured("(" + expected + "()) en",
-        " (" + input + "()) en");
-      TestDecodeStructured("en (" + expected + ")",
-        " en (" + input + ")");
+      TestDecodeStructured(
+  "(" + expected + "()) en",
+  " (" + input + "()) en");
+      TestDecodeStructured(
+  "en (" + expected + ")",
+  " en (" + input + ")");
     }
 
     [Test]
     public void TestEncodedPhrase2() {
       {
-        string stringTemp = DowngradeHeaderField("subject",
-                    "(tes\u00bet) x@x.example");
-        Assert.AreEqual("=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "subject",
+  "(tes\u00bet) x@x.example");
+        Assert.AreEqual(
+  "=?utf-8?Q?=28tes=C2=BEt=29_x=40x=2Eexample?=",
+  stringTemp);
       }
     }
 
     [Test]
     public void TestToFieldDowngrading() {
-      const string sep = ", ";
+      const string ValueSep = ", ";
       {
-        string objectTemp = "x <x@example.com>" + sep + "\"X\" <y@example.com>";
-        object objectTemp2 = DowngradeHeaderField("to",
-                    "x <x@example.com>, \"X\" <y@example.com>");
+  string objectTemp = "x <x@example.com>" + ValueSep +
+          "\"X\" <y@example.com>";
+        string strparam = "x <x@example.com>, \"X\" <y@example.com>";
+        object objectTemp2 = DowngradeHeaderField(
+  "to",
+  strparam);
         Assert.AreEqual(objectTemp, objectTemp2);
       }
-      {
-        string objectTemp = "x <x@example.com>" + sep +
+            {
+                string objectTemp = "x <x@example.com>" + ValueSep +
                     "=?utf-8?Q?=C2=BE?= <y@example.com>";
-        object objectTemp2 = DowngradeHeaderField("to",
-                    "x <x@example.com>, \u00be <y@example.com>");
-        Assert.AreEqual(objectTemp, objectTemp2);
-      }
-      {
-        string objectTemp = "x <x@example.com>" + sep +
+                string strparam = "x <x@example.com>, \u00be <y@example.com>";
+                object objectTemp2 = DowngradeHeaderField(
+          "to",
+          strparam);
+                Assert.AreEqual(objectTemp, objectTemp2);
+            }
+            {
+                string objectTemp = "x <x@example.com>" + ValueSep +
                     "=?utf-8?Q?=C2=BE?= <y@example.com>";
-        object objectTemp2 = DowngradeHeaderField("to",
-                    "x <x@example.com>, \"\u00be\" <y@example.com>");
-        Assert.AreEqual(objectTemp, objectTemp2);
-      }
-      {
-        string objectTemp = "x <x@example.com>" + sep +
-          "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>";
-        object objectTemp2 = DowngradeHeaderField("to",
-                    "x <x@example.com>, x\u00e1 x x\u00e1 <y@example.com>");
-        Assert.AreEqual(objectTemp, objectTemp2);
-      }
-      {
-        string stringTemp = DowngradeHeaderField("to",
-                    "g: x@example.com, x\u00e1y@example.com;");
+                object objectTemp2 = DowngradeHeaderField(
+          "to",
+          "x <x@example.com>" + ValueSep + "\"\u00be\" <y@example.com>");
+                Assert.AreEqual(objectTemp, objectTemp2);
+            }
+            {
+                string objectTemp = "x <x@example.com>" + ValueSep +
+                  "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <y@example.com>";
+                object objectTemp2 = DowngradeHeaderField(
+          "to",
+          "x <x@example.com>" + ValueSep + "x\u00e1 x x\u00e1 <y@example.com>");
+                Assert.AreEqual(objectTemp, objectTemp2);
+            }
+            {
+                string stringTemp = DowngradeHeaderField(
+          "to",
+          "g: x@example.com" + ValueSep + "x\u00e1y@example.com;");
 
-        {
-          object objectTemp =
-            "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;"
-                    ;
-          object objectTemp2 = stringTemp;
-          Assert.AreEqual(objectTemp, objectTemp2);
-        }
-      }
-      {
-        string stringTemp = DowngradeHeaderField("to",
-                    "g: x@example.com, x@\u0300.example;");
+                {
+                    object objectTemp =
+  "g =?utf-8?Q?x=40example=2Ecom=2C_x=C3=A1y=40example=2Ecom?= :;";
 
-        {
-          object objectTemp =
-            "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;"
-                    ;
-          object objectTemp2 = stringTemp;
-          Assert.AreEqual(objectTemp, objectTemp2);
-        }
-      }
-      {
-        string objectTemp = "g: x@example.com" + sep + "x@xn--e-ufa.example;";
-        object objectTemp2 = DowngradeHeaderField("to",
-                    "g: x@example.com, x@e\u00e1.example;");
-        Assert.AreEqual(objectTemp, objectTemp2);
-      }
-      {
-        string stringTemp = DowngradeHeaderField("sender",
-                "x <x@e\u00e1.example>");
-        Assert.AreEqual("x <x@xn--e-ufa.example>",
+                    object objectTemp2 = stringTemp;
+                    Assert.AreEqual(objectTemp, objectTemp2);
+                }
+            }
+            {
+                string stringTemp = DowngradeHeaderField(
+          "to",
+          "g: x@example.com" + ValueSep + "x@\u0300.example;");
+
+                {
+                    object objectTemp =
+  "g =?utf-8?Q?x=40example=2Ecom=2C_x=40=CC=80=2Eexample?= :;";
+
+                    object objectTemp2 = stringTemp;
+                    Assert.AreEqual(objectTemp, objectTemp2);
+                }
+            }
+            {
+                string objectTemp = "g: x@example.com" + ValueSep +
+                    "x@xn--e-ufa.example;";
+                object objectTemp2 = DowngradeHeaderField(
+          "to",
+          "g: x@example.com" + ValueSep + "x@e\u00e1.example;");
+                Assert.AreEqual(objectTemp, objectTemp2);
+            }
+            {
+                string stringTemp = DowngradeHeaderField(
+          "sender",
+          "x <x@e\u00e1.example>");
+                Assert.AreEqual(
+          "x <x@xn--e-ufa.example>",
           stringTemp);
+            }
+            {
+                string stringTemp = DowngradeHeaderField(
+          "sender",
+          "x\u00e1 x x\u00e1 <x@example.com>");
+                Assert.AreEqual(
+          "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
+          stringTemp);
+            }
+            {
+        string stringTemp = DowngradeHeaderField(
+  "sender",
+  "x\u00e1 x x\u00e1 <x@e\u00e1.example>");
+        Assert.AreEqual(
+  "=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("sender",
-                    "x\u00e1 x x\u00e1 <x@example.com>");
-        Assert.AreEqual("=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@example.com>",
-          stringTemp);
-      }
-      {
-        string stringTemp = DowngradeHeaderField("sender",
-                    "x\u00e1 x x\u00e1 <x@e\u00e1.example>");
-        Assert.AreEqual("=?utf-8?Q?x=C3=A1_x_x=C3=A1?= <x@xn--e-ufa.example>",
-          stringTemp);
-      }
-      {
-        string stringTemp = DowngradeHeaderField("sender",
-          "x <x\u00e1y@example.com>");
-        Assert.AreEqual("x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "sender",
+  "x <x\u00e1y@example.com>");
+        Assert.AreEqual(
+  "x =?utf-8?Q?x=C3=A1y=40example=2Ecom?= :;",
+  stringTemp);
       }
     }
 
@@ -1638,7 +1682,7 @@ string stringTemp =
     }
 
     private static string DowngradeHeaderField(string name, string value) {
-      var msgstr = "";
+      var msgstr = String.Empty;
       msgstr += name + ": " + value + "\r\n";
       if (!name.Equals("from")) {
         msgstr += "from: x@example.com\r\n";
@@ -1652,186 +1696,235 @@ string stringTemp =
       return gen;
     }
 
-    //[Test]
+    // [Test]
     public void TestCommentsToWords() {
       {
         string stringTemp = EncodeComment("(x)");
-        Assert.AreEqual("(=?utf-8?Q?x?=)",
-          stringTemp);
+        Assert.AreEqual(
+  "(=?utf-8?Q?x?=)",
+  stringTemp);
       }
       {
         string stringTemp = EncodeComment("(x\\y)");
-        Assert.AreEqual("(=?utf-8?Q?xy?=)",
-          stringTemp);
+        Assert.AreEqual(
+  "(=?utf-8?Q?xy?=)",
+  stringTemp);
       }
       {
         string stringTemp = EncodeComment("(x\r\n y)");
-        Assert.AreEqual("(=?utf-8?Q?x_y?=)",
-          stringTemp);
+        Assert.AreEqual(
+  "(=?utf-8?Q?x_y?=)",
+  stringTemp);
       }
       {
         string stringTemp = EncodeComment("(x\u00a0)");
-        Assert.AreEqual("(=?utf-8?Q?x=C2=A0?=)",
-          stringTemp);
+        Assert.AreEqual(
+  "(=?utf-8?Q?x=C2=A0?=)",
+  stringTemp);
       }
       {
         string stringTemp = EncodeComment("(x\\\u00a0)");
-        Assert.AreEqual("(=?utf-8?Q?x=C2=A0?=)",
-          stringTemp);
+        Assert.AreEqual(
+  "(=?utf-8?Q?x=C2=A0?=)",
+  stringTemp);
       }
       Assert.AreEqual("(=?utf-8?Q?x?=())", EncodeComment("(x())"));
-      Assert.AreEqual("(=?utf-8?Q?x?=()=?utf-8?Q?y?=)",
+      Assert.AreEqual(
+  "(=?utf-8?Q?x?=()=?utf-8?Q?y?=)",
                     EncodeComment("(x()y)"));
-      Assert.AreEqual("(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)",
+      Assert.AreEqual(
+  "(=?utf-8?Q?x?=(=?utf-8?Q?ab?=)=?utf-8?Q?y?=)",
                     EncodeComment("(x(a\\b)y)"));
       {
         string stringTemp = EncodeComment("()");
-        Assert.AreEqual("()",
-          stringTemp);
+        Assert.AreEqual(
+  "()",
+  stringTemp);
       }
     }
     [Test]
     public void TestCommentsToWords2() {
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "(test) x@x.example");
-        Assert.AreEqual("(test) x@x.example",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "(test) x@x.example");
+        Assert.AreEqual(
+  "(test) x@x.example",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                 "(tes\u00bet) x@x.example");
-        Assert.AreEqual("(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "(tes\u00bet) x@x.example");
+        Assert.AreEqual(
+  "(=?utf-8?Q?tes=C2=BEt?=) x@x.example",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("content-language",
-                    "(tes\u00bet) en");
-        Assert.AreEqual("(=?utf-8?Q?tes=C2=BEt?=) en",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "content-language",
+  "(tes\u00bet) en");
+        Assert.AreEqual(
+  "(=?utf-8?Q?tes=C2=BEt?=) en",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "(comment) Test <x@x.example>");
-        Assert.AreEqual("(comment) Test <x@x.example>",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) Test <x@x.example>");
+        Assert.AreEqual(
+  "(comment) Test <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "(comment) Tes\u00bet <x@x.example>");
-        Assert.AreEqual("(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) Tes\u00bet <x@x.example>");
+        Assert.AreEqual(
+  "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "(comment) Tes\u00bet Subject <x@x.example>");
-  Assert.AreEqual("(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-                stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) Tes\u00bet Subject <x@x.example>");
+  Assert.AreEqual(
+  "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "(comment) Test Sub\u00beject <x@x.example>");
-  Assert.AreEqual("(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-                stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) Test Sub\u00beject <x@x.example>");
+  Assert.AreEqual(
+  "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "(comment) \"Tes\u00bet\" <x@x.example>");
-        Assert.AreEqual("(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) \"Tes\u00bet\" <x@x.example>");
+        Assert.AreEqual(
+  "(comment) =?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "(comment) \"Tes\u00bet Subject\" <x@x.example>");
-  Assert.AreEqual("(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-                stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) \"Tes\u00bet Subject\" <x@x.example>");
+  Assert.AreEqual(
+  "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "(comment) \"Test Sub\u00beject\" <x@x.example>");
-  Assert.AreEqual("(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-                stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) \"Test Sub\u00beject\" <x@x.example>");
+  Assert.AreEqual(
+  "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "(comment) \"Tes\u00bet   Subject\" <x@x.example>");
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) \"Tes\u00bet Subject\" <x@x.example>");
         {
- object objectTemp = "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>"
-                    ;
+ object objectTemp = "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>";
+
           object objectTemp2 = stringTemp;
           Assert.AreEqual(objectTemp, objectTemp2);
         }
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "(comment) \"Tes\u00bet Subject\" (comment) <x@x.example>");
 
         {
           object objectTemp =
-            "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>"
-                    ;
+            "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>";
+
           object objectTemp2 = stringTemp;
           Assert.AreEqual(objectTemp, objectTemp2);
         }
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-  Assert.AreEqual("=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-                stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "\"Tes\u00bet Subject\" (comment) <x@x.example>");
+  Assert.AreEqual(
+  "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+  stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from", "Test <x@x.example>");
-        Assert.AreEqual("Test <x@x.example>",
-          stringTemp);
+        Assert.AreEqual(
+  "Test <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                 "Tes\u00bet <x@x.example>");
-        Assert.AreEqual("=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "Tes\u00bet <x@x.example>");
+        Assert.AreEqual(
+  "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "Tes\u00bet Subject <x@x.example>");
-        Assert.AreEqual("=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "Tes\u00bet Subject <x@x.example>");
+        Assert.AreEqual(
+  "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "Test Sub\u00beject <x@x.example>");
-        Assert.AreEqual("=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "Test Sub\u00beject <x@x.example>");
+        Assert.AreEqual(
+  "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "\"Tes\u00bet\" <x@x.example>");
-        Assert.AreEqual("=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "\"Tes\u00bet\" <x@x.example>");
+        Assert.AreEqual(
+  "=?utf-8?Q?Tes=C2=BEt?= <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "\"Tes\u00bet Subject\" <x@x.example>");
-        Assert.AreEqual("=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "\"Tes\u00bet Subject\" <x@x.example>");
+        Assert.AreEqual(
+  "=?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "\"Test Sub\u00beject\" <x@x.example>");
-        Assert.AreEqual("=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "\"Test Sub\u00beject\" <x@x.example>");
+        Assert.AreEqual(
+  "=?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "\"Tes\u00bet   Subject\" <x@x.example>");
-        Assert.AreEqual("=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
-          stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "\"Tes\u00bet Subject\" <x@x.example>");
+        Assert.AreEqual(
+  "=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
+  stringTemp);
       }
       {
-        string stringTemp = DowngradeHeaderField("from",
-                    "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-  Assert.AreEqual("=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-                stringTemp);
+        string stringTemp = DowngradeHeaderField(
+  "from",
+  "\"Tes\u00bet Subject\" (comment) <x@x.example>");
+  Assert.AreEqual(
+  "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+  stringTemp);
       }
     }
 
@@ -1862,83 +1955,102 @@ string stringTemp =
       // Colons and angle brackets
       TestEncodedWordsPhrase("\"x <y:z>\"", "=?utf-8?q?x_=3Cy=3Az=3E?=");
       // Encoded word lookalikes
-      TestEncodedWordsPhrase("\"=?utf-8?q?xyz?=\"",
-        "=?utf-8?q?=3D=3Futf-8=3Fq=3Fxyz=3F=3D?=");
-      TestEncodedWordsPhrase("\"=?utf-8?q?xyz?=\"",
-                    "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
+      TestEncodedWordsPhrase(
+  "\"=?utf-8?q?xyz?=\"",
+  "=?utf-8?q?=3D=3Futf-8=3Fq=3Fxyz=3F=3D?=");
+      TestEncodedWordsPhrase(
+  "\"=?utf-8?q?xyz?=\"",
+  "=?utf-8?q?=3D=3Futf-8=3F?= =?utf-8?q?q=3Fxyz=3F=3D?=");
       // Already quoted material
-      TestEncodedWordsPhrase("me (x) \"x:y\"",
-        "=?utf-8?q?me?= (x) \"x:y\"");
+      TestEncodedWordsPhrase(
+  "me (x) \"x:y\"",
+  "=?utf-8?q?me?= (x) \"x:y\"");
       // Already quoted material with a special
-      TestEncodedWordsPhrase("me \"x:y\"",
-                    "=?utf-8?q?me?= \"x:y\"");
+      TestEncodedWordsPhrase(
+  "me \"x:y\"",
+  "=?utf-8?q?me?= \"x:y\"");
     }
 
     [Test]
     [Timeout(5000)]
+
     public void TestEncodedWords() {
-      const string par = "(";
-        TestEncodedWordsPhrase ("(sss) y", "(sss) =?us-ascii?q?y?=");
-        TestEncodedWordsPhrase ("tes=dxx", "=?us-ascii?q?tes=dxx?=");
-        TestEncodedWordsPhrase ("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
-        TestEncodedWordsPhrase ("=?bad1?= =?bad2?= =?bad3?=",
-                    "=?bad1?= =?bad2?= =?bad3?=");
+      const string ValuePar = "(";
+        TestEncodedWordsPhrase("(sss) y", "(sss) =?us-ascii?q?y?=");
+        TestEncodedWordsPhrase("tes=dxx", "=?us-ascii?q?tes=dxx?=");
+        TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
+        TestEncodedWordsPhrase(
+  "=?bad1?= =?bad2?= =?bad3?=",
+  "=?bad1?= =?bad2?= =?bad3?=");
         // quoted because one word was decoded
-        TestEncodedWordsPhrase ("\"y =?bad2?= =?bad3?=\"",
-                    "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
+        TestEncodedWordsPhrase(
+  "\"y =?bad2?= =?bad3?=\"",
+  "=?us-ascii?q?y?= =?bad2?= =?bad3?=");
         // quoted because one word was decoded
-        TestEncodedWordsPhrase ("\"=?bad1?= y =?bad3?=\"",
-                    "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
-        TestEncodedWordsPhrase ("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
-        TestEncodedWordsPhrase ("xy (sss)",
-                "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
-        TestEncodedWordsPhrase ("x (sss) y",
-                    "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
-        TestEncodedWordsPhrase ("x (z) y",
-                    "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
-     TestEncodedWordsPhrase ("=?us-ascii?q?x?=" + par +
-          "sss)=?us-ascii?q?y?=",
+        TestEncodedWordsPhrase(
+  "\"=?bad1?= y =?bad3?=\"",
+  "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
+        TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
+        TestEncodedWordsPhrase(
+  "xy(sss)",
+  "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
+        TestEncodedWordsPhrase(
+  "x(sss) y",
+  "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
+        TestEncodedWordsPhrase(
+  "x(z) y",
+  "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
+     TestEncodedWordsPhrase(
+  "=?us-ascii?q?x?=" + ValuePar + "sss)=?us-ascii?q?y?=",
                     "=?us-ascii?q?x?=(sss)=?us-ascii?q?y?=");
-        TestEncodedWordsPhrase ("=?us-ascii?q?x?=" + par + "z)=?us-ascii?q?y?=",
+        TestEncodedWordsPhrase(
+  "=?us-ascii?q?x?=" + ValuePar + "z)=?us-ascii?q?y?=",
                     "=?us-ascii?q?x?=(=?utf-8?Q?z?=)=?us-ascii?q?y?=");
-        TestEncodedWordsPhrase ("=?us-ascii?q?x?=" + par + "z) y",
+        TestEncodedWordsPhrase(
+  "=?us-ascii?q?x?=" + ValuePar + "z) y",
                     "=?us-ascii?q?x?=(=?utf-8?Q?z?=) =?us-ascii?q?y?=");
-        TestEncodedWordsOne ("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
-        TestEncodedWordsOne ("abcde abcde", "abcde abcde");
-        TestEncodedWordsOne ("abcde", "abcde");
-        TestEncodedWordsOne ("abcde", "=?utf-8?Q?abcde?=");
-      TestEncodedWordsOne ("=?utf-8?Q?abcde?=extra",
-          "=?utf-8?Q?abcde?=extra");
-        TestEncodedWordsOne ("abcde ", "=?utf-8?Q?abcde?= ");
-        TestEncodedWordsOne ("ab\u00a0de", "=?utf-8?Q?ab=C2=A0de?=");
-        TestEncodedWordsOne ("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
-        TestEncodedWordsOne ("x y", "x =?utf-8?Q?y?=");
-        TestEncodedWordsOne ("x y", "x =?utf-8?Q?y?=");
-        TestEncodedWordsOne ("x y", "=?utf-8?Q?x?= y");
-        TestEncodedWordsOne ("x y", "=?utf-8?Q?x?= y");
-        TestEncodedWordsOne ("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
-        TestEncodedWordsOne ("abc de", "=?utf-8?Q?abc=20de?=");
-        TestEncodedWordsOne ("abc de", "=?utf-8?Q?abc_de?=");
-        TestEncodedWordsOne ("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
-    TestEncodedWordsOne ("=?x-undefined?q?abcde?=",
-          "=?x-undefined?q?abcde?=");
-        TestEncodedWordsOne ("=?utf-8?Q?" + Repeat ("x", 200) + "?=",
-                    "=?utf-8?Q?" + Repeat ("x", 200) + "?=");
-     TestEncodedWordsPhrase ("=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
-                    "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
+        TestEncodedWordsOne("x y", "=?utf-8?Q?x_?= =?utf-8?Q?y?=");
+        TestEncodedWordsOne("abcde abcde", "abcde abcde");
+        TestEncodedWordsOne("abcde", "abcde");
+        TestEncodedWordsOne("abcde", "=?utf-8?Q?abcde?=");
+      TestEncodedWordsOne(
+  "=?utf-8?Q?abcde?=extra",
+  "=?utf-8?Q?abcde?=extra");
+        TestEncodedWordsOne("abcde ", "=?utf-8?Q?abcde?= ");
+        TestEncodedWordsOne("ab\u00a0de", "=?utf-8?Q?ab=C2=A0de?=");
+        TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
+        TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
+        TestEncodedWordsOne("x y", "x =?utf-8?Q?y?=");
+        TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
+        TestEncodedWordsOne("x y", "=?utf-8?Q?x?= y");
+        TestEncodedWordsOne("xy", "=?utf-8?Q?x?= =?utf-8?Q?y?=");
+        TestEncodedWordsOne("abc de", "=?utf-8?Q?abc=20de?=");
+        TestEncodedWordsOne("abc de", "=?utf-8?Q?abc_de?=");
+        TestEncodedWordsOne("abc\ufffdde", "=?us-ascii?q?abc=90de?=");
+    TestEncodedWordsOne(
+  "=?x-undefined?q?abcde?=",
+  "=?x-undefined?q?abcde?=");
+        TestEncodedWordsOne(
+  "=?utf-8?Q?" + Repeat("x", 200) + "?=",
+  "=?utf-8?Q?" + Repeat("x", 200) + "?=");
+     TestEncodedWordsPhrase(
+  "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=",
+  "=?x-undefined?q?abcde?= =?x-undefined?q?abcde?=");
         // Language embedded in encoded word
-        TestEncodedWordsOne ("x", "=?utf-8*en?Q?x?=");
-        TestEncodedWordsOne ("=?x-unknown*en?Q?x?=", "=?x-unknown*en?Q?x?=");
-        TestEncodedWordsOne ("x", "=?utf-8*en-us?Q?x?=");
-        TestEncodedWordsOne ("x", "=?utf-8*i-default?Q?x?=");
-    TestEncodedWordsOne ("=?utf-8*i-unknown?Q?x?=",
-          "=?utf-8*i-unknown?Q?x?=");
-        TestEncodedWordsOne ("=?*en?Q?x?=", "=?*en?Q?x?=");
-        TestEncodedWordsOne ("=?utf-8*?Q?x?=", "=?utf-8*?Q?x?=");
+        TestEncodedWordsOne("x", "=?utf-8*en?Q?x?=");
+        TestEncodedWordsOne("=?x-unknown*en?Q?x?=", "=?x-unknown*en?Q?x?=");
+        TestEncodedWordsOne("x", "=?utf-8*en-us?Q?x?=");
+        TestEncodedWordsOne("x", "=?utf-8*i-default?Q?x?=");
+    TestEncodedWordsOne(
+  "=?utf-8*i-unknown?Q?x?=",
+  "=?utf-8*i-unknown?Q?x?=");
+        TestEncodedWordsOne("=?*en?Q?x?=", "=?*en?Q?x?=");
+        TestEncodedWordsOne("=?utf-8*?Q?x?=", "=?utf-8*?Q?x?=");
     }
 
     [Test]
     [Timeout(5000)]
+
     public void TestHeaderParsing() {
       string tmp;
       tmp = " A Xxxxx: Yyy Zzz <x@x.example>;";
@@ -2018,11 +2130,11 @@ string stringTemp =
     public static string ToQPString(byte[] bytes) {
       var builder = new StringBuilder();
       for (var i = 0; i < bytes.Length; ++i) {
-        const string hex = "0123456789ABCDEF";
+        const string ValueHex = "0123456789ABCDEF";
         byte c = bytes[i];
         builder.Append('=');
-        builder.Append(hex[((int)c >> 4) & 15]);
-        builder.Append(hex[((int)c) & 15]);
+        builder.Append(ValueHex[((int)c >> 4) & 15]);
+        builder.Append(ValueHex[((int)c) & 15]);
         builder.Append("=\r\n");
       }
       return builder.ToString();
@@ -2062,8 +2174,10 @@ string stringTemp =
     public static void TestEncodedBytesRoundTrip(string str) {
       TestEncodedBytesRoundTrip(DataUtilities.GetUtf8Bytes(str, true), false);
       {
-        byte[] objectTemp = DataUtilities.GetUtf8Bytes(str, true,
-                true);
+        byte[] objectTemp = DataUtilities.GetUtf8Bytes(
+  str,
+  true,
+  true);
         TestEncodedBytesRoundTrip(objectTemp, true);
       }
     }
@@ -2079,11 +2193,12 @@ string stringTemp =
 
     [Test]
     [Timeout(200000)]
+
     public void TestRandomEncodedBytes() {
       var rnd = new RandomGenerator();
       for (var i = 0; i < 10000; ++i) {
         if (i % 100 == 0) {
-          //Console.WriteLine (i);
+          // Console.WriteLine (i);
         }
         byte[] bytes = RandomBytes(rnd);
         TestEncodedBytesRoundTrip(bytes, false);

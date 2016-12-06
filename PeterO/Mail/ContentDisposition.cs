@@ -296,8 +296,8 @@ strLower.IndexOf(
       // Avoid space before and after last dot
       for (int i = str.Length - 1; i >= 0; --i) {
         if (str[i] == '.') {
-          bool spaceAfter = (i + 1 < str.Length && str[i + 1] == 0x20);
-          bool spaceBefore = (i > 0 && str[i - 1] == 0x20);
+          bool spaceAfter = i + 1 < str.Length && str[i + 1] == 0x20;
+          bool spaceBefore = i > 0 && str[i - 1] == 0x20;
           if (spaceAfter && spaceBefore) {
             str = str.Substring(0, i - 1) + "_._" + str.Substring(i + 2);
           } else if (spaceAfter) {

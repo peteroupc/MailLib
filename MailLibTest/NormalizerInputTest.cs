@@ -4,6 +4,7 @@ using PeterO.Text;
 using System;
 using System.Text;
 using Test;
+
 namespace MailLibTest {
   [TestFixture]
   public partial class NormalizerInputTest {
@@ -19,7 +20,7 @@ namespace MailLibTest {
     public static string RandomAscii(RandomGenerator rnd) {
       int length = rnd.UniformInt(50) + 1;
       var sb = new StringBuilder();
-      for (var i = 0;i< length; ++i) {
+      for (var i = 0; i < length; ++i) {
         var c = (char)rnd.UniformInt(128);
         sb.Append(c);
       }
@@ -55,17 +56,21 @@ public void TestNormalizationAscii() {
       str,
       Normalization.NFKD));
     // ASCII strings normalize to themselves
-    string str2 = NormalizerInput.Normalize(str,
-      Normalization.NFC);
+    string str2 = NormalizerInput.Normalize(
+  str,
+  Normalization.NFC);
     Assert.AreEqual(str, str2);
-    str2 = NormalizerInput.Normalize(str,
-      Normalization.NFD);
+    str2 = NormalizerInput.Normalize(
+  str,
+  Normalization.NFD);
     Assert.AreEqual(str, str2);
-    str2 = NormalizerInput.Normalize(str,
-      Normalization.NFKC);
+    str2 = NormalizerInput.Normalize(
+  str,
+  Normalization.NFKC);
     Assert.AreEqual(str, str2);
-    str2 = NormalizerInput.Normalize(str,
-      Normalization.NFKD);
+    str2 = NormalizerInput.Normalize(
+  str,
+  Normalization.NFKD);
     Assert.AreEqual(str, str2);
   }
 }
@@ -80,8 +85,9 @@ public void TestNormalizationLatinOne() {
       str,
       Normalization.NFC));
     // Latin-1 strings normalize to themselves in NFC
-    string str2 = NormalizerInput.Normalize(str,
-      Normalization.NFC);
+    string str2 = NormalizerInput.Normalize(
+  str,
+  Normalization.NFC);
     Assert.AreEqual(str, str2);
   }
 }
@@ -96,8 +102,9 @@ public void TestNormalizationLatinOne() {
         "x\u0300\u0323",
         Normalization.NFC));
       try {
-        NormalizerInput.IsNormalized((ICharacterInput)null,
-          Normalization.NFC);
+        NormalizerInput.IsNormalized(
+  (ICharacterInput)null,
+  Normalization.NFC);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         new Object();

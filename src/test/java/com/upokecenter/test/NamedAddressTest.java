@@ -102,9 +102,9 @@ new Object();
     public void TestIsGroup() {
       // not implemented yet
       NamedAddress na;
-      ArrayList<NamedAddress> naList = new ArrayList<NamedAddress>();
-      naList.add(new NamedAddress("test@example.com"));
-      na=new NamedAddress("test",naList);
+      ArrayList<NamedAddress> valueNaList = new ArrayList<NamedAddress>();
+      valueNaList.add(new NamedAddress("test@example.com"));
+      na = new NamedAddress("test", valueNaList);
       if (!(na.isGroup()))Assert.fail();
       na = new NamedAddress("test@example.com");
       if (na.isGroup())Assert.fail();
@@ -221,8 +221,9 @@ Assert.assertEquals(
       if (!(na.isGroup()))Assert.fail();
       {
 String stringTemp = na.toString();
-      String s1 = "Group: Me <me@example.com>, Fred <fred@example.com>;" ;
-        Assert.assertEquals(s1, stringTemp);
+String ValueS1 =
+        "Group: Me <me@example.com>, Fred <fred@example.com>;";
+        Assert.assertEquals(ValueS1, stringTemp);
 }
       groupAddr = na.getGroupAddresses();
       Assert.assertEquals(2, groupAddr.size());
@@ -249,8 +250,8 @@ na = new
       if (!(na.isGroup()))Assert.fail();
       {
 String stringTemp = na.toString();
-        String s1 = "Group: Me <me@example.com>, somebody@example.com;";
-        Assert.assertEquals(s1, stringTemp);
+    String ValueS1 = "Group: Me <me@example.com>, somebody@example.com;";
+        Assert.assertEquals(ValueS1, stringTemp);
 }
       groupAddr = na.getGroupAddresses();
       Assert.assertEquals(2, groupAddr.size());
@@ -290,9 +291,9 @@ Assert.assertEquals(
     }
     @Test
     public void TestToString() {
-      String mbox =
+      String ValueMbox =
               "Me <@example.org,@example.net,@example.com:me@x.example>";
-      NamedAddress result = new NamedAddress(mbox);
+      NamedAddress result = new NamedAddress(ValueMbox);
       {
         String stringTemp = result.toString();
         Assert.assertEquals(
