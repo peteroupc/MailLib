@@ -81,8 +81,7 @@ package com.upokecenter.text;
       private final ICharacterInput nci;
 
     /**
-     * Initializes a new instance of the <see cref='NormalizingCharacterInput'/>
-     * class.
+     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
      * @param str A public object.
      */
       public NormalizingCharacterInput(
@@ -92,8 +91,7 @@ package com.upokecenter.text;
       }
 
     /**
-     * Initializes a new instance of the <see cref='NormalizingCharacterInput'/>
-     * class.
+     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
      * @param input A public object.
      */
       public NormalizingCharacterInput(
@@ -119,8 +117,7 @@ package com.upokecenter.text;
       }
 
     /**
-     * Initializes a new instance of the <see cref='NormalizingCharacterInput'/>
-     * class.
+     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
      * @param str A public object.
      * @param index A 32-bit signed integer.
      * @param length Another 32-bit signed integer.
@@ -135,8 +132,7 @@ package com.upokecenter.text;
       }
 
     /**
-     * Initializes a new instance of the <see cref='NormalizingCharacterInput'/>
-     * class.
+     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
      * @param str A text string.
      * @param form A Normalization object.
      * @throws java.lang.NullPointerException The parameter {@code str} or "input" or
@@ -146,8 +142,7 @@ package com.upokecenter.text;
       }
 
     /**
-     * Initializes a new instance of the <see cref='NormalizingCharacterInput'/>
-     * class.
+     * Initializes a new instance of the {@link NormalizingCharacterInput} class.
      * @param stream A public object.
      * @param form A Normalization object.
      */

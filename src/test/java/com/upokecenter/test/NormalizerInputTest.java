@@ -42,16 +42,24 @@ public void TestNormalizationAscii() {
     // ASCII strings are already normalized
     if (!(NormalizerInput.IsNormalized(
       str,
-      Normalization.NFC)))Assert.fail();
+      Normalization.NFC))) {
+ Assert.fail();
+ }
     if (!(NormalizerInput.IsNormalized(
       str,
-      Normalization.NFD)))Assert.fail();
+      Normalization.NFD))) {
+ Assert.fail();
+ }
     if (!(NormalizerInput.IsNormalized(
       str,
-      Normalization.NFKC)))Assert.fail();
+      Normalization.NFKC))) {
+ Assert.fail();
+ }
     if (!(NormalizerInput.IsNormalized(
       str,
-      Normalization.NFKD)))Assert.fail();
+      Normalization.NFKD))) {
+ Assert.fail();
+ }
     // ASCII strings normalize to themselves
     String str2 = NormalizerInput.Normalize(
   str,
@@ -80,7 +88,9 @@ public void TestNormalizationLatinOne() {
     // Latin-1 strings are already normalized in NFC
     if (!(NormalizerInput.IsNormalized(
       str,
-      Normalization.NFC)))Assert.fail();
+      Normalization.NFC))) {
+ Assert.fail();
+ }
     // Latin-1 strings normalize to themselves in NFC
     String str2 = NormalizerInput.Normalize(
   str,
@@ -94,10 +104,14 @@ public void TestNormalizationLatinOne() {
       // Additional normalization tests
       if (NormalizerInput.IsNormalized(
         "x\u0300\u0323yz",
-        Normalization.NFC))Assert.fail();
+        Normalization.NFC)) {
+ Assert.fail();
+ }
       if (NormalizerInput.IsNormalized(
         "x\u0300\u0323",
-        Normalization.NFC))Assert.fail();
+        Normalization.NFC)) {
+ Assert.fail();
+ }
       try {
         NormalizerInput.IsNormalized(
   (ICharacterInput)null,
@@ -113,19 +127,27 @@ public void TestNormalizationLatinOne() {
       if (!(
   NormalizerInput.IsNormalized(
   "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-  Normalization.NFC)))Assert.fail();
+  Normalization.NFC))) {
+ Assert.fail();
+ }
       if (!(
       NormalizerInput.IsNormalized(
   "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-  Normalization.NFD)))Assert.fail();
+  Normalization.NFD))) {
+ Assert.fail();
+ }
       if (!(
       NormalizerInput.IsNormalized(
   "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-  Normalization.NFKC)))Assert.fail();
+  Normalization.NFKC))) {
+ Assert.fail();
+ }
       if (!(
       NormalizerInput.IsNormalized(
   "\ud836\udc00\ud836\udd00\ud836\ude00\ud836\udf00\ud837\udc00\ud837\udf00",
-  Normalization.NFKD)))Assert.fail();
+  Normalization.NFKD))) {
+ Assert.fail();
+ }
     }
     @Test
     public void TestNormalize() {

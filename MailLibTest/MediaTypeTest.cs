@@ -220,6 +220,9 @@ Assert.AreEqual(objectTemp, objectTemp2);
     [Test]
     public void TestIsMultipart() {
       // not implemented yet
+      Assert.IsTrue(MediaType.Parse("multipart/alternative").IsMultipart);
+      Assert.IsFalse(MediaType.Parse("message/alternative").IsMultipart);
+      Assert.IsFalse(MediaType.Parse("font/otf").IsMultipart);
     }
     [Test]
     public void TestIsText() {

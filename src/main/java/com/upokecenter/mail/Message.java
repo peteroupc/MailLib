@@ -279,7 +279,7 @@ import com.upokecenter.text.*;
           true);
         if (charset == null) {
           throw new
-            UnsupportedOperationException("Not in a supported character set.");
+            UnsupportedOperationException("Not in a supported character encoding.");
         }
         return Encodings.DecodeToString(
           charset,

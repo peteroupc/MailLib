@@ -205,7 +205,7 @@ namespace PeterO.Mail {
           true);
         if (charset == null) {
           throw new
-            NotSupportedException("Not in a supported character set.");
+            NotSupportedException("Not in a supported character encoding.");
         }
         return Encodings.DecodeToString(
           charset,

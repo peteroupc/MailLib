@@ -196,8 +196,7 @@ Gets the value of a parameter in this media type, such as "charset" or
 * <code>name</code> - Name of the parameter to get. The name is compared using a basic
  case-insensitive comparison. (Two strings are equal in such a
  comparison, if they match after converting the basic upper-case
- letters A to Z (U + 0041 to U + 005A) in both strings to lower
- case.).
+ letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
 
 **Returns:**
 

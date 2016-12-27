@@ -105,17 +105,29 @@ new Object();
       ArrayList<NamedAddress> valueNaList = new ArrayList<NamedAddress>();
       valueNaList.add(new NamedAddress("test@example.com"));
       na = new NamedAddress("test", valueNaList);
-      if (!(na.isGroup()))Assert.fail();
+      if (!(na.isGroup())) {
+ Assert.fail();
+ }
       na = new NamedAddress("test@example.com");
-      if (na.isGroup())Assert.fail();
+      if (na.isGroup()) {
+ Assert.fail();
+ }
       na = new NamedAddress("Test <test@example.com>");
-      if (na.isGroup())Assert.fail();
+      if (na.isGroup()) {
+ Assert.fail();
+ }
       na = new NamedAddress("Group: test@example.com;");
-      if (!(na.isGroup()))Assert.fail();
+      if (!(na.isGroup())) {
+ Assert.fail();
+ }
       na = new NamedAddress("Group: Test <test@example.com>;");
-      if (!(na.isGroup()))Assert.fail();
+      if (!(na.isGroup())) {
+ Assert.fail();
+ }
       na = new NamedAddress("Group:;");
-      if (!(na.isGroup()))Assert.fail();
+      if (!(na.isGroup())) {
+ Assert.fail();
+ }
     }
 
     @Test
@@ -124,7 +136,9 @@ new Object();
       List<NamedAddress> groupAddr;
       na = new NamedAddress("me@example.com");
       Assert.assertEquals("me@example.com", na.getName());
-      if (na.isGroup())Assert.fail();
+      if (na.isGroup()) {
+ Assert.fail();
+ }
       {
 String stringTemp = na.getAddress().toString();
 Assert.assertEquals(
@@ -141,7 +155,9 @@ Assert.assertEquals(
       Assert.assertEquals("John's Office", na.getName());
       na = new NamedAddress("Me <me@example.com>");
       Assert.assertEquals("Me", na.getName());
-      if (na.isGroup())Assert.fail();
+      if (na.isGroup()) {
+ Assert.fail();
+ }
       {
 String stringTemp = na.getAddress().toString();
 Assert.assertEquals(
@@ -150,7 +166,9 @@ Assert.assertEquals(
 }
     na = new NamedAddress("(comment) Me (comment) <me@example.com> (comment)");
       Assert.assertEquals("Me", na.getName());
-      if (na.isGroup())Assert.fail();
+      if (na.isGroup()) {
+ Assert.fail();
+ }
       {
 String stringTemp = na.getAddress().toString();
 Assert.assertEquals(
@@ -159,7 +177,9 @@ Assert.assertEquals(
 }
       na = new NamedAddress("=?utf-8?q?Me?= <me@example.com>");
       Assert.assertEquals("Me", na.getName());
-      if (na.isGroup())Assert.fail();
+      if (na.isGroup()) {
+ Assert.fail();
+ }
       {
 String stringTemp = na.getAddress().toString();
 Assert.assertEquals(
@@ -175,7 +195,9 @@ Assert.assertEquals(
    na = new NamedAddress("=?utf-8?q?John=27s_Office?= <" +
                   "me@example.com>");
       Assert.assertEquals("John's Office", na.getName());
-      if (na.isGroup())Assert.fail();
+      if (na.isGroup()) {
+ Assert.fail();
+ }
       {
 String stringTemp = na.getAddress().toString();
 Assert.assertEquals(
@@ -190,7 +212,9 @@ Assert.assertEquals(
 }
       na = new NamedAddress("\"Me\" <me@example.com>");
       Assert.assertEquals("Me", na.getName());
-      if (na.isGroup())Assert.fail();
+      if (na.isGroup()) {
+ Assert.fail();
+ }
       {
 String stringTemp = na.getAddress().toString();
 Assert.assertEquals(
@@ -205,7 +229,9 @@ Assert.assertEquals(
 }
       //------------
       na = new NamedAddress("Group: \"Me\" <me@example.com>;");
-      if (!(na.isGroup()))Assert.fail();
+      if (!(na.isGroup())) {
+ Assert.fail();
+ }
       groupAddr = na.getGroupAddresses();
       Assert.assertEquals(1, groupAddr.size());
       na = groupAddr.get(0);
@@ -218,7 +244,9 @@ Assert.assertEquals(
 }
       na = new
   NamedAddress("Group: \"Me\" <me@example.com>, Fred <fred@example.com>;");
-      if (!(na.isGroup()))Assert.fail();
+      if (!(na.isGroup())) {
+ Assert.fail();
+ }
       {
 String stringTemp = na.toString();
 String ValueS1 =
@@ -247,7 +275,9 @@ Assert.assertEquals(
 na = new
         NamedAddress("Group: \"Me\" <me@example.com>, somebody@example.com;");
       Assert.assertEquals("Group", na.getName());
-      if (!(na.isGroup()))Assert.fail();
+      if (!(na.isGroup())) {
+ Assert.fail();
+ }
       {
 String stringTemp = na.toString();
     String ValueS1 = "Group: Me <me@example.com>, somebody@example.com;";

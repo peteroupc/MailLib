@@ -153,8 +153,7 @@ namespace MailLibTest {
             // Avoid space before and after last dot
             for (i = str.Length - 1; i >= 0; --i) {
                 if (str[i] == '.') {
-                 bool spaceAfter = (i + 1 < str.Length && str[i + 1] ==
-                    0x20);
+                 bool spaceAfter = i + 1 < str.Length && str[i + 1] == 0x20;
                     bool spaceBefore = i > 0 && str[i - 1] == 0x20;
                     if (spaceAfter || spaceBefore) {
                     return false;
@@ -162,9 +161,7 @@ namespace MailLibTest {
                     break;
                 }
             }
-             return (NormalizerInput.IsNormalized(
-              str,
-              Normalization.NFC));
+             return NormalizerInput.IsNormalized(str, Normalization.NFC);
         }
 
         [Test] public void TestMakeFilename() {

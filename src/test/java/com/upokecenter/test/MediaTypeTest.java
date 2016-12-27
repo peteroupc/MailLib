@@ -219,6 +219,15 @@ Assert.assertEquals(objectTemp, objectTemp2);
     @Test
     public void TestIsMultipart() {
       // not implemented yet
+      if (!(MediaType.Parse("multipart/alternative").isMultipart())) {
+ Assert.fail();
+ }
+      if (MediaType.Parse("message/alternative").isMultipart()) {
+ Assert.fail();
+ }
+      if (MediaType.Parse("font/otf").isMultipart()) {
+ Assert.fail();
+ }
     }
     @Test
     public void TestIsText() {

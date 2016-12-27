@@ -24,20 +24,32 @@ import com.upokecenter.mail.*;
         @Test
         public void TestIsAttachment() {
             ContentDisposition cd = ContentDisposition.Parse("inline");
-            if (cd.isAttachment())Assert.fail();
+            if (cd.isAttachment()) {
+ Assert.fail();
+ }
             cd = ContentDisposition.Parse("cd-unknown");
-            if (cd.isAttachment())Assert.fail();
+            if (cd.isAttachment()) {
+ Assert.fail();
+ }
             cd = ContentDisposition.Parse("attachment");
-            if (!(cd.isAttachment()))Assert.fail();
+            if (!(cd.isAttachment())) {
+ Assert.fail();
+ }
         }
 
         @Test public void TestIsInline() {
             ContentDisposition cd = ContentDisposition.Parse("inline");
-            if (!(cd.isInline()))Assert.fail();
+            if (!(cd.isInline())) {
+ Assert.fail();
+ }
             cd = ContentDisposition.Parse("cd-unknown");
-            if (cd.isInline())Assert.fail();
+            if (cd.isInline()) {
+ Assert.fail();
+ }
             cd = ContentDisposition.Parse("attachment");
-            if (cd.isInline())Assert.fail();
+            if (cd.isInline()) {
+ Assert.fail();
+ }
         }
 
         private static String MakeQEncoding(String str) {
@@ -145,8 +157,7 @@ import com.upokecenter.mail.*;
             // Avoid space before and after last dot
             for (i = str.length() - 1; i >= 0; --i) {
                 if (str.charAt(i) == '.') {
-                 boolean spaceAfter = (i + 1 < str.length() && str.charAt(i + 1) ==
-                    0x20);
+                 boolean spaceAfter = i + 1 < str.length() && str.charAt(i + 1) == 0x20;
                     boolean spaceBefore = i > 0 && str.charAt(i - 1) == 0x20;
                     if (spaceAfter || spaceBefore) {
                     return false;
@@ -154,9 +165,7 @@ import com.upokecenter.mail.*;
                     break;
                 }
             }
-             return (NormalizerInput.IsNormalized(
-              str,
-              Normalization.NFC));
+             return NormalizerInput.IsNormalized(str, Normalization.NFC);
         }
 
         @Test public void TestMakeFilename() {
@@ -176,7 +185,9 @@ Assert.assertEquals(objectTemp, objectTemp2);
             }
             String mfn = ContentDisposition.MakeFilename(
               "utf-8''%2A%EF%AB%87%EC%A5%B2%2B67%20Tqd%20R%E3%80%80%2E");
-            if (!(this.IsGoodFilename(mfn)))Assert.fail(mfn);
+            if (!(this.IsGoodFilename(mfn))) {
+ Assert.fail(mfn);
+ }
             for (int i = 0; i < 1000000; ++i) {
         if (i % 1000 == 0) {
           // System.out.println (i);

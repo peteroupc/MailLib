@@ -61,30 +61,30 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
       }
     }
 
-    internal static Message MessageFromString(string valueStr) {
+    internal static Message MessageFromString(string ValueStr) {
       var msgobj = new Message(
   DataUtilities.GetUtf8Bytes(
-  valueStr,
+  ValueStr,
   true));
       MessageGenerate(msgobj);
       return msgobj;
     }
 
-    internal static void MessageConstructOnly(string valueStr) {
+    internal static void MessageConstructOnly(string ValueStr) {
       new Message(
   DataUtilities.GetUtf8Bytes(
-  valueStr,
+  ValueStr,
   true));
     }
 
-    private static void TestMediaTypeRoundTrip(string valueStr) {
+    private static void TestMediaTypeRoundTrip(string ValueStr) {
       string mtstring = new MediaTypeBuilder(
   "x",
   "y").SetParameter("z",
-                    valueStr).ToString();
+                    ValueStr).ToString();
       Assert.IsFalse(mtstring.Contains("\r\n\r\n"));
       Assert.IsFalse(mtstring.Contains("\r\n \r\n"));
-      Assert.AreEqual(valueStr, MediaType.Parse(mtstring).GetParameter("z"));
+      Assert.AreEqual(ValueStr, MediaType.Parse(mtstring).GetParameter("z"));
   Message mtmessage = MessageFromString("MIME-Version: 1.0\r\nContent-Type: " +
                     mtstring + "\r\n\r\n");
       MessageGenerate(mtmessage);
@@ -141,8 +141,7 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
   MessageFromString(msg).ContentType);
       msg = ValueStart +
 
-  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: text/html\r\n\r\n"
-  ;
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: text/html\r\n\r\n";
 
       Assert.AreEqual(
   MediaType.ApplicationOctetStream,
@@ -161,8 +160,7 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
   MessageFromString(msg).ContentType);
       msg = ValueStart +
 
-  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image\r\nContent-Type: text/html\r\n\r\n"
-  ;
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image\r\nContent-Type: text/html\r\n\r\n";
 
       Assert.AreEqual(
   MediaType.TextPlainAscii,
@@ -170,8 +168,7 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
       // Third header field is syntactically invalid
       msg = ValueStart +
 
-  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: audio\r\n\r\n"
-  ;
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: audio\r\n\r\n";
 
       Assert.AreEqual(
   MediaType.TextPlainAscii,
@@ -211,9 +208,9 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
   string expected) {
       MediaType mt = MediaType.Parse(mtype);
       Assert.AreEqual(expected, mt.GetParameter(param));
-      var valueStr = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
+      var ValueStr = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: " + mtype + "\r\n\r\nTest";
-      Message msg = MessageFromString(valueStr);
+      Message msg = MessageFromString(ValueStr);
       mt = msg.ContentType;
       Assert.AreEqual(expected, mt.GetParameter(param));
     }
@@ -284,17 +281,15 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
         "charset",
         "a biso-8859-1-en-xyz");
 
-      if ((
-  MediaType.Parse(
-  "text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
+ if
+   ((MediaType.Parse("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
   null)) != null) {
         Assert.Fail();
       }
 
-      if ((
-  MediaType.Parse(
-  "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
-  null)) != null) {
+      if ((MediaType.Parse(
+        "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
+        null)) != null) {
         Assert.Fail();
       }
       TestRfc2231Extension(
@@ -643,13 +638,12 @@ Assert.AreEqual(objectTemp, objectTemp2);
     [Test]
     public void TestMessageTests() {
       const string ValueMultipart =
-  "MIME-Version: 1.0\r\nContent-Type: ValueMultipart/mixed; boundary=b\r\n";
+  "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
 
       string msg;
       msg = ValueMultipart +
 
-  "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\nContent-Description: description\r\n\r\n\r\n--b--"
-  ;
+  "Content-Transfer-Encoding: 8bit\r\n\r\n--b\r\nContent-Description: description\r\n\r\n\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -675,8 +669,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       }
       msg =
 
-  "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: 8bit\r\n\r\n--b\r\n\r\n\r\n--b--"
-  ;
+  "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: 8bit\r\n\r\n--b\r\n\r\n\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -686,8 +679,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       }
       msg =
 
-  "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nA"
-  ;
+  "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\n\r\nA";
 
       try {
         MessageFromString(msg);
@@ -697,8 +689,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       }
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--"
-  ;
+  "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -708,8 +699,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       }
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: 7bit\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--"
-  ;
+  "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: 7bit\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nX\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -724,7 +714,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       // don't know the best way to handle these cases
       // without being too lenient
       const string ValueMultipart =
-  "MIME-Version: 1.0\r\nContent-Type: ValueMultipart/mixed; boundary=b\r\n";
+  "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n";
 
       string msg;
       // Multipart message with base64
@@ -739,8 +729,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       // Message top-level-type with base64
       msg =
 
-  "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: base64\r\n--b\r\n\r\n\r\n--b--"
-  ;
+  "MIME-Version: 1.0\r\nContent-Type: message/rfc822\r\nContent-Type: base64\r\n--b\r\n\r\n\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -748,7 +737,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      // Truncated top-level ValueMultipart message
+      // Truncated top-level multipart message
       msg = ValueMultipart +
           "\r\n--b\r\nContent-Type: text/plain\r\n\r\nHello World";
       try {
@@ -757,7 +746,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      // Truncated top-level ValueMultipart message
+      // Truncated top-level multipart message
       msg = ValueMultipart +
         "\r\n--b\r\nContent-Type: text/html\r\n\r\n<b>Hello World</b>";
       try {
@@ -780,8 +769,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       // would be illegal in a 7-bit encoding
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\nX\r\n--b--"
-  ;
+  "\r\n--b\r\nContent-Type: message/rfc822\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\nX\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -793,8 +781,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       // which is not allowed for this media type
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: base64\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nXX==\r\n--b--"
-  ;
+  "\r\n--b\r\nContent-Type: message/rfc822\r\nContent-Transfer-Encoding: base64\r\n\r\nFrom: \"Me\" <me@example.com>\r\n\r\nXX==\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -808,8 +795,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       // would be illegal in a 7-bit encoding
       msg = ValueMultipart +
 
-  "\r\n--b\r\nContent-Type: text/rfc822-headers\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\n--b--"
-  ;
+  "\r\n--b\r\nContent-Type: text/rfc822-headers\r\n\r\nFrom: \"\ufffd\ufffd\" <me@example.com>\r\n\r\n--b--";
 
       try {
         MessageFromString(msg);
@@ -835,8 +821,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       // would be illegal in a 7-bit encoding
       msg =
 
-  "Mime-Version: 1.0\r\nContent-Type: text/html\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\ufffd"
-  ;
+  "Mime-Version: 1.0\r\nContent-Type: text/html\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\ufffd";
 
       try {
         MessageFromString(msg);
@@ -860,8 +845,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       // or included?
       msg =
 
-  "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\nA"
-  ;
+  "Mime-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\nA";
 
       try {
         MessageFromString(msg);
@@ -876,8 +860,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         return (!message.ContentType.SubType.Equals("global")) &&
           ((!message.ContentType.SubType.Equals("global-headers")) &&
            (message.ContentType.SubType.Equals("global-delivery-status") ||
-            (message.ContentType.SubType.Equals(
-              "global-disposition-notification"))));
+    message.ContentType.SubType.Equals("global-disposition-notification")));
       }
       foreach (Message part in message.Parts) {
         if (HasNestedMessageType(part)) {
@@ -1109,7 +1092,7 @@ throw new InvalidOperationException(String.Empty, ex);
     public void TestBoundaryReading() {
       byte[] body;
       string messageStart = "MIME-Version: 1.0\r\n";
-      messageStart += "Content-Type: ValueMultipart/mixed; boundary=b1\r\n\r\n";
+      messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
       messageStart += "Preamble\r\n";
       messageStart += "--b1\r\n";
       string message = messageStart;
@@ -1119,7 +1102,7 @@ throw new InvalidOperationException(String.Empty, ex);
       message += "Epilogue";
       Message msg;
       msg = MessageFromString(message);
-      Assert.AreEqual("ValueMultipart", msg.ContentType.TopLevelType);
+      Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
       {
         string stringTemp = msg.ContentType.GetParameter("boundary");
         Assert.AreEqual(
@@ -1131,7 +1114,7 @@ throw new InvalidOperationException(String.Empty, ex);
       Assert.AreEqual("Test", msg.Parts[0].BodyString);
       // Nested Multipart body part
       message = messageStart;
-      message += "Content-Type: ValueMultipart/mixed; boundary=b2\r\n\r\n";
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
       message += "\r\n--b2\r\n";
       message += "Content-Type: text/plain\r\n\r\n";
       message += "Test\r\n";
@@ -1153,7 +1136,7 @@ throw new InvalidOperationException(String.Empty, ex);
       Assert.AreEqual("Test", msg.Parts[0].BodyString);
       // No CRLF before first boundary
       message = "MIME-Version: 1.0\r\n";
-      message += "Content-Type: ValueMultipart/mixed; boundary=b1\r\n\r\n";
+      message += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
       message += "--b1\r\n";
       message += "Content-Type: text/plain\r\n\r\n";
       message += "Test\r\n";
@@ -1170,7 +1153,7 @@ throw new InvalidOperationException(String.Empty, ex);
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual("ValueMultipart", msg.ContentType.TopLevelType);
+      Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
       {
         string stringTemp = msg.ContentType.GetParameter("boundary");
         Assert.AreEqual(
@@ -1193,7 +1176,7 @@ throw new InvalidOperationException(String.Empty, ex);
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual("ValueMultipart", msg.ContentType.TopLevelType);
+      Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
       {
         string stringTemp = msg.ContentType.GetParameter("boundary");
         Assert.AreEqual(
@@ -1210,7 +1193,7 @@ throw new InvalidOperationException(String.Empty, ex);
       Assert.AreEqual(4, body.Length);
       // Base64 in nested body part
       message = messageStart;
-      message += "Content-Type: ValueMultipart/mixed; boundary=b2\r\n\r\n";
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
       message += "--b2\r\n";
       message += "Content-Type: application/octet-stream\r\n";
       message += "Content-Transfer-Encoding: base64\r\n\r\n";
@@ -1219,7 +1202,7 @@ throw new InvalidOperationException(String.Empty, ex);
       message += "--b1--\r\n";
       message += "Epilogue";
       msg = MessageFromString(message);
-      Assert.AreEqual("ValueMultipart", msg.ContentType.TopLevelType);
+      Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
       {
         string stringTemp = msg.ContentType.GetParameter("boundary");
         Assert.AreEqual(
@@ -1237,7 +1220,7 @@ throw new InvalidOperationException(String.Empty, ex);
       Assert.AreEqual(4, body.Length);
       // Nested Multipart body part II
       message = messageStart;
-      message += "Content-Type: ValueMultipart/mixed; boundary=b2\r\n\r\n";
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
       message += "--b2\r\n";
       message += "Content-Type: text/plain\r\n\r\n";
       message += "Test\r\n";
@@ -1526,9 +1509,9 @@ MessageFromString(MessageFromString(msg).Generate())
     [Test]
     public void TestFWSAtSubjectEnd() {
       Message msg;
-      const string valueStr = "From: me@example.com\r\nSubject: Test\r\n " +
+      const string ValueStr = "From: me@example.com\r\nSubject: Test\r\n " +
         "\r\nX-Header: Header\r\n\r\nBody";
-      msg = MessageFromString(valueStr);
+      msg = MessageFromString(ValueStr);
       {
         string stringTemp = msg.GetHeader("subject");
         Assert.AreEqual(
@@ -1539,16 +1522,16 @@ MessageFromString(MessageFromString(msg).Generate())
 
     [Test]
     public void TestEmptyGroup() {
-      const string valueStr = "From: me@example.com\r\nTo: empty-group:;" +
+      const string ValueStr = "From: me@example.com\r\nTo: empty-group:;" +
         "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
         "\r\n\r\nBody";
-      MessageFromString(valueStr);
+      MessageFromString(ValueStr);
     }
 
     [Test]
     public void TestMediaTypeArgumentValidationExtra() {
       Assert.IsTrue(MediaType.Parse("text/plain").IsText);
-      Assert.IsTrue(MediaType.Parse("ValueMultipart/alternative").IsMultipart);
+      Assert.IsTrue(MediaType.Parse("multipart/alternative").IsMultipart);
       {
         string stringTemp = MediaType.Parse(
                 "example/x ").TypeAndSubType;
@@ -1766,15 +1749,15 @@ MessageFromString(MessageFromString(msg).Generate())
 
     private static void TestFileNameOne(string input, string expected) {
       Message msg;
-      String valueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+      String ValueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
  "Content-Type: text/plain\r\nContent-Disposition: inline; filename=" +
           input + "\r\n\r\nEmpty.";
-      msg = MessageFromString(valueStr);
+      msg = MessageFromString(ValueStr);
       Assert.AreEqual(expected, msg.FileName);
-      valueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+      ValueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: text/plain; name=" + input +
         "\r\n\r\nEmpty.";
-      msg = MessageFromString(valueStr);
+      msg = MessageFromString(ValueStr);
       Assert.AreEqual(expected, msg.FileName);
     }
     [Test]
@@ -1789,8 +1772,8 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     [Test]
     public void TestFromAddresses() {
-      string valueStr = "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
-      Message msg = MessageFromString(valueStr);
+      string ValueStr = "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
+      Message msg = MessageFromString(ValueStr);
       MessageFromString(MessageGenerate(msg));
       Assert.AreEqual(1, msg.FromAddresses.Count);
     }
@@ -1804,8 +1787,8 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     [Test]
     public void TestGetHeader() {
-      const string valueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(valueStr);
+      const string ValueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      Message msg = MessageFromString(ValueStr);
       try {
         msg.GetHeader(2);
         Assert.Fail("Should have failed");
@@ -1835,8 +1818,8 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     [Test]
     public void TestRemoveHeader() {
-      const string valueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(valueStr);
+      const string ValueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      Message msg = MessageFromString(ValueStr);
       try {
         msg.RemoveHeader(2);
         Assert.Fail("Should have failed");
@@ -1919,6 +1902,12 @@ MessageFromString(MessageFromString(msg).Generate())
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
+ new Message().SetHeader("from", "\"Me\" <x@example.com>");
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
         new Message().SetHeader("from", "\"a\nb\" <x@example.com>");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
@@ -1936,8 +1925,8 @@ MessageFromString(MessageFromString(msg).Generate())
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      const string valueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(valueStr);
+      const string ValueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      Message msg = MessageFromString(ValueStr);
       try {
         msg.SetHeader(2, "X-Header2", "2");
         Assert.Fail("Should have failed");
@@ -2036,7 +2025,41 @@ MessageFromString(MessageFromString(msg).Generate())
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-    }
+            var headerNames = new string[] { "from", "to", "cc",
+              "bcc", "reply-to" };
+            foreach (string headerName in headerNames) {
+                try {
+ new Message().SetHeader(headerName, "\"Me\" <x@example.com>");
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+                try {
+ new Message().SetHeader(headerName, "\"Me Me\" <x@example.com>");
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+                try {
+ new Message().SetHeader(headerName, "\"Me(x)\" <x@example.com>");
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+                try {
+ new Message().SetHeader(headerName, "\"Me\u002c Me\" <x@example.com>");
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+                try {
+ new Message().SetHeader(headerName, "\"Me\u002c Me(x)\" <x@example.com>");
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+            }
+        }
     [Test]
     public void TestSetHtmlBody() {
       var msg = new Message();

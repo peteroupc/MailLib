@@ -258,23 +258,27 @@ Assert.AreEqual(
       }
 
       public void AssertNFC(params NormResult[] other) {
-        foreach (NormResult o in other)
-          AssertEqual(this.origstr, o.nfc, this.line);
+        foreach (NormResult o in other) {
+ AssertEqual(this.origstr, o.nfc, this.line);
+ }
       }
 
       public void AssertNFD(params NormResult[] other) {
-        foreach (NormResult o in other)
-          AssertEqual(this.origstr, o.nfd, this.line);
+        foreach (NormResult o in other) {
+ AssertEqual(this.origstr, o.nfd, this.line);
+ }
       }
 
       public void AssertNFKC(params NormResult[] other) {
-        foreach (NormResult o in other)
-          AssertEqual(this.origstr, o.nfkc, this.line);
+        foreach (NormResult o in other) {
+ AssertEqual(this.origstr, o.nfkc, this.line);
+ }
       }
 
       public void AssertNFKD(params NormResult[] other) {
-        foreach (NormResult o in other)
-          AssertEqual(this.origstr, o.nfkd, this.line);
+        foreach (NormResult o in other) {
+ AssertEqual(this.origstr, o.nfkd, this.line);
+ }
       }
     }
 

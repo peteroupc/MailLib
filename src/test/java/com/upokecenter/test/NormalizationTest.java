@@ -192,11 +192,15 @@ Assert.assertEquals(
   stringTemp);
 }
       if (
-        NormalizerInput.IsNormalized(str, Normalization.NFC))Assert.fail();
+        NormalizerInput.IsNormalized(str, Normalization.NFC)) {
+ Assert.fail();
+ }
       this.TestIdempotent(str, Normalization.NFC);
             str = "_\u96e3\uc972+67 Tqd R_._";
             if (!(
-        NormalizerInput.IsNormalized(str, Normalization.NFC)))Assert.fail();
+        NormalizerInput.IsNormalized(str, Normalization.NFC))) {
+ Assert.fail();
+ }
             this.TestIdempotent(str, Normalization.NFC);
     }
 
@@ -256,23 +260,27 @@ Assert.assertEquals(
       }
 
       public void AssertNFC(NormResult... other) {
-        for (NormResult o : other)
-          AssertEqual(this.origstr, o.nfc, this.line);
+        for (NormResult o : other) {
+ AssertEqual(this.origstr, o.nfc, this.line);
+ }
       }
 
       public void AssertNFD(NormResult... other) {
-        for (NormResult o : other)
-          AssertEqual(this.origstr, o.nfd, this.line);
+        for (NormResult o : other) {
+ AssertEqual(this.origstr, o.nfd, this.line);
+ }
       }
 
       public void AssertNFKC(NormResult... other) {
-        for (NormResult o : other)
-          AssertEqual(this.origstr, o.nfkc, this.line);
+        for (NormResult o : other) {
+ AssertEqual(this.origstr, o.nfkc, this.line);
+ }
       }
 
       public void AssertNFKD(NormResult... other) {
-        for (NormResult o : other)
-          AssertEqual(this.origstr, o.nfkd, this.line);
+        for (NormResult o : other) {
+ AssertEqual(this.origstr, o.nfkd, this.line);
+ }
       }
     }
 
@@ -286,7 +294,9 @@ Assert.assertEquals(
       if (lines == null) {
  Assert.fail();
  }
-      if (!(lines.length > 0))Assert.fail();
+      if (!(lines.length > 0)) {
+ Assert.fail();
+ }
       boolean part1 = false;
        for (String lineItem : lines) {
         String line = lineItem;

@@ -73,7 +73,7 @@
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="Encoding">
-      <HintPath>..\packages\PeterO.Encoding.0.2.0\lib\portable-net45+dnxcore50+netcore45+win+wpa81+wp80\Encoding.dll</HintPath>
+      <HintPath>..\packages\PeterO.Encoding.0.2.1\lib\portable-net45+dnxcore50+netcore45+win+wpa81+wp80\Encoding.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

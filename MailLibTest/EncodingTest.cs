@@ -1206,12 +1206,12 @@ namespace MailLibTest {
       dsn = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\nOriginal-Recipient: " +
         actual + "\r\nFinal-Recipient: " + actual +
         "\r\nX-Ignore: Y\r\n\r\n";
-      if (encap)
-        expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
+      if (encap) {
+ expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
           ("Downgraded-Original-Recipient: " + expected) +
           "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
           "\r\nX-Ignore: Y\r\n\r\n";
-      else {
+ } else {
         expectedDSN = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\n" +
           ("Original-Recipient: " + expected) + "\r\n" +
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
@@ -1305,8 +1305,7 @@ string stringTemp =
         TestValidLanguageTag(objectTemp, objectTemp2);
       }
       {
-        string stringTemp2 = (
-        "zh-CN-a-myext-x-private");
+        string stringTemp2 = "zh-CN-a-myext-x-private";
         TestValidLanguageTag(true, stringTemp2);
       }
       {
@@ -1526,7 +1525,7 @@ string stringTemp =
       string tmp = "=?utf-8?q??=\r\n \r\nX-Ignore: 1";
       TestDecodeUnstructured("=?utf-8?q??= ", tmp);
       tmp = "=?utf-8?q??=\r\n \r\n ABC";
-      TestDecodeUnstructured("=?utf-8?q??= ABC", tmp);
+      TestDecodeUnstructured("=?utf-8?q??=\u0020\u0020ABC", tmp);
     }
 
     [Test]
@@ -1827,7 +1826,7 @@ string stringTemp =
       {
         string stringTemp = DowngradeHeaderField(
   "from",
-  "(comment) \"Tes\u00bet Subject\" <x@x.example>");
+  "(comment) \"Tes\u00bet\u0020\u0020\u0020Subject\" <x@x.example>");
         {
  object objectTemp = "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>";
 
@@ -1913,7 +1912,7 @@ string stringTemp =
       {
         string stringTemp = DowngradeHeaderField(
   "from",
-  "\"Tes\u00bet Subject\" <x@x.example>");
+  "\"Tes\u00bet\u0020\u0020\u0020Subject\" <x@x.example>");
         Assert.AreEqual(
   "=?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>",
   stringTemp);
@@ -1992,13 +1991,13 @@ string stringTemp =
   "=?bad1?= =?us-ascii?q?y?= =?bad3?=");
         TestEncodedWordsPhrase("xy", "=?us-ascii?q?x?= =?us-ascii?q?y?=");
         TestEncodedWordsPhrase(
-  "xy(sss)",
+  "xy\u0020(sss)",
   "=?us-ascii?q?x?= =?us-ascii?q?y?= (sss)");
         TestEncodedWordsPhrase(
-  "x(sss) y",
+  "x\u0020(sss)\u0020y",
   "=?us-ascii?q?x?= (sss) =?us-ascii?q?y?=");
         TestEncodedWordsPhrase(
-  "x(z) y",
+  "x\u0020(z)\u0020y",
   "=?us-ascii?q?x?= (=?utf-8?Q?z?=) =?us-ascii?q?y?=");
      TestEncodedWordsPhrase(
   "=?us-ascii?q?x?=" + ValuePar + "sss)=?us-ascii?q?y?=",
