@@ -6,7 +6,7 @@
   at: http://peteroupc.github.io/
    */
   using System;
-  using System.Collections.Generic;
+using System.Collections.Generic;
 
   namespace PeterO.Text {
     /// <include file='../../docs.xml'
@@ -106,6 +106,10 @@
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
+    /// <param name='input'>The parameter <paramref name='input'/> is not
+    /// documented yet.</param>
+    /// <param name='form'>The parameter <paramref name='form'/> is not
+    /// documented yet.</param>
   [Obsolete("Instead of this method, create a NormalizerInput on the input and call ReadChar to get the normalized string's code points.")]
    public static IList<int> GetChars(
   ICharacterInput input,

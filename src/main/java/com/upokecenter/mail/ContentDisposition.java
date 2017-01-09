@@ -239,7 +239,8 @@ import com.upokecenter.text.*;
       // 2183); as a result, the directory separators
       // will be treated as unsuitable characters for filenames
       // and are handled below.
-      for (int i = 0; i < str.length() && builder.length() < 243; ++i) {
+      int i = 0;
+      while (i < str.length() && builder.length() < 243) {
         int c = DataUtilities.CodePointAt(str, i);
         if (c >= 0x10000) {
           ++i;
@@ -260,6 +261,16 @@ import com.upokecenter.text.*;
           // reserved by Windows,
           // backslash, forward slash, ASCII controls, and C1 controls).
           builder.append('_');
+  } else if (c=='!' && i+1<str.length() && str.charAt(i)=='[') {
+     // '![ ... ]' may be interpreted in BASH as an evaluator;
+     // replace '!' with underscore
+    builder.append('_');
+  } else if (c=='`') {
+     // '`' starts a command in BASH and possibly other shells
+    builder.append('_');
+  } else if (c=='$') {
+     // '$' starts a variable in BASH and possibly other shells
+    builder.append('_');
         } else if (c == 0x2028 || c == 0x2029) {
           // line break characters (0x85 is already included above)
           builder.append('_');
@@ -281,6 +292,7 @@ import com.upokecenter.text.*;
             }
           }
         }
+  ++i;
       }
       str = builder.toString();
       str = ParserUtility.TrimAndCollapseSpaceAndTab(str);

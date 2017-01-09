@@ -521,9 +521,9 @@
 <summary>Sets a parameter of this content disposition.</summary>
             <param name='name'>Name of the parameter to set. If this name
             already exists (compared using a basic case-insensitive comparison), it will be
-            overwritten. . (Two
+            overwritten. (Two
             strings are equal in a basic case-insensitive comparison, if they match after
-            converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.)</param>
+            converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).</param>
             <param name='value'>Value of the parameter to set.</param>
             <returns>This instance.</returns>
             <exception cref='T:System.ArgumentNullException'>Either <paramref name='value'/> or <paramref name='name'/> is null.</exception>
@@ -1912,35 +1912,35 @@ Returns <c>false</c> if the string contains an unpaired surrogate code point.</r
             holder.</para></summary>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput)">
-<summary>Initializes a new instance of the <see cref="NormalizingCharacterInput" /> class.</summary>
+<summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
              <param name='input'>A public object.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the <see cref="NormalizingCharacterInput" /> class.</summary>
+<summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
              <param name='stream'>A public object.</param>
              <param name='form'>A Normalization object.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32})">
-<summary>Initializes a new instance of the <see cref="NormalizingCharacterInput" /> class.</summary>
+<summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
              <param name='characterList'>An IList object.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the <see cref="NormalizingCharacterInput" /> class.</summary>
+<summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
              <param name='characterList'>A public object.</param>
              <param name='form'>A Normalization object.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String)">
-<summary>Initializes a new instance of the <see cref="NormalizingCharacterInput" /> class.</summary>
+<summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
              <param name='str'>A public object.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the <see cref="NormalizingCharacterInput" /> class.</summary>
+<summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
              <param name='str'>A text string.</param>
              <param name='form'>A Normalization object.</param>
              <exception cref='T:System.ArgumentNullException'>The parameter <paramref name='str'/> or "input" or "charArray" is null.</exception>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)">
-<summary>Initializes a new instance of the <see cref="NormalizingCharacterInput" /> class.</summary>
+<summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
              <param name='str'>A public object.</param>
              <param name='index'>A 32-bit signed integer.</param>
              <param name='length'>Another 32-bit signed integer.</param>

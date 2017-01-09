@@ -1,10 +1,11 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
-import org.junit.Assert;
-import org.junit.Test;
-import com.upokecenter.text.*;
-import com.upokecenter.util.*;
 
 import java.util.*;
+
+import org.junit.Assert;
+import org.junit.Test;
+import com.upokecenter.util.*;
+import com.upokecenter.text.*;
 
   public class NormalizationTest {
     public static String[] SplitAt(String str, String delimiter) {
@@ -34,7 +35,7 @@ import java.util.*;
           break;
         } else {
           first = false;
-          String newstr = str.substring(index, (index)+((index2) - index));
+          String newstr = str.substring(index, (index)+(index2 - index));
           strings = (strings == null) ? ((new ArrayList<String>())) : strings;
           strings.add(newstr);
           index = index2 + delimLength;
@@ -339,8 +340,8 @@ Assert.assertEquals(
         }
         if (!handled[i]) {
           if (i >= 0x10000) {
-            cptemp[0] = ((char)((((i - 0x10000) >> 10) & 0x3ff) + 0xd800));
-            cptemp[1] = ((char)(((i - 0x10000) & 0x3ff) + 0xdc00));
+            cptemp[0] = (char)((((i - 0x10000) >> 10) & 0x3ff) + 0xd800);
+            cptemp[1] = (char)(((i - 0x10000) & 0x3ff) + 0xdc00);
           } else {
             cptemp[0] = (char)i;
           }

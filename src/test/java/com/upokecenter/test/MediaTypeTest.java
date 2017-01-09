@@ -1,4 +1,5 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
+
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.mail.*;
@@ -57,84 +58,84 @@ Assert.assertEquals(
       }
       {
 Object objectTemp = "utf-8";
-Object objectTemp2 = MediaType.Parse("text/plain; CHARSET=UTF-8"
-).GetCharset();
+Object objectTemp2 = MediaType.Parse("text/plain; CHARSET=UTF-8")
+.GetCharset();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = "utf-8";
-Object objectTemp2 = MediaType.Parse("text/plain; ChArSeT=UTF-8"
-).GetCharset();
+Object objectTemp2 = MediaType.Parse("text/plain; ChArSeT=UTF-8")
+.GetCharset();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = "utf-8";
-Object objectTemp2 = MediaType.Parse("text/plain; charset=UTF-8"
-).GetCharset();
+Object objectTemp2 = MediaType.Parse("text/plain; charset=UTF-8")
+.GetCharset();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       // Note that MIME implicitly allows whitespace around the equal sign
       {
-        String stringTemp = MediaType.Parse("text/plain; charset = UTF-8"
-).GetCharset();
+        String stringTemp = MediaType.Parse("text/plain; charset = UTF-8")
+.GetCharset();
 Assert.assertEquals(
           "utf-8",
           stringTemp);
       }
       {
-  String stringTemp = MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8"
-).GetCharset();
+  String stringTemp = MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8")
+.GetCharset();
 Assert.assertEquals(
           "utf-8",
           stringTemp);
       }
       {
-        String stringTemp = MediaType.Parse("text/plain; charset='UTF-8'"
-).GetCharset();
+        String stringTemp = MediaType.Parse("text/plain; charset='UTF-8'")
+.GetCharset();
 Assert.assertEquals(
           "'utf-8'",
           stringTemp);
       }
       {
-        String stringTemp = MediaType.Parse("text/plain; charset=\"UTF-8\""
-).GetCharset();
+        String stringTemp = MediaType.Parse("text/plain; charset=\"UTF-8\"")
+.GetCharset();
 Assert.assertEquals(
           "utf-8",
           stringTemp);
       }
       {
         String stringTemp =
-          MediaType.Parse("text/plain; foo=\"\\\"\"; charset=\"UTF-8\""
-).GetCharset();
+          MediaType.Parse("text/plain; foo=\"\\\"\"; charset=\"UTF-8\"")
+.GetCharset();
 Assert.assertEquals(
           "utf-8",
           stringTemp);
       }
       {
         String stringTemp =
-          MediaType.Parse("text/plain; foo=\"; charset=\\\"UTF-8\\\"\""
-).GetCharset();
+          MediaType.Parse("text/plain; foo=\"; charset=\\\"UTF-8\\\"\"")
+.GetCharset();
 Assert.assertEquals(
           "us-ascii",
           stringTemp);
       }
       {
-     String stringTemp = MediaType.Parse("text/plain; foo='; charset=\"UTF-8\""
-).GetCharset();
+     String stringTemp = MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"")
+.GetCharset();
 Assert.assertEquals(
           "utf-8",
           stringTemp);
       }
       {
-   String stringTemp = MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\""
-).GetCharset();
+   String stringTemp = MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"")
+.GetCharset();
 Assert.assertEquals(
           "utf-8",
           stringTemp);
       }
       {
-        String stringTemp = MediaType.Parse("text/plain; charset=\"UTF-\\8\""
-).GetCharset();
+        String stringTemp = MediaType.Parse("text/plain; charset=\"UTF-\\8\"")
+.GetCharset();
 Assert.assertEquals(
           "utf-8",
           stringTemp);
@@ -148,63 +149,63 @@ Assert.assertEquals(
       Assert.assertEquals("", MediaType.Parse("text/xyz").GetCharset());
       {
 Object objectTemp = "utf-8";
-Object objectTemp2 = MediaType.Parse("text/xyz;charset=UTF-8"
-).GetCharset();
+Object objectTemp2 = MediaType.Parse("text/xyz;charset=UTF-8")
+.GetCharset();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = "utf-8";
-Object objectTemp2 = MediaType.Parse("text/xyz;charset=utf-8"
-).GetCharset();
+Object objectTemp2 = MediaType.Parse("text/xyz;charset=utf-8")
+.GetCharset();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = "";
-Object objectTemp2 = MediaType.Parse("text/xyz;chabset=utf-8"
-).GetCharset();
+Object objectTemp2 = MediaType.Parse("text/xyz;chabset=utf-8")
+.GetCharset();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = "utf-8";
-Object objectTemp2 = MediaType.Parse("text/xml;charset=utf-8"
-).GetCharset();
+Object objectTemp2 = MediaType.Parse("text/xml;charset=utf-8")
+.GetCharset();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = "utf-8";
-Object objectTemp2 = MediaType.Parse("text/plain;charset=utf-8"
-).GetCharset();
+Object objectTemp2 = MediaType.Parse("text/plain;charset=utf-8")
+.GetCharset();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
-  String stringTemp = MediaType.Parse("text/plain;chabset=utf-8"
-).GetCharset();
+  String stringTemp = MediaType.Parse("text/plain;chabset=utf-8")
+.GetCharset();
 Assert.assertEquals(
           "us-ascii",
           stringTemp);
       }
       {
 Object objectTemp = "utf-8";
-Object objectTemp2 = MediaType.Parse("image/xml;charset=utf-8"
-).GetCharset();
+Object objectTemp2 = MediaType.Parse("image/xml;charset=utf-8")
+.GetCharset();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = "";
-Object objectTemp2 = MediaType.Parse("image/xml;chabset=utf-8"
-).GetCharset();
+Object objectTemp2 = MediaType.Parse("image/xml;chabset=utf-8")
+.GetCharset();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = "utf-8";
-Object objectTemp2 = MediaType.Parse("image/plain;charset=utf-8"
-).GetCharset();
+Object objectTemp2 = MediaType.Parse("image/plain;charset=utf-8")
+.GetCharset();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
       {
 Object objectTemp = "";
-Object objectTemp2 = MediaType.Parse("image/plain;chabset=utf-8"
-).GetCharset();
+Object objectTemp2 = MediaType.Parse("image/plain;chabset=utf-8")
+.GetCharset();
 Assert.assertEquals(objectTemp, objectTemp2);
 }
     }

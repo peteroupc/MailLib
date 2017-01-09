@@ -1,9 +1,10 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
+
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
-import com.upokecenter.text.*;
 import com.upokecenter.mail.*;
+import com.upokecenter.text.*;
 
     public class ContentDispositionTest {
         @Test public void TestDispositionType() {
@@ -127,7 +128,8 @@ import com.upokecenter.mail.*;
         "nul") || strLower.equals("clock$") || strLower.indexOf(
         "nul.") == 0 || strLower.equals(
         "prn") || strLower.indexOf(
-        "prn.") == 0 || strLower.equals(
+        "prn.") == 0 || strLower.indexOf(
+        "![") >= 0 || strLower.equals(
         "aux") || strLower.indexOf(
         "aux.") == 0 || strLower.equals(
         "con") || strLower.indexOf(
@@ -147,8 +149,8 @@ import com.upokecenter.mail.*;
                 if (c < 0x20 || (c >= 0x7f && c <= 0x9f) ||
                   c == '%' || c == 0x2028 || c == 0x2029 ||
                 c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
-                  c == ':' || c == '<' || c == '>' || c == '"' ||
-               c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
+                  c == ':' || c == '<' || c == '>' || c == '"' || c=='`' ||
+    c=='$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff ||
                     (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
                     return false;

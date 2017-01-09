@@ -5,9 +5,9 @@ http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
-using NUnit.Framework;
 using System;
 using System.Globalization;
+using NUnit.Framework;
 
 namespace Test {
   internal static class TestCommon {

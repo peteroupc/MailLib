@@ -2304,7 +2304,7 @@ public final void setSubject(String value) {
                 } else {
  badticks = 0;
 }
-                st = ((int)st * 31 + dtt);
+                st = (((int)st * 31) + dtt);
                 ++sx;
                 if (sx >= 100) {
  sx = 0;
@@ -2320,7 +2320,7 @@ public final void setSubject(String value) {
                     } else {
  badticks = 0;
 }
-                    int ticks = ((int)st * 31 + dtt + j);
+                    int ticks = (((int)st * 31) + dtt + j);
                     st = ticks;
                     ++sx;
                     if (sx >= 100) {

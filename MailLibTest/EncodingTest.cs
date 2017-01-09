@@ -5,13 +5,13 @@ http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
+using System;
+using System.Collections.Generic;
+using System.Text;
 using NUnit.Framework;
 using PeterO;
 using PeterO.Mail;
 using PeterO.Text;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Test;
 
 namespace MailLibTest {

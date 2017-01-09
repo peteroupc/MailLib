@@ -6,13 +6,14 @@ http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
+
+import java.util.*;
+
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 import com.upokecenter.text.*;
-
-import java.util.*;
 
   public class EncodingTest {
     public static String MailNamespace() {
@@ -372,7 +373,7 @@ import java.util.*;
         new byte[] { 0, 16, 1  }, "ABAB");
       TestBase64Decode(new byte[] { 0, 16, 1, 93  }, "ABABXX==");
       TestBase64Decode(
-     new byte[] { (byte)169, (byte)172, (byte)241, (byte)179, 7, (byte)157, 114, (byte)247, (byte)235  },
+     new byte[] { (byte)169, (byte)172, (byte)241, (byte)179, 7, (byte)157, 114, (byte)247, (byte)235 },
           "qazxswedcvfr");
       TestBase64Decode(
         new byte[] { (byte)255, (byte)239, (byte)254, 103  }, "/+/+Zz==");
@@ -2073,7 +2074,7 @@ String stringTemp =
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      tmp = "<x y@x.invalid>";  // local part is not a dot-atom
+      tmp = "<x y@x.invalid>"; // local part is not a dot-atom
       try {
         msg.SetHeader("to", tmp);
         Assert.fail("Should have failed");

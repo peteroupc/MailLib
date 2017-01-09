@@ -62,7 +62,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
 
     /**
      * Not documented yet.
-     * @param bytes Not documented yet.
+     * @param bytes The parameter {@code bytes} is not documented yet.
      * @param offset A zero-based index showing where the desired portion of {@code
      * bytes} begins.
      * @param length The length, in bytes, of the desired portion of {@code bytes}
@@ -116,7 +116,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
            long t1 = (s1 >> 18) & 0x3fffffffffffL;
            long t0 = (s0 >> 5) & 0x7ffffffffffffffL;
            this.s[1] = s1 ^ s0 ^ t1 ^ t0;
-           return (this.s[1] + s0);
+           return this.s[1] + s0;
     }
 
     private void Seed() {

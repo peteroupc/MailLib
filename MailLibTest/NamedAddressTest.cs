@@ -1,7 +1,7 @@
-using NUnit.Framework;
-using PeterO.Mail;
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
+using PeterO.Mail;
 
 namespace MailLibTest {
   [TestFixture]

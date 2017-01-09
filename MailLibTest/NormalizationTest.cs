@@ -1,10 +1,10 @@
-using NUnit.Framework;
-using PeterO.Text;
-using PeterO;
 using System;
-using Test;
 using System.Collections.Generic;
 using System.Text;
+using NUnit.Framework;
+using PeterO;
+using PeterO.Text;
+using Test;
 
 namespace MailLibTest {
   [TestFixture]
@@ -36,7 +36,7 @@ namespace MailLibTest {
           break;
         } else {
           first = false;
-          string newstr = str.Substring(index, (index2) - index);
+          string newstr = str.Substring(index, index2 - index);
           strings = strings ?? (new List<string>());
           strings.Add(newstr);
           index = index2 + delimLength;
@@ -336,8 +336,8 @@ Assert.AreEqual(
         }
         if (!handled[i]) {
           if (i >= 0x10000) {
-            cptemp[0] = ((char)((((i - 0x10000) >> 10) & 0x3ff) + 0xd800));
-            cptemp[1] = ((char)(((i - 0x10000) & 0x3ff) + 0xdc00));
+            cptemp[0] = (char)((((i - 0x10000) >> 10) & 0x3ff) + 0xd800);
+            cptemp[1] = (char)(((i - 0x10000) & 0x3ff) + 0xdc00);
           } else {
             cptemp[0] = (char)i;
           }

@@ -1,9 +1,9 @@
-using NUnit.Framework;
-using PeterO;
-using PeterO.Text;
-using PeterO.Mail;
 using System;
 using System.Text;
+using NUnit.Framework;
+using PeterO;
+using PeterO.Mail;
+using PeterO.Text;
 
 namespace MailLibTest {
     [TestFixture]
@@ -119,7 +119,9 @@ namespace MailLibTest {
         StringComparison.Ordinal) == 0 || strLower.Equals(
         "prn") || strLower.IndexOf(
         "prn.",
-        StringComparison.Ordinal) == 0 || strLower.Equals(
+        StringComparison.Ordinal) == 0 || strLower.IndexOf(
+        "![",
+        StringComparison.Ordinal) >= 0 || strLower.Equals(
         "aux") || strLower.IndexOf(
         "aux.",
         StringComparison.Ordinal) == 0 || strLower.Equals(
@@ -143,8 +145,8 @@ namespace MailLibTest {
                 if (c < 0x20 || (c >= 0x7f && c <= 0x9f) ||
                   c == '%' || c == 0x2028 || c == 0x2029 ||
                 c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
-                  c == ':' || c == '<' || c == '>' || c == '"' ||
-               c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
+                  c == ':' || c == '<' || c == '>' || c == '"' || c=='`' ||
+    c=='$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff ||
                     (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
                     return false;

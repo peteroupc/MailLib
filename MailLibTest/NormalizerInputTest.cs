@@ -1,8 +1,8 @@
+using System;
+using System.Text;
 using NUnit.Framework;
 using PeterO;
 using PeterO.Text;
-using System;
-using System.Text;
 using Test;
 
 namespace MailLibTest {

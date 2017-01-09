@@ -1,9 +1,9 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
+
+import java.util.*;
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.mail.*;
-
-import java.util.*;
 
   public class NamedAddressTest {
     @Test

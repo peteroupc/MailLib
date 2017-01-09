@@ -226,21 +226,21 @@ import com.upokecenter.text.*;
       // Keraia
       if (!(Idna.IsValidDomainName("x\u0375\u03b1", false))) {
  Assert.fail();
- }  // Greek
+ } // Greek
       if (Idna.IsValidDomainName("x\u0375a", false)) {
  Assert.fail();
- }  // Non-Greek
+ } // Non-Greek
       // Geresh and gershayim
       if (!(Idna.IsValidDomainName("\u05d0\u05f3", false))) {
  Assert.fail();
- }  // Hebrew
+ } // Hebrew
       // Arabic (non-Hebrew)
       if (Idna.IsValidDomainName("\u0627\u05f3", false)) {
  Assert.fail();
  }
       if (!(Idna.IsValidDomainName("\u05d0\u05f4", false))) {
  Assert.fail();
- }  // Hebrew
+ } // Hebrew
       // Arabic (non-Hebrew)
       if (Idna.IsValidDomainName("\u0627\u05f4", false)) {
  Assert.fail();
@@ -248,10 +248,10 @@ import com.upokecenter.text.*;
       // Bidi Rule: Hebrew and Latin in the same label
       if (Idna.IsValidDomainName("a\u05d0", false)) {
  Assert.fail();
- }  // Hebrew
+ } // Hebrew
       if (Idna.IsValidDomainName("\u05d0a", false)) {
  Assert.fail();
- }  // Hebrew
+ } // Hebrew
       // Arabic-indic digits and extended Arabic-indic digits
       if (Idna.IsValidDomainName("\u0627\u0660\u06f0\u0627", false)) {
  Assert.fail();

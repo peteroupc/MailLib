@@ -8,7 +8,6 @@ at: http://peteroupc.github.io/
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 using PeterO;
 using PeterO.Text;
 
@@ -1647,7 +1646,8 @@ private sealed class HeaderXVerificasicurezza : StructuredHeaderField {
       CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
       fieldMap = new Dictionary<string,
-        IHeaderFieldParser>(); fieldMap["content-return"] = new
+        IHeaderFieldParser>();
+fieldMap["content-return"] = new
         HeaderX400ContentReturn();
 fieldMap["x400-content-return"] = new HeaderX400ContentReturn();
 fieldMap["delivery-date"] = new HeaderDeliveryDate();

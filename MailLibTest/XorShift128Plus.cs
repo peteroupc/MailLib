@@ -58,7 +58,8 @@ namespace PeterO {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='bytes'>Not documented yet.</param>
+    /// <param name='bytes'>The parameter <paramref name='bytes'/> is not
+    /// documented yet.</param>
     /// <param name='offset'>A zero-based index showing where the desired
     /// portion of <paramref name='bytes'/> begins.</param>
     /// <param name='length'>The length, in bytes, of the desired portion

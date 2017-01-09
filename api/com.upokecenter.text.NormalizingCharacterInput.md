@@ -245,6 +245,10 @@ ReadChar to get the normalized String's code points.
 
 **Parameters:**
 
+* <code>input</code> - The parameter <code>input</code> is not documented yet.
+
+* <code>form</code> - The parameter <code>form</code> is not documented yet.
+
 * <code>str</code> - An object that implements a stream of Unicode characters.
 
 * <code>form</code> - Specifies the normalization form to use when normalizing the

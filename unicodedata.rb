@@ -697,6 +697,27 @@ def getChunkedFunctions(arr, name, chunkSize)
   ret+=("    }\n");
   return ret
 end
+def getQCSArray(form)
+ qcs=[]
+ minval=-1;maxval=-1
+ for i in 0...0x110000
+  qcs.push(Normalizer.isQCS(i,form));
+  minval=i if minval==-1 && !qcs[i]
+  maxval=i if !qcs[i]
+ end
+ return [qcs,minval,maxval]
+end
+def makeQCS(f,fjs,form)
+  namestr=form.to_s
+  qcs=getQCSArray(form)
+  puts "Finding #{namestr} quick-check starters..."
+  data=("    public static readonly byte[] QCS#{namestr} = new byte[] {\n")
+  bin=LZ4.compress(toBoolArray(qcs[0]))
+  data+=("      "+linebrokenjoinbytes(bin))
+  data+=("    };\n")
+  fjs.puts(jsbytes("NormalizationData['QCS#{namestr}']",bin))
+  return [qcs[1],qcs[2],data]
+end
 
 Dir.mkdir("cache") rescue nil
 puts "Gathering Unicode data..."
@@ -746,6 +767,26 @@ f.puts("using System;")
 f.puts("namespace PeterO.Text {")
 f.puts("  internal static class NormalizationData {")
 final="readonly"
+#-------------------
+
+qcs1=makeQCS(f,fjs,:NFC);
+qcs2=makeQCS(f,fjs,:NFD);
+qcs3=makeQCS(f,fjs,:NFKC);
+qcs4=makeQCS(f,fjs,:NFKD);
+f.puts("    public const int QCSNFCMin = #{qcs1[0]};")
+f.puts("    public const int QCSNFCMax = #{qcs1[1]};")
+f.puts("    public const int QCSNFDMin = #{qcs2[0]};")
+f.puts("    public const int QCSNFDMax = #{qcs2[1]};")
+f.puts("    public const int QCSNFKCMin = #{qcs3[0]};")
+f.puts("    public const int QCSNFKCMax = #{qcs3[1]};")
+f.puts("    public const int QCSNFKDMin = #{qcs4[0]};")
+f.puts("    public const int QCSNFKDMax = #{qcs4[1]};")
+f.puts(qcs1[2])
+f.puts(qcs2[2])
+f.puts(qcs3[2])
+f.puts(qcs4[2])
+
+#-------------------
 binary=[]
 for key in $ComposedPairs.keys.sort
   a=key/0x110000
@@ -838,32 +879,6 @@ fjs.puts("]; if(typeof Uint32Array!='undefined')NormalizationData.DecompMappings
 fjs.puts("NormalizationData.ComplexDecompMappings = [")
 fjs.puts(linebrokenjoin(complexdecomps))
 fjs.puts("]; if(typeof Uint32Array!='undefined')NormalizationData.ComplexDecompMappings = new Uint32Array(NormalizationData.ComplexDecompMappings);")
-def getQCSArray(form)
- qcs=[]
- minval=-1;maxval=-1
- for i in 0...0x110000
-  qcs.push(Normalizer.isQCS(i,form));
-  minval=i if minval==-1 && !qcs[i]
-  maxval=i if !qcs[i]
- end
- return [qcs,minval,maxval]
-end
-def makeQCS(f,fjs,form)
-  namestr=form.to_s
-  qcs=getQCSArray(form)
-  puts "Finding #{namestr} quick-check starters..."
-  f.puts("    public static readonly int QCS#{namestr}Min = #{qcs[1]};")
-  f.puts("    public static readonly int QCS#{namestr}Max = #{qcs[2]};")
-  f.puts("    public static readonly byte[] QCS#{namestr} = new byte[] {")
-  bin=LZ4.compress(toBoolArray(qcs[0]))
-  f.puts("      "+linebrokenjoinbytes(bin))
-  f.puts("    };")
-  fjs.puts(jsbytes("NormalizationData['QCS#{namestr}']",bin))
-end
-makeQCS(f,fjs,:NFC);
-makeQCS(f,fjs,:NFD);
-makeQCS(f,fjs,:NFKC);
-makeQCS(f,fjs,:NFKD);
 f.puts("  }")
 if true
 f.puts("}")

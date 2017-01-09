@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-
 using PeterO;
 using PeterO.Mail.Transforms;
 using PeterO.Text;
@@ -2022,7 +2021,7 @@ namespace PeterO.Mail {
                 } else {
  badticks = 0;
 }
-                st = unchecked((int)st * 31 + dtt);
+                st = unchecked(((int)st * 31) + dtt);
                 ++sx;
                 if (sx >= 100) {
  sx = 0;
@@ -2038,7 +2037,7 @@ namespace PeterO.Mail {
                     } else {
  badticks = 0;
 }
-                    int ticks = unchecked((int)st * 31 + dtt + j);
+                    int ticks = unchecked(((int)st * 31) + dtt + j);
                     st = ticks;
                     ++sx;
                     if (sx >= 100) {

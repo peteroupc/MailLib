@@ -1,9 +1,9 @@
-using NUnit.Framework;
-using PeterO;
-using PeterO.Mail;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using NUnit.Framework;
+using PeterO;
+using PeterO.Mail;
 
 namespace MailLibTest {
   [TestFixture]
@@ -53,38 +53,39 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
       TestMediaTypeRoundTrip("xy" + EncodingTest.Repeat("@", 20) + "z");
       TestMediaTypeRoundTrip("xy" + EncodingTest.Repeat("@", 150) + "z");
       {
-        string stringTemp = MediaType.Parse("x/y;z=1;z*=utf-8''2"
-).GetParameter("z");
+        string stringTemp = MediaType.Parse("x/y;z=1;z*=utf-8''2")
+.GetParameter("z");
         Assert.AreEqual(
         "2",
         stringTemp);
       }
     }
 
-    internal static Message MessageFromString(string ValueStr) {
+    internal static Message MessageFromString(string valueStr) {
       var msgobj = new Message(
   DataUtilities.GetUtf8Bytes(
-  ValueStr,
+  valueStr,
   true));
       MessageGenerate(msgobj);
       return msgobj;
     }
 
-    internal static void MessageConstructOnly(string ValueStr) {
+    internal static void MessageConstructOnly(string valueStr) {
       new Message(
   DataUtilities.GetUtf8Bytes(
-  ValueStr,
+  valueStr,
   true));
     }
 
-    private static void TestMediaTypeRoundTrip(string ValueStr) {
+    private static void TestMediaTypeRoundTrip(string valueStr) {
       string mtstring = new MediaTypeBuilder(
   "x",
-  "y").SetParameter("z",
-                    ValueStr).ToString();
+  "y").SetParameter(
+  "z",
+  valueStr).ToString();
       Assert.IsFalse(mtstring.Contains("\r\n\r\n"));
       Assert.IsFalse(mtstring.Contains("\r\n \r\n"));
-      Assert.AreEqual(ValueStr, MediaType.Parse(mtstring).GetParameter("z"));
+      Assert.AreEqual(valueStr, MediaType.Parse(mtstring).GetParameter("z"));
   Message mtmessage = MessageFromString("MIME-Version: 1.0\r\nContent-Type: " +
                     mtstring + "\r\n\r\n");
       MessageGenerate(mtmessage);
@@ -208,9 +209,9 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
   string expected) {
       MediaType mt = MediaType.Parse(mtype);
       Assert.AreEqual(expected, mt.GetParameter(param));
-      var ValueStr = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
+      var valueStr = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: " + mtype + "\r\n\r\nTest";
-      Message msg = MessageFromString(ValueStr);
+      Message msg = MessageFromString(valueStr);
       mt = msg.ContentType;
       Assert.AreEqual(expected, mt.GetParameter(param));
     }
@@ -281,15 +282,17 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
         "charset",
         "a biso-8859-1-en-xyz");
 
- if
-   ((MediaType.Parse("text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
-  null)) != null) {
+ if (
+  MediaType.Parse(
+  "text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
+  null) != null) {
         Assert.Fail();
       }
 
-      if ((MediaType.Parse(
-        "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
-        null)) != null) {
+ if (
+  MediaType.Parse(
+  "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
+  null) != null) {
         Assert.Fail();
       }
       TestRfc2231Extension(
@@ -317,8 +320,9 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
     public static void SingleTestMediaTypeEncoding(string value) {
       MediaType mt = new MediaTypeBuilder(
   "x",
-  "y").SetParameter("z",
-                    value).ToMediaType();
+  "y").SetParameter(
+  "z",
+  value).ToMediaType();
       string topLevel = mt.TopLevelType;
       string sub = mt.SubType;
       string mtstring = "MIME-Version: 1.0\r\nContent-Type: " + mt +
@@ -520,8 +524,8 @@ Assert.AreEqual(objectTemp, objectTemp2);
     public void TestHeaderManip() {
       {
         string stringTemp = MessageFromString(
-          "From: Me <me@example.com>\r\n\r\n").AddHeader("x-comment", "comment"
-).GetHeader("x-comment");
+          "From: Me <me@example.com>\r\n\r\n").AddHeader("x-comment", "comment")
+.GetHeader("x-comment");
         Assert.AreEqual(
           "comment",
           stringTemp);
@@ -537,34 +541,38 @@ Assert.AreEqual(objectTemp, objectTemp2);
       }
       {
         string stringTemp = MessageFromString(
-          "From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-                    "you@example.com").GetHeader(0).Key;
+          "From: Me <me@example.com>\r\n\r\n").SetHeader(
+  0,
+  "you@example.com").GetHeader(0).Key;
         Assert.AreEqual(
           "from",
           stringTemp);
       }
       {
         string stringTemp = MessageFromString(
-          "From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-                    "you@example.com").GetHeader(0).Value;
+          "From: Me <me@example.com>\r\n\r\n").SetHeader(
+  0,
+  "you@example.com").GetHeader(0).Value;
         Assert.AreEqual(
           "you@example.com",
           stringTemp);
       }
       {
         string stringTemp = MessageFromString(
-          "From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-                    "x-comment",
- "comment").GetHeader(0).Key;
+          "From: Me <me@example.com>\r\n\r\n").SetHeader(
+  0,
+  "x-comment",
+  "comment").GetHeader(0).Key;
         Assert.AreEqual(
           "x-comment",
           stringTemp);
       }
       {
         string stringTemp = MessageFromString(
-          "From: Me <me@example.com>\r\n\r\n").SetHeader(0,
-                    "x-comment",
- "comment").GetHeader(0).Value;
+          "From: Me <me@example.com>\r\n\r\n").SetHeader(
+  0,
+  "x-comment",
+  "comment").GetHeader(0).Value;
         Assert.AreEqual(
           "comment",
           stringTemp);
@@ -1285,8 +1293,8 @@ throw new InvalidOperationException(String.Empty, ex);
   MediaType.TextPlainAscii,
   MediaType.Parse("text/plain; charset=us-ascii"));
       Assert.IsTrue(MediaType.TextPlainAscii.GetHashCode() ==
-                MediaType.Parse("text/plain; charset=us-ascii"
-).GetHashCode());
+                MediaType.Parse("text/plain; charset=us-ascii")
+.GetHashCode());
     }
     [Test]
     public void TestMediaTypeBuilder() {
@@ -1509,9 +1517,9 @@ MessageFromString(MessageFromString(msg).Generate())
     [Test]
     public void TestFWSAtSubjectEnd() {
       Message msg;
-      const string ValueStr = "From: me@example.com\r\nSubject: Test\r\n " +
+   const string ValueStringVar = "From: me@example.com\r\nSubject: Test\r\n " +
         "\r\nX-Header: Header\r\n\r\nBody";
-      msg = MessageFromString(ValueStr);
+      msg = MessageFromString(ValueStringVar);
       {
         string stringTemp = msg.GetHeader("subject");
         Assert.AreEqual(
@@ -1522,10 +1530,10 @@ MessageFromString(MessageFromString(msg).Generate())
 
     [Test]
     public void TestEmptyGroup() {
-      const string ValueStr = "From: me@example.com\r\nTo: empty-group:;" +
+    const string ValueStringVar = "From: me@example.com\r\nTo: empty-group:;" +
         "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
         "\r\n\r\nBody";
-      MessageFromString(ValueStr);
+      MessageFromString(ValueStringVar);
     }
 
     [Test]
@@ -1547,22 +1555,22 @@ MessageFromString(MessageFromString(msg).Generate())
           stringTemp);
       }
       {
-        string stringTemp = MediaType.Parse("example/x ; a=b"
-).TypeAndSubType;
+        string stringTemp = MediaType.Parse("example/x ; a=b")
+.TypeAndSubType;
         Assert.AreEqual(
         "example/x",
         stringTemp);
       }
       {
-        string stringTemp = MediaType.Parse("example/x; a=b"
-).TypeAndSubType;
+        string stringTemp = MediaType.Parse("example/x; a=b")
+.TypeAndSubType;
         Assert.AreEqual(
         "example/x",
         stringTemp);
       }
       {
-        string stringTemp = MediaType.Parse("example/x; a=b "
-).TypeAndSubType;
+        string stringTemp = MediaType.Parse("example/x; a=b ")
+.TypeAndSubType;
         Assert.AreEqual(
         "example/x",
         stringTemp);
@@ -1687,8 +1695,9 @@ MessageFromString(MessageFromString(msg).Generate())
       }
       try {
         MessageFromString(
-  "From: x@example.com\r\nX-" + EncodingTest.Repeat("a",
-          995) + ":\r\n Test\r\n\r\nBody");
+  "From: x@example.com\r\nX-" + EncodingTest.Repeat(
+  "a",
+  995) + ":\r\n Test\r\n\r\nBody");
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1749,15 +1758,15 @@ MessageFromString(MessageFromString(msg).Generate())
 
     private static void TestFileNameOne(string input, string expected) {
       Message msg;
-      String ValueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+      String valueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
  "Content-Type: text/plain\r\nContent-Disposition: inline; filename=" +
           input + "\r\n\r\nEmpty.";
-      msg = MessageFromString(ValueStr);
+      msg = MessageFromString(valueStr);
       Assert.AreEqual(expected, msg.FileName);
-      ValueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+      valueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: text/plain; name=" + input +
         "\r\n\r\nEmpty.";
-      msg = MessageFromString(ValueStr);
+      msg = MessageFromString(valueStr);
       Assert.AreEqual(expected, msg.FileName);
     }
     [Test]
@@ -1772,8 +1781,8 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     [Test]
     public void TestFromAddresses() {
-      string ValueStr = "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
-      Message msg = MessageFromString(ValueStr);
+      string valueStr = "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
+      Message msg = MessageFromString(valueStr);
       MessageFromString(MessageGenerate(msg));
       Assert.AreEqual(1, msg.FromAddresses.Count);
     }
@@ -1787,8 +1796,9 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     [Test]
     public void TestGetHeader() {
-      const string ValueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(ValueStr);
+    const string ValueStringVar =
+      "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      Message msg = MessageFromString(ValueStringVar);
       try {
         msg.GetHeader(2);
         Assert.Fail("Should have failed");
@@ -1818,8 +1828,8 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     [Test]
     public void TestRemoveHeader() {
-      const string ValueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(ValueStr);
+      const string valueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      Message msg = MessageFromString(valueStr);
       try {
         msg.RemoveHeader(2);
         Assert.Fail("Should have failed");
@@ -1925,8 +1935,8 @@ throw new InvalidOperationException(String.Empty, ex);
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      const string ValueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(ValueStr);
+      const string valueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      Message msg = MessageFromString(valueStr);
       try {
         msg.SetHeader(2, "X-Header2", "2");
         Assert.Fail("Should have failed");

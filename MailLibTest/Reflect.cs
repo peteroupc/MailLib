@@ -28,15 +28,18 @@ namespace MailLibTest {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='type'>Not documented yet.</param>
-    /// <param name='parameters'>Not documented yet.</param>
+    /// <param name='type'>The parameter <paramref name='type'/> is not
+    /// documented yet.</param>
+    /// <param name='parameters'>The parameter <paramref
+    /// name='parameters'/> is not documented yet.</param>
     /// <returns>An arbitrary object.</returns>
     public static object Construct(string type, params object[] parameters) {
       try {
+        BindingFlags flags = BindingFlags.Instance | BindingFlags.Public |
+ BindingFlags.NonPublic | BindingFlags.CreateInstance;
         return Activator.CreateInstance(
   FindType(type),
-          BindingFlags.Instance | BindingFlags.Public |
- BindingFlags.NonPublic | BindingFlags.CreateInstance,
+          flags,
  null,
  parameters,
           null);
@@ -46,8 +49,10 @@ namespace MailLibTest {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='obj'>Not documented yet.</param>
-    /// <param name='name'>Not documented yet.</param>
+    /// <param name='obj'>The parameter <paramref name='obj'/> is not
+    /// documented yet.</param>
+    /// <param name='name'>The parameter <paramref name='name'/> is not
+    /// documented yet.</param>
     /// <returns>An arbitrary object.</returns>
     public static object GetMethod(object obj, string name) {
       return obj.GetType().GetMethod(
@@ -76,9 +81,12 @@ namespace MailLibTest {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='obj'>Not documented yet.</param>
-    /// <param name='method'>Not documented yet.</param>
-    /// <param name='parameters'>Not documented yet. (3).</param>
+    /// <param name='obj'>The parameter <paramref name='obj'/> is not
+    /// documented yet.</param>
+    /// <param name='method'>The parameter <paramref name='method'/> is not
+    /// documented yet.</param>
+    /// <param name='parameters'>The parameter <paramref
+    /// name='parameters'/> is not documented yet.</param>
     /// <returns>An arbitrary object.</returns>
     public static object InvokeMethod(
   object obj,
@@ -92,9 +100,12 @@ namespace MailLibTest {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='obj'>Not documented yet.</param>
-    /// <param name='name'>Not documented yet.</param>
-    /// <param name='parameters'>Not documented yet. (3).</param>
+    /// <param name='obj'>The parameter <paramref name='obj'/> is not
+    /// documented yet.</param>
+    /// <param name='name'>The parameter <paramref name='name'/> is not
+    /// documented yet.</param>
+    /// <param name='parameters'>The parameter <paramref
+    /// name='parameters'/> is not documented yet.</param>
     /// <returns>An arbitrary object.</returns>
     public static object Invoke(
   object obj,
@@ -107,9 +118,12 @@ namespace MailLibTest {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='type'>Not documented yet.</param>
-    /// <param name='name'>Not documented yet.</param>
-    /// <param name='parameters'>Not documented yet. (3).</param>
+    /// <param name='type'>The parameter <paramref name='type'/> is not
+    /// documented yet.</param>
+    /// <param name='name'>The parameter <paramref name='name'/> is not
+    /// documented yet.</param>
+    /// <param name='parameters'>The parameter <paramref
+    /// name='parameters'/> is not documented yet.</param>
     /// <returns>An arbitrary object.</returns>
     public static object InvokeStatic(
   string type,
@@ -122,20 +136,26 @@ namespace MailLibTest {
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='obj'>Not documented yet.</param>
-    /// <param name='name'>Not documented yet.</param>
+    /// <param name='obj'>The parameter <paramref name='obj'/> is not
+    /// documented yet.</param>
+    /// <param name='name'>The parameter <paramref name='name'/> is not
+    /// documented yet.</param>
     /// <returns>An arbitrary object.</returns>
     public static object GetProperty(object obj, string name) {
+  object method = obj.GetType().GetProperty(
+  name,
+  BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty)
+      .GetGetMethod();
       return InvokeMethod(
   obj,
- obj.GetType().GetProperty(
-  name,
-  BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty).GetGetMethod());
+  method);
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='type'>Not documented yet.</param>
-    /// <param name='name'>Not documented yet.</param>
+    /// <param name='type'>The parameter <paramref name='type'/> is not
+    /// documented yet.</param>
+    /// <param name='name'>The parameter <paramref name='name'/> is not
+    /// documented yet.</param>
     /// <returns>An arbitrary object.</returns>
     public static object GetPropertyStatic(string type, string name) {
       return InvokeMethod(
@@ -143,28 +163,37 @@ namespace MailLibTest {
  FindType(
   type).GetProperty(
   name,
-  BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetProperty).GetGetMethod());
+  BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetProperty)
+      .GetGetMethod());
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='obj'>Not documented yet.</param>
-    /// <param name='name'>Not documented yet.</param>
+    /// <param name='obj'>The parameter <paramref name='obj'/> is not
+    /// documented yet.</param>
+    /// <param name='name'>The parameter <paramref name='name'/> is not
+    /// documented yet.</param>
     /// <returns>An arbitrary object.</returns>
     public static object GetField(object obj, string name) {
+      BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic |
+        BindingFlags.Instance | BindingFlags.GetField;
       return obj.GetType().GetField(
   name,
-  BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField).GetValue(obj);
+  flags) .GetValue(obj);
     }
 
     /// <summary>Not documented yet.</summary>
-    /// <param name='type'>Not documented yet.</param>
-    /// <param name='name'>Not documented yet.</param>
+    /// <param name='type'>The parameter <paramref name='type'/> is not
+    /// documented yet.</param>
+    /// <param name='name'>The parameter <paramref name='name'/> is not
+    /// documented yet.</param>
     /// <returns>An arbitrary object.</returns>
     public static object GetFieldStatic(string type, string name) {
-      return FindType(
+        BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic |
+          BindingFlags.Instance | BindingFlags.GetField;
+       return FindType(
   type).GetField(
   name,
-  BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField).GetValue(null);
+  flags) .GetValue(null);
     }
   }
 }
