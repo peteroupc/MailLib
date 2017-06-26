@@ -117,7 +117,7 @@ private NormalizationData() {
         15, (byte)0xe0,
  23, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xd4, 15, 33, 0,
         14,
-      16, 0, 116, 30, 15, (byte)0xff, 0, (byte)0xa5, 16, (byte)0xff  };
+      16, 0, 116, 30, 15, (byte)0xff, 0, (byte)0xa5, 16, (byte)0xff };
 
     public static final byte[] QCSNFD = new byte[] { (byte)0xf3, 9, 0, 1,
       (byte)0xff, (byte)0xff, (byte)0xff, 2, 3, 4, 5, (byte)0xff,
@@ -256,7 +256,7 @@ private NormalizationData() {
  1, (byte)0xff, 3, 15, 109, 11, (byte)0xff, (byte)0xff, (byte)0xff,
         (byte)0xff,
       (byte)0xb3, 15, 79, 28, 48, 31, (byte)0xc0, (byte)0xff, 0, (byte)0xa8,
-        16, (byte)0xff  };
+        16, (byte)0xff };
 
     public static final byte[] QCSNFKC = new byte[] { (byte)0xf3, 9, 0,
       1, (byte)0xff, (byte)0xff, (byte)0xff, 2, (byte)0xff, 3, 4,
@@ -406,7 +406,7 @@ private NormalizationData() {
         23, (byte)0xff,
       (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xb8, 15, (byte)0x9c, 23,
         18, 15, (byte)0xff,
-      0, (byte)0xa6, 16, (byte)0xff  };
+      0, (byte)0xa6, 16, (byte)0xff };
 
     public static final byte[] QCSNFKD = new byte[] { (byte)0xf3, 9, 0,
       1, (byte)0xff, (byte)0xff, (byte)0xff, 2, 3, 4, 5, (byte)0xff,
@@ -585,7 +585,7 @@ private NormalizationData() {
       0, (byte)0xfe, 108, 29, 15, 109, 11, (byte)0xff, (byte)0xff,
         (byte)0xff, (byte)0xff,
       (byte)0x97, 15, 79, 28, 48, 31, (byte)0xc0, (byte)0xff, 0, (byte)0xa8,
-        16, (byte)0xff  };
+        16, (byte)0xff };
 
     public static final int[] ComposedPairs = GetComposedPairs();
 
@@ -1130,7 +1130,7 @@ private NormalizationData() {
         0, 15, (byte)0xb6,
   14, (byte)0xc0, 15, (byte)0xd3, 24, (byte)0xff, (byte)0xc7, 4, 84, 5, 15,
         68,
-      3, 94, 15, (byte)0x87, 16, (byte)0xa2, 16, 0  };
+      3, 94, 15, (byte)0x87, 16, (byte)0xa2, 16, 0 };
 
     public static final int[] DecompMappings = GetDecompMappings();
 

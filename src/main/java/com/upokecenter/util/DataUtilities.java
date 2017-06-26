@@ -1,6 +1,6 @@
 package com.upokecenter.util;
 /*
-Written in 2013 by Peter O.
+Written by Peter O. in 2013.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -155,14 +155,14 @@ private DataUtilities() {
 }
         }
         if (c <= 0x80) {
-          return new byte[] { (byte)c  };
+          return new byte[] { (byte)c };
         } else if (c <= 0x7ff) {
           return new byte[] { (byte)(0xc0 | ((c >> 6) & 0x1f)),
-            (byte)(0x80 | (c & 0x3f))  };
+            (byte)(0x80 | (c & 0x3f)) };
         } else {
           return new byte[] { (byte)(0xe0 | ((c >> 12) & 0x0f)),
             (byte)(0x80 | ((c >> 6) & 0x3f)),
-            (byte)(0x80 | (c & 0x3f))  };
+            (byte)(0x80 | (c & 0x3f)) };
         }
       } else if (str.length() == 2) {
         int c = str.charAt(0);
@@ -172,9 +172,9 @@ private DataUtilities() {
           return new byte[] { (byte)(0xf0 | ((c >> 18) & 0x07)),
             (byte)(0x80 | ((c >> 12) & 0x3f)),
             (byte)(0x80 | ((c >> 6) & 0x3f)),
-            (byte)(0x80 | (c & 0x3f))  };
+            (byte)(0x80 | (c & 0x3f)) };
         } else if (!lenientLineBreaks && c <= 0x80 && c2 <= 0x80) {
-          return new byte[] { (byte)c, (byte)c2  };
+          return new byte[] { (byte)c, (byte)c2 };
         }
       }
       try {
@@ -189,7 +189,9 @@ ms = new java.io.ByteArrayOutputStream();
           return ms.toByteArray();
 }
 finally {
-try { if (ms != null)ms.close(); } catch (java.io.IOException ex) {}
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
 }
       } catch (IOException ex) {
         throw new IllegalArgumentException("I/O error occurred", ex);

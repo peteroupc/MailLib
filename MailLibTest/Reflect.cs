@@ -178,7 +178,7 @@ namespace MailLibTest {
         BindingFlags.Instance | BindingFlags.GetField;
       return obj.GetType().GetField(
   name,
-  flags) .GetValue(obj);
+  flags).GetValue(obj);
     }
 
     /// <summary>Not documented yet.</summary>
@@ -193,7 +193,7 @@ namespace MailLibTest {
        return FindType(
   type).GetField(
   name,
-  flags) .GetValue(null);
+  flags).GetValue(null);
     }
   }
 }

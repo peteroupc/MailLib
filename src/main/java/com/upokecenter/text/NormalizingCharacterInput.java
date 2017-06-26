@@ -82,7 +82,7 @@ import java.util.*;
 
     /**
      * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param str A public object.
+     * @param str The parameter {@code str} is a public object.
      */
       public NormalizingCharacterInput(
     String str) {
@@ -92,7 +92,7 @@ import java.util.*;
 
     /**
      * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param input A public object.
+     * @param input The parameter {@code input} is a public object.
      */
       public NormalizingCharacterInput(
     ICharacterInput input) {
@@ -118,10 +118,10 @@ import java.util.*;
 
     /**
      * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param str A public object.
-     * @param index A 32-bit signed integer.
-     * @param length Another 32-bit signed integer.
-     * @param form A Normalization object.
+     * @param str The parameter {@code str} is a public object.
+     * @param index The parameter {@code index} is a 32-bit signed integer.
+     * @param length The parameter {@code length} is a 32-bit signed integer.
+     * @param form The parameter {@code form} is a Normalization object.
      */
       public NormalizingCharacterInput(
     String str,
@@ -133,8 +133,8 @@ import java.util.*;
 
     /**
      * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param str A text string.
-     * @param form A Normalization object.
+     * @param str The parameter {@code str} is a text string.
+     * @param form The parameter {@code form} is a Normalization object.
      * @throws java.lang.NullPointerException The parameter {@code str} or "input" or
      * "charArray" is null.
      */
@@ -143,8 +143,8 @@ import java.util.*;
 
     /**
      * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param stream A public object.
-     * @param form A Normalization object.
+     * @param stream The parameter {@code stream} is a public object.
+     * @param form The parameter {@code form} is a Normalization object.
      */
       public NormalizingCharacterInput(
      ICharacterInput stream,
@@ -195,7 +195,7 @@ import java.util.*;
 
     /**
      * Gets a list of normalized code points after reading from a string.
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @param form Specifies the normalization form to use when normalizing the
      * text.
      * @return A list of the normalized Unicode characters.
@@ -231,15 +231,15 @@ import java.util.*;
  */
 @Deprecated
    public static List<Integer> GetChars(
-  ICharacterInput input,
+  ICharacterInput chars,
   Normalization form) {
-        if (input == null) {
-          throw new NullPointerException("input");
+        if (chars == null) {
+          throw new NullPointerException("chars");
         }
         List<Integer> ret = new ArrayList<Integer>();
         int ch;
-        input = new NormalizingCharacterInput(input, form);
-        while ((ch = input.ReadChar()) >= 0) {
+        chars = new NormalizingCharacterInput(chars, form);
+        while ((ch = chars.ReadChar()) >= 0) {
            ret.add(ch);
         }
         return ret;

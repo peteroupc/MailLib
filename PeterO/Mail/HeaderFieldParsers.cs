@@ -906,6 +906,16 @@ private sealed class HeaderBcc : StructuredHeaderField {
   }
 }
 
+private sealed class HeaderCancelLock : StructuredHeaderField {
+  public override int Parse(
+  string str,
+  int index,
+  int endIndex,
+  ITokener tokener) {
+    return HeaderParser.ParseHeaderCancelLock(str, index, endIndex, tokener);
+  }
+}
+
 private sealed class HeaderContentBase : StructuredHeaderField {
   public override int Parse(
   string str,
@@ -1208,6 +1218,20 @@ private sealed class HeaderListId : StructuredHeaderField {
   int endIndex,
   ITokener tokener) {
     return HeaderParser.ParseHeaderListId(str, index, endIndex, tokener);
+  }
+}
+
+private sealed class HeaderListUnsubscribePost : StructuredHeaderField {
+  public override int Parse(
+  string str,
+  int index,
+  int endIndex,
+  ITokener tokener) {
+    return HeaderParser.ParseHeaderListUnsubscribePost(
+  str,
+  index,
+  endIndex,
+  tokener);
   }
 }
 
@@ -1647,8 +1671,7 @@ private sealed class HeaderXVerificasicurezza : StructuredHeaderField {
       // NOTE: Header fields not mentioned here are treated as unstructured
       fieldMap = new Dictionary<string,
         IHeaderFieldParser>();
-fieldMap["content-return"] = new
-        HeaderX400ContentReturn();
+fieldMap["content-return"] = new HeaderX400ContentReturn();
 fieldMap["x400-content-return"] = new HeaderX400ContentReturn();
 fieldMap["delivery-date"] = new HeaderDeliveryDate();
 fieldMap["priority"] = new HeaderPriority();
@@ -1691,6 +1714,8 @@ fieldMap["auto-submitted"] = new HeaderAutoSubmitted();
 fieldMap["base"] = new HeaderContentBase();
 fieldMap["bcc"] = new HeaderBcc();
 fieldMap["cc"] = new HeaderTo();
+fieldMap["cancel-lock"] = new HeaderCancelLock();
+fieldMap["cancel-key"] = new HeaderCancelLock();
 fieldMap["content-base"] = new HeaderContentBase();
 fieldMap["content-disposition"] = new HeaderContentDisposition();
 fieldMap["content-duration"] = new HeaderContentDuration();
@@ -1719,6 +1744,7 @@ fieldMap["keywords"] = new HeaderKeywords();
 fieldMap["language"] = new HeaderLanguage();
 fieldMap["latest-delivery-time"] = new HeaderLatestDeliveryTime();
 fieldMap["list-id"] = new HeaderListId();
+fieldMap["list-unsubscribe-post"] = new HeaderListUnsubscribePost();
 fieldMap["message-context"] = new HeaderMessageContext();
 fieldMap["message-id"] = new HeaderMessageId();
 fieldMap["mime-version"] = new HeaderMimeVersion();

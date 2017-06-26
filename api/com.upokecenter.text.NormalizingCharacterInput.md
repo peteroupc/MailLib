@@ -27,7 +27,7 @@ Deprecated.&nbsp;
 * `NormalizingCharacterInput(String str,
                          Normalization form) NormalizingCharacterInput`<br>
  Deprecated.  Initializes a new instance of the NormalizingCharacterInput class.
-* `static List<Integer> GetChars(com.upokecenter.text.ICharacterInput input,
+* `static List<Integer> GetChars(com.upokecenter.text.ICharacterInput chars,
         Normalization form)`<br>
  Deprecated.
 Instead of this method, create a NormalizerInput on the input and call
@@ -103,7 +103,7 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>str</code> - A public object.
+* <code>str</code> - The parameter <code>str</code> is a public object.
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput(com.upokecenter.text.ICharacterInput input)
@@ -111,7 +111,7 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>input</code> - A public object.
+* <code>input</code> - The parameter <code>input</code> is a public object.
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput(List<Integer> characterList)
@@ -125,13 +125,13 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>str</code> - A public object.
+* <code>str</code> - The parameter <code>str</code> is a public object.
 
-* <code>index</code> - A 32-bit signed integer.
+* <code>index</code> - The parameter <code>index</code> is a 32-bit signed integer.
 
-* <code>length</code> - Another 32-bit signed integer.
+* <code>length</code> - The parameter <code>length</code> is a 32-bit signed integer.
 
-* <code>form</code> - A Normalization object.
+* <code>form</code> - The parameter <code>form</code> is a Normalization object.
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput(String str, Normalization form)
@@ -139,9 +139,9 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
-* <code>form</code> - A Normalization object.
+* <code>form</code> - The parameter <code>form</code> is a Normalization object.
 
 **Throws:**
 
@@ -154,9 +154,9 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>stream</code> - A public object.
+* <code>stream</code> - The parameter <code>stream</code> is a public object.
 
-* <code>form</code> - A Normalization object.
+* <code>form</code> - The parameter <code>form</code> is a Normalization object.
 
 ### IsNormalized
     public static boolean IsNormalized(com.upokecenter.text.ICharacterInput chars, Normalization form)
@@ -225,7 +225,7 @@ ReadChar to get the normalized String's code points.
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 * <code>form</code> - Specifies the normalization form to use when normalizing the
  text.
@@ -239,7 +239,7 @@ ReadChar to get the normalized String's code points.
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### GetChars
-    @Deprecated public static List<Integer> GetChars(com.upokecenter.text.ICharacterInput input, Normalization form)
+    @Deprecated public static List<Integer> GetChars(com.upokecenter.text.ICharacterInput chars, Normalization form)
 Deprecated.&nbsp;Instead of this method, create a NormalizerInput on the input and call
 ReadChar to get the normalized String's code points.
 

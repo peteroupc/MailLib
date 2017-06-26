@@ -154,9 +154,9 @@ Sets a parameter of this content disposition.
 
 * <code>name</code> - Name of the parameter to set. If this name already exists
  (compared using a basic case-insensitive comparison), it will be
- overwritten. . (Two strings are equal in a basic case-insensitive
+ overwritten. (Two strings are equal in a basic case-insensitive
  comparison, if they match after converting the basic upper-case
- letters A to Z (U + 0041 to U + 005A) in both strings to lower case.)
+ letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
 
 * <code>value</code> - Value of the parameter to set.
 

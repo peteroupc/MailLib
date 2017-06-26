@@ -7,7 +7,6 @@ at: http://peteroupc.github.io/
  */
 using System;
 using System.Collections.Generic;
-
 using PeterO;
 
 namespace PeterO.Mail {

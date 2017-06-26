@@ -2074,7 +2074,7 @@ String stringTemp =
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      tmp = "<x y@x.invalid>"; // local part is not a dot-atom
+      tmp = "<x y@x.invalid>";  // local part is not a dot-atom
       try {
         msg.SetHeader("to", tmp);
         Assert.fail("Should have failed");

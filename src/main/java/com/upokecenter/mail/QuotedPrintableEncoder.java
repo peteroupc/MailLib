@@ -98,9 +98,9 @@ import com.upokecenter.text.*;
           byte[] buf;
           if (ch == '.') {
             buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)'=',
-            (byte)'2', (byte)'E'  };
+            (byte)'2', (byte)'E' };
           } else {
-            buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)ch  };
+            buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)ch };
           }
           output.write(buf, 0, buf.length);
           this.lineCount = buf.length - 3;

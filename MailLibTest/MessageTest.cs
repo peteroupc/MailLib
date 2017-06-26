@@ -61,31 +61,36 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
       }
     }
 
-    internal static Message MessageFromString(string valueStr) {
+    internal static Message MessageFromString(string ValueMessageString) {
       var msgobj = new Message(
   DataUtilities.GetUtf8Bytes(
-  valueStr,
+  ValueMessageString,
   true));
       MessageGenerate(msgobj);
       return msgobj;
     }
 
-    internal static void MessageConstructOnly(string valueStr) {
+    internal static void MessageConstructOnly(string ValueMessageString) {
       new Message(
   DataUtilities.GetUtf8Bytes(
-  valueStr,
+  ValueMessageString,
   true));
     }
 
-    private static void TestMediaTypeRoundTrip(string valueStr) {
+    private static void TestMediaTypeRoundTrip(string ValueMessageString) {
       string mtstring = new MediaTypeBuilder(
   "x",
   "y").SetParameter(
   "z",
-  valueStr).ToString();
+  ValueMessageString).ToString();
       Assert.IsFalse(mtstring.Contains("\r\n\r\n"));
       Assert.IsFalse(mtstring.Contains("\r\n \r\n"));
-      Assert.AreEqual(valueStr, MediaType.Parse(mtstring).GetParameter("z"));
+   {
+object objectTemp = ValueMessageString;
+object objectTemp2 = MediaType.Parse(mtstring).GetParameter(
+  "z");
+Assert.AreEqual(objectTemp, objectTemp2);
+}
   Message mtmessage = MessageFromString("MIME-Version: 1.0\r\nContent-Type: " +
                     mtstring + "\r\n\r\n");
       MessageGenerate(mtmessage);
@@ -100,8 +105,10 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
           "from",
           "me@example.com")
           .SetTextBody("Hello world."));
-        if (EncodingTest.IsGoodAsciiMessageFormat(msgtext, false, "TestGenerate"
-) != 2) {
+        if (EncodingTest.IsGoodAsciiMessageFormat(
+          msgtext,
+          false,
+          "TestGenerate") != 2) {
           Assert.Fail("Bad message format generated");
         }
         string msgid = MessageFromString(msgtext).GetHeader("message-id");
@@ -209,9 +216,9 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
   string expected) {
       MediaType mt = MediaType.Parse(mtype);
       Assert.AreEqual(expected, mt.GetParameter(param));
-      var valueStr = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
+      var ValueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: " + mtype + "\r\n\r\nTest";
-      Message msg = MessageFromString(valueStr);
+      Message msg = MessageFromString(ValueMessageString);
       mt = msg.ContentType;
       Assert.AreEqual(expected, mt.GetParameter(param));
     }
@@ -531,10 +538,10 @@ Assert.AreEqual(objectTemp, objectTemp2);
           stringTemp);
       }
       {
+        var kvp = new KeyValuePair<string, string>("x-comment", "comment");
         string stringTemp = MessageFromString(
-        "From: Me <me@example.com>\r\n\r\n").AddHeader(new
-            KeyValuePair<string,
-                string>("x-comment", "comment")).GetHeader("x-comment");
+    "From: Me <me@example.com>\r\n\r\n")
+.AddHeader(kvp).GetHeader("x-comment");
         Assert.AreEqual(
           "comment",
           stringTemp);
@@ -891,7 +898,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       Assert.AreEqual(34, date[4]);
       Assert.AreEqual(56, date[5]);
       Assert.AreEqual(0, date[6]);
-      Assert.AreEqual(10 * 60 + 34, date[7]);
+      Assert.AreEqual((10 * 60) + 34, date[7]);
       msg.SetHeader("date", "Mon, 1 Jan 1900 23:59:60 -1034");
       date = msg.GetDate();
       Assert.AreEqual(1900, date[0]);
@@ -901,7 +908,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       Assert.AreEqual(59, date[4]);
       Assert.AreEqual(60, date[5]);
       Assert.AreEqual(0, date[6]);
-      Assert.AreEqual(-(10 * 60 + 34), date[7]);
+      Assert.AreEqual(-((10 * 60) + 34), date[7]);
       msg.SetHeader("date", "Sun, 1 Jan 2000 12:34:56 +1034");
       if (msg.GetDate() != null) {
  Assert.Fail();
@@ -1758,15 +1765,15 @@ MessageFromString(MessageFromString(msg).Generate())
 
     private static void TestFileNameOne(string input, string expected) {
       Message msg;
-      String valueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+   String ValueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
  "Content-Type: text/plain\r\nContent-Disposition: inline; filename=" +
           input + "\r\n\r\nEmpty.";
-      msg = MessageFromString(valueStr);
+      msg = MessageFromString(ValueMessageString);
       Assert.AreEqual(expected, msg.FileName);
-      valueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+      ValueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: text/plain; name=" + input +
         "\r\n\r\nEmpty.";
-      msg = MessageFromString(valueStr);
+      msg = MessageFromString(ValueMessageString);
       Assert.AreEqual(expected, msg.FileName);
     }
     [Test]
@@ -1781,8 +1788,9 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     [Test]
     public void TestFromAddresses() {
-      string valueStr = "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
-      Message msg = MessageFromString(valueStr);
+ string ValueMessageString =
+        "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
+      Message msg = MessageFromString(ValueMessageString);
       MessageFromString(MessageGenerate(msg));
       Assert.AreEqual(1, msg.FromAddresses.Count);
     }
@@ -1826,10 +1834,12 @@ MessageFromString(MessageFromString(msg).Generate())
     public void TestParts() {
       // not implemented yet
     }
+
+const string ValueRemoveHeaderString =
+        "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
     [Test]
     public void TestRemoveHeader() {
-      const string valueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(valueStr);
+      Message msg = MessageFromString(ValueRemoveHeaderString);
       try {
         msg.RemoveHeader(2);
         Assert.Fail("Should have failed");
@@ -1935,8 +1945,9 @@ throw new InvalidOperationException(String.Empty, ex);
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-      const string valueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(valueStr);
+const string ValueMessageString =
+        "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      Message msg = MessageFromString(ValueMessageString);
       try {
         msg.SetHeader(2, "X-Header2", "2");
         Assert.Fail("Should have failed");

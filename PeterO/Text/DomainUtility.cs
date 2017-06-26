@@ -7,7 +7,6 @@ at: http://peteroupc.github.io/
  */
 using System;
 using System.Text;
-
 using PeterO;
 
 namespace PeterO.Text {

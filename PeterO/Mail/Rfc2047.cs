@@ -8,7 +8,6 @@ at: http://peteroupc.github.io/
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 using PeterO;
 using PeterO.Mail.Transforms;
 using PeterO.Text;

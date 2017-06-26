@@ -187,7 +187,7 @@ private ParserUtility() {
             }
             c1 = str.charAt(index);  // get the next character
           }
-          if (c1 == '-') { // case AA- or AAA-
+          if (c1 == '-') {  // case AA- or AAA-
             ++index;
             if (index + 2 == endIndex) {  // case AA-?? or AAA-??
               c1 = str.charAt(index);

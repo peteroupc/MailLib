@@ -94,7 +94,7 @@ namespace MailLibTest {
             return ret;
         }
 
-        private bool IsGoodFilename(string str) {
+        internal static bool IsGoodFilename(string str) {
             if (str == null || str.Length == 0 || str.Length > 255) {
                 return false;
             }
@@ -145,8 +145,8 @@ namespace MailLibTest {
                 if (c < 0x20 || (c >= 0x7f && c <= 0x9f) ||
                   c == '%' || c == 0x2028 || c == 0x2029 ||
                 c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
-                  c == ':' || c == '<' || c == '>' || c == '"' || c=='`' ||
-    c=='$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
+                  c == ':' || c == '<' || c == '>' || c == '"' || c == '`' ||
+    c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff ||
                     (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
                     return false;
@@ -183,14 +183,14 @@ Assert.AreEqual(objectTemp, objectTemp2);
             }
             string mfn = ContentDisposition.MakeFilename(
               "utf-8''%2A%EF%AB%87%EC%A5%B2%2B67%20Tqd%20R%E3%80%80%2E");
-            Assert.IsTrue(this.IsGoodFilename(mfn), mfn);
+            Assert.IsTrue(IsGoodFilename(mfn), mfn);
             for (var i = 0; i < 1000000; ++i) {
         if (i % 1000 == 0) {
           // Console.WriteLine (i);
         }
                 string str = RandomString(rnd);
                 string filename = ContentDisposition.MakeFilename(str);
-                if (!this.IsGoodFilename(filename)) {
+                if (!IsGoodFilename(filename)) {
             Assert.Fail("str_____=" + EncodingTest.EscapeString(str) +
                     "\n" +
                     "filename=" + EncodingTest.EscapeString(filename) + "\n" +
@@ -642,7 +642,10 @@ Assert.AreEqual(objectTemp, objectTemp2);
                   "folder_hello.txt",
                   stringTemp);
             }
-        }
+Assert.IsTrue(IsGoodFilename(ContentDisposition.MakeFilename(
+  "\u216a2s\u1e19C<snhs\ud87a\ude8dX(\ufdef\ufdd0,u.y\u001c.|}Y \u2f18Yx\u2a11N%(..s3^(N\u0084`(r|41X_.})\ud84c\udef3\ufe3c/\\/ sq?G![{\ufeffZ\"qSMdgv3#dg\tK@^X;`jl\ud892\udcd3' e@5a(\u00a0 wg0g hH?5\u202flh\u04c1 \uffff(,\u044d qQ7b:uFs9m\u0b6b\\AT|HDAsH6's!_B>rb(q?KpUv;fa r!\u1dc2.5.U\\Ez\u1f5a/J.8`?U\u01ba\\/v\ufdef_p.%|}.;.(OL9\u00001O.RV\u2433z,E\u008f%o\u008f.fpDN=G {(\udac5\udd76XC\uffff..z\ud9e4\udc62^(u=|'93\u0f6bWvz\u0f09\u26d2$?y\ud9c5\udcd4P:)+iO\u009f[f?>JTo,Ge`:'I\u5ccf\u009f\u9c3a<+yC {\ub10bm(j\u7959.tL=\ud86a\udea3\\(i \u001fG0 +np\u180erFt.hoy ny)\".6 +j "
+)));
+    }
 
         [Test] public void TestParameters() {
         }

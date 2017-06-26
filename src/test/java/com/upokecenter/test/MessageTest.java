@@ -61,35 +61,40 @@ Assert.assertEquals(messageTemp, objectTemp, objectTemp2);
       }
     }
 
-    static Message MessageFromString(String valueStr) {
+    static Message MessageFromString(String ValueMessageString) {
       Message msgobj = new Message(
   DataUtilities.GetUtf8Bytes(
-  valueStr,
+  ValueMessageString,
   true));
       MessageGenerate(msgobj);
       return msgobj;
     }
 
-    static void MessageConstructOnly(String valueStr) {
+    static void MessageConstructOnly(String ValueMessageString) {
       new Message(
   DataUtilities.GetUtf8Bytes(
-  valueStr,
+  ValueMessageString,
   true));
     }
 
-    private static void TestMediaTypeRoundTrip(String valueStr) {
+    private static void TestMediaTypeRoundTrip(String ValueMessageString) {
       String mtstring = new MediaTypeBuilder(
   "x",
   "y").SetParameter(
   "z",
-  valueStr).toString();
+  ValueMessageString).toString();
       if (mtstring.contains("\r\n\r\n")) {
  Assert.fail();
  }
       if (mtstring.contains("\r\n \r\n")) {
  Assert.fail();
  }
-      Assert.assertEquals(valueStr, MediaType.Parse(mtstring).GetParameter("z"));
+   {
+Object objectTemp = ValueMessageString;
+Object objectTemp2 = MediaType.Parse(mtstring).GetParameter(
+  "z");
+Assert.assertEquals(objectTemp, objectTemp2);
+}
   Message mtmessage = MessageFromString("MIME-Version: 1.0\r\nContent-Type: " +
                     mtstring + "\r\n\r\n");
       MessageGenerate(mtmessage);
@@ -104,8 +109,10 @@ Assert.assertEquals(messageTemp, objectTemp, objectTemp2);
           "from",
           "me@example.com")
           .SetTextBody("Hello world."));
-        if (EncodingTest.IsGoodAsciiMessageFormat(msgtext, false, "TestGenerate"
-) != 2) {
+        if (EncodingTest.IsGoodAsciiMessageFormat(
+          msgtext,
+          false,
+          "TestGenerate") != 2) {
           Assert.fail("Bad message format generated");
         }
         String msgid = MessageFromString(msgtext).GetHeader("message-id");
@@ -215,9 +222,9 @@ Assert.assertEquals(messageTemp, objectTemp, objectTemp2);
   String expected) {
       MediaType mt = MediaType.Parse(mtype);
       Assert.assertEquals(expected, mt.GetParameter(param));
-      String valueStr = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
+      String ValueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: " + mtype + "\r\n\r\nTest";
-      Message msg = MessageFromString(valueStr);
+      Message msg = MessageFromString(ValueMessageString);
       mt = msg.getContentType();
       Assert.assertEquals(expected, mt.GetParameter(param));
     }
@@ -536,9 +543,10 @@ Assert.assertEquals(objectTemp, objectTemp2);
           stringTemp);
       }
       {
+        Map.Entry<String, String> kvp = new AbstractMap.SimpleImmutableEntry<String, String>("x-comment", "comment");
         String stringTemp = MessageFromString(
-        "From: Me <me@example.com>\r\n\r\n").AddHeader(new AbstractMap.SimpleImmutableEntry<String,
-                String>("x-comment", "comment")).GetHeader("x-comment");
+    "From: Me <me@example.com>\r\n\r\n")
+.AddHeader(kvp).GetHeader("x-comment");
         Assert.assertEquals(
           "comment",
           stringTemp);
@@ -895,7 +903,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
       Assert.assertEquals(34, date[4]);
       Assert.assertEquals(56, date[5]);
       Assert.assertEquals(0, date[6]);
-      Assert.assertEquals(10 * 60 + 34, date[7]);
+      Assert.assertEquals((10 * 60) + 34, date[7]);
       msg.SetHeader("date", "Mon, 1 Jan 1900 23:59:60 -1034");
       date = msg.GetDate();
       Assert.assertEquals(1900, date[0]);
@@ -905,7 +913,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
       Assert.assertEquals(59, date[4]);
       Assert.assertEquals(60, date[5]);
       Assert.assertEquals(0, date[6]);
-      Assert.assertEquals(-(10 * 60 + 34), date[7]);
+      Assert.assertEquals(-((10 * 60) + 34), date[7]);
       msg.SetHeader("date", "Sun, 1 Jan 2000 12:34:56 +1034");
       if (msg.GetDate() != null) {
  Assert.fail();
@@ -1768,15 +1776,15 @@ MessageFromString(MessageFromString(msg).Generate())
 
     private static void TestFileNameOne(String input, String expected) {
       Message msg;
-      String valueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+   String ValueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
  "Content-Type: text/plain\r\nContent-Disposition: inline; filename=" +
           input + "\r\n\r\nEmpty.";
-      msg = MessageFromString(valueStr);
+      msg = MessageFromString(ValueMessageString);
       Assert.assertEquals(expected, msg.getFileName());
-      valueStr = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+      ValueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: text/plain; name=" + input +
         "\r\n\r\nEmpty.";
-      msg = MessageFromString(valueStr);
+      msg = MessageFromString(ValueMessageString);
       Assert.assertEquals(expected, msg.getFileName());
     }
     @Test
@@ -1791,8 +1799,9 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     @Test
     public void TestFromAddresses() {
-      String valueStr = "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
-      Message msg = MessageFromString(valueStr);
+ String ValueMessageString =
+        "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
+      Message msg = MessageFromString(ValueMessageString);
       MessageFromString(MessageGenerate(msg));
       Assert.assertEquals(1, msg.getFromAddresses().size());
     }
@@ -1836,10 +1845,12 @@ MessageFromString(MessageFromString(msg).Generate())
     public void TestParts() {
       // not implemented yet
     }
+
+String ValueRemoveHeaderString =
+        "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
     @Test
     public void TestRemoveHeader() {
-      String valueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(valueStr);
+      Message msg = MessageFromString(ValueRemoveHeaderString);
       try {
         msg.RemoveHeader(2);
         Assert.fail("Should have failed");
@@ -1945,8 +1956,9 @@ throw new IllegalStateException("", ex);
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-      String valueStr = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(valueStr);
+String ValueMessageString =
+        "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      Message msg = MessageFromString(ValueMessageString);
       try {
         msg.SetHeader(2, "X-Header2", "2");
         Assert.fail("Should have failed");

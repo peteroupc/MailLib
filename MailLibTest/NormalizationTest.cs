@@ -128,13 +128,16 @@ namespace MailLibTest {
   string actualStr,
   string msg) {
       if (!expectedStr.Equals(actualStr)) {
-        Assert.AreEqual(expectedStr, actualStr, msg);
+                Assert.Fail(
+  "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
+            "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
       }
     }
 
     public static void AssertEqual(int expected, int actual, string msg) {
       if (expected != actual) {
-        Assert.AreEqual(expected, actual, msg);
+                Assert.Fail(
+          "\nexpected: " + expected + "\n" + "\nwas: " + actual + "\n" + msg);
       }
     }
 

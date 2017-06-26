@@ -902,6 +902,16 @@ private static final class HeaderBcc extends StructuredHeaderField {
   }
 }
 
+private static final class HeaderCancelLock extends StructuredHeaderField {
+  @Override public int Parse(
+  String str,
+  int index,
+  int endIndex,
+  ITokener tokener) {
+    return HeaderParser.ParseHeaderCancelLock(str, index, endIndex, tokener);
+  }
+}
+
 private static final class HeaderContentBase extends StructuredHeaderField {
   @Override public int Parse(
   String str,
@@ -1203,6 +1213,20 @@ private static final class HeaderListId extends StructuredHeaderField {
   int endIndex,
   ITokener tokener) {
     return HeaderParser.ParseHeaderListId(str, index, endIndex, tokener);
+  }
+}
+
+private static final class HeaderListUnsubscribePost extends StructuredHeaderField {
+  @Override public int Parse(
+  String str,
+  int index,
+  int endIndex,
+  ITokener tokener) {
+    return HeaderParser.ParseHeaderListUnsubscribePost(
+  str,
+  index,
+  endIndex,
+  tokener);
   }
 }
 
@@ -1638,8 +1662,7 @@ private static final class HeaderXVerificasicurezza extends StructuredHeaderFiel
       // NOTE: Header fields not mentioned here are treated as unstructured
       fieldMap = new HashMap<String,
         IHeaderFieldParser>();
-fieldMap.put("content-return",new
-        HeaderX400ContentReturn());
+fieldMap.put("content-return",new HeaderX400ContentReturn());
 fieldMap.put("x400-content-return",new HeaderX400ContentReturn());
 fieldMap.put("delivery-date",new HeaderDeliveryDate());
 fieldMap.put("priority",new HeaderPriority());
@@ -1682,6 +1705,8 @@ fieldMap.put("auto-submitted",new HeaderAutoSubmitted());
 fieldMap.put("base",new HeaderContentBase());
 fieldMap.put("bcc",new HeaderBcc());
 fieldMap.put("cc",new HeaderTo());
+fieldMap.put("cancel-lock",new HeaderCancelLock());
+fieldMap.put("cancel-key",new HeaderCancelLock());
 fieldMap.put("content-base",new HeaderContentBase());
 fieldMap.put("content-disposition",new HeaderContentDisposition());
 fieldMap.put("content-duration",new HeaderContentDuration());
@@ -1710,6 +1735,7 @@ fieldMap.put("keywords",new HeaderKeywords());
 fieldMap.put("language",new HeaderLanguage());
 fieldMap.put("latest-delivery-time",new HeaderLatestDeliveryTime());
 fieldMap.put("list-id",new HeaderListId());
+fieldMap.put("list-unsubscribe-post",new HeaderListUnsubscribePost());
 fieldMap.put("message-context",new HeaderMessageContext());
 fieldMap.put("message-id",new HeaderMessageId());
 fieldMap.put("mime-version",new HeaderMimeVersion());

@@ -8,7 +8,6 @@ at: http://peteroupc.github.io/
 using System;
 using System.IO;
 using System.Text;
-
 using PeterO;
 using PeterO.Text;
 

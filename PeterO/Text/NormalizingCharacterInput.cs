@@ -112,15 +112,15 @@ using System.Collections.Generic;
     /// documented yet.</param>
   [Obsolete("Instead of this method, create a NormalizerInput on the input and call ReadChar to get the normalized string's code points.")]
    public static IList<int> GetChars(
-  ICharacterInput input,
+  ICharacterInput chars,
   Normalization form) {
-        if (input == null) {
-          throw new ArgumentNullException("input");
+        if (chars == null) {
+          throw new ArgumentNullException("chars");
         }
         IList<int> ret = new List<int>();
         int ch;
-        input = new NormalizingCharacterInput(input, form);
-        while ((ch = input.ReadChar()) >= 0) {
+        chars = new NormalizingCharacterInput(chars, form);
+        while ((ch = chars.ReadChar()) >= 0) {
            ret.Add(ch);
         }
         return ret;

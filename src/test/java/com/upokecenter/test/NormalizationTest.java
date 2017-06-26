@@ -127,13 +127,16 @@ import com.upokecenter.text.*;
   String actualStr,
   String msg) {
       if (!expectedStr.equals(actualStr)) {
-        Assert.assertEquals(msg, expectedStr, actualStr);
+                Assert.fail(
+  "\nexpected: " + EncodingTest.EscapeString(expectedStr) + "\n" +
+            "\nwas: " + EncodingTest.EscapeString(actualStr) + "\n" + msg);
       }
     }
 
     public static void AssertEqual(int expected, int actual, String msg) {
       if (expected != actual) {
-        Assert.assertEquals(msg, expected, actual);
+                Assert.fail(
+          "\nexpected: " + expected + "\n" + "\nwas: " + actual + "\n" + msg);
       }
     }
 

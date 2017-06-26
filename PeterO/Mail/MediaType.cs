@@ -8,7 +8,6 @@ at: http://peteroupc.github.io/
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 using PeterO;
 using PeterO.Mail.Transforms;
 using PeterO.Text;
@@ -268,7 +267,7 @@ return SkipQuotedString(
         }
         index = i2;
         char c = str[index];
-        if (c == '"') { // end of quoted-string
+        if (c == '"') {  // end of quoted-string
           ++index;
           // NOTE: Don't skip CFWS even if the rule is Rfc5322
           return index;
@@ -764,11 +763,12 @@ return SkipQuotedString(
       // UTF-8 default:
       // -- csv, calendar**, vnd.a***, parameters, prs.fallenstein.rst,
       // vnd.esmertec.theme.descriptor, vnd.trolltech.linguist,
-      // vnd.graphviz, vnd.sun.j2me.app-descriptor
+      // vnd.graphviz, vnd.sun.j2me.app-descriptor, strings*(5)
       //
       // * Required parameter.
       // ** No explicit default, but says that "[t]he charset supported
       // by this revision of iCalendar is UTF-8."
+      // *(5) No charset parameter defined.
       // *** Default is UTF-8 "if 8-bit bytes are encountered" (even if
       // none are found, though, a 7-bit ASCII text is still also UTF-8).
       // **** Content containing non-ASCII bytes "should be rejected".
@@ -791,7 +791,7 @@ return SkipQuotedString(
         // Media types that assume a default of UTF-8
         if (sub.Equals("vcard") || sub.Equals("jcr-cnd") ||
           sub.Equals("n3") || sub.Equals("turtle") ||
-            sub.Equals("vnd.debian.copyright") ||
+  sub.Equals("strings") || sub.Equals("vnd.debian.copyright") ||
               sub.Equals("provenance-notation") || sub.Equals("csv") ||
    sub.Equals("calendar") || sub.Equals("vnd.a") ||
               sub.Equals("parameters") || sub.Equals("prs.fallenstein.rst") ||

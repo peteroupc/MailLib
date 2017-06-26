@@ -134,7 +134,7 @@ import com.upokecenter.mail.*;
           this.lineCharCount = 0;
           return 0x0d;
         }
-        if (c == '=') { // Equals
+        if (c == '=') {  // Equals
           if (this.maxLineSize >= 0) {
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {

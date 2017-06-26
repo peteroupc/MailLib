@@ -21,7 +21,7 @@
 <doc name="M:PeterO.DataUtilities.CodePointAt(System.String,System.Int32)">
 <summary>Gets the Unicode code point at the given index of the
             string.</summary>
-            <param name='str'>A text string.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
             <param name='index'>Index of the current position into the
             string.</param>
             <returns>The Unicode code point at the given position. Returns -1
@@ -35,7 +35,7 @@
 <doc name="M:PeterO.DataUtilities.CodePointAt(System.String,System.Int32,System.Int32)">
 <summary>Gets the Unicode code point at the given index of the
             string.</summary>
-            <param name='str'>A text string.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
             <param name='index'>Index of the current position into the
             string.</param>
             <param name='surrogateBehavior'>Specifies what kind of value to
@@ -53,7 +53,7 @@
 <doc name="M:PeterO.DataUtilities.CodePointBefore(System.String,System.Int32)">
 <summary>Gets the Unicode code point just before the given index of
             the string.</summary>
-            <param name='str'>A text string.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
             <param name='index'>Index of the current position into the
             string.</param>
             <returns>The Unicode code point at the previous position. Returns
@@ -66,7 +66,7 @@
 <doc name="M:PeterO.DataUtilities.CodePointBefore(System.String,System.Int32,System.Int32)">
 <summary>Gets the Unicode code point just before the given index of
             the string.</summary>
-            <param name='str'>A text string.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
             <param name='index'>Index of the current position into the
             string.</param>
             <param name='surrogateBehavior'>Specifies what kind of value to
@@ -97,7 +97,7 @@
 </doc>
 <doc name="M:PeterO.DataUtilities.GetUtf8Bytes(System.String,System.Boolean)">
 <summary>Encodes a string in UTF-8 as a byte array.</summary>
-            <param name='str'>A text string.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
             <param name='replace'>If true, replaces unpaired surrogate code
             points with the replacement character (U+FFFD). If false, stops
             processing when an unpaired surrogate code point is seen.</param>
@@ -110,7 +110,7 @@
 </doc>
 <doc name="M:PeterO.DataUtilities.GetUtf8Bytes(System.String,System.Boolean,System.Boolean)">
 <summary>Encodes a string in UTF-8 as a byte array.</summary>
-            <param name='str'>A text string.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
             <param name='replace'>If true, replaces unpaired surrogate code
             points with the replacement character (U+FFFD). If false, stops
             processing when an unpaired surrogate code point is seen.</param>
@@ -127,7 +127,7 @@
 <doc name="M:PeterO.DataUtilities.GetUtf8Length(System.String,System.Boolean)">
 <summary>Calculates the number of bytes needed to encode a string
             in UTF-8.</summary>
-            <param name='str'>A text string.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
             <param name='replace'>If true, treats unpaired surrogate code
             points as having 3 UTF-8 bytes (the UTF-8 length of the replacement
             character U+FFFD).</param>
@@ -249,7 +249,7 @@
 <summary>Returns a string with the basic upper-case letters A to Z
             (U+0041 to U+005A) converted to lower-case. Other characters
             remain unchanged.</summary>
-            <param name='str'>A text string.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
             <returns>The converted string, or null if <paramref name='str'/> is
             null.</returns>
 </doc>
@@ -371,7 +371,7 @@
 <doc name="M:PeterO.Mail.ContentDisposition.Equals(System.Object)">
 <summary>Determines whether this object and another object are
             equal.</summary>
-            <param name='obj'>An arbitrary object.</param>
+            <param name='obj'>The parameter <paramref name='obj'/> is an arbitrary object.</param>
             <returns><c>true</c> if the objects are equal; otherwise, <c>false</c>.</returns>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.GetHashCode">
@@ -445,7 +445,7 @@
 <doc name="M:PeterO.Mail.ContentDisposition.Parse(System.String)">
 <summary>Parses a content disposition string and returns a content
             disposition object.</summary>
-            <param name='dispoValue'>A text string.</param>
+            <param name='dispoValue'>The parameter <paramref name='dispoValue'/> is a text string.</param>
             <returns>A content disposition object, or "Attachment" if <paramref name='dispoValue'/> is empty or syntactically invalid.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='dispoValue'/> is null.</exception>
@@ -473,13 +473,13 @@
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.#ctor(PeterO.Mail.ContentDisposition)">
 <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.DispositionBuilder'/> class.</summary>
-            <param name='mt'>A ContentDisposition object.</param>
+            <param name='mt'>The parameter <paramref name='mt'/> is a ContentDisposition object.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='mt'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.#ctor(System.String)">
 <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.DispositionBuilder'/> class.</summary>
-            <param name='type'>A text string.</param>
+            <param name='type'>The parameter <paramref name='type'/> is a text string.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='type'/> is null.</exception>
 </doc>
@@ -512,7 +512,7 @@
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.SetDispositionType(System.String)">
 <summary>Sets the disposition type, such as "inline".</summary>
-            <param name='str'>A text string.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
             <returns>This instance.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='str'/> is null.</exception>
@@ -586,7 +586,7 @@
 <doc name="M:PeterO.Mail.MediaType.Equals(System.Object)">
 <summary>Determines whether this object and another object are
             equal.</summary>
-            <param name='obj'>An arbitrary object.</param>
+            <param name='obj'>The parameter <paramref name='obj'/> is an arbitrary object.</param>
             <returns><c>true</c> if this object and another object are equal; otherwise, <c>false</c>.</returns>
 </doc>
 <doc name="M:PeterO.Mail.MediaType.GetCharset">
@@ -710,7 +710,7 @@
 <doc name="M:PeterO.Mail.MediaTypeBuilder.#ctor(PeterO.Mail.MediaType)">
 <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MediaTypeBuilder'/> class using the data
             from another media type.</summary>
-            <param name='mt'>A MediaType object.</param>
+            <param name='mt'>The parameter <paramref name='mt'/> is a MediaType object.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='mt'/> is null.</exception>
 </doc>
@@ -1305,7 +1305,7 @@
 <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.MessageDataException'/> class.</summary>
             <param name='message'>A string to use as the exception
             message.</param>
-            <param name='innerException'>An Exception object.</param>
+            <param name='innerException'>The parameter <paramref name='innerException'/> is an Exception object.</param>
 </doc>
 <doc name="T:PeterO.Mail.NamedAddress">
 <summary>Represents an email address and a name for that address.
@@ -1524,7 +1524,7 @@
 <doc name="M:PeterO.Text.Idna.IsValidDomainName(System.String,System.Boolean)">
 <summary>Determines whether the given string is a syntactically
             valid domain name.</summary>
-            <param name='str'>A text string.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
             <param name='lookupRules'>If true, uses rules to apply when looking
             up the string as a domain name. If false, uses rules to apply when
             registering the string as a domain name.</param>
@@ -1563,13 +1563,13 @@
 </doc>
 <doc name="M:PeterO.Text.Normalizer.#ctor(System.String,PeterO.Text.Normalization)">
 <summary>Initializes a new instance of the <see cref='T:PeterO.Text.Normalizer'/> class.</summary>
-            <param name='str'>A text string.</param>
-            <param name='form'>A Normalization object.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
+            <param name='form'>The parameter <paramref name='form'/> is a Normalization object.</param>
 </doc>
 <doc name="M:PeterO.Text.Normalizer.IsNormalized(System.String,PeterO.Text.Normalization)">
 <summary>Returns whether this string is normalized.</summary>
             <param name='str'>The string to check.</param>
-            <param name='form'>A Normalization object.</param>
+            <param name='form'>The parameter <paramref name='form'/> is a Normalization object.</param>
             <returns><c>true</c> if this string is normalized; otherwise, <c>false</c>.
 Returns <c>false</c> if the string contains an unpaired surrogate code point.</returns>
 </doc>
@@ -1685,11 +1685,11 @@ Returns <c>false</c> if the string contains an unpaired surrogate code point.</r
 <doc name="M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput)">
 <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizerInput'/> class using
             Normalization Form C.</summary>
-            <param name='input'>An ICharacterInput object.</param>
+            <param name='input'>The parameter <paramref name='input'/> is an ICharacterInput object.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizerInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)">
 <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizerInput'/> class.</summary>
-            <param name='stream'>An ICharacterInput object.</param>
+            <param name='stream'>The parameter <paramref name='stream'/> is an ICharacterInput object.</param>
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
@@ -1704,7 +1704,7 @@ Returns <c>false</c> if the string contains an unpaired surrogate code point.</r
 <doc name="M:PeterO.Text.NormalizerInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)">
 <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizerInput'/> class using
             the given normalization form.</summary>
-            <param name='characterList'>An IList object.</param>
+            <param name='characterList'>The parameter <paramref name='characterList'/> is an IList object.</param>
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
@@ -1718,14 +1718,14 @@ Returns <c>false</c> if the string contains an unpaired surrogate code point.</r
 </doc>
 <doc name="M:PeterO.Text.NormalizerInput.#ctor(System.String,PeterO.Text.Normalization)">
 <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizerInput'/> class.</summary>
-            <param name='str'>A text string.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizerInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)">
 <summary>Initializes a new instance of the <see cref='T:PeterO.Text.NormalizerInput'/> class. Uses a
             portion of a string as the input.</summary>
-            <param name='str'>A text string.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
             <param name='index'>A zero-based index showing where the desired
             portion of <paramref name='str'/> begins.</param>
             <param name='length'>The number of elements in the desired portion
@@ -1748,7 +1748,7 @@ Returns <c>false</c> if the string contains an unpaired surrogate code point.</r
 <doc name="M:PeterO.Text.NormalizerInput.GetChars(System.String,PeterO.Text.Normalization)">
 <summary>Gets a list of normalized code points after reading from a
             string.</summary>
-            <param name='str'>A text string.</param>
+            <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
             <param name='form'>Specifies the normalization form to use when
             normalizing the text.</param>
             <returns>A list of the normalized Unicode characters.</returns>
@@ -1913,37 +1913,37 @@ Returns <c>false</c> if the string contains an unpaired surrogate code point.</r
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput)">
 <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-             <param name='input'>A public object.</param>
+             <param name='input'>The parameter <paramref name='input'/> is a public object.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)">
 <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-             <param name='stream'>A public object.</param>
-             <param name='form'>A Normalization object.</param>
+             <param name='stream'>The parameter <paramref name='stream'/> is a public object.</param>
+             <param name='form'>The parameter <paramref name='form'/> is a Normalization object.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32})">
 <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-             <param name='characterList'>An IList object.</param>
+             <param name='characterList'>The parameter <paramref name='characterList'/> is an IList object.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.Collections.Generic.IList{System.Int32},PeterO.Text.Normalization)">
 <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-             <param name='characterList'>A public object.</param>
-             <param name='form'>A Normalization object.</param>
+             <param name='characterList'>The parameter <paramref name='characterList'/> is a public object.</param>
+             <param name='form'>The parameter <paramref name='form'/> is a Normalization object.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String)">
 <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-             <param name='str'>A public object.</param>
+             <param name='str'>The parameter <paramref name='str'/> is a public object.</param>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)">
 <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-             <param name='str'>A text string.</param>
-             <param name='form'>A Normalization object.</param>
+             <param name='str'>The parameter <paramref name='str'/> is a text string.</param>
+             <param name='form'>The parameter <paramref name='form'/> is a Normalization object.</param>
              <exception cref='T:System.ArgumentNullException'>The parameter <paramref name='str'/> or "input" or "charArray" is null.</exception>
 </doc>
 <doc name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,System.Int32,System.Int32,PeterO.Text.Normalization)">
 <summary>Initializes a new instance of the <see cref='NormalizingCharacterInput'/> class.</summary>
-             <param name='str'>A public object.</param>
-             <param name='index'>A 32-bit signed integer.</param>
-             <param name='length'>Another 32-bit signed integer.</param>
-             <param name='form'>A Normalization object.</param>
+             <param name='str'>The parameter <paramref name='str'/> is a public object.</param>
+             <param name='index'>The parameter <paramref name='index'/> is a 32-bit signed integer.</param>
+             <param name='length'>The parameter <paramref name='length'/> is a 32-bit signed integer.</param>
+             <param name='form'>The parameter <paramref name='form'/> is a Normalization object.</param>
 </doc>
 </docs>

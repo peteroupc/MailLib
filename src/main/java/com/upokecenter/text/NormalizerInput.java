@@ -567,7 +567,7 @@ UnicodeDatabase.IsQuickCheckStarter(
 
     /* private static String EC(int c) {
               if (c < 0) {
-                  return ("<" + c + ">");
+                  return "<" + c + ">";
               }
       String uesc = "\\u";
               if (c >= 0x10000) {

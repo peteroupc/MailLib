@@ -153,6 +153,7 @@ namespace PeterO.Mail {
       if (str == null) {
         return String.Empty;
       }
+      int i;
       str = ParserUtility.TrimAndCollapseSpaceAndTab(str);
       if (str.IndexOf("=?", StringComparison.Ordinal) >= 0) {
         // May contain encoded words, which are very frequent
@@ -202,7 +203,7 @@ namespace PeterO.Mail {
       // 2183); as a result, the directory separators
       // will be treated as unsuitable characters for filenames
       // and are handled below.
-      var i = 0;
+      i = 0;
       while (i < str.Length && builder.Length < 243) {
         int c = DataUtilities.CodePointAt(str, i);
         if (c >= 0x10000) {
@@ -224,14 +225,14 @@ namespace PeterO.Mail {
           // reserved by Windows,
           // backslash, forward slash, ASCII controls, and C1 controls).
           builder.Append('_');
-  } else if (c=='!' && i+1<str.Length && str[i]=='[') {
+  } else if (c == '!' && i + 1 < str.Length && str[i] == '[') {
      // '![ ... ]' may be interpreted in BASH as an evaluator;
      // replace '!' with underscore
     builder.Append('_');
-  } else if (c=='`') {
+  } else if (c == '`') {
      // '`' starts a command in BASH and possibly other shells
     builder.Append('_');
-  } else if (c=='$') {
+  } else if (c == '$') {
      // '$' starts a variable in BASH and possibly other shells
     builder.Append('_');
         } else if (c == 0x2028 || c == 0x2029) {
@@ -306,7 +307,7 @@ strLower.IndexOf(
         str = "_" + str;
       }
       // Avoid space before and after last dot
-      for (int i = str.Length - 1; i >= 0; --i) {
+      for (i = str.Length - 1; i >= 0; --i) {
         if (str[i] == '.') {
           bool spaceAfter = i + 1 < str.Length && str[i + 1] == 0x20;
           bool spaceBefore = i > 0 && str[i - 1] == 0x20;

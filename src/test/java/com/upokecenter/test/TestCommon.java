@@ -1,6 +1,6 @@
 package com.upokecenter.test;
 /*
-Written in 2013 by Peter O.
+Written by Peter O. in 2013.
 Any copyright is dedicated to the Public Domain.
 http://creativecommons.org/publicdomain/zero/1.0/
 If you like this, you should donate to Peter O.
@@ -21,7 +21,7 @@ private TestCommon() {
       sb.append("new byte[] { ");
       for (int i = 0; i < bytes.length; ++i) {
         if (i > 0) {
-          sb.append(", ");  }
+          sb.append(", "); }
         if ((bytes[i] & 0x80) != 0) {
           sb.append("(byte)0x");
         } else {

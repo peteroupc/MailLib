@@ -8,7 +8,6 @@ at: http://peteroupc.github.io/
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 using PeterO;
 
 namespace PeterO.Mail {
@@ -175,7 +174,7 @@ namespace PeterO.Mail {
             }
             c1 = str[index];  // get the next character
           }
-          if (c1 == '-') { // case AA- or AAA-
+          if (c1 == '-') {  // case AA- or AAA-
             ++index;
             if (index + 2 == endIndex) {  // case AA-?? or AAA-??
               c1 = str[index];

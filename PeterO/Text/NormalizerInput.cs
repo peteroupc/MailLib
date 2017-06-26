@@ -478,7 +478,7 @@ UnicodeDatabase.IsQuickCheckStarter(
 
     /* private static string EC (int c) {
               if (c < 0) {
-                  return ("<" + c + ">");
+                  return "<" + c + ">";
               }
       string uesc = "\\u";
               if (c >= 0x10000) {

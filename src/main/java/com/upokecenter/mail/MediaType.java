@@ -291,7 +291,7 @@ return SkipQuotedString(
         }
         index = i2;
         char c = str.charAt(index);
-        if (c == '"') { // end of quoted-String
+        if (c == '"') {  // end of quoted-String
           ++index;
           // NOTE: Don't skip CFWS even if the rule is Rfc5322
           return index;
@@ -793,11 +793,12 @@ return SkipQuotedString(
       // UTF-8 default:
       // -- csv, calendar**, vnd.a***, parameters, prs.fallenstein.rst,
       // vnd.esmertec.theme.descriptor, vnd.trolltech.linguist,
-      // vnd.graphviz, vnd.sun.j2me.app-descriptor
+      // vnd.graphviz, vnd.sun.j2me.app-descriptor, strings*(5)
       //
       // * Required parameter.
       // ** No explicit default, but says that "[t]he charset supported
       // by this revision of iCalendar is UTF-8."
+      // *(5) No charset parameter defined.
       // *** Default is UTF-8 "if 8-bit bytes are encountered" (even if
       // none are found, though, a 7-bit ASCII text is still also UTF-8).
       // **** Content containing non-ASCII bytes "should be rejected".
@@ -820,7 +821,7 @@ return SkipQuotedString(
         // Media types that assume a default of UTF-8
         if (sub.equals("vcard") || sub.equals("jcr-cnd") ||
           sub.equals("n3") || sub.equals("turtle") ||
-            sub.equals("vnd.debian.copyright") ||
+  sub.equals("strings") || sub.equals("vnd.debian.copyright") ||
               sub.equals("provenance-notation") || sub.equals("csv") ||
    sub.equals("calendar") || sub.equals("vnd.a") ||
               sub.equals("parameters") || sub.equals("prs.fallenstein.rst") ||

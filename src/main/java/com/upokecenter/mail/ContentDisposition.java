@@ -190,6 +190,7 @@ import com.upokecenter.text.*;
       if (str == null) {
         return "";
       }
+      int i;
       str = ParserUtility.TrimAndCollapseSpaceAndTab(str);
       if (str.indexOf("=?") >= 0) {
         // May contain encoded words, which are very frequent
@@ -239,7 +240,7 @@ import com.upokecenter.text.*;
       // 2183); as a result, the directory separators
       // will be treated as unsuitable characters for filenames
       // and are handled below.
-      int i = 0;
+      i = 0;
       while (i < str.length() && builder.length() < 243) {
         int c = DataUtilities.CodePointAt(str, i);
         if (c >= 0x10000) {
@@ -261,14 +262,14 @@ import com.upokecenter.text.*;
           // reserved by Windows,
           // backslash, forward slash, ASCII controls, and C1 controls).
           builder.append('_');
-  } else if (c=='!' && i+1<str.length() && str.charAt(i)=='[') {
+  } else if (c == '!' && i + 1 < str.length() && str.charAt(i) == '[') {
      // '![ ... ]' may be interpreted in BASH as an evaluator;
      // replace '!' with underscore
     builder.append('_');
-  } else if (c=='`') {
+  } else if (c == '`') {
      // '`' starts a command in BASH and possibly other shells
     builder.append('_');
-  } else if (c=='$') {
+  } else if (c == '$') {
      // '$' starts a variable in BASH and possibly other shells
     builder.append('_');
         } else if (c == 0x2028 || c == 0x2029) {
@@ -337,7 +338,7 @@ strLower.indexOf(
         str = "_" + str;
       }
       // Avoid space before and after last dot
-      for (int i = str.length() - 1; i >= 0; --i) {
+      for (i = str.length() - 1; i >= 0; --i) {
         if (str.charAt(i) == '.') {
           boolean spaceAfter = i + 1 < str.length() && str.charAt(i + 1) == 0x20;
           boolean spaceBefore = i > 0 && str.charAt(i - 1) == 0x20;
