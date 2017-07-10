@@ -61,28 +61,28 @@ Assert.assertEquals(messageTemp, objectTemp, objectTemp2);
       }
     }
 
-    static Message MessageFromString(String ValueMessageString) {
+    static Message MessageFromString(String valueMessageString) {
       Message msgobj = new Message(
   DataUtilities.GetUtf8Bytes(
-  ValueMessageString,
+  valueMessageString,
   true));
       MessageGenerate(msgobj);
       return msgobj;
     }
 
-    static void MessageConstructOnly(String ValueMessageString) {
+    static void MessageConstructOnly(String valueMessageString) {
       new Message(
   DataUtilities.GetUtf8Bytes(
-  ValueMessageString,
+  valueMessageString,
   true));
     }
 
-    private static void TestMediaTypeRoundTrip(String ValueMessageString) {
+    private static void TestMediaTypeRoundTrip(String valueMessageString) {
       String mtstring = new MediaTypeBuilder(
   "x",
   "y").SetParameter(
   "z",
-  ValueMessageString).toString();
+  valueMessageString).toString();
       if (mtstring.contains("\r\n\r\n")) {
  Assert.fail();
  }
@@ -90,7 +90,7 @@ Assert.assertEquals(messageTemp, objectTemp, objectTemp2);
  Assert.fail();
  }
    {
-Object objectTemp = ValueMessageString;
+Object objectTemp = valueMessageString;
 Object objectTemp2 = MediaType.Parse(mtstring).GetParameter(
   "z");
 Assert.assertEquals(objectTemp, objectTemp2);
@@ -125,33 +125,33 @@ Assert.assertEquals(objectTemp, objectTemp2);
 
     @Test
     public void TestContentTypeDefaults() {
-      String ValueStart = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
+  String ValueStartCTD = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
       String msg;
-      msg = ValueStart + "\r\n\r\n";
+      msg = ValueStartCTD + "\r\n\r\n";
       Assert.assertEquals(
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
-      msg = ValueStart + "Content-Type: text/html\r\n\r\n";
+      msg = ValueStartCTD + "Content-Type: text/html\r\n\r\n";
       Assert.assertEquals(
   MediaType.Parse("text/html"),
   MessageFromString(msg).getContentType());
-      msg = ValueStart + "Content-Type: text/\r\n\r\n";
+      msg = ValueStartCTD + "Content-Type: text/\r\n\r\n";
       Assert.assertEquals(
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
-      msg = ValueStart + "Content-Type: /html\r\n\r\n";
+      msg = ValueStartCTD + "Content-Type: /html\r\n\r\n";
       Assert.assertEquals(
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
       // All header fields are syntactically valid
-      msg = ValueStart +
+      msg = ValueStartCTD +
 
   "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\n\r\n";
 
       Assert.assertEquals(
   MediaType.ApplicationOctetStream,
   MessageFromString(msg).getContentType());
-      msg = ValueStart +
+      msg = ValueStartCTD +
 
   "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: text/html\r\n\r\n";
 
@@ -159,18 +159,18 @@ Assert.assertEquals(objectTemp, objectTemp2);
   MediaType.ApplicationOctetStream,
   MessageFromString(msg).getContentType());
       // First header field is syntactically invalid
-      msg = ValueStart +
+      msg = ValueStartCTD +
   "Content-Type: /plain;charset=utf-8\r\nContent-Type: image/jpeg\r\n\r\n";
       Assert.assertEquals(
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
       // Second header field is syntactically invalid
-      msg = ValueStart +
+      msg = ValueStartCTD +
   "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image\r\n\r\n";
       Assert.assertEquals(
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
-      msg = ValueStart +
+      msg = ValueStartCTD +
 
   "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image\r\nContent-Type: text/html\r\n\r\n";
 
@@ -178,7 +178,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
       // Third header field is syntactically invalid
-      msg = ValueStart +
+      msg = ValueStartCTD +
 
   "Content-Type: text/plain;charset=utf-8\r\nContent-Type: image/jpeg\r\nContent-Type: audio\r\n\r\n";
 
@@ -222,9 +222,9 @@ Assert.assertEquals(objectTemp, objectTemp2);
   String expected) {
       MediaType mt = MediaType.Parse(mtype);
       Assert.assertEquals(expected, mt.GetParameter(param));
-      String ValueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
+      String valueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: " + mtype + "\r\n\r\nTest";
-      Message msg = MessageFromString(ValueMessageString);
+      Message msg = MessageFromString(valueMessageString);
       mt = msg.getContentType();
       Assert.assertEquals(expected, mt.GetParameter(param));
     }
@@ -1776,15 +1776,15 @@ MessageFromString(MessageFromString(msg).Generate())
 
     private static void TestFileNameOne(String input, String expected) {
       Message msg;
-   String ValueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+   String valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
  "Content-Type: text/plain\r\nContent-Disposition: inline; filename=" +
           input + "\r\n\r\nEmpty.";
-      msg = MessageFromString(ValueMessageString);
+      msg = MessageFromString(valueMessageString);
       Assert.assertEquals(expected, msg.getFileName());
-      ValueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+      valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
         "Content-Type: text/plain; name=" + input +
         "\r\n\r\nEmpty.";
-      msg = MessageFromString(ValueMessageString);
+      msg = MessageFromString(valueMessageString);
       Assert.assertEquals(expected, msg.getFileName());
     }
     @Test
@@ -1799,9 +1799,9 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     @Test
     public void TestFromAddresses() {
- String ValueMessageString =
+ String valueMessageString =
         "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
-      Message msg = MessageFromString(ValueMessageString);
+      Message msg = MessageFromString(valueMessageString);
       MessageFromString(MessageGenerate(msg));
       Assert.assertEquals(1, msg.getFromAddresses().size());
     }
@@ -1815,9 +1815,8 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     @Test
     public void TestGetHeader() {
-    String ValueStringVar =
-      "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(ValueStringVar);
+    String ValueVsv = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      Message msg = MessageFromString(ValueVsv);
       try {
         msg.GetHeader(2);
         Assert.fail("Should have failed");
@@ -1846,11 +1845,11 @@ MessageFromString(MessageFromString(msg).Generate())
       // not implemented yet
     }
 
-String ValueRemoveHeaderString =
+String ValueVrhs =
         "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
     @Test
     public void TestRemoveHeader() {
-      Message msg = MessageFromString(ValueRemoveHeaderString);
+      Message msg = MessageFromString(ValueVrhs);
       try {
         msg.RemoveHeader(2);
         Assert.fail("Should have failed");
@@ -1956,9 +1955,9 @@ throw new IllegalStateException("", ex);
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
       }
-String ValueMessageString =
+String ValueVms =
         "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
-      Message msg = MessageFromString(ValueMessageString);
+      Message msg = MessageFromString(ValueVms);
       try {
         msg.SetHeader(2, "X-Header2", "2");
         Assert.fail("Should have failed");

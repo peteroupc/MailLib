@@ -190,8 +190,8 @@ namespace MailLibTest {
     public static object GetFieldStatic(string type, string name) {
         BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic |
           BindingFlags.Instance | BindingFlags.GetField;
-       return FindType(
-  type).GetField(
+       var typeinfo = FindType(type);
+       return typeinfo.GetField(
   name,
   flags).GetValue(null);
     }

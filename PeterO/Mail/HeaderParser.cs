@@ -6945,8 +6945,8 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
   (str[index] == 126))) {
  ++indexTemp2; break;
 }
-if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1] >= 48&&
-  str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70)||
+if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1] >= 48 &&
+  str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70) ||
   (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index + 2] >=
   48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index + 2] <=
   70) || (str[index + 2] >= 97 && str[index + 2] <= 102)))))) {
@@ -7554,8 +7554,8 @@ if (index < endIndex && (str[index] == 39)) {
  while (true) {
   indexTemp5 = index;
  do {
-if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1] >= 48&&
-  str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70)||
+if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1] >= 48 &&
+  str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70) ||
   (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index + 2] >=
   48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index + 2] <=
   70) || (str[index + 2] >= 97 && str[index + 2] <= 102)))))) {
@@ -7651,8 +7651,8 @@ if (index < endIndex && (str[index] == 61)) {
  while (true) {
   indexTemp4 = index;
  do {
-if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1] >= 48&&
-  str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70)||
+if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1] >= 48 &&
+  str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70) ||
   (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index + 2] >=
   48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index + 2] <=
   70) || (str[index + 2] >= 97 && str[index + 2] <= 102)))))) {
@@ -9051,8 +9051,8 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
   (str[index] == 126))) {
  ++indexTemp2; break;
 }
-if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1] >= 48&&
-  str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70)||
+if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1] >= 48 &&
+  str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70) ||
   (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index + 2] >=
   48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index + 2] <=
   70) || (str[index + 2] >= 97 && str[index + 2] <= 102)))))) {
@@ -9174,8 +9174,8 @@ if (index < endIndex && ((str[index] == 33) || (str[index] == 36) ||
   <= 59) || (str[index] == 61))) {
  ++indexTemp2; break;
 }
-if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1] >= 48&&
-  str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70)||
+if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1] >= 48 &&
+  str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1] <= 70) ||
   (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index + 2] >=
   48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index + 2] <=
   70) || (str[index + 2] >= 97 && str[index + 2] <= 102)))))) {

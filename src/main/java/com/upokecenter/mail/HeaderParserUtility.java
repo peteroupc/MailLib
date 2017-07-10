@@ -690,7 +690,13 @@ private HeaderParserUtility() {
             addresses.add(ParseGroup(str, tokenIndex, tokenEnd, tokens));
             lastIndex = tokenEnd;
           } else if (tokenKind == TokenMailbox) {
-            addresses.add(ParseMailbox(str, tokenIndex, tokenEnd, tokens));
+            try {
+              addresses.add(ParseMailbox(str, tokenIndex, tokenEnd, tokens));
+            } catch (IndexOutOfRangeException ex) {
+    throw new IllegalStateException(
+  "str=" + str + " index=" + index,
+  ex);
+                    }
             lastIndex = tokenEnd;
           }
         }

@@ -689,7 +689,13 @@ namespace PeterO.Mail {
             addresses.Add(ParseGroup(str, tokenIndex, tokenEnd, tokens));
             lastIndex = tokenEnd;
           } else if (tokenKind == TokenMailbox) {
-            addresses.Add(ParseMailbox(str, tokenIndex, tokenEnd, tokens));
+            try {
+              addresses.Add(ParseMailbox(str, tokenIndex, tokenEnd, tokens));
+            } catch (IndexOutOfRangeException ex) {
+    throw new InvalidOperationException(
+  "str=" + str + " index=" + index,
+  ex);
+                    }
             lastIndex = tokenEnd;
           }
         }
