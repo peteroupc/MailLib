@@ -141,7 +141,7 @@ Initializes a new instance of the <code>NormalizerInput</code> class using Norma
 
 **Parameters:**
 
-* <code>input</code> - An ICharacterInput object.
+* <code>input</code> - The parameter <code>input</code> is an ICharacterInput object.
 
 ### NormalizerInput
     public NormalizerInput(String str, int index, int length, Normalization form)
@@ -150,7 +150,7 @@ Initializes a new instance of the <code>NormalizerInput</code> class. Uses a por
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 * <code>index</code> - A zero-based index showing where the desired portion of <code>str</code> begins.
 
@@ -166,7 +166,7 @@ Initializes a new instance of the <code>NormalizerInput</code> class.
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 * <code>form</code> - Specifies the normalization form to use when normalizing the
  text.
@@ -177,7 +177,7 @@ Initializes a new instance of the <code>NormalizerInput</code> class.
 
 **Parameters:**
 
-* <code>stream</code> - An ICharacterInput object.
+* <code>stream</code> - The parameter <code>stream</code> is an ICharacterInput object.
 
 * <code>form</code> - Specifies the normalization form to use when normalizing the
  text.

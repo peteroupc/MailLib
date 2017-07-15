@@ -64,7 +64,7 @@ Initializes a new instance of the <code>MediaTypeBuilder</code> class using the 
 
 **Parameters:**
 
-* <code>mt</code> - A MediaType object.
+* <code>mt</code> - The parameter <code>mt</code> is a MediaType object.
 
 **Throws:**
 

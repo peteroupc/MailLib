@@ -40,9 +40,9 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
-* <code>form</code> - A Normalization object.
+* <code>form</code> - The parameter <code>form</code> is a Normalization object.
 
 ### Normalizer
     public Normalizer(String str, Normalization form)
@@ -50,9 +50,9 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
-* <code>form</code> - A Normalization object.
+* <code>form</code> - The parameter <code>form</code> is a Normalization object.
 
 ### Normalize
     public static String Normalize(String str, Normalization form)
@@ -80,7 +80,7 @@ Deprecated.&nbsp;
 
 * <code>str</code> - The string to check.
 
-* <code>form</code> - A Normalization object.
+* <code>form</code> - The parameter <code>form</code> is a Normalization object.
 
 **Returns:**
 

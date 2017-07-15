@@ -1121,12 +1121,12 @@ namespace PeterO.Mail {
     }
 
     internal static IList<NamedAddress> ParseAddresses(string[] values) {
-      var tokener = new Tokener();
       var list = new List<NamedAddress>();
       foreach (string addressValue in values) {
         if (addressValue == null) {
           continue;
         }
+        var tokener = new Tokener ();
         if (
           HeaderParser.ParseHeaderTo(
             addressValue,
@@ -1868,6 +1868,14 @@ namespace PeterO.Mail {
               }
               haveHeaders[headerIndex] = true;
               if (!this.IsValidAddressingField(name)) {
+                /*DebugUtility.Log (name);
+                {
+                  var ssb = new StringBuilder ();
+                  foreach (var mhs in this.GetMultipleHeaders (name)) {
+                    ssb.Append (mhs + " ");
+                  }
+                  DebugUtility.Log (ssb.ToString ());
+                }*/
                 value = GenerateAddressList(
     ParseAddresses(this.GetMultipleHeaders(name)));
                 if (value.Length == 0) {

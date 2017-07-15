@@ -74,7 +74,7 @@ Determines whether this object and another object are equal.
 
 **Parameters:**
 
-* <code>obj</code> - An arbitrary object.
+* <code>obj</code> - The parameter <code>obj</code> is an arbitrary object.
 
 **Returns:**
 
@@ -194,7 +194,7 @@ Parses a content disposition string and returns a content disposition
 
 **Parameters:**
 
-* <code>dispoValue</code> - A text string.
+* <code>dispoValue</code> - The parameter <code>dispoValue</code> is a text string.
 
 **Returns:**
 

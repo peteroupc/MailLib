@@ -32,7 +32,8 @@ private static final long serialVersionUID = 1L;
      * Initializes a new instance of the {@link
      * com.upokecenter.mail.MessageDataException} class.
      * @param message A string to use as the exception message.
-     * @param innerException An Exception object.
+     * @param innerException The parameter {@code innerException} is an Exception
+     * object.
      */
     public MessageDataException(String message, Throwable innerException) {
  super(message, innerException);

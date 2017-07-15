@@ -37,8 +37,8 @@ at: http://peteroupc.github.io/
     /**
      * Initializes a new instance of the {@link com.upokecenter.text.Normalizer}
      * class.
-     * @param str A text string.
-     * @param form A Normalization object.
+     * @param str The parameter {@code str} is a text string.
+     * @param form The parameter {@code form} is a Normalization object.
      */
     public Normalizer(String str, Normalization form) {
       this.nci = new NormalizerInput(str, form);
@@ -47,7 +47,7 @@ at: http://peteroupc.github.io/
     /**
      * Returns whether this string is normalized.
      * @param str The string to check.
-     * @param form A Normalization object.
+     * @param form The parameter {@code form} is a Normalization object.
      * @return {@code true} if this string is normalized; otherwise, {@code false}.
      * Returns {@code false} if the string contains an unpaired surrogate
      * code point.

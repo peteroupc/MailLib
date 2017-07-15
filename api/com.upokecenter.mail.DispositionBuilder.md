@@ -56,7 +56,7 @@ Initializes a new instance of the <code>DispositionBuilder</code> class.
 
 **Parameters:**
 
-* <code>mt</code> - A ContentDisposition object.
+* <code>mt</code> - The parameter <code>mt</code> is a ContentDisposition object.
 
 **Throws:**
 
@@ -68,7 +68,7 @@ Initializes a new instance of the <code>DispositionBuilder</code> class.
 
 **Parameters:**
 
-* <code>type</code> - A text string.
+* <code>type</code> - The parameter <code>type</code> is a text string.
 
 **Throws:**
 
@@ -116,7 +116,7 @@ Sets the disposition type, such as "inline".
 
 **Parameters:**
 
-* <code>str</code> - A text string.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 **Returns:**
 

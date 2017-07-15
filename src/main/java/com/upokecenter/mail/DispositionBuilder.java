@@ -42,7 +42,7 @@ public final void setDispositionType(String value) {
     /**
      * Initializes a new instance of the {@link
      * com.upokecenter.mail.DispositionBuilder} class.
-     * @param mt A ContentDisposition object.
+     * @param mt The parameter {@code mt} is a ContentDisposition object.
      * @throws java.lang.NullPointerException The parameter {@code mt} is null.
      */
     public DispositionBuilder(ContentDisposition mt) {
@@ -56,7 +56,7 @@ public final void setDispositionType(String value) {
     /**
      * Initializes a new instance of the {@link
      * com.upokecenter.mail.DispositionBuilder} class.
-     * @param type A text string.
+     * @param type The parameter {@code type} is a text string.
      * @throws java.lang.NullPointerException The parameter {@code type} is null.
      */
     public DispositionBuilder(String type) {
@@ -101,7 +101,7 @@ if (type.length() == 0) {
 
     /**
      * Sets the disposition type, such as "inline".
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @return This instance.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */

@@ -55,7 +55,7 @@ public final void setSubType(String value) {
      * Initializes a new instance of the {@link
      * com.upokecenter.mail.MediaTypeBuilder} class using the data from
      * another media type.
-     * @param mt A MediaType object.
+     * @param mt The parameter {@code mt} is a MediaType object.
      * @throws java.lang.NullPointerException The parameter {@code mt} is null.
      */
     public MediaTypeBuilder(MediaType mt) {

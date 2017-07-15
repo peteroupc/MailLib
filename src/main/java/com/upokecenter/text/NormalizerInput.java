@@ -237,7 +237,7 @@ package com.upokecenter.text;
      * Initializes a new instance of the {@link
      * com.upokecenter.text.NormalizerInput} class using Normalization Form
      * C.
-     * @param input An ICharacterInput object.
+     * @param input The parameter {@code input} is an ICharacterInput object.
      */
       public NormalizerInput(
     ICharacterInput input) {
@@ -249,7 +249,7 @@ package com.upokecenter.text;
      * Initializes a new instance of the {@link
      * com.upokecenter.text.NormalizerInput} class. Uses a portion of a
      * string as the input.
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @param index A zero-based index showing where the desired portion of {@code
      * str} begins.
      * @param length The number of elements in the desired portion of {@code str}
@@ -269,7 +269,7 @@ package com.upokecenter.text;
     /**
      * Initializes a new instance of the {@link
      * com.upokecenter.text.NormalizerInput} class.
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @param form Specifies the normalization form to use when normalizing the
      * text.
      */
@@ -280,7 +280,7 @@ package com.upokecenter.text;
     /**
      * Initializes a new instance of the {@link
      * com.upokecenter.text.NormalizerInput} class.
-     * @param stream An ICharacterInput object.
+     * @param stream The parameter {@code stream} is an ICharacterInput object.
      * @param form Specifies the normalization form to use when normalizing the
      * text.
      * @throws java.lang.NullPointerException The parameter {@code stream} is null.

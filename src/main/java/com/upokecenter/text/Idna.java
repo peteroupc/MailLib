@@ -239,7 +239,7 @@ scripts = (scripts == null) ? (ByteData.Decompress(IdnaData.IdnaRelevantScripts)
 
     /**
      * Determines whether the given string is a syntactically valid domain name.
-     * @param str A text string.
+     * @param str The parameter {@code str} is a text string.
      * @param lookupRules If true, uses rules to apply when looking up the string
      * as a domain name. If false, uses rules to apply when registering the
      * string as a domain name.

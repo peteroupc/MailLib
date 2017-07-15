@@ -46,7 +46,7 @@ import com.upokecenter.text.*;
 
     /**
      * Determines whether this object and another object are equal.
-     * @param obj An arbitrary object.
+     * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if this object and another object are equal; otherwise,
      * {@code false}.
      */

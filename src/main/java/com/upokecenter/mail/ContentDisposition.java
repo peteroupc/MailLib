@@ -33,7 +33,7 @@ import com.upokecenter.text.*;
 
     /**
      * Determines whether this object and another object are equal.
-     * @param obj An arbitrary object.
+     * @param obj The parameter {@code obj} is an arbitrary object.
      * @return {@code true} if the objects are equal; otherwise, {@code false}.
      */
     @Override public boolean equals(Object obj) {
@@ -461,7 +461,7 @@ strLower.indexOf(
     /**
      * Parses a content disposition string and returns a content disposition
      * object.
-     * @param dispoValue A text string.
+     * @param dispoValue The parameter {@code dispoValue} is a text string.
      * @return A content disposition object, or "Attachment" if {@code dispoValue}
      * is empty or syntactically invalid.
      * @throws java.lang.NullPointerException The parameter {@code dispoValue} is
