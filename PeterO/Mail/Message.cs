@@ -1126,7 +1126,7 @@ namespace PeterO.Mail {
         if (addressValue == null) {
           continue;
         }
-        var tokener = new Tokener ();
+        var tokener = new Tokener();
         if (
           HeaderParser.ParseHeaderTo(
             addressValue,
@@ -1870,11 +1870,11 @@ namespace PeterO.Mail {
               if (!this.IsValidAddressingField(name)) {
                 /*DebugUtility.Log (name);
                 {
-                  var ssb = new StringBuilder ();
+                  var ssb = new StringBuilder();
                   foreach (var mhs in this.GetMultipleHeaders (name)) {
                     ssb.Append (mhs + " ");
                   }
-                  DebugUtility.Log (ssb.ToString ());
+                  DebugUtility.Log (ssb.ToString());
                 }*/
                 value = GenerateAddressList(
     ParseAddresses(this.GetMultipleHeaders(name)));

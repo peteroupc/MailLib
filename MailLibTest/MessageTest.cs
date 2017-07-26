@@ -119,19 +119,18 @@ Assert.AreEqual(objectTemp, objectTemp2);
       }
     }
 
-
-    [Test]
-        public void TestMultipleReplyTo ()
-        {
+    [Test] public void TestMultipleReplyTo () {
             const string ValueMultipleReplyTo = "Reply-to: x@example.com\r\n" +
-             "Reply-to: y@example.com\r\n" +
-             "Reply-to: z@example.com\r\n" +
-             "Reply-to: w@example.com\r\n" +
-             "From: me@example.com\r\n\r\n";
-            Assert.DoesNotThrow (() => MessageFromString (ValueMultipleReplyTo).Generate ());
+             "Reply-to: y@example.com\r\n" + "Reply-to: z@example.com\r\n" +
+             "Reply-to: w@example.com\r\n" + "From: me@example.com\r\n\r\n";
+            try {
+ MessageFromString (ValueMultipleReplyTo).Generate();
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
         }
 
-   
     [Test]
     public void TestContentTypeDefaults() {
   const string ValueStartCTD = "From: me@example.com\r\nMIME-Version: 1.0\r\n";

@@ -1420,12 +1420,12 @@ public final void setSubject(String value) {
     }
 
     static List<NamedAddress> ParseAddresses(String[] values) {
-      Tokener tokener = new Tokener();
       ArrayList<NamedAddress> list = new ArrayList<NamedAddress>();
       for (String addressValue : values) {
         if (addressValue == null) {
           continue;
         }
+        Tokener tokener = new Tokener();
         if (
           HeaderParser.ParseHeaderTo(
             addressValue,
@@ -2159,6 +2159,14 @@ public final void setSubject(String value) {
               }
               haveHeaders[headerIndex] = true;
               if (!this.IsValidAddressingField(name)) {
+                /*DebugUtility.Log (name);
+                {
+                  StringBuilder ssb = new StringBuilder();
+                  for (Object mhs : this.GetMultipleHeaders (name)) {
+                    ssb.append (mhs + " ");
+                  }
+                  DebugUtility.Log (ssb.toString());
+                }*/
                 value = GenerateAddressList(
     ParseAddresses(this.GetMultipleHeaders(name)));
                 if (value.length() == 0) {

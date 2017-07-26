@@ -123,6 +123,18 @@ Assert.assertEquals(objectTemp, objectTemp2);
       }
     }
 
+    @Test public void TestMultipleReplyTo() {
+            String ValueMultipleReplyTo = "Reply-to: x@example.com\r\n" +
+             "Reply-to: y@example.com\r\n" + "Reply-to: z@example.com\r\n" +
+             "Reply-to: w@example.com\r\n" + "From: me@example.com\r\n\r\n";
+            try {
+ MessageFromString (ValueMultipleReplyTo).Generate();
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        }
+
     @Test
     public void TestContentTypeDefaults() {
   String ValueStartCTD = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
