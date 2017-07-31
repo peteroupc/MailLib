@@ -8,7 +8,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
      * for concurrent use among multiple threads.
      */
   public class XorShift128Plus implements IRandomGen {
-    private long[] s = new long[2];
+    private final long[] s = new long[2];
     private Object syncRoot = new Object();
     private boolean threadSafe;
 
@@ -101,9 +101,8 @@ package com.upokecenter.test; import com.upokecenter.util.*;
         synchronized (this.syncRoot) {
           return this.GetBytesInternal(bytes, offset, length);
         }
-      } else {
-        return this.GetBytesInternal(bytes, offset, length);
       }
+      return this.GetBytesInternal (bytes, offset, length);
     }
 
     // xorshift128 + generator

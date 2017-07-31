@@ -8,7 +8,7 @@ namespace PeterO {
     /// RNG as the underlying implementation. By default, this class is
     /// safe for concurrent use among multiple threads.</summary>
   public class XorShift128Plus : IRandomGen {
-    private long[] s = new long[2];
+    private readonly long[] s = new long[2];
     private object syncRoot = new Object();
     private bool threadSafe;
 
@@ -101,9 +101,8 @@ namespace PeterO {
         lock (this.syncRoot) {
           return this.GetBytesInternal(bytes, offset, length);
         }
-      } else {
-        return this.GetBytesInternal(bytes, offset, length);
       }
+      return this.GetBytesInternal (bytes, offset, length);
     }
 
     // xorshift128 + generator
