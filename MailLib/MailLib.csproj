@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>PeterO.MailLib</PackageId>
+    <Title>MailLib Library</Title>
+    <Company>Peter Occil</Company>
+    <Authors>Peter Occil</Authors>
+    <PackageLicenseUrl>https://github.com/peteroupc/MailLib/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/peteroupc/MailLib</PackageProjectUrl>
+    <Description>A .NET library for parsing and generating Internet email messages.</Description>
+    <PackageReleaseNotes>Version 0.11.0:
+
+- Corrected the documentation for MediaType's and ContentDisposition's Parameters properties
+- Added DisplayName property in NamedAddress class</PackageReleaseNotes>
+    <Copyright>Written by Peter O. in 2015-2017.  Any copyright is released to the Public Domain.</Copyright>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageVersion>0.11.0</PackageVersion>
+    <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
+    <PackageTags>email mail mime parser charset charsets</PackageTags>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>PeterO.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DocumentationFile>bin\Debug\netstandard1.0\MailLib.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType></DebugType>
+    <DocumentationFile>bin\Release\netstandard1.0\MailLib.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Condition=" '$(EnableDefaultEmbeddedResourceItems)' == 'true' " Update="PeterO.Text.Encoders.AppResources.resx">
+      <LogicalName>PeterO.Text.Encoders.AppResources.resources</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="PeterO.Encoding" Version="0.3.0" />
+  </ItemGroup>
+</Project>
