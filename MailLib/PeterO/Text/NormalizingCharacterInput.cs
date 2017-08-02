@@ -104,11 +104,31 @@ using System.Collections.Generic;
         return ret;
       }
 
+    /// <missing-param name='str'/>
+    /// <missing-param name='str'/>
+    /// <missing-param name='str'/>
+    /// <missing-param name='str'/>
+    /// <missing-param name='str'/>
+    /// <missing-param name='str'/>
+    /// <missing-param name='str'/>
+    /// <missing-param name='str'/>
+    /// <missing-param name='str'/>
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.GetChars(PeterO.Text.ICharacterInput,PeterO.Text.Normalization)"]/*'/>
+    /// <missing-param name='input'/>
+    /// <missing-param name='input'/>
+    /// <missing-param name='input'/>
+    /// <missing-param name='input'/>
+    /// <missing-param name='input'/>
+    /// <missing-param name='input'/>
+    /// <missing-param name='input'/>
+    /// <missing-param name='input'/>
+    /// <missing-param name='input'/>
     /// <param name='input'>The parameter <paramref name='input'/> is not
     /// documented yet.</param>
     /// <param name='form'>The parameter <paramref name='form'/> is not
+    /// documented yet.</param>
+    /// <param name='chars'>The parameter <paramref name='chars'/> is not
     /// documented yet.</param>
   [Obsolete("Instead of this method, create a NormalizerInput on the input and call ReadChar to get the normalized string's code points.")]
    public static IList<int> GetChars(
