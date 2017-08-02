@@ -102,7 +102,7 @@ namespace PeterO {
           return this.GetBytesInternal(bytes, offset, length);
         }
       }
-      return this.GetBytesInternal (bytes, offset, length);
+      return this.GetBytesInternal(bytes, offset, length);
     }
 
     // xorshift128 + generator

@@ -102,7 +102,7 @@ package com.upokecenter.test; import com.upokecenter.util.*;
           return this.GetBytesInternal(bytes, offset, length);
         }
       }
-      return this.GetBytesInternal (bytes, offset, length);
+      return this.GetBytesInternal(bytes, offset, length);
     }
 
     // xorshift128 + generator

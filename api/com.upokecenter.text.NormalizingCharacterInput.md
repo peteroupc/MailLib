@@ -249,6 +249,8 @@ ReadChar to get the normalized String's code points.
 
 * <code>form</code> - The parameter <code>form</code> is not documented yet.
 
+* <code>chars</code> - The parameter <code>chars</code> is not documented yet.
+
 * <code>str</code> - An object that implements a stream of Unicode characters.
 
 * <code>form</code> - Specifies the normalization form to use when normalizing the
