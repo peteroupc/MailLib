@@ -71,6 +71,9 @@ namespace PeterO.Mail {
     internal ContentDisposition(
  string type,
  IDictionary<string, string> parameters) {
+      if ((type) == null) {
+  throw new ArgumentNullException("type");
+}
       this.dispositionType = type;
       this.parameters = new Dictionary<string, string>(parameters);
     }
@@ -370,7 +373,7 @@ strLower.IndexOf(
       if (i == index) {
         return null;
       }
-      string dispositionType =
+      string dispoType =
         DataUtilities.ToLowerCaseAscii(str.Substring(index, i - index));
       if (i < endIndex) {
         // if not at end
@@ -378,7 +381,7 @@ strLower.IndexOf(
         if (i3 == endIndex) {
           // at end
           return new ContentDisposition(
-            dispositionType,
+            dispoType,
             parameters);
         }
         if (i3 < endIndex && str[i3] != ';') {
@@ -393,7 +396,7 @@ strLower.IndexOf(
         endIndex,
         HttpRules,
         parameters) ? new ContentDisposition(
-            dispositionType,
+            dispoType,
             parameters) : null;
     }
 
@@ -424,9 +427,6 @@ strLower.IndexOf(
     /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Inline"]/*'/>
     public static readonly ContentDisposition Inline =
       Build("inline");
-
-    private ContentDisposition() {
-    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String)"]/*'/>

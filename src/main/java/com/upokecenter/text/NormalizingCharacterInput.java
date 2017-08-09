@@ -82,7 +82,7 @@ import java.util.*;
 
     /**
      * Initializes a new instance of the {@link NormalizingCharacterInput} class.
-     * @param str The parameter {@code str} is a public object.
+     * @param str The parameter {@code str} is a text string.
      */
       public NormalizingCharacterInput(
     String str) {
@@ -219,10 +219,7 @@ import java.util.*;
 
     /**
      * Gets a list of normalized code points after reading from a character stream.
-     * @param input The parameter {@code input} is not documented yet.
-     * @param form The parameter {@code form} is not documented yet.
-     * @param chars The parameter {@code chars} is not documented yet.
-     * @param str An object that implements a stream of Unicode characters.
+     * @param chars An object that implements a stream of Unicode characters.
      * @param form Specifies the normalization form to use when normalizing the
      * text.
      * @return A list of the normalized Unicode characters.
