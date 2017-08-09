@@ -82,6 +82,9 @@ import com.upokecenter.text.*;
     ContentDisposition(
  String type,
  Map<String, String> parameters) {
+      if ((type) == null) {
+  throw new NullPointerException("type");
+}
       this.dispositionType = type;
       this.parameters = new HashMap<String, String>(parameters);
     }
@@ -410,7 +413,7 @@ strLower.indexOf(
       if (i == index) {
         return null;
       }
-      String dispositionType =
+      String dispoType =
         DataUtilities.ToLowerCaseAscii(str.substring(index, (index)+(i - index)));
       if (i < endIndex) {
         // if not at end
@@ -418,7 +421,7 @@ strLower.indexOf(
         if (i3 == endIndex) {
           // at end
           return new ContentDisposition(
-            dispositionType,
+            dispoType,
             parameters);
         }
         if (i3 < endIndex && str.charAt(i3) != ';') {
@@ -433,7 +436,7 @@ strLower.indexOf(
         endIndex,
         HttpRules,
         parameters) ? new ContentDisposition(
-            dispositionType,
+            dispoType,
             parameters) : null;
     }
 
@@ -454,9 +457,6 @@ strLower.indexOf(
      */
     public static final ContentDisposition Inline =
       Build("inline");
-
-    private ContentDisposition() {
-    }
 
     /**
      * Parses a content disposition string and returns a content disposition
