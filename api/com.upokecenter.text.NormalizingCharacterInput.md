@@ -103,7 +103,7 @@ Deprecated.&nbsp;
 
 **Parameters:**
 
-* <code>str</code> - The parameter <code>str</code> is a public object.
+* <code>str</code> - The parameter <code>str</code> is a text string.
 
 ### NormalizingCharacterInput
     public NormalizingCharacterInput(com.upokecenter.text.ICharacterInput input)
@@ -245,13 +245,7 @@ ReadChar to get the normalized String's code points.
 
 **Parameters:**
 
-* <code>input</code> - The parameter <code>input</code> is not documented yet.
-
-* <code>form</code> - The parameter <code>form</code> is not documented yet.
-
-* <code>chars</code> - The parameter <code>chars</code> is not documented yet.
-
-* <code>str</code> - An object that implements a stream of Unicode characters.
+* <code>chars</code> - An object that implements a stream of Unicode characters.
 
 * <code>form</code> - Specifies the normalization form to use when normalizing the
  text.

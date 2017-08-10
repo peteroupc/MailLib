@@ -694,7 +694,7 @@ namespace PeterO.Mail {
 // } catch (IndexOutOfRangeException ex) {
 // throw new InvalidOperationException(
   //  "str=" + str + " index=" + index,  // ex);
-                    }
+  // }
             lastIndex = tokenEnd;
           }
         }

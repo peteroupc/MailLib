@@ -1754,7 +1754,7 @@ Returns <c>false</c> if the string contains an unpaired surrogate code point.</r
             normalizing the text.</param>
             <returns>A list of the normalized Unicode characters.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='str'/> is null.</exception>
+            <paramref name='chars'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Text.NormalizerInput.GetChars(System.String,PeterO.Text.Normalization)">
 <summary>Gets a list of normalized code points after reading from a
