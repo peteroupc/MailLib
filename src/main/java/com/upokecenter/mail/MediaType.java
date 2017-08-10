@@ -1209,6 +1209,9 @@ return SkipQuotedString(
       new MediaTypeBuilder("application", "octet-stream").ToMediaType();
 
     private MediaType() {
+      this.topLevelType = "";
+      this.subType = "";
+      this.parameters = new HashMap<String, String>();
     }
 
     /**
