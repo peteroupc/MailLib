@@ -695,7 +695,7 @@ private HeaderParserUtility() {
 // } catch (IndexOutOfRangeException ex) {
 // throw new IllegalStateException(
   //  "str=" + str + " index=" + index,  // ex);
-                    }
+  // }
             lastIndex = tokenEnd;
           }
         }
