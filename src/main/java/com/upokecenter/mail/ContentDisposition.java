@@ -89,6 +89,11 @@ import com.upokecenter.text.*;
       this.parameters = new HashMap<String, String>(parameters);
     }
 
+    private ContentDisposition() {
+      this.dispositionType = "";
+      this.parameters = new HashMap<String, String>();
+    }
+
     private final Map<String, String> parameters;
 
     /**

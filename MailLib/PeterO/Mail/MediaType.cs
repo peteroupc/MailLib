@@ -1184,6 +1184,9 @@ return SkipQuotedString(
       new MediaTypeBuilder("application", "octet-stream").ToMediaType();
 
     private MediaType() {
+      this.topLevelType = String.Empty;
+      this.subType = String.Empty;
+      this.parameters = new Dictionary<string, string>();
     }
 
     /// <include file='../../docs.xml'

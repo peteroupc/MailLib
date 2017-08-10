@@ -78,6 +78,11 @@ namespace PeterO.Mail {
       this.parameters = new Dictionary<string, string>(parameters);
     }
 
+    private ContentDisposition() {
+      this.dispositionType = String.Empty;
+      this.parameters = new Dictionary<string, string>();
+    }
+
     private readonly IDictionary<string, string> parameters;
 
     /// <include file='../../docs.xml'
