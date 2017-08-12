@@ -139,6 +139,10 @@ import java.util.*;
      * "charArray" is null.
      */
       public NormalizingCharacterInput(String str, Normalization form) {
+        if ((str) == null) {
+  throw new NullPointerException("str");
+}
+        this.nci = new NormalizerInput(str, 0, str.length(), form);
       }
 
     /**
@@ -223,7 +227,7 @@ import java.util.*;
      * @param form Specifies the normalization form to use when normalizing the
      * text.
      * @return A list of the normalized Unicode characters.
-     * @throws java.lang.NullPointerException The parameter {@code str} is null.
+     * @throws java.lang.NullPointerException The parameter {@code chars} is null.
      * @deprecated Instead of this method, create a NormalizerInput on the input and call
  *ReadChar to get the normalized String's code points.
  */

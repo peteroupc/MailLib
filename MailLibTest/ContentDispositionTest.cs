@@ -96,9 +96,11 @@ namespace MailLibTest {
 
         internal static bool IsGoodFilename(string str) {
             if (str == null || str.Length == 0 || str.Length > 255) {
+      Console.WriteLine("A");
                 return false;
             }
             if (str[str.Length - 1] == '.' || str[str.Length - 1] == '~') {
+      Console.WriteLine("B");
                 return false;
             }
             string strLower = DataUtilities.ToLowerCaseAscii(str);
@@ -110,6 +112,7 @@ namespace MailLibTest {
           bool beginEndSpace = str[0] == 0x20 || str[str.Length - 1] ==
               0x20;
             if (bracketDigit || homeFolder || period || beginEndSpace) {
+      Console.WriteLine("C");
                 return false;
             }
             // Reserved filenames on Windows
@@ -137,6 +140,7 @@ namespace MailLibTest {
         StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
                   strLower[3] <= '9');
             if (reservedFilename) {
+      Console.WriteLine("D");
                 return false;
             }
             int i;
@@ -149,6 +153,7 @@ namespace MailLibTest {
     c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff ||
                     (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
+      Console.WriteLine("E, c=" + c);
                     return false;
                 }
             }
@@ -158,13 +163,25 @@ namespace MailLibTest {
                  bool spaceAfter = i + 1 < str.Length && str[i + 1] == 0x20;
                     bool spaceBefore = i > 0 && str[i - 1] == 0x20;
                     if (spaceAfter || spaceBefore) {
+      Console.WriteLine("F");
                     return false;
                     }
                     break;
                 }
             }
-             return NormalizerInput.IsNormalized(str, Normalization.NFC);
+      bool finalRet = NormalizerInput.IsNormalized(str, Normalization.NFC);
+      if (!finalRet) {
+      Console.WriteLine("G");
+      }
+      return finalRet;
         }
+
+  [Test]
+  public void TestMakeFilenameSpecific1() {
+Assert.IsTrue(IsGoodFilename(ContentDisposition.MakeFilename(
+  "\u216a2s\u1e19C<snhs\ud87a\ude8dX(\ufdef\ufdd0,u.y\u001c.|}Y \u2f18Yx\u2a11N%(..s3^(N\u0084`(r|41X_.})\ud84c\udef3\ufe3c/\\/ sq?G![{\ufeffZ\"qSMdgv3#dg\tK@^X;`jl\ud892\udcd3' e@5a(\u00a0 wg0g hH?5\u202flh\u04c1 \uffff(,\u044d qQ7b:uFs9m\u0b6b\\AT|HDAsH6's!_B>rb(q?KpUv;fa r!\u1dc2.5.U\\Ez\u1f5a/J.8`?U\u01ba\\/v\ufdef_p.%|}.;.(OL9\u00001O.RV\u2433z,E\u008f%o\u008f.fpDN=G {(\udac5\udd76XC\uffff..z\ud9e4\udc62^(u=|'93\u0f6bWvz\u0f09\u26d2$?y\ud9c5\udcd4P:)+iO\u009f[f?>JTo,Ge`:'I\u5ccf\u009f\u9c3a<+yC {\ub10bm(j\u7959.tL=\ud86a\udea3\\(i \u001fG0 +np\u180erFt.hoy ny)\".6 +j "
+)));
+  }
 
         [Test] public void TestMakeFilename() {
             string stringTemp;
@@ -642,9 +659,6 @@ Assert.AreEqual(objectTemp, objectTemp2);
                   "folder_hello.txt",
                   stringTemp);
             }
-Assert.IsTrue(IsGoodFilename(ContentDisposition.MakeFilename(
-  "\u216a2s\u1e19C<snhs\ud87a\ude8dX(\ufdef\ufdd0,u.y\u001c.|}Y \u2f18Yx\u2a11N%(..s3^(N\u0084`(r|41X_.})\ud84c\udef3\ufe3c/\\/ sq?G![{\ufeffZ\"qSMdgv3#dg\tK@^X;`jl\ud892\udcd3' e@5a(\u00a0 wg0g hH?5\u202flh\u04c1 \uffff(,\u044d qQ7b:uFs9m\u0b6b\\AT|HDAsH6's!_B>rb(q?KpUv;fa r!\u1dc2.5.U\\Ez\u1f5a/J.8`?U\u01ba\\/v\ufdef_p.%|}.;.(OL9\u00001O.RV\u2433z,E\u008f%o\u008f.fpDN=G {(\udac5\udd76XC\uffff..z\ud9e4\udc62^(u=|'93\u0f6bWvz\u0f09\u26d2$?y\ud9c5\udcd4P:)+iO\u009f[f?>JTo,Ge`:'I\u5ccf\u009f\u9c3a<+yC {\ub10bm(j\u7959.tL=\ud86a\udea3\\(i \u001fG0 +np\u180erFt.hoy ny)\".6 +j "
-)));
     }
 
         [Test] public void TestParameters() {
@@ -654,8 +668,8 @@ Assert.IsTrue(IsGoodFilename(ContentDisposition.MakeFilename(
             try {
                 ContentDisposition.Parse(null);
                 Assert.Fail("Should have failed");
-            } catch (ArgumentNullException) {
-                new Object();
+  } catch (ArgumentNullException) {
+  // NOTE: Intentionally empty
             } catch (Exception ex) {
                 Assert.Fail(ex.ToString());
                 throw new InvalidOperationException(String.Empty, ex);

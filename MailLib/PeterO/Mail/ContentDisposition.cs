@@ -233,7 +233,7 @@ namespace PeterO.Mail {
           // reserved by Windows,
           // backslash, forward slash, ASCII controls, and C1 controls).
           builder.Append('_');
-  } else if (c == '!' && i + 1 < str.Length && str[i] == '[') {
+  } else if (c == '!' && i + 1 < str.Length && str[i+1] == '[') {
      // '![ ... ]' may be interpreted in BASH as an evaluator;
      // replace '!' with underscore
     builder.Append('_');
@@ -272,33 +272,30 @@ namespace PeterO.Mail {
         return "_";
       }
       string strLower = DataUtilities.ToLowerCaseAscii(str);
-      // Reserved filenames on Windows
-      bool reservedFilename =
-  strLower.Equals(
-  "nul") || strLower.Equals("clock$") ||
-strLower.IndexOf(
-  "nul.",
-  StringComparison.Ordinal) == 0 || strLower.Equals(
-  "prn") ||
-strLower.IndexOf(
-  "prn.",
-  StringComparison.Ordinal) == 0 || strLower.Equals(
-  "aux") ||
-strLower.IndexOf(
-  "aux.",
-  StringComparison.Ordinal) == 0 || strLower.Equals(
-  "con") ||
-strLower.IndexOf(
-  "con.",
-  StringComparison.Ordinal) == 0 || (
-  strLower.Length >= 4 && strLower.IndexOf(
-  "lpt",
-  StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
-       strLower[3] <= '9') || (strLower.Length >= 4 &&
-              strLower.IndexOf(
-  "com",
-  StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
-            strLower[3] <= '9');
+      // Reserved filenames
+      bool reservedFilename = strLower.Equals(
+        "nul") || strLower.Equals("clock$") || strLower.IndexOf(
+        "nul.",
+        StringComparison.Ordinal) == 0 || strLower.Equals(
+        "prn") || strLower.IndexOf(
+        "prn.",
+        StringComparison.Ordinal) == 0 || strLower.IndexOf(
+        "![",
+        StringComparison.Ordinal) >= 0 || strLower.Equals(
+        "aux") || strLower.IndexOf(
+        "aux.",
+        StringComparison.Ordinal) == 0 || strLower.Equals(
+        "con") || strLower.IndexOf(
+        "con.",
+        StringComparison.Ordinal) == 0 || (
+        strLower.Length >= 4 && strLower.IndexOf(
+        "lpt",
+        StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
+             strLower[3] <= '9') || (strLower.Length >= 4 &&
+                    strLower.IndexOf(
+        "com",
+        StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
+                  strLower[3] <= '9');
       bool bracketDigit = str[0] == '{' && str.Length > 1 &&
             str[1] >= '0' && str[1] <= '9';
       // Home folder convention (tilde).

@@ -270,7 +270,7 @@ import com.upokecenter.text.*;
           // reserved by Windows,
           // backslash, forward slash, ASCII controls, and C1 controls).
           builder.append('_');
-  } else if (c == '!' && i + 1 < str.length() && str.charAt(i) == '[') {
+  } else if (c == '!' && i + 1 < str.length() && str.charAt(i+1) == '[') {
      // '![ ... ]' may be interpreted in BASH as an evaluator;
      // replace '!' with underscore
     builder.append('_');
@@ -309,27 +309,23 @@ import com.upokecenter.text.*;
         return "_";
       }
       String strLower = DataUtilities.ToLowerCaseAscii(str);
-      // Reserved filenames on Windows
-      boolean reservedFilename =
-  strLower.equals(
-  "nul") || strLower.equals("clock$") ||
-strLower.indexOf(
-  "nul.") == 0 || strLower.equals(
-  "prn") ||
-strLower.indexOf(
-  "prn.") == 0 || strLower.equals(
-  "aux") ||
-strLower.indexOf(
-  "aux.") == 0 || strLower.equals(
-  "con") ||
-strLower.indexOf(
-  "con.") == 0 || (
-  strLower.length() >= 4 && strLower.indexOf(
-  "lpt") == 0 && strLower.charAt(3) >= '0' &&
-       strLower.charAt(3) <= '9') || (strLower.length() >= 4 &&
-              strLower.indexOf(
-  "com") == 0 && strLower.charAt(3) >= '0' &&
-            strLower.charAt(3) <= '9');
+      // Reserved filenames
+      boolean reservedFilename = strLower.equals(
+        "nul") || strLower.equals("clock$") || strLower.indexOf(
+        "nul.") == 0 || strLower.equals(
+        "prn") || strLower.indexOf(
+        "prn.") == 0 || strLower.indexOf(
+        "![") >= 0 || strLower.equals(
+        "aux") || strLower.indexOf(
+        "aux.") == 0 || strLower.equals(
+        "con") || strLower.indexOf(
+        "con.") == 0 || (
+        strLower.length() >= 4 && strLower.indexOf(
+        "lpt") == 0 && strLower.charAt(3) >= '0' &&
+             strLower.charAt(3) <= '9') || (strLower.length() >= 4 &&
+                    strLower.indexOf(
+        "com") == 0 && strLower.charAt(3) >= '0' &&
+                  strLower.charAt(3) <= '9');
       boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&
             str.charAt(1) >= '0' && str.charAt(1) <= '9';
       // Home folder convention (tilde).
