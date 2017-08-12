@@ -256,7 +256,7 @@ ReadChar to get the normalized String's code points.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>str</code> is null.
+* <code>NullPointerException</code> - The parameter <code>chars</code> is null.
 
 ### IsNormalized
     @Deprecated public static boolean IsNormalized(int[] charArray, Normalization form)

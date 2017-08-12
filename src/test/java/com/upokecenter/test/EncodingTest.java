@@ -1679,8 +1679,8 @@ String stringTemp =
     }
 
     private static String DowngradeHeaderField(String name, String value) {
-      var msgstr = "";
-      msgstr += name + ": " + value + "\r\n";
+      String msgstr;
+      msgstr = name + ": " + value + "\r\n";
       if (!name.equals("from")) {
         msgstr += "from: x@example.com\r\n";
       }

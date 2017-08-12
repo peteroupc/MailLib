@@ -1681,8 +1681,8 @@ string stringTemp =
     }
 
     private static string DowngradeHeaderField(string name, string value) {
-      var msgstr = String.Empty;
-      msgstr += name + ": " + value + "\r\n";
+      string msgstr;
+      msgstr = name + ": " + value + "\r\n";
       if (!name.Equals("from")) {
         msgstr += "from: x@example.com\r\n";
       }

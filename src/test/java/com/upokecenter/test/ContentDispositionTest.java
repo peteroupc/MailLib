@@ -107,9 +107,11 @@ import com.upokecenter.text.*;
 
         static boolean IsGoodFilename(String str) {
             if (str == null || str.length() == 0 || str.length() > 255) {
+      System.out.println("A");
                 return false;
             }
             if (str.charAt(str.length() - 1) == '.' || str.charAt(str.length() - 1) == '~') {
+      System.out.println("B");
                 return false;
             }
             String strLower = DataUtilities.ToLowerCaseAscii(str);
@@ -121,6 +123,7 @@ import com.upokecenter.text.*;
           boolean beginEndSpace = str.charAt(0) == 0x20 || str.charAt(str.length() - 1) ==
               0x20;
             if (bracketDigit || homeFolder || period || beginEndSpace) {
+      System.out.println("C");
                 return false;
             }
             // Reserved filenames on Windows
@@ -141,6 +144,7 @@ import com.upokecenter.text.*;
         "com") == 0 && strLower.charAt(3) >= '0' &&
                   strLower.charAt(3) <= '9');
             if (reservedFilename) {
+      System.out.println("D");
                 return false;
             }
             int i;
@@ -153,6 +157,7 @@ import com.upokecenter.text.*;
     c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff ||
                     (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
+      System.out.println("E, c=" + c);
                     return false;
                 }
             }
@@ -162,13 +167,25 @@ import com.upokecenter.text.*;
                  boolean spaceAfter = i + 1 < str.length() && str.charAt(i + 1) == 0x20;
                     boolean spaceBefore = i > 0 && str.charAt(i - 1) == 0x20;
                     if (spaceAfter || spaceBefore) {
+      System.out.println("F");
                     return false;
                     }
                     break;
                 }
             }
-             return NormalizerInput.IsNormalized(str, Normalization.NFC);
+      boolean finalRet = NormalizerInput.IsNormalized(str, Normalization.NFC);
+      if (!finalRet) {
+      System.out.println("G");
+      }
+      return finalRet;
         }
+
+  @Test
+  public void TestMakeFilenameSpecific1() {
+Assert.assertTrue(IsGoodFilename(ContentDisposition.MakeFilename(
+  "\u216a2s\u1e19C<snhs\ud87a\ude8dX(\ufdef\ufdd0,u.y\u001c.|}Y \u2f18Yx\u2a11N%(..s3^(N\u0084`(r|41X_.})\ud84c\udef3\ufe3c/\\/ sq?G![{\ufeffZ\"qSMdgv3#dg\tK@^X;`jl\ud892\udcd3' e@5a(\u00a0 wg0g hH?5\u202flh\u04c1 \uffff(,\u044d qQ7b:uFs9m\u0b6b\\AT|HDAsH6's!_B>rb(q?KpUv;fa r!\u1dc2.5.U\\Ez\u1f5a/J.8`?U\u01ba\\/v\ufdef_p.%|}.;.(OL9\u00001O.getRV()\u2433z,E\u008f%o\u008f.fpDN=G {(\udac5\udd76XC\uffff..z\ud9e4\udc62^(u=|'93\u0f6bWvz\u0f09\u26d2$?y\ud9c5\udcd4P:)+iO\u009f[f?>JTo,Ge`:'I\u5ccf\u009f\u9c3a<+yC {\ub10bm(j\u7959.tL=\ud86a\udea3\\(i \u001fG0 +np\u180erFt.hoy ny)\".6 +j "
+)));
+  }
 
         @Test public void TestMakeFilename() {
             String stringTemp;
@@ -648,9 +665,6 @@ Assert.assertEquals(objectTemp, objectTemp2);
                   "folder_hello.txt",
                   stringTemp);
             }
-Assert.assertTrue(IsGoodFilename(ContentDisposition.MakeFilename(
-  "\u216a2s\u1e19C<snhs\ud87a\ude8dX(\ufdef\ufdd0,u.y\u001c.|}Y \u2f18Yx\u2a11N%(..s3^(N\u0084`(r|41X_.})\ud84c\udef3\ufe3c/\\/ sq?G![{\ufeffZ\"qSMdgv3#dg\tK@^X;`jl\ud892\udcd3' e@5a(\u00a0 wg0g hH?5\u202flh\u04c1 \uffff(,\u044d qQ7b:uFs9m\u0b6b\\AT|HDAsH6's!_B>rb(q?KpUv;fa r!\u1dc2.5.U\\Ez\u1f5a/J.8`?U\u01ba\\/v\ufdef_p.%|}.;.(OL9\u00001O.getRV()\u2433z,E\u008f%o\u008f.fpDN=G {(\udac5\udd76XC\uffff..z\ud9e4\udc62^(u=|'93\u0f6bWvz\u0f09\u26d2$?y\ud9c5\udcd4P:)+iO\u009f[f?>JTo,Ge`:'I\u5ccf\u009f\u9c3a<+yC {\ub10bm(j\u7959.tL=\ud86a\udea3\\(i \u001fG0 +np\u180erFt.hoy ny)\".6 +j "
-)));
     }
 
         @Test public void TestParameters() {
@@ -660,8 +674,8 @@ Assert.assertTrue(IsGoodFilename(ContentDisposition.MakeFilename(
             try {
                 ContentDisposition.Parse(null);
                 Assert.fail("Should have failed");
-            } catch (NullPointerException ex) {
-                new Object();
+  } catch (NullPointerException ex) {
+  // NOTE: Intentionally empty
             } catch (Exception ex) {
                 Assert.fail(ex.toString());
                 throw new IllegalStateException("", ex);
