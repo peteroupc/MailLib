@@ -81,6 +81,9 @@
     <Compile Include="Reflect.cs" />
     <Compile Include="TestCommon.cs" />
     <Compile Include="XorShift128Plus.cs" />
+    <Compile Include="..\..\UnitTest1.cs">
+      <Link>UnitTest1.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

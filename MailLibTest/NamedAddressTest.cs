@@ -12,7 +12,7 @@ namespace MailLibTest {
         Assert.AreEqual(null, new NamedAddress(String.Empty, (string)null));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -21,7 +21,7 @@ new Object();
         Assert.AreEqual(null, new NamedAddress(String.Empty, (Address)null));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -30,7 +30,7 @@ new Object();
         Assert.AreEqual(null, new NamedAddress("x at example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -39,7 +39,7 @@ new Object();
         Assert.AreEqual(null, new NamedAddress("x"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -48,7 +48,7 @@ new Object();
         Assert.AreEqual(null, new NamedAddress("x@"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -57,7 +57,7 @@ new Object();
         Assert.AreEqual(null, new NamedAddress("@example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -66,7 +66,7 @@ new Object();
         Assert.AreEqual(null, new NamedAddress("example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -75,7 +75,7 @@ new Object();
         Assert.AreEqual(null, new Address((string)null));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -84,7 +84,7 @@ new Object();
         Assert.AreEqual(null, new NamedAddress(String.Empty));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);

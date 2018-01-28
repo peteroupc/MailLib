@@ -263,8 +263,7 @@ private NormalizationData() {
         1,
       (byte)0xff, 3, 15, 109, 11, (byte)0xff, (byte)0xff, (byte)0xff,
         (byte)0xff, (byte)0xb3,
-   15, 79, 28, 48, 31, (byte)0xc0, (byte)0xff, 0, (byte)0xa8, 16, (byte)0xff
-         };
+   15, 79, 28, 48, 31, (byte)0xc0, (byte)0xff, 0, (byte)0xa8, 16, (byte)0xff };
     public static final byte[] QCSNFKC = new byte[] { (byte)0xf3, 9, 0,
       1, (byte)0xff, (byte)0xff, (byte)0xff, 2, (byte)0xff, 3, 4,
       (byte)0xff, (byte)0xff, 5, (byte)0xff, 6, 7, 8, (byte)0xff,
@@ -2036,8 +2035,7 @@ private NormalizationData() {
         20013, 12595878,
       19979, 12595879, 24038, 12595880, 21491, 12595881, 21307, 12595882,
         23447, 12595883,
-   23398, 12595884, 30435, 12595885, 20225, 12595886, 36039, 12595887, 21332
-        };
+   23398, 12595884, 30435, 12595885, 20225, 12595886, 36039, 12595887, 21332 };
     }
     private static int[] GetDecompMappings1() {
       return new int[] { 12595888, 22812, 25178801, 3538995, 25178802,

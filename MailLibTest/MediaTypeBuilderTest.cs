@@ -24,7 +24,7 @@ namespace MailLibTest {
  builder.RemoveParameter(null);
 Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -46,7 +46,7 @@ Assert.AreEqual(
  builder.SetParameter(null, String.Empty);
 Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -55,7 +55,7 @@ throw new InvalidOperationException(String.Empty, ex);
  builder.SetParameter(String.Empty, null);
 Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -64,7 +64,7 @@ throw new InvalidOperationException(String.Empty, ex);
  builder.SetParameter(String.Empty, "a");
 Assert.Fail("Should have failed");
 } catch (ArgumentException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
@@ -73,7 +73,7 @@ throw new InvalidOperationException(String.Empty, ex);
  builder.SetParameter("a\u00e0", "a");
 Assert.Fail("Should have failed");
 } catch (ArgumentException) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);

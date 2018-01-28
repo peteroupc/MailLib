@@ -23,7 +23,7 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(null, new Address("local=domain.example"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -32,7 +32,7 @@ new Object();
         Assert.assertEquals(null, new Address("local@"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -46,7 +46,7 @@ Assert.assertEquals(objectTemp, objectTemp2);
 }
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -55,7 +55,7 @@ new Object();
         Assert.assertEquals(null, new Address("lo,cal@example.com"));
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-new Object();
+// NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);

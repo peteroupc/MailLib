@@ -8,7 +8,8 @@ using PeterO.Text;
 namespace MailLibTest {
     [TestFixture]
     public partial class ContentDispositionTest {
-        [Test] public void TestDispositionType() {
+        [Test]
+public void TestDispositionType() {
             // not implemented yet
         }
         [Test]
@@ -33,7 +34,8 @@ namespace MailLibTest {
             Assert.IsTrue(cd.IsAttachment);
         }
 
-        [Test] public void TestIsInline() {
+        [Test]
+public void TestIsInline() {
             ContentDisposition cd = ContentDisposition.Parse("inline");
             Assert.IsTrue(cd.IsInline);
             cd = ContentDisposition.Parse("cd-unknown");
@@ -183,7 +185,8 @@ Assert.IsTrue(IsGoodFilename(ContentDisposition.MakeFilename(
 )));
   }
 
-        [Test] public void TestMakeFilename() {
+        [Test]
+public void TestMakeFilename() {
             string stringTemp;
       var rnd = new RandomGenerator(new XorShift128Plus(false));
         {
@@ -661,10 +664,12 @@ Assert.AreEqual(objectTemp, objectTemp2);
             }
     }
 
-        [Test] public void TestParameters() {
+        [Test]
+public void TestParameters() {
         }
 
-        [Test] public void TestParse() {
+        [Test]
+public void TestParse() {
             try {
                 ContentDisposition.Parse(null);
                 Assert.Fail("Should have failed");
@@ -676,7 +681,8 @@ Assert.AreEqual(objectTemp, objectTemp2);
             }
         }
 
-        [Test] public void TestToString() {
+        [Test]
+public void TestToString() {
             // not implemented yet
         }
     }

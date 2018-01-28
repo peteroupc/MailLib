@@ -329,7 +329,7 @@ namespace MailLibTest {
           Assert.AreEqual(objectTemp, objectTemp2);
         }
       } catch (ArgumentException) {
-        new Object();
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -361,7 +361,7 @@ namespace MailLibTest {
       try {
         MessageTest.MessageFromString(msgString);
       } catch (MessageDataException) {
-        new Object();
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2066,7 +2066,7 @@ string stringTemp =
         msg.SetHeader("to", tmp);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        new Object();
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2083,7 +2083,7 @@ string stringTemp =
         msg.SetHeader("to", tmp);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        new Object();
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);

@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>PeterO.MailLib</PackageId>
     <Title>MailLib Library</Title>
-    <Company>Peter Occil</Company>
+    <Owners>Peter Occil</Owners>
     <Authors>Peter Occil</Authors>
     <PackageLicenseUrl>https://github.com/peteroupc/MailLib/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/peteroupc/MailLib</PackageProjectUrl>
