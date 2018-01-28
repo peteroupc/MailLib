@@ -107,7 +107,7 @@ public void TestNormalizationLatinOne() {
   Normalization.NFC);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -141,7 +141,7 @@ public void TestNormalizationLatinOne() {
         nci.Read(null, 0, 0);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -150,7 +150,7 @@ public void TestNormalizationLatinOne() {
         nci.Read(new int[] { 't' }, -1, 1);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -159,7 +159,7 @@ public void TestNormalizationLatinOne() {
         nci.Read(new int[] { 't' }, 5, 1);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -168,7 +168,7 @@ public void TestNormalizationLatinOne() {
         nci.Read(new int[] { 't' }, 0, -1);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -177,7 +177,7 @@ public void TestNormalizationLatinOne() {
         nci.Read(new int[] { 't' }, 0, 5);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -186,7 +186,7 @@ public void TestNormalizationLatinOne() {
         nci.Read(new int[] { 't', 't' }, 1, 2);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);

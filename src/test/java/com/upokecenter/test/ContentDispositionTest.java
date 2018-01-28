@@ -7,7 +7,8 @@ import com.upokecenter.mail.*;
 import com.upokecenter.text.*;
 
     public class ContentDispositionTest {
-        @Test public void TestDispositionType() {
+        @Test
+public void TestDispositionType() {
             // not implemented yet
         }
         @Test
@@ -38,7 +39,8 @@ import com.upokecenter.text.*;
  }
         }
 
-        @Test public void TestIsInline() {
+        @Test
+public void TestIsInline() {
             ContentDisposition cd = ContentDisposition.Parse("inline");
             if (!(cd.isInline())) {
  Assert.fail();
@@ -187,7 +189,8 @@ Assert.assertTrue(IsGoodFilename(ContentDisposition.MakeFilename(
 )));
   }
 
-        @Test public void TestMakeFilename() {
+        @Test
+public void TestMakeFilename() {
             String stringTemp;
       RandomGenerator rnd = new RandomGenerator(new XorShift128Plus(false));
         {
@@ -667,10 +670,12 @@ Assert.assertEquals(objectTemp, objectTemp2);
             }
     }
 
-        @Test public void TestParameters() {
+        @Test
+public void TestParameters() {
         }
 
-        @Test public void TestParse() {
+        @Test
+public void TestParse() {
             try {
                 ContentDisposition.Parse(null);
                 Assert.fail("Should have failed");
@@ -682,7 +687,8 @@ Assert.assertEquals(objectTemp, objectTemp2);
             }
         }
 
-        @Test public void TestToString() {
+        @Test
+public void TestToString() {
             // not implemented yet
         }
     }

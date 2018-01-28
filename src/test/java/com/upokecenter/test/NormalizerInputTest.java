@@ -119,7 +119,7 @@ public void TestNormalizationLatinOne() {
   Normalization.NFC);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -161,7 +161,7 @@ public void TestNormalizationLatinOne() {
         nci.Read(null, 0, 0);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -170,7 +170,7 @@ public void TestNormalizationLatinOne() {
         nci.Read(new int[] { 't' }, -1, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -179,7 +179,7 @@ public void TestNormalizationLatinOne() {
         nci.Read(new int[] { 't' }, 5, 1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -188,7 +188,7 @@ public void TestNormalizationLatinOne() {
         nci.Read(new int[] { 't' }, 0, -1);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -197,7 +197,7 @@ public void TestNormalizationLatinOne() {
         nci.Read(new int[] { 't' }, 0, 5);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -206,7 +206,7 @@ public void TestNormalizationLatinOne() {
         nci.Read(new int[] { 't', 't' }, 1, 2);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        new Object();
+        // NOTE: Intentionally empty
 } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);

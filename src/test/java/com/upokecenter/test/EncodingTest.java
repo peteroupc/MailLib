@@ -328,7 +328,7 @@ import com.upokecenter.text.*;
           Assert.assertEquals(objectTemp, objectTemp2);
         }
       } catch (IllegalArgumentException ex) {
-        new Object();
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -360,7 +360,7 @@ import com.upokecenter.text.*;
       try {
         MessageTest.MessageFromString(msgString);
       } catch (MessageDataException ex) {
-        new Object();
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -2062,7 +2062,7 @@ String stringTemp =
         msg.SetHeader("to", tmp);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        new Object();
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
@@ -2079,7 +2079,7 @@ String stringTemp =
         msg.SetHeader("to", tmp);
         Assert.fail("Should have failed");
       } catch (IllegalArgumentException ex) {
-        new Object();
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.fail(ex.toString());
         throw new IllegalStateException("", ex);
