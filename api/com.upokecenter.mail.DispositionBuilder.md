@@ -8,9 +8,9 @@ Description of DispositionBuilder.
 
 * `DispositionBuilder() DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class.
-* `DispositionBuilder(ContentDisposition mt) DispositionBuilder`<br>
+* `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class.
-* `DispositionBuilder(String type) DispositionBuilder`<br>
+* `DispositionBuilder​(String type) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class.
 * `String getDispositionType()`<br>
  Gets this value's disposition type, such value, such as "inline" or
@@ -23,12 +23,12 @@ Irrelevant for content dispositions; will be removed in the future.
  Deprecated.
 Irrelevant for content dispositions; will be removed in the future.
  Irrelevant for content dispositions; will be removed in the future.
-* `DispositionBuilder RemoveParameter(String name)`<br>
+* `DispositionBuilder RemoveParameter​(String name)`<br>
  Removes a parameter from this content disposition.
-* `void setDispositionType(String value)`<br>
-* `DispositionBuilder SetDispositionType(String str)`<br>
+* `void setDispositionType​(String value)`<br>
+* `DispositionBuilder SetDispositionType​(String str)`<br>
  Sets the disposition type, such as "inline".
-* `DispositionBuilder SetParameter(String name,
+* `DispositionBuilder SetParameter​(String name,
             String value)`<br>
  Sets a parameter of this content disposition.
 * `ContentDisposition ToDisposition()`<br>
@@ -40,9 +40,9 @@ Irrelevant for content dispositions; will be removed in the future.
 
 * `DispositionBuilder() DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class.
-* `DispositionBuilder(ContentDisposition mt) DispositionBuilder`<br>
+* `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class.
-* `DispositionBuilder(String type) DispositionBuilder`<br>
+* `DispositionBuilder​(String type) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class.
 
 ## Method Details
@@ -51,7 +51,7 @@ Irrelevant for content dispositions; will be removed in the future.
     public DispositionBuilder()
 Initializes a new instance of the <code>DispositionBuilder</code> class.
 ### DispositionBuilder
-    public DispositionBuilder(ContentDisposition mt)
+    public DispositionBuilder​(ContentDisposition mt)
 Initializes a new instance of the <code>DispositionBuilder</code> class.
 
 **Parameters:**
@@ -63,7 +63,7 @@ Initializes a new instance of the <code>DispositionBuilder</code> class.
 * <code>NullPointerException</code> - The parameter <code>mt</code> is null.
 
 ### DispositionBuilder
-    public DispositionBuilder(String type)
+    public DispositionBuilder​(String type)
 Initializes a new instance of the <code>DispositionBuilder</code> class.
 
 **Parameters:**
@@ -85,10 +85,11 @@ Gets this value's disposition type, such value, such as "inline" or
  "attachment".
 
 ### setDispositionType
-    public final void setDispositionType(String value)
+    public final void setDispositionType​(String value)
 ### isText
     @Deprecated public final boolean isText()
-Deprecated.&nbsp;Irrelevant for content dispositions; will be removed in the future.
+Deprecated.
+<div class='deprecationComment'>Irrelevant for content dispositions; will be removed in the future.</div>
 
 **Returns:**
 
@@ -96,11 +97,13 @@ Deprecated.&nbsp;Irrelevant for content dispositions; will be removed in the fut
 
 ### isMultipart
     @Deprecated public final boolean isMultipart()
-Deprecated.&nbsp;Irrelevant for content dispositions; will be removed in the future.
+Deprecated.
+<div class='deprecationComment'>Irrelevant for content dispositions; will be removed in the future.</div>
 
 **Returns:**
 
-* <code>true</code> If this is a multipart media type; otherwise, <code>false</code>.
+* <code>true</code> If this is a multipart media type; otherwise, <code>
+ false</code>.
 
 ### ToDisposition
     public ContentDisposition ToDisposition()
@@ -111,7 +114,7 @@ Converts this object to an immutable ContentDisposition object.
 * A MediaType object.
 
 ### SetDispositionType
-    public DispositionBuilder SetDispositionType(String str)
+    public DispositionBuilder SetDispositionType​(String str)
 Sets the disposition type, such as "inline".
 
 **Parameters:**
@@ -127,7 +130,7 @@ Sets the disposition type, such as "inline".
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### RemoveParameter
-    public DispositionBuilder RemoveParameter(String name)
+    public DispositionBuilder RemoveParameter​(String name)
 Removes a parameter from this content disposition. Does nothing if the
  parameter's name doesn't exist.
 
@@ -147,7 +150,7 @@ Removes a parameter from this content disposition. Does nothing if the
 * <code>NullPointerException</code> - The parameter <code>name</code> is null.
 
 ### SetParameter
-    public DispositionBuilder SetParameter(String name, String value)
+    public DispositionBuilder SetParameter​(String name, String value)
 Sets a parameter of this content disposition.
 
 **Parameters:**

@@ -32,12 +32,12 @@
 
 ## Methods
 
-* `boolean equals(Object obj)`<br>
+* `boolean equals​(Object obj)`<br>
  Determines whether this object and another object are equal.
 * `String GetCharset()`<br>
  Gets this media type's "charset" parameter, naming a character encoding used
  to represent text in the data that uses this media type.
-* `String GetParameter(String name)`<br>
+* `String GetParameter​(String name)`<br>
  Gets the value of a parameter in this media type, such as "charset" or
  "format".
 * `Map<String,String> getParameters()`<br>
@@ -56,9 +56,9 @@
  Gets a value indicating whether this is a multipart media type.
 * `boolean isText()`<br>
  Gets a value indicating whether this is a text media type ("text/*").
-* `static MediaType Parse(String mediaTypeValue)`<br>
+* `static MediaType Parse​(String mediaTypeValue)`<br>
  Parses a media type string and returns a media type object.
-* `static MediaType Parse(String str,
+* `static MediaType Parse​(String str,
      MediaType defaultValue)`<br>
  Parses a media type string and returns a media type object, or the default
  value if the string is invalid.
@@ -96,7 +96,7 @@ Gets the name of this media type's top-level type (such as "text" or
  "audio".
 
 ### equals
-    public boolean equals(Object obj)
+    public boolean equals​(Object obj)
 Determines whether this object and another object are equal.
 
 **Overrides:**
@@ -146,7 +146,8 @@ Gets a value indicating whether this is a multipart media type.
 
 **Returns:**
 
-* <code>true</code> If this is a multipart media type; otherwise, <code>false</code>.
+* <code>true</code> If this is a multipart media type; otherwise, <code>
+ false</code>.
 
 ### getParameters
     public final Map<String,String> getParameters()
@@ -187,7 +188,7 @@ Gets this media type's "charset" parameter, naming a character encoding used
  parameter is absent. Returns an empty string in all other cases.
 
 ### GetParameter
-    public String GetParameter(String name)
+    public String GetParameter​(String name)
 Gets the value of a parameter in this media type, such as "charset" or
  "format".
 
@@ -218,7 +219,7 @@ Gets the top level type and subtype of this media type, separated by a
  slash; for example, "text/plain".
 
 ### Parse
-    public static MediaType Parse(String mediaTypeValue)
+    public static MediaType Parse​(String mediaTypeValue)
 Parses a media type string and returns a media type object. This method
  checks the syntactic validity of the string, but not whether it has
  all parameters it's required to have or whether the parameters
@@ -235,7 +236,7 @@ Parses a media type string and returns a media type object. This method
  empty or syntactically invalid.
 
 ### Parse
-    public static MediaType Parse(String str, MediaType defaultValue)
+    public static MediaType Parse​(String str, MediaType defaultValue)
 Parses a media type string and returns a media type object, or the default
  value if the string is invalid. This method checks the syntactic
  validity of the string, but not whether it has all parameters it's

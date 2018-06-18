@@ -16,12 +16,12 @@ Specifies how a message body should be displayed or handled by a mail user
 
 ## Methods
 
-* `boolean equals(Object obj)`<br>
+* `boolean equals​(Object obj)`<br>
  Determines whether this object and another object are equal.
 * `String getDispositionType()`<br>
  Gets a string containing this object's disposition type, such as "inline" or
  "attachment".
-* `String GetParameter(String name)`<br>
+* `String GetParameter​(String name)`<br>
  Gets a parameter from this disposition object.
 * `Map<String,String> getParameters()`<br>
  Gets a list of parameter names associated with this object and their values.
@@ -31,13 +31,13 @@ Specifies how a message body should be displayed or handled by a mail user
  Gets a value indicating whether the disposition type is attachment.
 * `boolean isInline()`<br>
  Gets a value indicating whether the disposition type is inline.
-* `static String MakeFilename(String str)`<br>
+* `static String MakeFilename​(String str)`<br>
  Converts a file name from the Content-Disposition header to a suitable name
  for saving data to a file.
-* `static ContentDisposition Parse(String dispoValue)`<br>
+* `static ContentDisposition Parse​(String dispoValue)`<br>
  Parses a content disposition string and returns a content disposition
  object.
-* `static ContentDisposition Parse(String dispositionValue,
+* `static ContentDisposition Parse​(String dispositionValue,
      ContentDisposition defaultValue)`<br>
  Creates a new content disposition object from the value of a
  Content-Disposition header field.
@@ -65,7 +65,7 @@ Gets a string containing this object's disposition type, such as "inline" or
  or "attachment".
 
 ### equals
-    public boolean equals(Object obj)
+    public boolean equals​(Object obj)
 Determines whether this object and another object are equal.
 
 **Overrides:**
@@ -98,7 +98,8 @@ Gets a value indicating whether the disposition type is inline.
 
 **Returns:**
 
-* <code>true</code> If the disposition type is inline; otherwise, <code>false</code>.
+* <code>true</code> If the disposition type is inline; otherwise, <code>
+ false</code>.
 
 ### isAttachment
     public final boolean isAttachment()
@@ -134,7 +135,7 @@ Converts this object to a text string.
 * A string representation of this object.
 
 ### MakeFilename
-    public static String MakeFilename(String str)
+    public static String MakeFilename​(String str)
 Converts a file name from the Content-Disposition header to a suitable name
  for saving data to a file. <p>Examples:</p>
  <p><code>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt"</code> (RFC 2047
@@ -166,7 +167,7 @@ Converts a file name from the Content-Disposition header to a suitable name
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### GetParameter
-    public String GetParameter(String name)
+    public String GetParameter​(String name)
 Gets a parameter from this disposition object.
 
 **Parameters:**
@@ -188,7 +189,7 @@ Gets a parameter from this disposition object.
 * <code>IllegalArgumentException</code> - The parameter <code>name</code> is empty.
 
 ### Parse
-    public static ContentDisposition Parse(String dispoValue)
+    public static ContentDisposition Parse​(String dispoValue)
 Parses a content disposition string and returns a content disposition
  object.
 
@@ -207,7 +208,7 @@ Parses a content disposition string and returns a content disposition
  null.
 
 ### Parse
-    public static ContentDisposition Parse(String dispositionValue, ContentDisposition defaultValue)
+    public static ContentDisposition Parse​(String dispositionValue, ContentDisposition defaultValue)
 Creates a new content disposition object from the value of a
  Content-Disposition header field.
 

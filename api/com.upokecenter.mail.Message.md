@@ -63,16 +63,16 @@
 * `Message() Message`<br>
  Initializes a new instance of the Message
  class.
-* `Message(byte[] bytes) Message`<br>
+* `Message​(byte[] bytes) Message`<br>
  Initializes a new instance of the Message
  class.
-* `Message(InputStream stream) Message`<br>
+* `Message​(InputStream stream) Message`<br>
  Initializes a new instance of the Message
  class.
-* `Message AddHeader(Map.Entry<String,String> header)`<br>
- Adds a header field to the end of the message's header.
-* `Message AddHeader(String name,
+* `Message AddHeader​(String name,
          String value)`<br>
+ Adds a header field to the end of the message's header.
+* `Message AddHeader​(Map.Entry<String,String> header)`<br>
  Adds a header field to the end of the message's header.
 * `String Generate()`<br>
  Generates this message's data in text form.
@@ -98,12 +98,12 @@
  file.
 * `List<NamedAddress> getFromAddresses()`<br>
  Gets a list of addresses found in the From header field or fields.
-* `Map.Entry<String,String> GetHeader(int index)`<br>
+* `Map.Entry<String,String> GetHeader​(int index)`<br>
  Gets the name and value of a header field by index.
-* `String GetHeader(String name)`<br>
+* `String GetHeader​(String name)`<br>
  Gets the first instance of the header field with the specified name, using a
  basic case-insensitive comparison.
-* `String[] GetHeaderArray(String name)`<br>
+* `String[] GetHeaderArray​(String name)`<br>
  Gets an array with the values of all header fields with the specified name,
  using a basic case-insensitive comparison.
 * `List<Map.Entry<String,String>> getHeaderFields()`<br>
@@ -115,39 +115,39 @@
  Gets this message's subject.
 * `List<NamedAddress> getToAddresses()`<br>
  Gets a list of addresses found in the To header field or fields.
-* `Message RemoveHeader(int index)`<br>
+* `Message RemoveHeader​(int index)`<br>
  Removes a header field by index.
-* `Message RemoveHeader(String name)`<br>
+* `Message RemoveHeader​(String name)`<br>
  Removes all instances of the given header field from this message.
-* `Message SetBody(byte[] bytes)`<br>
+* `Message SetBody​(byte[] bytes)`<br>
  Sets the body of this message to the given byte array.
-* `void setContentDisposition(ContentDisposition value)`<br>
-* `void setContentType(MediaType value)`<br>
+* `void setContentDisposition​(ContentDisposition value)`<br>
+* `void setContentType​(MediaType value)`<br>
 * `Message SetCurrentDate()`<br>
  Sets this message's Date header field to the current time as its value.
-* `Message SetDate(int[] dateTime)`<br>
+* `Message SetDate​(int[] dateTime)`<br>
  Sets this message's Date header field to the given date and time.
-* `Message SetHeader(int index,
-         Map.Entry<String,String> header)`<br>
- Sets the name and value of a header field by index.
-* `Message SetHeader(int index,
+* `Message SetHeader​(int index,
          String value)`<br>
  Sets the value of a header field by index without changing its name.
-* `Message SetHeader(int index,
+* `Message SetHeader​(int index,
          String name,
          String value)`<br>
  Sets the name and value of a header field by index.
-* `Message SetHeader(String name,
+* `Message SetHeader​(int index,
+         Map.Entry<String,String> header)`<br>
+ Sets the name and value of a header field by index.
+* `Message SetHeader​(String name,
          String value)`<br>
  Sets the value of this message's header field.
-* `Message SetHtmlBody(String str)`<br>
+* `Message SetHtmlBody​(String str)`<br>
  Sets the body of this message to the specified string in HTML format.
-* `void setSubject(String value)`<br>
-* `Message SetTextAndHtml(String text,
+* `void setSubject​(String value)`<br>
+* `Message SetTextAndHtml​(String text,
               String html)`<br>
  Sets the body of this message to a multipart body with plain text and HTML
  versions of the same message.
-* `Message SetTextBody(String str)`<br>
+* `Message SetTextBody​(String str)`<br>
  Sets the body of this message to the specified plain text string.
 
 ## Constructors
@@ -155,17 +155,17 @@
 * `Message() Message`<br>
  Initializes a new instance of the Message
  class.
-* `Message(byte[] bytes) Message`<br>
+* `Message​(byte[] bytes) Message`<br>
  Initializes a new instance of the Message
  class.
-* `Message(InputStream stream) Message`<br>
+* `Message​(InputStream stream) Message`<br>
  Initializes a new instance of the Message
  class.
 
 ## Method Details
 
 ### Message
-    public Message(InputStream stream)
+    public Message​(InputStream stream)
 Initializes a new instance of the <code>Message</code>
  class. Reads from the given InputStream object to initialize the message.
 
@@ -178,7 +178,7 @@ Initializes a new instance of the <code>Message</code>
 * <code>NullPointerException</code> - The parameter <code>stream</code> is null.
 
 ### Message
-    public Message(byte[] bytes)
+    public Message​(byte[] bytes)
 Initializes a new instance of the <code>Message</code>
  class. Reads from the given byte array to initialize the message.
 
@@ -247,7 +247,7 @@ Gets this message's content disposition. The content disposition specifies
 * This message's content disposition, or null if none is specified.
 
 ### setContentDisposition
-    public final void setContentDisposition(ContentDisposition value)
+    public final void setContentDisposition​(ContentDisposition value)
 ### getContentType
     public final MediaType getContentType()
 Gets this message's media type.
@@ -262,7 +262,7 @@ Gets this message's media type.
  null.
 
 ### setContentType
-    public final void setContentType(MediaType value)
+    public final void setContentType​(MediaType value)
 ### getFileName
     public final String getFileName()
 Gets a filename suggested by this message for saving the message's body to a
@@ -313,7 +313,7 @@ Gets this message's subject.
 * This message's subject.
 
 ### setSubject
-    public final void setSubject(String value)
+    public final void setSubject​(String value)
 ### getToAddresses
     public final List<NamedAddress> getToAddresses()
 Gets a list of addresses found in the To header field or fields.
@@ -323,7 +323,7 @@ Gets a list of addresses found in the To header field or fields.
 * A list of addresses found in the To header field or fields.
 
 ### AddHeader
-    public Message AddHeader(Map.Entry<String,String> header)
+    public Message AddHeader​(Map.Entry<String,String> header)
 Adds a header field to the end of the message's header. <p>Updates the
  ContentType and ContentDisposition properties if those header fields
  have been modified by this method.</p>
@@ -348,7 +348,7 @@ Adds a header field to the end of the message's header. <p>Updates the
  syntactically invalid.
 
 ### AddHeader
-    public Message AddHeader(String name, String value)
+    public Message AddHeader​(String name, String value)
 Adds a header field to the end of the message's header. <p>Updates the
  ContentType and ContentDisposition properties if those header fields
  have been modified by this method.</p>
@@ -365,7 +365,8 @@ Adds a header field to the end of the message's header. <p>Updates the
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>name</code> or <code>value</code> is null.
+* <code>NullPointerException</code> - The parameter <code>name</code> or <code>
+ value</code> is null.
 
 * <code>IllegalArgumentException</code> - The header field name is too long or
  contains an invalid character, or the header field's value is
@@ -440,7 +441,7 @@ Gets the date and time extracted from this message's Date header field (as
  integer.
 
 ### SetDate
-    public Message SetDate(int[] dateTime)
+    public Message SetDate​(int[] dateTime)
 Sets this message's Date header field to the given date and time.
 
 **Parameters:**
@@ -483,7 +484,7 @@ Returns the mail message contained in this message's body.
  "message/news", or "message/global", or null otherwise.
 
 ### GetHeader
-    public Map.Entry<String,String> GetHeader(int index)
+    public Map.Entry<String,String> GetHeader​(int index)
 Gets the name and value of a header field by index.
 
 **Parameters:**
@@ -501,7 +502,7 @@ Gets the name and value of a header field by index.
  least as high as the number of header fields.
 
 ### GetHeader
-    public String GetHeader(String name)
+    public String GetHeader​(String name)
 Gets the first instance of the header field with the specified name, using a
  basic case-insensitive comparison. (Two strings are equal in such a
  comparison, if they match after converting the basic upper-case
@@ -521,7 +522,7 @@ Gets the first instance of the header field with the specified name, using a
 * <code>NullPointerException</code> - Name is null.
 
 ### GetHeaderArray
-    public String[] GetHeaderArray(String name)
+    public String[] GetHeaderArray​(String name)
 Gets an array with the values of all header fields with the specified name,
  using a basic case-insensitive comparison. (Two strings are equal in
  such a comparison, if they match after converting the basic
@@ -543,7 +544,7 @@ Gets an array with the values of all header fields with the specified name,
 * <code>NullPointerException</code> - Name is null.
 
 ### RemoveHeader
-    public Message RemoveHeader(int index)
+    public Message RemoveHeader​(int index)
 Removes a header field by index. <p>Updates the ContentType and
  ContentDisposition properties if those header fields have been
  modified by this method.</p>
@@ -562,7 +563,7 @@ Removes a header field by index. <p>Updates the ContentType and
  least as high as the number of header fields.
 
 ### RemoveHeader
-    public Message RemoveHeader(String name)
+    public Message RemoveHeader​(String name)
 Removes all instances of the given header field from this message. If this
  is a multipart message, the header field is not removed from its body
  part headers. A basic case-insensitive comparison is used. (Two
@@ -585,7 +586,7 @@ Removes all instances of the given header field from this message. If this
 * <code>NullPointerException</code> - The parameter <code>name</code> is null.
 
 ### SetBody
-    public Message SetBody(byte[] bytes)
+    public Message SetBody​(byte[] bytes)
 Sets the body of this message to the given byte array. This method doesn't
  make a copy of that byte array.
 
@@ -602,7 +603,7 @@ Sets the body of this message to the given byte array. This method doesn't
 * <code>NullPointerException</code> - The parameter <code>bytes</code> is null.
 
 ### SetHeader
-    public Message SetHeader(int index, Map.Entry<String,String> header)
+    public Message SetHeader​(int index, Map.Entry<String,String> header)
 Sets the name and value of a header field by index. <p>Updates the
  ContentType and ContentDisposition properties if those header fields
  have been modified by this method.</p>
@@ -630,7 +631,7 @@ Sets the name and value of a header field by index. <p>Updates the
  null.
 
 ### SetHeader
-    public Message SetHeader(int index, String name, String value)
+    public Message SetHeader​(int index, String name, String value)
 Sets the name and value of a header field by index. <p>Updates the
  ContentType and ContentDisposition properties if those header fields
  have been modified by this method.</p>
@@ -654,10 +655,11 @@ Sets the name and value of a header field by index. <p>Updates the
  name is too long or contains an invalid character, or the header
  field's value is syntactically invalid.
 
-* <code>NullPointerException</code> - The parameter <code>name</code> or <code>value</code> is null.
+* <code>NullPointerException</code> - The parameter <code>name</code> or <code>
+ value</code> is null.
 
 ### SetHeader
-    public Message SetHeader(int index, String value)
+    public Message SetHeader​(int index, String value)
 Sets the value of a header field by index without changing its name.
  <p>Updates the ContentType and ContentDisposition properties if those
  header fields have been modified by this method.</p>
@@ -682,7 +684,7 @@ Sets the value of a header field by index without changing its name.
 * <code>NullPointerException</code> - The parameter <code>value</code> is null.
 
 ### SetHeader
-    public Message SetHeader(String name, String value)
+    public Message SetHeader​(String name, String value)
 Sets the value of this message's header field. If a header field with the
  same name exists, its value is replaced. If the header field's name
  occurs more than once, only the first instance of the header field is
@@ -706,10 +708,11 @@ Sets the value of this message's header field. If a header field with the
  contains an invalid character, or the header field's value is
  syntactically invalid.
 
-* <code>NullPointerException</code> - The parameter <code>name</code> or <code>value</code> is null.
+* <code>NullPointerException</code> - The parameter <code>name</code> or <code>
+ value</code> is null.
 
 ### SetHtmlBody
-    public Message SetHtmlBody(String str)
+    public Message SetHtmlBody​(String str)
 Sets the body of this message to the specified string in HTML format. The
  character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
  feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line
@@ -729,7 +732,7 @@ Sets the body of this message to the specified string in HTML format. The
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### SetTextAndHtml
-    public Message SetTextAndHtml(String text, String html)
+    public Message SetTextAndHtml​(String text, String html)
 Sets the body of this message to a multipart body with plain text and HTML
  versions of the same message. The character sequences CR (carriage
  return, "&#x5c;r" , U+000D), LF (line feed, "&#x5c;n", U+000A), and CR/LF will
@@ -748,10 +751,11 @@ Sets the body of this message to a multipart body with plain text and HTML
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>text</code> or <code>html</code> is null.
+* <code>NullPointerException</code> - The parameter <code>text</code> or <code>
+ html</code> is null.
 
 ### SetTextBody
-    public Message SetTextBody(String str)
+    public Message SetTextBody​(String str)
 Sets the body of this message to the specified plain text string. The
  character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
  feed, "&#x5c;n", U+000A), and CR/LF will be converted to CR/LF line

@@ -69,34 +69,34 @@
 
 ## Methods
 
-* `NormalizerInput(com.upokecenter.text.ICharacterInput input) NormalizerInput`<br>
+* `NormalizerInput​(com.upokecenter.text.ICharacterInput input) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class using Normalization Form
  C.
-* `NormalizerInput(com.upokecenter.text.ICharacterInput stream,
+* `NormalizerInput​(com.upokecenter.text.ICharacterInput stream,
                Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
-* `NormalizerInput(String str) NormalizerInput`<br>
+* `NormalizerInput​(String str) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class using Normalization Form
  C.
-* `NormalizerInput(String str,
+* `NormalizerInput​(String str,
                int index,
                int length,
                Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
-* `NormalizerInput(String str,
+* `NormalizerInput​(String str,
                Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
-* `static boolean IsNormalized(com.upokecenter.text.ICharacterInput chars,
+* `static boolean IsNormalized​(com.upokecenter.text.ICharacterInput chars,
             Normalization form)`<br>
  Determines whether the text provided by a character input is normalized.
-* `static boolean IsNormalized(String str,
+* `static boolean IsNormalized​(String str,
             Normalization form)`<br>
  Determines whether the given string is in the given Unicode normalization
  form.
-* `static String Normalize(String str,
+* `static String Normalize​(String str,
          Normalization form)`<br>
  Converts a string to the given Unicode normalization form.
-* `int Read(int[] chars,
+* `int Read​(int[] chars,
     int index,
     int length)`<br>
  Reads a sequence of Unicode code points from a data source.
@@ -105,28 +105,28 @@
 
 ## Constructors
 
-* `NormalizerInput(com.upokecenter.text.ICharacterInput input) NormalizerInput`<br>
+* `NormalizerInput​(com.upokecenter.text.ICharacterInput input) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class using Normalization Form
  C.
-* `NormalizerInput(com.upokecenter.text.ICharacterInput stream,
+* `NormalizerInput​(com.upokecenter.text.ICharacterInput stream,
                Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
-* `NormalizerInput(String str) NormalizerInput`<br>
+* `NormalizerInput​(String str) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class using Normalization Form
  C.
-* `NormalizerInput(String str,
+* `NormalizerInput​(String str,
                int index,
                int length,
                Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
-* `NormalizerInput(String str,
+* `NormalizerInput​(String str,
                Normalization form) NormalizerInput`<br>
  Initializes a new instance of the NormalizerInput class.
 
 ## Method Details
 
 ### NormalizerInput
-    public NormalizerInput(String str)
+    public NormalizerInput​(String str)
 Initializes a new instance of the <code>NormalizerInput</code> class using Normalization Form
  C.
 
@@ -135,7 +135,7 @@ Initializes a new instance of the <code>NormalizerInput</code> class using Norma
 * <code>str</code> - A string specifying the text to normalize.
 
 ### NormalizerInput
-    public NormalizerInput(com.upokecenter.text.ICharacterInput input)
+    public NormalizerInput​(com.upokecenter.text.ICharacterInput input)
 Initializes a new instance of the <code>NormalizerInput</code> class using Normalization Form
  C.
 
@@ -144,7 +144,7 @@ Initializes a new instance of the <code>NormalizerInput</code> class using Norma
 * <code>input</code> - The parameter <code>input</code> is an ICharacterInput object.
 
 ### NormalizerInput
-    public NormalizerInput(String str, int index, int length, Normalization form)
+    public NormalizerInput​(String str, int index, int length, Normalization form)
 Initializes a new instance of the <code>NormalizerInput</code> class. Uses a portion of a
  string as the input.
 
@@ -152,7 +152,8 @@ Initializes a new instance of the <code>NormalizerInput</code> class. Uses a por
 
 * <code>str</code> - The parameter <code>str</code> is a text string.
 
-* <code>index</code> - A zero-based index showing where the desired portion of <code>str</code> begins.
+* <code>index</code> - A zero-based index showing where the desired portion of <code>
+ str</code> begins.
 
 * <code>length</code> - The number of elements in the desired portion of <code>str</code>
  (but not more than <code>str</code> 's length).
@@ -161,7 +162,7 @@ Initializes a new instance of the <code>NormalizerInput</code> class. Uses a por
  text.
 
 ### NormalizerInput
-    public NormalizerInput(String str, Normalization form)
+    public NormalizerInput​(String str, Normalization form)
 Initializes a new instance of the <code>NormalizerInput</code> class.
 
 **Parameters:**
@@ -172,7 +173,7 @@ Initializes a new instance of the <code>NormalizerInput</code> class.
  text.
 
 ### NormalizerInput
-    public NormalizerInput(com.upokecenter.text.ICharacterInput stream, Normalization form)
+    public NormalizerInput​(com.upokecenter.text.ICharacterInput stream, Normalization form)
 Initializes a new instance of the <code>NormalizerInput</code> class.
 
 **Parameters:**
@@ -187,7 +188,7 @@ Initializes a new instance of the <code>NormalizerInput</code> class.
 * <code>NullPointerException</code> - The parameter <code>stream</code> is null.
 
 ### IsNormalized
-    public static boolean IsNormalized(com.upokecenter.text.ICharacterInput chars, Normalization form)
+    public static boolean IsNormalized​(com.upokecenter.text.ICharacterInput chars, Normalization form)
 Determines whether the text provided by a character input is normalized.
 
 **Parameters:**
@@ -205,7 +206,7 @@ Determines whether the text provided by a character input is normalized.
 * <code>NullPointerException</code> - The parameter <code>chars</code> is null.
 
 ### Normalize
-    public static String Normalize(String str, Normalization form)
+    public static String Normalize​(String str, Normalization form)
 Converts a string to the given Unicode normalization form.
 
 **Parameters:**
@@ -226,7 +227,7 @@ Converts a string to the given Unicode normalization form.
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### IsNormalized
-    public static boolean IsNormalized(String str, Normalization form)
+    public static boolean IsNormalized​(String str, Normalization form)
 Determines whether the given string is in the given Unicode normalization
  form.
 
@@ -261,7 +262,7 @@ Reads a Unicode character from a data source.
  0x10ffff), or the value -1 indicating the end of the source.
 
 ### Read
-    public int Read(int[] chars, int index, int length)
+    public int Read​(int[] chars, int index, int length)
 Reads a sequence of Unicode code points from a data source.
 
 **Specified by:**
@@ -272,7 +273,8 @@ Reads a sequence of Unicode code points from a data source.
 
 * <code>chars</code> - Output buffer.
 
-* <code>index</code> - A zero-based index showing where the desired portion of <code>chars</code> begins.
+* <code>index</code> - A zero-based index showing where the desired portion of <code>
+ chars</code> begins.
 
 * <code>length</code> - The number of elements in the desired portion of <code>chars</code>
  (but not more than <code>chars</code> 's length).
