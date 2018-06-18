@@ -15,16 +15,16 @@
 
 ## Methods
 
-* `static String EncodeDomainName(String value)`<br>
+* `static String EncodeDomainName​(String value)`<br>
  Tries to encode each label of a domain name into Punycode.
-* `static boolean IsValidDomainName(String str,
+* `static boolean IsValidDomainName​(String str,
                  boolean lookupRules)`<br>
  Determines whether the given string is a syntactically valid domain name.
 
 ## Method Details
 
 ### EncodeDomainName
-    public static String EncodeDomainName(String value)
+    public static String EncodeDomainName​(String value)
 Tries to encode each label of a domain name into Punycode.
 
 **Parameters:**
@@ -42,7 +42,7 @@ Tries to encode each label of a domain name into Punycode.
 * <code>NullPointerException</code> - Value is null.
 
 ### IsValidDomainName
-    public static boolean IsValidDomainName(String str, boolean lookupRules)
+    public static boolean IsValidDomainName​(String str, boolean lookupRules)
 Determines whether the given string is a syntactically valid domain name.
 
 **Parameters:**

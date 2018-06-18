@@ -9,10 +9,10 @@ A mutable media type object.
 * `MediaTypeBuilder() MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class, using the type
  "application/octet-stream".
-* `MediaTypeBuilder(MediaType mt) MediaTypeBuilder`<br>
+* `MediaTypeBuilder​(MediaType mt) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class using the data from
  another media type.
-* `MediaTypeBuilder(String type,
+* `MediaTypeBuilder​(String type,
                 String subtype) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class.
 * `String getSubType()`<br>
@@ -23,16 +23,16 @@ A mutable media type object.
  Gets a value indicating whether this is a multipart media type.
 * `boolean isText()`<br>
  Gets a value indicating whether this is a text media type.
-* `MediaTypeBuilder RemoveParameter(String name)`<br>
+* `MediaTypeBuilder RemoveParameter​(String name)`<br>
  Removes a parameter from this builder object.
-* `MediaTypeBuilder SetParameter(String name,
+* `MediaTypeBuilder SetParameter​(String name,
             String value)`<br>
  Sets a parameter's name and value for this media type.
-* `void setSubType(String value)`<br>
-* `MediaTypeBuilder SetSubType(String str)`<br>
+* `void setSubType​(String value)`<br>
+* `MediaTypeBuilder SetSubType​(String str)`<br>
  Sets this media type's subtype, such as "plain" or "xml" .
-* `void setTopLevelType(String value)`<br>
-* `MediaTypeBuilder SetTopLevelType(String str)`<br>
+* `void setTopLevelType​(String value)`<br>
+* `MediaTypeBuilder SetTopLevelType​(String str)`<br>
  Sets this media type's top-level type.
 * `MediaType ToMediaType()`<br>
  Converts this builder to an immutable media type object.
@@ -44,10 +44,10 @@ A mutable media type object.
 * `MediaTypeBuilder() MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class, using the type
  "application/octet-stream".
-* `MediaTypeBuilder(MediaType mt) MediaTypeBuilder`<br>
+* `MediaTypeBuilder​(MediaType mt) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class using the data from
  another media type.
-* `MediaTypeBuilder(String type,
+* `MediaTypeBuilder​(String type,
                 String subtype) MediaTypeBuilder`<br>
  Initializes a new instance of the MediaTypeBuilder class.
 
@@ -58,7 +58,7 @@ A mutable media type object.
 Initializes a new instance of the <code>MediaTypeBuilder</code> class, using the type
  "application/octet-stream".
 ### MediaTypeBuilder
-    public MediaTypeBuilder(MediaType mt)
+    public MediaTypeBuilder​(MediaType mt)
 Initializes a new instance of the <code>MediaTypeBuilder</code> class using the data from
  another media type.
 
@@ -71,7 +71,7 @@ Initializes a new instance of the <code>MediaTypeBuilder</code> class using the 
 * <code>NullPointerException</code> - The parameter <code>mt</code> is null.
 
 ### MediaTypeBuilder
-    public MediaTypeBuilder(String type, String subtype)
+    public MediaTypeBuilder​(String type, String subtype)
 Initializes a new instance of the <code>MediaTypeBuilder</code> class.
 
 **Parameters:**
@@ -89,7 +89,7 @@ Gets this value's top-level type.
 * This value's top-level type.
 
 ### setTopLevelType
-    public final void setTopLevelType(String value)
+    public final void setTopLevelType​(String value)
 ### getSubType
     public final String getSubType()
 Gets this value's subtype.
@@ -99,7 +99,7 @@ Gets this value's subtype.
 * This value's subtype.
 
 ### setSubType
-    public final void setSubType(String value)
+    public final void setSubType​(String value)
 ### isText
     public final boolean isText()
 Gets a value indicating whether this is a text media type.
@@ -114,7 +114,8 @@ Gets a value indicating whether this is a multipart media type.
 
 **Returns:**
 
-* <code>true</code> If this is a multipart media type; otherwise, <code>false</code>.
+* <code>true</code> If this is a multipart media type; otherwise, <code>
+ false</code>.
 
 ### ToMediaType
     public MediaType ToMediaType()
@@ -125,7 +126,7 @@ Converts this builder to an immutable media type object.
 * A MediaType object.
 
 ### SetTopLevelType
-    public MediaTypeBuilder SetTopLevelType(String str)
+    public MediaTypeBuilder SetTopLevelType​(String str)
 Sets this media type's top-level type.
 
 **Parameters:**
@@ -144,7 +145,7 @@ Sets this media type's top-level type.
  invalid for a top-level type.
 
 ### RemoveParameter
-    public MediaTypeBuilder RemoveParameter(String name)
+    public MediaTypeBuilder RemoveParameter​(String name)
 Removes a parameter from this builder object. Does nothing if the
  parameter's name doesn't exist.
 
@@ -164,7 +165,7 @@ Removes a parameter from this builder object. Does nothing if the
 * <code>NullPointerException</code> - The parameter <code>name</code> is null.
 
 ### SetParameter
-    public MediaTypeBuilder SetParameter(String name, String value)
+    public MediaTypeBuilder SetParameter​(String name, String value)
 Sets a parameter's name and value for this media type.
 
 **Parameters:**
@@ -183,13 +184,14 @@ Sets a parameter's name and value for this media type.
 
 **Throws:**
 
-* <code>NullPointerException</code> - The parameter <code>value</code> or <code>name</code> is null.
+* <code>NullPointerException</code> - The parameter <code>value</code> or <code>
+ name</code> is null.
 
 * <code>IllegalArgumentException</code> - The parameter <code>name</code> is empty or
  syntactically invalid.
 
 ### SetSubType
-    public MediaTypeBuilder SetSubType(String str)
+    public MediaTypeBuilder SetSubType​(String str)
 Sets this media type's subtype, such as "plain" or "xml" .
 
 **Parameters:**

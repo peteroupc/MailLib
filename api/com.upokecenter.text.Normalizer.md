@@ -2,41 +2,41 @@
 
     @Deprecated public final class Normalizer extends Object
 
-Deprecated.&nbsp;
-<div class='block'>Use NormalizerInput instead; that class is much more flexible than
+Deprecated.
+<div class='deprecationComment'>Use NormalizerInput instead; that class is much more flexible than
  Normalizer.</div>
 
 ## Methods
 
-* `Normalizer(String str,
+* `Normalizer​(String str,
           Normalization form) Normalizer`<br>
- Deprecated.  Initializes a new instance of the Normalizer
+ Deprecated. Initializes a new instance of the Normalizer
  class.
-* `static boolean IsNormalized(String str,
+* `static boolean IsNormalized​(String str,
             Normalization form)`<br>
- Deprecated.  Returns whether this string is normalized.
-* `static String Normalize(String str,
+ Deprecated. Returns whether this string is normalized.
+* `static String Normalize​(String str,
          Normalization form)`<br>
- Deprecated.  Converts a string to the given Unicode normalization form.
-* `int Read(int[] chars,
+ Deprecated. Converts a string to the given Unicode normalization form.
+* `int Read​(int[] chars,
     int index,
     int length)`<br>
- Deprecated.  Reads a sequence of Unicode code points from a data source.
+ Deprecated. Reads a sequence of Unicode code points from a data source.
 * `int ReadChar()`<br>
- Deprecated.  Reads a Unicode character from a data source.
+ Deprecated. Reads a Unicode character from a data source.
 
 ## Constructors
 
-* `Normalizer(String str,
+* `Normalizer​(String str,
           Normalization form) Normalizer`<br>
- Deprecated.  Initializes a new instance of the Normalizer
+ Deprecated. Initializes a new instance of the Normalizer
  class.
 
 ## Method Details
 
 ### Normalizer
-    public Normalizer(String str, Normalization form)
-Deprecated.&nbsp;
+    public Normalizer​(String str, Normalization form)
+Deprecated.
 
 **Parameters:**
 
@@ -45,8 +45,8 @@ Deprecated.&nbsp;
 * <code>form</code> - The parameter <code>form</code> is a Normalization object.
 
 ### Normalizer
-    public Normalizer(String str, Normalization form)
-Deprecated.&nbsp;
+    public Normalizer​(String str, Normalization form)
+Deprecated.
 
 **Parameters:**
 
@@ -55,8 +55,8 @@ Deprecated.&nbsp;
 * <code>form</code> - The parameter <code>form</code> is a Normalization object.
 
 ### Normalize
-    public static String Normalize(String str, Normalization form)
-Deprecated.&nbsp;
+    public static String Normalize​(String str, Normalization form)
+Deprecated.
 
 **Parameters:**
 
@@ -73,8 +73,8 @@ Deprecated.&nbsp;
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
 
 ### IsNormalized
-    public static boolean IsNormalized(String str, Normalization form)
-Deprecated.&nbsp;
+    public static boolean IsNormalized​(String str, Normalization form)
+Deprecated.
 
 **Parameters:**
 
@@ -90,7 +90,7 @@ Deprecated.&nbsp;
 
 ### ReadChar
     public int ReadChar()
-Deprecated.&nbsp;
+Deprecated.
 
 **Returns:**
 
@@ -98,8 +98,8 @@ Deprecated.&nbsp;
  0x10ffff), or the value -1 indicating the end of the source.
 
 ### Read
-    public int Read(int[] chars, int index, int length)
-Deprecated.&nbsp;
+    public int Read​(int[] chars, int index, int length)
+Deprecated.
 
 **Parameters:**
 

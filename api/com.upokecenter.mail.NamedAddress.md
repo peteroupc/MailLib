@@ -7,25 +7,25 @@ Represents an email address and a name for that address. Can represent a
 
 ## Methods
 
-* `NamedAddress(String address) NamedAddress`<br>
+* `NamedAddress​(String address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class.
-* `NamedAddress(String displayName,
+* `NamedAddress​(String displayName,
             Address address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class using the given display name and email address.
-* `NamedAddress(String groupName,
-            List<NamedAddress> mailboxes)`<br>
-* `NamedAddress(String displayName,
+* `NamedAddress​(String displayName,
             String address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class using the given display name and email address.
-* `NamedAddress(String displayName,
+* `NamedAddress​(String displayName,
             String localPart,
             String domain) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class using the given name and an email address made up of its local
  part and domain.
+* `NamedAddress​(String groupName,
+            List<NamedAddress> mailboxes)`<br>
 * `Address getAddress()`<br>
  Gets the email address associated with this object.
 * `String getDisplayName()`<br>
@@ -44,30 +44,30 @@ Represents an email address and a name for that address. Can represent a
 
 ## Constructors
 
-* `NamedAddress(String address) NamedAddress`<br>
+* `NamedAddress​(String address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class.
-* `NamedAddress(String displayName,
+* `NamedAddress​(String displayName,
             Address address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class using the given display name and email address.
-* `NamedAddress(String groupName,
-            List<NamedAddress> mailboxes)`<br>
-* `NamedAddress(String displayName,
+* `NamedAddress​(String displayName,
             String address) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class using the given display name and email address.
-* `NamedAddress(String displayName,
+* `NamedAddress​(String displayName,
             String localPart,
             String domain) NamedAddress`<br>
  Initializes a new instance of the NamedAddress
  class using the given name and an email address made up of its local
  part and domain.
+* `NamedAddress​(String groupName,
+            List<NamedAddress> mailboxes)`<br>
 
 ## Method Details
 
 ### NamedAddress
-    public NamedAddress(String address)
+    public NamedAddress​(String address)
 Initializes a new instance of the <code>NamedAddress</code>
  class. Examples: <ul> <li><code>john@example.com</code></li> <li><code>"John
  Doe" &lt;john@example.com&gt;</code></li>
@@ -100,7 +100,7 @@ Initializes a new instance of the <code>NamedAddress</code>
 * <code>IllegalArgumentException</code> - The named address has an invalid syntax.
 
 ### NamedAddress
-    public NamedAddress(String displayName, String address)
+    public NamedAddress​(String displayName, String address)
 Initializes a new instance of the <code>NamedAddress</code>
  class using the given display name and email address.
 
@@ -119,7 +119,7 @@ Initializes a new instance of the <code>NamedAddress</code>
  syntax.
 
 ### NamedAddress
-    public NamedAddress(String displayName, Address address)
+    public NamedAddress​(String displayName, Address address)
 Initializes a new instance of the <code>NamedAddress</code>
  class using the given display name and email address.
 
@@ -135,7 +135,7 @@ Initializes a new instance of the <code>NamedAddress</code>
 * <code>NullPointerException</code> - The parameter <code>address</code> is null.
 
 ### NamedAddress
-    public NamedAddress(String displayName, String localPart, String domain)
+    public NamedAddress​(String displayName, String localPart, String domain)
 Initializes a new instance of the <code>NamedAddress</code>
  class using the given name and an email address made up of its local
  part and domain.
@@ -155,7 +155,7 @@ Initializes a new instance of the <code>NamedAddress</code>
  <code>domain</code> is null.
 
 ### NamedAddress
-    public NamedAddress(String groupName, List<NamedAddress> mailboxes)
+    public NamedAddress​(String groupName, List<NamedAddress> mailboxes)
 ### getName
     public final String getName()
 Gets the display name for this email address, or the email address's value

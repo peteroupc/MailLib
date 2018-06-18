@@ -8,9 +8,9 @@ Exception thrown when a message has invalid syntax.
 
 * `MessageDataException() MessageDataException`<br>
  Initializes a new instance of the MessageDataException class.
-* `MessageDataException(String message) MessageDataException`<br>
+* `MessageDataException​(String message) MessageDataException`<br>
  Initializes a new instance of the MessageDataException class.
-* `MessageDataException(String message,
+* `MessageDataException​(String message,
                     Throwable innerException) MessageDataException`<br>
  Initializes a new instance of the MessageDataException class.
 
@@ -18,8 +18,8 @@ Exception thrown when a message has invalid syntax.
 
 * `MessageDataException() MessageDataException`<br>
  Initializes a new instance of the MessageDataException class.
-* `MessageDataException(String message) MessageDataException`<br>
+* `MessageDataException​(String message) MessageDataException`<br>
  Initializes a new instance of the MessageDataException class.
-* `MessageDataException(String message,
+* `MessageDataException​(String message,
                     Throwable innerException) MessageDataException`<br>
  Initializes a new instance of the MessageDataException class.

@@ -6,7 +6,7 @@ Represents an email address.
 
 ## Methods
 
-* `Address(String addressValue) Address`<br>
+* `Address​(String addressValue) Address`<br>
  Initializes a new instance of the Address
  class.
 * `String getDomain()`<br>
@@ -18,14 +18,14 @@ Represents an email address.
 
 ## Constructors
 
-* `Address(String addressValue) Address`<br>
+* `Address​(String addressValue) Address`<br>
  Initializes a new instance of the Address
  class.
 
 ## Method Details
 
 ### Address
-    public Address(String addressValue)
+    public Address​(String addressValue)
 Initializes a new instance of the <code>Address</code>
  class.
 
@@ -44,7 +44,7 @@ Initializes a new instance of the <code>Address</code>
  contains comments (text within parentheses).
 
 ### Address
-    public Address(String addressValue)
+    public Address​(String addressValue)
 Initializes a new instance of the <code>Address</code>
  class.
 
