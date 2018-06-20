@@ -34,7 +34,7 @@ import java.util.*;
     /**
      * Compares one integer array with another.
      * @param x An integer array.
-     * @param y An integer array. (2).
+     * @param y An integer array.
      * @return Zero if both values are equal; a negative number if {@code x} is
      * less than {@code y}, or a positive number if {@code x} is greater
      * than {@code y}.
