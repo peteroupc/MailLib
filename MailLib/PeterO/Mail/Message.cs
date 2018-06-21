@@ -24,6 +24,9 @@ namespace PeterO.Mail {
     private const int EncodingSevenBit = 0;
     private const int EncodingUnknown = -1;
 
+    // NOTE: System.Random is not a cryptographic RNG.
+    // If security is a concern, replace this call to System.Random
+    // to the interface of a cryptographic RNG.
     private static readonly Random ValueMsgidRandom = new Random();
     private static readonly object ValueSequenceSync = new Object();
 
@@ -2011,90 +2014,6 @@ namespace PeterO.Mail {
       }
     }
 
-        internal static byte[] TimeEntropy(int size) {
-            // This routine was inspired by the HAVEG entropy
-            // harvester, but is not exactly the same as it.
-            int st = unchecked((int)DateTime.UtcNow.Ticks);
-            int sx = st % 100;
-            var b = 0;
-            var badticks = 0;
-            var bytes = new byte[size];
-            for (var k = 0; k < 15; ++k) {
-                int dtt = (sx == 0) ? unchecked((int)DateTime.Now.Ticks) :
-                  unchecked((int)DateTime.UtcNow.Ticks);
-                if (badticks >= 20) {
-                    dtt /= 10;
-                } else if ((dtt & 1) == 0) {
-                    ++badticks;
-                } else {
- badticks = 0;
-}
-                st = unchecked(((int)st * 31) + dtt);
-                ++sx;
-                if (sx >= 100) {
- sx = 0;
-}
-                for (var j = 0; j < bytes.Length; ++j) {
-                    for (var i = 0; i < 8; ++i) {
-                    dtt = (sx == 0) ? unchecked((int)DateTime.Now.Ticks) :
-          unchecked((int)DateTime.UtcNow.Ticks);
-                    if (badticks >= 20) {
-                    dtt /= 10;
-                    } else if ((dtt & 1) == 0) {
-                    ++badticks;
-                    } else {
- badticks = 0;
-}
-                    int ticks = unchecked(((int)st * 31) + dtt + j);
-                    st = ticks;
-                    ++sx;
-                    if (sx >= 100) {
- sx = 0;
-}
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = unchecked(ticks + 54287);
-                    }
-                    }
-                    }
-                    }
-                    }
-                    }
-                    }
-                    }
-                    }
-                    }
-                    }
-              ticks = unchecked((int)(ticks + st +
-                (int)DateTime.UtcNow.Ticks + 1));
-                    b <<= 1;
-                    b |= ticks & 1;
-                    }
-                    bytes[j] ^= unchecked((byte)b);
-                }
-            }
-            return bytes;
-        }
-
     private string GenerateMessageID() {
       var builder = new StringBuilder();
       var seq = 0;
@@ -2110,9 +2029,7 @@ namespace PeterO.Mail {
       }
       const string ValueHex = "0123456789abcdef";
       byte[] ent;
-      if (ValueMsgidRandom.Next(5) == 0) {
-        ent = TimeEntropy(16);
-      } else {
+      {
         ent = new byte[16];
         for (var i = 0; i < ent.Length; ++i) {
           ent[i] = unchecked((byte)ValueMsgidRandom.Next(256));

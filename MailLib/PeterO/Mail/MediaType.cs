@@ -707,8 +707,8 @@ return SkipQuotedString(
       // media types defined before this RFC (July 2012) are grandfathered
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
-      // have US-ASCII as default. The text media types defined as of Nov. 12,
-      // 2016, are listed below:
+      // have US-ASCII as default. The text media types defined as of
+      // Jun. 21, 2018, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -749,6 +749,9 @@ return SkipQuotedString(
       // vnd.in3d.spot*, vnd.abc, vnd.wap.wmlscript, vnd.curl,
       // vnd.fmi.flexstor, uri-list, directory
       //
+      // No charset parameter defined (7-bit encoding):
+      // vnd.gml
+      //
       // US-ASCII default:
       // -- plain, sgml, troff
       //
@@ -785,7 +788,8 @@ return SkipQuotedString(
               sub.Equals("enriched") || sub.Equals("tab-separated-values") ||
               sub.Equals("vnd.in3d.spot") || sub.Equals("vnd.abc") ||
             sub.Equals("vnd.wap.wmlscript") || sub.Equals("vnd.curl") ||
-              sub.Equals("vnd.fmi.flexstor") || sub.Equals("uri-list")) {
+              sub.Equals("vnd.fmi.flexstor") || sub.Equals("uri-list") ||
+            sub.Equals("vnd.gml")) {
           return "us-ascii";
         }
         // Media types that assume a default of UTF-8
