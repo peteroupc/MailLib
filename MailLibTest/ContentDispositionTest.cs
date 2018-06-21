@@ -96,55 +96,98 @@ public void TestIsInline() {
             return ret;
         }
 
-        internal static bool IsGoodFilename(string str) {
+        internal static void FailFilename(string filename, string str) {
+      FailFilename(filename, str, null);
+    }
+
+  internal static void FailFilename(
+  string filename,
+  string str,
+  string extra) {
+            Assert.Fail("original=" + EncodingTest.EscapeString(filename) +
+                "\n" + "filename=" + EncodingTest.EscapeString(str) + "\n" +
+      "AssertGoodFilename(\"" + EncodingTest.EscapeString(filename) +
+          "\");" +(String.IsNullOrEmpty(extra) ? String.Empty : "\n" + extra));
+        }
+
+        internal static void AssertGoodFilename(string filename) {
+            string str = ContentDisposition.MakeFilename(filename);
             if (str == null || str.Length == 0 || str.Length > 255) {
-      Console.WriteLine("A");
-                return false;
+                FailFilename(filename, str);
             }
             if (str[str.Length - 1] == '.' || str[str.Length - 1] == '~') {
-      Console.WriteLine("B");
-                return false;
+                FailFilename(filename, str);
             }
             string strLower = DataUtilities.ToLowerCaseAscii(str);
             bool bracketDigit = str[0] == '{' && str.Length > 1 &&
                     str[1] >= '0' && str[1] <= '9';
-          bool homeFolder = str[0] == '~' || str[0] == '-' || str[0] ==
-              '$';
+            bool homeFolder = str[0] == '~' || str[0] == '-' || str[0] ==
+                '$';
             bool period = str[0] == '.';
-          bool beginEndSpace = str[0] == 0x20 || str[str.Length - 1] ==
-              0x20;
+            bool beginEndSpace = str[0] == 0x20 || str[str.Length - 1] ==
+                0x20;
             if (bracketDigit || homeFolder || period || beginEndSpace) {
-      Console.WriteLine("C");
-                return false;
+                FailFilename(filename, str);
             }
             // Reserved filenames on Windows
-            bool reservedFilename = strLower.Equals(
-        "nul") || strLower.Equals("clock$") || strLower.IndexOf(
-        "nul.",
-        StringComparison.Ordinal) == 0 || strLower.Equals(
-        "prn") || strLower.IndexOf(
-        "prn.",
-        StringComparison.Ordinal) == 0 || strLower.IndexOf(
-        "![",
-        StringComparison.Ordinal) >= 0 || strLower.Equals(
-        "aux") || strLower.IndexOf(
-        "aux.",
-        StringComparison.Ordinal) == 0 || strLower.Equals(
-        "con") || strLower.IndexOf(
-        "con.",
-        StringComparison.Ordinal) == 0 || (
-        strLower.Length >= 4 && strLower.IndexOf(
-        "lpt",
-        StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
-             strLower[3] <= '9') || (strLower.Length >= 4 &&
-                    strLower.IndexOf(
-        "com",
-        StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
-                  strLower[3] <= '9');
-            if (reservedFilename) {
-      Console.WriteLine("D");
-                return false;
-            }
+             if (strLower.Equals(
+        "nul")) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.Equals("clock$")) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.IndexOf(
+               "nul.",
+               StringComparison.Ordinal) == 0) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.Equals(
+               "prn")) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.IndexOf(
+               "prn.",
+               StringComparison.Ordinal) == 0) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.IndexOf(
+               "![",
+               StringComparison.Ordinal) >= 0) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.Equals(
+               "aux")) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.IndexOf(
+               "aux.",
+               StringComparison.Ordinal) == 0) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.Equals(
+               "con")) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.IndexOf(
+               "con.",
+               StringComparison.Ordinal) == 0) {
+  { FailFilename(filename, str, strLower);
+} }
+            if (
+               strLower.Length >= 4 && strLower.IndexOf(
+               "lpt",
+               StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
+                    strLower[3] <= '9') {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.Length >= 4 && strLower.IndexOf(
+               "com",
+               StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
+                 strLower[3] <= '9') {
+  { FailFilename(filename, str, strLower);
+} }
+
             int i;
             for (i = 0; i < str.Length; ++i) {
                 char c = str[i];
@@ -155,35 +198,53 @@ public void TestIsInline() {
     c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff ||
                     (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
-      Console.WriteLine("E, c=" + c);
-                    return false;
+                    FailFilename(
+  filename,
+  str,
+  "[" + EncodingTest.EscapeString(String.Empty + c) + "] index=" + i);
                 }
+        // Code points that decompose to "bad" characters
+        if (c == 0x1fef) {
+          FailFilename(
+  filename,
+  str,
+  "[" + EncodingTest.EscapeString(String.Empty + c) + "] index=" + i);
+                 }
             }
             // Avoid space before and after last dot
             for (i = str.Length - 1; i >= 0; --i) {
                 if (str[i] == '.') {
-                 bool spaceAfter = i + 1 < str.Length && str[i + 1] == 0x20;
+                    bool spaceAfter = i + 1 < str.Length && str[i + 1] == 0x20;
                     bool spaceBefore = i > 0 && str[i - 1] == 0x20;
                     if (spaceAfter || spaceBefore) {
-      Console.WriteLine("F");
-                    return false;
+                    FailFilename(filename, str);
                     }
                     break;
                 }
             }
-      bool finalRet = NormalizerInput.IsNormalized(str, Normalization.NFC);
-      if (!finalRet) {
-      Console.WriteLine("G");
-      }
-      return finalRet;
+         bool finalRet = NormalizerInput.IsNormalized(
+  str,
+  Normalization.NFC);
+            if (!finalRet) {
+                FailFilename(filename, str);
+            }
         }
 
   [Test]
   public void TestMakeFilenameSpecific1() {
-Assert.IsTrue(IsGoodFilename(ContentDisposition.MakeFilename(
-  "\u216a2s\u1e19C<snhs\ud87a\ude8dX(\ufdef\ufdd0,u.y\u001c.|}Y \u2f18Yx\u2a11N%(..s3^(N\u0084`(r|41X_.})\ud84c\udef3\ufe3c/\\/ sq?G![{\ufeffZ\"qSMdgv3#dg\tK@^X;`jl\ud892\udcd3' e@5a(\u00a0 wg0g hH?5\u202flh\u04c1 \uffff(,\u044d qQ7b:uFs9m\u0b6b\\AT|HDAsH6's!_B>rb(q?KpUv;fa r!\u1dc2.5.U\\Ez\u1f5a/J.8`?U\u01ba\\/v\ufdef_p.%|}.;.(OL9\u00001O.RV\u2433z,E\u008f%o\u008f.fpDN=G {(\udac5\udd76XC\uffff..z\ud9e4\udc62^(u=|'93\u0f6bWvz\u0f09\u26d2$?y\ud9c5\udcd4P:)+iO\u009f[f?>JTo,Ge`:'I\u5ccf\u009f\u9c3a<+yC {\ub10bm(j\u7959.tL=\ud86a\udea3\\(i \u001fG0 +np\u180erFt.hoy ny)\".6 +j "
-)));
-  }
+            // Contains GREEK VARIA which decomposes to a "bad" filename
+            // character
+            AssertGoodFilename("xx\u1fefxx");
+            AssertGoodFilename("xx!\ud845\udd33[xx");
+    Console.WriteLine(ContentDisposition.MakeFilename(
+  "xx!\ud845\udd33[xx"));
+            AssertGoodFilename("xx!\ud845\udd33[");
+            AssertGoodFilename("xx![xx");
+            AssertGoodFilename(
+  "\u216a2s\u1e19C<snhs\ud87a\ude8dX(\ufdef\ufdd0,u.y\u001c.|}Y \u2f18Yx\u2a11N%(..s3^(N\u0084`(r|41X_.})\ud84c\udef3\ufe3c/\\/ sq?G![{\ufeffZ\"qSMdgv3#dg\tK@^X;`jl\ud892\udcd3' e@5a(\u00a0 wg0g hH?5\u202flh\u04c1 \uffff(,\u044d qQ7b:uFs9m\u0b6b\\AT|HDAsH6's!_B>rb(q?KpUv;fa r!\u1dc2.5.U\\Ez\u1f5a/J.8`?U\u01ba\\/v\ufdef_p.%|}.;.(OL9\u00001O.RV\u2433z,E\u008f%o\u008f.fpDN=G {(\udac5\udd76XC\uffff..z\ud9e4\udc62^(u=|'93\u0f6bWvz\u0f09\u26d2$?y\ud9c5\udcd4P:)+iO\u009f[f?>JTo,Ge`:'I\u5ccf\u009f\u9c3a<+yC {\ub10bm(j\u7959.tL=\ud86a\udea3\\(i \u001fG0 +np\u180erFt.hoy ny)\".6 +j ");
+      AssertGoodFilename(
+  "K GY2n8 Uml\ufdd0U {\\\udbee\ude3brac,;8d\u3000i\ud965\uddd1W&9\ufffe`)nM@(\u1125=nZ:_='g5 ?g[\u1432S\ufdef/Y\u001fzF\ud84d\udda1\u009fb'C:\u00a0-M\u205f476\u001b\ud8c7\udc378=\"z\u0010\u2d33 {:\"mN\"5V!\ufdd0\u00a0> \u1680mdnR8\u03b2s\u008f^7*{yH\u001fil1>\u00108C6 \"p\u009fV,?/.C.o P9yP}s {\"{>\u205f\\(U\ufdd0\u205f!/ \"%K\u2000@ Y\u205fP/C,?O(\u03eb+\u009f\ubd8b\udbf3\udf10f.rv8\u009f%v6!]H6\u001bp`.\u008f:BVkI\u09f5|8!FQ\\Fp.88\u2000m\u0933 s.~cO$ fQoq\"\u3000\u6b07\ud8bd\udca6H\ud9be\udc02zY(N.h1\u0000|=!\ud845\udd33[\ua233o'dt;)H1p\u00a0?TVw5sZ\"\u205fF5.)M&?Kq<#\u0f96Td5Zr3@`~8.:");
+        }
 
         [Test]
 public void TestMakeFilename() {
@@ -201,22 +262,14 @@ Assert.AreEqual(objectTemp, objectTemp2);
                   "_",
                   stringTemp);
             }
-            string mfn = ContentDisposition.MakeFilename(
-              "utf-8''%2A%EF%AB%87%EC%A5%B2%2B67%20Tqd%20R%E3%80%80%2E");
-            Assert.IsTrue(IsGoodFilename(mfn), mfn);
-            for (var i = 0; i < 1000000; ++i) {
+
+  AssertGoodFilename("utf-8''%2A%EF%AB%87%EC%A5%B2%2B67%20Tqd%20R%E3%80%80%2E");
+            for (var i = 0; i < 10000; ++i) {
         if (i % 1000 == 0) {
-          // Console.WriteLine (i);
+          Console.WriteLine(i);
         }
-                string str = RandomString(rnd);
-                string filename = ContentDisposition.MakeFilename(str);
-                if (!IsGoodFilename(filename)) {
-            Assert.Fail("str_____=" + EncodingTest.EscapeString(str) +
-                    "\n" +
-                    "filename=" + EncodingTest.EscapeString(filename) + "\n" +
-  "Assert.IsTrue(IsGoodFilename(ContentDisposition.MakeFilename(\n" +
-                    " \"" + EncodingTest.EscapeString(str) + "\")));");
-                }
+
+        AssertGoodFilename(RandomString(rnd));
             }
             {
                 stringTemp = ContentDisposition.MakeFilename("hello. txt");

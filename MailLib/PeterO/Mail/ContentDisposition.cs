@@ -155,9 +155,43 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
+        private static string SurrogateCleanup (string str) {
+            var i = 0;
+            while (i < str.Length) {
+                int c = DataUtilities.CodePointAt (str, i, 2);
+                // NOTE: Unpaired surrogates are replaced with -1
+                if (c >= 0x10000) {
+                    ++i;
+                }
+                if (c < 0) {
+                    break;
+                }
+                ++i;
+            }
+            if (i >= str.Length) {
+ return str;
+}
+            var builder = new StringBuilder();
+            builder.Append (str.Substring (0, i));
+            while (i < str.Length) {
+                int c = DataUtilities.CodePointAt (str, i, 0);
+        // NOTE: Unpaired surrogates are replaced with U + FFFD
+                if (c >= 0x10000) {
+                    builder.Append (str [i]);
+                    builder.Append (str [i + 1]);
+                    i += 2;
+                } else {
+          var ch = (char)c;
+                    builder.Append (ch);
+                    ++i;
+                }
+            }
+            return builder.ToString();
+        }
+
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)"]/*'/>
-    public static string MakeFilename(string str) {
+        public static string MakeFilename(string str) {
       if (str == null) {
         return String.Empty;
       }
@@ -196,7 +230,9 @@ namespace PeterO.Mail {
           }
         }
       }
+      str = SurrogateCleanup (str);
       str = ParserUtility.TrimAndCollapseSpaceAndTab(str);
+                str = NormalizerInput.Normalize (str, Normalization.NFC);
       if (str.Length == 0) {
         return "_";
       }
@@ -213,12 +249,10 @@ namespace PeterO.Mail {
       // and are handled below.
       i = 0;
       while (i < str.Length && builder.Length < 243) {
-        int c = DataUtilities.CodePointAt(str, i);
+        int c = DataUtilities.CodePointAt(str, i, 0);
+        // NOTE: Unpaired surrogates are replaced with U + FFFD
         if (c >= 0x10000) {
           ++i;
-        }
-        if (c < 0) {
-          c = 0xfffd;
         }
         if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
    c == 0x180e || c == 0x1680 ||
@@ -240,7 +274,7 @@ namespace PeterO.Mail {
   } else if (c == '`') {
      // '`' starts a command in BASH and possibly other shells
     builder.Append('_');
-  } else if (c == '$') {
+                } else if (c == '$') {
      // '$' starts a variable in BASH and possibly other shells
     builder.Append('_');
         } else if (c == 0x2028 || c == 0x2029) {
@@ -257,11 +291,13 @@ namespace PeterO.Mail {
         } else {
           if (builder.Length < 242 || c < 0x10000) {
             if (c <= 0xffff) {
-              builder.Append((char)c);
+              builder.Append ((char)c);
             } else if (c <= 0x10ffff) {
-              builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-              builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+              builder.Append ((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
+              builder.Append ((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
             }
+          } else if (builder.Length >= 242) {
+            break;
           }
         }
   ++i;
@@ -326,9 +362,9 @@ namespace PeterO.Mail {
           break;
         }
       }
-      str = NormalizerInput.Normalize(str, Normalization.NFC);
-      // Ensure length is 254 or less
-      if (str.Length > 254) {
+            str = NormalizerInput.Normalize(str, Normalization.NFC);
+            // Ensure length is 254 or less
+            if (str.Length > 254) {
         char c = str[254];
         var newLength = 254;
         if ((c & 0xfc00) == 0xdc00) {
