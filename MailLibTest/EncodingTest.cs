@@ -104,6 +104,7 @@ namespace MailLibTest {
       var headers = true;
       var colon = false;
       var hasNonWhiteSpace = false;
+      var haveNonAsciiMsg = false;
       var startsWithSpace = false;
       var hasLongWord = false;
       var meetsLineLength = true;
@@ -123,13 +124,24 @@ namespace MailLibTest {
         if (c >= 0x80) {
           var builder = new StringBuilder();
           const string ValueHex = "0123456789ABCDEF";
-          builder.Append(fn);
-          builder.Append(": ");
-          builder.Append("Non-ASCII character (0x");
-          builder.Append(ValueHex[((int)c >> 4) & 15]);
-          builder.Append(ValueHex[((int)c) & 15]);
-          builder.Append(")");
-          // Console.WriteLine(builder.ToString());
+          if (!haveNonAsciiMsg) {
+            builder.Append(fn);
+            builder.Append(": ");
+            builder.Append("Non-ASCII character(0x");
+            builder.Append(ValueHex[((int)c >> 12) & 15]);
+            builder.Append(ValueHex[((int)c >> 8) & 15]);
+            builder.Append(ValueHex[((int)c >> 4) & 15]);
+            builder.Append(ValueHex[((int)c) & 15]);
+            builder.Append(")");
+            builder.Append(
+  "\n" + str.Substring(Math.Max(0,
+ index + 1 - 30), (
+  index + 1) - Math.Max(
+  0,
+  index + 1 - 30)));
+            Console.WriteLine(builder.ToString());
+          }
+          haveNonAsciiMsg = true;
           return 0;
         }
         if (c == '\r' && index + 1 < endIndex && str[index + 1] == '\n') {
@@ -2220,7 +2232,11 @@ string stringTemp =
       TestEncodedBytesRoundTrip("T\u000best\r\nFroMe");
       TestEncodedBytesRoundTrip("T\u000best\r\nFrMe");
       TestEncodedBytesRoundTrip("T\u000best\r\nFMe");
-      TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nGood ");
+            TestEncodedBytesRoundTrip("T\u000best\r\nFromYou");
+            TestEncodedBytesRoundTrip("T\u000best\r\nFroYou");
+            TestEncodedBytesRoundTrip("T\u000best\r\nFrYou");
+            TestEncodedBytesRoundTrip("T\u000best\r\nFYou");
+            TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nGood ");
       TestEncodedBytesRoundTrip("T\u000best\r\n.From Me");
       TestEncodedBytesRoundTrip("T\u000best\r\n..From Me");
       TestEncodedBytesRoundTrip("T\u000best\r\n...From Me");

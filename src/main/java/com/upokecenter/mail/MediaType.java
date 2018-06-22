@@ -737,8 +737,8 @@ return SkipQuotedString(
       // media types defined before this RFC (July 2012) are grandfathered
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
-      // have US-ASCII as default. The text media types defined as of Nov. 12,
-      // 2016, are listed below:
+      // have US-ASCII as default. The text media types defined as of
+      // Jun. 21, 2018, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -779,6 +779,9 @@ return SkipQuotedString(
       // vnd.in3d.spot*, vnd.abc, vnd.wap.wmlscript, vnd.curl,
       // vnd.fmi.flexstor, uri-list, directory
       //
+      // No charset parameter defined (7-bit encoding):
+      // vnd.gml
+      //
       // US-ASCII default:
       // -- plain, sgml, troff
       //
@@ -815,7 +818,8 @@ return SkipQuotedString(
               sub.equals("enriched") || sub.equals("tab-separated-values") ||
               sub.equals("vnd.in3d.spot") || sub.equals("vnd.abc") ||
             sub.equals("vnd.wap.wmlscript") || sub.equals("vnd.curl") ||
-              sub.equals("vnd.fmi.flexstor") || sub.equals("uri-list")) {
+              sub.equals("vnd.fmi.flexstor") || sub.equals("uri-list") ||
+            sub.equals("vnd.gml")) {
           return "us-ascii";
         }
         // Media types that assume a default of UTF-8

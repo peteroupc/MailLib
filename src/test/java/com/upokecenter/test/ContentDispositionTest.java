@@ -107,48 +107,91 @@ public void TestIsInline() {
             return ret;
         }
 
-        static boolean IsGoodFilename(String str) {
+        static void FailFilename(String filename, String str) {
+      FailFilename(filename, str, null);
+    }
+
+  static void FailFilename(
+  String filename,
+  String str,
+  String extra) {
+            Assert.fail("original=" + EncodingTest.EscapeString(filename) +
+                "\n" + "filename=" + EncodingTest.EscapeString(str) + "\n" +
+      "AssertGoodFilename(\"" + EncodingTest.EscapeString(filename) +
+          "\");" +(((extra)==null || (extra).length()==0) ? "" : "\n" + extra));
+        }
+
+        static void AssertGoodFilename(String filename) {
+            String str = ContentDisposition.MakeFilename(filename);
             if (str == null || str.length() == 0 || str.length() > 255) {
-      System.out.println("A");
-                return false;
+                FailFilename(filename, str);
             }
             if (str.charAt(str.length() - 1) == '.' || str.charAt(str.length() - 1) == '~') {
-      System.out.println("B");
-                return false;
+                FailFilename(filename, str);
             }
             String strLower = DataUtilities.ToLowerCaseAscii(str);
             boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&
                     str.charAt(1) >= '0' && str.charAt(1) <= '9';
-          boolean homeFolder = str.charAt(0) == '~' || str.charAt(0) == '-' || str.charAt(0) ==
-              '$';
+            boolean homeFolder = str.charAt(0) == '~' || str.charAt(0) == '-' || str.charAt(0) ==
+                '$';
             boolean period = str.charAt(0) == '.';
-          boolean beginEndSpace = str.charAt(0) == 0x20 || str.charAt(str.length() - 1) ==
-              0x20;
+            boolean beginEndSpace = str.charAt(0) == 0x20 || str.charAt(str.length() - 1) ==
+                0x20;
             if (bracketDigit || homeFolder || period || beginEndSpace) {
-      System.out.println("C");
-                return false;
+                FailFilename(filename, str);
             }
             // Reserved filenames on Windows
-            boolean reservedFilename = strLower.equals(
-        "nul") || strLower.equals("clock$") || strLower.indexOf(
-        "nul.") == 0 || strLower.equals(
-        "prn") || strLower.indexOf(
-        "prn.") == 0 || strLower.indexOf(
-        "![") >= 0 || strLower.equals(
-        "aux") || strLower.indexOf(
-        "aux.") == 0 || strLower.equals(
-        "con") || strLower.indexOf(
-        "con.") == 0 || (
-        strLower.length() >= 4 && strLower.indexOf(
-        "lpt") == 0 && strLower.charAt(3) >= '0' &&
-             strLower.charAt(3) <= '9') || (strLower.length() >= 4 &&
-                    strLower.indexOf(
-        "com") == 0 && strLower.charAt(3) >= '0' &&
-                  strLower.charAt(3) <= '9');
-            if (reservedFilename) {
-      System.out.println("D");
-                return false;
-            }
+             if (strLower.equals(
+        "nul")) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.equals("clock$")) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.indexOf(
+               "nul.") == 0) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.equals(
+               "prn")) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.indexOf(
+               "prn.") == 0) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.indexOf(
+               "![") >= 0) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.equals(
+               "aux")) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.indexOf(
+               "aux.") == 0) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.equals(
+               "con")) {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.indexOf(
+               "con.") == 0) {
+  { FailFilename(filename, str, strLower);
+} }
+            if (
+               strLower.length() >= 4 && strLower.indexOf(
+               "lpt") == 0 && strLower.charAt(3) >= '0' &&
+                    strLower.charAt(3) <= '9') {
+  { FailFilename(filename, str, strLower);
+} }
+             if (strLower.length() >= 4 && strLower.indexOf(
+               "com") == 0 && strLower.charAt(3) >= '0' &&
+                 strLower.charAt(3) <= '9') {
+  { FailFilename(filename, str, strLower);
+} }
+
             int i;
             for (i = 0; i < str.length(); ++i) {
                 char c = str.charAt(i);
@@ -159,35 +202,53 @@ public void TestIsInline() {
     c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff ||
                     (c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <= 0xfdef)) {
-      System.out.println("E, c=" + c);
-                    return false;
+                    FailFilename(
+  filename,
+  str,
+  "[" + EncodingTest.EscapeString("" + c) + "] index=" + i);
                 }
+        // Code points that decompose to "bad" characters
+        if (c == 0x1fef) {
+          FailFilename(
+  filename,
+  str,
+  "[" + EncodingTest.EscapeString("" + c) + "] index=" + i);
+                 }
             }
             // Avoid space before and after last dot
             for (i = str.length() - 1; i >= 0; --i) {
                 if (str.charAt(i) == '.') {
-                 boolean spaceAfter = i + 1 < str.length() && str.charAt(i + 1) == 0x20;
+                    boolean spaceAfter = i + 1 < str.length() && str.charAt(i + 1) == 0x20;
                     boolean spaceBefore = i > 0 && str.charAt(i - 1) == 0x20;
                     if (spaceAfter || spaceBefore) {
-      System.out.println("F");
-                    return false;
+                    FailFilename(filename, str);
                     }
                     break;
                 }
             }
-      boolean finalRet = NormalizerInput.IsNormalized(str, Normalization.NFC);
-      if (!finalRet) {
-      System.out.println("G");
-      }
-      return finalRet;
+         boolean finalRet = NormalizerInput.IsNormalized(
+  str,
+  Normalization.NFC);
+            if (!finalRet) {
+                FailFilename(filename, str);
+            }
         }
 
   @Test
   public void TestMakeFilenameSpecific1() {
-Assert.assertTrue(IsGoodFilename(ContentDisposition.MakeFilename(
-  "\u216a2s\u1e19C<snhs\ud87a\ude8dX(\ufdef\ufdd0,u.y\u001c.|}Y \u2f18Yx\u2a11N%(..s3^(N\u0084`(r|41X_.})\ud84c\udef3\ufe3c/\\/ sq?G![{\ufeffZ\"qSMdgv3#dg\tK@^X;`jl\ud892\udcd3' e@5a(\u00a0 wg0g hH?5\u202flh\u04c1 \uffff(,\u044d qQ7b:uFs9m\u0b6b\\AT|HDAsH6's!_B>rb(q?KpUv;fa r!\u1dc2.5.U\\Ez\u1f5a/J.8`?U\u01ba\\/v\ufdef_p.%|}.;.(OL9\u00001O.getRV()\u2433z,E\u008f%o\u008f.fpDN=G {(\udac5\udd76XC\uffff..z\ud9e4\udc62^(u=|'93\u0f6bWvz\u0f09\u26d2$?y\ud9c5\udcd4P:)+iO\u009f[f?>JTo,Ge`:'I\u5ccf\u009f\u9c3a<+yC {\ub10bm(j\u7959.tL=\ud86a\udea3\\(i \u001fG0 +np\u180erFt.hoy ny)\".6 +j "
-)));
-  }
+            // Contains GREEK VARIA which decomposes to a "bad" filename
+            // character
+            AssertGoodFilename("xx\u1fefxx");
+            AssertGoodFilename("xx!\ud845\udd33[xx");
+    System.out.println(ContentDisposition.MakeFilename(
+  "xx!\ud845\udd33[xx"));
+            AssertGoodFilename("xx!\ud845\udd33[");
+            AssertGoodFilename("xx![xx");
+            AssertGoodFilename(
+  "\u216a2s\u1e19C<snhs\ud87a\ude8dX(\ufdef\ufdd0,u.y\u001c.|}Y \u2f18Yx\u2a11N%(..s3^(N\u0084`(r|41X_.})\ud84c\udef3\ufe3c/\\/ sq?G![{\ufeffZ\"qSMdgv3#dg\tK@^X;`jl\ud892\udcd3' e@5a(\u00a0 wg0g hH?5\u202flh\u04c1 \uffff(,\u044d qQ7b:uFs9m\u0b6b\\AT|HDAsH6's!_B>rb(q?KpUv;fa r!\u1dc2.5.U\\Ez\u1f5a/J.8`?U\u01ba\\/v\ufdef_p.%|}.;.(OL9\u00001O.getRV()\u2433z,E\u008f%o\u008f.fpDN=G {(\udac5\udd76XC\uffff..z\ud9e4\udc62^(u=|'93\u0f6bWvz\u0f09\u26d2$?y\ud9c5\udcd4P:)+iO\u009f[f?>JTo,Ge`:'I\u5ccf\u009f\u9c3a<+yC {\ub10bm(j\u7959.tL=\ud86a\udea3\\(i \u001fG0 +np\u180erFt.hoy ny)\".6 +j ");
+      AssertGoodFilename(
+  "K GY2n8 Uml\ufdd0U {\\\udbee\ude3brac,;8d\u3000i\ud965\uddd1W&9\ufffe`)nM@(\u1125=nZ:_='g5 ?g[\u1432S\ufdef/Y\u001fzF\ud84d\udda1\u009fb'C:\u00a0-M\u205f476\u001b\ud8c7\udc378=\"z\u0010\u2d33 {:\"mN\"5V!\ufdd0\u00a0> \u1680mdnR8\u03b2s\u008f^7*{yH\u001fil1>\u00108C6 \"p\u009fV,?/.C.o P9yP}s {\"{>\u205f\\(U\ufdd0\u205f!/ \"%K\u2000@ Y\u205fP/C,?O(\u03eb+\u009f\ubd8b\udbf3\udf10f.rv8\u009f%v6!]H6\u001bp`.\u008f:BVkI\u09f5|8!FQ\\Fp.88\u2000m\u0933 s.~cO$ fQoq\"\u3000\u6b07\ud8bd\udca6H\ud9be\udc02zY(N.h1\u0000|=!\ud845\udd33[\ua233o'dt;)H1p\u00a0?TVw5sZ\"\u205fF5.)M&?Kq<#\u0f96Td5Zr3@`~8.:");
+        }
 
         @Test
 public void TestMakeFilename() {
@@ -205,24 +266,14 @@ Assert.assertEquals(objectTemp, objectTemp2);
                   "_",
                   stringTemp);
             }
-            String mfn = ContentDisposition.MakeFilename(
-              "utf-8''%2A%EF%AB%87%EC%A5%B2%2B67%20Tqd%20R%E3%80%80%2E");
-            if (!(IsGoodFilename(mfn))) {
- Assert.fail(mfn);
- }
-            for (int i = 0; i < 1000000; ++i) {
+
+  AssertGoodFilename("utf-8''%2A%EF%AB%87%EC%A5%B2%2B67%20Tqd%20R%E3%80%80%2E");
+            for (int i = 0; i < 10000; ++i) {
         if (i % 1000 == 0) {
-          // System.out.println (i);
+          System.out.println(i);
         }
-                String str = RandomString(rnd);
-                String filename = ContentDisposition.MakeFilename(str);
-                if (!IsGoodFilename(filename)) {
-            Assert.fail("str_____=" + EncodingTest.EscapeString(str) +
-                    "\n" +
-                    "filename=" + EncodingTest.EscapeString(filename) + "\n" +
-  "Assert.assertTrue(IsGoodFilename(ContentDisposition.MakeFilename(\n" +
-                    " \"" + EncodingTest.EscapeString(str) + "\")));");
-                }
+
+        AssertGoodFilename(RandomString(rnd));
             }
             {
                 stringTemp = ContentDisposition.MakeFilename("hello. txt");

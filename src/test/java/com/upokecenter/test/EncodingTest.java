@@ -103,6 +103,7 @@ import com.upokecenter.text.*;
       boolean headers = true;
       boolean colon = false;
       boolean hasNonWhiteSpace = false;
+      boolean haveNonAsciiMsg = false;
       boolean startsWithSpace = false;
       boolean hasLongWord = false;
       boolean meetsLineLength = true;
@@ -122,13 +123,25 @@ import com.upokecenter.text.*;
         if (c >= 0x80) {
           StringBuilder builder = new StringBuilder();
           String ValueHex = "0123456789ABCDEF";
-          builder.append(fn);
-          builder.append(": ");
-          builder.append("Non-ASCII character (0x");
-          builder.append(ValueHex.charAt(((int)c >> 4) & 15));
-          builder.append(ValueHex.charAt(((int)c) & 15));
-          builder.append(")");
-          // System.out.println(builder.toString());
+          if (!haveNonAsciiMsg) {
+            builder.append(fn);
+            builder.append(": ");
+            builder.append("Non-ASCII character(0x");
+            builder.append(ValueHex.charAt(((int)c >> 12) & 15));
+            builder.append(ValueHex.charAt(((int)c >> 8) & 15));
+            builder.append(ValueHex.charAt(((int)c >> 4) & 15));
+            builder.append(ValueHex.charAt(((int)c) & 15));
+            builder.append(")");
+            builder.append(
+  "\n" + str.substring(Math.max(0,
+ index + 1 - 30), (Math.max(0,
+ index + 1 - 30))+((
+  index + 1) - Math.max(
+  0,
+  index + 1 - 30))));
+            System.out.println(builder.toString());
+          }
+          haveNonAsciiMsg = true;
           return 0;
         }
         if (c == '\r' && index + 1 < endIndex && str.charAt(index + 1) == '\n') {
@@ -2215,7 +2228,11 @@ String stringTemp =
       TestEncodedBytesRoundTrip("T\u000best\r\nFroMe");
       TestEncodedBytesRoundTrip("T\u000best\r\nFrMe");
       TestEncodedBytesRoundTrip("T\u000best\r\nFMe");
-      TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nGood ");
+            TestEncodedBytesRoundTrip("T\u000best\r\nFromYou");
+            TestEncodedBytesRoundTrip("T\u000best\r\nFroYou");
+            TestEncodedBytesRoundTrip("T\u000best\r\nFrYou");
+            TestEncodedBytesRoundTrip("T\u000best\r\nFYou");
+            TestEncodedBytesRoundTrip("T\u000best\r\n.\r\nGood ");
       TestEncodedBytesRoundTrip("T\u000best\r\n.From Me");
       TestEncodedBytesRoundTrip("T\u000best\r\n..From Me");
       TestEncodedBytesRoundTrip("T\u000best\r\n...From Me");
