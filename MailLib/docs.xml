@@ -484,9 +484,9 @@
             <paramref name='type'/> is null.</exception>
 </doc>
 <doc name="P:PeterO.Mail.DispositionBuilder.DispositionType">
-<summary>Gets or sets this value's disposition type, such value,
+<summary>Gets or sets this value's disposition type,
             such as "inline" or "attachment".</summary>
-            <value>This value&apos;s disposition type, such value, such as
+            <value>This value&apos;s disposition type, such as
             &quot;inline&quot; or &quot;attachment&quot;.</value>
 </doc>
 <doc name="P:PeterO.Mail.DispositionBuilder.IsMultipart">

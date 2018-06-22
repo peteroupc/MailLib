@@ -172,6 +172,40 @@ import com.upokecenter.text.*;
       return sb.toString();
     }
 
+        private static String SurrogateCleanup(String str) {
+            int i = 0;
+            while (i < str.length()) {
+                int c = DataUtilities.CodePointAt (str, i, 2);
+                // NOTE: Unpaired surrogates are replaced with -1
+                if (c >= 0x10000) {
+                    ++i;
+                }
+                if (c < 0) {
+                    break;
+                }
+                ++i;
+            }
+            if (i >= str.length()) {
+ return str;
+}
+            StringBuilder builder = new StringBuilder();
+            builder.append (str.substring(0, i));
+            while (i < str.length()) {
+                int c = DataUtilities.CodePointAt (str, i, 0);
+        // NOTE: Unpaired surrogates are replaced with U + FFFD
+                if (c >= 0x10000) {
+                    builder.append (str.charAt(i));
+                    builder.append (str.charAt(i + 1));
+                    i += 2;
+                } else {
+          char ch = (char)c;
+                    builder.append (ch);
+                    ++i;
+                }
+            }
+            return builder.toString();
+        }
+
     /**
      * Converts a file name from the Content-Disposition header to a suitable name
      * for saving data to a file. <p>Examples:</p>
@@ -194,7 +228,7 @@ import com.upokecenter.text.*;
      * {@code str} is null.
      * @throws java.lang.NullPointerException The parameter {@code str} is null.
      */
-    public static String MakeFilename(String str) {
+        public static String MakeFilename(String str) {
       if (str == null) {
         return "";
       }
@@ -233,7 +267,9 @@ import com.upokecenter.text.*;
           }
         }
       }
+      str = SurrogateCleanup (str);
       str = ParserUtility.TrimAndCollapseSpaceAndTab(str);
+                str = NormalizerInput.Normalize (str, Normalization.NFC);
       if (str.length() == 0) {
         return "_";
       }
@@ -250,12 +286,10 @@ import com.upokecenter.text.*;
       // and are handled below.
       i = 0;
       while (i < str.length() && builder.length() < 243) {
-        int c = DataUtilities.CodePointAt(str, i);
+        int c = DataUtilities.CodePointAt(str, i, 0);
+        // NOTE: Unpaired surrogates are replaced with U + FFFD
         if (c >= 0x10000) {
           ++i;
-        }
-        if (c < 0) {
-          c = 0xfffd;
         }
         if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
    c == 0x180e || c == 0x1680 ||
@@ -277,7 +311,7 @@ import com.upokecenter.text.*;
   } else if (c == '`') {
      // '`' starts a command in BASH and possibly other shells
     builder.append('_');
-  } else if (c == '$') {
+                } else if (c == '$') {
      // '$' starts a variable in BASH and possibly other shells
     builder.append('_');
         } else if (c == 0x2028 || c == 0x2029) {
@@ -294,11 +328,13 @@ import com.upokecenter.text.*;
         } else {
           if (builder.length() < 242 || c < 0x10000) {
             if (c <= 0xffff) {
-              builder.append((char)c);
+              builder.append ((char)c);
             } else if (c <= 0x10ffff) {
-              builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
-              builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+              builder.append ((char)((((c - 0x10000) >> 10) & 0x3ff) + 0xd800));
+              builder.append ((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
             }
+          } else if (builder.length() >= 242) {
+            break;
           }
         }
   ++i;
@@ -356,9 +392,9 @@ import com.upokecenter.text.*;
           break;
         }
       }
-      str = NormalizerInput.Normalize(str, Normalization.NFC);
-      // Ensure length is 254 or less
-      if (str.length() > 254) {
+            str = NormalizerInput.Normalize(str, Normalization.NFC);
+            // Ensure length is 254 or less
+            if (str.length() > 254) {
         char c = str.charAt(254);
         int newLength = 254;
         if ((c & 0xfc00) == 0xdc00) {

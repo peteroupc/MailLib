@@ -79,6 +79,9 @@ import com.upokecenter.text.*;
     private static final int EncodingSevenBit = 0;
     private static final int EncodingUnknown = -1;
 
+    // NOTE: System.java.util.Random is not a cryptographic RNG.
+    // If security is a concern, replace this call to System.java.util.getRandom()
+    // to the interface of a cryptographic RNG.
     private static final java.util.Random ValueMsgidRandom = new java.util.Random();
     private static final Object ValueSequenceSync = new Object();
 
@@ -2294,90 +2297,6 @@ public final void setSubject(String value) {
       }
     }
 
-        static byte[] TimeEntropy(int size) {
-            // This routine was inspired by the HAVEG entropy
-            // harvester, but is not exactly the same as it.
-            int st = ((int)new java.util.Date().getTime());
-            int sx = st % 100;
-            int b = 0;
-            int badticks = 0;
-            byte[] bytes = new byte[size];
-            for (int k = 0; k < 15; ++k) {
-                int dtt = (sx == 0) ? ((int)System.currentTimeMillis()) :
-                  ((int)new java.util.Date().getTime());
-                if (badticks >= 20) {
-                    dtt /= 10;
-                } else if ((dtt & 1) == 0) {
-                    ++badticks;
-                } else {
- badticks = 0;
-}
-                st = (((int)st * 31) + dtt);
-                ++sx;
-                if (sx >= 100) {
- sx = 0;
-}
-                for (int j = 0; j < bytes.length; ++j) {
-                    for (int i = 0; i < 8; ++i) {
-                    dtt = (sx == 0) ? ((int)System.currentTimeMillis()) :
-          ((int)new java.util.Date().getTime());
-                    if (badticks >= 20) {
-                    dtt /= 10;
-                    } else if ((dtt & 1) == 0) {
-                    ++badticks;
-                    } else {
- badticks = 0;
-}
-                    int ticks = (((int)st * 31) + dtt + j);
-                    st = ticks;
-                    ++sx;
-                    if (sx >= 100) {
- sx = 0;
-}
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = (ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = (ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = (ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = (ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = (ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = (ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = (ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = (ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = (ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = (ticks + 54287);
-                    if ((ticks & (1 << i)) != 0) {
-                    ticks >>= 1; ticks = (ticks + 54287);
-                    }
-                    }
-                    }
-                    }
-                    }
-                    }
-                    }
-                    }
-                    }
-                    }
-                    }
-              ticks = ((int)(ticks + st +
-                (int)new java.util.Date().getTime() + 1));
-                    b <<= 1;
-                    b |= ticks & 1;
-                    }
-                    bytes[j] ^= ((byte)b);
-                }
-            }
-            return bytes;
-        }
-
     private String GenerateMessageID() {
       StringBuilder builder = new StringBuilder();
       int seq = 0;
@@ -2393,9 +2312,7 @@ public final void setSubject(String value) {
       }
       String ValueHex = "0123456789abcdef";
       byte[] ent;
-      if (ValueMsgidRandom.nextInt(5) == 0) {
-        ent = TimeEntropy(16);
-      } else {
+      {
         ent = new byte[16];
         for (int i = 0; i < ent.length; ++i) {
           ent[i] = ((byte)ValueMsgidRandom.nextInt(256));
