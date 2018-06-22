@@ -133,12 +133,11 @@ namespace MailLibTest {
             builder.Append(ValueHex[((int)c >> 4) & 15]);
             builder.Append(ValueHex[((int)c) & 15]);
             builder.Append(")");
-            builder.Append(
-  "\n" + str.Substring(Math.Max(0,
- index + 1 - 30), (
-  index + 1) - Math.Max(
-  0,
-  index + 1 - 30)));
+    int mm1=Math.Max(0,index+1-30);
+     string ss = str.Substring(
+    mm1, (index + 1) - mm1);
+            builder.Append("\n");
+            builder.Append(ss);
             Console.WriteLine(builder.ToString());
           }
           haveNonAsciiMsg = true;
