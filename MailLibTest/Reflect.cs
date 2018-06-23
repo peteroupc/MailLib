@@ -158,13 +158,13 @@ namespace MailLibTest {
     /// documented yet.</param>
     /// <returns>An arbitrary object.</returns>
     public static object GetPropertyStatic(string type, string name) {
-      return InvokeMethod(
-  null,
- FindType(
-  type).GetProperty(
+      var method = FindType(type).GetProperty(
   name,
   BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetProperty)
-      .GetGetMethod());
+                    .GetGetMethod();
+      return InvokeMethod(
+  null,
+  method);
     }
 
     /// <summary>Not documented yet.</summary>

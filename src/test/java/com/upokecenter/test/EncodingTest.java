@@ -132,13 +132,12 @@ import com.upokecenter.text.*;
             builder.append(ValueHex.charAt(((int)c >> 4) & 15));
             builder.append(ValueHex.charAt(((int)c) & 15));
             builder.append(")");
-            builder.append(
-  "\n" + str.substring(Math.max(0,
- index + 1 - 30), (Math.max(0,
- index + 1 - 30))+((
-  index + 1) - Math.max(
-  0,
-  index + 1 - 30))));
+    int mm1 = Math.max(0, index + 1 - 30);
+     String ss = str.substring(
+    mm1, (
+    mm1)+((index + 1) - mm1));
+            builder.append("\n");
+            builder.append(ss);
             System.out.println(builder.toString());
           }
           haveNonAsciiMsg = true;
