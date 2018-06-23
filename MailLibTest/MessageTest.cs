@@ -1846,7 +1846,7 @@ MessageFromString(MessageFromString(msg).Generate())
       // not implemented yet
     }
 
-const string ValueVrhs =
+internal const string ValueVrhs =
         "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
     [Test]
     public void TestRemoveHeader() {

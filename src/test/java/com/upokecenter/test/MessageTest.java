@@ -1857,7 +1857,7 @@ MessageFromString(MessageFromString(msg).Generate())
       // not implemented yet
     }
 
-String ValueVrhs =
+static final String ValueVrhs =
         "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
     @Test
     public void TestRemoveHeader() {
