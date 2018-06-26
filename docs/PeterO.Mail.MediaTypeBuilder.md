@@ -13,7 +13,8 @@ Initializes a new instance of the [PeterO.Mail.MediaTypeBuilder](PeterO.Mail.Med
 
 <b>Parameters:</b>
 
- * <i>mt</i>: A MediaType object.
+ * <i>mt</i>: The parameter  <i>mt</i>
+ is a MediaType object.
 
 <b>Exceptions:</b>
 
@@ -90,7 +91,7 @@ Removes a parameter from this builder object. Does nothing if the parameter's na
 
 <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to remove. The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
 
 <b>Return Value:</b>
 
@@ -112,7 +113,7 @@ Sets a parameter's name and value for this media type.
 
 <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to set, such as "charset". The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U + 0041 to U + 005A) in both strings to lower case.).
+ * <i>name</i>: Name of the parameter to set, such as "charset". The name is compared using a basic case-insensitive comparison. (Two strings are equal in such a comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
 
  * <i>value</i>: A text string giving the parameter's value.
 

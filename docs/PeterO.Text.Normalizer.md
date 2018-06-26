@@ -18,9 +18,11 @@ Initializes a new instance of the [PeterO.Text.Normalizer](PeterO.Text.Normalize
 
 <b>Parameters:</b>
 
- * <i>str</i>: A text string.
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
 
- * <i>form</i>: A Normalization object.
+ * <i>form</i>: The parameter  <i>form</i>
+ is a Normalization object.
 
 ### IsNormalized
 
@@ -34,7 +36,8 @@ Returns whether this string is normalized.
 
  * <i>str</i>: The string to check.
 
- * <i>form</i>: A Normalization object.
+ * <i>form</i>: The parameter  <i>form</i>
+ is a Normalization object.
 
 <b>Return Value:</b>
 

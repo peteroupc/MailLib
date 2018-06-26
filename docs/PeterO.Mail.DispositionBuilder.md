@@ -13,7 +13,8 @@ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.D
 
 <b>Parameters:</b>
 
- * <i>mt</i>: A ContentDisposition object.
+ * <i>mt</i>: The parameter  <i>mt</i>
+ is a ContentDisposition object.
 
 <b>Exceptions:</b>
 
@@ -30,7 +31,8 @@ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.D
 
 <b>Parameters:</b>
 
- * <i>type</i>: A text string.
+ * <i>type</i>: The parameter  <i>type</i>
+ is a text string.
 
 <b>Exceptions:</b>
 
@@ -48,11 +50,11 @@ Initializes a new instance of the [PeterO.Mail.DispositionBuilder](PeterO.Mail.D
 
     public string DispositionType { get; set;}
 
-Gets or sets this value's disposition type, such value, such as "inline" or "attachment".
+Gets or sets this value's disposition type, such as "inline" or "attachment".
 
 <b>Returns:</b>
 
-This value's disposition type, such value, such as "inline" or "attachment".
+This value's disposition type, such as "inline" or "attachment".
 
 ### IsMultipart
 
@@ -108,7 +110,8 @@ Sets the disposition type, such as "inline".
 
 <b>Parameters:</b>
 
- * <i>str</i>: A text string.
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
 
 <b>Return Value:</b>
 
@@ -130,7 +133,7 @@ Sets a parameter of this content disposition.
 
 <b>Parameters:</b>
 
- * <i>name</i>: Name of the parameter to set. If this name already exists (compared using a basic case-insensitive comparison), it will be overwritten. . (Two strings are equal in a basic case-insensitive comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.)
+ * <i>name</i>: Name of the parameter to set. If this name already exists (compared using a basic case-insensitive comparison), it will be overwritten. (Two strings are equal in a basic case-insensitive comparison, if they match after converting the basic upper-case letters A to Z (U+0041 to U+005A) in both strings to lower case.).
 
  * <i>value</i>: Value of the parameter to set.
 
