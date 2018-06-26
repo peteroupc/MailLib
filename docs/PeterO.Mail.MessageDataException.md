@@ -30,7 +30,8 @@ Initializes a new instance of the [PeterO.Mail.MessageDataException](PeterO.Mail
 
  * <i>message</i>: A string to use as the exception message.
 
- * <i>innerException</i>: An Exception object.
+ * <i>innerException</i>: The parameter  <i>innerException</i>
+ is an Exception object.
 
 ### MessageDataException Constructor
 

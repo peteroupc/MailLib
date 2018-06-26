@@ -65,7 +65,8 @@ Determines whether this object and another object are equal.
 
 <b>Parameters:</b>
 
- * <i>obj</i>: An arbitrary object.
+ * <i>obj</i>: The parameter  <i>obj</i>
+ is an arbitrary object.
 
 <b>Return Value:</b>
 
@@ -171,7 +172,8 @@ Parses a content disposition string and returns a content disposition object.
 
 <b>Parameters:</b>
 
- * <i>dispoValue</i>: A text string.
+ * <i>dispoValue</i>: The parameter  <i>dispoValue</i>
+ is a text string.
 
 <b>Return Value:</b>
 

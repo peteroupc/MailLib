@@ -36,7 +36,8 @@ Determines whether the given string is a syntactically valid domain name.
 
 <b>Parameters:</b>
 
- * <i>str</i>: A text string.
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
 
  * <i>lookupRules</i>: If true, uses rules to apply when looking up the string as a domain name. If false, uses rules to apply when registering the string as a domain name.
 

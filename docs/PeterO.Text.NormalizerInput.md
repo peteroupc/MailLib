@@ -40,7 +40,8 @@ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.Norm
 
 <b>Parameters:</b>
 
- * <i>input</i>: An ICharacterInput object.
+ * <i>input</i>: The parameter  <i>input</i>
+ is an ICharacterInput object.
 
 ### NormalizerInput Constructor
 
@@ -52,7 +53,8 @@ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.Norm
 
 <b>Parameters:</b>
 
- * <i>stream</i>: An ICharacterInput object.
+ * <i>stream</i>: The parameter  <i>stream</i>
+ is an ICharacterInput object.
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
@@ -85,7 +87,8 @@ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.Norm
 
 <b>Parameters:</b>
 
- * <i>str</i>: A text string.
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
 
  * <i>index</i>: A zero-based index showing where the desired portion of  <i>str</i>
  begins.
@@ -106,7 +109,8 @@ Initializes a new instance of the [PeterO.Text.NormalizerInput](PeterO.Text.Norm
 
 <b>Parameters:</b>
 
- * <i>str</i>: A text string.
+ * <i>str</i>: The parameter  <i>str</i>
+ is a text string.
 
  * <i>form</i>: Specifies the normalization form to use when normalizing the text.
 
