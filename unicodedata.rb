@@ -637,7 +637,7 @@ end
 def linebrokenjoin(arr)
  return linebrokenjoin(arr.unpack("C*")) if arr.is_a?(String)
  data=arr.join(", ")
- data=data.gsub(/(.{76}[^,\s]*),\s*/){ "#{$1},\n      " }
+ data=data.gsub(/(.{60}[^,\s]*),\s*/){ "#{$1},\n      " }
  data=data.gsub(/,[ \t]\r?\n/,",\n")
  return data
 end
