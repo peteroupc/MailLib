@@ -13,7 +13,14 @@
     <PackageReleaseNotes>Version 0.11.0:
 
 - Corrected the documentation for MediaType's and ContentDisposition's Parameters properties
-- Added DisplayName property in NamedAddress class</PackageReleaseNotes>
+- Added DisplayName property in NamedAddress class
+- More robust ContentDisposition.MakeFilename method
+- Update Unicode data
+- Converted to .NET Standard
+- Updated Encoding library used
+- Supported parsing several new header fields
+- Bug fixes
+</PackageReleaseNotes>
     <Copyright>Written by Peter O. in 2013-2017.  Any copyright is released to the Public Domain.
        (Exceptions involve classes that contain data generated from the Unicode Character Database.  See
        https://github.com/peteroupc/MailLib/LICENSE.md for more information.)</Copyright>
@@ -38,6 +45,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="PeterO.Encoding" Version="0.3.2" />
+    <PackageReference Include="PeterO.Encoding" Version="0.4.0" />
   </ItemGroup>
 </Project>
