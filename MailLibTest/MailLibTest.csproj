@@ -63,7 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\UnitTest1.cs"><Link>UnitTest1.cs</Link></Compile><Compile Include="AddressTest.cs" />
+<Compile Include="AddressTest.cs" />
     <Compile Include="ContentDispositionTest.cs" />
     <Compile Include="DispositionBuilderTest.cs" />
     <Compile Include="EncodingTest.cs" />

@@ -10,6 +10,7 @@
     <PackageLicenseUrl>https://github.com/peteroupc/MailLib/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/peteroupc/MailLib</PackageProjectUrl>
     <Description>A .NET library for parsing and generating Internet email messages.</Description>
+    <PackageSummary>A .NET library for parsing and generating Internet email messages.</PackageSummary>
     <PackageReleaseNotes>Version 0.11.0:
 
 - Corrected the documentation for MediaType's and ContentDisposition's Parameters properties
@@ -25,10 +26,12 @@
        (Exceptions involve classes that contain data generated from the Unicode Character Database.  See
        https://github.com/peteroupc/MailLib/LICENSE.md for more information.)</Copyright>
     <PackOnBuild>true</PackOnBuild>
+    <Version>0.11.0</Version>
     <PackageVersion>0.11.0</PackageVersion>
     <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
     <PackageTags>email mail mime parser charset charsets</PackageTags>
     <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>PeterO.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
