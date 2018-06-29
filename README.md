@@ -34,7 +34,7 @@ project, add the following to the `dependencies` section in your `pom.xml` file:
     <dependency>
       <groupId>com.upokecenter</groupId>
       <artifactId>maillib</artifactId>
-      <version>0.10.0</version>
+      <version>0.11.0</version>
     </dependency>
 
 In other Java-based environments, the library can be referred to by its
