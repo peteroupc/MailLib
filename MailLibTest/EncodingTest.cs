@@ -17,10 +17,6 @@ using Test;
 namespace MailLibTest {
   [TestFixture]
   public class EncodingTest {
-    public static string MailNamespace() {
-      return typeof(Message).Namespace;
-    }
-
         public static string RandomString(RandomGenerator rnd) {
             int count = 10 + rnd.UniformInt(350);
       var sb = new StringBuilder(count * 2);

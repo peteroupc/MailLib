@@ -44,8 +44,7 @@ public final class NetHelper {
     }
      return list.toArray(new String[]{});
     } catch(IOException ex){
-      Assert.fail(ex.getMessage());
-      return null;
+      throw new IllegalStateException(ex.getMessage(), ex);
     }
   }
 }

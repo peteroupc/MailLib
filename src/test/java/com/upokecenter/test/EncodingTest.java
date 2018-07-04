@@ -16,10 +16,6 @@ import com.upokecenter.mail.*;
 import com.upokecenter.text.*;
 
   public class EncodingTest {
-    public static String MailNamespace() {
-      return Message.class.getPackage().getName();
-    }
-
         public static String RandomString(RandomGenerator rnd) {
             int count = 10 + rnd.UniformInt(350);
       StringBuilder sb = new StringBuilder(count * 2);

@@ -13,8 +13,7 @@ Description of DispositionBuilder.
 * `DispositionBuilder​(String type) DispositionBuilder`<br>
  Initializes a new instance of the DispositionBuilder class.
 * `String getDispositionType()`<br>
- Gets this value's disposition type, such value, such as "inline" or
- "attachment".
+ Gets this value's disposition type, such as "inline" or "attachment".
 * `boolean isMultipart()`<br>
  Deprecated.
 Irrelevant for content dispositions; will be removed in the future.
@@ -76,13 +75,11 @@ Initializes a new instance of the <code>DispositionBuilder</code> class.
 
 ### getDispositionType
     public final String getDispositionType()
-Gets this value's disposition type, such value, such as "inline" or
- "attachment".
+Gets this value's disposition type, such as "inline" or "attachment".
 
 **Returns:**
 
-* This value's disposition type, such value, such as "inline" or
- "attachment".
+* This value's disposition type, such as "inline" or "attachment".
 
 ### setDispositionType
     public final void setDispositionType​(String value)

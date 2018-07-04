@@ -276,7 +276,6 @@ Assert.assertEquals(objectTemp, objectTemp2);
                   "_",
                   stringTemp);
             }
-
   AssertGoodFilename("utf-8''%2A%EF%AB%87%EC%A5%B2%2B67%20Tqd%20R%E3%80%80%2E");
             for (int i = 0; i < 10000; ++i) {
         if (i % 1000 == 0) {

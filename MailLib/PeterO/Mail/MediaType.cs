@@ -822,7 +822,7 @@ return SkipQuotedString(
       return this.parameters.ContainsKey(name) ? this.parameters[name] : null;
     }
 
-    internal static string DecodeRfc2231Extension(string value) {
+    private static string DecodeRfc2231Extension(string value) {
       int firstQuote = value.IndexOf('\'');
       if (firstQuote < 0) {
         // not a valid encoded parameter
@@ -886,7 +886,7 @@ return SkipQuotedString(
     }
 
     private static bool ExpandRfc2231Extensions(IDictionary<string, string>
-      parameters) {
+      parameters, bool httpRules) {
       if (parameters.Count == 0) {
         return true;
       }
@@ -900,6 +900,8 @@ return SkipQuotedString(
         int asterisk = name.IndexOf('*');
         if (asterisk == name.Length - 1 && asterisk > 0) {
           // name*="value" (except when the parameter is just "*")
+          // NOTE: As of RFC 5987, this particular extension is now allowed
+          // in HTTP
           string realName = name.Substring(0, name.Length - 1);
           string realValue = DecodeRfc2231Extension(value);
           if (realValue == null) {
@@ -911,7 +913,7 @@ return SkipQuotedString(
           continue;
         }
         // name*0 or name*0*
-        if (asterisk > 0 && ((asterisk == name.Length - 2 &&
+        if (!httpRules && asterisk > 0 && ((asterisk == name.Length - 2 &&
           name[asterisk + 1] == '0') || (asterisk == name.Length - 3 &&
           name[asterisk + 1] == '0' && name[asterisk + 2] == '*'))) {
           string realName = name.Substring(0, asterisk);
@@ -1000,7 +1002,7 @@ return SkipQuotedString(
             null);
         if (index >= endIndex) {
           // No more parameters
-          return httpRules || ExpandRfc2231Extensions(parameters);
+          return ExpandRfc2231Extensions(parameters, httpRules);
         }
         if (str[index] != ';') {
           return false;
@@ -1056,7 +1058,7 @@ return SkipQuotedString(
         }
         if (index >= endIndex) {
           // No more parameters
-          return httpRules || ExpandRfc2231Extensions(parameters);
+          return ExpandRfc2231Extensions(parameters, httpRules);
         }
         builder.Remove(0, builder.Length);
         int qs;
