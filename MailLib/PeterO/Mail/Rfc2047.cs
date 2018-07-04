@@ -273,7 +273,6 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
       return i;
     }
 
-
     public static string DecodeEncodedWords(
   string str,
   int index,

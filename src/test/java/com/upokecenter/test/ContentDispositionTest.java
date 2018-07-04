@@ -139,7 +139,8 @@ public void TestIsInline() {
             boolean period = str.charAt(0) == '.';
             boolean beginEndSpace = str.charAt(0) == 0x20 || str.charAt(str.length() - 1) ==
                 0x20;
-            if (bracketDigit || homeFolder || period || beginEndSpace) {
+            if (bracketDigit || homeFolder ||
+                period || beginEndSpace) {
                 FailFilename(filename, str);
             }
             // Reserved filenames on Windows
@@ -199,7 +200,8 @@ public void TestIsInline() {
                 char c = str.charAt(i);
                 if (c < 0x20 || (c >= 0x7f && c <= 0x9f) ||
                   c == '%' || c == 0x2028 || c == 0x2029 ||
-                c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
+                c == '#' ||
+                    c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
                   c == ':' || c == '<' || c == '>' || c == '"' || c == '`' ||
     c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
   (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c == 0xfeff ||
@@ -217,6 +219,16 @@ public void TestIsInline() {
   "[" + EncodingTest.EscapeString("" + c) + "] index=" + i);
                  }
             }
+             if (str.indexOf(" ") >= 0) {
+ FailFilename(filename, str);
+}
+             if (str.indexOf(" \t") >= 0) {
+ FailFilename(filename, str);
+}
+             if (str.indexOf("\t ") >= 0) {
+ FailFilename(filename, str);
+}
+
             // Avoid space before and after last dot
             for (i = str.length() - 1; i >= 0; --i) {
                 if (str.charAt(i) == '.') {
@@ -244,6 +256,7 @@ public void TestIsInline() {
             AssertGoodFilename("xx!\ud845\udd33[xx");
     System.out.println(ContentDisposition.MakeFilename(
   "xx!\ud845\udd33[xx"));
+            AssertGoodFilename("xx#xx");
             AssertGoodFilename("xx!\ud845\udd33[");
             AssertGoodFilename("xx![xx");
 String str8675 =
@@ -315,6 +328,10 @@ Assert.assertEquals(objectTemp, objectTemp2);
                   "long filename",
                   stringTemp);
             }
+                stringTemp = ContentDisposition.MakeFilename("xx#xx");
+                Assert.assertEquals(
+                  "xx_xx",
+                  stringTemp);
             {
                 stringTemp =
                   ContentDisposition.MakeFilename("=?utf=?utf-8?q?test?=");

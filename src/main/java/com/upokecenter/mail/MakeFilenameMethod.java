@@ -1,36 +1,37 @@
-using System;
-using System.Text;
-using PeterO.Mail.Transforms;
-using PeterO.Text;
+package com.upokecenter.mail;
 
-namespace PeterO.Mail {
-    internal static class MakeFilenameMethod {
-        private static string TrimAndCollapseSpaceAndTab (string str) {
-            if (String.IsNullOrEmpty (str)) {
+import com.upokecenter.mail.transforms.*;
+import com.upokecenter.text.*;
+
+    final class MakeFilenameMethod {
+private MakeFilenameMethod() {
+}
+        private static String TrimAndCollapseSpaceAndTab(String str) {
+            if (((str) == null || (str).length() == 0)) {
                 return str;
             }
             StringBuilder builder = null;
-            var index = 0;
+            int index = 0;
             int leadIndex;
             // Skip leading whitespace, if any
-            while (index < str.Length) {
-                char c = str [index];
+            while (index < str.length()) {
+                char c = str.charAt(index);
                 if (c == 0x09 || c == 0x20) {
-                    builder = builder ?? (new StringBuilder());
+                    builder = (builder == null) ? ((new StringBuilder())) : builder;
                     ++index;
                 } else {
                     break;
                 }
             }
             leadIndex = index;
-            while (index < str.Length) {
+            while (index < str.length()) {
                 int si = index;
-                char c = str [index++];
-                var count = 0;
+                char c = str.charAt(index++);
+                int count = 0;
                 while (c == 0x09 || c == 0x20) {
                     ++count;
-                    if (index < str.Length) {
-                    c = str [index++];
+                    if (index < str.length()) {
+                    c = str.charAt(index++);
                     } else {
                     break;
                     }
@@ -38,39 +39,39 @@ namespace PeterO.Mail {
                 if (count > 0) {
                     if (builder == null) {
                     builder = new StringBuilder();
-                    builder.Append (str.Substring (leadIndex, si));
+                    builder.append (str.substring(leadIndex, (leadIndex)+(si)));
                     }
                     if (c != 0x09 && c != 0x20) {
-                    builder.Append (' ');
-                    builder.Append (c);
+                    builder.append (' ');
+                    builder.append (c);
                     }
                 } else {
                     if (builder != null) {
-                    builder.Append (c);
+                    builder.append (c);
                     }
                 }
             }
-            return (builder == null) ? str : builder.ToString();
+            return (builder == null) ? str : builder.toString();
         }
 
-        private static string DecodeEncodedWordsLenient (
-      string str,
+        private static String DecodeEncodedWordsLenient(
+      String str,
       int index,
       int endIndex) {
-            var state = 0;
-            var markStart = 0;
-            var wordStart = 0;
-            var charsetStart = -1;
-            var charsetEnd = -1;
-            var dataStart = -1;
-            var encoding = 0;
-            var haveSpace = false;
+            int state = 0;
+            int markStart = 0;
+            int wordStart = 0;
+            int charsetStart = -1;
+            int charsetEnd = -1;
+            int dataStart = -1;
+            int encoding = 0;
+            boolean haveSpace = false;
             if (str.IndexOf ('=') < 0) {
                 // Contains no equal sign, and therefore no
                 // encoded words
-                return str.Substring (index, endIndex - index);
+                return str.substring(index, (index)+(endIndex - index));
             }
-            var builder = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
             while (index <= endIndex) {
                 switch (state) {
                 case 0:
@@ -79,8 +80,8 @@ namespace PeterO.Mail {
                     ++index;
                     break;
                     }
-                    if (str [index] == '=' && index + 1 < endIndex &&
-                    str [index + 1] == '?') {
+                    if (str.charAt(index) == '=' && index + 1 < endIndex &&
+                    str.charAt(index + 1) == '?') {
                     wordStart = index;
                     state = 1;
                     index += 2;
@@ -97,7 +98,7 @@ namespace PeterO.Mail {
                     index = charsetStart;
                     break;
                     }
-                    if (str [index] == '?') {
+                    if (str.charAt(index) == '?') {
                     charsetEnd = index;
                     state = 2;
                     ++index;
@@ -113,16 +114,16 @@ namespace PeterO.Mail {
                     index = charsetStart;
                     break;
                     }
-                  if ((str [index] == 'b' || str [index] == 'B') && index +
+                  if ((str.charAt(index) == 'b' || str.charAt(index) == 'B') && index +
                       1 <
-                    endIndex && str [index + 1] == '?') {
+                    endIndex && str.charAt(index + 1) == '?') {
                     encoding = 1;
                     state = 3;
                     index += 2;
                     dataStart = index;
-               } else if ((str [index] == 'q' || str [index] == 'Q') &&
+               } else if ((str.charAt(index) == 'q' || str.charAt(index) == 'Q') &&
                       index +
-                    1 < endIndex && str [index + 1] == '?') {
+                    1 < endIndex && str.charAt(index + 1) == '?') {
                     encoding = 2;
                     state = 3;
                     index += 2;
@@ -141,20 +142,20 @@ namespace PeterO.Mail {
                     index = charsetStart;
                     break;
                     }
-                    if (str [index] == '?' && index + 1 < endIndex &&
-                    str [index + 1] == '=') {
-                    string charset = str.Substring (
-                 charsetStart,
-                 charsetEnd - charsetStart);
-                    string data = str.Substring (dataStart, index - dataStart);
+                    if (str.charAt(index) == '?' && index + 1 < endIndex &&
+                    str.charAt(index + 1) == '=') {
+                    String charset = str.substring(
+                 charsetStart, (
+                 charsetStart)+(charsetEnd - charsetStart));
+                    String data = str.substring(dataStart, (dataStart)+(index - dataStart));
                     index += 2;
                     int endData = index;
-                    var acceptedEncodedWord = true;
+                    boolean acceptedEncodedWord = true;
                     int asterisk = charset.IndexOf ('*');
-                    string decodedWord = null;
+                    String decodedWord = null;
                     if (asterisk >= 1) {
-                    bool asteriskAtEnd = asterisk + 1 >= charset.Length;
-                    charset = charset.Substring (0, asterisk);
+                    boolean asteriskAtEnd = asterisk + 1 >= charset.length();
+                    charset = charset.substring(0, asterisk);
                     // Ignore language parameter after the asterisk
                     acceptedEncodedWord &= !asteriskAtEnd;
                     } else {
@@ -179,12 +180,12 @@ namespace PeterO.Mail {
                     state = 0;
                     } else {
                     if (!haveSpace) {
-                    builder.Append (
-                   str.Substring (
-                   markStart,
-                   wordStart - markStart));
+                    builder.append (
+                   str.substring(
+                   markStart, (
+                   markStart)+(wordStart - markStart)));
                     }
-                    builder.Append (decodedWord);
+                    builder.append (decodedWord);
                     haveSpace = false;
                     markStart = endData;
                     state = 4;
@@ -199,13 +200,13 @@ namespace PeterO.Mail {
                     ++index;
                     break;
                     }
-                    if (str [index] == '=' && index + 1 < endIndex &&
-                    str [index + 1] == '?') {
+                    if (str.charAt(index) == '=' && index + 1 < endIndex &&
+                    str.charAt(index + 1) == '?') {
                     wordStart = index;
                     state = 1;
                     index += 2;
                     charsetStart = index;
-                    } else if (str [index] == 0x20 || str [index] == 0x09) {
+                    } else if (str.charAt(index) == 0x20 || str.charAt(index) == 0x09) {
                     ++index;
                     haveSpace = true;
                     } else {
@@ -214,17 +215,17 @@ namespace PeterO.Mail {
                     haveSpace = false;
                     }
                     break;
-                default: throw new InvalidOperationException();
+                default: throw new IllegalStateException();
                 }
             }
-            builder.Append (str.Substring (markStart, str.Length - markStart));
-            return builder.ToString();
+            builder.append (str.substring(markStart, (markStart)+(str.length() - markStart)));
+            return builder.toString();
         }
 
-        private static bool IsAlphaNumHyphen (string str) {
-            int len = (str == null) ? 0 : str.Length;
+        private static boolean IsAlphaNumHyphen(String str) {
+            int len = (str == null) ? 0 : str.length();
             for (int i = 0; i < len; ++i) {
-                char c1 = str [i];
+                char c1 = str.charAt(i);
               if (!((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') ||
                   (c1
                   >= '0' && c1 <= '9') || c1=='-')) {
@@ -234,7 +235,7 @@ namespace PeterO.Mail {
             return true;
         }
 
-        private static string DecodeRfc2231ExtensionLenient (string value) {
+        private static String DecodeRfc2231ExtensionLenient(String value) {
       // NOTE: Differs from MediaType.DecodeRfc2231Extension in that
       // it doesn't do a detailed validation of the language tag.
       // This method is only used to adapt suggested filenames
@@ -251,39 +252,39 @@ namespace PeterO.Mail {
                 // not a valid encoded parameter
                 return null;
             }
-            string charset = value.Substring (0, firstQuote);
-            string language = value.Substring (
-        firstQuote + 1,
-        secondQuote - (firstQuote + 1));
-            if (language.Length > 0 && !IsAlphaNumHyphen (language)) {
+            String charset = value.substring(0, firstQuote);
+            String language = value.substring(
+        firstQuote + 1, (
+        firstQuote + 1)+(secondQuote - (firstQuote + 1)));
+            if (language.length() > 0 && !IsAlphaNumHyphen (language)) {
                 // not a valid language tag
                 return null;
             }
-            string paramValue = value.Substring (secondQuote + 1);
+            String paramValue = value.substring(secondQuote + 1);
             ICharacterEncoding cs = Encodings.GetEncoding (charset, true);
-            cs = cs ?? Encodings.GetEncoding ("us-ascii", true);
+            cs = (cs == null) ? (Encodings.GetEncoding ("us-ascii", true)) : cs;
             int quote = paramValue.IndexOf ('\'');
             return (quote >= 0) ? null : Encodings.DecodeToString (
               cs,
               new PercentEncodingStringTransform (paramValue));
         }
 
-        private static string RemoveEncodedWordEnds (string str) {
-            var sb = new StringBuilder();
-            var index = 0;
-            var inEncodedWord = false;
-            while (index < str.Length) {
-          if (!inEncodedWord && index + 1 < str.Length && str [index] == '='
+        private static String RemoveEncodedWordEnds(String str) {
+            StringBuilder sb = new StringBuilder();
+            int index = 0;
+            boolean inEncodedWord = false;
+            while (index < str.length()) {
+          if (!inEncodedWord && index + 1 < str.length() && str.charAt(index) == '='
                   &&
-                  str [index + 1] == '?') {
+                  str.charAt(index + 1) == '?') {
                     // Remove start of encoded word
                     inEncodedWord = true;
                     index += 2;
                     int start = index;
-                    var qmarks = 0;
+                    int qmarks = 0;
                     // skip charset and encoding
-                    while (index < str.Length) {
-                    if (str [index] == '?') {
+                    while (index < str.length()) {
+                    if (str.charAt(index) == '?') {
                     ++qmarks;
                     ++index;
                     if (qmarks == 2) {
@@ -297,35 +298,35 @@ namespace PeterO.Mail {
                     inEncodedWord = true;
                     } else {
                     inEncodedWord = false;
-                    sb.Append ('=');
-                    sb.Append ('?');
+                    sb.append ('=');
+                    sb.append ('?');
                     index = start;
                     }
-           } else if (inEncodedWord && index + 1 < str.Length && str [index]
+           } else if (inEncodedWord && index + 1 < str.length() && str.charAt(index)
                   ==
-                  '?' && str [index + 1] == '=') {
+                  '?' && str.charAt(index + 1) == '=') {
                     // End of encoded word
                     index += 2;
                     inEncodedWord = false;
                 } else {
                     int c = DataUtilities.CodePointAt (str, index);
                     if (c == 0xfffd) {
-                    sb.Append ((char)0xfffd);
+                    sb.append ((char)0xfffd);
                     ++index;
                     } else {
-                    sb.Append (str [index++]);
+                    sb.append (str.charAt(index++));
                     if (c >= 0x10000) {
-                    sb.Append (str [index++]);
+                    sb.append (str.charAt(index++));
                     }
                     }
                 }
             }
-            return sb.ToString();
+            return sb.toString();
         }
 
-        private static string SurrogateCleanup (string str) {
-            var i = 0;
-            while (i < str.Length) {
+        private static String SurrogateCleanup(String str) {
+            int i = 0;
+            while (i < str.length()) {
                 int c = DataUtilities.CodePointAt (str, i, 2);
                 // NOTE: Unpaired surrogates are replaced with -1
                 if (c >= 0x10000) {
@@ -336,29 +337,28 @@ namespace PeterO.Mail {
                 }
                 ++i;
             }
-            if (i >= str.Length) {
+            if (i >= str.length()) {
                 return str;
             }
-            var builder = new StringBuilder();
-            builder.Append (str.Substring (0, i));
-            while (i < str.Length) {
+            StringBuilder builder = new StringBuilder();
+            builder.append (str.substring(0, i));
+            while (i < str.length()) {
                 int c = DataUtilities.CodePointAt (str, i, 0);
                 // NOTE: Unpaired surrogates are replaced with U + FFFD
                 if (c >= 0x10000) {
-                    builder.Append (str [i]);
-                    builder.Append (str [i + 1]);
+                    builder.append (str.charAt(i));
+                    builder.append (str.charAt(i + 1));
                     i += 2;
                 } else {
-                    var ch = (char)c;
-                    builder.Append (ch);
+                    char ch = (char)c;
+                    builder.append (ch);
                     ++i;
                 }
             }
-            return builder.ToString();
+            return builder.toString();
         }
 
-        private static readonly int [] charCheck = new[] {
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        private static final int [] charCheck = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
@@ -367,18 +367,18 @@ namespace PeterO.Mail {
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
     };
-        private static bool SimplifiedFileCheck (string name) {
-            if (String.IsNullOrEmpty (name) || name.Length > 128) {
+        private static boolean SimplifiedFileCheck(String name) {
+            if (((name) == null || (name).length() == 0) || name.length() > 128) {
  return false;
 }
-            var dotSeen = false;
-            for (var i = 0; i < name.Length; ++i) {
-                var c = (int)name [i];
+            boolean dotSeen = false;
+            for (int i = 0; i < name.length(); ++i) {
+                int c = (int)name.charAt(i);
                 if (c >= 0x7f) {
  return false;
 }
                 if (c == 0x2e) {
-                    if (i == 0 || i == name.Length - 1 || dotSeen) {
+                    if (i == 0 || i == name.length() - 1 || dotSeen) {
  return false;
 }
                     dotSeen = true;
@@ -391,30 +391,30 @@ namespace PeterO.Mail {
                     if (c == 0x2d) {
  return false;
 }
-   if ((c == 0x4e || c == 0x6e || c == 0x41 || c == 0x61) && name.Length > 1
+   if ((c == 0x4e || c == 0x6e || c == 0x41 || c == 0x61) && name.length() > 1
                       &&
-                    (name [1] == 'u' || name [1] == 'U')) {
+                    (name.charAt(1) == 'u' || name.charAt(1) == 'U')) {
                     return false;
                     }
-                    if ((c == 0x43 || c == 0x63) && name.Length >= 3 &&
-                    (name [1] == 'o' || name [1] == 'O') &&
-  (name [2] == 'm' || name [2] == 'M' || name [2] == 'n' || name [2] == 'N'
+                    if ((c == 0x43 || c == 0x63) && name.length() >= 3 &&
+                    (name.charAt(1) == 'o' || name.charAt(1) == 'O') &&
+  (name.charAt(2) == 'm' || name.charAt(2) == 'M' || name.charAt(2) == 'n' || name.charAt(2) == 'N'
 )) {
                     return false;
                     }
 
-                    if ((c == 0x43 || c == 0x63) && name.Length == 6 &&
-                    (name [1] == 'l' || name [1] == 'L')) {
+                    if ((c == 0x43 || c == 0x63) && name.length() == 6 &&
+                    (name.charAt(1) == 'l' || name.charAt(1) == 'L')) {
                     return false;
                     }
-                    if ((c == 0x50 || c == 0x70) && name.Length >= 3 &&
-                (name [1] == 'r' || name [1] == 'R') &&
-                (name [2] == 'n' || name [2] == 'N')
+                    if ((c == 0x50 || c == 0x70) && name.length() >= 3 &&
+                (name.charAt(1) == 'r' || name.charAt(1) == 'R') &&
+                (name.charAt(2) == 'n' || name.charAt(2) == 'N')
 ) {
                     return false;
                     }
-                    if ((c == 0x4c || c == 0x6c) && name.Length > 1 &&
-                (name [1] == 'p' || name [1] == 'P')) {
+                    if ((c == 0x4c || c == 0x6c) && name.length() > 1 &&
+                (name.charAt(1) == 'p' || name.charAt(1) == 'P')) {
                     return false;
                     }
                 }
@@ -422,16 +422,16 @@ namespace PeterO.Mail {
             return true;
         }
 
-        public static string MakeFilename (string str) {
+        public static String MakeFilename(String str) {
             if (str == null) {
-                return String.Empty;
+                return "";
             }
             if (SimplifiedFileCheck (str)) {
                 return str;
             }
             int i;
             str = TrimAndCollapseSpaceAndTab (str);
-            if (str.IndexOf ("=?", StringComparison.Ordinal) >= 0) {
+            if (str.indexOf("=?") >= 0) {
                 // May contain encoded words, which are very frequent
                 // in Content-Disposition filenames (they would appear quoted
                 // in the Content-Disposition "filename" parameter); these
@@ -442,8 +442,8 @@ namespace PeterO.Mail {
                 str = MakeFilenameMethod.DecodeEncodedWordsLenient (
           str,
           0,
-          str.Length);
-                if (str.IndexOf ("=?", StringComparison.Ordinal) >= 0) {
+          str.length());
+                if (str.indexOf("=?") >= 0) {
                     // Remove ends of encoded words that remain
                     str = RemoveEncodedWordEnds (str);
                 }
@@ -453,13 +453,13 @@ namespace PeterO.Mail {
                 // too, to use quotes around a filename parameter AND use
                 // RFC 2231 encoding, even though all the examples in that RFC
                 // show unquoted use of this encoding.
-                string charset = Encodings.ResolveAliasForEmail (
-          str.Substring (
-          0,
-          str.IndexOf ('\'')));
-                if (!String.IsNullOrEmpty (charset)) {
-                    string newstr = DecodeRfc2231ExtensionLenient (str);
-                    if (!String.IsNullOrEmpty (newstr)) {
+                String charset = Encodings.ResolveAliasForEmail (
+          str.substring(
+          0, (
+          0)+(str.IndexOf ('\''))));
+                if (!((charset) == null || (charset).length() == 0)) {
+                    String newstr = DecodeRfc2231ExtensionLenient (str);
+                    if (!((newstr) == null || (newstr).length() == 0)) {
                     // Value was decoded under RFC 2231
                     str = newstr;
                     }
@@ -468,10 +468,10 @@ namespace PeterO.Mail {
             str = SurrogateCleanup (str);
             str = TrimAndCollapseSpaceAndTab (str);
             str = NormalizerInput.Normalize (str, Normalization.NFC);
-            if (str.Length == 0) {
+            if (str.length() == 0) {
                 return "_";
             }
-            var builder = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
             // Replace unsuitable characters for filenames
             // and make sure the filename's
             // length doesn't exceed 243. (A few additional characters
@@ -483,7 +483,7 @@ namespace PeterO.Mail {
             // will be treated as unsuitable characters for filenames
             // and are handled below.
             i = 0;
-            while (i < str.Length && builder.Length < 243) {
+            while (i < str.length() && builder.length() < 243) {
                 int c = DataUtilities.CodePointAt (str, i, 0);
                 // NOTE: Unpaired surrogates are replaced with U + FFFD
                 if (c >= 0x10000) {
@@ -494,7 +494,7 @@ namespace PeterO.Mail {
    (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
              0xfeff) {
                     // Replace space-like characters (including tab) with space
-                    builder.Append (' ');
+                    builder.append (' ');
                 } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||
                   c == '?' || c == '|' ||
             c == ':' || c == '<' || c == '>' || c == '"' ||
@@ -504,108 +504,101 @@ namespace PeterO.Mail {
                     // reserved by Windows,
                     // backslash, forward slash, ASCII controls, and C1
                     // controls).
-                    builder.Append ('_');
-             } else if (c == '!' && i + 1 < str.Length && str [i + 1] == '['
+                    builder.append ('_');
+             } else if (c == '!' && i + 1 < str.length() && str.charAt(i + 1) == '['
 ) {
                     // '![ ... ]' may be interpreted in BASH as an evaluator;
                     // replace '!' with underscore
-                    builder.Append ('_');
+                    builder.append ('_');
                 } else if (c == '`') {
                     // '`' starts a command in BASH and possibly other shells
-                    builder.Append ('_');
+                    builder.append ('_');
                 } else if (c == '#') {
                     // Fragment identifier for URIs
-                    builder.Append ('_');
+                    builder.append ('_');
                 } else if (c == '$') {
                     // '$' starts a variable in BASH and possibly other shells
-                    builder.Append ('_');
+                    builder.append ('_');
                 } else if (c == 0x2028 || c == 0x2029) {
                     // line break characters (0x85 is already included above)
-                    builder.Append ('_');
+                    builder.append ('_');
            } else if ((c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <=
                   0xfdef)) {
                     // noncharacters
-                    builder.Append ('_');
+                    builder.append ('_');
                 } else if (c == '%') {
-                    // Treat percent character as unsuitable, even though it
+                    // Treat percent ((character instanceof unsuitable) ? (unsuitable)character : null), even though it
                     // can occur
                     // in a Windows filename, since it's used in MS-DOS and
                     // Windows
                     // in environment variable placeholders
-                    builder.Append ('_');
+                    builder.append ('_');
                 } else {
-                    if (builder.Length < 242 || c < 0x10000) {
+                    if (builder.length() < 242 || c < 0x10000) {
                     if (c <= 0xffff) {
-                    builder.Append ((char)c);
+                    builder.append ((char)c);
                     } else if (c <= 0x10ffff) {
-             builder.Append ((char)((((c - 0x10000) >> 10) & 0x3ff) +
+             builder.append ((char)((((c - 0x10000) >> 10) & 0x3ff) +
                       0xd800));
-                    builder.Append ((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+                    builder.append ((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
                     }
-                    } else if (builder.Length >= 242) {
+                    } else if (builder.length() >= 242) {
                     break;
                     }
                 }
                 ++i;
             }
-            str = builder.ToString();
+            str = builder.toString();
             str = TrimAndCollapseSpaceAndTab (str);
-            if (str.Length == 0) {
+            if (str.length() == 0) {
                 return "_";
             }
-            string strLower = DataUtilities.ToLowerCaseAscii (str);
+            String strLower = DataUtilities.ToLowerCaseAscii (str);
             // Reserved filenames
-            bool reservedFilename = strLower.Equals (
-              "nul") || strLower.Equals ("clock$") || strLower.IndexOf (
-              "nul.",
-              StringComparison.Ordinal) == 0 || strLower.Equals (
-              "prn") || strLower.IndexOf (
-              "prn.",
-              StringComparison.Ordinal) == 0 || strLower.IndexOf (
-              "![",
-              StringComparison.Ordinal) >= 0 || strLower.Equals (
-              "aux") || strLower.IndexOf (
-              "aux.",
-              StringComparison.Ordinal) == 0 || strLower.Equals (
-              "con") || strLower.IndexOf (
-              "con.",
-              StringComparison.Ordinal) == 0 || (
-              strLower.Length >= 4 && strLower.IndexOf (
-              "lpt",
-              StringComparison.Ordinal) == 0 && strLower [3] >= '0' &&
-                   strLower [3] <= '9') || (strLower.Length >= 4 &&
-                    strLower.IndexOf (
-              "com",
-              StringComparison.Ordinal) == 0 && strLower [3] >= '0' &&
-                    strLower [3] <= '9');
-            bool bracketDigit = str [0] == '{' && str.Length > 1 &&
-                  str [1] >= '0' && str [1] <= '9';
+            boolean reservedFilename = strLower.equals (
+              "nul") || strLower.equals ("clock$") || strLower.indexOf(
+              "nul.") == 0 || strLower.equals (
+              "prn") || strLower.indexOf(
+              "prn.") == 0 || strLower.indexOf(
+              "![") >= 0 || strLower.equals (
+              "aux") || strLower.indexOf(
+              "aux.") == 0 || strLower.equals (
+              "con") || strLower.indexOf(
+              "con.") == 0 || (
+              strLower.length() >= 4 && strLower.indexOf(
+              "lpt") == 0 && strLower.charAt(3) >= '0' &&
+                   strLower.charAt(3) <= '9') || (strLower.length() >= 4 &&
+                    strLower.indexOf(
+              "com") == 0 && strLower.charAt(3) >= '0' &&
+                    strLower.charAt(3) <= '9');
+            boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&
+                  str.charAt(1) >= '0' && str.charAt(1) <= '9';
             // Home folder convention (tilde).
             // Filenames starting with hyphens can also be
             // problematic especially in Unix-based systems,
             // and filenames starting with dollar sign can
             // be misinterpreted if they're treated as expansion
             // symbols
-          bool homeFolder = str [0] == '~' || str [0] == '-' || str [0] ==
+          boolean homeFolder = str.charAt(0) == '~' || str.charAt(0) == '-' || str.charAt(0) ==
               '$' ;
             // Starts with period; may be hidden in some configurations
-            bool period = str [0] == '.';
+            boolean period = str.charAt(0) == '.';
             if (reservedFilename || bracketDigit || homeFolder ||
                  period) {
                 str = "_" + str;
             }
             // Avoid space before and after last dot
-            for (i = str.Length - 1; i >= 0; --i) {
-                if (str [i] == '.') {
-                    bool spaceAfter = i + 1 < str.Length && str [i + 1] == 0x20;
-                    bool spaceBefore = i > 0 && str [i - 1] == 0x20;
+            for (i = str.length() - 1; i >= 0; --i) {
+                if (str.charAt(i) == '.') {
+                    boolean spaceAfter = i + 1 < str.length() && str.charAt(i + 1) == 0x20;
+                    boolean spaceBefore = i > 0 && str.charAt(i - 1) == 0x20;
                     if (spaceAfter && spaceBefore) {
-                str = str.Substring (0, i - 1) + "_._" + str.Substring (i +
+                str = str.substring(0,i - 1) + "_._" + str.substring(i +
                       2);
                     } else if (spaceAfter) {
-                    str = str.Substring (0, i) + "._" + str.Substring (i + 2);
+                    str = str.substring(0,i) + "._" + str.substring(i + 2);
                     } else if (spaceBefore) {
-                 str = str.Substring (0, i - 1) + "_." + str.Substring (i +
+                 str = str.substring(0,i - 1) + "_." + str.substring(i +
                       1);
                     }
                     break;
@@ -613,25 +606,24 @@ namespace PeterO.Mail {
             }
             str = NormalizerInput.Normalize (str, Normalization.NFC);
             // Ensure length is 254 or less
-            if (str.Length > 254) {
-                char c = str [254];
-                var newLength = 254;
+            if (str.length() > 254) {
+                char c = str.charAt(254);
+                int newLength = 254;
                 if ((c & 0xfc00) == 0xdc00) {
                     --newLength;
                 }
-                str = str.Substring (0, newLength);
+                str = str.substring(0, newLength);
             }
-            if (str [str.Length - 1] == '.' || str [str.Length - 1] == '~') {
+            if (str.charAt(str.length() - 1) == '.' || str.charAt(str.length() - 1) == '~') {
                 // Ends in a dot or tilde (a file whose name ends with
                 // the latter may be treated as
                 // a backup file especially in Unix-based systems).
                 // NOTE: Although concatenation of two NFC strings
-                // doesn't necessarily lead to an NFC string, this
+                // doesn't necessarily lead to an NFC String, this
                 // particular concatenation doesn't disturb the NFC
-                // status of the string.
+                // status of the String.
                 str += "_";
             }
             return str;
         }
     }
-}

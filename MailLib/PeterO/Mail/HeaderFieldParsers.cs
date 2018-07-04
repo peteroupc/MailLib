@@ -392,8 +392,7 @@ namespace PeterO.Mail {
         return str;
       }
 
-            private static string TrimAndCollapseSpaceAndTab (string str)
-            {
+            private static string TrimAndCollapseSpaceAndTab (string str) {
                 if (String.IsNullOrEmpty (str)) {
                     return str;
                 }
@@ -404,10 +403,10 @@ namespace PeterO.Mail {
                 while (index < str.Length) {
                     char c = str [index];
                     if (c == 0x09 || c == 0x20) {
-                        builder = builder ?? (new StringBuilder ());
-                        ++index;
+                    builder = builder ?? (new StringBuilder());
+                    ++index;
                     } else {
-                        break;
+                    break;
                     }
                 }
                 leadIndex = index;
@@ -416,31 +415,30 @@ namespace PeterO.Mail {
                     char c = str [index++];
                     var count = 0;
                     while (c == 0x09 || c == 0x20) {
-                        ++count;
-                        if (index < str.Length) {
-                            c = str [index++];
-                        } else {
-                            break;
-                        }
+                    ++count;
+                    if (index < str.Length) {
+                    c = str [index++];
+                    } else {
+                    break;
+                    }
                     }
                     if (count > 0) {
-                        if (builder == null) {
-                            builder = new StringBuilder ();
-                            builder.Append (str.Substring (leadIndex, si));
-                        }
-                        if (c != 0x09 && c != 0x20) {
-                            builder.Append (' ');
-                            builder.Append (c);
-                        }
+                    if (builder == null) {
+                    builder = new StringBuilder();
+                    builder.Append (str.Substring (leadIndex, si));
+                    }
+                    if (c != 0x09 && c != 0x20) {
+                    builder.Append (' ');
+                    builder.Append (c);
+                    }
                     } else {
-                        if (builder != null) {
-                            builder.Append (c);
-                        }
+                    if (builder != null) {
+                    builder.Append (c);
+                    }
                     }
                 }
-                return (builder == null) ? str : builder.ToString ();
+                return (builder == null) ? str : builder.ToString();
             }
-
 
             public string UncommentAndCollapse(string str) {
         var sb = new StringBuilder();
