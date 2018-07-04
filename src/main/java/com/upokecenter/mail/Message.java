@@ -69,7 +69,7 @@ import com.upokecenter.text.*;
      * encoded word that uses ISO-2022-JP (the only supported encoding that
      * uses code switching) even if the encoded word's payload ends in a
      * different mode from "ASCII mode". (Each encoded word still starts in
-     * that mode, though.)</li></ul> ---.
+     * "ASCII mode", though.)</li></ul> ---.
      */
   public final class Message {
     private static final int EncodingBase64 = 2;

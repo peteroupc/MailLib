@@ -18,10 +18,8 @@ import com.upokecenter.util.*;
     private String type;
 
     /**
-     * Gets this value's disposition type, such value, such as "inline" or
-     * "attachment".
-     * @return This value's disposition type, such value, such as "inline" or
-     * "attachment".
+     * Gets this value's disposition type, such as "inline" or "attachment".
+     * @return This value's disposition type, such as "inline" or "attachment".
      */
     public final String getDispositionType() {
         return this.type;

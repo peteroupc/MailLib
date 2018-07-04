@@ -861,7 +861,11 @@
             ISO-2022-JP (the only supported encoding that uses code switching)
             even if the encoded word's payload ends in a different mode from
             "ASCII mode". (Each encoded word still starts in "ASCII mode",
-            though.)</item></list> ---.</summary>
+            though.)</item></list>
+<p>It would be appreciated if users of this library contact the author if they
+ find other ways in which this implementation deviates from the mail specifications or other
+applicable specifications.</p>
+</summary>
 </doc>
 <doc name="M:PeterO.Mail.Message.#ctor">
 <summary>Initializes a new instance of the <see cref='T:PeterO.Mail.Message'/> class. The message will be
@@ -946,9 +950,28 @@
             being set and "value" is null.</exception>
 </doc>
 <doc name="P:PeterO.Mail.Message.FileName">
-<summary>Gets a filename suggested by this message for saving the
+<summary><p>Gets a file name suggested by this message for saving the
             message's body to a file. For more information on the algorithm,
-            see ContentDisposition.MakeFilename.</summary>
+            see ContentDisposition.MakeFilename.</p>
+<p>This method generates
+a file name based on the <c>filename</c> parameter of the Content-Disposition
+header field, if it exists, or on the <c>name</c> parameter of the Content-Type
+header field, otherwise.</p></summary>
+<remarks>
+<p><b>Remark:</b> Note that RFC 2046 sec. 4.5.1 (<c>application/octet-stream</c> subtype)
+cites an earlier RFC 1341, which "defined the use of a 'NAME' parameter which gave 
+a <i>suggested</i> file name to be used if the data were written to a file".  (Although the
+same section says this parameter "has been deprecated in anticipation of [the]
+Content-Disposition header field", the <c>name</c> parameter may still be written out
+to email messages in some implementations, even in media types other than 
+<c>application/octet-stream</c>.)  Also, RFC 2183 sec. 2.3 (<c>filename</c>
+parameter) confirms that the "<i>suggested</i> filename" in the <c>filename</c>
+parameter "should be <i>used as a basis</i> for the actual filename, where possible",
+and that that file name should "not [be] blindly use[d]".  See also RFC 6266, section
+4.3, which discuss the use of that parameter in Hypertext Transfer Protocol (HTTP).
+Thus, this implementation is  justified in not using the exact file name given, but rather 
+adapting it to increase the chance of the name being usable in file systems.</p>
+</remarks>
             <value>A suggested name for the file, or the empty string if there
             is no filename suggested by the content type or content
             disposition.</value>

@@ -63,7 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-<Compile Include="AddressTest.cs" />
+<Compile Include="..\..\UnitTest1.cs"><Link>UnitTest1.cs</Link></Compile><Compile Include="AddressTest.cs" />
     <Compile Include="ContentDispositionTest.cs" />
     <Compile Include="DispositionBuilderTest.cs" />
     <Compile Include="EncodingTest.cs" />
@@ -79,7 +79,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomGenerator.cs" />
-    <Compile Include="Reflect.cs" />
     <Compile Include="TestCommon.cs" />
     <Compile Include="XorShift128Plus.cs" />
 
