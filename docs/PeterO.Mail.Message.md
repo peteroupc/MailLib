@@ -42,7 +42,7 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * (b) This implementation can decode an encoded word that uses ISO-2022-JP (the only supported encoding that uses code switching) even if the encoded word's payload ends in a different mode from "ASCII mode". (Each encoded word still starts in "ASCII mode", though.)
 
- ---.
+It would be appreciated if users of this library contact the author if they find other ways in which this implementation deviates from the mail specifications or other applicable specifications.Note that this class currently doesn't support the "padding" parameter for message bodies with the media type "application/octet stream" or treated as that media type (see RFC 2046 sec. 4.5.1).
 
 ### Message Constructor
 
@@ -142,7 +142,9 @@ This value is being set and "value" is null.
 
     public string FileName { get; }
 
-Gets a filename suggested by this message for saving the message's body to a file. For more information on the algorithm, see ContentDisposition.MakeFilename.
+Gets a file name suggested by this message for saving the message's body to a file. For more information on the algorithm, see ContentDisposition.MakeFilename.This method generates a file name based on the  `filename`  parameter of the Content-Disposition header field, if it exists, or on the  `name`  parameter of the Content-Type header field, otherwise.
+
+<b>Remark:</b> Note that RFC 2046 sec. 4.5.1 ( `application/octet-stream`  subtype) cites an earlier RFC 1341, which "defined the use of a 'NAME' parameter which gave a <i>suggested</i> file name to be used if the data were written to a file". (Although the same section says this parameter "has been deprecated in anticipation of [the] Content-Disposition header field", the  `name`  parameter may still be written out to email messages in some implementations, even in media types other than `application/octet-stream` .) Also, RFC 2183 sec. 2.3 ( `filename` parameter) confirms that the "<i>suggested</i> filename" in the  `filename` parameter "should be <i>used as a basis</i> for the actual filename, where possible", and that that file name should "not [be] blindly use[d]". See also RFC 6266, section 4.3, which discusses the use of that parameter in Hypertext Transfer Protocol (HTTP). Thus, this implementation is justified in not using the exact file name given, but rather adapting it to increase the chance of the name being usable in file systems.To the extent that the "name" parameter is not allowed in message bodies with the media type "application/octet-stream" or treated as that media-type, this is a deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which says that "[t]here are NO globally meaningful parameters that apply to all media types").
 
 <b>Returns:</b>
 

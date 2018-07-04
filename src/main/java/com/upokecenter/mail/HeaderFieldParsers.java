@@ -394,7 +394,55 @@ private HeaderFieldParsers() {
         return str;
       }
 
-      public String UncommentAndCollapse(String str) {
+            private static String TrimAndCollapseSpaceAndTab(String str) {
+                if (((str) == null || (str).length() == 0)) {
+                    return str;
+                }
+                StringBuilder builder = null;
+                int index = 0;
+                int leadIndex;
+                // Skip leading whitespace, if any
+                while (index < str.length()) {
+                    char c = str.charAt(index);
+                    if (c == 0x09 || c == 0x20) {
+                    builder = (builder == null) ? ((new StringBuilder())) : builder;
+                    ++index;
+                    } else {
+                    break;
+                    }
+                }
+                leadIndex = index;
+                while (index < str.length()) {
+                    int si = index;
+                    char c = str.charAt(index++);
+                    int count = 0;
+                    while (c == 0x09 || c == 0x20) {
+                    ++count;
+                    if (index < str.length()) {
+                    c = str.charAt(index++);
+                    } else {
+                    break;
+                    }
+                    }
+                    if (count > 0) {
+                    if (builder == null) {
+                    builder = new StringBuilder();
+                    builder.append (str.substring(leadIndex, (leadIndex)+(si)));
+                    }
+                    if (c != 0x09 && c != 0x20) {
+                    builder.append (' ');
+                    builder.append (c);
+                    }
+                    } else {
+                    if (builder != null) {
+                    builder.append (c);
+                    }
+                    }
+                }
+                return (builder == null) ? str : builder.toString();
+            }
+
+            public String UncommentAndCollapse(String str) {
         StringBuilder sb = new StringBuilder();
         Tokener tokener = new Tokener();
         int endIndex = this.Parse(str, 0, str.length(), tokener);
@@ -417,7 +465,7 @@ private HeaderFieldParsers() {
         }
         sb.append(str.substring(lastIndex, (lastIndex)+(str.length() - lastIndex)));
         String ret = sb.toString();
-        ret = ParserUtility.TrimAndCollapseSpaceAndTab(ret);
+        ret = TrimAndCollapseSpaceAndTab(ret);
         return ret;
       }
 

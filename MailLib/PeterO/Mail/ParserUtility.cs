@@ -12,54 +12,6 @@ using PeterO;
 
 namespace PeterO.Mail {
   internal static class ParserUtility {
-    public static string TrimAndCollapseSpaceAndTab(string str) {
-      if (String.IsNullOrEmpty(str)) {
-        return str;
-      }
-      StringBuilder builder = null;
-      var index = 0;
-      int leadIndex;
-      // Skip leading whitespace, if any
-      while (index < str.Length) {
-        char c = str[index];
-        if (c == 0x09 || c == 0x20) {
-          builder = builder ?? (new StringBuilder());
-          ++index;
-        } else {
-          break;
-        }
-      }
-      leadIndex = index;
-      while (index < str.Length) {
-        int si = index;
-        char c = str[index++];
-        var count = 0;
-        while (c == 0x09 || c == 0x20) {
-          ++count;
-          if (index < str.Length) {
-            c = str[index++];
-          } else {
-            break;
-          }
-        }
-        if (count > 0) {
-          if (builder == null) {
-            builder = new StringBuilder();
-            builder.Append(str.Substring(leadIndex, si));
-          }
-          if (c != 0x09 && c != 0x20) {
-            builder.Append(' ');
-            builder.Append(c);
-          }
-        } else {
-          if (builder != null) {
-            builder.Append(c);
-          }
-        }
-      }
-      return (builder == null) ? str : builder.ToString();
-    }
-
     public static string TrimSpaceAndTab(string str) {
       if (String.IsNullOrEmpty(str)) {
         return str;

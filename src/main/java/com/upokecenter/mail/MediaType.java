@@ -861,7 +861,7 @@ return SkipQuotedString(
       return this.parameters.containsKey(name) ? this.parameters.get(name) : null;
     }
 
-    static String DecodeRfc2231Extension(String value) {
+    private static String DecodeRfc2231Extension(String value) {
       int firstQuote = value.indexOf('\'');
       if (firstQuote < 0) {
         // not a valid encoded parameter
@@ -925,7 +925,7 @@ return SkipQuotedString(
     }
 
     private static boolean ExpandRfc2231Extensions(Map<String, String>
-      parameters) {
+      parameters, boolean httpRules) {
       if (parameters.size() == 0) {
         return true;
       }
@@ -939,6 +939,8 @@ return SkipQuotedString(
         int asterisk = name.indexOf('*');
         if (asterisk == name.length() - 1 && asterisk > 0) {
           // name*="value" (except when the parameter is just "*")
+          // NOTE: As of RFC 5987, this particular extension is now allowed
+          // in HTTP
           String realName = name.substring(0, name.length() - 1);
           String realValue = DecodeRfc2231Extension(value);
           if (realValue == null) {
@@ -950,7 +952,7 @@ return SkipQuotedString(
           continue;
         }
         // name*0 or name*0*
-        if (asterisk > 0 && ((asterisk == name.length() - 2 &&
+        if (!httpRules && asterisk > 0 && ((asterisk == name.length() - 2 &&
           name.charAt(asterisk + 1) == '0') || (asterisk == name.length() - 3 &&
           name.charAt(asterisk + 1) == '0' && name.charAt(asterisk + 2) == '*'))) {
           String realName = name.substring(0, asterisk);
@@ -1041,7 +1043,7 @@ return SkipQuotedString(
             null);
         if (index >= endIndex) {
           // No more parameters
-          return httpRules || ExpandRfc2231Extensions(parameters);
+          return ExpandRfc2231Extensions(parameters, httpRules);
         }
         if (str.charAt(index) != ';') {
           return false;
@@ -1097,7 +1099,7 @@ return SkipQuotedString(
         }
         if (index >= endIndex) {
           // No more parameters
-          return httpRules || ExpandRfc2231Extensions(parameters);
+          return ExpandRfc2231Extensions(parameters, httpRules);
         }
         builder.delete(0, (0)+(builder.length()));
         int qs;

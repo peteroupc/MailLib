@@ -11,16 +11,14 @@ using System.Text;
 using PeterO;
 using PeterO.Text;
 
-namespace PeterO.Mail
-{
+namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.ContentDisposition"]/*'/>
-    public class ContentDisposition
-    {
+    public class ContentDisposition {
         private readonly string dispositionType;
 
-        /// <include file='../../docs.xml'
-        /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.DispositionType"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.DispositionType"]/*'/>
         public string DispositionType {
             get {
                 return this.dispositionType;
@@ -28,10 +26,9 @@ namespace PeterO.Mail
         }
 
         #region Equals and GetHashCode implementation
-        /// <include file='../../docs.xml'
-        /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Equals(System.Object)"]/*'/>
-        public override bool Equals (object obj)
-        {
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Equals(System.Object)"]/*'/>
+        public override bool Equals (object obj) {
             var other = obj as ContentDisposition;
             if (other == null) {
                 return false;
@@ -40,32 +37,32 @@ namespace PeterO.Mail
               CollectionUtilities.MapEquals (this.parameters, other.parameters);
         }
 
-        /// <include file='../../docs.xml'
-        /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetHashCode"]/*'/>
-        public override int GetHashCode ()
-        {
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetHashCode"]/*'/>
+        public override int GetHashCode () {
             var hashCode = 632580499;
             if (this.dispositionType != null) {
                 hashCode = unchecked(hashCode + (632580503 *
-                  this.dispositionType.GetHashCode ()));
+                  this.dispositionType.GetHashCode()));
             }
             if (this.parameters != null) {
-                hashCode = unchecked(hashCode + (632580587 * this.parameters.Count));
+          hashCode = unchecked(hashCode + (632580587 *
+                  this.parameters.Count));
             }
             return hashCode;
         }
         #endregion
 
-        /// <include file='../../docs.xml'
-        /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsInline"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsInline"]/*'/>
         public bool IsInline {
             get {
                 return this.dispositionType.Equals ("inline");
             }
         }
 
-        /// <include file='../../docs.xml'
-        /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsAttachment"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsAttachment"]/*'/>
         public bool IsAttachment {
             get {
                 return this.dispositionType.Equals ("attachment");
@@ -74,8 +71,7 @@ namespace PeterO.Mail
 
         internal ContentDisposition (
      string type,
-     IDictionary<string, string> parameters)
-        {
+     IDictionary<string, string> parameters) {
             if ((type) == null) {
                 throw new ArgumentNullException ("type");
             }
@@ -83,43 +79,39 @@ namespace PeterO.Mail
             this.parameters = new Dictionary<string, string> (parameters);
         }
 
-        private ContentDisposition ()
-        {
+        private ContentDisposition () {
             this.dispositionType = String.Empty;
-            this.parameters = new Dictionary<string, string> ();
+            this.parameters = new Dictionary<string, string>();
         }
 
         private readonly IDictionary<string, string> parameters;
 
-        /// <include file='../../docs.xml'
-        /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.Parameters"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.Parameters"]/*'/>
         public IDictionary<string, string> Parameters {
             get {
                 return new ReadOnlyMap<string, string> (this.parameters);
             }
         }
 
-        /// <include file='../../docs.xml'
-        /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.ToString"]/*'/>
-        public override string ToString ()
-        {
-            var sb = new StringBuilder ();
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.ToString"]/*'/>
+        public override string ToString () {
+            var sb = new StringBuilder();
             sb.Append (this.dispositionType);
             MediaType.AppendParameters (this.parameters, sb);
-            return sb.ToString ();
+            return sb.ToString();
         }
-
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)"]/*'/>
-    public static string MakeFilename (string str)
-    {
+    public static string MakeFilename (string str) {
       return MakeFilenameMethod.MakeFilename (str);
     }
-            /// <include file='../../docs.xml'
-            /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)"]/*'/>
-            public string GetParameter (string name)
-        {
+
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)"]/*'/>
+            public string GetParameter (string name) {
             if (name == null) {
                 throw new ArgumentNullException ("name");
             }
@@ -127,20 +119,21 @@ namespace PeterO.Mail
                 throw new ArgumentException ("name is empty.");
             }
             name = DataUtilities.ToLowerCaseAscii (name);
-            return this.parameters.ContainsKey (name) ? this.parameters [name] : null;
+     return this.parameters.ContainsKey (name) ? this.parameters [name] :
+              null;
         }
 
-        private static ContentDisposition ParseDisposition (string str)
-        {
+        private static ContentDisposition ParseDisposition (string str) {
             const bool HttpRules = false;
             var index = 0;
             if (str == null) {
                 throw new ArgumentNullException ("str");
             }
             int endIndex = str.Length;
-            var parameters = new Dictionary<string, string> ();
+            var parameters = new Dictionary<string, string>();
             index = HeaderParser.ParseCFWS (str, index, endIndex, null);
-            int i = MediaType.SkipMimeToken (str, index, endIndex, null, HttpRules);
+       int i = MediaType.SkipMimeToken (str, index, endIndex, null,
+              HttpRules);
             if (i == index) {
                 return null;
             }
@@ -152,8 +145,8 @@ namespace PeterO.Mail
                 if (i3 == endIndex) {
                     // at end
                     return new ContentDisposition (
-                      dispoType,
-                      parameters);
+                    dispoType,
+                    parameters);
                 }
                 if (i3 < endIndex && str [i3] != ';') {
                     // not followed by ";", so not a content disposition
@@ -171,11 +164,10 @@ namespace PeterO.Mail
                   parameters) : null;
         }
 
-        private static ContentDisposition Build (string name)
-        {
+        private static ContentDisposition Build (string name) {
             return new ContentDisposition (
               name,
-              new Dictionary<string, string> ());
+              new Dictionary<string, string>());
         }
 
 #if CODE_ANALYSIS
@@ -184,8 +176,8 @@ namespace PeterO.Mail
       "CA2104",
       Justification="This instance is immutable")]
 #endif
-        /// <include file='../../docs.xml'
-        /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Attachment"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Attachment"]/*'/>
         public static readonly ContentDisposition Attachment =
           Build ("attachment");
 
@@ -195,27 +187,25 @@ namespace PeterO.Mail
       "CA2104",
       Justification="This instance is immutable")]
 #endif
-        /// <include file='../../docs.xml'
-        /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Inline"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Inline"]/*'/>
         public static readonly ContentDisposition Inline =
           Build ("inline");
 
-        /// <include file='../../docs.xml'
-        /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String)"]/*'/>
-        public static ContentDisposition Parse (string dispoValue)
-        {
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String)"]/*'/>
+        public static ContentDisposition Parse (string dispoValue) {
             if (dispoValue == null) {
                 throw new ArgumentNullException ("dispoValue");
             }
             return Parse (dispoValue, Attachment);
         }
 
-        /// <include file='../../docs.xml'
-        /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String,PeterO.Mail.ContentDisposition)"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String,PeterO.Mail.ContentDisposition)"]/*'/>
         public static ContentDisposition Parse (
       string dispositionValue,
-      ContentDisposition defaultValue)
-        {
+      ContentDisposition defaultValue) {
             if (dispositionValue == null) {
                 throw new ArgumentNullException ("dispositionValue");
             }
