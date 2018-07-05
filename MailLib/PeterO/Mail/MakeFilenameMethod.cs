@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using PeterO;
 using PeterO.Mail.Transforms;
 using PeterO.Text;
 
