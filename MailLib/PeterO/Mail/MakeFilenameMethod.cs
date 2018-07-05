@@ -6,8 +6,8 @@ using PeterO.Text;
 
 namespace PeterO.Mail {
     internal static class MakeFilenameMethod {
-        private static string TrimAndCollapseSpaceAndTab (string str) {
-            if (String.IsNullOrEmpty (str)) {
+        private static string TrimAndCollapseSpaceAndTab(string str){
+          if (String.IsNullOrEmpty (str)) {
                 return str;
             }
             StringBuilder builder = null;
@@ -115,15 +115,13 @@ namespace PeterO.Mail {
                     break;
                     }
                   if ((str [index] == 'b' || str [index] == 'B') && index +
-                      1 <
-                    endIndex && str [index + 1] == '?') {
+                1 < endIndex && str [index + 1] == '?') {
                     encoding = 1;
                     state = 3;
                     index += 2;
                     dataStart = index;
                } else if ((str [index] == 'q' || str [index] == 'Q') &&
-                      index +
-                    1 < endIndex && str [index + 1] == '?') {
+                index + 1 < endIndex && str [index + 1] == '?') {
                     encoding = 2;
                     state = 3;
                     index += 2;
@@ -222,22 +220,9 @@ namespace PeterO.Mail {
             return builder.ToString();
         }
 
-        private static bool IsAlphaNumHyphen (string str) {
-            int len = (str == null) ? 0 : str.Length;
-            for (int i = 0; i < len; ++i) {
-                char c1 = str [i];
-              if (!((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') ||
-                  (c1
-                  >= '0' && c1 <= '9') || c1=='-')) {
-          return false;
-                }
-            }
-            return true;
-        }
-
         private static string DecodeRfc2231ExtensionLenient (string value) {
       // NOTE: Differs from MediaType.DecodeRfc2231Extension in that
-      // it doesn't do a detailed validation of the language tag.
+      // it doesn't check the syntax of the language tag.
       // This method is only used to adapt suggested filenames
       // (and the language tag is not used for that purpose here
       // anyway), so it is not necessary to follow RFC 2231 or BCP
@@ -253,13 +238,7 @@ namespace PeterO.Mail {
                 return null;
             }
             string charset = value.Substring (0, firstQuote);
-            string language = value.Substring (
-        firstQuote + 1,
-        secondQuote - (firstQuote + 1));
-            if (language.Length > 0 && !IsAlphaNumHyphen (language)) {
-                // not a valid language tag
-                return null;
-            }
+            // NOTE: Language tag is ignored here
             string paramValue = value.Substring (secondQuote + 1);
             ICharacterEncoding cs = Encodings.GetEncoding (charset, true);
             cs = cs ?? Encodings.GetEncoding ("us-ascii", true);
@@ -274,9 +253,8 @@ namespace PeterO.Mail {
             var index = 0;
             var inEncodedWord = false;
             while (index < str.Length) {
-          if (!inEncodedWord && index + 1 < str.Length && str [index] == '='
-                  &&
-                  str [index + 1] == '?') {
+          if (!inEncodedWord && index + 1 < str.Length && str [index] == '='&&
+                str [index + 1] == '?') {
                     // Remove start of encoded word
                     inEncodedWord = true;
                     index += 2;
@@ -303,8 +281,7 @@ namespace PeterO.Mail {
                     index = start;
                     }
            } else if (inEncodedWord && index + 1 < str.Length && str [index]
-                  ==
-                  '?' && str [index + 1] == '=') {
+                == '?' && str [index + 1] == '=') {
                     // End of encoded word
                     index += 2;
                     inEncodedWord = false;
@@ -392,9 +369,8 @@ namespace PeterO.Mail {
                     if (c == 0x2d) {
  return false;
 }
-   if ((c == 0x4e || c == 0x6e || c == 0x41 || c == 0x61) && name.Length > 1
-                      &&
-                    (name [1] == 'u' || name [1] == 'U')) {
+   if ((c == 0x4e || c == 0x6e || c == 0x41 || c == 0x61) && name.Length > 1 &&
+                (name [1] == 'u' || name [1] == 'U')) {
                     return false;
                     }
                     if ((c == 0x43 || c == 0x63) && name.Length >= 3 &&
@@ -540,7 +516,7 @@ namespace PeterO.Mail {
                     builder.Append ((char)c);
                     } else if (c <= 0x10ffff) {
              builder.Append ((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                      0xd800));
+                    0xd800));
                     builder.Append ((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
                     }
                     } else if (builder.Length >= 242) {
@@ -602,12 +578,12 @@ namespace PeterO.Mail {
                     bool spaceBefore = i > 0 && str [i - 1] == 0x20;
                     if (spaceAfter && spaceBefore) {
                 str = str.Substring (0, i - 1) + "_._" + str.Substring (i +
-                      2);
+                    2);
                     } else if (spaceAfter) {
                     str = str.Substring (0, i) + "._" + str.Substring (i + 2);
                     } else if (spaceBefore) {
                  str = str.Substring (0, i - 1) + "_." + str.Substring (i +
-                      1);
+                    1);
                     }
                     break;
                 }

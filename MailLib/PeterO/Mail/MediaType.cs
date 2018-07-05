@@ -822,7 +822,7 @@ return SkipQuotedString(
       return this.parameters.ContainsKey(name) ? this.parameters[name] : null;
     }
 
-    private static string DecodeRfc2231Extension(string value) {
+    private static string DecodeRfc2231Extension(string value, bool httpRules) {
       int firstQuote = value.IndexOf('\'');
       if (firstQuote < 0) {
         // not a valid encoded parameter
@@ -834,6 +834,10 @@ return SkipQuotedString(
         return null;
       }
       string charset = value.Substring(0, firstQuote);
+      if (httpRules && charset.Length == 0){
+         // charset is omitted, which is not allowed under RFC5987
+         return null;
+      }
       string language = value.Substring(
   firstQuote + 1,
   secondQuote - (firstQuote + 1));
@@ -842,12 +846,17 @@ return SkipQuotedString(
         return null;
       }
       string paramValue = value.Substring(secondQuote + 1);
+      // NOTE: For HTTP (RFC 5987) no specific error-handling
+      // behavior is mandated for "encoding errors", which can
+      // be interpreted as including unsupported or unrecognized
+      // character encodings (see sec. 3.2.1).
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
       cs = cs ?? USAsciiEncoding;
       return DecodeRfc2231Encoding(paramValue, cs);
     }
 
     private static ICharacterEncoding GetRfc2231Charset(string value) {
+      // NOTE: Currently only used outside of httpRules
       if (value == null) {
         return USAsciiEncoding;
       }
@@ -903,12 +912,13 @@ return SkipQuotedString(
           // NOTE: As of RFC 5987, this particular extension is now allowed
           // in HTTP
           string realName = name.Substring(0, name.Length - 1);
-          string realValue = DecodeRfc2231Extension(value);
+          string realValue = DecodeRfc2231Extension(value, httpRules);
           if (realValue == null) {
             continue;
           }
           parameters.Remove(name);
           // NOTE: Overrides the name without continuations
+          // (also suggested by RFC5987 sec. 4.2)
           parameters[realName] = realValue;
           continue;
         }
@@ -917,8 +927,9 @@ return SkipQuotedString(
           name[asterisk + 1] == '0') || (asterisk == name.Length - 3 &&
           name[asterisk + 1] == '0' && name[asterisk + 2] == '*'))) {
           string realName = name.Substring(0, asterisk);
+          // NOTE: 'httpRules' for DecodeRfc2231Extension is false
           string realValue = (asterisk == name.Length - 3) ?
-            DecodeRfc2231Extension(value) : value;
+            DecodeRfc2231Extension(value, false) : value;
           ICharacterEncoding charsetUsed = GetRfc2231Charset(
             (asterisk == name.Length - 3) ? value : null);
           parameters.Remove(name);
