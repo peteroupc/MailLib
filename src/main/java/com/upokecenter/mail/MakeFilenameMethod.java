@@ -1,5 +1,6 @@
 package com.upokecenter.mail;
 
+import com.upokecenter.util.*;
 import com.upokecenter.mail.transforms.*;
 import com.upokecenter.text.*;
 
@@ -66,7 +67,7 @@ private MakeFilenameMethod() {
             int dataStart = -1;
             int encoding = 0;
             boolean haveSpace = false;
-            if (str.IndexOf ('=') < 0) {
+            if (str.indexOf('=') < 0) {
                 // Contains no equal sign, and therefore no
                 // encoded words
                 return str.substring(index, (index)+(endIndex - index));
@@ -115,15 +116,13 @@ private MakeFilenameMethod() {
                     break;
                     }
                   if ((str.charAt(index) == 'b' || str.charAt(index) == 'B') && index +
-                      1 <
-                    endIndex && str.charAt(index + 1) == '?') {
+                1 < endIndex && str.charAt(index + 1) == '?') {
                     encoding = 1;
                     state = 3;
                     index += 2;
                     dataStart = index;
                } else if ((str.charAt(index) == 'q' || str.charAt(index) == 'Q') &&
-                      index +
-                    1 < endIndex && str.charAt(index + 1) == '?') {
+                index + 1 < endIndex && str.charAt(index + 1) == '?') {
                     encoding = 2;
                     state = 3;
                     index += 2;
@@ -151,7 +150,7 @@ private MakeFilenameMethod() {
                     index += 2;
                     int endData = index;
                     boolean acceptedEncodedWord = true;
-                    int asterisk = charset.IndexOf ('*');
+                    int asterisk = charset.indexOf('*');
                     String decodedWord = null;
                     if (asterisk >= 1) {
                     boolean asteriskAtEnd = asterisk + 1 >= charset.length();
@@ -227,8 +226,7 @@ private MakeFilenameMethod() {
             for (int i = 0; i < len; ++i) {
                 char c1 = str.charAt(i);
               if (!((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') ||
-                  (c1
-                  >= '0' && c1 <= '9') || c1=='-')) {
+                (c1 >= '0' && c1 <= '9') || c1=='-')) {
           return false;
                 }
             }
@@ -242,12 +240,12 @@ private MakeFilenameMethod() {
       // (and the language tag is not used for that purpose here
       // anyway), so it is not necessary to follow RFC 2231 or BCP
       // 47 strictly here.
-            int firstQuote = value.IndexOf ('\'');
+            int firstQuote = value.indexOf('\'');
             if (firstQuote < 0) {
                 // not a valid encoded parameter
                 return null;
             }
-            int secondQuote = value.IndexOf ('\'', firstQuote + 1);
+            int secondQuote = value.indexOf('\'',firstQuote + 1);
             if (secondQuote < 0) {
                 // not a valid encoded parameter
                 return null;
@@ -263,7 +261,7 @@ private MakeFilenameMethod() {
             String paramValue = value.substring(secondQuote + 1);
             ICharacterEncoding cs = Encodings.GetEncoding (charset, true);
             cs = (cs == null) ? (Encodings.GetEncoding ("us-ascii", true)) : cs;
-            int quote = paramValue.IndexOf ('\'');
+            int quote = paramValue.indexOf('\'');
             return (quote >= 0) ? null : Encodings.DecodeToString (
               cs,
               new PercentEncodingStringTransform (paramValue));
@@ -274,9 +272,8 @@ private MakeFilenameMethod() {
             int index = 0;
             boolean inEncodedWord = false;
             while (index < str.length()) {
-          if (!inEncodedWord && index + 1 < str.length() && str.charAt(index) == '='
-                  &&
-                  str.charAt(index + 1) == '?') {
+          if (!inEncodedWord && index + 1 < str.length() && str.charAt(index) == '='&&
+                str.charAt(index + 1) == '?') {
                     // Remove start of encoded word
                     inEncodedWord = true;
                     index += 2;
@@ -303,8 +300,7 @@ private MakeFilenameMethod() {
                     index = start;
                     }
            } else if (inEncodedWord && index + 1 < str.length() && str.charAt(index)
-                  ==
-                  '?' && str.charAt(index + 1) == '=') {
+                == '?' && str.charAt(index + 1) == '=') {
                     // End of encoded word
                     index += 2;
                     inEncodedWord = false;
@@ -391,9 +387,8 @@ private MakeFilenameMethod() {
                     if (c == 0x2d) {
  return false;
 }
-   if ((c == 0x4e || c == 0x6e || c == 0x41 || c == 0x61) && name.length() > 1
-                      &&
-                    (name.charAt(1) == 'u' || name.charAt(1) == 'U')) {
+   if ((c == 0x4e || c == 0x6e || c == 0x41 || c == 0x61) && name.length() > 1 &&
+                (name.charAt(1) == 'u' || name.charAt(1) == 'U')) {
                     return false;
                     }
                     if ((c == 0x43 || c == 0x63) && name.length() >= 3 &&
@@ -447,7 +442,7 @@ private MakeFilenameMethod() {
                     // Remove ends of encoded words that remain
                     str = RemoveEncodedWordEnds (str);
                 }
-            } else if (str.IndexOf ('\'') > 0) {
+            } else if (str.indexOf('\'') > 0) {
                 // Check for RFC 2231 encoding, as long as the value before the
                 // apostrophe is a recognized charset. It appears to be common,
                 // too, to use quotes around a filename parameter AND use
@@ -456,7 +451,7 @@ private MakeFilenameMethod() {
                 String charset = Encodings.ResolveAliasForEmail (
           str.substring(
           0, (
-          0)+(str.IndexOf ('\''))));
+          0)+(str.indexOf('\''))));
                 if (!((charset) == null || (charset).length() == 0)) {
                     String newstr = DecodeRfc2231ExtensionLenient (str);
                     if (!((newstr) == null || (newstr).length() == 0)) {
@@ -539,7 +534,7 @@ private MakeFilenameMethod() {
                     builder.append ((char)c);
                     } else if (c <= 0x10ffff) {
              builder.append ((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                      0xd800));
+                    0xd800));
                     builder.append ((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
                     }
                     } else if (builder.length() >= 242) {
@@ -594,12 +589,12 @@ private MakeFilenameMethod() {
                     boolean spaceBefore = i > 0 && str.charAt(i - 1) == 0x20;
                     if (spaceAfter && spaceBefore) {
                 str = str.substring(0,i - 1) + "_._" + str.substring(i +
-                      2);
+                    2);
                     } else if (spaceAfter) {
                     str = str.substring(0,i) + "._" + str.substring(i + 2);
                     } else if (spaceBefore) {
                  str = str.substring(0,i - 1) + "_." + str.substring(i +
-                      1);
+                    1);
                     }
                     break;
                 }
