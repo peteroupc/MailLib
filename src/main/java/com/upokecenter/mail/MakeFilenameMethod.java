@@ -8,7 +8,7 @@ import com.upokecenter.text.*;
 private MakeFilenameMethod() {
 }
         private static String TrimAndCollapseSpaceAndTab(String str) {
-            if (((str) == null || (str).length() == 0)) {
+          if (((str) == null || (str).length() == 0)) {
                 return str;
             }
             StringBuilder builder = null;
@@ -221,21 +221,9 @@ private MakeFilenameMethod() {
             return builder.toString();
         }
 
-        private static boolean IsAlphaNumHyphen(String str) {
-            int len = (str == null) ? 0 : str.length();
-            for (int i = 0; i < len; ++i) {
-                char c1 = str.charAt(i);
-              if (!((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z') ||
-                (c1 >= '0' && c1 <= '9') || c1=='-')) {
-          return false;
-                }
-            }
-            return true;
-        }
-
         private static String DecodeRfc2231ExtensionLenient(String value) {
       // NOTE: Differs from MediaType.DecodeRfc2231Extension in that
-      // it doesn't do a detailed validation of the language tag.
+      // it doesn't check the syntax of the language tag.
       // This method is only used to adapt suggested filenames
       // (and the language tag is not used for that purpose here
       // anyway), so it is not necessary to follow RFC 2231 or BCP
@@ -251,13 +239,7 @@ private MakeFilenameMethod() {
                 return null;
             }
             String charset = value.substring(0, firstQuote);
-            String language = value.substring(
-        firstQuote + 1, (
-        firstQuote + 1)+(secondQuote - (firstQuote + 1)));
-            if (language.length() > 0 && !IsAlphaNumHyphen (language)) {
-                // not a valid language tag
-                return null;
-            }
+            // NOTE: Language tag is ignored here
             String paramValue = value.substring(secondQuote + 1);
             ICharacterEncoding cs = Encodings.GetEncoding (charset, true);
             cs = (cs == null) ? (Encodings.GetEncoding ("us-ascii", true)) : cs;

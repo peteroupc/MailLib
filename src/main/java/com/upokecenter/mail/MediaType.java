@@ -861,7 +861,7 @@ return SkipQuotedString(
       return this.parameters.containsKey(name) ? this.parameters.get(name) : null;
     }
 
-    private static String DecodeRfc2231Extension(String value) {
+    private static String DecodeRfc2231Extension(String value, boolean httpRules) {
       int firstQuote = value.indexOf('\'');
       if (firstQuote < 0) {
         // not a valid encoded parameter
@@ -873,6 +873,10 @@ return SkipQuotedString(
         return null;
       }
       String charset = value.substring(0, firstQuote);
+      if (httpRules && charset.length() == 0) {
+         // charset is omitted, which is not allowed under RFC5987
+         return null;
+      }
       String language = value.substring(
   firstQuote + 1, (
   firstQuote + 1)+(secondQuote - (firstQuote + 1)));
@@ -881,12 +885,17 @@ return SkipQuotedString(
         return null;
       }
       String paramValue = value.substring(secondQuote + 1);
+      // NOTE: For HTTP (RFC 5987) no specific error-handling
+      // behavior is mandated for "encoding errors", which can
+      // be interpreted as including unsupported or unrecognized
+      // character encodings (see sec. 3.2.1).
       ICharacterEncoding cs = Encodings.GetEncoding(charset, true);
       cs = (cs == null) ? (USAsciiEncoding) : cs;
       return DecodeRfc2231Encoding(paramValue, cs);
     }
 
     private static ICharacterEncoding GetRfc2231Charset(String value) {
+      // NOTE: Currently only used outside of httpRules
       if (value == null) {
         return USAsciiEncoding;
       }
@@ -942,12 +951,13 @@ return SkipQuotedString(
           // NOTE: As of RFC 5987, this particular extension is now allowed
           // in HTTP
           String realName = name.substring(0, name.length() - 1);
-          String realValue = DecodeRfc2231Extension(value);
+          String realValue = DecodeRfc2231Extension(value, httpRules);
           if (realValue == null) {
             continue;
           }
           parameters.remove(name);
           // NOTE: Overrides the name without continuations
+          // (also suggested by RFC5987 sec. 4.2)
           parameters.put(realName, realValue);
           continue;
         }
@@ -956,8 +966,9 @@ return SkipQuotedString(
           name.charAt(asterisk + 1) == '0') || (asterisk == name.length() - 3 &&
           name.charAt(asterisk + 1) == '0' && name.charAt(asterisk + 2) == '*'))) {
           String realName = name.substring(0, asterisk);
+          // NOTE: 'httpRules' for DecodeRfc2231Extension is false
           String realValue = (asterisk == name.length() - 3) ?
-            DecodeRfc2231Extension(value) : value;
+            DecodeRfc2231Extension(value, false) : value;
           ICharacterEncoding charsetUsed = GetRfc2231Charset(
             (asterisk == name.length() - 3) ? value : null);
           parameters.remove(name);

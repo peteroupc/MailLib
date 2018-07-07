@@ -834,7 +834,7 @@ return SkipQuotedString(
         return null;
       }
       string charset = value.Substring(0, firstQuote);
-      if (httpRules && charset.Length == 0){
+      if (httpRules && charset.Length == 0) {
          // charset is omitted, which is not allowed under RFC5987
          return null;
       }
@@ -901,6 +901,9 @@ return SkipQuotedString(
       }
       var keyList = new List<string>(parameters.Keys);
       keyList.Sort();
+      // NOTE: RFC 2231 doesn't specify what happens if a "*" extension
+      // and a "*0*" continuation both appear in the same media type string.
+      // TODO: Choose a consistent behavior in this respect.
       foreach (string name in keyList) {
         if (!parameters.ContainsKey(name)) {
           continue;

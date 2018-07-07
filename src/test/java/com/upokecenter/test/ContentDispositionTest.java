@@ -219,7 +219,7 @@ public void TestIsInline() {
   "[" + EncodingTest.EscapeString("" + c) + "] index=" + i);
                  }
             }
-             if (str.indexOf("\u0020\u0020") >= 0) {
+      if (str.indexOf("\u0020\u0020") >= 0) {
  FailFilename(filename, str);
 }
              if (str.indexOf("\u0020\t") >= 0) {
@@ -260,12 +260,18 @@ public void TestIsInline() {
             AssertGoodFilename("xx!\ud845\udd33[");
             AssertGoodFilename("xx![xx");
             String
-  stmp=("0_@S\u2000\u164d7~?H |Hw\u669b\u007f\u12c6>kT\ud802\udda8 .hu-z\u2e03A\ua944}N.\u176cL\uffffJRm+{K `\"\u7ff2D\u2f2d7Q(\"[~JWP@Dy\u2f77voW\u202f\u001b\uf8e2;w\ud9d6\ude5c\udb66\udf9d?o\ufeff\u2f0c \u1384l1N_tG?\u2eae\u008f.\ubf99l5<p.@\"S\ufdefiU ~\u73d6ag/l7\ufdd0\u27a4u W$vZ!(jxf^eQ\u13ac \uf8a4l0\"\ufeffz3.2\u179b$V9,b\u24fe\u4b27S\u001bO\u072a|H6 e_\u2377.F*##xX\u007f ~\u2aa4xU\uc09b$MXPI\u007fMr\uc880 u#'Do5qR; |;:1(A\u200bRR*T*:xLAR#;%.||k?v4/~6EB..1\udacc\udd9bP\ud824\ude7d.|%'Z970<?u'\\gG\u3189V.es0.f\tu? %t&=6\u205f\u2a4f#F\u2000 {*\\ &(]Rk<u<|\ud80e\udeb7l>s}/JG'\u205f-t-k\uc774#.\u0020\u0020");
+
+  stmp =
+  "0_@S\u2000\u164d7~?H |Hw\u669b\u007f\u12c6>kT\ud802\udda8 .hu-z\u2e03A\ua944}N.\u176cL\uffffJRm+{K `\"\u7ff2D\u2f2d7Q(\"[~JWP@Dy\u2f77voW\u202f\u001b\uf8e2;w\ud9d6\ude5c\udb66\udf9d?o\ufeff\u2f0c \u1384l1N_tG?\u2eae\u008f.\ubf99l5<p.@\"S\ufdefiU ~\u73d6ag/l7\ufdd0\u27a4u W$vZ!(jxf^eQ\u13ac \uf8a4l0\"\ufeffz3.2\u179b$V9,b\u24fe\u4b27S\u001bO\u072a|H6 e_\u2377.F*##xX\u007f ~\u2aa4xU\uc09b$MXPI\u007fMr\uc880 u#'Do5qR; |;:1(A\u200bRR*T*:xLAR#;%.||k?v4/~6EB..1\udacc\udd9bP\ud824\ude7d.|%'Z970<?u'\\gG\u3189V.es0.f\tu? %t&=6\u205f\u2a4f#F\u2000 {*\\ &(]Rk<u<|\ud80e\udeb7l>s}/JG'\u205f-t-k\uc774#.\u0020\u0020";
 AssertGoodFilename(stmp);
 
-  stmp=("\u1492\u0f68r\t\ud9d6\udf2cquip %T;K=_%\u008fW\ufffe-\u2ef5u%.p\u0010~#uI_U0!6 {1?uIFA 0iO4y9 (\u53807aPz+\u009f}rj\u0a81 \u2446fo[\\? \u0757 I\t0\u19c8.z(c\uffffgc)J5VdW\ufeff4*\u200b%.\u00aaR\ufbbfw\u16d0Rm%\u001f\u189d\u00a0W\ufffe\u0bfa(9!.'\u1499.\u200b_m\ufffe>7v\u2000N},gch.get(3\ufffe\u2a07pD:gXhG_\u0000&\ufffeyT$&\u2fa5 N\ud8fd\udd2am \u0000)1\u009f$y1 \ud9e1\udc78\u001f;\u2bdd9.\u1d21B}\u1271 X.U|O/\ufeffQQ.A>cW!1'\u2374hmt \u0866\ufeff&t\\fe\u009f\u2cado?\ud9f5\ude56;\\b^\udb81\udf2d\u008f \u00a0\udbfd\udf53@.)7MD\u008fxwKs\u202f}\"\u17ff^m\u0010\ufdef'FF\u2000T>:\u2000h.J\u1e10\ufdefI$\u0355eIL`CDcH\u0dffrX4.'qx {. p:w. E64cF?1\\;");
+  stmp =
+  "\u1492\u0f68r\t\ud9d6\udf2cquip %T;K=_%\u008fW\ufffe-\u2ef5u%.p\u0010~#uI_U0!6 {1?uIFA 0iO4y9 (\u53807aPz+\u009f}rj\u0a81 \u2446fo[\\? \u0757 I\t0\u19c8.z(c\uffffgc)J5VdW\ufeff4*\u200b%.\u00aaR\ufbbfw\u16d0Rm%\u001f\u189d\u00a0W\ufffe\u0bfa(9!.'\u1499.\u200b_m\ufffe>7v\u2000N},gch.get(3\ufffe\u2a07pD:gXhG_\u0000&\ufffeyT$&\u2fa5 N\ud8fd\udd2am \u0000)1\u009f$y1 \ud9e1\udc78\u001f;\u2bdd9.\u1d21B}\u1271 X.U|O/\ufeffQQ.A>cW!1'\u2374hmt \u0866\ufeff&t\\fe\u009f\u2cado?\ud9f5\ude56;\\b^\udb81\udf2d\u008f \u00a0\udbfd\udf53@.)7MD\u008fxwKs\u202f}\"\u17ff^m\u0010\ufdef'FF\u2000T>:\u2000h.J\u1e10\ufdefI$\u0355eIL`CDcH\u0dffrX4.'qx {. p:w. E64cF?1\\;";
 AssertGoodFilename(stmp);
 
+  stmp =
+  ".Zw\"\ud91f\udd46\u0010p *L {fN_\t5Wvs%Bka-\u00fb\ufdef@\uffffy|-\u001fDWqpX\uda60\udeadznb'\u00a0h1 \udb32\uddcah..\u0cab\u26eff\u21114\u2b8aSz,\t \u2d0d.Q\u009f\ufacfD\u0010E+r@!.MY/\u0010dFN\ubdb8\u21203\ud9af\udf5e`\u3000\u15ae _>vg";
+AssertGoodFilename(stmp);
 String str8675 =
 
   "\u216a2s\u1e19C<snhs\ud87a\ude8dX(\ufdef\ufdd0,u.y\u001c.|}Y \u2f18Yx\u2a11N%(..s3^(N\u0084`(r|41X_.})\ud84c\udef3\ufe3c/\\/ sq?G![{\ufeffZ\"qSMdgv3#dg\tK@^X;`jl\ud892\udcd3' e@5a(\u00a0 wg0g hH?5\u202flh\u04c1 \uffff(,\u044d qQ7b:uFs9m\u0b6b\\AT|HDAsH6's!_B>rb(q?KpUv;fa r!\u1dc2.5.U\\Ez\u1f5a/J.8`?U\u01ba\\/v\ufdef_p.%|}.;.(OL9\u00001O.getRV()\u2433z,E\u008f%o\u008f.fpDN=G {(\udac5\udd76XC\uffff..z\ud9e4\udc62^(u=|'93\u0f6bWvz\u0f09\u26d2$?y\ud9c5\udcd4P:)+iO\u009f[f?>JTo,Ge`:'I\u5ccf\u009f\u9c3a<+yC {\ub10bm(j\u7959.tL=\ud86a\udea3\\(i \u001fG0 +np\u180erFt.hoy ny)\".6 +j ";
