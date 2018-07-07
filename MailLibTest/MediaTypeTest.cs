@@ -1,13 +1,23 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using PeterO.Mail;
+using Test;
 
 namespace MailLibTest {
   [TestFixture]
   public partial class MediaTypeTest {
     [Test]
     public void TestEquals() {
-      // not implemented yet
+      MediaType mt=MediaType.Parse("text/example;param1=value1;param2=value2");
+      MediaType mt2=MediaType.Parse("text/example;param2=value2;param1=value1");
+      MediaType mt3=MediaType.Parse("text/example;param1=value2;param2=value2");
+      TestCommon.AssertEqualsHashCode(mt,mt2);
+      TestCommon.AssertEqualsHashCode(mt,mt3);
+      TestCommon.AssertEqualsHashCode(mt3,mt2);
+      Assert.AreEqual(mt,mt2);
+      Assert.IsFalse(mt.Equals(mt3));
+      Assert.IsFalse(mt2.Equals(mt3));
     }
     [Test]
     public void TestGetCharset() {
@@ -230,11 +240,27 @@ Assert.AreEqual(objectTemp, objectTemp2);
     }
     [Test]
     public void TestParameters() {
-      // not implemented yet
+      MediaType mt=MediaType.Parse("text/example;param1=value1;param2=value2");
+      IDictionary<string,string> parameters;
+      parameters=mt.Parameters;
+      Assert.IsTrue(parameters.ContainsKey("param1"));
+      Assert.IsTrue(parameters.ContainsKey("param2"));
+      Assert.AreEqual("value1",parameters["param1"]);
+      Assert.AreEqual("value2",parameters["param2"]);
     }
     [Test]
     public void TestParse() {
-      // not implemented yet
+      Assert.Throws(typeof(ArgumentNullException),()=>MediaType.Parse(null));
+      MediaType mt=MediaType.Parse("text/example;param1=\"value1\"");
+      IDictionary<string,string> parameters;
+      parameters=mt.Parameters;
+      Assert.AreEqual("value1",parameters["param1"]);
+      mt=MediaType.Parse("text/example;param1*=utf-8''value2");
+      Assert.AreEqual("value2",parameters["param1"]);
+      mt=MediaType.Parse("text/example;param1*=utf-8'en'value3");
+      Assert.AreEqual("value3",parameters["param1"]);
+      mt=MediaType.Parse("text/example;param1*0*=utf-8'en'val;param1*1*=ue4");
+      Assert.AreEqual("value4",parameters["param1"]);
     }
     [Test]
     public void TestSubType() {

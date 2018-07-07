@@ -6,7 +6,7 @@ using PeterO.Text;
 
 namespace PeterO.Mail {
     internal static class MakeFilenameMethod {
-        private static string TrimAndCollapseSpaceAndTab(string str){
+        private static string TrimAndCollapseSpaceAndTab(string str) {
           if (String.IsNullOrEmpty (str)) {
                 return str;
             }
@@ -482,8 +482,7 @@ namespace PeterO.Mail {
                     // backslash, forward slash, ASCII controls, and C1
                     // controls).
                     builder.Append ('_');
-             } else if (c == '!' && i + 1 < str.Length && str [i + 1] == '['
-) {
+             } else if (c == '!' && i + 1 < str.Length && str [i + 1] == '[') {
                     // '![ ... ]' may be interpreted in BASH as an evaluator;
                     // replace '!' with underscore
                     builder.Append ('_');
@@ -495,6 +494,9 @@ namespace PeterO.Mail {
                     builder.Append ('_');
                 } else if (c == '$') {
                     // '$' starts a variable in BASH and possibly other shells
+                    builder.Append ('_');
+                } else if (c == ';') {
+                    // ';' separates command lines in BASH and possibly other shells
                     builder.Append ('_');
                 } else if (c == 0x2028 || c == 0x2029) {
                     // line break characters (0x85 is already included above)
