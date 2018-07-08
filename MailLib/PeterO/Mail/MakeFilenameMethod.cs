@@ -496,7 +496,8 @@ namespace PeterO.Mail {
                     // '$' starts a variable in BASH and possibly other shells
                     builder.Append ('_');
                 } else if (c == ';') {
-                    // ';' separates command lines in BASH and possibly other shells
+                    // ';' separates command lines in BASH and possibly
+                    // other shells
                     builder.Append ('_');
                 } else if (c == 0x2028 || c == 0x2029) {
                     // line break characters (0x85 is already included above)

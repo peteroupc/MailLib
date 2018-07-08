@@ -172,10 +172,15 @@ import com.upokecenter.text.*;
       }
     }
 
-    @Test
+    @Test(timeout = 200000)
     public void NormTestRandom() {
+      System.out.println("Initializing random");
       RandomGenerator rand = new RandomGenerator(new XorShift128Plus(false));
-      for (int i = 0; i < 100000; ++i) {
+      System.out.println("Initialized random");
+      for (int i = 0; i < 10000; ++i) {
+        if (i%100 == 0) {
+ System.out.println(i);
+}
         String str = EncodingTest.RandomString(rand);
                 this.TestIdempotent(str, Normalization.NFC);
                 this.TestIdempotent(str, Normalization.NFD);
