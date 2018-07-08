@@ -4014,6 +4014,14 @@ public static int ParseHeaderLatestDeliveryTime(String str, int index, int
   endIndex, ITokener tokener) {
  return ParseDateTime(str, index, endIndex, tokener);
 }
+public static int ParseHeaderListArchive(String str, int index, int
+  endIndex, ITokener tokener) {
+ return ParseListHeaderUrlList(str, index, endIndex, tokener);
+}
+public static int ParseHeaderListHelp(String str, int index, int endIndex,
+  ITokener tokener) {
+ return ParseListHeaderUrlList(str, index, endIndex, tokener);
+}
 public static int ParseHeaderListId(String str, int index, int endIndex,
   ITokener tokener) {
 int i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state, tx3;
@@ -4098,6 +4106,55 @@ if (index < endIndex && (str.charAt(index) == 62)) {
  tokener.RestoreState(state);
 }
  return indexTemp;
+}
+public static int ParseHeaderListOwner(String str, int index, int endIndex,
+  ITokener tokener) {
+ return ParseListHeaderUrlList(str, index, endIndex, tokener);
+}
+public static int ParseHeaderListPost(String str, int index, int endIndex,
+  ITokener tokener) {
+int indexStart, indexStart2, indexTemp, indexTemp2, state, state2;
+indexStart = index;
+ state = (tokener != null) ? tokener.GetState() : 0;
+ indexTemp = index;
+ do {
+  state2 = (tokener != null) ? tokener.GetState() : 0;
+ indexTemp2 = index;
+ do {
+ indexStart2 = index;
+ index = ParseCFWS(str, index, endIndex, tokener);
+if (index + 1 < endIndex && (str.charAt(index) & ~32) == 78 && (str.charAt(index + 1) & ~32) == 79) {
+ index += 2;
+} else {
+ index = indexStart2; break;
+}
+ index = ParseCFWS(str, index, endIndex, tokener);
+  indexTemp2 = index;
+  index = indexStart2;
+ } while (false);
+ if (indexTemp2 != index) {
+ indexTemp = indexTemp2; break;
+}
+ if (tokener != null) {
+ tokener.RestoreState(state2);
+}
+  indexTemp2 = ParseListHeaderUrlList(str, index, endIndex, tokener);
+ if (indexTemp2 != index) {
+ indexTemp = indexTemp2; break;
+}
+ } while (false);
+ if (tokener != null && indexTemp == indexStart) {
+ tokener.RestoreState(state);
+}
+ return indexTemp;
+}
+public static int ParseHeaderListSubscribe(String str, int index, int
+  endIndex, ITokener tokener) {
+ return ParseListHeaderUrlList(str, index, endIndex, tokener);
+}
+public static int ParseHeaderListUnsubscribe(String str, int index, int
+  endIndex, ITokener tokener) {
+ return ParseListHeaderUrlList(str, index, endIndex, tokener);
 }
 
 public static int ParseHeaderListUnsubscribePost(String str, int index, int
@@ -6010,6 +6067,89 @@ index = indexTemp2;
  }
   indexTemp = index;
  } while (false);
+ return indexTemp;
+}
+public static int ParseListHeaderUrl(String str, int index, int endIndex,
+  ITokener tokener) {
+int indexStart, indexTemp, state;
+indexStart = index;
+ state = (tokener != null) ? tokener.GetState() : 0;
+ indexTemp = index;
+ do {
+ index = ParseCFWS(str, index, endIndex, tokener);
+if (index < endIndex && (str.charAt(index) == 60)) {
+ ++index;
+} else {
+ index = indexStart; break;
+}
+if (index < endIndex && ((str.charAt(index) >= 33 && str.charAt(index) <= 59) ||
+  (str.charAt(index) == 61) || (str.charAt(index) >= 63 && str.charAt(index) <= 126))) {
+ ++index;
+ while ((index < endIndex && ((str.charAt(index) >= 33 && str.charAt(index) <= 59) ||
+   (str.charAt(index) == 61) || (str.charAt(index) >= 63 && str.charAt(index) <= 126)))) {
+ ++index;
+}
+} else {
+ index = indexStart; break;
+}
+if (index < endIndex && (str.charAt(index) == 62)) {
+ ++index;
+} else {
+ index = indexStart; break;
+}
+ index = ParseCFWS(str, index, endIndex, tokener);
+  indexTemp = index;
+ } while (false);
+ if (tokener != null && indexTemp == indexStart) {
+ tokener.RestoreState(state);
+}
+ return indexTemp;
+}
+public static int ParseListHeaderUrlList(String str, int index, int
+  endIndex, ITokener tokener) {
+int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
+indexStart = index;
+ state = (tokener != null) ? tokener.GetState() : 0;
+ indexTemp = index;
+ do {
+ tx2 = ParseListHeaderUrl(str, index, endIndex, tokener);
+ if (tx2 == index) {
+ break;
+} else {
+ index = tx2;
+}
+ while (true) {
+  state2 = (tokener != null) ? tokener.GetState() : 0;
+ indexTemp2 = index;
+ do {
+ indexStart2 = index;
+if (index < endIndex && (str.charAt(index) == 44)) {
+ ++index;
+} else {
+ break;
+}
+ tx3 = ParseListHeaderUrl(str, index, endIndex, tokener);
+ if (tx3 == index) {
+index = indexStart2; break;
+} else {
+ index = tx3;
+}
+  indexTemp2 = index;
+  index = indexStart2;
+ } while (false);
+  if (indexTemp2 != index) {
+index = indexTemp2;
+  } else if (tokener != null) {
+tokener.RestoreState(state2); break;
+} else {
+ break;
+}
+ }
+  indexTemp = index;
+ } while (false);
+ if (tokener != null && indexTemp == indexStart) {
+ tokener.RestoreState(state);
+}
  return indexTemp;
 }
 public static int ParseLocalPart(String str, int index, int endIndex,

@@ -331,7 +331,7 @@ Assert.AreEqual(
             {
 string stringTemp = ContentDisposition.MakeFilename("lpt1 .x");
 Assert.AreEqual(
-  "_lpt_.x",
+  "_lpt1_.x",
   stringTemp);
 }
             {
@@ -343,7 +343,7 @@ Assert.AreEqual(
             {
 string stringTemp = ContentDisposition.MakeFilename("lpt1 .x.y");
 Assert.AreEqual(
-  "_lpt .x.y",
+  "_lpt1 .x.y",
   stringTemp);
 }
         }
@@ -853,7 +853,7 @@ Assert.AreEqual(
             {
                 stringTemp = ContentDisposition.MakeFilename("lpt1device");
                 Assert.AreEqual(
-                  "_lpt1device",
+                  "lpt1device",
                   stringTemp);
             }
             {

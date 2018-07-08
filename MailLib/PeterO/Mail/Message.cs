@@ -2036,7 +2036,7 @@ namespace PeterO.Mail {
         }
       }
       long ticks = DateTime.UtcNow.Ticks;
-      for (int i = 0; i < 16; ++i) {
+      for (int i = 0; i < 10; ++i) {
         builder.Append(ValueHex[(int)(ticks & 15)]);
         ticks >>= 4;
       }

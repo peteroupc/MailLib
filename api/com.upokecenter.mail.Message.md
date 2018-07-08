@@ -52,11 +52,23 @@
  RFC 2047:</li> <li>(a) If a sequence of encoded words decodes to a
  string with a CTL character (U + 007F, or a character less than U + 0020
  and not TAB) after being converted to Unicode, the encoded words are
- left un-decoded.</li> <li>(b) This implementation can decode an
- encoded word that uses ISO-2022-JP (the only supported encoding that
- uses code switching) even if the encoded word's payload ends in a
- different mode from "ASCII mode". (Each encoded word still starts in
- "ASCII mode", though.)</li></ul> ---.
+ left un-decoded.</li> <li>(b) </li></ul> <p>It would be appreciated
+ if users of this library contact the author if they find other ways
+ in which this implementation deviates from the mail specifications or
+ other applicable specifications.</p> <p>Note that this class
+ currently doesn't support the "padding" parameter for message bodies
+ with the media type "application/octet-stream" or treated as that
+ media type (see RFC 2046 sec. 4.5.1).</p> <p>Note that this
+ implementation can decode an RFC 2047 encoded word that uses
+ ISO-2022-JP (the only supported encoding that uses code switching)
+ even if the encoded word's payload ends in a different mode from
+ "ASCII mode". (Each encoded word still starts in "ASCII mode",
+ though.) This, however, is not a deviation to RFC 2047 because the
+ relevant rule only concerns bringing the output device back to "ASCII
+ mode" after the decoded text is displayed (see last paragraph of sec.
+ 6.2) -- since the decoded text is converted to Unicode rather than
+ kept as ISO-2022-JP, this is not applicable since there is no such
+ thing as "ASCII mode" in the Unicode Standard.</p>
 
 ## Methods
 
@@ -94,8 +106,8 @@
  Gets the date and time extracted from this message's Date header field (as
  though GetHeader("date") were called).
 * `String getFileName()`<br>
- Gets a filename suggested by this message for saving the message's body to a
- file.
+ Gets a file name suggested by this message for saving the message's body
+ to a file.
 * `List<NamedAddress> getFromAddresses()`<br>
  Gets a list of addresses found in the From header field or fields.
 * `Map.Entry<String,String> GetHeader​(int index)`<br>
@@ -239,7 +251,7 @@ Gets a list of addresses found in the CC header field or fields.
 ### getContentDisposition
     public final ContentDisposition getContentDisposition()
 Gets this message's content disposition. The content disposition specifies
- how a user agent should handle or otherwise display this message. Can
+ how a user agent should display or otherwise handle this message. Can
  be set to null.
 
 **Returns:**
@@ -265,9 +277,34 @@ Gets this message's media type.
     public final void setContentType​(MediaType value)
 ### getFileName
     public final String getFileName()
-Gets a filename suggested by this message for saving the message's body to a
- file. For more information on the algorithm, see
- ContentDisposition.MakeFilename.
+<p>Gets a file name suggested by this message for saving the message's body
+ to a file. For more information on the algorithm, see
+ ContentDisposition.MakeFilename.</p> <p>This method generates a file
+ name based on the <code>filename</code> parameter of the
+ Content-Disposition header field, if it exists, or on the <code>name</code>
+ parameter of the Content-Type header field, otherwise.</p><p>
+ <p><b>Remark:</b> Note that RFC 2046 sec. 4.5.1
+ (<code>application/octet-stream</code> subtype) cites an earlier RFC 1341,
+ which "defined the use of a 'NAME' parameter which gave a
+ <i>suggested</i> file name to be used if the data were written to a
+ file". (Although the same section says this parameter "has been
+ deprecated in anticipation of [the] Content-Disposition header
+ field", the <code>name</code> parameter may still be written out to email
+ messages in some implementations, even in media types other than
+ <code>application/octet-stream</code>.) Also, RFC 2183 sec. 2.3
+ (<code>filename</code> parameter) confirms that the "<i>suggested</i>
+ filename" in the <code>filename</code> parameter "should be <i>used as a
+ basis</i> for the actual filename, where possible", and that that
+ file name should "not [be] blindly use[d]". See also RFC 6266,
+ section 4.3, which discusses the use of that parameter in Hypertext
+ Transfer Protocol (HTTP). Thus, this implementation is justified in
+ not using the exact file name given, but rather adapting it to
+ increase the chance of the name being usable in file systems.</p>
+ <p>To the extent that the "name" parameter is not allowed in message
+ bodies with the media type "application/octet-stream" or treated as
+ that media-type, this is a deviation of RFC 2045 and 2046 (see also
+ RFC 2045 sec. 5, which says that "[t]here are NO globally meaningful
+ parameters that apply to all media types").</p> </p>
 
 **Returns:**
 

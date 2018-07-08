@@ -994,10 +994,47 @@ private sealed class HeaderLatestDeliveryTime : StructuredHeaderField {
       tokener);
   }
 }
+private sealed class HeaderListArchive : StructuredHeaderField {
+  public override int Parse(string str, int index, int endIndex, ITokener
+    tokener) {
+    return HeaderParser.ParseHeaderListArchive(str, index, endIndex, tokener);
+  }
+}
+private sealed class HeaderListHelp : StructuredHeaderField {
+  public override int Parse(string str, int index, int endIndex, ITokener
+    tokener) {
+    return HeaderParser.ParseHeaderListHelp(str, index, endIndex, tokener);
+  }
+}
 private sealed class HeaderListId : StructuredHeaderField {
   public override int Parse(string str, int index, int endIndex, ITokener
     tokener) {
     return HeaderParser.ParseHeaderListId(str, index, endIndex, tokener);
+  }
+}
+private sealed class HeaderListOwner : StructuredHeaderField {
+  public override int Parse(string str, int index, int endIndex, ITokener
+    tokener) {
+    return HeaderParser.ParseHeaderListOwner(str, index, endIndex, tokener);
+  }
+}
+private sealed class HeaderListPost : StructuredHeaderField {
+  public override int Parse(string str, int index, int endIndex, ITokener
+    tokener) {
+    return HeaderParser.ParseHeaderListPost(str, index, endIndex, tokener);
+  }
+}
+private sealed class HeaderListSubscribe : StructuredHeaderField {
+  public override int Parse(string str, int index, int endIndex, ITokener
+    tokener) {
+    return HeaderParser.ParseHeaderListSubscribe(str, index, endIndex, tokener);
+  }
+}
+private sealed class HeaderListUnsubscribe : StructuredHeaderField {
+  public override int Parse(string str, int index, int endIndex, ITokener
+    tokener) {
+ return HeaderParser.ParseHeaderListUnsubscribe(str, index, endIndex,
+      tokener);
   }
 }
 private sealed class HeaderListUnsubscribePost : StructuredHeaderField {
@@ -1329,7 +1366,13 @@ fieldMap["jabber-id"] = new HeaderJabberId();
 fieldMap["keywords"] = new HeaderKeywords();
 fieldMap["language"] = new HeaderLanguage();
 fieldMap["latest-delivery-time"] = new HeaderLatestDeliveryTime();
+fieldMap["list-archive"] = new HeaderListArchive();
+fieldMap["list-help"] = new HeaderListHelp();
 fieldMap["list-id"] = new HeaderListId();
+fieldMap["list-owner"] = new HeaderListOwner();
+fieldMap["list-post"] = new HeaderListPost();
+fieldMap["list-subscribe"] = new HeaderListSubscribe();
+fieldMap["list-unsubscribe"] = new HeaderListUnsubscribe();
 fieldMap["list-unsubscribe-post"] = new HeaderListUnsubscribePost();
 fieldMap["message-context"] = new HeaderMessageContext();
 fieldMap["message-id"] = new HeaderMessageId();

@@ -989,10 +989,47 @@ private static final class HeaderLatestDeliveryTime extends StructuredHeaderFiel
       tokener);
   }
 }
+private static final class HeaderListArchive extends StructuredHeaderField {
+  @Override public int Parse(String str, int index, int endIndex, ITokener
+    tokener) {
+    return HeaderParser.ParseHeaderListArchive(str, index, endIndex, tokener);
+  }
+}
+private static final class HeaderListHelp extends StructuredHeaderField {
+  @Override public int Parse(String str, int index, int endIndex, ITokener
+    tokener) {
+    return HeaderParser.ParseHeaderListHelp(str, index, endIndex, tokener);
+  }
+}
 private static final class HeaderListId extends StructuredHeaderField {
   @Override public int Parse(String str, int index, int endIndex, ITokener
     tokener) {
     return HeaderParser.ParseHeaderListId(str, index, endIndex, tokener);
+  }
+}
+private static final class HeaderListOwner extends StructuredHeaderField {
+  @Override public int Parse(String str, int index, int endIndex, ITokener
+    tokener) {
+    return HeaderParser.ParseHeaderListOwner(str, index, endIndex, tokener);
+  }
+}
+private static final class HeaderListPost extends StructuredHeaderField {
+  @Override public int Parse(String str, int index, int endIndex, ITokener
+    tokener) {
+    return HeaderParser.ParseHeaderListPost(str, index, endIndex, tokener);
+  }
+}
+private static final class HeaderListSubscribe extends StructuredHeaderField {
+  @Override public int Parse(String str, int index, int endIndex, ITokener
+    tokener) {
+    return HeaderParser.ParseHeaderListSubscribe(str, index, endIndex, tokener);
+  }
+}
+private static final class HeaderListUnsubscribe extends StructuredHeaderField {
+  @Override public int Parse(String str, int index, int endIndex, ITokener
+    tokener) {
+ return HeaderParser.ParseHeaderListUnsubscribe(str, index, endIndex,
+      tokener);
   }
 }
 private static final class HeaderListUnsubscribePost extends StructuredHeaderField {
@@ -1320,7 +1357,13 @@ fieldMap.put("jabber-id",new HeaderJabberId());
 fieldMap.put("keywords",new HeaderKeywords());
 fieldMap.put("language",new HeaderLanguage());
 fieldMap.put("latest-delivery-time",new HeaderLatestDeliveryTime());
+fieldMap.put("list-archive",new HeaderListArchive());
+fieldMap.put("list-help",new HeaderListHelp());
 fieldMap.put("list-id",new HeaderListId());
+fieldMap.put("list-owner",new HeaderListOwner());
+fieldMap.put("list-post",new HeaderListPost());
+fieldMap.put("list-subscribe",new HeaderListSubscribe());
+fieldMap.put("list-unsubscribe",new HeaderListUnsubscribe());
 fieldMap.put("list-unsubscribe-post",new HeaderListUnsubscribePost());
 fieldMap.put("message-context",new HeaderMessageContext());
 fieldMap.put("message-id",new HeaderMessageId());
