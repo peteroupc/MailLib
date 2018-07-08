@@ -110,6 +110,12 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetFilename"]/*'/>
+    public string GetFilename() {
+      return MakeFilename(this.GetParameter("filename"));
+    }
+
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)"]/*'/>
             public string GetParameter (string name) {
             if (name == null) {

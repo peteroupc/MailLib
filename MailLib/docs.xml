@@ -374,6 +374,12 @@
             <param name='obj'>The parameter <paramref name='obj'/> is an arbitrary object.</param>
             <returns><c>true</c> if the objects are equal; otherwise, <c>false</c>.</returns>
 </doc>
+<doc name="M:PeterO.Mail.ContentDisposition.GetFilename">
+<summary>Gets an adapted version of the "filename" parameter
+            in this content disposition object by using the "MakeFilename" method.</summary>
+            <returns>The adapted file name in the form of a string, or the empty string if there
+            is no "filename" parameter.</returns>
+</doc>
 <doc name="M:PeterO.Mail.ContentDisposition.GetHashCode">
 <summary>Returns the hash code for this instance.</summary>
             <returns>A 32-bit hash code.</returns>
@@ -857,17 +863,22 @@
             CTL character (U+007F, or a character less than U+0020 and not
             TAB) after being converted to Unicode, the encoded words are left
             un-decoded.</item>
-            <item>(b) This implementation can decode an encoded word that uses
-            ISO-2022-JP (the only supported encoding that uses code switching)
-            even if the encoded word's payload ends in a different mode from
-            "ASCII mode". (Each encoded word still starts in "ASCII mode",
-            though.)</item></list>
+            <item>(b) </item></list>
 <p>It would be appreciated if users of this library contact the author if they
  find other ways in which this implementation deviates from the mail specifications or other
 applicable specifications.</p>
 <p>Note that this class currently doesn't support the "padding" parameter
-for message bodies with the media type "application/octet stream" or treated
+for message bodies with the media type "application/octet-stream" or treated
 as that media type (see RFC 2046 sec. 4.5.1).</p>
+<p>Note that this implementation can decode an RFC 2047 encoded word that uses
+            ISO-2022-JP (the only supported encoding that uses code switching)
+            even if the encoded word's payload ends in a different mode from
+            "ASCII mode". (Each encoded word still starts in "ASCII mode",
+            though.)  This, however, is not a deviation to RFC 2047 because the relevant
+rule only concerns bringing the output device back to "ASCII mode" after the decoded text
+is displayed (see last paragraph of sec. 6.2) -- since the decoded text is converted
+to Unicode rather than kept as ISO-2022-JP, this is not applicable since there is
+no such thing as "ASCII mode" in the Unicode Standard.</p>
 </summary>
 </doc>
 <doc name="M:PeterO.Mail.Message.#ctor">
