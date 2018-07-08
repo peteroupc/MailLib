@@ -899,11 +899,14 @@ return SkipQuotedString(
       if (parameters.Count == 0) {
         return true;
       }
-      var keyList = new List<string>(parameters.Keys);
-      keyList.Sort();
       // NOTE: RFC 2231 doesn't specify what happens if a "*" extension
       // and a "*0*" continuation both appear in the same media type string.
-      // TODO: Choose a consistent behavior in this respect.
+      // In this implementation, due to the sorting which follows,
+      // the former will appear before the latter in the key list and
+      // will generally be overridden by the latter in the
+      // final parameter list.
+      var keyList = new List<string>(parameters.Keys);
+      keyList.Sort();
       foreach (string name in keyList) {
         if (!parameters.ContainsKey(name)) {
           continue;

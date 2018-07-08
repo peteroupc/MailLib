@@ -345,6 +345,15 @@ private MakeFilenameMethod() {
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
     };
+        private static final int [] charCheckInitial = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+      0, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1,
+      2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+      0, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1,
+      2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
+    };
         private static boolean SimplifiedFileCheck(String name) {
             if (((name) == null || (name).length() == 0) || name.length() > 128) {
  return false;
@@ -360,40 +369,20 @@ private MakeFilenameMethod() {
  return false;
 }
                     dotSeen = true;
-                } else if (charCheck [c] == 0) {
-                    return false;
-                } else {
-                    dotSeen = false;
+                    continue;
                 }
-                if (i == 0) {
-                    if (c == 0x2d) {
+                int cc=(i == 0) ? charCheckInitial[c] : charCheck[c];
+                dotSeen = false;
+                if (cc == 0) {
  return false;
 }
-   if ((c == 0x4e || c == 0x6e || c == 0x41 || c == 0x61) && name.length() > 1 &&
-                (name.charAt(1) == 'u' || name.charAt(1) == 'U')) {
-                    return false;
-                    }
-                    if ((c == 0x43 || c == 0x63) && name.length() >= 3 &&
-                    (name.charAt(1) == 'o' || name.charAt(1) == 'O') &&
-  (name.charAt(2) == 'm' || name.charAt(2) == 'M' || name.charAt(2) == 'n' || name.charAt(2) == 'N'
-)) {
-                    return false;
-                    }
-
-                    if ((c == 0x43 || c == 0x63) && name.length() == 6 &&
-                    (name.charAt(1) == 'l' || name.charAt(1) == 'L')) {
-                    return false;
-                    }
-                    if ((c == 0x50 || c == 0x70) && name.length() >= 3 &&
-                (name.charAt(1) == 'r' || name.charAt(1) == 'R') &&
-                (name.charAt(2) == 'n' || name.charAt(2) == 'N')
-) {
-                    return false;
-                    }
-                    if ((c == 0x4c || c == 0x6c) && name.length() > 1 &&
-                (name.charAt(1) == 'p' || name.charAt(1) == 'P')) {
-                    return false;
-                    }
+                if (cc == 2) {
+                   if (name.length() == 3 || name.length() == 4) {
+ return false;
+}
+                   if (name.length()>4 && (name.charAt(3)=='.' || name.charAt(4)=='.')) {
+ return false;
+}
                 }
             }
             return true;
@@ -534,7 +523,8 @@ private MakeFilenameMethod() {
                 return "_";
             }
             String strLower = DataUtilities.ToLowerCaseAscii (str);
-            // Reserved filenames
+            // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
+            // well as "!["
             boolean reservedFilename = strLower.equals (
               "nul") || strLower.equals ("clock$") || strLower.indexOf(
               "nul.") == 0 || strLower.equals (
@@ -544,13 +534,17 @@ private MakeFilenameMethod() {
               "aux") || strLower.indexOf(
               "aux.") == 0 || strLower.equals (
               "con") || strLower.indexOf(
-              "con.") == 0 || (
-              strLower.length() >= 4 && strLower.indexOf(
-              "lpt") == 0 && strLower.charAt(3) >= '0' &&
-                   strLower.charAt(3) <= '9') || (strLower.length() >= 4 &&
-                    strLower.indexOf(
+              "con.") == 0;
+            // LPTn, COMn
+      if (strLower.length()==4 || (strLower.length()>4 && (strLower.charAt(4)=='.' ||
+        strLower.charAt(4)==' '))) {
+             reservedFilename = reservedFilename || (strLower.indexOf(
+               "lpt") == 0 && strLower.charAt(3) >= '0' &&
+                    strLower.charAt(3) <= '9');
+              reservedFilename = reservedFilename || (strLower.indexOf(
               "com") == 0 && strLower.charAt(3) >= '0' &&
                     strLower.charAt(3) <= '9');
+            }
             boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&
                   str.charAt(1) >= '0' && str.charAt(1) <= '9';
             // Home folder convention (tilde).

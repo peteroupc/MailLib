@@ -180,7 +180,7 @@ namespace MailLibTest {
       var rand = new RandomGenerator(new XorShift128Plus(false));
       Console.WriteLine("Initialized random");
       for (var i = 0; i < 10000; ++i) {
-        if (i%100 == 0) {
+        if (i % 100 == 0) {
  Console.WriteLine(i);
 }
         string str = EncodingTest.RandomString(rand);
@@ -190,7 +190,6 @@ namespace MailLibTest {
                 this.TestIdempotent(str, Normalization.NFKD);
 }
 Console.WriteLine("Done");
-      
     }
 
     [Test]

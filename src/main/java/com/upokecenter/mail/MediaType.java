@@ -938,11 +938,14 @@ return SkipQuotedString(
       if (parameters.size() == 0) {
         return true;
       }
-      ArrayList<String> keyList = new ArrayList<String>(parameters.keySet());
-      java.util.Collections.sort(keyList);
       // NOTE: RFC 2231 doesn't specify what happens if a "*" extension
       // and a "*0*" continuation both appear in the same media type String.
-      // TODO: Choose a consistent behavior in this respect.
+      // In this implementation, due to the sorting which follows,
+      // the former will appear before the latter in the key list and
+      // will generally be overridden by the latter in the
+      // final parameter list.
+      ArrayList<String> keyList = new ArrayList<String>(parameters.keySet());
+      java.util.Collections.sort(keyList);
       for (String name : keyList) {
         if (!parameters.containsKey(name)) {
           continue;

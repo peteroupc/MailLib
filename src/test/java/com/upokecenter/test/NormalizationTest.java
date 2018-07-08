@@ -178,7 +178,7 @@ import com.upokecenter.text.*;
       RandomGenerator rand = new RandomGenerator(new XorShift128Plus(false));
       System.out.println("Initialized random");
       for (int i = 0; i < 10000; ++i) {
-        if (i%100 == 0) {
+        if (i % 100 == 0) {
  System.out.println(i);
 }
         String str = EncodingTest.RandomString(rand);
@@ -187,6 +187,7 @@ import com.upokecenter.text.*;
                 this.TestIdempotent(str, Normalization.NFKC);
                 this.TestIdempotent(str, Normalization.NFKD);
 }
+System.out.println("Done");
     }
 
     @Test
