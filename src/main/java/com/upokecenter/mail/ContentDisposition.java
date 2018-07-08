@@ -147,6 +147,16 @@ import com.upokecenter.text.*;
     }
 
     /**
+     * Gets an adapted version of the "filename" parameter in this content
+     * disposition object by using the "MakeFilename" method.
+     * @return The adapted file name in the form of a string, or the empty string
+     * if there is no "filename" parameter.
+     */
+    public String GetFilename() {
+      return MakeFilename(this.GetParameter("filename"));
+    }
+
+    /**
      * Gets a parameter from this disposition object.
      * @param name The name of the parameter to get. The name will be matched using
      * a basic case-insensitive comparison. (Two strings are equal in such a

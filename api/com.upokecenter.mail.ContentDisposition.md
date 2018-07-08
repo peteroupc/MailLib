@@ -21,6 +21,9 @@ Specifies how a message body should be displayed or handled by a mail user
 * `String getDispositionType()`<br>
  Gets a string containing this object's disposition type, such as "inline" or
  "attachment".
+* `String GetFilename()`<br>
+ Gets an adapted version of the "filename" parameter in this content
+ disposition object by using the "MakeFilename" method.
 * `String GetParameter​(String name)`<br>
  Gets a parameter from this disposition object.
 * `Map<String,String> getParameters()`<br>
@@ -165,6 +168,16 @@ Converts a file name from the Content-Disposition header to a suitable name
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
+
+### GetFilename
+    public String GetFilename()
+Gets an adapted version of the "filename" parameter in this content
+ disposition object by using the "MakeFilename" method.
+
+**Returns:**
+
+* The adapted file name in the form of a string, or the empty string
+ if there is no "filename" parameter.
 
 ### GetParameter
     public String GetParameter​(String name)
