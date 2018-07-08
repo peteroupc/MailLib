@@ -1,5 +1,6 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
 
+import java.util.*;
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.mail.*;
@@ -7,7 +8,19 @@ import com.upokecenter.mail.*;
   public class MediaTypeTest {
     @Test
     public void TestEquals() {
-      // not implemented yet
+      MediaType mt=MediaType.Parse("text/example;param1=value1;param2=value2");
+      MediaType mt2=MediaType.Parse("text/example;param2=value2;param1=value1");
+      MediaType mt3=MediaType.Parse("text/example;param1=value2;param2=value2");
+      TestCommon.AssertEqualsHashCode(mt, mt2);
+      TestCommon.AssertEqualsHashCode(mt, mt3);
+      TestCommon.AssertEqualsHashCode(mt3, mt2);
+      Assert.assertEquals(mt, mt2);
+      if (mt.equals(mt3)) {
+ Assert.fail();
+ }
+      if (mt2.equals(mt3)) {
+ Assert.fail();
+ }
     }
     @Test
     public void TestGetCharset() {
@@ -236,11 +249,51 @@ Assert.assertEquals(objectTemp, objectTemp2);
     }
     @Test
     public void TestParameters() {
-      // not implemented yet
+      MediaType mt=MediaType.Parse("text/example;param1=value1;param2=value2");
+      Map<String, String> parameters;
+      parameters = mt.getParameters();
+      if (!(parameters.containsKey("param1"))) {
+ Assert.fail();
+ }
+      if (!(parameters.containsKey("param2"))) {
+ Assert.fail();
+ }
+      Assert.assertEquals("value1",parameters.get("param1"));
+      Assert.assertEquals("value2",parameters.get("param2"));
     }
     @Test
     public void TestParse() {
-      // not implemented yet
+      try {
+ MediaType.Parse(null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      MediaType mt=MediaType.Parse("text/example;param1=\"value1\"");
+      Map<String, String> parameters;
+      parameters = mt.getParameters();
+      Assert.assertEquals("value1",parameters.get("param1"));
+      mt=MediaType.Parse("text/example;param1*=utf-8''value2");
+      Assert.assertEquals("value2",parameters.get("param1"));
+      mt=MediaType.Parse("text/example;param1*=utf-8'en'value3");
+      Assert.assertEquals("value3",parameters.get("param1"));
+      mt=MediaType.Parse("text/example;param1*0*=utf-8'en'val;param1*1*=ue4");
+      Assert.assertEquals("value4",parameters.get("param1"));
+      mt=MediaType.Parse("text/example;param1*=iso-8859-1''valu%e72");
+      Assert.assertEquals("valu\u00e72",parameters.get("param1"));
+      mt=MediaType.Parse("text/example;param1*=iso-8859-1''valu%E72");
+      Assert.assertEquals("valu\u00e72",parameters.get("param1"));
+      mt=MediaType.Parse("text/example;param1*=iso-8859-1'en'valu%e72");
+      Assert.assertEquals("valu\u00e72",parameters.get("param1"));
+      mt=MediaType.Parse("text/example;param1*=iso-8859-1'en'valu%E72");
+      Assert.assertEquals("valu\u00e72",parameters.get("param1"));
+      mt=MediaType.Parse("text/example;param1*=iso-8859-1'en'valu%4E2");
+      Assert.assertEquals("valu\u004e2",parameters.get("param1"));
+      mt=MediaType.Parse("text/example;param1*=iso-8859-1'en'valu%4e2");
+      Assert.assertEquals("valu\u004e2",parameters.get("param1"));
     }
     @Test
     public void TestSubType() {

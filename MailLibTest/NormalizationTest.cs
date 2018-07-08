@@ -180,13 +180,17 @@ namespace MailLibTest {
       var rand = new RandomGenerator(new XorShift128Plus(false));
       Console.WriteLine("Initialized random");
       for (var i = 0; i < 10000; ++i) {
-        if(i%100==0)Console.WriteLine(i);
+        if (i%100 == 0) {
+ Console.WriteLine(i);
+}
         string str = EncodingTest.RandomString(rand);
                 this.TestIdempotent(str, Normalization.NFC);
                 this.TestIdempotent(str, Normalization.NFD);
                 this.TestIdempotent(str, Normalization.NFKC);
                 this.TestIdempotent(str, Normalization.NFKD);
 }
+Console.WriteLine("Done");
+      
     }
 
     [Test]

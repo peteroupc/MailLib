@@ -940,6 +940,9 @@ return SkipQuotedString(
       }
       ArrayList<String> keyList = new ArrayList<String>(parameters.keySet());
       java.util.Collections.sort(keyList);
+      // NOTE: RFC 2231 doesn't specify what happens if a "*" extension
+      // and a "*0*" continuation both appear in the same media type String.
+      // TODO: Choose a consistent behavior in this respect.
       for (String name : keyList) {
         if (!parameters.containsKey(name)) {
           continue;

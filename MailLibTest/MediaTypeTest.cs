@@ -12,10 +12,10 @@ namespace MailLibTest {
       MediaType mt=MediaType.Parse("text/example;param1=value1;param2=value2");
       MediaType mt2=MediaType.Parse("text/example;param2=value2;param1=value1");
       MediaType mt3=MediaType.Parse("text/example;param1=value2;param2=value2");
-      TestCommon.AssertEqualsHashCode(mt,mt2);
-      TestCommon.AssertEqualsHashCode(mt,mt3);
-      TestCommon.AssertEqualsHashCode(mt3,mt2);
-      Assert.AreEqual(mt,mt2);
+      TestCommon.AssertEqualsHashCode(mt, mt2);
+      TestCommon.AssertEqualsHashCode(mt, mt3);
+      TestCommon.AssertEqualsHashCode(mt3, mt2);
+      Assert.AreEqual(mt, mt2);
       Assert.IsFalse(mt.Equals(mt3));
       Assert.IsFalse(mt2.Equals(mt3));
     }
@@ -241,8 +241,8 @@ Assert.AreEqual(objectTemp, objectTemp2);
     [Test]
     public void TestParameters() {
       MediaType mt=MediaType.Parse("text/example;param1=value1;param2=value2");
-      IDictionary<string,string> parameters;
-      parameters=mt.Parameters;
+      IDictionary<string, string> parameters;
+      parameters = mt.Parameters;
       Assert.IsTrue(parameters.ContainsKey("param1"));
       Assert.IsTrue(parameters.ContainsKey("param2"));
       Assert.AreEqual("value1",parameters["param1"]);
@@ -250,17 +250,46 @@ Assert.AreEqual(objectTemp, objectTemp2);
     }
     [Test]
     public void TestParse() {
-      Assert.Throws(typeof(ArgumentNullException),()=>MediaType.Parse(null));
+      try {
+ MediaType.Parse(null);
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
       MediaType mt=MediaType.Parse("text/example;param1=\"value1\"");
-      IDictionary<string,string> parameters;
-      parameters=mt.Parameters;
+      IDictionary<string, string> parameters;
+      parameters = mt.Parameters;
       Assert.AreEqual("value1",parameters["param1"]);
       mt=MediaType.Parse("text/example;param1*=utf-8''value2");
+      parameters = mt.Parameters;
       Assert.AreEqual("value2",parameters["param1"]);
       mt=MediaType.Parse("text/example;param1*=utf-8'en'value3");
+      parameters = mt.Parameters;
       Assert.AreEqual("value3",parameters["param1"]);
       mt=MediaType.Parse("text/example;param1*0*=utf-8'en'val;param1*1*=ue4");
+      parameters = mt.Parameters;
       Assert.AreEqual("value4",parameters["param1"]);
+      mt=MediaType.Parse("text/example;param1*=iso-8859-1''valu%e72");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u00e72",parameters["param1"]);
+      mt=MediaType.Parse("text/example;param1*=iso-8859-1''valu%E72");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u00e72",parameters["param1"]);
+      mt=MediaType.Parse("text/example;param1*=iso-8859-1'en'valu%e72");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u00e72",parameters["param1"]);
+      mt=MediaType.Parse("text/example;param1*=iso-8859-1'en'valu%E72");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u00e72",parameters["param1"]);
+      mt=MediaType.Parse("text/example;param1*=iso-8859-1'en'valu%4E2");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u004e2",parameters["param1"]);
+      mt=MediaType.Parse("text/example;param1*=iso-8859-1'en'valu%4e2");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u004e2",parameters["param1"]);
     }
     [Test]
     public void TestSubType() {
