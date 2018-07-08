@@ -100,6 +100,16 @@ namespace PeterO.Mail.Transforms {
         if (c == 0x20) {
           // Space can't occur in the Q-encoding; output
           // the space character
+          // NOTE: Since DecodeEncodedWords already checks
+          // a word for spaces/tabs before using this class
+          // on that string, it's not possible for this code
+          // to reach this point in that case. The other place
+          // where this class is used is to adapt file names
+          // (notably in Content-Disposition headers where
+          // RFC 2047-like encodings occur a lot in practice).
+          // For that purpose, however, it is not necessary
+          // to follow RFC 2047 (the encoded word specification)
+          // strictly.
           return 0x20;
         } else if (c < 0x20 || c >= 0x7f) {
           // Can't occur in the Q-encoding; replace

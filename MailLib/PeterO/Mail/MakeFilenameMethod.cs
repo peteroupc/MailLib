@@ -345,6 +345,16 @@ namespace PeterO.Mail {
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
     };
+        private static readonly int [] charCheckInitial = new[] {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+      0, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1,
+      2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+      0, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1,
+      2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
+    };
         private static bool SimplifiedFileCheck (string name) {
             if (String.IsNullOrEmpty (name) || name.Length > 128) {
  return false;
@@ -360,40 +370,20 @@ namespace PeterO.Mail {
  return false;
 }
                     dotSeen = true;
-                } else if (charCheck [c] == 0) {
-                    return false;
-                } else {
-                    dotSeen = false;
+                    continue;
                 }
-                if (i == 0) {
-                    if (c == 0x2d) {
+                int cc=(i == 0) ? charCheckInitial[c] : charCheck[c];
+                dotSeen = false;
+                if (cc == 0) {
  return false;
 }
-   if ((c == 0x4e || c == 0x6e || c == 0x41 || c == 0x61) && name.Length > 1 &&
-                (name [1] == 'u' || name [1] == 'U')) {
-                    return false;
-                    }
-                    if ((c == 0x43 || c == 0x63) && name.Length >= 3 &&
-                    (name [1] == 'o' || name [1] == 'O') &&
-  (name [2] == 'm' || name [2] == 'M' || name [2] == 'n' || name [2] == 'N'
-)) {
-                    return false;
-                    }
-
-                    if ((c == 0x43 || c == 0x63) && name.Length == 6 &&
-                    (name [1] == 'l' || name [1] == 'L')) {
-                    return false;
-                    }
-                    if ((c == 0x50 || c == 0x70) && name.Length >= 3 &&
-                (name [1] == 'r' || name [1] == 'R') &&
-                (name [2] == 'n' || name [2] == 'N')
-) {
-                    return false;
-                    }
-                    if ((c == 0x4c || c == 0x6c) && name.Length > 1 &&
-                (name [1] == 'p' || name [1] == 'P')) {
-                    return false;
-                    }
+                if (cc == 2) {
+                   if (name.Length == 3 || name.Length == 4) {
+ return false;
+}
+                   if (name.Length>4 && (name[3]=='.' || name[4]=='.')) {
+ return false;
+}
                 }
             }
             return true;
@@ -534,7 +524,8 @@ namespace PeterO.Mail {
                 return "_";
             }
             string strLower = DataUtilities.ToLowerCaseAscii (str);
-            // Reserved filenames
+            // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
+            // well as "!["
             bool reservedFilename = strLower.Equals (
               "nul") || strLower.Equals ("clock$") || strLower.IndexOf (
               "nul.",
@@ -549,15 +540,19 @@ namespace PeterO.Mail {
               StringComparison.Ordinal) == 0 || strLower.Equals (
               "con") || strLower.IndexOf (
               "con.",
-              StringComparison.Ordinal) == 0 || (
-              strLower.Length >= 4 && strLower.IndexOf (
-              "lpt",
-              StringComparison.Ordinal) == 0 && strLower [3] >= '0' &&
-                   strLower [3] <= '9') || (strLower.Length >= 4 &&
-                    strLower.IndexOf (
+              StringComparison.Ordinal) == 0;
+            // LPTn, COMn
+      if (strLower.Length==4 || (strLower.Length>4 && (strLower[4]=='.' ||
+        strLower[4]==' '))) {
+             reservedFilename = reservedFilename || (strLower.IndexOf (
+               "lpt",
+               StringComparison.Ordinal) == 0 && strLower [3] >= '0' &&
+                    strLower [3] <= '9');
+              reservedFilename = reservedFilename || (strLower.IndexOf (
               "com",
               StringComparison.Ordinal) == 0 && strLower [3] >= '0' &&
                     strLower [3] <= '9');
+            }
             bool bracketDigit = str [0] == '{' && str.Length > 1 &&
                   str [1] >= '0' && str [1] <= '9';
             // Home folder convention (tilde).
