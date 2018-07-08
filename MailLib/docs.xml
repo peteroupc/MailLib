@@ -952,8 +952,8 @@ no such thing as "ASCII mode" in the Unicode Standard.</p>
 </doc>
 <doc name="P:PeterO.Mail.Message.ContentDisposition">
 <summary>Gets or sets this message's content disposition. The
-            content disposition specifies how a user agent should handle or
-            otherwise display this message. Can be set to null.</summary>
+            content disposition specifies how a user agent should display or
+            otherwise handle this message. Can be set to null.</summary>
             <value>This message&apos;s content disposition, or null if none is
             specified.</value>
 </doc>
