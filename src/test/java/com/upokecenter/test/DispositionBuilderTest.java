@@ -78,7 +78,75 @@ Assert.assertEquals(null, new DispositionBuilder(""));
     }
     @Test
     public void TestSetParameter() {
-      // not implemented yet
+      DispositionBuilder db = new DispositionBuilder().SetParameter("a", "b");
+      {
+String stringTemp = db.ToDisposition().GetParameter("a");
+Assert.assertEquals(
+  "b",
+  stringTemp);
+}
+      db.SetParameter("a", "");
+      Assert.assertEquals("", db.ToDisposition().GetParameter("a"));
+      try {
+ new DispositionBuilder().SetParameter(null, null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ new DispositionBuilder().SetParameter(null, "test");
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ new DispositionBuilder().SetParameter(null, "");
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ new DispositionBuilder().SetParameter("test", null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ new DispositionBuilder().SetParameter("test", "");
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ new DispositionBuilder().SetParameter("", "value");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ new DispositionBuilder().SetParameter("test\u00e0", "value");
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
     }
     @Test
     public void TestToDisposition() {

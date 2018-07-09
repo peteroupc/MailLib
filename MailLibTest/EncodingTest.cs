@@ -1473,22 +1473,32 @@ string stringTemp =
       TestDecodeQuotedPrintable("te\t \r\n", "te\r\n");
       TestDecodeQuotedPrintable("te \t\r\n", "te\r\n");
     }
-    // [Test]
+    [Test]
     public static void TestLenientQuotedPrintable() {
       // Ignore for now, Message constructor currently uses
       // quoted-printable parsing that's not lenient on
-      // line break formats
-      TestDecodeQuotedPrintable("te\rst", "te\r\nst");
-      TestDecodeQuotedPrintable("te\nst", "te\r\nst");
-      TestDecodeQuotedPrintable("te \t\nst", "te\r\nst");
-      TestDecodeQuotedPrintable("te=\rst", "test");
-      TestDecodeQuotedPrintable("te=\nst", "test");
-      TestDecodeQuotedPrintable("te\t \nst", "te\r\nst");
-      TestDecodeQuotedPrintable("te\t \rst", "te\r\nst");
-      TestDecodeQuotedPrintable("te \rst", "te\r\nst");
-      TestDecodeQuotedPrintable("te \nst", "te\r\nst");
-      TestDecodeQuotedPrintable("te=\r", "te");
-      TestDecodeQuotedPrintable("te=\n", "te");
+      // line break formats.
+      // -----
+      // See point 4 in the second numbered
+      // list of section 6.7 of RFC 2045, which suggests excluding
+      // bare CR and bare LF from the decoded data.
+      TestDecodeQuotedPrintable("te\rst", "test");
+      TestDecodeQuotedPrintable("te\nst", "test");
+      // Space/tab followed by CR or LF. In this
+      // case, the space/tab is kept, but not the CR or LF.
+      // See point 4 of second numbered list and point
+      // 3 of first numbered list.
+      TestDecodeQuotedPrintable("te \t\nst", "te \tst");
+      TestDecodeQuotedPrintable("te \t\rst", "te \tst");
+      TestDecodeQuotedPrintable("te\t \nst", "te\t st");
+      TestDecodeQuotedPrintable("te\t \rst", "te\t st");
+      TestDecodeQuotedPrintable("te \rst", "te st");
+      TestDecodeQuotedPrintable("te \nst", "te st");
+      // See point 2 of second numbered list
+      TestDecodeQuotedPrintable("te=\rst", "te=\rst");
+      TestDecodeQuotedPrintable("te=\nst", "te=\nst");
+      TestDecodeQuotedPrintable("te=\r", "te=\r");
+      TestDecodeQuotedPrintable("te=\n", "te=\n");
     }
     [Test]
     public void TestNonLenientQuotedPrintable() {

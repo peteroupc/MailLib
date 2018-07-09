@@ -1,5 +1,7 @@
 package com.upokecenter.test; import com.upokecenter.util.*;
 
+import java.util.*;
+
 import org.junit.Assert;
 import org.junit.Test;
 import com.upokecenter.util.*;
@@ -956,6 +958,18 @@ Assert.assertEquals(
 
         @Test
 public void TestParameters() {
+      ContentDisposition mt =
+          ContentDisposition.Parse("inline;param1=value1;param2=value2");
+      Map<String, String> parameters;
+      parameters = mt.getParameters();
+      if (!(parameters.containsKey("param1"))) {
+ Assert.fail();
+ }
+      if (!(parameters.containsKey("param2"))) {
+ Assert.fail();
+ }
+      Assert.assertEquals("value1", parameters.get("param1"));
+      Assert.assertEquals("value2", parameters.get("param2"));
         }
 
         @Test
@@ -969,7 +983,136 @@ public void TestParse() {
                 Assert.fail(ex.toString());
                 throw new IllegalStateException("", ex);
             }
+
+      ContentDisposition mt;
+      Map<String, String> parameters;
+      mt = ContentDisposition.Parse("inline;param1=\"value1\"");
+      parameters = mt.getParameters();
+      Assert.assertEquals("value1", parameters.get("param1"));
+      mt = ContentDisposition.Parse("inline;param1*=utf-8''value2");
+      parameters = mt.getParameters();
+      Assert.assertEquals("value2", parameters.get("param1"));
+      mt = ContentDisposition.Parse("inline;param1*=utf-8'en'value3");
+      parameters = mt.getParameters();
+      Assert.assertEquals("value3", parameters.get("param1"));
+  mt =
+  ContentDisposition.Parse("inline;param1*0*=utf-8'en'val;param1*1*=ue4");
+      parameters = mt.getParameters();
+      Assert.assertEquals("value4", parameters.get("param1"));
+      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1''valu%e72");
+      parameters = mt.getParameters();
+      Assert.assertEquals("valu\u00e72", parameters.get("param1"));
+      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1''valu%E72");
+      parameters = mt.getParameters();
+      Assert.assertEquals("valu\u00e72", parameters.get("param1"));
+      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%e72");
+      parameters = mt.getParameters();
+      Assert.assertEquals("valu\u00e72", parameters.get("param1"));
+      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%E72");
+      parameters = mt.getParameters();
+      Assert.assertEquals("valu\u00e72", parameters.get("param1"));
+      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%4E2");
+      parameters = mt.getParameters();
+      Assert.assertEquals("valu\u004e2", parameters.get("param1"));
+      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%4e2");
+      parameters = mt.getParameters();
+      Assert.assertEquals("valu\u004e2", parameters.get("param1"));
+    mt = ContentDisposition.Parse("inline;param1*=utf-8''value2;param1=dummy");
+      parameters = mt.getParameters();
+      Assert.assertEquals("value2", parameters.get("param1"));
+    mt = ContentDisposition.Parse("inline;param1=dummy;param1*=utf-8''value2");
+      parameters = mt.getParameters();
+      Assert.assertEquals("value2", parameters.get("param1"));
+      mt =
+
+  ContentDisposition.Parse("inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
+      parameters = mt.getParameters();
+      Assert.assertEquals("value4", parameters.get("param1"));
+      mt =
+
+  ContentDisposition.Parse("inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
+      parameters = mt.getParameters();
+      Assert.assertEquals("value4", parameters.get("param1"));
+mt =
+  ContentDisposition.Parse("inline;param1*=iso-8859-1''valu%e72;param1=dummy");
+      parameters = mt.getParameters();
+      Assert.assertEquals("valu\u00e72", parameters.get("param1"));
+mt =
+  ContentDisposition.Parse("inline;param1=dummy;param1*=iso-8859-1''valu%E72");
+      parameters = mt.getParameters();
+      Assert.assertEquals("valu\u00e72", parameters.get("param1"));
         }
+
+    @Test
+    public void TestParseIDB() {
+      // NOTE: The following tests implementation-dependent behavior
+      // since RFC 2231 doesn't provide for this case.
+      ContentDisposition mt;
+      Map<String, String> parameters;
+      mt =
+
+  ContentDisposition.Parse("inline;param=value1;param1*=utf-8''value2;param1*0=value3");
+      parameters = mt.getParameters();
+      Assert.assertEquals("value3", parameters.get("param1"));
+      mt =
+
+  ContentDisposition.Parse("inline;param=value1;param1*0=value3;param1*=utf-8''value2");
+      parameters = mt.getParameters();
+      Assert.assertEquals("value3", parameters.get("param1"));
+      mt =
+
+  ContentDisposition.Parse("inline;param1*0=value3;param=value1;param1*=utf-8''value2");
+      parameters = mt.getParameters();
+      Assert.assertEquals("value3", parameters.get("param1"));
+      mt =
+
+  ContentDisposition.Parse("inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+      parameters = mt.getParameters();
+      Assert.assertEquals("value3", parameters.get("param1"));
+if (ContentDisposition.Parse("inline;param*xx=value", null) != null) {
+ Assert.fail();
+ }
+if (ContentDisposition.Parse("inline;param*0xx=value", null) != null) {
+ Assert.fail();
+ }
+if (ContentDisposition.Parse("inline;param*xx0=value", null) != null) {
+ Assert.fail();
+ }
+if (ContentDisposition.Parse("inline;param*xx*=value", null) != null) {
+ Assert.fail();
+ }
+if (ContentDisposition.Parse("inline;param*0xx*=value", null) != null) {
+ Assert.fail();
+ }
+if (ContentDisposition.Parse("inline;param*xx0*=value", null) != null) {
+ Assert.fail();
+ }
+if (ContentDisposition.Parse("inline;param*0*0=value", null) != null) {
+ Assert.fail();
+ }
+if (ContentDisposition.Parse("inline;param*0*x=value", null) != null) {
+ Assert.fail();
+ }
+if (ContentDisposition.Parse("inline;param*0*0*=value", null) != null) {
+ Assert.fail();
+ }
+if (ContentDisposition.Parse("inline;param*0*x*=value", null) != null) {
+ Assert.fail();
+ }
+ if (
+  ContentDisposition.Parse(
+  "inline; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
+  null) != null) {
+        Assert.fail();
+      }
+
+ if (
+  ContentDisposition.Parse(
+  "inline; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
+  null) != null) {
+        Assert.fail();
+      }
+    }
 
         @Test
 public void TestToString() {

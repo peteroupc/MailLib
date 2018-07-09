@@ -171,6 +171,8 @@ namespace PeterO.Mail {
                 "()'+-.,/?:".IndexOf((char)c) >= 0) {
                 return count + this.IncrementAndAppendChar(output, (char)c);
               } else {
+                // NOTE: Cannot be encoded using lower-case hexadecimal
+                // characters
                 count += this.IncrementAndAppendChars(
   output,
   (char)0x3d,

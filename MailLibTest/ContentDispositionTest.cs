@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using PeterO;
@@ -952,6 +953,14 @@ Assert.AreEqual(
 
         [Test]
 public void TestParameters() {
+      ContentDisposition mt =
+          ContentDisposition.Parse("inline;param1=value1;param2=value2");
+      IDictionary<string, string> parameters;
+      parameters = mt.Parameters;
+      Assert.IsTrue(parameters.ContainsKey("param1"));
+      Assert.IsTrue(parameters.ContainsKey("param2"));
+      Assert.AreEqual("value1", parameters["param1"]);
+      Assert.AreEqual("value2", parameters["param2"]);
         }
 
         [Test]
@@ -965,7 +974,136 @@ public void TestParse() {
                 Assert.Fail(ex.ToString());
                 throw new InvalidOperationException(String.Empty, ex);
             }
+
+      ContentDisposition mt;
+      IDictionary<string, string> parameters;
+      mt = ContentDisposition.Parse("inline;param1=\"value1\"");
+      parameters = mt.Parameters;
+      Assert.AreEqual("value1", parameters["param1"]);
+      mt = ContentDisposition.Parse("inline;param1*=utf-8''value2");
+      parameters = mt.Parameters;
+      Assert.AreEqual("value2", parameters["param1"]);
+      mt = ContentDisposition.Parse("inline;param1*=utf-8'en'value3");
+      parameters = mt.Parameters;
+      Assert.AreEqual("value3", parameters["param1"]);
+  mt =
+  ContentDisposition.Parse("inline;param1*0*=utf-8'en'val;param1*1*=ue4");
+      parameters = mt.Parameters;
+      Assert.AreEqual("value4", parameters["param1"]);
+      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1''valu%e72");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u00e72", parameters["param1"]);
+      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1''valu%E72");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u00e72", parameters["param1"]);
+      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%e72");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u00e72", parameters["param1"]);
+      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%E72");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u00e72", parameters["param1"]);
+      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%4E2");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u004e2", parameters["param1"]);
+      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%4e2");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u004e2", parameters["param1"]);
+    mt = ContentDisposition.Parse("inline;param1*=utf-8''value2;param1=dummy");
+      parameters = mt.Parameters;
+      Assert.AreEqual("value2", parameters["param1"]);
+    mt = ContentDisposition.Parse("inline;param1=dummy;param1*=utf-8''value2");
+      parameters = mt.Parameters;
+      Assert.AreEqual("value2", parameters["param1"]);
+      mt =
+
+  ContentDisposition.Parse("inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
+      parameters = mt.Parameters;
+      Assert.AreEqual("value4", parameters["param1"]);
+      mt =
+
+  ContentDisposition.Parse("inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
+      parameters = mt.Parameters;
+      Assert.AreEqual("value4", parameters["param1"]);
+mt =
+  ContentDisposition.Parse("inline;param1*=iso-8859-1''valu%e72;param1=dummy");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u00e72", parameters["param1"]);
+mt =
+  ContentDisposition.Parse("inline;param1=dummy;param1*=iso-8859-1''valu%E72");
+      parameters = mt.Parameters;
+      Assert.AreEqual("valu\u00e72", parameters["param1"]);
         }
+
+    [Test]
+    public void TestParseIDB() {
+      // NOTE: The following tests implementation-dependent behavior
+      // since RFC 2231 doesn't provide for this case.
+      ContentDisposition mt;
+      IDictionary<string, string> parameters;
+      mt =
+
+  ContentDisposition.Parse("inline;param=value1;param1*=utf-8''value2;param1*0=value3");
+      parameters = mt.Parameters;
+      Assert.AreEqual("value3", parameters["param1"]);
+      mt =
+
+  ContentDisposition.Parse("inline;param=value1;param1*0=value3;param1*=utf-8''value2");
+      parameters = mt.Parameters;
+      Assert.AreEqual("value3", parameters["param1"]);
+      mt =
+
+  ContentDisposition.Parse("inline;param1*0=value3;param=value1;param1*=utf-8''value2");
+      parameters = mt.Parameters;
+      Assert.AreEqual("value3", parameters["param1"]);
+      mt =
+
+  ContentDisposition.Parse("inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+      parameters = mt.Parameters;
+      Assert.AreEqual("value3", parameters["param1"]);
+if (ContentDisposition.Parse("inline;param*xx=value", null) != null) {
+ Assert.Fail();
+ }
+if (ContentDisposition.Parse("inline;param*0xx=value", null) != null) {
+ Assert.Fail();
+ }
+if (ContentDisposition.Parse("inline;param*xx0=value", null) != null) {
+ Assert.Fail();
+ }
+if (ContentDisposition.Parse("inline;param*xx*=value", null) != null) {
+ Assert.Fail();
+ }
+if (ContentDisposition.Parse("inline;param*0xx*=value", null) != null) {
+ Assert.Fail();
+ }
+if (ContentDisposition.Parse("inline;param*xx0*=value", null) != null) {
+ Assert.Fail();
+ }
+if (ContentDisposition.Parse("inline;param*0*0=value", null) != null) {
+ Assert.Fail();
+ }
+if (ContentDisposition.Parse("inline;param*0*x=value", null) != null) {
+ Assert.Fail();
+ }
+if (ContentDisposition.Parse("inline;param*0*0*=value", null) != null) {
+ Assert.Fail();
+ }
+if (ContentDisposition.Parse("inline;param*0*x*=value", null) != null) {
+ Assert.Fail();
+ }
+ if (
+  ContentDisposition.Parse(
+  "inline; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
+  null) != null) {
+        Assert.Fail();
+      }
+
+ if (
+  ContentDisposition.Parse(
+  "inline; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
+  null) != null) {
+        Assert.Fail();
+      }
+    }
 
         [Test]
 public void TestToString() {

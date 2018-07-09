@@ -97,8 +97,7 @@ namespace MailLibTest {
                   stringTemp);
       }
       {
- string stringTemp =
-          MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8")
+ string stringTemp = MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8")
       .GetCharset();
         Assert.AreEqual(
                   "utf-8",
@@ -135,16 +134,14 @@ namespace MailLibTest {
                   stringTemp);
       }
       {
-    string stringTemp =
-          MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"")
+    string stringTemp = MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"")
    .GetCharset();
         Assert.AreEqual(
                   "utf-8",
                   stringTemp);
       }
       {
-  string stringTemp =
-          MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"")
+  string stringTemp = MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"")
      .GetCharset();
         Assert.AreEqual(
                   "utf-8",
@@ -306,10 +303,12 @@ namespace MailLibTest {
       parameters = mt.Parameters;
       Assert.AreEqual("value2", parameters["param1"]);
       mt =
+
   MediaType.Parse("text/example;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
       mt =
+
   MediaType.Parse("text/example;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
@@ -330,21 +329,69 @@ mt =
       MediaType mt;
       IDictionary<string, string> parameters;
       mt =
+
   MediaType.Parse("text/example;param=value1;param1*=utf-8''value2;param1*0=value3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
+
   MediaType.Parse("text/example;param=value1;param1*0=value3;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
+
   MediaType.Parse("text/example;param1*0=value3;param=value1;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
+
   MediaType.Parse("text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
+if (MediaType.Parse("text/plain;param*xx=value", null) != null) {
+ Assert.Fail();
+ }
+if (MediaType.Parse("text/plain;param*0xx=value", null) != null) {
+ Assert.Fail();
+ }
+if (MediaType.Parse("text/plain;param*xx0=value", null) != null) {
+ Assert.Fail();
+ }
+if (MediaType.Parse("text/plain;param*xx*=value", null) != null) {
+ Assert.Fail();
+ }
+if (MediaType.Parse("text/plain;param*0xx*=value", null) != null) {
+ Assert.Fail();
+ }
+if (MediaType.Parse("text/plain;param*xx0*=value", null) != null) {
+ Assert.Fail();
+ }
+if (MediaType.Parse("text/plain;param*0*0=value", null) != null) {
+ Assert.Fail();
+ }
+if (MediaType.Parse("text/plain;param*0*x=value", null) != null) {
+ Assert.Fail();
+ }
+if (MediaType.Parse("text/plain;param*0*0*=value", null) != null) {
+ Assert.Fail();
+ }
+if (MediaType.Parse("text/plain;param*0*x*=value", null) != null) {
+ Assert.Fail();
+ }
+
+ if (
+  MediaType.Parse(
+  "text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
+  null) != null) {
+        Assert.Fail();
+      }
+
+ if (
+  MediaType.Parse(
+  "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
+  null) != null) {
+        Assert.Fail();
+      }
     }
 
     [Test]

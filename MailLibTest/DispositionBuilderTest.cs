@@ -78,7 +78,75 @@ Assert.AreEqual(null, new DispositionBuilder(String.Empty));
     }
     [Test]
     public void TestSetParameter() {
-      // not implemented yet
+      var db = new DispositionBuilder().SetParameter("a", "b");
+      {
+string stringTemp = db.ToDisposition().GetParameter("a");
+Assert.AreEqual(
+  "b",
+  stringTemp);
+}
+      db.SetParameter("a", String.Empty);
+      Assert.AreEqual(String.Empty, db.ToDisposition().GetParameter("a"));
+      try {
+ new DispositionBuilder().SetParameter(null, null);
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new DispositionBuilder().SetParameter(null, "test");
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new DispositionBuilder().SetParameter(null, String.Empty);
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new DispositionBuilder().SetParameter("test", null);
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new DispositionBuilder().SetParameter("test", String.Empty);
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new DispositionBuilder().SetParameter(String.Empty, "value");
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new DispositionBuilder().SetParameter("test\u00e0", "value");
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
     }
     [Test]
     public void TestToDisposition() {
