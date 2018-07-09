@@ -43,7 +43,7 @@ Assert.AreEqual(
       builder.SetParameter("a", String.Empty);
       Assert.AreEqual(String.Empty, builder.ToMediaType().GetParameter("a"));
       try {
- builder.SetParameter(null, String.Empty);
+ new MediaTypeBuilder().SetParameter(null, null);
 Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
 // NOTE: Intentionally empty
@@ -52,7 +52,7 @@ Assert.Fail("Should have failed");
 throw new InvalidOperationException(String.Empty, ex);
 }
       try {
- builder.SetParameter(String.Empty, null);
+ new MediaTypeBuilder().SetParameter(null, "test");
 Assert.Fail("Should have failed");
 } catch (ArgumentNullException) {
 // NOTE: Intentionally empty
@@ -61,7 +61,31 @@ Assert.Fail("Should have failed");
 throw new InvalidOperationException(String.Empty, ex);
 }
       try {
- builder.SetParameter(String.Empty, "a");
+ new MediaTypeBuilder().SetParameter(null, String.Empty);
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new MediaTypeBuilder().SetParameter("test", null);
+Assert.Fail("Should have failed");
+} catch (ArgumentNullException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new MediaTypeBuilder().SetParameter("test", String.Empty);
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ new MediaTypeBuilder().SetParameter(String.Empty, "value");
 Assert.Fail("Should have failed");
 } catch (ArgumentException) {
 // NOTE: Intentionally empty
@@ -70,7 +94,7 @@ Assert.Fail("Should have failed");
 throw new InvalidOperationException(String.Empty, ex);
 }
       try {
- builder.SetParameter("a\u00e0", "a");
+ new MediaTypeBuilder().SetParameter("test\u00e0", "value");
 Assert.Fail("Should have failed");
 } catch (ArgumentException) {
 // NOTE: Intentionally empty

@@ -476,16 +476,16 @@
 <summary>Description of DispositionBuilder.</summary>
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.#ctor">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.DispositionBuilder'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.DispositionBuilder'/> class using the  disposition type "attachment".</summary>
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.#ctor(PeterO.Mail.ContentDisposition)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.DispositionBuilder'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.DispositionBuilder'/> class using the data from the given content disposition.</summary>
             <param name='mt'>The parameter <paramref name='mt'/> is a ContentDisposition object.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='mt'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Mail.DispositionBuilder.#ctor(System.String)">
-<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.DispositionBuilder'/> class.</summary>
+<summary>Initializes a new instance of the <see cref='T:PeterO.Mail.DispositionBuilder'/> class using the given disposition type.</summary>
             <param name='type'>The parameter <paramref name='type'/> is a text string.</param>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='type'/> is null.</exception>

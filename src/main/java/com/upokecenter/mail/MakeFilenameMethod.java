@@ -450,173 +450,167 @@ private MakeFilenameMethod() {
         }
       }
       str = Rfc2231Adjust(str);
-      str = TrimAndCollapseSpaceAndTab(str);
-      str = NormalizerInput.Normalize(str, Normalization.NFC);
-      if (str.length() == 0) {
-        return "_";
-      }
-      StringBuilder builder = new StringBuilder();
-      // Replace unsuitable characters for filenames
-      // and make sure the filename's
-      // length doesn't exceed 243. (A few additional characters
-      // may be added later on.)
-      // NOTE: Even if there are directory separators (backslash
-      // and forward slash), the filename is not treated as a
-      // file system path (in accordance with sec. 2.3 of RFC
-      // 2183); as a result, the directory separators
-      // will be treated as unsuitable characters for filenames
-      // and are handled below.
-      i = 0;
-      while (i < str.length() && builder.length() < 254) {
-        int c = DataUtilities.CodePointAt(str, i, 0);
-        // NOTE: Unpaired surrogates are replaced with U + FFFD
-        if (c >= 0x10000) {
+      String oldstr = null;
+      do {
+        oldstr = str;
+        str = TrimAndCollapseSpaceAndTab(str);
+        if (str.length() == 0) {
+          return "_";
+        }
+        StringBuilder builder = new StringBuilder();
+        // Replace unsuitable characters for filenames
+        // and make sure the filename's
+        // length doesn't exceed 254. (A few additional characters
+        // may be added later on.)
+        // NOTE: Even if there are directory separators (backslash
+        // and forward slash), the filename is not treated as a
+        // file system path (in accordance with sec. 2.3 of RFC
+        // 2183); as a result, the directory separators
+        // will be treated as unsuitable characters for filenames
+        // and are handled below.
+        i = 0;
+        while (i < str.length() && builder.length() < 254) {
+          int c = DataUtilities.CodePointAt(str, i, 0);
+          // NOTE: Unpaired surrogates are replaced with U + FFFD
+          if (c >= 0x10000) {
+            ++i;
+          }
+          if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
+     c == 0x180e || c == 0x1680 ||
+  (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
+       0xfeff) {
+            // Replace space-like characters (including tab) with space
+            builder.append(' ');
+          } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||
+            c == '?' || c == '|' ||
+      c == ':' || c == '<' || c == '>' || c == '"' ||
+            (c >= 0x7f && c <= 0x9f)) {
+            // Unsuitable character for a filename (one of the
+            // characters
+            // reserved by Windows,
+            // backslash, forward slash, ASCII controls, and C1
+            // controls).
+            builder.append('_');
+          } else if (c == '!' && i + 1 < str.length() && str.charAt(i + 1) == '[') {
+            // '![ ... ]' may be interpreted in BASH as an evaluator;
+            // replace '!' with underscore
+            builder.append('_');
+          } else if (c == '`') {
+            // '`' starts a command in BASH and possibly other shells
+            builder.append('_');
+          } else if (c == '#') {
+            // Fragment identifier for URIs
+            builder.append('_');
+          } else if (c == '$') {
+            // '$' starts a variable in BASH and possibly other shells
+            builder.append('_');
+          } else if (c == ';') {
+            // ';' separates command lines in BASH and possibly
+            // other shells
+            builder.append('_');
+          } else if (c == 0x2028 || c == 0x2029) {
+            // line break characters (0x85 is already included above)
+            builder.append('_');
+          } else if ((c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <=
+                 0xfdef)) {
+            // noncharacters
+            builder.append('_');
+          } else if (c == '%') {
+            // Treat percent ((character instanceof unsuitable) ? (unsuitable)character : null), even though it
+            // can occur
+            // in a Windows filename, since it's used in MS-DOS and
+            // Windows
+            // in environment variable placeholders
+            builder.append('_');
+          } else {
+            if (builder.length() < 254 || c < 0x10000) {
+              if (c <= 0xffff) {
+                builder.append((char)c);
+              } else if (c <= 0x10ffff) {
+                builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
+                    0xd800));
+                builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+              }
+            } else if (builder.length() >= 253) {
+              break;
+            }
+          }
           ++i;
         }
-        if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
-   c == 0x180e || c == 0x1680 ||
-(c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
-     0xfeff) {
-          // Replace space-like characters (including tab) with space
-          builder.append(' ');
-        } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||
-          c == '?' || c == '|' ||
-    c == ':' || c == '<' || c == '>' || c == '"' ||
-          (c >= 0x7f && c <= 0x9f)) {
-          // Unsuitable character for a filename (one of the
-          // characters
-          // reserved by Windows,
-          // backslash, forward slash, ASCII controls, and C1
-          // controls).
-          builder.append('_');
-        } else if (c == '!' && i + 1 < str.length() && str.charAt(i + 1) == '[') {
-          // '![ ... ]' may be interpreted in BASH as an evaluator;
-          // replace '!' with underscore
-          builder.append('_');
-        } else if (c == '`') {
-          // '`' starts a command in BASH and possibly other shells
-          builder.append('_');
-        } else if (c == '#') {
-          // Fragment identifier for URIs
-          builder.append('_');
-        } else if (c == '$') {
-          // '$' starts a variable in BASH and possibly other shells
-          builder.append('_');
-        } else if (c == ';') {
-          // ';' separates command lines in BASH and possibly
-          // other shells
-          builder.append('_');
-        } else if (c == 0x2028 || c == 0x2029) {
-          // line break characters (0x85 is already included above)
-          builder.append('_');
-        } else if ((c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <=
-               0xfdef)) {
-          // noncharacters
-          builder.append('_');
-        } else if (c == '%') {
-          // Treat percent ((character instanceof unsuitable) ? (unsuitable)character : null), even though it
-          // can occur
-          // in a Windows filename, since it's used in MS-DOS and
-          // Windows
-          // in environment variable placeholders
-          builder.append('_');
-        } else {
-          if (builder.length() < 254 || c < 0x10000) {
-            if (c <= 0xffff) {
-              builder.append((char)c);
-            } else if (c <= 0x10ffff) {
-              builder.append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                    0xd800));
-              builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+        str = builder.toString();
+        if (str.length() == 0) {
+ return "_";
+}
+        String strLower = DataUtilities.ToLowerCaseAscii(str);
+        // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
+        // well as "!["
+        boolean reservedFilename = strLower.equals(
+          "nul") || strLower.equals("clock$") || strLower.indexOf(
+          "nul.") == 0 || strLower.equals(
+          "prn") || strLower.indexOf(
+          "prn.") == 0 || strLower.indexOf(
+          "![") >= 0 || strLower.equals(
+          "aux") || strLower.indexOf(
+          "aux.") == 0 || strLower.equals(
+          "con") || strLower.indexOf(
+          "con.") == 0;
+        // LPTn, COMn
+     if (strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4) == '.'
+          ||
+          strLower.charAt(4) == ' '))) {
+          reservedFilename = reservedFilename || (strLower.indexOf(
+            "lpt") == 0 && strLower.charAt(3) >= '0' &&
+                 strLower.charAt(3) <= '9');
+          reservedFilename = reservedFilename || (strLower.indexOf(
+          "com") == 0 && strLower.charAt(3) >= '0' &&
+                strLower.charAt(3) <= '9');
+        }
+        boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&
+              str.charAt(1) >= '0' && str.charAt(1) <= '9';
+        // Home folder convention (tilde).
+        // Filenames starting with hyphens can also be
+        // problematic especially in Unix-based systems,
+        // and filenames starting with dollar sign can
+        // be misinterpreted if they're treated as expansion
+        // symbols
+        boolean homeFolder = str.charAt(0) == '~' || str.charAt(0) == '-' || str.charAt(0) ==
+            '$';
+        // Starts with period; may be hidden in some configurations
+        boolean period = str.charAt(0) == '.';
+        if (reservedFilename || bracketDigit || homeFolder ||
+             period) {
+          str = "_" + str;
+        }
+        str = TrimAndCollapseSpaceAndTab(str);
+        str = NormalizerInput.Normalize(str, Normalization.NFC);
+        // Avoid space before and after last dot
+        for (i = str.length() - 1; i >= 0; --i) {
+          if (str.charAt(i) == '.') {
+            boolean spaceAfter = i + 1 < str.length() && str.charAt(i + 1) == 0x20;
+            boolean spaceBefore = i > 0 && str.charAt(i - 1) == 0x20;
+            if (spaceAfter && spaceBefore) {
+              str = str.substring(0,i - 1) + "_._" + str.substring(i +
+                  2);
+            } else if (spaceAfter) {
+              str = str.substring(0,i) + "._" + str.substring(i + 2);
+            } else if (spaceBefore) {
+              str = str.substring(0,i - 1) + "_." + str.substring(i +
+                 1);
             }
-          } else if (builder.length() >= 253) {
             break;
           }
         }
-        ++i;
-      }
-      str = builder.toString();
-      str = TrimAndCollapseSpaceAndTab(str);
-      if (str.length() == 0) {
-        return "_";
-      }
-      String strLower = DataUtilities.ToLowerCaseAscii(str);
-      // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
-      // well as "!["
-      boolean reservedFilename = strLower.equals(
-        "nul") || strLower.equals("clock$") || strLower.indexOf(
-        "nul.") == 0 || strLower.equals(
-        "prn") || strLower.indexOf(
-        "prn.") == 0 || strLower.indexOf(
-        "![") >= 0 || strLower.equals(
-        "aux") || strLower.indexOf(
-        "aux.") == 0 || strLower.equals(
-        "con") || strLower.indexOf(
-        "con.") == 0;
-      // LPTn, COMn
-      if (strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4) == '.' ||
-        strLower.charAt(4) == ' '))) {
-        reservedFilename = reservedFilename || (strLower.indexOf(
-          "lpt") == 0 && strLower.charAt(3) >= '0' &&
-               strLower.charAt(3) <= '9');
-        reservedFilename = reservedFilename || (strLower.indexOf(
-        "com") == 0 && strLower.charAt(3) >= '0' &&
-              strLower.charAt(3) <= '9');
-      }
-      boolean bracketDigit = str.charAt(0) == '{' && str.length() > 1 &&
-            str.charAt(1) >= '0' && str.charAt(1) <= '9';
-      // Home folder convention (tilde).
-      // Filenames starting with hyphens can also be
-      // problematic especially in Unix-based systems,
-      // and filenames starting with dollar sign can
-      // be misinterpreted if they're treated as expansion
-      // symbols
-      boolean homeFolder = str.charAt(0) == '~' || str.charAt(0) == '-' || str.charAt(0) ==
-          '$';
-      // Starts with period; may be hidden in some configurations
-      boolean period = str.charAt(0) == '.';
-      if (reservedFilename || bracketDigit || homeFolder ||
-           period) {
-        str = "_" + str;
-      }
-      // Avoid space before and after last dot
-      for (i = str.length() - 1; i >= 0; --i) {
-        if (str.charAt(i) == '.') {
-          boolean spaceAfter = i + 1 < str.length() && str.charAt(i + 1) == 0x20;
-          boolean spaceBefore = i > 0 && str.charAt(i - 1) == 0x20;
-          if (spaceAfter && spaceBefore) {
-            str = str.substring(0,i - 1) + "_._" + str.substring(i +
-                2);
-          } else if (spaceAfter) {
-            str = str.substring(0,i) + "._" + str.substring(i + 2);
-          } else if (spaceBefore) {
-            str = str.substring(0,i - 1) + "_." + str.substring(i +
-               1);
-          }
-          break;
+        if (str.charAt(str.length() - 1) == '.' || str.charAt(str.length() - 1) == '~') {
+          // Ends in a dot or tilde (a file whose name ends with
+          // the latter may be treated as
+          // a backup file especially in Unix-based systems).
+          // NOTE: Although concatenation of two NFC strings
+          // doesn't necessarily lead to an NFC String, this
+          // particular concatenation doesn't disturb the NFC
+          // status of the String.
+          str += "_";
         }
-      }
-      str = NormalizerInput.Normalize(str, Normalization.NFC);
-      // Ensure length is 254 or less
-      if (str.length() > 254) {
-        char c = str.charAt(254);
-        int newLength = 254;
-        if ((c & 0xfc00) == 0xdc00) {
-          --newLength;
-        }
-        str = str.substring(0, newLength);
-        str = TrimAndCollapseSpaceAndTab(str);
-      }
-      if (str.charAt(str.length() - 1) == '.' || str.charAt(str.length() - 1) == '~') {
-        // Ends in a dot or tilde (a file whose name ends with
-        // the latter may be treated as
-        // a backup file especially in Unix-based systems).
-        // NOTE: Although concatenation of two NFC strings
-        // doesn't necessarily lead to an NFC String, this
-        // particular concatenation doesn't disturb the NFC
-        // status of the String.
-        str += "_";
-      }
+      } while (!oldstr.equals(str));
       return str;
     }
   }

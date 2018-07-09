@@ -451,180 +451,174 @@ namespace PeterO.Mail {
         }
       }
       str = Rfc2231Adjust(str);
-      str = TrimAndCollapseSpaceAndTab(str);
-      str = NormalizerInput.Normalize(str, Normalization.NFC);
-      if (str.Length == 0) {
-        return "_";
-      }
-      var builder = new StringBuilder();
-      // Replace unsuitable characters for filenames
-      // and make sure the filename's
-      // length doesn't exceed 243. (A few additional characters
-      // may be added later on.)
-      // NOTE: Even if there are directory separators (backslash
-      // and forward slash), the filename is not treated as a
-      // file system path (in accordance with sec. 2.3 of RFC
-      // 2183); as a result, the directory separators
-      // will be treated as unsuitable characters for filenames
-      // and are handled below.
-      i = 0;
-      while (i < str.Length && builder.Length < 254) {
-        int c = DataUtilities.CodePointAt(str, i, 0);
-        // NOTE: Unpaired surrogates are replaced with U + FFFD
-        if (c >= 0x10000) {
+      string oldstr = null;
+      do {
+        oldstr = str;
+        str = TrimAndCollapseSpaceAndTab(str);
+        if (str.Length == 0) {
+          return "_";
+        }
+        var builder = new StringBuilder();
+        // Replace unsuitable characters for filenames
+        // and make sure the filename's
+        // length doesn't exceed 254. (A few additional characters
+        // may be added later on.)
+        // NOTE: Even if there are directory separators (backslash
+        // and forward slash), the filename is not treated as a
+        // file system path (in accordance with sec. 2.3 of RFC
+        // 2183); as a result, the directory separators
+        // will be treated as unsuitable characters for filenames
+        // and are handled below.
+        i = 0;
+        while (i < str.Length && builder.Length < 254) {
+          int c = DataUtilities.CodePointAt(str, i, 0);
+          // NOTE: Unpaired surrogates are replaced with U + FFFD
+          if (c >= 0x10000) {
+            ++i;
+          }
+          if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
+     c == 0x180e || c == 0x1680 ||
+  (c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
+       0xfeff) {
+            // Replace space-like characters (including tab) with space
+            builder.Append(' ');
+          } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||
+            c == '?' || c == '|' ||
+      c == ':' || c == '<' || c == '>' || c == '"' ||
+            (c >= 0x7f && c <= 0x9f)) {
+            // Unsuitable character for a filename (one of the
+            // characters
+            // reserved by Windows,
+            // backslash, forward slash, ASCII controls, and C1
+            // controls).
+            builder.Append('_');
+          } else if (c == '!' && i + 1 < str.Length && str[i + 1] == '[') {
+            // '![ ... ]' may be interpreted in BASH as an evaluator;
+            // replace '!' with underscore
+            builder.Append('_');
+          } else if (c == '`') {
+            // '`' starts a command in BASH and possibly other shells
+            builder.Append('_');
+          } else if (c == '#') {
+            // Fragment identifier for URIs
+            builder.Append('_');
+          } else if (c == '$') {
+            // '$' starts a variable in BASH and possibly other shells
+            builder.Append('_');
+          } else if (c == ';') {
+            // ';' separates command lines in BASH and possibly
+            // other shells
+            builder.Append('_');
+          } else if (c == 0x2028 || c == 0x2029) {
+            // line break characters (0x85 is already included above)
+            builder.Append('_');
+          } else if ((c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <=
+                 0xfdef)) {
+            // noncharacters
+            builder.Append('_');
+          } else if (c == '%') {
+            // Treat percent character as unsuitable, even though it
+            // can occur
+            // in a Windows filename, since it's used in MS-DOS and
+            // Windows
+            // in environment variable placeholders
+            builder.Append('_');
+          } else {
+            if (builder.Length < 254 || c < 0x10000) {
+              if (c <= 0xffff) {
+                builder.Append((char)c);
+              } else if (c <= 0x10ffff) {
+                builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) +
+                    0xd800));
+                builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+              }
+            } else if (builder.Length >= 253) {
+              break;
+            }
+          }
           ++i;
         }
-        if (c == (int)'\t' || c == 0xa0 || c == 0x3000 ||
-   c == 0x180e || c == 0x1680 ||
-(c >= 0x2000 && c <= 0x200b) || c == 0x205f || c == 0x202f || c ==
-     0xfeff) {
-          // Replace space-like characters (including tab) with space
-          builder.Append(' ');
-        } else if (c < 0x20 || c == '\\' || c == '/' || c == '*' ||
-          c == '?' || c == '|' ||
-    c == ':' || c == '<' || c == '>' || c == '"' ||
-          (c >= 0x7f && c <= 0x9f)) {
-          // Unsuitable character for a filename (one of the
-          // characters
-          // reserved by Windows,
-          // backslash, forward slash, ASCII controls, and C1
-          // controls).
-          builder.Append('_');
-        } else if (c == '!' && i + 1 < str.Length && str[i + 1] == '[') {
-          // '![ ... ]' may be interpreted in BASH as an evaluator;
-          // replace '!' with underscore
-          builder.Append('_');
-        } else if (c == '`') {
-          // '`' starts a command in BASH and possibly other shells
-          builder.Append('_');
-        } else if (c == '#') {
-          // Fragment identifier for URIs
-          builder.Append('_');
-        } else if (c == '$') {
-          // '$' starts a variable in BASH and possibly other shells
-          builder.Append('_');
-        } else if (c == ';') {
-          // ';' separates command lines in BASH and possibly
-          // other shells
-          builder.Append('_');
-        } else if (c == 0x2028 || c == 0x2029) {
-          // line break characters (0x85 is already included above)
-          builder.Append('_');
-        } else if ((c & 0xfffe) == 0xfffe || (c >= 0xfdd0 && c <=
-               0xfdef)) {
-          // noncharacters
-          builder.Append('_');
-        } else if (c == '%') {
-          // Treat percent character as unsuitable, even though it
-          // can occur
-          // in a Windows filename, since it's used in MS-DOS and
-          // Windows
-          // in environment variable placeholders
-          builder.Append('_');
-        } else {
-          if (builder.Length < 254 || c < 0x10000) {
-            if (c <= 0xffff) {
-              builder.Append((char)c);
-            } else if (c <= 0x10ffff) {
-              builder.Append((char)((((c - 0x10000) >> 10) & 0x3ff) +
-                    0xd800));
-              builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
+        str = builder.ToString();
+        if (str.Length == 0) {
+ return "_";
+}
+        string strLower = DataUtilities.ToLowerCaseAscii(str);
+        // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
+        // well as "!["
+        bool reservedFilename = strLower.Equals(
+          "nul") || strLower.Equals("clock$") || strLower.IndexOf(
+          "nul.",
+          StringComparison.Ordinal) == 0 || strLower.Equals(
+          "prn") || strLower.IndexOf(
+          "prn.",
+          StringComparison.Ordinal) == 0 || strLower.IndexOf(
+          "![",
+          StringComparison.Ordinal) >= 0 || strLower.Equals(
+          "aux") || strLower.IndexOf(
+          "aux.",
+          StringComparison.Ordinal) == 0 || strLower.Equals(
+          "con") || strLower.IndexOf(
+          "con.",
+          StringComparison.Ordinal) == 0;
+        // LPTn, COMn
+     if (strLower.Length == 4 || (strLower.Length > 4 && (strLower[4] == '.'
+          ||
+          strLower[4] == ' '))) {
+          reservedFilename = reservedFilename || (strLower.IndexOf(
+            "lpt",
+            StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
+                 strLower[3] <= '9');
+          reservedFilename = reservedFilename || (strLower.IndexOf(
+          "com",
+          StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
+                strLower[3] <= '9');
+        }
+        bool bracketDigit = str[0] == '{' && str.Length > 1 &&
+              str[1] >= '0' && str[1] <= '9';
+        // Home folder convention (tilde).
+        // Filenames starting with hyphens can also be
+        // problematic especially in Unix-based systems,
+        // and filenames starting with dollar sign can
+        // be misinterpreted if they're treated as expansion
+        // symbols
+        bool homeFolder = str[0] == '~' || str[0] == '-' || str[0] ==
+            '$';
+        // Starts with period; may be hidden in some configurations
+        bool period = str[0] == '.';
+        if (reservedFilename || bracketDigit || homeFolder ||
+             period) {
+          str = "_" + str;
+        }
+        str = TrimAndCollapseSpaceAndTab(str);
+        str = NormalizerInput.Normalize(str, Normalization.NFC);
+        // Avoid space before and after last dot
+        for (i = str.Length - 1; i >= 0; --i) {
+          if (str[i] == '.') {
+            bool spaceAfter = i + 1 < str.Length && str[i + 1] == 0x20;
+            bool spaceBefore = i > 0 && str[i - 1] == 0x20;
+            if (spaceAfter && spaceBefore) {
+              str = str.Substring(0, i - 1) + "_._" + str.Substring(i +
+                  2);
+            } else if (spaceAfter) {
+              str = str.Substring(0, i) + "._" + str.Substring(i + 2);
+            } else if (spaceBefore) {
+              str = str.Substring(0, i - 1) + "_." + str.Substring(i +
+                 1);
             }
-          } else if (builder.Length >= 253) {
             break;
           }
         }
-        ++i;
-      }
-      str = builder.ToString();
-      str = TrimAndCollapseSpaceAndTab(str);
-      if (str.Length == 0) {
-        return "_";
-      }
-      string strLower = DataUtilities.ToLowerCaseAscii(str);
-      // Reserved filenames: NUL, CLOCK$, PRN, AUX, CON, as
-      // well as "!["
-      bool reservedFilename = strLower.Equals(
-        "nul") || strLower.Equals("clock$") || strLower.IndexOf(
-        "nul.",
-        StringComparison.Ordinal) == 0 || strLower.Equals(
-        "prn") || strLower.IndexOf(
-        "prn.",
-        StringComparison.Ordinal) == 0 || strLower.IndexOf(
-        "![",
-        StringComparison.Ordinal) >= 0 || strLower.Equals(
-        "aux") || strLower.IndexOf(
-        "aux.",
-        StringComparison.Ordinal) == 0 || strLower.Equals(
-        "con") || strLower.IndexOf(
-        "con.",
-        StringComparison.Ordinal) == 0;
-      // LPTn, COMn
-      if (strLower.Length == 4 || (strLower.Length > 4 && (strLower[4] == '.' ||
-        strLower[4] == ' '))) {
-        reservedFilename = reservedFilename || (strLower.IndexOf(
-          "lpt",
-          StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
-               strLower[3] <= '9');
-        reservedFilename = reservedFilename || (strLower.IndexOf(
-        "com",
-        StringComparison.Ordinal) == 0 && strLower[3] >= '0' &&
-              strLower[3] <= '9');
-      }
-      bool bracketDigit = str[0] == '{' && str.Length > 1 &&
-            str[1] >= '0' && str[1] <= '9';
-      // Home folder convention (tilde).
-      // Filenames starting with hyphens can also be
-      // problematic especially in Unix-based systems,
-      // and filenames starting with dollar sign can
-      // be misinterpreted if they're treated as expansion
-      // symbols
-      bool homeFolder = str[0] == '~' || str[0] == '-' || str[0] ==
-          '$';
-      // Starts with period; may be hidden in some configurations
-      bool period = str[0] == '.';
-      if (reservedFilename || bracketDigit || homeFolder ||
-           period) {
-        str = "_" + str;
-      }
-      // Avoid space before and after last dot
-      for (i = str.Length - 1; i >= 0; --i) {
-        if (str[i] == '.') {
-          bool spaceAfter = i + 1 < str.Length && str[i + 1] == 0x20;
-          bool spaceBefore = i > 0 && str[i - 1] == 0x20;
-          if (spaceAfter && spaceBefore) {
-            str = str.Substring(0, i - 1) + "_._" + str.Substring(i +
-                2);
-          } else if (spaceAfter) {
-            str = str.Substring(0, i) + "._" + str.Substring(i + 2);
-          } else if (spaceBefore) {
-            str = str.Substring(0, i - 1) + "_." + str.Substring(i +
-               1);
-          }
-          break;
+        if (str[str.Length - 1] == '.' || str[str.Length - 1] == '~') {
+          // Ends in a dot or tilde (a file whose name ends with
+          // the latter may be treated as
+          // a backup file especially in Unix-based systems).
+          // NOTE: Although concatenation of two NFC strings
+          // doesn't necessarily lead to an NFC string, this
+          // particular concatenation doesn't disturb the NFC
+          // status of the string.
+          str += "_";
         }
-      }
-      str = NormalizerInput.Normalize(str, Normalization.NFC);
-      // Ensure length is 254 or less
-      if (str.Length > 254) {
-        char c = str[254];
-        var newLength = 254;
-        if ((c & 0xfc00) == 0xdc00) {
-          --newLength;
-        }
-        str = str.Substring(0, newLength);
-        str = TrimAndCollapseSpaceAndTab(str);
-      }
-      if (str[str.Length - 1] == '.' || str[str.Length - 1] == '~') {
-        // Ends in a dot or tilde (a file whose name ends with
-        // the latter may be treated as
-        // a backup file especially in Unix-based systems).
-        // NOTE: Although concatenation of two NFC strings
-        // doesn't necessarily lead to an NFC string, this
-        // particular concatenation doesn't disturb the NFC
-        // status of the string.
-        str += "_";
-      }
+      } while (!oldstr.Equals(str));
       return str;
     }
   }

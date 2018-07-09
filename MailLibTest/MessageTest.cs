@@ -222,126 +222,131 @@ throw new InvalidOperationException(String.Empty, ex);
       }
     }
 
-    public static void TestRfc2231Extension(
+    private static void TestRfc2231ExtensionMediaType(
   string mtype,
   string param,
   string expected) {
-      MediaType mt = MediaType.Parse(mtype);
+      MediaType mt = MediaType.Parse("text/plain" + mtype);
       Assert.AreEqual(expected, mt.GetParameter(param));
       var valueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
-        "Content-Type: " + mtype + "\r\n\r\nTest";
+        "Content-Type: text/plain" + mtype + "\r\n\r\nTest";
       Message msg = MessageFromString(valueMessageString);
       mt = msg.ContentType;
       Assert.AreEqual(expected, mt.GetParameter(param));
     }
 
+    private static void TestRfc2231ExtensionContentDisposition(
+  string mtype,
+  string param,
+  string expected) {
+      ContentDisposition mt = ContentDisposition.Parse("inline" + mtype);
+      Assert.AreEqual(expected, mt.GetParameter(param));
+      var valueMessageString = "From: me@example.com\r\nMIME-Version: 1.0\r\n" +
+        "Content-Type: text/plain\r\nContent-Disposition: inline" + mtype +
+          "\r\n\r\nTest";
+      Message msg = MessageFromString(valueMessageString);
+      mt = msg.ContentDisposition;
+      Assert.AreEqual(expected, mt.GetParameter(param));
+    }
+
+    public static void TestRfc2231Extension(
+  string mtype,
+  string param,
+  string expected) {
+       TestRfc2231ExtensionMediaType(mtype, param, expected);
+       TestRfc2231ExtensionContentDisposition(mtype, param, expected);
+    }
+
     [Test]
     public void TestRfc2231Extensions() {
-      TestRfc2231Extension("text/plain; charset=\"utf-8\"", "charset", "utf-8");
+      TestRfc2231Extension("; charset=\"utf-8\"", "charset", "utf-8");
       TestRfc2231Extension(
-  "text/plain; charset*=us-ascii'en'utf-8",
+  "; charset*=us-ascii'en'utf-8",
   "charset",
   "utf-8");
       TestRfc2231Extension(
-  "text/plain; charset*=us-ascii''utf-8",
+  "; charset*=us-ascii''utf-8",
   "charset",
   "utf-8");
       TestRfc2231Extension(
-  "text/plain; charset*='en'utf-8",
+  "; charset*='en'utf-8",
   "charset",
   "utf-8");
       TestRfc2231Extension(
-  "text/plain; charset*='i-unknown'utf-8",
+  "; charset*='i-unknown'utf-8",
   "charset",
   "us-ascii");
       TestRfc2231Extension(
-  "text/plain; charset*=us-ascii'i-unknown'utf-8",
+  "; charset*=us-ascii'i-unknown'utf-8",
   "charset",
   "us-ascii");
-      TestRfc2231Extension("text/plain; charset*=''utf-8", "charset", "utf-8");
+      TestRfc2231Extension("; charset*=''utf-8", "charset", "utf-8");
       TestRfc2231Extension(
-  "text/plain; charset*0=a;charset*1=b",
+  "; charset*0=a;charset*1=b",
   "charset",
   "ab");
       TestRfc2231Extension(
-  "text/plain; charset*=utf-8''a%20b",
+  "; charset*=utf-8''a%20b",
   "charset",
   "a b");
       TestRfc2231Extension(
-  "text/plain; charset*=iso-8859-1''a%a0b",
+  "; charset*=iso-8859-1''a%a0b",
   "charset",
   "a\u00a0b");
       TestRfc2231Extension(
-  "text/plain; charset*=utf-8''a%c2%a0b",
+  "; charset*=utf-8''a%c2%a0b",
   "charset",
   "a\u00a0b");
       TestRfc2231Extension(
-  "text/plain; charset*=iso-8859-1''a%a0b",
+  "; charset*=iso-8859-1''a%a0b",
   "charset",
   "a\u00a0b");
       TestRfc2231Extension(
-  "text/plain; charset*=utf-8''a%c2%a0b",
+  "; charset*=utf-8''a%c2%a0b",
   "charset",
   "a\u00a0b");
       TestRfc2231Extension(
-  "text/plain; charset*0=\"a\";charset*1=b",
+  "; charset*0=\"a\";charset*1=b",
   "charset",
   "ab");
 
   TestRfc2231Extension(
-  "text/plain; charset*0*=utf-8''a%20b;charset*1*=c%20d",
+  "; charset*0*=utf-8''a%20b;charset*1*=c%20d",
   "charset",
   "a bc d");
       TestRfc2231Extension(
-        "text/plain; charset*0=ab;charset*1*=iso-8859-1-en-xyz",
+        "; charset*0=ab;charset*1*=iso-8859-1-en-xyz",
         "charset",
         "abiso-8859-1-en-xyz");
       TestRfc2231Extension(
-        "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1-en-xyz",
+        "; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1-en-xyz",
         "charset",
         "a biso-8859-1-en-xyz");
-
- if (
-  MediaType.Parse(
-  "text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
-  null) != null) {
-        Assert.Fail();
-      }
-
- if (
-  MediaType.Parse(
-  "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
-  null) != null) {
-        Assert.Fail();
-      }
       TestRfc2231Extension(
-        "text/plain; charset*0*=utf-8''a%20b;charset*1=a%20b",
+        "; charset*0*=utf-8''a%20b;charset*1=a%20b",
         "charset",
         "a ba%20b");
       TestRfc2231Extension(
-         "text/plain; Charset*0*=utf-8''a%20b;cHarset*1=a%20b",
+         "; Charset*0*=utf-8''a%20b;cHarset*1=a%20b",
          "charset",
          "a ba%20b");
       TestRfc2231Extension(
-        "text/plain\r\n (; charset=x;y=\");ChaRseT*=''a%41b-c(\")",
+        "\r\n (; charset=x;y=\");ChaRseT*=''a%41b-c(\")",
         "charset",
         "aAb-c");
       TestRfc2231Extension(
-        "text/plain;\r\n chARSet (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
+        ";\r\n chARSet (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
         "charset",
         "abc");
       TestRfc2231Extension(
-        "text/plain;\r\n charsET (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
+        ";\r\n charsET (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
         "format",
         "flowed");
     }
 
-    public static void SingleTestMediaTypeEncoding(string value) {
-      MediaType mt = new MediaTypeBuilder(
-  "x",
-  "y").SetParameter(
-  "z",
-  value).ToMediaType();
+    private static void SingleTestMediaTypeEncodingMediaType(string value) {
+      MediaType mt = new MediaTypeBuilder("x", "y")
+         .SetParameter("z", value).ToMediaType();
       string topLevel = mt.TopLevelType;
       string sub = mt.SubType;
       string mtstring = "MIME-Version: 1.0\r\nContent-Type: " + mt +
@@ -353,6 +358,26 @@ throw new InvalidOperationException(String.Empty, ex);
   value,
   msg.ContentType.GetParameter("z"),
   mt.ToString());
+    }
+
+    private static void SingleTestMediaTypeEncodingDisposition(string value) {
+      ContentDisposition mt = new DispositionBuilder("inline")
+         .SetParameter("z", value).ToDisposition();
+      string topLevel = mt.DispositionType;
+      string mtstring = "MIME-Version: 1.0\r\nContent-Type: text/plain" +
+        "\r\nContent-Disposition: " + mt +
+        "\r\nContent-Transfer-Encoding: base64\r\n\r\n";
+      Message msg = MessageFromString(mtstring);
+      Assert.AreEqual(topLevel, msg.ContentDisposition.DispositionType);
+      Assert.AreEqual(
+  value,
+  msg.ContentDisposition.GetParameter("z"),
+  mt.ToString());
+    }
+
+    public static void SingleTestMediaTypeEncoding(string value) {
+         SingleTestMediaTypeEncodingMediaType(value);
+         SingleTestMediaTypeEncodingDisposition(value);
     }
 
     [Test]
