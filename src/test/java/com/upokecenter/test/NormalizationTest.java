@@ -295,7 +295,6 @@ Assert.assertEquals(
     }
 
     @Test(timeout = 60000)
-
     public void NormTest() {
       boolean[] handled = new boolean[0x110000];
       String[] lines = NetHelper.DownloadOrOpenAllLines(
