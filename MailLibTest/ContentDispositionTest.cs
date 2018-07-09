@@ -128,12 +128,20 @@ public void TestIsInline() {
             bool period = str[0] == '.';
             bool beginEndSpace = str[0] == 0x20 || str[str.Length - 1] ==
                 0x20;
-            if (bracketDigit || homeFolder ||
-                period || beginEndSpace) {
-                FailFilename(filename, str);
-            }
-            // Reserved filenames on Windows
-            if (strLower.Equals(
+      if (bracketDigit) {
+ FailFilename(filename, str);
+}
+      if (homeFolder) {
+ FailFilename(filename, str);
+}
+      if (period) {
+ FailFilename(filename, str);
+}
+      if (beginEndSpace) {
+ FailFilename(filename, str);
+}
+      // Reserved filenames on Windows
+      if (strLower.Equals(
        "nul")) {
                 {
                     FailFilename(filename, str, strLower);
@@ -268,10 +276,18 @@ public void TestIsInline() {
             if (!finalRet) {
                 FailFilename(filename, str);
             }
+      // Assert that MakeFilename is idempotent
+      string newstr = ContentDisposition.MakeFilename(str);
+      if (!newstr.Equals(str)) {
+        FailFilename(
+  filename,
+  str,
+  "Not idempotent:\nnewname_=" + EncodingTest.EscapeString(newstr));
+      }
         }
 
         [Test]
-public void TestMakeFilenameSpecific1() {
+public void TestMakeFilenameSpecific() {
             // Contains GREEK VARIA which decomposes to a "bad" filename
             // character
             AssertGoodFilename("xx\u1fefxx");
@@ -346,10 +362,18 @@ Assert.AreEqual(
   "_lpt1 .x.y",
   stringTemp);
 }
-        }
+      AssertGoodFilename("utf-8'en'utf-8%27%27test");
+      AssertGoodFilename("utf-8'en'utf-8%27en%27test");
+      AssertGoodFilename("utf-8''utf-8%27%27test");
+      AssertGoodFilename("utf-8''utf-8%27en%27test");
+      AssertGoodFilename("utf-8''unknown%27%27test");
+      AssertGoodFilename("utf-8'en'unknown%27%27test");
+      AssertGoodFilename("utf-8'en'unknown%27en%27test");
 
-        [Test] [Timeout(200000)]
-        public void TestMakeFilename() {
+  AssertGoodFilename(".Fm\u2a32\u16801c sl\u001fvU0O\u2af4\ufeff7r'\ufdd0&R|.W\".R@)\u02f1|q|\u2a84Ji4Lj65XTP2&\u3000t\ta]:\u008fk0$\"^QNU\ub7e7l\tpj>K\ud81e\udcb24\u8463pC[\ufdd0aJL ZSDX./|!3(lA\\a\ud800\udca6N?\"\uffff\\/\u06b5V1\"\u0000K\u1a41MZ.(iE&\u0d91\tJ\u009f\u0da3x)\"\u0396 hN\u1585uCF U2/|\\\u2043s9Zkd {\u2fdcZB+\u008f.\ud942\udda6.+!\\j!-`nuM@H/y\u205f0';$?^Q.&Mo.e?\u2000FY$2\u0559|B>\"7'A\u2e51\u07463.\u009f3\u12a4U|~>2.#\"t!X,I|vn\u2000.\ufffe6\u00a0X\u2315*G+*%^\ufeff\u001bt\ud87e\udcb0z}ig\u4609y\ud943\udf81>o%<g,\u205f&)\u007f\u200b|\udb79\ude00?a'X*z|Bm\udaa1\udc53#N$\"&)O: F\u0000\uda2b\uddbdeAte\ufffe\\pqb'\u202fT}\u23cdC!K.^2}c:Wj)[ZCa\u19094\u3000\udb4b\udff1R\ufdef64o.\u26d94hf.+&P>_\u22b1\t\ufdd0f\u200b\\P\uc5a0\u05ddf*P \u1ecav\ufdd0S");
+    }
+
+        [Test] [Timeout(200000)] public void TestMakeFilename() {
             string stringTemp;
             var rnd = new RandomGenerator(new XorShift128Plus(false));
             {
@@ -622,18 +646,15 @@ Assert.AreEqual(
                 Assert.AreEqual("hello_._txt", stringTemp);
             }
             {
-          stringTemp =
-                  ContentDisposition.MakeFilename("hello\u2028world.txt");
+          stringTemp = ContentDisposition.MakeFilename("hello\u2028world.txt");
                 Assert.AreEqual("hello_world.txt", stringTemp);
             }
             {
-          stringTemp =
-                  ContentDisposition.MakeFilename("hello\u2029world.txt");
+          stringTemp = ContentDisposition.MakeFilename("hello\u2029world.txt");
                 Assert.AreEqual("hello_world.txt", stringTemp);
             }
             {
-          stringTemp =
-                  ContentDisposition.MakeFilename("hello\u0085world.txt");
+          stringTemp = ContentDisposition.MakeFilename("hello\u0085world.txt");
                 Assert.AreEqual("hello_world.txt", stringTemp);
             }
             {

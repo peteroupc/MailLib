@@ -294,7 +294,6 @@ Assert.AreEqual(
 
     [Test]
     [Timeout(60000)]
-
     public void NormTest() {
       var handled = new bool[0x110000];
       string[] lines = NetHelper.DownloadOrOpenAllLines(

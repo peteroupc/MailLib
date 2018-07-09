@@ -389,6 +389,40 @@ namespace PeterO.Mail {
       return true;
     }
 
+    private static string Rfc2231Adjust(string str) {
+      int index = str.IndexOf('\'');
+      if (index > 0) {
+        // Check for RFC 2231 encoding, as long as the value before the
+        // apostrophe is a recognized charset. It appears to be common,
+        // too, to use quotes around a filename parameter AND use
+        // RFC 2231 encoding, even though all the examples in that RFC
+        // show unquoted use of this encoding.
+        string charset = Encodings.ResolveAliasForEmail(
+  str.Substring(
+  0,
+  index));
+        if (!String.IsNullOrEmpty(charset)) {
+          string newstr = DecodeRfc2231ExtensionLenient(str);
+          if (!String.IsNullOrEmpty(newstr)) {
+            // Value was decoded under RFC 2231
+            str = newstr;
+            index = str.IndexOf('\'');
+            if (index > 0) {
+              string tmpstr = str.Substring(0, index);
+              charset = Encodings.ResolveAliasForEmail(tmpstr);
+              if (!String.IsNullOrEmpty(charset)) {
+                // First part of string is again a
+                // charset, so ensure idempotency by ensuring
+                // that part is no longer a charset
+                str = tmpstr + "_" + str.Substring(index + 1);
+              }
+            }
+          }
+        }
+      }
+      return str;
+    }
+
     public static string MakeFilename(string str) {
       if (str == null) {
         return String.Empty;
@@ -398,6 +432,7 @@ namespace PeterO.Mail {
       }
       int i;
       str = TrimAndCollapseSpaceAndTab(str);
+      str = SurrogateCleanup(str);
       if (str.IndexOf("=?", StringComparison.Ordinal) >= 0) {
         // May contain encoded words, which are very frequent
         // in Content-Disposition filenames (they would appear quoted
@@ -414,25 +449,8 @@ namespace PeterO.Mail {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
         }
-      } else if (str.IndexOf('\'') > 0) {
-        // Check for RFC 2231 encoding, as long as the value before the
-        // apostrophe is a recognized charset. It appears to be common,
-        // too, to use quotes around a filename parameter AND use
-        // RFC 2231 encoding, even though all the examples in that RFC
-        // show unquoted use of this encoding.
-        string charset = Encodings.ResolveAliasForEmail(
-  str.Substring(
-  0,
-  str.IndexOf('\'')));
-        if (!String.IsNullOrEmpty(charset)) {
-          string newstr = DecodeRfc2231ExtensionLenient(str);
-          if (!String.IsNullOrEmpty(newstr)) {
-            // Value was decoded under RFC 2231
-            str = newstr;
-          }
-        }
       }
-      str = SurrogateCleanup(str);
+      str = Rfc2231Adjust(str);
       str = TrimAndCollapseSpaceAndTab(str);
       str = NormalizerInput.Normalize(str, Normalization.NFC);
       if (str.Length == 0) {
@@ -450,7 +468,7 @@ namespace PeterO.Mail {
       // will be treated as unsuitable characters for filenames
       // and are handled below.
       i = 0;
-      while (i < str.Length && builder.Length < 243) {
+      while (i < str.Length && builder.Length < 254) {
         int c = DataUtilities.CodePointAt(str, i, 0);
         // NOTE: Unpaired surrogates are replaced with U + FFFD
         if (c >= 0x10000) {
@@ -504,7 +522,7 @@ namespace PeterO.Mail {
           // in environment variable placeholders
           builder.Append('_');
         } else {
-          if (builder.Length < 242 || c < 0x10000) {
+          if (builder.Length < 254 || c < 0x10000) {
             if (c <= 0xffff) {
               builder.Append((char)c);
             } else if (c <= 0x10ffff) {
@@ -512,7 +530,7 @@ namespace PeterO.Mail {
                     0xd800));
               builder.Append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
             }
-          } else if (builder.Length >= 242) {
+          } else if (builder.Length >= 253) {
             break;
           }
         }
@@ -595,6 +613,7 @@ namespace PeterO.Mail {
           --newLength;
         }
         str = str.Substring(0, newLength);
+        str = TrimAndCollapseSpaceAndTab(str);
       }
       if (str[str.Length - 1] == '.' || str[str.Length - 1] == '~') {
         // Ends in a dot or tilde (a file whose name ends with

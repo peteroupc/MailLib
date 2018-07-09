@@ -388,6 +388,40 @@ private MakeFilenameMethod() {
       return true;
     }
 
+    private static String Rfc2231Adjust(String str) {
+      int index = str.indexOf('\'');
+      if (index > 0) {
+        // Check for RFC 2231 encoding, as long as the value before the
+        // apostrophe is a recognized charset. It appears to be common,
+        // too, to use quotes around a filename parameter AND use
+        // RFC 2231 encoding, even though all the examples in that RFC
+        // show unquoted use of this encoding.
+        String charset = Encodings.ResolveAliasForEmail(
+  str.substring(
+  0, (
+  0)+(index)));
+        if (!((charset) == null || (charset).length() == 0)) {
+          String newstr = DecodeRfc2231ExtensionLenient(str);
+          if (!((newstr) == null || (newstr).length() == 0)) {
+            // Value was decoded under RFC 2231
+            str = newstr;
+            index = str.indexOf('\'');
+            if (index > 0) {
+              String tmpstr = str.substring(0, index);
+              charset = Encodings.ResolveAliasForEmail(tmpstr);
+              if (!((charset) == null || (charset).length() == 0)) {
+                // First part of String is again a
+                // charset, so ensure idempotency by ensuring
+                // that part is no longer a charset
+                str = tmpstr + "_" + str.substring(index + 1);
+              }
+            }
+          }
+        }
+      }
+      return str;
+    }
+
     public static String MakeFilename(String str) {
       if (str == null) {
         return "";
@@ -397,6 +431,7 @@ private MakeFilenameMethod() {
       }
       int i;
       str = TrimAndCollapseSpaceAndTab(str);
+      str = SurrogateCleanup(str);
       if (str.indexOf("=?") >= 0) {
         // May contain encoded words, which are very frequent
         // in Content-Disposition filenames (they would appear quoted
@@ -413,25 +448,8 @@ private MakeFilenameMethod() {
           // Remove ends of encoded words that remain
           str = RemoveEncodedWordEnds(str);
         }
-      } else if (str.indexOf('\'') > 0) {
-        // Check for RFC 2231 encoding, as long as the value before the
-        // apostrophe is a recognized charset. It appears to be common,
-        // too, to use quotes around a filename parameter AND use
-        // RFC 2231 encoding, even though all the examples in that RFC
-        // show unquoted use of this encoding.
-        String charset = Encodings.ResolveAliasForEmail(
-  str.substring(
-  0, (
-  0)+(str.indexOf('\''))));
-        if (!((charset) == null || (charset).length() == 0)) {
-          String newstr = DecodeRfc2231ExtensionLenient(str);
-          if (!((newstr) == null || (newstr).length() == 0)) {
-            // Value was decoded under RFC 2231
-            str = newstr;
-          }
-        }
       }
-      str = SurrogateCleanup(str);
+      str = Rfc2231Adjust(str);
       str = TrimAndCollapseSpaceAndTab(str);
       str = NormalizerInput.Normalize(str, Normalization.NFC);
       if (str.length() == 0) {
@@ -449,7 +467,7 @@ private MakeFilenameMethod() {
       // will be treated as unsuitable characters for filenames
       // and are handled below.
       i = 0;
-      while (i < str.length() && builder.length() < 243) {
+      while (i < str.length() && builder.length() < 254) {
         int c = DataUtilities.CodePointAt(str, i, 0);
         // NOTE: Unpaired surrogates are replaced with U + FFFD
         if (c >= 0x10000) {
@@ -503,7 +521,7 @@ private MakeFilenameMethod() {
           // in environment variable placeholders
           builder.append('_');
         } else {
-          if (builder.length() < 242 || c < 0x10000) {
+          if (builder.length() < 254 || c < 0x10000) {
             if (c <= 0xffff) {
               builder.append((char)c);
             } else if (c <= 0x10ffff) {
@@ -511,7 +529,7 @@ private MakeFilenameMethod() {
                     0xd800));
               builder.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
             }
-          } else if (builder.length() >= 242) {
+          } else if (builder.length() >= 253) {
             break;
           }
         }
@@ -587,6 +605,7 @@ private MakeFilenameMethod() {
           --newLength;
         }
         str = str.substring(0, newLength);
+        str = TrimAndCollapseSpaceAndTab(str);
       }
       if (str.charAt(str.length() - 1) == '.' || str.charAt(str.length() - 1) == '~') {
         // Ends in a dot or tilde (a file whose name ends with

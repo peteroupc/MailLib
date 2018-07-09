@@ -412,7 +412,8 @@
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)">
 <summary>Converts a file name from the Content-Disposition header
-            to a suitable name for saving data to a file.
+            to a suitable name for saving data to a file.  This method is idempotent; that is, calling the method
+            again on the result doesn't change that result.
             <para>Examples:</para>
             <para><c>"=?utf-8?q?hello=2Etxt?=" -&gt; "hello.txt"</c> (RFC 2047
             encoding)</para>
