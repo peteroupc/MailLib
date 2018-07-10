@@ -1365,7 +1365,7 @@ namespace PeterO.Mail {
           // NOTE: The max line size is actually 76, but some emails
           // have lines that exceed this size, so use an unlimited line length
           // when parsing
-          transform = new QuotedPrintableTransform(stream, false, -1);
+          transform = new QuotedPrintableTransform(stream, true, -1);
           break;
         case EncodingBase64:
           // NOTE: Same as quoted-printable regarding line length
