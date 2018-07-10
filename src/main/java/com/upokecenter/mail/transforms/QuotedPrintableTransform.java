@@ -296,7 +296,6 @@ import com.upokecenter.mail.*;
               } else {
                 throw new MessageDataException("Expected LF after CR");
               }
-              break;
             }
             if (c2 != ' ' && c2 != '\t') {
               // Not a space or tab

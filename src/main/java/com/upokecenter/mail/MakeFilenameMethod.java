@@ -423,8 +423,8 @@ private MakeFilenameMethod() {
     }
 
     public static String MakeFilename(String str) {
-      if (str == null) {
-        return "";
+      if (((str) == null || (str).length() == 0)) {
+        return "_";
       }
       if (SimplifiedFileCheck(str)) {
         return str;
@@ -555,8 +555,7 @@ private MakeFilenameMethod() {
           "con") || strLower.indexOf(
           "con.") == 0;
         // LPTn, COMn
-     if (strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4) == '.'
-          ||
+     if (strLower.length() == 4 || (strLower.length() > 4 && (strLower.charAt(4) == '.'||
           strLower.charAt(4) == ' '))) {
           reservedFilename = reservedFilename || (strLower.indexOf(
             "lpt") == 0 && strLower.charAt(3) >= '0' &&

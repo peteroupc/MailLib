@@ -362,6 +362,13 @@ return SkipQuotedString(
   StringBuilder sb) {
       int length = 1;
       int contin = 0;
+      // NOTE: Use uppercase hex characters
+      // to encode according to RFC 2231, but the augmented
+      // BNF for ext-octet in that RFC allows both upper-case
+      // and lower-case, even though only upper-case
+      // appears in that production. This
+      // is due to the nature of augmented BNF (see RFC
+      // 5234 sec 2.3).
       String ValueHex = "0123456789ABCDEF";
       length += name.length() + 12;
       int MaxLength = 76;

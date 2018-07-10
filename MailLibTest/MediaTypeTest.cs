@@ -7,6 +7,344 @@ using Test;
 namespace MailLibTest {
   [TestFixture]
   public class MediaTypeTest {
+    private static IDictionary<string, string> MakeDict(params string[]
+      keyvalues) {
+      if (keyvalues == null) {
+ throw new ArgumentNullException("keyvalues");
+}
+      if (keyvalues.Length % 2 != 0) {
+ throw new ArgumentException("keyvalues");
+}
+      var dict = new Dictionary<string, string>();
+      for (var i = 0; i < keyvalues.Length; i += 2) {
+        dict.Add((string)keyvalues[i], keyvalues[i + 1]);
+      }
+      return dict;
+    }
+
+    private static IDictionary<string, string>[] testMediaTypes = new
+      IDictionary<string, string>[] {
+      MakeDict(
+  "name",
+  "multipart/example",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/example;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MULTIPART/example",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MULTIPART/example;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MuLtIpArT/example",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MuLtIpArT/example;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/EXAMPLE",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/EXAMPLE;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MuLtIpArT/EXAMPLE",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MuLtIpArT/EXAMPLE;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/ExAmPlE",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/ExAmPlE;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/eXaMpLe",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/eXaMpLe;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MuLtIpArT/eXaMpLe",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MuLtIpArT/eXaMpLe;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multi-part/example",
+  "toplevel",
+  "multi-part",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "font/otf",
+  "toplevel",
+  "font",
+  "subtype",
+  "otf",
+  "multipart",
+  "0",
+  "text",
+  "0"),
+  MakeDict(
+  "name",
+  "message/alternative",
+  "toplevel",
+  "message",
+  "subtype",
+  "alternative",
+  "multipart",
+  "0",
+  "text",
+  "0"),
+  MakeDict(
+  "name",
+  "multipart/alternative",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "alternative",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+  MakeDict(
+  "name",
+  "multi-part/example;x=y",
+  "toplevel",
+  "multi-part",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "texb/example",
+  "toplevel",
+  "texb",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "texb/example;x=y",
+  "toplevel",
+  "texb",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "text/example",
+  "toplevel",
+  "text",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "1"),
+      MakeDict(
+  "name",
+  "text/example;x=y",
+  "toplevel",
+  "text",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "1"),
+      MakeDict(
+  "name",
+  "TEXT/example",
+  "toplevel",
+  "text",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "1"),
+      MakeDict(
+  "name",
+  "TEXT/example;x=y",
+  "toplevel",
+  "text",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "1"),
+      MakeDict(
+  "name",
+  "TexT/example",
+  "toplevel",
+  "text",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "1"),
+      MakeDict(
+  "name",
+  "TexT/example;x=y",
+  "toplevel",
+  "text",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "1")
+    };
+
     [Test]
     public void TestEquals() {
       MediaType mt =
@@ -21,6 +359,15 @@ namespace MailLibTest {
       Assert.AreEqual(mt, mt2);
       Assert.IsFalse(mt.Equals(mt3));
       Assert.IsFalse(mt2.Equals(mt3));
+      for (var i = 0; i < testMediaTypes.Length; ++i) {
+        for (var j = 0; j < testMediaTypes.Length; ++j) {
+          IDictionary<string, string> dictI = testMediaTypes[i];
+          IDictionary<string, string> dictJ = testMediaTypes[j];
+          TestCommon.AssertEqualsHashCode(
+            MediaType.Parse(dictI["name"]),
+            MediaType.Parse(dictJ["name"]));
+        }
+      }
     }
     [Test]
     public void TestGetCharset() {
@@ -224,23 +571,22 @@ namespace MailLibTest {
       }
     }
     [Test]
-    public void TestGetHashCode() {
-      // not implemented yet
-    }
-    [Test]
     public void TestGetParameter() {
       // not implemented yet
     }
     [Test]
     public void TestIsMultipart() {
-      // not implemented yet
-      Assert.IsTrue(MediaType.Parse("multipart/alternative").IsMultipart);
-      Assert.IsFalse(MediaType.Parse("message/alternative").IsMultipart);
-      Assert.IsFalse(MediaType.Parse("font/otf").IsMultipart);
+foreach (IDictionary<string, string> dict in testMediaTypes) {
+        MediaType mt = MediaType.Parse(dict["name"]);
+        Assert.AreEqual(dict["multipart"].Equals("1"), mt.IsMultipart);
+      }
     }
     [Test]
     public void TestIsText() {
-      // not implemented yet
+foreach (IDictionary<string, string> dict in testMediaTypes) {
+        MediaType mt = MediaType.Parse(dict["name"]);
+        Assert.AreEqual(dict["text"].Equals("1"), mt.IsText);
+      }
     }
     [Test]
     public void TestParameters() {
@@ -392,15 +738,39 @@ if (MediaType.Parse("text/plain;param*0*x*=value", null) != null) {
   null) != null) {
         Assert.Fail();
       }
+TestPercentEncodingOne("test\u00be", "test%C2%BE");
+      TestPercentEncodingOne("test\u00be", "test%c2%be");
+      TestPercentEncodingOne("tesA", "tes%41");
+      TestPercentEncodingOne("tesa", "tes%61");
+      TestPercentEncodingOne("tes\r\na", "tes%0D%0Aa");
+      TestPercentEncodingOne(
+  "tes%xx",
+  "tes%xx");
+      TestPercentEncodingOne("tes%dxx", "tes%dxx");
+    }
+
+    private static void TestPercentEncodingOne(string expected, string input) {
+      MediaType cd = MediaType.Parse("text/plain; filename*=utf-8''" + input);
+      Assert.AreEqual(expected, cd.GetParameter("filename"));
     }
 
     [Test]
     public void TestSubType() {
-      // not implemented yet
+foreach (IDictionary<string, string> dict in testMediaTypes) {
+        MediaType mt = MediaType.Parse(dict["name"]);
+        Assert.AreEqual(
+          dict["subtype"],
+          mt.SubType);
+      }
     }
     [Test]
     public void TestTopLevelType() {
-      // not implemented yet
+foreach (IDictionary<string, string> dict in testMediaTypes) {
+        MediaType mt = MediaType.Parse(dict["name"]);
+        Assert.AreEqual(
+          dict["toplevel"],
+          mt.TopLevelType);
+      }
     }
     [Test]
     public void TestToString() {
@@ -408,7 +778,12 @@ if (MediaType.Parse("text/plain;param*0*x*=value", null) != null) {
     }
     [Test]
     public void TestTypeAndSubType() {
-      // not implemented yet
+foreach (IDictionary<string, string> dict in testMediaTypes) {
+        MediaType mt = MediaType.Parse(dict["name"]);
+        Assert.AreEqual(
+          dict["toplevel"] + "/" + dict["subtype"],
+          mt.TypeAndSubType);
+      }
     }
   }
 }

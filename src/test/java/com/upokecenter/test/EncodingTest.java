@@ -1159,24 +1159,6 @@ import com.upokecenter.text.*;
       TestBase64Decode(new byte[] { (byte)255, 1, 3  }, "/wED");
     }
 
-    private static void TestPercentEncodingOne(String expected, String input) {
-      ContentDisposition cd =
-        ContentDisposition.Parse("inline; filename*=utf-8''" + input);
-      Assert.assertEquals(expected, cd.GetParameter("filename"));
-    }
-
-    @Test
-    public void TestPercentEncoding() {
-      TestPercentEncodingOne("test\u00be", "test%c2%be");
-      TestPercentEncodingOne("tesA", "tes%41");
-      TestPercentEncodingOne("tesa", "tes%61");
-      TestPercentEncodingOne("tes\r\na", "tes%0d%0aa");
-      TestPercentEncodingOne(
-  "tes%xx",
-  "tes%xx");
-      TestPercentEncodingOne("tes%dxx", "tes%dxx");
-    }
-
     private static void AssertUtf8Equal(byte[] expected, byte[] actual) {
       Assert.assertEquals(
   DataUtilities.GetUtf8String(expected, true),

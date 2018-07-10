@@ -6,6 +6,344 @@ import org.junit.Test;
 import com.upokecenter.mail.*;
 
   public class MediaTypeTest {
+    private static Map<String, String> MakeDict(String...
+      keyvalues) {
+      if (keyvalues == null) {
+ throw new NullPointerException("keyvalues");
+}
+      if (keyvalues.length % 2 != 0) {
+ throw new IllegalArgumentException("keyvalues");
+}
+      HashMap<String, String> dict = new HashMap<String, String>();
+      for (int i = 0; i < keyvalues.length; i += 2) {
+        dict.put((String)keyvalues[i], keyvalues[i + 1]);
+      }
+      return dict;
+    }
+
+    private static Map<String, String>[] testMediaTypes = new
+      Map<String, String>[] {
+      MakeDict(
+  "name",
+  "multipart/example",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/example;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MULTIPART/example",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MULTIPART/example;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MuLtIpArT/example",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MuLtIpArT/example;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/EXAMPLE",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/EXAMPLE;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MuLtIpArT/EXAMPLE",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MuLtIpArT/EXAMPLE;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/ExAmPlE",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/ExAmPlE;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/eXaMpLe",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multipart/eXaMpLe;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MuLtIpArT/eXaMpLe",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "MuLtIpArT/eXaMpLe;x=y",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "example",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "multi-part/example",
+  "toplevel",
+  "multi-part",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "font/otf",
+  "toplevel",
+  "font",
+  "subtype",
+  "otf",
+  "multipart",
+  "0",
+  "text",
+  "0"),
+  MakeDict(
+  "name",
+  "message/alternative",
+  "toplevel",
+  "message",
+  "subtype",
+  "alternative",
+  "multipart",
+  "0",
+  "text",
+  "0"),
+  MakeDict(
+  "name",
+  "multipart/alternative",
+  "toplevel",
+  "multipart",
+  "subtype",
+  "alternative",
+  "multipart",
+  "1",
+  "text",
+  "0"),
+  MakeDict(
+  "name",
+  "multi-part/example;x=y",
+  "toplevel",
+  "multi-part",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "texb/example",
+  "toplevel",
+  "texb",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "texb/example;x=y",
+  "toplevel",
+  "texb",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "0"),
+      MakeDict(
+  "name",
+  "text/example",
+  "toplevel",
+  "text",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "1"),
+      MakeDict(
+  "name",
+  "text/example;x=y",
+  "toplevel",
+  "text",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "1"),
+      MakeDict(
+  "name",
+  "TEXT/example",
+  "toplevel",
+  "text",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "1"),
+      MakeDict(
+  "name",
+  "TEXT/example;x=y",
+  "toplevel",
+  "text",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "1"),
+      MakeDict(
+  "name",
+  "TexT/example",
+  "toplevel",
+  "text",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "1"),
+      MakeDict(
+  "name",
+  "TexT/example;x=y",
+  "toplevel",
+  "text",
+  "subtype",
+  "example",
+  "multipart",
+  "0",
+  "text",
+  "1")
+    };
+
     @Test
     public void TestEquals() {
       MediaType mt =
@@ -24,6 +362,15 @@ import com.upokecenter.mail.*;
       if (mt2.equals(mt3)) {
  Assert.fail();
  }
+      for (int i = 0; i < testMediaTypes.length; ++i) {
+        for (int j = 0; j < testMediaTypes.length; ++j) {
+          Map<String, String> dictI = testMediaTypes.get(i);
+          Map<String, String> dictJ = testMediaTypes.get(j);
+          TestCommon.AssertEqualsHashCode(
+            MediaType.Parse(dictI.get("name")),
+            MediaType.Parse(dictJ.get("name")));
+        }
+      }
     }
     @Test
     public void TestGetCharset() {
@@ -227,29 +574,22 @@ import com.upokecenter.mail.*;
       }
     }
     @Test
-    public void TestGetHashCode() {
-      // not implemented yet
-    }
-    @Test
     public void TestGetParameter() {
       // not implemented yet
     }
     @Test
     public void TestIsMultipart() {
-      // not implemented yet
-      if (!(MediaType.Parse("multipart/alternative").isMultipart())) {
- Assert.fail();
- }
-      if (MediaType.Parse("message/alternative").isMultipart()) {
- Assert.fail();
- }
-      if (MediaType.Parse("font/otf").isMultipart()) {
- Assert.fail();
- }
+foreach (Map<String, String> dict in testMediaTypes) {
+        MediaType mt = MediaType.Parse(dict.get("name"));
+        Assert.assertEquals(dict.get("multipart").equals("1"), mt.isMultipart());
+      }
     }
     @Test
     public void TestIsText() {
-      // not implemented yet
+foreach (Map<String, String> dict in testMediaTypes) {
+        MediaType mt = MediaType.Parse(dict.get("name"));
+        Assert.assertEquals(dict.get("text").equals("1"), mt.isText());
+      }
     }
     @Test
     public void TestParameters() {
@@ -405,15 +745,39 @@ if (MediaType.Parse("text/plain;param*0*x*=value", null) != null) {
   null) != null) {
         Assert.fail();
       }
+TestPercentEncodingOne("test\u00be", "test%C2%BE");
+      TestPercentEncodingOne("test\u00be", "test%c2%be");
+      TestPercentEncodingOne("tesA", "tes%41");
+      TestPercentEncodingOne("tesa", "tes%61");
+      TestPercentEncodingOne("tes\r\na", "tes%0D%0Aa");
+      TestPercentEncodingOne(
+  "tes%xx",
+  "tes%xx");
+      TestPercentEncodingOne("tes%dxx", "tes%dxx");
+    }
+
+    private static void TestPercentEncodingOne(String expected, String input) {
+      MediaType cd = MediaType.Parse("text/plain; filename*=utf-8''" + input);
+      Assert.assertEquals(expected, cd.GetParameter("filename"));
     }
 
     @Test
     public void TestSubType() {
-      // not implemented yet
+foreach (Map<String, String> dict in testMediaTypes) {
+        MediaType mt = MediaType.Parse(dict.get("name"));
+        Assert.assertEquals(
+          dict.get("subtype"),
+          mt.getSubType());
+      }
     }
     @Test
     public void TestTopLevelType() {
-      // not implemented yet
+foreach (Map<String, String> dict in testMediaTypes) {
+        MediaType mt = MediaType.Parse(dict.get("name"));
+        Assert.assertEquals(
+          dict.get("toplevel"),
+          mt.getTopLevelType());
+      }
     }
     @Test
     public void TestToString() {
@@ -421,6 +785,11 @@ if (MediaType.Parse("text/plain;param*0*x*=value", null) != null) {
     }
     @Test
     public void TestTypeAndSubType() {
-      // not implemented yet
+foreach (Map<String, String> dict in testMediaTypes) {
+        MediaType mt = MediaType.Parse(dict.get("name"));
+        Assert.assertEquals(
+          dict.get("toplevel") + "/" + dict.get("subtype"),
+          mt.getTypeAndSubType());
+      }
     }
   }
