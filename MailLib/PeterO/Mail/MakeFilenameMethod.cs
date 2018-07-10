@@ -424,8 +424,8 @@ namespace PeterO.Mail {
     }
 
     public static string MakeFilename(string str) {
-      if (str == null) {
-        return String.Empty;
+      if (String.IsNullOrEmpty(str)) {
+        return "_";
       }
       if (SimplifiedFileCheck(str)) {
         return str;
@@ -561,8 +561,7 @@ namespace PeterO.Mail {
           "con.",
           StringComparison.Ordinal) == 0;
         // LPTn, COMn
-     if (strLower.Length == 4 || (strLower.Length > 4 && (strLower[4] == '.'
-          ||
+     if (strLower.Length == 4 || (strLower.Length > 4 && (strLower[4] == '.'||
           strLower[4] == ' '))) {
           reservedFilename = reservedFilename || (strLower.IndexOf(
             "lpt",

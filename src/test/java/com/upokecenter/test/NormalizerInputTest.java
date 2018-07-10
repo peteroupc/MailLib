@@ -151,10 +151,6 @@ public void TestNormalizationLatinOne() {
  }
     }
     @Test
-    public void TestNormalize() {
-      // not implemented yet
-    }
-    @Test
     public void TestRead() {
       NormalizerInput nci = new NormalizerInput("test");
       try {

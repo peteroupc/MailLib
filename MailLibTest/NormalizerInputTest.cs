@@ -131,10 +131,6 @@ public void TestNormalizationLatinOne() {
   Normalization.NFKD));
     }
     [Test]
-    public void TestNormalize() {
-      // not implemented yet
-    }
-    [Test]
     public void TestRead() {
       var nci = new NormalizerInput("test");
       try {

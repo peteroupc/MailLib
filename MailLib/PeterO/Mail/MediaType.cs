@@ -338,6 +338,13 @@ return SkipQuotedString(
   StringBuilder sb) {
       var length = 1;
       var contin = 0;
+      // NOTE: Use uppercase hex characters
+      // to encode according to RFC 2231, but the augmented
+      // BNF for ext-octet in that RFC allows both upper-case
+      // and lower-case, even though only upper-case
+      // appears in that production. This
+      // is due to the nature of augmented BNF (see RFC
+      // 5234 sec 2.3).
       const string ValueHex = "0123456789ABCDEF";
       length += name.Length + 12;
       const int MaxLength = 76;

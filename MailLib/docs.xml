@@ -377,8 +377,8 @@
 <doc name="M:PeterO.Mail.ContentDisposition.GetFilename">
 <summary>Gets an adapted version of the "filename" parameter
             in this content disposition object by using the "MakeFilename" method.</summary>
-            <returns>The adapted file name in the form of a string, or the empty string if there
-            is no "filename" parameter.</returns>
+            <returns>The adapted file name in the form of a string. Returns "_" if there
+            is no "filename" parameter or that parameter is empty.</returns>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.GetHashCode">
 <summary>Returns the hash code for this instance.</summary>
@@ -435,10 +435,7 @@
             collapsed to a single space; leading and trailing spaces and tabs
             are removed; and the filename is truncated if it would otherwise be
             too long. The returned string will be in normalization form C.
-            Returns an empty string if <paramref name='str'/> is
-            null.</returns>
-            <exception cref='T:System.ArgumentNullException'>The parameter
-            <paramref name='str'/> is null.</exception>
+            Returns "_" if "str" is null or empty.</returns>
 </doc>
 <doc name="P:PeterO.Mail.ContentDisposition.Parameters">
 <summary>Gets a list of parameter names associated with this object
@@ -991,9 +988,9 @@ with the media type "application/octet-stream" or treated as that media-type,
 this is a deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which says that
 "[t]here are NO globally meaningful parameters that apply to all media types").</p>
 </remarks>
-            <value>A suggested name for the file, or the empty string if there
+            <value>A suggested name for the file.  Returns "_" if there
             is no filename suggested by the content type or content
-            disposition.</value>
+            disposition, or if that filename is an empty string.</value>
 </doc>
 <doc name="P:PeterO.Mail.Message.FromAddresses">
 <summary>Gets a list of addresses found in the From header field or

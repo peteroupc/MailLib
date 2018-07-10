@@ -1032,7 +1032,22 @@ mt =
   ContentDisposition.Parse("inline;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
+      TestPercentEncodingOne("test\u00be", "test%C2%BE");
+      TestPercentEncodingOne("test\u00be", "test%c2%be");
+      TestPercentEncodingOne("tesA", "tes%41");
+      TestPercentEncodingOne("tesa", "tes%61");
+      TestPercentEncodingOne("tes\r\na", "tes%0D%0Aa");
+      TestPercentEncodingOne(
+  "tes%xx",
+  "tes%xx");
+      TestPercentEncodingOne("tes%dxx", "tes%dxx");
         }
+
+    private static void TestPercentEncodingOne(string expected, string input) {
+      ContentDisposition cd =
+        ContentDisposition.Parse("inline; filename*=utf-8''" + input);
+      Assert.AreEqual(expected, cd.GetParameter("filename"));
+    }
 
     [Test]
     public void TestParseIDB() {
