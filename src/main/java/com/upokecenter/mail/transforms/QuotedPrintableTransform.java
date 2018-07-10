@@ -11,7 +11,7 @@ import com.upokecenter.util.*;
 import com.upokecenter.mail.*;
 
   public final class QuotedPrintableTransform implements IByteReader {
-    private final boolean lenientLineBreaks;
+    private final boolean allowBareLfCr;
     private final boolean checkStrictEncoding;
     private final int maxLineSize;
     private final IByteReader input;
@@ -39,11 +39,11 @@ import com.upokecenter.mail.*;
 
     public QuotedPrintableTransform(
   IByteReader input,
-  boolean lenientLineBreaks,
+  boolean allowBareLfCr,
   int maxLineSize,
   boolean checkStrictEncoding) {
       this.maxLineSize = maxLineSize;
-      this.lenientLineBreaks = lenientLineBreaks;
+      this.allowBareLfCr = allowBareLfCr;
       this.checkStrictEncoding = checkStrictEncoding;
       this.input = input;
       this.lastByte = -1;
@@ -51,16 +51,16 @@ import com.upokecenter.mail.*;
 
     public QuotedPrintableTransform(
   IByteReader input,
-  boolean lenientLineBreaks) {
- this(input, lenientLineBreaks, 76, false);
+  boolean allowBareLfCr) {
+ this(input, allowBareLfCr, 76, false);
     }
 
     public QuotedPrintableTransform(
   IByteReader input,
-  boolean lenientLineBreaks,
+  boolean allowBareLfCr,
   int maxLineLength) {
  this(
-  input, lenientLineBreaks, maxLineLength, false);
+  input, allowBareLfCr, maxLineLength, false);
     }
 
     private void ResizeBuffer(int size) {
@@ -115,24 +115,18 @@ import com.upokecenter.mail.*;
             return 0x0d;
           }
           this.unget = true;
-          if (!this.lenientLineBreaks) {
+          if (!this.allowBareLfCr) {
             throw new MessageDataException("Expected LF after CR");
           }
-          // CR, so write CRLF
-          this.ResizeBuffer(1);
-          this.buffer[0] = 0x0a;
-          this.lineCharCount = 0;
-          return 0x0d;
+          // Ignore CR (part of suggested behavior by RFC 2045)
+          continue;
         }
         if (c == 0x0a) {  // LF
-          if (!this.lenientLineBreaks) {
+          if (!this.allowBareLfCr) {
             throw new MessageDataException("Expected LF after CR");
           }
-          // LF, so write CRLF
-          this.ResizeBuffer(1);
-          this.buffer[0] = 0x0a;
-          this.lineCharCount = 0;
-          return 0x0d;
+          // Ignore LF (part of suggested behavior by RFC 2045)
+          continue;
         }
         if (c == '=') {  // Equals
           if (this.maxLineSize >= 0) {
@@ -160,11 +154,6 @@ import com.upokecenter.mail.*;
               this.lineCharCount = 0;
               continue;
             }
-            if (this.lenientLineBreaks) {
-              this.lineCharCount = 0;
-              this.unget = true;
-              continue;
-            }
             if (!this.checkStrictEncoding && (this.maxLineSize > 76 ||
               this.maxLineSize < 0)) {
               if (this.maxLineSize >= 0) {
@@ -175,19 +164,18 @@ import com.upokecenter.mail.*;
                 }
               }
               this.unget = true;
-              this.ResizeBuffer(1);
-              this.buffer[0] = (byte)'\r';
               return '=';
             }
+            if (this.allowBareLfCr) {
+              this.unget = true;
+              return '=';
+            } else {
             throw new
-           MessageDataException("CR not followed by LF in quoted-printable");
+              MessageDataException("CR not followed by LF in quoted-printable");
+            }
           } else if (b1 == -1) {
             // Equals sign at end, ignore
             return -1;
-          } else if (b1 == '\n' && this.lenientLineBreaks) {
-            // Soft line break
-            this.lineCharCount = 0;
-            continue;
           } else {
             if (!this.checkStrictEncoding && (this.maxLineSize > 76 ||
               this.maxLineSize < 0)) {
@@ -197,8 +185,13 @@ import com.upokecenter.mail.*;
               this.unget = true;
               return '=';
             }
-            throw new
-           MessageDataException("Invalid hex character in quoted-printable");
+            if (b1 == '\n' && this.allowBareLfCr) {
+              this.unget = true;
+              return '=';
+            } else {
+               throw new
+  MessageDataException("Invalid hex character in quoted-printable");
+            }
           }
           int b2 = this.ReadInputByte();
           // At this point, only a hex character is expected
@@ -208,7 +201,7 @@ import com.upokecenter.mail.*;
           } else if (b2 >= 'A' && b2 <= 'F') {
             c <<= 4;
             c |= b2 + 10 - 'A';
-          } else if (b2 >= 'a' && b2 <= 'f') {
+          } else if (b2 >= 'a' && b2 <= 'f' && !this.checkStrictEncoding) {
             c <<= 4;
             c |= b2 + 10 - 'a';
           } else {
@@ -271,18 +264,17 @@ import com.upokecenter.mail.*;
             }
             return c;
           }
-          boolean endsWithLineBreak = false;
+          boolean endsWithEofOrCrLf = false;
           while (true) {
-            if ((c2 == '\n' && this.lenientLineBreaks) || c2 < 0) {
-              // EOF, or LF with lenient line breaks
+            if (c2 < 0) {
+              // EOF
               this.unget = true;
-              endsWithLineBreak = true;
+              endsWithEofOrCrLf = true;
               break;
             }
-            if (c2 == '\r' && this.lenientLineBreaks) {
-              // CR with lenient line breaks
-              this.unget = true;
-              endsWithLineBreak = true;
+            if (c2 == '\n' && this.allowBareLfCr) {
+              // LF with bare LF/CR allowed.
+              // Doesn't end with CRLF or EOF.
               break;
             }
             if (c2 == '\r') {
@@ -294,21 +286,15 @@ import com.upokecenter.mail.*;
                 this.ResizeBuffer(1);
                 this.buffer[0] = (byte)'\n';
                 return 0x0d;
-              } else {
-                // Add the CR to the
-                // buffer, it won't be ignored
+              } else if (this.allowBareLfCr) {
+                // Doesn't end with CRLF or EOF.
+                // Add just-read character to buffer
+                // and return first space
                 this.ResizeBuffer(spaceCount);
-                this.buffer[spaceCount - 1] = (byte)'\r';
-              }
-              if (!this.lenientLineBreaks) {
+                this.buffer[spaceCount - 1] = (byte)c2;
+                return c;
+              } else {
                 throw new MessageDataException("Expected LF after CR");
-              }
-              this.unget = true;  // it's something else
-              ++this.lineCharCount;
-              if (this.maxLineSize >= 0 && this.lineCharCount >
-                    this.maxLineSize) {
-                throw new
-            MessageDataException("Encoded quoted-printable line too long");
               }
               break;
             }
@@ -331,7 +317,7 @@ import com.upokecenter.mail.*;
             c2 = this.ReadInputByte();
           }
           // Ignore space/tab runs if the line ends in that run
-          if (!endsWithLineBreak) {
+          if (!endsWithEofOrCrLf) {
             return c;
           }
           if (this.checkStrictEncoding) {

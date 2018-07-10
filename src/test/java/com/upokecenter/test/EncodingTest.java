@@ -1471,7 +1471,7 @@ String stringTemp =
       TestDecodeQuotedPrintable("te\t \r\n", "te\r\n");
       TestDecodeQuotedPrintable("te \t\r\n", "te\r\n");
     }
-    @Test
+    @Test(timeout = 5000)
     public static void TestLenientQuotedPrintable() {
       // Ignore for now, Message constructor currently uses
       // quoted-printable parsing that's not lenient on
@@ -1492,11 +1492,20 @@ String stringTemp =
       TestDecodeQuotedPrintable("te\t \rst", "te\t st");
       TestDecodeQuotedPrintable("te \rst", "te st");
       TestDecodeQuotedPrintable("te \nst", "te st");
-      // See point 2 of second numbered list
-      TestDecodeQuotedPrintable("te=\rst", "te=\rst");
-      TestDecodeQuotedPrintable("te=\nst", "te=\nst");
-      TestDecodeQuotedPrintable("te=\r", "te=\r");
-      TestDecodeQuotedPrintable("te=\n", "te=\n");
+      TestDecodeQuotedPrintable("te\t\rst", "te\tst");
+      TestDecodeQuotedPrintable("te\t\nst", "te\tst");
+      TestDecodeQuotedPrintable("te \r =\r\nst", "te\u0020\u0020st");
+      TestDecodeQuotedPrintable("te \n =\r\nst", "te\u0020\u0020st");
+      TestDecodeQuotedPrintable("te\t\r =\r\nst", "te\t\u0020st");
+      TestDecodeQuotedPrintable("te \n\t=\r\nst", "te\u0020\tst");
+      // See points 5 and 2 of second numbered list;
+      // this implementation follows a mix of these
+      // suggestions by outputting "=" when "=\r" not
+      // followed by "\n" appears, and when "=\n" appears
+      TestDecodeQuotedPrintable("te=\rst", "te=st");
+      TestDecodeQuotedPrintable("te=\nst", "te=st");
+      TestDecodeQuotedPrintable("te=\r", "te=");
+      TestDecodeQuotedPrintable("te=\n", "te=");
     }
     @Test
     public void TestNonLenientQuotedPrintable() {
