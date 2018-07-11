@@ -102,7 +102,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.ToString"]/*'/>
     public override string ToString() {
       // NOTE: 76 is the maximum length of a line in an Internet
-      // message, and 21 is the length of "Content-Disposition: " (with
+      // message header, and 21 is the length of "Content-Disposition: " (with
       // trailing space).
       var sa = new MediaType.SymbolAppender(76, 21);
       sa.AppendSymbol(this.dispositionType);
@@ -137,7 +137,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)"]/*'/>
     public string GetParameter(string name) {
       // TODO: Support creation-date, modification-date,
-      // read-date and size specially.  NOTE: Size is
+      // read-date and size specially. NOTE: Size is
       // a hint only; see RFC 2183
       if (name == null) {
         throw new ArgumentNullException("name");

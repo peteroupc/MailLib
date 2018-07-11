@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace MailLibTest {
@@ -17,6 +17,5 @@ namespace MailLibTest {
       }
       return dict;
     }
-
   }
 }
