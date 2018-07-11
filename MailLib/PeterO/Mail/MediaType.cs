@@ -365,7 +365,7 @@ namespace PeterO.Mail {
         return this.maxLength;
       }
       public bool CanFitSymbol(string symbol) {
-        return (this.maxLength < 0 || 1 + symbol.Length <= this.maxLength);
+        return this.maxLength < 0 || 1 + symbol.Length <= this.maxLength;
       }
       public bool TryAppendSymbol(string symbol) {
         if (CanFitSymbol(symbol)) {
@@ -398,7 +398,7 @@ namespace PeterO.Mail {
     }
 
     private static bool IsTokenChar(int c) {
-      return (c >= 33 && c <= 126 && AttrNameSpecials.IndexOf((char)c) < 0);
+      return c >= 33 && c <= 126 && AttrNameSpecials.IndexOf((char)c) < 0;
     }
     private static void PctAppend(StringBuilder sb, int w) {
       // NOTE: Use uppercase hex characters
@@ -413,8 +413,11 @@ namespace PeterO.Mail {
       sb.Append(ValueHex[w & 15]);
     }
 
-    private static bool RequiresContinuations(string str, int startPos, int startColumn, int maxLength) {
-      if (maxLength < 0) return false;
+    private static bool RequiresContinuations(string str, int startPos, int
+      startColumn, int maxLength) {
+      if (maxLength < 0) {
+        return false;
+      }
       int column = startColumn;
       int index = startPos;
       while (index < str.Length && column <= maxLength) {
@@ -428,7 +431,7 @@ namespace PeterO.Mail {
           column += 9;
         }
         if (IsTokenChar(c)) {
-          column += 1;
+          ++column;
         } else if (c <= 0x7f) {
           column += 3;
         } else if (c <= 0x7ff) {
@@ -436,16 +439,17 @@ namespace PeterO.Mail {
         } else {
           column += 9;
         }
-        index++;
+        ++index;
       }
-      return (column > maxLength);
+      return column > maxLength;
     }
 
-    private static int EncodeContinuation(string str, int startPos, SymbolAppender sa) {
+    private static int EncodeContinuation(string str, int startPos,
+      SymbolAppender sa) {
       int column = sa.GetColumn();
       int maxLength = sa.GetMaxLength();
       int index = startPos;
-      StringBuilder sb = new StringBuilder();
+      var sb = new StringBuilder();
       while (index < str.Length && (maxLength < 0 || column <= maxLength)) {
         int c = str[index];
         bool first = (index == 0);
@@ -457,7 +461,7 @@ namespace PeterO.Mail {
           c = 0xfffd;
         }
         if (IsTokenChar(c)) {
-          contin += 1;
+          ++contin;
         } else if (c <= 0x7f) {
           contin += 3;
         } else if (c <= 0x7ff) {
@@ -470,7 +474,9 @@ namespace PeterO.Mail {
         if (maxLength >= 0 && column + contin > maxLength) {
           break;
         }
-        if (first) sb.Append("utf-8''");
+        if (first) {
+          sb.Append("utf-8''");
+        }
         if (IsTokenChar(c)) {
           sb.Append((char)c);
         } else if (c <= 0x7f) {
@@ -487,9 +493,9 @@ namespace PeterO.Mail {
           PctAppend(sb, (0x80 | ((c >> 12) & 0x3f)));
           PctAppend(sb, (0x80 | ((c >> 6) & 0x3f)));
           PctAppend(sb, (0x80 | (c & 0x3f)));
-          index++;
+          ++index;
         }
-        index++;
+        ++index;
         column += contin;
       }
       if (maxLength >= 0 && index == startPos) {
@@ -506,8 +512,21 @@ namespace PeterO.Mail {
   string name,
   string str,
   SymbolAppender sa) {
-      // DebugAssert.NotEmpty(str);
-      // DebugAssert.NotEmpty(name);
+#if DEBUG
+      if ((str) == null) {
+        throw new ArgumentNullException("str");
+      }
+      if ((str).Length == 0) {
+        throw new ArgumentException("str" + " is empty.");
+      }
+      if ((name) == null) {
+        throw new ArgumentNullException("name");
+      }
+      if ((name).Length == 0) {
+        throw new ArgumentException("name" + " is empty.");
+      }
+#endif
+
       int column = sa.GetColumn();
       // Check if parameter is short enough for the column that
       // no continuations are needed
@@ -517,13 +536,16 @@ namespace PeterO.Mail {
         sa.AppendSymbol(name + "*").AppendSymbol("=");
         EncodeContinuation(str, 0, sa);
       } else {
-        int contin = 0;
-        int index = 0;
+        var contin = 0;
+        var index = 0;
         while (index < str.Length) {
-          if (contin > 0) sa.AppendSymbol(";");
-          sa.AppendSymbol(name + "*" + IntToString(contin) + "*").AppendSymbol("=");
+          if (contin > 0) {
+            sa.AppendSymbol(";");
+          }
+          sa.AppendSymbol(name + "*" + IntToString(contin) + "*")
+     .AppendSymbol("=");
           index = EncodeContinuation(str, index, sa);
-          contin++;
+          ++contin;
         }
       }
     }
@@ -593,18 +615,19 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToString"]/*'/>
     public override string ToString() {
       // NOTE: 76 is the maximum length of a line in an Internet
-      // message, and 14 is the length of "Content-Type: " (with trailing space).
+      // message, and 14 is the length of "Content-Type: " (with trailing
+      // space).
       var sa = new SymbolAppender(76, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
       AppendParameters(this.parameters, sa);
       return sa.ToString();
     }
 
-    /// <summary>Converts this media type to a text string form
-    /// suitable for inserting in HTTP headers.  Notably, the string contains the
+    /// <summary>Converts this media type to a text string form suitable
+    /// for inserting in HTTP headers. Notably, the string contains the
     /// value of a Content-Type header field (without the text necessarily
-    /// starting with "Content-Type" followed by a space), and consists
-    /// of a single line.</summary>
+    /// starting with "Content-Type" followed by a space), and consists of
+    /// a single line.</summary>
     /// <returns>A text string form of this media type.</returns>
     public string ToSingleLineString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).

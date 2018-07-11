@@ -12,8 +12,8 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.ContentDisposition"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.ContentDisposition"]/*'/>
   public class ContentDisposition {
     private readonly string dispositionType;
 
@@ -98,26 +98,29 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.ToString"]/*'/>
     public override string ToString() {
       // NOTE: 76 is the maximum length of a line in an Internet
-      // message, and 21 is the length of "Content-Disposition: " (with trailing space).
-      MediaType.SymbolAppender sa = new MediaType.SymbolAppender(76, 21);
+      // message, and 21 is the length of "Content-Disposition: " (with
+      // trailing space).
+      var sa = new MediaType.SymbolAppender(76, 21);
       sa.AppendSymbol(this.dispositionType);
       MediaType.AppendParameters(this.parameters, sa);
       return sa.ToString();
     }
 
     /// <summary>Converts this content disposition to a text string form
-    /// suitable for inserting in HTTP headers.  Notably, the string contains the
-    /// value of a Content-Disposition header field (without the text necessarily
-    /// starting with "Content-Disposition" followed by a space), and consists
-    /// of a single line.</summary>
+    /// suitable for inserting in HTTP headers. Notably, the string
+    /// contains the value of a Content-Disposition header field (without
+    /// the text necessarily starting with "Content-Disposition" followed
+    /// by a space), and consists of a single line.</summary>
     /// <returns>A text string form of this content disposition.</returns>
     public string ToSingleLineString() {
-      // NOTE: 21 is the length of "Content-Disposition: " (with trailing space).
-      MediaType.SymbolAppender sa = new MediaType.SymbolAppender(-1, 21);
+      // NOTE: 21 is the length of "Content-Disposition: " (with trailing
+      // space).
+      var sa = new MediaType.SymbolAppender(-1, 21);
       sa.AppendSymbol(this.dispositionType);
       MediaType.AppendParameters(this.parameters, sa);
       return sa.ToString();
     }
+
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)"]/*'/>
     public static string MakeFilename(string str) {

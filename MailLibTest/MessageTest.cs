@@ -95,12 +95,14 @@ namespace MailLibTest {
       string msgstring = "MIME-Version: 1.0\r\nContent-Type: " +
         mtstring + "\r\n\r\n";
       Message mtmessage = MessageFromString(msgstring);
-      Assert.IsTrue(EncodingTest.IsGoodAsciiMessageFormat(
+      {
+bool boolTemp = EncodingTest.IsGoodAsciiMessageFormat(
           msgstring,
           false,
-        "TestGenerate") == 2, msgstring);
+          "TestGenerate") == 2;
+Assert.IsTrue(boolTemp, msgstring);
+}
       MessageGenerate(mtmessage);
-
     }
 
     [Test]
@@ -140,7 +142,8 @@ namespace MailLibTest {
 
     [Test]
     public void TestContentTypeDefaults() {
-      const string ValueStartCTD = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
+  const string ValueStartCTD =
+        "From: me@example.com\r\nMIME-Version: 1.0\r\n" ;
       string msg;
       msg = ValueStartCTD + "\r\n\r\n";
       Assert.AreEqual(
@@ -265,6 +268,29 @@ namespace MailLibTest {
     }
 
     [Test]
+    public void TestRfc2231ExtensionsEndPercent() {
+      // Tests to check percent encoding at end, ensuring
+      // that an infinite-decoding-loop bug does not reappear.
+      // NOTE: RFC5987 doesn't mandate any particular
+      // error handling behavior here
+      TestRfc2231Extension(";param1*=utf-8''example%", "param1", "example%");
+      TestRfc2231Extension(";param1*=utf-8''example%;param2=x", "param1", "example%");
+      TestRfc2231Extension(";param2=x;param1*=utf-8''example%", "param1", "example%");
+      TestRfc2231Extension(";param1*=utf-8''example%a", "param1", "example%a");
+      TestRfc2231Extension(";param1*=utf-8''example%a;param2=x", "param1", "example%a");
+      TestRfc2231Extension(";param2=x;param1*=utf-8''example%a", "param1", "example%a");
+      TestRfc2231Extension(";param1*=utf-8''example%A", "param1", "example%A");
+      TestRfc2231Extension(";param1*=utf-8''example%A;param2=x", "param1", "example%A");
+      TestRfc2231Extension(";param2=x;param1*=utf-8''example%A", "param1", "example%A");
+      TestRfc2231Extension(";param1*=utf-8''example%9", "param1", "example%9");
+      TestRfc2231Extension(";param1*=utf-8''example%9;param2=x", "param1", "example%9");
+      TestRfc2231Extension(";param2=x;param1*=utf-8''example%9", "param1", "example%9");
+      TestRfc2231Extension(";param1*=utf-8''example%w", "param1", "example%w");
+      TestRfc2231Extension(";param1*=utf-8''example%w;param2=x", "param1", "example%w");
+      TestRfc2231Extension(";param2=x;param1*=utf-8''example%w", "param1", "example%w");
+    }
+
+    [Test]
     public void TestRfc2231Extensions() {
       TestRfc2231Extension("; charset=\"utf-8\"", "charset", "utf-8");
       TestRfc2231Extension(
@@ -327,6 +353,10 @@ namespace MailLibTest {
         "a ba%20b");
       TestRfc2231Extension(
          "; Charset*0*=utf-8''a%20b;cHarset*1=a%20b",
+         "charset",
+         "a ba%20b");
+      TestRfc2231Extension(
+         "; Charset*0*=utf-8''a%20b;cHarset*1=\"a%20b\"",
          "charset",
          "a ba%20b");
       TestRfc2231Extension(
@@ -1560,7 +1590,8 @@ MessageFromString(MessageFromString(msg).Generate())
     [Test]
     public void TestFWSAtSubjectEnd() {
       Message msg;
-      const string ValueStringVar = "From: me@example.com\r\nSubject: Test\r\n " +
+   const string ValueStringVar =
+        "From: me@example.com\r\nSubject: Test\r\n " +
            "\r\nX-Header: Header\r\n\r\nBody";
       msg = MessageFromString(ValueStringVar);
       {
@@ -1573,7 +1604,8 @@ MessageFromString(MessageFromString(msg).Generate())
 
     [Test]
     public void TestEmptyGroup() {
-      const string ValueStringVar = "From: me@example.com\r\nTo: empty-group:;" +
+    const string ValueStringVar =
+        "From: me@example.com\r\nTo: empty-group:;" +
           "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
           "\r\n\r\nBody";
       MessageFromString(ValueStringVar);
@@ -1801,7 +1833,8 @@ MessageFromString(MessageFromString(msg).Generate())
 
     private static void TestFileNameOne(string input, string expected) {
       Message msg;
-      String valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+   String valueMessageString =
+        "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
     "Content-Type: text/plain\r\nContent-Disposition: inline; filename=" +
              input + "\r\n\r\nEmpty.";
       msg = MessageFromString(valueMessageString);
@@ -2103,13 +2136,15 @@ MessageFromString(MessageFromString(msg).Generate())
           throw new InvalidOperationException(String.Empty, ex);
         }
         try {
-          new Message().SetHeader(headerName, "\"Me\u002c Me\" <x@example.com>");
+        new Message().SetHeader(headerName,
+            "\"Me\u002c Me\" <x@example.com>");
         } catch (Exception ex) {
           Assert.Fail(ex.ToString());
           throw new InvalidOperationException(String.Empty, ex);
         }
         try {
-          new Message().SetHeader(headerName, "\"Me\u002c Me(x)\" <x@example.com>");
+     new Message().SetHeader(headerName,
+            "\"Me\u002c Me(x)\" <x@example.com>");
         } catch (Exception ex) {
           Assert.Fail(ex.ToString());
           throw new InvalidOperationException(String.Empty, ex);

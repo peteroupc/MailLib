@@ -444,7 +444,8 @@ namespace MailLibTest {
                   stringTemp);
       }
       {
-        string stringTemp = MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8")
+ string stringTemp =
+          MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8")
              .GetCharset();
         Assert.AreEqual(
                   "utf-8",
@@ -481,14 +482,16 @@ namespace MailLibTest {
                   stringTemp);
       }
       {
-        string stringTemp = MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"")
+    string stringTemp =
+          MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"")
        .GetCharset();
         Assert.AreEqual(
                   "utf-8",
                   stringTemp);
       }
       {
-        string stringTemp = MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"")
+  string stringTemp =
+          MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"")
            .GetCharset();
         Assert.AreEqual(
                   "utf-8",
@@ -601,8 +604,15 @@ namespace MailLibTest {
     }
     [Test]
     public void TestParse() {
-      Assert.IsNull(MediaType.Parse("x/x; charset*='i-unknown'utf-8", null));
-      Assert.IsNull(MediaType.Parse("x/x; charset*=us-ascii'i-unknown'utf-8", null));
+      // TODO: Consider simply ignoring the
+      // charset parameter in these two cases
+      if ((MediaType.Parse("x/x; charset*='i-unknown'utf-8", null)) != null) {
+ Assert.Fail();
+ }
+ if ((MediaType.Parse("x/x; charset*=us-ascii'i-unknown'utf-8", null)) !=
+        null) {
+ Assert.Fail();
+ }
       try {
         MediaType.Parse(null);
         Assert.Fail("Should have failed");
@@ -661,11 +671,11 @@ namespace MailLibTest {
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
       mt =
-        MediaType.Parse("text/example;param1*=iso-8859-1''valu%e72;param1=dummy");
+  MediaType.Parse("text/example;param1*=iso-8859-1''valu%e72;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
       mt =
-        MediaType.Parse("text/example;param1=dummy;param1*=iso-8859-1''valu%E72");
+  MediaType.Parse("text/example;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
     }
