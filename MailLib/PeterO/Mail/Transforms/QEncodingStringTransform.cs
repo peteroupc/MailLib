@@ -75,7 +75,7 @@ namespace PeterO.Mail.Transforms {
             c <<= 4;
             c |= b1 + 10 - 'a';
           } else if (b1 == -1) {
-            return '%';
+            return '=';
           } else {
             --this.inputIndex;
             return '=';

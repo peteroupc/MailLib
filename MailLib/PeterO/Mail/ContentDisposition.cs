@@ -21,6 +21,10 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.DispositionType"]/*'/>
     public string DispositionType {
       get {
+        // TODO: Unrecognized/unknown types
+        // should be treated as attachment
+        // (RFC 6266 sec. 4.2); note this in the
+        // documentation
         return this.dispositionType;
       }
     }
@@ -106,12 +110,8 @@ namespace PeterO.Mail {
       return sa.ToString();
     }
 
-    /// <summary>Converts this content disposition to a text string form
-    /// suitable for inserting in HTTP headers. Notably, the string
-    /// contains the value of a Content-Disposition header field (without
-    /// the text necessarily starting with "Content-Disposition" followed
-    /// by a space), and consists of a single line.</summary>
-    /// <returns>A text string form of this content disposition.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.ToSingleLineString"]/*'/>
     public string ToSingleLineString() {
       // NOTE: 21 is the length of "Content-Disposition: " (with trailing
       // space).
@@ -136,6 +136,9 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)"]/*'/>
     public string GetParameter(string name) {
+      // TODO: Support creation-date, modification-date,
+      // read-date and size specially.  NOTE: Size is
+      // a hint only; see RFC 2183
       if (name == null) {
         throw new ArgumentNullException("name");
       }

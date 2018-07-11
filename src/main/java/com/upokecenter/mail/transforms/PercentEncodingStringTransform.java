@@ -72,6 +72,8 @@ import com.upokecenter.mail.*;
           } else if (b1 >= 'a' && b1 <= 'f') {
             c <<= 4;
             c |= b1 + 10 - 'a';
+          } else if (b1 == -1) {
+            return '%';
           } else {
             --this.inputIndex;
             return '%';
@@ -87,6 +89,10 @@ import com.upokecenter.mail.*;
           } else if (b2 >= 'a' && b2 <= 'f') {
             c <<= 4;
             c |= b2 + 10 - 'a';
+          } else if (b2 == -1) {
+            this.ResizeBuffer(1);
+            this.buffer[0] = (byte)b1;
+            return '%';
           } else {
             --this.inputIndex;
             this.ResizeBuffer(1);

@@ -424,6 +424,7 @@ namespace PeterO.Mail {
     }
 
     public static string MakeFilename(string str) {
+      // TODO: Handle single-quoted filenames (ex: 'filename')?
       if (String.IsNullOrEmpty(str)) {
         // TODO: Consider empty string instead
         return "_";

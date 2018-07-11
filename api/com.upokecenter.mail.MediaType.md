@@ -8,7 +8,7 @@
  example, the media type <code>text/plain; charset = utf-8</code> is a text
  media type ("text"), namely, a plain text type ("plain"), and the
  parameters say that the data uses UTF-8, a Unicode character encoding
- ("charset=utf-8"). Other top-level types include "audio", "video",
+ ("charset = utf-8"). Other top-level types include "audio", "video",
  and "application".</p> <p>A media type is sometimes known as a "MIME
  type", for Multipurpose Internet Mail Extensions, the standard that
  introduced media types.</p> <p>This type is immutable, meaning its
@@ -62,8 +62,12 @@
      MediaType defaultValue)`<br>
  Parses a media type string and returns a media type object, or the default
  value if the string is invalid.
+* `String ToSingleLineString()`<br>
+ Converts this media type to a text string form suitable for inserting in
+ HTTP headers.
 * `String toString()`<br>
- Converts this object to a text string.
+ Converts this media type to a text string form suitable for inserting in
+ email headers.
 
 ## Field Details
 
@@ -162,7 +166,11 @@ Gets a list of the parameters contained in this media type object.
 
 ### toString
     public String toString()
-Converts this object to a text string.
+Converts this media type to a text string form suitable for inserting in
+ email headers. Notably, the string contains the value of a
+ Content-Type header field (without the text necessarily starting with
+ "Content-Type" followed by a space), and consists of one or more
+ lines.
 
 **Overrides:**
 
@@ -170,7 +178,18 @@ Converts this object to a text string.
 
 **Returns:**
 
-* A string representation of this object.
+* A text string form of this media type.
+
+### ToSingleLineString
+    public String ToSingleLineString()
+Converts this media type to a text string form suitable for inserting in
+ HTTP headers. Notably, the string contains the value of a
+ Content-Type header field (without the text necessarily starting with
+ "Content-Type" followed by a space), and consists of a single line.
+
+**Returns:**
+
+* A text string form of this media type.
 
 ### GetCharset
     public String GetCharset()
@@ -232,8 +251,8 @@ Parses a media type string and returns a media type object. This method
 
 **Returns:**
 
-* A media type object, or text/plain if <code>mediaTypeValue</code> is
- empty or syntactically invalid.
+* A media type object, or MediaType.TextPlainAscii if <code>
+ mediaTypeValue</code> is empty or syntactically invalid.
 
 ### Parse
     public static MediaType Parse​(String str, MediaType defaultValue)

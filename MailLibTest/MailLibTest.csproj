@@ -82,6 +82,7 @@
     <Compile Include="TestCommon.cs" />
     <Compile Include="XorShift128Plus.cs" />
 
+    <Compile Include="DictUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

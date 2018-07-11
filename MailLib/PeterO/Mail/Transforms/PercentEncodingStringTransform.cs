@@ -72,7 +72,7 @@ namespace PeterO.Mail.Transforms {
           } else if (b1 >= 'a' && b1 <= 'f') {
             c <<= 4;
             c |= b1 + 10 - 'a';
-          } else if(b1 == -1){
+          } else if (b1 == -1) {
             return '%';
           } else {
             --this.inputIndex;

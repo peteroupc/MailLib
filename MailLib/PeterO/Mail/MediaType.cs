@@ -13,8 +13,8 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-  /// <include file='../../docs.xml'
-  /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
   public sealed class MediaType {
     private const string AttrNameSpecials = "()<>@,;:\\\"/[]?='%*";
     private const string ValueHex = "0123456789ABCDEF";
@@ -110,12 +110,12 @@ namespace PeterO.Mail {
     }
 
     internal enum QuotedStringRule {
-      /// <include file='../../docs.xml'
-      /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Http"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Http"]/*'/>
       Http,
 
-      /// <include file='../../docs.xml'
-      /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Rfc5322"]/*'/>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Rfc5322"]/*'/>
       Rfc5322
     }
 
@@ -413,37 +413,6 @@ namespace PeterO.Mail {
       sb.Append(ValueHex[w & 15]);
     }
 
-    private static bool RequiresContinuations(string str, int startPos, int
-      startColumn, int maxLength) {
-      if (maxLength < 0) {
-        return false;
-      }
-      int column = startColumn;
-      int index = startPos;
-      while (index < str.Length && column <= maxLength) {
-        int c = str[index];
-        if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length &&
-            str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
-          column += 12;
-          index += 2;
-          continue;
-        } else if ((c & 0xf800) == 0xd800) {
-          column += 9;
-        }
-        if (IsTokenChar(c)) {
-          ++column;
-        } else if (c <= 0x7f) {
-          column += 3;
-        } else if (c <= 0x7ff) {
-          column += 6;
-        } else {
-          column += 9;
-        }
-        ++index;
-      }
-      return column > maxLength;
-    }
-
     private static int EncodeContinuation(string str, int startPos,
       SymbolAppender sa) {
       int column = sa.GetColumn();
@@ -531,11 +500,11 @@ namespace PeterO.Mail {
       // Check if parameter is short enough for the column that
       // no continuations are needed
       int continColumn = column + name.Length + 9;
-      if (!RequiresContinuations(str, 0, continColumn, sa.GetMaxLength())) {
-        // Short enough
-        sa.AppendSymbol(name + "*").AppendSymbol("=");
-        EncodeContinuation(str, 0, sa);
-      } else {
+      int oldcolumn = sa.GetColumn();
+      int oldlength = sa.GetLength();
+      sa.AppendSymbol(name + "*").AppendSymbol("=");
+      if (EncodeContinuation(str, 0, sa) != str.Length) {
+        sa.Reset(oldcolumn, oldlength);
         var contin = 0;
         var index = 0;
         while (index < str.Length) {
@@ -623,12 +592,8 @@ namespace PeterO.Mail {
       return sa.ToString();
     }
 
-    /// <summary>Converts this media type to a text string form suitable
-    /// for inserting in HTTP headers. Notably, the string contains the
-    /// value of a Content-Type header field (without the text necessarily
-    /// starting with "Content-Type" followed by a space), and consists of
-    /// a single line.</summary>
-    /// <returns>A text string form of this media type.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToSingleLineString"]/*'/>
     public string ToSingleLineString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       var sa = new SymbolAppender(-1, 14);
@@ -908,7 +873,7 @@ namespace PeterO.Mail {
       }
       string charset = value.Substring(0, firstQuote);
       if (httpRules && charset.Length == 0) {
-        // charset is omitted, which is not allowed under RFC5987
+        // charset is omitted, which is not allowed under RFC8187
         return null;
       }
       string language = value.Substring(
@@ -919,7 +884,7 @@ namespace PeterO.Mail {
         return null;
       }
       string paramValue = value.Substring(secondQuote + 1);
-      // NOTE: For HTTP (RFC 5987) no specific error-handling
+      // NOTE: For HTTP (RFC 8187) no specific error-handling
       // behavior is mandated for "encoding errors", which can
       // be interpreted as including unsupported or unrecognized
       // character encodings (see sec. 3.2.1).
@@ -988,8 +953,8 @@ namespace PeterO.Mail {
         int asterisk = name.IndexOf('*');
         if (asterisk == name.Length - 1 && asterisk > 0) {
           // name*="value" (except when the parameter is just "*")
-          // NOTE: As of RFC 5987, this particular extension is now allowed
-          // in HTTP
+          // NOTE: As of RFC 5987 (now RFC 8187), this particular extension 
+          // is now allowed in HTTP
           string realName = name.Substring(0, name.Length - 1);
           string realValue = DecodeRfc2231Extension(value, httpRules);
           if (realValue == null) {
@@ -997,7 +962,7 @@ namespace PeterO.Mail {
           }
           parameters.Remove(name);
           // NOTE: Overrides the name without continuations
-          // (also suggested by RFC5987 sec. 4.2)
+          // (also suggested by RFC8187 sec. 4.2)
           parameters[realName] = realValue;
           continue;
         }
