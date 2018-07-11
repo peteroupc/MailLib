@@ -466,8 +466,12 @@
             <paramref name='dispositionValue'/> is null.</exception>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.ToString">
-<summary>Converts this object to a text string.</summary>
-            <returns>A string representation of this object.</returns>
+<summary>Converts this content disposition to a text string form
+   suitable for inserting in email headers.  Notably, the string contains the
+   value of a Content-Disposition header field (without the text necessarily
+   starting with "Content-Disposition" followed by a space), and consists
+   of one or more lines.</summary>
+            <returns>A text string form of this content disposition.</returns>
 </doc>
 <doc name="T:PeterO.Mail.DispositionBuilder">
 <summary>Description of DispositionBuilder.</summary>
@@ -574,7 +578,7 @@
             <c>text/plain; charset = utf-8</c> is a text media type ("text"),
             namely, a plain text type ("plain"), and the parameters say that
             the data uses UTF-8, a Unicode character encoding
-            ("charset=utf-8"). Other top-level types include "audio", "video",
+            ("charset = utf-8"). Other top-level types include "audio", "video",
             and "application".</para>
             <para>A media type is sometimes known as a "MIME type", for
             Multipurpose Internet Mail Extensions, the standard that introduced
@@ -651,7 +655,7 @@
             parameter.</summary>
             <param name='mediaTypeValue'>A text string representing a media
             type. This media type can include parameters.</param>
-            <returns>A media type object, or text/plain if <paramref name='mediaTypeValue'/> is empty or syntactically
+            <returns>A media type object, or MediaType.TextPlainAscii if <paramref name='mediaTypeValue'/> is empty or syntactically
             invalid.</returns>
 </doc>
 <doc name="M:PeterO.Mail.MediaType.Parse(System.String,PeterO.Mail.MediaType)">
@@ -689,8 +693,12 @@
             characters outside the basic Latin range (U+0000 to U+007F).</summary>
 </doc>
 <doc name="M:PeterO.Mail.MediaType.ToString">
-<summary>Converts this object to a text string.</summary>
-            <returns>A string representation of this object.</returns>
+<summary>Converts this media type to a text string form
+   suitable for inserting in email headers.  Notably, the string contains the
+   value of a Content-Type header field (without the text necessarily
+   starting with "Content-Type" followed by a space), and consists
+   of one or more lines.</summary>
+            <returns>A text string form of this media type.</returns>
 </doc>
 <doc name="P:PeterO.Mail.MediaType.TopLevelType">
 <summary>Gets the name of this media type's top-level type (such as

@@ -13,10 +13,12 @@ using PeterO.Mail.Transforms;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
   public sealed class MediaType {
     private const string AttrNameSpecials = "()<>@,;:\\\"/[]?='%*";
+    private const string ValueHex = "0123456789ABCDEF";
+
     private readonly string topLevelType;
 
     private static readonly ICharacterEncoding USAsciiEncoding =
@@ -47,17 +49,17 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetHashCode"]/*'/>
     public override int GetHashCode() {
       var hashCode = 632580499;
-        if (this.topLevelType != null) {
-  hashCode = unchecked(hashCode + (632580503 *
-            this.topLevelType.GetHashCode()));
-        }
-        if (this.subType != null) {
-       hashCode = unchecked(hashCode + (632580563 *
-            this.subType.GetHashCode()));
-        }
-        if (this.parameters != null) {
-          hashCode = unchecked(hashCode + (632580587 * this.parameters.Count));
-        }
+      if (this.topLevelType != null) {
+        hashCode = unchecked(hashCode + (632580503 *
+                  this.topLevelType.GetHashCode()));
+      }
+      if (this.subType != null) {
+        hashCode = unchecked(hashCode + (632580563 *
+             this.subType.GetHashCode()));
+      }
+      if (this.parameters != null) {
+        hashCode = unchecked(hashCode + (632580587 * this.parameters.Count));
+      }
       return hashCode;
     }
     #endregion
@@ -108,12 +110,12 @@ namespace PeterO.Mail {
     }
 
     internal enum QuotedStringRule {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Http"]/*'/>
+      /// <include file='../../docs.xml'
+      /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Http"]/*'/>
       Http,
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Rfc5322"]/*'/>
+      /// <include file='../../docs.xml'
+      /// path='docs/doc[@name="F:PeterO.Mail.MediaType.QuotedStringRule.Rfc5322"]/*'/>
       Rfc5322
     }
 
@@ -202,12 +204,12 @@ namespace PeterO.Mail {
   int index,
   int endIndex,
   StringBuilder builder) {
-return SkipQuotedString(
-  s,
-  index,
-  endIndex,
-  builder,
-  QuotedStringRule.Rfc5322);
+      return SkipQuotedString(
+        s,
+        index,
+        endIndex,
+        builder,
+        QuotedStringRule.Rfc5322);
     }
 
     private static int ParseFWSLax(
@@ -276,7 +278,7 @@ return SkipQuotedString(
         index = SkipQtextOrQuotedPair(str, index, endIndex, rule);
         if (index == oldIndex) {
           if (builder != null) {
-            builder.Remove(valueBLength, (builder.Length)-valueBLength);
+            builder.Remove(valueBLength, (builder.Length) - valueBLength);
           }
           return startIndex;
         }
@@ -287,7 +289,7 @@ return SkipQuotedString(
         }
       }
       if (builder != null) {
-        builder.Remove(valueBLength, (builder.Length)-valueBLength);
+        builder.Remove(valueBLength, (builder.Length) - valueBLength);
       }
       return startIndex;  // not a valid quoted-string
     }
@@ -332,12 +334,73 @@ return SkipQuotedString(
       return new String(chars, 0, count);
     }
 
-    private static void AppendComplexParamValue(
-  string name,
-  string str,
-  StringBuilder sb) {
-      var length = 1;
-      var contin = 0;
+    internal sealed class SymbolAppender {
+      StringBuilder builder;
+      int maxLength;
+      int column;
+      int startColumn;
+      public SymbolAppender(int maxLength, int startColumn) {
+        builder = new StringBuilder();
+        this.maxLength = maxLength;
+        this.column = startColumn;
+        this.startColumn = startColumn;
+      }
+      public void Reset(int column, int length) {
+        this.column = column;
+        if (length == 0) {
+          this.builder.Length = length;
+        } else {
+          string oldstring = this.builder.ToString().Substring(0, length);
+          this.builder.Length = 0;
+          this.builder.Append(oldstring);
+        }
+      }
+      public int GetColumn() {
+        return this.column;
+      }
+      public int GetLength() {
+        return this.builder.Length;
+      }
+      public int GetMaxLength() {
+        return this.maxLength;
+      }
+      public bool CanFitSymbol(string symbol) {
+        return (this.maxLength < 0 || 1 + symbol.Length <= this.maxLength);
+      }
+      public bool TryAppendSymbol(string symbol) {
+        if (CanFitSymbol(symbol)) {
+          AppendSymbol(symbol);
+          return true;
+        }
+        return false;
+      }
+      public SymbolAppender AppendBreak() {
+        this.builder.Append("\r\n ");
+        this.column = 1;
+        return this;
+      }
+      // NOTE: Assumes that all symbols being appended
+      // contain only ASCII characters and no line breaks
+      public SymbolAppender AppendSymbol(string symbol) {
+        if (maxLength < 0 || this.column + symbol.Length <= this.maxLength) {
+          this.builder.Append(symbol);
+          this.column += symbol.Length;
+        } else {
+          this.builder.Append("\r\n ");
+          this.builder.Append(symbol);
+          this.column = 1 + symbol.Length;
+        }
+        return this;
+      }
+      public override string ToString() {
+        return this.builder.ToString();
+      }
+    }
+
+    private static bool IsTokenChar(int c) {
+      return (c >= 33 && c <= 126 && AttrNameSpecials.IndexOf((char)c) < 0);
+    }
+    private static void PctAppend(StringBuilder sb, int w) {
       // NOTE: Use uppercase hex characters
       // to encode according to RFC 2231, but the augmented
       // BNF for ext-octet in that RFC allows both upper-case
@@ -345,139 +408,122 @@ return SkipQuotedString(
       // appears in that production. This
       // is due to the nature of augmented BNF (see RFC
       // 5234 sec 2.3).
-      const string ValueHex = "0123456789ABCDEF";
-      length += name.Length + 12;
-      const int MaxLength = 76;
-      if (sb.Length + name.Length + 9 + (str.Length * 3) <= MaxLength) {
-        // Very short
-        length = sb.Length + name.Length + 9;
-        sb.Append(name + "*=utf-8''");
-      } else if (length + (str.Length * 3) <= MaxLength) {
-        // Short enough that no continuations
-        // are needed
-        length -= 2;
-        sb.Append(name + "*=utf-8''");
-      } else {
-        sb.Append(name + "*0*=utf-8''");
-      }
-      var first = true;
-      var index = 0;
-      while (index < str.Length) {
+      sb.Append('%');
+      sb.Append(ValueHex[(w >> 4) & 15]);
+      sb.Append(ValueHex[w & 15]);
+    }
+
+    private static bool RequiresContinuations(string str, int startPos, int startColumn, int maxLength) {
+      if (maxLength < 0) return false;
+      int column = startColumn;
+      int index = startPos;
+      while (index < str.Length && column <= maxLength) {
         int c = str[index];
         if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length &&
             str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
-          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str[index + 1] - 0xdc00);
-          ++index;
+          column += 12;
+          index += 2;
+          continue;
         } else if ((c & 0xf800) == 0xd800) {
-          // unpaired surrogate
+          column += 9;
+        }
+        if (IsTokenChar(c)) {
+          column += 1;
+        } else if (c <= 0x7f) {
+          column += 3;
+        } else if (c <= 0x7ff) {
+          column += 6;
+        } else {
+          column += 9;
+        }
+        index++;
+      }
+      return (column > maxLength);
+    }
+
+    private static int EncodeContinuation(string str, int startPos, SymbolAppender sa) {
+      int column = sa.GetColumn();
+      int maxLength = sa.GetMaxLength();
+      int index = startPos;
+      StringBuilder sb = new StringBuilder();
+      while (index < str.Length && (maxLength < 0 || column <= maxLength)) {
+        int c = str[index];
+        bool first = (index == 0);
+        int contin = (index == 0) ? 7 : 0;
+        if ((c & 0xfc00) == 0xd800 && index + 1 < str.Length &&
+            str[index + 1] >= 0xdc00 && str[index + 1] <= 0xdfff) {
+          c = 0x10000 + ((c - 0xd800) << 10) + (str[index + 1] - 0xdc00);
+        } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
-        ++index;
-      if (c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=*%'"
-        .IndexOf((char)c) < 0) {
-          ++length;
-          if (!first && length + 1 > MaxLength) {
-            sb.Append(";\r\n ");
-            first = true;
-            ++contin;
-            string continString = name + "*" + IntToString(contin) + "*=";
-            sb.Append(continString);
-            length = 1 + continString.Length;
-            ++length;
-          }
-          first = false;
-          sb.Append((char)c);
-        } else if (c < 0x80) {
-          length += 3;
-          if (!first && length + 1 > MaxLength) {
-            sb.Append(";\r\n ");
-            first = true;
-            ++contin;
-            string continString = name + "*" + IntToString(contin) +
-              "*=";
-            sb.Append(continString);
-            length = 1 + continString.Length;
-            length += 3;
-          }
-          first = false;
-          sb.Append('%');
-          sb.Append(ValueHex[(c >> 4) & 15]);
-          sb.Append(ValueHex[c & 15]);
-        } else if (c < 0x800) {
-          length += 6;
-          if (!first && length + 1 > MaxLength) {
-            sb.Append(";\r\n ");
-            first = true;
-            ++contin;
-            string continString = name + "*" + IntToString(contin) +
-              "*=";
-            sb.Append(continString);
-            length = 1 + continString.Length;
-            length += 6;
-          }
-          first = false;
-          int w = (byte)(0xc0 | ((c >> 6) & 0x1f));
-          int x = (byte)(0x80 | (c & 0x3f));
-          sb.Append('%');
-          sb.Append(ValueHex[(w >> 4) & 15]);
-          sb.Append(ValueHex[w & 15]);
-          sb.Append('%');
-          sb.Append(ValueHex[(x >> 4) & 15]);
-          sb.Append(ValueHex[x & 15]);
-        } else if (c < 0x10000) {
-          length += 9;
-          if (!first && length + 1 > MaxLength) {
-            sb.Append(";\r\n ");
-            first = true;
-            ++contin;
-            string continString = name + "*" + IntToString(contin) +
-              "*=";
-            sb.Append(continString);
-            length = 1 + continString.Length;
-            length += 9;
-          }
-          first = false;
-          int w = (byte)(0xe0 | ((c >> 12) & 0x0f));
-          int x = (byte)(0x80 | ((c >> 6) & 0x3f));
-          int y = (byte)(0x80 | (c & 0x3f));
-          sb.Append('%');
-          sb.Append(ValueHex[(w >> 4) & 15]);
-          sb.Append(ValueHex[w & 15]);
-          sb.Append('%');
-          sb.Append(ValueHex[(x >> 4) & 15]);
-          sb.Append(ValueHex[x & 15]);
-          sb.Append('%');
-          sb.Append(ValueHex[(y >> 4) & 15]);
-          sb.Append(ValueHex[y & 15]);
+        if (IsTokenChar(c)) {
+          contin += 1;
+        } else if (c <= 0x7f) {
+          contin += 3;
+        } else if (c <= 0x7ff) {
+          contin += 6;
+        } else if (c <= 0xffff) {
+          contin += 9;
         } else {
-          length += 12;
-          if (!first && length + 1 > MaxLength) {
-            sb.Append(";\r\n ");
-            first = true;
-            ++contin;
-            string continString = name + "*" + IntToString(contin) + "*=";
-            sb.Append(continString);
-            length = 1 + continString.Length;
-            length += 12;
-          }
-          first = false;
-          int w = (byte)(0xf0 | ((c >> 18) & 0x07));
-          int x = (byte)(0x80 | ((c >> 12) & 0x3f));
-          int y = (byte)(0x80 | ((c >> 6) & 0x3f));
-          int z = (byte)(0x80 | (c & 0x3f));
-          sb.Append('%');
-          sb.Append(ValueHex[(w >> 4) & 15]);
-          sb.Append(ValueHex[w & 15]);
-          sb.Append('%');
-          sb.Append(ValueHex[(x >> 4) & 15]);
-          sb.Append(ValueHex[x & 15]);
-          sb.Append('%');
-          sb.Append(ValueHex[(y >> 4) & 15]);
-          sb.Append(ValueHex[y & 15]);
-          sb.Append('%');
-          sb.Append(ValueHex[(z >> 4) & 15]);
-          sb.Append(ValueHex[z & 15]);
+          contin += 12;
+        }
+        if (maxLength >= 0 && column + contin > maxLength) {
+          break;
+        }
+        if (first) sb.Append("utf-8''");
+        if (IsTokenChar(c)) {
+          sb.Append((char)c);
+        } else if (c <= 0x7f) {
+          PctAppend(sb, c);
+        } else if (c <= 0x7ff) {
+          PctAppend(sb, (0xc0 | ((c >> 6) & 0x1f)));
+          PctAppend(sb, (0x80 | (c & 0x3f)));
+        } else if (c <= 0xffff) {
+          PctAppend(sb, (0xe0 | ((c >> 12) & 0x0f)));
+          PctAppend(sb, (0x80 | ((c >> 6) & 0x3f)));
+          PctAppend(sb, (0x80 | (c & 0x3f)));
+        } else {
+          PctAppend(sb, (0xf0 | ((c >> 18) & 0x07)));
+          PctAppend(sb, (0x80 | ((c >> 12) & 0x3f)));
+          PctAppend(sb, (0x80 | ((c >> 6) & 0x3f)));
+          PctAppend(sb, (0x80 | (c & 0x3f)));
+          index++;
+        }
+        index++;
+        column += contin;
+      }
+      if (maxLength >= 0 && index == startPos) {
+        // No room to put any continuation here;
+        // add a line break and try again
+        sa.AppendBreak();
+        return EncodeContinuation(str, startPos, sa);
+      }
+      sa.AppendSymbol(sb.ToString());
+      return index;
+    }
+
+    private static void AppendComplexParamValue(
+  string name,
+  string str,
+  SymbolAppender sa) {
+      // DebugAssert.NotEmpty(str);
+      // DebugAssert.NotEmpty(name);
+      int column = sa.GetColumn();
+      // Check if parameter is short enough for the column that
+      // no continuations are needed
+      int continColumn = column + name.Length + 9;
+      if (!RequiresContinuations(str, 0, continColumn, sa.GetMaxLength())) {
+        // Short enough
+        sa.AppendSymbol(name + "*").AppendSymbol("=");
+        EncodeContinuation(str, 0, sa);
+      } else {
+        int contin = 0;
+        int index = 0;
+        while (index < str.Length) {
+          if (contin > 0) sa.AppendSymbol(";");
+          sa.AppendSymbol(name + "*" + IntToString(contin) + "*").AppendSymbol("=");
+          index = EncodeContinuation(str, index, sa);
+          contin++;
         }
       }
     }
@@ -485,11 +531,11 @@ return SkipQuotedString(
     private static bool AppendSimpleParamValue(
   string name,
   string str,
-  StringBuilder sb) {
-      sb.Append(name);
-      sb.Append('=');
+  SymbolAppender sa) {
+      sa.AppendSymbol(name);
+      sa.AppendSymbol("=");
       if (str.Length == 0) {
-        sb.Append("\"\"");
+        sa.AppendSymbol("\"\"");
         return true;
       }
       var simple = true;
@@ -500,62 +546,45 @@ return SkipQuotedString(
         }
       }
       if (simple) {
-        sb.Append(str);
-        return true;
+        return sa.TryAppendSymbol(str);
       }
+      var sb = new StringBuilder();
       sb.Append('"');
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
         if (c >= 32 && c <= 126 && c != '\\' && c != '"') {
           sb.Append(c);
-        } else if (c == 0x20 || c == 0x09 || c == '\\' || c == '"') {
+        } else if (c == 0x09 || c == '\\' || c == '"') {
           sb.Append('\\');
           sb.Append(c);
         } else {
           // Requires complex encoding
           return false;
         }
-      }
-      sb.Append('"');
-      return true;
-    }
-
-    internal static int LastLineStart(StringBuilder sb) {
-      string valueSbString = sb.ToString();
-      for (int i = sb.Length - 1; i >= 0; --i) {
-        if (valueSbString[i] == '\n') {
-          return i + 1;
+        if (sa.GetMaxLength() >= 0 && sb.Length > sa.GetMaxLength()) {
+          // Too long to fit (optimization for very
+          // long parameter values)
+          return false;
         }
       }
-      return 0;
+      sb.Append('"');
+      return sa.TryAppendSymbol(sb.ToString());
     }
 
     internal static void AppendParameters(
-  IDictionary<string, string> parameters,
- StringBuilder sb) {
-      var tmp = new StringBuilder();
+      IDictionary<string, string> parameters,
+      SymbolAppender sa) {
       var keylist = new List<string>(parameters.Keys);
       keylist.Sort();
       foreach (string key in keylist) {
-        int lineIndex = LastLineStart(sb);
         string name = key;
         string value = parameters[key];
-        sb.Append(';');
-        tmp.Length = 0;
-        if (!AppendSimpleParamValue(name, value, tmp)) {
-          tmp.Length = 0;
-          AppendComplexParamValue(name, value, tmp);
-       if ((sb.Length - lineIndex) + tmp.Length > (lineIndex == 0 ? 76 :
-            75)) {
-            sb.Append("\r\n ");
-          }
-          sb.Append(tmp);
-        } else {
-       if ((sb.Length - lineIndex) + tmp.Length > (lineIndex == 0 ? 76 :
-            75)) {
-            sb.Append("\r\n ");
-          }
-          sb.Append(tmp);
+        sa.AppendSymbol(";");
+        int oldcolumn = sa.GetColumn();
+        int oldlength = sa.GetLength();
+        if (!AppendSimpleParamValue(name, value, sa)) {
+          sa.Reset(oldcolumn, oldlength);
+          AppendComplexParamValue(name, value, sa);
         }
       }
     }
@@ -563,12 +592,26 @@ return SkipQuotedString(
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToString"]/*'/>
     public override string ToString() {
-      var sb = new StringBuilder();
-      sb.Append(this.topLevelType);
-      sb.Append('/');
-      sb.Append(this.subType);
-      AppendParameters(this.parameters, sb);
-      return sb.ToString();
+      // NOTE: 76 is the maximum length of a line in an Internet
+      // message, and 14 is the length of "Content-Type: " (with trailing space).
+      var sa = new SymbolAppender(76, 14);
+      sa.AppendSymbol(this.topLevelType + "/" + this.subType);
+      AppendParameters(this.parameters, sa);
+      return sa.ToString();
+    }
+
+    /// <summary>Converts this media type to a text string form
+    /// suitable for inserting in HTTP headers.  Notably, the string contains the
+    /// value of a Content-Type header field (without the text necessarily
+    /// starting with "Content-Type" followed by a space), and consists
+    /// of a single line.</summary>
+    /// <returns>A text string form of this media type.</returns>
+    public string ToSingleLineString() {
+      // NOTE: 14 is the length of "Content-Type: " (with trailing space).
+      var sa = new SymbolAppender(-1, 14);
+      sa.AppendSymbol(this.topLevelType + "/" + this.subType);
+      AppendParameters(this.parameters, sa);
+      return sa.ToString();
     }
 
     internal static int SkipMimeToken(
@@ -680,8 +723,8 @@ return SkipQuotedString(
           }
           ++i;
           ++count;
-    } else if (count > 0 && (c == (c & 0x7f) && specials.IndexOf(c) >=
-          0)) {
+        } else if (count > 0 && (c == (c & 0x7f) && specials.IndexOf(c) >=
+              0)) {
           if (builder != null) {
             builder.Append(c);
           }
@@ -842,8 +885,8 @@ return SkipQuotedString(
       }
       string charset = value.Substring(0, firstQuote);
       if (httpRules && charset.Length == 0) {
-         // charset is omitted, which is not allowed under RFC5987
-         return null;
+        // charset is omitted, which is not allowed under RFC5987
+        return null;
       }
       string language = value.Substring(
   firstQuote + 1,
@@ -890,9 +933,9 @@ return SkipQuotedString(
       return cs;
     }
 
-  private static string DecodeRfc2231Encoding(
-  string value,
-  ICharacterEncoding charset) {
+    private static string DecodeRfc2231Encoding(
+    string value,
+    ICharacterEncoding charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.IndexOf('\'');
@@ -1018,12 +1061,12 @@ return SkipQuotedString(
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipOws
-    index = httpRules ? SkipOws(str, index, endIndex) :
-          HeaderParser.ParseCFWS(
-            str,
-            index,
-            endIndex,
-            null);
+        index = httpRules ? SkipOws(str, index, endIndex) :
+              HeaderParser.ParseCFWS(
+                str,
+                index,
+                endIndex,
+                null);
         if (index >= endIndex) {
           // No more parameters
           return ExpandRfc2231Extensions(parameters, httpRules);
@@ -1032,12 +1075,12 @@ return SkipQuotedString(
           return false;
         }
         ++index;
-    index = httpRules ? SkipOws(str, index, endIndex) :
-          HeaderParser.ParseCFWS(
-  str,
-  index,
-  endIndex,
-  null);
+        index = httpRules ? SkipOws(str, index, endIndex) :
+              HeaderParser.ParseCFWS(
+      str,
+      index,
+      endIndex,
+      null);
         var builder = new StringBuilder();
         // NOTE: RFC6838 restricts the format of parameter names to the same
         // syntax as types and subtypes, but this syntax is incompatible with
@@ -1161,12 +1204,12 @@ return SkipQuotedString(
   parameters) ? new MediaType(topLevelType, subType, parameters) : null;
     }
 
-    #if CODE_ANALYSIS
+#if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
       Justification="This instance is immutable")]
-    #endif
+#endif
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="F:PeterO.Mail.MediaType.TextPlainAscii"]/*'/>
     public static readonly MediaType TextPlainAscii =
@@ -1176,12 +1219,12 @@ return SkipQuotedString(
         "charset",
         "us-ascii").ToMediaType();
 
-    #if CODE_ANALYSIS
+#if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
       Justification="This instance is immutable")]
-    #endif
+#endif
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="F:PeterO.Mail.MediaType.TextPlainUtf8"]/*'/>
     public static readonly MediaType TextPlainUtf8 =
@@ -1191,12 +1234,12 @@ return SkipQuotedString(
         "charset",
         "utf-8").ToMediaType();
 
-    #if CODE_ANALYSIS
+#if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Microsoft.Security",
       "CA2104",
       Justification="This instance is immutable")]
-    #endif
+#endif
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="F:PeterO.Mail.MediaType.MessageRfc822"]/*'/>
     public static readonly MediaType MessageRfc822 =

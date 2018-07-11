@@ -12,101 +12,116 @@ using PeterO;
 using PeterO.Text;
 
 namespace PeterO.Mail {
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="T:PeterO.Mail.ContentDisposition"]/*'/>
-    public class ContentDisposition {
-        private readonly string dispositionType;
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.ContentDisposition"]/*'/>
+  public class ContentDisposition {
+    private readonly string dispositionType;
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.DispositionType"]/*'/>
-        public string DispositionType {
-            get {
-                return this.dispositionType;
-            }
-        }
+    public string DispositionType {
+      get {
+        return this.dispositionType;
+      }
+    }
 
-        #region Equals and GetHashCode implementation
+    #region Equals and GetHashCode implementation
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Equals(System.Object)"]/*'/>
-        public override bool Equals (object obj) {
-            var other = obj as ContentDisposition;
-            if (other == null) {
-                return false;
-            }
-            return this.dispositionType.Equals (other.dispositionType) &&
-              CollectionUtilities.MapEquals (this.parameters, other.parameters);
-        }
+    public override bool Equals(object obj) {
+      var other = obj as ContentDisposition;
+      if (other == null) {
+        return false;
+      }
+      return this.dispositionType.Equals(other.dispositionType) &&
+        CollectionUtilities.MapEquals(this.parameters, other.parameters);
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetHashCode"]/*'/>
-        public override int GetHashCode () {
-            var hashCode = 632580499;
-            if (this.dispositionType != null) {
-                hashCode = unchecked(hashCode + (632580503 *
-                  this.dispositionType.GetHashCode()));
-            }
-            if (this.parameters != null) {
-          hashCode = unchecked(hashCode + (632580587 *
-                  this.parameters.Count));
-            }
-            return hashCode;
-        }
-        #endregion
+    public override int GetHashCode() {
+      var hashCode = 632580499;
+      if (this.dispositionType != null) {
+        hashCode = unchecked(hashCode + (632580503 *
+          this.dispositionType.GetHashCode()));
+      }
+      if (this.parameters != null) {
+        hashCode = unchecked(hashCode + (632580587 *
+                this.parameters.Count));
+      }
+      return hashCode;
+    }
+    #endregion
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsInline"]/*'/>
-        public bool IsInline {
-            get {
-                return this.dispositionType.Equals ("inline");
-            }
-        }
+    public bool IsInline {
+      get {
+        return this.dispositionType.Equals("inline");
+      }
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.IsAttachment"]/*'/>
-        public bool IsAttachment {
-            get {
-                return this.dispositionType.Equals ("attachment");
-            }
-        }
+    public bool IsAttachment {
+      get {
+        return this.dispositionType.Equals("attachment");
+      }
+    }
 
-        internal ContentDisposition (
-     string type,
-     IDictionary<string, string> parameters) {
-            if ((type) == null) {
-                throw new ArgumentNullException ("type");
-            }
-            this.dispositionType = type;
-            this.parameters = new Dictionary<string, string> (parameters);
-        }
+    internal ContentDisposition(
+ string type,
+ IDictionary<string, string> parameters) {
+      if ((type) == null) {
+        throw new ArgumentNullException("type");
+      }
+      this.dispositionType = type;
+      this.parameters = new Dictionary<string, string>(parameters);
+    }
 
-        private ContentDisposition () {
-            this.dispositionType = String.Empty;
-            this.parameters = new Dictionary<string, string>();
-        }
+    private ContentDisposition() {
+      this.dispositionType = String.Empty;
+      this.parameters = new Dictionary<string, string>();
+    }
 
-        private readonly IDictionary<string, string> parameters;
+    private readonly IDictionary<string, string> parameters;
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.Parameters"]/*'/>
-        public IDictionary<string, string> Parameters {
-            get {
-                return new ReadOnlyMap<string, string> (this.parameters);
-            }
-        }
+    public IDictionary<string, string> Parameters {
+      get {
+        return new ReadOnlyMap<string, string>(this.parameters);
+      }
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.ToString"]/*'/>
-        public override string ToString () {
-            var sb = new StringBuilder();
-            sb.Append (this.dispositionType);
-            MediaType.AppendParameters (this.parameters, sb);
-            return sb.ToString();
-        }
+    public override string ToString() {
+      // NOTE: 76 is the maximum length of a line in an Internet
+      // message, and 21 is the length of "Content-Disposition: " (with trailing space).
+      MediaType.SymbolAppender sa = new MediaType.SymbolAppender(76, 21);
+      sa.AppendSymbol(this.dispositionType);
+      MediaType.AppendParameters(this.parameters, sa);
+      return sa.ToString();
+    }
 
+    /// <summary>Converts this content disposition to a text string form
+    /// suitable for inserting in HTTP headers.  Notably, the string contains the
+    /// value of a Content-Disposition header field (without the text necessarily
+    /// starting with "Content-Disposition" followed by a space), and consists
+    /// of a single line.</summary>
+    /// <returns>A text string form of this content disposition.</returns>
+    public string ToSingleLineString() {
+      // NOTE: 21 is the length of "Content-Disposition: " (with trailing space).
+      MediaType.SymbolAppender sa = new MediaType.SymbolAppender(-1, 21);
+      sa.AppendSymbol(this.dispositionType);
+      MediaType.AppendParameters(this.parameters, sa);
+      return sa.ToString();
+    }
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.MakeFilename(System.String)"]/*'/>
-    public static string MakeFilename (string str) {
-      return MakeFilenameMethod.MakeFilename (str);
+    public static string MakeFilename(string str) {
+      return MakeFilenameMethod.MakeFilename(str);
     }
 
     /// <include file='../../docs.xml'
@@ -117,64 +132,64 @@ namespace PeterO.Mail {
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)"]/*'/>
-            public string GetParameter (string name) {
-            if (name == null) {
-                throw new ArgumentNullException ("name");
-            }
-            if (name.Length == 0) {
-                throw new ArgumentException ("name is empty.");
-            }
-            name = DataUtilities.ToLowerCaseAscii (name);
-     return this.parameters.ContainsKey (name) ? this.parameters [name] :
-              null;
-        }
+    public string GetParameter(string name) {
+      if (name == null) {
+        throw new ArgumentNullException("name");
+      }
+      if (name.Length == 0) {
+        throw new ArgumentException("name is empty.");
+      }
+      name = DataUtilities.ToLowerCaseAscii(name);
+      return this.parameters.ContainsKey(name) ? this.parameters[name] :
+               null;
+    }
 
-        private static ContentDisposition ParseDisposition (string str) {
-            const bool HttpRules = false;
-            var index = 0;
-            if (str == null) {
-                throw new ArgumentNullException ("str");
-            }
-            int endIndex = str.Length;
-            var parameters = new Dictionary<string, string>();
-            index = HeaderParser.ParseCFWS (str, index, endIndex, null);
-       int i = MediaType.SkipMimeToken (str, index, endIndex, null,
-              HttpRules);
-            if (i == index) {
-                return null;
-            }
-            string dispoType =
-              DataUtilities.ToLowerCaseAscii (str.Substring (index, i - index));
-            if (i < endIndex) {
-                // if not at end
-                int i3 = HeaderParser.ParseCFWS (str, i, endIndex, null);
-                if (i3 == endIndex) {
-                    // at end
-                    return new ContentDisposition (
-                    dispoType,
-                    parameters);
-                }
-                if (i3 < endIndex && str [i3] != ';') {
-                    // not followed by ";", so not a content disposition
-                    return null;
-                }
-            }
-            index = i;
-            return MediaType.ParseParameters (
-              str,
-              index,
-              endIndex,
-              HttpRules,
-              parameters) ? new ContentDisposition (
-                  dispoType,
-                  parameters) : null;
+    private static ContentDisposition ParseDisposition(string str) {
+      const bool HttpRules = false;
+      var index = 0;
+      if (str == null) {
+        throw new ArgumentNullException("str");
+      }
+      int endIndex = str.Length;
+      var parameters = new Dictionary<string, string>();
+      index = HeaderParser.ParseCFWS(str, index, endIndex, null);
+      int i = MediaType.SkipMimeToken(str, index, endIndex, null,
+             HttpRules);
+      if (i == index) {
+        return null;
+      }
+      string dispoType =
+        DataUtilities.ToLowerCaseAscii(str.Substring(index, i - index));
+      if (i < endIndex) {
+        // if not at end
+        int i3 = HeaderParser.ParseCFWS(str, i, endIndex, null);
+        if (i3 == endIndex) {
+          // at end
+          return new ContentDisposition(
+          dispoType,
+          parameters);
         }
+        if (i3 < endIndex && str[i3] != ';') {
+          // not followed by ";", so not a content disposition
+          return null;
+        }
+      }
+      index = i;
+      return MediaType.ParseParameters(
+        str,
+        index,
+        endIndex,
+        HttpRules,
+        parameters) ? new ContentDisposition(
+            dispoType,
+            parameters) : null;
+    }
 
-        private static ContentDisposition Build (string name) {
-            return new ContentDisposition (
-              name,
-              new Dictionary<string, string>());
-        }
+    private static ContentDisposition Build(string name) {
+      return new ContentDisposition(
+        name,
+        new Dictionary<string, string>());
+    }
 
 #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -184,8 +199,8 @@ namespace PeterO.Mail {
 #endif
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Attachment"]/*'/>
-        public static readonly ContentDisposition Attachment =
-          Build ("attachment");
+    public static readonly ContentDisposition Attachment =
+      Build("attachment");
 
 #if CODE_ANALYSIS
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -195,28 +210,28 @@ namespace PeterO.Mail {
 #endif
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="F:PeterO.Mail.ContentDisposition.Inline"]/*'/>
-        public static readonly ContentDisposition Inline =
-          Build ("inline");
+    public static readonly ContentDisposition Inline =
+      Build("inline");
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String)"]/*'/>
-        public static ContentDisposition Parse (string dispoValue) {
-            if (dispoValue == null) {
-                throw new ArgumentNullException ("dispoValue");
-            }
-            return Parse (dispoValue, Attachment);
-        }
+    public static ContentDisposition Parse(string dispoValue) {
+      if (dispoValue == null) {
+        throw new ArgumentNullException("dispoValue");
+      }
+      return Parse(dispoValue, Attachment);
+    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String,PeterO.Mail.ContentDisposition)"]/*'/>
-        public static ContentDisposition Parse (
-      string dispositionValue,
-      ContentDisposition defaultValue) {
-            if (dispositionValue == null) {
-                throw new ArgumentNullException ("dispositionValue");
-            }
-            ContentDisposition dispo = ParseDisposition (dispositionValue);
-            return dispo ?? defaultValue;
-        }
+    public static ContentDisposition Parse(
+  string dispositionValue,
+  ContentDisposition defaultValue) {
+      if (dispositionValue == null) {
+        throw new ArgumentNullException("dispositionValue");
+      }
+      ContentDisposition dispo = ParseDisposition(dispositionValue);
+      return dispo ?? defaultValue;
     }
+  }
 }

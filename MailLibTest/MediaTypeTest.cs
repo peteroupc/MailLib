@@ -10,11 +10,11 @@ namespace MailLibTest {
     private static IDictionary<string, string> MakeDict(params string[]
       keyvalues) {
       if (keyvalues == null) {
- throw new ArgumentNullException("keyvalues");
-}
+        throw new ArgumentNullException("keyvalues");
+      }
       if (keyvalues.Length % 2 != 0) {
- throw new ArgumentException("keyvalues");
-}
+        throw new ArgumentException("keyvalues");
+      }
       var dict = new Dictionary<string, string>();
       for (var i = 0; i < keyvalues.Length; i += 2) {
         dict.Add((string)keyvalues[i], keyvalues[i + 1]);
@@ -444,8 +444,8 @@ namespace MailLibTest {
                   stringTemp);
       }
       {
- string stringTemp = MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8")
-      .GetCharset();
+        string stringTemp = MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8")
+             .GetCharset();
         Assert.AreEqual(
                   "utf-8",
                   stringTemp);
@@ -481,15 +481,15 @@ namespace MailLibTest {
                   stringTemp);
       }
       {
-    string stringTemp = MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"")
-   .GetCharset();
+        string stringTemp = MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"")
+       .GetCharset();
         Assert.AreEqual(
                   "utf-8",
                   stringTemp);
       }
       {
-  string stringTemp = MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"")
-     .GetCharset();
+        string stringTemp = MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"")
+           .GetCharset();
         Assert.AreEqual(
                   "utf-8",
                   stringTemp);
@@ -576,14 +576,14 @@ namespace MailLibTest {
     }
     [Test]
     public void TestIsMultipart() {
-foreach (IDictionary<string, string> dict in testMediaTypes) {
+      foreach (IDictionary<string, string> dict in testMediaTypes) {
         MediaType mt = MediaType.Parse(dict["name"]);
         Assert.AreEqual(dict["multipart"].Equals("1"), mt.IsMultipart);
       }
     }
     [Test]
     public void TestIsText() {
-foreach (IDictionary<string, string> dict in testMediaTypes) {
+      foreach (IDictionary<string, string> dict in testMediaTypes) {
         MediaType mt = MediaType.Parse(dict["name"]);
         Assert.AreEqual(dict["text"].Equals("1"), mt.IsText);
       }
@@ -601,6 +601,8 @@ foreach (IDictionary<string, string> dict in testMediaTypes) {
     }
     [Test]
     public void TestParse() {
+      Assert.IsNull(MediaType.Parse("x/x; charset*='i-unknown'utf-8", null));
+      Assert.IsNull(MediaType.Parse("x/x; charset*=us-ascii'i-unknown'utf-8", null));
       try {
         MediaType.Parse(null);
         Assert.Fail("Should have failed");
@@ -658,12 +660,12 @@ foreach (IDictionary<string, string> dict in testMediaTypes) {
   MediaType.Parse("text/example;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
-mt =
-  MediaType.Parse("text/example;param1*=iso-8859-1''valu%e72;param1=dummy");
+      mt =
+        MediaType.Parse("text/example;param1*=iso-8859-1''valu%e72;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
-mt =
-  MediaType.Parse("text/example;param1=dummy;param1*=iso-8859-1''valu%E72");
+      mt =
+        MediaType.Parse("text/example;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
     }
@@ -694,51 +696,51 @@ mt =
   MediaType.Parse("text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
-if (MediaType.Parse("text/plain;param*xx=value", null) != null) {
- Assert.Fail();
- }
-if (MediaType.Parse("text/plain;param*0xx=value", null) != null) {
- Assert.Fail();
- }
-if (MediaType.Parse("text/plain;param*xx0=value", null) != null) {
- Assert.Fail();
- }
-if (MediaType.Parse("text/plain;param*xx*=value", null) != null) {
- Assert.Fail();
- }
-if (MediaType.Parse("text/plain;param*0xx*=value", null) != null) {
- Assert.Fail();
- }
-if (MediaType.Parse("text/plain;param*xx0*=value", null) != null) {
- Assert.Fail();
- }
-if (MediaType.Parse("text/plain;param*0*0=value", null) != null) {
- Assert.Fail();
- }
-if (MediaType.Parse("text/plain;param*0*x=value", null) != null) {
- Assert.Fail();
- }
-if (MediaType.Parse("text/plain;param*0*0*=value", null) != null) {
- Assert.Fail();
- }
-if (MediaType.Parse("text/plain;param*0*x*=value", null) != null) {
- Assert.Fail();
- }
-
- if (
-  MediaType.Parse(
-  "text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
-  null) != null) {
+      if (MediaType.Parse("text/plain;param*xx=value", null) != null) {
+        Assert.Fail();
+      }
+      if (MediaType.Parse("text/plain;param*0xx=value", null) != null) {
+        Assert.Fail();
+      }
+      if (MediaType.Parse("text/plain;param*xx0=value", null) != null) {
+        Assert.Fail();
+      }
+      if (MediaType.Parse("text/plain;param*xx*=value", null) != null) {
+        Assert.Fail();
+      }
+      if (MediaType.Parse("text/plain;param*0xx*=value", null) != null) {
+        Assert.Fail();
+      }
+      if (MediaType.Parse("text/plain;param*xx0*=value", null) != null) {
+        Assert.Fail();
+      }
+      if (MediaType.Parse("text/plain;param*0*0=value", null) != null) {
+        Assert.Fail();
+      }
+      if (MediaType.Parse("text/plain;param*0*x=value", null) != null) {
+        Assert.Fail();
+      }
+      if (MediaType.Parse("text/plain;param*0*0*=value", null) != null) {
+        Assert.Fail();
+      }
+      if (MediaType.Parse("text/plain;param*0*x*=value", null) != null) {
         Assert.Fail();
       }
 
- if (
-  MediaType.Parse(
-  "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
-  null) != null) {
+      if (
+       MediaType.Parse(
+       "text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
+       null) != null) {
         Assert.Fail();
       }
-TestPercentEncodingOne("test\u00be", "test%C2%BE");
+
+      if (
+       MediaType.Parse(
+       "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
+       null) != null) {
+        Assert.Fail();
+      }
+      TestPercentEncodingOne("test\u00be", "test%C2%BE");
       TestPercentEncodingOne("test\u00be", "test%c2%be");
       TestPercentEncodingOne("tesA", "tes%41");
       TestPercentEncodingOne("tesa", "tes%61");
@@ -756,7 +758,7 @@ TestPercentEncodingOne("test\u00be", "test%C2%BE");
 
     [Test]
     public void TestSubType() {
-foreach (IDictionary<string, string> dict in testMediaTypes) {
+      foreach (IDictionary<string, string> dict in testMediaTypes) {
         MediaType mt = MediaType.Parse(dict["name"]);
         Assert.AreEqual(
           dict["subtype"],
@@ -765,7 +767,7 @@ foreach (IDictionary<string, string> dict in testMediaTypes) {
     }
     [Test]
     public void TestTopLevelType() {
-foreach (IDictionary<string, string> dict in testMediaTypes) {
+      foreach (IDictionary<string, string> dict in testMediaTypes) {
         MediaType mt = MediaType.Parse(dict["name"]);
         Assert.AreEqual(
           dict["toplevel"],
@@ -777,8 +779,17 @@ foreach (IDictionary<string, string> dict in testMediaTypes) {
       // not implemented yet
     }
     [Test]
+    public void TestToSingleLineString() {
+      foreach (IDictionary<string, string> dict in testMediaTypes) {
+        MediaType mt = MediaType.Parse(dict["name"]);
+        string str = mt.ToSingleLineString();
+        Assert.IsFalse(str.IndexOf("\r") >= 0);
+        Assert.IsFalse(str.IndexOf("\n") >= 0);
+      }
+    }
+    [Test]
     public void TestTypeAndSubType() {
-foreach (IDictionary<string, string> dict in testMediaTypes) {
+      foreach (IDictionary<string, string> dict in testMediaTypes) {
         MediaType mt = MediaType.Parse(dict["name"]);
         Assert.AreEqual(
           dict["toplevel"] + "/" + dict["subtype"],
