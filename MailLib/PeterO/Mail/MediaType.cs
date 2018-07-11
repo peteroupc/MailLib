@@ -584,7 +584,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToString"]/*'/>
     public override string ToString() {
       // NOTE: 76 is the maximum length of a line in an Internet
-      // message, and 14 is the length of "Content-Type: " (with trailing
+      // message header, and 14 is the length of "Content-Type: " (with trailing
       // space).
       var sa = new SymbolAppender(76, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
@@ -953,7 +953,7 @@ namespace PeterO.Mail {
         int asterisk = name.IndexOf('*');
         if (asterisk == name.Length - 1 && asterisk > 0) {
           // name*="value" (except when the parameter is just "*")
-          // NOTE: As of RFC 5987 (now RFC 8187), this particular extension 
+          // NOTE: As of RFC 5987 (now RFC 8187), this particular extension
           // is now allowed in HTTP
           string realName = name.Substring(0, name.Length - 1);
           string realValue = DecodeRfc2231Extension(value, httpRules);

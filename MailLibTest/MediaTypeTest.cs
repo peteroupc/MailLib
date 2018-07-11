@@ -559,7 +559,7 @@ namespace MailLibTest {
         Assert.AreEqual(objectTemp, objectTemp2);
       }
     }
-    private static IDictionary<string, string>[] testParamTypes = new
+    internal static IDictionary<string, string>[] testParamTypes = new
       IDictionary<string, string>[] {
 DictUtility.MakeDict("params",";filename=x.y","filename","x.y"),
 DictUtility.MakeDict("params",";filename=\"cc\"","filename","cc"),
@@ -791,7 +791,6 @@ DictUtility.MakeDict("params",";filename=\"\\\\ab\"","filename","\\ab")
   "tes%xx");
       TestPercentEncodingOne("tes%dxx", "tes%dxx");
     }
-
 
     [Test]
     public void TestParseErrors() {
