@@ -425,6 +425,7 @@ namespace PeterO.Mail {
 
     public static string MakeFilename(string str) {
       if (String.IsNullOrEmpty(str)) {
+        // TODO: Consider empty string instead
         return "_";
       }
       if (SimplifiedFileCheck(str)) {

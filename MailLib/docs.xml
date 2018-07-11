@@ -436,6 +436,32 @@
             are removed; and the filename is truncated if it would otherwise be
             too long. The returned string will be in normalization form C.
             Returns "_" if "str" is null or empty.</returns>
+<remarks>
+<p><b>Remark:</b> Email and HTTP headers may specify suggested filenames
+using the Content-Disposition header field's <c>filename</c> parameter or, 
+in practice, the Content-Type header field's <c>name</c> parameter.</p>
+<p>Although RFC 2047 encoded words appearing in both parameters are written out
+by some implementations, this practice is discouraged by some (especially since
+the RFC itself says that encoded words "MUST NOT appear within a 'quoted-string'").  
+Nevertheless, the MakeFilename method has good reason to decode RFC 2047 
+encoded words (and RFC 2231 encoding) in filenames passed to this method.</p>
+<p>RFC 2046 sec. 4.5.1 (<c>application/octet-stream</c> subtype
+in Content-Type header field) cites an earlier RFC 1341, which "defined the use 
+of a 'NAME' parameter which gave a <i>suggested</i> file name to be used if the 
+data were written to a file".  Also, RFC 2183 sec. 2.3 (<c>filename</c>
+parameter in Content-Disposition) confirms that the "<i>suggested</i> filename" in 
+the <c>filename</c> parameter "should be <i>used as a basis</i> for the actual filename,
+where possible", and that that file name should "not [be] blindly use[d]".  
+See also RFC 6266, section 4.3, which discusses the use of that parameter in Hypertext 
+Transfer Protocol (HTTP).</p>
+<p>To the extent that the "name" parameter is not allowed in message bodies
+other than those with the media type "application/octet-stream" or treated as that 
+media-type, this is a deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, 
+which says that "[t]here are NO globally meaningful parameters that apply to all media types").
+(Some email implementations may still write out the "name" parameter, even in media 
+types other than <c>application/octet-stream</c> and even though RFC 2046 has 
+deprecated that parameter.) </p>
+</remarks>
 </doc>
 <doc name="P:PeterO.Mail.ContentDisposition.Parameters">
 <summary>Gets a list of parameter names associated with this object
@@ -450,7 +476,7 @@
 <summary>Parses a content disposition string and returns a content
             disposition object.</summary>
             <param name='dispoValue'>The parameter <paramref name='dispoValue'/> is a text string.</param>
-            <returns>A content disposition object, or "Attachment" if <paramref name='dispoValue'/> is empty or syntactically invalid.</returns>
+            <returns>A content disposition object, or ContentDisposition.Attachment" if <paramref name='dispoValue'/> is empty or syntactically invalid.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='dispoValue'/> is null.</exception>
 </doc>
@@ -977,25 +1003,7 @@ no such thing as "ASCII mode" in the Unicode Standard.</p>
 a file name based on the <c>filename</c> parameter of the Content-Disposition
 header field, if it exists, or on the <c>name</c> parameter of the Content-Type
 header field, otherwise.</p></summary>
-<remarks>
-<p><b>Remark:</b> Note that RFC 2046 sec. 4.5.1 (<c>application/octet-stream</c> subtype)
-cites an earlier RFC 1341, which "defined the use of a 'NAME' parameter which gave
-a <i>suggested</i> file name to be used if the data were written to a file".  (Although the
-same section says this parameter "has been deprecated in anticipation of [the]
-Content-Disposition header field", the <c>name</c> parameter may still be written out
-to email messages in some implementations, even in media types other than
-<c>application/octet-stream</c>.)  Also, RFC 2183 sec. 2.3 (<c>filename</c>
-parameter) confirms that the "<i>suggested</i> filename" in the <c>filename</c>
-parameter "should be <i>used as a basis</i> for the actual filename, where possible",
-and that that file name should "not [be] blindly use[d]".  See also RFC 6266, section
-4.3, which discusses the use of that parameter in Hypertext Transfer Protocol (HTTP).
-Thus, this implementation is justified in not using the exact file name given, but rather
-adapting it to increase the chance of the name being usable in file systems.</p>
-<p>To the extent that the "name" parameter is not allowed in message bodies
-with the media type "application/octet-stream" or treated as that media-type,
-this is a deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, which says that
-"[t]here are NO globally meaningful parameters that apply to all media types").</p>
-</remarks>
+
             <value>A suggested name for the file.  Returns "_" if there
             is no filename suggested by the content type or content
             disposition, or if that filename is an empty string.</value>
