@@ -25,19 +25,20 @@ namespace MailLibTest {
         Assert.Fail();
       }
       string ret = msg.Generate();
-{
-object objectTemp = 2;
-object objectTemp2 = EncodingTest.IsGoodAsciiMessageFormat(
-  ret,
-  false,
-  String.Empty);
-string messageTemp = ret;
-Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
-}
+      {
+        object objectTemp = 2;
+        object objectTemp2 = EncodingTest.IsGoodAsciiMessageFormat(
+          ret,
+          false,
+          String.Empty);
+        string messageTemp = ret;
+        Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
+      }
       return ret;
     }
 
     [Test]
+    [Timeout(5000)]
     public void TestMediaTypeEncodingRoundTrip() {
       TestMediaTypeRoundTrip("xy" + EncodingTest.Repeat("\"", 20) + "z");
       TestMediaTypeRoundTrip("xy" + EncodingTest.Repeat(" ", 20) + "z");
@@ -85,15 +86,21 @@ Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
   valueMessageString).ToString();
       Assert.IsFalse(mtstring.Contains("\r\n\r\n"));
       Assert.IsFalse(mtstring.Contains("\r\n \r\n"));
-   {
-object objectTemp = valueMessageString;
-object objectTemp2 = MediaType.Parse(mtstring).GetParameter(
-  "z");
-Assert.AreEqual(objectTemp, objectTemp2);
-}
-  Message mtmessage = MessageFromString("MIME-Version: 1.0\r\nContent-Type: " +
-                    mtstring + "\r\n\r\n");
+      {
+        object objectTemp = valueMessageString;
+        object objectTemp2 = MediaType.Parse(mtstring).GetParameter(
+          "z");
+        Assert.AreEqual(objectTemp, objectTemp2, mtstring);
+      }
+      string msgstring = "MIME-Version: 1.0\r\nContent-Type: " +
+        mtstring + "\r\n\r\n";
+      Message mtmessage = MessageFromString(msgstring);
+      Assert.IsTrue(EncodingTest.IsGoodAsciiMessageFormat(
+          msgstring,
+          false,
+        "TestGenerate") == 2, msgstring);
       MessageGenerate(mtmessage);
+
     }
 
     [Test]
@@ -119,21 +126,21 @@ Assert.AreEqual(objectTemp, objectTemp2);
       }
     }
     [Test]
-public void TestMultipleReplyTo() {
-            const string ValueMultipleReplyTo = "Reply-to: x@example.com\r\n" +
-             "Reply-to: y@example.com\r\n" + "Reply-to: z@example.com\r\n" +
-             "Reply-to: w@example.com\r\n" + "From: me@example.com\r\n\r\n";
-            try {
- MessageFromString(ValueMultipleReplyTo).Generate();
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-        }
+    public void TestMultipleReplyTo() {
+      const string ValueMultipleReplyTo = "Reply-to: x@example.com\r\n" +
+       "Reply-to: y@example.com\r\n" + "Reply-to: z@example.com\r\n" +
+       "Reply-to: w@example.com\r\n" + "From: me@example.com\r\n\r\n";
+      try {
+        MessageFromString(ValueMultipleReplyTo).Generate();
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
+    }
 
     [Test]
     public void TestContentTypeDefaults() {
-  const string ValueStartCTD = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
+      const string ValueStartCTD = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
       string msg;
       msg = ValueStartCTD + "\r\n\r\n";
       Assert.AreEqual(
@@ -214,7 +221,7 @@ throw new InvalidOperationException(String.Empty, ex);
           Assert.AreEqual(null, new Message(data));
           Assert.Fail("Should have failed");
         } catch (MessageDataException) {
-  // NOTE: Intentionally empty
+          // NOTE: Intentionally empty
         } catch (Exception ex) {
           Assert.Fail(ex.ToString());
           throw new InvalidOperationException(String.Empty, ex);
@@ -253,8 +260,8 @@ throw new InvalidOperationException(String.Empty, ex);
   string mtype,
   string param,
   string expected) {
-       TestRfc2231ExtensionMediaType(mtype, param, expected);
-       TestRfc2231ExtensionContentDisposition(mtype, param, expected);
+      TestRfc2231ExtensionMediaType(mtype, param, expected);
+      TestRfc2231ExtensionContentDisposition(mtype, param, expected);
     }
 
     [Test]
@@ -272,14 +279,6 @@ throw new InvalidOperationException(String.Empty, ex);
   "; charset*='en'utf-8",
   "charset",
   "utf-8");
-      TestRfc2231Extension(
-  "; charset*='i-unknown'utf-8",
-  "charset",
-  "us-ascii");
-      TestRfc2231Extension(
-  "; charset*=us-ascii'i-unknown'utf-8",
-  "charset",
-  "us-ascii");
       TestRfc2231Extension("; charset*=''utf-8", "charset", "utf-8");
       TestRfc2231Extension(
   "; charset*0=a;charset*1=b",
@@ -310,10 +309,10 @@ throw new InvalidOperationException(String.Empty, ex);
   "charset",
   "ab");
 
-  TestRfc2231Extension(
-  "; charset*0*=utf-8''a%20b;charset*1*=c%20d",
-  "charset",
-  "a bc d");
+      TestRfc2231Extension(
+      "; charset*0*=utf-8''a%20b;charset*1*=c%20d",
+      "charset",
+      "a bc d");
       TestRfc2231Extension(
         "; charset*0=ab;charset*1*=iso-8859-1-en-xyz",
         "charset",
@@ -376,32 +375,32 @@ throw new InvalidOperationException(String.Empty, ex);
     }
 
     public static void SingleTestMediaTypeEncoding(string value) {
-         SingleTestMediaTypeEncodingMediaType(value);
-         SingleTestMediaTypeEncodingDisposition(value);
+      SingleTestMediaTypeEncodingMediaType(value);
+      SingleTestMediaTypeEncodingDisposition(value);
     }
 
     [Test]
     public void TestNamedAddress() {
       {
-object objectTemp = "\"Me \" <me@example.com>";
-object objectTemp2 = new NamedAddress(
-  "Me ",
-  "me@example.com").ToString();
-Assert.AreEqual(objectTemp, objectTemp2);
-}
+        object objectTemp = "\"Me \" <me@example.com>";
+        object objectTemp2 = new NamedAddress(
+          "Me ",
+          "me@example.com").ToString();
+        Assert.AreEqual(objectTemp, objectTemp2);
+      }
       {
-object objectTemp = "\" Me\" <me@example.com>";
-object objectTemp2 = new NamedAddress(
-  " Me",
-  "me@example.com").ToString();
-Assert.AreEqual(objectTemp, objectTemp2);
-}
+        object objectTemp = "\" Me\" <me@example.com>";
+        object objectTemp2 = new NamedAddress(
+          " Me",
+          "me@example.com").ToString();
+        Assert.AreEqual(objectTemp, objectTemp2);
+      }
 
       try {
         Assert.AreEqual(null, new Address(String.Empty));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -410,7 +409,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         Assert.AreEqual(null, new Address("a b@example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -419,7 +418,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         Assert.AreEqual(null, new NamedAddress("a b@example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -428,7 +427,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         Assert.AreEqual(null, new NamedAddress("ab.example.com"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -437,7 +436,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         Assert.AreEqual(null, new Address("ab@exa mple.example"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -446,7 +445,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         Assert.AreEqual(null, new Address("ab@example.com addr"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -491,7 +490,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         Assert.AreEqual(null, new Address("Me <me@example.com>"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -500,7 +499,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         Assert.AreEqual(null, new Address("Me\u00e0 <me@example.com>"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -509,7 +508,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         Assert.AreEqual(null, new Address("\"Me\" <me@example.com>"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -518,7 +517,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         Assert.AreEqual(null, new Address("\"Me\u00e0\" <me@example.com>"));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -528,7 +527,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         Assert.AreEqual(null, new NamedAddress(ValueSt));
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -626,7 +625,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         msg.SetHeader(0, (string)null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -635,7 +634,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         msg.SetHeader(0, null, null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -644,7 +643,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         msg.AddHeader(null, null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -653,7 +652,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         msg.SetHeader(-1, "me@example.com");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -662,7 +661,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         msg.SetHeader(-1, "To", "me@example.com");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -671,7 +670,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         msg.GetHeader(-1);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -680,7 +679,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
         msg.RemoveHeader(-1);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -948,8 +947,8 @@ Assert.AreEqual(objectTemp, objectTemp2);
       Assert.AreEqual(-((10 * 60) + 34), date[7]);
       msg.SetHeader("date", "Sun, 1 Jan 2000 12:34:56 +1034");
       if (msg.GetDate() != null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       msg.SetHeader("date", "1 Jan 2000 12:34:56 +1034");
       date = msg.GetDate();
       Assert.AreEqual(2000, date[0]);
@@ -957,187 +956,187 @@ Assert.AreEqual(objectTemp, objectTemp2);
       Assert.AreEqual(1, date[2]);
       msg.SetHeader("date", "32 Jan 2000 12:34:56 +1034");
       if (msg.GetDate() != null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       msg.SetHeader("date", "30 Feb 2000 12:34:56 +1034");
       if (msg.GetDate() != null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       msg.SetHeader("date", "1 Feb 999999999999999999999 12:34:56 +1034");
       if (msg.GetDate() != null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       msg.SetHeader("date", "1 Jan 2000 24:34:56 +1034");
       if (msg.GetDate() != null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       msg.SetHeader("date", "1 Jan 2000 01:60:56 +1034");
       if (msg.GetDate() != null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       msg.SetHeader("date", "1 Jan 2000 01:01:61 +1034");
       if (msg.GetDate() != null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
       msg.SetHeader("date", "1 Jan 2000 01:01:01 +1099");
       if (msg.GetDate() != null) {
- Assert.Fail();
- }
+        Assert.Fail();
+      }
     }
 
     [Test]
     public void TestSetDate() {
       var msg = new Message();
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, 0 });
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, 0 });
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(null);
-Assert.Fail("Should have failed");
-} catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(null);
+        Assert.Fail("Should have failed");
+      } catch (ArgumentNullException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { -1, 1, 1, 0, 0, 0, 0, 0 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { -1, 1, 1, 0, 0, 0, 0, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 0, 1, 0, 0, 0, 0, 0 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 0, 1, 0, 0, 0, 0, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 13, 1, 0, 0, 0, 0, 0 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 13, 1, 0, 0, 0, 0, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 0, 0, 0, 0, 0, 0 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 0, 0, 0, 0, 0, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 32, 0, 0, 0, 0, 0 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 32, 0, 0, 0, 0, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, -5, 0, 0, 0, 0 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, -5, 0, 0, 0, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 24, 0, 0, 0, 0 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 24, 0, 0, 0, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 0, -1, 0, 0, 0 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 0, -1, 0, 0, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 0, 60, 0, 0, 0 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 0, 60, 0, 0, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 0, 0, -1, 0, 0 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 0, 0, -1, 0, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 61, 0, 0 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 61, 0, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, -1, 0 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, -1, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 1000, 0 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 1000, 0 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, -1440 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, -1440 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
- msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, 1440 });
-Assert.Fail("Should have failed");
-} catch (ArgumentException) {
-  // NOTE: Intentionally empty
-} catch (Exception ex) {
- Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        msg.SetDate(new int[] { 2000, 1, 1, 0, 0, 0, 0, 1440 });
+        Assert.Fail("Should have failed");
+      } catch (ArgumentException) {
+        // NOTE: Intentionally empty
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
     }
 
     [Test]
@@ -1290,7 +1289,7 @@ throw new InvalidOperationException(String.Empty, ex);
         MediaType.TextPlainAscii.GetParameter(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1299,7 +1298,7 @@ throw new InvalidOperationException(String.Empty, ex);
         MediaType.TextPlainAscii.GetParameter(String.Empty);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1308,7 +1307,7 @@ throw new InvalidOperationException(String.Empty, ex);
         MediaType.Parse(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1347,7 +1346,7 @@ throw new InvalidOperationException(String.Empty, ex);
         Assert.AreEqual(null, new MediaTypeBuilder(null));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1357,7 +1356,7 @@ throw new InvalidOperationException(String.Empty, ex);
         builder.SetTopLevelType(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1366,7 +1365,7 @@ throw new InvalidOperationException(String.Empty, ex);
         builder.SetParameter(null, "v");
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1375,7 +1374,7 @@ throw new InvalidOperationException(String.Empty, ex);
         builder.SetParameter(null, null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1384,7 +1383,7 @@ throw new InvalidOperationException(String.Empty, ex);
         builder.SetParameter(String.Empty, "v");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1393,7 +1392,7 @@ throw new InvalidOperationException(String.Empty, ex);
         builder.SetParameter("v", null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1402,7 +1401,7 @@ throw new InvalidOperationException(String.Empty, ex);
         builder.SetTopLevelType(String.Empty);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1411,7 +1410,7 @@ throw new InvalidOperationException(String.Empty, ex);
         builder.SetTopLevelType("e=");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1420,7 +1419,7 @@ throw new InvalidOperationException(String.Empty, ex);
         builder.SetTopLevelType("e/e");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1429,7 +1428,7 @@ throw new InvalidOperationException(String.Empty, ex);
         new MediaTypeBuilder().SetSubType(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1438,7 +1437,7 @@ throw new InvalidOperationException(String.Empty, ex);
         new MediaTypeBuilder().RemoveParameter(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1459,7 +1458,7 @@ throw new InvalidOperationException(String.Empty, ex);
         new MediaTypeBuilder().SetSubType(String.Empty);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1468,7 +1467,7 @@ throw new InvalidOperationException(String.Empty, ex);
         new MediaTypeBuilder().SetSubType("x;y");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1477,7 +1476,7 @@ throw new InvalidOperationException(String.Empty, ex);
         new MediaTypeBuilder().SetSubType("x/y");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1492,7 +1491,7 @@ throw new InvalidOperationException(String.Empty, ex);
         new MediaTypeBuilder().SetParameter("x;y", "v");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1501,7 +1500,7 @@ throw new InvalidOperationException(String.Empty, ex);
         new MediaTypeBuilder().SetParameter("x/y", "v");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1561,8 +1560,8 @@ MessageFromString(MessageFromString(msg).Generate())
     [Test]
     public void TestFWSAtSubjectEnd() {
       Message msg;
-   const string ValueStringVar = "From: me@example.com\r\nSubject: Test\r\n " +
-        "\r\nX-Header: Header\r\n\r\nBody";
+      const string ValueStringVar = "From: me@example.com\r\nSubject: Test\r\n " +
+           "\r\nX-Header: Header\r\n\r\nBody";
       msg = MessageFromString(ValueStringVar);
       {
         string stringTemp = msg.GetHeader("subject");
@@ -1574,9 +1573,9 @@ MessageFromString(MessageFromString(msg).Generate())
 
     [Test]
     public void TestEmptyGroup() {
-    const string ValueStringVar = "From: me@example.com\r\nTo: empty-group:;" +
-        "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
-        "\r\n\r\nBody";
+      const string ValueStringVar = "From: me@example.com\r\nTo: empty-group:;" +
+          "\r\nCc: empty-group:;" + "\r\nBcc: empty-group:;" +
+          "\r\n\r\nBody";
       MessageFromString(ValueStringVar);
     }
 
@@ -1653,7 +1652,7 @@ MessageFromString(MessageFromString(msg).Generate())
         Assert.AreEqual(null, new Message((Stream)null));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1662,41 +1661,41 @@ MessageFromString(MessageFromString(msg).Generate())
         Assert.AreEqual(null, new Message((byte[])null));
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-  MessageConstructOnly(
-  "From: x@example.com\r\nSub ject: Test\r\n\r\nBody");
+        MessageConstructOnly(
+        "From: x@example.com\r\nSub ject: Test\r\n\r\nBody");
         Assert.Fail("Should have failed");
       } catch (MessageDataException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-    MessageConstructOnly("From: x@example.com\r\nX-" +
-          EncodingTest.Repeat(
-  "a",
-  2000) + ": Test\r\n\r\nBody");
+        MessageConstructOnly("From: x@example.com\r\nX-" +
+              EncodingTest.Repeat(
+      "a",
+      2000) + ": Test\r\n\r\nBody");
         Assert.Fail("Should have failed");
       } catch (MessageDataException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
-    MessageConstructOnly("From: x@example.com\r\nX-" +
-          EncodingTest.Repeat(
-  "a",
-  996) + ":\r\n Test\r\n\r\nBody");
+        MessageConstructOnly("From: x@example.com\r\nX-" +
+              EncodingTest.Repeat(
+      "a",
+      996) + ":\r\n Test\r\n\r\nBody");
         Assert.Fail("Should have failed");
       } catch (MessageDataException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1705,7 +1704,7 @@ MessageFromString(MessageFromString(msg).Generate())
         MessageConstructOnly("From: x@example.com\r\n: Test\r\n\r\nBody");
         Assert.Fail("Should have failed");
       } catch (MessageDataException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1714,7 +1713,7 @@ MessageFromString(MessageFromString(msg).Generate())
         MessageConstructOnly("From: x@example.com\r\nSubject: Test\r\n\rBody");
         Assert.Fail("Should have failed");
       } catch (MessageDataException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1723,7 +1722,7 @@ MessageFromString(MessageFromString(msg).Generate())
         MessageConstructOnly("From: x@example.com\r\nSubject: Test\r\n\nBody");
         Assert.Fail("Should have failed");
       } catch (MessageDataException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1732,7 +1731,7 @@ MessageFromString(MessageFromString(msg).Generate())
         MessageConstructOnly("From: x@example.com\nSubject: Test\n\nBody");
         Assert.Fail("Should have failed");
       } catch (MessageDataException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1771,7 +1770,7 @@ MessageFromString(MessageFromString(msg).Generate())
         msg.BodyString.ToString();
         Assert.Fail("Should have failed");
       } catch (NotSupportedException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1793,7 +1792,7 @@ MessageFromString(MessageFromString(msg).Generate())
         msg.ContentType = null;
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1802,9 +1801,9 @@ MessageFromString(MessageFromString(msg).Generate())
 
     private static void TestFileNameOne(string input, string expected) {
       Message msg;
-   String valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
- "Content-Type: text/plain\r\nContent-Disposition: inline; filename=" +
-          input + "\r\n\r\nEmpty.";
+      String valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+    "Content-Type: text/plain\r\nContent-Disposition: inline; filename=" +
+             input + "\r\n\r\nEmpty.";
       msg = MessageFromString(valueMessageString);
       Assert.AreEqual(expected, msg.FileName);
       valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
@@ -1825,8 +1824,8 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     [Test]
     public void TestFromAddresses() {
- string valueMessageString =
-        "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
+      string valueMessageString =
+             "From: me@example.com\r\nSubject: Subject\r\n\r\nBody";
       Message msg = MessageFromString(valueMessageString);
       MessageFromString(MessageGenerate(msg));
       Assert.AreEqual(1, msg.FromAddresses.Count);
@@ -1841,13 +1840,13 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     [Test]
     public void TestGetHeader() {
-    const string ValueVsv = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      const string ValueVsv = "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
       Message msg = MessageFromString(ValueVsv);
       try {
         msg.GetHeader(2);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1856,7 +1855,7 @@ MessageFromString(MessageFromString(msg).Generate())
         new Message().GetHeader(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1871,8 +1870,8 @@ MessageFromString(MessageFromString(msg).Generate())
       // not implemented yet
     }
 
-internal const string ValueVrhs =
-        "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+    internal const string ValueVrhs =
+            "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
     [Test]
     public void TestRemoveHeader() {
       Message msg = MessageFromString(ValueVrhs);
@@ -1880,7 +1879,7 @@ internal const string ValueVrhs =
         msg.RemoveHeader(2);
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1892,7 +1891,7 @@ internal const string ValueVrhs =
         new Message().SetBody(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1904,7 +1903,7 @@ internal const string ValueVrhs =
         new Message().SetHeader("from", "\"a\r\nb\" <x@example.com>");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1913,7 +1912,7 @@ internal const string ValueVrhs =
         new Message().SetHeader("from", "\"a\rb\" <x@example.com>");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1922,7 +1921,7 @@ internal const string ValueVrhs =
         new Message().SetHeader("from", "\"a\r b\" <x@example.com>");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1931,7 +1930,7 @@ internal const string ValueVrhs =
         new Message().SetHeader("from", "\"a\r\n b\" <x@example.com");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1946,7 +1945,7 @@ internal const string ValueVrhs =
         new Message().SetHeader("from", "=?utf-8?q?=01?= <x@example.com");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1958,16 +1957,16 @@ internal const string ValueVrhs =
         throw new InvalidOperationException(String.Empty, ex);
       }
       try {
- new Message().SetHeader("from", "\"Me\" <x@example.com>");
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
+        new Message().SetHeader("from", "\"Me\" <x@example.com>");
+      } catch (Exception ex) {
+        Assert.Fail(ex.ToString());
+        throw new InvalidOperationException(String.Empty, ex);
+      }
       try {
         new Message().SetHeader("from", "\"a\nb\" <x@example.com>");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1976,19 +1975,19 @@ throw new InvalidOperationException(String.Empty, ex);
         new Message().SetHeader("from", "\"a\0b\" <x@example.com>");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-const string ValueVms =
-        "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
+      const string ValueVms =
+              "From: me@example.com\r\nX-Header: 1\r\n\r\nTest";
       Message msg = MessageFromString(ValueVms);
       try {
         msg.SetHeader(2, "X-Header2", "2");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -1997,7 +1996,7 @@ const string ValueVms =
         msg.SetHeader(2, "2");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2006,7 +2005,7 @@ const string ValueVms =
         msg.SetHeader(1, (string)null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2025,7 +2024,7 @@ const string ValueVms =
         new Message().SetHeader(EncodingTest.Repeat("a", 998), "x");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2034,7 +2033,7 @@ const string ValueVms =
         new Message().SetHeader("e:d", "x");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2043,7 +2042,7 @@ const string ValueVms =
         new Message().SetHeader("e d", "x");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2052,7 +2051,7 @@ const string ValueVms =
         new Message().SetHeader("e\u007f", "x");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2061,7 +2060,7 @@ const string ValueVms =
         new Message().SetHeader("e\u00a0", "x");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2070,7 +2069,7 @@ const string ValueVms =
         new Message().SetHeader("e\u0008", "x");
         Assert.Fail("Should have failed");
       } catch (ArgumentException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2082,41 +2081,41 @@ const string ValueVms =
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
-            var headerNames = new string[] { "from", "to", "cc",
+      var headerNames = new string[] { "from", "to", "cc",
               "bcc", "reply-to" };
-            foreach (string headerName in headerNames) {
-                try {
- new Message().SetHeader(headerName, "\"Me\" <x@example.com>");
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-                try {
- new Message().SetHeader(headerName, "\"Me Me\" <x@example.com>");
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-                try {
- new Message().SetHeader(headerName, "\"Me(x)\" <x@example.com>");
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-                try {
- new Message().SetHeader(headerName, "\"Me\u002c Me\" <x@example.com>");
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-                try {
- new Message().SetHeader(headerName, "\"Me\u002c Me(x)\" <x@example.com>");
-} catch (Exception ex) {
-Assert.Fail(ex.ToString());
-throw new InvalidOperationException(String.Empty, ex);
-}
-            }
+      foreach (string headerName in headerNames) {
+        try {
+          new Message().SetHeader(headerName, "\"Me\" <x@example.com>");
+        } catch (Exception ex) {
+          Assert.Fail(ex.ToString());
+          throw new InvalidOperationException(String.Empty, ex);
         }
+        try {
+          new Message().SetHeader(headerName, "\"Me Me\" <x@example.com>");
+        } catch (Exception ex) {
+          Assert.Fail(ex.ToString());
+          throw new InvalidOperationException(String.Empty, ex);
+        }
+        try {
+          new Message().SetHeader(headerName, "\"Me(x)\" <x@example.com>");
+        } catch (Exception ex) {
+          Assert.Fail(ex.ToString());
+          throw new InvalidOperationException(String.Empty, ex);
+        }
+        try {
+          new Message().SetHeader(headerName, "\"Me\u002c Me\" <x@example.com>");
+        } catch (Exception ex) {
+          Assert.Fail(ex.ToString());
+          throw new InvalidOperationException(String.Empty, ex);
+        }
+        try {
+          new Message().SetHeader(headerName, "\"Me\u002c Me(x)\" <x@example.com>");
+        } catch (Exception ex) {
+          Assert.Fail(ex.ToString());
+          throw new InvalidOperationException(String.Empty, ex);
+        }
+      }
+    }
     [Test]
     public void TestSetHtmlBody() {
       var msg = new Message();
@@ -2124,7 +2123,7 @@ throw new InvalidOperationException(String.Empty, ex);
         msg.SetHtmlBody(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2136,7 +2135,7 @@ throw new InvalidOperationException(String.Empty, ex);
         new Message().SetTextAndHtml(null, "test");
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2145,7 +2144,7 @@ throw new InvalidOperationException(String.Empty, ex);
         new Message().SetTextAndHtml("test", null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
@@ -2158,7 +2157,7 @@ throw new InvalidOperationException(String.Empty, ex);
         msg.SetTextBody(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
-  // NOTE: Intentionally empty
+        // NOTE: Intentionally empty
       } catch (Exception ex) {
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
