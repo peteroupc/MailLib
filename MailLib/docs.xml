@@ -357,7 +357,23 @@
 <summary>Specifies how a message body should be displayed or
             handled by a mail user agent. This type is immutable; its contents
             can't be changed after it's created. To create a changeable
-            disposition object, use the DispositionBuilder class.</summary>
+            disposition object, use the DispositionBuilder class.
+      <para><b>About the "filename" parameter</b></para>
+     <para>The "filename" parameter of a content disposition suggests a name to use when saving data to a file.
+            For the "filename" parameter, the GetParameter method and Parameters property (<c>getParameters</c>) method in Java) do not adapt that parameter's value using the ContentDisposition.MakeFilename method.
+            Thus, for example, the "filename" parameter, if any, returned by this method
+            could have an arbitrary length, be encoded using RFC 2047 encoded words
+            (which some email and HTTP implementations
+            still like to write out in headers, even though that RFC says encoded words "MUST NOT appear
+            within a 'quoted-string'"; see ContentDisposition.MakeFilename), or not be usable as is as a file name.</para>
+     <para><b>Example:</b> An example of RFC 2047 encoded words is:</para>
+     <para><b>=?UTF-8?Q?test?=</b></para>
+     <para>Content-Disposition header fields like the following have appeared in practice:</para>
+    <para><b>Content-Disposition: attachment; filename==?UTF-8?Q?example?=</b></para>
+    <para><b>Content-Disposition: attachment; filename==?UTF-8?Q?test.png?=</b></para>
+    <para><b>Content-Disposition: attachment; filename="=?UTF-8?Q?test.png?="</b></para>
+     <para>In this implementation, the first and second of these are syntactically invalid, so they trigger parse errors, while the third of these is syntactically valid, but the "filename" parameter is treated as "=?UTF-8?Q?test.png?=", not "test.png" or something else -- RFC 2047 encoded words are not decoded at the moment a content disposition is parsed (using the Parse method).</para>
+</summary>
 </doc>
 <doc name="F:PeterO.Mail.ContentDisposition.Attachment">
 <summary>The content disposition value "attachment".</summary>
@@ -385,7 +401,10 @@
             <returns>A 32-bit hash code.</returns>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)">
-<summary>Gets a parameter from this disposition object.</summary>
+<summary>Gets a parameter from this disposition object.  For the "filename" parameter, the value of that
+            parameter is not adapted with the ContentDisposition.MakeFilename method; see the documentation for the ContentDisposition class.
+
+</summary>
             <param name='name'>The name of the parameter to get. The name will
             be matched using a basic case-insensitive comparison. (Two
             strings are equal in such a comparison, if they match after
@@ -437,35 +456,36 @@
             too long. The returned string will be in normalization form C.
             Returns "_" if "str" is null or empty.</returns>
 <remarks>
-<p><b>Remark:</b> Email and HTTP headers may specify suggested filenames
-using the Content-Disposition header field's <c>filename</c> parameter or, 
-in practice, the Content-Type header field's <c>name</c> parameter.</p>
-<p>Although RFC 2047 encoded words appearing in both parameters are written out
+<para><b>Remark:</b> Email and HTTP headers may specify suggested filenames
+using the Content-Disposition header field's <c>filename</c> parameter or,
+in practice, the Content-Type header field's <c>name</c> parameter.</para>
+<para>Although RFC 2047 encoded words appearing in both parameters are written out
 by some implementations, this practice is discouraged by some (especially since
-the RFC itself says that encoded words "MUST NOT appear within a 'quoted-string'").  
-Nevertheless, the MakeFilename method has good reason to decode RFC 2047 
-encoded words (and RFC 2231 encoding) in filenames passed to this method.</p>
-<p>RFC 2046 sec. 4.5.1 (<c>application/octet-stream</c> subtype
-in Content-Type header field) cites an earlier RFC 1341, which "defined the use 
-of a 'NAME' parameter which gave a <i>suggested</i> file name to be used if the 
+the RFC itself says that encoded words "MUST NOT appear within a 'quoted-string'").
+Nevertheless, the MakeFilename method has good reason to decode RFC 2047
+encoded words (and RFC 2231 encoding) in filenames passed to this method.</para>
+<para>RFC 2046 sec. 4.5.1 (<c>application/octet-stream</c> subtype
+in Content-Type header field) cites an earlier RFC 1341, which "defined the use
+of a 'NAME' parameter which gave a <i>suggested</i> file name to be used if the
 data were written to a file".  Also, RFC 2183 sec. 2.3 (<c>filename</c>
-parameter in Content-Disposition) confirms that the "<i>suggested</i> filename" in 
+parameter in Content-Disposition) confirms that the "<i>suggested</i> filename" in
 the <c>filename</c> parameter "should be <i>used as a basis</i> for the actual filename,
-where possible", and that that file name should "not [be] blindly use[d]".  
-See also RFC 6266, section 4.3, which discusses the use of that parameter in Hypertext 
-Transfer Protocol (HTTP).</p>
-<p>To the extent that the "name" parameter is not allowed in message bodies
-other than those with the media type "application/octet-stream" or treated as that 
-media-type, this is a deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5, 
+where possible", and that that file name should "not [be] blindly use[d]".
+See also RFC 6266, section 4.3, which discusses the use of that parameter in Hypertext
+Transfer Protocol (HTTP).</para>
+<para>To the extent that the "name" parameter is not allowed in message bodies
+other than those with the media type "application/octet-stream" or treated as that
+media-type, this is a deviation of RFC 2045 and 2046 (see also RFC 2045 sec. 5,
 which says that "[t]here are NO globally meaningful parameters that apply to all media types").
-(Some email implementations may still write out the "name" parameter, even in media 
-types other than <c>application/octet-stream</c> and even though RFC 2046 has 
-deprecated that parameter.) </p>
+(Some email implementations may still write out the "name" parameter, even in media
+types other than <c>application/octet-stream</c> and even though RFC 2046 has
+deprecated that parameter.) </para>
 </remarks>
 </doc>
 <doc name="P:PeterO.Mail.ContentDisposition.Parameters">
 <summary>Gets a list of parameter names associated with this object
-            and their values.</summary>
+            and their values.<para>For the "filename" parameter, the value of that
+            parameter is not adapted with the ContentDisposition.MakeFilename method; see the documentation for the ContentDisposition class.</para></summary>
             <value>A read-only list of parameter names associated with this
             object and their values.<para>NOTE: Previous versions erroneously
             stated that the list will be sorted by name.  In fact, the names will not be
@@ -490,6 +510,14 @@ deprecated that parameter.) </p>
             <returns>A ContentDisposition object.</returns>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='dispositionValue'/> is null.</exception>
+</doc>
+<doc name="M:PeterO.Mail.ContentDisposition.ToSingleLineString">
+<summary>Converts this content disposition to a text string form
+            suitable for inserting in HTTP headers. Notably, the string
+            contains the value of a Content-Disposition header field (without
+            the text necessarily starting with "Content-Disposition" followed
+            by a space), and consists of a single line.</summary>
+            <returns>A text string form of this content disposition.</returns>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.ToString">
 <summary>Converts this content disposition to a text string form
@@ -718,6 +746,14 @@ deprecated that parameter.) </p>
             parameter "utf-8", used for plain text data that may contain
             characters outside the basic Latin range (U+0000 to U+007F).</summary>
 </doc>
+<doc name="M:PeterO.Mail.MediaType.ToSingleLineString">
+<summary>Converts this media type to a text string form suitable
+            for inserting in HTTP headers. Notably, the string contains the
+            value of a Content-Type header field (without the text necessarily
+            starting with "Content-Type" followed by a space), and consists of
+            a single line.</summary>
+            <returns>A text string form of this media type.</returns>
+</doc>
 <doc name="M:PeterO.Mail.MediaType.ToString">
 <summary>Converts this media type to a text string form
    suitable for inserting in email headers.  Notably, the string contains the
@@ -896,13 +932,13 @@ deprecated that parameter.) </p>
             TAB) after being converted to Unicode, the encoded words are left
             un-decoded.</item>
             <item>(b) </item></list>
-<p>It would be appreciated if users of this library contact the author if they
+<para>It would be appreciated if users of this library contact the author if they
  find other ways in which this implementation deviates from the mail specifications or other
-applicable specifications.</p>
-<p>Note that this class currently doesn't support the "padding" parameter
+applicable specifications.</para>
+<para>Note that this class currently doesn't support the "padding" parameter
 for message bodies with the media type "application/octet-stream" or treated
-as that media type (see RFC 2046 sec. 4.5.1).</p>
-<p>Note that this implementation can decode an RFC 2047 encoded word that uses
+as that media type (see RFC 2046 sec. 4.5.1).</para>
+<para>Note that this implementation can decode an RFC 2047 encoded word that uses
             ISO-2022-JP (the only supported encoding that uses code switching)
             even if the encoded word's payload ends in a different mode from
             "ASCII mode". (Each encoded word still starts in "ASCII mode",
@@ -910,7 +946,7 @@ as that media type (see RFC 2046 sec. 4.5.1).</p>
 rule only concerns bringing the output device back to "ASCII mode" after the decoded text
 is displayed (see last paragraph of sec. 6.2) -- since the decoded text is converted
 to Unicode rather than kept as ISO-2022-JP, this is not applicable since there is
-no such thing as "ASCII mode" in the Unicode Standard.</p>
+no such thing as "ASCII mode" in the Unicode Standard.</para>
 </summary>
 </doc>
 <doc name="M:PeterO.Mail.Message.#ctor">
@@ -996,13 +1032,13 @@ no such thing as "ASCII mode" in the Unicode Standard.</p>
             being set and "value" is null.</exception>
 </doc>
 <doc name="P:PeterO.Mail.Message.FileName">
-<summary><p>Gets a file name suggested by this message for saving the
+<summary><para>Gets a file name suggested by this message for saving the
             message's body to a file. For more information on the algorithm,
-            see ContentDisposition.MakeFilename.</p>
-<p>This method generates
+            see ContentDisposition.MakeFilename.</para>
+<para>This method generates
 a file name based on the <c>filename</c> parameter of the Content-Disposition
 header field, if it exists, or on the <c>name</c> parameter of the Content-Type
-header field, otherwise.</p></summary>
+header field, otherwise.</para></summary>
 
             <value>A suggested name for the file.  Returns "_" if there
             is no filename suggested by the content type or content

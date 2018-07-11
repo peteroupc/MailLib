@@ -1980,13 +1980,12 @@ string stringTemp =
   "=?utf-8?q?me?= \"x:y\"");
     }
 
-
     [Test]
     public void TestEncodedWordsEqualAtEnd() {
       // Tests to check equal sign at end of Q-encoding, ensuring
       // that an infinite-decoding-loop bug does not reappear.
       // The following tests are examples of incorrectly formed
-      // encoded words under RFC 2047 sec. 6.3.  That section does
+      // encoded words under RFC 2047 sec. 6.3. That section does
       // not explicitly disallow the behavior being tested below, which
       // is that ill-formed escape sequences are left unescaped.
       TestEncodedWordsPhrase("example=", "=?utf-8?Q?example=?=");

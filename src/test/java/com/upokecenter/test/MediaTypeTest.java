@@ -9,11 +9,11 @@ import com.upokecenter.mail.*;
     private static Map<String, String> MakeDict(String...
       keyvalues) {
       if (keyvalues == null) {
- throw new NullPointerException("keyvalues");
-}
+        throw new NullPointerException("keyvalues");
+      }
       if (keyvalues.length % 2 != 0) {
- throw new IllegalArgumentException("keyvalues");
-}
+        throw new IllegalArgumentException("keyvalues");
+      }
       HashMap<String, String> dict = new HashMap<String, String>();
       for (int i = 0; i < keyvalues.length; i += 2) {
         dict.put((String)keyvalues[i], keyvalues[i + 1]);
@@ -447,8 +447,9 @@ import com.upokecenter.mail.*;
                   stringTemp);
       }
       {
- String stringTemp = MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8")
-      .GetCharset();
+ String stringTemp =
+          MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8")
+             .GetCharset();
         Assert.assertEquals(
                   "utf-8",
                   stringTemp);
@@ -484,15 +485,17 @@ import com.upokecenter.mail.*;
                   stringTemp);
       }
       {
-    String stringTemp = MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"")
-   .GetCharset();
+    String stringTemp =
+          MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"")
+       .GetCharset();
         Assert.assertEquals(
                   "utf-8",
                   stringTemp);
       }
       {
-  String stringTemp = MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"")
-     .GetCharset();
+  String stringTemp =
+          MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"")
+           .GetCharset();
         Assert.assertEquals(
                   "utf-8",
                   stringTemp);
@@ -579,14 +582,14 @@ import com.upokecenter.mail.*;
     }
     @Test
     public void TestIsMultipart() {
-foreach (Map<String, String> dict in testMediaTypes) {
+      foreach (Map<String, String> dict in testMediaTypes) {
         MediaType mt = MediaType.Parse(dict.get("name"));
         Assert.assertEquals(dict.get("multipart").equals("1"), mt.isMultipart());
       }
     }
     @Test
     public void TestIsText() {
-foreach (Map<String, String> dict in testMediaTypes) {
+      foreach (Map<String, String> dict in testMediaTypes) {
         MediaType mt = MediaType.Parse(dict.get("name"));
         Assert.assertEquals(dict.get("text").equals("1"), mt.isText());
       }
@@ -608,6 +611,15 @@ foreach (Map<String, String> dict in testMediaTypes) {
     }
     @Test
     public void TestParse() {
+      // TODO: Consider simply ignoring the
+      // charset parameter in these two cases
+      if ((MediaType.Parse("x/x; charset*='i-unknown'utf-8", null)) != null) {
+ Assert.fail();
+ }
+ if ((MediaType.Parse("x/x; charset*=us-ascii'i-unknown'utf-8", null)) !=
+        null) {
+ Assert.fail();
+ }
       try {
         MediaType.Parse(null);
         Assert.fail("Should have failed");
@@ -665,11 +677,11 @@ foreach (Map<String, String> dict in testMediaTypes) {
   MediaType.Parse("text/example;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
-mt =
+      mt =
   MediaType.Parse("text/example;param1*=iso-8859-1''valu%e72;param1=dummy");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
-mt =
+      mt =
   MediaType.Parse("text/example;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
@@ -701,51 +713,51 @@ mt =
   MediaType.Parse("text/example;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
-if (MediaType.Parse("text/plain;param*xx=value", null) != null) {
- Assert.fail();
- }
-if (MediaType.Parse("text/plain;param*0xx=value", null) != null) {
- Assert.fail();
- }
-if (MediaType.Parse("text/plain;param*xx0=value", null) != null) {
- Assert.fail();
- }
-if (MediaType.Parse("text/plain;param*xx*=value", null) != null) {
- Assert.fail();
- }
-if (MediaType.Parse("text/plain;param*0xx*=value", null) != null) {
- Assert.fail();
- }
-if (MediaType.Parse("text/plain;param*xx0*=value", null) != null) {
- Assert.fail();
- }
-if (MediaType.Parse("text/plain;param*0*0=value", null) != null) {
- Assert.fail();
- }
-if (MediaType.Parse("text/plain;param*0*x=value", null) != null) {
- Assert.fail();
- }
-if (MediaType.Parse("text/plain;param*0*0*=value", null) != null) {
- Assert.fail();
- }
-if (MediaType.Parse("text/plain;param*0*x*=value", null) != null) {
- Assert.fail();
- }
-
- if (
-  MediaType.Parse(
-  "text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
-  null) != null) {
+      if (MediaType.Parse("text/plain;param*xx=value", null) != null) {
+        Assert.fail();
+      }
+      if (MediaType.Parse("text/plain;param*0xx=value", null) != null) {
+        Assert.fail();
+      }
+      if (MediaType.Parse("text/plain;param*xx0=value", null) != null) {
+        Assert.fail();
+      }
+      if (MediaType.Parse("text/plain;param*xx*=value", null) != null) {
+        Assert.fail();
+      }
+      if (MediaType.Parse("text/plain;param*0xx*=value", null) != null) {
+        Assert.fail();
+      }
+      if (MediaType.Parse("text/plain;param*xx0*=value", null) != null) {
+        Assert.fail();
+      }
+      if (MediaType.Parse("text/plain;param*0*0=value", null) != null) {
+        Assert.fail();
+      }
+      if (MediaType.Parse("text/plain;param*0*x=value", null) != null) {
+        Assert.fail();
+      }
+      if (MediaType.Parse("text/plain;param*0*0*=value", null) != null) {
+        Assert.fail();
+      }
+      if (MediaType.Parse("text/plain;param*0*x*=value", null) != null) {
         Assert.fail();
       }
 
- if (
-  MediaType.Parse(
-  "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
-  null) != null) {
+      if (
+       MediaType.Parse(
+       "text/plain; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
+       null) != null) {
         Assert.fail();
       }
-TestPercentEncodingOne("test\u00be", "test%C2%BE");
+
+      if (
+       MediaType.Parse(
+       "text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
+       null) != null) {
+        Assert.fail();
+      }
+      TestPercentEncodingOne("test\u00be", "test%C2%BE");
       TestPercentEncodingOne("test\u00be", "test%c2%be");
       TestPercentEncodingOne("tesA", "tes%41");
       TestPercentEncodingOne("tesa", "tes%61");
@@ -763,7 +775,7 @@ TestPercentEncodingOne("test\u00be", "test%C2%BE");
 
     @Test
     public void TestSubType() {
-foreach (Map<String, String> dict in testMediaTypes) {
+      foreach (Map<String, String> dict in testMediaTypes) {
         MediaType mt = MediaType.Parse(dict.get("name"));
         Assert.assertEquals(
           dict.get("subtype"),
@@ -772,7 +784,7 @@ foreach (Map<String, String> dict in testMediaTypes) {
     }
     @Test
     public void TestTopLevelType() {
-foreach (Map<String, String> dict in testMediaTypes) {
+      foreach (Map<String, String> dict in testMediaTypes) {
         MediaType mt = MediaType.Parse(dict.get("name"));
         Assert.assertEquals(
           dict.get("toplevel"),
@@ -784,8 +796,21 @@ foreach (Map<String, String> dict in testMediaTypes) {
       // not implemented yet
     }
     @Test
+    public void TestToSingleLineString() {
+      foreach (Map<String, String> dict in testMediaTypes) {
+        MediaType mt = MediaType.Parse(dict.get("name"));
+        String str = mt.ToSingleLineString();
+        if (str.indexOf("\r") >= 0) {
+ Assert.fail();
+ }
+        if (str.indexOf("\n") >= 0) {
+ Assert.fail();
+ }
+      }
+    }
+    @Test
     public void TestTypeAndSubType() {
-foreach (Map<String, String> dict in testMediaTypes) {
+      foreach (Map<String, String> dict in testMediaTypes) {
         MediaType mt = MediaType.Parse(dict.get("name"));
         Assert.assertEquals(
           dict.get("toplevel") + "/" + dict.get("subtype"),

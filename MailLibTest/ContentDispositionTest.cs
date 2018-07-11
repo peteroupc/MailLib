@@ -23,7 +23,13 @@ namespace MailLibTest {
     }
     [Test]
     public void TestGetParameter() {
-      // not implemented yet
+      foreach (IDictionary<string, string> dict in TestParamTypes) {
+        ContentDisposition mt = ContentDisposition.Parse("inline" + dict["params"]);
+        Assert.AreEqual(
+          dict["filename"],
+          mt.GetParameter("filename"));
+      }
+
     }
     [Test]
     public void TestIsAttachment() {
@@ -1018,12 +1024,10 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
       mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%4e2");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u004e2", parameters["param1"]);
-    mt =
-        ContentDisposition.Parse("inline;param1*=utf-8''value2;param1=dummy");
+    mt = ContentDisposition.Parse("inline;param1*=utf-8''value2;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("value2", parameters["param1"]);
-    mt =
-        ContentDisposition.Parse("inline;param1=dummy;param1*=utf-8''value2");
+    mt = ContentDisposition.Parse("inline;param1=dummy;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value2", parameters["param1"]);
       mt =
@@ -1132,6 +1136,57 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
        null) != null) {
         Assert.Fail();
       }
+    }
+    internal static readonly string[] ParseErrors ={
+";x=,y",";x=x.z,y",";x=y,",";x=y,y",";x=y;",
+";x=[y",";x=x.z[y",";x=y[",";x=y[y",
+";x=]y",";x=x.z]y",";x=y]",";x=y]y",
+      ";x *=y",";x *0=y",";x *0*=y",
+";x *=utf-8''y",";x *0=utf-8''y",";x *0*=utf-8''y",
+
+";x=x.z y",";x=y y",";x=x_z y",
+";,y=x",";x.z,y=x",";y=x,",";x=y,y=x",
+";[y=x",";x.z[y=x",";y[=x",";x=y[y=x",
+";]y=x",";x.z]y=x",";y]=x",";x=y]y=x",
+";x.z y=x",";y y=x",";x_z y=x",
+      ";;x=y",";x=y;;y=z",";x=y,z=w",",x=y",";x=y,x=z",
+";x==x",";x==?utf-8?q?x?=",";x;z=w",";x;x=y",
+";x=?utf-8?q?x?=",
+";x=?x",";x=?utf-8?q?x?=",
+     ";x=a b;x=y",
+";x=a, b;x=y",
+      ";x=a x=y",
+";x=a,x=y",
+      "x=y",":x=y"," x=y","/x=y",
+      ";x=y;z","=y;z","=y",
+ ";x==?utf-8*x?q?x?=","\"x=y\";x=z",
+      "\"x=y;x=z\"","x=y;\"x=z\"",
+      ";x=\"y",";x=\"y\"z",";x=z\"y\"",
+      ";x=z\"y\"z",
+      ";x=z\"y?,\"z",
+      ";x=z\"y?;?\"z"
+};
+
+    [Test]
+    public void TestParseErrors() {
+      foreach (string str in ContentDispositionTest.ParseErrors) {
+        Assert.IsNull(ContentDisposition.Parse("inline"+ str,null), str);
+      }
+      Assert.IsNull(ContentDisposition.Parse("inl/ine;y=z", null));
+      Assert.IsNull(ContentDisposition.Parse("inline=x;y=z", null));
+      Assert.IsNull(ContentDisposition.Parse("inline=x", null));
+      Assert.IsNull(ContentDisposition.Parse(":inline;y=z", null));
+      Assert.IsNull(ContentDisposition.Parse(":inline", null));
+      Assert.IsNull(ContentDisposition.Parse(";inline;y=z", null));
+      Assert.IsNull(ContentDisposition.Parse(";inline", null));
+      Assert.IsNull(ContentDisposition.Parse(";x=y", null));
+      Assert.IsNull(ContentDisposition.Parse(";x=y;z=w", null));
+      Assert.IsNull(ContentDisposition.Parse("  ;  x=y", null));
+      Assert.IsNull(ContentDisposition.Parse("  ;  x=y;z=w", null));
+      Assert.IsNull(ContentDisposition.Parse("  ;x=y", null));
+      Assert.IsNull(ContentDisposition.Parse("  ;x=y;z=w", null));
+      Assert.IsNull(ContentDisposition.Parse("??;x=y", null));
+      Assert.IsNull(ContentDisposition.Parse("??;x=y;z=w", null));
     }
 
     [Test]

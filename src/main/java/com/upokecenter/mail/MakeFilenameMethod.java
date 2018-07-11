@@ -424,6 +424,7 @@ private MakeFilenameMethod() {
 
     public static String MakeFilename(String str) {
       if (((str) == null || (str).length() == 0)) {
+        // TODO: Consider empty String instead
         return "_";
       }
       if (SimplifiedFileCheck(str)) {

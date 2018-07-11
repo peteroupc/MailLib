@@ -20,7 +20,7 @@ import com.upokecenter.text.*;
      * example, the media type <code>text/plain; charset = utf-8</code> is a text
      * media type ("text"), namely, a plain text type ("plain"), and the
      * parameters say that the data uses UTF-8, a Unicode character encoding
-     * ("charset=utf-8"). Other top-level types include "audio", "video",
+     * ("charset = utf-8"). Other top-level types include "audio", "video",
      * and "application".</p> <p>A media type is sometimes known as a "MIME
      * type", for Multipurpose Internet Mail Extensions, the standard that
      * introduced media types.</p> <p>This type is immutable, meaning its
@@ -29,6 +29,8 @@ import com.upokecenter.text.*;
      */
   public final class MediaType {
     private static final String AttrNameSpecials = "()<>@,;:\\\"/[]?='%*";
+    private static final String ValueHex = "0123456789ABCDEF";
+
     private final String topLevelType;
 
     private static final ICharacterEncoding USAsciiEncoding =
@@ -66,17 +68,17 @@ import com.upokecenter.text.*;
      */
     @Override public int hashCode() {
       int valueHashCode = 632580499;
-        if (this.topLevelType != null) {
-  valueHashCode = (valueHashCode + (632580503 *
-            this.topLevelType.hashCode()));
-        }
-        if (this.subType != null) {
-       valueHashCode = (valueHashCode + (632580563 *
-            this.subType.hashCode()));
-        }
-        if (this.parameters != null) {
-          valueHashCode = (valueHashCode + (632580587 * this.parameters.size()));
-        }
+      if (this.topLevelType != null) {
+        valueHashCode = (valueHashCode + (632580503 *
+                  this.topLevelType.hashCode()));
+      }
+      if (this.subType != null) {
+        valueHashCode = (valueHashCode + (632580563 *
+             this.subType.hashCode()));
+      }
+      if (this.parameters != null) {
+        valueHashCode = (valueHashCode + (632580587 * this.parameters.size()));
+      }
       return valueHashCode;
     }
 
@@ -226,12 +228,12 @@ import com.upokecenter.text.*;
   int index,
   int endIndex,
   StringBuilder builder) {
-return SkipQuotedString(
-  s,
-  index,
-  endIndex,
-  builder,
-  QuotedStringRule.Rfc5322);
+      return SkipQuotedString(
+        s,
+        index,
+        endIndex,
+        builder,
+        QuotedStringRule.Rfc5322);
     }
 
     private static int ParseFWSLax(
@@ -300,7 +302,7 @@ return SkipQuotedString(
         index = SkipQtextOrQuotedPair(str, index, endIndex, rule);
         if (index == oldIndex) {
           if (builder != null) {
-            builder.delete(valueBLength, (valueBLength)+((builder.length())-valueBLength));
+            builder.delete(valueBLength, (valueBLength)+((builder.length()) - valueBLength));
           }
           return startIndex;
         }
@@ -311,7 +313,7 @@ return SkipQuotedString(
         }
       }
       if (builder != null) {
-        builder.delete(valueBLength, (valueBLength)+((builder.length())-valueBLength));
+        builder.delete(valueBLength, (valueBLength)+((builder.length()) - valueBLength));
       }
       return startIndex;  // not a valid quoted-String
     }
@@ -356,12 +358,73 @@ return SkipQuotedString(
       return new String(chars, 0, count);
     }
 
-    private static void AppendComplexParamValue(
-  String name,
-  String str,
-  StringBuilder sb) {
-      int length = 1;
-      int contin = 0;
+    static final class SymbolAppender {
+      StringBuilder builder;
+      int maxLength;
+      int column;
+      int startColumn;
+      public SymbolAppender(int maxLength, int startColumn) {
+        builder = new StringBuilder();
+        this.maxLength = maxLength;
+        this.column = startColumn;
+        this.startColumn = startColumn;
+      }
+      public void Reset(int column, int length) {
+        this.column = column;
+        if (length == 0) {
+          this.builder.setLength(length);
+        } else {
+          String oldstring = this.builder.toString().substring(0, length);
+          this.builder.setLength(0);
+          this.builder.append(oldstring);
+        }
+      }
+      public int GetColumn() {
+        return this.column;
+      }
+      public int GetLength() {
+        return this.builder.length();
+      }
+      public int GetMaxLength() {
+        return this.maxLength;
+      }
+      public boolean CanFitSymbol(String symbol) {
+        return this.maxLength < 0 || 1 + symbol.length() <= this.maxLength;
+      }
+      public boolean TryAppendSymbol(String symbol) {
+        if (CanFitSymbol(symbol)) {
+          AppendSymbol(symbol);
+          return true;
+        }
+        return false;
+      }
+      public SymbolAppender AppendBreak() {
+        this.builder.append("\r\n ");
+        this.column = 1;
+        return this;
+      }
+      // NOTE: Assumes that all symbols being appended
+      // contain only ASCII characters and no line breaks
+      public SymbolAppender AppendSymbol(String symbol) {
+        if (maxLength < 0 || this.column + symbol.length() <= this.maxLength) {
+          this.builder.append(symbol);
+          this.column += symbol.length();
+        } else {
+          this.builder.append("\r\n ");
+          this.builder.append(symbol);
+          this.column = 1 + symbol.length();
+        }
+        return this;
+      }
+      @Override public String toString() {
+        return this.builder.toString();
+      }
+    }
+
+    private static boolean IsTokenChar(int c) {
+      return c >= 33 && c <= 126 && AttrNameSpecials.indexOf((char)c) < 0;
+    }
+    private static void PctAppend(StringBuilder sb, int w) {
       // NOTE: Use uppercase hex characters
       // to encode according to RFC 2231, but the augmented
       // BNF for ext-octet in that RFC allows both upper-case
@@ -369,139 +432,129 @@ return SkipQuotedString(
       // appears in that production. This
       // is due to the nature of augmented BNF (see RFC
       // 5234 sec 2.3).
-      String ValueHex = "0123456789ABCDEF";
-      length += name.length() + 12;
-      int MaxLength = 76;
-      if (sb.length() + name.length() + 9 + (str.length() * 3) <= MaxLength) {
-        // Very short
-        length = sb.length() + name.length() + 9;
-        sb.append(name + "*=utf-8''");
-      } else if (length + (str.length() * 3) <= MaxLength) {
-        // Short enough that no continuations
-        // are needed
-        length -= 2;
-        sb.append(name + "*=utf-8''");
-      } else {
-        sb.append(name + "*0*=utf-8''");
+      sb.append('%');
+      sb.append(ValueHex.charAt((w >> 4) & 15));
+      sb.append(ValueHex.charAt(w & 15));
+    }
+
+    private static boolean RequiresContinuations(String str, int startPos, int
+      startColumn, int maxLength) {
+      if (maxLength < 0) {
+        return false;
       }
-      boolean first = true;
-      int index = 0;
-      while (index < str.length()) {
+      int column = startColumn;
+      int index = startPos;
+      while (index < str.length() && column <= maxLength) {
         int c = str.charAt(index);
         if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
             str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
-          // Get the Unicode code point for the surrogate pair
-          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
-          ++index;
+          column += 12;
+          index += 2;
+          continue;
         } else if ((c & 0xf800) == 0xd800) {
-          // unpaired surrogate
-          c = 0xfffd;
+          column += 9;
+        }
+        if (IsTokenChar(c)) {
+          ++column;
+        } else if (c <= 0x7f) {
+          column += 3;
+        } else if (c <= 0x7ff) {
+          column += 6;
+        } else {
+          column += 9;
         }
         ++index;
-      if (c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=*%'"
-        .indexOf((char)c) < 0) {
-          ++length;
-          if (!first && length + 1 > MaxLength) {
-            sb.append(";\r\n ");
-            first = true;
-            ++contin;
-            String continString = name + "*" + IntToString(contin) + "*=";
-            sb.append(continString);
-            length = 1 + continString.length();
-            ++length;
-          }
-          first = false;
-          sb.append((char)c);
-        } else if (c < 0x80) {
-          length += 3;
-          if (!first && length + 1 > MaxLength) {
-            sb.append(";\r\n ");
-            first = true;
-            ++contin;
-            String continString = name + "*" + IntToString(contin) +
-              "*=";
-            sb.append(continString);
-            length = 1 + continString.length();
-            length += 3;
-          }
-          first = false;
-          sb.append('%');
-          sb.append(ValueHex.charAt((c >> 4) & 15));
-          sb.append(ValueHex.charAt(c & 15));
-        } else if (c < 0x800) {
-          length += 6;
-          if (!first && length + 1 > MaxLength) {
-            sb.append(";\r\n ");
-            first = true;
-            ++contin;
-            String continString = name + "*" + IntToString(contin) +
-              "*=";
-            sb.append(continString);
-            length = 1 + continString.length();
-            length += 6;
-          }
-          first = false;
-          int w = (byte)(0xc0 | ((c >> 6) & 0x1f));
-          int x = (byte)(0x80 | (c & 0x3f));
-          sb.append('%');
-          sb.append(ValueHex.charAt((w >> 4) & 15));
-          sb.append(ValueHex.charAt(w & 15));
-          sb.append('%');
-          sb.append(ValueHex.charAt((x >> 4) & 15));
-          sb.append(ValueHex.charAt(x & 15));
-        } else if (c < 0x10000) {
-          length += 9;
-          if (!first && length + 1 > MaxLength) {
-            sb.append(";\r\n ");
-            first = true;
-            ++contin;
-            String continString = name + "*" + IntToString(contin) +
-              "*=";
-            sb.append(continString);
-            length = 1 + continString.length();
-            length += 9;
-          }
-          first = false;
-          int w = (byte)(0xe0 | ((c >> 12) & 0x0f));
-          int x = (byte)(0x80 | ((c >> 6) & 0x3f));
-          int y = (byte)(0x80 | (c & 0x3f));
-          sb.append('%');
-          sb.append(ValueHex.charAt((w >> 4) & 15));
-          sb.append(ValueHex.charAt(w & 15));
-          sb.append('%');
-          sb.append(ValueHex.charAt((x >> 4) & 15));
-          sb.append(ValueHex.charAt(x & 15));
-          sb.append('%');
-          sb.append(ValueHex.charAt((y >> 4) & 15));
-          sb.append(ValueHex.charAt(y & 15));
+      }
+      return column > maxLength;
+    }
+
+    private static int EncodeContinuation(String str, int startPos,
+      SymbolAppender sa) {
+      int column = sa.GetColumn();
+      int maxLength = sa.GetMaxLength();
+      int index = startPos;
+      StringBuilder sb = new StringBuilder();
+      while (index < str.length() && (maxLength < 0 || column <= maxLength)) {
+        int c = str.charAt(index);
+        boolean first = (index == 0);
+        int contin = (index == 0) ? 7 : 0;
+        if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
+            str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
+          c = 0x10000 + ((c - 0xd800) << 10) + (str.charAt(index + 1) - 0xdc00);
+        } else if ((c & 0xf800) == 0xd800) {
+          c = 0xfffd;
+        }
+        if (IsTokenChar(c)) {
+          ++contin;
+        } else if (c <= 0x7f) {
+          contin += 3;
+        } else if (c <= 0x7ff) {
+          contin += 6;
+        } else if (c <= 0xffff) {
+          contin += 9;
         } else {
-          length += 12;
-          if (!first && length + 1 > MaxLength) {
-            sb.append(";\r\n ");
-            first = true;
-            ++contin;
-            String continString = name + "*" + IntToString(contin) + "*=";
-            sb.append(continString);
-            length = 1 + continString.length();
-            length += 12;
+          contin += 12;
+        }
+        if (maxLength >= 0 && column + contin > maxLength) {
+          break;
+        }
+        if (first) {
+          sb.append("utf-8''");
+        }
+        if (IsTokenChar(c)) {
+          sb.append((char)c);
+        } else if (c <= 0x7f) {
+          PctAppend(sb, c);
+        } else if (c <= 0x7ff) {
+          PctAppend(sb, (0xc0 | ((c >> 6) & 0x1f)));
+          PctAppend(sb, (0x80 | (c & 0x3f)));
+        } else if (c <= 0xffff) {
+          PctAppend(sb, (0xe0 | ((c >> 12) & 0x0f)));
+          PctAppend(sb, (0x80 | ((c >> 6) & 0x3f)));
+          PctAppend(sb, (0x80 | (c & 0x3f)));
+        } else {
+          PctAppend(sb, (0xf0 | ((c >> 18) & 0x07)));
+          PctAppend(sb, (0x80 | ((c >> 12) & 0x3f)));
+          PctAppend(sb, (0x80 | ((c >> 6) & 0x3f)));
+          PctAppend(sb, (0x80 | (c & 0x3f)));
+          ++index;
+        }
+        ++index;
+        column += contin;
+      }
+      if (maxLength >= 0 && index == startPos) {
+        // No room to put any continuation here;
+        // add a line break and try again
+        sa.AppendBreak();
+        return EncodeContinuation(str, startPos, sa);
+      }
+      sa.AppendSymbol(sb.toString());
+      return index;
+    }
+
+    private static void AppendComplexParamValue(
+  String name,
+  String str,
+  SymbolAppender sa) {
+      int column = sa.GetColumn();
+      // Check if parameter is short enough for the column that
+      // no continuations are needed
+      int continColumn = column + name.length() + 9;
+      if (!RequiresContinuations(str, 0, continColumn, sa.GetMaxLength())) {
+        // Short enough
+        sa.AppendSymbol(name + "*").AppendSymbol("=");
+        EncodeContinuation(str, 0, sa);
+      } else {
+        int contin = 0;
+        int index = 0;
+        while (index < str.length()) {
+          if (contin > 0) {
+            sa.AppendSymbol(";");
           }
-          first = false;
-          int w = (byte)(0xf0 | ((c >> 18) & 0x07));
-          int x = (byte)(0x80 | ((c >> 12) & 0x3f));
-          int y = (byte)(0x80 | ((c >> 6) & 0x3f));
-          int z = (byte)(0x80 | (c & 0x3f));
-          sb.append('%');
-          sb.append(ValueHex.charAt((w >> 4) & 15));
-          sb.append(ValueHex.charAt(w & 15));
-          sb.append('%');
-          sb.append(ValueHex.charAt((x >> 4) & 15));
-          sb.append(ValueHex.charAt(x & 15));
-          sb.append('%');
-          sb.append(ValueHex.charAt((y >> 4) & 15));
-          sb.append(ValueHex.charAt(y & 15));
-          sb.append('%');
-          sb.append(ValueHex.charAt((z >> 4) & 15));
-          sb.append(ValueHex.charAt(z & 15));
+          sa.AppendSymbol(name + "*" + IntToString(contin) + "*")
+     .AppendSymbol("=");
+          index = EncodeContinuation(str, index, sa);
+          ++contin;
         }
       }
     }
@@ -509,11 +562,11 @@ return SkipQuotedString(
     private static boolean AppendSimpleParamValue(
   String name,
   String str,
-  StringBuilder sb) {
-      sb.append(name);
-      sb.append('=');
+  SymbolAppender sa) {
+      sa.AppendSymbol(name);
+      sa.AppendSymbol("=");
       if (str.length() == 0) {
-        sb.append("\"\"");
+        sa.AppendSymbol("\"\"");
         return true;
       }
       boolean simple = true;
@@ -524,77 +577,80 @@ return SkipQuotedString(
         }
       }
       if (simple) {
-        sb.append(str);
-        return true;
+        return sa.TryAppendSymbol(str);
       }
+      StringBuilder sb = new StringBuilder();
       sb.append('"');
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
         if (c >= 32 && c <= 126 && c != '\\' && c != '"') {
           sb.append(c);
-        } else if (c == 0x20 || c == 0x09 || c == '\\' || c == '"') {
+        } else if (c == 0x09 || c == '\\' || c == '"') {
           sb.append('\\');
           sb.append(c);
         } else {
           // Requires complex encoding
           return false;
         }
-      }
-      sb.append('"');
-      return true;
-    }
-
-    static int LastLineStart(StringBuilder sb) {
-      String valueSbString = sb.toString();
-      for (int i = sb.length() - 1; i >= 0; --i) {
-        if (valueSbString.charAt(i) == '\n') {
-          return i + 1;
+        if (sa.GetMaxLength() >= 0 && sb.length() > sa.GetMaxLength()) {
+          // Too long to fit (optimization for very
+          // long parameter values)
+          return false;
         }
       }
-      return 0;
+      sb.append('"');
+      return sa.TryAppendSymbol(sb.toString());
     }
 
     static void AppendParameters(
-  Map<String, String> parameters,
- StringBuilder sb) {
-      StringBuilder tmp = new StringBuilder();
+      Map<String, String> parameters,
+      SymbolAppender sa) {
       ArrayList<String> keylist = new ArrayList<String>(parameters.keySet());
       java.util.Collections.sort(keylist);
       for (String key : keylist) {
-        int lineIndex = LastLineStart(sb);
         String name = key;
         String value = parameters.get(key);
-        sb.append(';');
-        tmp.setLength(0);
-        if (!AppendSimpleParamValue(name, value, tmp)) {
-          tmp.setLength(0);
-          AppendComplexParamValue(name, value, tmp);
-       if ((sb.length() - lineIndex) + tmp.length() > (lineIndex == 0 ? 76 :
-            75)) {
-            sb.append("\r\n ");
-          }
-          sb.append(tmp);
-        } else {
-       if ((sb.length() - lineIndex) + tmp.length() > (lineIndex == 0 ? 76 :
-            75)) {
-            sb.append("\r\n ");
-          }
-          sb.append(tmp);
+        sa.AppendSymbol(";");
+        int oldcolumn = sa.GetColumn();
+        int oldlength = sa.GetLength();
+        if (!AppendSimpleParamValue(name, value, sa)) {
+          sa.Reset(oldcolumn, oldlength);
+          AppendComplexParamValue(name, value, sa);
         }
       }
     }
 
     /**
-     * Converts this object to a text string.
-     * @return A string representation of this object.
+     * Converts this media type to a text string form suitable for inserting in
+     * email headers. Notably, the string contains the value of a
+     * Content-Type header field (without the text necessarily starting with
+     * "Content-Type" followed by a space), and consists of one or more
+     * lines.
+     * @return A text string form of this media type.
      */
     @Override public String toString() {
-      StringBuilder sb = new StringBuilder();
-      sb.append(this.topLevelType);
-      sb.append('/');
-      sb.append(this.subType);
-      AppendParameters(this.parameters, sb);
-      return sb.toString();
+      // NOTE: 76 is the maximum length of a line in an Internet
+      // message, and 14 is the length of "Content-Type: " (with trailing
+      // space).
+      SymbolAppender sa = new SymbolAppender(76, 14);
+      sa.AppendSymbol(this.topLevelType + "/" + this.subType);
+      AppendParameters(this.parameters, sa);
+      return sa.toString();
+    }
+
+    /**
+     * Converts this media type to a text string form suitable for inserting in
+     * HTTP headers. Notably, the string contains the value of a
+     * Content-Type header field (without the text necessarily starting with
+     * "Content-Type" followed by a space), and consists of a single line.
+     * @return A text string form of this media type.
+     */
+    public String ToSingleLineString() {
+      // NOTE: 14 is the length of "Content-Type: " (with trailing space).
+      SymbolAppender sa = new SymbolAppender(-1, 14);
+      sa.AppendSymbol(this.topLevelType + "/" + this.subType);
+      AppendParameters(this.parameters, sa);
+      return sa.toString();
     }
 
     static int SkipMimeToken(
@@ -706,8 +762,8 @@ return SkipQuotedString(
           }
           ++i;
           ++count;
-    } else if (count > 0 && (c == (c & 0x7f) && specials.indexOf(c) >=
-          0)) {
+        } else if (count > 0 && (c == (c & 0x7f) && specials.indexOf(c) >=
+              0)) {
           if (builder != null) {
             builder.append(c);
           }
@@ -881,8 +937,8 @@ return SkipQuotedString(
       }
       String charset = value.substring(0, firstQuote);
       if (httpRules && charset.length() == 0) {
-         // charset is omitted, which is not allowed under RFC5987
-         return null;
+        // charset is omitted, which is not allowed under RFC5987
+        return null;
       }
       String language = value.substring(
   firstQuote + 1, (
@@ -929,9 +985,9 @@ return SkipQuotedString(
       return cs;
     }
 
-  private static String DecodeRfc2231Encoding(
-  String value,
-  ICharacterEncoding charset) {
+    private static String DecodeRfc2231Encoding(
+    String value,
+    ICharacterEncoding charset) {
       // a value without a quote
       // mark is not a valid encoded parameter
       int quote = value.indexOf('\'');
@@ -1059,12 +1115,12 @@ return SkipQuotedString(
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipOws
-    index = httpRules ? SkipOws(str, index, endIndex) :
-          HeaderParser.ParseCFWS(
-            str,
-            index,
-            endIndex,
-            null);
+        index = httpRules ? SkipOws(str, index, endIndex) :
+              HeaderParser.ParseCFWS(
+                str,
+                index,
+                endIndex,
+                null);
         if (index >= endIndex) {
           // No more parameters
           return ExpandRfc2231Extensions(parameters, httpRules);
@@ -1073,12 +1129,12 @@ return SkipQuotedString(
           return false;
         }
         ++index;
-    index = httpRules ? SkipOws(str, index, endIndex) :
-          HeaderParser.ParseCFWS(
-  str,
-  index,
-  endIndex,
-  null);
+        index = httpRules ? SkipOws(str, index, endIndex) :
+              HeaderParser.ParseCFWS(
+      str,
+      index,
+      endIndex,
+      null);
         StringBuilder builder = new StringBuilder();
         // NOTE: RFC6838 restricts the format of parameter names to the same
         // syntax as types and subtypes, but this syntax is incompatible with
@@ -1251,8 +1307,8 @@ return SkipQuotedString(
      * themselves are set to valid values for the parameter.
      * @param mediaTypeValue A text string representing a media type. This media
      * type can include parameters.
-     * @return A media type object, or text/plain if {@code mediaTypeValue} is
-     * empty or syntactically invalid.
+     * @return A media type object, or MediaType.TextPlainAscii if {@code
+     * mediaTypeValue} is empty or syntactically invalid.
      */
     public static MediaType Parse(String mediaTypeValue) {
       return Parse(mediaTypeValue, TextPlainAscii);
