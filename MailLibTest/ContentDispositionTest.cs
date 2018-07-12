@@ -5,17 +5,64 @@ using NUnit.Framework;
 using PeterO;
 using PeterO.Mail;
 using PeterO.Text;
+using Test;
 
 namespace MailLibTest {
   [TestFixture]
   public partial class ContentDispositionTest {
+    private static ContentDisposition ParseAndTestAspects(string s) {
+      ContentDisposition mt = ContentDisposition.Parse(s);
+      if (mt == null) {
+ TestAspects(mt);
+}
+      return mt;
+    }
+    private static ContentDisposition ParseAndTestAspects(string s,
+      ContentDisposition defvalue) {
+      ContentDisposition mt = ContentDisposition.Parse(s, defvalue);
+      if (mt == null) {
+ TestAspects(mt);
+}
+      return mt;
+    }
+    private static void TestAspects(ContentDisposition mt) {
+      if (mt == null) {
+ return;
+}
+      // Test round-tripping
+      string str = mt.ToString();
+      ContentDisposition mt2 = ContentDisposition.Parse(str, null);
+      if ((mt2) == null) {
+ Assert.Fail();
+ }
+      Assert.AreEqual(str, mt2.ToString());
+      TestCommon.AssertEqualsHashCode(mt, mt2);
+      str = mt.ToSingleLineString();
+      mt2 = ContentDisposition.Parse(str, null);
+      if ((mt2) == null) {
+ Assert.Fail();
+ }
+      Assert.AreEqual(str, mt2.ToSingleLineString());
+      TestCommon.AssertEqualsHashCode(mt, mt2);
+    }
     [Test]
     public void TestDispositionType() {
       // not implemented yet
     }
     [Test]
     public void TestEquals() {
-      // not implemented yet
+      ContentDisposition mt =
+          ParseAndTestAspects("inline;param1=value1;param2=value2");
+      ContentDisposition mt2 =
+           ParseAndTestAspects("inline;param2=value2;param1=value1");
+      ContentDisposition mt3 =
+           ParseAndTestAspects("inline;param1=value2;param2=value2");
+      TestCommon.AssertEqualsHashCode(mt, mt2);
+      TestCommon.AssertEqualsHashCode(mt, mt3);
+      TestCommon.AssertEqualsHashCode(mt3, mt2);
+      Assert.AreEqual(mt, mt2);
+      Assert.IsFalse(mt.Equals(mt3));
+      Assert.IsFalse(mt2.Equals(mt3));
     }
     [Test]
     public void TestGetHashCode() {
@@ -25,7 +72,7 @@ namespace MailLibTest {
     public void TestGetParameter() {
    foreach (IDictionary<string, string> dict in
         MediaTypeTest.testParamTypes) {
-   ContentDisposition mt = ContentDisposition.Parse("inline" + dict["params"]);
+   ContentDisposition mt = ParseAndTestAspects("inline" + dict["params"]);
         Assert.AreEqual(
           dict["filename"],
           mt.GetParameter("filename"));
@@ -33,21 +80,21 @@ namespace MailLibTest {
     }
     [Test]
     public void TestIsAttachment() {
-      ContentDisposition cd = ContentDisposition.Parse("inline");
+      ContentDisposition cd = ParseAndTestAspects("inline");
       Assert.IsFalse(cd.IsAttachment);
-      cd = ContentDisposition.Parse("cd-unknown");
+      cd = ParseAndTestAspects("cd-unknown");
       Assert.IsFalse(cd.IsAttachment);
-      cd = ContentDisposition.Parse("attachment");
+      cd = ParseAndTestAspects("attachment");
       Assert.IsTrue(cd.IsAttachment);
     }
 
     [Test]
     public void TestIsInline() {
-      ContentDisposition cd = ContentDisposition.Parse("inline");
+      ContentDisposition cd = ParseAndTestAspects("inline");
       Assert.IsTrue(cd.IsInline);
-      cd = ContentDisposition.Parse("cd-unknown");
+      cd = ParseAndTestAspects("cd-unknown");
       Assert.IsFalse(cd.IsInline);
-      cd = ContentDisposition.Parse("attachment");
+      cd = ParseAndTestAspects("attachment");
       Assert.IsFalse(cd.IsInline);
     }
 
@@ -960,7 +1007,7 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
     [Test]
     public void TestParameters() {
       ContentDisposition mt =
-          ContentDisposition.Parse("inline;param1=value1;param2=value2");
+          ParseAndTestAspects("inline;param1=value1;param2=value2");
       IDictionary<string, string> parameters;
       parameters = mt.Parameters;
       Assert.IsTrue(parameters.ContainsKey("param1"));
@@ -971,18 +1018,8 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
 
     [Test]
     public void TestParse() {
-      // TODO: Consider simply ignoring the
-      // charset parameter in these two cases
-  if ((ContentDisposition.Parse("x; charset*='i-unknown'utf-8", null)) !=
-        null) {
- Assert.Fail();
- }
-      if ((ContentDisposition.Parse("x; charset*=us-ascii'i-unknown'utf-8",
-        null)) != null) {
- Assert.Fail();
- }
       try {
-        ContentDisposition.Parse(null);
+        ParseAndTestAspects(null);
         Assert.Fail("Should have failed");
       } catch (ArgumentNullException) {
         // NOTE: Intentionally empty
@@ -993,61 +1030,60 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
 
       ContentDisposition mt;
       IDictionary<string, string> parameters;
-      mt = ContentDisposition.Parse("inline;param1=\"value1\"");
+      mt = ParseAndTestAspects("inline;param1=\"value1\"");
       parameters = mt.Parameters;
       Assert.AreEqual("value1", parameters["param1"]);
-      mt = ContentDisposition.Parse("inline;param1*=utf-8''value2");
+      mt = ParseAndTestAspects("inline;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value2", parameters["param1"]);
-      mt = ContentDisposition.Parse("inline;param1*=utf-8'en'value3");
+      mt = ParseAndTestAspects("inline;param1*=utf-8'en'value3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
-      mt =
-      ContentDisposition.Parse("inline;param1*0*=utf-8'en'val;param1*1*=ue4");
+      mt = ParseAndTestAspects("inline;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
-      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1''valu%e72");
+      mt = ParseAndTestAspects("inline;param1*=iso-8859-1''valu%e72");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
-      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1''valu%E72");
+      mt = ParseAndTestAspects("inline;param1*=iso-8859-1''valu%E72");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
-      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%e72");
+      mt = ParseAndTestAspects("inline;param1*=iso-8859-1'en'valu%e72");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
-      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%E72");
+      mt = ParseAndTestAspects("inline;param1*=iso-8859-1'en'valu%E72");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
-      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%4E2");
+      mt = ParseAndTestAspects("inline;param1*=iso-8859-1'en'valu%4E2");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u004e2", parameters["param1"]);
-      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%4e2");
+      mt = ParseAndTestAspects("inline;param1*=iso-8859-1'en'valu%4e2");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u004e2", parameters["param1"]);
-    mt = ContentDisposition.Parse("inline;param1*=utf-8''value2;param1=dummy");
+    mt = ParseAndTestAspects("inline;param1*=utf-8''value2;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("value2", parameters["param1"]);
-    mt = ContentDisposition.Parse("inline;param1=dummy;param1*=utf-8''value2");
+    mt = ParseAndTestAspects("inline;param1=dummy;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value2", parameters["param1"]);
       mt =
 
-  ContentDisposition.Parse("inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
+  ParseAndTestAspects("inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
       mt =
 
-  ContentDisposition.Parse("inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
+  ParseAndTestAspects("inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.Parameters;
       Assert.AreEqual("value4", parameters["param1"]);
       mt =
 
-  ContentDisposition.Parse("inline;param1*=iso-8859-1''valu%e72;param1=dummy");
+  ParseAndTestAspects("inline;param1*=iso-8859-1''valu%e72;param1=dummy");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
       mt =
 
-  ContentDisposition.Parse("inline;param1=dummy;param1*=iso-8859-1''valu%E72");
+  ParseAndTestAspects("inline;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.Parameters;
       Assert.AreEqual("valu\u00e72", parameters["param1"]);
       TestPercentEncodingOne("test\u00be", "test%C2%BE");
@@ -1063,9 +1099,36 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
 
     private static void TestPercentEncodingOne(string expected, string input) {
       ContentDisposition cd =
-        ContentDisposition.Parse("inline; filename*=utf-8''" + input);
+        ParseAndTestAspects("inline; filename*=utf-8''" + input);
       Assert.AreEqual(expected, cd.GetParameter("filename"));
     }
+
+    // Parameters not conforming to RFC 2231, but
+    // have names with asterisks
+    internal static string[] NoParams = new string[] {
+";param*xx=value",
+  ";param*0xx=value",
+  ";param*xx0=value",
+  ";param*xx*=value",
+  ";param*0*0=value",
+  ";param*0*x=value",
+  ";param*0xx*=value",
+  ";param*xx0*=value",
+  ";param*0*0*=value",
+  ";param*0*x*=value",
+  ";param*x*0*=value",
+  ";param*x*x*=value",
+      "; charset*='i-unknown'utf-8" /* invalid language tag, no charset */,
+  "; charset*=us-ascii'i-unknown'utf-8" /* invalid language tag, defined
+  charset */,
+  ";param*xx*=utf-8''value",
+  ";param*0xx*=utf-8''value",
+  ";param*xx0*=utf-8''value",
+  ";param*0*0*=utf-8''value",
+  ";param*0*x*=utf-8''value",
+  ";param*x*0*=utf-8''value",
+  ";param*x*x*=utf-8''value"
+};
 
     [Test]
     public void TestParseIDB() {
@@ -1075,67 +1138,61 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
       IDictionary<string, string> parameters;
       mt =
 
-  ContentDisposition.Parse("inline;param=value1;param1*=utf-8''value2;param1*0=value3");
+  ParseAndTestAspects("inline;param=value1;param1*=utf-8''value2;param1*0=value3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
-  ContentDisposition.Parse("inline;param=value1;param1*0=value3;param1*=utf-8''value2");
+  ParseAndTestAspects("inline;param=value1;param1*0=value3;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
-  ContentDisposition.Parse("inline;param1*0=value3;param=value1;param1*=utf-8''value2");
+  ParseAndTestAspects("inline;param1*0=value3;param=value1;param1*=utf-8''value2");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
       mt =
 
-  ContentDisposition.Parse("inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+  ParseAndTestAspects("inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.Parameters;
       Assert.AreEqual("value3", parameters["param1"]);
-      if (ContentDisposition.Parse("inline;param*xx=value", null) != null) {
-        Assert.Fail();
+foreach (var str in NoParams) {
+        mt = ParseAndTestAspects("inline"+str, null);
+        parameters = mt.Parameters;
+        IList<string> keys;
+        keys = new List<string>(parameters.Keys);
+        Assert.AreEqual(0, keys.Count);
+        Assert.AreEqual("inline", mt.DispositionType);
       }
-      if (ContentDisposition.Parse("inline;param*0xx=value", null) != null) {
-        Assert.Fail();
-      }
-      if (ContentDisposition.Parse("inline;param*xx0=value", null) != null) {
-        Assert.Fail();
-      }
-      if (ContentDisposition.Parse("inline;param*xx*=value", null) != null) {
-        Assert.Fail();
-      }
-      if (ContentDisposition.Parse("inline;param*0xx*=value", null) != null) {
-        Assert.Fail();
-      }
-      if (ContentDisposition.Parse("inline;param*xx0*=value", null) != null) {
-        Assert.Fail();
-      }
-      if (ContentDisposition.Parse("inline;param*0*0=value", null) != null) {
-        Assert.Fail();
-      }
-      if (ContentDisposition.Parse("inline;param*0*x=value", null) != null) {
-        Assert.Fail();
-      }
-      if (ContentDisposition.Parse("inline;param*0*0*=value", null) != null) {
-        Assert.Fail();
-      }
-      if (ContentDisposition.Parse("inline;param*0*x*=value", null) != null) {
-        Assert.Fail();
-      }
-      if (
-       ContentDisposition.Parse(
-       "inline; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
-       null) != null) {
-        Assert.Fail();
-      }
-
-      if (
-       ContentDisposition.Parse(
-       "inline; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
-       null) != null) {
-        Assert.Fail();
-      }
+mt = ParseAndTestAspects("inline; charset*0=ab;charset*1*=iso-8859-1'en'xyz");
+      {
+string stringTemp = mt.GetParameter("charset");
+Assert.AreEqual(
+  "ab",
+  stringTemp);
+}
+      Assert.AreEqual("inline", mt.DispositionType);
+      if ((mt.GetParameter("charset*0")) != null) {
+ Assert.Fail();
+ }
+      if ((mt.GetParameter("charset*1*")) != null) {
+ Assert.Fail();
+ }
+      mt =
+  ParseAndTestAspects("inline; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
+      {
+string stringTemp = mt.GetParameter("charset");
+Assert.AreEqual(
+  "a b",
+  stringTemp);
+}
+      Assert.AreEqual("inline", mt.DispositionType);
+      if ((mt.GetParameter("charset*0")) != null) {
+ Assert.Fail();
+ }
+      if ((mt.GetParameter("charset*1*")) != null) {
+ Assert.Fail();
+ }
     }
     internal static readonly string[] ParseErrors = {
 ";x=,y",";x=x.z,y",";x=y,",";x=y,y",";x=y;",
@@ -1170,51 +1227,51 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
     [Test]
     public void TestParseErrors() {
       foreach (string str in ContentDispositionTest.ParseErrors) {
-        Assert.IsNull(ContentDisposition.Parse("inline"+ str,null), str);
+        Assert.IsNull(ParseAndTestAspects("inline"+ str,null), str);
       }
-      if ((ContentDisposition.Parse("inl/ine;y=z", null)) != null) {
+      if ((ParseAndTestAspects("inl/ine;y=z", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse("inline=x;y=z", null)) != null) {
+      if ((ParseAndTestAspects("inline=x;y=z", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse("inline=x", null)) != null) {
+      if ((ParseAndTestAspects("inline=x", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse(":inline;y=z", null)) != null) {
+      if ((ParseAndTestAspects(":inline;y=z", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse(":inline", null)) != null) {
+      if ((ParseAndTestAspects(":inline", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse(";inline;y=z", null)) != null) {
+      if ((ParseAndTestAspects(";inline;y=z", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse(";inline", null)) != null) {
+      if ((ParseAndTestAspects(";inline", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse(";x=y", null)) != null) {
+      if ((ParseAndTestAspects(";x=y", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse(";x=y;z=w", null)) != null) {
+      if ((ParseAndTestAspects(";x=y;z=w", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse("  ;  x=y", null)) != null) {
+      if ((ParseAndTestAspects("  ;  x=y", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse("  ;  x=y;z=w", null)) != null) {
+      if ((ParseAndTestAspects("  ;  x=y;z=w", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse("  ;x=y", null)) != null) {
+      if ((ParseAndTestAspects("  ;x=y", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse("  ;x=y;z=w", null)) != null) {
+      if ((ParseAndTestAspects("  ;x=y;z=w", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse("??;x=y", null)) != null) {
+      if ((ParseAndTestAspects("??;x=y", null)) != null) {
  Assert.Fail();
  }
-      if ((ContentDisposition.Parse("??;x=y;z=w", null)) != null) {
+      if ((ParseAndTestAspects("??;x=y;z=w", null)) != null) {
  Assert.Fail();
  }
     }
