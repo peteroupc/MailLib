@@ -9,13 +9,63 @@ import com.upokecenter.mail.*;
 import com.upokecenter.text.*;
 
   public class ContentDispositionTest {
+    private static ContentDisposition ParseAndTestAspects(String s) {
+      ContentDisposition mt = ContentDisposition.Parse(s);
+      if (mt == null) {
+ TestAspects(mt);
+}
+      return mt;
+    }
+    private static ContentDisposition ParseAndTestAspects(String s,
+      ContentDisposition defvalue) {
+      ContentDisposition mt = ContentDisposition.Parse(s, defvalue);
+      if (mt == null) {
+ TestAspects(mt);
+}
+      return mt;
+    }
+    private static void TestAspects(ContentDisposition mt) {
+      if (mt == null) {
+ return;
+}
+      // Test round-tripping
+      String str = mt.toString();
+      ContentDisposition mt2 = ContentDisposition.Parse(str, null);
+      if ((mt2) == null) {
+ Assert.fail();
+ }
+      Assert.assertEquals(str, mt2.toString());
+      TestCommon.AssertEqualsHashCode(mt, mt2);
+      str = mt.ToSingleLineString();
+      mt2 = ContentDisposition.Parse(str, null);
+      if ((mt2) == null) {
+ Assert.fail();
+ }
+      Assert.assertEquals(str, mt2.ToSingleLineString());
+      TestCommon.AssertEqualsHashCode(mt, mt2);
+    }
     @Test
     public void TestDispositionType() {
       // not implemented yet
     }
     @Test
     public void TestEquals() {
-      // not implemented yet
+      ContentDisposition mt =
+          ParseAndTestAspects("inline;param1=value1;param2=value2");
+      ContentDisposition mt2 =
+           ParseAndTestAspects("inline;param2=value2;param1=value1");
+      ContentDisposition mt3 =
+           ParseAndTestAspects("inline;param1=value2;param2=value2");
+      TestCommon.AssertEqualsHashCode(mt, mt2);
+      TestCommon.AssertEqualsHashCode(mt, mt3);
+      TestCommon.AssertEqualsHashCode(mt3, mt2);
+      Assert.assertEquals(mt, mt2);
+      if (mt.equals(mt3)) {
+ Assert.fail();
+ }
+      if (mt2.equals(mt3)) {
+ Assert.fail();
+ }
     }
     @Test
     public void TestGetHashCode() {
@@ -25,7 +75,7 @@ import com.upokecenter.text.*;
     public void TestGetParameter() {
    foreach (Map<String, String> dict in
         MediaTypeTest.testParamTypes) {
-   ContentDisposition mt = ContentDisposition.Parse("inline" + dict.get("params"));
+   ContentDisposition mt = ParseAndTestAspects("inline" + dict.get("params"));
         Assert.assertEquals(
           dict.get("filename"),
           mt.GetParameter("filename"));
@@ -33,15 +83,15 @@ import com.upokecenter.text.*;
     }
     @Test
     public void TestIsAttachment() {
-      ContentDisposition cd = ContentDisposition.Parse("inline");
+      ContentDisposition cd = ParseAndTestAspects("inline");
       if (cd.isAttachment()) {
  Assert.fail();
  }
-      cd = ContentDisposition.Parse("cd-unknown");
+      cd = ParseAndTestAspects("cd-unknown");
       if (cd.isAttachment()) {
  Assert.fail();
  }
-      cd = ContentDisposition.Parse("attachment");
+      cd = ParseAndTestAspects("attachment");
       if (!(cd.isAttachment())) {
  Assert.fail();
  }
@@ -49,15 +99,15 @@ import com.upokecenter.text.*;
 
     @Test
     public void TestIsInline() {
-      ContentDisposition cd = ContentDisposition.Parse("inline");
+      ContentDisposition cd = ParseAndTestAspects("inline");
       if (!(cd.isInline())) {
  Assert.fail();
  }
-      cd = ContentDisposition.Parse("cd-unknown");
+      cd = ParseAndTestAspects("cd-unknown");
       if (cd.isInline()) {
  Assert.fail();
  }
-      cd = ContentDisposition.Parse("attachment");
+      cd = ParseAndTestAspects("attachment");
       if (cd.isInline()) {
  Assert.fail();
  }
@@ -964,7 +1014,7 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
     @Test
     public void TestParameters() {
       ContentDisposition mt =
-          ContentDisposition.Parse("inline;param1=value1;param2=value2");
+          ParseAndTestAspects("inline;param1=value1;param2=value2");
       Map<String, String> parameters;
       parameters = mt.getParameters();
       if (!(parameters.containsKey("param1"))) {
@@ -979,18 +1029,8 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
 
     @Test
     public void TestParse() {
-      // TODO: Consider simply ignoring the
-      // charset parameter in these two cases
-  if ((ContentDisposition.Parse("x; charset*='i-unknown'utf-8", null)) !=
-        null) {
- Assert.fail();
- }
-      if ((ContentDisposition.Parse("x; charset*=us-ascii'i-unknown'utf-8",
-        null)) != null) {
- Assert.fail();
- }
       try {
-        ContentDisposition.Parse(null);
+        ParseAndTestAspects(null);
         Assert.fail("Should have failed");
       } catch (NullPointerException ex) {
         // NOTE: Intentionally empty
@@ -1001,61 +1041,60 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
 
       ContentDisposition mt;
       Map<String, String> parameters;
-      mt = ContentDisposition.Parse("inline;param1=\"value1\"");
+      mt = ParseAndTestAspects("inline;param1=\"value1\"");
       parameters = mt.getParameters();
       Assert.assertEquals("value1", parameters.get("param1"));
-      mt = ContentDisposition.Parse("inline;param1*=utf-8''value2");
+      mt = ParseAndTestAspects("inline;param1*=utf-8''value2");
       parameters = mt.getParameters();
       Assert.assertEquals("value2", parameters.get("param1"));
-      mt = ContentDisposition.Parse("inline;param1*=utf-8'en'value3");
+      mt = ParseAndTestAspects("inline;param1*=utf-8'en'value3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
-      mt =
-      ContentDisposition.Parse("inline;param1*0*=utf-8'en'val;param1*1*=ue4");
+      mt = ParseAndTestAspects("inline;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
-      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1''valu%e72");
+      mt = ParseAndTestAspects("inline;param1*=iso-8859-1''valu%e72");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
-      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1''valu%E72");
+      mt = ParseAndTestAspects("inline;param1*=iso-8859-1''valu%E72");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
-      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%e72");
+      mt = ParseAndTestAspects("inline;param1*=iso-8859-1'en'valu%e72");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
-      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%E72");
+      mt = ParseAndTestAspects("inline;param1*=iso-8859-1'en'valu%E72");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
-      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%4E2");
+      mt = ParseAndTestAspects("inline;param1*=iso-8859-1'en'valu%4E2");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u004e2", parameters.get("param1"));
-      mt = ContentDisposition.Parse("inline;param1*=iso-8859-1'en'valu%4e2");
+      mt = ParseAndTestAspects("inline;param1*=iso-8859-1'en'valu%4e2");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u004e2", parameters.get("param1"));
-    mt = ContentDisposition.Parse("inline;param1*=utf-8''value2;param1=dummy");
+    mt = ParseAndTestAspects("inline;param1*=utf-8''value2;param1=dummy");
       parameters = mt.getParameters();
       Assert.assertEquals("value2", parameters.get("param1"));
-    mt = ContentDisposition.Parse("inline;param1=dummy;param1*=utf-8''value2");
+    mt = ParseAndTestAspects("inline;param1=dummy;param1*=utf-8''value2");
       parameters = mt.getParameters();
       Assert.assertEquals("value2", parameters.get("param1"));
       mt =
 
-  ContentDisposition.Parse("inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
+  ParseAndTestAspects("inline;param1*0*=utf-8'en'val;param1*1*=ue4;param1=dummy");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
       mt =
 
-  ContentDisposition.Parse("inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
+  ParseAndTestAspects("inline;param1=dummy;param1*0*=utf-8'en'val;param1*1*=ue4");
       parameters = mt.getParameters();
       Assert.assertEquals("value4", parameters.get("param1"));
       mt =
 
-  ContentDisposition.Parse("inline;param1*=iso-8859-1''valu%e72;param1=dummy");
+  ParseAndTestAspects("inline;param1*=iso-8859-1''valu%e72;param1=dummy");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
       mt =
 
-  ContentDisposition.Parse("inline;param1=dummy;param1*=iso-8859-1''valu%E72");
+  ParseAndTestAspects("inline;param1=dummy;param1*=iso-8859-1''valu%E72");
       parameters = mt.getParameters();
       Assert.assertEquals("valu\u00e72", parameters.get("param1"));
       TestPercentEncodingOne("test\u00be", "test%C2%BE");
@@ -1071,9 +1110,36 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
 
     private static void TestPercentEncodingOne(String expected, String input) {
       ContentDisposition cd =
-        ContentDisposition.Parse("inline; filename*=utf-8''" + input);
+        ParseAndTestAspects("inline; filename*=utf-8''" + input);
       Assert.assertEquals(expected, cd.GetParameter("filename"));
     }
+
+    // Parameters not conforming to RFC 2231, but
+    // have names with asterisks
+    static String[] NoParams = new String[] {
+";param*xx=value",
+  ";param*0xx=value",
+  ";param*xx0=value",
+  ";param*xx*=value",
+  ";param*0*0=value",
+  ";param*0*x=value",
+  ";param*0xx*=value",
+  ";param*xx0*=value",
+  ";param*0*0*=value",
+  ";param*0*x*=value",
+  ";param*x*0*=value",
+  ";param*x*x*=value",
+      "; charset*='i-unknown'utf-8" /* invalid language tag, no charset */,
+  "; charset*=us-ascii'i-unknown'utf-8" /* invalid language tag, defined
+  charset */,
+  ";param*xx*=utf-8''value",
+  ";param*0xx*=utf-8''value",
+  ";param*xx0*=utf-8''value",
+  ";param*0*0*=utf-8''value",
+  ";param*0*x*=utf-8''value",
+  ";param*x*0*=utf-8''value",
+  ";param*x*x*=utf-8''value"
+};
 
     @Test
     public void TestParseIDB() {
@@ -1083,67 +1149,61 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
       Map<String, String> parameters;
       mt =
 
-  ContentDisposition.Parse("inline;param=value1;param1*=utf-8''value2;param1*0=value3");
+  ParseAndTestAspects("inline;param=value1;param1*=utf-8''value2;param1*0=value3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
-  ContentDisposition.Parse("inline;param=value1;param1*0=value3;param1*=utf-8''value2");
+  ParseAndTestAspects("inline;param=value1;param1*0=value3;param1*=utf-8''value2");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
-  ContentDisposition.Parse("inline;param1*0=value3;param=value1;param1*=utf-8''value2");
+  ParseAndTestAspects("inline;param1*0=value3;param=value1;param1*=utf-8''value2");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
       mt =
 
-  ContentDisposition.Parse("inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
+  ParseAndTestAspects("inline;param1*0*=utf8''val;param=value1;param1*=utf-8''value2;param1*1*=ue3");
       parameters = mt.getParameters();
       Assert.assertEquals("value3", parameters.get("param1"));
-      if (ContentDisposition.Parse("inline;param*xx=value", null) != null) {
-        Assert.fail();
+for (Object str : NoParams) {
+        mt = ParseAndTestAspects("inline"+str, null);
+        parameters = mt.getParameters();
+        List<String> keys;
+        keys = new ArrayList<String>(parameters.keySet());
+        Assert.assertEquals(0, keys.size());
+        Assert.assertEquals("inline", mt.getDispositionType());
       }
-      if (ContentDisposition.Parse("inline;param*0xx=value", null) != null) {
-        Assert.fail();
-      }
-      if (ContentDisposition.Parse("inline;param*xx0=value", null) != null) {
-        Assert.fail();
-      }
-      if (ContentDisposition.Parse("inline;param*xx*=value", null) != null) {
-        Assert.fail();
-      }
-      if (ContentDisposition.Parse("inline;param*0xx*=value", null) != null) {
-        Assert.fail();
-      }
-      if (ContentDisposition.Parse("inline;param*xx0*=value", null) != null) {
-        Assert.fail();
-      }
-      if (ContentDisposition.Parse("inline;param*0*0=value", null) != null) {
-        Assert.fail();
-      }
-      if (ContentDisposition.Parse("inline;param*0*x=value", null) != null) {
-        Assert.fail();
-      }
-      if (ContentDisposition.Parse("inline;param*0*0*=value", null) != null) {
-        Assert.fail();
-      }
-      if (ContentDisposition.Parse("inline;param*0*x*=value", null) != null) {
-        Assert.fail();
-      }
-      if (
-       ContentDisposition.Parse(
-       "inline; charset*0=ab;charset*1*=iso-8859-1'en'xyz",
-       null) != null) {
-        Assert.fail();
-      }
-
-      if (
-       ContentDisposition.Parse(
-       "inline; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz",
-       null) != null) {
-        Assert.fail();
-      }
+mt = ParseAndTestAspects("inline; charset*0=ab;charset*1*=iso-8859-1'en'xyz");
+      {
+String stringTemp = mt.GetParameter("charset");
+Assert.assertEquals(
+  "ab",
+  stringTemp);
+}
+      Assert.assertEquals("inline", mt.getDispositionType());
+      if ((mt.GetParameter("charset*0")) != null) {
+ Assert.fail();
+ }
+      if ((mt.GetParameter("charset*1*")) != null) {
+ Assert.fail();
+ }
+      mt =
+  ParseAndTestAspects("inline; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
+      {
+String stringTemp = mt.GetParameter("charset");
+Assert.assertEquals(
+  "a b",
+  stringTemp);
+}
+      Assert.assertEquals("inline", mt.getDispositionType());
+      if ((mt.GetParameter("charset*0")) != null) {
+ Assert.fail();
+ }
+      if ((mt.GetParameter("charset*1*")) != null) {
+ Assert.fail();
+ }
     }
     static final String[] ParseErrors = {
 ";x=,y",";x=x.z,y",";x=y,",";x=y,y",";x=y;",
@@ -1178,51 +1238,51 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
     @Test
     public void TestParseErrors() {
       for (String str : ContentDispositionTest.ParseErrors) {
-        Assert.IsNull(ContentDisposition.Parse("inline"+ str,null), str);
+        Assert.IsNull(ParseAndTestAspects("inline"+ str,null), str);
       }
-      if ((ContentDisposition.Parse("inl/ine;y=z", null)) != null) {
+      if ((ParseAndTestAspects("inl/ine;y=z", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse("inline=x;y=z", null)) != null) {
+      if ((ParseAndTestAspects("inline=x;y=z", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse("inline=x", null)) != null) {
+      if ((ParseAndTestAspects("inline=x", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse(":inline;y=z", null)) != null) {
+      if ((ParseAndTestAspects(":inline;y=z", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse(":inline", null)) != null) {
+      if ((ParseAndTestAspects(":inline", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse(";inline;y=z", null)) != null) {
+      if ((ParseAndTestAspects(";inline;y=z", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse(";inline", null)) != null) {
+      if ((ParseAndTestAspects(";inline", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse(";x=y", null)) != null) {
+      if ((ParseAndTestAspects(";x=y", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse(";x=y;z=w", null)) != null) {
+      if ((ParseAndTestAspects(";x=y;z=w", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse("  ;  x=y", null)) != null) {
+      if ((ParseAndTestAspects("  ;  x=y", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse("  ;  x=y;z=w", null)) != null) {
+      if ((ParseAndTestAspects("  ;  x=y;z=w", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse("  ;x=y", null)) != null) {
+      if ((ParseAndTestAspects("  ;x=y", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse("  ;x=y;z=w", null)) != null) {
+      if ((ParseAndTestAspects("  ;x=y;z=w", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse("??;x=y", null)) != null) {
+      if ((ParseAndTestAspects("??;x=y", null)) != null) {
  Assert.fail();
  }
-      if ((ContentDisposition.Parse("??;x=y;z=w", null)) != null) {
+      if ((ParseAndTestAspects("??;x=y;z=w", null)) != null) {
  Assert.fail();
  }
     }

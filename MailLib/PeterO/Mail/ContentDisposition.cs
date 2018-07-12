@@ -23,7 +23,7 @@ namespace PeterO.Mail {
       get {
         // TODO: Unrecognized/unknown types
         // should be treated as attachment
-        // (RFC 6266 sec. 4.2); note this in the
+        // (RFC 6266 sec. 4.2; RFC 2183 sec. 2.8); note this in the
         // documentation
         return this.dispositionType;
       }
