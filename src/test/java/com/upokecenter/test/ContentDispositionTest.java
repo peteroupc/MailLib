@@ -23,7 +23,13 @@ import com.upokecenter.text.*;
     }
     @Test
     public void TestGetParameter() {
-      // not implemented yet
+   foreach (Map<String, String> dict in
+        MediaTypeTest.testParamTypes) {
+   ContentDisposition mt = ContentDisposition.Parse("inline" + dict.get("params"));
+        Assert.assertEquals(
+          dict.get("filename"),
+          mt.GetParameter("filename"));
+      }
     }
     @Test
     public void TestIsAttachment() {
@@ -1138,6 +1144,87 @@ ContentDisposition.MakeFilename("=?us-ascii*xx9x9x?q?filetest?=");
        null) != null) {
         Assert.fail();
       }
+    }
+    static final String[] ParseErrors = {
+";x=,y",";x=x.z,y",";x=y,",";x=y,y",";x=y;",
+  ";x=[y",";x=x.z[y",";x=y[",";x=y[y",
+  ";x=]y",";x=x.z]y",";x=y]",";x=y]y",
+      ";x *=y",";x *0=y",";x *0*=y",
+  ";x *=utf-8''y",";x *0=utf-8''y",";x *0*=utf-8''y",
+
+";x=x.z y",";x=y y",";x=x_z y",
+  ";,y=x",";x.z,y=x",";y=x,",";x=y,y=x",
+  ";[y=x",";x.z[y=x",";y[=x",";x=y[y=x",
+  ";]y=x",";x.z]y=x",";y]=x",";x=y]y=x",
+  ";x.z y=x",";y y=x",";x_z y=x",
+      ";;x=y",";x=y;;y=z",";x=y,z=w",",x=y",";x=y,x=z",
+  ";x==x",";x==?utf-8?q?x?=",";x;z=w",";x;x=y",
+  ";x=?utf-8?q?x?=",
+  ";x=?x",";x=?utf-8?q?x?=",
+     ";x=a b;x=y",
+  ";x=a, b;x=y",
+      ";x=a x=y",
+  ";x=a,x=y",
+      "x=y",":x=y"," x=y","/x=y",
+      ";x=y;z","=y;z","=y",
+ ";x==?utf-8*x?q?x?=","\"x=y\";x=z",
+      "\"x=y;x=z\"","x=y;\"x=z\"",
+      ";x=\"y",";x=\"y\"z",";x=z\"y\"",
+      ";x=z\"y\"z",
+      ";x=z\"y?,\"z",
+      ";x=z\"y?;?\"z"
+};
+
+    @Test
+    public void TestParseErrors() {
+      for (String str : ContentDispositionTest.ParseErrors) {
+        Assert.IsNull(ContentDisposition.Parse("inline"+ str,null), str);
+      }
+      if ((ContentDisposition.Parse("inl/ine;y=z", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse("inline=x;y=z", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse("inline=x", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse(":inline;y=z", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse(":inline", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse(";inline;y=z", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse(";inline", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse(";x=y", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse(";x=y;z=w", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse("  ;  x=y", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse("  ;  x=y;z=w", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse("  ;x=y", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse("  ;x=y;z=w", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse("??;x=y", null)) != null) {
+ Assert.fail();
+ }
+      if ((ContentDisposition.Parse("??;x=y;z=w", null)) != null) {
+ Assert.fail();
+ }
     }
 
     @Test

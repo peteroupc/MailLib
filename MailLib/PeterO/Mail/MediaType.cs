@@ -16,6 +16,8 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
   public sealed class MediaType {
+    // Printable ASCII characters that cannot appear in an
+    // attribute value under RFC 2231
     private const string AttrNameSpecials = "()<>@,;:\\\"/[]?='%*";
     private const string ValueHex = "0123456789ABCDEF";
 
@@ -397,7 +399,7 @@ namespace PeterO.Mail {
       }
     }
 
-    private static bool IsTokenChar(int c) {
+    private static bool IsAttributeChar(int c) {
       return c >= 33 && c <= 126 && AttrNameSpecials.IndexOf((char)c) < 0;
     }
     private static void PctAppend(StringBuilder sb, int w) {
@@ -429,7 +431,7 @@ namespace PeterO.Mail {
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
-        if (IsTokenChar(c)) {
+        if (IsAttributeChar(c)) {
           ++contin;
         } else if (c <= 0x7f) {
           contin += 3;
@@ -446,7 +448,7 @@ namespace PeterO.Mail {
         if (first) {
           sb.Append("utf-8''");
         }
-        if (IsTokenChar(c)) {
+        if (IsAttributeChar(c)) {
           sb.Append((char)c);
         } else if (c <= 0x7f) {
           PctAppend(sb, c);
@@ -746,7 +748,7 @@ namespace PeterO.Mail {
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of
-      // Jun. 21, 2018, are listed below:
+      // Jul. 11, 2018, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -761,7 +763,8 @@ namespace PeterO.Mail {
       // vnd.motorola.reflex,
       // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript,
       // vnd.dvb.subtitle,
-      // vnd.fly, rtf, rfc822-headers, prs.prop.logic, vnd.ascii-art****
+      // vnd.fly, rtf, rfc822-headers, prs.prop.logic, vnd.ascii-art****,
+      // vnd.hgl*(6), vnd.gml
       //
       // Special procedure defined for charset detection:
       // -- ecmascript, javascript, html
@@ -777,7 +780,8 @@ namespace PeterO.Mail {
       // charset is treated as default is irrelevant):
       // -- example
       //
-      // No default specified (after RFC6657):
+      // Uses charset parameter, but no default charset specified (after
+      // RFC6657):
       // -- markdown*
       //
       // -- US-ASCII assumed: --
@@ -787,9 +791,6 @@ namespace PeterO.Mail {
       // vnd.in3d.spot*, vnd.abc, vnd.wap.wmlscript, vnd.curl,
       // vnd.fmi.flexstor, uri-list, directory
       //
-      // No charset parameter defined (7-bit encoding):
-      // vnd.gml
-      //
       // US-ASCII default:
       // -- plain, sgml, troff
       //
@@ -798,7 +799,7 @@ namespace PeterO.Mail {
       // UTF-8 only:
       // -- vcard, jcr-cnd, cache-manifest
       //
-      // Charset parameter defined but is "always UTF-8":
+      // Charset parameter defined but is "always ... UTF-8":
       // -- n3, turtle, vnd.debian.copyright, provenance-notation
       //
       // UTF-8 default:
@@ -810,6 +811,7 @@ namespace PeterO.Mail {
       // ** No explicit default, but says that "[t]he charset supported
       // by this revision of iCalendar is UTF-8."
       // *(5) No charset parameter defined.
+      // *(6) 8-bit encoding.
       // *** Default is UTF-8 "if 8-bit bytes are encountered" (even if
       // none are found, though, a 7-bit ASCII text is still also UTF-8).
       // **** Content containing non-ASCII bytes "should be rejected".
@@ -826,8 +828,7 @@ namespace PeterO.Mail {
               sub.Equals("enriched") || sub.Equals("tab-separated-values") ||
               sub.Equals("vnd.in3d.spot") || sub.Equals("vnd.abc") ||
             sub.Equals("vnd.wap.wmlscript") || sub.Equals("vnd.curl") ||
-              sub.Equals("vnd.fmi.flexstor") || sub.Equals("uri-list") ||
-            sub.Equals("vnd.gml")) {
+              sub.Equals("vnd.fmi.flexstor") || sub.Equals("uri-list")) {
           return "us-ascii";
         }
         // Media types that assume a default of UTF-8
@@ -996,7 +997,7 @@ namespace PeterO.Mail {
              charsetUsed);
               if (newEnc == null) {
                 // Contains a quote character in the encoding, so illegal
-                return false;
+                break;
               }
               builder.Append(newEnc);
               parameters.Remove(continEncoded);
@@ -1010,12 +1011,14 @@ namespace PeterO.Mail {
           parameters[realName] = realValue;
         }
       }
-      foreach (string name in parameters.Keys) {
+      keyList = new List<string>(parameters.Keys);
+      foreach (string name in keyList) {
         // Check parameter names using stricter format
         // in RFC6838
         if (SkipMimeTypeSubtype(name, 0, name.Length, null) != name.Length) {
           // Illegal parameter name, so use default media type
-          return false;
+          //return false;
+          parameters.Remove(name);
         }
       }
       return true;
@@ -1046,6 +1049,8 @@ namespace PeterO.Mail {
  int endIndex,
       bool httpRules,
  IDictionary<string, string> parameters) {
+      var duplicateAttributes = new Dictionary<string, string>();
+      bool hasDuplicateAttributes = false;
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipOws
@@ -1070,10 +1075,19 @@ namespace PeterO.Mail {
       endIndex,
       null);
         var builder = new StringBuilder();
-        // NOTE: RFC6838 restricts the format of parameter names to the same
+        // NOTE:
+        // 1. RFC6838 restricts the format of parameter names to the same
         // syntax as types and subtypes, but this syntax is incompatible with
-        // the RFC2231 format
-        int afteratt = SkipAttributeNameRfc2231(
+        // the RFC2045 format for attributes (which is the same as for
+        // MIME tokens).
+        // 2. RFC2231 further restricts the syntax of MIME tokens to
+        // accommodate certain extensions, but this is not checked here; rather,
+        // RFC2231 extensions are handled after the attribute names and
+        // values are parsed; in this process, certain attribute names
+        // containing
+        // an asterisk will be deleted and replaced with other parameters.
+        // See also RFC 8187, sec. 3.2.1.
+        int afteratt = SkipMimeToken(
           str,
           index,
           endIndex,
@@ -1099,8 +1113,9 @@ namespace PeterO.Mail {
         }
         attribute = DataUtilities.ToLowerCaseAscii(attribute);
         if (parameters.ContainsKey(attribute)) {
-          // Console.WriteLine("Contains duplicate attribute " + attribute);
-          return false;
+          parameters.Remove(attribute);
+          duplicateAttributes[attribute]=String.Empty;
+          hasDuplicateAttributes = true;
         }
         ++index;
         if (!httpRules) {
@@ -1117,9 +1132,6 @@ namespace PeterO.Mail {
         }
         builder.Remove(0, builder.Length);
         int qs;
-        // If the attribute name ends with '*' the value may not be a quoted
-        // string
-        if (attribute[attribute.Length - 1] != '*') {
           // try getting the value quoted
           qs = SkipQuotedString(
             str,
@@ -1131,17 +1143,25 @@ namespace PeterO.Mail {
             qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
           }
           if (qs != index) {
-            parameters[attribute] = builder.ToString();
+            // If the attribute name ends with '*' the value may not be a quoted
+            // string because of RFC2231; if this happens, ignore the attribute
+            if (attribute[attribute.Length - 1] != '*' &&
+     (!hasDuplicateAttributes ||
+                !duplicateAttributes.ContainsKey(attribute))) {
+             parameters[attribute] = builder.ToString();
+            }
             index = qs;
             continue;
           }
           builder.Remove(0, builder.Length);
-        }
         // try getting the value unquoted
         // Note we don't use getAtom
         qs = SkipMimeToken(str, index, endIndex, builder, httpRules);
         if (qs != index) {
-          parameters[attribute] = builder.ToString();
+    if (!hasDuplicateAttributes ||
+            !duplicateAttributes.ContainsKey(attribute)) {
+             parameters[attribute] = builder.ToString();
+          }
           index = qs;
           continue;
         }

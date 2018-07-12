@@ -7,7 +7,6 @@ using Test;
 namespace MailLibTest {
   [TestFixture]
   public class MediaTypeTest {
-
     private static IDictionary<string, string>[] testMediaTypes = new
       IDictionary<string, string>[] {
       DictUtility.MakeDict(
@@ -430,8 +429,7 @@ namespace MailLibTest {
                   stringTemp);
       }
       {
- string stringTemp =
-          MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8")
+ string stringTemp = MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8")
              .GetCharset();
         Assert.AreEqual(
                   "utf-8",
@@ -468,16 +466,14 @@ namespace MailLibTest {
                   stringTemp);
       }
       {
-    string stringTemp =
-          MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"")
+    string stringTemp = MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"")
        .GetCharset();
         Assert.AreEqual(
                   "utf-8",
                   stringTemp);
       }
       {
-  string stringTemp =
-          MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"")
+  string stringTemp = MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"")
            .GetCharset();
         Assert.AreEqual(
                   "utf-8",
@@ -562,42 +558,51 @@ namespace MailLibTest {
     internal static IDictionary<string, string>[] testParamTypes = new
       IDictionary<string, string>[] {
 DictUtility.MakeDict("params",";filename=x.y","filename","x.y"),
-DictUtility.MakeDict("params",";filename=\"cc\"","filename","cc"),
-DictUtility.MakeDict("params",";filename    =    x.y","filename","x.y"),
-DictUtility.MakeDict("params",";filename    =    \"cc\"","filename","cc"),
-DictUtility.MakeDict("params",";filename=    x.y","filename","x.y"),
-DictUtility.MakeDict("params",";filename=    \"cc\"","filename","cc"),
-DictUtility.MakeDict("params",";filename    =x.y","filename","x.y"),
-DictUtility.MakeDict("params",";filename    =\"cc\"","filename","cc"),
-DictUtility.MakeDict("params",";filename=x.y    ","filename","x.y"),
-DictUtility.MakeDict("params",";filename=\"cc\"    ","filename","cc"),
-DictUtility.MakeDict("params",";filename=\"ccaaaaaaaaaaaaaaaaaaaa\"","filename","ccaaaaaaaaaaaaaaaaaaaa"),
-DictUtility.MakeDict("params",";filename=\"ccaaaaaaa,;=aaaaaaaaaaa\"","filename","ccaaaaaaa,;=aaaaaaaaaaa"),
-DictUtility.MakeDict("params",";filename=\"ccaaaaaaa,;e1=xxx;e2=yyy\"","filename","ccaaaaaaa,;e1=xxx;e2=yyy"),
-DictUtility.MakeDict("params",";filename=\"cc\\a\\b\\c\\1\\2\\3\"","filename","ccabc123"),
-DictUtility.MakeDict("params",";filename=\"cc\\\\\\'\\\"\\[\\]\"","filename","cc\\'\"[]"),
-DictUtility.MakeDict("params",";filename=\"cc%\\ab\"","filename","cc%ab"),
-DictUtility.MakeDict("params",";filename=\"\u00e7\"","filename","\u00e7"),
-DictUtility.MakeDict("params",";filename=e's","filename","e's"),
-DictUtility.MakeDict("params",";filename='es","filename","'es"),
-DictUtility.MakeDict("params",";filename='es'","filename","'es'"),
-DictUtility.MakeDict("params",";filename=utf-8'en'example","filename","utf-8'en'example"),
-DictUtility.MakeDict("params",";filename=utf-8''example","filename","utf-8''example"),
-DictUtility.MakeDict("params",";filename=\"%ab\u00e7\"","filename","%ab\u00e7"),
-DictUtility.MakeDict("params",";filename=\"%ab\u00c2\u00a0\"","filename","%ab\u00c2\u00a0"),
-DictUtility.MakeDict("params",";filename=\"cc%\\66\"","filename","cc%66"),
-DictUtility.MakeDict("params",";filename=\"cc%xy\"","filename","cc%xy"),
-DictUtility.MakeDict("params",";filename=\"cc\\\"x\\\"y\"","filename","cc\"x\"y"),
-DictUtility.MakeDict("params",";FILENAME=x.y","filename","x.y"),
-DictUtility.MakeDict("params",";FILENAME=\"cc\"","filename","cc"),
-DictUtility.MakeDict("params",";FiLeNaMe=x.y","filename","x.y"),
-DictUtility.MakeDict("params",";FiLeNaMe=\"cc\"","filename","cc"),
-DictUtility.MakeDict("params",";fIlEnAmE=x.y","filename","x.y"),
-DictUtility.MakeDict("params",";fIlEnAmE=\"cc\"","filename","cc"),
-DictUtility.MakeDict("params",";filename=\"\\\\ab\"","filename","\\ab")
+  DictUtility.MakeDict("params",";filename=\"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";filename    =    x.y","filename","x.y"),
+  DictUtility.MakeDict("params",";filename    =    \"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";filename=    x.y","filename","x.y"),
+  DictUtility.MakeDict("params",";filename=    \"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";filename    =x.y","filename","x.y"),
+  DictUtility.MakeDict("params",";filename    =\"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";filename=x.y    ","filename","x.y"),
+  DictUtility.MakeDict("params",";filename=\"cc\"    ","filename","cc"),
+  DictUtility.MakeDict("params" ,";filename=\"ccaaaaaaaaaaaaaaaaaaaa\"",
+"filename" ,"ccaaaaaaaaaaaaaaaaaaaa"),
+  DictUtility.MakeDict("params" ,";filename=\"ccaaaaaaa,;=aaaaaaaaaaa\"",
+"filename" ,"ccaaaaaaa,;=aaaaaaaaaaa"),
+  DictUtility.MakeDict("params" ,";filename=\"ccaaaaaaa,;e1=xxx;e2=yyy\"",
+"filename" ,"ccaaaaaaa,;e1=xxx;e2=yyy"),
+  DictUtility.MakeDict("params" ,";filename=\"cc\\a\\b\\c\\1\\2\\3\"",
+"filename" ,"ccabc123"),
+  DictUtility.MakeDict("params" ,";filename=\"cc\\\\\\'\\\"\\[\\]\"",
+"filename" ,"cc\\'\"[]"),
+  DictUtility.MakeDict("params",";filename=\"cc%\\ab\"","filename","cc%ab"),
+  DictUtility.MakeDict("params",";filename=\"\u00e7\"","filename","\u00e7"),
+  DictUtility.MakeDict("params",";filename=e's","filename","e's"),
+  DictUtility.MakeDict("params",";filename='es","filename","'es"),
+  DictUtility.MakeDict("params",";filename='es'","filename","'es'"),
+  DictUtility.MakeDict("params" ,";filename=utf-8'en'example" ,"filename",
+"utf-8'en'example"),
+  DictUtility.MakeDict("params" ,";filename=utf-8''example" ,"filename",
+"utf-8''example"),
+  DictUtility.MakeDict("params",";filename=\"%ab\u00e7\"","filename","%ab\u00e7"),
+  DictUtility.MakeDict("params" ,";filename=\"%ab\u00c2\u00a0\"" ,"filename",
+"%ab\u00c2\u00a0"),
+  DictUtility.MakeDict("params",";filename=\"cc%\\66\"","filename","cc%66"),
+  DictUtility.MakeDict("params",";filename=\"cc%xy\"","filename","cc%xy"),
+  DictUtility.MakeDict("params" ,";filename=\"cc\\\"x\\\"y\"" ,"filename",
+"cc\"x\"y"),
+  DictUtility.MakeDict("params",";FILENAME=x.y","filename","x.y"),
+  DictUtility.MakeDict("params",";FILENAME=\"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";FiLeNaMe=x.y","filename","x.y"),
+  DictUtility.MakeDict("params",";FiLeNaMe=\"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";fIlEnAmE=x.y","filename","x.y"),
+  DictUtility.MakeDict("params",";fIlEnAmE=\"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";filename=\"\\\\ab\"","filename","\\ab")
 // DictUtility.MakeDict("params",";notfilename=x.y","filename",null),
-// DictUtility.MakeDict("params",";notfilename=\"cc\"","filename",null),
-};
+  // DictUtility.MakeDict("params",";notfilename=\"cc\"","filename",null),
+  };
 
     [Test]
     public void TestGetParameter() {

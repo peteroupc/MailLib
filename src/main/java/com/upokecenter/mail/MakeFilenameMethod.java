@@ -423,6 +423,7 @@ private MakeFilenameMethod() {
     }
 
     public static String MakeFilename(String str) {
+      // TODO: Handle single-quoted filenames (ex: 'filename')?
       if (((str) == null || (str).length() == 0)) {
         // TODO: Consider empty String instead
         return "_";

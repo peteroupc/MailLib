@@ -23,7 +23,8 @@ namespace MailLibTest {
     }
     [Test]
     public void TestGetParameter() {
-      foreach (IDictionary<string, string> dict in MediaTypeTest.testParamTypes) {
+   foreach (IDictionary<string, string> dict in
+        MediaTypeTest.testParamTypes) {
    ContentDisposition mt = ContentDisposition.Parse("inline" + dict["params"]);
         Assert.AreEqual(
           dict["filename"],
