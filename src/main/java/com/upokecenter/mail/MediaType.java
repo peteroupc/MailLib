@@ -28,6 +28,8 @@ import com.upokecenter.text.*;
      * media type object, use the MediaTypeBuilder class.</p>
      */
   public final class MediaType {
+    // Printable ASCII characters that cannot appear in an
+    // attribute value under RFC 2231
     private static final String AttrNameSpecials = "()<>@,;:\\\"/[]?='%*";
     private static final String ValueHex = "0123456789ABCDEF";
 
@@ -421,7 +423,7 @@ import com.upokecenter.text.*;
       }
     }
 
-    private static boolean IsTokenChar(int c) {
+    private static boolean IsAttributeChar(int c) {
       return c >= 33 && c <= 126 && AttrNameSpecials.indexOf((char)c) < 0;
     }
     private static void PctAppend(StringBuilder sb, int w) {
@@ -435,37 +437,6 @@ import com.upokecenter.text.*;
       sb.append('%');
       sb.append(ValueHex.charAt((w >> 4) & 15));
       sb.append(ValueHex.charAt(w & 15));
-    }
-
-    private static boolean RequiresContinuations(String str, int startPos, int
-      startColumn, int maxLength) {
-      if (maxLength < 0) {
-        return false;
-      }
-      int column = startColumn;
-      int index = startPos;
-      while (index < str.length() && column <= maxLength) {
-        int c = str.charAt(index);
-        if ((c & 0xfc00) == 0xd800 && index + 1 < str.length() &&
-            str.charAt(index + 1) >= 0xdc00 && str.charAt(index + 1) <= 0xdfff) {
-          column += 12;
-          index += 2;
-          continue;
-        } else if ((c & 0xf800) == 0xd800) {
-          column += 9;
-        }
-        if (IsTokenChar(c)) {
-          ++column;
-        } else if (c <= 0x7f) {
-          column += 3;
-        } else if (c <= 0x7ff) {
-          column += 6;
-        } else {
-          column += 9;
-        }
-        ++index;
-      }
-      return column > maxLength;
     }
 
     private static int EncodeContinuation(String str, int startPos,
@@ -484,7 +455,7 @@ import com.upokecenter.text.*;
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
-        if (IsTokenChar(c)) {
+        if (IsAttributeChar(c)) {
           ++contin;
         } else if (c <= 0x7f) {
           contin += 3;
@@ -501,7 +472,7 @@ import com.upokecenter.text.*;
         if (first) {
           sb.append("utf-8''");
         }
-        if (IsTokenChar(c)) {
+        if (IsAttributeChar(c)) {
           sb.append((char)c);
         } else if (c <= 0x7f) {
           PctAppend(sb, c);
@@ -540,11 +511,11 @@ import com.upokecenter.text.*;
       // Check if parameter is short enough for the column that
       // no continuations are needed
       int continColumn = column + name.length() + 9;
-      if (!RequiresContinuations(str, 0, continColumn, sa.GetMaxLength())) {
-        // Short enough
-        sa.AppendSymbol(name + "*").AppendSymbol("=");
-        EncodeContinuation(str, 0, sa);
-      } else {
+      int oldcolumn = sa.GetColumn();
+      int oldlength = sa.GetLength();
+      sa.AppendSymbol(name + "*").AppendSymbol("=");
+      if (EncodeContinuation(str, 0, sa) != str.length()) {
+        sa.Reset(oldcolumn, oldlength);
         int contin = 0;
         int index = 0;
         while (index < str.length()) {
@@ -630,7 +601,7 @@ import com.upokecenter.text.*;
      */
     @Override public String toString() {
       // NOTE: 76 is the maximum length of a line in an Internet
-      // message, and 14 is the length of "Content-Type: " (with trailing
+      // message header, and 14 is the length of "Content-Type: " (with trailing
       // space).
       SymbolAppender sa = new SymbolAppender(76, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
@@ -801,7 +772,7 @@ import com.upokecenter.text.*;
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
       // have US-ASCII as default. The text media types defined as of
-      // Jun. 21, 2018, are listed below:
+      // Jul. 11, 2018, are listed below:
       //
       // -- No default charset assumed: --
       //
@@ -816,7 +787,8 @@ import com.upokecenter.text.*;
       // vnd.motorola.reflex,
       // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript,
       // vnd.dvb.subtitle,
-      // vnd.fly, rtf, rfc822-headers, prs.prop.logic, vnd.ascii-art****
+      // vnd.fly, rtf, rfc822-headers, prs.prop.logic, vnd.ascii-art****,
+      // vnd.hgl*(6), vnd.gml
       //
       // Special procedure defined for charset detection:
       // -- ecmascript, javascript, html
@@ -832,7 +804,8 @@ import com.upokecenter.text.*;
       // charset is treated as default is irrelevant):
       // -- example
       //
-      // No default specified (after RFC6657):
+      // Uses charset parameter, but no default charset specified (after
+      // RFC6657):
       // -- markdown*
       //
       // -- US-ASCII assumed: --
@@ -842,9 +815,6 @@ import com.upokecenter.text.*;
       // vnd.in3d.spot*, vnd.abc, vnd.wap.wmlscript, vnd.curl,
       // vnd.fmi.flexstor, uri-list, directory
       //
-      // No charset parameter defined (7-bit encoding):
-      // vnd.gml
-      //
       // US-ASCII default:
       // -- plain, sgml, troff
       //
@@ -853,7 +823,7 @@ import com.upokecenter.text.*;
       // UTF-8 only:
       // -- vcard, jcr-cnd, cache-manifest
       //
-      // Charset parameter defined but is "always UTF-8":
+      // Charset parameter defined but is "always ... UTF-8":
       // -- n3, turtle, vnd.debian.copyright, provenance-notation
       //
       // UTF-8 default:
@@ -865,6 +835,7 @@ import com.upokecenter.text.*;
       // ** No explicit default, but says that "[t]he charset supported
       // by this revision of iCalendar is UTF-8."
       // *(5) No charset parameter defined.
+      // *(6) 8-bit encoding.
       // *** Default is UTF-8 "if 8-bit bytes are encountered" (even if
       // none are found, though, a 7-bit ASCII text is still also UTF-8).
       // **** Content containing non-ASCII bytes "should be rejected".
@@ -881,8 +852,7 @@ import com.upokecenter.text.*;
               sub.equals("enriched") || sub.equals("tab-separated-values") ||
               sub.equals("vnd.in3d.spot") || sub.equals("vnd.abc") ||
             sub.equals("vnd.wap.wmlscript") || sub.equals("vnd.curl") ||
-              sub.equals("vnd.fmi.flexstor") || sub.equals("uri-list") ||
-            sub.equals("vnd.gml")) {
+              sub.equals("vnd.fmi.flexstor") || sub.equals("uri-list")) {
           return "us-ascii";
         }
         // Media types that assume a default of UTF-8
@@ -937,7 +907,7 @@ import com.upokecenter.text.*;
       }
       String charset = value.substring(0, firstQuote);
       if (httpRules && charset.length() == 0) {
-        // charset is omitted, which is not allowed under RFC5987
+        // charset is omitted, which is not allowed under RFC8187
         return null;
       }
       String language = value.substring(
@@ -948,7 +918,7 @@ import com.upokecenter.text.*;
         return null;
       }
       String paramValue = value.substring(secondQuote + 1);
-      // NOTE: For HTTP (RFC 5987) no specific error-handling
+      // NOTE: For HTTP (RFC 8187) no specific error-handling
       // behavior is mandated for "encoding errors", which can
       // be interpreted as including unsupported or unrecognized
       // character encodings (see sec. 3.2.1).
@@ -1017,8 +987,8 @@ import com.upokecenter.text.*;
         int asterisk = name.indexOf('*');
         if (asterisk == name.length() - 1 && asterisk > 0) {
           // name*="value" (except when the parameter is just "*")
-          // NOTE: As of RFC 5987, this particular extension is now allowed
-          // in HTTP
+          // NOTE: As of RFC 5987 (now RFC 8187), this particular extension
+          // is now allowed in HTTP
           String realName = name.substring(0, name.length() - 1);
           String realValue = DecodeRfc2231Extension(value, httpRules);
           if (realValue == null) {
@@ -1026,7 +996,7 @@ import com.upokecenter.text.*;
           }
           parameters.remove(name);
           // NOTE: Overrides the name without continuations
-          // (also suggested by RFC5987 sec. 4.2)
+          // (also suggested by RFC8187 sec. 4.2)
           parameters.put(realName, realValue);
           continue;
         }
@@ -1060,7 +1030,7 @@ import com.upokecenter.text.*;
              charsetUsed);
               if (newEnc == null) {
                 // Contains a quote character in the encoding, so illegal
-                return false;
+                break;
               }
               builder.append(newEnc);
               parameters.remove(continEncoded);
@@ -1074,12 +1044,14 @@ import com.upokecenter.text.*;
           parameters.put(realName, realValue);
         }
       }
-      for (String name : parameters.keySet()) {
+      keyList = new ArrayList<String>(parameters.keySet());
+      for (String name : keyList) {
         // Check parameter names using stricter format
         // in RFC6838
         if (SkipMimeTypeSubtype(name, 0, name.length(), null) != name.length()) {
           // Illegal parameter name, so use default media type
-          return false;
+          //return false;
+          parameters.remove(name);
         }
       }
       return true;
@@ -1112,6 +1084,8 @@ import com.upokecenter.text.*;
  int endIndex,
       boolean httpRules,
  Map<String, String> parameters) {
+      HashMap<String, String> duplicateAttributes = new HashMap<String, String>();
+      boolean hasDuplicateAttributes = false;
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipOws
@@ -1136,10 +1110,19 @@ import com.upokecenter.text.*;
       endIndex,
       null);
         StringBuilder builder = new StringBuilder();
-        // NOTE: RFC6838 restricts the format of parameter names to the same
+        // NOTE:
+        // 1. RFC6838 restricts the format of parameter names to the same
         // syntax as types and subtypes, but this syntax is incompatible with
-        // the RFC2231 format
-        int afteratt = SkipAttributeNameRfc2231(
+        // the RFC2045 format for attributes (which is the same as for
+        // MIME tokens).
+        // 2. RFC2231 further restricts the syntax of MIME tokens to
+        // accommodate certain extensions, but this is not checked here; rather,
+        // RFC2231 extensions are handled after the attribute names and
+        // values are parsed; in this process, certain attribute names
+        // containing
+        // an asterisk will be deleted and replaced with other parameters.
+        // See also RFC 8187, sec. 3.2.1.
+        int afteratt = SkipMimeToken(
           str,
           index,
           endIndex,
@@ -1165,8 +1148,9 @@ import com.upokecenter.text.*;
         }
         attribute = DataUtilities.ToLowerCaseAscii(attribute);
         if (parameters.containsKey(attribute)) {
-          // System.out.println("Contains duplicate attribute " + attribute);
-          return false;
+          parameters.remove(attribute);
+          duplicateAttributes.put(attribute,"");
+          hasDuplicateAttributes = true;
         }
         ++index;
         if (!httpRules) {
@@ -1183,9 +1167,6 @@ import com.upokecenter.text.*;
         }
         builder.delete(0, (0)+(builder.length()));
         int qs;
-        // If the attribute name ends with '*' the value may not be a quoted
-        // String
-        if (attribute.charAt(attribute.length() - 1) != '*') {
           // try getting the value quoted
           qs = SkipQuotedString(
             str,
@@ -1197,17 +1178,25 @@ import com.upokecenter.text.*;
             qs = HeaderParser.ParseCFWS(str, qs, endIndex, null);
           }
           if (qs != index) {
-            parameters.put(attribute, builder.toString());
+            // If the attribute name ends with '*' the value may not be a quoted
+            // String because of RFC2231; if this happens, ignore the attribute
+            if (attribute.charAt(attribute.length() - 1) != '*' &&
+     (!hasDuplicateAttributes ||
+                !duplicateAttributes.containsKey(attribute))) {
+             parameters.put(attribute, builder.toString());
+            }
             index = qs;
             continue;
           }
           builder.delete(0, (0)+(builder.length()));
-        }
         // try getting the value unquoted
         // Note we don't use getAtom
         qs = SkipMimeToken(str, index, endIndex, builder, httpRules);
         if (qs != index) {
-          parameters.put(attribute, builder.toString());
+    if (!hasDuplicateAttributes ||
+            !duplicateAttributes.containsKey(attribute)) {
+             parameters.put(attribute, builder.toString());
+          }
           index = qs;
           continue;
         }
@@ -1301,10 +1290,8 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Parses a media type string and returns a media type object. This method
-     * checks the syntactic validity of the string, but not whether it has
-     * all parameters it's required to have or whether the parameters
-     * themselves are set to valid values for the parameter.
+     * Parses a media type string and returns a media type object. For further
+     * information, see the overload taking a MediaType parameter.
      * @param mediaTypeValue A text string representing a media type. This media
      * type can include parameters.
      * @return A media type object, or MediaType.TextPlainAscii if {@code
@@ -1319,7 +1306,21 @@ import com.upokecenter.text.*;
      * value if the string is invalid. This method checks the syntactic
      * validity of the string, but not whether it has all parameters it's
      * required to have or whether the parameters themselves are set to
-     * valid values for the parameter.
+     * valid values for the parameter. <p>RFC 2231 extensions allow each
+     * media type parameter to be associated with a character encoding
+     * and/or language, and support parameter values that span two or more
+     * key-value pairs. Parameters making use of RFC 2231 extensions have
+     * names with an asterisk ("*"). Such a parameter will be ignored if it
+     * is ill-formed because of RFC 2231's rules (except for illegal
+     * percent-decoding or undecodable sequences for the given character
+     * enoding). Examples of RFC 2231 extensions follow (both examples
+     * encode the same "filename" parameter):</p> <p><b>text/example;
+     * filename*=utf-8'en'filename.txt</b></p> <p><b>text/example;
+     * filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b></p> <p>This
+     * implementation ignores keys (in parameter key-value pairs) that
+     * appear more than once in the media type. Nothing in RFCs 2045, 2183,
+     * 6266, or 7231 explicitly disallows such keys, or otherwise specifies
+     * error-handling behavior for such keys.</p>
      * @param str A text string representing a media type. This media type can
      * include parameters.
      * @param defaultValue The media type to return if the string is syntactically

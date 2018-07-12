@@ -277,7 +277,7 @@ if (!(boolTemp)) {
     public void TestRfc2231ExtensionsEndPercent() {
       // Tests to check percent encoding at end, ensuring
       // that an infinite-decoding-loop bug does not reappear.
-      // NOTE: RFC5987 doesn't mandate any particular
+      // NOTE: RFC8187 doesn't mandate any particular
       // error handling behavior here
       TestRfc2231Extension(";param1*=utf-8''example%", "param1", "example%");
       TestRfc2231Extension(";param1*=utf-8''example%;param2=x", "param1",

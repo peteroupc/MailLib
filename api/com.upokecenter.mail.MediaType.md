@@ -239,10 +239,8 @@ Gets the top level type and subtype of this media type, separated by a
 
 ### Parse
     public static MediaType Parse​(String mediaTypeValue)
-Parses a media type string and returns a media type object. This method
- checks the syntactic validity of the string, but not whether it has
- all parameters it's required to have or whether the parameters
- themselves are set to valid values for the parameter.
+Parses a media type string and returns a media type object. For further
+ information, see the overload taking a MediaType parameter.
 
 **Parameters:**
 
@@ -260,7 +258,21 @@ Parses a media type string and returns a media type object, or the default
  value if the string is invalid. This method checks the syntactic
  validity of the string, but not whether it has all parameters it's
  required to have or whether the parameters themselves are set to
- valid values for the parameter.
+ valid values for the parameter. <p>RFC 2231 extensions allow each
+ media type parameter to be associated with a character encoding
+ and/or language, and support parameter values that span two or more
+ key-value pairs. Parameters making use of RFC 2231 extensions have
+ names with an asterisk ("*"). Such a parameter will be ignored if it
+ is ill-formed because of RFC 2231's rules (except for illegal
+ percent-decoding or undecodable sequences for the given character
+ enoding). Examples of RFC 2231 extensions follow (both examples
+ encode the same "filename" parameter):</p> <p><b>text/example;
+ filename*=utf-8'en'filename.txt</b></p> <p><b>text/example;
+ filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b></p> <p>This
+ implementation ignores keys (in parameter key-value pairs) that
+ appear more than once in the media type. Nothing in RFCs 2045, 2183,
+ 6266, or 7231 explicitly disallows such keys, or otherwise specifies
+ error-handling behavior for such keys.</p>
 
 **Parameters:**
 

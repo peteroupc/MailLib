@@ -6,24 +6,9 @@ import org.junit.Test;
 import com.upokecenter.mail.*;
 
   public class MediaTypeTest {
-    private static Map<String, String> MakeDict(String...
-      keyvalues) {
-      if (keyvalues == null) {
-        throw new NullPointerException("keyvalues");
-      }
-      if (keyvalues.length % 2 != 0) {
-        throw new IllegalArgumentException("keyvalues");
-      }
-      HashMap<String, String> dict = new HashMap<String, String>();
-      for (int i = 0; i < keyvalues.length; i += 2) {
-        dict.put((String)keyvalues[i], keyvalues[i + 1]);
-      }
-      return dict;
-    }
-
     private static Map<String, String>[] testMediaTypes = new
       Map<String, String>[] {
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "multipart/example",
   "toplevel",
@@ -34,7 +19,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "multipart/example;x=y",
   "toplevel",
@@ -45,7 +30,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "MULTIPART/example",
   "toplevel",
@@ -56,7 +41,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "MULTIPART/example;x=y",
   "toplevel",
@@ -67,7 +52,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "MuLtIpArT/example",
   "toplevel",
@@ -78,7 +63,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "MuLtIpArT/example;x=y",
   "toplevel",
@@ -89,7 +74,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "multipart/EXAMPLE",
   "toplevel",
@@ -100,7 +85,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "multipart/EXAMPLE;x=y",
   "toplevel",
@@ -111,7 +96,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "MuLtIpArT/EXAMPLE",
   "toplevel",
@@ -122,7 +107,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "MuLtIpArT/EXAMPLE;x=y",
   "toplevel",
@@ -133,7 +118,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "multipart/ExAmPlE",
   "toplevel",
@@ -144,7 +129,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "multipart/ExAmPlE;x=y",
   "toplevel",
@@ -155,7 +140,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "multipart/eXaMpLe",
   "toplevel",
@@ -166,7 +151,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "multipart/eXaMpLe;x=y",
   "toplevel",
@@ -177,7 +162,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "MuLtIpArT/eXaMpLe",
   "toplevel",
@@ -188,7 +173,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "MuLtIpArT/eXaMpLe;x=y",
   "toplevel",
@@ -199,7 +184,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "multi-part/example",
   "toplevel",
@@ -210,7 +195,7 @@ import com.upokecenter.mail.*;
   "0",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "font/otf",
   "toplevel",
@@ -221,7 +206,7 @@ import com.upokecenter.mail.*;
   "0",
   "text",
   "0"),
-  MakeDict(
+  DictUtility.MakeDict(
   "name",
   "message/alternative",
   "toplevel",
@@ -232,7 +217,7 @@ import com.upokecenter.mail.*;
   "0",
   "text",
   "0"),
-  MakeDict(
+  DictUtility.MakeDict(
   "name",
   "multipart/alternative",
   "toplevel",
@@ -243,7 +228,7 @@ import com.upokecenter.mail.*;
   "1",
   "text",
   "0"),
-  MakeDict(
+  DictUtility.MakeDict(
   "name",
   "multi-part/example;x=y",
   "toplevel",
@@ -254,7 +239,7 @@ import com.upokecenter.mail.*;
   "0",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "texb/example",
   "toplevel",
@@ -265,7 +250,7 @@ import com.upokecenter.mail.*;
   "0",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "texb/example;x=y",
   "toplevel",
@@ -276,7 +261,7 @@ import com.upokecenter.mail.*;
   "0",
   "text",
   "0"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "text/example",
   "toplevel",
@@ -287,7 +272,7 @@ import com.upokecenter.mail.*;
   "0",
   "text",
   "1"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "text/example;x=y",
   "toplevel",
@@ -298,7 +283,7 @@ import com.upokecenter.mail.*;
   "0",
   "text",
   "1"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "TEXT/example",
   "toplevel",
@@ -309,7 +294,7 @@ import com.upokecenter.mail.*;
   "0",
   "text",
   "1"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "TEXT/example;x=y",
   "toplevel",
@@ -320,7 +305,7 @@ import com.upokecenter.mail.*;
   "0",
   "text",
   "1"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "TexT/example",
   "toplevel",
@@ -331,7 +316,7 @@ import com.upokecenter.mail.*;
   "0",
   "text",
   "1"),
-      MakeDict(
+      DictUtility.MakeDict(
   "name",
   "TexT/example;x=y",
   "toplevel",
@@ -447,8 +432,7 @@ import com.upokecenter.mail.*;
                   stringTemp);
       }
       {
- String stringTemp =
-          MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8")
+ String stringTemp = MediaType.Parse("text/plain; charset (cmt) = (cmt) UTF-8")
              .GetCharset();
         Assert.assertEquals(
                   "utf-8",
@@ -485,16 +469,14 @@ import com.upokecenter.mail.*;
                   stringTemp);
       }
       {
-    String stringTemp =
-          MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"")
+    String stringTemp = MediaType.Parse("text/plain; foo='; charset=\"UTF-8\"")
        .GetCharset();
         Assert.assertEquals(
                   "utf-8",
                   stringTemp);
       }
       {
-  String stringTemp =
-          MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"")
+  String stringTemp = MediaType.Parse("text/plain; foo=bar; charset=\"UTF-8\"")
            .GetCharset();
         Assert.assertEquals(
                   "utf-8",
@@ -576,9 +558,63 @@ import com.upokecenter.mail.*;
         Assert.assertEquals(objectTemp, objectTemp2);
       }
     }
+    static Map<String, String>[] testParamTypes = new
+      Map<String, String>[] {
+DictUtility.MakeDict("params",";filename=x.y","filename","x.y"),
+  DictUtility.MakeDict("params",";filename=\"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";filename    =    x.y","filename","x.y"),
+  DictUtility.MakeDict("params",";filename    =    \"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";filename=    x.y","filename","x.y"),
+  DictUtility.MakeDict("params",";filename=    \"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";filename    =x.y","filename","x.y"),
+  DictUtility.MakeDict("params",";filename    =\"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";filename=x.y    ","filename","x.y"),
+  DictUtility.MakeDict("params",";filename=\"cc\"    ","filename","cc"),
+  DictUtility.MakeDict("params" ,";filename=\"ccaaaaaaaaaaaaaaaaaaaa\"",
+"filename" ,"ccaaaaaaaaaaaaaaaaaaaa"),
+  DictUtility.MakeDict("params" ,";filename=\"ccaaaaaaa,;=aaaaaaaaaaa\"",
+"filename" ,"ccaaaaaaa,;=aaaaaaaaaaa"),
+  DictUtility.MakeDict("params" ,";filename=\"ccaaaaaaa,;e1=xxx;e2=yyy\"",
+"filename" ,"ccaaaaaaa,;e1=xxx;e2=yyy"),
+  DictUtility.MakeDict("params" ,";filename=\"cc\\a\\b\\c\\1\\2\\3\"",
+"filename" ,"ccabc123"),
+  DictUtility.MakeDict("params" ,";filename=\"cc\\\\\\'\\\"\\[\\]\"",
+"filename" ,"cc\\'\"[]"),
+  DictUtility.MakeDict("params",";filename=\"cc%\\ab\"","filename","cc%ab"),
+  DictUtility.MakeDict("params",";filename=\"\u00e7\"","filename","\u00e7"),
+  DictUtility.MakeDict("params",";filename=e's","filename","e's"),
+  DictUtility.MakeDict("params",";filename='es","filename","'es"),
+  DictUtility.MakeDict("params",";filename='es'","filename","'es'"),
+  DictUtility.MakeDict("params" ,";filename=utf-8'en'example" ,"filename",
+"utf-8'en'example"),
+  DictUtility.MakeDict("params" ,";filename=utf-8''example" ,"filename",
+"utf-8''example"),
+  DictUtility.MakeDict("params",";filename=\"%ab\u00e7\"","filename","%ab\u00e7"),
+  DictUtility.MakeDict("params" ,";filename=\"%ab\u00c2\u00a0\"" ,"filename",
+"%ab\u00c2\u00a0"),
+  DictUtility.MakeDict("params",";filename=\"cc%\\66\"","filename","cc%66"),
+  DictUtility.MakeDict("params",";filename=\"cc%xy\"","filename","cc%xy"),
+  DictUtility.MakeDict("params" ,";filename=\"cc\\\"x\\\"y\"" ,"filename",
+"cc\"x\"y"),
+  DictUtility.MakeDict("params",";FILENAME=x.y","filename","x.y"),
+  DictUtility.MakeDict("params",";FILENAME=\"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";FiLeNaMe=x.y","filename","x.y"),
+  DictUtility.MakeDict("params",";FiLeNaMe=\"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";fIlEnAmE=x.y","filename","x.y"),
+  DictUtility.MakeDict("params",";fIlEnAmE=\"cc\"","filename","cc"),
+  DictUtility.MakeDict("params",";filename=\"\\\\ab\"","filename","\\ab")
+// DictUtility.MakeDict("params",";notfilename=x.y","filename",null),
+  // DictUtility.MakeDict("params",";notfilename=\"cc\"","filename",null),
+  };
+
     @Test
     public void TestGetParameter() {
-      // not implemented yet
+      foreach (Map<String, String> dict in testParamTypes) {
+        MediaType mt = MediaType.Parse("x/x"+ dict.get("params"));
+        Assert.assertEquals(
+          dict.get("filename"),
+          mt.GetParameter("filename"));
+      }
     }
     @Test
     public void TestIsMultipart() {
@@ -766,6 +802,13 @@ import com.upokecenter.mail.*;
   "tes%xx",
   "tes%xx");
       TestPercentEncodingOne("tes%dxx", "tes%dxx");
+    }
+
+    @Test
+    public void TestParseErrors() {
+      for (String str : ContentDispositionTest.ParseErrors) {
+        Assert.IsNull(MediaType.Parse("text/plain"+ str,null), str);
+      }
     }
 
     private static void TestPercentEncodingOne(String expected, String input) {
