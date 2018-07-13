@@ -359,31 +359,10 @@ public final void setContentType(MediaType value) {
      * ContentDisposition.MakeFilename.</p> <p>This method generates a file
      * name based on the <code>filename</code> parameter of the
      * Content-Disposition header field, if it exists, or on the <code>name</code>
-     * parameter of the Content-Type header field, otherwise.</p><p>
-     * <p><b>Remark:</b> Note that RFC 2046 sec. 4.5.1
-     * (<code>application/octet-stream</code> subtype) cites an earlier RFC 1341,
-     * which "defined the use of a 'NAME' parameter which gave a
-     * <i>suggested</i> file name to be used if the data were written to a
-     * file". (Although the same section says this parameter "has been
-     * deprecated in anticipation of [the] Content-Disposition header
-     * field", the <code>name</code> parameter may still be written out to email
-     * messages in some implementations, even in media types other than
-     * <code>application/octet-stream</code>.) Also, RFC 2183 sec. 2.3
-     * (<code>filename</code> parameter) confirms that the "<i>suggested</i>
-     * filename" in the <code>filename</code> parameter "should be <i>used as a
-     * basis</i> for the actual filename, where possible", and that that
-     * file name should "not [be] blindly use[d]". See also RFC 6266,
-     * section 4.3, which discusses the use of that parameter in Hypertext
-     * Transfer Protocol (HTTP). Thus, this implementation is justified in
-     * not using the exact file name given, but rather adapting it to
-     * increase the chance of the name being usable in file systems.</p>
-     * <p>To the extent that the "name" parameter is not allowed in message
-     * bodies with the media type "application/octet-stream" or treated as
-     * that media-type, this is a deviation of RFC 2045 and 2046 (see also
-     * RFC 2045 sec. 5, which says that "[t]here are NO globally meaningful
-     * parameters that apply to all media types").</p> </p>
-     * @return A suggested name for the file, or the empty string if there is no
-     * filename suggested by the content type or content disposition.
+     * parameter of the Content-Type header field, otherwise.</p>
+     * @return A suggested name for the file. Returns "_" if there is no filename
+     * suggested by the content type or content disposition, or if that
+     * filename is an empty string.
      */
     public final String getFileName() {
         ContentDisposition disp = this.contentDisposition;
@@ -1249,7 +1228,7 @@ public final void setSubject(String value) {
       int[] status) {
       int index;
       if (
-        HasTextToEscapeIgnoreEncodedWords(
+        HasTextToEscape(
           headerValue,
           0,
           headerValue.length())) {
@@ -1310,7 +1289,7 @@ public final void setSubject(String value) {
           }
         }
         if (
-          HasTextToEscapeIgnoreEncodedWords(
+          HasTextToEscape(
             headerValue,
             0,
             headerValue.length())) {
@@ -1348,15 +1327,19 @@ public final void setSubject(String value) {
       return sb.toString();
     }
 
-    static boolean HasTextToEscape(String s) {
-      // <summary>Returns true if the String has: * non-ASCII characters *
-      // "=?" * CTLs other than tab, or * a word longer than 75 characters.
-      // Can return false even if the String has: * CRLF followed by a line
-      // with just whitespace.</summary>
-      return HasTextToEscape(s, 0, s.length());
+    static boolean HasTextToEscapeOrEncodedWordStarts(String s) {
+      // <summary>Returns true if the String has:
+      // * non-ASCII characters
+      //  * "=?"
+      // * CTLs other than tab, or
+      // * a word longer than 75 characters.
+      // Can return false even if the String has:
+      // * CRLF followed by a line with just whitespace.</summary>
+      return HasTextToEscapeOrEncodedWordStarts(s, 0, s.length());
     }
 
-    static boolean HasTextToEscape(String s, int index, int endIndex) {
+    static boolean HasTextToEscapeOrEncodedWordStarts(String s, int
+      index, int endIndex) {
       int len = endIndex;
       int chunkLength = 0;
       for (int i = index; i < endIndex; ++i) {
@@ -1400,7 +1383,7 @@ public final void setSubject(String value) {
       return false;
     }
 
-    static boolean HasTextToEscapeIgnoreEncodedWords(
+    static boolean HasTextToEscape(
       String s,
       int index,
       int endIndex) {
@@ -2233,11 +2216,11 @@ public final void setSubject(String value) {
           if (rawField.indexOf(": ") < 0) {
             throw new MessageDataException("No colon+space: " + rawField);
           }
-        } else if (HasTextToEscape(value)) {
+        } else if (HasTextToEscapeOrEncodedWordStarts(value)) {
           String downgraded =
             HeaderFieldParsers.GetParser(name).DowngradeFieldValue(value);
           if (
-            HasTextToEscapeIgnoreEncodedWords(
+            HasTextToEscape(
               downgraded,
               0,
               downgraded.length())) {

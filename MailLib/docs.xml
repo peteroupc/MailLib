@@ -463,7 +463,7 @@ in practice, the Content-Type header field's <c>name</c> parameter.</para>
 by some implementations, this practice is discouraged by some (especially since
 the RFC itself says that encoded words "MUST NOT appear within a 'quoted-string'").
 Nevertheless, the MakeFilename method has a basis in the RFCs to decode RFC 2047
-encoded words (and RFC 2231 encoding) in filenames passed to this method.</para>
+encoded words (and RFC 2231 encoding) in file names passed to this method.</para>
 <para>RFC 2046 sec. 4.5.1 (<c>application/octet-stream</c> subtype
 in Content-Type header field) cites an earlier RFC 1341, which "defined the use
 of a 'NAME' parameter which gave a <i>suggested</i> file name to be used if the

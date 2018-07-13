@@ -913,7 +913,7 @@ namespace PeterO.Mail {
       int[] status) {
       int index;
       if (
-        HasTextToEscapeIgnoreEncodedWords(
+        HasTextToEscape(
           headerValue,
           0,
           headerValue.Length)) {
@@ -974,7 +974,7 @@ namespace PeterO.Mail {
           }
         }
         if (
-          HasTextToEscapeIgnoreEncodedWords(
+          HasTextToEscape(
             headerValue,
             0,
             headerValue.Length)) {
@@ -1012,15 +1012,19 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    internal static bool HasTextToEscape(string s) {
-      // <summary>Returns true if the string has: * non-ASCII characters *
-      // "=?" * CTLs other than tab, or * a word longer than 75 characters.
-      // Can return false even if the string has: * CRLF followed by a line
-      // with just whitespace.</summary>
-      return HasTextToEscape(s, 0, s.Length);
+    internal static bool HasTextToEscapeOrEncodedWordStarts(string s) {
+      // <summary>Returns true if the string has:
+      // * non-ASCII characters
+      //  * "=?"
+      // * CTLs other than tab, or
+      // * a word longer than 75 characters.
+      // Can return false even if the string has:
+      // * CRLF followed by a line with just whitespace.</summary>
+      return HasTextToEscapeOrEncodedWordStarts(s, 0, s.Length);
     }
 
-    internal static bool HasTextToEscape(string s, int index, int endIndex) {
+    internal static bool HasTextToEscapeOrEncodedWordStarts(string s, int
+      index, int endIndex) {
       int len = endIndex;
       var chunkLength = 0;
       for (int i = index; i < endIndex; ++i) {
@@ -1064,7 +1068,7 @@ namespace PeterO.Mail {
       return false;
     }
 
-    internal static bool HasTextToEscapeIgnoreEncodedWords(
+    internal static bool HasTextToEscape(
       string s,
       int index,
       int endIndex) {
@@ -1905,11 +1909,11 @@ namespace PeterO.Mail {
           if (rawField.IndexOf(": ", StringComparison.Ordinal) < 0) {
             throw new MessageDataException("No colon+space: " + rawField);
           }
-        } else if (HasTextToEscape(value)) {
+        } else if (HasTextToEscapeOrEncodedWordStarts(value)) {
           string downgraded =
             HeaderFieldParsers.GetParser(name).DowngradeFieldValue(value);
           if (
-            HasTextToEscapeIgnoreEncodedWords(
+            HasTextToEscape(
               downgraded,
               0,
               downgraded.Length)) {
