@@ -12,6 +12,8 @@ If you like this software, consider donating to me at this link: [http://peterou
 
 A portable library in C# and Java for parsing and generating Internet mail messages.
 
+Note that sending and receiving email messages is outside the scope of this library; however, an application that sends and/or receives such messages can use this library to help interpret those messages.
+
 Documentation
 ------------
 
@@ -68,9 +70,20 @@ An example of reading an email message from a file:
 Release Notes
 ---------
 
+Version 0.11.0:
+
+- Corrected the documentation for MediaType's and ContentDisposition's Parameters properties
+- Added DisplayName property in NamedAddress class
+- More robust ContentDisposition.MakeFilename method
+- Update Unicode data
+- Converted to .NET Standard
+- Updated Encoding library used
+- Supported parsing several new header fields
+- Bug fixes
+
 Version 0.10.0:
 
-- Character encoding conversion library moved out of this library (see [PeterO.Encoding](https://github.com/peteroupc/Encoding); currently uses version 2.0 of that library.
+- Character encoding conversion library moved out of this library (see [PeterO.Encoding](https://github.com/peteroupc/Encoding); currently uses version 0.2.0 of that library.
 - Updated normalization and IDNA data to Unicode 9.0
 - Normalization implementation renamed to NormalizerInput from NormalizerCharacterInput; the latter class is now deprecated
 - Add GetHeaderArray, SetDate, and GetDate methods of Message class

@@ -806,7 +806,7 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
       if (index == endIndex) {
         return String.Empty;
       }
-      if (!Message.HasTextToEscape(str, index, endIndex)) {
+      if (!Message.HasTextToEscapeOrEncodedWordStarts(str, index, endIndex)) {
         // No need to use encoded words
         return str.Substring(index, endIndex - index);
       }

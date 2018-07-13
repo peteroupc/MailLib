@@ -786,7 +786,7 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
       if (index == endIndex) {
         return "";
       }
-      if (!Message.HasTextToEscape(str, index, endIndex)) {
+      if (!Message.HasTextToEscapeOrEncodedWordStarts(str, index, endIndex)) {
         // No need to use encoded words
         return str.substring(index, (index)+(endIndex - index));
       }
