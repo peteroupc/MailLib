@@ -163,6 +163,9 @@ namespace PeterO.Mail {
               } else if (c == 0x46 && this.lineCount == 0) {
                 this.machineState = 3;
                 return count;
+              } else if (c == 0x2d && this.lineCount == 0) {
+                this.machineState = 9;
+                return count;
               } else if (c == 0x20) {
                 this.machineState = 7;
                 return count;
@@ -337,6 +340,19 @@ namespace PeterO.Mail {
               } else {
                 count += this.IncrementAndAppendChar(output, ' ');
                 count += this.IncrementAndAppend(output, "=0D");
+                this.machineState = 0;
+                continue;
+              }
+            }
+          case 9: {
+              // Hyphen at beginning of line (may start boundary delimiter)
+              if (c == (byte)'-') {
+                count += this.IncrementAndAppend(output, "=2D");
+                count += this.IncrementAndAppendChar(output, (char)'-');
+                this.machineState = 0;
+                return count;
+              } else {
+                count += this.IncrementAndAppendChar(output, (char)'-');
                 this.machineState = 0;
                 continue;
               }

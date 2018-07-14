@@ -380,7 +380,8 @@
 </doc>
 <doc name="P:PeterO.Mail.ContentDisposition.DispositionType">
 <summary>Gets a string containing this object's disposition type,
-            such as "inline" or "attachment".</summary>
+            such as "inline" or "attachment".  Note that under RFC 6266 sec. 4.2 and RFC 2183 sec. 2.8,
+unrecognized disposition types should be treated as "attachment".</summary>
             <value>A string containing this object&apos;s disposition type,
             such as &quot;inline&quot; or &quot;attachment&quot;.</value>
 </doc>
@@ -653,7 +654,11 @@ deprecated that parameter.) </para>
             media types.</para>
             <para>This type is immutable, meaning its values can't be changed
             once it' s created. To create a changeable media type object, use
-            the MediaTypeBuilder class.</para></summary>
+            the MediaTypeBuilder class.</para>
+           <para><b>Note:</b> According to RFC 2049, unrecognized subtypes
+of the top-level type <c>multipart</c> must be treated as <c>multipart/mixed</c>
+and unrecognized media types as the media type <c>application/octet-stream</c>.</para>
+</summary>
 </doc>
 <doc name="F:PeterO.Mail.MediaType.ApplicationOctetStream">
 <summary>Specifies the media type "application/octet-stream", used
@@ -791,7 +796,8 @@ deprecated that parameter.) </para>
 </doc>
 <doc name="P:PeterO.Mail.MediaType.TypeAndSubType">
 <summary>Gets the top level type and subtype of this media type,
-            separated by a slash; for example, "text/plain".</summary>
+            separated by a slash; for example, "text/plain".
+</summary>
             <value>The top level type and subtype of this media type, separated
             by a slash; for example, &quot;text/plain&quot;.</value>
 </doc>
@@ -968,6 +974,8 @@ rule only concerns bringing the output device back to "ASCII mode" after the dec
 is displayed (see last paragraph of sec. 6.2) -- since the decoded text is converted
 to Unicode rather than kept as ISO-2022-JP, this is not applicable since there is
 no such thing as "ASCII mode" in the Unicode Standard.</para>
+<para>Note that this library (the MailLib library) has no facilities for sending and
+    receiving email messages, since that's outside this library's scope.</para>
 </summary>
 </doc>
 <doc name="M:PeterO.Mail.Message.#ctor">

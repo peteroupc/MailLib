@@ -1690,7 +1690,19 @@ string stringTemp =
       return DowngradeHeaderField("subject", str);
     }
 
+
+    private sealed class HeaderInfo {
+      public string header;
+      public Message message;
+      public HeaderInfo(string header, Message message) {
+        this.header = header;
+        this.message = message;
+      }
+    }
     private static string DowngradeHeaderField(string name, string value) {
+      return DowngradeHeaderFieldEx(name, value).header;
+    }
+    private static HeaderInfo DowngradeHeaderFieldEx(string name, string value) {
       string msgstr;
       msgstr = name + ": " + value + "\r\n";
       if (!name.Equals("from")) {
@@ -1702,8 +1714,39 @@ string stringTemp =
       int io = gen.IndexOf('\r');
       int colon = gen.IndexOf(':');
       gen = gen.Substring(colon + 2, io - (colon + 2));
-      return gen;
+      return new HeaderInfo(gen, MessageTest.MessageFromString(msgstr));
     }
+
+
+    private static void TestDowngradeAddressOne(
+      string header, string value,
+      string displayName, string localPart, string domain) {
+      HeaderInfo hinfo = DowngradeHeaderFieldEx(header, value);
+      Console.WriteLine(header);
+      Console.WriteLine(value);
+      Console.WriteLine(hinfo.header);
+      var address = new NamedAddress(hinfo.message.GetHeader(header));
+      Assert.AreEqual(displayName, address.DisplayName);
+      Assert.AreEqual(localPart, address.Address.LocalPart);
+      Assert.AreEqual(domain, address.Address.Domain);
+
+    }
+
+    private static string[] addressHeaderFields ={"from","to","cc","bcc",
+"disposition-notification-to","sender"};
+    [Test]
+    public void TestDowngradeAddress() {
+      foreach (string header in addressHeaderFields) {
+        TestDowngradeAddressOne(header, "down\u00begrade <down@example.com>",
+             "down\u00begrade", "down", "example.com");
+        TestDowngradeAddressOne(header, "downgrade <down@example.c\u00e7m>",
+             "downgrade", "down", "example.c\u00e7m");
+        TestDowngradeAddressOne(header, "downgrade <down@c\u00e7m.example>",
+             "downgrade", "down", "c\u00e7m.example");
+      }
+    }
+
+
 
     // [Test]
     public void TestCommentsToWords() {
@@ -2221,9 +2264,6 @@ string stringTemp =
     public void TestRandomEncodedBytes() {
       var rnd = new RandomGenerator();
       for (var i = 0; i < 10000; ++i) {
-        if (i % 100 == 0) {
-          // Console.WriteLine (i);
-        }
         byte[] bytes = RandomBytes(rnd);
         TestEncodedBytesRoundTrip(bytes, false);
       }
@@ -2238,9 +2278,28 @@ string stringTemp =
       TestEncodedBytesRoundTrip("T \r\r\nA");
       TestEncodedBytesRoundTrip("T \r");
       TestEncodedBytesRoundTrip("T \r\r");
+      TestEncodedBytesRoundTrip("The Best\r\nFrom Me");
+      TestEncodedBytesRoundTrip("The Best\r\nGood ");
+      TestEncodedBytesRoundTrip("The Best\r\nFrom ");
+      TestEncodedBytesRoundTrip("The Best\r\nFrom");
+      TestEncodedBytesRoundTrip("The Best\r\nFro");
+      TestEncodedBytesRoundTrip("The Best\r\nFr");
+      TestEncodedBytesRoundTrip("The Best\r\nF");
+      TestEncodedBytesRoundTrip("The Best\r\n--?");
+      TestEncodedBytesRoundTrip("The Best\r\n-?");
+      TestEncodedBytesRoundTrip("The Best\r\n--");
+      TestEncodedBytesRoundTrip("The Best\r\n-");
       TestEncodedBytesRoundTrip("T\u000best\r\nFrom Me");
       TestEncodedBytesRoundTrip("T\u000best\r\nGood ");
       TestEncodedBytesRoundTrip("T\u000best\r\nFrom ");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFrom");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFro");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFr");
+      TestEncodedBytesRoundTrip("T\u000best\r\nF");
+      TestEncodedBytesRoundTrip("T\u000best\r\n--?");
+      TestEncodedBytesRoundTrip("T\u000best\r\n-?");
+      TestEncodedBytesRoundTrip("T\u000best\r\n--");
+      TestEncodedBytesRoundTrip("T\u000best\r\n-");
       TestEncodedBytesRoundTrip("T\u000best\r\nFromMe");
       TestEncodedBytesRoundTrip("T\u000best\r\nFroMe");
       TestEncodedBytesRoundTrip("T\u000best\r\nFrMe");

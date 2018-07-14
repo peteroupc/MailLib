@@ -370,7 +370,7 @@ namespace PeterO.Mail {
   field,
   0,
   field.Length,
-  date) != 0 ? date : null;
+  date, true) != 0 ? date : null;
     }
 
     /// <include file='../../docs.xml'

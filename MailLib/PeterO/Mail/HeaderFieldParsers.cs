@@ -472,7 +472,7 @@ namespace PeterO.Mail {
       public string DecodeEncodedWords(string str) {
 #if DEBUG
         if (str == null) {
-          throw new ArgumentNullException("str");
+          throw new ArgumentNullException(nameof(str));
         }
 #endif
 
