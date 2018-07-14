@@ -336,6 +336,7 @@ private static MediaType ParseAndTestAspects(String s) {
 }
       return mt;
     }
+
     private static MediaType ParseAndTestAspects(String s, MediaType defvalue) {
       MediaType mt = MediaType.Parse(s, defvalue);
       if (mt == null) {
@@ -343,6 +344,7 @@ private static MediaType ParseAndTestAspects(String s) {
 }
       return mt;
     }
+
     private static void TestAspects(MediaType mt) {
       if (mt == null) {
  return;
@@ -350,14 +352,14 @@ private static MediaType ParseAndTestAspects(String s) {
       // Test round-tripping
       String str = mt.toString();
       MediaType mt2 = MediaType.Parse(str, null);
-      if ((mt2) == null) {
+      if (mt2 == null) {
  Assert.fail();
  }
       Assert.assertEquals(str, mt2.toString());
       TestCommon.AssertEqualsHashCode(mt, mt2);
       str = mt.ToSingleLineString();
       mt2 = MediaType.Parse(str, null);
-      if ((mt2) == null) {
+      if (mt2 == null) {
  Assert.fail();
  }
       Assert.assertEquals(str, mt2.ToSingleLineString());
@@ -520,8 +522,7 @@ private static MediaType ParseAndTestAspects(String s) {
                   stringTemp);
       }
       {
-     String stringTemp =
-          ParseAndTestAspects("text/plain; charset=\"UTF-\\8\"")
+     String stringTemp = ParseAndTestAspects("text/plain; charset=\"UTF-\\8\"")
 .GetCharset();
         Assert.assertEquals(
                   "utf-8",
@@ -533,8 +534,12 @@ private static MediaType ParseAndTestAspects(String s) {
                   "us-ascii",
                   stringTemp);
       }
-   Assert.assertEquals("", ParseAndTestAspects("text/xyz")
-.GetCharset());
+   {
+Object objectTemp = "";
+Object objectTemp2 = ParseAndTestAspects("text/xyz")
+.GetCharset();
+Assert.assertEquals(objectTemp, objectTemp2);
+}
       {
         Object objectTemp = "utf-8";
         Object objectTemp2 = ParseAndTestAspects("text/xyz;charset=UTF-8")
@@ -597,57 +602,93 @@ private static MediaType ParseAndTestAspects(String s) {
         Assert.assertEquals(objectTemp, objectTemp2);
       }
     }
-    static Map<String, String>[] testParamTypes = new
+
+    private static Map<String, String>[] ValueTestParamTypes = new
       Map<String, String>[] {
-DictUtility.MakeDict("params",";filename=x.y","filename","x.y"),
-  DictUtility.MakeDict("params",";filename=\"cc\"","filename","cc"),
-  DictUtility.MakeDict("params",";filename    =    x.y","filename","x.y"),
-  DictUtility.MakeDict("params",";filename    =    \"cc\"","filename","cc"),
-  DictUtility.MakeDict("params",";filename=    x.y","filename","x.y"),
-  DictUtility.MakeDict("params",";filename=    \"cc\"","filename","cc"),
-  DictUtility.MakeDict("params",";filename    =x.y","filename","x.y"),
-  DictUtility.MakeDict("params",";filename    =\"cc\"","filename","cc"),
-  DictUtility.MakeDict("params",";filename=x.y    ","filename","x.y"),
-  DictUtility.MakeDict("params",";filename=\"cc\"    ","filename","cc"),
-  DictUtility.MakeDict("params" ,";filename=\"ccaaaaaaaaaaaaaaaaaaaa\"",
-"filename" ,"ccaaaaaaaaaaaaaaaaaaaa"),
-  DictUtility.MakeDict("params" ,";filename=\"ccaaaaaaa,;=aaaaaaaaaaa\"",
-"filename" ,"ccaaaaaaa,;=aaaaaaaaaaa"),
-  DictUtility.MakeDict("params" ,";filename=\"ccaaaaaaa,;e1=xxx;e2=yyy\"",
-"filename" ,"ccaaaaaaa,;e1=xxx;e2=yyy"),
-  DictUtility.MakeDict("params" ,";filename=\"cc\\a\\b\\c\\1\\2\\3\"",
-"filename" ,"ccabc123"),
-  DictUtility.MakeDict("params" ,";filename=\"cc\\\\\\'\\\"\\[\\]\"",
-"filename" ,"cc\\'\"[]"),
-  DictUtility.MakeDict("params",";filename=\"cc%\\ab\"","filename","cc%ab"),
-  DictUtility.MakeDict("params",";filename=\"\u00e7\"","filename","\u00e7"),
-  DictUtility.MakeDict("params",";filename=e's","filename","e's"),
-  DictUtility.MakeDict("params",";filename='es","filename","'es"),
-  DictUtility.MakeDict("params",";filename='es'","filename","'es'"),
-  DictUtility.MakeDict("params" ,";filename=utf-8'en'example" ,"filename",
-"utf-8'en'example"),
-  DictUtility.MakeDict("params" ,";filename=utf-8''example" ,"filename",
-"utf-8''example"),
-  DictUtility.MakeDict("params",";filename=\"%ab\u00e7\"","filename","%ab\u00e7"),
-  DictUtility.MakeDict("params" ,";filename=\"%ab\u00c2\u00a0\"" ,"filename",
-"%ab\u00c2\u00a0"),
-  DictUtility.MakeDict("params",";filename=\"cc%\\66\"","filename","cc%66"),
-  DictUtility.MakeDict("params",";filename=\"cc%xy\"","filename","cc%xy"),
-  DictUtility.MakeDict("params" ,";filename=\"cc\\\"x\\\"y\"" ,"filename",
-"cc\"x\"y"),
-  DictUtility.MakeDict("params",";FILENAME=x.y","filename","x.y"),
-  DictUtility.MakeDict("params",";FILENAME=\"cc\"","filename","cc"),
-  DictUtility.MakeDict("params",";FiLeNaMe=x.y","filename","x.y"),
-  DictUtility.MakeDict("params",";FiLeNaMe=\"cc\"","filename","cc"),
-  DictUtility.MakeDict("params",";fIlEnAmE=x.y","filename","x.y"),
-  DictUtility.MakeDict("params",";fIlEnAmE=\"cc\"","filename","cc"),
-  DictUtility.MakeDict("params",";filename=\"\\\\ab\"","filename","\\ab")
+DictUtility.MakeDict("params", ";filename=x.y", "filename","x.y"),
+  DictUtility.MakeDict("params", ";filename=\"cc\"", "filename","cc"),
+  DictUtility.MakeDict("params", ";filename = x.y", "filename","x.y"),
+  DictUtility.MakeDict("params", ";filename = \"cc\"", "filename","cc"),
+  DictUtility.MakeDict("params", ";filename= x.y", "filename","x.y"),
+  DictUtility.MakeDict("params", ";filename= \"cc\"", "filename","cc"),
+  DictUtility.MakeDict("params", ";filename =x.y", "filename","x.y"),
+  DictUtility.MakeDict("params", ";filename =\"cc\"", "filename","cc"),
+  DictUtility.MakeDict("params", ";filename=x.y ", "filename","x.y"),
+  DictUtility.MakeDict("params", ";filename=\"cc\" ", "filename","cc"),
+  DictUtility.MakeDict("params", ";filename=\"a\\" + "\u0020b\"",
+"filename" ,"a b"),
+  DictUtility.MakeDict("params", ";filename=\"a\\" + "\tb\"","filename","a\tb"),
+  DictUtility.MakeDict("params", ";filename=\"a\\" + "\\b\"","filename","a\\b"),
+  DictUtility.MakeDict(
+  "params",
+  ";filename=\"ccaaaaaaaaaaaaaaaaaaaa\"",
+  "filename",
+  "ccaaaaaaaaaaaaaaaaaaaa"),
+  DictUtility.MakeDict(
+  "params",
+  ";filename=\"ccaaaaaaa,;=aaaaaaaaaaa\"",
+  "filename",
+  "ccaaaaaaa,;=aaaaaaaaaaa"),
+  DictUtility.MakeDict(
+  "params",
+  ";filename=\"ccaaaaaaa,;e1=xxx;e2=yyy\"",
+  "filename",
+  "ccaaaaaaa,;e1=xxx;e2=yyy"),
+  DictUtility.MakeDict(
+  "params",
+  ";filename=\"cc\\a\\b\\c\\1\\2\\3\"",
+  "filename",
+  "ccabc123"),
+  DictUtility.MakeDict(
+  "params",
+  ";filename=\"cc\\\\\\'\\\"\\[\\]\"",
+  "filename",
+  "cc\\'\"[]"),
+  DictUtility.MakeDict("params", ";filename=\"cc%\\ab\"", "filename","cc%ab"),
+  DictUtility.MakeDict("params", ";filename=\"\u00e7\"", "filename","\u00e7"),
+  DictUtility.MakeDict("params", ";filename=e's", "filename","e's"),
+  DictUtility.MakeDict("params", ";filename='es", "filename","'es"),
+  DictUtility.MakeDict("params", ";filename='es'", "filename","'es'"),
+  DictUtility.MakeDict(
+  "params",
+  ";filename=utf-8'en'example",
+  "filename",
+  "utf-8'en'example"),
+  DictUtility.MakeDict(
+  "params",
+  ";filename=utf-8''example",
+  "filename",
+  "utf-8''example"),
+  DictUtility.MakeDict(
+  "params",
+  ";filename=\"%ab\u00e7\"",
+  "filename",
+  "%ab\u00e7"),
+  DictUtility.MakeDict(
+  "params",
+  ";filename=\"%ab\u00c2\u00a0\"",
+  "filename",
+  "%ab\u00c2\u00a0"),
+  DictUtility.MakeDict("params", ";filename=\"cc%\\66\"", "filename","cc%66"),
+  DictUtility.MakeDict("params", ";filename=\"cc%xy\"", "filename","cc%xy"),
+  DictUtility.MakeDict(
+  "params",
+  ";filename=\"cc\\\"x\\\"y\"",
+  "filename",
+  "cc\"x\"y"),
+  DictUtility.MakeDict("params", ";FILENAME=x.y", "filename","x.y"),
+  DictUtility.MakeDict("params", ";FILENAME=\"cc\"", "filename","cc"),
+  DictUtility.MakeDict("params", ";FiLeNaMe=x.y", "filename","x.y"),
+  DictUtility.MakeDict("params", ";FiLeNaMe=\"cc\"", "filename","cc"),
+  DictUtility.MakeDict("params", ";fIlEnAmE=x.y", "filename","x.y"),
+  DictUtility.MakeDict("params", ";fIlEnAmE=\"cc\"", "filename","cc"),
+  DictUtility.MakeDict("params", ";filename=\"\\\\ab\"", "filename","\\ab")
 };
 
     @Test
     public void TestGetParameter() {
-      foreach (Map<String, String> dict in testParamTypes) {
-        MediaType mt = ParseAndTestAspects("x/x"+ dict.get("params"));
+      foreach (Map<String, String> dict in ValueTestParamTypes) {
+        MediaType mt = ParseAndTestAspects("x/x" + dict.get("params"));
         Assert.assertEquals(
           dict.get("filename"),
           mt.GetParameter("filename"));
@@ -797,13 +838,14 @@ Assert.assertEquals(
   stringTemp);
 }
       Assert.assertEquals("text/plain", mt.getTypeAndSubType());
-      if ((mt.GetParameter("charset*0")) != null) {
+      if (mt.GetParameter("charset*0") != null) {
  Assert.fail();
  }
-      if ((mt.GetParameter("charset*1*")) != null) {
+      if (mt.GetParameter("charset*1*") != null) {
  Assert.fail();
  }
       mt =
+
   ParseAndTestAspects("text/plain; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1'en'xyz");
       {
 String stringTemp = mt.GetParameter("charset");
@@ -812,10 +854,10 @@ Assert.assertEquals(
   stringTemp);
 }
       Assert.assertEquals("text/plain", mt.getTypeAndSubType());
-      if ((mt.GetParameter("charset*0")) != null) {
+      if (mt.GetParameter("charset*0") != null) {
  Assert.fail();
  }
-      if ((mt.GetParameter("charset*1*")) != null) {
+      if (mt.GetParameter("charset*1*") != null) {
  Assert.fail();
  }
       TestPercentEncodingOne("test\u00be", "test%C2%BE");
@@ -832,7 +874,7 @@ Assert.assertEquals(
     @Test
     public void TestParseErrors() {
       for (String str : ContentDispositionTest.ParseErrors) {
-        Assert.IsNull(ParseAndTestAspects("text/plain"+ str,null), str);
+        Assert.IsNull(ParseAndTestAspects("text/plain" + str, null), str);
       }
     }
 

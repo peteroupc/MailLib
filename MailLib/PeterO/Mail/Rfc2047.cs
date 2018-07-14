@@ -606,8 +606,7 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
   EncodedWordContext.Comment);
           builder.Append(newComment);
           lastIndex = token[2] - 1;
-        } else if (token[0] == HeaderParserUtility.TokenPhraseAtom ||
-                   token[0] == HeaderParserUtility.TokenPhraseAtomOrDot) {
+        } else if (token[0] == HeaderParserUtility.TokenPhraseAtom) {
           // This is an atom token; only words within
           // a phrase can be encoded words; the first character
           // starts the actual atom rather than a comment or whitespace
@@ -727,9 +726,13 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
    index,
    endIndex,
    builderPhrase);
+        } else if (str[index]=='.') {
+          // Dot
+          builderPhrase.Append(".");
+          ++index;
         } else {
           // Atom
-          index2 = HeaderParser.ParsePhraseAtomOrDot(
+          index2 = HeaderParser.ParsePhraseAtom(
   str,
   index,
   endIndex,

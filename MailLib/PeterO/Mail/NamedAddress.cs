@@ -58,7 +58,7 @@ namespace PeterO.Mail {
       if (this.isGroup) {
         #if DEBUG
 if (this.displayName == null) {
-  throw new ArgumentNullException("this.displayName");
+  throw new InvalidOperationException("this");
 }
 #endif
 

@@ -172,7 +172,7 @@ namespace MailLibTest {
           if (index == 0 || str[index - 1] == 0x20 || str[index - 1] == 0x09 ||
             str[index - 1] == 0x0d) {
             Console.WriteLine(fn +
-  ":\n--End of line, whitespace, or start of message before colon");
+  ":\n--End of line, whitespace, or start of valueMessage before colon");
             return 0;
           }
           if (str[index + 1] != 0x20 &&
@@ -182,7 +182,7 @@ namespace MailLibTest {
   Math.Max(index + 2 - 30, 0),
   Math.Min(index + 2, 30));
             Console.WriteLine(fn +
-              ":\n--No space/line break after header name and colon: (" +
+              ":\n--No space/line break after valueHeader name and colon: (" +
               str[index + 1] + ") [" + test + "] " + index);
             return 0;
           }
@@ -191,7 +191,7 @@ namespace MailLibTest {
         if (c == 0) {
           var builder = new StringBuilder();
           const string ValueHex = "0123456789ABCDEF";
-          builder.Append(fn + ": CTL in message (0x");
+          builder.Append(fn + ": CTL in valueMessage (0x");
           builder.Append(ValueHex[((int)c >> 4) & 15]);
           builder.Append(ValueHex[((int)c) & 15]);
           builder.Append(")");
@@ -201,7 +201,7 @@ namespace MailLibTest {
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
           var builder = new StringBuilder();
           const string ValueHex = "0123456789ABCDEF";
-          builder.Append(fn + ": CTL in header (0x");
+          builder.Append(fn + ": CTL in valueHeader (0x");
           builder.Append(ValueHex[((int)c >> 4) & 15]);
           builder.Append(ValueHex[((int)c) & 15]);
           builder.Append(")");
@@ -228,7 +228,8 @@ namespace MailLibTest {
         if (lineLength > maxLineLength) {
           if (lineLength > 998) {
             if (headers) {
-              Console.WriteLine(fn + ":\n--Line length exceeded in header(" +
+           Console.WriteLine(fn +
+                ":\n--Line length exceeded in valueHeader(" +
                     maxLineLength + " " +
                     str.Substring(index - 78, 78) + ", " + lineLength + ")");
               return 0;
@@ -1169,7 +1170,7 @@ namespace MailLibTest {
     private static byte[] DowngradeDeliveryStatus(string str) {
       Message msg =
 
-  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"
+  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: valueMessage/global-delivery-status\r\n"
     +
     "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
       msg = MessageTest.MessageFromString(MessageTest.MessageGenerate(msg));
@@ -1691,18 +1692,22 @@ string stringTemp =
     }
 
     private sealed class HeaderInfo {
-      public string header;
-      public Message message;
-      public HeaderInfo(string header, Message message) {
-        this.header = header;
-        this.message = message;
+      private string valueHeader;
+      private Message valueMessage;
+
+      public HeaderInfo(string valueHeader, Message valueMessage) {
+        this.valueHeader = valueHeader;
+        this.valueMessage = valueMessage;
       }
     }
+
     private static string DowngradeHeaderField(string name, string value) {
-      return DowngradeHeaderFieldEx(name, value).header;
+      return DowngradeHeaderFieldEx(name, value).valueHeader;
     }
-  private static HeaderInfo DowngradeHeaderFieldEx(string name, string
-      value) {
+
+  private static HeaderInfo DowngradeHeaderFieldEx(
+  string name,
+  string value) {
       string msgstr;
       msgstr = name + ": " + value + "\r\n";
       if (!name.Equals("from")) {
@@ -1718,32 +1723,44 @@ string stringTemp =
     }
 
     private static void TestDowngradeAddressOne(
-      string header,
+      string valueHeader,
       string value,
       string displayName,
       string localPart,
       string domain) {
-      HeaderInfo hinfo = DowngradeHeaderFieldEx(header, value);
-      Console.WriteLine(header);
+      HeaderInfo hinfo = DowngradeHeaderFieldEx(valueHeader, value);
+      Console.WriteLine(valueHeader);
       Console.WriteLine(value);
-      Console.WriteLine(hinfo.header);
-      var address = new NamedAddress(hinfo.message.GetHeader(header));
+      Console.WriteLine(hinfo.valueHeader);
+      var address = new NamedAddress(hinfo.valueMessage.GetHeader(valueHeader));
       Assert.AreEqual(displayName, address.DisplayName);
       Assert.AreEqual(localPart, address.Address.LocalPart);
       Assert.AreEqual(domain, address.Address.Domain);
     }
 
-    private static string[] addressHeaderFields ={"from","to","cc","bcc",
-  "disposition-notification-to","sender"};
+    private static string[] addressHeaderFields = {"from","to","cc","bcc",
+  "disposition-notification-to", "sender"};
     [Test]
     public void TestDowngradeAddress() {
-      foreach (string header in addressHeaderFields) {
-        TestDowngradeAddressOne(header, "down\u00begrade <down@example.com>",
-             "down\u00begrade", "down", "example.com");
-        TestDowngradeAddressOne(header, "downgrade <down@example.c\u00e7m>",
-             "downgrade", "down", "example.c\u00e7m");
-        TestDowngradeAddressOne(header, "downgrade <down@c\u00e7m.example>",
-             "downgrade", "down", "c\u00e7m.example");
+      foreach (string valueHeader in addressHeaderFields) {
+        TestDowngradeAddressOne(
+  valueHeader,
+ "down\u00begrade <down@example.com>",
+             "down\u00begrade",
+ "down",
+ "example.com");
+        TestDowngradeAddressOne(
+  valueHeader,
+ "downgrade <down@example.c\u00e7m>",
+             "downgrade",
+ "down",
+ "example.c\u00e7m");
+        TestDowngradeAddressOne(
+  valueHeader,
+ "downgrade <down@c\u00e7m.example>",
+             "downgrade",
+ "down",
+ "c\u00e7m.example");
       }
     }
 
