@@ -173,7 +173,6 @@ if (index < endIndex && (str.charAt(index) == 62)) {
 public static int ParseAtext(String str, int index, int endIndex, ITokener
   tokener) {
 int indexTemp = index;
- do {
 if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index)
   <= 57) || (str.charAt(index) == 33) || (str.charAt(index) == 35) || (str.charAt(index) == 36) ||
@@ -184,13 +183,11 @@ if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) == 123) || (str.charAt(index) == 124) || (str.charAt(index) == 125) ||
   (str.charAt(index) == 126) || (str.charAt(index) >= 128 && str.charAt(index) <= 55295) ||
   (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
- ++indexTemp; break;
+ ++indexTemp;
+  } else if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
+  56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+ indexTemp += 2;
 }
-if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <= 56319) &&
-  (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
- indexTemp += 2; break;
-}
- } while (false);
  return indexTemp;
 }
 public static int ParseAtom(String str, int index, int endIndex, ITokener
@@ -1070,18 +1067,15 @@ if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
 }
  for (i4 = 0;; ++i4) {
   indexTemp5 = index;
- do {
 if (index + 1 < endIndex && (((str.charAt(index) == 45) && ((str.charAt(index + 1) >= 65 &&
   str.charAt(index + 1) <= 90) || (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <=
   122) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))))) {
- indexTemp5 += 2; break;
-}
-if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
+ indexTemp5 += 2;
+  } else if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index)
   <= 57))) {
- ++indexTemp5; break;
+ ++indexTemp5;
 }
- } while (false);
   if (indexTemp5 != index) {
  index = indexTemp5;
 } else {
@@ -1119,18 +1113,15 @@ if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
 }
  while (true) {
   indexTemp5 = index;
- do {
 if (index + 1 < endIndex && (((str.charAt(index) == 45) && ((str.charAt(index + 1) >= 65 &&
   str.charAt(index + 1) <= 90) || (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <=
   122) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))))) {
- indexTemp5 += 2; break;
-}
-if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
+ indexTemp5 += 2;
+  } else if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index)
   <= 57))) {
- ++indexTemp5; break;
+ ++indexTemp5;
 }
- } while (false);
   if (indexTemp5 != index) {
 index = indexTemp5;
 } else {
@@ -1545,16 +1536,13 @@ if (index < endIndex && ((str.charAt(index) >= 33 && str.charAt(index) <= 90) ||
  ++indexTemp3; break;
 }
  indexTemp4 = index;
- do {
 if (index < endIndex && ((str.charAt(index) >= 128 && str.charAt(index) <= 55295) ||
   (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
- ++indexTemp4; break;
+ ++indexTemp4;
+  } else if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
+  56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+ indexTemp4 += 2;
 }
-if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <= 56319) &&
-  (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
- indexTemp4 += 2; break;
-}
- } while (false);
  if (indexTemp4 != index) {
  indexTemp3 = indexTemp4; break;
 }
@@ -2213,14 +2201,11 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 do {
   indexTemp2 = index;
- do {
 if (index + 1 < endIndex && (str.charAt(index) & ~32) == 78 && (str.charAt(index + 1) & ~32) == 79) {
- indexTemp2 += 2; break;
+ indexTemp2 += 2;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 89 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 83) {
+ indexTemp2 += 3;
 }
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 89 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 83) {
- indexTemp2 += 3; break;
-}
- } while (false);
   if (indexTemp2 != index) {
  index = indexTemp2;
 } else {
@@ -3538,43 +3523,31 @@ if (index + 3 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57
  index = ParseCFWS(str, index, endIndex, tokener);
 do {
   indexTemp4 = index;
- do {
 if (index + 1 < endIndex && (str.charAt(index) & ~32) == 85 && (str.charAt(index + 1) & ~32) == 84) {
- indexTemp4 += 2; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 71 && (str.charAt(index + 1) & ~32) == 77 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp4 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 69 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp4 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 69 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp4 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 67 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp4 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 67 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp4 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp4 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp4 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp4 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp4 += 3; break;
-}
-if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 73) ||
+ indexTemp4 += 2;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 71 && (str.charAt(index + 1) & ~32) == 77 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 69 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 69 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 67 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 67 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp4 += 3;
+  } else if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 73) ||
   (str.charAt(index) >= 75 && str.charAt(index) <= 90) || (str.charAt(index) >= 97 && str.charAt(index)
   <= 105) || (str.charAt(index) >= 107 && str.charAt(index) <= 122))) {
- ++indexTemp4; break;
+ ++indexTemp4;
 }
- } while (false);
   if (indexTemp4 != index) {
  index = indexTemp4;
 } else {
@@ -5036,42 +5009,34 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 do {
   indexTemp2 = index;
- do {
 if (index + 3 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) == 83 && (str.charAt(index + 3) & ~32) ==
   83) {
- indexTemp2 += 4; break;
-}
-if (index + 3 < endIndex && (str.charAt(index) & ~32) == 70 && (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) == 73 && (str.charAt(index + 3) & ~32) ==
+ indexTemp2 += 4;
+  } else if (index + 3 < endIndex && (str.charAt(index) & ~32) == 70 && (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) == 73 && (str.charAt(index + 3) & ~32) ==
   76) {
- indexTemp2 += 4; break;
-}
-if (index + 7 < endIndex && (str.charAt(index) & ~32) == 83 && (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) == 70 && (str.charAt(index + 3) & ~32) == 84 &&
-  (str.charAt(index + 4) & ~32) == 70 && (str.charAt(index + 5) & ~32) == 65 &&
+ indexTemp2 += 4;
+  } else if (index + 7 < endIndex && (str.charAt(index) & ~32) == 83 && (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) == 70 && (str.charAt(index + 3) & ~32) ==
+  84 && (str.charAt(index + 4) & ~32) == 70 && (str.charAt(index + 5) & ~32) == 65 &&
   (str.charAt(index + 6) & ~32) == 73 && (str.charAt(index + 7) & ~32) == 76) {
- indexTemp2 += 8; break;
-}
-if (index + 6 < endIndex && (str.charAt(index) & ~32) == 78 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 85 && (str.charAt(index + 3) & ~32) == 84 &&
-  (str.charAt(index + 4) & ~32) == 82 && (str.charAt(index + 5) & ~32) == 65 &&
+ indexTemp2 += 8;
+  } else if (index + 6 < endIndex && (str.charAt(index) & ~32) == 78 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 85 && (str.charAt(index + 3) & ~32) ==
+  84 && (str.charAt(index + 4) & ~32) == 82 && (str.charAt(index + 5) & ~32) == 65 &&
   (str.charAt(index + 6) & ~32) == 76) {
- indexTemp2 += 7; break;
-}
-if (index + 3 < endIndex && (str.charAt(index) & ~32) == 78 && (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) == 78 && (str.charAt(index + 3) & ~32) ==
+ indexTemp2 += 7;
+  } else if (index + 3 < endIndex && (str.charAt(index) & ~32) == 78 && (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) == 78 && (str.charAt(index + 3) & ~32) ==
   69) {
- indexTemp2 += 4; break;
-}
-if (index + 8 < endIndex && (str.charAt(index) & ~32) == 84 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 77 && (str.charAt(index + 3) & ~32) == 80 &&
-  (str.charAt(index + 4) & ~32) == 69 && (str.charAt(index + 5) & ~32) == 82 &&
+ indexTemp2 += 4;
+  } else if (index + 8 < endIndex && (str.charAt(index) & ~32) == 84 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 77 && (str.charAt(index + 3) & ~32) ==
+  80 && (str.charAt(index + 4) & ~32) == 69 && (str.charAt(index + 5) & ~32) == 82 &&
   (str.charAt(index + 6) & ~32) == 82 && (str.charAt(index + 7) & ~32) == 79 && (str.charAt(index+
   8) & ~32) == 82) {
- indexTemp2 += 9; break;
-}
-if (index + 8 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 82 && (str.charAt(index + 3) & ~32) == 77 &&
-  (str.charAt(index + 4) & ~32) == 69 && (str.charAt(index + 5) & ~32) == 82 &&
+ indexTemp2 += 9;
+  } else if (index + 8 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 82 && (str.charAt(index + 3) & ~32) ==
+  77 && (str.charAt(index + 4) & ~32) == 69 && (str.charAt(index + 5) & ~32) == 82 &&
   (str.charAt(index + 6) & ~32) == 82 && (str.charAt(index + 7) & ~32) == 79 && (str.charAt(index+
   8) & ~32) == 82) {
- indexTemp2 += 9; break;
+ indexTemp2 += 9;
 }
- } while (false);
   if (indexTemp2 != index) {
  index = indexTemp2;
 } else {
@@ -5823,18 +5788,15 @@ if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
 }
  while (true) {
   indexTemp2 = index;
- do {
 if (index + 1 < endIndex && (((str.charAt(index) == 45) && ((str.charAt(index + 1) >= 65 &&
   str.charAt(index + 1) <= 90) || (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <=
   122) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))))) {
- indexTemp2 += 2; break;
-}
-if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
+ indexTemp2 += 2;
+  } else if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index)
   <= 57))) {
- ++indexTemp2; break;
+ ++indexTemp2;
 }
- } while (false);
   if (indexTemp2 != index) {
 index = indexTemp2;
 } else {
@@ -6047,18 +6009,15 @@ int indexTemp, indexTemp2;
  do {
  while (true) {
   indexTemp2 = index;
- do {
 if (index + 1 < endIndex && (((str.charAt(index) == 45) && ((str.charAt(index + 1) >= 65 &&
   str.charAt(index + 1) <= 90) || (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <=
   122) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))))) {
- indexTemp2 += 2; break;
-}
-if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
+ indexTemp2 += 2;
+  } else if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index)
   <= 57))) {
- ++indexTemp2; break;
+ ++indexTemp2;
 }
- } while (false);
   if (indexTemp2 != index) {
 index = indexTemp2;
 } else {
@@ -6241,16 +6200,13 @@ if (index < endIndex && (str.charAt(index) == 92)) {
 }
 do {
   indexTemp5 = index;
- do {
 if (index < endIndex && ((str.charAt(index) >= 128 && str.charAt(index) <= 55295) ||
   (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
- ++indexTemp5; break;
+ ++indexTemp5;
+  } else if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
+  56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+ indexTemp5 += 2;
 }
-if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <= 56319) &&
-  (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
- indexTemp5 += 2; break;
-}
- } while (false);
   if (indexTemp5 != index) {
  index = indexTemp5;
 } else {
@@ -6600,17 +6556,14 @@ indexStart = index;
  do {
  for (i = 0; i < 69; ++i) {
   indexTemp2 = index;
- do {
 if (index < endIndex && ((str.charAt(index) >= 40 && str.charAt(index) <= 41))) {
- ++indexTemp2; break;
-}
-if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
+ ++indexTemp2;
+  } else if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) == 32) ||
   (str.charAt(index) == 39) || (str.charAt(index) >= 43 && str.charAt(index) <= 58) ||
   (str.charAt(index) == 61) || (str.charAt(index) == 63))) {
- ++indexTemp2; break;
+ ++indexTemp2;
 }
- } while (false);
   if (indexTemp2 != index) {
  index = indexTemp2;
 } else {
@@ -6988,26 +6941,22 @@ int indexTemp, indexTemp2;
  do {
  while (true) {
   indexTemp2 = index;
- do {
 if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index)
   <= 57) || (str.charAt(index) >= 45 && str.charAt(index) <= 46) || (str.charAt(index) == 95) ||
   (str.charAt(index) == 126))) {
- ++indexTemp2; break;
-}
-if (index + 2 < endIndex && (((str.charAt(index) == 37) && (((str.charAt(index + 1) >= 48 &&
-  str.charAt(index + 1) <= 57) || (str.charAt(index + 1) >= 65 && str.charAt(index + 1) <= 70) ||
-  (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <= 102)) && ((str.charAt(index + 2) >=
-  48 && str.charAt(index + 2) <= 57) || (str.charAt(index + 2) >= 65 && str.charAt(index + 2) <=
-  70) || (str.charAt(index + 2) >= 97 && str.charAt(index + 2) <= 102)))))) {
- indexTemp2 += 3; break;
-}
-if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) == 36) ||
+ ++indexTemp2;
+  } else if (index + 2 < endIndex && (((str.charAt(index) == 37) && (((str.charAt(index + 1)
+  >= 48 && str.charAt(index + 1) <= 57) || (str.charAt(index + 1) >= 65 && str.charAt(index + 1)
+  <= 70) || (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <= 102)) && ((str.charAt(index+
+  2) >= 48 && str.charAt(index + 2) <= 57) || (str.charAt(index + 2) >= 65 && str.charAt(index+
+  2) <= 70) || (str.charAt(index + 2) >= 97 && str.charAt(index + 2) <= 102)))))) {
+ indexTemp2 += 3;
+  } else if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) == 36) ||
   (str.charAt(index) >= 40 && str.charAt(index) <= 44) || (str.charAt(index) == 59) ||
   (str.charAt(index) == 61))) {
- ++indexTemp2; break;
+ ++indexTemp2;
 }
- } while (false);
   if (indexTemp2 != index) {
 index = indexTemp2;
 } else {
@@ -7332,19 +7281,16 @@ while (index < endIndex && (str.charAt(index) == 13)) {
   indexTemp4 = index;
  do {
  indexTemp5 = index;
- do {
 if (index < endIndex && ((str.charAt(index) == 0) || (str.charAt(index) >= 1 && str.charAt(index)
   <= 8) || (str.charAt(index) >= 11 && str.charAt(index) <= 12) || (str.charAt(index) >= 14 &&
   str.charAt(index) <= 31) || (str.charAt(index) == 127) || (str.charAt(index) >= 33 &&
   str.charAt(index) <= 126) || (str.charAt(index) >= 128 && str.charAt(index) <= 55295) ||
   (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
- ++indexTemp5; break;
+ ++indexTemp5;
+  } else if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
+  56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+ indexTemp5 += 2;
 }
-if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <= 56319) &&
-  (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
- indexTemp5 += 2; break;
-}
- } while (false);
  if (indexTemp5 != index) {
  indexTemp4 = indexTemp5; break;
 }
@@ -7555,22 +7501,19 @@ if (index < endIndex && (str.charAt(index) == 39)) {
 }
  while (true) {
   indexTemp5 = index;
- do {
 if (index + 2 < endIndex && (((str.charAt(index) == 37) && (((str.charAt(index + 1) >= 48 &&
   str.charAt(index + 1) <= 57) || (str.charAt(index + 1) >= 65 && str.charAt(index + 1) <= 70) ||
   (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <= 102)) && ((str.charAt(index + 2) >=
   48 && str.charAt(index + 2) <= 57) || (str.charAt(index + 2) >= 65 && str.charAt(index + 2) <=
   70) || (str.charAt(index + 2) >= 97 && str.charAt(index + 2) <= 102)))))) {
- indexTemp5 += 3; break;
-}
-if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) >= 35 &&
+ indexTemp5 += 3;
+  } else if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) >= 35 &&
   str.charAt(index) <= 36) || (str.charAt(index) == 38) || (str.charAt(index) == 43) ||
   (str.charAt(index) >= 45 && str.charAt(index) <= 46) || (str.charAt(index) >= 48 && str.charAt(index)
   <= 57) || (str.charAt(index) >= 65 && str.charAt(index) <= 90) || (str.charAt(index) >= 94 &&
   str.charAt(index) <= 126))) {
- ++indexTemp5; break;
+ ++indexTemp5;
 }
- } while (false);
   if (indexTemp5 != index) {
 index = indexTemp5;
 } else {
@@ -7652,22 +7595,19 @@ if (index < endIndex && (str.charAt(index) == 61)) {
 }
  while (true) {
   indexTemp4 = index;
- do {
 if (index + 2 < endIndex && (((str.charAt(index) == 37) && (((str.charAt(index + 1) >= 48 &&
   str.charAt(index + 1) <= 57) || (str.charAt(index + 1) >= 65 && str.charAt(index + 1) <= 70) ||
   (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <= 102)) && ((str.charAt(index + 2) >=
   48 && str.charAt(index + 2) <= 57) || (str.charAt(index + 2) >= 65 && str.charAt(index + 2) <=
   70) || (str.charAt(index + 2) >= 97 && str.charAt(index + 2) <= 102)))))) {
- indexTemp4 += 3; break;
-}
-if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) >= 35 &&
+ indexTemp4 += 3;
+  } else if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) >= 35 &&
   str.charAt(index) <= 36) || (str.charAt(index) == 38) || (str.charAt(index) == 43) ||
   (str.charAt(index) >= 45 && str.charAt(index) <= 46) || (str.charAt(index) >= 48 && str.charAt(index)
   <= 57) || (str.charAt(index) >= 65 && str.charAt(index) <= 90) || (str.charAt(index) >= 94 &&
   str.charAt(index) <= 126))) {
- ++indexTemp4; break;
+ ++indexTemp4;
 }
- } while (false);
   if (indexTemp4 != index) {
 index = indexTemp4;
 } else {
@@ -7799,18 +7739,15 @@ if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
 }
  for (i4 = 0;; ++i4) {
   indexTemp5 = index;
- do {
 if (index + 1 < endIndex && (((str.charAt(index) == 45) && ((str.charAt(index + 1) >= 65 &&
   str.charAt(index + 1) <= 90) || (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <=
   122) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))))) {
- indexTemp5 += 2; break;
-}
-if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
+ indexTemp5 += 2;
+  } else if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index)
   <= 57))) {
- ++indexTemp5; break;
+ ++indexTemp5;
 }
- } while (false);
   if (indexTemp5 != index) {
  index = indexTemp5;
 } else {
@@ -7848,18 +7785,15 @@ if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
 }
  while (true) {
   indexTemp5 = index;
- do {
 if (index + 1 < endIndex && (((str.charAt(index) == 45) && ((str.charAt(index + 1) >= 65 &&
   str.charAt(index + 1) <= 90) || (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <=
   122) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57))))) {
- indexTemp5 += 2; break;
-}
-if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
+ indexTemp5 += 2;
+  } else if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index)
   <= 57))) {
- ++indexTemp5; break;
+ ++indexTemp5;
 }
- } while (false);
   if (indexTemp5 != index) {
 index = indexTemp5;
 } else {
@@ -8143,16 +8077,13 @@ if (index < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57) ||
  ++indexTemp2; break;
 }
  indexTemp3 = index;
- do {
 if (index < endIndex && ((str.charAt(index) >= 128 && str.charAt(index) <= 55295) ||
   (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
- ++indexTemp3; break;
+ ++indexTemp3;
+  } else if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
+  56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+ indexTemp3 += 2;
 }
-if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <= 56319) &&
-  (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
- indexTemp3 += 2; break;
-}
- } while (false);
  if (indexTemp3 != index) {
  indexTemp2 = indexTemp3; break;
 }
@@ -8375,17 +8306,14 @@ int indexTemp, indexTemp2;
  do {
  while (true) {
   indexTemp2 = index;
- do {
 if (index < endIndex && ((str.charAt(index) >= 40 && str.charAt(index) <= 41))) {
- ++indexTemp2; break;
-}
-if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
+ ++indexTemp2;
+  } else if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) == 32) ||
   (str.charAt(index) == 39) || (str.charAt(index) >= 43 && str.charAt(index) <= 58) ||
   (str.charAt(index) == 61) || (str.charAt(index) == 63))) {
- ++indexTemp2; break;
+ ++indexTemp2;
 }
- } while (false);
   if (indexTemp2 != index) {
 index = indexTemp2;
 } else {
@@ -8463,41 +8391,33 @@ index = indexStart; break;
 public static int ParsePsChar(String str, int index, int endIndex, ITokener
   tokener) {
 int indexTemp = index;
- do {
 if (index < endIndex && ((str.charAt(index) >= 40 && str.charAt(index) <= 41))) {
- ++indexTemp; break;
-}
-if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
+ ++indexTemp;
+  } else if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) == 32) ||
   (str.charAt(index) == 39) || (str.charAt(index) >= 43 && str.charAt(index) <= 58) ||
   (str.charAt(index) == 61) || (str.charAt(index) == 63))) {
- ++indexTemp; break;
+ ++indexTemp;
 }
- } while (false);
  return indexTemp;
 }
 
 public static int ParsePtype(String str, int index, int endIndex, ITokener
   tokener) {
 int indexTemp = index;
- do {
 if (index + 3 < endIndex && (str.charAt(index) & ~32) == 83 && (str.charAt(index + 1) & ~32) == 77 && (str.charAt(index + 2) & ~32) == 84 && (str.charAt(index + 3) & ~32) ==
   80) {
- indexTemp += 4; break;
-}
-if (index + 5 < endIndex && (str.charAt(index) & ~32) == 72 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 65 && (str.charAt(index + 3) & ~32) == 68 &&
-  (str.charAt(index + 4) & ~32) == 69 && (str.charAt(index + 5) & ~32) == 82) {
- indexTemp += 6; break;
-}
-if (index + 3 < endIndex && (str.charAt(index) & ~32) == 66 && (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) == 68 && (str.charAt(index + 3) & ~32) ==
+ indexTemp += 4;
+  } else if (index + 5 < endIndex && (str.charAt(index) & ~32) == 72 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 65 && (str.charAt(index + 3) & ~32) ==
+  68 && (str.charAt(index + 4) & ~32) == 69 && (str.charAt(index + 5) & ~32) == 82) {
+ indexTemp += 6;
+  } else if (index + 3 < endIndex && (str.charAt(index) & ~32) == 66 && (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) == 68 && (str.charAt(index + 3) & ~32) ==
   89) {
- indexTemp += 4; break;
+ indexTemp += 4;
+  } else if (index + 5 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) == 76 && (str.charAt(index + 3) & ~32) ==
+  73 && (str.charAt(index + 4) & ~32) == 67 && (str.charAt(index + 5) & ~32) == 89) {
+ indexTemp += 6;
 }
-if (index + 5 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) == 76 && (str.charAt(index + 3) & ~32) == 73 &&
-  (str.charAt(index + 4) & ~32) == 67 && (str.charAt(index + 5) & ~32) == 89) {
- indexTemp += 6; break;
-}
- } while (false);
  return indexTemp;
 }
 public static int ParsePvalue(String str, int index, int endIndex, ITokener
@@ -8668,23 +8588,19 @@ if (index < endIndex && (str.charAt(index) == 92)) {
 }
 do {
   indexTemp2 = index;
- do {
 if (index < endIndex && ((str.charAt(index) >= 33 && str.charAt(index) <= 126) ||
   (str.charAt(index) >= 128 && str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
   str.charAt(index) <= 65535))) {
- ++indexTemp2; break;
-}
-if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <= 56319) &&
-  (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
- indexTemp2 += 2; break;
-}
-if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) == 9) ||
+ ++indexTemp2;
+  } else if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
+  56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+ indexTemp2 += 2;
+  } else if (index < endIndex && ((str.charAt(index) == 32) || (str.charAt(index) == 9) ||
   (str.charAt(index) == 0) || (str.charAt(index) >= 1 && str.charAt(index) <= 8) || (str.charAt(index)
   >= 11 && str.charAt(index) <= 12) || (str.charAt(index) >= 14 && str.charAt(index) <= 31) ||
   (str.charAt(index) == 127) || (str.charAt(index) == 10) || (str.charAt(index) == 13))) {
- ++indexTemp2; break;
+ ++indexTemp2;
 }
- } while (false);
   if (indexTemp2 != index) {
  index = indexTemp2;
 } else {
@@ -8911,26 +8827,22 @@ int indexTemp, indexTemp2;
  do {
  while (true) {
   indexTemp2 = index;
- do {
 if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index)
   <= 57) || (str.charAt(index) >= 45 && str.charAt(index) <= 46) || (str.charAt(index) == 95) ||
   (str.charAt(index) == 126))) {
- ++indexTemp2; break;
-}
-if (index + 2 < endIndex && (((str.charAt(index) == 37) && (((str.charAt(index + 1) >= 48 &&
-  str.charAt(index + 1) <= 57) || (str.charAt(index + 1) >= 65 && str.charAt(index + 1) <= 70) ||
-  (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <= 102)) && ((str.charAt(index + 2) >=
-  48 && str.charAt(index + 2) <= 57) || (str.charAt(index + 2) >= 65 && str.charAt(index + 2) <=
-  70) || (str.charAt(index + 2) >= 97 && str.charAt(index + 2) <= 102)))))) {
- indexTemp2 += 3; break;
-}
-if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) == 36) ||
+ ++indexTemp2;
+  } else if (index + 2 < endIndex && (((str.charAt(index) == 37) && (((str.charAt(index + 1)
+  >= 48 && str.charAt(index + 1) <= 57) || (str.charAt(index + 1) >= 65 && str.charAt(index + 1)
+  <= 70) || (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <= 102)) && ((str.charAt(index+
+  2) >= 48 && str.charAt(index + 2) <= 57) || (str.charAt(index + 2) >= 65 && str.charAt(index+
+  2) <= 70) || (str.charAt(index + 2) >= 97 && str.charAt(index + 2) <= 102)))))) {
+ indexTemp2 += 3;
+  } else if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) == 36) ||
   (str.charAt(index) >= 38 && str.charAt(index) <= 44) || (str.charAt(index) == 59) ||
   (str.charAt(index) == 61))) {
- ++indexTemp2; break;
+ ++indexTemp2;
 }
- } while (false);
   if (indexTemp2 != index) {
 index = indexTemp2;
 } else {
@@ -9013,26 +8925,22 @@ int indexTemp, indexTemp2;
  do {
  while (true) {
   indexTemp2 = index;
- do {
 if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index)
   <= 57) || (str.charAt(index) >= 45 && str.charAt(index) <= 46) || (str.charAt(index) == 95) ||
   (str.charAt(index) == 126))) {
- ++indexTemp2; break;
-}
-if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) == 36) ||
+ ++indexTemp2;
+  } else if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) == 36) ||
   (str.charAt(index) >= 38 && str.charAt(index) <= 44) || (str.charAt(index) >= 58 && str.charAt(index)
   <= 59) || (str.charAt(index) == 61))) {
- ++indexTemp2; break;
+ ++indexTemp2;
+  } else if (index + 2 < endIndex && (((str.charAt(index) == 37) && (((str.charAt(index + 1)
+  >= 48 && str.charAt(index + 1) <= 57) || (str.charAt(index + 1) >= 65 && str.charAt(index + 1)
+  <= 70) || (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <= 102)) && ((str.charAt(index+
+  2) >= 48 && str.charAt(index + 2) <= 57) || (str.charAt(index + 2) >= 65 && str.charAt(index+
+  2) <= 70) || (str.charAt(index + 2) >= 97 && str.charAt(index + 2) <= 102)))))) {
+ indexTemp2 += 3;
 }
-if (index + 2 < endIndex && (((str.charAt(index) == 37) && (((str.charAt(index + 1) >= 48 &&
-  str.charAt(index + 1) <= 57) || (str.charAt(index + 1) >= 65 && str.charAt(index + 1) <= 70) ||
-  (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <= 102)) && ((str.charAt(index + 2) >=
-  48 && str.charAt(index + 2) <= 57) || (str.charAt(index + 2) >= 65 && str.charAt(index + 2) <=
-  70) || (str.charAt(index + 2) >= 97 && str.charAt(index + 2) <= 102)))))) {
- indexTemp2 += 3; break;
-}
- } while (false);
   if (indexTemp2 != index) {
 index = indexTemp2;
 } else {
@@ -9154,42 +9062,34 @@ for (i = 0; i < 126; ++i) {
 public static int ParseResult(String str, int index, int endIndex, ITokener
   tokener) {
 int indexTemp = index;
- do {
 if (index + 3 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) == 83 && (str.charAt(index + 3) & ~32) ==
   83) {
- indexTemp += 4; break;
-}
-if (index + 3 < endIndex && (str.charAt(index) & ~32) == 70 && (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) == 73 && (str.charAt(index + 3) & ~32) ==
+ indexTemp += 4;
+  } else if (index + 3 < endIndex && (str.charAt(index) & ~32) == 70 && (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) == 73 && (str.charAt(index + 3) & ~32) ==
   76) {
- indexTemp += 4; break;
-}
-if (index + 7 < endIndex && (str.charAt(index) & ~32) == 83 && (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) == 70 && (str.charAt(index + 3) & ~32) == 84 &&
-  (str.charAt(index + 4) & ~32) == 70 && (str.charAt(index + 5) & ~32) == 65 &&
+ indexTemp += 4;
+  } else if (index + 7 < endIndex && (str.charAt(index) & ~32) == 83 && (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) == 70 && (str.charAt(index + 3) & ~32) ==
+  84 && (str.charAt(index + 4) & ~32) == 70 && (str.charAt(index + 5) & ~32) == 65 &&
   (str.charAt(index + 6) & ~32) == 73 && (str.charAt(index + 7) & ~32) == 76) {
- indexTemp += 8; break;
-}
-if (index + 6 < endIndex && (str.charAt(index) & ~32) == 78 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 85 && (str.charAt(index + 3) & ~32) == 84 &&
-  (str.charAt(index + 4) & ~32) == 82 && (str.charAt(index + 5) & ~32) == 65 &&
+ indexTemp += 8;
+  } else if (index + 6 < endIndex && (str.charAt(index) & ~32) == 78 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 85 && (str.charAt(index + 3) & ~32) ==
+  84 && (str.charAt(index + 4) & ~32) == 82 && (str.charAt(index + 5) & ~32) == 65 &&
   (str.charAt(index + 6) & ~32) == 76) {
- indexTemp += 7; break;
-}
-if (index + 3 < endIndex && (str.charAt(index) & ~32) == 78 && (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) == 78 && (str.charAt(index + 3) & ~32) ==
+ indexTemp += 7;
+  } else if (index + 3 < endIndex && (str.charAt(index) & ~32) == 78 && (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) == 78 && (str.charAt(index + 3) & ~32) ==
   69) {
- indexTemp += 4; break;
-}
-if (index + 8 < endIndex && (str.charAt(index) & ~32) == 84 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 77 && (str.charAt(index + 3) & ~32) == 80 &&
-  (str.charAt(index + 4) & ~32) == 69 && (str.charAt(index + 5) & ~32) == 82 &&
+ indexTemp += 4;
+  } else if (index + 8 < endIndex && (str.charAt(index) & ~32) == 84 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 77 && (str.charAt(index + 3) & ~32) ==
+  80 && (str.charAt(index + 4) & ~32) == 69 && (str.charAt(index + 5) & ~32) == 82 &&
   (str.charAt(index + 6) & ~32) == 82 && (str.charAt(index + 7) & ~32) == 79 && (str.charAt(index+
   8) & ~32) == 82) {
- indexTemp += 9; break;
-}
-if (index + 8 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 82 && (str.charAt(index + 3) & ~32) == 77 &&
-  (str.charAt(index + 4) & ~32) == 69 && (str.charAt(index + 5) & ~32) == 82 &&
+ indexTemp += 9;
+  } else if (index + 8 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 82 && (str.charAt(index + 3) & ~32) ==
+  77 && (str.charAt(index + 4) & ~32) == 69 && (str.charAt(index + 5) & ~32) == 82 &&
   (str.charAt(index + 6) & ~32) == 82 && (str.charAt(index + 7) & ~32) == 79 && (str.charAt(index+
   8) & ~32) == 82) {
- indexTemp += 9; break;
+ indexTemp += 9;
 }
- } while (false);
  return indexTemp;
 }
 public static int ParseSection(String str, int index, int endIndex, ITokener
@@ -9376,18 +9276,15 @@ public static int ParseStrictHeaderTo(String str, int index, int endIndex,
 public static int ParseText(String str, int index, int endIndex, ITokener
   tokener) {
 int indexTemp = index;
- do {
 if (index < endIndex && ((str.charAt(index) >= 1 && str.charAt(index) <= 9) || (str.charAt(index)
   == 11) || (str.charAt(index) == 12) || (str.charAt(index) >= 14 && str.charAt(index) <= 127) ||
   (str.charAt(index) >= 128 && str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
   str.charAt(index) <= 65535))) {
- ++indexTemp; break;
+ ++indexTemp;
+  } else if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
+  56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
+ indexTemp += 2;
 }
-if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <= 56319) &&
-  (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
- indexTemp += 2; break;
-}
- } while (false);
  return indexTemp;
 }
 public static int ParseTime(String str, int index, int endIndex, ITokener
@@ -9479,21 +9376,18 @@ if (index + 1 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57
 public static int ParseTypeString(String str, int index, int endIndex,
   ITokener tokener) {
 int indexTemp = index;
- do {
 if (index + 2 < endIndex && (str.charAt(index) & ~32) == 65 && (str.charAt(index + 1) & ~32) == 76 && (str.charAt(index + 2) & ~32) == 76) {
- indexTemp += 3; break;
-}
-if (index + 3 < endIndex && (str.charAt(index) & ~32) == 76 && (str.charAt(index + 1) & ~32) == 73 && (str.charAt(index + 2) & ~32) == 83 && (str.charAt(index + 3) & ~32) ==
+ indexTemp += 3;
+  } else if (index + 3 < endIndex && (str.charAt(index) & ~32) == 76 && (str.charAt(index + 1) & ~32) == 73 && (str.charAt(index + 2) & ~32) == 83 && (str.charAt(index + 3) & ~32) ==
   84) {
- indexTemp += 4; break;
-}
-if (index + 10 < endIndex && (str.charAt(index) & ~32) == 84 && (str.charAt(index + 1) & ~32) == 82 && (str.charAt(index + 2) & ~32) == 65 && (str.charAt(index + 3) & ~32) == 78 &&
-  (str.charAt(index + 4) & ~32) == 83 && (str.charAt(index + 5) & ~32) == 65 &&
+ indexTemp += 4;
+  } else if (index + 10 < endIndex && (str.charAt(index) & ~32) == 84 && (str.charAt(index +
+  1) & ~32) == 82 && (str.charAt(index + 2) & ~32) == 65 && (str.charAt(index + 3) & ~32)
+  == 78 && (str.charAt(index + 4) & ~32) == 83 && (str.charAt(index + 5) & ~32) == 65 &&
   (str.charAt(index + 6) & ~32) == 67 && (str.charAt(index + 7) & ~32) == 84 && (str.charAt(index+
   8) & ~32) == 73 && (str.charAt(index + 9) & ~32) == 79 && (str.charAt(index + 10) & ~32) == 78) {
- indexTemp += 11; break;
+ indexTemp += 11;
 }
- } while (false);
  return indexTemp;
 }
 public static int ParseValue(String str, int index, int endIndex, ITokener
@@ -9629,43 +9523,31 @@ if (index + 3 < endIndex && ((str.charAt(index) >= 48 && str.charAt(index) <= 57
  index = ParseCFWS(str, index, endIndex, tokener);
 do {
   indexTemp3 = index;
- do {
 if (index + 1 < endIndex && (str.charAt(index) & ~32) == 85 && (str.charAt(index + 1) & ~32) == 84) {
- indexTemp3 += 2; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 71 && (str.charAt(index + 1) & ~32) == 77 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp3 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 69 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp3 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 69 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp3 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 67 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp3 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 67 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp3 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp3 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp3 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp3 += 3; break;
-}
-if (index + 2 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
- indexTemp3 += 3; break;
-}
-if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 73) ||
+ indexTemp3 += 2;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 71 && (str.charAt(index + 1) & ~32) == 77 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp3 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 69 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp3 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 69 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp3 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 67 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp3 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 67 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp3 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp3 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp3 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp3 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 80 && (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32) == 84) {
+ indexTemp3 += 3;
+  } else if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 73) ||
   (str.charAt(index) >= 75 && str.charAt(index) <= 90) || (str.charAt(index) >= 97 && str.charAt(index)
   <= 105) || (str.charAt(index) >= 107 && str.charAt(index) <= 122))) {
- ++indexTemp3; break;
+ ++indexTemp3;
 }
- } while (false);
   if (indexTemp3 != index) {
  index = indexTemp3;
 } else {

@@ -423,10 +423,8 @@ private MakeFilenameMethod() {
     }
 
     public static String MakeFilename(String str) {
-      // TODO: Handle single-quoted filenames (ex: 'filename')?
       if (((str) == null || (str).length() == 0)) {
-        // TODO: Consider empty String instead
-        return "_";
+        return "";
       }
       if (SimplifiedFileCheck(str)) {
         return str;
@@ -499,6 +497,9 @@ private MakeFilenameMethod() {
             builder.append('_');
           } else if (c == '`') {
             // '`' starts a command in BASH and possibly other shells
+            builder.append('_');
+          } else if (c == '\'') {
+            // "'" starts a filename String in BASH and possibly other shells
             builder.append('_');
           } else if (c == '#') {
             // Fragment identifier for URIs

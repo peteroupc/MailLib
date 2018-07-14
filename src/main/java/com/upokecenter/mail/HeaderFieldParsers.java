@@ -111,7 +111,7 @@ private HeaderFieldParsers() {
                     // System.out.println(str.substring(startIndex, (startIndex)+(endIndex -
                     // startIndex)));
    if (Message.HasTextToEscapeOrEncodedWordStarts(str, startIndex,
-                      endIndex)) {
+                    endIndex)) {
                     String newComment = Rfc2047.EncodeComment(
                 str,
                 startIndex,
@@ -373,10 +373,9 @@ private HeaderFieldParsers() {
                     addrSpecStart, (
                     addrSpecStart)+(addrSpecEnd - addrSpecStart));
                     String valueSbString = sb.toString();
-    boolean endsWithSpace = sb.length() > 0 &&
-                      (valueSbString.charAt(valueSbString.length() -
+    boolean endsWithSpace = sb.length() > 0 && (valueSbString.charAt(valueSbString.length() -
                 1) == 0x20 || valueSbString.charAt(valueSbString.length() - 1) ==
-                      0x09);
+                    0x09);
                     String encodedText = (endsWithSpace ? "" : " ") +
                     Rfc2047.EncodeString(addrSpec) + " :;";
                     sb.append(encodedText);

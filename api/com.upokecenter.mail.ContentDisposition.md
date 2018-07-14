@@ -90,6 +90,8 @@ The content disposition value "inline".
 ### getDispositionType
     public final String getDispositionType()
 Gets a string containing this object's disposition type, such as "inline" or
+ "attachment". Note that under RFC 6266 sec. 4.2 and RFC 2183 sec.
+ 2.8, unrecognized disposition types should be treated as
  "attachment".
 
 **Returns:**
@@ -206,7 +208,7 @@ Converts a file name from the Content-Disposition header to a suitable name
  (especially since the RFC itself says that encoded words "MUST NOT
  appear within a 'quoted-string'"). Nevertheless, the MakeFilename
  method has a basis in the RFCs to decode RFC 2047 encoded words (and
- RFC 2231 encoding) in filenames passed to this method.</p> <p>RFC
+ RFC 2231 encoding) in file names passed to this method.</p> <p>RFC
  2046 sec. 4.5.1 (<code>application/octet-stream</code> subtype in
  Content-Type header field) cites an earlier RFC 1341, which "defined
  the use of a 'NAME' parameter which gave a <i>suggested</i> file name
