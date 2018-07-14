@@ -610,6 +610,21 @@ private HeaderFieldParsers() {
       }
     }
 
+    private static final class HeaderContentDisposition extends StructuredHeaderField {
+      @Override public int Parse(String str, int index, int endIndex, ITokener
+        tokener) {
+         String s = str.substring(index, (index)+(endIndex-index));
+         return ContentDisposition.Parse(s, null) == null ? index : endIndex;
+      }
+    }
+    private static final class HeaderContentType extends StructuredHeaderField {
+      @Override public int Parse(String str, int index, int endIndex, ITokener
+        tokener) {
+         String s = str.substring(index, (index)+(endIndex-index));
+         return MediaType.Parse(s, null) == null ? index : endIndex;
+      }
+    }
+
     private static final class HeaderX400ContentReturn extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
@@ -915,13 +930,6 @@ private HeaderFieldParsers() {
           tokener);
       }
     }
-    private static final class HeaderContentDisposition extends StructuredHeaderField {
-      @Override public int Parse(String str, int index, int endIndex, ITokener
-        tokener) {
-        return HeaderParser.ParseHeaderContentDisposition(str, index, endIndex,
-          tokener);
-      }
-    }
     private static final class HeaderContentDuration extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
@@ -961,13 +969,6 @@ private HeaderFieldParsers() {
         tokener) {
         return HeaderParser.ParseHeaderContentTransferEncoding(str, index,
           endIndex, tokener);
-      }
-    }
-    private static final class HeaderContentType extends StructuredHeaderField {
-      @Override public int Parse(String str, int index, int endIndex, ITokener
-        tokener) {
-     return HeaderParser.ParseHeaderContentType(str, index, endIndex,
-          tokener);
       }
     }
     private static final class HeaderDate extends StructuredHeaderField {

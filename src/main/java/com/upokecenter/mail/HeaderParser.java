@@ -2539,63 +2539,7 @@ if (index < endIndex && ((str.charAt(index) >= 33 && str.charAt(index) <= 59) ||
 }
 public static int ParseHeaderContentDisposition(String str, int index, int
   endIndex, ITokener tokener) {
-int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx3;
-indexStart = index;
- state = (tokener != null) ? tokener.GetState() : 0;
- indexTemp = index;
- do {
- index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) >= 35 &&
-  str.charAt(index) <= 36) || (str.charAt(index) >= 45 && str.charAt(index) <= 46) || (str.charAt(index)
-  >= 48 && str.charAt(index) <= 57) || (str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
-  (str.charAt(index) >= 94 && str.charAt(index) <= 126) || (str.charAt(index) >= 42 && str.charAt(index)
-  <= 43) || (str.charAt(index) >= 38 && str.charAt(index) <= 39) || (str.charAt(index) == 63))) {
- ++index;
- while ((index < endIndex && ((str.charAt(index) == 33) || (str.charAt(index) >= 35 &&
-   str.charAt(index) <= 36) || (str.charAt(index) >= 45 && str.charAt(index) <= 46) ||
-   (str.charAt(index) >= 48 && str.charAt(index) <= 57) || (str.charAt(index) >= 65 && str.charAt(index)
-   <= 90) || (str.charAt(index) >= 94 && str.charAt(index) <= 126) || (str.charAt(index) >= 42 &&
-   str.charAt(index) <= 43) || (str.charAt(index) >= 38 && str.charAt(index) <= 39) ||
-   (str.charAt(index) == 63)))) {
- ++index;
-}
-} else {
- index = indexStart; break;
-}
- index = ParseCFWS(str, index, endIndex, tokener);
- while (true) {
-  state2 = (tokener != null) ? tokener.GetState() : 0;
- indexTemp2 = index;
- do {
- indexStart2 = index;
-if (index < endIndex && (str.charAt(index) == 59)) {
- ++index;
-} else {
- break;
-}
- tx3 = ParseParameter(str, index, endIndex, tokener);
- if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
-}
-  indexTemp2 = index;
-  index = indexStart2;
- } while (false);
-  if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
-}
- }
-  indexTemp = index;
- } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
- return indexTemp;
+ return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
 public static int ParseHeaderContentDuration(String str, int index, int
   endIndex, ITokener tokener) {
@@ -2787,64 +2731,7 @@ if (indexTemp3 != indexStart2) {
 }
 public static int ParseHeaderContentType(String str, int index, int
   endIndex, ITokener tokener) {
-int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
-indexStart = index;
- state = (tokener != null) ? tokener.GetState() : 0;
- indexTemp = index;
- do {
- index = ParseCFWS(str, index, endIndex, tokener);
- tx2 = ParseRestrictedName(str, index, endIndex, tokener);
- if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
-}
-if (index < endIndex && (str.charAt(index) == 47)) {
- ++index;
-} else {
- index = indexStart; break;
-}
- tx2 = ParseRestrictedName(str, index, endIndex, tokener);
- if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
-}
- while (true) {
-  state2 = (tokener != null) ? tokener.GetState() : 0;
- indexTemp2 = index;
- do {
- indexStart2 = index;
- index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && (str.charAt(index) == 59)) {
- ++index;
-} else {
- index = indexStart2; break;
-}
- index = ParseCFWS(str, index, endIndex, tokener);
- tx3 = ParseParameter(str, index, endIndex, tokener);
- if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
-}
-  indexTemp2 = index;
-  index = indexStart2;
- } while (false);
-  if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
-}
- }
-  indexTemp = index;
- } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
- return indexTemp;
+ return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
 
 public static int ParseHeaderControl(String str, int index, int endIndex,
@@ -8549,7 +8436,7 @@ if (index < endIndex && (str.charAt(index) >= 57344 && str.charAt(index) <= 6553
   } else if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
   56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {
  indexTemp2 += 2;
-  } else if (index < endIndex && (str.charAt(index) >= 0 && str.charAt(index) <= 55295)) {
+  } else if (index < endIndex && (str.charAt(index) >= 33 && str.charAt(index) <= 55295)) {
  ++indexTemp2;
 }
   if (indexTemp2 != index) {
@@ -8978,35 +8865,6 @@ tokener.RestoreState(state2); break;
  if (tokener != null && indexTemp == indexStart) {
  tokener.RestoreState(state);
 }
- return indexTemp;
-}
-
-public static int ParseRestrictedName(String str, int index, int endIndex,
-  ITokener tokener) {
-int i, indexTemp;
- indexTemp = index;
- do {
-if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
-  (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 && str.charAt(index)
-  <= 57))) {
- ++index;
-} else {
-  break;
-}
-for (i = 0; i < 126; ++i) {
- if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
-   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 &&
-   str.charAt(index) <= 57) || (str.charAt(index) == 33) || (str.charAt(index) >= 35 &&
-   str.charAt(index) <= 36) || (str.charAt(index) == 38) || (str.charAt(index) >= 94 &&
-   str.charAt(index) <= 95) || (str.charAt(index) >= 45 && str.charAt(index) <= 46) ||
-   (str.charAt(index) == 43))) {
-  ++index;
- } else {
- break;
-}
-}
-  indexTemp = index;
- } while (false);
  return indexTemp;
 }
 
