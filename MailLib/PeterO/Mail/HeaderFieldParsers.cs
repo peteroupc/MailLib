@@ -109,7 +109,7 @@ namespace PeterO.Mail {
                     // Console.WriteLine(str.Substring(startIndex, endIndex -
                     // startIndex));
    if (Message.HasTextToEscapeOrEncodedWordStarts(str, startIndex,
-                      endIndex)) {
+                    endIndex)) {
                     string newComment = Rfc2047.EncodeComment(
                 str,
                 startIndex,
@@ -371,10 +371,9 @@ namespace PeterO.Mail {
                     addrSpecStart,
                     addrSpecEnd - addrSpecStart);
                     string valueSbString = sb.ToString();
-    bool endsWithSpace = sb.Length > 0 &&
-                      (valueSbString[valueSbString.Length -
+    bool endsWithSpace = sb.Length > 0 && (valueSbString[valueSbString.Length -
                 1] == 0x20 || valueSbString[valueSbString.Length - 1] ==
-                      0x09);
+                    0x09);
                     string encodedText = (endsWithSpace ? String.Empty : " ") +
                     Rfc2047.EncodeString(addrSpec) + " :;";
                     sb.Append(encodedText);

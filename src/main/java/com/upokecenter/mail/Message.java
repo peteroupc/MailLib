@@ -81,7 +81,10 @@ import com.upokecenter.text.*;
      * mode" after the decoded text is displayed (see last paragraph of sec.
      * 6.2) -- since the decoded text is converted to Unicode rather than
      * kept as ISO-2022-JP, this is not applicable since there is no such
-     * thing as "ASCII mode" in the Unicode Standard.</p>
+     * thing as "ASCII mode" in the Unicode Standard.</p> <p>Note that this
+     * library (the MailLib library) has no facilities for sending and
+     * receiving email messages, since that's outside this library's
+     * scope.</p>
      */
   public final class Message {
     private static final int EncodingBase64 = 2;
@@ -540,7 +543,8 @@ public final void setSubject(String value) {
   field,
   0,
   field.length(),
-  date) != 0 ? date : null;
+  date,
+  true) != 0 ? date : null;
     }
 
     /**

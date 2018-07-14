@@ -1182,6 +1182,37 @@ if (!(boolTemp)) {
     }
 
     @Test
+    public void TestBoundaryReadingWithTransportPadding() {
+      String messageStart = "MIME-Version: 1.0\r\n";
+      messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
+      messageStart += "Preamble\r\n";
+      String[] paddings={"","\u0020","\t","\u0020\u0020",
+          "\t\u0020","\u0020\t","\t\t"};
+      for (Object padding1 : paddings) {
+        for (Object padding2 : paddings) {
+          String message = messageStart;
+          message += "--b1"+padding1+"\r\n";
+          message += "Content-Type: text/plain\r\n\r\n";
+          message += "Test\r\n";
+          message += "--b1--"+padding2+"\r\n";
+          message += "Epilogue";
+      Message msg;
+      msg = MessageFromString(message);
+      Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
+      {
+        String stringTemp = msg.getContentType().GetParameter("boundary");
+        Assert.assertEquals(
+          "b1",
+          stringTemp);
+      }
+      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
+      Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
+        }
+      }
+    }
+
+    @Test
     public void TestBoundaryReading() {
       byte[] body;
       String messageStart = "MIME-Version: 1.0\r\n";

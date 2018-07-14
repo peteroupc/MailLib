@@ -26,7 +26,8 @@ private HeaderParserUtility() {
   String str,
   int index,
   int endIndex,
-  int[] ret) {
+  int[] ret,
+  boolean parseObsoleteZones) {
       int i, i3, indexStart, indexStart2, indexStart3, indexTemp,
         indexTemp2, indexTemp3, indexTemp4;
       int dayOfWeek = -1, day = -1, month = -1, year = -1, hour = -1, minute
@@ -131,68 +132,55 @@ private HeaderParserUtility() {
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         do {
           indexTemp2 = index;
-          do {
             if (index + 2 < endIndex && (str.charAt(index) & ~32) == 74 &&
               (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) == 78) {
               month = 1;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str.charAt(index) & ~32) == 70 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 70 &&
               (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 66) {
               month = 2;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 &&
               (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) == 82) {
               month = 3;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str.charAt(index) & ~32) == 65 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 65 &&
               (str.charAt(index + 1) & ~32) == 80 && (str.charAt(index + 2) & ~32) == 82) {
               month = 4;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 &&
               (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) == 89) {
               month = 5;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str.charAt(index) & ~32) == 74 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 74 &&
               (str.charAt(index + 1) & ~32) == 85 && (str.charAt(index + 2) & ~32) == 78) {
               month = 6;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str.charAt(index) & ~32) == 74 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 74 &&
               (str.charAt(index + 1) & ~32) == 85 && (str.charAt(index + 2) & ~32) == 76) {
               month = 7;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str.charAt(index) & ~32) == 65 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 65 &&
               (str.charAt(index + 1) & ~32) == 85 && (str.charAt(index + 2) & ~32) == 71) {
               month = 8;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str.charAt(index) & ~32) == 83 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 83 &&
               (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 80) {
               month = 9;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str.charAt(index) & ~32) == 79 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 79 &&
               (str.charAt(index + 1) & ~32) == 67 && (str.charAt(index + 2) & ~32) == 84) {
               month = 10;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str.charAt(index) & ~32) == 78 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 78 &&
               (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) == 86) {
               month = 11;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str.charAt(index) & ~32) == 68 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 68 &&
               (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) == 67) {
               month = 12;
-              indexTemp2 += 3; break;
+              indexTemp2 += 3;
             }
-          } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -380,74 +368,65 @@ private HeaderParserUtility() {
               index = HeaderParser.ParseCFWS(str, index, endIndex, null);
               do {
                 indexTemp4 = index;
-                do {
-                  if (index + 1 < endIndex && (str.charAt(index) & ~32) == 85 &&
+                if (parseObsoleteZones) {
+                    if (index + 1 < endIndex && (str.charAt(index) & ~32) == 85 &&
                     (str.charAt(index + 1) & ~32) == 84) {
                     offset = 0;
-                    indexTemp4 += 2; break;
-                  }
-                  if (index + 2 < endIndex && (str.charAt(index) & ~32) == 71 &&
+                    indexTemp4 += 2;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 71 &&
                     (str.charAt(index + 1) & ~32) == 77 && (str.charAt(index + 2) & ~32)
                     == 84) {
                     offset = 0;
-                    indexTemp4 += 3; break;
-                  }
-                  if (index + 2 < endIndex && (str.charAt(index) & ~32) == 69 &&
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 69 &&
                     (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32)
                     == 84) {
                     offset = -5 * 60;
-                    indexTemp4 += 3; break;
-                  }
-                  if (index + 2 < endIndex && (str.charAt(index) & ~32) == 69 &&
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 69 &&
                     (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32)
                     == 84) {
                     offset = -4 * 60;
-                    indexTemp4 += 3; break;
-                  }
-                  if (index + 2 < endIndex && (str.charAt(index) & ~32) == 67 &&
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 67 &&
                     (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32)
                     == 84) {
                     offset = -6 * 60;
-                    indexTemp4 += 3; break;
-                  }
-                  if (index + 2 < endIndex && (str.charAt(index) & ~32) == 67 &&
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 67 &&
                     (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32)
                     == 84) {
                     offset = -5 * 60;
-                    indexTemp4 += 3; break;
-                  }
-                  if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 &&
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 &&
                     (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32)
                     == 84) {
                     offset = -7 * 60;
-                    indexTemp4 += 3; break;
-                  }
-                  if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 &&
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 &&
                     (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32)
                     == 84) {
                     offset = -6 * 60;
-                    indexTemp4 += 3; break;
-                  }
-                  if (index + 2 < endIndex && (str.charAt(index) & ~32) == 80 &&
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 80 &&
                     (str.charAt(index + 1) & ~32) == 83 && (str.charAt(index + 2) & ~32)
                     == 84) {
                     offset = -8 * 60;
-                    indexTemp4 += 3; break;
-                  }
-                  if (index + 2 < endIndex && (str.charAt(index) & ~32) == 80 &&
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 80 &&
                     (str.charAt(index + 1) & ~32) == 68 && (str.charAt(index + 2) & ~32)
                     == 84) {
                     offset = -7 * 60;
-                    indexTemp4 += 3; break;
-                  }
-                  if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index)
+                    indexTemp4 += 3;
+  } else if (index < endIndex && ((str.charAt(index) >= 65 &&
+                      str.charAt(index)
                     <= 73) || (str.charAt(index) >= 75 && str.charAt(index) <= 90) ||
                     (str.charAt(index) >= 97 && str.charAt(index) <= 105) || (str.charAt(index)
                     >= 107 && str.charAt(index) <= 122))) {
                     offset = 0;
-                    ++indexTemp4; break;
-                  }
-                } while (false);
+                    ++indexTemp4;
+                    }
+                }
                 if (indexTemp4 != index) {
                   index = indexTemp4;
                 } else {

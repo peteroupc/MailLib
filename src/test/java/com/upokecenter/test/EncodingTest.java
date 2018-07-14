@@ -1687,7 +1687,19 @@ String stringTemp =
       return DowngradeHeaderField("subject", str);
     }
 
+    private static final class HeaderInfo {
+      public String header;
+      public Message message;
+      public HeaderInfo(String header, Message message) {
+        this.header = header;
+        this.message = message;
+      }
+    }
     private static String DowngradeHeaderField(String name, String value) {
+      return DowngradeHeaderFieldEx(name, value).header;
+    }
+  private static HeaderInfo DowngradeHeaderFieldEx(String name, String
+      value) {
       String msgstr;
       msgstr = name + ": " + value + "\r\n";
       if (!name.equals("from")) {
@@ -1699,7 +1711,37 @@ String stringTemp =
       int io = gen.indexOf('\r');
       int colon = gen.indexOf(':');
       gen = gen.substring(colon + 2, (colon + 2)+(io - (colon + 2)));
-      return gen;
+      return new HeaderInfo(gen, MessageTest.MessageFromString(msgstr));
+    }
+
+    private static void TestDowngradeAddressOne(
+      String header,
+      String value,
+      String displayName,
+      String localPart,
+      String domain) {
+      HeaderInfo hinfo = DowngradeHeaderFieldEx(header, value);
+      System.out.println(header);
+      System.out.println(value);
+      System.out.println(hinfo.header);
+      NamedAddress address = new NamedAddress(hinfo.message.GetHeader(header));
+      Assert.assertEquals(displayName, address.getDisplayName());
+      Assert.assertEquals(localPart, address.getAddress().getLocalPart());
+      Assert.assertEquals(domain, address.getAddress().getDomain());
+    }
+
+    private static String[] addressHeaderFields ={"from","to","cc","bcc",
+  "disposition-notification-to","sender"};
+    @Test
+    public void TestDowngradeAddress() {
+      for (String header : addressHeaderFields) {
+        TestDowngradeAddressOne(header, "down\u00begrade <down@example.com>",
+             "down\u00begrade", "down", "example.com");
+        TestDowngradeAddressOne(header, "downgrade <down@example.c\u00e7m>",
+             "downgrade", "down", "example.c\u00e7m");
+        TestDowngradeAddressOne(header, "downgrade <down@c\u00e7m.example>",
+             "downgrade", "down", "c\u00e7m.example");
+      }
     }
 
     // @Test
@@ -2215,9 +2257,6 @@ String stringTemp =
     public void TestRandomEncodedBytes() {
       RandomGenerator rnd = new RandomGenerator();
       for (int i = 0; i < 10000; ++i) {
-        if (i % 100 == 0) {
-          // System.out.println (i);
-        }
         byte[] bytes = RandomBytes(rnd);
         TestEncodedBytesRoundTrip(bytes, false);
       }
@@ -2232,9 +2271,28 @@ String stringTemp =
       TestEncodedBytesRoundTrip("T \r\r\nA");
       TestEncodedBytesRoundTrip("T \r");
       TestEncodedBytesRoundTrip("T \r\r");
+      TestEncodedBytesRoundTrip("The Best\r\nFrom Me");
+      TestEncodedBytesRoundTrip("The Best\r\nGood ");
+      TestEncodedBytesRoundTrip("The Best\r\nFrom ");
+      TestEncodedBytesRoundTrip("The Best\r\nFrom");
+      TestEncodedBytesRoundTrip("The Best\r\nFro");
+      TestEncodedBytesRoundTrip("The Best\r\nFr");
+      TestEncodedBytesRoundTrip("The Best\r\nF");
+      TestEncodedBytesRoundTrip("The Best\r\n--?");
+      TestEncodedBytesRoundTrip("The Best\r\n-?");
+      TestEncodedBytesRoundTrip("The Best\r\n--");
+      TestEncodedBytesRoundTrip("The Best\r\n-");
       TestEncodedBytesRoundTrip("T\u000best\r\nFrom Me");
       TestEncodedBytesRoundTrip("T\u000best\r\nGood ");
       TestEncodedBytesRoundTrip("T\u000best\r\nFrom ");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFrom");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFro");
+      TestEncodedBytesRoundTrip("T\u000best\r\nFr");
+      TestEncodedBytesRoundTrip("T\u000best\r\nF");
+      TestEncodedBytesRoundTrip("T\u000best\r\n--?");
+      TestEncodedBytesRoundTrip("T\u000best\r\n-?");
+      TestEncodedBytesRoundTrip("T\u000best\r\n--");
+      TestEncodedBytesRoundTrip("T\u000best\r\n-");
       TestEncodedBytesRoundTrip("T\u000best\r\nFromMe");
       TestEncodedBytesRoundTrip("T\u000best\r\nFroMe");
       TestEncodedBytesRoundTrip("T\u000best\r\nFrMe");

@@ -1179,14 +1179,14 @@ Assert.IsTrue(boolTemp, msgstring);
     }
 
     [Test]
-    public void TestBoundaryReadingWithTransportPadding(){
+    public void TestBoundaryReadingWithTransportPadding() {
       string messageStart = "MIME-Version: 1.0\r\n";
       messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
       messageStart += "Preamble\r\n";
       string[] paddings={"","\u0020","\t","\u0020\u0020",
           "\t\u0020","\u0020\t","\t\t"};
-      foreach(var padding1 in paddings){
-        foreach(var padding2 in paddings){
+      foreach (var padding1 in paddings) {
+        foreach (var padding2 in paddings) {
           string message = messageStart;
           message += "--b1"+padding1+"\r\n";
           message += "Content-Type: text/plain\r\n\r\n";
@@ -1207,7 +1207,6 @@ Assert.IsTrue(boolTemp, msgstring);
       Assert.AreEqual("Test", msg.Parts[0].BodyString);
         }
       }
-
     }
 
     [Test]

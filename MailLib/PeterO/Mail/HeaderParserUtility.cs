@@ -26,7 +26,7 @@ namespace PeterO.Mail {
   int index,
   int endIndex,
   int[] ret,
-    bool parseObsoleteZones) {
+  bool parseObsoleteZones) {
       int i, i3, indexStart, indexStart2, indexStart3, indexTemp,
         indexTemp2, indexTemp3, indexTemp4;
       int dayOfWeek = -1, day = -1, month = -1, year = -1, hour = -1, minute
@@ -131,68 +131,55 @@ namespace PeterO.Mail {
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         do {
           indexTemp2 = index;
-          do {
             if (index + 2 < endIndex && (str[index] & ~32) == 74 &&
               (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) {
               month = 1;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str[index] & ~32) == 70 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 70 &&
               (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) {
               month = 2;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str[index] & ~32) == 77 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 77 &&
               (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 82) {
               month = 3;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str[index] & ~32) == 65 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 65 &&
               (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 82) {
               month = 4;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str[index] & ~32) == 77 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 77 &&
               (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 89) {
               month = 5;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str[index] & ~32) == 74 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 74 &&
               (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 78) {
               month = 6;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str[index] & ~32) == 74 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 74 &&
               (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 76) {
               month = 7;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str[index] & ~32) == 65 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 65 &&
               (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 71) {
               month = 8;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str[index] & ~32) == 83 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 83 &&
               (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 80) {
               month = 9;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str[index] & ~32) == 79 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 79 &&
               (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) == 84) {
               month = 10;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str[index] & ~32) == 78 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 78 &&
               (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 86) {
               month = 11;
-              indexTemp2 += 3; break;
-            }
-            if (index + 2 < endIndex && (str[index] & ~32) == 68 &&
+              indexTemp2 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 68 &&
               (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67) {
               month = 12;
-              indexTemp2 += 3; break;
+              indexTemp2 += 3;
             }
-          } while (false);
           if (indexTemp2 != index) {
             index = indexTemp2;
           } else {
@@ -381,74 +368,63 @@ namespace PeterO.Mail {
               do {
                 indexTemp4 = index;
                 if (parseObsoleteZones) {
-                  do {
                     if (index + 1 < endIndex && (str[index] & ~32) == 85 &&
-                      (str[index + 1] & ~32) == 84) {
-                      offset = 0;
-                      indexTemp4 += 2; break;
+                    (str[index + 1] & ~32) == 84) {
+                    offset = 0;
+                    indexTemp4 += 2;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 71 &&
+                    (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32)
+                    == 84) {
+                    offset = 0;
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 69 &&
+                    (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32)
+                    == 84) {
+                    offset = -5 * 60;
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 69 &&
+                    (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32)
+                    == 84) {
+                    offset = -4 * 60;
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 67 &&
+                    (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32)
+                    == 84) {
+                    offset = -6 * 60;
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 67 &&
+                    (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32)
+                    == 84) {
+                    offset = -5 * 60;
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 77 &&
+                    (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32)
+                    == 84) {
+                    offset = -7 * 60;
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 77 &&
+                    (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32)
+                    == 84) {
+                    offset = -6 * 60;
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 80 &&
+                    (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32)
+                    == 84) {
+                    offset = -8 * 60;
+                    indexTemp4 += 3;
+  } else if (index + 2 < endIndex && (str[index] & ~32) == 80 &&
+                    (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32)
+                    == 84) {
+                    offset = -7 * 60;
+                    indexTemp4 += 3;
+  } else if (index < endIndex && ((str[index] >= 65 &&
+                      str[index]
+                    <= 73) || (str[index] >= 75 && str[index] <= 90) ||
+                    (str[index] >= 97 && str[index] <= 105) || (str[index]
+                    >= 107 && str[index] <= 122))) {
+                    offset = 0;
+                    ++indexTemp4;
                     }
-                    if (index + 2 < endIndex && (str[index] & ~32) == 71 &&
-                      (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32)
-                      == 84) {
-                      offset = 0;
-                      indexTemp4 += 3; break;
-                    }
-                    if (index + 2 < endIndex && (str[index] & ~32) == 69 &&
-                      (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32)
-                      == 84) {
-                      offset = -5 * 60;
-                      indexTemp4 += 3; break;
-                    }
-                    if (index + 2 < endIndex && (str[index] & ~32) == 69 &&
-                      (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32)
-                      == 84) {
-                      offset = -4 * 60;
-                      indexTemp4 += 3; break;
-                    }
-                    if (index + 2 < endIndex && (str[index] & ~32) == 67 &&
-                      (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32)
-                      == 84) {
-                      offset = -6 * 60;
-                      indexTemp4 += 3; break;
-                    }
-                    if (index + 2 < endIndex && (str[index] & ~32) == 67 &&
-                      (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32)
-                      == 84) {
-                      offset = -5 * 60;
-                      indexTemp4 += 3; break;
-                    }
-                    if (index + 2 < endIndex && (str[index] & ~32) == 77 &&
-                      (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32)
-                      == 84) {
-                      offset = -7 * 60;
-                      indexTemp4 += 3; break;
-                    }
-                    if (index + 2 < endIndex && (str[index] & ~32) == 77 &&
-                      (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32)
-                      == 84) {
-                      offset = -6 * 60;
-                      indexTemp4 += 3; break;
-                    }
-                    if (index + 2 < endIndex && (str[index] & ~32) == 80 &&
-                      (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32)
-                      == 84) {
-                      offset = -8 * 60;
-                      indexTemp4 += 3; break;
-                    }
-                    if (index + 2 < endIndex && (str[index] & ~32) == 80 &&
-                      (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32)
-                      == 84) {
-                      offset = -7 * 60;
-                      indexTemp4 += 3; break;
-                    }
-                    if (index < endIndex && ((str[index] >= 65 && str[index]
-                      <= 73) || (str[index] >= 75 && str[index] <= 90) ||
-                      (str[index] >= 97 && str[index] <= 105) || (str[index]
-                      >= 107 && str[index] <= 122))) {
-                      offset = 0;
-                      ++indexTemp4; break;
-                    }
-                  } while (false);
                 }
                 if (indexTemp4 != index) {
                   index = indexTemp4;

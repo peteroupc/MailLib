@@ -48,15 +48,13 @@ import com.upokecenter.text.*;
 
     /**
      * Gets a string containing this object's disposition type, such as "inline" or
+     * "attachment". Note that under RFC 6266 sec. 4.2 and RFC 2183 sec.
+     * 2.8, unrecognized disposition types should be treated as
      * "attachment".
      * @return A string containing this object's disposition type, such as "inline"
      * or "attachment".
      */
     public final String getDispositionType() {
-        // TODO: Unrecognized/unknown types
-        // should be treated as attachment
-        // (RFC 6266 sec. 4.2; RFC 2183 sec. 2.8); note this in the
-        // documentation
         return this.dispositionType;
       }
 
@@ -195,7 +193,7 @@ import com.upokecenter.text.*;
      * (especially since the RFC itself says that encoded words "MUST NOT
      * appear within a 'quoted-string'"). Nevertheless, the MakeFilename
      * method has a basis in the RFCs to decode RFC 2047 encoded words (and
-     * RFC 2231 encoding) in filenames passed to this method.</p> <p>RFC
+     * RFC 2231 encoding) in file names passed to this method.</p> <p>RFC
      * 2046 sec. 4.5.1 (<code>application/octet-stream</code> subtype in
      * Content-Type header field) cites an earlier RFC 1341, which "defined
      * the use of a 'NAME' parameter which gave a <i>suggested</i> file name
@@ -257,7 +255,8 @@ import com.upokecenter.text.*;
     public String GetParameter(String name) {
       // TODO: Support creation-date, modification-date,
       // read-date and size specially. NOTE: Size is
-      // a hint only; see RFC 2183
+      // a hint only, see RFC 2183, and dates are RFC 822 date time with
+      // numeric timezones
       if (name == null) {
         throw new NullPointerException("name");
       }

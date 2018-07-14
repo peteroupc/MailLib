@@ -1690,7 +1690,6 @@ string stringTemp =
       return DowngradeHeaderField("subject", str);
     }
 
-
     private sealed class HeaderInfo {
       public string header;
       public Message message;
@@ -1702,7 +1701,8 @@ string stringTemp =
     private static string DowngradeHeaderField(string name, string value) {
       return DowngradeHeaderFieldEx(name, value).header;
     }
-    private static HeaderInfo DowngradeHeaderFieldEx(string name, string value) {
+  private static HeaderInfo DowngradeHeaderFieldEx(string name, string
+      value) {
       string msgstr;
       msgstr = name + ": " + value + "\r\n";
       if (!name.Equals("from")) {
@@ -1717,10 +1717,12 @@ string stringTemp =
       return new HeaderInfo(gen, MessageTest.MessageFromString(msgstr));
     }
 
-
     private static void TestDowngradeAddressOne(
-      string header, string value,
-      string displayName, string localPart, string domain) {
+      string header,
+      string value,
+      string displayName,
+      string localPart,
+      string domain) {
       HeaderInfo hinfo = DowngradeHeaderFieldEx(header, value);
       Console.WriteLine(header);
       Console.WriteLine(value);
@@ -1729,11 +1731,10 @@ string stringTemp =
       Assert.AreEqual(displayName, address.DisplayName);
       Assert.AreEqual(localPart, address.Address.LocalPart);
       Assert.AreEqual(domain, address.Address.Domain);
-
     }
 
     private static string[] addressHeaderFields ={"from","to","cc","bcc",
-"disposition-notification-to","sender"};
+  "disposition-notification-to","sender"};
     [Test]
     public void TestDowngradeAddress() {
       foreach (string header in addressHeaderFields) {
@@ -1745,8 +1746,6 @@ string stringTemp =
              "downgrade", "down", "c\u00e7m.example");
       }
     }
-
-
 
     // [Test]
     public void TestCommentsToWords() {
