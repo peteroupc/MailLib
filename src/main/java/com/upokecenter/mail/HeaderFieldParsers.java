@@ -110,12 +110,13 @@ private HeaderFieldParsers() {
                     endIndex = token[2];
                     // System.out.println(str.substring(startIndex, (startIndex)+(endIndex -
                     // startIndex)));
-   if (Message.HasTextToEscapeOrEncodedWordStarts(str, startIndex,
+                if (Message.HasTextToEscapeOrEncodedWordStarts(str,
+                      startIndex,
                     endIndex)) {
                     String newComment = Rfc2047.EncodeComment(
-                str,
-                startIndex,
-                endIndex);
+                  str,
+                  startIndex,
+                  endIndex);
                     sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
                     sb.append(newComment);
                     } else {
@@ -231,14 +232,14 @@ private HeaderFieldParsers() {
                     // At least some of the domains could not
                     // be converted to ASCII
                     originalGroups = (originalGroups == null) ? (this.ParseGroupLists(
-        originalString,
-        0,
-        originalString.length())) : originalGroups;
+          originalString,
+          0,
+          originalString.length())) : originalGroups;
                     originalGroupList = originalGroups.get(groupIndex);
                     String groupText = originalGroupList;
                     String displayNameText = str.substring(
-        startIndex, (
-        startIndex)+(displayNameEnd - startIndex));
+          startIndex, (
+          startIndex)+(displayNameEnd - startIndex));
                     String encodedText = displayNameText + " " +
                     Rfc2047.EncodeString(groupText) + " :;";
                     sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
@@ -332,8 +333,8 @@ private HeaderFieldParsers() {
                     sb.append(str.substring(lastIndex, (lastIndex)+(startIndex - lastIndex)));
                     if (!hasPhrase) {
                     String addrSpec = str.substring(
-                token[1], (
-                token[1])+(token[2] - token[1]));
+                    token[1], (
+                    token[1])+(token[2] - token[1]));
                     String encodedText = " " + Rfc2047.EncodeString(addrSpec) +
                     " :;";
                     sb.append(encodedText);
@@ -348,14 +349,14 @@ private HeaderFieldParsers() {
                     // append the rest of the String so far up to and
                     // including the phrase
                     sb.append(
-                 str.substring(
-                 lastIndex, (
-                 lastIndex)+(angleAddrStart - lastIndex)));
+                    str.substring(
+                    lastIndex, (
+                    lastIndex)+(angleAddrStart - lastIndex)));
                     int addrSpecStart = HeaderParser.ParseCFWS(
-            str,
-            angleAddrStart,
-            token[2],
-            null);
+                str,
+                angleAddrStart,
+                token[2],
+                null);
                     if (addrSpecStart < token[2] && str.charAt(addrSpecStart) == '<') {
                     ++addrSpecStart;
                     }
@@ -365,16 +366,17 @@ private HeaderFieldParsers() {
                     token[2],
                     null);
                     int addrSpecEnd = HeaderParser.ParseAddrSpec(
-            str,
-            addrSpecStart,
-            token[2],
-            null);
+                str,
+                addrSpecStart,
+                token[2],
+                null);
                     String addrSpec = str.substring(
                     addrSpecStart, (
                     addrSpecStart)+(addrSpecEnd - addrSpecStart));
                     String valueSbString = sb.toString();
-    boolean endsWithSpace = sb.length() > 0 && (valueSbString.charAt(valueSbString.length() -
-                1) == 0x20 || valueSbString.charAt(valueSbString.length() - 1) ==
+    boolean endsWithSpace = sb.length() > 0 &&
+                      (valueSbString.charAt(valueSbString.length() -
+                    1) == 0x20 || valueSbString.charAt(valueSbString.length() - 1) ==
                     0x09);
                     String encodedText = (endsWithSpace ? "" : " ") +
                     Rfc2047.EncodeString(addrSpec) + " :;";
@@ -548,10 +550,10 @@ private HeaderFieldParsers() {
           String checkword =
             DataUtilities.ToLowerCaseAscii(str.substring(index, (index)+(word.length())));
           if (!checkword.equals(word)) {
- return false;
-}
-      index = HeaderParser.ParseCFWS(str, index + word.length(), endIndex,
-            null);
+            return false;
+          }
+          index = HeaderParser.ParseCFWS(str, index + word.length(), endIndex,
+                null);
           return index == endIndex;
         }
         return false;
@@ -567,8 +569,8 @@ private HeaderFieldParsers() {
           int newindex = HeaderParser.ParseReceivedToken(header, index,
             header.length(), null);
           if (newindex == index) {
- break;
-}
+            break;
+          }
           if (IsCFWSWordCFWS(header, index, newindex, "for")) {
             Tokener tokener = new Tokener();
             int clauseEnd = HeaderParser.ParseReceivedToken(
@@ -613,18 +615,132 @@ private HeaderFieldParsers() {
     private static final class HeaderContentDisposition extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-         String s = str.substring(index, (index)+(endIndex-index));
-         return ContentDisposition.Parse(s, null) == null ? index : endIndex;
+        String s = str.substring(index, (index)+(endIndex - index));
+        int ret = ContentDisposition.Parse(s, null) == null ? index : endIndex;
+        if (ret == endIndex) {
+ HeaderParserUtility.TraverseCFWSAndQuotedStrings(str, index, endIndex,
+   tokener);
+}
+        return ret;
       }
     }
     private static final class HeaderContentType extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-         String s = str.substring(index, (index)+(endIndex-index));
-         return MediaType.Parse(s, null) == null ? index : endIndex;
+        String s = str.substring(index, (index)+(endIndex - index));
+        int ret = MediaType.Parse(s, null) == null ? index : endIndex;
+        if (ret == endIndex) {
+ HeaderParserUtility.TraverseCFWSAndQuotedStrings(str, index, endIndex,
+   tokener);
+}
+        return ret;
       }
     }
-
+    private static final class HeaderAutoSubmitted extends StructuredHeaderField {
+      @Override public int Parse(String str, int index, int endIndex, ITokener
+        tokener) {
+        // NOTE: Same syntax as Content-Disposition
+        String s = str.substring(index, (index)+(endIndex - index));
+        int ret = ContentDisposition.Parse(s, null) == null ? index : endIndex;
+        if (ret == endIndex) {
+ HeaderParserUtility.TraverseCFWSAndQuotedStrings(str, index, endIndex,
+   tokener);
+}
+        return ret;
+      }
+    }
+    private static final class HeaderSioLabel extends StructuredHeaderField {
+      @Override public int Parse(String str, int index, int endIndex, ITokener
+        tokener) {
+        int si = index;
+        si = HeaderParser.ParseFWS(str, si, endIndex, tokener);
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        int ret = MediaType.ParseParameters(
+           str,
+           si,
+           endIndex,
+           false,
+           parameters) ? endIndex : index;
+        if (ret != endIndex) {
+ return index;
+}
+        if (HeaderParserUtility.HasComments(str, index, endIndex)) {
+ return index;
+}
+        HeaderParserUtility.TraverseCFWSAndQuotedStrings(str, index,
+          endIndex, tokener);
+        return ret;
+      }
+    }
+    private static final class HeaderArchive extends StructuredHeaderField {
+      @Override public int Parse(String str, int index, int endIndex, ITokener
+        tokener) {
+        // NOTE: Almost the same syntax as Content-Disposition, except
+        // first character must be a space (since this is a Netnews header
+        // field),
+        // and a limited selection of "disposition types" is valid;
+        // however, the initial space is not checked here, a behavior
+        // allowed by RFC
+        // 5536 sec. 2.2
+        String s = str.substring(index, (index)+(endIndex - index));
+        ContentDisposition cd = ContentDisposition.Parse(s, null);
+        if (cd == null) {
+          return index;
+        }
+        int ret = (cd.getDispositionType().equals("no") ||
+          cd.getDispositionType().equals("yes")) ? (endIndex) : (index);
+        if (ret == endIndex) {
+ HeaderParserUtility.TraverseCFWSAndQuotedStrings(str, index, endIndex,
+   tokener);
+}
+        return ret;
+      }
+    }
+    private static final class HeaderInjectionInfo extends StructuredHeaderField {
+      @Override public int Parse(String str, int index, int endIndex, ITokener
+        tokener) {
+        // NOTE: Under the syntax of InjectionInfo, the
+        // first character must be a space (since this is a Netnews header
+        // field);
+        // however, the initial space is not checked here, a behavior
+        // allowed by RFC
+        // 5536 sec. 2.2
+        int indexStart, indexTemp, state, tx2;
+        indexStart = index;
+        state = (tokener != null) ? tokener.GetState() : 0;
+        indexTemp = index;
+        do {
+          index = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
+          tx2 = HeaderParser.ParsePathIdentity(str, index, endIndex, tokener);
+          if (tx2 == index) {
+            index = indexStart; break;
+          } else {
+            index = tx2;
+          }
+          index = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
+          if (index < endIndex && (str.charAt(index) == 59)) {
+            ++index;
+            HashMap<String, String> parameters = new HashMap<String, String>();
+            index = MediaType.ParseParameters(
+                    str,
+                    index,
+                    endIndex,
+                    false,
+                    parameters) ? endIndex : indexStart;
+            if (index == endIndex) {
+ HeaderParserUtility.TraverseCFWSAndQuotedStrings(str, indexStart, endIndex,
+   tokener);
+}
+          }
+          indexTemp = index;
+        } while (false);
+        if (tokener != null && indexTemp == indexStart) {
+          tokener.RestoreState(state);
+        }
+        return indexTemp;
+      }
+    }
+    // -------------- generic classes --------------
     private static final class HeaderX400ContentReturn extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
@@ -635,8 +751,8 @@ private HeaderFieldParsers() {
     private static final class HeaderDeliveryDate extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-    return HeaderParser.ParseHeaderDeliveryDate(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderDeliveryDate(str, index, endIndex,
+              tokener);
       }
     }
     private static final class HeaderPriority extends StructuredHeaderField {
@@ -648,15 +764,15 @@ private HeaderFieldParsers() {
     private static final class HeaderImportance extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-      return HeaderParser.ParseHeaderImportance(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderImportance(str, index, endIndex,
+            tokener);
       }
     }
     private static final class HeaderSensitivity extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-     return HeaderParser.ParseHeaderSensitivity(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderSensitivity(str, index, endIndex,
+             tokener);
       }
     }
     private static final class HeaderX400ContentIdentifier extends StructuredHeaderField {
@@ -669,8 +785,8 @@ private HeaderFieldParsers() {
     private static final class HeaderX400Received extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-    return HeaderParser.ParseHeaderX400Received(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderX400Received(str, index, endIndex,
+              tokener);
       }
     }
     private static final class HeaderX400MtsIdentifier extends StructuredHeaderField {
@@ -697,8 +813,8 @@ private HeaderFieldParsers() {
     private static final class HeaderConversion extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-      return HeaderParser.ParseHeaderConversion(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderConversion(str, index, endIndex,
+            tokener);
       }
     }
     private static final class HeaderConversionWithLoss extends StructuredHeaderField {
@@ -711,15 +827,15 @@ private HeaderFieldParsers() {
     private static final class HeaderSupersedes extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-      return HeaderParser.ParseHeaderSupersedes(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderSupersedes(str, index, endIndex,
+            tokener);
       }
     }
     private static final class HeaderAutoforwarded extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-   return HeaderParser.ParseHeaderAutoforwarded(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderAutoforwarded(str, index, endIndex,
+               tokener);
       }
     }
     private static final class HeaderContentTranslationType extends StructuredHeaderField {
@@ -743,7 +859,7 @@ private HeaderFieldParsers() {
             tokener);
       }
     }
-  private static final class HeaderPreventNondeliveryReport extends StructuredHeaderField {
+    private static final class HeaderPreventNondeliveryReport extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
         return HeaderParser.ParseHeaderPreventNondeliveryReport(str, index,
@@ -767,27 +883,21 @@ private HeaderFieldParsers() {
     private static final class HeaderExpandedDate extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-    return HeaderParser.ParseHeaderExpandedDate(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderExpandedDate(str, index, endIndex,
+              tokener);
       }
     }
     private static final class HeaderNewsgroups extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-      return HeaderParser.ParseHeaderNewsgroups(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderNewsgroups(str, index, endIndex,
+            tokener);
       }
     }
     private static final class HeaderPath extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
         return HeaderParser.ParseHeaderPath(str, index, endIndex, tokener);
-      }
-    }
-    private static final class HeaderArchive extends StructuredHeaderField {
-      @Override public int Parse(String str, int index, int endIndex, ITokener
-        tokener) {
-        return HeaderParser.ParseHeaderArchive(str, index, endIndex, tokener);
       }
     }
     private static final class HeaderControl extends StructuredHeaderField {
@@ -799,29 +909,22 @@ private HeaderFieldParsers() {
     private static final class HeaderDistribution extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-    return HeaderParser.ParseHeaderDistribution(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderDistribution(str, index, endIndex,
+              tokener);
       }
     }
     private static final class HeaderFollowupTo extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-      return HeaderParser.ParseHeaderFollowupTo(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderFollowupTo(str, index, endIndex,
+            tokener);
       }
     }
     private static final class HeaderInjectionDate extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-   return HeaderParser.ParseHeaderInjectionDate(str, index, endIndex,
-          tokener);
-      }
-    }
-    private static final class HeaderInjectionInfo extends StructuredHeaderField {
-      @Override public int Parse(String str, int index, int endIndex, ITokener
-        tokener) {
-   return HeaderParser.ParseHeaderInjectionInfo(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderInjectionDate(str, index, endIndex,
+               tokener);
       }
     }
     private static final class HeaderUserAgent extends StructuredHeaderField {
@@ -853,11 +956,11 @@ private HeaderFieldParsers() {
     private static final class HeaderArchivedAt extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-      return HeaderParser.ParseHeaderArchivedAt(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderArchivedAt(str, index, endIndex,
+            tokener);
       }
     }
-  private static final class HeaderArcAuthenticationResults extends StructuredHeaderField {
+    private static final class HeaderArcAuthenticationResults extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
         return HeaderParser.ParseHeaderArcAuthenticationResults(str, index,
@@ -871,13 +974,6 @@ private HeaderFieldParsers() {
           endIndex, tokener);
       }
     }
-    private static final class HeaderAutoSubmitted extends StructuredHeaderField {
-      @Override public int Parse(String str, int index, int endIndex, ITokener
-        tokener) {
-   return HeaderParser.ParseHeaderAutoSubmitted(str, index, endIndex,
-          tokener);
-      }
-    }
     private static final class HeaderBcc extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
@@ -887,8 +983,8 @@ private HeaderFieldParsers() {
     private static final class HeaderCancelLock extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-      return HeaderParser.ParseHeaderCancelLock(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderCancelLock(str, index, endIndex,
+            tokener);
       }
     }
     private static final class HeaderCancelKey extends StructuredHeaderField {
@@ -926,8 +1022,8 @@ private HeaderFieldParsers() {
     private static final class HeaderContentBase extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-     return HeaderParser.ParseHeaderContentBase(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderContentBase(str, index, endIndex,
+             tokener);
       }
     }
     private static final class HeaderContentDuration extends StructuredHeaderField {
@@ -960,8 +1056,8 @@ private HeaderFieldParsers() {
     private static final class HeaderContentMd5 extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-      return HeaderParser.ParseHeaderContentMd5(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderContentMd5(str, index, endIndex,
+            tokener);
       }
     }
     private static final class HeaderContentTransferEncoding extends StructuredHeaderField {
@@ -991,7 +1087,7 @@ private HeaderFieldParsers() {
           index, endIndex, tokener);
       }
     }
- private static final class HeaderDispositionNotificationTo extends StructuredHeaderField {
+    private static final class HeaderDispositionNotificationTo extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
         return HeaderParser.ParseHeaderDispositionNotificationTo(str, index,
@@ -1008,8 +1104,8 @@ private HeaderFieldParsers() {
     private static final class HeaderDkimSignature extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-   return HeaderParser.ParseHeaderDkimSignature(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderDkimSignature(str, index, endIndex,
+               tokener);
       }
     }
     private static final class HeaderArcMessageSignature extends StructuredHeaderField {
@@ -1035,8 +1131,8 @@ private HeaderFieldParsers() {
     private static final class HeaderEesstVersion extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-    return HeaderParser.ParseHeaderEesstVersion(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderEesstVersion(str, index, endIndex,
+              tokener);
       }
     }
     private static final class HeaderEncoding extends StructuredHeaderField {
@@ -1091,8 +1187,8 @@ private HeaderFieldParsers() {
     private static final class HeaderListArchive extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-     return HeaderParser.ParseHeaderListArchive(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderListArchive(str, index, endIndex,
+             tokener);
       }
     }
     private static final class HeaderListHelp extends StructuredHeaderField {
@@ -1122,8 +1218,8 @@ private HeaderFieldParsers() {
     private static final class HeaderListSubscribe extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-   return HeaderParser.ParseHeaderListSubscribe(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderListSubscribe(str, index, endIndex,
+               tokener);
       }
     }
     private static final class HeaderListUnsubscribe extends StructuredHeaderField {
@@ -1156,8 +1252,8 @@ private HeaderFieldParsers() {
     private static final class HeaderMimeVersion extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-     return HeaderParser.ParseHeaderMimeVersion(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderMimeVersion(str, index, endIndex,
+             tokener);
       }
     }
     private static final class HeaderMmhsAcp127MessageIdentifier extends StructuredHeaderField {
@@ -1195,7 +1291,7 @@ private HeaderFieldParsers() {
           endIndex, tokener);
       }
     }
-  private static final class HeaderMmhsHandlingInstructions extends StructuredHeaderField {
+    private static final class HeaderMmhsHandlingInstructions extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
         return HeaderParser.ParseHeaderMmhsHandlingInstructions(str, index,
@@ -1251,7 +1347,7 @@ private HeaderFieldParsers() {
           endIndex, tokener);
       }
     }
- private static final class HeaderMmhsSubjectIndicatorCodes extends StructuredHeaderField {
+    private static final class HeaderMmhsSubjectIndicatorCodes extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
         return HeaderParser.ParseHeaderMmhsSubjectIndicatorCodes(str, index,
@@ -1261,8 +1357,8 @@ private HeaderFieldParsers() {
     private static final class HeaderMtPriority extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-      return HeaderParser.ParseHeaderMtPriority(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderMtPriority(str, index, endIndex,
+            tokener);
       }
     }
     private static final class HeaderObsoletes extends StructuredHeaderField {
@@ -1281,11 +1377,11 @@ private HeaderFieldParsers() {
     private static final class HeaderReceivedSpf extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-     return HeaderParser.ParseHeaderReceivedSpf(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderReceivedSpf(str, index, endIndex,
+             tokener);
       }
     }
-private static final class HeaderRequireRecipientValidSince extends StructuredHeaderField {
+    private static final class HeaderRequireRecipientValidSince extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
         return HeaderParser.ParseHeaderRequireRecipientValidSince(str, index,
@@ -1301,8 +1397,8 @@ private static final class HeaderRequireRecipientValidSince extends StructuredHe
     private static final class HeaderReturnPath extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-      return HeaderParser.ParseHeaderReturnPath(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderReturnPath(str, index, endIndex,
+            tokener);
       }
     }
     private static final class HeaderSender extends StructuredHeaderField {
@@ -1311,17 +1407,11 @@ private static final class HeaderRequireRecipientValidSince extends StructuredHe
         return HeaderParser.ParseHeaderSender(str, index, endIndex, tokener);
       }
     }
-    private static final class HeaderSioLabel extends StructuredHeaderField {
-      @Override public int Parse(String str, int index, int endIndex, ITokener
-        tokener) {
-        return HeaderParser.ParseHeaderSioLabel(str, index, endIndex, tokener);
-      }
-    }
     private static final class HeaderSolicitation extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-    return HeaderParser.ParseHeaderSolicitation(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderSolicitation(str, index, endIndex,
+              tokener);
       }
     }
     private static final class HeaderTo extends StructuredHeaderField {
@@ -1339,8 +1429,8 @@ private static final class HeaderRequireRecipientValidSince extends StructuredHe
     private static final class HeaderXArchivedAt extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-     return HeaderParser.ParseHeaderXArchivedAt(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderXArchivedAt(str, index, endIndex,
+             tokener);
       }
     }
     private static final class HeaderXRicevuta extends StructuredHeaderField {
@@ -1352,15 +1442,15 @@ private static final class HeaderRequireRecipientValidSince extends StructuredHe
     private static final class HeaderXTiporicevuta extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-   return HeaderParser.ParseHeaderXTiporicevuta(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderXTiporicevuta(str, index, endIndex,
+               tokener);
       }
     }
     private static final class HeaderXTrasporto extends StructuredHeaderField {
       @Override public int Parse(String str, int index, int endIndex, ITokener
         tokener) {
-      return HeaderParser.ParseHeaderXTrasporto(str, index, endIndex,
-          tokener);
+        return HeaderParser.ParseHeaderXTrasporto(str, index, endIndex,
+            tokener);
       }
     }
     private static final class HeaderXVerificasicurezza extends StructuredHeaderField {
@@ -1378,8 +1468,18 @@ private static final class HeaderRequireRecipientValidSince extends StructuredHe
 
     private static Map<String, IHeaderFieldParser> CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
+      // TODO: Support stricter Message-ID syntax in RFC 5536 sec. 3.1.3
       fieldMap = new HashMap<String,
         IHeaderFieldParser>();
+      fieldMap.put("content-disposition",new HeaderContentDisposition());
+      fieldMap.put("content-type",new HeaderContentType());
+      fieldMap.put("auto-submitted",new HeaderAutoSubmitted());
+      fieldMap.put("archive",new HeaderArchive());
+      fieldMap.put("autosubmitted",new HeaderAutoforwarded());  // same syntax
+      fieldMap.put("sio-label",new HeaderSioLabel());
+      fieldMap.put("sio-label-history",new HeaderSioLabel());
+      fieldMap.put("injection-info",new HeaderInjectionInfo());
+      //------------------ generic ------------------
       fieldMap.put("content-return",new HeaderX400ContentReturn());
       fieldMap.put("x400-content-return",new HeaderX400ContentReturn());
       fieldMap.put("delivery-date",new HeaderDeliveryDate());
@@ -1401,29 +1501,26 @@ private static final class HeaderRequireRecipientValidSince extends StructuredHe
       fieldMap.put("content-translation-type",new HeaderContentTranslationType());
       fieldMap.put("generate-delivery-report",new HeaderGenerateDeliveryReport());
       fieldMap.put("incomplete-copy",new HeaderIncompleteCopy());
- fieldMap.put("prevent-nondelivery-report",new
-        HeaderPreventNondeliveryReport());
+      fieldMap.put("prevent-nondelivery-report",new
+             HeaderPreventNondeliveryReport());
       fieldMap.put("alternate-recipient",new HeaderAlternateRecipient());
       fieldMap.put("disclose-recipients",new HeaderDiscloseRecipients());
       fieldMap.put("expanded-date",new HeaderExpandedDate());
       fieldMap.put("newsgroups",new HeaderNewsgroups());
       fieldMap.put("path",new HeaderPath());
-      fieldMap.put("archive",new HeaderArchive());
       fieldMap.put("control",new HeaderControl());
       fieldMap.put("distribution",new HeaderDistribution());
       fieldMap.put("followup-to",new HeaderFollowupTo());
       fieldMap.put("injection-date",new HeaderInjectionDate());
-      fieldMap.put("injection-info",new HeaderInjectionInfo());
       fieldMap.put("user-agent",new HeaderUserAgent());
       fieldMap.put("xref",new HeaderXref());
       fieldMap.put("nntp-posting-date",new HeaderInjectionDate());
       fieldMap.put("nntp-posting-host",new HeaderNntpPostingHost());
       fieldMap.put("accept-language",new HeaderAcceptLanguage());
       fieldMap.put("archived-at",new HeaderArchivedAt());
- fieldMap.put("arc-authentication-results",new
-        HeaderArcAuthenticationResults());
+      fieldMap.put("arc-authentication-results",new
+             HeaderArcAuthenticationResults());
       fieldMap.put("authentication-results",new HeaderAuthenticationResults());
-      fieldMap.put("auto-submitted",new HeaderAutoSubmitted());
       fieldMap.put("base",new HeaderContentBase());
       fieldMap.put("bcc",new HeaderBcc());
       fieldMap.put("cc",new HeaderTo());
@@ -1434,15 +1531,13 @@ private static final class HeaderRequireRecipientValidSince extends StructuredHe
       fieldMap.put("form-sub",new HeaderFormSub());
       fieldMap.put("x-pgp-sig",new HeaderXPgpSig());
       fieldMap.put("content-base",new HeaderContentBase());
-      fieldMap.put("content-disposition",new HeaderContentDisposition());
       fieldMap.put("content-duration",new HeaderContentDuration());
       fieldMap.put("content-id",new HeaderContentId());
       fieldMap.put("content-language",new HeaderContentLanguage());
       fieldMap.put("content-location",new HeaderContentLocation());
       fieldMap.put("content-md5",new HeaderContentMd5());
-   fieldMap.put("content-transfer-encoding",new
-        HeaderContentTransferEncoding());
-      fieldMap.put("content-type",new HeaderContentType());
+      fieldMap.put("content-transfer-encoding",new
+           HeaderContentTransferEncoding());
       fieldMap.put("date",new HeaderDate());
       fieldMap.put("deferred-delivery",new HeaderDeferredDelivery());
       fieldMap.put("disposition-notification-options",new
@@ -1483,14 +1578,14 @@ private static final class HeaderRequireRecipientValidSince extends StructuredHe
       fieldMap.put("mmhs-exempted-address",new HeaderMmhsExemptedAddress());
       fieldMap.put("mmhs-extended-authorisation-info",new
         HeaderMmhsExtendedAuthorisationInfo());
- fieldMap.put("mmhs-handling-instructions",new
-        HeaderMmhsHandlingInstructions());
-   fieldMap.put("mmhs-message-instructions",new
-        HeaderMmhsMessageInstructions());
+      fieldMap.put("mmhs-handling-instructions",new
+             HeaderMmhsHandlingInstructions());
+      fieldMap.put("mmhs-message-instructions",new
+           HeaderMmhsMessageInstructions());
       fieldMap.put("mmhs-message-type",new HeaderMmhsMessageType());
       fieldMap.put("mmhs-originator-plad",new HeaderMmhsOriginatorPlad());
-   fieldMap.put("mmhs-originator-reference",new
-        HeaderMmhsOriginatorReference());
+      fieldMap.put("mmhs-originator-reference",new
+           HeaderMmhsOriginatorReference());
       fieldMap.put("mmhs-other-recipients-indicator-cc",new
         HeaderMmhsOtherRecipientsIndicatorCc());
       fieldMap.put("mmhs-other-recipients-indicator-to",new
@@ -1519,8 +1614,6 @@ private static final class HeaderRequireRecipientValidSince extends StructuredHe
       fieldMap.put("resent-to",new HeaderResentTo());
       fieldMap.put("return-path",new HeaderReturnPath());
       fieldMap.put("sender",new HeaderSender());
-      fieldMap.put("sio-label",new HeaderSioLabel());
-      fieldMap.put("sio-label-history",new HeaderSioLabel());
       fieldMap.put("solicitation",new HeaderSolicitation());
       fieldMap.put("to",new HeaderTo());
       fieldMap.put("vbr-info",new HeaderVbrInfo());

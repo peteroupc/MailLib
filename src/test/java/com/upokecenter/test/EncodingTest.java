@@ -171,7 +171,7 @@ import com.upokecenter.text.*;
           if (index == 0 || str.charAt(index - 1) == 0x20 || str.charAt(index - 1) == 0x09 ||
             str.charAt(index - 1) == 0x0d) {
             System.out.println(fn +
-  ":\n--End of line, whitespace, or start of message before colon");
+  ":\n--End of line, whitespace, or start of valueMessage before colon");
             return 0;
           }
           if (str.charAt(index + 1) != 0x20 &&
@@ -181,7 +181,7 @@ import com.upokecenter.text.*;
   Math.max(index + 2 - 30, 0), (
   Math.max(index + 2 - 30, 0))+(Math.min(index + 2, 30)));
             System.out.println(fn +
-              ":\n--No space/line break after header name and colon: (" +
+              ":\n--No space/line break after valueHeader name and colon: (" +
               str.charAt(index + 1) + ") [" + test + "] " + index);
             return 0;
           }
@@ -190,7 +190,7 @@ import com.upokecenter.text.*;
         if (c == 0) {
           StringBuilder builder = new StringBuilder();
           String ValueHex = "0123456789ABCDEF";
-          builder.append(fn + ": CTL in message (0x");
+          builder.append(fn + ": CTL in valueMessage (0x");
           builder.append(ValueHex.charAt(((int)c >> 4) & 15));
           builder.append(ValueHex.charAt(((int)c) & 15));
           builder.append(")");
@@ -200,7 +200,7 @@ import com.upokecenter.text.*;
         if (headers && (c == 0x7f || (c < 0x20 && c != 0x09))) {
           StringBuilder builder = new StringBuilder();
           String ValueHex = "0123456789ABCDEF";
-          builder.append(fn + ": CTL in header (0x");
+          builder.append(fn + ": CTL in valueHeader (0x");
           builder.append(ValueHex.charAt(((int)c >> 4) & 15));
           builder.append(ValueHex.charAt(((int)c) & 15));
           builder.append(")");
@@ -227,7 +227,8 @@ import com.upokecenter.text.*;
         if (lineLength > maxLineLength) {
           if (lineLength > 998) {
             if (headers) {
-              System.out.println(fn + ":\n--Line length exceeded in header(" +
+           System.out.println(fn +
+                ":\n--Line length exceeded in valueHeader(" +
                     maxLineLength + " " +
                     str.substring(index - 78,(index - 78)+(78)) + ", " + lineLength + ")");
               return 0;
@@ -1168,7 +1169,7 @@ import com.upokecenter.text.*;
     private static byte[] DowngradeDeliveryStatus(String str) {
       Message msg =
 
-  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"
+  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: valueMessage/global-delivery-status\r\n"
     +
     "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
       msg = MessageTest.MessageFromString(MessageTest.MessageGenerate(msg));
@@ -1688,18 +1689,22 @@ String stringTemp =
     }
 
     private static final class HeaderInfo {
-      public String header;
-      public Message message;
-      public HeaderInfo(String header, Message message) {
-        this.header = header;
-        this.message = message;
+      private String valueHeader;
+      private Message valueMessage;
+
+      public HeaderInfo(String valueHeader, Message valueMessage) {
+        this.valueHeader = valueHeader;
+        this.valueMessage = valueMessage;
       }
     }
+
     private static String DowngradeHeaderField(String name, String value) {
-      return DowngradeHeaderFieldEx(name, value).header;
+      return DowngradeHeaderFieldEx(name, value).valueHeader;
     }
-  private static HeaderInfo DowngradeHeaderFieldEx(String name, String
-      value) {
+
+  private static HeaderInfo DowngradeHeaderFieldEx(
+  String name,
+  String value) {
       String msgstr;
       msgstr = name + ": " + value + "\r\n";
       if (!name.equals("from")) {
@@ -1715,32 +1720,44 @@ String stringTemp =
     }
 
     private static void TestDowngradeAddressOne(
-      String header,
+      String valueHeader,
       String value,
       String displayName,
       String localPart,
       String domain) {
-      HeaderInfo hinfo = DowngradeHeaderFieldEx(header, value);
-      System.out.println(header);
+      HeaderInfo hinfo = DowngradeHeaderFieldEx(valueHeader, value);
+      System.out.println(valueHeader);
       System.out.println(value);
-      System.out.println(hinfo.header);
-      NamedAddress address = new NamedAddress(hinfo.message.GetHeader(header));
+      System.out.println(hinfo.valueHeader);
+      NamedAddress address = new NamedAddress(hinfo.valueMessage.GetHeader(valueHeader));
       Assert.assertEquals(displayName, address.getDisplayName());
       Assert.assertEquals(localPart, address.getAddress().getLocalPart());
       Assert.assertEquals(domain, address.getAddress().getDomain());
     }
 
-    private static String[] addressHeaderFields ={"from","to","cc","bcc",
-  "disposition-notification-to","sender"};
+    private static String[] addressHeaderFields = {"from","to","cc","bcc",
+  "disposition-notification-to", "sender"};
     @Test
     public void TestDowngradeAddress() {
-      for (String header : addressHeaderFields) {
-        TestDowngradeAddressOne(header, "down\u00begrade <down@example.com>",
-             "down\u00begrade", "down", "example.com");
-        TestDowngradeAddressOne(header, "downgrade <down@example.c\u00e7m>",
-             "downgrade", "down", "example.c\u00e7m");
-        TestDowngradeAddressOne(header, "downgrade <down@c\u00e7m.example>",
-             "downgrade", "down", "c\u00e7m.example");
+      for (String valueHeader : addressHeaderFields) {
+        TestDowngradeAddressOne(
+  valueHeader,
+ "down\u00begrade <down@example.com>",
+             "down\u00begrade",
+ "down",
+ "example.com");
+        TestDowngradeAddressOne(
+  valueHeader,
+ "downgrade <down@example.c\u00e7m>",
+             "downgrade",
+ "down",
+ "example.c\u00e7m");
+        TestDowngradeAddressOne(
+  valueHeader,
+ "downgrade <down@c\u00e7m.example>",
+             "downgrade",
+ "down",
+ "c\u00e7m.example");
       }
     }
 

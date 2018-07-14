@@ -13,7 +13,6 @@ namespace PeterO.Mail {
   internal static class HeaderParserUtility {
     internal const int TokenComment = 2;
     internal const int TokenPhraseAtom = 3;
-    internal const int TokenPhraseAtomOrDot = 4;
     internal const int TokenPhrase = 1;
     internal const int TokenGroup = 5;
     internal const int TokenMailbox = 6;
@@ -418,8 +417,7 @@ namespace PeterO.Mail {
                     offset = -7 * 60;
                     indexTemp4 += 3;
   } else if (index < endIndex && ((str[index] >= 65 &&
-                      str[index]
-                    <= 73) || (str[index] >= 75 && str[index] <= 90) ||
+                str[index] <= 73) || (str[index] >= 75 && str[index] <= 90) ||
                     (str[index] >= 97 && str[index] <= 105) || (str[index]
                     >= 107 && str[index] <= 122))) {
                     offset = 0;
@@ -471,6 +469,74 @@ namespace PeterO.Mail {
         }
       }
       return indexTemp;
+    }
+
+    public static bool HasComments(string str, int startIndex, int endIndex) {
+       // Determines whether the string portion has comments.
+       // Assumes the portion of the string is a syntactically valid
+       // header field according to the Parse method of the header
+       // field in question (except that comments may be allowed within white
+       // space), and that parentheses can appear in that
+       // field only within quoted strings or as comment delimiters.
+       int index = startIndex;
+       while (index<endIndex) {
+           int c = str[index];
+           if (c == 0x28||c == 0x29) {
+                // comment found
+                return true;
+           } else if (c == 0x22) {
+                // quoted string found, skip it
+                int
+  si = HeaderParser.ParseQuotedString(str, index, endIndex, null);
+                    if (si == index) {
+ throw new InvalidOperationException("Internal error: "+str);
+}
+                    index = si;
+           } else {
+               ++index;
+           }
+       }
+       return false;
+    }
+
+    public static void TraverseCFWSAndQuotedStrings(string str, int
+      startIndex, int endIndex, ITokener tokener) {
+       // Fills a tokener with comment and quoted-string tokens.
+       // Assumes the portion of the string is a syntactically valid
+       // header field according to the Parse method of the header
+       // field in question.
+      if (tokener != null) {
+       int index = startIndex;
+       while (index<endIndex) {
+           int c = str[index];
+           if (c == 0x20 || c == 0x0d || c == 0x0a || c == 0x28 || c == 0x29) {
+                // Whitespace or parentheses
+                int state = tokener.GetState();
+                int si = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
+                if (si == index) {
+ throw new InvalidOperationException("Internal error: "+str);
+}
+                if (si<endIndex && str[si]==(char)0x22) {
+                    // Note that quoted-string starts with optional CFWS
+                    tokener.RestoreState(state);
+  si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
+                    if (si == index) {
+ throw new InvalidOperationException("Internal error: "+str);
+}
+                }
+            index = si;
+          } else if (c == 0x22) {
+             int
+  si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
+                if (si == index) {
+ throw new InvalidOperationException("Internal error: "+str);
+}
+                index = si;
+           } else {
+                ++index;
+           }
+       }
+       }
     }
 
     private static bool ShouldQuote(string str) {

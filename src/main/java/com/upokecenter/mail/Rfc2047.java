@@ -586,8 +586,7 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
   EncodedWordContext.Comment);
           builder.append(newComment);
           lastIndex = token[2] - 1;
-        } else if (token[0] == HeaderParserUtility.TokenPhraseAtom ||
-                   token[0] == HeaderParserUtility.TokenPhraseAtomOrDot) {
+        } else if (token[0] == HeaderParserUtility.TokenPhraseAtom) {
           // This is an atom token; only words within
           // a phrase can be encoded words; the first character
           // starts the actual atom rather than a comment or whitespace
@@ -707,9 +706,13 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
    index,
    endIndex,
    builderPhrase);
+        } else if (str.charAt(index)=='.') {
+          // Dot
+          builderPhrase.append(".");
+          ++index;
         } else {
           // Atom
-          index2 = HeaderParser.ParsePhraseAtomOrDot(
+          index2 = HeaderParser.ParsePhraseAtom(
   str,
   index,
   endIndex,

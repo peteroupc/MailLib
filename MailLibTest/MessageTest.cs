@@ -142,7 +142,7 @@ Assert.IsTrue(boolTemp, msgstring);
 
     [Test]
     public void TestContentTypeDefaults() {
-  const string ValueStartCTD = "From: me@example.com\r\nMIME-Version: 1.0\r\n" ;
+  const string ValueStartCTD = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
       string msg;
       msg = ValueStartCTD + "\r\n\r\n";
       Assert.AreEqual(
@@ -273,30 +273,50 @@ Assert.IsTrue(boolTemp, msgstring);
       // NOTE: RFC8187 doesn't mandate any particular
       // error handling behavior here
       TestRfc2231Extension(";param1*=utf-8''example%", "param1", "example%");
-      TestRfc2231Extension(";param1*=utf-8''example%;param2=x", "param1",
-        "example%");
-      TestRfc2231Extension(";param2=x;param1*=utf-8''example%", "param1",
-        "example%");
+      TestRfc2231Extension(
+  ";param1*=utf-8''example%;param2=x",
+  "param1",
+  "example%");
+      TestRfc2231Extension(
+  ";param2=x;param1*=utf-8''example%",
+  "param1",
+  "example%");
       TestRfc2231Extension(";param1*=utf-8''example%a", "param1", "example%a");
-      TestRfc2231Extension(";param1*=utf-8''example%a;param2=x", "param1",
-        "example%a");
-      TestRfc2231Extension(";param2=x;param1*=utf-8''example%a", "param1",
-        "example%a");
+      TestRfc2231Extension(
+  ";param1*=utf-8''example%a;param2=x",
+  "param1",
+  "example%a");
+      TestRfc2231Extension(
+  ";param2=x;param1*=utf-8''example%a",
+  "param1",
+  "example%a");
       TestRfc2231Extension(";param1*=utf-8''example%A", "param1", "example%A");
-      TestRfc2231Extension(";param1*=utf-8''example%A;param2=x", "param1",
-        "example%A");
-      TestRfc2231Extension(";param2=x;param1*=utf-8''example%A", "param1",
-        "example%A");
+      TestRfc2231Extension(
+  ";param1*=utf-8''example%A;param2=x",
+  "param1",
+  "example%A");
+      TestRfc2231Extension(
+  ";param2=x;param1*=utf-8''example%A",
+  "param1",
+  "example%A");
       TestRfc2231Extension(";param1*=utf-8''example%9", "param1", "example%9");
-      TestRfc2231Extension(";param1*=utf-8''example%9;param2=x", "param1",
-        "example%9");
-      TestRfc2231Extension(";param2=x;param1*=utf-8''example%9", "param1",
-        "example%9");
+      TestRfc2231Extension(
+  ";param1*=utf-8''example%9;param2=x",
+  "param1",
+  "example%9");
+      TestRfc2231Extension(
+  ";param2=x;param1*=utf-8''example%9",
+  "param1",
+  "example%9");
       TestRfc2231Extension(";param1*=utf-8''example%w", "param1", "example%w");
-      TestRfc2231Extension(";param1*=utf-8''example%w;param2=x", "param1",
-        "example%w");
-      TestRfc2231Extension(";param2=x;param1*=utf-8''example%w", "param1",
-        "example%w");
+      TestRfc2231Extension(
+  ";param1*=utf-8''example%w;param2=x",
+  "param1",
+  "example%w");
+      TestRfc2231Extension(
+  ";param2=x;param1*=utf-8''example%w",
+  "param1",
+  "example%w");
     }
 
     [Test]
@@ -1183,15 +1203,15 @@ Assert.IsTrue(boolTemp, msgstring);
       string messageStart = "MIME-Version: 1.0\r\n";
       messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
       messageStart += "Preamble\r\n";
-      string[] paddings={"","\u0020","\t","\u0020\u0020",
-          "\t\u0020","\u0020\t","\t\t"};
+      string[] paddings = {String.Empty,"\u0020","\t","\u0020\u0020",
+          "\t\u0020", "\u0020\t", "\t\t"};
       foreach (var padding1 in paddings) {
         foreach (var padding2 in paddings) {
           string message = messageStart;
-          message += "--b1"+padding1+"\r\n";
+          message += "--b1" + padding1 + "\r\n";
           message += "Content-Type: text/plain\r\n\r\n";
           message += "Test\r\n";
-          message += "--b1--"+padding2+"\r\n";
+          message += "--b1--" + padding2 + "\r\n";
           message += "Epilogue";
       Message msg;
       msg = MessageFromString(message);
@@ -1872,25 +1892,25 @@ MessageFromString(MessageFromString(msg).Generate())
     private static void TestFileNameOne(string input, string expected) {
       Message msg;
    String valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
-    "Content-Type: text/plain\r\nContent-Disposition: inline; filename=" +
-             input + "\r\n\r\nEmpty.";
-      msg = MessageFromString(valueMessageString);
-      Assert.AreEqual(expected, msg.FileName);
-      valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
-        "Content-Type: text/plain; name=" + input +
-        "\r\n\r\nEmpty.";
-      msg = MessageFromString(valueMessageString);
-      Assert.AreEqual(expected, msg.FileName);
+         "Content-Type: text/plain\r\nContent-Disposition: " +
+        new DispositionBuilder("inline").SetParameter("filename",input)
+        .ToString() + "\r\n\r\nEmpty.";
+        msg = MessageFromString(valueMessageString);
+        Assert.AreEqual(expected, msg.FileName, valueMessageString);
+        valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
+        "Content-Type: " + new MediaTypeBuilder("text", "plain")
+        .SetParameter("name", input).ToString() +
+          "\r\n\r\nEmpty.";
+        msg = MessageFromString(valueMessageString);
+        Assert.AreEqual(expected, msg.FileName);
     }
     [Test]
     public void TestFileName() {
-      TestFileNameOne("com.txt", "com.txt");
-      TestFileNameOne("com0.txt", "_com0.txt");
-      TestFileNameOne("-hello.txt", "_-hello.txt");
-      TestFileNameOne("lpt0.txt", "_lpt0.txt");
-      TestFileNameOne("\"hello.txt\"", "hello.txt");
-      TestFileNameOne("\"=?utf-8?q?hello=2Etxt?=\"", "hello.txt");
-      TestFileNameOne("\"utf-8''hello%2Etxt\"", "hello.txt");
+for (var i = 0; i < ContentDispositionTest.FileNames.Length; i += 2) {
+        TestFileNameOne(
+  ContentDispositionTest.FileNames[i],
+  ContentDispositionTest.FileNames[i + 1]);
+      }
     }
     [Test]
     public void TestFromAddresses() {
@@ -2173,15 +2193,17 @@ MessageFromString(MessageFromString(msg).Generate())
           throw new InvalidOperationException(String.Empty, ex);
         }
         try {
-        new Message().SetHeader(headerName,
-            "\"Me\u002c Me\" <x@example.com>");
+        new Message().SetHeader(
+  headerName,
+  "\"Me\u002c Me\" <x@example.com>");
         } catch (Exception ex) {
           Assert.Fail(ex.ToString());
           throw new InvalidOperationException(String.Empty, ex);
         }
         try {
-     new Message().SetHeader(headerName,
-            "\"Me\u002c Me(x)\" <x@example.com>");
+     new Message().SetHeader(
+  headerName,
+  "\"Me\u002c Me(x)\" <x@example.com>");
         } catch (Exception ex) {
           Assert.Fail(ex.ToString());
           throw new InvalidOperationException(String.Empty, ex);

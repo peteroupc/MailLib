@@ -14,7 +14,6 @@ private HeaderParserUtility() {
 }
     static final int TokenComment = 2;
     static final int TokenPhraseAtom = 3;
-    static final int TokenPhraseAtomOrDot = 4;
     static final int TokenPhrase = 1;
     static final int TokenGroup = 5;
     static final int TokenMailbox = 6;
@@ -419,8 +418,7 @@ private HeaderParserUtility() {
                     offset = -7 * 60;
                     indexTemp4 += 3;
   } else if (index < endIndex && ((str.charAt(index) >= 65 &&
-                      str.charAt(index)
-                    <= 73) || (str.charAt(index) >= 75 && str.charAt(index) <= 90) ||
+                str.charAt(index) <= 73) || (str.charAt(index) >= 75 && str.charAt(index) <= 90) ||
                     (str.charAt(index) >= 97 && str.charAt(index) <= 105) || (str.charAt(index)
                     >= 107 && str.charAt(index) <= 122))) {
                     offset = 0;
@@ -472,6 +470,74 @@ private HeaderParserUtility() {
         }
       }
       return indexTemp;
+    }
+
+    public static boolean HasComments(String str, int startIndex, int endIndex) {
+       // Determines whether the String portion has comments.
+       // Assumes the portion of the String is a syntactically valid
+       // header field according to the Parse method of the header
+       // field in question (except that comments may be allowed within white
+       // space), and that parentheses can appear in that
+       // field only within quoted strings or as comment delimiters.
+       int index = startIndex;
+       while (index<endIndex) {
+           int c = str.charAt(index);
+           if (c == 0x28||c == 0x29) {
+                // comment found
+                return true;
+           } else if (c == 0x22) {
+                // quoted String found, skip it
+                int
+  si = HeaderParser.ParseQuotedString(str, index, endIndex, null);
+                    if (si == index) {
+ throw new IllegalStateException("Internal error: "+str);
+}
+                    index = si;
+           } else {
+               ++index;
+           }
+       }
+       return false;
+    }
+
+    public static void TraverseCFWSAndQuotedStrings(String str, int
+      startIndex, int endIndex, ITokener tokener) {
+       // Fills a tokener with comment and quoted-String tokens.
+       // Assumes the portion of the String is a syntactically valid
+       // header field according to the Parse method of the header
+       // field in question.
+      if (tokener != null) {
+       int index = startIndex;
+       while (index<endIndex) {
+           int c = str.charAt(index);
+           if (c == 0x20 || c == 0x0d || c == 0x0a || c == 0x28 || c == 0x29) {
+                // Whitespace or parentheses
+                int state = tokener.GetState();
+                int si = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
+                if (si == index) {
+ throw new IllegalStateException("Internal error: "+str);
+}
+                if (si<endIndex && str.charAt(si) == (char)0x22) {
+                    // Note that quoted-String starts with optional CFWS
+                    tokener.RestoreState(state);
+  si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
+                    if (si == index) {
+ throw new IllegalStateException("Internal error: "+str);
+}
+                }
+            index = si;
+          } else if (c == 0x22) {
+             int
+  si = HeaderParser.ParseQuotedString(str, index, endIndex, tokener);
+                if (si == index) {
+ throw new IllegalStateException("Internal error: "+str);
+}
+                index = si;
+           } else {
+                ++index;
+           }
+       }
+       }
     }
 
     private static boolean ShouldQuote(String str) {
@@ -661,10 +727,10 @@ private HeaderParserUtility() {
       int lastIndex = index;
       List<NamedAddress> addresses = new ArrayList<NamedAddress>();
       for (int i = 0; i < tokens.size(); ++i) {
-        int tokenIndex = tokens.get(i)[1];
-        int tokenEnd = tokens.get(i)[2];
+        int tokenIndex = tokens.charAt(i)[1];
+        int tokenEnd = tokens.charAt(i)[2];
         if (tokenIndex >= lastIndex && tokenIndex < endIndex) {
-          int tokenKind = tokens.get(i)[0];
+          int tokenKind = tokens.charAt(i)[0];
           if (tokenKind == TokenGroup) {
             addresses.add(ParseGroup(str, tokenIndex, tokenEnd, tokens));
             lastIndex = tokenEnd;
@@ -689,10 +755,10 @@ private HeaderParserUtility() {
   List<int[]> tokens) {
       int lastIndex = index;
       for (int i = 0; i < tokens.size(); ++i) {
-        int tokenIndex = tokens.get(i)[1];
-        int tokenEnd = tokens.get(i)[2];
+        int tokenIndex = tokens.charAt(i)[1];
+        int tokenEnd = tokens.charAt(i)[2];
         if (tokenIndex >= lastIndex && tokenIndex < endIndex) {
-          int tokenKind = tokens.get(i)[0];
+          int tokenKind = tokens.charAt(i)[0];
           if (tokenKind == TokenGroup) {
             return ParseGroup(str, tokenIndex, tokenEnd, tokens);
           }
@@ -713,10 +779,10 @@ private HeaderParserUtility() {
       boolean haveDisplayName = false;
       List<NamedAddress> mailboxes = new ArrayList<NamedAddress>();
       for (int i = 0; i < tokens.size(); ++i) {
-        int tokenIndex = tokens.get(i)[1];
-        int tokenEnd = tokens.get(i)[2];
+        int tokenIndex = tokens.charAt(i)[1];
+        int tokenEnd = tokens.charAt(i)[2];
         if (tokenIndex >= index && tokenIndex < endIndex) {
-          int tokenKind = tokens.get(i)[0];
+          int tokenKind = tokens.charAt(i)[0];
           if (tokenKind == TokenPhrase && !haveDisplayName) {
             // Phrase
             displayName = Rfc2047.DecodePhraseText(
@@ -745,10 +811,10 @@ private HeaderParserUtility() {
       String localPart = null;
       String domain = null;
       for (int i = 0; i < tokens.size(); ++i) {
-        int tokenIndex = tokens.get(i)[1];
-        int tokenEnd = tokens.get(i)[2];
+        int tokenIndex = tokens.charAt(i)[1];
+        int tokenEnd = tokens.charAt(i)[2];
         if (tokenIndex >= index && tokenIndex < endIndex) {
-          int tokenKind = tokens.get(i)[0];
+          int tokenKind = tokens.charAt(i)[0];
           switch (tokenKind) {
             case TokenPhrase:
               // Phrase
