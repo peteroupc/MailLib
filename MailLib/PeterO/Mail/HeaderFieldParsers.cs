@@ -615,6 +615,21 @@ namespace PeterO.Mail {
       }
     }
 
+    private sealed class HeaderContentDisposition : StructuredHeaderField {
+      public override int Parse(string str, int index, int endIndex, ITokener
+        tokener) {
+         string s = str.Substring(index, endIndex-index);
+         return ContentDisposition.Parse(s, null) == null ? index : endIndex;
+      }
+    }
+    private sealed class HeaderContentType : StructuredHeaderField {
+      public override int Parse(string str, int index, int endIndex, ITokener
+        tokener) {
+         string s = str.Substring(index, endIndex-index);
+         return MediaType.Parse(s, null) == null ? index : endIndex;
+      }
+    }
+
     private sealed class HeaderX400ContentReturn : StructuredHeaderField {
       public override int Parse(string str, int index, int endIndex, ITokener
         tokener) {
@@ -922,13 +937,6 @@ namespace PeterO.Mail {
           tokener);
       }
     }
-    private sealed class HeaderContentDisposition : StructuredHeaderField {
-      public override int Parse(string str, int index, int endIndex, ITokener
-        tokener) {
-        return HeaderParser.ParseHeaderContentDisposition(str, index, endIndex,
-          tokener);
-      }
-    }
     private sealed class HeaderContentDuration : StructuredHeaderField {
       public override int Parse(string str, int index, int endIndex, ITokener
         tokener) {
@@ -968,13 +976,6 @@ namespace PeterO.Mail {
         tokener) {
         return HeaderParser.ParseHeaderContentTransferEncoding(str, index,
           endIndex, tokener);
-      }
-    }
-    private sealed class HeaderContentType : StructuredHeaderField {
-      public override int Parse(string str, int index, int endIndex, ITokener
-        tokener) {
-     return HeaderParser.ParseHeaderContentType(str, index, endIndex,
-          tokener);
       }
     }
     private sealed class HeaderDate : StructuredHeaderField {
