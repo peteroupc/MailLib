@@ -177,15 +177,12 @@ public static int ParseAtext(string str, int index, int endIndex, ITokener
   tokener) {
 int indexTemp = index;
 if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 33) || (str[index] == 35) || (str[index] == 36) ||
-  (str[index] == 37) || (str[index] == 38) || (str[index] == 39) ||
-  (str[index] == 42) || (str[index] == 43) || (str[index] == 45) ||
-  (str[index] == 47) || (str[index] == 61) || (str[index] == 63) ||
-  (str[index] == 94) || (str[index] == 95) || (str[index] == 96) ||
-  (str[index] == 123) || (str[index] == 124) || (str[index] == 125) ||
-  (str[index] == 126) || (str[index] >= 128 && str[index] <= 55295) ||
-  (str[index] >= 57344 && str[index] <= 65535))) {
+  (str[index] == 33) || (str[index] >= 35 && str[index] <= 39) ||
+  (str[index] >= 42 && str[index] <= 43) || (str[index] == 45) ||
+  (str[index] >= 47 && str[index] <= 57) || (str[index] == 61) ||
+  (str[index] == 63) || (str[index] >= 94 && str[index] <= 126) ||
+  (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 &&
+  str[index] <= 65535))) {
  ++indexTemp;
   } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
   56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
@@ -1680,16 +1677,15 @@ indexStart = index;
  indexTemp = index;
  do {
 if (index < endIndex && ((str[index] >= 33 && str[index] <= 90) ||
-  (str[index] >= 94 && str[index] <= 126) || (str[index] >= 1 && str[index]
-  <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 &&
-  str[index] <= 31) || (str[index] == 127))) {
+  (str[index] >= 1 && str[index] <= 8) || (str[index] >= 11 && str[index] <=
+  12) || (str[index] >= 14 && str[index] <= 31))) {
  ++indexTemp; break;
 }
   indexTemp2 = ParseQuotedPair(str, index, endIndex, tokener);
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
-if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) ||
+if (index < endIndex && ((str[index] >= 94 && str[index] <= 55295) ||
   (str[index] >= 57344 && str[index] <= 65535))) {
  ++indexTemp; break;
 }
@@ -4272,23 +4268,25 @@ if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
 }
 public static int ParseHeaderMmhsAcp127MessageIdentifier(string str, int
   index, int endIndex, ITokener tokener) {
-int i, indexStart, indexTemp, indexTemp2, state;
+int i, indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseFWS(str, index, endIndex, tokener);
- for (i = 0; i < 69; ++i) {
-  indexTemp2 = ParsePsChar(str, index, endIndex, tokener);
-  if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
-  } break;
- }
- }
- if (index == indexStart) {
+for (i = 0; i < 69; ++i) {
+ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
+   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
+   <= 58) || (str[index] == 61) || (str[index] == 63))) {
+  ++index;
+ } else if (i< 1) {
+index = indexStart; break;
+ } else {
+ break;
+}
+}
+if (index == indexStart) {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
@@ -4530,23 +4528,25 @@ index = indexStart2; break;
 }
 public static int ParseHeaderMmhsOriginatorPlad(string str, int index, int
   endIndex, ITokener tokener) {
-int i, indexStart, indexTemp, indexTemp2, state;
+int i, indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseFWS(str, index, endIndex, tokener);
- for (i = 0; i < 69; ++i) {
-  indexTemp2 = ParsePsChar(str, index, endIndex, tokener);
-  if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
-  } break;
- }
- }
- if (index == indexStart) {
+for (i = 0; i < 69; ++i) {
+ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
+   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
+   <= 58) || (str[index] == 61) || (str[index] == 63))) {
+  ++index;
+ } else if (i< 1) {
+index = indexStart; break;
+ } else {
+ break;
+}
+}
+if (index == indexStart) {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
@@ -4559,23 +4559,25 @@ indexStart = index;
 }
 public static int ParseHeaderMmhsOriginatorReference(string str, int index,
   int endIndex, ITokener tokener) {
-int i, indexStart, indexTemp, indexTemp2, state;
+int i, indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseFWS(str, index, endIndex, tokener);
- for (i = 0; i < 69; ++i) {
-  indexTemp2 = ParsePsChar(str, index, endIndex, tokener);
-  if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
-  } break;
- }
- }
- if (index == indexStart) {
+for (i = 0; i < 69; ++i) {
+ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
+   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
+   <= 58) || (str[index] == 61) || (str[index] == 63))) {
+  ++index;
+ } else if (i< 1) {
+index = indexStart; break;
+ } else {
+ break;
+}
+}
+if (index == indexStart) {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
@@ -6623,29 +6625,23 @@ index = indexStart; break;
 #endif
 public static int ParseMilitaryString(string str, int index, int endIndex,
   ITokener tokener) {
-int i, indexStart, indexTemp, indexTemp2;
+int i, indexStart, indexTemp;
 indexStart = index;
  indexTemp = index;
  do {
- for (i = 0; i < 69; ++i) {
-  indexTemp2 = index;
-if (index < endIndex && ((str[index] >= 40 && str[index] <= 41))) {
- ++indexTemp2;
-  } else if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
-  (str[index] == 39) || (str[index] >= 43 && str[index] <= 58) ||
-  (str[index] == 61) || (str[index] == 63))) {
- ++indexTemp2;
+for (i = 0; i < 69; ++i) {
+ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
+   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
+   <= 58) || (str[index] == 61) || (str[index] == 63))) {
+  ++index;
+ } else if (i< 1) {
+index = indexStart; break;
+ } else {
+ break;
 }
-  if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
-  } break;
- }
- }
- if (index == indexStart) {
+}
+if (index == indexStart) {
  break;
 }
   indexTemp = index;
@@ -6654,23 +6650,24 @@ if (index < endIndex && ((str[index] >= 40 && str[index] <= 41))) {
 }
 public static int ParseMilitaryStringSequence(string str, int index, int
   endIndex, ITokener tokener) {
-int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3,
-  state, state2;
+int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, state, state2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
- for (i = 0; i < 69; ++i) {
-  indexTemp2 = ParsePsChar(str, index, endIndex, tokener);
-  if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
-  } break;
- }
- }
- if (index == indexStart) {
+for (i = 0; i < 69; ++i) {
+ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
+   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
+   <= 58) || (str[index] == 61) || (str[index] == 63))) {
+  ++index;
+ } else if (i< 1) {
+index = indexStart; break;
+ } else {
+ break;
+}
+}
+if (index == indexStart) {
  break;
 }
  while (true) {
@@ -6685,17 +6682,19 @@ if (index < endIndex && (str[index] == 59)) {
  index = indexStart2; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
- for (i2 = 0; i2 < 69; ++i2) {
-  indexTemp3 = ParsePsChar(str, index, endIndex, tokener);
-  if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 1) {
-   index = indexStart2;
-  } break;
- }
- }
- if (index == indexStart2) {
+for (i2 = 0; i2 < 69; ++i2) {
+ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
+   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
+   <= 58) || (str[index] == 61) || (str[index] == 63))) {
+  ++index;
+ } else if (i2< 1) {
+index = indexStart2; break;
+ } else {
+ break;
+}
+}
+if (index == indexStart2) {
  break;
 }
   indexTemp2 = index;
@@ -7369,11 +7368,10 @@ while (index < endIndex && (str[index] == 13)) {
   indexTemp4 = index;
  do {
  indexTemp5 = index;
-if (index < endIndex && ((str[index] == 0) || (str[index] >= 1 && str[index]
-  <= 8) || (str[index] >= 11 && str[index] <= 12) || (str[index] >= 14 &&
-  str[index] <= 31) || (str[index] == 127) || (str[index] >= 33 &&
-  str[index] <= 126) || (str[index] >= 128 && str[index] <= 55295) ||
-  (str[index] >= 57344 && str[index] <= 65535))) {
+if (index < endIndex && ((str[index] >= 0 && str[index] <= 8) || (str[index]
+  >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) ||
+  (str[index] >= 33 && str[index] <= 55295) || (str[index] >= 57344 &&
+  str[index] <= 65535))) {
  ++indexTemp5;
   } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
   56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
@@ -7496,8 +7494,8 @@ public static int ParseOtherSections(string str, int index, int endIndex,
   ITokener tokener) {
 int indexTemp = index;
  do {
-if (index + 1 < endIndex && (str[index] == 42) && ((str[index + 1] >= 49 &&
-  str[index + 1] <= 57))) {
+if (index + 1 < endIndex && (str[index] == 42) && (str[index + 1] >= 49 &&
+  str[index + 1] <= 57)) {
  index += 2;
 } else {
  break;
@@ -8147,40 +8145,25 @@ index = indexTemp2;
 }
 public static int ParsePhraseAtom(string str, int index, int endIndex,
   ITokener tokener) {
-int i, indexStart, indexTemp, indexTemp2, indexTemp3, state;
+int i, indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  for (i = 0;; ++i) {
   indexTemp2 = index;
- do {
 if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122))) {
- ++indexTemp2; break;
-}
-if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index] == 33) || (str[index] == 35) || (str[index] == 36) ||
-  (str[index] == 37) || (str[index] == 38) || (str[index] == 39) ||
-  (str[index] == 42) || (str[index] == 43) || (str[index] == 45) ||
-  (str[index] == 47) || (str[index] == 61) || (str[index] == 63) ||
-  (str[index] == 94) || (str[index] == 95) || (str[index] == 96) ||
-  (str[index] == 123) || (str[index] == 124) || (str[index] == 125) ||
-  (str[index] == 126))) {
- ++indexTemp2; break;
-}
- indexTemp3 = index;
-if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) ||
-  (str[index] >= 57344 && str[index] <= 65535))) {
- ++indexTemp3;
+  (str[index] == 33) || (str[index] >= 35 && str[index] <= 39) ||
+  (str[index] >= 42 && str[index] <= 43) || (str[index] == 45) ||
+  (str[index] >= 47 && str[index] <= 57) || (str[index] == 61) ||
+  (str[index] == 63) || (str[index] >= 94 && str[index] <= 126) ||
+  (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 &&
+  str[index] <= 65535))) {
+ ++indexTemp2;
   } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
   56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
- indexTemp3 += 2;
+ indexTemp2 += 2;
 }
- if (indexTemp3 != index) {
- indexTemp2 = indexTemp3; break;
-}
- } while (false);
   if (indexTemp2 != index) {
  index = indexTemp2;
 } else {
@@ -8399,25 +8382,14 @@ if (index + 7 < endIndex && (str[index] & ~32) == 79 && (str[index + 1] & ~32) =
 #endif
 public static int ParsePrintablestring(string str, int index, int endIndex,
   ITokener tokener) {
-int indexTemp, indexTemp2;
- indexTemp = index;
+int indexTemp = index;
  do {
- while (true) {
-  indexTemp2 = index;
-if (index < endIndex && ((str[index] >= 40 && str[index] <= 41))) {
- ++indexTemp2;
-  } else if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
-  (str[index] == 39) || (str[index] >= 43 && str[index] <= 58) ||
-  (str[index] == 61) || (str[index] == 63))) {
- ++indexTemp2;
+  (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
+  <= 58) || (str[index] == 61) || (str[index] == 63)))) {
+ ++index;
 }
-  if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
-}
- }
   indexTemp = index;
  } while (false);
  return indexTemp;
@@ -8487,25 +8459,6 @@ index = indexStart; break;
  } while (false);
  if (tokener != null && indexTemp == indexStart) {
  tokener.RestoreState(state);
-}
- return indexTemp;
-}
-#if CODE_ANALYSIS
-[System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
-#endif
-public static int ParsePsChar(string str, int index, int endIndex, ITokener
-  tokener) {
-int indexTemp = index;
-if (index < endIndex && ((str[index] >= 40 && str[index] <= 41))) {
- ++indexTemp;
-  } else if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
-  (str[index] == 39) || (str[index] >= 43 && str[index] <= 58) ||
-  (str[index] == 61) || (str[index] == 63))) {
- ++indexTemp;
 }
  return indexTemp;
 }
@@ -8629,10 +8582,9 @@ indexStart = index;
  indexTemp = index;
  do {
 if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-  str[index] <= 91) || (str[index] >= 93 && str[index] <= 126) ||
-  (str[index] >= 1 && str[index] <= 8) || (str[index] >= 11 && str[index] <=
-  12) || (str[index] >= 14 && str[index] <= 31) || (str[index] == 127) ||
-  (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 &&
+  str[index] <= 91) || (str[index] >= 1 && str[index] <= 8) || (str[index]
+  >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) ||
+  (str[index] >= 93 && str[index] <= 55295) || (str[index] >= 57344 &&
   str[index] <= 65535))) {
  ++indexTemp; break;
 }
@@ -8650,11 +8602,16 @@ if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
 }
  return indexTemp;
 }
+#if CODE_ANALYSIS
+[System.Diagnostics.CodeAnalysis.SuppressMessage(
+  "Microsoft.Usage",
+  "CA1801",
+  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+#endif
 public static int ParseQuotedMilitaryString(string str, int index, int
   endIndex, ITokener tokener) {
-int i, indexStart, indexTemp, indexTemp2, state;
+int i, indexStart, indexTemp;
 indexStart = index;
- state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
 if (index < endIndex && (str[index] == 34)) {
@@ -8662,17 +8619,19 @@ if (index < endIndex && (str[index] == 34)) {
 } else {
  break;
 }
- for (i = 0; i < 69; ++i) {
-  indexTemp2 = ParsePsChar(str, index, endIndex, tokener);
-  if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
-  } break;
- }
- }
- if (index == indexStart) {
+for (i = 0; i < 69; ++i) {
+ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
+   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
+   <= 58) || (str[index] == 61) || (str[index] == 63))) {
+  ++index;
+ } else if (i< 1) {
+index = indexStart; break;
+ } else {
+ break;
+}
+}
+if (index == indexStart) {
  break;
 }
 if (index < endIndex && (str[index] == 34)) {
@@ -8682,9 +8641,6 @@ if (index < endIndex && (str[index] == 34)) {
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
  return indexTemp;
 }
 #if CODE_ANALYSIS
@@ -8706,17 +8662,12 @@ if (index < endIndex && (str[index] == 92)) {
 }
 do {
   indexTemp2 = index;
-if (index < endIndex && ((str[index] >= 33 && str[index] <= 126) ||
-  (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 &&
-  str[index] <= 65535))) {
+if (index < endIndex && (str[index] >= 57344 && str[index] <= 65535)) {
  ++indexTemp2;
   } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
   56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
  indexTemp2 += 2;
-  } else if (index < endIndex && ((str[index] == 32) || (str[index] == 9) ||
-  (str[index] == 0) || (str[index] >= 1 && str[index] <= 8) || (str[index]
-  >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) ||
-  (str[index] == 127) || (str[index] == 10) || (str[index] == 13))) {
+  } else if (index < endIndex && (str[index] >= 0 && str[index] <= 55295)) {
  ++indexTemp2;
 }
   if (indexTemp2 != index) {
@@ -9257,23 +9208,24 @@ if (index + 1 < endIndex && str[index] == 42 && str[index + 1] == 48) {
 }
 public static int ParseSicSequence(string str, int index, int endIndex,
   ITokener tokener) {
-int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3,
-  state, state2;
+int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, state, state2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
- for (i = 0; i < 8; ++i) {
-  indexTemp2 = ParsePsChar(str, index, endIndex, tokener);
-  if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 3) {
-   index = indexStart;
-  } break;
- }
- }
- if (index == indexStart) {
+for (i = 0; i < 8; ++i) {
+ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
+   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
+   <= 58) || (str[index] == 61) || (str[index] == 63))) {
+  ++index;
+ } else if (i< 3) {
+index = indexStart; break;
+ } else {
+ break;
+}
+}
+if (index == indexStart) {
  break;
 }
  while (true) {
@@ -9288,17 +9240,19 @@ if (index < endIndex && (str[index] == 59)) {
  index = indexStart2; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
- for (i2 = 0; i2 < 8; ++i2) {
-  indexTemp3 = ParsePsChar(str, index, endIndex, tokener);
-  if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 3) {
-   index = indexStart2;
-  } break;
- }
- }
- if (index == indexStart2) {
+for (i2 = 0; i2 < 8; ++i2) {
+ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
+   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
+   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
+   <= 58) || (str[index] == 61) || (str[index] == 63))) {
+  ++index;
+ } else if (i2< 3) {
+index = indexStart2; break;
+ } else {
+ break;
+}
+}
+if (index == indexStart2) {
  break;
 }
   indexTemp2 = index;
@@ -9430,9 +9384,8 @@ public static int ParseText(string str, int index, int endIndex, ITokener
   tokener) {
 int indexTemp = index;
 if (index < endIndex && ((str[index] >= 1 && str[index] <= 9) || (str[index]
-  == 11) || (str[index] == 12) || (str[index] >= 14 && str[index] <= 127) ||
-  (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 &&
-  str[index] <= 65535))) {
+  >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 55295) ||
+  (str[index] >= 57344 && str[index] <= 65535))) {
  ++indexTemp;
   } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
   56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
