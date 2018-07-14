@@ -618,6 +618,11 @@ namespace PeterO.Mail {
     private sealed class HeaderContentDisposition : StructuredHeaderField {
       public override int Parse(string str, int index, int endIndex, ITokener
         tokener) {
+         // TODO: Enable access to tokener parameter.
+         // The only tokens the tokener cares about here are Comment
+         // and QuotedString, and these are relatively easy to find if this
+         // header field has the correct syntax. (Note that "quoted-string"
+         // has optional CFWS at the ends.)
          string s = str.Substring(index, endIndex-index);
          return ContentDisposition.Parse(s, null) == null ? index : endIndex;
       }
@@ -625,11 +630,90 @@ namespace PeterO.Mail {
     private sealed class HeaderContentType : StructuredHeaderField {
       public override int Parse(string str, int index, int endIndex, ITokener
         tokener) {
+         // TODO: Enable access to tokener parameter
          string s = str.Substring(index, endIndex-index);
          return MediaType.Parse(s, null) == null ? index : endIndex;
       }
     }
-
+    private sealed class HeaderAutoSubmitted : StructuredHeaderField {
+      public override int Parse(string str, int index, int endIndex, ITokener
+        tokener) {
+         // NOTE: Same syntax as Content-Disposition
+         // TODO: Enable access to tokener parameter
+         string s = str.Substring(index, endIndex-index);
+         return ContentDisposition.Parse(s, null) == null ? index : endIndex;
+      }
+    }
+    private sealed class HeaderSioLabel : StructuredHeaderField {
+      public override int Parse(string str, int index, int endIndex, ITokener
+        tokener) {
+        int si=index;
+        si=ParseFWS(str,si,endIndex,tokener);
+        // TODO: RFC7444 includes FWS, not CFWS, at ends of the header field value,
+        // but ParseParameters currently checks for CFWS
+         // TODO: Enable access to tokener parameter
+        var parameters = new Dictionary<string, string>();
+        return MediaType.ParseParameters(
+           str, si,
+           endIndex,
+           false,
+           parameters) ? endIndex : index;
+      }
+    }
+    private sealed class HeaderArchive : StructuredHeaderField {
+      public override int Parse(string str, int index, int endIndex, ITokener
+        tokener) {
+         // NOTE: Almost the same syntax as Content-Disposition, except
+         // first character must be a space (since this is a Netnews header field),
+         // and a limited selection of "disposition types" is valid;
+         // however, the initial space is not checked here, a behavior allowed by RFC
+         // 5536 sec. 2.2
+         // TODO: Enable access to tokener parameter
+         string s = str.Substring(index, endIndex-index);
+         string cd=ContentDisposition.Parse(s, null);
+         if(cd==null)return index;
+         if(cd.DispositionType.Equals("no") || cd.DispositionType.Equals("yes"))return endIndex;
+         return index;
+      }
+    }
+    private sealed class HeaderInjectionInfo : StructuredHeaderField {
+      public override int Parse(string str, int index, int endIndex, ITokener
+        tokener) {
+         // NOTE: Under the syntax of InjectionInfo, the
+         // first character must be a space (since this is a Netnews header field);
+         // however, the initial space is not checked here, a behavior allowed by RFC
+         // 5536 sec. 2.2
+         // TODO: Enable access to tokener parameter
+int indexStart, indexTemp, state, tx2;
+indexStart = index;
+ state = (tokener != null) ? tokener.GetState() : 0;
+ indexTemp = index;
+ do {
+ index = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
+ tx2 = HeaderParser.ParsePathIdentity(str, index, endIndex, tokener);
+ if (tx2 == index) {
+index=indexStart;  break;
+}
+ else {
+ index=tx2;
+}
+ index = HeaderParser.ParseCFWS(str, index, endIndex, tokener);
+if ((index < endIndex && (str[index] == 59))) {
+ index += 1;
+ var parameters = new Dictionary<string, string>();
+ index=MediaType.ParseParameters(
+           str, index,
+           endIndex,
+           false,
+           parameters) ? endIndex : indexStart;
+}
+  indexTemp = index;
+ } while (false);
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
+ return indexTemp;
+      }
+    }
+    // -------------- generic classes --------------
     private sealed class HeaderX400ContentReturn : StructuredHeaderField {
       public override int Parse(string str, int index, int endIndex, ITokener
         tokener) {
@@ -823,13 +907,6 @@ namespace PeterO.Mail {
           tokener);
       }
     }
-    private sealed class HeaderInjectionInfo : StructuredHeaderField {
-      public override int Parse(string str, int index, int endIndex, ITokener
-        tokener) {
-   return HeaderParser.ParseHeaderInjectionInfo(str, index, endIndex,
-          tokener);
-      }
-    }
     private sealed class HeaderUserAgent : StructuredHeaderField {
       public override int Parse(string str, int index, int endIndex, ITokener
         tokener) {
@@ -876,13 +953,6 @@ namespace PeterO.Mail {
         tokener) {
         return HeaderParser.ParseHeaderAuthenticationResults(str, index,
           endIndex, tokener);
-      }
-    }
-    private sealed class HeaderAutoSubmitted : StructuredHeaderField {
-      public override int Parse(string str, int index, int endIndex, ITokener
-        tokener) {
-   return HeaderParser.ParseHeaderAutoSubmitted(str, index, endIndex,
-          tokener);
       }
     }
     private sealed class HeaderBcc : StructuredHeaderField {
@@ -1328,12 +1398,6 @@ private sealed class HeaderRequireRecipientValidSince :
         return HeaderParser.ParseHeaderSender(str, index, endIndex, tokener);
       }
     }
-    private sealed class HeaderSioLabel : StructuredHeaderField {
-      public override int Parse(string str, int index, int endIndex, ITokener
-        tokener) {
-        return HeaderParser.ParseHeaderSioLabel(str, index, endIndex, tokener);
-      }
-    }
     private sealed class HeaderSolicitation : StructuredHeaderField {
       public override int Parse(string str, int index, int endIndex, ITokener
         tokener) {
@@ -1396,8 +1460,18 @@ private sealed class HeaderRequireRecipientValidSince :
     private static IDictionary<string, IHeaderFieldParser>
       CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
+       // TODO: Support stricter Message-ID syntax in RFC 5536 sec. 3.1.3
       fieldMap = new Dictionary<string,
         IHeaderFieldParser>();
+        fieldMap["content-disposition"] = new HeaderContentDisposition();
+      fieldMap["content-type"] = new HeaderContentType();
+     fieldMap["auto-submitted"] = new HeaderAutoSubmitted();
+     fieldMap["archive"] = new HeaderArchive();
+     fieldMap["autosubmitted"] = new HeaderAutoforwarded(); // same syntax
+      fieldMap["sio-label"] = new HeaderSioLabel();
+      fieldMap["sio-label-history"] = new HeaderSioLabel();
+      fieldMap["injection-info"] = new HeaderInjectionInfo();
+      //------------------ generic ------------------
       fieldMap["content-return"] = new HeaderX400ContentReturn();
       fieldMap["x400-content-return"] = new HeaderX400ContentReturn();
       fieldMap["delivery-date"] = new HeaderDeliveryDate();
@@ -1426,12 +1500,10 @@ private sealed class HeaderRequireRecipientValidSince :
       fieldMap["expanded-date"] = new HeaderExpandedDate();
       fieldMap["newsgroups"] = new HeaderNewsgroups();
       fieldMap["path"] = new HeaderPath();
-      fieldMap["archive"] = new HeaderArchive();
       fieldMap["control"] = new HeaderControl();
       fieldMap["distribution"] = new HeaderDistribution();
       fieldMap["followup-to"] = new HeaderFollowupTo();
       fieldMap["injection-date"] = new HeaderInjectionDate();
-      fieldMap["injection-info"] = new HeaderInjectionInfo();
       fieldMap["user-agent"] = new HeaderUserAgent();
       fieldMap["xref"] = new HeaderXref();
       fieldMap["nntp-posting-date"] = new HeaderInjectionDate();
@@ -1441,8 +1513,7 @@ private sealed class HeaderRequireRecipientValidSince :
  fieldMap["arc-authentication-results"] = new
         HeaderArcAuthenticationResults();
       fieldMap["authentication-results"] = new HeaderAuthenticationResults();
-      fieldMap["auto-submitted"] = new HeaderAutoSubmitted();
-      fieldMap["base"] = new HeaderContentBase();
+       fieldMap["base"] = new HeaderContentBase();
       fieldMap["bcc"] = new HeaderBcc();
       fieldMap["cc"] = new HeaderTo();
       fieldMap["cancel-lock"] = new HeaderCancelLock();
@@ -1452,7 +1523,6 @@ private sealed class HeaderRequireRecipientValidSince :
       fieldMap["form-sub"] = new HeaderFormSub();
       fieldMap["x-pgp-sig"] = new HeaderXPgpSig();
       fieldMap["content-base"] = new HeaderContentBase();
-      fieldMap["content-disposition"] = new HeaderContentDisposition();
       fieldMap["content-duration"] = new HeaderContentDuration();
       fieldMap["content-id"] = new HeaderContentId();
       fieldMap["content-language"] = new HeaderContentLanguage();
@@ -1460,7 +1530,6 @@ private sealed class HeaderRequireRecipientValidSince :
       fieldMap["content-md5"] = new HeaderContentMd5();
    fieldMap["content-transfer-encoding"] = new
         HeaderContentTransferEncoding();
-      fieldMap["content-type"] = new HeaderContentType();
       fieldMap["date"] = new HeaderDate();
       fieldMap["deferred-delivery"] = new HeaderDeferredDelivery();
       fieldMap["disposition-notification-options"] = new
@@ -1537,8 +1606,6 @@ private sealed class HeaderRequireRecipientValidSince :
       fieldMap["resent-to"] = new HeaderResentTo();
       fieldMap["return-path"] = new HeaderReturnPath();
       fieldMap["sender"] = new HeaderSender();
-      fieldMap["sio-label"] = new HeaderSioLabel();
-      fieldMap["sio-label-history"] = new HeaderSioLabel();
       fieldMap["solicitation"] = new HeaderSolicitation();
       fieldMap["to"] = new HeaderTo();
       fieldMap["vbr-info"] = new HeaderVbrInfo();
