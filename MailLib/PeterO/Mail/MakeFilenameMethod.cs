@@ -424,10 +424,8 @@ namespace PeterO.Mail {
     }
 
     public static string MakeFilename(string str) {
-      // TODO: Handle single-quoted filenames (ex: 'filename')?
       if (String.IsNullOrEmpty(str)) {
-        // TODO: Consider empty string instead
-        return "_";
+        return String.Empty;
       }
       if (SimplifiedFileCheck(str)) {
         return str;
@@ -500,6 +498,9 @@ namespace PeterO.Mail {
             builder.Append('_');
           } else if (c == '`') {
             // '`' starts a command in BASH and possibly other shells
+            builder.Append('_');
+          } else if (c == '\'') {
+            // "'" starts a filename string in BASH and possibly other shells
             builder.Append('_');
           } else if (c == '#') {
             // Fragment identifier for URIs

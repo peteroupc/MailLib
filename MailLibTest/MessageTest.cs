@@ -1179,6 +1179,38 @@ Assert.IsTrue(boolTemp, msgstring);
     }
 
     [Test]
+    public void TestBoundaryReadingWithTransportPadding(){
+      string messageStart = "MIME-Version: 1.0\r\n";
+      messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
+      messageStart += "Preamble\r\n";
+      string[] paddings={"","\u0020","\t","\u0020\u0020",
+          "\t\u0020","\u0020\t","\t\t"};
+      foreach(var padding1 in paddings){
+        foreach(var padding2 in paddings){
+          string message = messageStart;
+          message += "--b1"+padding1+"\r\n";
+          message += "Content-Type: text/plain\r\n\r\n";
+          message += "Test\r\n";
+          message += "--b1--"+padding2+"\r\n";
+          message += "Epilogue";
+      Message msg;
+      msg = MessageFromString(message);
+      Assert.AreEqual("multipart", msg.ContentType.TopLevelType);
+      {
+        string stringTemp = msg.ContentType.GetParameter("boundary");
+        Assert.AreEqual(
+          "b1",
+          stringTemp);
+      }
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
+      Assert.AreEqual("Test", msg.Parts[0].BodyString);
+        }
+      }
+
+    }
+
+    [Test]
     public void TestBoundaryReading() {
       byte[] body;
       string messageStart = "MIME-Version: 1.0\r\n";

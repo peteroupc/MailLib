@@ -21,10 +21,6 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="P:PeterO.Mail.ContentDisposition.DispositionType"]/*'/>
     public string DispositionType {
       get {
-        // TODO: Unrecognized/unknown types
-        // should be treated as attachment
-        // (RFC 6266 sec. 4.2; RFC 2183 sec. 2.8); note this in the
-        // documentation
         return this.dispositionType;
       }
     }
@@ -138,7 +134,8 @@ namespace PeterO.Mail {
     public string GetParameter(string name) {
       // TODO: Support creation-date, modification-date,
       // read-date and size specially. NOTE: Size is
-      // a hint only; see RFC 2183
+      // a hint only, see RFC 2183, and dates are RFC 822 date time with
+      // numeric timezones
       if (name == null) {
         throw new ArgumentNullException("name");
       }

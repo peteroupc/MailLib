@@ -284,7 +284,7 @@ namespace MailLibTest {
         char c = str[i];
         if (c < 0x20 || (c >= 0x7f && c <= 0x9f) ||
           c == '%' || c == 0x2028 || c == 0x2029 ||
-        c == '#' || c == ';' ||
+        c == '#' || c == ';' || c=='\'' ||
             c == '\\' || c == '/' || c == '*' || c == '?' || c == '|' ||
           c == ':' || c == '<' || c == '>' || c == '"' || c == '`' ||
 c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
@@ -436,7 +436,7 @@ stmp =
         stringTemp = ContentDisposition.MakeFilename(
         null);
 Assert.AreEqual(
-  "_",
+  "",
   stringTemp);
 }
       {
