@@ -130,12 +130,30 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetCreationDate"]/*'/>
+    public int[] GetCreationDate() {
+      return MailDateTime.ParseDateString(
+        this.GetParameter("creation-date"));
+    }
+
+    /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetModificationDate"]/*'/>
+    public int[] GetModificationDate() {
+      return MailDateTime.ParseDateString(
+        this.GetParameter("modification-date"));
+    }
+
+    /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetReadDate"]/*'/>
+    public int[] GetReadDate() {
+      return MailDateTime.ParseDateString(
+        this.GetParameter("read-date"));
+    }
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)"]/*'/>
     public string GetParameter(string name) {
-      // TODO: Support creation-date, modification-date,
-      // read-date and size specially. NOTE: Size is
-      // a hint only, see RFC 2183, and dates are RFC 822 date time with
-      // numeric timezones
+      // TODO: Support size specially. NOTE: Size is
+      // a hint only, see RFC 2183
       if (name == null) {
         throw new ArgumentNullException("name");
       }
