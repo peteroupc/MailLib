@@ -348,7 +348,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
       }
     }
 
-    private static string[] FileNames = {
+    public static string[] FileNames = {
 "hello.\u0020txt", "hello._txt",
   "hello\u0020.txt", "hello_.txt",
   "hello\u0020.\u0020txt", "hello_._txt",
@@ -633,7 +633,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
 
     // Parameters not conforming to RFC 2231, but
     // have names with asterisks
-    private static string[] NoParams = new string[] {
+    internal static string[] NoParams = new string[] {
 ";param*xx=value",
   ";param*0xx=value",
   ";param*xx0=value",

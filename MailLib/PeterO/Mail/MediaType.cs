@@ -296,45 +296,7 @@ namespace PeterO.Mail {
       return startIndex;  // not a valid quoted-string
     }
 
-    private static void ReverseChars(char[] chars, int offset, int length) {
-      int half = length >> 1;
-      int right = offset + length - 1;
-      for (var i = 0; i < half; i++, right--) {
-        char value = chars[offset + i];
-        chars[offset + i] = chars[right];
-        chars[right] = value;
-      }
-    }
-
-    private static string valueDigits = "0123456789";
-
-    private static string IntToString(int value) {
-      if (value == Int32.MinValue) {
-        return "-2147483648";
-      }
-      if (value == 0) {
-        return "0";
-      }
-      bool neg = value < 0;
-      var chars = new char[24];
-      var count = 0;
-      if (neg) {
-        chars[0] = '-';
-        ++count;
-        value = -value;
-      }
-      while (value != 0) {
-        char digit = valueDigits[(int)(value % 10)];
-        chars[count++] = digit;
-        value /= 10;
-      }
-      if (neg) {
-        ReverseChars(chars, 1, count - 1);
-      } else {
-        ReverseChars(chars, 0, count);
-      }
-      return new String(chars, 0, count);
-    }
+   
 
     internal sealed class SymbolAppender {
       StringBuilder builder;
@@ -513,7 +475,7 @@ namespace PeterO.Mail {
           if (contin > 0) {
             sa.AppendSymbol(";");
           }
-          sa.AppendSymbol(name + "*" + IntToString(contin) + "*")
+          sa.AppendSymbol(name + "*" + ParserUtility.IntToString(contin) + "*")
      .AppendSymbol("=");
           index = EncodeContinuation(str, index, sa);
           ++contin;
@@ -984,14 +946,11 @@ namespace PeterO.Mail {
           // search for name*1 or name*1*, then name*2 or name*2*,
           // and so on
           while (true) {
-            string contin = realName + "*" + IntToString(pindex);
+            string contin = realName + "*" + 
+              ParserUtility.IntToString(pindex);
             string continEncoded = contin + "*";
-            if (parameters.ContainsKey(contin)) {
-              // Unencoded continuation
-              builder.Append(parameters[contin]);
-              parameters.Remove(contin);
-            } else if (parameters.ContainsKey(continEncoded)) {
-              // Encoded continuation
+            if (parameters.ContainsKey(continEncoded)) {
+              // Encoded continuation (checked first)
               string newEnc = DecodeRfc2231Encoding(
              parameters[continEncoded],
              charsetUsed);
@@ -1001,6 +960,10 @@ namespace PeterO.Mail {
               }
               builder.Append(newEnc);
               parameters.Remove(continEncoded);
+            } else if (parameters.ContainsKey(contin)) {
+              // Unencoded continuation (checked second)
+              builder.Append(parameters[contin]);
+              parameters.Remove(contin);
             } else {
               break;
             }

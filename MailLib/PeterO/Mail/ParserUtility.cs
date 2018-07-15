@@ -12,6 +12,44 @@ using PeterO;
 
 namespace PeterO.Mail {
   internal static class ParserUtility {
+
+    private static string ValueDigits = "0123456789";
+    public static string IntToString(int value) {
+      if (value == Int32.MinValue) {
+        return "-2147483648";
+      }
+      if (value == 0) {
+        return "0";
+      }
+      bool neg = value < 0;
+      var chars = new char[12];
+      var count = 11;
+      if (neg) {
+        value = -value;
+      }
+      while (value > 43698) {
+        int intdivvalue = value / 10;
+        char digit = ValueDigits[(int)(value - (intdivvalue * 10))];
+        chars[count--] = digit;
+        value = intdivvalue;
+      }
+      while (value > 9) {
+        int intdivvalue = (value * 26215) >> 18;
+        char digit = ValueDigits[(int)(value - (intdivvalue * 10))];
+        chars[count--] = digit;
+        value = intdivvalue;
+      }
+      if (value != 0) {
+        chars[count--] = ValueDigits[(int)value];
+      }
+      if (neg) {
+        chars[count] = '-';
+      } else {
+        ++count;
+      }
+      return new String(chars, count, 12 - count);
+    }
+
     public static string TrimSpaceAndTab(string str) {
       if (String.IsNullOrEmpty(str)) {
         return str;

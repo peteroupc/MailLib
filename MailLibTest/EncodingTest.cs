@@ -1168,11 +1168,10 @@ namespace MailLibTest {
     }
 
     private static byte[] DowngradeDeliveryStatus(string str) {
-      Message msg =
-
-  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: valueMessage/global-delivery-status\r\n"
+      string msgstr = "From: xy@x.example\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"
     +
-    "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
+        "Content-Transfer-Encoding: 8bit\r\n\r\n" + str;
+      Message msg = MessageTest.MessageFromString(msgstr);
       msg = MessageTest.MessageFromString(MessageTest.MessageGenerate(msg));
       return msg.GetBody();
     }
@@ -1695,19 +1694,29 @@ string stringTemp =
       private string valueHeader;
       private Message valueMessage;
 
+      public string ValueHeader {
+        get { return valueHeader; }
+        set { valueHeader = value; }
+      }
+
+      public Message ValueMessage { 
+        get { return valueMessage; }
+        set { valueMessage = value; }
+      }
+
       public HeaderInfo(string valueHeader, Message valueMessage) {
-        this.valueHeader = valueHeader;
-        this.valueMessage = valueMessage;
+        this.ValueHeader = valueHeader;
+        this.ValueMessage = valueMessage;
       }
     }
 
     private static string DowngradeHeaderField(string name, string value) {
-      return DowngradeHeaderFieldEx(name, value).valueHeader;
+      return DowngradeHeaderFieldEx(name, value).ValueHeader;
     }
 
-  private static HeaderInfo DowngradeHeaderFieldEx(
-  string name,
-  string value) {
+    private static HeaderInfo DowngradeHeaderFieldEx(
+    string name,
+    string value) {
       string msgstr;
       msgstr = name + ": " + value + "\r\n";
       if (!name.Equals("from")) {
@@ -1723,16 +1732,16 @@ string stringTemp =
     }
 
     private static void TestDowngradeAddressOne(
-      string valueHeader,
-      string value,
+      string headerName,
+      string headerValue,
       string displayName,
       string localPart,
       string domain) {
-      HeaderInfo hinfo = DowngradeHeaderFieldEx(valueHeader, value);
-      Console.WriteLine(valueHeader);
-      Console.WriteLine(value);
-      Console.WriteLine(hinfo.valueHeader);
-      var address = new NamedAddress(hinfo.valueMessage.GetHeader(valueHeader));
+      HeaderInfo hinfo = DowngradeHeaderFieldEx(headerName, headerValue);
+      Console.WriteLine(headerName);
+      Console.WriteLine(headerValue);
+      Console.WriteLine(hinfo.ValueHeader);
+      var address = new NamedAddress(hinfo.ValueMessage.GetHeader(headerName));
       Assert.AreEqual(displayName, address.DisplayName);
       Assert.AreEqual(localPart, address.Address.LocalPart);
       Assert.AreEqual(domain, address.Address.Domain);
@@ -1856,17 +1865,17 @@ string stringTemp =
         string stringTemp = DowngradeHeaderField(
   "from",
   "(comment) Tes\u00bet Subject <x@x.example>");
-  Assert.AreEqual(
-  "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-  stringTemp);
+        Assert.AreEqual(
+        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+        stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField(
   "from",
   "(comment) Test Sub\u00beject <x@x.example>");
-  Assert.AreEqual(
-  "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-  stringTemp);
+        Assert.AreEqual(
+        "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+        stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField(
@@ -1880,24 +1889,24 @@ string stringTemp =
         string stringTemp = DowngradeHeaderField(
   "from",
   "(comment) \"Tes\u00bet Subject\" <x@x.example>");
-  Assert.AreEqual(
-  "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-  stringTemp);
+        Assert.AreEqual(
+        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+        stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField(
   "from",
   "(comment) \"Test Sub\u00beject\" <x@x.example>");
-  Assert.AreEqual(
-  "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-  stringTemp);
+        Assert.AreEqual(
+        "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+        stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField(
   "from",
   "(comment) \"Tes\u00bet\u0020\u0020\u0020Subject\" <x@x.example>");
         {
- object objectTemp = "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>";
+          object objectTemp = "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>";
 
           object objectTemp2 = stringTemp;
           Assert.AreEqual(objectTemp, objectTemp2);
@@ -1920,9 +1929,9 @@ string stringTemp =
         string stringTemp = DowngradeHeaderField(
   "from",
   "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-  Assert.AreEqual(
-  "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-  stringTemp);
+        Assert.AreEqual(
+        "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+        stringTemp);
       }
       {
         string stringTemp = DowngradeHeaderField("from", "Test <x@x.example>");
@@ -1990,9 +1999,9 @@ string stringTemp =
         string stringTemp = DowngradeHeaderField(
   "from",
   "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-  Assert.AreEqual(
-  "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-  stringTemp);
+        Assert.AreEqual(
+        "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+        stringTemp);
       }
     }
 
