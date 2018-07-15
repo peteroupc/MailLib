@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 using System.Text;
 using PeterO;
 namespace PeterO.Mail {
-  /// <summary>
-  /// Mail date time.
-  /// </summary>
+  /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="T:PeterO.Mail.MailDateTime"]/*'/>
   public static class MailDateTime {
-    
+
     private static string[] valueDaysOfWeek = {
       "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
     };
@@ -16,11 +15,8 @@ namespace PeterO.Mail {
       "Aug", "Sep", "Oct", "Nov", "Dec"
     };
 
-    /// <summary>
-    /// Generates the date string.
-    /// </summary>
-    /// <returns>The date string.</returns>
-    /// <param name="dateTime">Date time.</param>
+    /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[])"]/*'/>
     public static string GenerateDateString(int[] dateTime) {
       if (!DateTimeUtilities.IsValidDateTime(dateTime) ||
         dateTime[0] < 0) {
@@ -69,12 +65,8 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    /// <summary>
-    /// Parses the date string.
-    /// </summary>
-    /// <returns>The date string.</returns>
-    /// <param name="str">String.</param>
-    /// <param name="parseObsoleteZones">If set to <c>true</c> parse obsolete zones.</param>
+    /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)"]/*'/>
     public static int[] ParseDateString(string str, bool parseObsoleteZones) {
       if (String.IsNullOrEmpty(str)) return null;
       int[] ret = new int[8];
@@ -85,11 +77,8 @@ namespace PeterO.Mail {
       }
     }
 
-    /// <summary>
-    /// Parses the date string.
-    /// </summary>
-    /// <returns>The date string.</returns>
-    /// <param name="str">String.</param>
+    /// <include file='../../docs.xml'
+  /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String)"]/*'/>
     public static int[] ParseDateString(string str) {
       return ParseDateString(str, false);
     }

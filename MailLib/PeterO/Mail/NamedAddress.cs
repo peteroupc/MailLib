@@ -63,7 +63,6 @@ if (this.displayName == null) {
 #endif
 
         var builder = new StringBuilder();
-        // TODO: Support internationalized display names and addresses
   builder.Append(HeaderParserUtility.QuoteValueIfNeeded(this.displayName));
         builder.Append(": ");
         var first = true;

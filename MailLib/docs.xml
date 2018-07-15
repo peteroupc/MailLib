@@ -391,6 +391,22 @@ unrecognized disposition types should be treated as "attachment".</summary>
             <param name='obj'>The parameter <paramref name='obj'/> is an arbitrary object.</param>
             <returns><c>true</c> if the objects are equal; otherwise, <c>false</c>.</returns>
 </doc>
+<doc name="M:PeterO.Mail.ContentDisposition.GetCreationDate">
+<summary>
+            Gets the date and time extracted from this
+            content disposition's "creation-date" parameter,
+            which specifies the date of creation of a file
+            (RFC 2183 sec. 2.4).
+            See <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+            for information on the format of this
+            method's return value.
+            </summary>
+            <returns>The extracted date and time as an
+            8-element array, or <c>null</c> if the "creation-date"
+            parameter doesn't exist, is an empty string, or is
+            syntactically invalid, or if the parameter's year
+            would overflow a 32-bit signed integer.</returns>
+</doc>
 <doc name="M:PeterO.Mail.ContentDisposition.GetFilename">
 <summary>Gets an adapted version of the "filename" parameter
             in this content disposition object by using the "MakeFilename" method.</summary>
@@ -400,6 +416,22 @@ unrecognized disposition types should be treated as "attachment".</summary>
 <doc name="M:PeterO.Mail.ContentDisposition.GetHashCode">
 <summary>Returns the hash code for this instance.</summary>
             <returns>A 32-bit hash code.</returns>
+</doc>
+<doc name="M:PeterO.Mail.ContentDisposition.GetModificationDate">
+<summary>
+            Gets the date and time extracted from this
+            content disposition's "modification-date" parameter,
+            which specifies the date of last modification of a file
+            (RFC 2183 sec. 2.5).
+            See <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+            for information on the format of this
+            method's return value.
+            </summary>
+            <returns>The extracted date and time as an
+            8-element array, or <c>null</c> if the "modification-date"
+            parameter doesn't exist, is an empty string, or is
+            syntactically invalid, or if the parameter's year
+            would overflow a 32-bit signed integer.</returns>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)">
 <summary>Gets a parameter from this disposition object.  For the "filename" parameter, the value of that
@@ -416,6 +448,22 @@ unrecognized disposition types should be treated as "attachment".</summary>
             <paramref name='name'/> is null.</exception>
             <exception cref='T:System.ArgumentException'>The parameter
             <paramref name='name'/> is empty.</exception>
+</doc>
+<doc name="M:PeterO.Mail.ContentDisposition.GetReadDate">
+<summary>
+            Gets the date and time extracted from this
+            content disposition's "read-date" parameter,
+            which specifies the date at which a file was last read
+            (RFC 2183 sec. 2.6).
+            See <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+            for information on the format of this
+            method's return value.
+            </summary>
+            <returns>The extracted date and time as an
+            8-element array, or <c>null</c> if the "read-date"
+            parameter doesn't exist, is an empty string, or is
+            syntactically invalid, or if the parameter's year
+            would overflow a 32-bit signed integer.</returns>
 </doc>
 <doc name="F:PeterO.Mail.ContentDisposition.Inline">
 <summary>The content disposition value "inline".</summary>
@@ -637,6 +685,69 @@ deprecated that parameter.) </para>
 </doc>
 <doc name="T:PeterO.Mail.IdentityEncoder">
 <summary>An IdentityEncoder.</summary>
+</doc>
+<doc name="T:PeterO.Mail.MailDateTime">
+<summary>
+            Not documented yet.
+            </summary>
+</doc>
+<doc name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[])">
+<summary>
+            Generates a date-time string following the 
+           Internet Message Format (RFC 5322) from an 8-element array.
+            </summary>
+            <returns>A date-time string.</returns>
+            <exception cref='T:System.ArgumentException'>The parameter "dateTime" is
+            null or invalid.</exception>
+            <param name='dateTime'>The date and time in the form of an 8-element array.  See 
+           <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+           for information on the format of this parameter.</param>
+</doc>
+<doc name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String)">
+<summary>
+           Gets the date and time extracted from a date-time string following the 
+           Internet Message Format (RFC 5322).  However, this method does not allow obsolete time
+           zone strings to appear in the date-time string.  See 
+           <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+           for information on the format of this method's return value.
+            </summary>
+            <returns>An 8-element array containing the date and time, or <c>null</c> if
+             <paramref name='str'/> is null, empty, or syntactically invalid, or if the string's
+             year would overflow the range of a 32-bit signed integer.</returns>
+            <param name='str'>String.</param>
+</doc>
+<doc name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)">
+<summary>
+            Gets the date and time extracted from a date-time string following the 
+           Internet Message Format (RFC 5322), with an option to allow obsolete time
+           zone strings to appear in the date-time string.
+            </summary>
+            <returns>An 8-element array containing the date and time, or <c>null</c> if
+             <paramref name='str'/> is null, empty, or syntactically invalid, or if the string's
+             year would overflow the range of a 32-bit signed integer.  If an array is returned,
+            element of that array (starting from 0) is as follows:
+            <list>
+            <item>0 - The year. For example, the value 2000 means 2000
+            C.E.</item>
+            <item>1 - Month of the year, from 1 (January) through 12
+            (December).</item>
+            <item>2 - Day of the month, from 1 through 31.</item>
+            <item>3 - Hour of the day, from 0 through 23.</item>
+            <item>4 - Minute of the hour, from 0 through 59.</item>
+            <item>5 - Second of the minute, from 0 through 60 (this value can
+            go up to 60 to accommodate leap seconds). (Leap seconds are
+            additional seconds added to adjust international atomic time, or
+            TAI, to an approximation of astronomical time known as coordinated
+            universal time, or UTC.)</item>
+            <item>6 - Milliseconds of the second, from 0 through 999. Will
+            always be 0.</item>
+            <item>7 - Number of minutes to subtract from this date and time to
+            get global time. This number can be positive or
+            negative.</item></list></returns>
+            <param name='str'>String.</param>
+            <param name='parseObsoleteZones'>If set to <c>true</c>, this method allows obsolete
+         time zones (single-letter time zones, "GMT", "UT", and certain three-letter combinations)
+         to appear in the date-time string.</param>
 </doc>
 <doc name="T:PeterO.Mail.MediaType">
 <summary>
@@ -1124,26 +1235,11 @@ header field, otherwise.</para></summary>
 </doc>
 <doc name="M:PeterO.Mail.Message.GetDate">
 <summary>Gets the date and time extracted from this message's Date
-            header field (as though GetHeader("date") were called). Each
-            element of the array (starting from 0) is as follows:
-            <list>
-            <item>0 - The year. For example, the value 2000 means 2000
-            C.E.</item>
-            <item>1 - Month of the year, from 1 (January) through 12
-            (December).</item>
-            <item>2 - Day of the month, from 1 through 31.</item>
-            <item>3 - Hour of the day, from 0 through 23.</item>
-            <item>4 - Minute of the hour, from 0 through 59.</item>
-            <item>5 - Second of the minute, from 0 through 60 (this value can
-            go up to 60 to accommodate leap seconds). (Leap seconds are
-            additional seconds added to adjust international atomic time, or
-            TAI, to an approximation of astronomical time known as coordinated
-            universal time, or UTC.)</item>
-            <item>6 - Milliseconds of the second, from 0 through 999. Will
-            always be 0.</item>
-            <item>7 - Number of minutes to subtract from this date and time to
-            get global time. This number can be positive or
-            negative.</item></list></summary>
+            header field (the value of which is found as though 
+            GetHeader("date") were called). See
+         <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/> for
+more information on the format of the date-time array returned by
+this method.</summary>
             <returns>An array containing eight elements. Returns null if the
             Date header doesn't exist, if the Date field is syntactically or
             semantically invalid, or if the field's year would overflow a
