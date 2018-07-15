@@ -103,92 +103,6 @@ namespace PeterO.Mail {
       }
     }
 
-    private static string valueDigits = "0123456789";
-
-    private static string IntToString(int value) {
-      if (value == Int32.MinValue) {
-        return "-2147483648";
-      }
-      if (value == 0) {
-        return "0";
-      }
-      bool neg = value < 0;
-      var chars = new char[24];
-      var count = 0;
-      if (neg) {
-        chars[0] = '-';
-        ++count;
-        value = -value;
-      }
-      while (value != 0) {
-        char digit = valueDigits[(int)(value % 10)];
-        chars[count++] = digit;
-        value /= 10;
-      }
-      if (neg) {
-        ReverseChars(chars, 1, count - 1);
-      } else {
-        ReverseChars(chars, 0, count);
-      }
-      return new String(chars, 0, count);
-    }
-
-    private static string[] valueDaysOfWeek = {
-      "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
-    };
-
-    private static string[] valueMonths = {
-      String.Empty, "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
-      "Aug", "Sep", "Oct", "Nov", "Dec"
-    };
-
-    private static string GetDateString(int[] dateTime) {
-      if (!DateTimeUtilities.IsValidDateTime(dateTime) ||
-        dateTime[0] < 0) {
-        throw new ArgumentException("Invalid date and time");
-      }
-      int dow = DateTimeUtilities.GetDayOfWeek(dateTime);
-      if (dow < 0) {
-        throw new ArgumentException("Invalid date and time");
-      }
-      string dayString = valueDaysOfWeek[dow];
-      string monthString = valueMonths[dateTime[1]];
-      var sb = new StringBuilder();
-      sb.Append(dayString);
-      sb.Append(", ");
-      sb.Append((char)('0' + ((dateTime[2] / 10) % 10)));
-      sb.Append((char)('0' + (dateTime[2] % 10)));
-      sb.Append(' ');
-      sb.Append(monthString);
-      sb.Append(' ');
-      string yearString = IntToString(dateTime[0]);
-      if (yearString.Length < 4) {
-        for (int i = 0; i < 4 - yearString.Length; ++i) {
-          sb.Append('0');
-        }
-      }
-      sb.Append(yearString);
-      sb.Append(' ');
-      sb.Append((char)('0' + ((dateTime[3] / 10) % 10)));
-      sb.Append((char)('0' + (dateTime[3] % 10)));
-      sb.Append(':');
-      sb.Append((char)('0' + ((dateTime[4] / 10) % 10)));
-      sb.Append((char)('0' + (dateTime[4] % 10)));
-      sb.Append(':');
-      sb.Append((char)('0' + ((dateTime[5] / 10) % 10)));
-      sb.Append((char)('0' + (dateTime[5] % 10)));
-      sb.Append(' ');
-      int offset = dateTime[7];
-      sb.Append((offset < 0) ? '-' : '+');
-      offset = Math.Abs(offset);
-      int hours = (offset / 60) % 24;
-      int minutes = offset % 60;
-      sb.Append((char)('0' + ((hours / 10) % 10)));
-      sb.Append((char)('0' + (hours % 10)));
-      sb.Append((char)('0' + ((minutes / 10) % 10)));
-      sb.Append((char)('0' + (minutes % 10)));
-      return sb.ToString();
-    }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.Message.BccAddresses"]/*'/>
@@ -365,13 +279,7 @@ namespace PeterO.Mail {
       if (field == null) {
  return null;
 }
-      var date = new int[8];
-      return HeaderParserUtility.ParseHeaderExpandedDate(
-  field,
-  0,
-  field.Length,
-  date,
-  true) != 0 ? date : null;
+      return MailDateTime.ParseDateString(field, true);
     }
 
     /// <include file='../../docs.xml'
@@ -385,9 +293,11 @@ namespace PeterO.Mail {
       }
       if (dateTime[0] < 0) {
         throw new ArgumentException("Invalid year: " +
-          IntToString(dateTime[0]));
+          ParserUtility.IntToString(dateTime[0]));
       }
-      return this.SetHeader("date", GetDateString(dateTime));
+      return this.SetHeader(
+        "date", 
+        MailDateTime.GenerateDateString(dateTime));
     }
 
     /// <include file='../../docs.xml'
@@ -1962,7 +1872,7 @@ namespace PeterO.Mail {
         AppendAscii(output, "Date: ");
         AppendAscii(
           output,
-          GetDateString(DateTimeUtilities.GetCurrentLocalTime()));
+          MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentLocalTime()));
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {

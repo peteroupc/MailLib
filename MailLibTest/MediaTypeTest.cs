@@ -600,7 +600,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
       }
     }
 
-    private static IDictionary<string, string>[] ValueTestParamTypes = new
+    internal static IDictionary<string, string>[] ValueTestParamTypes = new
       IDictionary<string, string>[] {
 DictUtility.MakeDict("params", ";filename=x.y", "filename","x.y"),
   DictUtility.MakeDict("params", ";filename=\"cc\"", "filename","cc"),
