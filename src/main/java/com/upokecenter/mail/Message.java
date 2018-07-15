@@ -189,93 +189,6 @@ import com.upokecenter.text.*;
       }
     }
 
-    private static String valueDigits = "0123456789";
-
-    private static String IntToString(int value) {
-      if (value == Integer.MIN_VALUE) {
-        return "-2147483648";
-      }
-      if (value == 0) {
-        return "0";
-      }
-      boolean neg = value < 0;
-      char[] chars = new char[24];
-      int count = 0;
-      if (neg) {
-        chars[0] = '-';
-        ++count;
-        value = -value;
-      }
-      while (value != 0) {
-        char digit = valueDigits.charAt((int)(value % 10));
-        chars[count++] = digit;
-        value /= 10;
-      }
-      if (neg) {
-        ReverseChars(chars, 1, count - 1);
-      } else {
-        ReverseChars(chars, 0, count);
-      }
-      return new String(chars, 0, count);
-    }
-
-    private static String[] valueDaysOfWeek = {
-      "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
-    };
-
-    private static String[] valueMonths = {
-      "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
-      "Aug", "Sep", "Oct", "Nov", "Dec"
-    };
-
-    private static String GetDateString(int[] dateTime) {
-      if (!DateTimeUtilities.IsValidDateTime(dateTime) ||
-        dateTime[0] < 0) {
-        throw new IllegalArgumentException("Invalid date and time");
-      }
-      int dow = DateTimeUtilities.GetDayOfWeek(dateTime);
-      if (dow < 0) {
-        throw new IllegalArgumentException("Invalid date and time");
-      }
-      String dayString = valueDaysOfWeek[dow];
-      String monthString = valueMonths[dateTime[1]];
-      StringBuilder sb = new StringBuilder();
-      sb.append(dayString);
-      sb.append(", ");
-      sb.append((char)('0' + ((dateTime[2] / 10) % 10)));
-      sb.append((char)('0' + (dateTime[2] % 10)));
-      sb.append(' ');
-      sb.append(monthString);
-      sb.append(' ');
-      String yearString = IntToString(dateTime[0]);
-      if (yearString.length() < 4) {
-        for (int i = 0; i < 4 - yearString.length(); ++i) {
-          sb.append('0');
-        }
-      }
-      sb.append(yearString);
-      sb.append(' ');
-      sb.append((char)('0' + ((dateTime[3] / 10) % 10)));
-      sb.append((char)('0' + (dateTime[3] % 10)));
-      sb.append(':');
-      sb.append((char)('0' + ((dateTime[4] / 10) % 10)));
-      sb.append((char)('0' + (dateTime[4] % 10)));
-      sb.append(':');
-      sb.append((char)('0' + ((dateTime[5] / 10) % 10)));
-      sb.append((char)('0' + (dateTime[5] % 10)));
-      sb.append(' ');
-      int offset = dateTime[7];
-      sb.append((offset < 0) ? '-' : '+');
-      offset = Math.abs(offset);
-      int hours = (offset / 60) % 24;
-      int minutes = offset % 60;
-      sb.append((char)('0' + ((hours / 10) % 10)));
-      sb.append((char)('0' + (hours % 10)));
-      sb.append((char)('0' + ((minutes / 10) % 10)));
-      sb.append((char)('0' + (minutes % 10)));
-      return sb.toString();
-    }
-
     /**
      * Gets a list of addresses found in the BCC header field or fields.
      * @return A list of addresses found in the BCC header field or fields.
@@ -513,21 +426,12 @@ public final void setSubject(String value) {
     }
 
     /**
-     * Gets the date and time extracted from this message's Date header field (as
-     * though GetHeader("date") were called). Each element of the array
-     * (starting from 0) is as follows: <ul> <li>0 - The year. For example,
-     * the value 2000 means 2000 C.E.</li> <li>1 - Month of the year, from 1
-     * (January) through 12 (December).</li> <li>2 - Day of the month, from
-     * 1 through 31.</li> <li>3 - Hour of the day, from 0 through 23.</li>
-     * <li>4 - Minute of the hour, from 0 through 59.</li> <li>5 - Second of
-     * the minute, from 0 through 60 (this value can go up to 60 to
-     * accommodate leap seconds). (Leap seconds are additional seconds added
-     * to adjust international atomic time, or TAI, to an approximation of
-     * astronomical time known as coordinated universal time, or UTC.)</li>
-     * <li>6 - Milliseconds of the second, from 0 through 999. Will always
-     * be 0.</li> <li>7 - Number of minutes to subtract from this date and
-     * time to get global time. This number can be positive or
-     * negative.</li></ul>
+     * Gets the date and time extracted from this message's Date header field (the
+     * value of which is found as though GetHeader("date") were called). See
+     * <see
+  * cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+     * for more information on the format of the date-time array returned by
+     * this method.
      * @return An array containing eight elements. Returns null if the Date header
      * doesn't exist, if the Date field is syntactically or semantically
      * invalid, or if the field's year would overflow a 32-bit signed
@@ -535,16 +439,8 @@ public final void setSubject(String value) {
      */
     public int[] GetDate() {
       String field = this.GetHeader("date");
-      if (field == null) {
- return null;
-}
-      int[] date = new int[8];
-      return HeaderParserUtility.ParseHeaderExpandedDate(
-  field,
-  0,
-  field.length(),
-  date,
-  true) != 0 ? date : null;
+ return (field == null) ? (null) : (MailDateTime.ParseDateString(field,
+        true));
     }
 
     /**
@@ -579,9 +475,11 @@ public final void setSubject(String value) {
       }
       if (dateTime[0] < 0) {
         throw new IllegalArgumentException("Invalid year: " +
-          IntToString(dateTime[0]));
+          ParserUtility.IntToString(dateTime[0]));
       }
-      return this.SetHeader("date", GetDateString(dateTime));
+      return this.SetHeader(
+        "date",
+        MailDateTime.GenerateDateString(dateTime));
     }
 
     /**
@@ -2264,7 +2162,7 @@ public final void setSubject(String value) {
         AppendAscii(output, "Date: ");
         AppendAscii(
           output,
-          GetDateString(DateTimeUtilities.GetCurrentLocalTime()));
+  MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentLocalTime()));
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {

@@ -106,8 +106,8 @@
 * `MediaType getContentType()`<br>
  Gets this message's media type.
 * `int[] GetDate()`<br>
- Gets the date and time extracted from this message's Date header field (as
- though GetHeader("date") were called).
+ Gets the date and time extracted from this message's Date header field (the
+ value of which is found as though GetHeader("date") were called).
 * `String getFileName()`<br>
  Gets a file name suggested by this message for saving the message's body
  to a file.
@@ -436,21 +436,11 @@ Gets the byte array for this message's body. This method doesn't make a copy
 
 ### GetDate
     public int[] GetDate()
-Gets the date and time extracted from this message's Date header field (as
- though GetHeader("date") were called). Each element of the array
- (starting from 0) is as follows: <ul> <li>0 - The year. For example,
- the value 2000 means 2000 C.E.</li> <li>1 - Month of the year, from 1
- (January) through 12 (December).</li> <li>2 - Day of the month, from
- 1 through 31.</li> <li>3 - Hour of the day, from 0 through 23.</li>
- <li>4 - Minute of the hour, from 0 through 59.</li> <li>5 - Second of
- the minute, from 0 through 60 (this value can go up to 60 to
- accommodate leap seconds). (Leap seconds are additional seconds added
- to adjust international atomic time, or TAI, to an approximation of
- astronomical time known as coordinated universal time, or UTC.)</li>
- <li>6 - Milliseconds of the second, from 0 through 999. Will always
- be 0.</li> <li>7 - Number of minutes to subtract from this date and
- time to get global time. This number can be positive or
- negative.</li></ul>
+Gets the date and time extracted from this message's Date header field (the
+ value of which is found as though GetHeader("date") were called). See
+ <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+ for more information on the format of the date-time array returned by
+ this method.
 
 **Returns:**
 

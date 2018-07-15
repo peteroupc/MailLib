@@ -14,6 +14,43 @@ import com.upokecenter.util.*;
   final class ParserUtility {
 private ParserUtility() {
 }
+    private static String ValueDigits = "0123456789";
+    public static String IntToString(int value) {
+      if (value == Integer.MIN_VALUE) {
+        return "-2147483648";
+      }
+      if (value == 0) {
+        return "0";
+      }
+      boolean neg = value < 0;
+      char[] chars = new char[12];
+      int count = 11;
+      if (neg) {
+        value = -value;
+      }
+      while (value > 43698) {
+        int intdivvalue = value / 10;
+        char digit = ValueDigits.charAt((int)(value - (intdivvalue * 10)));
+        chars[count--] = digit;
+        value = intdivvalue;
+      }
+      while (value > 9) {
+        int intdivvalue = (value * 26215) >> 18;
+        char digit = ValueDigits.charAt((int)(value - (intdivvalue * 10)));
+        chars[count--] = digit;
+        value = intdivvalue;
+      }
+      if (value != 0) {
+        chars[count--] = ValueDigits.charAt((int)value);
+      }
+      if (neg) {
+        chars[count] = '-';
+      } else {
+        ++count;
+      }
+      return new String(chars, count, 12 - count);
+    }
+
     public static String TrimSpaceAndTab(String str) {
       if (((str) == null || (str).length() == 0)) {
         return str;

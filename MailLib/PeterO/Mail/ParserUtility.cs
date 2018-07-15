@@ -12,7 +12,6 @@ using PeterO;
 
 namespace PeterO.Mail {
   internal static class ParserUtility {
-
     private static string ValueDigits = "0123456789";
     public static string IntToString(int value) {
       if (value == Int32.MinValue) {

@@ -66,7 +66,6 @@ import java.util.*;
     @Override public String toString() {
       if (this.isGroup) {
         StringBuilder builder = new StringBuilder();
-        // TODO: Support internationalized display names and addresses
   builder.append(HeaderParserUtility.QuoteValueIfNeeded(this.displayName));
         builder.append(": ");
         boolean first = true;

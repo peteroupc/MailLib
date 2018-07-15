@@ -43,17 +43,29 @@ Specifies how a message body should be displayed or handled by a mail user
 
 * `boolean equals​(Object obj)`<br>
  Determines whether this object and another object are equal.
+* `int[] GetCreationDate()`<br>
+ Gets the date and time extracted from this content disposition's
+ "creation-date" parameter, which specifies the date of creation of a
+ file (RFC 2183 sec.
 * `String getDispositionType()`<br>
  Gets a string containing this object's disposition type, such as "inline" or
  "attachment".
 * `String GetFilename()`<br>
  Gets an adapted version of the "filename" parameter in this content
  disposition object by using the "MakeFilename" method.
+* `int[] GetModificationDate()`<br>
+ Gets the date and time extracted from this content disposition's
+ "modification-date" parameter, which specifies the date of last
+ modification of a file (RFC 2183 sec.
 * `String GetParameter​(String name)`<br>
  Gets a parameter from this disposition object.
 * `Map<String,String> getParameters()`<br>
  Gets a list of parameter names associated with this object and their
  values.
+* `int[] GetReadDate()`<br>
+ Gets the date and time extracted from this content disposition's "read-date"
+ parameter, which specifies the date at which a file was last read
+ (RFC 2183 sec.
 * `int hashCode()`<br>
  Returns the hash code for this instance.
 * `boolean isAttachment()`<br>
@@ -254,6 +266,48 @@ Gets an adapted version of the "filename" parameter in this content
 
 * The adapted file name in the form of a string. Returns "_" if there
  is no "filename" parameter or that parameter is empty.
+
+### GetCreationDate
+    public int[] GetCreationDate()
+Gets the date and time extracted from this content disposition's
+ "creation-date" parameter, which specifies the date of creation of a
+ file (RFC 2183 sec. 2.4). See <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+ for information on the format of this method's return value.
+
+**Returns:**
+
+* The extracted date and time as an 8-element array, or <code>null</code>
+ if the "creation-date" parameter doesn't exist, is an empty string,
+ or is syntactically invalid, or if the parameter's year would
+ overflow a 32-bit signed integer.
+
+### GetModificationDate
+    public int[] GetModificationDate()
+Gets the date and time extracted from this content disposition's
+ "modification-date" parameter, which specifies the date of last
+ modification of a file (RFC 2183 sec. 2.5). See <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+ for information on the format of this method's return value.
+
+**Returns:**
+
+* The extracted date and time as an 8-element array, or <code>null</code>
+ if the "modification-date" parameter doesn't exist, is an empty
+ string, or is syntactically invalid, or if the parameter's year would
+ overflow a 32-bit signed integer.
+
+### GetReadDate
+    public int[] GetReadDate()
+Gets the date and time extracted from this content disposition's "read-date"
+ parameter, which specifies the date at which a file was last read
+ (RFC 2183 sec. 2.6). See <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+ for information on the format of this method's return value.
+
+**Returns:**
+
+* The extracted date and time as an 8-element array, or <code>null</code>
+ if the "read-date" parameter doesn't exist, is an empty string, or is
+ syntactically invalid, or if the parameter's year would overflow a
+ 32-bit signed integer.
 
 ### GetParameter
     public String GetParameter​(String name)

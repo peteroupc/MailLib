@@ -1902,7 +1902,7 @@ MessageFromString(MessageFromString(msg).Generate())
       Message msg;
    String valueMessageString = "From: x@example.com\r\nMIME-Version: 1.0\r\n" +
          "Content-Type: text/plain\r\nContent-Disposition: " +
-        new DispositionBuilder("inline").SetParameter("filename",input)
+        new DispositionBuilder("inline").SetParameter("filename", input)
         .toString() + "\r\n\r\nEmpty.";
         msg = MessageFromString(valueMessageString);
         Assert.assertEquals(valueMessageString, expected, msg.getFileName());

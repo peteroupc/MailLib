@@ -10,6 +10,9 @@ Specifies how a message body should be displayed or handled by a mail user
 * [com.upokecenter.mail.DispositionBuilder](com.upokecenter.mail.DispositionBuilder.md) -
 Description of DispositionBuilder.
 
+* [com.upokecenter.mail.MailDateTime](com.upokecenter.mail.MailDateTime.md) -
+Not documented yet.
+
 * [com.upokecenter.mail.MediaType](com.upokecenter.mail.MediaType.md) -
 Specifies what kind of data a message body is.
 

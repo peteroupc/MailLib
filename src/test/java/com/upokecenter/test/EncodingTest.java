@@ -1167,11 +1167,12 @@ import com.upokecenter.text.*;
     }
 
     private static byte[] DowngradeDeliveryStatus(String str) {
-      Message msg =
+      String msgstr =
 
-  MessageTest.MessageFromString("From: x@x.com\r\nMIME-Version: 1.0\r\nContent-Type: valueMessage/global-delivery-status\r\n"
+  "From: xy@x.example\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"
     +
-    "Content-Transfer-Encoding: 8bit\r\n\r\n" + str);
+    "Content-Transfer-Encoding: 8bit\r\n\r\n" + str;
+      Message msg = MessageTest.MessageFromString(msgstr);
       msg = MessageTest.MessageFromString(MessageTest.MessageGenerate(msg));
       return msg.GetBody();
     }
@@ -1692,19 +1693,31 @@ String stringTemp =
       private String valueHeader;
       private Message valueMessage;
 
+      public final String getValueHeader() {
+ return this.valueHeader;
+}
+public final void setValueHeader(String value) {
+ this.valueHeader = value; }
+
+      public final Message getValueMessage() {
+ return this.valueMessage;
+}
+public final void setValueMessage(Message value) {
+ this.valueMessage = value; }
+
       public HeaderInfo(String valueHeader, Message valueMessage) {
-        this.valueHeader = valueHeader;
-        this.valueMessage = valueMessage;
+        this.setValueHeader(valueHeader);
+        this.setValueMessage(valueMessage);
       }
     }
 
     private static String DowngradeHeaderField(String name, String value) {
-      return DowngradeHeaderFieldEx(name, value).valueHeader;
+      return DowngradeHeaderFieldEx(name, value).getValueHeader();
     }
 
-  private static HeaderInfo DowngradeHeaderFieldEx(
-  String name,
-  String value) {
+    private static HeaderInfo DowngradeHeaderFieldEx(
+    String name,
+    String value) {
       String msgstr;
       msgstr = name + ": " + value + "\r\n";
       if (!name.equals("from")) {
@@ -1720,16 +1733,16 @@ String stringTemp =
     }
 
     private static void TestDowngradeAddressOne(
-      String valueHeader,
-      String value,
+      String headerName,
+      String headerValue,
       String displayName,
       String localPart,
       String domain) {
-      HeaderInfo hinfo = DowngradeHeaderFieldEx(valueHeader, value);
-      System.out.println(valueHeader);
-      System.out.println(value);
-      System.out.println(hinfo.valueHeader);
-      NamedAddress address = new NamedAddress(hinfo.valueMessage.GetHeader(valueHeader));
+      HeaderInfo hinfo = DowngradeHeaderFieldEx(headerName, headerValue);
+      System.out.println(headerName);
+      System.out.println(headerValue);
+      System.out.println(hinfo.getValueHeader());
+      NamedAddress address = new NamedAddress(hinfo.getValueMessage().GetHeader(headerName));
       Assert.assertEquals(displayName, address.getDisplayName());
       Assert.assertEquals(localPart, address.getAddress().getLocalPart());
       Assert.assertEquals(domain, address.getAddress().getDomain());
@@ -1853,17 +1866,17 @@ String stringTemp =
         String stringTemp = DowngradeHeaderField(
   "from",
   "(comment) Tes\u00bet Subject <x@x.example>");
-  Assert.assertEquals(
-  "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-  stringTemp);
+        Assert.assertEquals(
+        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+        stringTemp);
       }
       {
         String stringTemp = DowngradeHeaderField(
   "from",
   "(comment) Test Sub\u00beject <x@x.example>");
-  Assert.assertEquals(
-  "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-  stringTemp);
+        Assert.assertEquals(
+        "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+        stringTemp);
       }
       {
         String stringTemp = DowngradeHeaderField(
@@ -1877,24 +1890,25 @@ String stringTemp =
         String stringTemp = DowngradeHeaderField(
   "from",
   "(comment) \"Tes\u00bet Subject\" <x@x.example>");
-  Assert.assertEquals(
-  "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
-  stringTemp);
+        Assert.assertEquals(
+        "(comment) =?utf-8?Q?Tes=C2=BEt_Subject?= <x@x.example>",
+        stringTemp);
       }
       {
         String stringTemp = DowngradeHeaderField(
   "from",
   "(comment) \"Test Sub\u00beject\" <x@x.example>");
-  Assert.assertEquals(
-  "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
-  stringTemp);
+        Assert.assertEquals(
+        "(comment) =?utf-8?Q?Test_Sub=C2=BEject?= <x@x.example>",
+        stringTemp);
       }
       {
         String stringTemp = DowngradeHeaderField(
   "from",
   "(comment) \"Tes\u00bet\u0020\u0020\u0020Subject\" <x@x.example>");
         {
- Object objectTemp = "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>";
+Object objectTemp =
+            "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>";
 
           Object objectTemp2 = stringTemp;
           Assert.assertEquals(objectTemp, objectTemp2);
@@ -1917,9 +1931,9 @@ String stringTemp =
         String stringTemp = DowngradeHeaderField(
   "from",
   "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-  Assert.assertEquals(
-  "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-  stringTemp);
+        Assert.assertEquals(
+        "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+        stringTemp);
       }
       {
         String stringTemp = DowngradeHeaderField("from", "Test <x@x.example>");
@@ -1987,9 +2001,9 @@ String stringTemp =
         String stringTemp = DowngradeHeaderField(
   "from",
   "\"Tes\u00bet Subject\" (comment) <x@x.example>");
-  Assert.assertEquals(
-  "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
-  stringTemp);
+        Assert.assertEquals(
+        "=?utf-8?Q?Tes=C2=BEt_Subject?= (comment) <x@x.example>",
+        stringTemp);
       }
     }
 

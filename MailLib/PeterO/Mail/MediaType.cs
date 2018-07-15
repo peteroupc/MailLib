@@ -296,8 +296,6 @@ namespace PeterO.Mail {
       return startIndex;  // not a valid quoted-string
     }
 
-   
-
     internal sealed class SymbolAppender {
       StringBuilder builder;
       int maxLength;
@@ -946,7 +944,7 @@ namespace PeterO.Mail {
           // search for name*1 or name*1*, then name*2 or name*2*,
           // and so on
           while (true) {
-            string contin = realName + "*" + 
+            string contin = realName + "*" +
               ParserUtility.IntToString(pindex);
             string continEncoded = contin + "*";
             if (parameters.ContainsKey(continEncoded)) {
@@ -1013,7 +1011,7 @@ namespace PeterO.Mail {
       bool httpRules,
  IDictionary<string, string> parameters) {
       var duplicateAttributes = new Dictionary<string, string>();
-      bool hasDuplicateAttributes = false;
+      var hasDuplicateAttributes = false;
       while (true) {
         // RFC5322 uses ParseCFWS when skipping whitespace;
         // HTTP currently uses skipOws
@@ -1109,8 +1107,7 @@ namespace PeterO.Mail {
             // If the attribute name ends with '*' the value may not be a quoted
             // string because of RFC2231; if this happens, ignore the attribute
             if (attribute[attribute.Length - 1] != '*' &&
-     (!hasDuplicateAttributes ||
-                !duplicateAttributes.ContainsKey(attribute))) {
+     (!hasDuplicateAttributes || !duplicateAttributes.ContainsKey(attribute))) {
              parameters[attribute] = builder.ToString();
             }
             index = qs;

@@ -103,7 +103,6 @@ namespace PeterO.Mail {
       }
     }
 
-
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.Message.BccAddresses"]/*'/>
     public IList<NamedAddress> BccAddresses {
@@ -276,10 +275,8 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.GetDate"]/*'/>
     public int[] GetDate() {
       string field = this.GetHeader("date");
-      if (field == null) {
- return null;
-}
-      return MailDateTime.ParseDateString(field, true);
+ return (field == null) ? (null) : (MailDateTime.ParseDateString(field,
+        true));
     }
 
     /// <include file='../../docs.xml'
@@ -296,7 +293,7 @@ namespace PeterO.Mail {
           ParserUtility.IntToString(dateTime[0]));
       }
       return this.SetHeader(
-        "date", 
+        "date",
         MailDateTime.GenerateDateString(dateTime));
     }
 
@@ -1872,7 +1869,7 @@ namespace PeterO.Mail {
         AppendAscii(output, "Date: ");
         AppendAscii(
           output,
-          MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentLocalTime()));
+  MailDateTime.GenerateDateString(DateTimeUtilities.GetCurrentLocalTime()));
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
