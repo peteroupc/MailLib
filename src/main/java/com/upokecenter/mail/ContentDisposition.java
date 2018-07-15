@@ -239,6 +239,54 @@ import com.upokecenter.text.*;
     }
 
     /**
+     * Gets the date and time extracted from this content disposition's
+     * "creation-date" parameter, which specifies the date of creation of a
+     * file (RFC 2183 sec. 2.4). See <see
+  * cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+     * for information on the format of this method's return value.
+     * @return The extracted date and time as an 8-element array, or {@code null}
+     * if the "creation-date" parameter doesn't exist, is an empty string,
+     * or is syntactically invalid, or if the parameter's year would
+     * overflow a 32-bit signed integer.
+     */
+    public int[] GetCreationDate() {
+      return MailDateTime.ParseDateString(
+        this.GetParameter("creation-date"));
+    }
+
+    /**
+     * Gets the date and time extracted from this content disposition's
+     * "modification-date" parameter, which specifies the date of last
+     * modification of a file (RFC 2183 sec. 2.5). See <see
+  * cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+     * for information on the format of this method's return value.
+     * @return The extracted date and time as an 8-element array, or {@code null}
+     * if the "modification-date" parameter doesn't exist, is an empty
+     * string, or is syntactically invalid, or if the parameter's year would
+     * overflow a 32-bit signed integer.
+     */
+    public int[] GetModificationDate() {
+      return MailDateTime.ParseDateString(
+        this.GetParameter("modification-date"));
+    }
+
+    /**
+     * Gets the date and time extracted from this content disposition's "read-date"
+     * parameter, which specifies the date at which a file was last read
+     * (RFC 2183 sec. 2.6). See <see
+  * cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
+     * for information on the format of this method's return value.
+     * @return The extracted date and time as an 8-element array, or {@code null}
+     * if the "read-date" parameter doesn't exist, is an empty string, or is
+     * syntactically invalid, or if the parameter's year would overflow a
+     * 32-bit signed integer.
+     */
+    public int[] GetReadDate() {
+      return MailDateTime.ParseDateString(
+        this.GetParameter("read-date"));
+    }
+
+    /**
      * Gets a parameter from this disposition object. For the "filename" parameter,
      * the value of that parameter is not adapted with the
      * ContentDisposition.MakeFilename method; see the documentation for the
@@ -253,10 +301,8 @@ import com.upokecenter.text.*;
      * @throws IllegalArgumentException The parameter {@code name} is empty.
      */
     public String GetParameter(String name) {
-      // TODO: Support creation-date, modification-date,
-      // read-date and size specially. NOTE: Size is
-      // a hint only, see RFC 2183, and dates are RFC 822 date time with
-      // numeric timezones
+      // TODO: Support size specially. NOTE: Size is
+      // a hint only, see RFC 2183
       if (name == null) {
         throw new NullPointerException("name");
       }

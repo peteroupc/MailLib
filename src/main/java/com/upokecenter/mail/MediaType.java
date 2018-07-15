@@ -26,6 +26,10 @@ import com.upokecenter.text.*;
      * introduced media types.</p> <p>This type is immutable, meaning its
      * values can't be changed once it' s created. To create a changeable
      * media type object, use the MediaTypeBuilder class.</p>
+     * <p><b>Note:</b> According to RFC 2049, unrecognized subtypes of the
+     * top-level type <code>multipart</code> must be treated as
+     * <code>multipart/mixed</code> and unrecognized media types as the media type
+     * <code>application/octet-stream</code>.</p>
      */
   public final class MediaType {
     // Printable ASCII characters that cannot appear in an
@@ -320,46 +324,6 @@ import com.upokecenter.text.*;
       return startIndex;  // not a valid quoted-String
     }
 
-    private static void ReverseChars(char[] chars, int offset, int length) {
-      int half = length >> 1;
-      int right = offset + length - 1;
-      for (int i = 0; i < half; i++, right--) {
-        char value = chars[offset + i];
-        chars[offset + i] = chars[right];
-        chars[right] = value;
-      }
-    }
-
-    private static String valueDigits = "0123456789";
-
-    private static String IntToString(int value) {
-      if (value == Integer.MIN_VALUE) {
-        return "-2147483648";
-      }
-      if (value == 0) {
-        return "0";
-      }
-      boolean neg = value < 0;
-      char[] chars = new char[24];
-      int count = 0;
-      if (neg) {
-        chars[0] = '-';
-        ++count;
-        value = -value;
-      }
-      while (value != 0) {
-        char digit = valueDigits.charAt((int)(value % 10));
-        chars[count++] = digit;
-        value /= 10;
-      }
-      if (neg) {
-        ReverseChars(chars, 1, count - 1);
-      } else {
-        ReverseChars(chars, 0, count);
-      }
-      return new String(chars, 0, count);
-    }
-
     static final class SymbolAppender {
       StringBuilder builder;
       int maxLength;
@@ -522,7 +486,7 @@ import com.upokecenter.text.*;
           if (contin > 0) {
             sa.AppendSymbol(";");
           }
-          sa.AppendSymbol(name + "*" + IntToString(contin) + "*")
+          sa.AppendSymbol(name + "*" + ParserUtility.IntToString(contin) + "*")
      .AppendSymbol("=");
           index = EncodeContinuation(str, index, sa);
           ++contin;
@@ -1017,14 +981,11 @@ import com.upokecenter.text.*;
           // search for name*1 or name*1*, then name*2 or name*2*,
           // and so on
           while (true) {
-            String contin = realName + "*" + IntToString(pindex);
+            String contin = realName + "*" +
+              ParserUtility.IntToString(pindex);
             String continEncoded = contin + "*";
-            if (parameters.containsKey(contin)) {
-              // Unencoded continuation
-              builder.append(parameters.get(contin));
-              parameters.remove(contin);
-            } else if (parameters.containsKey(continEncoded)) {
-              // Encoded continuation
+            if (parameters.containsKey(continEncoded)) {
+              // Encoded continuation (checked first)
               String newEnc = DecodeRfc2231Encoding(
              parameters.get(continEncoded),
              charsetUsed);
@@ -1034,6 +995,10 @@ import com.upokecenter.text.*;
               }
               builder.append(newEnc);
               parameters.remove(continEncoded);
+            } else if (parameters.containsKey(contin)) {
+              // Unencoded continuation (checked second)
+              builder.append(parameters.get(contin));
+              parameters.remove(contin);
             } else {
               break;
             }
@@ -1181,8 +1146,7 @@ import com.upokecenter.text.*;
             // If the attribute name ends with '*' the value may not be a quoted
             // String because of RFC2231; if this happens, ignore the attribute
             if (attribute.charAt(attribute.length() - 1) != '*' &&
-     (!hasDuplicateAttributes ||
-                !duplicateAttributes.containsKey(attribute))) {
+     (!hasDuplicateAttributes || !duplicateAttributes.containsKey(attribute))) {
              parameters.put(attribute, builder.toString());
             }
             index = qs;

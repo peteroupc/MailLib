@@ -20,7 +20,6 @@ namespace PeterO.Mail {
     internal const int TokenLocalPart = 8;
     internal const int TokenDomain = 9;
 
-
     public static bool HasComments(string str, int startIndex, int endIndex) {
        // Determines whether the string portion has comments.
        // Assumes the portion of the string is a syntactically valid

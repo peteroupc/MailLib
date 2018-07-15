@@ -1168,9 +1168,11 @@ namespace MailLibTest {
     }
 
     private static byte[] DowngradeDeliveryStatus(string str) {
-      string msgstr = "From: xy@x.example\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"
+      string msgstr =
+
+  "From: xy@x.example\r\nMIME-Version: 1.0\r\nContent-Type: message/global-delivery-status\r\n"
     +
-        "Content-Transfer-Encoding: 8bit\r\n\r\n" + str;
+    "Content-Transfer-Encoding: 8bit\r\n\r\n" + str;
       Message msg = MessageTest.MessageFromString(msgstr);
       msg = MessageTest.MessageFromString(MessageTest.MessageGenerate(msg));
       return msg.GetBody();
@@ -1695,13 +1697,21 @@ string stringTemp =
       private Message valueMessage;
 
       public string ValueHeader {
-        get { return valueHeader; }
-        set { valueHeader = value; }
+        get {
+ return this.valueHeader;
+}
+
+        set {
+ this.valueHeader = value; }
       }
 
-      public Message ValueMessage { 
-        get { return valueMessage; }
-        set { valueMessage = value; }
+      public Message ValueMessage {
+        get {
+ return this.valueMessage;
+}
+
+        set {
+ this.valueMessage = value; }
       }
 
       public HeaderInfo(string valueHeader, Message valueMessage) {
@@ -1906,7 +1916,8 @@ string stringTemp =
   "from",
   "(comment) \"Tes\u00bet\u0020\u0020\u0020Subject\" <x@x.example>");
         {
-          object objectTemp = "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>";
+object objectTemp =
+            "(comment) =?utf-8?Q?Tes=C2=BEt___Subject?= <x@x.example>";
 
           object objectTemp2 = stringTemp;
           Assert.AreEqual(objectTemp, objectTemp2);
