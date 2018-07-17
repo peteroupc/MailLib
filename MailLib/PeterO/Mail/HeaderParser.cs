@@ -1390,7 +1390,7 @@ tokener.RestoreState(state3); break;
   if (indexTemp == indexStart) {
  tokener.RestoreState(state);
 } else {
- tokener.Commit(9, indexStart, indexTemp);
+ tokener.Commit(8, indexStart, indexTemp);
 }
  }
  return indexTemp;
@@ -1995,7 +1995,7 @@ if (index < endIndex && (str[index] == 59)) {
   if (indexTemp == indexStart) {
  tokener.RestoreState(state);
 } else {
- tokener.Commit(5, indexStart, indexTemp);
+ tokener.Commit(4, indexStart, indexTemp);
 }
  }
  return indexTemp;
@@ -5973,7 +5973,7 @@ tokener.RestoreState(state2); break;
   if (indexTemp == indexStart) {
  tokener.RestoreState(state);
 } else {
- tokener.Commit(8, indexStart, indexTemp);
+ tokener.Commit(7, indexStart, indexTemp);
 }
  }
  return indexTemp;
@@ -6086,7 +6086,7 @@ indexStart = index;
   if (indexTemp == indexStart) {
  tokener.RestoreState(state);
 } else {
- tokener.Commit(6, indexStart, indexTemp);
+ tokener.Commit(5, indexStart, indexTemp);
 }
  }
  return indexTemp;
@@ -8220,7 +8220,7 @@ index = indexStart; break;
   if (indexTemp == indexStart) {
  tokener.RestoreState(state);
 } else {
- tokener.Commit(7, indexStart, indexTemp);
+ tokener.Commit(6, indexStart, indexTemp);
 }
  }
  return indexTemp;

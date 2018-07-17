@@ -106,7 +106,7 @@ Gets an adapted version of the "filename" parameter in this content disposition 
 
 <b>Return Value:</b>
 
-The adapted file name in the form of a string. Returns "_" if there is no "filename" parameter or that parameter is empty.
+The adapted file name in the form of a string. Returns the empty string if there is no "filename" parameter or that parameter is empty.
 
 ### GetHashCode
 
@@ -194,7 +194,7 @@ To the extent that the "name" parameter is not allowed in message bodies other t
 
 <b>Return Value:</b>
 
-A string with the converted version of the file name. Among other things, encoded words under RFC 2047 are decoded (since they occur so frequently in Content-Disposition filenames); the value is decoded under RFC 2231 if possible; characters unsuitable for use in a filename (including the directory separators slash and backslash) are replaced with underscores; spaces and tabs are collapsed to a single space; leading and trailing spaces and tabs are removed; and the filename is truncated if it would otherwise be too long. The returned string will be in normalization form C. Returns "_" if "str" is null or empty.
+A string with the converted version of the file name. Among other things, encoded words under RFC 2047 are decoded (since they occur so frequently in Content-Disposition filenames); the value is decoded under RFC 2231 if possible; characters unsuitable for use in a filename (including the directory separators slash and backslash) are replaced with underscores; spaces and tabs are collapsed to a single space; leading and trailing spaces and tabs are removed; and the filename is truncated if it would otherwise be too long. The returned string will be in normalization form C. Returns the empty string if "str" is null or empty.
 
 ### Parse
 
