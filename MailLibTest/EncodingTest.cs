@@ -1211,15 +1211,32 @@ namespace MailLibTest {
       bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
-      dsn = "X-Ignore: X\r\n\r\nOriginal-recipient : " + actual +
+      dsn = "X-Ignore: X\r\n\r\nOriginal-reciPient: " + actual +
         "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore: Y\r\n\r\n";
+      // NOTE: If a header field needs downgrading, header field
+      // name case is no longer preserved, so test both
+      // scenarios.
+      // NOTE: As of RFC 2234, linear white space is no
+      // longer implicit in ABNF productions; as a result, linear white
+      // space is interpreted as not allowed between the header field
+      // name and the colon, even though both may be separated in the
+      // ABNF productions in RFC 3798.
       expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
         ("Downgraded-Original-Recipient: " + expected) +
         "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
         "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
-          ("Original-recipient : " + expected) + "\r\n" +
+          ("Original-Recipient: " + expected) + "\r\n" +
           ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
+      string actualString = DataUtilities.GetUtf8String(bytes, false);
+      if (!expectedDSN.Equals(actualString)) {
+        expectedDSN = encap ? "X-Ignore: X\r\n\r\n" +
+        ("Downgraded-Original-Recipient: " + expected) +
+        "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
+        "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n\r\n" +
+          ("Original-reciPient: " + expected) + "\r\n" +
+          ("Final-Recipient: " + expected) + "\r\nX-Ignore: Y\r\n\r\n";
+      }
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
     }
@@ -1460,10 +1477,6 @@ string stringTemp =
     [Test]
     [Timeout(5000)]
     public static void TestLenientQuotedPrintable() {
-      // Ignore for now, Message constructor currently uses
-      // quoted-printable parsing that's not lenient on
-      // line break formats.
-      // -----
       // See point 4 in the second numbered
       // list of section 6.7 of RFC 2045, which suggests excluding
       // bare CR and bare LF from the decoded data.

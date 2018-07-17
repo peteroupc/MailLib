@@ -73,7 +73,7 @@ namespace PeterO.Mail {
  string type,
  IDictionary<string, string> parameters) {
       if ((type) == null) {
-        throw new ArgumentNullException("type");
+        throw new ArgumentNullException(nameof(type));
       }
       this.dispositionType = type;
       this.parameters = new Dictionary<string, string>(parameters);
@@ -100,7 +100,7 @@ namespace PeterO.Mail {
       // NOTE: 76 is the maximum length of a line in an Internet
       // message header, and 21 is the length of "Content-Disposition: " (with
       // trailing space).
-      var sa = new MediaType.SymbolAppender(76, 21);
+      var sa = new HeaderEncoder(76, 21);
       sa.AppendSymbol(this.dispositionType);
       MediaType.AppendParameters(this.parameters, sa);
       return sa.ToString();
@@ -111,7 +111,7 @@ namespace PeterO.Mail {
     public string ToSingleLineString() {
       // NOTE: 21 is the length of "Content-Disposition: " (with trailing
       // space).
-      var sa = new MediaType.SymbolAppender(-1, 21);
+      var sa = new HeaderEncoder(-1, 21);
       sa.AppendSymbol(this.dispositionType);
       MediaType.AppendParameters(this.parameters, sa);
       return sa.ToString();
@@ -153,10 +153,8 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.GetParameter(System.String)"]/*'/>
     public string GetParameter(string name) {
-      // TODO: Support size specially. NOTE: Size is
-      // a hint only, see RFC 2183
       if (name == null) {
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
       }
       if (name.Length == 0) {
         throw new ArgumentException("name is empty.");
@@ -170,7 +168,7 @@ namespace PeterO.Mail {
       const bool HttpRules = false;
       var index = 0;
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       int endIndex = str.Length;
       var parameters = new Dictionary<string, string>();
@@ -239,7 +237,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.Parse(System.String)"]/*'/>
     public static ContentDisposition Parse(string dispoValue) {
       if (dispoValue == null) {
-        throw new ArgumentNullException("dispoValue");
+        throw new ArgumentNullException(nameof(dispoValue));
       }
       return Parse(dispoValue, Attachment);
     }
@@ -250,7 +248,7 @@ namespace PeterO.Mail {
   string dispositionValue,
   ContentDisposition defaultValue) {
       if (dispositionValue == null) {
-        throw new ArgumentNullException("dispositionValue");
+        throw new ArgumentNullException(nameof(dispositionValue));
       }
       ContentDisposition dispo = ParseDisposition(dispositionValue);
       return dispo ?? defaultValue;

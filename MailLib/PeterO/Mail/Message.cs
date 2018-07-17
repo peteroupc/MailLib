@@ -50,7 +50,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.IO.Stream)"]/*'/>
     public Message(Stream stream) {
       if (stream == null) {
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
       }
       this.headers = new List<string>();
       this.parts = new List<Message>();
@@ -63,7 +63,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.#ctor(System.Byte[])"]/*'/>
     public Message(byte[] bytes) {
       if (bytes == null) {
-        throw new ArgumentNullException("bytes");
+        throw new ArgumentNullException(nameof(bytes));
       }
       this.headers = new List<string>();
       this.parts = new List<Message>();
@@ -165,7 +165,7 @@ namespace PeterO.Mail {
 
       set {
         if (value == null) {
-          throw new ArgumentNullException("value");
+          throw new ArgumentNullException(nameof(value));
         }
         if (!this.ContentType.Equals(value)) {
           this.contentType = value;
@@ -283,7 +283,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.SetDate(System.Int32[])"]/*'/>
     public Message SetDate(int[] dateTime) {
       if (dateTime == null) {
-  throw new ArgumentNullException("dateTime");
+  throw new ArgumentNullException(nameof(dateTime));
 }
       if (!DateTimeUtilities.IsValidDateTime(dateTime)) {
         throw new ArgumentException("Invalid date and time");
@@ -334,7 +334,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeader(System.String)"]/*'/>
     public string GetHeader(string name) {
       if (name == null) {
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.Count; i += 2) {
@@ -350,7 +350,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.GetHeaderArray(System.String)"]/*'/>
     public string[] GetHeaderArray(string name) {
       if (name == null) {
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       var list = new List<string>();
@@ -389,7 +389,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.String)"]/*'/>
     public Message RemoveHeader(string name) {
       if (name == null) {
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       // Remove the header field
@@ -412,7 +412,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.SetBody(System.Byte[])"]/*'/>
     public Message SetBody(byte[] bytes) {
       if (bytes == null) {
-        throw new ArgumentNullException("bytes");
+        throw new ArgumentNullException(nameof(bytes));
       }
       this.body = bytes;
       return this;
@@ -483,7 +483,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHtmlBody(System.String)"]/*'/>
     public Message SetHtmlBody(string str) {
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true, true);
       this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
@@ -495,10 +495,10 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextAndHtml(System.String,System.String)"]/*'/>
     public Message SetTextAndHtml(string text, string html) {
       if (text == null) {
-        throw new ArgumentNullException("text");
+        throw new ArgumentNullException(nameof(text));
       }
       if (html == null) {
-        throw new ArgumentNullException("html");
+        throw new ArgumentNullException(nameof(html));
       }
       // The spec for multipart/alternative (RFC 2046) says that
       // the fanciest version of the message should go last (in
@@ -518,7 +518,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.SetTextBody(System.String)"]/*'/>
     public Message SetTextBody(string str) {
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true, true);
       this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
@@ -588,7 +588,7 @@ namespace PeterO.Mail {
     // Returns true only if:
     // * Text matches the production "unstructured"
     // in RFC 5322 without any obsolete syntax
-    // * Each line is no more than 75 characters in length
+    // * Each line is no more than 76 characters in length
     // * Text has only printable ASCII characters, CR,
     // LF, and/or TAB
     internal static bool CanOutputRaw(string s) {
@@ -625,7 +625,7 @@ namespace PeterO.Mail {
           return false;
         }
         ++chunkLength;
-        if (chunkLength > 75) {
+        if (chunkLength > 76) {
           return false;
         }
       }
@@ -679,21 +679,21 @@ namespace PeterO.Mail {
           } else {
             first &= c != 0x20 && c != 0x09;
           }
-          if (c != 0x20 && c != 0x09) {
-            headerNameEnd = index;
-          }
+          // NOTE: Used to ignore linear white space at the end of the
+          // header field name. But as of RFC 2234, linear white space is no
+          // longer implicit in ABNF productions; as a result, linear white
+          // space is interpreted as not allowed between the header field
+          // name and the colon, even though both may be separated in the
+          // ABNF productions in RFC 3798. As a further result, a header
+          // field starting with "Example :" will not be treated as a header
+          // field named "Example" in this code.
+          headerNameEnd = index;
         }
         if (endOfHeaders) {
           break;
         }
         int headerValueStart = index;
         int headerValueEnd = index;
-        string origFieldName =
-          DataUtilities.GetUtf8String(
-            bytes,
-            headerNameStart,
-            headerValueStart - headerNameStart,
-            true);
         string fieldName = DataUtilities.ToLowerCaseAscii(
           DataUtilities.GetUtf8String(
             bytes,
@@ -702,6 +702,7 @@ namespace PeterO.Mail {
             true));
         bool origRecipient = fieldName.Equals("original-recipient");
         bool finalRecipient = fieldName.Equals("final-recipient");
+        DebugUtility.Log("["+fieldName+"]");
         // Read the header field value using UTF-8 characters
         // rather than bytes
         while (true) {
@@ -793,16 +794,13 @@ namespace PeterO.Mail {
             } else {
               writer.Write(bytes, lastIndex, headerNameStart - lastIndex);
             }
-            var encoder = new WordWrapEncoder(true);
             string field = (origRecipient ?
-        "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient") +
-                  ": ";
+        "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient");
             if (status[0] != 2) {
- field = origFieldName + " ";
-}
-            encoder.AddString(field + headerValue);
+              field = fieldName;
+            }
             byte[] newBytes = DataUtilities.GetUtf8Bytes(
-              encoder.ToString(),
+              HeaderEncoder.EncodeHeaderField(field, headerValue),
               true);
             writer.Write(newBytes, 0, newBytes.Length);
             lastIndex = headerValueEnd;
@@ -1171,22 +1169,6 @@ namespace PeterO.Mail {
       }
     }
 
-    private static string Capitalize(string s) {
-      var builder = new StringBuilder();
-      var afterHyphen = true;
-      for (int i = 0; i < s.Length; ++i) {
-        if (afterHyphen && s[i] >= 'a' && s[i] <= 'z') {
-          builder.Append((char)(s[i] - 0x20));
-        } else {
-          builder.Append(s[i]);
-        }
-        afterHyphen = s[i] == '-';
-      }
-      string ret = builder.ToString();
-      return ret.Equals("Mime-Version") ? "MIME-Version" :
-        (ret.Equals("Message-Id") ? "Message-ID" : ret);
-    }
-
     private static string GenerateBoundary(int num) {
       var sb = new StringBuilder();
       const string ValueHex = "0123456789ABCDEF";
@@ -1497,7 +1479,7 @@ namespace PeterO.Mail {
       TransformWithUnget stream,
       int[] bytesRead) {
       if (stream == null) {
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
       }
       var cp = 0;
       var bytesSeen = 0;
@@ -1566,17 +1548,21 @@ namespace PeterO.Mail {
       if (body == null || body.Length == 0) {
         return EncodingSevenBit;
       }
-      int lengthCheck = Math.Min(body.Length, 4096);
+      int lengthCheck = Math.Min(body.Length, 1024);
       var highBytes = 0;
       var ctlBytes = 0;
       var lineLength = 0;
-      bool allTextBytes = !isBodyPart;
+      // Assume 'allTextBytes' is false if this is a body part or not
+      // all of the body is checked
+      bool allTextBytes = (!isBodyPart) && lengthCheck != body.Length;
       for (int i = 0; i < lengthCheck; ++i) {
-        if (highBytes + ctlBytes > 100 && i == 300) {
-          return EncodingBase64;
-        }
-        if (highBytes + ctlBytes > 10 && i == 300) {
-          return EncodingQuotedPrintable;
+        if (i>0 && (allTextBytes ? (i%108 == 0) : (i%36 == 0))) {
+         if (highBytes + ctlBytes > i/3) {
+           return EncodingBase64;
+         }
+         if (!allTextBytes) {
+           return EncodingQuotedPrintable;
+         }
         }
         if ((body[i] & 0x80) != 0) {
           ++highBytes;
@@ -1611,20 +1597,22 @@ namespace PeterO.Mail {
         allTextBytes &= lineLength != 0 || i + 4 >= body.Length || body[i] !=
           'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3] !=
           'm' || body[i + 4] != ' ';
+        allTextBytes &= lineLength != 0 || i + 1 >= body.Length || body[i] !=
+          '-' || body[i + 1] != '-';
         ++lineLength;
         allTextBytes &= lineLength <= 78;
       }
-      return (lengthCheck == body.Length && allTextBytes) ? EncodingSevenBit :
-        ((highBytes > (lengthCheck / 3)) ? EncodingBase64 : ((ctlBytes >
-                    10) ? EncodingBase64 : EncodingQuotedPrintable));
+      return (allTextBytes) ? EncodingSevenBit :
+    ((highBytes > lengthCheck / 3) ? EncodingBase64 :
+          EncodingQuotedPrintable);
     }
 
     private static string ValidateHeaderField(string name, string value) {
       if (name == null) {
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
       }
       if (value == null) {
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
       }
       if (name.Length > 997) {
         throw new ArgumentException("Header field name too long");
@@ -1810,8 +1798,7 @@ namespace PeterO.Mail {
             }
           }
         }
-        string rawField = Capitalize(name) + ":" +
-          (StartsWithWhitespace(value) ? String.Empty : " ") + value;
+        string rawField = HeaderEncoder.EncodeHeaderField(name, value);
         if (CanOutputRaw(rawField)) {
           AppendAscii(output, rawField);
           if (rawField.IndexOf(": ", StringComparison.Ordinal) < 0) {
@@ -1846,17 +1833,13 @@ namespace PeterO.Mail {
 #endif
             }
           }
-          bool haveDquote = downgraded.IndexOf('"') >= 0;
-          var encoder = new WordWrapEncoder(!haveDquote);
-          encoder.AddString(Capitalize(name) + ": " + downgraded);
-          string newValue = encoder.ToString();
-          AppendAscii(output, newValue);
+          AppendAscii(
+            output,
+            HeaderEncoder.EncodeHeaderField(name, downgraded));
         } else {
-          bool haveDquote = value.IndexOf('"') >= 0;
-          var encoder = new WordWrapEncoder(!haveDquote);
-          encoder.AddString(Capitalize(name) + ": " + value);
-          string newValue = encoder.ToString();
-          AppendAscii(output, newValue);
+          AppendAscii(
+            output,
+            HeaderEncoder.EncodeHeaderField(name, value));
         }
         AppendAscii(output, "\r\n");
       }
@@ -1873,8 +1856,10 @@ namespace PeterO.Mail {
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
-        AppendAscii(output, "Message-ID:\r\n ");
-        AppendAscii(output, this.GenerateMessageID());
+        AppendAscii(
+          output,
+       HeaderEncoder.EncodeHeaderField("Message-ID",
+ this.GenerateMessageID()));
         AppendAscii(output, "\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
@@ -2376,7 +2361,7 @@ namespace PeterO.Mail {
       public MessageStackEntry(Message msg) {
 #if DEBUG
         if (msg == null) {
-          throw new ArgumentNullException("msg");
+          throw new ArgumentNullException(nameof(msg));
         }
 #endif
 

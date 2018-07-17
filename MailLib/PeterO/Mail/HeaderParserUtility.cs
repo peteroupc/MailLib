@@ -36,7 +36,7 @@ namespace PeterO.Mail {
            } else if (c == 0x22) {
                 // quoted string found, skip it
                 int
-  si = HeaderParser.ParseQuotedString(str, index, endIndex, null);
+  si = HeaderParser.ParseQuotedStringCore(str, index, endIndex, null);
                     if (si == index) {
  throw new InvalidOperationException("Internal error: "+str);
 }

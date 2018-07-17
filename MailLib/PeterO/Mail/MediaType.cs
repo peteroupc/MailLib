@@ -296,69 +296,6 @@ namespace PeterO.Mail {
       return startIndex;  // not a valid quoted-string
     }
 
-    internal sealed class SymbolAppender {
-      StringBuilder builder;
-      int maxLength;
-      int column;
-      int startColumn;
-      public SymbolAppender(int maxLength, int startColumn) {
-        builder = new StringBuilder();
-        this.maxLength = maxLength;
-        this.column = startColumn;
-        this.startColumn = startColumn;
-      }
-      public void Reset(int column, int length) {
-        this.column = column;
-        if (length == 0) {
-          this.builder.Length = length;
-        } else {
-          string oldstring = this.builder.ToString().Substring(0, length);
-          this.builder.Length = 0;
-          this.builder.Append(oldstring);
-        }
-      }
-      public int GetColumn() {
-        return this.column;
-      }
-      public int GetLength() {
-        return this.builder.Length;
-      }
-      public int GetMaxLength() {
-        return this.maxLength;
-      }
-      public bool CanFitSymbol(string symbol) {
-        return this.maxLength < 0 || 1 + symbol.Length <= this.maxLength;
-      }
-      public bool TryAppendSymbol(string symbol) {
-        if (CanFitSymbol(symbol)) {
-          AppendSymbol(symbol);
-          return true;
-        }
-        return false;
-      }
-      public SymbolAppender AppendBreak() {
-        this.builder.Append("\r\n ");
-        this.column = 1;
-        return this;
-      }
-      // NOTE: Assumes that all symbols being appended
-      // contain only ASCII characters and no line breaks
-      public SymbolAppender AppendSymbol(string symbol) {
-        if (maxLength < 0 || this.column + symbol.Length <= this.maxLength) {
-          this.builder.Append(symbol);
-          this.column += symbol.Length;
-        } else {
-          this.builder.Append("\r\n ");
-          this.builder.Append(symbol);
-          this.column = 1 + symbol.Length;
-        }
-        return this;
-      }
-      public override string ToString() {
-        return this.builder.ToString();
-      }
-    }
-
     private static bool IsAttributeChar(int c) {
       return c >= 33 && c <= 126 && AttrNameSpecials.IndexOf((char)c) < 0;
     }
@@ -376,12 +313,13 @@ namespace PeterO.Mail {
     }
 
     private static int EncodeContinuation(string str, int startPos,
-      SymbolAppender sa) {
+      HeaderEncoder sa) {
       int column = sa.GetColumn();
-      int maxLength = sa.GetMaxLength();
+      int maxLineLength = sa.GetMaxLineLength();
       int index = startPos;
       var sb = new StringBuilder();
-      while (index < str.Length && (maxLength < 0 || column <= maxLength)) {
+ while (index < str.Length && (maxLineLength < 0 || column <=
+        maxLineLength)) {
         int c = str[index];
         bool first = (index == 0);
         int contin = (index == 0) ? 7 : 0;
@@ -402,7 +340,7 @@ namespace PeterO.Mail {
         } else {
           contin += 12;
         }
-        if (maxLength >= 0 && column + contin > maxLength) {
+        if (maxLineLength >= 0 && column + contin > maxLineLength) {
           break;
         }
         if (first) {
@@ -429,7 +367,7 @@ namespace PeterO.Mail {
         ++index;
         column += contin;
       }
-      if (maxLength >= 0 && index == startPos) {
+      if (maxLineLength >= 0 && index == startPos) {
         // No room to put any continuation here;
         // add a line break and try again
         sa.AppendBreak();
@@ -442,16 +380,16 @@ namespace PeterO.Mail {
     private static void AppendComplexParamValue(
   string name,
   string str,
-  SymbolAppender sa) {
+  HeaderEncoder sa) {
 #if DEBUG
       if ((str) == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       if ((str).Length == 0) {
         throw new ArgumentException("str" + " is empty.");
       }
       if ((name) == null) {
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
       }
       if ((name).Length == 0) {
         throw new ArgumentException("name" + " is empty.");
@@ -484,7 +422,7 @@ namespace PeterO.Mail {
     private static bool AppendSimpleParamValue(
   string name,
   string str,
-  SymbolAppender sa) {
+  HeaderEncoder sa) {
       sa.AppendSymbol(name);
       sa.AppendSymbol("=");
       if (str.Length == 0) {
@@ -514,7 +452,7 @@ namespace PeterO.Mail {
           // Requires complex encoding
           return false;
         }
-        if (sa.GetMaxLength() >= 0 && sb.Length > sa.GetMaxLength()) {
+        if (sa.GetMaxLineLength() >= 0 && sb.Length > sa.GetMaxLineLength()) {
           // Too long to fit (optimization for very
           // long parameter values)
           return false;
@@ -526,7 +464,7 @@ namespace PeterO.Mail {
 
     internal static void AppendParameters(
       IDictionary<string, string> parameters,
-      SymbolAppender sa) {
+      HeaderEncoder sa) {
       var keylist = new List<string>(parameters.Keys);
       keylist.Sort();
       foreach (string key in keylist) {
@@ -548,7 +486,7 @@ namespace PeterO.Mail {
       // NOTE: 76 is the maximum length of a line in an Internet
       // message header, and 14 is the length of "Content-Type: " (with trailing
       // space).
-      var sa = new SymbolAppender(76, 14);
+      var sa = new HeaderEncoder(76, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
       AppendParameters(this.parameters, sa);
       return sa.ToString();
@@ -558,7 +496,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToSingleLineString"]/*'/>
     public string ToSingleLineString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
-      var sa = new SymbolAppender(-1, 14);
+      var sa = new HeaderEncoder(-1, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
       AppendParameters(this.parameters, sa);
       return sa.ToString();
@@ -812,7 +750,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.MediaType.GetParameter(System.String)"]/*'/>
     public string GetParameter(string name) {
       if (name == null) {
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
       }
       if (name.Length == 0) {
         throw new ArgumentException("name is empty.");
@@ -1134,7 +1072,7 @@ namespace PeterO.Mail {
       const bool HttpRules = false;
       var index = 0;
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       int endIndex = str.Length;
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
@@ -1240,7 +1178,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.MediaType.Parse(System.String,PeterO.Mail.MediaType)"]/*'/>
     public static MediaType Parse(string str, MediaType defaultValue) {
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       MediaType mt = ParseMediaType(str);
       return mt ?? defaultValue;

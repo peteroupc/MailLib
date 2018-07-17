@@ -25,15 +25,17 @@ namespace MailLibTest {
         Assert.Fail();
       }
       string ret = msg.Generate();
-      {
-        object objectTemp = 2;
-        object objectTemp2 = EncodingTest.IsGoodAsciiMessageFormat(
+      if (ret == null) {
+ Assert.Fail();
+ }
+        int fmtresult = EncodingTest.IsGoodAsciiMessageFormat(
           ret,
           false,
           String.Empty);
         string messageTemp = ret;
-        Assert.AreEqual(objectTemp, objectTemp2, messageTemp);
-      }
+        Assert.IsTrue(
+  fmtresult != 0,
+  messageTemp.Substring(0, Math.Min(messageTemp.Length, 260)));
       return ret;
     }
 
@@ -63,12 +65,17 @@ namespace MailLibTest {
     }
 
     internal static Message MessageFromString(string valueMessageString) {
-      var msgobj = new Message(
+      try {
+        var msgobj = new Message(
   DataUtilities.GetUtf8Bytes(
   valueMessageString,
   true));
-      MessageGenerate(msgobj);
-      return msgobj;
+        MessageGenerate(msgobj);
+        return msgobj;
+      } catch (Exception) {
+        Console.WriteLine(valueMessageString);
+        throw;
+      }
     }
 
     internal static void MessageConstructOnly(string valueMessageString) {

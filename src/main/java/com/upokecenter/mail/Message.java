@@ -124,7 +124,7 @@ import com.upokecenter.text.*;
      */
     public Message(InputStream stream) {
       if (stream == null) {
-        throw new NullPointerException("stream");
+        throw new NullPointerException"stream";
       }
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
@@ -141,7 +141,7 @@ import com.upokecenter.text.*;
      */
     public Message(byte[] bytes) {
       if (bytes == null) {
-        throw new NullPointerException("bytes");
+        throw new NullPointerException"bytes";
       }
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
@@ -257,7 +257,7 @@ public final void setContentDisposition(ContentDisposition value) {
       }
 public final void setContentType(MediaType value) {
         if (value == null) {
-          throw new NullPointerException("value");
+          throw new NullPointerException"value";
         }
         if (!this.getContentType().equals(value)) {
           this.contentType = value;
@@ -468,7 +468,7 @@ public final void setSubject(String value) {
      */
     public Message SetDate(int[] dateTime) {
       if (dateTime == null) {
-  throw new NullPointerException("dateTime");
+  throw new NullPointerException"dateTime";
 }
       if (!DateTimeUtilities.IsValidDateTime(dateTime)) {
         throw new IllegalArgumentException("Invalid date and time");
@@ -531,7 +531,7 @@ public final void setSubject(String value) {
      */
     public String GetHeader(String name) {
       if (name == null) {
-        throw new NullPointerException("name");
+        throw new NullPointerException"name";
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.size(); i += 2) {
@@ -557,7 +557,7 @@ public final void setSubject(String value) {
      */
     public String[] GetHeaderArray(String name) {
       if (name == null) {
-        throw new NullPointerException("name");
+        throw new NullPointerException"name";
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       ArrayList<String> list = new ArrayList<String>();
@@ -614,7 +614,7 @@ public final void setSubject(String value) {
      */
     public Message RemoveHeader(String name) {
       if (name == null) {
-        throw new NullPointerException("name");
+        throw new NullPointerException"name";
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       // Remove the header field
@@ -642,7 +642,7 @@ public final void setSubject(String value) {
      */
     public Message SetBody(byte[] bytes) {
       if (bytes == null) {
-        throw new NullPointerException("bytes");
+        throw new NullPointerException"bytes";
       }
       this.body = bytes;
       return this;
@@ -773,7 +773,7 @@ public final void setSubject(String value) {
      */
     public Message SetHtmlBody(String str) {
       if (str == null) {
-        throw new NullPointerException("str");
+        throw new NullPointerException"str";
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true, true);
       this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
@@ -795,10 +795,10 @@ public final void setSubject(String value) {
      */
     public Message SetTextAndHtml(String text, String html) {
       if (text == null) {
-        throw new NullPointerException("text");
+        throw new NullPointerException"text";
       }
       if (html == null) {
-        throw new NullPointerException("html");
+        throw new NullPointerException"html";
       }
       // The spec for multipart/alternative (RFC 2046) says that
       // the fanciest version of the message should go last (in
@@ -827,7 +827,7 @@ public final void setSubject(String value) {
      */
     public Message SetTextBody(String str) {
       if (str == null) {
-        throw new NullPointerException("str");
+        throw new NullPointerException"str";
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true, true);
       this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
@@ -897,7 +897,7 @@ public final void setSubject(String value) {
     // Returns true only if:
     // * Text matches the production "unstructured"
     // in RFC 5322 without any obsolete syntax
-    // * Each line is no more than 75 characters in length
+    // * Each line is no more than 76 characters in length
     // * Text has only printable ASCII characters, CR,
     // LF, and/or TAB
     static boolean CanOutputRaw(String s) {
@@ -934,7 +934,7 @@ public final void setSubject(String value) {
           return false;
         }
         ++chunkLength;
-        if (chunkLength > 75) {
+        if (chunkLength > 76) {
           return false;
         }
       }
@@ -988,21 +988,21 @@ public final void setSubject(String value) {
           } else {
             first &= c != 0x20 && c != 0x09;
           }
-          if (c != 0x20 && c != 0x09) {
-            headerNameEnd = index;
-          }
+          // NOTE: Used to ignore linear white space at the end of the
+          // header field name. But as of RFC 2234, linear white space is no
+          // longer implicit in ABNF productions; as a result, linear white
+          // space is interpreted as not allowed between the header field
+          // name and the colon, even though both may be separated in the
+          // ABNF productions in RFC 3798. As a further result, a header
+          // field starting with "Example :" will not be treated as a header
+          // field named "Example" in this code.
+          headerNameEnd = index;
         }
         if (endOfHeaders) {
           break;
         }
         int headerValueStart = index;
         int headerValueEnd = index;
-        String origFieldName =
-          DataUtilities.GetUtf8String(
-            bytes,
-            headerNameStart,
-            headerValueStart - headerNameStart,
-            true);
         String fieldName = DataUtilities.ToLowerCaseAscii(
           DataUtilities.GetUtf8String(
             bytes,
@@ -1011,6 +1011,7 @@ public final void setSubject(String value) {
             true));
         boolean origRecipient = fieldName.equals("original-recipient");
         boolean finalRecipient = fieldName.equals("final-recipient");
+        DebugUtility.Log("["+fieldName+"]");
         // Read the header field value using UTF-8 characters
         // rather than bytes
         while (true) {
@@ -1102,16 +1103,13 @@ public final void setSubject(String value) {
             } else {
               writer.write(bytes, lastIndex, headerNameStart - lastIndex);
             }
-            WordWrapEncoder encoder = new WordWrapEncoder(true);
             String field = (origRecipient ?
-        "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient") +
-                  ": ";
+        "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient");
             if (status[0] != 2) {
- field = origFieldName + " ";
-}
-            encoder.AddString(field + headerValue);
+              field = fieldName;
+            }
             byte[] newBytes = DataUtilities.GetUtf8Bytes(
-              encoder.toString(),
+              HeaderEncoder.EncodeHeaderField(field, headerValue),
               true);
             writer.write(newBytes, 0, newBytes.length);
             lastIndex = headerValueEnd;
@@ -1480,22 +1478,6 @@ public final void setSubject(String value) {
       }
     }
 
-    private static String Capitalize(String s) {
-      StringBuilder builder = new StringBuilder();
-      boolean afterHyphen = true;
-      for (int i = 0; i < s.length(); ++i) {
-        if (afterHyphen && s.charAt(i) >= 'a' && s.charAt(i) <= 'z') {
-          builder.append((char)(s.charAt(i) - 0x20));
-        } else {
-          builder.append(s.charAt(i));
-        }
-        afterHyphen = s.charAt(i) == '-';
-      }
-      String ret = builder.toString();
-      return ret.equals("Mime-Version") ? "MIME-Version" :
-        (ret.equals("Message-Id") ? "Message-ID" : ret);
-    }
-
     private static String GenerateBoundary(int num) {
       StringBuilder sb = new StringBuilder();
       String ValueHex = "0123456789ABCDEF";
@@ -1806,7 +1788,7 @@ public final void setSubject(String value) {
       TransformWithUnget stream,
       int[] bytesRead) {
       if (stream == null) {
-        throw new NullPointerException("stream");
+        throw new NullPointerException"stream";
       }
       int cp = 0;
       int bytesSeen = 0;
@@ -1875,17 +1857,21 @@ public final void setSubject(String value) {
       if (body == null || body.length == 0) {
         return EncodingSevenBit;
       }
-      int lengthCheck = Math.min(body.length, 4096);
+      int lengthCheck = Math.min(body.length, 1024);
       int highBytes = 0;
       int ctlBytes = 0;
       int lineLength = 0;
-      boolean allTextBytes = !isBodyPart;
+      // Assume 'allTextBytes' is false if this is a body part or not
+      // all of the body is checked
+      boolean allTextBytes = (!isBodyPart) && lengthCheck != body.length;
       for (int i = 0; i < lengthCheck; ++i) {
-        if (highBytes + ctlBytes > 100 && i == 300) {
-          return EncodingBase64;
-        }
-        if (highBytes + ctlBytes > 10 && i == 300) {
-          return EncodingQuotedPrintable;
+        if (i>0 && (allTextBytes ? (i%108 == 0) : (i%36 == 0))) {
+         if (highBytes + ctlBytes > i/3) {
+           return EncodingBase64;
+         }
+         if (!allTextBytes) {
+           return EncodingQuotedPrintable;
+         }
         }
         if ((body[i] & 0x80) != 0) {
           ++highBytes;
@@ -1920,20 +1906,22 @@ public final void setSubject(String value) {
         allTextBytes &= lineLength != 0 || i + 4 >= body.length || body[i] !=
           'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3] !=
           'm' || body[i + 4] != ' ';
+        allTextBytes &= lineLength != 0 || i + 1 >= body.length || body[i] !=
+          '-' || body[i + 1] != '-';
         ++lineLength;
         allTextBytes &= lineLength <= 78;
       }
-      return (lengthCheck == body.length && allTextBytes) ? EncodingSevenBit :
-        ((highBytes > (lengthCheck / 3)) ? EncodingBase64 : ((ctlBytes >
-                    10) ? EncodingBase64 : EncodingQuotedPrintable));
+      return (allTextBytes) ? EncodingSevenBit :
+    ((highBytes > lengthCheck / 3) ? EncodingBase64 :
+          EncodingQuotedPrintable);
     }
 
     private static String ValidateHeaderField(String name, String value) {
       if (name == null) {
-        throw new NullPointerException("name");
+        throw new NullPointerException"name";
       }
       if (value == null) {
-        throw new NullPointerException("value");
+        throw new NullPointerException"value";
       }
       if (name.length() > 997) {
         throw new IllegalArgumentException("Header field name too long");
@@ -2111,8 +2099,7 @@ public final void setSubject(String value) {
             }
           }
         }
-        String rawField = Capitalize(name) + ":" +
-          (StartsWithWhitespace(value) ? "" : " ") + value;
+        String rawField = HeaderEncoder.EncodeHeaderField(name, value);
         if (CanOutputRaw(rawField)) {
           AppendAscii(output, rawField);
           if (rawField.indexOf(": ") < 0) {
@@ -2139,17 +2126,13 @@ public final void setSubject(String value) {
             } else {
             }
           }
-          boolean haveDquote = downgraded.indexOf('"') >= 0;
-          WordWrapEncoder encoder = new WordWrapEncoder(!haveDquote);
-          encoder.AddString(Capitalize(name) + ": " + downgraded);
-          String newValue = encoder.toString();
-          AppendAscii(output, newValue);
+          AppendAscii(
+            output,
+            HeaderEncoder.EncodeHeaderField(name, downgraded));
         } else {
-          boolean haveDquote = value.indexOf('"') >= 0;
-          WordWrapEncoder encoder = new WordWrapEncoder(!haveDquote);
-          encoder.AddString(Capitalize(name) + ": " + value);
-          String newValue = encoder.toString();
-          AppendAscii(output, newValue);
+          AppendAscii(
+            output,
+            HeaderEncoder.EncodeHeaderField(name, value));
         }
         AppendAscii(output, "\r\n");
       }
@@ -2166,8 +2149,10 @@ public final void setSubject(String value) {
         AppendAscii(output, "\r\n");
       }
       if (!haveMsgId && depth == 0) {
-        AppendAscii(output, "Message-ID:\r\n ");
-        AppendAscii(output, this.GenerateMessageID());
+        AppendAscii(
+          output,
+       HeaderEncoder.EncodeHeaderField("Message-ID",
+ this.GenerateMessageID()));
         AppendAscii(output, "\r\n");
       }
       if (!haveMimeVersion && depth == 0) {
