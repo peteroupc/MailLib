@@ -66,17 +66,12 @@ import com.upokecenter.mail.*;
     }
 
     static Message MessageFromString(String valueMessageString) {
-      try {
         Message msgobj = new Message(
   DataUtilities.GetUtf8Bytes(
   valueMessageString,
   true));
         MessageGenerate(msgobj);
         return msgobj;
-      } catch (Exception ex) {
-        System.out.println(valueMessageString);
-        throw ex;
-      }
     }
 
     static void MessageConstructOnly(String valueMessageString) {
@@ -1924,10 +1919,9 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     @Test
     public void TestFileName() {
-for (int i = 0; i < ContentDispositionTest.FileNames.length; i += 2) {
-        TestFileNameOne(
-  ContentDispositionTest.FileNames.get(i),
-  ContentDispositionTest.FileNames.get(i + 1));
+      String[] fn = ContentDispositionTest.FileNames;
+for (int i = 0; i < fn.length; i += 2) {
+        TestFileNameOne(fn[i], fn[i + 1]);
       }
     }
     @Test

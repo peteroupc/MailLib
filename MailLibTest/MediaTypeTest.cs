@@ -7,8 +7,8 @@ using Test;
 namespace MailLibTest {
   [TestFixture]
   public class MediaTypeTest {
-    private static IDictionary<string, string>[] testMediaTypes = new
-      IDictionary<string, string>[] {
+    private static IList<IDictionary<string, string>> testMediaTypes =
+      DictUtility.DictList(
       DictUtility.MakeDict(
   "name",
   "multipart/example",
@@ -328,7 +328,7 @@ namespace MailLibTest {
   "0",
   "text",
   "1")
-    };
+);
 
 private static MediaType ParseAndTestAspects(string s) {
       MediaType mt = MediaType.Parse(s);
@@ -380,10 +380,8 @@ private static MediaType ParseAndTestAspects(string s) {
       Assert.AreEqual(mt, mt2);
       Assert.IsFalse(mt.Equals(mt3));
       Assert.IsFalse(mt2.Equals(mt3));
-      for (var i = 0; i < testMediaTypes.Length; ++i) {
-        for (var j = 0; j < testMediaTypes.Length; ++j) {
-          IDictionary<string, string> dictI = testMediaTypes[i];
-          IDictionary<string, string> dictJ = testMediaTypes[j];
+      foreach (IDictionary<string, string> dictI in testMediaTypes) {
+        foreach (IDictionary<string, string> dictJ in testMediaTypes) {
           TestCommon.AssertEqualsHashCode(
             ParseAndTestAspects(dictI["name"]),
             ParseAndTestAspects(dictJ["name"]));
@@ -600,9 +598,9 @@ Assert.AreEqual(objectTemp, objectTemp2);
       }
     }
 
- public static readonly IDictionary<string, string>[] ValueTestParamTypes =
-      new IDictionary<string, string>[] {
-DictUtility.MakeDict("params", ";filename=x.y", "filename", "x.y"),
+ public static readonly IList<IDictionary<string, string>> ValueTestParamTypes =
+      DictUtility.DictList(
+  DictUtility.MakeDict("params", ";filename=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";filename=\"cc\"", "filename", "cc"),
   DictUtility.MakeDict("params", ";filename = x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";filename = \"cc\"", "filename", "cc"),
@@ -691,7 +689,7 @@ DictUtility.MakeDict("params", ";filename=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";fIlEnAmE=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";fIlEnAmE=\"cc\"", "filename", "cc"),
   DictUtility.MakeDict("params", ";filename=\"\\\\ab\"", "filename", "\\ab")
-};
+);
 
     [Test]
     public void TestGetParameter() {

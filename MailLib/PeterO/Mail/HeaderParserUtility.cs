@@ -50,8 +50,8 @@ namespace PeterO.Mail {
 
     public static void TraverseCFWSAndQuotedStrings(string str, int
       startIndex, int endIndex, ITokener tokener) {
-       // Fills a tokener with comment and quoted-string tokens.
-       // Assumes the portion of the string is a syntactically valid
+       // Fills a tokener with "comment" and "quoted-string"
+       // tokens. Assumes the portion of the string is a syntactically valid
        // header field according to the Parse method of the header
        // field in question.
       if (tokener != null) {

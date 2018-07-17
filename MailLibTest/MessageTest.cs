@@ -65,17 +65,12 @@ namespace MailLibTest {
     }
 
     internal static Message MessageFromString(string valueMessageString) {
-      try {
         var msgobj = new Message(
   DataUtilities.GetUtf8Bytes(
   valueMessageString,
   true));
         MessageGenerate(msgobj);
         return msgobj;
-      } catch (Exception) {
-        Console.WriteLine(valueMessageString);
-        throw;
-      }
     }
 
     internal static void MessageConstructOnly(string valueMessageString) {
@@ -1913,10 +1908,9 @@ MessageFromString(MessageFromString(msg).Generate())
     }
     [Test]
     public void TestFileName() {
-for (var i = 0; i < ContentDispositionTest.FileNames.Length; i += 2) {
-        TestFileNameOne(
-  ContentDispositionTest.FileNames[i],
-  ContentDispositionTest.FileNames[i + 1]);
+      string[] fn = ContentDispositionTest.FileNames;
+for (var i = 0; i < fn.Length; i += 2) {
+        TestFileNameOne(fn[i], fn[i + 1]);
       }
     }
     [Test]

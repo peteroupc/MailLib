@@ -7,11 +7,14 @@ Description of DispositionBuilder.
 ## Methods
 
 * `DispositionBuilder() DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class.
+ Initializes a new instance of the DispositionBuilder class using the disposition
+ type "attachment".
 * `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class.
+ Initializes a new instance of the DispositionBuilder class using the data from
+ the given content disposition.
 * `DispositionBuilder​(String type) DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class.
+ Initializes a new instance of the DispositionBuilder class using the given
+ disposition type.
 * `String getDispositionType()`<br>
  Gets this value's disposition type, such as "inline" or "attachment".
 * `boolean isMultipart()`<br>
@@ -38,20 +41,25 @@ Irrelevant for content dispositions; will be removed in the future.
 ## Constructors
 
 * `DispositionBuilder() DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class.
+ Initializes a new instance of the DispositionBuilder class using the disposition
+ type "attachment".
 * `DispositionBuilder​(ContentDisposition mt) DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class.
+ Initializes a new instance of the DispositionBuilder class using the data from
+ the given content disposition.
 * `DispositionBuilder​(String type) DispositionBuilder`<br>
- Initializes a new instance of the DispositionBuilder class.
+ Initializes a new instance of the DispositionBuilder class using the given
+ disposition type.
 
 ## Method Details
 
 ### DispositionBuilder
     public DispositionBuilder()
-Initializes a new instance of the <code>DispositionBuilder</code> class.
+Initializes a new instance of the <code>DispositionBuilder</code> class using the disposition
+ type "attachment".
 ### DispositionBuilder
     public DispositionBuilder​(ContentDisposition mt)
-Initializes a new instance of the <code>DispositionBuilder</code> class.
+Initializes a new instance of the <code>DispositionBuilder</code> class using the data from
+ the given content disposition.
 
 **Parameters:**
 
@@ -63,7 +71,8 @@ Initializes a new instance of the <code>DispositionBuilder</code> class.
 
 ### DispositionBuilder
     public DispositionBuilder​(String type)
-Initializes a new instance of the <code>DispositionBuilder</code> class.
+Initializes a new instance of the <code>DispositionBuilder</code> class using the given
+ disposition type.
 
 **Parameters:**
 

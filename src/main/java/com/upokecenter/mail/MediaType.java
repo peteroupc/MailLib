@@ -787,7 +787,7 @@ import com.upokecenter.text.*;
      */
     public String GetParameter(String name) {
       if (name == null) {
-        throw new NullPointerException"name";
+        throw new NullPointerException("name");
       }
       if (name.length() == 0) {
         throw new IllegalArgumentException("name is empty.");
@@ -1111,7 +1111,7 @@ import com.upokecenter.text.*;
       boolean HttpRules = false;
       int index = 0;
       if (str == null) {
-        throw new NullPointerException"str";
+        throw new NullPointerException("str");
       }
       int endIndex = str.length();
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
@@ -1232,7 +1232,7 @@ import com.upokecenter.text.*;
      */
     public static MediaType Parse(String str, MediaType defaultValue) {
       if (str == null) {
-        throw new NullPointerException"str";
+        throw new NullPointerException("str");
       }
       MediaType mt = ParseMediaType(str);
       return (mt == null) ? (defaultValue) : mt;

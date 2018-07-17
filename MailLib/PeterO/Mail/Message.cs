@@ -702,7 +702,6 @@ namespace PeterO.Mail {
             true));
         bool origRecipient = fieldName.Equals("original-recipient");
         bool finalRecipient = fieldName.Equals("final-recipient");
-        DebugUtility.Log("["+fieldName+"]");
         // Read the header field value using UTF-8 characters
         // rather than bytes
         while (true) {

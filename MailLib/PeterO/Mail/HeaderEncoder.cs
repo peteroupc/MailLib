@@ -7,6 +7,7 @@ at: http://peteroupc.github.io/
  */
 using System;
 using System.Text;
+using PeterO;
 
 namespace PeterO.Mail {
   internal sealed class HeaderEncoder {
@@ -66,7 +67,8 @@ namespace PeterO.Mail {
       if (startIndex == endIndex) {
  return writeSpace;
 }
-      var spaceLength = (writeSpace) ? 1 : 0;
+      int spaceLength;
+      spaceLength = writeSpace ? 1 : 0;
       if (maxLineLength < 0 || this.column + (endIndex-startIndex) +
         spaceLength <= this.maxLineLength) {
         if (writeSpace) {

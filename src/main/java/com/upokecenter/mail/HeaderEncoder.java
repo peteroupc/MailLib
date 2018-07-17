@@ -7,6 +7,8 @@ If you like this, you should donate to Peter O.
 at: http://peteroupc.github.io/
  */
 
+import com.upokecenter.util.*;
+
   final class HeaderEncoder {
     private final StringBuilder builder;
     private int maxLineLength;
@@ -64,7 +66,8 @@ at: http://peteroupc.github.io/
       if (startIndex == endIndex) {
  return writeSpace;
 }
-      writeSpace spaceLength = (writeSpace) ? 1 : 0;
+      int spaceLength;
+      spaceLength = writeSpace ? 1 : 0;
       if (maxLineLength < 0 || this.column + (endIndex-startIndex) +
         spaceLength <= this.maxLineLength) {
         if (writeSpace) {
