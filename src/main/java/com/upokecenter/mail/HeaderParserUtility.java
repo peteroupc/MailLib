@@ -12,14 +12,14 @@ import java.util.*;
   final class HeaderParserUtility {
 private HeaderParserUtility() {
 }
+    static final int TokenPhrase = 1;
     static final int TokenComment = 2;
     static final int TokenPhraseAtom = 3;
-    static final int TokenPhrase = 1;
-    static final int TokenGroup = 5;
-    static final int TokenMailbox = 6;
-    static final int TokenQuotedString = 7;
-    static final int TokenLocalPart = 8;
-    static final int TokenDomain = 9;
+    static final int TokenGroup = 4;
+    static final int TokenMailbox = 5;
+    static final int TokenQuotedString = 6;
+    static final int TokenLocalPart = 7;
+    static final int TokenDomain = 8;
 
     public static boolean HasComments(String str, int startIndex, int endIndex) {
        // Determines whether the String portion has comments.

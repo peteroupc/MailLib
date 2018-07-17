@@ -11,14 +11,14 @@ using System.Text;
 
 namespace PeterO.Mail {
   internal static class HeaderParserUtility {
+    internal const int TokenPhrase = 1;
     internal const int TokenComment = 2;
     internal const int TokenPhraseAtom = 3;
-    internal const int TokenPhrase = 1;
-    internal const int TokenGroup = 5;
-    internal const int TokenMailbox = 6;
-    internal const int TokenQuotedString = 7;
-    internal const int TokenLocalPart = 8;
-    internal const int TokenDomain = 9;
+    internal const int TokenGroup = 4;
+    internal const int TokenMailbox = 5;
+    internal const int TokenQuotedString = 6;
+    internal const int TokenLocalPart = 7;
+    internal const int TokenDomain = 8;
 
     public static bool HasComments(string str, int startIndex, int endIndex) {
        // Determines whether the string portion has comments.
