@@ -30,7 +30,8 @@ public final void setDispositionType(String value) {
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class.
+     * com.upokecenter.mail.DispositionBuilder} class using the disposition
+     * type "attachment".
      */
     public DispositionBuilder() {
       this.parameters = new HashMap<String, String>();
@@ -39,7 +40,8 @@ public final void setDispositionType(String value) {
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class.
+     * com.upokecenter.mail.DispositionBuilder} class using the data from
+     * the given content disposition.
      * @param mt The parameter {@code mt} is a ContentDisposition object.
      * @throws java.lang.NullPointerException The parameter {@code mt} is null.
      */
@@ -53,7 +55,8 @@ public final void setDispositionType(String value) {
 
     /**
      * Initializes a new instance of the {@link
-     * com.upokecenter.mail.DispositionBuilder} class.
+     * com.upokecenter.mail.DispositionBuilder} class using the given
+     * disposition type.
      * @param type The parameter {@code type} is a text string.
      * @throws java.lang.NullPointerException The parameter {@code type} is null.
      */

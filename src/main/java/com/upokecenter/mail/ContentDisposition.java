@@ -111,7 +111,7 @@ import com.upokecenter.text.*;
  String type,
  Map<String, String> parameters) {
       if ((type) == null) {
-        throw new NullPointerException"type";
+        throw new NullPointerException("type");
       }
       this.dispositionType = type;
       this.parameters = new HashMap<String, String>(parameters);
@@ -302,7 +302,7 @@ import com.upokecenter.text.*;
      */
     public String GetParameter(String name) {
       if (name == null) {
-        throw new NullPointerException"name";
+        throw new NullPointerException("name");
       }
       if (name.length() == 0) {
         throw new IllegalArgumentException("name is empty.");
@@ -316,7 +316,7 @@ import com.upokecenter.text.*;
       boolean HttpRules = false;
       int index = 0;
       if (str == null) {
-        throw new NullPointerException"str";
+        throw new NullPointerException("str");
       }
       int endIndex = str.length();
       HashMap<String, String> parameters = new HashMap<String, String>();
@@ -382,7 +382,7 @@ import com.upokecenter.text.*;
      */
     public static ContentDisposition Parse(String dispoValue) {
       if (dispoValue == null) {
-        throw new NullPointerException"dispoValue";
+        throw new NullPointerException("dispoValue");
       }
       return Parse(dispoValue, Attachment);
     }
@@ -419,7 +419,7 @@ import com.upokecenter.text.*;
   String dispositionValue,
   ContentDisposition defaultValue) {
       if (dispositionValue == null) {
-        throw new NullPointerException"dispositionValue";
+        throw new NullPointerException("dispositionValue");
       }
       ContentDisposition dispo = ParseDisposition(dispositionValue);
       return (dispo == null) ? (defaultValue) : dispo;

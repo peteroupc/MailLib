@@ -51,8 +51,8 @@ private HeaderParserUtility() {
 
     public static void TraverseCFWSAndQuotedStrings(String str, int
       startIndex, int endIndex, ITokener tokener) {
-       // Fills a tokener with comment and quoted-String tokens.
-       // Assumes the portion of the String is a syntactically valid
+       // Fills a tokener with "comment" and "quoted-String"
+       // tokens. Assumes the portion of the String is a syntactically valid
        // header field according to the Parse method of the header
        // field in question.
       if (tokener != null) {
@@ -276,10 +276,10 @@ private HeaderParserUtility() {
       int lastIndex = index;
       List<NamedAddress> addresses = new ArrayList<NamedAddress>();
       for (int i = 0; i < tokens.size(); ++i) {
-        int tokenIndex = tokens.charAt(i)[1];
-        int tokenEnd = tokens.charAt(i)[2];
+        int tokenIndex = tokens.get(i)[1];
+        int tokenEnd = tokens.get(i)[2];
         if (tokenIndex >= lastIndex && tokenIndex < endIndex) {
-          int tokenKind = tokens.charAt(i)[0];
+          int tokenKind = tokens.get(i)[0];
           if (tokenKind == TokenGroup) {
             addresses.add(ParseGroup(str, tokenIndex, tokenEnd, tokens));
             lastIndex = tokenEnd;
@@ -304,10 +304,10 @@ private HeaderParserUtility() {
   List<int[]> tokens) {
       int lastIndex = index;
       for (int i = 0; i < tokens.size(); ++i) {
-        int tokenIndex = tokens.charAt(i)[1];
-        int tokenEnd = tokens.charAt(i)[2];
+        int tokenIndex = tokens.get(i)[1];
+        int tokenEnd = tokens.get(i)[2];
         if (tokenIndex >= lastIndex && tokenIndex < endIndex) {
-          int tokenKind = tokens.charAt(i)[0];
+          int tokenKind = tokens.get(i)[0];
           if (tokenKind == TokenGroup) {
             return ParseGroup(str, tokenIndex, tokenEnd, tokens);
           }
@@ -328,10 +328,10 @@ private HeaderParserUtility() {
       boolean haveDisplayName = false;
       List<NamedAddress> mailboxes = new ArrayList<NamedAddress>();
       for (int i = 0; i < tokens.size(); ++i) {
-        int tokenIndex = tokens.charAt(i)[1];
-        int tokenEnd = tokens.charAt(i)[2];
+        int tokenIndex = tokens.get(i)[1];
+        int tokenEnd = tokens.get(i)[2];
         if (tokenIndex >= index && tokenIndex < endIndex) {
-          int tokenKind = tokens.charAt(i)[0];
+          int tokenKind = tokens.get(i)[0];
           if (tokenKind == TokenPhrase && !haveDisplayName) {
             // Phrase
             displayName = Rfc2047.DecodePhraseText(
@@ -360,10 +360,10 @@ private HeaderParserUtility() {
       String localPart = null;
       String domain = null;
       for (int i = 0; i < tokens.size(); ++i) {
-        int tokenIndex = tokens.charAt(i)[1];
-        int tokenEnd = tokens.charAt(i)[2];
+        int tokenIndex = tokens.get(i)[1];
+        int tokenEnd = tokens.get(i)[2];
         if (tokenIndex >= index && tokenIndex < endIndex) {
-          int tokenKind = tokens.charAt(i)[0];
+          int tokenKind = tokens.get(i)[0];
           switch (tokenKind) {
             case TokenPhrase:
               // Phrase

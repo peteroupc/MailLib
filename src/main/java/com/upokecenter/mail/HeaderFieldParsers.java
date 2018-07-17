@@ -562,7 +562,7 @@ private HeaderFieldParsers() {
       @Override public String DowngradeFieldValue(String str) {
         // NOTE: Follows RFC 6857, except HasTextToEscape
         // is broader than non-ASCII
-        String header = base.DowngradeFieldValue(str);
+        String header = super.DowngradeFieldValue(str);
         int index = 0;
         StringBuilder sb = new StringBuilder();
         while (index < header.length()) {

@@ -6,8 +6,8 @@ import org.junit.Test;
 import com.upokecenter.mail.*;
 
   public class MediaTypeTest {
-    private static Map<String, String>[] testMediaTypes = new
-      Map<String, String>[] {
+    private static List<Map<String, String>> testMediaTypes =
+      DictUtility.DictList(
       DictUtility.MakeDict(
   "name",
   "multipart/example",
@@ -327,7 +327,7 @@ import com.upokecenter.mail.*;
   "0",
   "text",
   "1")
-    };
+);
 
 private static MediaType ParseAndTestAspects(String s) {
       MediaType mt = MediaType.Parse(s);
@@ -383,10 +383,8 @@ private static MediaType ParseAndTestAspects(String s) {
       if (mt2.equals(mt3)) {
  Assert.fail();
  }
-      for (int i = 0; i < testMediaTypes.length; ++i) {
-        for (int j = 0; j < testMediaTypes.length; ++j) {
-          Map<String, String> dictI = testMediaTypes.get(i);
-          Map<String, String> dictJ = testMediaTypes.get(j);
+      for (Map<String, String> dictI : testMediaTypes) {
+        for (Map<String, String> dictJ : testMediaTypes) {
           TestCommon.AssertEqualsHashCode(
             ParseAndTestAspects(dictI.get("name")),
             ParseAndTestAspects(dictJ.get("name")));
@@ -603,9 +601,9 @@ Assert.assertEquals(objectTemp, objectTemp2);
       }
     }
 
- public static final Map<String, String>[] ValueTestParamTypes =
-      new Map<String, String>[] {
-DictUtility.MakeDict("params", ";filename=x.y", "filename", "x.y"),
+ public static final List<Map<String, String>> ValueTestParamTypes =
+      DictUtility.DictList(
+  DictUtility.MakeDict("params", ";filename=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";filename=\"cc\"", "filename", "cc"),
   DictUtility.MakeDict("params", ";filename = x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";filename = \"cc\"", "filename", "cc"),
@@ -694,11 +692,11 @@ DictUtility.MakeDict("params", ";filename=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";fIlEnAmE=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";fIlEnAmE=\"cc\"", "filename", "cc"),
   DictUtility.MakeDict("params", ";filename=\"\\\\ab\"", "filename", "\\ab")
-};
+);
 
     @Test
     public void TestGetParameter() {
-      foreach (Map<String, String> dict in ValueTestParamTypes) {
+      for (Map<String, String> dict : ValueTestParamTypes) {
         MediaType mt = ParseAndTestAspects("x/x" + dict.get("params"));
         Assert.assertEquals(
           dict.get("filename"),
@@ -707,14 +705,14 @@ DictUtility.MakeDict("params", ";filename=x.y", "filename", "x.y"),
     }
     @Test
     public void TestIsMultipart() {
-      foreach (Map<String, String> dict in testMediaTypes) {
+      for (Map<String, String> dict : testMediaTypes) {
         MediaType mt = ParseAndTestAspects(dict.get("name"));
         Assert.assertEquals(dict.get("multipart").equals("1"), mt.isMultipart());
       }
     }
     @Test
     public void TestIsText() {
-      foreach (Map<String, String> dict in testMediaTypes) {
+      for (Map<String, String> dict : testMediaTypes) {
         MediaType mt = ParseAndTestAspects(dict.get("name"));
         Assert.assertEquals(dict.get("text").equals("1"), mt.isText());
       }
@@ -885,7 +883,9 @@ Assert.assertEquals(
     @Test
     public void TestParseErrors() {
       for (String str : ContentDispositionTest.ParseErrors) {
-        Assert.IsNull(ParseAndTestAspects("text/plain" + str, null), str);
+        if ((ParseAndTestAspects("text/plain" + str, null))!=null) {
+ Assert.fail(str);
+ }
       }
     }
 
@@ -897,7 +897,7 @@ Assert.assertEquals(
 
     @Test
     public void TestSubType() {
-      foreach (Map<String, String> dict in testMediaTypes) {
+      for (Map<String, String> dict : testMediaTypes) {
         MediaType mt = ParseAndTestAspects(dict.get("name"));
         Assert.assertEquals(
           dict.get("subtype"),
@@ -906,7 +906,7 @@ Assert.assertEquals(
     }
     @Test
     public void TestTopLevelType() {
-      foreach (Map<String, String> dict in testMediaTypes) {
+      for (Map<String, String> dict : testMediaTypes) {
         MediaType mt = ParseAndTestAspects(dict.get("name"));
         Assert.assertEquals(
           dict.get("toplevel"),
@@ -919,7 +919,7 @@ Assert.assertEquals(
     }
     @Test
     public void TestToSingleLineString() {
-      foreach (Map<String, String> dict in testMediaTypes) {
+      for (Map<String, String> dict : testMediaTypes) {
         MediaType mt = ParseAndTestAspects(dict.get("name"));
         String str = mt.ToSingleLineString();
         if (str.indexOf("\r") >= 0) {
@@ -932,7 +932,7 @@ Assert.assertEquals(
     }
     @Test
     public void TestTypeAndSubType() {
-      foreach (Map<String, String> dict in testMediaTypes) {
+      for (Map<String, String> dict : testMediaTypes) {
         MediaType mt = ParseAndTestAspects(dict.get("name"));
         Assert.assertEquals(
           dict.get("toplevel") + "/" + dict.get("subtype"),

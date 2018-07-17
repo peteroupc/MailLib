@@ -1476,7 +1476,7 @@ string stringTemp =
     }
     [Test]
     [Timeout(5000)]
-    public static void TestLenientQuotedPrintable() {
+    public void TestLenientQuotedPrintable() {
       // See point 4 in the second numbered
       // list of section 6.7 of RFC 2045, which suggests excluding
       // bare CR and bare LF from the decoded data.

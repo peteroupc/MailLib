@@ -124,7 +124,7 @@ import com.upokecenter.text.*;
      */
     public Message(InputStream stream) {
       if (stream == null) {
-        throw new NullPointerException"stream";
+        throw new NullPointerException("stream");
       }
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
@@ -141,7 +141,7 @@ import com.upokecenter.text.*;
      */
     public Message(byte[] bytes) {
       if (bytes == null) {
-        throw new NullPointerException"bytes";
+        throw new NullPointerException("bytes");
       }
       this.headers = new ArrayList<String>();
       this.parts = new ArrayList<Message>();
@@ -257,7 +257,7 @@ public final void setContentDisposition(ContentDisposition value) {
       }
 public final void setContentType(MediaType value) {
         if (value == null) {
-          throw new NullPointerException"value";
+          throw new NullPointerException("value");
         }
         if (!this.getContentType().equals(value)) {
           this.contentType = value;
@@ -468,7 +468,7 @@ public final void setSubject(String value) {
      */
     public Message SetDate(int[] dateTime) {
       if (dateTime == null) {
-  throw new NullPointerException"dateTime";
+  throw new NullPointerException("dateTime");
 }
       if (!DateTimeUtilities.IsValidDateTime(dateTime)) {
         throw new IllegalArgumentException("Invalid date and time");
@@ -531,7 +531,7 @@ public final void setSubject(String value) {
      */
     public String GetHeader(String name) {
       if (name == null) {
-        throw new NullPointerException"name";
+        throw new NullPointerException("name");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       for (int i = 0; i < this.headers.size(); i += 2) {
@@ -557,7 +557,7 @@ public final void setSubject(String value) {
      */
     public String[] GetHeaderArray(String name) {
       if (name == null) {
-        throw new NullPointerException"name";
+        throw new NullPointerException("name");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       ArrayList<String> list = new ArrayList<String>();
@@ -614,7 +614,7 @@ public final void setSubject(String value) {
      */
     public Message RemoveHeader(String name) {
       if (name == null) {
-        throw new NullPointerException"name";
+        throw new NullPointerException("name");
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       // Remove the header field
@@ -642,7 +642,7 @@ public final void setSubject(String value) {
      */
     public Message SetBody(byte[] bytes) {
       if (bytes == null) {
-        throw new NullPointerException"bytes";
+        throw new NullPointerException("bytes");
       }
       this.body = bytes;
       return this;
@@ -773,7 +773,7 @@ public final void setSubject(String value) {
      */
     public Message SetHtmlBody(String str) {
       if (str == null) {
-        throw new NullPointerException"str";
+        throw new NullPointerException("str");
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true, true);
       this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
@@ -795,10 +795,10 @@ public final void setSubject(String value) {
      */
     public Message SetTextAndHtml(String text, String html) {
       if (text == null) {
-        throw new NullPointerException"text";
+        throw new NullPointerException("text");
       }
       if (html == null) {
-        throw new NullPointerException"html";
+        throw new NullPointerException("html");
       }
       // The spec for multipart/alternative (RFC 2046) says that
       // the fanciest version of the message should go last (in
@@ -827,7 +827,7 @@ public final void setSubject(String value) {
      */
     public Message SetTextBody(String str) {
       if (str == null) {
-        throw new NullPointerException"str";
+        throw new NullPointerException("str");
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true, true);
       this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
@@ -1011,7 +1011,6 @@ public final void setSubject(String value) {
             true));
         boolean origRecipient = fieldName.equals("original-recipient");
         boolean finalRecipient = fieldName.equals("final-recipient");
-        DebugUtility.Log("["+fieldName+"]");
         // Read the header field value using UTF-8 characters
         // rather than bytes
         while (true) {
@@ -1788,7 +1787,7 @@ public final void setSubject(String value) {
       TransformWithUnget stream,
       int[] bytesRead) {
       if (stream == null) {
-        throw new NullPointerException"stream";
+        throw new NullPointerException("stream");
       }
       int cp = 0;
       int bytesSeen = 0;
@@ -1918,10 +1917,10 @@ public final void setSubject(String value) {
 
     private static String ValidateHeaderField(String name, String value) {
       if (name == null) {
-        throw new NullPointerException"name";
+        throw new NullPointerException("name");
       }
       if (value == null) {
-        throw new NullPointerException"value";
+        throw new NullPointerException("value");
       }
       if (name.length() > 997) {
         throw new IllegalArgumentException("Header field name too long");

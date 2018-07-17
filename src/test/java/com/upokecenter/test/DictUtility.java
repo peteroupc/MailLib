@@ -5,6 +5,19 @@ import java.util.*;
   public final class DictUtility {
 private DictUtility() {
 }
+    public static List<Map<String, String>>
+      DictList(Map<String, String>... dicts) {
+      if (dicts == null) {
+        throw new NullPointerException("dicts");
+      }
+       List<Map<String, String>> list = new ArrayList<Map<String,
+         String>>();
+       for (Map<String, String> dict : dicts) {
+          list.add(dict);
+       }
+       return list;
+    }
+
     public static Map<String, String> MakeDict(String...
   keyvalues) {
       if (keyvalues == null) {

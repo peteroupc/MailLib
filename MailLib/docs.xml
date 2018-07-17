@@ -410,7 +410,7 @@ unrecognized disposition types should be treated as "attachment".</summary>
 <doc name="M:PeterO.Mail.ContentDisposition.GetFilename">
 <summary>Gets an adapted version of the "filename" parameter
             in this content disposition object by using the "MakeFilename" method.</summary>
-            <returns>The adapted file name in the form of a string. Returns "_" if there
+            <returns>The adapted file name in the form of a string. Returns the empty string if there
             is no "filename" parameter or that parameter is empty.</returns>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.GetHashCode">
@@ -503,7 +503,7 @@ unrecognized disposition types should be treated as "attachment".</summary>
             collapsed to a single space; leading and trailing spaces and tabs
             are removed; and the filename is truncated if it would otherwise be
             too long. The returned string will be in normalization form C.
-            Returns "_" if "str" is null or empty.</returns>
+            Returns the empty string if "str" is null or empty.</returns>
 <remarks>
 <para><b>Remark:</b> Email and HTTP headers may specify suggested filenames
 using the Content-Disposition header field's <c>filename</c> parameter or,
@@ -1180,7 +1180,7 @@ a file name based on the <c>filename</c> parameter of the Content-Disposition
 header field, if it exists, or on the <c>name</c> parameter of the Content-Type
 header field, otherwise.</para></summary>
 
-            <value>A suggested name for the file.  Returns "_" if there
+            <value>A suggested name for the file.  Returns the empty string if there
             is no filename suggested by the content type or content
             disposition, or if that filename is an empty string.</value>
 </doc>

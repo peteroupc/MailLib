@@ -76,8 +76,7 @@ import com.upokecenter.text.*;
     }
     @Test
     public void TestGetParameter() {
-      foreach (Map<String, String> dict in
-           MediaTypeTest.ValueTestParamTypes) {
+      for (Map<String, String> dict : MediaTypeTest.ValueTestParamTypes) {
         ContentDisposition mt = ParseAndTestAspects("inline" + dict.get("params"));
         Assert.assertEquals(
           dict.get("filename"),
@@ -766,7 +765,9 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
     @Test
     public void TestParseErrors() {
       for (String str : ContentDispositionTest.ParseErrors) {
-        Assert.IsNull(ParseAndTestAspects("inline" + str, null), str);
+        if ((ParseAndTestAspects("inline" + str, null))!=null) {
+ Assert.fail(str);
+ }
       }
       if (ParseAndTestAspects("inl/ine;y=z", null) != null) {
         Assert.fail();
