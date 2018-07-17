@@ -25,15 +25,19 @@ import com.upokecenter.mail.*;
         Assert.fail();
       }
       String ret = msg.Generate();
-      {
-        Object objectTemp = 2;
-        Object objectTemp2 = EncodingTest.IsGoodAsciiMessageFormat(
+      if (ret == null) {
+ Assert.fail();
+ }
+        int fmtresult = EncodingTest.IsGoodAsciiMessageFormat(
           ret,
           false,
           "");
         String messageTemp = ret;
-        Assert.assertEquals(messageTemp, objectTemp, objectTemp2);
-      }
+        if (!(
+  fmtresult != 0)) {
+ Assert.fail(
+  messageTemp.substring(0, Math.min(messageTemp.length(), 260)));
+ }
       return ret;
     }
 
@@ -62,12 +66,17 @@ import com.upokecenter.mail.*;
     }
 
     static Message MessageFromString(String valueMessageString) {
-      Message msgobj = new Message(
+      try {
+        Message msgobj = new Message(
   DataUtilities.GetUtf8Bytes(
   valueMessageString,
   true));
-      MessageGenerate(msgobj);
-      return msgobj;
+        MessageGenerate(msgobj);
+        return msgobj;
+      } catch (Exception ex) {
+        System.out.println(valueMessageString);
+        throw ex;
+      }
     }
 
     static void MessageConstructOnly(String valueMessageString) {

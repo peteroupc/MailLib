@@ -324,69 +324,6 @@ import com.upokecenter.text.*;
       return startIndex;  // not a valid quoted-String
     }
 
-    static final class SymbolAppender {
-      StringBuilder builder;
-      int maxLength;
-      int column;
-      int startColumn;
-      public SymbolAppender(int maxLength, int startColumn) {
-        builder = new StringBuilder();
-        this.maxLength = maxLength;
-        this.column = startColumn;
-        this.startColumn = startColumn;
-      }
-      public void Reset(int column, int length) {
-        this.column = column;
-        if (length == 0) {
-          this.builder.setLength(length);
-        } else {
-          String oldstring = this.builder.toString().substring(0, length);
-          this.builder.setLength(0);
-          this.builder.append(oldstring);
-        }
-      }
-      public int GetColumn() {
-        return this.column;
-      }
-      public int GetLength() {
-        return this.builder.length();
-      }
-      public int GetMaxLength() {
-        return this.maxLength;
-      }
-      public boolean CanFitSymbol(String symbol) {
-        return this.maxLength < 0 || 1 + symbol.length() <= this.maxLength;
-      }
-      public boolean TryAppendSymbol(String symbol) {
-        if (CanFitSymbol(symbol)) {
-          AppendSymbol(symbol);
-          return true;
-        }
-        return false;
-      }
-      public SymbolAppender AppendBreak() {
-        this.builder.append("\r\n ");
-        this.column = 1;
-        return this;
-      }
-      // NOTE: Assumes that all symbols being appended
-      // contain only ASCII characters and no line breaks
-      public SymbolAppender AppendSymbol(String symbol) {
-        if (maxLength < 0 || this.column + symbol.length() <= this.maxLength) {
-          this.builder.append(symbol);
-          this.column += symbol.length();
-        } else {
-          this.builder.append("\r\n ");
-          this.builder.append(symbol);
-          this.column = 1 + symbol.length();
-        }
-        return this;
-      }
-      @Override public String toString() {
-        return this.builder.toString();
-      }
-    }
-
     private static boolean IsAttributeChar(int c) {
       return c >= 33 && c <= 126 && AttrNameSpecials.indexOf((char)c) < 0;
     }
@@ -404,12 +341,13 @@ import com.upokecenter.text.*;
     }
 
     private static int EncodeContinuation(String str, int startPos,
-      SymbolAppender sa) {
+      HeaderEncoder sa) {
       int column = sa.GetColumn();
-      int maxLength = sa.GetMaxLength();
+      int maxLineLength = sa.GetMaxLineLength();
       int index = startPos;
       StringBuilder sb = new StringBuilder();
-      while (index < str.length() && (maxLength < 0 || column <= maxLength)) {
+ while (index < str.length() && (maxLineLength < 0 || column <=
+        maxLineLength)) {
         int c = str.charAt(index);
         boolean first = (index == 0);
         int contin = (index == 0) ? 7 : 0;
@@ -430,7 +368,7 @@ import com.upokecenter.text.*;
         } else {
           contin += 12;
         }
-        if (maxLength >= 0 && column + contin > maxLength) {
+        if (maxLineLength >= 0 && column + contin > maxLineLength) {
           break;
         }
         if (first) {
@@ -457,7 +395,7 @@ import com.upokecenter.text.*;
         ++index;
         column += contin;
       }
-      if (maxLength >= 0 && index == startPos) {
+      if (maxLineLength >= 0 && index == startPos) {
         // No room to put any continuation here;
         // add a line break and try again
         sa.AppendBreak();
@@ -470,7 +408,7 @@ import com.upokecenter.text.*;
     private static void AppendComplexParamValue(
   String name,
   String str,
-  SymbolAppender sa) {
+  HeaderEncoder sa) {
       int column = sa.GetColumn();
       // Check if parameter is short enough for the column that
       // no continuations are needed
@@ -497,7 +435,7 @@ import com.upokecenter.text.*;
     private static boolean AppendSimpleParamValue(
   String name,
   String str,
-  SymbolAppender sa) {
+  HeaderEncoder sa) {
       sa.AppendSymbol(name);
       sa.AppendSymbol("=");
       if (str.length() == 0) {
@@ -527,7 +465,7 @@ import com.upokecenter.text.*;
           // Requires complex encoding
           return false;
         }
-        if (sa.GetMaxLength() >= 0 && sb.length() > sa.GetMaxLength()) {
+        if (sa.GetMaxLineLength() >= 0 && sb.length() > sa.GetMaxLineLength()) {
           // Too long to fit (optimization for very
           // long parameter values)
           return false;
@@ -539,7 +477,7 @@ import com.upokecenter.text.*;
 
     static void AppendParameters(
       Map<String, String> parameters,
-      SymbolAppender sa) {
+      HeaderEncoder sa) {
       ArrayList<String> keylist = new ArrayList<String>(parameters.keySet());
       java.util.Collections.sort(keylist);
       for (String key : keylist) {
@@ -567,7 +505,7 @@ import com.upokecenter.text.*;
       // NOTE: 76 is the maximum length of a line in an Internet
       // message header, and 14 is the length of "Content-Type: " (with trailing
       // space).
-      SymbolAppender sa = new SymbolAppender(76, 14);
+      HeaderEncoder sa = new HeaderEncoder(76, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
       AppendParameters(this.parameters, sa);
       return sa.toString();
@@ -582,7 +520,7 @@ import com.upokecenter.text.*;
      */
     public String ToSingleLineString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
-      SymbolAppender sa = new SymbolAppender(-1, 14);
+      HeaderEncoder sa = new HeaderEncoder(-1, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
       AppendParameters(this.parameters, sa);
       return sa.toString();
@@ -849,7 +787,7 @@ import com.upokecenter.text.*;
      */
     public String GetParameter(String name) {
       if (name == null) {
-        throw new NullPointerException("name");
+        throw new NullPointerException"name";
       }
       if (name.length() == 0) {
         throw new IllegalArgumentException("name is empty.");
@@ -1173,7 +1111,7 @@ import com.upokecenter.text.*;
       boolean HttpRules = false;
       int index = 0;
       if (str == null) {
-        throw new NullPointerException("str");
+        throw new NullPointerException"str";
       }
       int endIndex = str.length();
       index = HeaderParser.ParseCFWS(str, index, endIndex, null);
@@ -1294,7 +1232,7 @@ import com.upokecenter.text.*;
      */
     public static MediaType Parse(String str, MediaType defaultValue) {
       if (str == null) {
-        throw new NullPointerException("str");
+        throw new NullPointerException"str";
       }
       MediaType mt = ParseMediaType(str);
       return (mt == null) ? (defaultValue) : mt;

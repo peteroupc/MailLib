@@ -111,7 +111,7 @@ import com.upokecenter.text.*;
  String type,
  Map<String, String> parameters) {
       if ((type) == null) {
-        throw new NullPointerException("type");
+        throw new NullPointerException"type";
       }
       this.dispositionType = type;
       this.parameters = new HashMap<String, String>(parameters);
@@ -151,7 +151,7 @@ import com.upokecenter.text.*;
       // NOTE: 76 is the maximum length of a line in an Internet
       // message header, and 21 is the length of "Content-Disposition: " (with
       // trailing space).
-      MediaType.SymbolAppender sa = new MediaType.SymbolAppender(76, 21);
+      HeaderEncoder sa = new HeaderEncoder(76, 21);
       sa.AppendSymbol(this.dispositionType);
       MediaType.AppendParameters(this.parameters, sa);
       return sa.toString();
@@ -168,7 +168,7 @@ import com.upokecenter.text.*;
     public String ToSingleLineString() {
       // NOTE: 21 is the length of "Content-Disposition: " (with trailing
       // space).
-      MediaType.SymbolAppender sa = new MediaType.SymbolAppender(-1, 21);
+      HeaderEncoder sa = new HeaderEncoder(-1, 21);
       sa.AppendSymbol(this.dispositionType);
       MediaType.AppendParameters(this.parameters, sa);
       return sa.toString();
@@ -301,10 +301,8 @@ import com.upokecenter.text.*;
      * @throws IllegalArgumentException The parameter {@code name} is empty.
      */
     public String GetParameter(String name) {
-      // TODO: Support size specially. NOTE: Size is
-      // a hint only, see RFC 2183
       if (name == null) {
-        throw new NullPointerException("name");
+        throw new NullPointerException"name";
       }
       if (name.length() == 0) {
         throw new IllegalArgumentException("name is empty.");
@@ -318,7 +316,7 @@ import com.upokecenter.text.*;
       boolean HttpRules = false;
       int index = 0;
       if (str == null) {
-        throw new NullPointerException("str");
+        throw new NullPointerException"str";
       }
       int endIndex = str.length();
       HashMap<String, String> parameters = new HashMap<String, String>();
@@ -384,7 +382,7 @@ import com.upokecenter.text.*;
      */
     public static ContentDisposition Parse(String dispoValue) {
       if (dispoValue == null) {
-        throw new NullPointerException("dispoValue");
+        throw new NullPointerException"dispoValue";
       }
       return Parse(dispoValue, Attachment);
     }
@@ -421,7 +419,7 @@ import com.upokecenter.text.*;
   String dispositionValue,
   ContentDisposition defaultValue) {
       if (dispositionValue == null) {
-        throw new NullPointerException("dispositionValue");
+        throw new NullPointerException"dispositionValue";
       }
       ContentDisposition dispo = ParseDisposition(dispositionValue);
       return (dispo == null) ? (defaultValue) : dispo;
