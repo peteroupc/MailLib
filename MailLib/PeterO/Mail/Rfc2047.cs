@@ -49,11 +49,19 @@ namespace PeterO.Mail {
       return false;
     }
 
+    [Obsolete]
     public static string EncodeComment(string str, int index, int endIndex) {
+      HeaderEncoder enc = new HeaderEncoder(76, 0);
+      EncodeCommentNew(enc, str, index, endIndex);
+      return enc.ToString();
+    }
+
+    public static void EncodeCommentNew(HeaderEncoder enc, string str, int
+      index, int endIndex) {
       // NOTE: Assumes that the comment is syntactically valid
 #if DEBUG
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -74,9 +82,8 @@ namespace PeterO.Mail {
 #endif
       int length = endIndex - index;
       if (length < 2 || str[index] != '(' || str[endIndex - 1] != ')') {
-        return str.Substring(index, length);
+        enc.AppendString(str.Substring(index, length-index));
       }
-      EncodedWordEncoder encoder;
       int nextComment = str.IndexOf('(', index + 1);
       int nextBackslash = str.IndexOf('\\', index + 1);
       // don't count comments or backslashes beyond
@@ -98,18 +105,15 @@ namespace PeterO.Mail {
       }
       if (nextComment < 0 && nextBackslash < 0) {
         // No escapes or nested comments, so it's relatively easy
-        if (length == 2) {
-          return "()";
+        enc.AppendSymbol("(");
+        if (length>2) {
+          enc.AppendAsEncodedWords(str.Substring(index + 1, (length-2)));
         }
-        encoder = new EncodedWordEncoder();
-        encoder.AddPrefix("(");
-        encoder.AddString(str, index + 1, length - 2);
-        encoder.FinalizeEncoding(")");
-        return encoder.ToString();
+        enc.AppendSymbol(")");
+        return;
       }
       if (nextBackslash < 0) {
         // No escapes; just look for '(' and ')'
-        encoder = new EncodedWordEncoder();
         while (true) {
           int parenStart = index;
           // Get the next run of parentheses
@@ -129,16 +133,19 @@ namespace PeterO.Mail {
             ++index;
           }
           if (parenEnd == index) {
-            encoder.FinalizeEncoding(
-        str.Substring(
-        parenStart,
-        parenEnd - parenStart));
+            for (var k = parenStart; k < parenEnd; ++k) {
+              enc.AppendSymbol(str.Substring(k, 1));
+            }
             break;
           }
-          encoder.AddPrefix(str.Substring(parenStart, parenEnd - parenStart));
-          encoder.AddString(str, parenEnd, index - parenEnd);
+          for (var k = parenStart; k < parenEnd; ++k) {
+            enc.AppendSymbol(str.Substring(k, 1));
+          }
+          enc.AppendAsEncodedWords(str.Substring(
+            parenEnd,
+            index - parenEnd));
         }
-        return encoder.ToString();
+        return;
       }
       var builder = new StringBuilder();
       // escapes, but no nested comments
@@ -174,17 +181,12 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
             ++index;
           }
         }
-        if (builder.Length == 0) {
-          return "()";
-        }
-        encoder = new EncodedWordEncoder();
-        encoder.AddPrefix("(");
-        encoder.AddString(builder.ToString());
-        encoder.FinalizeEncoding(")");
-        return encoder.ToString();
+        enc.AppendSymbol("(");
+        enc.AppendAsEncodedWords(builder.ToString());
+        enc.AppendSymbol(")");
+        return;
       }
       // escapes and nested comments
-      encoder = new EncodedWordEncoder();
       while (true) {
         int parenStart = index;
         // Get the next run of parentheses
@@ -225,16 +227,17 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
           }
         }
         if (builder.Length == 0) {
-          encoder.FinalizeEncoding(
-      str.Substring(
-      parenStart,
-      parenEnd - parenStart));
+            for (var k = parenStart; k < parenEnd; ++k) {
+              enc.AppendSymbol(str.Substring(k, 1));
+            }
           break;
         }
-        encoder.AddPrefix(str.Substring(parenStart, parenEnd - parenStart));
-        encoder.AddString(builder.ToString());
+        for (var k = parenStart; k < parenEnd; ++k) {
+              enc.AppendSymbol(str.Substring(k, 1));
+        }
+        enc.AppendAsEncodedWords(builder.ToString());
       }
-      return encoder.ToString();
+      return;
     }
 
     private static int SkipCharsetOrEncoding(
@@ -696,7 +699,7 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
  int index,
       int endIndex,
  IList<int[]> tokens,
-      StringBuilder builder) {
+      HeaderEncoder enc) {
       // Assumes the value matches the production "phrase"
       // and that there are no comments in the value
       if (index == endIndex) {
@@ -705,17 +708,16 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
       int index2 = HeaderParser.ParseCFWS(str, index, endIndex, null);
       if (index2 == endIndex) {
         // Just linear whitespace
-        builder.Append(str.Substring(index, endIndex - index));
+        enc.AppendString(str.Substring(index, endIndex - index));
         return;
       }
       if (!PrecededByStartOrLinearWhitespace(str, index2)) {
         // Append a space before the encoded words
-        builder.Append(' ');
-      } else {
+        enc.AppendSpace();
+      } else if (index != index2) {
         // Append the linear whitespace
-        builder.Append(str.Substring(index, index2 - index));
+        enc.AppendSpace();
       }
-      var encoder = new EncodedWordEncoder();
       var builderPhrase = new StringBuilder();
       index = index2;
       while (index < endIndex) {
@@ -742,22 +744,20 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
         }
         index2 = HeaderParser.ParseFWS(str, index, endIndex, null);
         if (index2 == endIndex) {
-          encoder.AddString(builderPhrase.ToString());
-          encoder.FinalizeEncoding();
-          builder.Append(encoder.ToString());
+          enc.AppendAsEncodedWords(builderPhrase.ToString());
           if (index2 != index) {
-            builder.Append(str.Substring(index, index2 - index));
+            enc.AppendSpace();
           } else if (!FollowedByEndOrLinearWhitespace(
     str,
     endIndex,
     str.Length)) {
             // Add a space if no linear whitespace follows
-            builder.Append(' ');
+            enc.AppendSpace();
           }
           break;
         }
         if (index2 != index) {
-          builderPhrase.Append(' ');
+          builderPhrase.Append(" ");
         }
         index = index2;
       }
@@ -765,40 +765,14 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
 
     public static string EncodeString(string str) {
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
-      return EncodeString(str, 0, str.Length);
+      return new HeaderEncoder(76, 0).AppendAsEncodedWords(
+        str).ToString();
     }
 
-    public static string EncodeString(string str, int index, int endIndex) {
-      if (str == null) {
-        throw new ArgumentNullException("str");
-      }
-      if (index < 0) {
-        throw new ArgumentException("index (" + index + ") is less than " +
-            "0");
-      }
-      if (index > str.Length) {
-        throw new ArgumentException("index (" + index + ") is more than " +
-          str.Length);
-      }
-      if (endIndex < 0) {
-        throw new ArgumentException("endIndex (" + endIndex +
-            ") is less than " + "0");
-      }
-      if (endIndex > str.Length) {
-        throw new ArgumentException("endIndex (" + endIndex +
-          ") is more than " + str.Length);
-      }
-      if (str.Length - index < endIndex) {
-        throw new ArgumentException("str's length minus " + index + " (" +
-          (str.Length - index) + ") is less than " + endIndex);
-      }
-      return new EncodedWordEncoder().AddString(
-        str.Substring(index, endIndex)).FinalizeEncoding().ToString();
-    }
-
-    public static string EncodePhraseText(
+    public static void EncodePhraseTextNew(
+  HeaderEncoder enc,
   string str,
   int index,
   int endIndex,
@@ -807,14 +781,14 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
       // and assumes that endIndex is the end of all whitespace
       // found after the phrase. Doesn't encode text within comments.
       if (index == endIndex) {
-        return String.Empty;
+        return;
       }
       if (!Message.HasTextToEscapeOrEncodedWordStarts(str, index, endIndex)) {
         // No need to use encoded words
-        return str.Substring(index, endIndex - index);
+        enc.AppendString(str.Substring(index, endIndex - index));
+        return;
       }
       int lastIndex = index;
-      var builder = new StringBuilder();
       foreach (int[] token in tokens) {
     if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
           token[2] >= index && token[2] <= endIndex)) {
@@ -822,14 +796,27 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
         }
         if (token[0] == HeaderParserUtility.TokenComment) {
           // Process this piece of the phrase
-          EncodePhraseTextInternal(str, lastIndex, token[1], tokens, builder);
+          EncodePhraseTextInternal(str, lastIndex, token[1], tokens, enc);
           // Append the comment
-          builder.Append(str.Substring(token[1], token[2] - token[1]));
+          enc.AppendString(str.Substring(token[1], token[2] - token[1]));
           lastIndex = token[2];
         }
       }
-      EncodePhraseTextInternal(str, lastIndex, endIndex, tokens, builder);
-      return builder.ToString();
+      EncodePhraseTextInternal(str, lastIndex, endIndex, tokens, enc);
+    }
+
+    [Obsolete]
+    public static string EncodePhraseText(
+  string str,
+  int index,
+  int endIndex,
+  IList<int[]> tokens) {
+      if (index == endIndex) {
+        return String.Empty;
+      }
+      HeaderEncoder enc = new HeaderEncoder(76, 0);
+      EncodePhraseTextNew(enc, str, index, endIndex, tokens);
+      return enc.ToString();
     }
   }
 }

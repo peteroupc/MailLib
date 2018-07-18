@@ -276,9 +276,9 @@ public final void setContentType(MediaType value) {
      * name based on the <code>filename</code> parameter of the
      * Content-Disposition header field, if it exists, or on the <code>name</code>
      * parameter of the Content-Type header field, otherwise.</p>
-     * @return A suggested name for the file. Returns "_" if there is no filename
-     * suggested by the content type or content disposition, or if that
-     * filename is an empty string.
+     * @return A suggested name for the file. Returns the empty string if there is
+     * no filename suggested by the content type or content disposition, or
+     * if that filename is an empty string.
      */
     public final String getFileName() {
         ContentDisposition disp = this.contentDisposition;
@@ -439,8 +439,8 @@ public final void setSubject(String value) {
      */
     public int[] GetDate() {
       String field = this.GetHeader("date");
- return (field == null) ? (null) : (MailDateTime.ParseDateString(field,
-        true));
+      return (field == null) ? (null) : (MailDateTime.ParseDateString(field,
+             true));
     }
 
     /**
@@ -468,8 +468,8 @@ public final void setSubject(String value) {
      */
     public Message SetDate(int[] dateTime) {
       if (dateTime == null) {
-  throw new NullPointerException("dateTime");
-}
+        throw new NullPointerException("dateTime");
+      }
       if (!DateTimeUtilities.IsValidDateTime(dateTime)) {
         throw new IllegalArgumentException("Invalid date and time");
       }
@@ -943,6 +943,18 @@ public final void setSubject(String value) {
 
     // Parse the delivery status byte array to downgrade
     // the Original-Recipient and Final-Recipient header fields
+    // NOTE: RFC 3464 (delivery status notifications) refers
+    // to RFC 822 for its message conventions (sec. 2.1.1), while RFC
+    // 8098 (disposition notifications) refers to RFC 5322 for its
+    // conventions (sec. 3.1.1). While RFC 822 allows white
+    // space and comments to appear between lexical tokens
+    // of structured header fields (note in particular sec. A.3.3, which
+    // shows white space between the header field name and the
+    // colon), RFC 5322 doesn't (it refers to
+    // RFC 2234, which states that linear white space is no longer
+    // implicit in ABNF productions). However, RFC 5322 includes
+    // an obsolete syntax allowing optional white space to appear
+    // between the header field and the colon (sec. 4.5.8).
     static byte[] DowngradeDeliveryStatus(byte[] bytes) {
       StringBuilder sb = new StringBuilder();
       int index = 0;
@@ -988,15 +1000,13 @@ public final void setSubject(String value) {
           } else {
             first &= c != 0x20 && c != 0x09;
           }
-          // NOTE: Used to ignore linear white space at the end of the
-          // header field name. But as of RFC 2234, linear white space is no
-          // longer implicit in ABNF productions; as a result, linear white
-          // space is interpreted as not allowed between the header field
-          // name and the colon, even though both may be separated in the
-          // ABNF productions in RFC 3798. As a further result, a header
-          // field starting with "Example :" will not be treated as a header
+          // NOTE: Allows obsolete syntax between header field
+          // name and colon. As a result, a header
+          // field starting with "Example :" will be treated as a header
           // field named "Example" in this code.
-          headerNameEnd = index;
+          if (c != 0x20 && c != 0x09) {
+            headerNameEnd = index;
+          }
         }
         if (endOfHeaders) {
           break;
@@ -1087,32 +1097,55 @@ public final void setSubject(String value) {
           // ++lineCount;
         }
         if (origRecipient || finalRecipient) {
-          String headerValue = DataUtilities.GetUtf8String(
+          String headerValue = null;
+          int[] status = new int[1];
+          try {
+            headerValue = DataUtilities.GetUtf8String(
             bytes,
             headerValueStart,
             headerValueEnd - headerValueStart,
-            true);
-          int[] status = new int[1];
-          headerValue = DowngradeRecipientHeaderValue(headerValue, status);
+            false);  // throws on invalid UTF-8
+          } catch (IllegalArgumentException ex) {
+            // Invalid UTF-8, so encapsulate
+            headerValue = null;
+            status[0] = 2;
+          }
+          if (headerValue != null) {
+            headerValue = DowngradeRecipientHeaderValue(headerValue, status);
+          }
           if (status[0] == 2 || status[0] == 1) {
-            // Downgraded or encapsulated
+            // Downgraded (1) or encapsulated (2)
             if (writer == null) {
               writer = new ArrayWriter();
               writer.write(bytes, 0, headerNameStart);
             } else {
               writer.write(bytes, lastIndex, headerNameStart - lastIndex);
             }
-            String field = (origRecipient ?
-        "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient");
-            if (status[0] != 2) {
-              field = fieldName;
+            if (status[0] == 1) {
+              // Downgraded
+              byte[] newBytes = DataUtilities.GetUtf8Bytes(
+                 HeaderEncoder.EncodeHeaderField(fieldName, headerValue),
+                 true);
+              writer.write(newBytes, 0, newBytes.length);
+            } else {
+              // Encapsulated
+              String field = (origRecipient ?
+       "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient");
+              headerValue = DataUtilities.GetUtf8String(
+                  bytes,
+                  headerValueStart,
+                  headerValueEnd - headerValueStart,
+                  true);  // replaces invalid UTF-8
+              String newField =
+                HeaderEncoder.EncodeHeaderFieldAsEncodedWords(field,
+                headerValue);
+              byte[] newBytes = DataUtilities.GetUtf8Bytes(
+                newField,
+                true);
+              writer.write(newBytes, 0, newBytes.length);
             }
-            byte[] newBytes = DataUtilities.GetUtf8Bytes(
-              HeaderEncoder.EncodeHeaderField(field, headerValue),
-              true);
-            writer.write(newBytes, 0, newBytes.length);
-            lastIndex = headerValueEnd;
           }
+          lastIndex = headerValueEnd;
         }
       }
       if (writer != null) {
@@ -1120,6 +1153,26 @@ public final void setSubject(String value) {
         bytes = writer.ToArray();
       }
       return bytes;
+    }
+
+    private static String EncodeCommentsInText(String str) {
+      int i = 0;
+      if (str.indexOf('(') < 0) return str;
+      StringBuilder sb = new StringBuilder();
+      while (i < str.length()) {
+        if (str.charAt(i) == '(') {
+        int si = HeaderParserUtility.ParseCommentLax(str, i, str.length(),
+            null);
+          if (si != i) {
+            sb.append(Rfc2047.EncodeComment(str, i, si));
+            i = si;
+            continue;
+          }
+        }
+        sb.append(str.charAt(i));
+        ++i;
+      }
+      return sb.toString();
     }
 
     static String DowngradeRecipientHeaderValue(
@@ -1153,19 +1206,31 @@ public final void setSubject(String value) {
           atomText,
           headerValue.length(),
           null);
+        // NOTE: Commented out for now (see below)
+        //if (atomText != typeEnd) {
+ isUtf8 = false;
+}
         if (index < headerValue.length() && headerValue.charAt(atomText) == ';') {
-          String typePart = headerValue.substring(0, atomText + 1);
-          // Downgrade the comments in the type part
-          // NOTE: Final-recipient has the same syntax as original-recipient,
-          // except for the header field name
-          typePart = HeaderFieldParsers.GetParser(
-            "original-recipient").DowngradeFieldValue(typePart);
+          int addressPart = HeaderParser.ParseCFWS(
+           headerValue,
+           atomText + 1,
+           headerValue.length(),
+           null);
+          String typePart = headerValue.substring(0, addressPart);
           if (isUtf8) {
             // Downgrade the non-ASCII characters in the address
+            // NOTE: The ABNF for utf-8-type-addr in RFC 6533
+            // appears not to allow linear white space.
+            // DEVIATION: Allow CFWS between "utf-8" and semicolon
+            // for sake of robustness, even though it doesn't fit
+            // utf-8-type-addr (see also RFC 8098 secs. 3.2.3
+            // and 3.2.4)
             StringBuilder builder = new StringBuilder();
             String ValueHex = "0123456789ABCDEF";
-            for (int i = atomText + 1; i < headerValue.length(); ++i) {
-              if (headerValue.charAt(i) < 0x80) {
+            for (int i = addressPart; i < headerValue.length(); ++i) {
+              if (headerValue.charAt(i) < 0x7f && headerValue.charAt(i) > 0x20 &&
+                headerValue.charAt(i) != '\\' && headerValue.charAt(i) != '+' &&
+                   headerValue.charAt(i) != '-') {
                 builder.append(headerValue.charAt(i));
               } else {
                 int cp = DataUtilities.CodePointAt(headerValue, i);
@@ -1182,9 +1247,22 @@ public final void setSubject(String value) {
                 builder.append('}');
               }
             }
-            headerValue = typePart + builder;
+            // Do comment downgrading last for sake of convenience
+            // (especially since RFC 8098 (disposition notifications) allows
+            // CFWS at the end of the address, though a conflict exists between
+            // that RFC and utf-8-type-addr, which technically allows
+            // parentheses to appear in the address).
+          // NOTE: The syntax for Original-Recipient and Final-Recipient header
+          // field values (in RFC 3464, delivery status notifications) has a
+          // structured part and an
+          // unstructured part (generic-address defined as "*text") (see
+          // RFC 3464 secs.
+          // 2.3.1 and 2.3.2, which uses the conventions in RFC
+          // 822, where linear white space can appear between lexical
+          // tokens of a header field).
+            headerValue = EncodeCommentsInText(typePart + builder);
           } else {
-            headerValue = typePart + headerValue.substring(atomText + 1);
+            headerValue = EncodeCommentsInText(headerValue);
           }
         }
         if (
@@ -1192,16 +1270,11 @@ public final void setSubject(String value) {
             headerValue,
             0,
             headerValue.length())) {
-          // Encapsulate the header field in encoded words
           if (status != null) {
             // Encapsulated
             status[0] = 2;
           }
-          int spaceAndTabEnd = ParserUtility.SkipSpaceAndTab(
-  origValue,
-  0,
-  origValue.length());
-          return Rfc2047.EncodeString(origValue.substring(spaceAndTabEnd));
+          return null;
         }
         if (status != null) {
           // Downgraded
@@ -1386,12 +1459,12 @@ public final void setSubject(String value) {
                   indexTemp4 = index;
                   do {
                     int indexStart4 = index;
-                  while (index < endIndex && ((str.charAt(index) == 32) ||
-                (str.charAt(index) == 9))) {
+                    while (index < endIndex && ((str.charAt(index) == 32) ||
+                  (str.charAt(index) == 9))) {
                     ++index;
                     }
-                 if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index +
-                1) == 10) {
+                    if (index + 1 < endIndex && str.charAt(index) == 13 && str.charAt(index +
+                   1) == 10) {
                     index += 2;
                     } else {
                     index = indexStart4; break;
@@ -1522,7 +1595,7 @@ public final void setSubject(String value) {
     }
 
     private static boolean IsWellFormedBoundary(String str) {
-      if (str == null || str.length() < 1 || str.length() > 70) {
+      if (((str) == null || (str).length() == 0) || str.length() > 70) {
         return false;
       }
       for (int i = 0; i < str.length(); ++i) {
@@ -1736,9 +1809,7 @@ public final void setSubject(String value) {
                   ungetStream.Unget();
                   // this isn't space or tab; if this is the start
                   // of the line, this is no longer FWS
-                  if (lineCount == 0) {
-                    haveFWS = false;
-                  }
+                  haveFWS &= lineCount != 0;
                   break;
                 }
               }
@@ -1864,13 +1935,13 @@ public final void setSubject(String value) {
       // all of the body is checked
       boolean allTextBytes = (!isBodyPart) && lengthCheck != body.length;
       for (int i = 0; i < lengthCheck; ++i) {
-        if (i>0 && (allTextBytes ? (i%108 == 0) : (i%36 == 0))) {
-         if (highBytes + ctlBytes > i/3) {
-           return EncodingBase64;
-         }
-         if (!allTextBytes) {
-           return EncodingQuotedPrintable;
-         }
+        if (i > 0 && (allTextBytes ? (i % 108 == 0) : (i % 36 == 0))) {
+          if (highBytes + ctlBytes > i / 3) {
+            return EncodingBase64;
+          }
+          if (!allTextBytes) {
+            return EncodingQuotedPrintable;
+          }
         }
         if ((body[i] & 0x80) != 0) {
           ++highBytes;
@@ -1936,7 +2007,8 @@ public final void setSubject(String value) {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.length()) != value.length()) {
-       throw new IllegalArgumentException("Header field value contains invalid text");
+       throw new
+            IllegalArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.length(), null) != value.length()) {
           throw new
@@ -1970,7 +2042,9 @@ public final void setSubject(String value) {
       if (!isMultipart) {
         if (builder.getTopLevelType().equals("message")) {
           if (builder.getSubType().equals("delivery-status") ||
-              builder.getSubType().equals("global-delivery-status")) {
+              builder.getSubType().equals("global-delivery-status") ||
+              builder.getSubType().equals("disposition-notification") ||
+              builder.getSubType().equals("global-disposition-notification")) {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
           boolean msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
@@ -2010,6 +2084,7 @@ public final void setSubject(String value) {
       for (int i = 0; i < this.headers.size(); i += 2) {
         String name = this.headers.get(i);
         String value = this.headers.get(i + 1);
+        String rawField = null;
         if (name.equals("content-type")) {
           if (haveContentType) {
             // Already outputted, continue
@@ -2083,7 +2158,7 @@ public final void setSubject(String value) {
     ParseAddresses(this.GetMultipleHeaders(name)));
                 if (value.length() == 0) {
                   // No addresses, synthesize a field
-                  value = this.SynthesizeField(name);
+                  rawField = this.SynthesizeField(name);
                 }
               }
             }
@@ -2093,20 +2168,20 @@ public final void setSubject(String value) {
               value = GenerateAddressList(ParseAddresses(value));
               if (value.length() == 0) {
                 // No addresses, synthesize a field
-                value = this.SynthesizeField(name);
+                rawField = this.SynthesizeField(name);
               }
             }
           }
         }
-        String rawField = HeaderEncoder.EncodeHeaderField(name, value);
+        rawField = (rawField == null) ? ((HeaderEncoder.EncodeHeaderField(name, value))) : rawField;
         if (CanOutputRaw(rawField)) {
           AppendAscii(output, rawField);
           if (rawField.indexOf(": ") < 0) {
             throw new MessageDataException("No colon+space: " + rawField);
           }
         } else if (HasTextToEscapeOrEncodedWordStarts(value)) {
-          String downgraded =
-            HeaderFieldParsers.GetParser(name).DowngradeFieldValue(value);
+          String downgraded = HeaderFieldParsers.GetParser(name)
+                    .DowngradeHeaderField(name, value);
           if (
             HasTextToEscape(
               downgraded,
@@ -2119,15 +2194,16 @@ public final void setSubject(String value) {
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field
-              name = "downgraded-" + name;
-              downgraded =
-                    Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTab(value));
+              downgraded = HeaderEncoder.EncodeHeaderFieldAsEncodedWords(
+                  "downgraded-" + name,
+                  ParserUtility.TrimSpaceAndTab(value));
             } else {
             }
+          } else {
+            AppendAscii(
+              output,
+              downgraded);
           }
-          AppendAscii(
-            output,
-            HeaderEncoder.EncodeHeaderField(name, downgraded));
         } else {
           AppendAscii(
             output,
@@ -2464,7 +2540,7 @@ public final void setSubject(String value) {
       int bufferLength = buffer.length;
       this.body = new byte[0];
       ArrayWriter aw = new ArrayWriter();
-       {
+      {
         while (true) {
           int ch = 0;
           try {
@@ -2549,7 +2625,7 @@ public final void setSubject(String value) {
       int bufferCount = 0;
       int bufferLength = buffer.length;
       ArrayWriter aw = new ArrayWriter();
-       {
+      {
         while (true) {
           int ch = 0;
           try {
@@ -2576,15 +2652,19 @@ public final void setSubject(String value) {
     }
 
     private String SynthesizeField(String name) {
+      HeaderEncoder encoder = new HeaderEncoder(76, 0);
+      encoder.AppendSymbol(name + ":");
+      encoder.AppendSpace();
       String fullField = Implode(this.GetMultipleHeaders(name), ", ");
-      String value = new EncodedWordEncoder().AddString(fullField)
-        .FinalizeEncoding().toString();
-      if (value.length() > 0) {
-        value += " <me@" + name + "address.invalid>";
+      String lcname = DataUtilities.ToLowerCaseAscii(name);
+      if (fullField.length() == 0) {
+        encoder.AppendSymbol("me@" + name + "-address.invalid");
       } else {
-        value = "me@" + name + "-address.invalid";
+        encoder.AppendAsEncodedWords(fullField);
+        encoder.AppendSpace();
+        encoder.AppendSymbol("<me@" + name + "-address.invalid>");
       }
-      return value;
+      return encoder.toString();
     }
 
     private static class MessageStackEntry {

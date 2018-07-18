@@ -390,7 +390,7 @@ import com.upokecenter.text.*;
           PctAppend(sb, (0x80 | ((c >> 12) & 0x3f)));
           PctAppend(sb, (0x80 | ((c >> 6) & 0x3f)));
           PctAppend(sb, (0x80 | (c & 0x3f)));
-          ++index;
+          ++index;  // Because it uses 2 surrogates
         }
         ++index;
         column += contin;

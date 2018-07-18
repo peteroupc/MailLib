@@ -1240,7 +1240,7 @@ import com.upokecenter.text.*;
       AssertUtf8Equal(expectedBytes, bytes);
     }
 
-    @Test
+    @Test(timeout = 25000)
     public void TestDowngradeDSN() {
       String ValueHexstart = "\\x" + "{";
       TestDowngradeDSNOne(
@@ -1278,8 +1278,8 @@ String stringTemp =
         TestDowngradeDSNOne(stringTemp, stringTemp2);
       }
       TestDowngradeDSNOne(
-  "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40=C2=BE?=",
-  "(\u00be) rfc822; x@\u00be");
+  "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_m=C2=BE?=",
+  "(\u00be) rfc822; m\u00be");
     }
 
     private static void TestValidLanguageTag(boolean expectedValid, String str) {
@@ -1833,7 +1833,7 @@ public final void setValueMessage(Message value) {
   stringTemp);
       }
     }
-    @Test
+    @Test(timeout = 5000)
     public void TestCommentsToWords2() {
       {
         String stringTemp = DowngradeHeaderField(
@@ -2079,7 +2079,6 @@ Object objectTemp =
     }
 
     @Test(timeout = 5000)
-
     public void TestEncodedWords() {
       String ValuePar = "(";
         TestEncodedWordsPhrase("(sss) y", "(sss) =?us-ascii?q?y?=");

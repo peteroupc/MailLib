@@ -51,14 +51,24 @@ private Rfc2047() {
       return false;
     }
 
+/**
+ * @deprecated
+ */
+@Deprecated
     public static String EncodeComment(String str, int index, int endIndex) {
+      HeaderEncoder enc = new HeaderEncoder(76, 0);
+      EncodeCommentNew(enc, str, index, endIndex);
+      return enc.toString();
+    }
+
+    public static void EncodeCommentNew(HeaderEncoder enc, String str, int
+      index, int endIndex) {
       // NOTE: Assumes that the comment is syntactically valid
 
       int length = endIndex - index;
       if (length < 2 || str.charAt(index) != '(' || str.charAt(endIndex - 1) != ')') {
-        return str.substring(index, (index)+(length));
+        enc.AppendString(str.substring(index, (index)+(length-index)));
       }
-      EncodedWordEncoder encoder;
       int nextComment = str.indexOf('(',index + 1);
       int nextBackslash = str.indexOf('\\',index + 1);
       // don't count comments or backslashes beyond
@@ -80,18 +90,15 @@ private Rfc2047() {
       }
       if (nextComment < 0 && nextBackslash < 0) {
         // No escapes or nested comments, so it's relatively easy
-        if (length == 2) {
-          return "()";
+        enc.AppendSymbol("(");
+        if (length>2) {
+          enc.AppendAsEncodedWords(str.substring(index + 1, (index + 1)+((length-2))));
         }
-        encoder = new EncodedWordEncoder();
-        encoder.AddPrefix("(");
-        encoder.AddString(str, index + 1, length - 2);
-        encoder.FinalizeEncoding(")");
-        return encoder.toString();
+        enc.AppendSymbol(")");
+        return;
       }
       if (nextBackslash < 0) {
         // No escapes; just look for '(' and ')'
-        encoder = new EncodedWordEncoder();
         while (true) {
           int parenStart = index;
           // Get the next run of parentheses
@@ -111,16 +118,19 @@ private Rfc2047() {
             ++index;
           }
           if (parenEnd == index) {
-            encoder.FinalizeEncoding(
-        str.substring(
-        parenStart, (
-        parenStart)+(parenEnd - parenStart)));
+            for (var k = parenStart; k < parenEnd; ++k) {
+              enc.AppendSymbol(str.substring(k, (k)+(1)));
+            }
             break;
           }
-          encoder.AddPrefix(str.substring(parenStart, (parenStart)+(parenEnd - parenStart)));
-          encoder.AddString(str, parenEnd, index - parenEnd);
+          for (var k = parenStart; k < parenEnd; ++k) {
+            enc.AppendSymbol(str.substring(k, (k)+(1)));
+          }
+          enc.AppendAsEncodedWords(str.substring(
+            parenEnd, (
+            parenEnd)+(index - parenEnd)));
         }
-        return encoder.toString();
+        return;
       }
       StringBuilder builder = new StringBuilder();
       // escapes, but no nested comments
@@ -156,17 +166,12 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
             ++index;
           }
         }
-        if (builder.length() == 0) {
-          return "()";
-        }
-        encoder = new EncodedWordEncoder();
-        encoder.AddPrefix("(");
-        encoder.AddString(builder.toString());
-        encoder.FinalizeEncoding(")");
-        return encoder.toString();
+        enc.AppendSymbol("(");
+        enc.AppendAsEncodedWords(builder.toString());
+        enc.AppendSymbol(")");
+        return;
       }
       // escapes and nested comments
-      encoder = new EncodedWordEncoder();
       while (true) {
         int parenStart = index;
         // Get the next run of parentheses
@@ -207,16 +212,17 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
           }
         }
         if (builder.length() == 0) {
-          encoder.FinalizeEncoding(
-      str.substring(
-      parenStart, (
-      parenStart)+(parenEnd - parenStart)));
+            for (var k = parenStart; k < parenEnd; ++k) {
+              enc.AppendSymbol(str.substring(k, (k)+(1)));
+            }
           break;
         }
-        encoder.AddPrefix(str.substring(parenStart, (parenStart)+(parenEnd - parenStart)));
-        encoder.AddString(builder.toString());
+        for (var k = parenStart; k < parenEnd; ++k) {
+              enc.AppendSymbol(str.substring(k, (k)+(1)));
+        }
+        enc.AppendAsEncodedWords(builder.toString());
       }
-      return encoder.toString();
+      return;
     }
 
     private static int SkipCharsetOrEncoding(
@@ -676,7 +682,7 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
  int index,
       int endIndex,
  List<int[]> tokens,
-      StringBuilder builder) {
+      HeaderEncoder enc) {
       // Assumes the value matches the production "phrase"
       // and that there are no comments in the value
       if (index == endIndex) {
@@ -685,17 +691,16 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
       int index2 = HeaderParser.ParseCFWS(str, index, endIndex, null);
       if (index2 == endIndex) {
         // Just linear whitespace
-        builder.append(str.substring(index, (index)+(endIndex - index)));
+        enc.AppendString(str.substring(index, (index)+(endIndex - index)));
         return;
       }
       if (!PrecededByStartOrLinearWhitespace(str, index2)) {
         // Append a space before the encoded words
-        builder.append(' ');
-      } else {
+        enc.AppendSpace();
+      } else if (index != index2) {
         // Append the linear whitespace
-        builder.append(str.substring(index, (index)+(index2 - index)));
+        enc.AppendSpace();
       }
-      EncodedWordEncoder encoder = new EncodedWordEncoder();
       StringBuilder builderPhrase = new StringBuilder();
       index = index2;
       while (index < endIndex) {
@@ -722,22 +727,20 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
         }
         index2 = HeaderParser.ParseFWS(str, index, endIndex, null);
         if (index2 == endIndex) {
-          encoder.AddString(builderPhrase.toString());
-          encoder.FinalizeEncoding();
-          builder.append(encoder.toString());
+          enc.AppendAsEncodedWords(builderPhrase.toString());
           if (index2 != index) {
-            builder.append(str.substring(index, (index)+(index2 - index)));
+            enc.AppendSpace();
           } else if (!FollowedByEndOrLinearWhitespace(
     str,
     endIndex,
     str.length())) {
             // Add a space if no linear whitespace follows
-            builder.append(' ');
+            enc.AppendSpace();
           }
           break;
         }
         if (index2 != index) {
-          builderPhrase.append(' ');
+          builderPhrase.append(" ");
         }
         index = index2;
       }
@@ -747,38 +750,12 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
       if (str == null) {
         throw new NullPointerException("str");
       }
-      return EncodeString(str, 0, str.length());
+      return new HeaderEncoder(76, 0).AppendAsEncodedWords(
+        str).toString();
     }
 
-    public static String EncodeString(String str, int index, int endIndex) {
-      if (str == null) {
-        throw new NullPointerException("str");
-      }
-      if (index < 0) {
-        throw new IllegalArgumentException("index (" + index + ") is less than " +
-            "0");
-      }
-      if (index > str.length()) {
-        throw new IllegalArgumentException("index (" + index + ") is more than " +
-          str.length());
-      }
-      if (endIndex < 0) {
-        throw new IllegalArgumentException("endIndex (" + endIndex +
-            ") is less than " + "0");
-      }
-      if (endIndex > str.length()) {
-        throw new IllegalArgumentException("endIndex (" + endIndex +
-          ") is more than " + str.length());
-      }
-      if (str.length() - index < endIndex) {
-        throw new IllegalArgumentException("str's length minus " + index + " (" +
-          (str.length() - index) + ") is less than " + endIndex);
-      }
-      return new EncodedWordEncoder().AddString(
-        str.substring(index, (index)+(endIndex))).FinalizeEncoding().toString();
-    }
-
-    public static String EncodePhraseText(
+    public static void EncodePhraseTextNew(
+  HeaderEncoder enc,
   String str,
   int index,
   int endIndex,
@@ -787,14 +764,14 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
       // and assumes that endIndex is the end of all whitespace
       // found after the phrase. Doesn't encode text within comments.
       if (index == endIndex) {
-        return "";
+        return;
       }
       if (!Message.HasTextToEscapeOrEncodedWordStarts(str, index, endIndex)) {
         // No need to use encoded words
-        return str.substring(index, (index)+(endIndex - index));
+        enc.AppendString(str.substring(index, (index)+(endIndex - index)));
+        return;
       }
       int lastIndex = index;
-      StringBuilder builder = new StringBuilder();
       for (int[] token : tokens) {
     if (!(token[1] >= lastIndex && token[1] >= index && token[1] <= endIndex &&
           token[2] >= index && token[2] <= endIndex)) {
@@ -802,13 +779,29 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
         }
         if (token[0] == HeaderParserUtility.TokenComment) {
           // Process this piece of the phrase
-          EncodePhraseTextInternal(str, lastIndex, token[1], tokens, builder);
+          EncodePhraseTextInternal(str, lastIndex, token[1], tokens, enc);
           // Append the comment
-          builder.append(str.substring(token[1], (token[1])+(token[2] - token[1])));
+          enc.AppendString(str.substring(token[1], (token[1])+(token[2] - token[1])));
           lastIndex = token[2];
         }
       }
-      EncodePhraseTextInternal(str, lastIndex, endIndex, tokens, builder);
-      return builder.toString();
+      EncodePhraseTextInternal(str, lastIndex, endIndex, tokens, enc);
+    }
+
+/**
+ * @deprecated
+ */
+@Deprecated
+    public static String EncodePhraseText(
+  String str,
+  int index,
+  int endIndex,
+  List<int[]> tokens) {
+      if (index == endIndex) {
+        return "";
+      }
+      HeaderEncoder enc = new HeaderEncoder(76, 0);
+      EncodePhraseTextNew(enc, str, index, endIndex, tokens);
+      return enc.toString();
     }
   }

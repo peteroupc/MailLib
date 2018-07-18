@@ -9,6 +9,8 @@ at: http://peteroupc.github.io/
 
 import com.upokecenter.util.*;
 
+// NOTE: Implements Punycode defined in RFC 3492
+
     /**
      * Utility methods for domain names.
      */
@@ -79,10 +81,10 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
         throw new IllegalArgumentException("endIndex (" + endIndex +
           ") is less than " + index);
       }
-      int n = 128;
+      int vnum = 128;
       int delta = 0;
       int bias = 72;
-      int h = 0;
+      int v4 = 0;
       int tmpIndex;
       int firstIndex = -1;
       int codePointLength = 0;
@@ -107,43 +109,43 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
         if (c < 0x80) {
           // This is a basic (ASCII) code point
           ++outputLength;
-          ++h;
+          ++v4;
         } else if (firstIndex < 0) {
           firstIndex = tmpIndex;
         }
         // Increment index after setting firstIndex
         tmpIndex += (c >= 0x10000) ? 2 : 1;
       }
-      if (h != 0) {
+      if (v4 != 0) {
         ++outputLength;
       }
-      int b = h;
+      int b = v4;
       if (firstIndex >= 0) {
         basicsBeforeFirstNonbasic = firstIndex - index;
       } else {
         // No non-basic code points
         return endIndex - index;
       }
-      while (h < codePointLength) {
+      while (v4 < codePointLength) {
         int min = 0x110000;
         tmpIndex = firstIndex;
         while (tmpIndex < endIndex) {
           int c = CodePointAt(str, tmpIndex, endIndex);
           tmpIndex += (c >= 0x10000) ? 2 : 1;
-          if (c >= n && c < min) {
+          if (c >= vnum && c < min) {
             min = c;
           }
         }
-        int d = min - n;
-        if (d > Integer.MAX_VALUE / (h + 1)) {
+        int v3 = min - vnum;
+        if (v3 > Integer.MAX_VALUE / (v4 + 1)) {
           return -1;
         }
-        d *= h + 1;
-        n = min;
-        if (d > Integer.MAX_VALUE - delta) {
+        v3 *= v4 + 1;
+        vnum = min;
+        if (v3 > Integer.MAX_VALUE - delta) {
           return -1;
         }
-        delta += d;
+        delta += v3;
         tmpIndex = firstIndex;
         if (basicsBeforeFirstNonbasic > Integer.MAX_VALUE - delta) {
           return -1;
@@ -152,39 +154,39 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
         while (tmpIndex < endIndex) {
           int c = CodePointAt(str, tmpIndex, endIndex);
           tmpIndex += (c >= 0x10000) ? 2 : 1;
-          if (c < n) {
+          if (c < vnum) {
             if (delta == Integer.MAX_VALUE) {
               return -1;
             }
             ++delta;
-          } else if (c == n) {
-            int q = delta;
-            int k = 36;
+          } else if (c == vnum) {
+            int v1 = delta;
+            int v2 = 36;
             while (true) {
-              int t;
-              t = (k <= bias) ? 1 : ((k >= bias + 26) ? 26 : (k - bias));
-              if (q < t) {
+              int v5;
+              v5 = (v2 <= bias) ? 1 : ((v2 >= bias + 26) ? 26 : (v2 - bias));
+              if (v1 < v5) {
                 break;
               }
               ++outputLength;
-              q -= t;
-              q /= 36 - t;
-              k += 36;
+              v1 -= v5;
+              v1 /= 36 - v5;
+              v2 += 36;
             }
             ++outputLength;
-            delta = (h == b) ? delta / 700 : delta >> 1;
-            delta += delta / (h + 1);
-            k = 0;
+            delta = (v4 == b) ? delta / 700 : delta >> 1;
+            delta += delta / (v4 + 1);
+            v2 = 0;
             while (delta > 455) {
               delta /= 35;
-              k += 36;
+              v2 += 36;
             }
-            bias = k + ((36 * delta) / (delta + 38));
+            bias = v2 + ((36 * delta) / (delta + 38));
             delta = 0;
-            ++h;
+            ++v4;
           }
         }
-        ++n;
+        ++vnum;
         ++delta;
       }
       return outputLength;
@@ -258,7 +260,7 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
         index = lastHyphen + 1;
       }
       i = 0;
-      int n = 128;
+      int vnum = 128;
       int bias = 72;
       int stringLength = builder.length();
       char[] chararr = new char[2];
@@ -287,16 +289,16 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
             return null;
           }
           i += temp;
-          int t = k - bias;
+          int v5 = k - bias;
           if (k <= bias) {
-            t = 1;
+            v5 = 1;
           } else if (k >= bias + 26) {
-            t = 26;
+            v5 = 26;
           }
-          if (digit < t) {
+          if (digit < v5) {
             break;
           }
-          temp = 36 - t;
+          temp = 36 - v5;
           if (w > Integer.MAX_VALUE / temp) {
             return null;
           }
@@ -314,17 +316,17 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
         bias = k + ((36 * delta) / (delta + 38));
         int idiv;
         idiv = i / futureLength;
-        if (n > Integer.MAX_VALUE - idiv) {
+        if (vnum > Integer.MAX_VALUE - idiv) {
           return null;
         }
-        n += idiv;
+        vnum += idiv;
         i %= futureLength;
-        if (n <= 0xffff) {
-          chararr[0] = (char)n;
+        if (vnum <= 0xffff) {
+          chararr[0] = (char)vnum;
           builder.insert(i, chararr, 0, 1);
-        } else if (n <= 0x10ffff) {
-          chararr[0] = (char)((((n - 0x10000) >> 10) & 0x3ff) + 0xd800);
-          chararr[1] = (char)(((n - 0x10000) & 0x3ff) + 0xdc00);
+        } else if (vnum <= 0x10ffff) {
+          chararr[0] = (char)((((vnum - 0x10000) >> 10) & 0x3ff) + 0xd800);
+          chararr[1] = (char)(((vnum - 0x10000) & 0x3ff) + 0xdc00);
           builder.insert(i, chararr, 0, 2);
         } else {
           return null;
@@ -369,10 +371,10 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
         throw new IllegalArgumentException("endIndex (" + endIndex +
           ") is less than " + index);
       }
-      int n = 128;
+      int vnum = 128;
       int delta = 0;
       int bias = 72;
-      int h = 0;
+      int v4 = 0;
       int tmpIndex;
       int firstIndex = -1;
       int codePointLength = 0;
@@ -406,11 +408,11 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
           // This is an uppercase ASCII character,
           // convert to lowercase
           builder.append((char)(c + 0x20));
-          ++h;
+          ++v4;
         } else if (c < 0x80) {
           // This is a basic (ASCII) code point
           builder.append((char)c);
-          ++h;
+          ++v4;
         } else if (firstIndex < 0) {
           firstIndex = tmpIndex;
         }
@@ -419,7 +421,7 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
         }
         ++tmpIndex;
       }
-      int b = h;
+      int b = v4;
       if (firstIndex >= 0) {
         basicsBeforeFirstNonbasic = firstIndex - index;
       } else {
@@ -427,15 +429,15 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
         // (NOTE: Not encoded with "-" at end)
         return builder.toString();
       }
-      if (h != 0) {
+      if (v4 != 0) {
         builder.append('-');
       }
-      while (h < codePointLength) {
+      while (v4 < codePointLength) {
         int min = 0x110000;
         tmpIndex = firstIndex;
         while (tmpIndex < endIndex) {
           int c = Idna.CodePointAt(str, tmpIndex);
-          if (c >= n && c < min) {
+          if (c >= vnum && c < min) {
             min = c;
           }
           if (c >= 0x10000) {
@@ -443,16 +445,16 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
           }
           ++tmpIndex;
         }
-        int d = min - n;
-        if (d > Integer.MAX_VALUE / (h + 1)) {
+        int v3 = min - vnum;
+        if (v3 > Integer.MAX_VALUE / (v4 + 1)) {
           return null;
         }
-        d *= h + 1;
-        n = min;
-        if (d > Integer.MAX_VALUE - delta) {
+        v3 *= v4 + 1;
+        vnum = min;
+        if (v3 > Integer.MAX_VALUE - delta) {
           return null;
         }
-        delta += d;
+        delta += v3;
         tmpIndex = firstIndex;
         if (basicsBeforeFirstNonbasic > Integer.MAX_VALUE - delta) {
           return null;
@@ -464,29 +466,29 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
             ++tmpIndex;
           }
           ++tmpIndex;
-          if (c < n) {
+          if (c < vnum) {
             if (delta == Integer.MAX_VALUE) {
               return null;
             }
             ++delta;
-          } else if (c == n) {
+          } else if (c == vnum) {
             int q = delta;
             int k = 36;
             while (true) {
-              int t;
-              t = (k <= bias) ? 1 : ((k >= bias + 26) ? 26 : (k - bias));
-              if (q < t) {
+              int v5;
+              v5 = (k <= bias) ? 1 : ((k >= bias + 26) ? 26 : (k - bias));
+              if (q < v5) {
                 break;
               }
-              int digit = t + ((q - t) % (36 - t));
+              int digit = v5 + ((q - v5) % (36 - v5));
               builder.append(PunycodeAlphabet.charAt(digit));
-              q -= t;
-              q /= 36 - t;
+              q -= v5;
+              q /= 36 - v5;
               k += 36;
             }
             builder.append(PunycodeAlphabet.charAt(q));
-            delta = (h == b) ? delta / 700 : delta >> 1;
-            delta += delta / (h + 1);
+            delta = (v4 == b) ? delta / 700 : delta >> 1;
+            delta += delta / (v4 + 1);
             k = 0;
             while (delta > 455) {
               delta /= 35;
@@ -494,10 +496,10 @@ throw new IllegalArgumentException("endIndex (" + endIndex + ") is less than " +
             }
             bias = k + ((36 * delta) / (delta + 38));
             delta = 0;
-            ++h;
+            ++v4;
           }
         }
-        ++n;
+        ++vnum;
         ++delta;
       }
       return builder.toString();

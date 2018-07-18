@@ -84,14 +84,15 @@ namespace PeterO.Mail {
       return false;  // No need to write space anymore
     }
 
+    // TODO: Handle strings with unpaired surrogates
     public HeaderEncoder AppendString(string symbol) {
       if (symbol.Length > 0) {
         var i = 0;
         var symbolBegin = 0;
         var writeSpace = false;
         while (i < symbol.Length) {
-     if (symbol[i] == '\r' && i + 1 < symbol.Length && symbol[i + 1] == '\n'
-) {
+     if (symbol[i] == '\r' && i + 1 < symbol.Length &&
+          symbol[i + 1] == '\n') {
          writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i,
               writeSpace);
             symbolBegin = i + 2;
@@ -135,7 +136,11 @@ namespace PeterO.Mail {
             ++i;
           }
         }
-        AppendSpaceAndSymbol(symbol, symbolBegin, symbol.Length, writeSpace);
+        writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin,
+                    symbol.Length, writeSpace);
+        if (writeSpace) {
+ AppendSpace();
+}
       }
       return this;
     }
@@ -171,6 +176,137 @@ namespace PeterO.Mail {
         }
       }
       AppendSpaceAndSymbol(symbol, symbolBegin, symbol.Length, writeSpace);
+    }
+
+    private bool CanCharUnitFit(int currentWordLength, int unitLength, bool
+      writeSpace) {
+      int effectiveMaxLength = 75;  // 75 is max. allowed length of an encoded word
+      if (this.GetMaxLineLength() >= 0) {
+        effectiveMaxLength = Math.Min(
+         effectiveMaxLength,
+         this.GetMaxLineLength());
+      }
+      if (currentWordLength == 0) {
+        // 12 characters for prologue and epilogue
+        int extraSpace = 0;
+        if (writeSpace) {
+ extraSpace = 1;
+}
+        return this.column + 12 + unitLength + extraSpace <= effectiveMaxLength;
+      } else {
+        //
+        return this.column + 2 + unitLength <= effectiveMaxLength;
+      }
+    }
+
+    private static string TrimAllSpaceLine(string str) {
+      // Keep a generated header field from having an all-whitespace
+      // line at the end
+      if (str.Length > 0) {
+        int c = str[str.Length - 1];
+        if (c != ' ' && c != '\t' && c != '\n') {
+ return str;
+}
+        string ret = str;
+        for (var i = str.Length - 1; i >= 0; --i) {
+          switch (str[i]) {
+            case ' ':
+            case '\t':
+              break;
+            case '\n':
+              if (i > 0 && str[i - 1] == '\r') {
+                --i;
+                ret = str.Substring(0, i);
+              } else {
+                return ret;
+              }
+              break;
+            default: return ret;
+         }
+        }
+        return ret;
+      }
+      return str;
+    }
+
+    private void AppendOne(char c) {
+      this.builder.Append(c);
+      ++this.column;
+    }
+    private const string HexChars = "0123456789ABCDEF";
+    private void AppendQEncoding(int ch) {
+      this.builder.Append('=');
+      this.builder.Append(HexChars[(ch >> 4) & 15]);
+      this.builder.Append(HexChars[ch & 15]);
+      this.column += 3;
+    }
+
+    public HeaderEncoder AppendAsEncodedWords(string symbol) {
+      var i = 0;
+      var currentWordLength = 0;
+      while (i < symbol.Length) {
+        int ch = DataUtilities.CodePointAt(symbol, i);
+        if (ch >= 0x10000) {
+          ++i;
+        }
+ bool smallChar=ch < 0x80 && ch > 0x20 && ch != (char)'"' && ch != (char)','
+          &&
+                 "?()<>[]:;@\\.=_".IndexOf((char)ch) < 0;
+        int unitLength = 1;
+        if (ch == 0x20 || smallChar) {
+ unitLength = 1;
+  } else if (ch <= 0x7f) {
+ unitLength = 3;
+  } else if (ch <= 0x7ff) {
+ unitLength = 6;
+  } else if (ch <= 0xffff) {
+ unitLength = 9;
+} else {
+ unitLength = 12;
+}
+        if (!CanCharUnitFit(currentWordLength, unitLength, false)) {
+           if (currentWordLength>0) {
+             AppendSymbol("?=");
+             if (CanCharUnitFit(0, unitLength, true)) {
+                 AppendSpace();
+             } else {
+                 AppendBreak();
+             }
+           } else {
+             AppendBreak();
+           }
+           AppendSymbol("=?utf-8?Q?");
+           currentWordLength = 12;
+        } else if (currentWordLength == 0) {
+           AppendSymbol("=?utf-8?Q?");
+           currentWordLength = 12;
+        }
+        if (ch == 0x20) {
+ this.AppendOne('_');
+  } else if (smallChar) {
+ this.AppendOne((char)ch);
+  } else if (ch <= 0x7f) {
+ this.AppendQEncoding(ch);
+  } else if (ch <= 0x7ff) {
+          this.AppendQEncoding(0xc0 | ((ch >> 6) & 0x1f));
+          this.AppendQEncoding(0x80 | (ch & 0x3f));
+        } else if (ch <= 0xffff) {
+          this.AppendQEncoding(0xe0 | ((ch >> 12) & 0x0f));
+          this.AppendQEncoding(0x80 | ((ch >> 6) & 0x3f));
+          this.AppendQEncoding(0x80 | (ch & 0x3f));
+        } else {
+          this.AppendQEncoding(0xf0 | ((ch >> 18) & 0x07));
+          this.AppendQEncoding(0x80 | ((ch >> 12) & 0x3f));
+          this.AppendQEncoding(0x80 | ((ch >> 6) & 0x3f));
+          this.AppendQEncoding(0x80 | (ch & 0x3f));
+        }
+        currentWordLength+=unitLength;
+        ++i;
+      }
+      if (currentWordLength>0) {
+ AppendSymbol("?=");
+}
+      return this;
     }
 
     private void AppendQuotedString(string symbol, bool writeSpace) {
@@ -230,7 +366,7 @@ namespace PeterO.Mail {
       return this;
     }
 
-    private static string CapitalizeHeaderField(string s) {
+    public static string CapitalizeHeaderField(string s) {
       var builder = new StringBuilder();
       var afterHyphen = true;
       for (int i = 0; i < s.Length; ++i) {
@@ -245,18 +381,32 @@ namespace PeterO.Mail {
       return ret.Equals("Mime-Version") ? "MIME-Version" :
         (ret.Equals("Message-Id") ? "Message-ID" : ret);
     }
+  public static string EncodeHeaderFieldAsEncodedWords(string fieldName, string
+      fieldValue) {
+      var sa = new HeaderEncoder(76, 0);
+      sa.AppendSymbol(CapitalizeHeaderField(fieldName) + ":");
+      sa.AppendSpace();
+      var fws = HeaderParser.ParseFWS(fieldValue, 0, fieldValue.Length, null);
+      if (fws>0) {
+        fieldValue = fieldValue.Substring(fws);
+      }
+      sa.AppendAsEncodedWords(fieldValue);
+      return sa.ToString();
+  }
   public static string EncodeHeaderField(string fieldName, string
       fieldValue) {
       var sa = new HeaderEncoder(76, 0);
       sa.AppendSymbol(CapitalizeHeaderField(fieldName) + ":");
-      if (fieldValue.Length == 0 || fieldValue[0] != ' ') {
-        sa.AppendSpace();
+      sa.AppendSpace();
+      var fws = HeaderParser.ParseFWS(fieldValue, 0, fieldValue.Length, null);
+      if (fws>0) {
+        fieldValue = fieldValue.Substring(fws);
       }
       sa.AppendString(fieldValue);
       return sa.ToString();
     }
     public override string ToString() {
-      return this.builder.ToString();
+      return TrimAllSpaceLine(this.builder.ToString());
     }
   }
 }

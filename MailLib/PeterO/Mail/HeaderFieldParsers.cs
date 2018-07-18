@@ -14,8 +14,8 @@ using PeterO.Text;
 namespace PeterO.Mail {
   internal static class HeaderFieldParsers {
     private sealed class UnstructuredHeaderField : IHeaderFieldParser {
-      public string DowngradeFieldValue(string str) {
-        return Rfc2047.EncodeString(str);
+      public string DowngradeHeaderField(string name, string str) {
+        return HeaderEncoder.EncodeHeaderFieldAsEncodedWords(name, str);
       }
 
       public string DecodeEncodedWords(string str) {
@@ -70,7 +70,15 @@ namespace PeterO.Mail {
         return groups;
       }
 
-      public virtual string DowngradeFieldValue(string str) {
+      public virtual string DowngradeHeaderField(string name, string str) {
+        return HeaderEncoder.EncodeHeaderField(
+          name,
+          DowngradeHeaderFieldValue(this, str));
+      }
+
+      public static string DowngradeHeaderFieldValue(
+        StructuredHeaderField shf,
+        string str) {
         string originalString = str;
         IList<string> originalGroups = null;
         for (int phase = 0; phase < 5; ++phase) {
@@ -84,7 +92,7 @@ namespace PeterO.Mail {
           }
           var sb = new StringBuilder();
           var tokener = new Tokener();
-          int endIndex = this.Parse(str, 0, str.Length, tokener);
+          int endIndex = shf.Parse(str, 0, str.Length, tokener);
           if (endIndex != str.Length) {
             // The header field is syntactically invalid,
             // so downgrading is not possible
@@ -109,7 +117,7 @@ namespace PeterO.Mail {
                     // Console.WriteLine(str.Substring(startIndex, endIndex -
                     // startIndex));
                 if (Message.HasTextToEscapeOrEncodedWordStarts(str,
-                      startIndex,
+                    startIndex,
                     endIndex)) {
                     string newComment = Rfc2047.EncodeComment(
                   str,
@@ -229,7 +237,7 @@ namespace PeterO.Mail {
                     if (nonasciiLocalParts) {
                     // At least some of the domains could not
                     // be converted to ASCII
-                    originalGroups = originalGroups ?? this.ParseGroupLists(
+                    originalGroups = originalGroups ?? shf.ParseGroupLists(
           originalString,
           0,
           originalString.Length);
@@ -372,8 +380,7 @@ namespace PeterO.Mail {
                     addrSpecStart,
                     addrSpecEnd - addrSpecStart);
                     string valueSbString = sb.ToString();
-    bool endsWithSpace = sb.Length > 0 &&
-                      (valueSbString[valueSbString.Length -
+    bool endsWithSpace = sb.Length > 0 && (valueSbString[valueSbString.Length -
                     1] == 0x20 || valueSbString[valueSbString.Length - 1] ==
                     0x09);
                     string encodedText = (endsWithSpace ? String.Empty : " ") +
@@ -564,10 +571,19 @@ namespace PeterO.Mail {
         return false;
       }
 
-      public override string DowngradeFieldValue(string str) {
+      public override string DowngradeHeaderField(string name, string str) {
+        return HeaderEncoder.EncodeHeaderField(
+          name,
+          DowngradeHeaderFieldValueReceived(this, str));
+      }
+      private static string DowngradeHeaderFieldValueReceived(
+        HeaderReceived shf,
+        string str) {
         // NOTE: Follows RFC 6857, except HasTextToEscape
         // is broader than non-ASCII
-        string header = base.DowngradeFieldValue(str);
+        string header = StructuredHeaderField.DowngradeHeaderFieldValue(
+          shf,
+          str);
         var index = 0;
         var sb = new StringBuilder();
         while (index < header.Length) {
@@ -1647,7 +1663,7 @@ namespace PeterO.Mail {
 
     public static IHeaderFieldParser GetParser(string name) {
       if (name == null) {
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
       }
       name = DataUtilities.ToLowerCaseAscii(name);
       return fieldMap.ContainsKey(name) ? fieldMap[name] : Unstructured;

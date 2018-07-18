@@ -16,8 +16,8 @@ import com.upokecenter.text.*;
 private HeaderFieldParsers() {
 }
     private static final class UnstructuredHeaderField implements IHeaderFieldParser {
-      public String DowngradeFieldValue(String str) {
-        return Rfc2047.EncodeString(str);
+      public String DowngradeHeaderField(String name, String str) {
+        return HeaderEncoder.EncodeHeaderFieldAsEncodedWords(name, str);
       }
 
       public String DecodeEncodedWords(String str) {
@@ -72,7 +72,15 @@ private HeaderFieldParsers() {
         return groups;
       }
 
-      public String DowngradeFieldValue(String str) {
+      public String DowngradeHeaderField(String name, String str) {
+        return HeaderEncoder.EncodeHeaderField(
+          name,
+          DowngradeHeaderFieldValue(this, str));
+      }
+
+      public static String DowngradeHeaderFieldValue(
+        StructuredHeaderField shf,
+        String str) {
         String originalString = str;
         List<String> originalGroups = null;
         for (int phase = 0; phase < 5; ++phase) {
@@ -86,7 +94,7 @@ private HeaderFieldParsers() {
           }
           StringBuilder sb = new StringBuilder();
           Tokener tokener = new Tokener();
-          int endIndex = this.Parse(str, 0, str.length(), tokener);
+          int endIndex = shf.Parse(str, 0, str.length(), tokener);
           if (endIndex != str.length()) {
             // The header field is syntactically invalid,
             // so downgrading is not possible
@@ -111,7 +119,7 @@ private HeaderFieldParsers() {
                     // System.out.println(str.substring(startIndex, (startIndex)+(endIndex -
                     // startIndex)));
                 if (Message.HasTextToEscapeOrEncodedWordStarts(str,
-                      startIndex,
+                    startIndex,
                     endIndex)) {
                     String newComment = Rfc2047.EncodeComment(
                   str,
@@ -231,7 +239,7 @@ private HeaderFieldParsers() {
                     if (nonasciiLocalParts) {
                     // At least some of the domains could not
                     // be converted to ASCII
-                    originalGroups = (originalGroups == null) ? (this.ParseGroupLists(
+                    originalGroups = (originalGroups == null) ? (shf.ParseGroupLists(
           originalString,
           0,
           originalString.length())) : originalGroups;
@@ -374,8 +382,7 @@ private HeaderFieldParsers() {
                     addrSpecStart, (
                     addrSpecStart)+(addrSpecEnd - addrSpecStart));
                     String valueSbString = sb.toString();
-    boolean endsWithSpace = sb.length() > 0 &&
-                      (valueSbString.charAt(valueSbString.length() -
+    boolean endsWithSpace = sb.length() > 0 && (valueSbString.charAt(valueSbString.length() -
                     1) == 0x20 || valueSbString.charAt(valueSbString.length() - 1) ==
                     0x09);
                     String encodedText = (endsWithSpace ? "" : " ") +
@@ -559,10 +566,19 @@ private HeaderFieldParsers() {
         return false;
       }
 
-      @Override public String DowngradeFieldValue(String str) {
+      @Override public String DowngradeHeaderField(String name, String str) {
+        return HeaderEncoder.EncodeHeaderField(
+          name,
+          DowngradeHeaderFieldValueReceived(this, str));
+      }
+      private static String DowngradeHeaderFieldValueReceived(
+        HeaderReceived shf,
+        String str) {
         // NOTE: Follows RFC 6857, except HasTextToEscape
         // is broader than non-ASCII
-        String header = super.DowngradeFieldValue(str);
+        String header = StructuredHeaderField.DowngradeHeaderFieldValue(
+          shf,
+          str);
         int index = 0;
         StringBuilder sb = new StringBuilder();
         while (index < header.length()) {
