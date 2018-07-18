@@ -13,7 +13,7 @@ namespace PeterO.Mail {
 
     int Parse(string str, int index, int endIndex, ITokener tokener);
 
-    string DowngradeFieldValue(string str);
+    string DowngradeHeaderField(string name, string str);
 
     string DecodeEncodedWords(string str);
 

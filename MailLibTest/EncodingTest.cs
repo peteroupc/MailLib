@@ -1242,6 +1242,7 @@ namespace MailLibTest {
     }
 
     [Test]
+    [Timeout(25000)]
     public void TestDowngradeDSN() {
       const string ValueHexstart = "\\x" + "{";
       TestDowngradeDSNOne(
@@ -1279,8 +1280,8 @@ string stringTemp =
         TestDowngradeDSNOne(stringTemp, stringTemp2);
       }
       TestDowngradeDSNOne(
-  "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_x=40=C2=BE?=",
-  "(\u00be) rfc822; x@\u00be");
+  "=?utf-8?Q?=28=C2=BE=29_rfc822=3B_m=C2=BE?=",
+  "(\u00be) rfc822; m\u00be");
     }
 
     private static void TestValidLanguageTag(bool expectedValid, string str) {
@@ -1843,6 +1844,7 @@ string stringTemp =
       }
     }
     [Test]
+    [Timeout(5000)]
     public void TestCommentsToWords2() {
       {
         string stringTemp = DowngradeHeaderField(
@@ -2089,7 +2091,6 @@ object objectTemp =
 
     [Test]
     [Timeout(5000)]
-
     public void TestEncodedWords() {
       const string ValuePar = "(";
         TestEncodedWordsPhrase("(sss) y", "(sss) =?us-ascii?q?y?=");

@@ -275,16 +275,16 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Message.GetDate"]/*'/>
     public int[] GetDate() {
       string field = this.GetHeader("date");
- return (field == null) ? (null) : (MailDateTime.ParseDateString(field,
-        true));
+      return (field == null) ? (null) : (MailDateTime.ParseDateString(field,
+             true));
     }
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.SetDate(System.Int32[])"]/*'/>
     public Message SetDate(int[] dateTime) {
       if (dateTime == null) {
-  throw new ArgumentNullException(nameof(dateTime));
-}
+        throw new ArgumentNullException(nameof(dateTime));
+      }
       if (!DateTimeUtilities.IsValidDateTime(dateTime)) {
         throw new ArgumentException("Invalid date and time");
       }
@@ -634,6 +634,18 @@ namespace PeterO.Mail {
 
     // Parse the delivery status byte array to downgrade
     // the Original-Recipient and Final-Recipient header fields
+    // NOTE: RFC 3464 (delivery status notifications) refers
+    // to RFC 822 for its message conventions (sec. 2.1.1), while RFC
+    // 8098 (disposition notifications) refers to RFC 5322 for its
+    // conventions (sec. 3.1.1). While RFC 822 allows white
+    // space and comments to appear between lexical tokens
+    // of structured header fields (note in particular sec. A.3.3, which
+    // shows white space between the header field name and the
+    // colon), RFC 5322 doesn't (it refers to
+    // RFC 2234, which states that linear white space is no longer
+    // implicit in ABNF productions). However, RFC 5322 includes
+    // an obsolete syntax allowing optional white space to appear
+    // between the header field and the colon (sec. 4.5.8).
     internal static byte[] DowngradeDeliveryStatus(byte[] bytes) {
       var sb = new StringBuilder();
       var index = 0;
@@ -679,15 +691,13 @@ namespace PeterO.Mail {
           } else {
             first &= c != 0x20 && c != 0x09;
           }
-          // NOTE: Used to ignore linear white space at the end of the
-          // header field name. But as of RFC 2234, linear white space is no
-          // longer implicit in ABNF productions; as a result, linear white
-          // space is interpreted as not allowed between the header field
-          // name and the colon, even though both may be separated in the
-          // ABNF productions in RFC 3798. As a further result, a header
-          // field starting with "Example :" will not be treated as a header
+          // NOTE: Allows obsolete syntax between header field
+          // name and colon. As a result, a header
+          // field starting with "Example :" will be treated as a header
           // field named "Example" in this code.
-          headerNameEnd = index;
+          if (c != 0x20 && c != 0x09) {
+            headerNameEnd = index;
+          }
         }
         if (endOfHeaders) {
           break;
@@ -778,32 +788,55 @@ namespace PeterO.Mail {
           // ++lineCount;
         }
         if (origRecipient || finalRecipient) {
-          string headerValue = DataUtilities.GetUtf8String(
+          string headerValue = null;
+          var status = new int[1];
+          try {
+            headerValue = DataUtilities.GetUtf8String(
             bytes,
             headerValueStart,
             headerValueEnd - headerValueStart,
-            true);
-          var status = new int[1];
-          headerValue = DowngradeRecipientHeaderValue(headerValue, status);
+            false);  // throws on invalid UTF-8
+          } catch (ArgumentException ex) {
+            // Invalid UTF-8, so encapsulate
+            headerValue = null;
+            status[0] = 2;
+          }
+          if (headerValue != null) {
+            headerValue = DowngradeRecipientHeaderValue(headerValue, status);
+          }
           if (status[0] == 2 || status[0] == 1) {
-            // Downgraded or encapsulated
+            // Downgraded (1) or encapsulated (2)
             if (writer == null) {
               writer = new ArrayWriter();
               writer.Write(bytes, 0, headerNameStart);
             } else {
               writer.Write(bytes, lastIndex, headerNameStart - lastIndex);
             }
-            string field = (origRecipient ?
-        "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient");
-            if (status[0] != 2) {
-              field = fieldName;
+            if (status[0] == 1) {
+              // Downgraded
+              byte[] newBytes = DataUtilities.GetUtf8Bytes(
+                 HeaderEncoder.EncodeHeaderField(fieldName, headerValue),
+                 true);
+              writer.Write(newBytes, 0, newBytes.Length);
+            } else {
+              // Encapsulated
+              string field = (origRecipient ?
+       "Downgraded-Original-Recipient" : "Downgraded-Final-Recipient");
+              headerValue = DataUtilities.GetUtf8String(
+                  bytes,
+                  headerValueStart,
+                  headerValueEnd - headerValueStart,
+                  true);  // replaces invalid UTF-8
+              string newField =
+                HeaderEncoder.EncodeHeaderFieldAsEncodedWords(field,
+                headerValue);
+              byte[] newBytes = DataUtilities.GetUtf8Bytes(
+                newField,
+                true);
+              writer.Write(newBytes, 0, newBytes.Length);
             }
-            byte[] newBytes = DataUtilities.GetUtf8Bytes(
-              HeaderEncoder.EncodeHeaderField(field, headerValue),
-              true);
-            writer.Write(newBytes, 0, newBytes.Length);
-            lastIndex = headerValueEnd;
           }
+          lastIndex = headerValueEnd;
         }
       }
       if (writer != null) {
@@ -811,6 +844,26 @@ namespace PeterO.Mail {
         bytes = writer.ToArray();
       }
       return bytes;
+    }
+
+    private static string EncodeCommentsInText(string str) {
+      var i = 0;
+      if (str.IndexOf('(') < 0) return str;
+      var sb = new StringBuilder();
+      while (i < str.Length) {
+        if (str[i] == '(') {
+        int si = HeaderParserUtility.ParseCommentLax(str, i, str.Length,
+            null);
+          if (si != i) {
+            sb.Append(Rfc2047.EncodeComment(str, i, si));
+            i = si;
+            continue;
+          }
+        }
+        sb.Append(str[i]);
+        ++i;
+      }
+      return sb.ToString();
     }
 
     internal static string DowngradeRecipientHeaderValue(
@@ -844,19 +897,31 @@ namespace PeterO.Mail {
           atomText,
           headerValue.Length,
           null);
+        // NOTE: Commented out for now (see below)
+        //if (atomText != typeEnd) {
+ isUtf8 = false;
+}
         if (index < headerValue.Length && headerValue[atomText] == ';') {
-          string typePart = headerValue.Substring(0, atomText + 1);
-          // Downgrade the comments in the type part
-          // NOTE: Final-recipient has the same syntax as original-recipient,
-          // except for the header field name
-          typePart = HeaderFieldParsers.GetParser(
-            "original-recipient").DowngradeFieldValue(typePart);
+          int addressPart = HeaderParser.ParseCFWS(
+           headerValue,
+           atomText + 1,
+           headerValue.Length,
+           null);
+          string typePart = headerValue.Substring(0, addressPart);
           if (isUtf8) {
             // Downgrade the non-ASCII characters in the address
+            // NOTE: The ABNF for utf-8-type-addr in RFC 6533
+            // appears not to allow linear white space.
+            // DEVIATION: Allow CFWS between "utf-8" and semicolon
+            // for sake of robustness, even though it doesn't fit
+            // utf-8-type-addr (see also RFC 8098 secs. 3.2.3
+            // and 3.2.4)
             var builder = new StringBuilder();
             const string ValueHex = "0123456789ABCDEF";
-            for (int i = atomText + 1; i < headerValue.Length; ++i) {
-              if (headerValue[i] < 0x80) {
+            for (int i = addressPart; i < headerValue.Length; ++i) {
+              if (headerValue[i] < 0x7f && headerValue[i] > 0x20 &&
+                headerValue[i] != '\\' && headerValue[i] != '+' &&
+                   headerValue[i] != '-') {
                 builder.Append(headerValue[i]);
               } else {
                 int cp = DataUtilities.CodePointAt(headerValue, i);
@@ -873,9 +938,22 @@ namespace PeterO.Mail {
                 builder.Append('}');
               }
             }
-            headerValue = typePart + builder;
+            // Do comment downgrading last for sake of convenience
+            // (especially since RFC 8098 (disposition notifications) allows
+            // CFWS at the end of the address, though a conflict exists between
+            // that RFC and utf-8-type-addr, which technically allows
+            // parentheses to appear in the address).
+          // NOTE: The syntax for Original-Recipient and Final-Recipient header
+          // field values (in RFC 3464, delivery status notifications) has a
+          // structured part and an
+          // unstructured part (generic-address defined as "*text") (see
+          // RFC 3464 secs.
+          // 2.3.1 and 2.3.2, which uses the conventions in RFC
+          // 822, where linear white space can appear between lexical
+          // tokens of a header field).
+            headerValue = EncodeCommentsInText(typePart + builder);
           } else {
-            headerValue = typePart + headerValue.Substring(atomText + 1);
+            headerValue = EncodeCommentsInText(headerValue);
           }
         }
         if (
@@ -883,16 +961,11 @@ namespace PeterO.Mail {
             headerValue,
             0,
             headerValue.Length)) {
-          // Encapsulate the header field in encoded words
           if (status != null) {
             // Encapsulated
             status[0] = 2;
           }
-          int spaceAndTabEnd = ParserUtility.SkipSpaceAndTab(
-  origValue,
-  0,
-  origValue.Length);
-          return Rfc2047.EncodeString(origValue.Substring(spaceAndTabEnd));
+          return null;
         }
         if (status != null) {
           // Downgraded
@@ -1077,12 +1150,12 @@ namespace PeterO.Mail {
                   indexTemp4 = index;
                   do {
                     int indexStart4 = index;
-                  while (index < endIndex && ((str[index] == 32) ||
-                (str[index] == 9))) {
+                    while (index < endIndex && ((str[index] == 32) ||
+                  (str[index] == 9))) {
                     ++index;
                     }
-                 if (index + 1 < endIndex && str[index] == 13 && str[index +
-                1] == 10) {
+                    if (index + 1 < endIndex && str[index] == 13 && str[index +
+                   1] == 10) {
                     index += 2;
                     } else {
                     index = indexStart4; break;
@@ -1213,7 +1286,7 @@ namespace PeterO.Mail {
     }
 
     private static bool IsWellFormedBoundary(string str) {
-      if (str == null || str.Length < 1 || str.Length > 70) {
+      if (String.IsNullOrEmpty(str) || str.Length > 70) {
         return false;
       }
       for (int i = 0; i < str.Length; ++i) {
@@ -1427,9 +1500,7 @@ namespace PeterO.Mail {
                   ungetStream.Unget();
                   // this isn't space or tab; if this is the start
                   // of the line, this is no longer FWS
-                  if (lineCount == 0) {
-                    haveFWS = false;
-                  }
+                  haveFWS &= lineCount != 0;
                   break;
                 }
               }
@@ -1555,13 +1626,13 @@ namespace PeterO.Mail {
       // all of the body is checked
       bool allTextBytes = (!isBodyPart) && lengthCheck != body.Length;
       for (int i = 0; i < lengthCheck; ++i) {
-        if (i>0 && (allTextBytes ? (i%108 == 0) : (i%36 == 0))) {
-         if (highBytes + ctlBytes > i/3) {
-           return EncodingBase64;
-         }
-         if (!allTextBytes) {
-           return EncodingQuotedPrintable;
-         }
+        if (i > 0 && (allTextBytes ? (i % 108 == 0) : (i % 36 == 0))) {
+          if (highBytes + ctlBytes > i / 3) {
+            return EncodingBase64;
+          }
+          if (!allTextBytes) {
+            return EncodingQuotedPrintable;
+          }
         }
         if ((body[i] & 0x80) != 0) {
           ++highBytes;
@@ -1627,7 +1698,8 @@ namespace PeterO.Mail {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
-       throw new ArgumentException("Header field value contains invalid text");
+       throw new
+            ArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.Length, null) != value.Length) {
           throw new
@@ -1661,7 +1733,9 @@ namespace PeterO.Mail {
       if (!isMultipart) {
         if (builder.TopLevelType.Equals("message")) {
           if (builder.SubType.Equals("delivery-status") ||
-              builder.SubType.Equals("global-delivery-status")) {
+              builder.SubType.Equals("global-delivery-status") ||
+              builder.SubType.Equals("disposition-notification") ||
+              builder.SubType.Equals("global-disposition-notification")) {
             bodyToWrite = DowngradeDeliveryStatus(bodyToWrite);
           }
           bool msgCanBeUnencoded = CanBeUnencoded(bodyToWrite, depth > 0);
@@ -1709,6 +1783,7 @@ namespace PeterO.Mail {
       for (int i = 0; i < this.headers.Count; i += 2) {
         string name = this.headers[i];
         string value = this.headers[i + 1];
+        string rawField = null;
         if (name.Equals("content-type")) {
           if (haveContentType) {
             // Already outputted, continue
@@ -1782,7 +1857,7 @@ namespace PeterO.Mail {
     ParseAddresses(this.GetMultipleHeaders(name)));
                 if (value.Length == 0) {
                   // No addresses, synthesize a field
-                  value = this.SynthesizeField(name);
+                  rawField = this.SynthesizeField(name);
                 }
               }
             }
@@ -1792,20 +1867,20 @@ namespace PeterO.Mail {
               value = GenerateAddressList(ParseAddresses(value));
               if (value.Length == 0) {
                 // No addresses, synthesize a field
-                value = this.SynthesizeField(name);
+                rawField = this.SynthesizeField(name);
               }
             }
           }
         }
-        string rawField = HeaderEncoder.EncodeHeaderField(name, value);
+        rawField = rawField ?? (HeaderEncoder.EncodeHeaderField(name, value));
         if (CanOutputRaw(rawField)) {
           AppendAscii(output, rawField);
           if (rawField.IndexOf(": ", StringComparison.Ordinal) < 0) {
             throw new MessageDataException("No colon+space: " + rawField);
           }
         } else if (HasTextToEscapeOrEncodedWordStarts(value)) {
-          string downgraded =
-            HeaderFieldParsers.GetParser(name).DowngradeFieldValue(value);
+          string downgraded = HeaderFieldParsers.GetParser(name)
+                    .DowngradeHeaderField(name, value);
           if (
             HasTextToEscape(
               downgraded,
@@ -1818,9 +1893,9 @@ namespace PeterO.Mail {
               // Header field still contains invalid characters (such
               // as non-ASCII characters in 7-bit messages), convert
               // to a downgraded field
-              name = "downgraded-" + name;
-              downgraded =
-                    Rfc2047.EncodeString(ParserUtility.TrimSpaceAndTab(value));
+              downgraded = HeaderEncoder.EncodeHeaderFieldAsEncodedWords(
+                  "downgraded-" + name,
+                  ParserUtility.TrimSpaceAndTab(value));
             } else {
 #if DEBUG
               throw new
@@ -1831,10 +1906,11 @@ namespace PeterO.Mail {
                  "Header field still has non-Ascii or controls");
 #endif
             }
+          } else {
+            AppendAscii(
+              output,
+              downgraded);
           }
-          AppendAscii(
-            output,
-            HeaderEncoder.EncodeHeaderField(name, downgraded));
         } else {
           AppendAscii(
             output,
@@ -2177,7 +2253,7 @@ namespace PeterO.Mail {
       int bufferLength = buffer.Length;
       this.body = new byte[0];
       var aw = new ArrayWriter();
-       {
+      {
         while (true) {
           var ch = 0;
           try {
@@ -2283,7 +2359,7 @@ namespace PeterO.Mail {
       var bufferCount = 0;
       int bufferLength = buffer.Length;
       var aw = new ArrayWriter();
-       {
+      {
         while (true) {
           var ch = 0;
           try {
@@ -2325,15 +2401,19 @@ namespace PeterO.Mail {
     }
 
     private string SynthesizeField(string name) {
+      var encoder = new HeaderEncoder(76, 0);
+      encoder.AppendSymbol(name + ":");
+      encoder.AppendSpace();
       string fullField = Implode(this.GetMultipleHeaders(name), ", ");
-      string value = new EncodedWordEncoder().AddString(fullField)
-        .FinalizeEncoding().ToString();
-      if (value.Length > 0) {
-        value += " <me@" + name + "address.invalid>";
+      string lcname = DataUtilities.ToLowerCaseAscii(name);
+      if (fullField.Length == 0) {
+        encoder.AppendSymbol("me@" + name + "-address.invalid");
       } else {
-        value = "me@" + name + "-address.invalid";
+        encoder.AppendAsEncodedWords(fullField);
+        encoder.AppendSpace();
+        encoder.AppendSymbol("<me@" + name + "-address.invalid>");
       }
-      return value;
+      return encoder.ToString();
     }
 
     private class MessageStackEntry {

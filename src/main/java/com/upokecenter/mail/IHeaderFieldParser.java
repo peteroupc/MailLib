@@ -12,7 +12,7 @@ at: http://peteroupc.github.io/
 
     int Parse(String str, int index, int endIndex, ITokener tokener);
 
-    String DowngradeFieldValue(String str);
+    String DowngradeHeaderField(String name, String str);
 
     String DecodeEncodedWords(String str);
 

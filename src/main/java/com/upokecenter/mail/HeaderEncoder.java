@@ -83,14 +83,15 @@ import com.upokecenter.util.*;
       return false;  // No need to write space anymore
     }
 
+    // TODO: Handle strings with unpaired surrogates
     public HeaderEncoder AppendString(String symbol) {
       if (symbol.length() > 0) {
         int i = 0;
         int symbolBegin = 0;
         boolean writeSpace = false;
         while (i < symbol.length()) {
-     if (symbol.charAt(i) == '\r' && i + 1 < symbol.length() && symbol.charAt(i + 1) == '\n'
-) {
+     if (symbol.charAt(i) == '\r' && i + 1 < symbol.length() &&
+          symbol.charAt(i + 1) == '\n') {
          writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i,
               writeSpace);
             symbolBegin = i + 2;
@@ -134,7 +135,11 @@ import com.upokecenter.util.*;
             ++i;
           }
         }
-        AppendSpaceAndSymbol(symbol, symbolBegin, symbol.length(), writeSpace);
+        writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin,
+                    symbol.length(), writeSpace);
+        if (writeSpace) {
+ AppendSpace();
+}
       }
       return this;
     }
@@ -170,6 +175,137 @@ import com.upokecenter.util.*;
         }
       }
       AppendSpaceAndSymbol(symbol, symbolBegin, symbol.length(), writeSpace);
+    }
+
+    private boolean CanCharUnitFit(int currentWordLength, int unitLength, boolean
+      writeSpace) {
+      int effectiveMaxLength = 75;  // 75 is max. allowed length of an encoded word
+      if (this.GetMaxLineLength() >= 0) {
+        effectiveMaxLength = Math.min(
+         effectiveMaxLength,
+         this.GetMaxLineLength());
+      }
+      if (currentWordLength == 0) {
+        // 12 characters for prologue and epilogue
+        int extraSpace = 0;
+        if (writeSpace) {
+ extraSpace = 1;
+}
+        return this.column + 12 + unitLength + extraSpace <= effectiveMaxLength;
+      } else {
+        //
+        return this.column + 2 + unitLength <= effectiveMaxLength;
+      }
+    }
+
+    private static String TrimAllSpaceLine(String str) {
+      // Keep a generated header field from having an all-whitespace
+      // line at the end
+      if (str.length() > 0) {
+        int c = str.charAt(str.length() - 1);
+        if (c != ' ' && c != '\t' && c != '\n') {
+ return str;
+}
+        String ret = str;
+        for (var i = str.length() - 1; i >= 0; --i) {
+          switch (str.charAt(i)) {
+            case ' ':
+            case '\t':
+              break;
+            case '\n':
+              if (i > 0 && str.charAt(i - 1) == '\r') {
+                --i;
+                ret = str.substring(0, i);
+              } else {
+                return ret;
+              }
+              break;
+            default: return ret;
+         }
+        }
+        return ret;
+      }
+      return str;
+    }
+
+    private void AppendOne(char c) {
+      this.builder.append(c);
+      ++this.column;
+    }
+    private static final String HexChars = "0123456789ABCDEF";
+    private void AppendQEncoding(int ch) {
+      this.builder.append('=');
+      this.builder.append(HexChars.charAt((ch >> 4) & 15));
+      this.builder.append(HexChars.charAt(ch & 15));
+      this.column += 3;
+    }
+
+    public HeaderEncoder AppendAsEncodedWords(String symbol) {
+      int i = 0;
+      int currentWordLength = 0;
+      while (i < symbol.length()) {
+        int ch = DataUtilities.CodePointAt(symbol, i);
+        if (ch >= 0x10000) {
+          ++i;
+        }
+ boolean smallChar=ch < 0x80 && ch > 0x20 && ch != (char)'"' && ch != (char)','
+          &&
+                 "?()<>[]:;@\\.=_".indexOf((char)ch) < 0;
+        int unitLength = 1;
+        if (ch == 0x20 || smallChar) {
+ unitLength = 1;
+  } else if (ch <= 0x7f) {
+ unitLength = 3;
+  } else if (ch <= 0x7ff) {
+ unitLength = 6;
+  } else if (ch <= 0xffff) {
+ unitLength = 9;
+} else {
+ unitLength = 12;
+}
+        if (!CanCharUnitFit(currentWordLength, unitLength, false)) {
+           if (currentWordLength>0) {
+             AppendSymbol("?=");
+             if (CanCharUnitFit(0, unitLength, true)) {
+                 AppendSpace();
+             } else {
+                 AppendBreak();
+             }
+           } else {
+             AppendBreak();
+           }
+           AppendSymbol("=?utf-8?Q?");
+           currentWordLength = 12;
+        } else if (currentWordLength == 0) {
+           AppendSymbol("=?utf-8?Q?");
+           currentWordLength = 12;
+        }
+        if (ch == 0x20) {
+ this.AppendOne('_');
+  } else if (smallChar) {
+ this.AppendOne((char)ch);
+  } else if (ch <= 0x7f) {
+ this.AppendQEncoding(ch);
+  } else if (ch <= 0x7ff) {
+          this.AppendQEncoding(0xc0 | ((ch >> 6) & 0x1f));
+          this.AppendQEncoding(0x80 | (ch & 0x3f));
+        } else if (ch <= 0xffff) {
+          this.AppendQEncoding(0xe0 | ((ch >> 12) & 0x0f));
+          this.AppendQEncoding(0x80 | ((ch >> 6) & 0x3f));
+          this.AppendQEncoding(0x80 | (ch & 0x3f));
+        } else {
+          this.AppendQEncoding(0xf0 | ((ch >> 18) & 0x07));
+          this.AppendQEncoding(0x80 | ((ch >> 12) & 0x3f));
+          this.AppendQEncoding(0x80 | ((ch >> 6) & 0x3f));
+          this.AppendQEncoding(0x80 | (ch & 0x3f));
+        }
+        currentWordLength+=unitLength;
+        ++i;
+      }
+      if (currentWordLength>0) {
+ AppendSymbol("?=");
+}
+      return this;
     }
 
     private void AppendQuotedString(String symbol, boolean writeSpace) {
@@ -229,7 +365,7 @@ import com.upokecenter.util.*;
       return this;
     }
 
-    private static String CapitalizeHeaderField(String s) {
+    public static String CapitalizeHeaderField(String s) {
       StringBuilder builder = new StringBuilder();
       boolean afterHyphen = true;
       for (int i = 0; i < s.length(); ++i) {
@@ -244,17 +380,31 @@ import com.upokecenter.util.*;
       return ret.equals("Mime-Version") ? "MIME-Version" :
         (ret.equals("Message-Id") ? "Message-ID" : ret);
     }
+  public static String EncodeHeaderFieldAsEncodedWords(String fieldName, String
+      fieldValue) {
+      HeaderEncoder sa = new HeaderEncoder(76, 0);
+      sa.AppendSymbol(CapitalizeHeaderField(fieldName) + ":");
+      sa.AppendSpace();
+      var fws = HeaderParser.ParseFWS(fieldValue, 0, fieldValue.length(), null);
+      if (fws>0) {
+        fieldValue = fieldValue.substring(fws);
+      }
+      sa.AppendAsEncodedWords(fieldValue);
+      return sa.toString();
+  }
   public static String EncodeHeaderField(String fieldName, String
       fieldValue) {
       HeaderEncoder sa = new HeaderEncoder(76, 0);
       sa.AppendSymbol(CapitalizeHeaderField(fieldName) + ":");
-      if (fieldValue.length() == 0 || fieldValue.charAt(0) != ' ') {
-        sa.AppendSpace();
+      sa.AppendSpace();
+      var fws = HeaderParser.ParseFWS(fieldValue, 0, fieldValue.length(), null);
+      if (fws>0) {
+        fieldValue = fieldValue.substring(fws);
       }
       sa.AppendString(fieldValue);
       return sa.toString();
     }
     @Override public String toString() {
-      return this.builder.toString();
+      return TrimAllSpaceLine(this.builder.toString());
     }
   }
