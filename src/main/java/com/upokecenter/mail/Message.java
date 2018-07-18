@@ -1075,9 +1075,7 @@ public final void setSubject(String value) {
                   --index;
                   // this isn't space or tab; if this is the start
                   // of the line, this is no longer FWS
-                  if (lineStart) {
-                    haveFWS = false;
-                  }
+                  haveFWS &= !lineStart;
                   break;
                 }
               }
@@ -1208,8 +1206,8 @@ public final void setSubject(String value) {
           null);
         // NOTE: Commented out for now (see below)
         //if (atomText != typeEnd) {
- isUtf8 = false;
-}
+// isUtf8 = false;
+//}
         if (index < headerValue.length() && headerValue.charAt(atomText) == ';') {
           int addressPart = HeaderParser.ParseCFWS(
            headerValue,
@@ -1302,7 +1300,7 @@ public final void setSubject(String value) {
     static boolean HasTextToEscapeOrEncodedWordStarts(String s) {
       // <summary>Returns true if the String has:
       // * non-ASCII characters
-      //  * "=?"
+      // * "=?"
       // * CTLs other than tab, or
       // * a word longer than 75 characters.
       // Can return false even if the String has:
@@ -2007,8 +2005,7 @@ public final void setSubject(String value) {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.length()) != value.length()) {
-       throw new
-            IllegalArgumentException("Header field value contains invalid text");
+       throw new IllegalArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.length(), null) != value.length()) {
           throw new

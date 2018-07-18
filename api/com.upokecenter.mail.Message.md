@@ -289,9 +289,9 @@ Gets this message's media type.
 
 **Returns:**
 
-* A suggested name for the file. Returns "_" if there is no filename
- suggested by the content type or content disposition, or if that
- filename is an empty string.
+* A suggested name for the file. Returns the empty string if there is
+ no filename suggested by the content type or content disposition, or
+ if that filename is an empty string.
 
 ### getFromAddresses
     public final List<NamedAddress> getFromAddresses()
