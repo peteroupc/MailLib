@@ -766,9 +766,7 @@ namespace PeterO.Mail {
                   --index;
                   // this isn't space or tab; if this is the start
                   // of the line, this is no longer FWS
-                  if (lineStart) {
-                    haveFWS = false;
-                  }
+                  haveFWS &= !lineStart;
                   break;
                 }
               }
@@ -899,8 +897,8 @@ namespace PeterO.Mail {
           null);
         // NOTE: Commented out for now (see below)
         //if (atomText != typeEnd) {
- isUtf8 = false;
-}
+// isUtf8 = false;
+//}
         if (index < headerValue.Length && headerValue[atomText] == ';') {
           int addressPart = HeaderParser.ParseCFWS(
            headerValue,
@@ -993,7 +991,7 @@ namespace PeterO.Mail {
     internal static bool HasTextToEscapeOrEncodedWordStarts(string s) {
       // <summary>Returns true if the string has:
       // * non-ASCII characters
-      //  * "=?"
+      // * "=?"
       // * CTLs other than tab, or
       // * a word longer than 75 characters.
       // Can return false even if the string has:
@@ -1698,8 +1696,7 @@ namespace PeterO.Mail {
       IHeaderFieldParser parser = HeaderFieldParsers.GetParser(name);
       if (parser.IsStructured()) {
         if (ParseUnstructuredText(value, 0, value.Length) != value.Length) {
-       throw new
-            ArgumentException("Header field value contains invalid text");
+       throw new ArgumentException("Header field value contains invalid text");
         }
         if (parser.Parse(value, 0, value.Length, null) != value.Length) {
           throw new
