@@ -1502,7 +1502,6 @@ namespace PeterO.Mail {
     private static IDictionary<string, IHeaderFieldParser>
       CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
-      // TODO: Support stricter Message-ID syntax in RFC 5536 sec. 3.1.3
       fieldMap = new Dictionary<string,
         IHeaderFieldParser>();
       fieldMap["content-disposition"] = new HeaderContentDisposition();
