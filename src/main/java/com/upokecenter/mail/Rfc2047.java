@@ -51,17 +51,7 @@ private Rfc2047() {
       return false;
     }
 
-/**
- * @deprecated
- */
-@Deprecated
-    public static String EncodeComment(String str, int index, int endIndex) {
-      HeaderEncoder enc = new HeaderEncoder(76, 0);
-      EncodeCommentNew(enc, str, index, endIndex);
-      return enc.toString();
-    }
-
-    public static void EncodeCommentNew(HeaderEncoder enc, String str, int
+    public static void EncodeComment(HeaderEncoder enc, String str, int
       index, int endIndex) {
       // NOTE: Assumes that the comment is syntactically valid
 
@@ -380,9 +370,8 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
             asterisk + 1, (
             asterisk + 1)+(charset.length() - (asterisk + 1)));
                 charset = charset.substring(0, asterisk);
-                if (!ParserUtility.IsValidLanguageTag(language)) {
-                  acceptedEncodedWord = false;
-                }
+             acceptedEncodedWord &=
+                  ParserUtility.IsValidLanguageTag(language);
               } else {
                 acceptedEncodedWord &= asterisk != 0;
               }
@@ -679,9 +668,8 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
 
     private static void EncodePhraseTextInternal(
       String str,
- int index,
+      int index,
       int endIndex,
- List<int[]> tokens,
       HeaderEncoder enc) {
       // Assumes the value matches the production "phrase"
       // and that there are no comments in the value
@@ -746,15 +734,19 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
       }
     }
 
+/**
+ * @deprecated
+ */
+@Deprecated
     public static String EncodeString(String str) {
       if (str == null) {
         throw new NullPointerException("str");
       }
-      return new HeaderEncoder(76, 0).AppendAsEncodedWords(
+      return new HeaderEncoder().AppendAsEncodedWords(
         str).toString();
     }
 
-    public static void EncodePhraseTextNew(
+    public static void EncodePhraseText(
   HeaderEncoder enc,
   String str,
   int index,
@@ -779,29 +771,12 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
         }
         if (token[0] == HeaderParserUtility.TokenComment) {
           // Process this piece of the phrase
-          EncodePhraseTextInternal(str, lastIndex, token[1], tokens, enc);
+          EncodePhraseTextInternal(str, lastIndex, token[1], enc);
           // Append the comment
           enc.AppendString(str.substring(token[1], (token[1])+(token[2] - token[1])));
           lastIndex = token[2];
         }
       }
-      EncodePhraseTextInternal(str, lastIndex, endIndex, tokens, enc);
-    }
-
-/**
- * @deprecated
- */
-@Deprecated
-    public static String EncodePhraseText(
-  String str,
-  int index,
-  int endIndex,
-  List<int[]> tokens) {
-      if (index == endIndex) {
-        return "";
-      }
-      HeaderEncoder enc = new HeaderEncoder(76, 0);
-      EncodePhraseTextNew(enc, str, index, endIndex, tokens);
-      return enc.toString();
+      EncodePhraseTextInternal(str, lastIndex, endIndex, enc);
     }
   }

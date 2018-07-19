@@ -483,10 +483,9 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToString"]/*'/>
     public override string ToString() {
-      // NOTE: 76 is the maximum length of a line in an Internet
-      // message header, and 14 is the length of "Content-Type: " (with trailing
+      // NOTE: 14 is the length of "Content-Type: " (with trailing
       // space).
-      var sa = new HeaderEncoder(76, 14);
+      var sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
       AppendParameters(this.parameters, sa);
       return sa.ToString();

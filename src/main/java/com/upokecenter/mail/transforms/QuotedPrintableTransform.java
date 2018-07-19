@@ -52,7 +52,7 @@ import com.upokecenter.mail.*;
     public QuotedPrintableTransform(
   IByteReader input,
   boolean allowBareLfCr) {
- this(input, allowBareLfCr, 76, false);
+ this(input, allowBareLfCr, QuotedPrintableEncoder.MaxLineLength, false);
     }
 
     public QuotedPrintableTransform(
@@ -154,7 +154,8 @@ import com.upokecenter.mail.*;
               this.lineCharCount = 0;
               continue;
             }
-            if (!this.checkStrictEncoding && (this.maxLineSize > 76 ||
+            if (!this.checkStrictEncoding && (
+              this.maxLineSize > QuotedPrintableEncoder.MaxLineLength ||
               this.maxLineSize < 0)) {
               if (this.maxLineSize >= 0) {
                 ++this.lineCharCount;
@@ -177,7 +178,8 @@ import com.upokecenter.mail.*;
             // Equals sign at end, ignore
             return -1;
           } else {
-            if (!this.checkStrictEncoding && (this.maxLineSize > 76 ||
+            if (!this.checkStrictEncoding && (
+              this.maxLineSize > QuotedPrintableEncoder.MaxLineLength ||
               this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
@@ -205,7 +207,8 @@ import com.upokecenter.mail.*;
             c <<= 4;
             c |= b2 + 10 - 'a';
           } else {
-            if (!this.checkStrictEncoding && (this.maxLineSize > 76 ||
+            if (!this.checkStrictEncoding && (
+              this.maxLineSize > QuotedPrintableEncoder.MaxLineLength ||
               this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
@@ -329,7 +332,7 @@ import com.upokecenter.mail.*;
           // Invalid character
           if (this.maxLineSize < 0) {
             // Ignore the character
-          } else if (this.maxLineSize > 76) {
+          } else if (this.maxLineSize > QuotedPrintableEncoder.MaxLineLength) {
             // Just increment the line count
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {

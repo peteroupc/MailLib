@@ -97,10 +97,9 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.ContentDisposition.ToString"]/*'/>
     public override string ToString() {
-      // NOTE: 76 is the maximum length of a line in an Internet
-      // message header, and 21 is the length of "Content-Disposition: " (with
+      // NOTE: 21 is the length of "Content-Disposition: " (with
       // trailing space).
-      var sa = new HeaderEncoder(76, 21);
+      var sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 21);
       sa.AppendSymbol(this.dispositionType);
       MediaType.AppendParameters(this.parameters, sa);
       return sa.ToString();

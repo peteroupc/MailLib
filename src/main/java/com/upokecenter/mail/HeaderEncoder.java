@@ -16,7 +16,7 @@ import com.upokecenter.util.*;
     private int startColumn;
 
     public HeaderEncoder() {
- this(76, 0); }
+ this(Message.MaxRecHeaderLineLength, 0); }
 
     public HeaderEncoder(int maxLineLength, int startColumn) {
       // Minimum supported max line length is 15 to accommodate
@@ -29,6 +29,10 @@ import com.upokecenter.util.*;
       this.maxLineLength = maxLineLength;
       this.column = startColumn;
       this.startColumn = startColumn;
+    }
+
+    public void Reset() {
+      Reset(this.startColumn, 0);
     }
     public void Reset(int column, int length) {
       this.column = column;
@@ -211,8 +215,8 @@ import com.upokecenter.util.*;
 
     private boolean CanCharUnitFit(int currentWordLength, int unitLength, boolean
       writeSpace) {
-  int effectiveMaxLength = 75;  // 75 is max. allowed length of an encoded
-        word
+      // 75 is max. allowed length of an encoded word
+      int effectiveMaxLength = 75;
       if (this.GetMaxLineLength() >= 0) {
         effectiveMaxLength = Math.min(
          effectiveMaxLength,
@@ -281,17 +285,14 @@ import com.upokecenter.util.*;
           ++i;
         }
   boolean smallChar = ch < 0x80 && ch > 0x20 && ch != (char)'"' && ch !=
-          (char)','&&
-                "?()<>[]:;@\\.=_".indexOf((char)ch) < 0;
+          (char)','&& "?()<>[]:;@\\.=_".indexOf((char)ch) < 0;
         int unitLength = 1;
         if (ch == 0x20 || smallChar) {
           unitLength = 1;
         } else if (ch <= 0x7f) {
           unitLength = 3;
-        } else if (ch <= 0x7ff) {
-          unitLength = 6;
         } else {
- unitLength = (ch <= 0xffff) ? (9) : (12);
+ unitLength = (ch <= 0x7ff) ? (6) : ((ch <= 0xffff) ? (9) : (12));
 }
         if (!CanCharUnitFit(currentWordLength, unitLength, false)) {
           if (currentWordLength > 0) {
@@ -354,9 +355,10 @@ import com.upokecenter.util.*;
           writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
           symbolBegin = i + 2;
           i += 2;
-        } else if (symbol.charAt(i) == ' ') {
+        } else if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
           AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
-          writeSpace = true;
+          AppendSpaceOrTab(symbol.charAt(i));
+          writeSpace = false;
           symbolBegin = i + 1;
           ++i;
         } else if (symbol.charAt(i) == '\\' && i + 1 < symbol.length()) {
@@ -368,6 +370,18 @@ import com.upokecenter.util.*;
         }
       }
       AppendSpaceAndSymbol(symbol, symbolBegin, symbol.length(), writeSpace);
+    }
+
+    private HeaderEncoder AppendSpaceOrTab(char ch) {
+      if (maxLineLength < 0 || this.column + 1 <= this.maxLineLength) {
+        this.builder.append(ch);
+        ++this.column;
+      } else {
+        this.builder.append("\r\n");
+        this.builder.append(ch);
+        this.column = 1;
+      }
+      return this;
     }
 
     public HeaderEncoder AppendSpace() {

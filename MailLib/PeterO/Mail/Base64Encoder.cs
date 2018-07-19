@@ -15,6 +15,8 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.Base64Encoder"]/*'/>
   internal sealed class Base64Encoder : ICharacterEncoder {
+    internal const int MaxLineLength = 76;
+
     private static readonly byte[] Base64Classic = {
   0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d,
   0x4e, 0x4f, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a,
@@ -63,7 +65,7 @@ namespace PeterO.Mail {
   bool unlimitedLineLength,
   byte[] alphabet) {
       if (alphabet == null) {
-        throw new ArgumentNullException("alphabet");
+        throw new ArgumentNullException(nameof(alphabet));
       }
       if (alphabet.Length != 64) {
         throw new ArgumentException("alphabet.Length (" + alphabet.Length +
@@ -111,7 +113,7 @@ namespace PeterO.Mail {
 
     private static byte[] StringAlphabetToBytes(string alphabetString) {
       if (alphabetString == null) {
-        throw new ArgumentNullException("alphabet");
+        throw new ArgumentNullException(nameof(alphabetString));
       }
       if (alphabetString.Length != 64) {
       throw new ArgumentException("alphabet.Length (" +
@@ -195,7 +197,7 @@ throw new
     private int LineAwareAppend(IWriter output, byte c) {
       var charCount = 0;
       if (!this.unlimitedLineLength) {
-        if (this.lineCount >= 76) {
+        if (this.lineCount >= MaxLineLength) {
           output.WriteByte((byte)0x0d);
           output.WriteByte((byte)0x0a);
           charCount += 2;
@@ -216,12 +218,12 @@ throw new
       var charCount = 0;
       var bytes = new byte[6];
       if (!this.unlimitedLineLength) {
-        if (this.lineCount >= 76) {
+        if (this.lineCount >= MaxLineLength) {
           // Output CRLF
           bytes[charCount++] = (byte)0x0d;
           bytes[charCount++] = (byte)0x0a;
           this.lineCount = 0;
-        } else if (this.lineCount + 3 >= 76) {
+        } else if (this.lineCount + 3 >= MaxLineLength) {
           charCount += this.LineAwareAppend(output, c1);
           charCount += this.LineAwareAppend(output, c2);
           charCount += this.LineAwareAppend(output, c3);

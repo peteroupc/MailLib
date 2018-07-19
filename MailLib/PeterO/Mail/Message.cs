@@ -17,6 +17,8 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
   public sealed class Message {
+    internal const int MaxRecHeaderLineLength = 78;
+
     private const int EncodingBase64 = 2;
     private const int EncodingBinary = 4;
     private const int EncodingEightBit = 3;
@@ -575,9 +577,10 @@ namespace PeterO.Mail {
           return false;
         }
         ++lineLength;
-        if (lineLength > 78) {
-          // Console.WriteLine("Line length exceeded (" + maxLineLength +
-          // " " + (str.Substring(index-78, 78)) + ")");
+        if (lineLength > MaxRecHeaderLineLength) {
+          // Console.WriteLine("Line length exceeded (" + lineLength +
+          // " " + (str.Substring(index-MaxRecHeaderLineLength,
+          // MaxRecHeaderLineLength)) + ")");
           return false;
         }
         ++index;
@@ -586,50 +589,68 @@ namespace PeterO.Mail {
     }
 
     // Returns true only if:
-    // * Text matches the production "unstructured"
+    // * Header field has a name followed by colon followed by SP
+    // * Header field's value matches the production "unstructured"
     // in RFC 5322 without any obsolete syntax
-    // * Each line is no more than 76 characters in length
+    // * Each line is no more than MaxRecHeaderLineLength characters in length
     // * Text has only printable ASCII characters, CR,
     // LF, and/or TAB
     internal static bool CanOutputRaw(string s) {
+var foundColon = false;
+      var index = 0;
       int len = s.Length;
-      var chunkLength = 0;
-      var maybe = false;
-      var firstColon = true;
-      for (int i = 0; i < len; ++i) {
-        char c = s[i];
-        if (c == ':' && firstColon) {
+      for (var i = 0; i < len; ++i) {
+        if (s[i] == ':') {
+          foundColon = true;
           if (i + 1 >= len || s[i + 1] != 0x20) {
-            // colon not followed by SPACE (0x20)
+            // Colon not followed by SPACE (0x20)
             return false;
           }
-          firstColon = false;
-        }
-        if (c == 0x0d) {
-          if (i + 1 >= len || s[i + 1] != 0x0a) {
-            // bare CR
+          index = i + 2;
+          if (index > MaxRecHeaderLineLength) {
+ return false;
+}
+          break;
+  } else if (s[i] == 0x0d || s[i] == 0x09 || s[i] == 0x20) {
+ return false;
+}
+      }
+      if (!foundColon) {
+ return false;
+}
+      var chunkLength = index;
+      for (var i = index; i < len;) {
+        if (s[i] == 0x0d) {
+          if (i + 2 >= len || s[i + 1] != 0x0a || (s[i + 2] != 0x09 && s[i +
+            2] != 0x20)) {
+            // bare CR, or CRLF not followed by SP/VTAB
             return false;
           }
-          if (i + 2 >= len || (s[i + 2] != 0x09 && s[i + 2] != 0x20)) {
-            // CRLF not followed by whitespace
+          i += 3;
+          chunkLength = 1;
+          var found = false;
+          for (var j = i; j < len; ++j) {
+            if (s[j] != 0x09 && s[j] != 0x20 && s[j] != 0x0d) {
+              found = true; break;
+            }
+          }
+          if (!found) {
+ return false;
+}
+        } else {
+          char c = s[i];
+          if (chunkLength > MaxRecHeaderLineLength) {
+ return false;
+}
+          if (c >= 0x7f || (c < 0x20 && c != 0x09 && c != 0x0d)) {
+            // CTLs (except TAB, SPACE, and CR) and non-ASCII
+            // characters
             return false;
           }
-          chunkLength = 0;
-          maybe = true;
-          i += 2;
-          continue;
-        }
-        if (c >= 0x7f || (c < 0x20 && c != 0x09 && c != 0x0d)) {
-          // CTLs (except TAB, SPACE, and CR) and non-ASCII
-          // characters
-          return false;
-        }
-        ++chunkLength;
-        if (chunkLength > 76) {
-          return false;
+          ++i;
         }
       }
-      return (!maybe) || (ParseUnstructuredText(s, 0, s.Length) == s.Length);
+      return true;
     }
 
     // Parse the delivery status byte array to downgrade
@@ -859,7 +880,7 @@ namespace PeterO.Mail {
             null);
           if (si != i) {
             enc.AppendString(str, begin, i);
-            Rfc2047.EncodeCommentNew(enc, str, i, si);
+            Rfc2047.EncodeComment(enc, str, i, si);
             i = si;
             begin = si;
             continue;
@@ -1683,7 +1704,7 @@ namespace PeterO.Mail {
         allTextBytes &= lineLength != 0 || i + 1 >= body.Length || body[i] !=
           '-' || body[i + 1] != '-';
         ++lineLength;
-        allTextBytes &= lineLength <= 78;
+        allTextBytes &= lineLength <= MaxRecHeaderLineLength;
       }
       return (allTextBytes) ? EncodingSevenBit :
     ((highBytes > lengthCheck / 3) ? EncodingBase64 :

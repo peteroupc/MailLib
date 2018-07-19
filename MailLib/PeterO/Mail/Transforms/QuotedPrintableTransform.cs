@@ -51,7 +51,8 @@ namespace PeterO.Mail.Transforms {
 
     public QuotedPrintableTransform(
   IByteReader input,
-  bool allowBareLfCr) : this(input, allowBareLfCr, 76, false) {
+  bool allowBareLfCr) : this(input, allowBareLfCr,
+                    QuotedPrintableEncoder.MaxLineLength, false) {
     }
 
     public QuotedPrintableTransform(
@@ -155,7 +156,8 @@ namespace PeterO.Mail.Transforms {
               this.lineCharCount = 0;
               continue;
             }
-            if (!this.checkStrictEncoding && (this.maxLineSize > 76 ||
+            if (!this.checkStrictEncoding && (
+              this.maxLineSize > QuotedPrintableEncoder.MaxLineLength ||
               this.maxLineSize < 0)) {
               if (this.maxLineSize >= 0) {
                 ++this.lineCharCount;
@@ -178,7 +180,8 @@ namespace PeterO.Mail.Transforms {
             // Equals sign at end, ignore
             return -1;
           } else {
-            if (!this.checkStrictEncoding && (this.maxLineSize > 76 ||
+            if (!this.checkStrictEncoding && (
+              this.maxLineSize > QuotedPrintableEncoder.MaxLineLength ||
               this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
@@ -206,7 +209,8 @@ namespace PeterO.Mail.Transforms {
             c <<= 4;
             c |= b2 + 10 - 'a';
           } else {
-            if (!this.checkStrictEncoding && (this.maxLineSize > 76 ||
+            if (!this.checkStrictEncoding && (
+              this.maxLineSize > QuotedPrintableEncoder.MaxLineLength ||
               this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
@@ -330,7 +334,7 @@ namespace PeterO.Mail.Transforms {
           // Invalid character
           if (this.maxLineSize < 0) {
             // Ignore the character
-          } else if (this.maxLineSize > 76) {
+          } else if (this.maxLineSize > QuotedPrintableEncoder.MaxLineLength) {
             // Just increment the line count
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {

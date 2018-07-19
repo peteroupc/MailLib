@@ -16,6 +16,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="T:PeterO.Mail.QuotedPrintableEncoder"]/*'/>
   internal sealed class QuotedPrintableEncoder : ICharacterEncoder {
     private const string HexAlphabet = "0123456789ABCDEF";
+    public const int MaxLineLength = 76;
     private readonly int lineBreakMode;
     private readonly bool unlimitedLineLength;
     private int lineCount;
@@ -32,8 +33,8 @@ namespace PeterO.Mail {
     private int IncrementAndAppend(IWriter output, string appendStr) {
       var count = 0;
       if (!this.unlimitedLineLength) {
-        if (this.lineCount + appendStr.Length > 75) {
-          // 76 including the final '='
+        if (this.lineCount + appendStr.Length >= MaxLineLength) {
+          // MaxLineLength including the final '='
           output.WriteByte(0x3d);
           output.WriteByte(0x0d);
           output.WriteByte(0x0a);
@@ -64,8 +65,8 @@ namespace PeterO.Mail {
   char b3) {
       var count = 0;
       if (!this.unlimitedLineLength) {
-        if (this.lineCount + 3 > 75) {
-          // 76 including the final '='
+        if (this.lineCount + 3 >= MaxLineLength) {
+          // MaxLineLength including the final '='
           output.WriteByte(0x3d);
           output.WriteByte(0x0d);
           output.WriteByte(0x0a);
@@ -92,8 +93,8 @@ namespace PeterO.Mail {
     private int IncrementAndAppendChar(IWriter output, char ch) {
       var count = 1;
       if (!this.unlimitedLineLength) {
-        if (this.lineCount + 1 > 75) {
-          // 76 including the final '='
+        if (this.lineCount + 1 >= MaxLineLength) {
+          // MaxLineLength including the final '='
           byte[] buf;
           if (ch == '.') {
             buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)'=',
@@ -125,7 +126,7 @@ namespace PeterO.Mail {
       int c,
       IWriter output) {
       if (output == null) {
-        throw new ArgumentNullException("output");
+        throw new ArgumentNullException(nameof(output));
       }
       var count = 0;
       if (c >= 0) {

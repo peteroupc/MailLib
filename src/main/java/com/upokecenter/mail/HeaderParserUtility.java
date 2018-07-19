@@ -104,6 +104,7 @@ private HeaderParserUtility() {
       }
       for (int i = 0; i < str.length(); ++i) {
         if (str.charAt(i) == '\\' || str.charAt(i) == '"') {
+          // Backslash or double quote
           return true;
         }
         if ((str.charAt(i) == ' ' || str.charAt(i) == '\t') && i + 1 < str.length() &&

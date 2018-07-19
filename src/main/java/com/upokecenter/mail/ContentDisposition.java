@@ -148,10 +148,9 @@ import com.upokecenter.text.*;
      * @return A text string form of this content disposition.
      */
     @Override public String toString() {
-      // NOTE: 76 is the maximum length of a line in an Internet
-      // message header, and 21 is the length of "Content-Disposition: " (with
+      // NOTE: 21 is the length of "Content-Disposition: " (with
       // trailing space).
-      HeaderEncoder sa = new HeaderEncoder(76, 21);
+      HeaderEncoder sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 21);
       sa.AppendSymbol(this.dispositionType);
       MediaType.AppendParameters(this.parameters, sa);
       return sa.toString();
@@ -221,8 +220,8 @@ import com.upokecenter.text.*;
      * replaced with underscores; spaces and tabs are collapsed to a single
      * space; leading and trailing spaces and tabs are removed; and the
      * filename is truncated if it would otherwise be too long. The returned
-     * string will be in normalization form C. Returns "_" if "str" is null
-     * or empty.
+     * string will be in normalization form C. Returns the empty string if
+     * "str" is null or empty.
      */
     public static String MakeFilename(String str) {
       return MakeFilenameMethod.MakeFilename(str);
@@ -231,8 +230,9 @@ import com.upokecenter.text.*;
     /**
      * Gets an adapted version of the "filename" parameter in this content
      * disposition object by using the "MakeFilename" method.
-     * @return The adapted file name in the form of a string. Returns "_" if there
-     * is no "filename" parameter or that parameter is empty.
+     * @return The adapted file name in the form of a string. Returns the empty
+     * string if there is no "filename" parameter or that parameter is
+     * empty.
      */
     public String GetFilename() {
       return MakeFilename(this.GetParameter("filename"));
