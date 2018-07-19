@@ -16,7 +16,5 @@ namespace PeterO.Mail {
     string DowngradeHeaderField(string name, string str);
 
     string DecodeEncodedWords(string str);
-
-    string UncommentAndCollapse(string str);
   }
 }

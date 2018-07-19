@@ -116,7 +116,7 @@ namespace PeterO.Mail {
         throw new ArgumentNullException(nameof(alphabetString));
       }
       if (alphabetString.Length != 64) {
-      throw new ArgumentException("alphabet.Length (" +
+      throw new ArgumentException("alphabet string length (" +
           alphabetString.Length + ") is not equal to 64");
       }
       var alphabet = new byte[64];

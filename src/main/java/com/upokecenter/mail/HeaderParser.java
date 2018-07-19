@@ -4655,17 +4655,24 @@ tokener.RestoreState(state2); break;
 }
 public static int ParseHeaderOriginalRecipient(String str, int index, int
   endIndex, ITokener tokener) {
-int indexStart, indexTemp, indexTemp2, state, tx2;
+int i, indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
- tx2 = ParseAtom(str, index, endIndex, tokener);
- if (tx2 == index) {
-index = indexStart; break;
+ for (i = 0;; ++i) {
+  indexTemp2 = ParseAtext(str, index, endIndex, tokener);
+  if (indexTemp2 != index) {
+ index = indexTemp2;
 } else {
- index = tx2;
+  if (i< 1) {
+   index = indexStart;
+  } break;
+ }
+ }
+ if (index == indexStart) {
+ break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str.charAt(index) == 59)) {
@@ -4673,14 +4680,16 @@ if (index < endIndex && (str.charAt(index) == 59)) {
 } else {
  index = indexStart; break;
 }
+ index = ParseCFWS(str, index, endIndex, tokener);
  while (true) {
-  indexTemp2 = ParseText(str, index, endIndex, tokener);
+  indexTemp2 = ParseTextExceptOpeningParen(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
 index = indexTemp2;
 } else {
  break;
 }
  }
+ index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
  if (tokener != null && indexTemp == indexStart) {
@@ -8630,12 +8639,13 @@ public static int ParseStrictHeaderTo(String str, int index, int endIndex,
  return ParseAddressList(str, index, endIndex, tokener);
 }
 
-public static int ParseText(String str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseTextExceptOpeningParen(String str, int index, int
+  endIndex, ITokener tokener) {
 int indexTemp = index;
 if (index < endIndex && ((str.charAt(index) >= 1 && str.charAt(index) <= 9) || (str.charAt(index)
-  >= 11 && str.charAt(index) <= 12) || (str.charAt(index) >= 14 && str.charAt(index) <= 55295) ||
-  (str.charAt(index) >= 57344 && str.charAt(index) <= 65535))) {
+  >= 11 && str.charAt(index) <= 12) || (str.charAt(index) >= 14 && str.charAt(index) <= 39) ||
+  (str.charAt(index) >= 41 && str.charAt(index) <= 55295) || (str.charAt(index) >= 57344 &&
+  str.charAt(index) <= 65535))) {
  ++indexTemp;
   } else if (index + 1 < endIndex && ((str.charAt(index) >= 55296 && str.charAt(index) <=
   56319) && (str.charAt(index + 1) >= 56320 && str.charAt(index + 1) <= 57343))) {

@@ -284,15 +284,14 @@ namespace PeterO.Mail {
         if (ch >= 0x10000) {
           ++i;
         }
-  bool smallChar = ch < 0x80 && ch > 0x20 && ch != (char)'"' && ch !=
+  bool smallChar = ch <= 0x7e && ch > 0x20 && ch != (char)'"' && ch !=
           (char)','&& "?()<>[]:;@\\.=_".IndexOf((char)ch) < 0;
         var unitLength = 1;
         if (ch == 0x20 || smallChar) {
           unitLength = 1;
-        } else if (ch <= 0x7f) {
-          unitLength = 3;
         } else {
- unitLength = (ch <= 0x7ff) ? (6) : ((ch <= 0xffff) ? (9) : (12));
+ unitLength = (ch <= 0x7f) ? (3) : ((ch <= 0x7ff) ? (6) : ((ch <= 0xffff) ?
+   (9) : (12)));
 }
         if (!CanCharUnitFit(currentWordLength, unitLength, false)) {
           if (currentWordLength > 0) {
@@ -411,7 +410,7 @@ namespace PeterO.Mail {
       return this;
     }
 
-    public static string CapitalizeHeaderField(string s) {
+    private static string CapitalizeHeaderField(string s) {
       var builder = new StringBuilder();
       var afterHyphen = true;
       for (int i = 0; i < s.Length; ++i) {

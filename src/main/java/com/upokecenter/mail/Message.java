@@ -65,29 +65,35 @@ import com.upokecenter.text.*;
      * RFC 2047:</li> <li>(a) If a sequence of encoded words decodes to a
      * string with a CTL character (U + 007F, or a character less than U + 0020
      * and not TAB) after being converted to Unicode, the encoded words are
-     * left un-decoded.</li> <li>(b) </li></ul> <p>It would be appreciated
-     * if users of this library contact the author if they find other ways
-     * in which this implementation deviates from the mail specifications or
-     * other applicable specifications.</p> <p>Note that this class
-     * currently doesn't support the "padding" parameter for message bodies
-     * with the media type "application/octet-stream" or treated as that
-     * media type (see RFC 2046 sec. 4.5.1).</p> <p>Note that this
-     * implementation can decode an RFC 2047 encoded word that uses
-     * ISO-2022-JP (the only supported encoding that uses code switching)
-     * even if the encoded word's payload ends in a different mode from
-     * "ASCII mode". (Each encoded word still starts in "ASCII mode",
-     * though.) This, however, is not a deviation to RFC 2047 because the
-     * relevant rule only concerns bringing the output device back to "ASCII
-     * mode" after the decoded text is displayed (see last paragraph of sec.
-     * 6.2) -- since the decoded text is converted to Unicode rather than
-     * kept as ISO-2022-JP, this is not applicable since there is no such
-     * thing as "ASCII mode" in the Unicode Standard.</p> <p>Note that this
-     * library (the MailLib library) has no facilities for sending and
-     * receiving email messages, since that's outside this library's
-     * scope.</p>
+     * left un-decoded.</li> <li>(b) This implementation can decode encoded
+     * words regardless of the character length of the line in which they
+     * appear. This implementation can generate a header field line with one
+     * or more encoded words even if that line is more than 76 characters
+     * long. (This implementation follows the recommendation to limit header
+     * field lines to no more than 78 characters, where possible.)</li></ul>
+     * <p>It would be appreciated if users of this library contact the
+     * author if they find other ways in which this implementation deviates
+     * from the mail specifications or other applicable specifications.</p>
+     * <p>Note that this class currently doesn't support the "padding"
+     * parameter for message bodies with the media type
+     * "application/octet-stream" or treated as that media type (see RFC
+     * 2046 sec. 4.5.1).</p> <p>Note that this implementation can decode an
+     * RFC 2047 encoded word that uses ISO-2022-JP (the only supported
+     * encoding that uses code switching) even if the encoded word's payload
+     * ends in a different mode from "ASCII mode". (Each encoded word still
+     * starts in "ASCII mode", though.) This, however, is not a deviation to
+     * RFC 2047 because the relevant rule only concerns bringing the output
+     * device back to "ASCII mode" after the decoded text is displayed (see
+     * last paragraph of sec. 6.2) -- since the decoded text is converted to
+     * Unicode rather than kept as ISO-2022-JP, this is not applicable since
+     * there is no such thing as "ASCII mode" in the Unicode Standard.</p>
+     * <p>Note that this library (the MailLib library) has no facilities for
+     * sending and receiving email messages, since that's outside this
+     * library's scope.</p>
      */
   public final class Message {
     static final int MaxRecHeaderLineLength = 78;
+    static final int MaxHardHeaderLineLength = 998;
 
     private static final int EncodingBase64 = 2;
     private static final int EncodingBinary = 4;
@@ -1330,22 +1336,35 @@ boolean foundColon = false;
 
     static boolean HasTextToEscapeOrEncodedWordStarts(String s) {
       // <summary>Returns true if the String has:
-      // * non-ASCII characters
-      // * "=?"
+      // * non-ASCII characters,
+      // * "=?",
       // * CTLs other than tab, or
-      // * a word longer than 75 characters.
+      // * a word longer than MaxRecHeaderLineLength minus 1 characters.
       // Can return false even if the String has:
       // * CRLF followed by a line with just whitespace.</summary>
-      return HasTextToEscapeOrEncodedWordStarts(s, 0, s.length());
+      return HasTextToEscapeOrEncodedWordStarts(s, 0, s.length(), true);
     }
 
     static boolean HasTextToEscapeOrEncodedWordStarts(String s, int
       index, int endIndex) {
+      return HasTextToEscapeOrEncodedWordStarts(s, index, endIndex, true);
+    }
+
+    static boolean HasTextToEscape(String s, int index, int endIndex) {
+      return HasTextToEscapeOrEncodedWordStarts(s, index, endIndex, false);
+    }
+
+    static boolean HasTextToEscape(String s) {
+      return HasTextToEscapeOrEncodedWordStarts(s, 0, s.length(), false);
+    }
+
+    static boolean HasTextToEscapeOrEncodedWordStarts(String s, int
+      index, int endIndex, boolean checkEWStarts) {
       int len = endIndex;
       int chunkLength = 0;
       for (int i = index; i < endIndex; ++i) {
         char c = s.charAt(i);
-        if (c == '=' && i + 1 < len && c == '?') {
+        if (checkEWStarts && c == '=' && i + 1 < len && c == '?') {
           // "=?" (start of an encoded word)
           return true;
         }
@@ -1376,51 +1395,7 @@ boolean foundColon = false;
           chunkLength = 0;
         } else {
           ++chunkLength;
-          if (chunkLength > 75) {
-            return true;
-          }
-        }
-      }
-      return false;
-    }
-
-    static boolean HasTextToEscape(
-      String s,
-      int index,
-      int endIndex) {
-      int len = endIndex;
-      int chunkLength = 0;
-
-      for (int i = index; i < endIndex; ++i) {
-        char c = s.charAt(i);
-        if (c == 0x0d) {
-          if (i + 1 >= len || s.charAt(i + 1) != 0x0a) {
-            // bare CR
-            // System.out.println("bare CR");
-            return true;
-          }
-          if (i + 2 >= len || (s.charAt(i + 2) != 0x09 && s.charAt(i + 2) != 0x20)) {
-            // CRLF not followed by whitespace
-            return true;
-          }
-          chunkLength = 0;
-          ++i;
-          continue;
-        }
-        if (c == 0x0a) {
-          // bare LF
-          return true;
-        }
-        if (c >= 0x7f || (c < 0x20 && c != 0x09 && c != 0x0d)) {
-          // CTLs (except TAB, SPACE, and CR) and non-ASCII
-          // characters
-          return true;
-        }
-        if (c == 0x20 || c == 0x09) {
-          chunkLength = 0;
-        } else {
-          ++chunkLength;
-          if (chunkLength > 998) {
+          if (chunkLength > MaxRecHeaderLineLength - 1) {
             return true;
           }
         }
@@ -1735,7 +1710,7 @@ boolean foundColon = false;
             }
             sb.append((char)c);
           } else if (!first && c == ':') {
-            if (lineCount >= 999) {
+            if (lineCount > Message.MaxHardHeaderLineLength) {
               // 998 characters includes the colon
               throw new MessageDataException("Header field name too long");
             }

@@ -15,6 +15,4 @@ at: http://peteroupc.github.io/
     String DowngradeHeaderField(String name, String str);
 
     String DecodeEncodedWords(String str);
-
-    String UncommentAndCollapse(String str);
   }

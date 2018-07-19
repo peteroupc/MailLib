@@ -154,9 +154,9 @@ import com.upokecenter.text.*;
   localPartEnd + 1,
   addressValue.length());
       // Check length restrictions.
-      if (this.StringLength() > 997) {
-        // Maximum character length per line for an Internet message is 998;
-        // we check if the length exceeds 997 (thus excluding the space
+      if (this.StringLength() > Message.MaxHardHeaderLineLength - 1) {
+        // Maximum character length per line for an Internet message minus 1;
+        // we check if the length exceeds that number (thus excluding the space
         // character
         // of a folded line).
         throw new IllegalArgumentException("Address too long");
