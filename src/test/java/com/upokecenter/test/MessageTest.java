@@ -32,6 +32,10 @@ import com.upokecenter.mail.*;
           ret,
           false,
           "");
+      if (fmtresult == 1) {
+        System.out.println("fmtresult=1 for "+
+                    ret.substring(0, Math.min(ret.length(), 260)));
+      }
         String messageTemp = ret;
         if (!(
   fmtresult != 0)) {
@@ -75,10 +79,12 @@ import com.upokecenter.mail.*;
     }
 
     static void MessageConstructOnly(String valueMessageString) {
-      new Message(
+      if ((new Message(
   DataUtilities.GetUtf8Bytes(
   valueMessageString,
-  true));
+  true))) == null) {
+ Assert.fail();
+ }
     }
 
     private static void TestMediaTypeRoundTrip(String valueMessageString) {
@@ -111,7 +117,9 @@ if (!(boolTemp)) {
  Assert.fail(msgstring);
  }
 }
-      MessageGenerate(mtmessage);
+      if ((MessageGenerate(mtmessage)) == null) {
+ Assert.fail();
+ }
     }
 
     @Test
@@ -136,6 +144,23 @@ if (!(boolTemp)) {
         msgids.add(msgid);
       }
     }
+
+@Test
+    public void TestGenerateLineWrap() {
+      Message msg;
+      String longvalue = "name1<name1@example.com>,name2<name2@example.com>," +
+        "name3<name3@example.com>,name4<name4@example.com>";
+  msg = new Message();
+      msg.SetHeader("to", longvalue);
+      MessageGenerate(msg);
+      msg = new Message();
+      msg.SetHeader("cc", longvalue);
+      MessageGenerate(msg);
+      msg = new Message();
+      msg.SetHeader("bcc", longvalue);
+      MessageGenerate(msg);
+    }
+
     @Test
     public void TestMultipleReplyTo() {
       String ValueMultipleReplyTo = "Reply-to: x@example.com\r\n" +

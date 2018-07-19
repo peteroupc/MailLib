@@ -1194,6 +1194,17 @@ import com.upokecenter.text.*;
       bytes = DowngradeDeliveryStatus(dsn);
       expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
       AssertUtf8Equal(expectedBytes, bytes);
+      dsn = "X-Ignore: X\r\nOriginal-Recipient: " + actual +
+  "\r\nFinal-Recipient: " + actual + "\r\nX-Ignore2: Y\r\n";
+      expectedDSN = encap ? "X-Ignore: X\r\n" +
+        ("Downgraded-Original-Recipient: " + expected) +
+        "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
+        "\r\nX-Ignore2: Y\r\n" : "X-Ignore: X\r\n" +
+          ("Original-Recipient: " + expected) + "\r\n" +
+          ("Final-Recipient: " + expected) + "\r\nX-Ignore2: Y\r\n";
+      bytes = DowngradeDeliveryStatus(dsn);
+      expectedBytes = DataUtilities.GetUtf8Bytes(expectedDSN, true);
+      AssertUtf8Equal(expectedBytes, bytes);
       dsn = "X-Ignore: X\r\n\r\nX-Ignore: X\r\n Y\r\nOriginal-Recipient: " +
         actual + "\r\nFinal-Recipient: " + actual +
         "\r\nX-Ignore: Y\r\n\r\n";

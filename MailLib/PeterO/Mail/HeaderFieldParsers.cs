@@ -15,7 +15,7 @@ namespace PeterO.Mail {
   internal static class HeaderFieldParsers {
     private sealed class UnstructuredHeaderField : IHeaderFieldParser {
       public string DowngradeHeaderField(string name, string str) {
-        return HeaderEncoder.EncodeHeaderFieldAsEncodedWords(name, str);
+        return HeaderEncoder.EncodeFieldAsEncodedWords(name, str);
       }
 
       public string DecodeEncodedWords(string str) {
@@ -71,7 +71,7 @@ namespace PeterO.Mail {
       }
 
       public virtual string DowngradeHeaderField(string name, string str) {
-        return HeaderEncoder.EncodeHeaderField(
+        return HeaderEncoder.EncodeField(
           name,
           DowngradeHeaderFieldValue(this, str));
       }
@@ -81,7 +81,7 @@ namespace PeterO.Mail {
         string str) {
         string originalString = str;
         IList<string> originalGroups = null;
-        for (int phase = 0; phase < 5; ++phase) {
+        for (int phase = 0; phase < 4; ++phase) {
           if (str.IndexOf('(') < 0 && phase == 0) {
             // No comments in the header field value, a common case
             continue;
@@ -572,7 +572,7 @@ namespace PeterO.Mail {
       }
 
       public override string DowngradeHeaderField(string name, string str) {
-        return HeaderEncoder.EncodeHeaderField(
+        return HeaderEncoder.EncodeField(
           name,
           DowngradeHeaderFieldValueReceived(this, str));
       }

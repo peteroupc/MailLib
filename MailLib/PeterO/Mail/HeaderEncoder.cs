@@ -15,6 +15,9 @@ namespace PeterO.Mail {
     private int maxLineLength;
     private int column;
     private int startColumn;
+
+    public HeaderEncoder() : this(76, 0) { }
+
     public HeaderEncoder(int maxLineLength, int startColumn) {
       // Minimum supported max line length is 15 to accommodate
       // certain multi-character units that must appear together
@@ -74,56 +77,67 @@ namespace PeterO.Mail {
         if (writeSpace) {
           this.builder.Append(" ");
         }
-        this.builder.Append(symbol.Substring(startIndex, endIndex - startIndex));
+      this.builder.Append(symbol.Substring(startIndex, endIndex -
+          startIndex));
         this.column += (endIndex - startIndex) + spaceLength;
       } else {
         this.builder.Append("\r\n ");
-        this.builder.Append(symbol.Substring(startIndex, endIndex - startIndex));
+      this.builder.Append(symbol.Substring(startIndex, endIndex -
+          startIndex));
         this.column = 1 + (endIndex - startIndex);
       }
       return false;  // No need to write space anymore
     }
 
     public HeaderEncoder AppendString(string symbol) {
+      return AppendString(symbol, 0, symbol.Length);
+    }
+
+    public HeaderEncoder AppendString(string symbol, int startIndex, int
+      endIndex) {
       if (symbol.Length > 0) {
-        var i = 0;
-        var symbolBegin = 0;
+        var i = startIndex;
+        var symbolBegin = startIndex;
         var writeSpace = false;
-        while (i < symbol.Length) {
-          if (symbol[i] == '\r' && i + 1 < symbol.Length &&
+        while (i < endIndex) {
+          if (symbol[i] == '\r' && i + 1 < endIndex &&
                symbol[i + 1] == '\n') {
             writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i,
                  writeSpace);
             symbolBegin = i + 2;
             i += 2;
             continue;
-          } else if(symbol[i]=='<' || symbol[i]=='>' || symbol[i]==',' ||
-                    symbol[i]==';' || symbol[i]=='\\' || symbol[i]==':'){
-            // Additional characters between which linear white space can freely appear
-            // in structured header fields.  They are the union of RFC 822's specials 
-            // and RFC 2045's tspecials, with the exception of parentheses (comment 
+          } else if (symbol[i]=='<' || symbol[i]=='>' || symbol[i]==',' ||
+                    symbol[i]==';' || symbol[i]==':') {
+            // Additional characters between which linear white space can
+            // freely appear
+            // in structured header fields. They are the union of RFC 822's
+            // specials
+            // and RFC 2045's tspecials, with the exception of parentheses
+            // (comment
             // delimiters), square brackets (domain literal delimiters),
-            // double quote (quoted string delimiter), at-sign (better not to separate
-            // email addresses), and the opening angle bracket (handled elsewhere
-            // in this code).
+            // double quote (quoted string delimiter), at-sign (better not
+            // to separate
+            // email addresses), and the backslash (since it serves as an escape
+            // in some header fields).
             writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i,
                  writeSpace);
             symbolBegin = i;
-            i += 1;
+            ++i;
             continue;
           } else if (symbol[i] == '"' || symbol[i] == '[') {
-            // May begin quoted-string or domain literal 
+            // May begin quoted-string or domain literal
             // (use ParseQuotedStringCore instead of
             // ParseQuotedString because it excludes optional CFWS at ends)
             int si = symbol[i] == '"' ?
-                       HeaderParser.ParseQuotedStringCore(symbol, i, symbol.Length,
-                                                          null) :
-                       HeaderParser.ParseDomainLiteralCore(symbol, i, symbol.Length,
-                                                          null);
+                    HeaderParser.ParseQuotedStringCore(symbol, i, endIndex,
+                null) : HeaderParser.ParseDomainLiteralCore(symbol, i, endIndex,
+                    null);
             if (si != i) {
               writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i,
-                     writeSpace);
-              AppendQuotedStringOrDomain(symbol.Substring(i, si - i), writeSpace);
+                    writeSpace);
+           AppendQuotedStringOrDomain(symbol.Substring(i, si - i),
+                writeSpace);
               writeSpace = false;
               i = si;
               symbolBegin = si;
@@ -132,11 +146,11 @@ namespace PeterO.Mail {
             }
           } else if (symbol[i] == '(') {
             // May begin comment
-            int si = HeaderParserUtility.ParseCommentLax(symbol, i, symbol.Length,
-                        null);
+            int si = HeaderParserUtility.ParseCommentLax(symbol, i, endIndex,
+                    null);
             if (si != i) {
               writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i,
-                     writeSpace);
+                    writeSpace);
               AppendComment(symbol.Substring(i, si - i), writeSpace);
               writeSpace = false;
               i = si;
@@ -147,14 +161,14 @@ namespace PeterO.Mail {
           } else if (symbol[i] == ' ' || symbol[i] == '\t') {
             AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             writeSpace = true;
-            i = HeaderParser.ParseFWS(symbol, i, symbol.Length, null);
+            i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
             symbolBegin = i;
           } else {
             ++i;
           }
         }
         writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin,
-                    symbol.Length, writeSpace);
+                    endIndex, writeSpace);
         if (writeSpace) {
           AppendSpace();
         }
@@ -170,7 +184,7 @@ namespace PeterO.Mail {
       var symbolBegin = 0;
       while (i < symbol.Length) {
         if (symbol[i] == '\r' && i + 1 < symbol.Length && symbol[i + 1] == '\n'
-   ) {
+) {
           writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
           symbolBegin = i + 2;
           i += 2;
@@ -197,7 +211,8 @@ namespace PeterO.Mail {
 
     private bool CanCharUnitFit(int currentWordLength, int unitLength, bool
       writeSpace) {
-      int effectiveMaxLength = 75;  // 75 is max. allowed length of an encoded word
+  var effectiveMaxLength = 75;  // 75 is max. allowed length of an encoded
+        word
       if (this.GetMaxLineLength() >= 0) {
         effectiveMaxLength = Math.Min(
          effectiveMaxLength,
@@ -205,13 +220,12 @@ namespace PeterO.Mail {
       }
       if (currentWordLength == 0) {
         // 12 characters for prologue and epilogue
-        int extraSpace = 0;
+        var extraSpace = 0;
         if (writeSpace) {
           extraSpace = 1;
         }
         return this.column + 12 + unitLength + extraSpace <= effectiveMaxLength;
       } else {
-        //
         return this.column + 2 + unitLength <= effectiveMaxLength;
       }
     }
@@ -266,21 +280,19 @@ namespace PeterO.Mail {
         if (ch >= 0x10000) {
           ++i;
         }
-        bool smallChar = ch < 0x80 && ch > 0x20 && ch != (char)'"' && ch != (char)','
-                 &&
-                        "?()<>[]:;@\\.=_".IndexOf((char)ch) < 0;
-        int unitLength = 1;
+  bool smallChar = ch < 0x80 && ch > 0x20 && ch != (char)'"' && ch !=
+          (char)','&&
+                "?()<>[]:;@\\.=_".IndexOf((char)ch) < 0;
+        var unitLength = 1;
         if (ch == 0x20 || smallChar) {
           unitLength = 1;
         } else if (ch <= 0x7f) {
           unitLength = 3;
         } else if (ch <= 0x7ff) {
           unitLength = 6;
-        } else if (ch <= 0xffff) {
-          unitLength = 9;
         } else {
-          unitLength = 12;
-        }
+ unitLength = (ch <= 0xffff) ? (9) : (12);
+}
         if (!CanCharUnitFit(currentWordLength, unitLength, false)) {
           if (currentWordLength > 0) {
             AppendSymbol("?=");
@@ -328,7 +340,7 @@ namespace PeterO.Mail {
 
     private void AppendQuotedStringOrDomain(string symbol, bool writeSpace) {
       // NOTE: Assumes 'symbol' is a syntactically valid 'quoted-string'
-      // and begins and ends with a double quote, or is a syntactically 
+      // and begins and ends with a double quote, or is a syntactically
       // valid domain literal
       // and begins and ends with opening/closing brackets
       if (symbol.Length == 0) {
@@ -338,7 +350,7 @@ namespace PeterO.Mail {
       var symbolBegin = 0;
       while (i < symbol.Length) {
         if (symbol[i] == '\r' && i + 1 < symbol.Length && symbol[i + 1] == '\n'
-   ) {
+) {
           writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
           symbolBegin = i + 2;
           i += 2;
@@ -400,28 +412,31 @@ namespace PeterO.Mail {
       return ret.Equals("Mime-Version") ? "MIME-Version" :
         (ret.Equals("Message-Id") ? "Message-ID" : ret);
     }
-    public static string EncodeHeaderFieldAsEncodedWords(string fieldName, string
-        fieldValue) {
-      var sa = new HeaderEncoder(76, 0);
-      sa.AppendSymbol(CapitalizeHeaderField(fieldName) + ":");
-      sa.AppendSpace();
+
+    public HeaderEncoder AppendFieldName(string fieldName) {
+      this.AppendSymbol(CapitalizeHeaderField(fieldName) + ":");
+      this.AppendSpace();
+      return this;
+    }
+
+    public static string TrimLeadingFWS(string fieldValue) {
       var fws = HeaderParser.ParseFWS(fieldValue, 0, fieldValue.Length, null);
       if (fws > 0) {
         fieldValue = fieldValue.Substring(fws);
       }
-      sa.AppendAsEncodedWords(fieldValue);
+      return fieldValue;
+    }
+
+    public static string EncodeFieldAsEncodedWords(string fieldName, string
+        fieldValue) {
+      var sa = new HeaderEncoder().AppendFieldName(fieldName);
+      sa.AppendAsEncodedWords(TrimLeadingFWS(fieldValue));
       return sa.ToString();
     }
-    public static string EncodeHeaderField(string fieldName, string
+    public static string EncodeField(string fieldName, string
         fieldValue) {
-      var sa = new HeaderEncoder(76, 0);
-      sa.AppendSymbol(CapitalizeHeaderField(fieldName) + ":");
-      sa.AppendSpace();
-      var fws = HeaderParser.ParseFWS(fieldValue, 0, fieldValue.Length, null);
-      if (fws > 0) {
-        fieldValue = fieldValue.Substring(fws);
-      }
-      sa.AppendString(fieldValue);
+      var sa = new HeaderEncoder().AppendFieldName(fieldName);
+      sa.AppendString(TrimLeadingFWS(fieldValue));
       return sa.ToString();
     }
     public override string ToString() {
