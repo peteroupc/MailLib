@@ -299,10 +299,12 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
             char c = str.charAt(index);
             ++index;
             // Check for a run of printable ASCII characters (except space)
-            // with length up to 75 (also exclude '(' and ')' if the context
+            // with length up to 75 (also exclude '(' , '\', and ')' if the
+            // context
             // is a comment)
             if (c >= 0x21 && c < 0x7e && (context !=
-              EncodedWordContext.Comment || (c != '(' && c != ')'))) {
+          EncodedWordContext.Comment || (c != '(' && c != ')' && c != '\\'
+))) {
               ++charCount;
               if (charCount > 75) {
                 maybeWord = false;
@@ -370,8 +372,7 @@ if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 +
             asterisk + 1, (
             asterisk + 1)+(charset.length() - (asterisk + 1)));
                 charset = charset.substring(0, asterisk);
-             acceptedEncodedWord &=
-                  ParserUtility.IsValidLanguageTag(language);
+             acceptedEncodedWord &= ParserUtility.IsValidLanguageTag(language);
               } else {
                 acceptedEncodedWord &= asterisk != 0;
               }

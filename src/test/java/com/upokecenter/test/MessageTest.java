@@ -33,7 +33,7 @@ import com.upokecenter.mail.*;
           false,
           "");
       if (fmtresult == 1) {
-        System.out.println("fmtresult=1 for "+
+        System.out.println("fmtresult=1 for " +
                     ret.substring(0, Math.min(ret.length(), 260)));
       }
         String messageTemp = ret;
@@ -117,7 +117,7 @@ if (!(boolTemp)) {
  Assert.fail(msgstring);
  }
 }
-      if ((MessageGenerate(mtmessage)) == null) {
+      if (MessageGenerate(mtmessage) == null) {
  Assert.fail();
  }
     }

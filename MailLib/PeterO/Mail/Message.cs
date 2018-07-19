@@ -18,6 +18,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
   public sealed class Message {
     internal const int MaxRecHeaderLineLength = 78;
+    internal const int MaxHardHeaderLineLength = 998;
 
     private const int EncodingBase64 = 2;
     private const int EncodingBinary = 4;
@@ -1022,22 +1023,35 @@ var foundColon = false;
 
     internal static bool HasTextToEscapeOrEncodedWordStarts(string s) {
       // <summary>Returns true if the string has:
-      // * non-ASCII characters
-      // * "=?"
+      // * non-ASCII characters,
+      // * "=?",
       // * CTLs other than tab, or
-      // * a word longer than 75 characters.
+      // * a word longer than MaxRecHeaderLineLength minus 1 characters.
       // Can return false even if the string has:
       // * CRLF followed by a line with just whitespace.</summary>
-      return HasTextToEscapeOrEncodedWordStarts(s, 0, s.Length);
+      return HasTextToEscapeOrEncodedWordStarts(s, 0, s.Length, true);
     }
 
     internal static bool HasTextToEscapeOrEncodedWordStarts(string s, int
       index, int endIndex) {
+      return HasTextToEscapeOrEncodedWordStarts(s, index, endIndex, true);
+    }
+
+    internal static bool HasTextToEscape(string s, int index, int endIndex) {
+      return HasTextToEscapeOrEncodedWordStarts(s, index, endIndex, false);
+    }
+
+    internal static bool HasTextToEscape(string s) {
+      return HasTextToEscapeOrEncodedWordStarts(s, 0, s.Length, false);
+    }
+
+    internal static bool HasTextToEscapeOrEncodedWordStarts(string s, int
+      index, int endIndex, bool checkEWStarts) {
       int len = endIndex;
       var chunkLength = 0;
       for (int i = index; i < endIndex; ++i) {
         char c = s[i];
-        if (c == '=' && i + 1 < len && c == '?') {
+        if (checkEWStarts && c == '=' && i + 1 < len && c == '?') {
           // "=?" (start of an encoded word)
           return true;
         }
@@ -1068,51 +1082,7 @@ var foundColon = false;
           chunkLength = 0;
         } else {
           ++chunkLength;
-          if (chunkLength > 75) {
-            return true;
-          }
-        }
-      }
-      return false;
-    }
-
-    internal static bool HasTextToEscape(
-      string s,
-      int index,
-      int endIndex) {
-      int len = endIndex;
-      var chunkLength = 0;
-
-      for (int i = index; i < endIndex; ++i) {
-        char c = s[i];
-        if (c == 0x0d) {
-          if (i + 1 >= len || s[i + 1] != 0x0a) {
-            // bare CR
-            // Console.WriteLine("bare CR");
-            return true;
-          }
-          if (i + 2 >= len || (s[i + 2] != 0x09 && s[i + 2] != 0x20)) {
-            // CRLF not followed by whitespace
-            return true;
-          }
-          chunkLength = 0;
-          ++i;
-          continue;
-        }
-        if (c == 0x0a) {
-          // bare LF
-          return true;
-        }
-        if (c >= 0x7f || (c < 0x20 && c != 0x09 && c != 0x0d)) {
-          // CTLs (except TAB, SPACE, and CR) and non-ASCII
-          // characters
-          return true;
-        }
-        if (c == 0x20 || c == 0x09) {
-          chunkLength = 0;
-        } else {
-          ++chunkLength;
-          if (chunkLength > 998) {
+          if (chunkLength > MaxRecHeaderLineLength - 1) {
             return true;
           }
         }
@@ -1427,7 +1397,7 @@ var foundColon = false;
             }
             sb.Append((char)c);
           } else if (!first && c == ':') {
-            if (lineCount >= 999) {
+            if (lineCount > Message.MaxHardHeaderLineLength) {
               // 998 characters includes the colon
               throw new MessageDataException("Header field name too long");
             }
@@ -1939,7 +1909,7 @@ var foundColon = false;
 #if DEBUG
               throw new
   MessageDataException("Header field still has non-Ascii or controls: " +
-                    name + " " + value);
+                    name + "\n" + downgraded);
 #else
                throw new MessageDataException(
                  "Header field still has non-Ascii or controls");

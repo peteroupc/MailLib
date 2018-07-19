@@ -1,8 +1,7 @@
 using System;
 namespace PeterO.Mail {
 internal static class HeaderParser {
-public static int ParseAddrSpec(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseAddrSpec(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -11,29 +10,25 @@ indexStart = index;
  tx2 = ParseLocalPart(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
 if (index < endIndex && (str[index] == 64)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  tx2 = ParseDomain(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseAddress(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseAddress(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -48,55 +43,54 @@ indexStart = index;
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseAddressList(string str, int index, int endIndex,
-  ITokener tokener) {
-int indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, indexTemp4,
-  state, state2, tx2;
+public static int ParseAddressList(string str, int index, int endIndex, ITokener tokener) {
+int indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, indexTemp4, state, state2, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
  tx2 = ParseAddress(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
 do {
@@ -112,30 +106,28 @@ do {
 }
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else { break;
+ index=indexTemp3;
+}
+  else { break;
 }
 } while (false);
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseAngleAddr(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseAngleAddr(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -143,133 +135,117 @@ indexStart = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 60)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseObsRoute(str, index, endIndex, tokener);
  tx2 = ParseAddrSpec(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
 if (index < endIndex && (str[index] == 62)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseAtext(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseAtext(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp = index;
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] == 33) || (str[index] >= 35 && str[index] <= 39) ||
-  (str[index] >= 42 && str[index] <= 43) || (str[index] == 45) ||
-  (str[index] >= 47 && str[index] <= 57) || (str[index] == 61) ||
-  (str[index] == 63) || (str[index] >= 94 && str[index] <= 126) ||
-  (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 &&
-  str[index] <= 65535))) {
- ++indexTemp;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
-  56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+if (index < endIndex && (((str[index] >= 65 && str[index] <= 90)) || (str[index] == 33) || ((str[index] >= 35 && str[index] <= 39)) || ((str[index] >= 42 && str[index] <= 43)) || (str[index] == 45) || ((str[index] >= 47 && str[index] <= 57)) || (str[index] == 61) || (str[index] == 63) || ((str[index] >= 94 && str[index] <= 126)) || ((str[index] >= 128 && str[index] <= 55295)) || ((str[index] >= 57344 && str[index] <= 65535)))) {
+ indexTemp += 1;
+}
+else if (index + 1 < endIndex && ((((str[index] >= 55296 && str[index] <= 56319)) && ((str[index + 1] >= 56320 && str[index + 1] <= 57343))))) {
  indexTemp += 2;
 }
  return indexTemp;
 }
-public static int ParseAtom(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseAtom(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
- for (i = 0;; ++i) {
+ for (i = 0;;i++) {
   indexTemp2 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseAuthresVersion(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseAuthresVersion(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
- while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
+if ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
+ while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
 }
-} else {
+}
+else {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseBase64Terminal(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseBase64Terminal(string str, int index, int endIndex, ITokener tokener) {
 int indexStart2, indexTemp, indexTemp2;
  indexTemp = index;
  do {
  indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 1 < endIndex && (((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] == 43) ||
-  (str[index] >= 47 && str[index] <= 57)) && ((str[index + 1] >= 65 &&
-  str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) ||
-  (str[index + 1] == 43) || (str[index + 1] >= 47 && str[index + 1] <=
-  57)))) {
+if (index + 1 < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 43) || ((str[index] >= 47 && str[index] <= 57))) && (((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97 && str[index + 1] <= 122)) || (str[index + 1] == 43) || ((str[index + 1] >= 47 && str[index + 1] <= 57)))))) {
  index += 2;
-} else {
+}
+else {
   break;
 }
 if (index + 1 < endIndex && str[index] == 61 && str[index + 1] == 61) {
  index += 2;
-} else {
- index = indexStart2; break;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
@@ -280,22 +256,17 @@ if (index + 1 < endIndex && str[index] == 61 && str[index + 1] == 61) {
  indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 2 < endIndex && (((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] == 43) ||
-  (str[index] >= 47 && str[index] <= 57)) && ((str[index + 1] >= 65 &&
-  str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) ||
-  (str[index + 1] == 43) || (str[index + 1] >= 47 && str[index + 1] <=
-  57)) && ((str[index + 2] >= 65 && str[index + 2] <= 90) || (str[index + 2]
-  >= 97 && str[index + 2] <= 122) || (str[index + 2] == 43) || (str[index +
-  2] >= 47 && str[index + 2] <= 57)))) {
+if (index + 2 < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 43) || ((str[index] >= 47 && str[index] <= 57))) && (((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97 && str[index + 1] <= 122)) || (str[index + 1] == 43) || ((str[index + 1] >= 47 && str[index + 1] <= 57))) && (((str[index + 2] >= 65 && str[index + 2] <= 90)) || ((str[index + 2] >= 97 && str[index + 2] <= 122)) || (str[index + 2] == 43) || ((str[index + 2] >= 47 && str[index + 2] <= 57)))))) {
  index += 3;
-} else {
+}
+else {
   break;
 }
 if (index < endIndex && (str[index] == 61)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
@@ -306,41 +277,40 @@ if (index < endIndex && (str[index] == 61)) {
  } while (false);
  return indexTemp;
 }
-public static int ParseCFWS(string str, int index, int endIndex, ITokener
-  tokener) {
-int i, i2, indexStart, indexStart2, indexStart3, indexTemp, indexTemp2,
-  indexTemp3, state, state2, tx4;
+public static int ParseCFWS(string str, int index, int endIndex, ITokener tokener) {
+int i, i2, indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3, state, state2, tx4;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
+ 
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0;;i2++) {
   indexTemp3 = index;
  do {
  indexStart3 = index;
  index = ParseFWS(str, index, endIndex, tokener);
  tx4 = HeaderParserUtility.ParseCommentLax(str, index, endIndex, tokener);
  if (tx4 == index) {
-index = indexStart3; break;
-} else {
- index = tx4;
+index=indexStart3;  break;
 }
+ index=tx4;
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 1) {
-   index = indexStart2;
+ index=indexTemp3;
+}
+  else {
+  if (i2<1) {
+   index=indexStart2;
   } break;
  }
  }
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
@@ -350,67 +320,55 @@ index = indexStart3; break;
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
-for (i = 0; true; ++i) {
+ if (tokener != null)tokener.RestoreState(state2);
+for (i = 0; ; ++i) {
   indexTemp2 = ParseFWS(str, index, endIndex, tokener);
-  if (indexTemp2 == index) { if (i< 1) {
+  if (indexTemp2 == index) { if (i<1) {
  indexTemp = indexStart;
 } break;
-} else {
- index = indexTemp2;
 }
+  index = indexTemp2;
 }
  index = indexStart;
 if (indexTemp2 != indexStart) {
- indexTemp = indexTemp2; break;
+ indexTemp = indexTemp2;  break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseCKey(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseCKey(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] == 45) ||
-  (str[index] >= 47 && str[index] <= 57))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] == 45) ||
-   (str[index] >= 47 && str[index] <= 57)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 45) || ((str[index] >= 47 && str[index] <= 57)))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 45) || ((str[index] >= 47 && str[index] <= 57)))))) ) {
+ index += 1;
 }
-} else {
+}
+else {
  break;
 }
 if (index < endIndex && (str[index] == 58)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  tx2 = ParseCKeyString(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseCKeyList(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseCKeyList(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -419,11 +377,11 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseCKey(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -431,36 +389,31 @@ index = indexStart; break;
  tx3 = ParseCFWS(str, index, endIndex, tokener);
  if (tx3 == index) {
  break;
-} else {
- index = tx3;
 }
+ index=tx3;
  tx3 = ParseCKey(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseCKeyString(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseCKeyString(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -470,63 +423,49 @@ indexStart = index;
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] == 43) ||
-  (str[index] >= 47 && str[index] <= 57) || (str[index] == 61))) {
- ++indexTemp;
- while ((indexTemp < endIndex && ((str[indexTemp] >= 65 && str[indexTemp] <=
-   90) || (str[indexTemp] >= 97 && str[indexTemp] <= 122) || (str[indexTemp]
-   == 43) || (str[indexTemp] >= 47 && str[indexTemp] <= 57) ||
-   (str[indexTemp] == 61)))) {
-indexTemp++;
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 43) || ((str[index] >= 47 && str[index] <= 57)) || (str[index] == 61))))) ) {
+ indexTemp += 1;
+ while ((indexTemp < endIndex && (((((str[indexTemp] >= 65 && str[indexTemp] <= 90)) || ((str[indexTemp] >= 97 && str[indexTemp] <= 122)) || (str[indexTemp] == 43) || ((str[indexTemp] >= 47 && str[indexTemp] <= 57)) || (str[indexTemp] == 61))))) ) {
+indexTemp += 1;
 }
  break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseCLock(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseCLock(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] == 45) ||
-  (str[index] >= 47 && str[index] <= 57))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] == 45) ||
-   (str[index] >= 47 && str[index] <= 57)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 45) || ((str[index] >= 47 && str[index] <= 57)))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 45) || ((str[index] >= 47 && str[index] <= 57)))))) ) {
+ index += 1;
 }
-} else {
+}
+else {
  break;
 }
 if (index < endIndex && (str[index] == 58)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  tx2 = ParseCLockString(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseCLockList(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseCLockList(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -535,11 +474,11 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseCLock(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -547,36 +486,31 @@ index = indexStart; break;
  tx3 = ParseCFWS(str, index, endIndex, tokener);
  if (tx3 == index) {
  break;
-} else {
- index = tx3;
 }
+ index=tx3;
  tx3 = ParseCLock(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseCLockString(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseCLockString(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -586,40 +520,27 @@ indexStart = index;
   indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 3 < endIndex && (((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] == 43) ||
-  (str[index] >= 47 && str[index] <= 57)) && ((str[index + 1] >= 65 &&
-  str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) ||
-  (str[index + 1] == 43) || (str[index + 1] >= 47 && str[index + 1] <=
-  57)) && ((str[index + 2] >= 65 && str[index + 2] <= 90) || (str[index + 2]
-  >= 97 && str[index + 2] <= 122) || (str[index + 2] == 43) || (str[index +
-  2] >= 47 && str[index + 2] <= 57)) && ((str[index + 3] >= 65 && str[index+
-  3] <= 90) || (str[index + 3] >= 97 && str[index + 3] <= 122) ||
-  (str[index + 3] == 43) || (str[index + 3] >= 47 && str[index + 3] <=
-  57)))) {
+if (index + 3 < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 43) || ((str[index] >= 47 && str[index] <= 57))) && (((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97 && str[index + 1] <= 122)) || (str[index + 1] == 43) || ((str[index + 1] >= 47 && str[index + 1] <= 57))) && (((str[index + 2] >= 65 && str[index + 2] <= 90)) || ((str[index + 2] >= 97 && str[index + 2] <= 122)) || (str[index + 2] == 43) || ((str[index + 2] >= 47 && str[index + 2] <= 57))) && (((str[index + 3] >= 65 && str[index + 3] <= 90)) || ((str[index + 3] >= 97 && str[index + 3] <= 122)) || (str[index + 3] == 43) || ((str[index + 3] >= 47 && str[index + 3] <= 57)))))) {
  index += 4;
-} else {
+}
+else {
   break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
  index = ParseBase64Terminal(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseCertifierList(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseCertifierList(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -628,45 +549,42 @@ indexStart = index;
  tx2 = ParseDomainName(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 58)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx3 = ParseDomainName(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDate(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseDate(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -675,44 +593,25 @@ indexStart = index;
  tx2 = ParseDay(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
-if (index + 2 < endIndex && (((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 &&
-  (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) ||
-  ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index +
-  2] & ~32) == 82) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) ==
-  80 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 77 &&
-  (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 89) ||
-  ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index +
-  2] & ~32) == 78) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) ==
-  85 && (str[index + 2] & ~32) == 76) || ((str[index] & ~32) == 65 &&
-  (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 71) ||
-  ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 69 && (str[index +
-  2] & ~32) == 80) || ((str[index] & ~32) == 79 && (str[index + 1] & ~32) ==
-  67 && (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 78 &&
-  (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 86) ||
-  ((str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index +
-  2] & ~32) == 67))) {
+ index=tx2;
+if (index + 2 < endIndex && (((((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 89) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 76) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 71) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 80) || ((str[index] & ~32) == 79 && (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 86) || ((str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67))))) {
  index += 3;
-} else {
- index = indexStart; break;
+}
+else {
+ index = indexStart;  break;
 }
  tx2 = ParseYear(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDateTime(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseDateTime(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -725,114 +624,92 @@ do {
  tx3 = ParseDayOfWeek(str, index, endIndex, tokener);
  if (tx3 == index) {
  break;
-} else {
- index = tx3;
 }
+ index=tx3;
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
  tx2 = ParseDate(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  tx2 = ParseTime(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDay(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseDay(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-for (i = 0; i < 2; ++i) {
- if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
-  ++index;
- } else if (i< 1) {
-index = indexStart; break;
- } else {
- break;
+for (i = 0; i<2; i++) {
+ if ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+  index += 1;
+ } else if (i<1) {
+index=indexStart; break;
+ } else break;
 }
-}
-if (index == indexStart) {
- break;
-}
+if (index==indexStart)break;
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDayOfWeek(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseDayOfWeek(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 2 < endIndex && (((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 84 &&
-  (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 69) ||
-  ((str[index] & ~32) == 87 && (str[index + 1] & ~32) == 69 && (str[index +
-  2] & ~32) == 68) || ((str[index] & ~32) == 84 && (str[index + 1] & ~32) ==
-  72 && (str[index + 2] & ~32) == 85) || ((str[index] & ~32) == 70 &&
-  (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73) ||
-  ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 65 && (str[index +
-  2] & ~32) == 84) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) ==
-  85 && (str[index + 2] & ~32) == 78))) {
+if (index + 2 < endIndex && (((((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 84 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 69) || ((str[index] & ~32) == 87 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 68) || ((str[index] & ~32) == 84 && (str[index + 1] & ~32) == 72 && (str[index + 2] & ~32) == 85) || ((str[index] & ~32) == 70 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 78))))) {
  index += 3;
-} else {
- index = indexStart; break;
+}
+else {
+ index = indexStart;  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDesignator(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseDesignator(string str, int index, int endIndex, ITokener tokener) {
  return ParseMilitaryString(str, index, endIndex, tokener);
 }
-public static int ParseDiagDeprecated(string str, int index, int endIndex,
-  ITokener tokener) {
-int i, indexStart, indexStart2, indexStart3, indexStart4, indexTemp,
-  indexTemp2, indexTemp3, indexTemp4, state;
+public static int ParseDiagDeprecated(string str, int index, int endIndex, ITokener tokener) {
+int i, indexStart, indexStart2, indexStart3, indexStart4, indexTemp, indexTemp2, indexTemp3, indexTemp4, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
 if (index < endIndex && (str[index] == 33)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
 do {
@@ -843,13 +720,15 @@ do {
  indexStart3 = index;
 if (index + 1 < endIndex && str[index] == 50 && str[index + 1] == 53) {
  index += 2;
-} else {
+}
+else {
  break;
 }
-if (index < endIndex && (str[index] >= 48 && str[index] <= 53)) {
- ++index;
-} else {
- index = indexStart3; break;
+if (index < endIndex && ((str[index] >= 48 && str[index] <= 53))) {
+ index += 1;
+}
+else {
+ index=indexStart3; break;
 }
   indexTemp3 = index;
   index = indexStart3;
@@ -860,16 +739,17 @@ if (index < endIndex && (str[index] >= 48 && str[index] <= 53)) {
  indexTemp3 = index;
  do {
  indexStart3 = index;
-if (index + 1 < endIndex && (str[index] == 50) && (str[index + 1] >= 48 &&
-  str[index + 1] <= 52)) {
+if (index + 1 < endIndex && (str[index] == 50) && ((str[index + 1] >= 48 && str[index + 1] <= 52))) {
  index += 2;
-} else {
+}
+else {
  break;
 }
-if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
-} else {
- index = indexStart3; break;
+if (index < endIndex && ((str[index] >= 48 && str[index] <= 57))) {
+ index += 1;
+}
+else {
+ index=indexStart3; break;
 }
   indexTemp3 = index;
   index = indexStart3;
@@ -877,34 +757,34 @@ if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
  if (indexTemp3 != index) {
  indexTemp2 = indexTemp3; break;
 }
-if (index + 2 < endIndex && ((str[index] == 49) && ((str[index + 1] >= 48 &&
-  str[index + 1] <= 57) || (str[index + 2] >= 48 && str[index + 2] <= 57)))) {
+if (index + 2 < endIndex && (((str[index] == 49) && ((str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 2] >= 48 && str[index + 2] <= 57))))) {
  indexTemp2 += 3; break;
 }
-if (index + 1 < endIndex && ((str[index] >= 49 && str[index] <= 57) &&
-  (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+if (index + 1 < endIndex && ((((str[index] >= 49 && str[index] <= 57)) && ((str[index + 1] >= 48 && str[index + 1] <= 57))))) {
  indexTemp2 += 2; break;
 }
-if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++indexTemp2; break;
+if (index < endIndex && (((str[index] >= 48 && str[index] <= 57)))) {
+ indexTemp2 += 1; break;
 }
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
- index = indexStart; break;
+ index=indexTemp2;
+}
+  else {
+ index=indexStart; break;
 }
 } while (false);
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
- for (i = 0; i < 3; ++i) {
+ for (i = 0;i<3;i++) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
 do {
@@ -915,13 +795,15 @@ do {
  indexStart4 = index;
 if (index + 1 < endIndex && str[index] == 50 && str[index + 1] == 53) {
  index += 2;
-} else {
+}
+else {
  break;
 }
-if (index < endIndex && (str[index] >= 48 && str[index] <= 53)) {
- ++index;
-} else {
- index = indexStart4; break;
+if (index < endIndex && ((str[index] >= 48 && str[index] <= 53))) {
+ index += 1;
+}
+else {
+ index=indexStart4; break;
 }
   indexTemp4 = index;
   index = indexStart4;
@@ -932,16 +814,17 @@ if (index < endIndex && (str[index] >= 48 && str[index] <= 53)) {
  indexTemp4 = index;
  do {
  indexStart4 = index;
-if (index + 1 < endIndex && (str[index] == 50) && (str[index + 1] >= 48 &&
-  str[index + 1] <= 52)) {
+if (index + 1 < endIndex && (str[index] == 50) && ((str[index + 1] >= 48 && str[index + 1] <= 52))) {
  index += 2;
-} else {
+}
+else {
  break;
 }
-if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
-} else {
- index = indexStart4; break;
+if (index < endIndex && ((str[index] >= 48 && str[index] <= 57))) {
+ index += 1;
+}
+else {
+ index=indexStart4; break;
 }
   indexTemp4 = index;
   index = indexStart4;
@@ -949,88 +832,86 @@ if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
  if (indexTemp4 != index) {
  indexTemp3 = indexTemp4; break;
 }
-if (index + 2 < endIndex && ((str[index] == 49) && ((str[index + 1] >= 48 &&
-  str[index + 1] <= 57) || (str[index + 2] >= 48 && str[index + 2] <= 57)))) {
+if (index + 2 < endIndex && (((str[index] == 49) && ((str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 2] >= 48 && str[index + 2] <= 57))))) {
  indexTemp3 += 3; break;
 }
-if (index + 1 < endIndex && ((str[index] >= 49 && str[index] <= 57) &&
-  (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+if (index + 1 < endIndex && ((((str[index] >= 49 && str[index] <= 57)) && ((str[index + 1] >= 48 && str[index + 1] <= 57))))) {
  indexTemp3 += 2; break;
 }
-if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++indexTemp3; break;
+if (index < endIndex && (((str[index] >= 48 && str[index] <= 57)))) {
+ indexTemp3 += 1; break;
 }
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
- index = indexStart2; break;
+ index=indexTemp3;
+}
+  else {
+ index=indexStart2; break;
 }
 } while (false);
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 3) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<3) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDiagIdentity(string str, int index, int endIndex,
-  ITokener tokener) {
-int i2, i4, indexStart, indexStart2, indexStart3, indexStart4, indexTemp,
-  indexTemp2, indexTemp3, indexTemp4, indexTemp5, state, state2, tx4;
+public static int ParseDiagIdentity(string str, int index, int endIndex, ITokener tokener) {
+int i2, i4, indexStart, indexStart2, indexStart3, indexStart4, indexTemp, indexTemp2, indexTemp3, indexTemp4, indexTemp5, state, state2, tx4;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
+ 
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0;;i2++) {
   indexTemp3 = index;
  do {
  indexStart3 = index;
  tx4 = ParseLabel(str, index, endIndex, tokener);
  if (tx4 == index) {
  break;
-} else {
- index = tx4;
 }
+ index=tx4;
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
- index = indexStart3; break;
+ index += 1;
+}
+else {
+ index=indexStart3; break;
 }
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 1) {
-   index = indexStart2;
+ index=indexTemp3;
+}
+  else {
+  if (i2<1) {
+   index=indexStart2;
   } break;
  }
  }
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
 do {
@@ -1039,32 +920,30 @@ do {
  indexTemp4 = index;
  do {
  indexStart4 = index;
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122))) {
- ++index;
-} else {
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))))) {
+ index += 1;
+}
+else {
   break;
 }
- for (i4 = 0;; ++i4) {
+ for (i4 = 0;;i4++) {
   indexTemp5 = index;
-if (index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >= 65 &&
-  str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
-  122) || (str[index + 1] >= 48 && str[index + 1] <= 57))))) {
+if (index + 1 < endIndex && (((str[index] == 45) && (((((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97 && str[index + 1] <= 122)) || ((str[index + 1] >= 48 && str[index + 1] <= 57)))))))) {
  indexTemp5 += 2;
-  } else if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57))) {
- ++indexTemp5;
+}
+else if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)))))) {
+ indexTemp5 += 1;
 }
   if (indexTemp5 != index) {
- index = indexTemp5;
-} else {
-  if (i4< 1) {
-   index = indexStart4;
+ index=indexTemp5;
+}
+  else {
+  if (i4<1) {
+   index=indexStart4;
   } break;
  }
  }
- if (index == indexStart4) {
+ if (index==indexStart4) {
  break;
 }
   indexTemp4 = index;
@@ -1076,37 +955,33 @@ if (index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >= 65 &&
  indexTemp4 = index;
  do {
  indexStart4 = index;
-if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
-} else {
+if (index < endIndex && ((str[index] >= 48 && str[index] <= 57))) {
+ index += 1;
+}
+else {
  break;
 }
-while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index] == 45)))) {
- ++index;
+while ((index < endIndex && (((((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45))))) ) {
+ index += 1;
 }
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122))) {
- ++index;
-} else {
- index = indexStart4; break;
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))))) {
+ index += 1;
+}
+else {
+ index = indexStart4;  break;
 }
  while (true) {
   indexTemp5 = index;
-if (index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >= 65 &&
-  str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
-  122) || (str[index + 1] >= 48 && str[index + 1] <= 57))))) {
+if (index + 1 < endIndex && (((str[index] == 45) && (((((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97 && str[index + 1] <= 122)) || ((str[index + 1] >= 48 && str[index + 1] <= 57)))))))) {
  indexTemp5 += 2;
-  } else if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57))) {
- ++indexTemp5;
+}
+else if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)))))) {
+ indexTemp5 += 1;
 }
   if (indexTemp5 != index) {
-index = indexTemp5;
-} else {
- break;
+index=indexTemp5;
 }
+  else break;
  }
   indexTemp4 = index;
   index = indexStart4;
@@ -1116,12 +991,13 @@ index = indexTemp5;
 }
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
- index = indexStart2; break;
+ index=indexTemp3;
+}
+  else {
+ index=indexStart2; break;
 }
 } while (false);
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
   indexTemp2 = index;
@@ -1130,30 +1006,20 @@ index = indexTemp5;
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 45) || (str[index] == 95))) {
- ++indexTemp;
- while ((indexTemp < endIndex && ((str[indexTemp] >= 65 && str[indexTemp] <=
-   90) || (str[indexTemp] >= 97 && str[indexTemp] <= 122) || (str[indexTemp]
-   >= 48 && str[indexTemp] <= 57) || (str[indexTemp] == 45) ||
-   (str[indexTemp] == 95)))) {
-indexTemp++;
+ if (tokener != null)tokener.RestoreState(state2);
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45) || (str[index] == 95))))) ) {
+ indexTemp += 1;
+ while ((indexTemp < endIndex && (((((str[indexTemp] >= 65 && str[indexTemp] <= 90)) || ((str[indexTemp] >= 97 && str[indexTemp] <= 122)) || ((str[indexTemp] >= 48 && str[indexTemp] <= 57)) || (str[indexTemp] == 45) || (str[indexTemp] == 95))))) ) {
+indexTemp += 1;
 }
  break;
 }
  // Unlimited production in choice
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDiagOther(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseDiagOther(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -1161,162 +1027,142 @@ indexStart = index;
  do {
 if (index + 1 < endIndex && str[index] == 33 && str[index + 1] == 46) {
  index += 2;
-} else {
+}
+else {
  break;
 }
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
 do {
   indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx3 = ParseDiagIdentity(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDispNotParam(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseDispNotParam(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-  str[index] <= 36) || (str[index] == 38) || (str[index] == 43) ||
-  (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 &&
-  str[index] <= 126))) {
- ++index;
- while ((index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-   str[index] <= 36) || (str[index] == 38) || (str[index] == 43) ||
-   (str[index] >= 45 && str[index] <= 46) || (str[index] >= 48 && str[index]
-   <= 57) || (str[index] >= 65 && str[index] <= 90) || (str[index] >= 94 &&
-   str[index] <= 126)))) {
- ++index;
+if ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 36)) || (str[index] == 38) || (str[index] == 43) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)))))) ) {
+ index += 1;
+ while ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 36)) || (str[index] == 38) || (str[index] == 43) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
 }
-if (index + 8 < endIndex && (str[index] == 61) && (((str[index + 1] & ~32)
-  == 82 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 81 &&
-  (str[index + 4] & ~32) == 85 && (str[index + 5] & ~32) == 73 && (str[index+
-  6] & ~32) == 82 && (str[index + 7] & ~32) == 69 && (str[index + 8] & ~32) == 68) || ((str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) ==
-  80 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 73 &&
-  (str[index + 5] & ~32) == 79 && (str[index + 6] & ~32) == 78 && (str[index+
-  7] & ~32) == 65 && (str[index + 8] & ~32) == 76))) {
+else {
+ index=indexStart; break;
+}
+if (index + 8 < endIndex && (str[index] == 61) && (((((str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 81 && (str[index + 4] & ~32) == 85 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 69 && (str[index + 8] & ~32) == 68) || ((str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 80 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 73 && (str[index + 5] & ~32) == 79 && (str[index + 6] & ~32) == 78 && (str[index + 7] & ~32) == 65 && (str[index + 8] & ~32) == 76))))) {
  index += 9;
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  tx2 = ParseValue(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx3 = ParseValue(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDisplayName(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseDisplayName(string str, int index, int endIndex, ITokener tokener) {
  return ParsePhrase(str, index, endIndex, tokener);
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseDistName(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseDistName(string str, int index, int endIndex, ITokener tokener) {
 int indexStart2, indexTemp, indexTemp2;
  indexTemp = index;
  do {
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122))) {
- ++indexTemp; break;
+if (index < endIndex && (((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))) {
+ indexTemp += 1; break;
 }
  indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
-} else {
+if (index < endIndex && ((str[index] >= 48 && str[index] <= 57))) {
+ index += 1;
+}
+else {
  break;
 }
-while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 43) || (str[index] == 45) || (str[index] == 95)))
-) {
- ++index;
+while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 43) || (str[index] == 45) || (str[index] == 95))))) ) {
+ index += 1;
 }
   indexTemp2 = index;
   index = indexStart2;
@@ -1327,10 +1173,8 @@ while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
  } while (false);
  return indexTemp;
 }
-public static int ParseDomain(string str, int index, int endIndex, ITokener
-  tokener) {
-int indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3,
-  state, state2, state3, tx3, tx4;
+public static int ParseDomain(string str, int index, int endIndex, ITokener tokener) {
+int indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3, state, state2, state3, tx3, tx4;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
@@ -1346,35 +1190,35 @@ indexStart = index;
  tx3 = ParseAtom(str, index, endIndex, tokener);
  if (tx3 == index) {
  break;
-} else {
- index = tx3;
 }
+ index=tx3;
  while (true) {
+  
   state3 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp3 = index;
  do {
  indexStart3 = index;
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx4 = ParseAtom(str, index, endIndex, tokener);
  if (tx4 == index) {
-index = indexStart3; break;
-} else {
- index = tx4;
+index=indexStart3;  break;
 }
+ index=tx4;
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
   if (indexTemp3 != index) {
-index = indexTemp3;
-  } else if (tokener != null) {
-tokener.RestoreState(state3); break;
-} else {
- break;
+index=indexTemp3;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state3); break;
+}
+  else break;
  }
   indexTemp2 = index;
   index = indexStart2;
@@ -1382,21 +1226,15 @@ tokener.RestoreState(state3); break;
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
+ if (tokener != null)tokener.RestoreState(state2);
  } while (false);
  if (tokener != null) {
-  if (indexTemp == indexStart) {
- tokener.RestoreState(state);
-} else {
- tokener.Commit(8, indexStart, indexTemp);
-}
+  if (indexTemp == indexStart) tokener.RestoreState(state);
+  else tokener.Commit(8,indexStart,indexTemp);
  }
  return indexTemp;
 }
-public static int ParseDomainLiteral(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseDomainLiteral(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -1405,31 +1243,29 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseDomainLiteralCore(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDomainLiteralCore(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseDomainLiteralCore(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
 if (index < endIndex && (str[index] == 91)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -1437,58 +1273,53 @@ if (index < endIndex && (str[index] == 91)) {
  index = ParseFWS(str, index, endIndex, tokener);
  tx3 = ParseDtext(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 93)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDomainName(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseDomainName(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexStart2, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57))) {
- ++index;
-} else {
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)))))) {
+ index += 1;
+}
+else {
   break;
 }
  index = ParseLdhStr(str, index, endIndex, tokener);
- for (i = 0;; ++i) {
+ for (i = 0;;i++) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 1 < endIndex && (str[index] == 46) && ((str[index + 1] >= 65 &&
-  str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+if (index + 1 < endIndex && (str[index] == 46) && (((((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97 && str[index + 1] <= 122)) || ((str[index + 1] >= 48 && str[index + 1] <= 57)))))) {
  index += 2;
-} else {
+}
+else {
  break;
 }
  index = ParseLdhStr(str, index, endIndex, tokener);
@@ -1496,27 +1327,24 @@ if (index + 1 < endIndex && (str[index] == 46) && ((str[index + 1] >= 65 &&
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDomainNoCfws(string str, int index, int endIndex,
-  ITokener tokener) {
-int indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, indexTemp4,
-  state;
+public static int ParseDomainNoCfws(string str, int index, int endIndex, ITokener tokener) {
+int indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, indexTemp4, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
@@ -1529,23 +1357,22 @@ indexStart = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 91)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  while (true) {
   indexTemp3 = index;
  do {
-if (index < endIndex && ((str[index] >= 33 && str[index] <= 90) ||
-  (str[index] >= 94 && str[index] <= 126))) {
- ++indexTemp3; break;
+if (index < endIndex && (((str[index] >= 33 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)))) {
+ indexTemp3 += 1; break;
 }
  indexTemp4 = index;
-if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) ||
-  (str[index] >= 57344 && str[index] <= 65535))) {
- ++indexTemp4;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
-  56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+if (index < endIndex && (((str[index] >= 128 && str[index] <= 55295)) || ((str[index] >= 57344 && str[index] <= 65535)))) {
+ indexTemp4 += 1;
+}
+else if (index + 1 < endIndex && ((((str[index] >= 55296 && str[index] <= 56319)) && ((str[index + 1] >= 56320 && str[index + 1] <= 57343))))) {
  indexTemp4 += 2;
 }
  if (indexTemp4 != index) {
@@ -1553,15 +1380,15 @@ if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) ||
 }
  } while (false);
   if (indexTemp3 != index) {
-index = indexTemp3;
-} else {
- break;
+index=indexTemp3;
 }
+  else break;
  }
 if (index < endIndex && (str[index] == 93)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
@@ -1570,13 +1397,10 @@ if (index < endIndex && (str[index] == 93)) {
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDotAtom(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseDotAtom(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -1585,204 +1409,187 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseDotAtomText(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDotAtomText(string str, int index, int endIndex,
-  ITokener tokener) {
-int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3,
-  state, state2;
+public static int ParseDotAtomText(string str, int index, int endIndex, ITokener tokener) {
+int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state, state2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
- for (i = 0;; ++i) {
+ for (i = 0;;i++) {
   indexTemp2 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
- for (i2 = 0;; ++i2) {
+ for (i2 = 0;;i2++) {
   indexTemp3 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 1) {
-   index = indexStart2;
+ index=indexTemp3;
+}
+  else {
+  if (i2<1) {
+   index=indexStart2;
   } break;
  }
  }
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseDtext(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseDtext(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-if (index < endIndex && ((str[index] >= 33 && str[index] <= 90) ||
-  (str[index] >= 1 && str[index] <= 8) || (str[index] >= 11 && str[index] <=
-  12) || (str[index] >= 14 && str[index] <= 31))) {
- ++indexTemp; break;
+if (index < endIndex && (((str[index] >= 33 && str[index] <= 90)) || ((str[index] >= 1 && str[index] <= 8)) || ((str[index] >= 11 && str[index] <= 12)) || ((str[index] >= 14 && str[index] <= 31)))) {
+ indexTemp += 1; break;
 }
   indexTemp2 = ParseQuotedPair(str, index, endIndex, tokener);
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
-if (index < endIndex && ((str[index] >= 94 && str[index] <= 55295) ||
-  (str[index] >= 57344 && str[index] <= 65535))) {
- ++indexTemp; break;
+if (index < endIndex && (((str[index] >= 94 && str[index] <= 55295)) || ((str[index] >= 57344 && str[index] <= 65535)))) {
+ indexTemp += 1; break;
 }
-if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
-  (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+if (index + 1 < endIndex && ((((str[index] >= 55296 && str[index] <= 56319)) && ((str[index + 1] >= 56320 && str[index + 1] <= 57343))))) {
  indexTemp += 2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseEncodingCount(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseEncodingCount(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
- while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
+if ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
+ while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseEncodingKeyword(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseEncodingKeyword(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122))) {
- ++index;
-} else {
- index = indexStart; break;
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))))) {
+ index += 1;
 }
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 45))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
-   str[index] <= 57) || (str[index] == 45)))) {
- ++index;
+else {
+ index = indexStart;  break;
 }
-} else {
- index = indexStart; break;
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45))))) ) {
+ index += 1;
+}
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseFWS(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseFWS(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexStart2, indexTemp, indexTemp2;
 indexStart = index;
  indexTemp = index;
  do {
- for (i = 0;; ++i) {
+ for (i = 0;;i++) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
+if ((index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10)) {
  index += 2;
 }
-if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
- ++index;
-} else {
- index = indexStart2; break;
+if (index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) {
+ index += 1;
+}
+else {
+ index = indexStart2;  break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
   indexTemp = index;
@@ -1791,14 +1598,12 @@ if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseFsarg(string str, int index, int endIndex, ITokener
-  tokener) {
-int i3, indexStart2, indexStart3, indexStart4, indexTemp, indexTemp2,
-  indexTemp3, indexTemp4;
+public static int ParseFsarg(string str, int index, int endIndex, ITokener tokener) {
+int i3, indexStart2, indexStart3, indexStart4, indexTemp, indexTemp2, indexTemp3, indexTemp4;
  indexTemp = index;
  do {
  indexTemp2 = index;
@@ -1806,81 +1611,83 @@ int i3, indexStart2, indexStart3, indexStart4, indexTemp, indexTemp2,
  indexStart2 = index;
 if (index + 3 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 80 && str[index + 2] == 52 && str[index + 3] == 61) {
  index += 4;
-} else {
+}
+else {
  break;
 }
 do {
   indexTemp3 = index;
  do {
  indexStart3 = index;
-if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index] == 88) || (str[index] == 120))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-   (str[index] == 88) || (str[index] == 120)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 48 && str[index] <= 57)) || (str[index] == 88) || (str[index] == 120))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 48 && str[index] <= 57)) || (str[index] == 88) || (str[index] == 120))))) ) {
+ index += 1;
 }
-} else {
+}
+else {
  break;
 }
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
- index = indexStart3; break;
+ index += 1;
 }
-if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index] == 88) || (str[index] == 120))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-   (str[index] == 88) || (str[index] == 120)))) {
- ++index;
+else {
+ index=indexStart3; break;
 }
-} else {
- index = indexStart3; break;
+if ((index < endIndex && (((((str[index] >= 48 && str[index] <= 57)) || (str[index] == 88) || (str[index] == 120))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 48 && str[index] <= 57)) || (str[index] == 88) || (str[index] == 120))))) ) {
+ index += 1;
 }
- for (i3 = 0; i3 < 3; ++i3) {
+}
+else {
+ index=indexStart3; break;
+}
+ for (i3 = 0;i3<3;i3++) {
   indexTemp4 = index;
  do {
  indexStart4 = index;
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
-if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index] == 88) || (str[index] == 120))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-   (str[index] == 88) || (str[index] == 120)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 48 && str[index] <= 57)) || (str[index] == 88) || (str[index] == 120))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 48 && str[index] <= 57)) || (str[index] == 88) || (str[index] == 120))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart4; break;
+}
+else {
+ index=indexStart4; break;
 }
   indexTemp4 = index;
   index = indexStart4;
  } while (false);
   if (indexTemp4 != index) {
- index = indexTemp4;
-} else {
-  if (i3< 3) {
-   index = indexStart3;
+ index=indexTemp4;
+}
+  else {
+  if (i3<3) {
+   index=indexStart3;
   } break;
  }
  }
- if (index == indexStart3) {
+ if (index==indexStart3) {
  break;
 }
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
- index = indexStart2; break;
+ index=indexTemp3;
+}
+  else {
+ index=indexStart2; break;
 }
 } while (false);
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
   indexTemp2 = index;
@@ -1889,9 +1696,7 @@ if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
-if (index + 6 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 80 && str[index + 2] == 61 && (str[index + 3] & ~32) == 78 &&
-  (str[index + 4] & ~32) == 79 && (str[index + 5] & ~32) == 78 && (str[index+
-  6] & ~32) == 69) {
+if (index + 6 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 80 && str[index + 2] == 61 && (str[index + 3] & ~32) == 78 && (str[index + 4] & ~32) == 79 && (str[index + 5] & ~32) == 78 && (str[index + 6] & ~32) == 69) {
  indexTemp += 7; break;
 }
  indexTemp2 = index;
@@ -1899,18 +1704,18 @@ if (index + 6 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) =
  indexStart2 = index;
 if (index + 3 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 80 && str[index + 2] == 54 && str[index + 3] == 61) {
  index += 4;
-} else {
+}
+else {
  break;
 }
-if (index < endIndex && ((str[index] == 88) || (str[index] == 120) ||
-  (str[index] >= 48 && str[index] <= 58))) {
- ++index;
- while ((index < endIndex && ((str[index] == 88) || (str[index] == 120) ||
-   (str[index] >= 48 && str[index] <= 58)))) {
- ++index;
+if ((index < endIndex && ((((str[index] == 88) || (str[index] == 120) || ((str[index] >= 48 && str[index] <= 58)))))) ) {
+ index += 1;
+ while ((index < endIndex && ((((str[index] == 88) || (str[index] == 120) || ((str[index] >= 48 && str[index] <= 58)))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart2; break;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
@@ -1921,31 +1726,29 @@ if (index < endIndex && ((str[index] == 88) || (str[index] == 120) ||
  indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122))) {
- ++index;
-} else {
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))))) {
+ index += 1;
+}
+else {
   break;
 }
-while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57)))) {
- ++index;
+while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)))))) ) {
+ index += 1;
 }
 if (index < endIndex && (str[index] == 61)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
 }
-if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-  str[index] <= 58) || (str[index] >= 60 && str[index] <= 126))) {
- ++index;
- while ((index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-   str[index] <= 58) || (str[index] >= 60 && str[index] <= 126)))) {
- ++index;
+else {
+ index=indexStart2; break;
 }
-} else {
- index = indexStart2; break;
+if ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 58)) || ((str[index] >= 60 && str[index] <= 126)))))) ) {
+ index += 1;
+ while ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 58)) || ((str[index] >= 60 && str[index] <= 126)))))) ) {
+ index += 1;
+}
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
@@ -1956,36 +1759,29 @@ if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
  } while (false);
  return indexTemp;
 }
-public static int ParseGeneralKeyword(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseGeneralKeyword(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 45))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
-   str[index] <= 57) || (str[index] == 45)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseGroup(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseGroup(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -1994,36 +1790,32 @@ indexStart = index;
  tx2 = ParseDisplayName(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
 if (index < endIndex && (str[index] == 58)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseGroupList(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
  if (tokener != null) {
-  if (indexTemp == indexStart) {
- tokener.RestoreState(state);
-} else {
- tokener.Commit(4, indexStart, indexTemp);
-}
+  if (indexTemp == indexStart) tokener.RestoreState(state);
+  else tokener.Commit(4,indexStart,indexTemp);
  }
  return indexTemp;
 }
-public static int ParseGroupList(string str, int index, int endIndex,
-  ITokener tokener) {
-int i, i2, indexStart, indexStart2, indexStart3, indexTemp, indexTemp2,
-  indexTemp3, state, state2, tx4;
+public static int ParseGroupList(string str, int index, int endIndex, ITokener tokener) {
+int i, i2, indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3, state, state2, tx4;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
@@ -2040,29 +1832,29 @@ indexStart = index;
  indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0;;i2++) {
   indexTemp3 = index;
  do {
  indexStart3 = index;
  index = ParseFWS(str, index, endIndex, tokener);
  tx4 = HeaderParserUtility.ParseCommentLax(str, index, endIndex, tokener);
  if (tx4 == index) {
-index = indexStart3; break;
-} else {
- index = tx4;
+index=indexStart3;  break;
 }
+ index=tx4;
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 1) {
-   index = indexStart2;
+ index=indexTemp3;
+}
+  else {
+  if (i2<1) {
+   index=indexStart2;
   } break;
  }
  }
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
@@ -2072,36 +1864,30 @@ index = indexStart3; break;
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
-for (i = 0; true; ++i) {
+ if (tokener != null)tokener.RestoreState(state2);
+for (i = 0; ; ++i) {
   indexTemp2 = ParseFWS(str, index, endIndex, tokener);
-  if (indexTemp2 == index) { if (i< 1) {
+  if (indexTemp2 == index) { if (i<1) {
  indexTemp = indexStart;
 } break;
-} else {
- index = indexTemp2;
 }
+  index = indexTemp2;
 }
  index = indexStart;
 if (indexTemp2 != indexStart) {
- indexTemp = indexTemp2; break;
+ indexTemp = indexTemp2;  break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderAcceptLanguage(string str, int index, int
-  endIndex, ITokener tokener) {
-int indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3,
-  state, state2, state3, tx3, tx4;
+public static int ParseHeaderAcceptLanguage(string str, int index, int endIndex, ITokener tokener) {
+int indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3, state, state2, state3, tx3, tx4;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
+ 
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -2109,37 +1895,37 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx3 = ParseLanguageQ(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
  while (true) {
+  
   state3 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp3 = index;
  do {
  indexStart3 = index;
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
  tx4 = ParseLanguageQ(str, index, endIndex, tokener);
  if (tx4 == index) {
-index = indexStart3; break;
-} else {
- index = tx4;
+index=indexStart3;  break;
 }
+ index=tx4;
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
   if (indexTemp3 != index) {
-index = indexTemp3;
-  } else if (tokener != null) {
-tokener.RestoreState(state3); break;
-} else {
- break;
+index=indexTemp3;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state3); break;
+}
+  else break;
  }
   indexTemp2 = index;
   index = indexStart2;
@@ -2147,25 +1933,19 @@ tokener.RestoreState(state3); break;
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
+ if (tokener != null)tokener.RestoreState(state2);
   indexTemp2 = ParseObsAcceptLanguage(str, index, endIndex, tokener);
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderAlternateRecipient(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderAlternateRecipient(string str, int index, int endIndex, ITokener tokener) {
  return ParseMixerKeyword(str, index, endIndex, tokener);
 }
-public static int ParseHeaderArcAuthenticationResults(string str, int index,
-  int endIndex, ITokener tokener) {
+public static int ParseHeaderArcAuthenticationResults(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -2174,43 +1954,36 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseInstance(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  tx2 = ParseHeaderAuthenticationResults(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderArcMessageSignature(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderArcMessageSignature(string str, int index, int endIndex, ITokener tokener) {
  return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
-public static int ParseHeaderArcSeal(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderArcSeal(string str, int index, int endIndex, ITokener tokener) {
  return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
-public static int ParseHeaderArchive(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderArchive(string str, int index, int endIndex, ITokener tokener) {
  return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
-public static int ParseHeaderArchivedAt(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderArchivedAt(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -2218,50 +1991,49 @@ indexStart = index;
  do {
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 60)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] >= 33 && str[index] <= 59) ||
-  (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
- ++index;
-} else {
- index = indexStart2; break;
+if (index < endIndex && (((((str[index] >= 33 && str[index] <= 59)) || (str[index] == 61) || ((str[index] >= 63 && str[index] <= 126)))))) {
+ index += 1;
+}
+else {
+ index = indexStart2;  break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 62)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderAuthenticationResults(string str, int index,
-  int endIndex, ITokener tokener) {
-int i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state,
-  tx2, tx3;
+public static int ParseHeaderAuthenticationResults(string str, int index, int endIndex, ITokener tokener) {
+int i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
@@ -2269,10 +2041,9 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseValue(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
 do {
   indexTemp2 = index;
  do {
@@ -2280,21 +2051,20 @@ do {
  tx3 = ParseCFWS(str, index, endIndex, tokener);
  if (tx3 == index) {
  break;
-} else {
- index = tx3;
 }
+ index=tx3;
  tx3 = ParseAuthresVersion(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
 do {
@@ -2305,43 +2075,39 @@ do {
  indexTemp2 = indexTemp3; break;
 }
  indexStart2 = index;
-for (i2 = 0; true; ++i2) {
+for (i2 = 0; ; ++i2) {
   indexTemp3 = ParseResinfo(str, index, endIndex, tokener);
-  if (indexTemp3 == index) { if (i2< 1) {
+  if (indexTemp3 == index) { if (i2<1) {
  indexTemp2 = indexStart2;
 } break;
-} else {
- index = indexTemp3;
 }
+  index = indexTemp3;
 }
  index = indexStart2;
 if (indexTemp3 != indexStart2) {
- indexTemp2 = indexTemp3; break;
+ indexTemp2 = indexTemp3;  break;
 }
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
- index = indexStart; break;
+ index=indexTemp2;
+}
+  else {
+ index=indexStart; break;
 }
 } while (false);
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderAutoforwarded(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderAutoforwarded(string str, int index, int endIndex, ITokener tokener) {
  return ParseMixerKeyword(str, index, endIndex, tokener);
 }
-public static int ParseHeaderBcc(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderBcc(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, indexTemp3, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -2360,141 +2126,122 @@ do {
 }
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderCancelKey(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderCancelKey(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
 if (index < endIndex && (str[index] == 32)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx2 = ParseCKeyList(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
 if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
  index += 2;
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderCancelLock(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderCancelLock(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
 if (index < endIndex && (str[index] == 32)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx2 = ParseCLockList(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
 if (index + 1 < endIndex && str[index] == 13 && str[index + 1] == 10) {
  index += 2;
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderContentBase(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderContentBase(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] >= 33 && str[index] <= 59) ||
-  (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 33 && str[index] <= 59) ||
-   (str[index] == 61) || (str[index] >= 63 && str[index] <= 126)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 33 && str[index] <= 59)) || (str[index] == 61) || ((str[index] >= 63 && str[index] <= 126)))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 33 && str[index] <= 59)) || (str[index] == 61) || ((str[index] >= 63 && str[index] <= 126)))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderContentDisposition(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderContentDisposition(string str, int index, int endIndex, ITokener tokener) {
  return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
-public static int ParseHeaderContentDuration(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderContentDuration(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-for (i = 0; i < 10; ++i) {
- if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
-  ++index;
- } else if (i< 1) {
-index = indexStart; break;
- } else {
- break;
+for (i = 0; i<10; i++) {
+ if ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+  index += 1;
+ } else if (i<1) {
+index=indexStart; break;
+ } else break;
 }
-}
-if (index == indexStart) {
- break;
-}
+if (index==indexStart)break;
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderContentId(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderContentId(string str, int index, int endIndex, ITokener tokener) {
  return ParseMsgId(str, index, endIndex, tokener);
 }
-public static int ParseHeaderContentLanguage(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderContentLanguage(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -2503,96 +2250,78 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseLanguageList(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderContentLocation(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderContentLocation(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] >= 33 && str[index] <= 59) ||
-  (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 33 && str[index] <= 59) ||
-   (str[index] == 61) || (str[index] >= 63 && str[index] <= 126)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 33 && str[index] <= 59)) || (str[index] == 61) || ((str[index] >= 63 && str[index] <= 126)))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 33 && str[index] <= 59)) || (str[index] == 61) || ((str[index] >= 63 && str[index] <= 126)))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderContentMd5(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderContentMd5(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 47 && str[index]
-  <= 57) || (str[index] == 43) || (str[index] == 61))) {
- ++index;
-} else {
- index = indexStart; break;
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 47 && str[index] <= 57)) || (str[index] == 43) || (str[index] == 61))))) {
+ index += 1;
+}
+else {
+ index = indexStart;  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderContentTransferEncoding(string str, int index,
-  int endIndex, ITokener tokener) {
+public static int ParseHeaderContentTransferEncoding(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 45))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
-   str[index] <= 57) || (str[index] == 45)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderContentTranslationType(string str, int index,
-  int endIndex, ITokener tokener) {
+public static int ParseHeaderContentTranslationType(string str, int index, int endIndex, ITokener tokener) {
 int i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -2602,143 +2331,121 @@ indexStart = index;
 do {
   indexTemp2 = index;
  do {
-if (index + 7 < endIndex && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 71 &&
-  (str[index + 4] & ~32) == 73 && (str[index + 5] & ~32) == 78 &&
-  (str[index + 6] & ~32) == 65 && (str[index + 7] & ~32) == 76) {
+if (index + 7 < endIndex && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 71 && (str[index + 4] & ~32) == 73 && (str[index + 5] & ~32) == 78 && (str[index + 6] & ~32) == 65 && (str[index + 7] & ~32) == 76) {
  indexTemp2 += 8; break;
 }
-if (index + 8 < endIndex && (str[index] & ~32) == 65 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 84 && (str[index + 3] & ~32) == 79 &&
-  (str[index + 4] & ~32) == 77 && (str[index + 5] & ~32) == 65 &&
-  (str[index + 6] & ~32) == 84 && (str[index + 7] & ~32) == 69 && (str[index+
-  8] & ~32) == 68) {
+if (index + 8 < endIndex && (str[index] & ~32) == 65 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 84 && (str[index + 3] & ~32) == 79 && (str[index + 4] & ~32) == 77 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32) == 84 && (str[index + 7] & ~32) == 69 && (str[index + 8] & ~32) == 68) {
  indexTemp2 += 9; break;
 }
-if (index + 4 < endIndex && (str[index] & ~32) == 72 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 65 &&
-  (str[index + 4] & ~32) == 78) {
+if (index + 4 < endIndex && (str[index] & ~32) == 72 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 65 && (str[index + 4] & ~32) == 78) {
  indexTemp2 += 5; break;
 }
  indexTemp3 = index;
  indexStart2 = index;
-for (i2 = 0; true; ++i2) {
+for (i2 = 0; ; ++i2) {
   indexTemp3 = ParseAtext(str, index, endIndex, tokener);
-  if (indexTemp3 == index) { if (i2< 1) {
+  if (indexTemp3 == index) { if (i2<1) {
  indexTemp2 = indexStart2;
 } break;
-} else {
- index = indexTemp3;
 }
+  index = indexTemp3;
 }
  index = indexStart2;
 if (indexTemp3 != indexStart2) {
- indexTemp2 = indexTemp3; break;
+ indexTemp2 = indexTemp3;  break;
 }
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
- index = indexStart; break;
+ index=indexTemp2;
+}
+  else {
+ index=indexStart; break;
 }
 } while (false);
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderContentType(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderContentType(string str, int index, int endIndex, ITokener tokener) {
  return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseHeaderControl(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderControl(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2;
 indexStart = index;
  indexTemp = index;
  do {
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
-if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-  str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index]
-  >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index]
-  <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
- ++index;
- while ((index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-   str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) ||
-   (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index]
-   <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 &&
-   str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) ||
-   (str[index] == 63)))) {
- ++index;
+if ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)) || ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38 && str[index] <= 39)) || (str[index] == 63))))) ) {
+ index += 1;
+ while ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)) || ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38 && str[index] <= 39)) || (str[index] == 63))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  while (true) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
- ++index;
- while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+if ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
+ while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
-} else {
+}
+else {
  break;
 }
-if (index < endIndex && (str[index] >= 33 && str[index] <= 126)) {
- ++index;
- while (index < endIndex && (str[index] >= 33 && str[index] <= 126)) {
- ++index;
+if ((index < endIndex && ((str[index] >= 33 && str[index] <= 126)))) {
+ index += 1;
+ while ((index < endIndex && ((str[index] >= 33 && str[index] <= 126)))) {
+ index += 1;
 }
-} else {
- index = indexStart2; break;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
   indexTemp = index;
  } while (false);
  return indexTemp;
 }
-public static int ParseHeaderConversion(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderConversion(string str, int index, int endIndex, ITokener tokener) {
  return ParseMixerKeyword(str, index, endIndex, tokener);
 }
-public static int ParseHeaderConversionWithLoss(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderConversionWithLoss(string str, int index, int endIndex, ITokener tokener) {
  return ParseMixerKeyword(str, index, endIndex, tokener);
 }
-public static int ParseHeaderDate(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderDate(string str, int index, int endIndex, ITokener tokener) {
  return ParseDateTime(str, index, endIndex, tokener);
 }
-public static int ParseHeaderDeferredDelivery(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderDeferredDelivery(string str, int index, int endIndex, ITokener tokener) {
  return ParseDateTime(str, index, endIndex, tokener);
 }
-public static int ParseHeaderDeliveryDate(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderDeliveryDate(string str, int index, int endIndex, ITokener tokener) {
 int i2, indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -2755,76 +2462,53 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx3 = ParseDayOfWeek(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
+}
+ index=tx3;
+ index = ParseCFWS(str, index, endIndex, tokener);
+if (index + 2 < endIndex && (((((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 89) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 76) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 71) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 80) || ((str[index] & ~32) == 79 && (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 86) || ((str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67))))) {
+ index += 3;
+}
+else {
+ index = indexStart2;  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 2 < endIndex && (((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 &&
-  (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) ||
-  ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index +
-  2] & ~32) == 82) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) ==
-  80 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 77 &&
-  (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 89) ||
-  ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index +
-  2] & ~32) == 78) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) ==
-  85 && (str[index + 2] & ~32) == 76) || ((str[index] & ~32) == 65 &&
-  (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 71) ||
-  ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 69 && (str[index +
-  2] & ~32) == 80) || ((str[index] & ~32) == 79 && (str[index + 1] & ~32) ==
-  67 && (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 78 &&
-  (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 86) ||
-  ((str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index +
-  2] & ~32) == 67))) {
- index += 3;
-} else {
- index = indexStart2; break;
+for (i2 = 0; i2<2; i2++) {
+ if ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+  index += 1;
+ } else if (i2<1) {
+index=indexStart2; break;
+ } else break;
 }
+if (index==indexStart2)break;
  index = ParseCFWS(str, index, endIndex, tokener);
-for (i2 = 0; i2 < 2; ++i2) {
- if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
-  ++index;
- } else if (i2< 1) {
-index = indexStart2; break;
- } else {
- break;
-}
-}
-if (index == indexStart2) {
- break;
-}
- index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 2 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57)) && (str[index + 2] == 58)) {
+if (index + 2 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57)) && (str[index + 2] == 58)) {
  index += 3;
-} else {
- index = indexStart2; break;
 }
-if (index + 2 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57)) && (str[index + 2] == 58)) {
+else {
+ index=indexStart2; break;
+}
+if (index + 2 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57)) && (str[index + 2] == 58)) {
  index += 3;
-} else {
- index = indexStart2; break;
 }
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+else {
+ index=indexStart2; break;
+}
+if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
-} else {
- index = indexStart2; break;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-for (i2 = 0;; ++i2) {
- if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
-  ++index;
- } else if (i2< 4) {
-index = indexStart2; break;
- } else {
- break;
+for (i2 = 0;; i2++) {
+ if ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+  index += 1;
+ } else if (i2<4) {
+index=indexStart2; break;
+ } else break;
 }
-}
-if (index == indexStart2) {
- break;
-}
+if (index==indexStart2)break;
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp2 = index;
   index = indexStart2;
@@ -2832,21 +2516,15 @@ if (index == indexStart2) {
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
+ if (tokener != null)tokener.RestoreState(state2);
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderDiscloseRecipients(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderDiscloseRecipients(string str, int index, int endIndex, ITokener tokener) {
  return ParseMixerKeyword(str, index, endIndex, tokener);
 }
-public static int ParseHeaderDispositionNotificationOptions(string str, int
-  index, int endIndex, ITokener tokener) {
+public static int ParseHeaderDispositionNotificationOptions(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -2855,205 +2533,187 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseDispNotParam(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx3 = ParseDispNotParam(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderDispositionNotificationTo(string str, int
-  index, int endIndex, ITokener tokener) {
+public static int ParseHeaderDispositionNotificationTo(string str, int index, int endIndex, ITokener tokener) {
  return ParseMailboxList(str, index, endIndex, tokener);
 }
-public static int ParseHeaderDistribution(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderDistribution(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
  tx2 = ParseDistName(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
  tx3 = ParseDistName(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderDkimSignature(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderDkimSignature(string str, int index, int endIndex, ITokener tokener) {
  return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseHeaderEdiintFeatures(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderEdiintFeatures(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2;
 indexStart = index;
  indexTemp = index;
  do {
-if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
- ++index;
+if ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
-if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index]
-  <= 122) || (str[index] == 45))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-   (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index]
-   <= 122) || (str[index] == 45)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 45))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 45))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  while (true) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
- ++index;
+if ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
 }
-if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
- ++index;
+else {
+ index=indexStart2; break;
 }
-if (index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index]
-  <= 122) || (str[index] == 45))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-   (str[index] >= 65 && str[index] <= 90) || (str[index] >= 97 && str[index]
-   <= 122) || (str[index] == 45)))) {
- ++index;
+if ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart2; break;
+if ((index < endIndex && (((((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 45))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 45))))) ) {
+ index += 1;
+}
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
   indexTemp = index;
  } while (false);
  return indexTemp;
 }
-public static int ParseHeaderEesstVersion(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderEesstVersion(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseFWS(str, index, endIndex, tokener);
-if (index + 2 < endIndex && str[index] == 49 && str[index + 1] == 46 &&
-  str[index + 2] == 48) {
+if (index + 2 < endIndex && str[index] == 49 && str[index + 1] == 46 && str[index + 2] == 48) {
  index += 3;
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderEncoding(string str, int index, int endIndex,
-  ITokener tokener) {
-int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3,
-  state, state2, tx3;
+public static int ParseHeaderEncoding(string str, int index, int endIndex, ITokener tokener) {
+int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state, state2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -3061,63 +2721,62 @@ indexStart = index;
  tx3 = ParseEncodingCount(str, index, endIndex, tokener);
  if (tx3 == index) {
  break;
-} else {
- index = tx3;
 }
- for (i2 = 0;; ++i2) {
+ index=tx3;
+ for (i2 = 0;;i2++) {
   indexTemp3 = ParseEncodingKeyword(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 1) {
-   index = indexStart2;
+ index=indexTemp3;
+}
+  else {
+  if (i2<1) {
+   index=indexStart2;
   } break;
  }
  }
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
  index = ParseEncodingCount(str, index, endIndex, tokener);
- for (i = 0;; ++i) {
+ for (i = 0;;i++) {
   indexTemp2 = ParseEncodingKeyword(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderEncrypted(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderEncrypted(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -3126,43 +2785,39 @@ indexStart = index;
  tx2 = ParseWord(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
 do {
   indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx3 = ParseWord(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderExpandedDate(string str, int index, int
-  endIndex, ITokener tokener) {
-int i, i3, indexStart, indexStart2, indexStart3, indexTemp, indexTemp2,
-  indexTemp3, indexTemp4, state, state3;
+public static int ParseHeaderExpandedDate(string str, int index, int endIndex, ITokener tokener) {
+int i, i3, indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3, indexTemp4, state, state3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
@@ -3172,96 +2827,74 @@ do {
  do {
  indexStart2 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 2 < endIndex && (((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 84 &&
-  (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 69) ||
-  ((str[index] & ~32) == 87 && (str[index + 1] & ~32) == 69 && (str[index +
-  2] & ~32) == 68) || ((str[index] & ~32) == 84 && (str[index + 1] & ~32) ==
-  72 && (str[index + 2] & ~32) == 85) || ((str[index] & ~32) == 70 &&
-  (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73) ||
-  ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 65 && (str[index +
-  2] & ~32) == 84) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) ==
-  85 && (str[index + 2] & ~32) == 78))) {
+if (index + 2 < endIndex && (((((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 84 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 69) || ((str[index] & ~32) == 87 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 68) || ((str[index] & ~32) == 84 && (str[index + 1] & ~32) == 72 && (str[index + 2] & ~32) == 85) || ((str[index] & ~32) == 70 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 78))))) {
  index += 3;
-} else {
- index = indexStart2; break;
+}
+else {
+ index = indexStart2;  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
  index = ParseCFWS(str, index, endIndex, tokener);
-for (i = 0; i < 2; ++i) {
- if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
-  ++index;
- } else if (i< 1) {
-index = indexStart; break;
- } else {
- break;
+for (i = 0; i<2; i++) {
+ if ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+  index += 1;
+ } else if (i<1) {
+index=indexStart; break;
+ } else break;
 }
-}
-if (index == indexStart) {
- break;
-}
+if (index==indexStart)break;
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 2 < endIndex && (((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 &&
-  (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) ||
-  ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index +
-  2] & ~32) == 82) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) ==
-  80 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 77 &&
-  (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 89) ||
-  ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index +
-  2] & ~32) == 78) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) ==
-  85 && (str[index + 2] & ~32) == 76) || ((str[index] & ~32) == 65 &&
-  (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 71) ||
-  ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 69 && (str[index +
-  2] & ~32) == 80) || ((str[index] & ~32) == 79 && (str[index + 1] & ~32) ==
-  67 && (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 78 &&
-  (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 86) ||
-  ((str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index +
-  2] & ~32) == 67))) {
+if (index + 2 < endIndex && (((((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 70 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 66) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 82) || ((str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 89) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 78) || ((str[index] & ~32) == 74 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 76) || ((str[index] & ~32) == 65 && (str[index + 1] & ~32) == 85 && (str[index + 2] & ~32) == 71) || ((str[index] & ~32) == 83 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 80) || ((str[index] & ~32) == 79 && (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) == 84) || ((str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 86) || ((str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 67))))) {
  index += 3;
-} else {
- index = indexStart; break;
+}
+else {
+ index = indexStart;  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
-} else {
- index = indexStart; break;
 }
-while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
+else {
+ index=indexStart; break;
+}
+while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 58)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
 do {
   indexTemp2 = index;
@@ -3269,56 +2902,60 @@ do {
  indexStart2 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 58)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
-} else {
- index = indexStart2; break;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
 do {
   indexTemp2 = index;
  do {
+ 
   state3 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp3 = index;
  do {
  indexStart3 = index;
- for (i3 = 0;; ++i3) {
+ for (i3 = 0;;i3++) {
   indexTemp4 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp4 != index) {
- index = indexTemp4;
-} else {
-  if (i3< 1) {
-   index = indexStart3;
+ index=indexTemp4;
+}
+  else {
+  if (i3<1) {
+   index=indexStart3;
   } break;
  }
  }
- if (index == indexStart3) {
+ if (index==indexStart3) {
  break;
 }
-if (index < endIndex && ((str[index] == 43) || (str[index] == 45))) {
- ++index;
-} else {
- index = indexStart3; break;
+if (index < endIndex && ((((str[index] == 43) || (str[index] == 45))))) {
+ index += 1;
 }
-if (index + 3 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 2] >= 48 &&
-  str[index + 2] <= 57) || (str[index + 3] >= 48 && str[index + 3] <= 57))) {
+else {
+ index = indexStart3;  break;
+}
+if (index + 3 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index + 3] >= 48 && str[index + 3] <= 57))) {
  index += 4;
-} else {
- index = indexStart3; break;
+}
+else {
+ index=indexStart3; break;
 }
   indexTemp3 = index;
   index = indexStart3;
@@ -3326,9 +2963,7 @@ if (index + 3 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
  if (indexTemp3 != index) {
  indexTemp2 = indexTemp3; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state3);
-}
+ if (tokener != null)tokener.RestoreState(state3);
   state3 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp3 = index;
  do {
@@ -3338,36 +2973,45 @@ do {
   indexTemp4 = index;
 if (index + 1 < endIndex && (str[index] & ~32) == 85 && (str[index + 1] & ~32) == 84) {
  indexTemp4 += 2;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 71 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 71 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp4 += 3;
-  } else if (index < endIndex && ((str[index] >= 65 && str[index] <= 73) ||
-  (str[index] >= 75 && str[index] <= 90) || (str[index] >= 97 && str[index]
-  <= 105) || (str[index] >= 107 && str[index] <= 122))) {
- ++indexTemp4;
+}
+else if (index < endIndex && (((str[index] >= 65 && str[index] <= 73)) || ((str[index] >= 75 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 105)) || ((str[index] >= 107 && str[index] <= 122)))) {
+ indexTemp4 += 1;
 }
   if (indexTemp4 != index) {
- index = indexTemp4;
-} else {
- index = indexStart3; break;
+ index=indexTemp4;
+}
+  else {
+ index=indexStart3; break;
 }
 } while (false);
- if (index == indexStart3) {
+ if (index==indexStart3) {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
@@ -3377,28 +3021,24 @@ if (index + 1 < endIndex && (str[index] & ~32) == 85 && (str[index + 1] & ~32) =
  if (indexTemp3 != index) {
  indexTemp2 = indexTemp3; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state3);
-}
+ if (tokener != null)tokener.RestoreState(state3);
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
- index = indexStart; break;
+ index=indexTemp2;
+}
+  else {
+ index=indexStart; break;
 }
 } while (false);
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderFollowupTo(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderFollowupTo(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -3411,17 +3051,17 @@ indexStart = index;
  indexTemp2 = index;
  do {
  indexStart2 = index;
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
-if (index + 5 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 84 &&
-  (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82) {
+if (index + 5 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82) {
  index += 6;
-} else {
- index = indexStart2; break;
 }
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+else {
+ index=indexStart2; break;
+}
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
   indexTemp2 = index;
   index = indexStart2;
@@ -3430,100 +3070,97 @@ while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderFormSub(string str, int index, int endIndex,
-  ITokener tokener) {
-int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3,
-  state, state2, tx3;
+public static int ParseHeaderFormSub(string str, int index, int endIndex, ITokener tokener) {
+int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state, state2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
- for (i = 0;; ++i) {
+ for (i = 0;;i++) {
   indexTemp2 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
-if (index + 2 < endIndex && (str[index] & ~32) == 86 && str[index + 1] == 61 &&
-  str[index + 2] == 49) {
+if (index + 2 < endIndex && (str[index] & ~32) == 86 && str[index + 1] == 61 && str[index + 2] == 49) {
  index += 3;
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0;;i2++) {
   indexTemp3 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 1) {
-   index = indexStart2;
+ index=indexTemp3;
+}
+  else {
+  if (i2<1) {
+   index=indexStart2;
   } break;
  }
  }
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
 }
- for (i2 = 0;; ++i2) {
+else {
+ index=indexStart2; break;
+}
+ for (i2 = 0;;i2++) {
   indexTemp3 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 1) {
-   index = indexStart2;
+ index=indexTemp3;
+}
+  else {
+  if (i2<1) {
+   index=indexStart2;
   } break;
  }
  }
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
  tx3 = ParseFsarg(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderFrom(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderFrom(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -3538,27 +3175,23 @@ indexStart = index;
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderGenerateDeliveryReport(string str, int index,
-  int endIndex, ITokener tokener) {
+public static int ParseHeaderGenerateDeliveryReport(string str, int index, int endIndex, ITokener tokener) {
  return ParseFWS(str, index, endIndex, tokener);
 }
-public static int ParseHeaderImportance(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderImportance(string str, int index, int endIndex, ITokener tokener) {
  return ParseMixerKeyword(str, index, endIndex, tokener);
 }
-public static int ParseHeaderInReplyTo(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderInReplyTo(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, indexTemp3, state, state2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -3572,65 +3205,56 @@ indexStart = index;
 }
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderIncompleteCopy(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderIncompleteCopy(string str, int index, int endIndex, ITokener tokener) {
  return ParseFWS(str, index, endIndex, tokener);
 }
-public static int ParseHeaderInjectionDate(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderInjectionDate(string str, int index, int endIndex, ITokener tokener) {
  return ParseDateTime(str, index, endIndex, tokener);
 }
-public static int ParseHeaderInjectionInfo(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderInjectionInfo(string str, int index, int endIndex, ITokener tokener) {
  return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
-public static int ParseHeaderJabberId(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderJabberId(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
 if (index < endIndex && (str[index] == 32)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
  tx2 = ParsePathxmpp(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+ index=tx2;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderKeywords(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderKeywords(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -3639,47 +3263,43 @@ indexStart = index;
  tx2 = ParsePhrase(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx3 = ParsePhrase(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderLanguage(string str, int index, int endIndex,
-  ITokener tokener) {
-int indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3,
-  state, tx4;
+public static int ParseHeaderLanguage(string str, int index, int endIndex, ITokener tokener) {
+int indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3, state, tx4;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
@@ -3689,80 +3309,74 @@ do {
   indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 1 < endIndex && (((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122)) && ((str[index + 1] >= 65 &&
-  str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
-  122)))) {
+if (index + 1 < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122))) && (((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97 && str[index + 1] <= 122)))))) {
  index += 2;
-} else {
+}
+else {
   break;
 }
-while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122)))) {
- ++index;
+while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))))) ) {
+ index += 1;
 }
 do {
   indexTemp3 = index;
  do {
  indexStart3 = index;
 if (index < endIndex && (str[index] == 40)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx4 = ParseLanguageDescription(str, index, endIndex, tokener);
  if (tx4 == index) {
-index = indexStart3; break;
-} else {
- index = tx4;
+index=indexStart3;  break;
 }
+ index=tx4;
 if (index < endIndex && (str[index] == 41)) {
- ++index;
-} else {
- index = indexStart3; break;
+ index += 1;
+}
+else {
+ index=indexStart3; break;
 }
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else { break;
+ index=indexTemp3;
+}
+  else { break;
 }
 } while (false);
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
- index = indexStart; break;
+ index=indexTemp2;
+}
+  else {
+ index=indexStart; break;
 }
 } while (false);
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderLatestDeliveryTime(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderLatestDeliveryTime(string str, int index, int endIndex, ITokener tokener) {
  return ParseDateTime(str, index, endIndex, tokener);
 }
-public static int ParseHeaderListArchive(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderListArchive(string str, int index, int endIndex, ITokener tokener) {
  return ParseListHeaderUrlList(str, index, endIndex, tokener);
 }
-public static int ParseHeaderListHelp(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderListHelp(string str, int index, int endIndex, ITokener tokener) {
  return ParseListHeaderUrlList(str, index, endIndex, tokener);
 }
-public static int ParseHeaderListId(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderListId(string str, int index, int endIndex, ITokener tokener) {
 int i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -3781,82 +3395,84 @@ do {
 }
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
 if (index < endIndex && (str[index] == 60)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
 do {
   indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseFWS(str, index, endIndex, tokener);
- for (i2 = 0;; ++i2) {
+ for (i2 = 0;;i2++) {
   indexTemp3 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 1) {
-   index = indexStart2;
+ index=indexTemp3;
+}
+  else {
+  if (i2<1) {
+   index=indexStart2;
   } break;
  }
  }
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
  tx3 = ParseDotAtomText(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
- index = indexStart; break;
+ index=indexTemp2;
+}
+  else {
+ index=indexStart; break;
 }
 } while (false);
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
 if (index < endIndex && (str[index] == 62)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderListOwner(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderListOwner(string str, int index, int endIndex, ITokener tokener) {
  return ParseListHeaderUrlList(str, index, endIndex, tokener);
 }
-public static int ParseHeaderListPost(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderListPost(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
+ 
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -3864,8 +3480,9 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index + 1 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79) {
  index += 2;
-} else {
- index = indexStart2; break;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp2 = index;
@@ -3874,167 +3491,134 @@ if (index + 1 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) =
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
+ if (tokener != null)tokener.RestoreState(state2);
   indexTemp2 = ParseListHeaderUrlList(str, index, endIndex, tokener);
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderListSubscribe(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderListSubscribe(string str, int index, int endIndex, ITokener tokener) {
  return ParseListHeaderUrlList(str, index, endIndex, tokener);
 }
-public static int ParseHeaderListUnsubscribe(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderListUnsubscribe(string str, int index, int endIndex, ITokener tokener) {
  return ParseListHeaderUrlList(str, index, endIndex, tokener);
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseHeaderListUnsubscribePost(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderListUnsubscribePost(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp;
 indexStart = index;
  indexTemp = index;
  do {
-if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
- ++index;
+if ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
-if (index + 25 < endIndex && (str[index] & ~32) == 76 && (str[index + 1] & ~32) == 73 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 84 &&
-  str[index + 4] == 45 && (str[index + 5] & ~32) == 85 && (str[index + 6] & ~32) == 78 && (str[index + 7] & ~32) == 83 && (str[index + 8] & ~32) ==
-  85 && (str[index + 9] & ~32) == 66 && (str[index + 10] & ~32) == 83 &&
-  (str[index + 11] & ~32) == 67 && (str[index + 12] & ~32) == 82 &&
-  (str[index + 13] & ~32) == 73 && (str[index + 14] & ~32) == 66 &&
-  (str[index + 15] & ~32) == 69 && str[index + 16] == 61 && (str[index + 17] & ~32) == 79 && (str[index + 18] & ~32) == 78 && (str[index + 19] & ~32)
-  == 69 && str[index + 20] == 45 && (str[index + 21] & ~32) == 67 &&
-  (str[index + 22] & ~32) == 76 && (str[index + 23] & ~32) == 73 &&
-  (str[index + 24] & ~32) == 67 && (str[index + 25] & ~32) == 75) {
+if (index + 25 < endIndex && (str[index] & ~32) == 76 && (str[index + 1] & ~32) == 73 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 84 && str[index + 4] == 45 && (str[index + 5] & ~32) == 85 && (str[index + 6] & ~32) == 78 && (str[index + 7] & ~32) == 83 && (str[index + 8] & ~32) == 85 && (str[index + 9] & ~32) == 66 && (str[index + 10] & ~32) == 83 && (str[index + 11] & ~32) == 67 && (str[index + 12] & ~32) == 82 && (str[index + 13] & ~32) == 73 && (str[index + 14] & ~32) == 66 && (str[index + 15] & ~32) == 69 && str[index + 16] == 61 && (str[index + 17] & ~32) == 79 && (str[index + 18] & ~32) == 78 && (str[index + 19] & ~32) == 69 && str[index + 20] == 45 && (str[index + 21] & ~32) == 67 && (str[index + 22] & ~32) == 76 && (str[index + 23] & ~32) == 73 && (str[index + 24] & ~32) == 67 && (str[index + 25] & ~32) == 75) {
  index += 26;
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
  return indexTemp;
 }
-public static int ParseHeaderMessageContext(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderMessageContext(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 45))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
-   str[index] <= 57) || (str[index] == 45)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMessageId(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderMessageId(string str, int index, int endIndex, ITokener tokener) {
  return ParseMsgId(str, index, endIndex, tokener);
 }
-public static int ParseHeaderMimeVersion(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderMimeVersion(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
- while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
+if ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
+ while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
- while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
+if ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
+ while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsAcp127MessageIdentifier(string str, int
-  index, int endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsAcp127MessageIdentifier(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseFWS(str, index, endIndex, tokener);
-for (i = 0; i < 69; ++i) {
- if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
-   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
-   <= 58) || (str[index] == 61) || (str[index] == 63))) {
-  ++index;
- } else if (i< 1) {
-index = indexStart; break;
- } else {
- break;
+for (i = 0; i<69; i++) {
+ if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 32) || ((str[index] >= 39 && str[index] <= 41)) || ((str[index] >= 43 && str[index] <= 58)) || (str[index] == 61) || (str[index] == 63))))) ) {
+  index += 1;
+ } else if (i<1) {
+index=indexStart; break;
+ } else break;
 }
-}
-if (index == indexStart) {
- break;
-}
+if (index==indexStart)break;
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsAuthorizingUsers(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsAuthorizingUsers(string str, int index, int endIndex, ITokener tokener) {
  return ParseMailboxList(str, index, endIndex, tokener);
 }
-public static int ParseHeaderMmhsCodressMessageIndicator(string str, int
-  index, int endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsCodressMessageIndicator(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4043,20 +3627,16 @@ indexStart = index;
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParseNonnegInteger(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsCopyPrecedence(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsCopyPrecedence(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4065,19 +3645,15 @@ indexStart = index;
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParsePrecedence(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsExemptedAddress(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsExemptedAddress(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4086,20 +3662,16 @@ indexStart = index;
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParseAddressList(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsExtendedAuthorisationInfo(string str, int
-  index, int endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsExtendedAuthorisationInfo(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4108,19 +3680,15 @@ indexStart = index;
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParseDateTime(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsHandlingInstructions(string str, int index,
-  int endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsHandlingInstructions(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4129,20 +3697,16 @@ indexStart = index;
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParseMilitaryStringSequence(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsMessageInstructions(string str, int index,
-  int endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsMessageInstructions(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4151,22 +3715,17 @@ indexStart = index;
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParseMilitaryStringSequence(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsMessageType(string str, int index, int
-  endIndex, ITokener tokener) {
-int indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3,
-  state, tx3;
+public static int ParseHeaderMmhsMessageType(string str, int index, int endIndex, ITokener tokener) {
+int indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3, state, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
@@ -4175,19 +3734,20 @@ indexStart = index;
 do {
   indexTemp2 = index;
  do {
-if (index < endIndex && (str[index] == 48)) {
- ++indexTemp2; break;
+if (index < endIndex && ((str[index] == 48))) {
+ indexTemp2 += 1; break;
 }
  indexTemp3 = index;
  do {
  indexStart3 = index;
-if (index < endIndex && (str[index] >= 49 && str[index] <= 57)) {
- ++index;
-} else {
+if (index < endIndex && ((str[index] >= 49 && str[index] <= 57))) {
+ index += 1;
+}
+else {
  break;
 }
-while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
+while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
 }
   indexTemp3 = index;
   index = indexStart3;
@@ -4195,34 +3755,27 @@ while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
  if (indexTemp3 != index) {
  indexTemp2 = indexTemp3; break;
 }
-if (index + 7 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 88 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 &&
-  (str[index + 4] & ~32) == 67 && (str[index + 5] & ~32) == 73 &&
-  (str[index + 6] & ~32) == 83 && (str[index + 7] & ~32) == 69) {
+if (index + 7 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 88 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 && (str[index + 4] & ~32) == 67 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32) == 83 && (str[index + 7] & ~32) == 69) {
  indexTemp2 += 8; break;
 }
-if (index + 8 < endIndex && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 &&
-  (str[index + 4] & ~32) == 65 && (str[index + 5] & ~32) == 84 &&
-  (str[index + 6] & ~32) == 73 && (str[index + 7] & ~32) == 79 && (str[index+
-  8] & ~32) == 78) {
+if (index + 8 < endIndex && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 80 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 && (str[index + 4] & ~32) == 65 && (str[index + 5] & ~32) == 84 && (str[index + 6] & ~32) == 73 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) == 78) {
  indexTemp2 += 9; break;
 }
-if (index + 6 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 79 && (str[index + 3] & ~32) == 74 &&
-  (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 67 &&
-  (str[index + 6] & ~32) == 84) {
+if (index + 6 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 79 && (str[index + 3] & ~32) == 74 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 67 && (str[index + 6] & ~32) == 84) {
  indexTemp2 += 7; break;
 }
-if (index + 4 < endIndex && (str[index] & ~32) == 68 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76 &&
-  (str[index + 4] & ~32) == 76) {
+if (index + 4 < endIndex && (str[index] & ~32) == 68 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76 && (str[index + 4] & ~32) == 76) {
  indexTemp2 += 5; break;
 }
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
- index = indexStart; break;
+ index=indexTemp2;
+}
+  else {
+ index=indexStart; break;
 }
 } while (false);
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
@@ -4231,97 +3784,75 @@ do {
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
  tx3 = ParseMessageTypeParam(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsOriginatorPlad(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsOriginatorPlad(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseFWS(str, index, endIndex, tokener);
-for (i = 0; i < 69; ++i) {
- if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
-   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
-   <= 58) || (str[index] == 61) || (str[index] == 63))) {
-  ++index;
- } else if (i< 1) {
-index = indexStart; break;
- } else {
- break;
+for (i = 0; i<69; i++) {
+ if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 32) || ((str[index] >= 39 && str[index] <= 41)) || ((str[index] >= 43 && str[index] <= 58)) || (str[index] == 61) || (str[index] == 63))))) ) {
+  index += 1;
+ } else if (i<1) {
+index=indexStart; break;
+ } else break;
 }
-}
-if (index == indexStart) {
- break;
-}
+if (index==indexStart)break;
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsOriginatorReference(string str, int index,
-  int endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsOriginatorReference(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseFWS(str, index, endIndex, tokener);
-for (i = 0; i < 69; ++i) {
- if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
-   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
-   <= 58) || (str[index] == 61) || (str[index] == 63))) {
-  ++index;
- } else if (i< 1) {
-index = indexStart; break;
- } else {
- break;
+for (i = 0; i<69; i++) {
+ if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 32) || ((str[index] >= 39 && str[index] <= 41)) || ((str[index] >= 43 && str[index] <= 58)) || (str[index] == 61) || (str[index] == 63))))) ) {
+  index += 1;
+ } else if (i<1) {
+index=indexStart; break;
+ } else break;
 }
-}
-if (index == indexStart) {
- break;
-}
+if (index==indexStart)break;
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsOtherRecipientsIndicatorCc(string str, int
-  index, int endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsOtherRecipientsIndicatorCc(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4330,49 +3861,46 @@ indexStart = index;
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParseDesignator(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
  tx3 = ParseDesignator(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsOtherRecipientsIndicatorTo(string str, int
-  index, int endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsOtherRecipientsIndicatorTo(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4381,49 +3909,46 @@ indexStart = index;
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParseDesignator(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
  tx3 = ParseDesignator(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsPrimaryPrecedence(string str, int index,
-  int endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsPrimaryPrecedence(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4432,19 +3957,15 @@ indexStart = index;
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParsePrecedence(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMmhsSubjectIndicatorCodes(string str, int
-  index, int endIndex, ITokener tokener) {
+public static int ParseHeaderMmhsSubjectIndicatorCodes(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4453,26 +3974,22 @@ indexStart = index;
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParseSicSequence(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderMtPriority(string str, int index, int endIndex,
-  ITokener tokener) {
-int indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3,
-  state, state2;
+public static int ParseHeaderMtPriority(string str, int index, int endIndex, ITokener tokener) {
+int indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3, state, state2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
+ 
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -4482,24 +3999,26 @@ do {
   indexTemp3 = index;
  do {
  indexStart3 = index;
-if (index < endIndex && (str[index] == 45)) {
- ++index;
+if ((index < endIndex && (str[index] == 45))) {
+ index += 1;
 }
-if (index < endIndex && (str[index] >= 49 && str[index] <= 57)) {
- ++index;
-} else {
- index = indexStart3; break;
+if (index < endIndex && ((str[index] >= 49 && str[index] <= 57))) {
+ index += 1;
+}
+else {
+ index=indexStart3; break;
 }
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
- index = indexStart2; break;
+ index=indexTemp3;
+}
+  else {
+ index=indexStart2; break;
 }
 } while (false);
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
   indexTemp2 = index;
@@ -4508,16 +4027,15 @@ if (index < endIndex && (str[index] >= 49 && str[index] <= 57)) {
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
+ if (tokener != null)tokener.RestoreState(state2);
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 48)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
@@ -4527,125 +4045,97 @@ if (index < endIndex && (str[index] == 48)) {
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
+ if (tokener != null)tokener.RestoreState(state2);
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderNewsMsgId(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderNewsMsgId(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
  tx2 = ParseNewsMsgId(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+ index=tx2;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderNewsSupersedes(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderNewsSupersedes(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
  tx2 = ParseNewsMsgId(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+ index=tx2;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderNewsgroups(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderNewsgroups(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-while (index < endIndex && (str[index] == 32)) {
- ++index;
+while ((index < endIndex && (str[index] == 32))) {
+ index += 1;
 }
  tx2 = ParseNewsgroupList(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderNntpPostingHost(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderNntpPostingHost(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-  str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index]
-  >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index]
-  <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
- ++index;
- while ((index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-   str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) ||
-   (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index]
-   <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 &&
-   str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) ||
-   (str[index] == 63)))) {
- ++index;
+if ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)) || ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38 && str[index] <= 39)) || (str[index] == 63))))) ) {
+ index += 1;
+ while ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)) || ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38 && str[index] <= 39)) || (str[index] == 63))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderObsoletes(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderObsoletes(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4654,128 +4144,123 @@ indexStart = index;
  tx2 = ParseMsgId(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx3 = ParseMsgId(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderOriginalRecipient(string str, int index, int
-  endIndex, ITokener tokener) {
-int indexStart, indexTemp, indexTemp2, state, tx2;
+public static int ParseHeaderOriginalRecipient(string str, int index, int endIndex, ITokener tokener) {
+int i, indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
- tx2 = ParseAtom(str, index, endIndex, tokener);
- if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+ for (i = 0;;i++) {
+  indexTemp2 = ParseAtext(str, index, endIndex, tokener);
+  if (indexTemp2 != index) {
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
+  } break;
+ }
+ }
+ if (index==indexStart) {
+ break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
 }
+else {
+ index=indexStart; break;
+}
+ index = ParseCFWS(str, index, endIndex, tokener);
  while (true) {
-  indexTemp2 = ParseText(str, index, endIndex, tokener);
+  indexTemp2 = ParseTextExceptOpeningParen(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
+ index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderPath(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderPath(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
  while (true) {
   indexTemp2 = ParsePathList(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 45) || (str[index] == 95))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
-   str[index] <= 57) || (str[index] == 45) || (str[index] == 95)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45) || (str[index] == 95))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45) || (str[index] == 95))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
 }
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+else {
+ index=indexStart; break;
+}
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderPreventNondeliveryReport(string str, int index,
-  int endIndex, ITokener tokener) {
+public static int ParseHeaderPreventNondeliveryReport(string str, int index, int endIndex, ITokener tokener) {
  return ParseFWS(str, index, endIndex, tokener);
 }
-public static int ParseHeaderPriority(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderPriority(string str, int index, int endIndex, ITokener tokener) {
  return ParseMixerKeyword(str, index, endIndex, tokener);
 }
-public static int ParseHeaderReceived(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderReceived(string str, int index, int endIndex, ITokener tokener) {
 int i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4786,18 +4271,17 @@ do {
  do {
  indexTemp3 = index;
  indexStart2 = index;
-for (i2 = 0; true; ++i2) {
+for (i2 = 0; ; ++i2) {
   indexTemp3 = ParseReceivedToken(str, index, endIndex, tokener);
-  if (indexTemp3 == index) { if (i2< 1) {
+  if (indexTemp3 == index) { if (i2<1) {
  indexTemp2 = indexStart2;
 } break;
-} else {
- index = indexTemp3;
 }
+  index = indexTemp3;
 }
  index = indexStart2;
 if (indexTemp3 != indexStart2) {
- indexTemp2 = indexTemp3; break;
+ indexTemp2 = indexTemp3;  break;
 }
   indexTemp3 = ParseCFWS(str, index, endIndex, tokener);
  if (indexTemp3 != index) {
@@ -4805,32 +4289,29 @@ if (indexTemp3 != indexStart2) {
 }
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  tx2 = ParseDateTime(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderReceivedSpf(string str, int index, int
-  endIndex, ITokener tokener) {
-int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3,
-  state, tx3;
+public static int ParseHeaderReceivedSpf(string str, int index, int endIndex, ITokener tokener) {
+int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
@@ -4838,54 +4319,49 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 do {
   indexTemp2 = index;
-if (index + 3 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) ==
-  83) {
+if (index + 3 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 83) {
  indexTemp2 += 4;
-  } else if (index + 3 < endIndex && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) ==
-  76) {
+}
+else if (index + 3 < endIndex && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76) {
  indexTemp2 += 4;
-  } else if (index + 7 < endIndex && (str[index] & ~32) == 83 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) ==
-  84 && (str[index + 4] & ~32) == 70 && (str[index + 5] & ~32) == 65 &&
-  (str[index + 6] & ~32) == 73 && (str[index + 7] & ~32) == 76) {
+}
+else if (index + 7 < endIndex && (str[index] & ~32) == 83 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 70 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32) == 73 && (str[index + 7] & ~32) == 76) {
  indexTemp2 += 8;
-  } else if (index + 6 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) ==
-  84 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 65 &&
-  (str[index + 6] & ~32) == 76) {
+}
+else if (index + 6 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32) == 76) {
  indexTemp2 += 7;
-  } else if (index + 3 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) ==
-  69) {
+}
+else if (index + 3 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) == 69) {
  indexTemp2 += 4;
-  } else if (index + 8 < endIndex && (str[index] & ~32) == 84 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) ==
-  80 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 &&
-  (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index+
-  8] & ~32) == 82) {
+}
+else if (index + 8 < endIndex && (str[index] & ~32) == 84 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 80 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) == 82) {
  indexTemp2 += 9;
-  } else if (index + 8 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 82 && (str[index + 3] & ~32) ==
-  77 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 &&
-  (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index+
-  8] & ~32) == 82) {
+}
+else if (index + 8 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 82 && (str[index + 3] & ~32) == 77 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) == 82) {
  indexTemp2 += 9;
 }
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
- index = indexStart; break;
+ index=indexTemp2;
+}
+  else {
+ index=indexStart; break;
 }
 } while (false);
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
- for (i = 0;; ++i) {
+ for (i = 0;;i++) {
   indexTemp2 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
 do {
@@ -4895,40 +4371,38 @@ do {
  tx3 = HeaderParserUtility.ParseCommentLax(str, index, endIndex, tokener);
  if (tx3 == index) {
  break;
-} else {
- index = tx3;
 }
- for (i2 = 0;; ++i2) {
+ index=tx3;
+ for (i2 = 0;;i2++) {
   indexTemp3 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 1) {
-   index = indexStart2;
+ index=indexTemp3;
+}
+  else {
+  if (i2<1) {
+   index=indexStart2;
   } break;
  }
  }
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
  index = ParseKeyValueList(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderRequireRecipientValidSince(string str, int
-  index, int endIndex, ITokener tokener) {
+public static int ParseHeaderRequireRecipientValidSince(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4937,37 +4411,31 @@ indexStart = index;
  tx2 = ParseAddrSpec(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  tx2 = ParseDateTime(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderResentTo(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderResentTo(string str, int index, int endIndex, ITokener tokener) {
  return ParseStrictHeaderTo(str, index, endIndex, tokener);
 }
-public static int ParseHeaderReturnPath(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderReturnPath(string str, int index, int endIndex, ITokener tokener) {
  return ParsePath(str, index, endIndex, tokener);
 }
-public static int ParseHeaderSender(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderSender(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -4986,21 +4454,16 @@ indexStart = index;
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderSensitivity(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderSensitivity(string str, int index, int endIndex, ITokener tokener) {
  return ParseMixerKeyword(str, index, endIndex, tokener);
 }
-public static int ParseHeaderSioLabel(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderSioLabel(string str, int index, int endIndex, ITokener tokener) {
  return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
-public static int ParseHeaderSolicitation(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderSolicitation(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -5009,119 +4472,102 @@ indexStart = index;
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParseSolicitationKeywords(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderSupersedes(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderSupersedes(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexStart2, indexTemp, indexTemp2, state, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
- for (i = 0;; ++i) {
+ for (i = 0;;i++) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 60)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  tx3 = ParseIdLeft(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
 if (index < endIndex && (str[index] == 64)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  tx3 = ParseIdRight(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
 if (index < endIndex && (str[index] == 62)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderTlsReportDomain(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderTlsReportDomain(string str, int index, int endIndex, ITokener tokener) {
  return ParseDomain(str, index, endIndex, tokener);
 }
-public static int ParseHeaderTlsReportSubmitter(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderTlsReportSubmitter(string str, int index, int endIndex, ITokener tokener) {
  return ParseDomain(str, index, endIndex, tokener);
 }
-public static int ParseHeaderTo(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderTo(string str, int index, int endIndex, ITokener tokener) {
  return ParseLaxHeaderTo(str, index, endIndex, tokener);
 }
-public static int ParseHeaderUserAgent(string str, int index, int endIndex,
-  ITokener tokener) {
-int i, indexStart, indexStart2, indexStart3, indexTemp, indexTemp2,
-  indexTemp3, state;
+public static int ParseHeaderUserAgent(string str, int index, int endIndex, ITokener tokener) {
+int i, indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
- for (i = 0;; ++i) {
+ for (i = 0;;i++) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-  str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index]
-  >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index]
-  <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
- ++index;
- while ((index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-   str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) ||
-   (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index]
-   <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 &&
-   str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) ||
-   (str[index] == 63)))) {
- ++index;
+if ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)) || ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38 && str[index] <= 39)) || (str[index] == 63))))) ) {
+ index += 1;
+ while ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)) || ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38 && str[index] <= 39)) || (str[index] == 63))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart2; break;
+}
+else {
+ index=indexStart2; break;
 }
 do {
   indexTemp3 = index;
@@ -5129,67 +4575,58 @@ do {
  indexStart3 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 47)) {
- ++index;
-} else {
- index = indexStart3; break;
+ index += 1;
+}
+else {
+ index=indexStart3; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-  str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index]
-  >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index]
-  <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
- ++index;
- while ((index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-   str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) ||
-   (str[index] >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index]
-   <= 90) || (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 &&
-   str[index] <= 43) || (str[index] >= 38 && str[index] <= 39) ||
-   (str[index] == 63)))) {
- ++index;
+if ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)) || ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38 && str[index] <= 39)) || (str[index] == 63))))) ) {
+ index += 1;
+ while ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)) || ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38 && str[index] <= 39)) || (str[index] == 63))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart3; break;
+}
+else {
+ index=indexStart3; break;
 }
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else { break;
+ index=indexTemp3;
+}
+  else { break;
 }
 } while (false);
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderVbrInfo(string str, int index, int endIndex,
-  ITokener tokener) {
-int i, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3,
-  indexTemp4, state;
+public static int ParseHeaderVbrInfo(string str, int index, int endIndex, ITokener tokener) {
+int i, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, indexTemp4, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
- for (i = 0;; ++i) {
+ for (i = 0;;i++) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
@@ -5211,197 +4648,175 @@ do {
 }
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
- index = indexStart2; break;
+ index=indexTemp3;
+}
+  else {
+ index=indexStart2; break;
 }
 } while (false);
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderX400ContentIdentifier(string str, int index,
-  int endIndex, ITokener tokener) {
+public static int ParseHeaderX400ContentIdentifier(string str, int index, int endIndex, ITokener tokener) {
  return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
-public static int ParseHeaderX400ContentReturn(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderX400ContentReturn(string str, int index, int endIndex, ITokener tokener) {
  return ParseMixerKeyword(str, index, endIndex, tokener);
 }
-public static int ParseHeaderX400MtsIdentifier(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderX400MtsIdentifier(string str, int index, int endIndex, ITokener tokener) {
  return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
-public static int ParseHeaderX400Originator(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderX400Originator(string str, int index, int endIndex, ITokener tokener) {
  return ParseMailbox(str, index, endIndex, tokener);
 }
-public static int ParseHeaderX400Received(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderX400Received(string str, int index, int endIndex, ITokener tokener) {
  return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
-public static int ParseHeaderX400Recipients(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderX400Recipients(string str, int index, int endIndex, ITokener tokener) {
  return ParseMailboxList(str, index, endIndex, tokener);
 }
-public static int ParseHeaderXArchivedAt(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderXArchivedAt(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] >= 33 && str[index] <= 59) ||
-  (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 33 && str[index] <= 59) ||
-   (str[index] == 61) || (str[index] >= 63 && str[index] <= 126)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 33 && str[index] <= 59)) || (str[index] == 61) || ((str[index] >= 63 && str[index] <= 126)))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 33 && str[index] <= 59)) || (str[index] == 61) || ((str[index] >= 63 && str[index] <= 126)))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseHeaderXPgpSig(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderXPgpSig(string str, int index, int endIndex, ITokener tokener) {
  return ParseNoEncodedWords(str, index, endIndex, tokener);
 }
-public static int ParseHeaderXRicevuta(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderXRicevuta(string str, int index, int endIndex, ITokener tokener) {
  return ParseGeneralKeyword(str, index, endIndex, tokener);
 }
-public static int ParseHeaderXTiporicevuta(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderXTiporicevuta(string str, int index, int endIndex, ITokener tokener) {
  return ParseGeneralKeyword(str, index, endIndex, tokener);
 }
-public static int ParseHeaderXTrasporto(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseHeaderXTrasporto(string str, int index, int endIndex, ITokener tokener) {
  return ParseGeneralKeyword(str, index, endIndex, tokener);
 }
-public static int ParseHeaderXVerificasicurezza(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseHeaderXVerificasicurezza(string str, int index, int endIndex, ITokener tokener) {
  return ParseGeneralKeyword(str, index, endIndex, tokener);
 }
-public static int ParseHeaderXref(string str, int index, int endIndex,
-  ITokener tokener) {
-int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3,
-  state, tx2, tx3;
+public static int ParseHeaderXref(string str, int index, int endIndex, ITokener tokener) {
+int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
  tx2 = ParsePathIdentity(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
- for (i = 0;; ++i) {
+ index=tx2;
+ for (i = 0;;i++) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0;;i2++) {
   indexTemp3 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 1) {
-   index = indexStart2;
+ index=indexTemp3;
+}
+  else {
+  if (i2<1) {
+   index=indexStart2;
   } break;
  }
  }
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
  tx3 = ParseNewsgroupName(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
 if (index < endIndex && (str[index] == 58)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
 }
-if (index < endIndex && ((str[index] >= 33 && str[index] <= 39) ||
-  (str[index] >= 41 && str[index] <= 58) || (str[index] >= 60 && str[index]
-  <= 126))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 33 && str[index] <= 39) ||
-   (str[index] >= 41 && str[index] <= 58) || (str[index] >= 60 && str[index]
-   <= 126)))) {
- ++index;
+else {
+ index=indexStart2; break;
 }
-} else {
- index = indexStart2; break;
+if ((index < endIndex && (((((str[index] >= 33 && str[index] <= 39)) || ((str[index] >= 41 && str[index] <= 58)) || ((str[index] >= 60 && str[index] <= 126)))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 33 && str[index] <= 39)) || ((str[index] >= 41 && str[index] <= 58)) || ((str[index] >= 60 && str[index] <= 126)))))) ) {
+ index += 1;
+}
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseIdLeft(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseIdLeft(string str, int index, int endIndex, ITokener tokener) {
  return ParseLocalPart(str, index, endIndex, tokener);
 }
-public static int ParseIdRight(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseIdRight(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -5416,13 +4831,10 @@ indexStart = index;
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseInstance(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseInstance(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -5430,69 +4842,62 @@ indexStart = index;
  do {
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 105)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 61)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
-for (i = 0; i < 2; ++i) {
- if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
-  ++index;
- } else if (i< 1) {
-index = indexStart; break;
- } else {
- break;
+for (i = 0; i<2; i++) {
+ if ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+  index += 1;
+ } else if (i<1) {
+index=indexStart; break;
+ } else break;
 }
-}
-if (index == indexStart) {
- break;
-}
+if (index==indexStart)break;
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseKey(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseKey(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp = index;
  do {
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122))) {
- ++index;
-} else {
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))))) {
+ index += 1;
+}
+else {
   break;
 }
-while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 95) || (str[index] >= 45 && str[index] <= 46)))) {
- ++index;
+while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 95) || ((str[index] >= 45 && str[index] <= 46)))))) ) {
+ index += 1;
 }
   indexTemp = index;
  } while (false);
  return indexTemp;
 }
-public static int ParseKeyValueList(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseKeyValueList(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -5501,49 +4906,46 @@ indexStart = index;
  tx2 = ParseKeyValuePair(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
  tx3 = ParseKeyValuePair(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
-if (index < endIndex && (str[index] == 59)) {
- ++index;
+if ((index < endIndex && (str[index] == 59))) {
+ index += 1;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseKeyValuePair(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseKeyValuePair(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, indexTemp3, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -5552,14 +4954,14 @@ indexStart = index;
  tx2 = ParseKey(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 61)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
 do {
   indexTemp2 = index;
@@ -5574,66 +4976,57 @@ do {
 }
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
- index = indexStart; break;
+ index=indexTemp2;
+}
+  else {
+ index=indexStart; break;
 }
 } while (false);
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseLabel(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseLabel(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp, indexTemp2;
  indexTemp = index;
  do {
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57))) {
- ++index;
-} else {
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)))))) {
+ index += 1;
+}
+else {
   break;
 }
  while (true) {
   indexTemp2 = index;
-if (index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >= 65 &&
-  str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
-  122) || (str[index + 1] >= 48 && str[index + 1] <= 57))))) {
+if (index + 1 < endIndex && (((str[index] == 45) && (((((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97 && str[index + 1] <= 122)) || ((str[index + 1] >= 48 && str[index + 1] <= 57)))))))) {
  indexTemp2 += 2;
-  } else if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57))) {
- ++indexTemp2;
+}
+else if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)))))) {
+ indexTemp2 += 1;
 }
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
   indexTemp = index;
  } while (false);
  return indexTemp;
 }
-public static int ParseLanguageDescription(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseLanguageDescription(string str, int index, int endIndex, ITokener tokener) {
  return ParsePrintablestring(str, index, endIndex, tokener);
 }
-public static int ParseLanguageList(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseLanguageList(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -5642,48 +5035,45 @@ indexStart = index;
  tx2 = ParseLanguageTag(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
  index = ParseCFWS(str, index, endIndex, tokener);
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
  tx3 = ParseLanguageTag(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseLanguageQ(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseLanguageQ(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -5692,76 +5082,67 @@ indexStart = index;
  tx2 = ParseLanguageRange(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
 do {
   indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index + 1 < endIndex && (str[index] & ~32) == 81 && str[index + 1] == 61) {
  index += 2;
-} else {
- index = indexStart2; break;
+}
+else {
+ index=indexStart2; break;
 }
  tx3 = ParseQvalue(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseLanguageRange(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseLanguageRange(string str, int index, int endIndex, ITokener tokener) {
 int i2, indexStart2, indexTemp, indexTemp2;
  indexTemp = index;
  do {
  indexTemp2 = index;
  do {
  indexStart2 = index;
-for (i2 = 0; i2 < 8; ++i2) {
- if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122))) {
-  ++index;
- } else if (i2< 1) {
-index = indexStart2; break;
- } else {
- break;
+for (i2 = 0; i2<8; i2++) {
+ if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))))) ) {
+  index += 1;
+ } else if (i2<1) {
+index=indexStart2; break;
+ } else break;
 }
-}
-if (index == indexStart2) {
- break;
-}
-while ((index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >=
-  65 && str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
-  122) || (str[index + 1] >= 48 && str[index + 1] <= 57)))))) {
+if (index==indexStart2)break;
+while ((index + 1 < endIndex && (((str[index] == 45) && (((((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97 && str[index + 1] <= 122)) || ((str[index + 1] >= 48 && str[index + 1] <= 57)))))))) ) {
  index += 2;
 }
   indexTemp2 = index;
@@ -5770,39 +5151,35 @@ while ((index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >=
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
-if (index < endIndex && (str[index] == 42)) {
- ++indexTemp; break;
+if (index < endIndex && ((str[index] == 42))) {
+ indexTemp += 1; break;
 }
  } while (false);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseLanguageTag(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseLanguageTag(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp = index;
  do {
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122))) {
- ++index;
-} else {
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))))) {
+ index += 1;
+}
+else {
   break;
 }
-while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 45)))) {
- ++index;
+while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45))))) ) {
+ index += 1;
 }
   indexTemp = index;
  } while (false);
  return indexTemp;
 }
-public static int ParseLaxHeaderTo(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseLaxHeaderTo(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, indexTemp3, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -5821,51 +5198,44 @@ do {
 }
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseLdhStr(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseLdhStr(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp, indexTemp2;
  indexTemp = index;
  do {
  while (true) {
   indexTemp2 = index;
-if (index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >= 65 &&
-  str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
-  122) || (str[index + 1] >= 48 && str[index + 1] <= 57))))) {
+if (index + 1 < endIndex && (((str[index] == 45) && (((((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97 && str[index + 1] <= 122)) || ((str[index + 1] >= 48 && str[index + 1] <= 57)))))))) {
  indexTemp2 += 2;
-  } else if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57))) {
- ++indexTemp2;
+}
+else if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)))))) {
+ indexTemp2 += 1;
 }
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
   indexTemp = index;
  } while (false);
  return indexTemp;
 }
-public static int ParseListHeaderUrl(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseListHeaderUrl(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -5873,35 +5243,33 @@ indexStart = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 60)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
 }
-if (index < endIndex && ((str[index] >= 33 && str[index] <= 59) ||
-  (str[index] == 61) || (str[index] >= 63 && str[index] <= 126))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 33 && str[index] <= 59) ||
-   (str[index] == 61) || (str[index] >= 63 && str[index] <= 126)))) {
- ++index;
+else {
+ index=indexStart; break;
 }
-} else {
- index = indexStart; break;
+if ((index < endIndex && (((((str[index] >= 33 && str[index] <= 59)) || (str[index] == 61) || ((str[index] >= 63 && str[index] <= 126)))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 33 && str[index] <= 59)) || (str[index] == 61) || ((str[index] >= 63 && str[index] <= 126)))))) ) {
+ index += 1;
+}
+}
+else {
+ index=indexStart; break;
 }
 if (index < endIndex && (str[index] == 62)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseListHeaderUrlList(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseListHeaderUrlList(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -5910,45 +5278,42 @@ indexStart = index;
  tx2 = ParseListHeaderUrl(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx3 = ParseListHeaderUrl(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseLocalPart(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseLocalPart(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -5957,51 +5322,46 @@ indexStart = index;
  tx2 = ParseWord(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx3 = ParseWord(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
  if (tokener != null) {
-  if (indexTemp == indexStart) {
- tokener.RestoreState(state);
-} else {
- tokener.Commit(7, indexStart, indexTemp);
-}
+  if (indexTemp == indexStart) tokener.RestoreState(state);
+  else tokener.Commit(7,indexStart,indexTemp);
  }
  return indexTemp;
 }
-public static int ParseLocalPartNoCfws(string str, int index, int endIndex,
-  ITokener tokener) {
-int indexStart, indexStart2, indexStart4, indexTemp, indexTemp2, indexTemp3,
-  indexTemp4, indexTemp5, state;
+public static int ParseLocalPartNoCfws(string str, int index, int endIndex, ITokener tokener) {
+int indexStart, indexStart2, indexStart4, indexTemp, indexTemp2, indexTemp3, indexTemp4, indexTemp5, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
@@ -6014,42 +5374,42 @@ indexStart = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 34)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  while (true) {
   indexTemp3 = index;
  do {
-if (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
- ++indexTemp3; break;
+if (index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) {
+ indexTemp3 += 1; break;
 }
-if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-  str[index] <= 91) || (str[index] >= 93 && str[index] <= 126))) {
- ++indexTemp3; break;
+if (index < endIndex && ((str[index] == 33) || ((str[index] >= 35 && str[index] <= 91)) || ((str[index] >= 93 && str[index] <= 126)))) {
+ indexTemp3 += 1; break;
 }
  indexTemp4 = index;
  do {
  indexStart4 = index;
-if (index < endIndex && (str[index] == 92)) {
- ++index;
+if ((index < endIndex && (str[index] == 92))) {
+ index += 1;
 }
 do {
   indexTemp5 = index;
-if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) ||
-  (str[index] >= 57344 && str[index] <= 65535))) {
- ++indexTemp5;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
-  56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+if (index < endIndex && (((str[index] >= 128 && str[index] <= 55295)) || ((str[index] >= 57344 && str[index] <= 65535)))) {
+ indexTemp5 += 1;
+}
+else if (index + 1 < endIndex && ((((str[index] >= 55296 && str[index] <= 56319)) && ((str[index + 1] >= 56320 && str[index + 1] <= 57343))))) {
  indexTemp5 += 2;
 }
   if (indexTemp5 != index) {
- index = indexTemp5;
-} else {
- index = indexStart4; break;
+ index=indexTemp5;
+}
+  else {
+ index=indexStart4; break;
 }
 } while (false);
- if (index == indexStart4) {
+ if (index==indexStart4) {
  break;
 }
   indexTemp4 = index;
@@ -6058,21 +5418,20 @@ if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) ||
  if (indexTemp4 != index) {
  indexTemp3 = indexTemp4; break;
 }
-if (index + 1 < endIndex && (((str[index] == 92) && ((str[index + 1] >= 32 &&
-  str[index + 1] <= 126) || (str[index + 1] == 9))))) {
+if (index + 1 < endIndex && (((str[index] == 92) && (((((str[index + 1] >= 32 && str[index + 1] <= 126)) || (str[index + 1] == 9))))))) {
  indexTemp3 += 2; break;
 }
  } while (false);
   if (indexTemp3 != index) {
-index = indexTemp3;
-} else {
- break;
+index=indexTemp3;
 }
+  else break;
  }
 if (index < endIndex && (str[index] == 34)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
@@ -6081,13 +5440,10 @@ if (index < endIndex && (str[index] == 34)) {
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseMailbox(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseMailbox(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -6103,58 +5459,56 @@ indexStart = index;
 }
  } while (false);
  if (tokener != null) {
-  if (indexTemp == indexStart) {
- tokener.RestoreState(state);
-} else {
- tokener.Commit(5, indexStart, indexTemp);
-}
+  if (indexTemp == indexStart) tokener.RestoreState(state);
+  else tokener.Commit(5,indexStart,indexTemp);
  }
  return indexTemp;
 }
-public static int ParseMailboxList(string str, int index, int endIndex,
-  ITokener tokener) {
-int indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, indexTemp4,
-  state, state2, tx2;
+public static int ParseMailboxList(string str, int index, int endIndex, ITokener tokener) {
+int indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, indexTemp4, state, state2, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
  tx2 = ParseMailbox(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
 do {
@@ -6170,30 +5524,28 @@ do {
 }
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else { break;
+ index=indexTemp3;
+}
+  else { break;
 }
 } while (false);
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseMcElement(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseMcElement(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -6201,25 +5553,22 @@ indexStart = index;
  do {
 if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 67 && str[index + 2] == 61) {
  index += 3;
-} else {
+}
+else {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParseTypeString(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseMdElement(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseMdElement(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -6227,60 +5576,52 @@ indexStart = index;
  do {
 if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 68 && str[index + 2] == 61) {
  index += 3;
-} else {
+}
+else {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParseDomainName(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseMessageTypeParam(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseMessageTypeParam(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-if (index + 9 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 78 &&
-  (str[index + 4] & ~32) == 84 && (str[index + 5] & ~32) == 73 &&
-  (str[index + 6] & ~32) == 70 && (str[index + 7] & ~32) == 73 && (str[index+
-  8] & ~32) == 69 && (str[index + 9] & ~32) == 82) {
+if (index + 9 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 78 && (str[index + 4] & ~32) == 84 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32) == 70 && (str[index + 7] & ~32) == 73 && (str[index + 8] & ~32) == 69 && (str[index + 9] & ~32) == 82) {
  index += 10;
-} else {
+}
+else {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 61)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParseQuotedMilitaryString(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseMethod(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseMethod(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -6289,10 +5630,9 @@ indexStart = index;
  while (true) {
   indexTemp2 = ParseLdhStr(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
 do {
   indexTemp2 = index;
@@ -6300,57 +5640,53 @@ do {
  indexStart2 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 47)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
  tx3 = ParseMethodVersion(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseMethodVersion(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseMethodVersion(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
- while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
+if ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
+ while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
 }
-} else {
+}
+else {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseMethodspec(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseMethodspec(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -6359,158 +5695,125 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseMethod(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 61)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseResult(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseMilitaryString(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseMilitaryString(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexTemp;
 indexStart = index;
  indexTemp = index;
  do {
-for (i = 0; i < 69; ++i) {
- if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
-   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
-   <= 58) || (str[index] == 61) || (str[index] == 63))) {
-  ++index;
- } else if (i< 1) {
-index = indexStart; break;
- } else {
- break;
+for (i = 0; i<69; i++) {
+ if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 32) || ((str[index] >= 39 && str[index] <= 41)) || ((str[index] >= 43 && str[index] <= 58)) || (str[index] == 61) || (str[index] == 63))))) ) {
+  index += 1;
+ } else if (i<1) {
+index=indexStart; break;
+ } else break;
 }
-}
-if (index == indexStart) {
- break;
-}
+if (index==indexStart)break;
   indexTemp = index;
  } while (false);
  return indexTemp;
 }
-public static int ParseMilitaryStringSequence(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseMilitaryStringSequence(string str, int index, int endIndex, ITokener tokener) {
 int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, state, state2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-for (i = 0; i < 69; ++i) {
- if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
-   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
-   <= 58) || (str[index] == 61) || (str[index] == 63))) {
-  ++index;
- } else if (i< 1) {
-index = indexStart; break;
- } else {
- break;
+for (i = 0; i<69; i++) {
+ if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 32) || ((str[index] >= 39 && str[index] <= 41)) || ((str[index] >= 43 && str[index] <= 58)) || (str[index] == 61) || (str[index] == 63))))) ) {
+  index += 1;
+ } else if (i<1) {
+index=indexStart; break;
+ } else break;
 }
-}
-if (index == indexStart) {
- break;
-}
+if (index==indexStart)break;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
-for (i2 = 0; i2 < 69; ++i2) {
- if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
-   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
-   <= 58) || (str[index] == 61) || (str[index] == 63))) {
-  ++index;
- } else if (i2< 1) {
-index = indexStart2; break;
- } else {
- break;
+for (i2 = 0; i2<69; i2++) {
+ if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 32) || ((str[index] >= 39 && str[index] <= 41)) || ((str[index] >= 43 && str[index] <= 58)) || (str[index] == 61) || (str[index] == 63))))) ) {
+  index += 1;
+ } else if (i2<1) {
+index=indexStart2; break;
+ } else break;
 }
-}
-if (index == indexStart2) {
- break;
-}
+if (index==indexStart2)break;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseMixerKeyword(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseMixerKeyword(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 45))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
-   str[index] <= 57) || (str[index] == 45)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseMsgId(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseMsgId(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -6518,42 +5821,40 @@ indexStart = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 60)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  tx2 = ParseIdLeft(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
 if (index < endIndex && (str[index] == 64)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  tx2 = ParseIdRight(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
 if (index < endIndex && (str[index] == 62)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseMvElement(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseMvElement(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -6561,25 +5862,22 @@ indexStart = index;
  do {
 if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 86 && str[index + 2] == 61) {
  index += 3;
-} else {
+}
+else {
  break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
  tx2 = ParseCertifierList(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseNameAddr(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseNameAddr(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -6588,83 +5886,80 @@ indexStart = index;
  index = ParseDisplayName(str, index, endIndex, tokener);
  tx2 = ParseAngleAddr(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseNewsMsgId(string str, int index, int endIndex,
-  ITokener tokener) {
-int i, i2, indexStart, indexStart2, indexStart3, indexTemp, indexTemp2,
-  indexTemp3, state;
+public static int ParseNewsMsgId(string str, int index, int endIndex, ITokener tokener) {
+int i, i2, indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
 if (index < endIndex && (str[index] == 60)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
- for (i = 0;; ++i) {
+ for (i = 0;;i++) {
   indexTemp2 = ParseAtext(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
 if (index < endIndex && (str[index] == 64)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
 do {
   indexTemp2 = index;
  do {
  indexTemp3 = index;
  indexStart2 = index;
-for (i2 = 0; true; ++i2) {
+for (i2 = 0; ; ++i2) {
   indexTemp3 = ParseAtext(str, index, endIndex, tokener);
-  if (indexTemp3 == index) { if (i2< 1) {
+  if (indexTemp3 == index) { if (i2<1) {
  indexTemp2 = indexStart2;
 } break;
-} else {
- index = indexTemp3;
 }
+  index = indexTemp3;
 }
  index = indexStart2;
 if (indexTemp3 != indexStart2) {
- indexTemp2 = indexTemp3; break;
+ indexTemp2 = indexTemp3;  break;
 }
  indexTemp3 = index;
  do {
  indexStart3 = index;
 if (index < endIndex && (str[index] == 91)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
-while ((index < endIndex && ((str[index] >= 33 && str[index] <= 61) ||
-  (str[index] >= 63 && str[index] <= 90) || (str[index] >= 94 && str[index]
-  <= 126)))) {
- ++index;
+while ((index < endIndex && (((((str[index] >= 33 && str[index] <= 61)) || ((str[index] >= 63 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)))))) ) {
+ index += 1;
 }
 if (index < endIndex && (str[index] == 93)) {
- ++index;
-} else {
- index = indexStart3; break;
+ index += 1;
+}
+else {
+ index=indexStart3; break;
 }
   indexTemp3 = index;
   index = indexStart3;
@@ -6674,104 +5969,96 @@ if (index < endIndex && (str[index] == 93)) {
 }
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
- index = indexStart; break;
+ index=indexTemp2;
+}
+  else {
+ index=indexStart; break;
 }
 } while (false);
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
 if (index < endIndex && (str[index] == 62)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
  indexTemp = (indexTemp-indexStart > 250) ? indexStart : indexTemp;
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseNewsgroupList(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseNewsgroupList(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
  tx2 = ParseNewsgroupName(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
  tx3 = ParseNewsgroupName(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
-while ((index < endIndex && ((str[index] == 32) || (str[index] == 9)))) {
- ++index;
+while ((index < endIndex && ((((str[index] == 32) || (str[index] == 9))))) ) {
+ index += 1;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseNewsgroupName(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseNewsgroupName(string str, int index, int endIndex, ITokener tokener) {
 int indexStart2, indexTemp, indexTemp2;
  indexTemp = index;
  do {
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 43) || (str[index] == 45) || (str[index] == 95))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
-   str[index] <= 57) || (str[index] == 43) || (str[index] == 45) ||
-   (str[index] == 95)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 43) || (str[index] == 45) || (str[index] == 95))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 43) || (str[index] == 45) || (str[index] == 95))))) ) {
+ index += 1;
 }
-} else {
+}
+else {
  break;
 }
  while (true) {
@@ -6779,74 +6066,66 @@ if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 43) || (str[index] == 45) || (str[index] == 95))) {
- ++index;
- while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 &&
-   str[index] <= 57) || (str[index] == 43) || (str[index] == 45) ||
-   (str[index] == 95)))) {
- ++index;
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 43) || (str[index] == 45) || (str[index] == 95))))) ) {
+ index += 1;
+ while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 43) || (str[index] == 45) || (str[index] == 95))))) ) {
+ index += 1;
 }
-} else {
- index = indexStart2; break;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
   indexTemp = index;
  } while (false);
  return indexTemp;
 }
-public static int ParseNoEncodedWords(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseNoEncodedWords(string str, int index, int endIndex, ITokener tokener) {
  return ParseObsUnstruct(str, index, endIndex, tokener);
 }
-public static int ParseNoFoldLiteral(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseNoFoldLiteral(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
 if (index < endIndex && (str[index] == 91)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  while (true) {
   indexTemp2 = ParseDtext(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
 if (index < endIndex && (str[index] == 93)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseNoResult(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseNoResult(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -6854,58 +6133,48 @@ indexStart = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 3 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) ==
-  69) {
+if (index + 3 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) == 69) {
  index += 4;
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseNodeid(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseNodeid(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp, indexTemp2;
  indexTemp = index;
  do {
  while (true) {
   indexTemp2 = index;
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] >= 45 && str[index] <= 46) || (str[index] == 95) ||
-  (str[index] == 126))) {
- ++indexTemp2;
-  } else if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1]
-  >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1]
-  <= 70) || (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index+
-  2] >= 48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index+
-  2] <= 70) || (str[index + 2] >= 97 && str[index + 2] <= 102)))))) {
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 45 && str[index] <= 46)) || (str[index] == 95) || (str[index] == 126))))) {
+ indexTemp2 += 1;
+}
+else if (index + 2 < endIndex && (((str[index] == 37) && (((((str[index + 1] >= 48 && str[index + 1] <= 57)) || ((str[index + 1] >= 65 && str[index + 1] <= 70)) || ((str[index + 1] >= 97 && str[index + 1] <= 102))) && (((str[index + 2] >= 48 && str[index + 2] <= 57)) || ((str[index + 2] >= 65 && str[index + 2] <= 70)) || ((str[index + 2] >= 97 && str[index + 2] <= 102)))))))) {
  indexTemp2 += 3;
-  } else if (index < endIndex && ((str[index] == 33) || (str[index] == 36) ||
-  (str[index] >= 40 && str[index] <= 44) || (str[index] == 59) ||
-  (str[index] == 61))) {
- ++indexTemp2;
+}
+else if (index < endIndex && ((((str[index] == 33) || (str[index] == 36) || ((str[index] >= 40 && str[index] <= 44)) || (str[index] == 59) || (str[index] == 61))))) {
+ indexTemp2 += 1;
 }
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
   indexTemp = index;
  } while (false);
@@ -6913,28 +6182,28 @@ index = indexTemp2;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseNonnegInteger(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseNonnegInteger(string str, int index, int endIndex, ITokener tokener) {
 int indexStart2, indexTemp, indexTemp2;
  indexTemp = index;
  do {
-if (index < endIndex && (str[index] == 48)) {
- ++indexTemp; break;
+if (index < endIndex && ((str[index] == 48))) {
+ indexTemp += 1; break;
 }
  indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index < endIndex && (str[index] >= 49 && str[index] <= 57)) {
- ++index;
-} else {
+if (index < endIndex && ((str[index] >= 49 && str[index] <= 57))) {
+ index += 1;
+}
+else {
  break;
 }
-while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
+while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
 }
   indexTemp2 = index;
   index = indexStart2;
@@ -6945,8 +6214,7 @@ while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
  } while (false);
  return indexTemp;
 }
-public static int ParseObsAcceptLanguage(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseObsAcceptLanguage(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -6955,55 +6223,52 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseObsLanguageQ(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
  tx3 = ParseObsLanguageQ(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseObsDomainList(string str, int index, int endIndex,
-  ITokener tokener) {
-int indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3,
-  state, state2, tx2, tx4;
+public static int ParseObsDomainList(string str, int index, int endIndex, ITokener tokener) {
+int indexStart, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3, state, state2, tx2, tx4;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -7011,37 +6276,39 @@ indexStart = index;
  if (indexTemp3 != index) {
  indexTemp2 = indexTemp3; break;
 }
-if (index < endIndex && (str[index] == 44)) {
- ++indexTemp2; break;
+if (index < endIndex && ((str[index] == 44))) {
+ indexTemp2 += 1; break;
 }
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
 if (index < endIndex && (str[index] == 64)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  tx2 = ParseDomain(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
@@ -7050,83 +6317,80 @@ do {
  do {
  indexStart3 = index;
 if (index < endIndex && (str[index] == 64)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  tx4 = ParseDomain(str, index, endIndex, tokener);
  if (tx4 == index) {
-index = indexStart3; break;
-} else {
- index = tx4;
+index=indexStart3;  break;
 }
+ index=tx4;
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else { break;
+ index=indexTemp3;
+}
+  else { break;
 }
 } while (false);
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseObsGroupList(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseObsGroupList(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexStart2, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
- for (i = 0;; ++i) {
+ for (i = 0;;i++) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 44)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseObsLanguageQ(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseObsLanguageQ(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -7135,71 +6399,67 @@ indexStart = index;
  tx2 = ParseLanguageRange(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
 do {
   indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index < endIndex && ((str[index] == 81) || (str[index] == 113))) {
- ++index;
-} else {
- index = indexStart2; break;
+if (index < endIndex && ((((str[index] == 81) || (str[index] == 113))))) {
+ index += 1;
+}
+else {
+ index = indexStart2;  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 61)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  tx3 = ParseQvalue(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseObsNOWSCTL(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseObsNOWSCTL(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp = index;
-if (index < endIndex && ((str[index] >= 1 && str[index] <= 8) || (str[index]
-  >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) ||
-  (str[index] == 127))) {
- ++indexTemp;
+if (index < endIndex && (((str[index] >= 1 && str[index] <= 8)) || ((str[index] >= 11 && str[index] <= 12)) || ((str[index] >= 14 && str[index] <= 31)) || (str[index] == 127))) {
+ indexTemp += 1;
 }
  return indexTemp;
 }
-public static int ParseObsRoute(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseObsRoute(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -7208,80 +6468,75 @@ indexStart = index;
  tx2 = ParseObsDomainList(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
 if (index < endIndex && (str[index] == 58)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseObsUnstruct(string str, int index, int endIndex,
-  ITokener tokener) {
-int i3, i4, indexStart, indexStart3, indexStart4, indexTemp, indexTemp2,
-  indexTemp3, indexTemp4, indexTemp5, state, state2, state3;
+public static int ParseObsUnstruct(string str, int index, int endIndex, ITokener tokener) {
+int i3, i4, indexStart, indexStart3, indexStart4, indexTemp, indexTemp2, indexTemp3, indexTemp4, indexTemp5, state, state2, state3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
+ 
   state3 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp3 = index;
  do {
  indexStart3 = index;
-while (index < endIndex && (str[index] == 13)) {
- ++index;
+while ((index < endIndex && (str[index] == 13))) {
+ index += 1;
 }
- for (i3 = 0;; ++i3) {
+ for (i3 = 0;;i3++) {
   indexTemp4 = index;
  do {
  indexTemp5 = index;
-if (index < endIndex && ((str[index] >= 0 && str[index] <= 8) || (str[index]
-  >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 31) ||
-  (str[index] >= 33 && str[index] <= 55295) || (str[index] >= 57344 &&
-  str[index] <= 65535))) {
- ++indexTemp5;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
-  56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+if (index < endIndex && (((str[index] >= 0 && str[index] <= 8)) || ((str[index] >= 11 && str[index] <= 12)) || ((str[index] >= 14 && str[index] <= 31)) || ((str[index] >= 33 && str[index] <= 55295)) || ((str[index] >= 57344 && str[index] <= 65535)))) {
+ indexTemp5 += 1;
+}
+else if (index + 1 < endIndex && ((((str[index] >= 55296 && str[index] <= 56319)) && ((str[index + 1] >= 56320 && str[index + 1] <= 57343))))) {
  indexTemp5 += 2;
 }
  if (indexTemp5 != index) {
  indexTemp4 = indexTemp5; break;
 }
  indexStart4 = index;
-for (i4 = 0; true; ++i4) {
+for (i4 = 0; ; ++i4) {
   indexTemp5 = ParseFWS(str, index, endIndex, tokener);
-  if (indexTemp5 == index) { if (i4< 1) {
+  if (indexTemp5 == index) { if (i4<1) {
  indexTemp4 = indexStart4;
 } break;
-} else {
- index = indexTemp5;
 }
+  index = indexTemp5;
 }
  index = indexStart4;
 if (indexTemp5 != indexStart4) {
- indexTemp4 = indexTemp5; break;
+ indexTemp4 = indexTemp5;  break;
 }
  } while (false);
   if (indexTemp4 != index) {
- index = indexTemp4;
-} else {
-  if (i3< 1) {
-   index = indexStart3;
+ index=indexTemp4;
+}
+  else {
+  if (i3<1) {
+   index=indexStart3;
   } break;
  }
  }
- if (index == indexStart3) {
+ if (index==indexStart3) {
  break;
 }
   indexTemp3 = index;
@@ -7290,37 +6545,32 @@ if (indexTemp5 != indexStart4) {
  if (indexTemp3 != index) {
  indexTemp2 = indexTemp3; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state3);
-}
-if (index < endIndex && (str[index] == 10)) {
- ++indexTemp2;
- while (indexTemp2 < endIndex && (str[indexTemp2] == 10)) {
-indexTemp2++;
+ if (tokener != null)tokener.RestoreState(state3);
+if ((index < endIndex && (str[index] == 10))) {
+ indexTemp2 += 1;
+ while ((indexTemp2 < endIndex && (str[indexTemp2] == 10))) {
+indexTemp2 += 1;
 }
  break;
 }
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
-while (index < endIndex && (str[index] == 13)) {
- ++index;
+while ((index < endIndex && (str[index] == 13))) {
+ index += 1;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParsePath(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParsePath(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -7336,15 +6586,17 @@ indexStart = index;
  indexStart2 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 60)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 62)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp2 = index;
@@ -7353,54 +6605,50 @@ if (index < endIndex && (str[index] == 62)) {
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
+ if (tokener != null)tokener.RestoreState(state2);
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParsePathIdentity(string str, int index, int endIndex,
-  ITokener tokener) {
-int i2, i4, indexStart, indexStart2, indexStart3, indexStart4, indexTemp,
-  indexTemp2, indexTemp3, indexTemp4, indexTemp5, state, state2, tx4;
+public static int ParsePathIdentity(string str, int index, int endIndex, ITokener tokener) {
+int i2, i4, indexStart, indexStart2, indexStart3, indexStart4, indexTemp, indexTemp2, indexTemp3, indexTemp4, indexTemp5, state, state2, tx4;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
+ 
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0;;i2++) {
   indexTemp3 = index;
  do {
  indexStart3 = index;
  tx4 = ParseLabel(str, index, endIndex, tokener);
  if (tx4 == index) {
  break;
-} else {
- index = tx4;
 }
+ index=tx4;
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
- index = indexStart3; break;
+ index += 1;
+}
+else {
+ index=indexStart3; break;
 }
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 1) {
-   index = indexStart2;
+ index=indexTemp3;
+}
+  else {
+  if (i2<1) {
+   index=indexStart2;
   } break;
  }
  }
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
 do {
@@ -7409,32 +6657,30 @@ do {
  indexTemp4 = index;
  do {
  indexStart4 = index;
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122))) {
- ++index;
-} else {
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))))) {
+ index += 1;
+}
+else {
   break;
 }
- for (i4 = 0;; ++i4) {
+ for (i4 = 0;;i4++) {
   indexTemp5 = index;
-if (index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >= 65 &&
-  str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
-  122) || (str[index + 1] >= 48 && str[index + 1] <= 57))))) {
+if (index + 1 < endIndex && (((str[index] == 45) && (((((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97 && str[index + 1] <= 122)) || ((str[index + 1] >= 48 && str[index + 1] <= 57)))))))) {
  indexTemp5 += 2;
-  } else if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57))) {
- ++indexTemp5;
+}
+else if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)))))) {
+ indexTemp5 += 1;
 }
   if (indexTemp5 != index) {
- index = indexTemp5;
-} else {
-  if (i4< 1) {
-   index = indexStart4;
+ index=indexTemp5;
+}
+  else {
+  if (i4<1) {
+   index=indexStart4;
   } break;
  }
  }
- if (index == indexStart4) {
+ if (index==indexStart4) {
  break;
 }
   indexTemp4 = index;
@@ -7446,37 +6692,33 @@ if (index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >= 65 &&
  indexTemp4 = index;
  do {
  indexStart4 = index;
-if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
-} else {
+if (index < endIndex && ((str[index] >= 48 && str[index] <= 57))) {
+ index += 1;
+}
+else {
  break;
 }
-while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index] == 45)))) {
- ++index;
+while ((index < endIndex && (((((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45))))) ) {
+ index += 1;
 }
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122))) {
- ++index;
-} else {
- index = indexStart4; break;
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))))) {
+ index += 1;
+}
+else {
+ index = indexStart4;  break;
 }
  while (true) {
   indexTemp5 = index;
-if (index + 1 < endIndex && (((str[index] == 45) && ((str[index + 1] >= 65 &&
-  str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <=
-  122) || (str[index + 1] >= 48 && str[index + 1] <= 57))))) {
+if (index + 1 < endIndex && (((str[index] == 45) && (((((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97 && str[index + 1] <= 122)) || ((str[index + 1] >= 48 && str[index + 1] <= 57)))))))) {
  indexTemp5 += 2;
-  } else if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57))) {
- ++indexTemp5;
+}
+else if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)))))) {
+ indexTemp5 += 1;
 }
   if (indexTemp5 != index) {
-index = indexTemp5;
-} else {
- break;
+index=indexTemp5;
 }
+  else break;
  }
   indexTemp4 = index;
   index = indexStart4;
@@ -7486,12 +6728,13 @@ index = indexTemp5;
 }
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
- index = indexStart2; break;
+ index=indexTemp3;
+}
+  else {
+ index=indexStart2; break;
 }
 } while (false);
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
   indexTemp2 = index;
@@ -7500,36 +6743,26 @@ index = indexTemp5;
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] == 45) || (str[index] == 95))) {
- ++indexTemp;
- while ((indexTemp < endIndex && ((str[indexTemp] >= 65 && str[indexTemp] <=
-   90) || (str[indexTemp] >= 97 && str[indexTemp] <= 122) || (str[indexTemp]
-   >= 48 && str[indexTemp] <= 57) || (str[indexTemp] == 45) ||
-   (str[indexTemp] == 95)))) {
-indexTemp++;
+ if (tokener != null)tokener.RestoreState(state2);
+if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || (str[index] == 45) || (str[index] == 95))))) ) {
+ indexTemp += 1;
+ while ((indexTemp < endIndex && (((((str[indexTemp] >= 65 && str[indexTemp] <= 90)) || ((str[indexTemp] >= 97 && str[indexTemp] <= 122)) || ((str[indexTemp] >= 48 && str[indexTemp] <= 57)) || (str[indexTemp] == 45) || (str[indexTemp] == 95))))) ) {
+indexTemp += 1;
 }
  break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParsePathList(string str, int index, int endIndex,
-  ITokener tokener) {
-int indexStart, indexStart2, indexStart4, indexTemp, indexTemp2, indexTemp3,
-  indexTemp4, state, state2, state4, tx3, tx5;
+public static int ParsePathList(string str, int index, int endIndex, ITokener tokener) {
+int indexStart, indexStart2, indexStart4, indexTemp, indexTemp2, indexTemp3, indexTemp4, state, state2, state4, tx3, tx5;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -7537,13 +6770,13 @@ indexStart = index;
  tx3 = ParsePathIdentity(str, index, endIndex, tokener);
  if (tx3 == index) {
  break;
-} else {
- index = tx3;
 }
+ index=tx3;
  index = ParseFWS(str, index, endIndex, tokener);
 do {
   indexTemp3 = index;
  do {
+ 
   state4 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp4 = index;
  do {
@@ -7551,13 +6784,13 @@ do {
  tx5 = ParseDiagOther(str, index, endIndex, tokener);
  if (tx5 == index) {
  break;
-} else {
- index = tx5;
 }
+ index=tx5;
 if (index < endIndex && (str[index] == 33)) {
- ++index;
-} else {
- index = indexStart4; break;
+ index += 1;
+}
+else {
+ index=indexStart4; break;
 }
   indexTemp4 = index;
   index = indexStart4;
@@ -7565,9 +6798,7 @@ if (index < endIndex && (str[index] == 33)) {
  if (indexTemp4 != index) {
  indexTemp3 = indexTemp4; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state4);
-}
+ if (tokener != null)tokener.RestoreState(state4);
   state4 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp4 = index;
  do {
@@ -7575,13 +6806,13 @@ if (index < endIndex && (str[index] == 33)) {
  tx5 = ParseDiagDeprecated(str, index, endIndex, tokener);
  if (tx5 == index) {
  break;
-} else {
- index = tx5;
 }
+ index=tx5;
 if (index < endIndex && (str[index] == 33)) {
- ++index;
-} else {
- index = indexStart4; break;
+ index += 1;
+}
+else {
+ index=indexStart4; break;
 }
   indexTemp4 = index;
   index = indexStart4;
@@ -7589,45 +6820,41 @@ if (index < endIndex && (str[index] == 33)) {
  if (indexTemp4 != index) {
  indexTemp3 = indexTemp4; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state4);
-}
+ if (tokener != null)tokener.RestoreState(state4);
 if (index + 1 < endIndex && str[index] == 33 && str[index + 1] == 33) {
  indexTemp3 += 2; break;
 }
-if (index < endIndex && (str[index] == 33)) {
- ++indexTemp3; break;
+if (index < endIndex && ((str[index] == 33))) {
+ indexTemp3 += 1; break;
 }
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
- index = indexStart2; break;
+ index=indexTemp3;
+}
+  else {
+ index=indexStart2; break;
 }
 } while (false);
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParsePathxmpp(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParsePathxmpp(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -7640,66 +6867,64 @@ do {
  while (true) {
   indexTemp3 = ParseNodeid(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
-index = indexTemp3;
-} else {
- break;
+index=indexTemp3;
 }
+  else break;
  }
 if (index < endIndex && (str[index] == 64)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
  while (true) {
   indexTemp2 = ParseRegName(str, index, endIndex, tokener);
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
 do {
   indexTemp2 = index;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 47)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  while (true) {
   indexTemp3 = ParseResid(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
-index = indexTemp3;
-} else {
- break;
+index=indexTemp3;
 }
+  else break;
  }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParsePhrase(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParsePhrase(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, indexTemp3, state, state2, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -7708,10 +6933,10 @@ indexStart = index;
  tx2 = ParsePhraseWord(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -7719,8 +6944,8 @@ indexStart = index;
  if (indexTemp3 != index) {
  indexTemp2 = indexTemp3; break;
 }
-if (index < endIndex && (str[index] == 46)) {
- ++indexTemp2; break;
+if (index < endIndex && ((str[index] == 46))) {
+ indexTemp2 += 1; break;
 }
   indexTemp3 = ParseCFWS(str, index, endIndex, tokener);
  if (indexTemp3 != index) {
@@ -7728,74 +6953,62 @@ if (index < endIndex && (str[index] == 46)) {
 }
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
  if (tokener != null) {
-  if (indexTemp == indexStart) {
- tokener.RestoreState(state);
-} else {
- tokener.Commit(1, indexStart, indexTemp);
-}
+  if (indexTemp == indexStart) tokener.RestoreState(state);
+  else tokener.Commit(1,indexStart,indexTemp);
  }
  return indexTemp;
 }
-public static int ParsePhraseAtom(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParsePhraseAtom(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
- for (i = 0;; ++i) {
+ for (i = 0;;i++) {
   indexTemp2 = index;
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] == 33) || (str[index] >= 35 && str[index] <= 39) ||
-  (str[index] >= 42 && str[index] <= 43) || (str[index] == 45) ||
-  (str[index] >= 47 && str[index] <= 57) || (str[index] == 61) ||
-  (str[index] == 63) || (str[index] >= 94 && str[index] <= 126) ||
-  (str[index] >= 128 && str[index] <= 55295) || (str[index] >= 57344 &&
-  str[index] <= 65535))) {
- ++indexTemp2;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
-  56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+if (index < endIndex && (((str[index] >= 65 && str[index] <= 90)) || (str[index] == 33) || ((str[index] >= 35 && str[index] <= 39)) || ((str[index] >= 42 && str[index] <= 43)) || (str[index] == 45) || ((str[index] >= 47 && str[index] <= 57)) || (str[index] == 61) || (str[index] == 63) || ((str[index] >= 94 && str[index] <= 126)) || ((str[index] >= 128 && str[index] <= 55295)) || ((str[index] >= 57344 && str[index] <= 65535)))) {
+ indexTemp2 += 1;
+}
+else if (index + 1 < endIndex && ((((str[index] >= 55296 && str[index] <= 56319)) && ((str[index + 1] >= 56320 && str[index + 1] <= 57343))))) {
  indexTemp2 += 2;
 }
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
-  if (i< 1) {
-   index = indexStart;
+ index=indexTemp2;
+}
+  else {
+  if (i<1) {
+   index=indexStart;
   } break;
  }
  }
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
   indexTemp = index;
  } while (false);
  if (tokener != null) {
-  if (indexTemp == indexStart) {
- tokener.RestoreState(state);
-} else {
- tokener.Commit(3, indexStart, indexTemp);
-}
+  if (indexTemp == indexStart) tokener.RestoreState(state);
+  else tokener.Commit(3,indexStart,indexTemp);
  }
  return indexTemp;
 }
-public static int ParsePhraseWord(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParsePhraseWord(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
+ 
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -7803,10 +7016,9 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx3 = ParsePhraseAtom(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp2 = index;
   index = indexStart2;
@@ -7814,21 +7026,16 @@ index = indexStart2; break;
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
+ if (tokener != null)tokener.RestoreState(state2);
   indexTemp2 = ParseQuotedString(str, index, endIndex, tokener);
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParsePrecedence(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParsePrecedence(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart3, indexTemp, indexTemp2, indexTemp3, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -7837,19 +7044,20 @@ indexStart = index;
 do {
   indexTemp2 = index;
  do {
-if (index < endIndex && (str[index] == 48)) {
- ++indexTemp2; break;
+if (index < endIndex && ((str[index] == 48))) {
+ indexTemp2 += 1; break;
 }
  indexTemp3 = index;
  do {
  indexStart3 = index;
-if (index < endIndex && (str[index] >= 49 && str[index] <= 57)) {
- ++index;
-} else {
+if (index < endIndex && ((str[index] >= 49 && str[index] <= 57))) {
+ index += 1;
+}
+else {
  break;
 }
-while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
+while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
 }
   indexTemp3 = index;
   index = indexStart3;
@@ -7857,69 +7065,52 @@ while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
  if (indexTemp3 != index) {
  indexTemp2 = indexTemp3; break;
 }
-if (index + 7 < endIndex && (str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) == 69 &&
-  (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 82 &&
-  (str[index + 6] & ~32) == 69 && (str[index + 7] & ~32) == 68) {
+if (index + 7 < endIndex && (str[index] & ~32) == 68 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) == 69 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32) == 69 && (str[index + 7] & ~32) == 68) {
  indexTemp2 += 8; break;
 }
-if (index + 6 < endIndex && (str[index] & ~32) == 82 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) == 84 &&
-  (str[index + 4] & ~32) == 73 && (str[index + 5] & ~32) == 78 &&
-  (str[index + 6] & ~32) == 69) {
+if (index + 6 < endIndex && (str[index] & ~32) == 82 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 73 && (str[index + 5] & ~32) == 78 && (str[index + 6] & ~32) == 69) {
  indexTemp2 += 7; break;
 }
-if (index + 7 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 79 &&
-  (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 73 &&
-  (str[index + 6] & ~32) == 84 && (str[index + 7] & ~32) == 89) {
+if (index + 7 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 79 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32) == 84 && (str[index + 7] & ~32) == 89) {
  indexTemp2 += 8; break;
 }
-if (index + 8 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 69 &&
-  (str[index + 4] & ~32) == 68 && (str[index + 5] & ~32) == 73 &&
-  (str[index + 6] & ~32) == 65 && (str[index + 7] & ~32) == 84 && (str[index+
-  8] & ~32) == 69) {
+if (index + 8 < endIndex && (str[index] & ~32) == 73 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 69 && (str[index + 4] & ~32) == 68 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32) == 65 && (str[index + 7] & ~32) == 84 && (str[index + 8] & ~32) == 69) {
  indexTemp2 += 9; break;
 }
-if (index + 4 < endIndex && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 76 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 83 &&
-  (str[index + 4] & ~32) == 72) {
+if (index + 4 < endIndex && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 76 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 83 && (str[index + 4] & ~32) == 72) {
  indexTemp2 += 5; break;
 }
-if (index + 7 < endIndex && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 86 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 &&
-  (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 73 &&
-  (str[index + 6] & ~32) == 68 && (str[index + 7] & ~32) == 69) {
+if (index + 7 < endIndex && (str[index] & ~32) == 79 && (str[index + 1] & ~32) == 86 && (str[index + 2] & ~32) == 69 && (str[index + 3] & ~32) == 82 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 73 && (str[index + 6] & ~32) == 68 && (str[index + 7] & ~32) == 69) {
  indexTemp2 += 8; break;
 }
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
- index = indexStart; break;
+ index=indexTemp2;
+}
+  else {
+ index=indexStart; break;
 }
 } while (false);
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParsePrintablestring(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParsePrintablestring(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp = index;
  do {
-while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
-  (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
-  <= 58) || (str[index] == 61) || (str[index] == 63)))) {
- ++index;
+while ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 32) || ((str[index] >= 39 && str[index] <= 41)) || ((str[index] >= 43 && str[index] <= 58)) || (str[index] == 61) || (str[index] == 63))))) ) {
+ index += 1;
 }
   indexTemp = index;
  } while (false);
@@ -7927,29 +7118,24 @@ while ((index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseProperty(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseProperty(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp = index;
  do {
-if (index + 7 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76 &&
-  (str[index + 4] & ~32) == 70 && (str[index + 5] & ~32) == 82 &&
-  (str[index + 6] & ~32) == 79 && (str[index + 7] & ~32) == 77) {
+if (index + 7 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76 && (str[index + 4] & ~32) == 70 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32) == 79 && (str[index + 7] & ~32) == 77) {
  indexTemp += 8; break;
 }
-if (index + 5 < endIndex && (str[index] & ~32) == 82 && (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) == 80 && (str[index + 3] & ~32) == 84 &&
-  (str[index + 4] & ~32) == 84 && (str[index + 5] & ~32) == 79) {
+if (index + 5 < endIndex && (str[index] & ~32) == 82 && (str[index + 1] & ~32) == 67 && (str[index + 2] & ~32) == 80 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 84 && (str[index + 5] & ~32) == 79) {
  indexTemp += 6; break;
 }
  // Unlimited production in choice
  } while (false);
  return indexTemp;
 }
-public static int ParsePropspec(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParsePropspec(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -7958,69 +7144,62 @@ indexStart = index;
  tx2 = ParsePtype(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseProperty(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 61)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  tx2 = ParsePvalue(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParsePtype(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParsePtype(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp = index;
-if (index + 3 < endIndex && (str[index] & ~32) == 83 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 84 && (str[index + 3] & ~32) ==
-  80) {
+if (index + 3 < endIndex && (str[index] & ~32) == 83 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 84 && (str[index + 3] & ~32) == 80) {
  indexTemp += 4;
-  } else if (index + 5 < endIndex && (str[index] & ~32) == 72 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) ==
-  68 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82) {
+}
+else if (index + 5 < endIndex && (str[index] & ~32) == 72 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 68 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82) {
  indexTemp += 6;
-  } else if (index + 3 < endIndex && (str[index] & ~32) == 66 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 68 && (str[index + 3] & ~32) ==
-  89) {
+}
+else if (index + 3 < endIndex && (str[index] & ~32) == 66 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 68 && (str[index + 3] & ~32) == 89) {
  indexTemp += 4;
-  } else if (index + 5 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 76 && (str[index + 3] & ~32) ==
-  73 && (str[index + 4] & ~32) == 67 && (str[index + 5] & ~32) == 89) {
+}
+else if (index + 5 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 76 && (str[index + 3] & ~32) == 73 && (str[index + 4] & ~32) == 67 && (str[index + 5] & ~32) == 89) {
  indexTemp += 6;
 }
  return indexTemp;
 }
-public static int ParsePvalue(string str, int index, int endIndex, ITokener
-  tokener) {
-int indexStart, indexStart3, indexStart4, indexTemp, indexTemp2, indexTemp3,
-  indexTemp4, state, state3, tx4;
+public static int ParsePvalue(string str, int index, int endIndex, ITokener tokener) {
+int indexStart, indexStart3, indexStart4, indexTemp, indexTemp2, indexTemp3, indexTemp4, state, state3, tx4;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
@@ -8029,20 +7208,10 @@ indexStart = index;
 do {
   indexTemp2 = index;
  do {
-if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-  str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index]
-  >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index]
-  <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
- ++indexTemp2;
- while ((indexTemp2 < endIndex && ((str[indexTemp2] == 33) ||
-   (str[indexTemp2] >= 35 && str[indexTemp2] <= 36) || (str[indexTemp2] >=
-   45 && str[indexTemp2] <= 46) || (str[indexTemp2] >= 48 && str[indexTemp2]
-   <= 57) || (str[indexTemp2] >= 65 && str[indexTemp2] <= 90) ||
-   (str[indexTemp2] >= 94 && str[indexTemp2] <= 126) || (str[indexTemp2] >=
-   42 && str[indexTemp2] <= 43) || (str[indexTemp2] >= 38 && str[indexTemp2]
-   <= 39) || (str[indexTemp2] == 63)))) {
-indexTemp2++;
+if ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)) || ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38 && str[index] <= 39)) || (str[index] == 63))))) ) {
+ indexTemp2 += 1;
+ while ((indexTemp2 < endIndex && ((((str[indexTemp2] == 33) || ((str[indexTemp2] >= 35 && str[indexTemp2] <= 36)) || ((str[indexTemp2] >= 45 && str[indexTemp2] <= 46)) || ((str[indexTemp2] >= 48 && str[indexTemp2] <= 57)) || ((str[indexTemp2] >= 65 && str[indexTemp2] <= 90)) || ((str[indexTemp2] >= 94 && str[indexTemp2] <= 126)) || ((str[indexTemp2] >= 42 && str[indexTemp2] <= 43)) || ((str[indexTemp2] >= 38 && str[indexTemp2] <= 39)) || (str[indexTemp2] == 63))))) ) {
+indexTemp2 += 1;
 }
  break;
 }
@@ -8060,72 +7229,66 @@ do {
  indexStart4 = index;
  index = ParseLocalPart(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 64)) {
- ++index;
-} else {
- index = indexStart4; break;
+ index += 1;
+}
+else {
+ index=indexStart4; break;
 }
   indexTemp4 = index;
   index = indexStart4;
  } while (false);
   if (indexTemp4 != index) {
- index = indexTemp4;
-} else { break;
+ index=indexTemp4;
+}
+  else { break;
 }
 } while (false);
  tx4 = ParseDomainName(str, index, endIndex, tokener);
  if (tx4 == index) {
-index = indexStart3; break;
-} else {
- index = tx4;
+index=indexStart3;  break;
 }
+ index=tx4;
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
  if (indexTemp3 != index) {
  indexTemp2 = indexTemp3; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state3);
-}
+ if (tokener != null)tokener.RestoreState(state3);
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
- index = indexStart; break;
+ index=indexTemp2;
+}
+  else {
+ index=indexStart; break;
 }
 } while (false);
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseQcontent(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseQcontent(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-  str[index] <= 91) || (str[index] >= 93 && str[index] <= 126))) {
- ++indexTemp; break;
+if (index < endIndex && ((str[index] == 33) || ((str[index] >= 35 && str[index] <= 91)) || ((str[index] >= 93 && str[index] <= 126)))) {
+ indexTemp += 1; break;
 }
   indexTemp2 = ParseObsNOWSCTL(str, index, endIndex, tokener);
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
-if (index < endIndex && ((str[index] >= 128 && str[index] <= 55295) ||
-  (str[index] >= 57344 && str[index] <= 65535))) {
- ++indexTemp; break;
+if (index < endIndex && (((str[index] >= 128 && str[index] <= 55295)) || ((str[index] >= 57344 && str[index] <= 65535)))) {
+ indexTemp += 1; break;
 }
-if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
-  (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+if (index + 1 < endIndex && ((((str[index] >= 55296 && str[index] <= 56319)) && ((str[index + 1] >= 56320 && str[index + 1] <= 57343))))) {
  indexTemp += 2; break;
 }
   indexTemp2 = ParseQuotedPair(str, index, endIndex, tokener);
@@ -8133,47 +7296,39 @@ if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <= 56319) &&
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseQuotedMilitaryString(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseQuotedMilitaryString(string str, int index, int endIndex, ITokener tokener) {
 int i, indexStart, indexTemp;
 indexStart = index;
  indexTemp = index;
  do {
 if (index < endIndex && (str[index] == 34)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
-for (i = 0; i < 69; ++i) {
- if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
-   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
-   <= 58) || (str[index] == 61) || (str[index] == 63))) {
-  ++index;
- } else if (i< 1) {
-index = indexStart; break;
- } else {
- break;
+for (i = 0; i<69; i++) {
+ if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 32) || ((str[index] >= 39 && str[index] <= 41)) || ((str[index] >= 43 && str[index] <= 58)) || (str[index] == 61) || (str[index] == 63))))) ) {
+  index += 1;
+ } else if (i<1) {
+index=indexStart; break;
+ } else break;
 }
-}
-if (index == indexStart) {
- break;
-}
+if (index==indexStart)break;
 if (index < endIndex && (str[index] == 34)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
@@ -8181,46 +7336,47 @@ if (index < endIndex && (str[index] == 34)) {
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseQuotedPair(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseQuotedPair(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2;
 indexStart = index;
  indexTemp = index;
  do {
 if (index < endIndex && (str[index] == 92)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
 do {
   indexTemp2 = index;
-if (index < endIndex && (str[index] >= 57344 && str[index] <= 65535)) {
- ++indexTemp2;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
-  56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+if (index < endIndex && (((str[index] >= 57344 && str[index] <= 65535)))) {
+ indexTemp2 += 1;
+}
+else if (index + 1 < endIndex && ((((str[index] >= 55296 && str[index] <= 56319)) && ((str[index + 1] >= 56320 && str[index + 1] <= 57343))))) {
  indexTemp2 += 2;
-  } else if (index < endIndex && (str[index] >= 0 && str[index] <= 55295)) {
- ++indexTemp2;
+}
+else if (index < endIndex && (((str[index] >= 0 && str[index] <= 55295)))) {
+ indexTemp2 += 1;
 }
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else {
- index = indexStart; break;
+ index=indexTemp2;
+}
+  else {
+ index=indexStart; break;
 }
 } while (false);
- if (index == indexStart) {
+ if (index==indexStart) {
  break;
 }
   indexTemp = index;
  } while (false);
  return indexTemp;
 }
-public static int ParseQuotedString(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseQuotedString(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -8229,35 +7385,32 @@ indexStart = index;
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseQuotedStringCore(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
  if (tokener != null) {
-  if (indexTemp == indexStart) {
- tokener.RestoreState(state);
-} else {
- tokener.Commit(6, indexStart, indexTemp);
-}
+  if (indexTemp == indexStart) tokener.RestoreState(state);
+  else tokener.Commit(6,indexStart,indexTemp);
  }
  return indexTemp;
 }
-public static int ParseQuotedStringCore(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseQuotedStringCore(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
 if (index < endIndex && (str[index] == 34)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -8265,42 +7418,39 @@ if (index < endIndex && (str[index] == 34)) {
  index = ParseFWS(str, index, endIndex, tokener);
  tx3 = ParseQcontent(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 34)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseQvalue(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseQvalue(string str, int index, int endIndex, ITokener tokener) {
 int i3, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3;
  indexTemp = index;
  do {
@@ -8308,8 +7458,9 @@ int i3, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3;
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 48)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
 do {
@@ -8317,23 +7468,23 @@ do {
  do {
  indexStart3 = index;
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
-for (i3 = 0; i3 < 3; ++i3) {
- if (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
-  ++index;
- } else {
- break;
-}
+for (i3 = 0; i3<3; i3++) {
+ if ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+  index += 1;
+ } else break;
 }
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else { break;
+ index=indexTemp3;
+}
+  else { break;
 }
 } while (false);
   indexTemp2 = index;
@@ -8346,8 +7497,9 @@ for (i3 = 0; i3 < 3; ++i3) {
  do {
  indexStart2 = index;
 if (index < endIndex && (str[index] == 49)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
 do {
@@ -8355,23 +7507,23 @@ do {
  do {
  indexStart3 = index;
 if (index < endIndex && (str[index] == 46)) {
- ++index;
-} else {
+ index += 1;
+}
+else {
  break;
 }
-for (i3 = 0; i3 < 3; ++i3) {
- if (index < endIndex && (str[index] == 48)) {
-  ++index;
- } else {
- break;
-}
+for (i3 = 0; i3<3; i3++) {
+ if ((index < endIndex && (str[index] == 48))) {
+  index += 1;
+ } else break;
 }
   indexTemp3 = index;
   index = indexStart3;
  } while (false);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else { break;
+ index=indexTemp3;
+}
+  else { break;
 }
 } while (false);
   indexTemp2 = index;
@@ -8383,41 +7535,37 @@ for (i3 = 0; i3 < 3; ++i3) {
  } while (false);
  return indexTemp;
 }
-public static int ParseReasonspec(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseReasonspec(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-if (index + 5 < endIndex && (str[index] & ~32) == 82 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 83 &&
-  (str[index + 4] & ~32) == 79 && (str[index + 5] & ~32) == 78) {
+if (index + 5 < endIndex && (str[index] & ~32) == 82 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 83 && (str[index + 4] & ~32) == 79 && (str[index + 5] & ~32) == 78) {
  index += 6;
-} else {
+}
+else {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 61)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
  tx2 = ParseValue(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseReceivedToken(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseReceivedToken(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -8444,45 +7592,34 @@ indexStart = index;
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseRegName(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseRegName(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp, indexTemp2;
  indexTemp = index;
  do {
  while (true) {
   indexTemp2 = index;
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] >= 45 && str[index] <= 46) || (str[index] == 95) ||
-  (str[index] == 126))) {
- ++indexTemp2;
-  } else if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1]
-  >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1]
-  <= 70) || (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index+
-  2] >= 48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index+
-  2] <= 70) || (str[index + 2] >= 97 && str[index + 2] <= 102)))))) {
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 45 && str[index] <= 46)) || (str[index] == 95) || (str[index] == 126))))) {
+ indexTemp2 += 1;
+}
+else if (index + 2 < endIndex && (((str[index] == 37) && (((((str[index + 1] >= 48 && str[index + 1] <= 57)) || ((str[index + 1] >= 65 && str[index + 1] <= 70)) || ((str[index + 1] >= 97 && str[index + 1] <= 102))) && (((str[index + 2] >= 48 && str[index + 2] <= 57)) || ((str[index + 2] >= 65 && str[index + 2] <= 70)) || ((str[index + 2] >= 97 && str[index + 2] <= 102)))))))) {
  indexTemp2 += 3;
-  } else if (index < endIndex && ((str[index] == 33) || (str[index] == 36) ||
-  (str[index] >= 38 && str[index] <= 44) || (str[index] == 59) ||
-  (str[index] == 61))) {
- ++indexTemp2;
+}
+else if (index < endIndex && ((((str[index] == 33) || (str[index] == 36) || ((str[index] >= 38 && str[index] <= 44)) || (str[index] == 59) || (str[index] == 61))))) {
+ indexTemp2 += 1;
 }
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
   indexTemp = index;
  } while (false);
@@ -8490,45 +7627,35 @@ index = indexTemp2;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseResid(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseResid(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp, indexTemp2;
  indexTemp = index;
  do {
  while (true) {
   indexTemp2 = index;
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 57) || (str[index] >= 45 && str[index] <= 46) || (str[index] == 95) ||
-  (str[index] == 126))) {
- ++indexTemp2;
-  } else if (index < endIndex && ((str[index] == 33) || (str[index] == 36) ||
-  (str[index] >= 38 && str[index] <= 44) || (str[index] >= 58 && str[index]
-  <= 59) || (str[index] == 61))) {
- ++indexTemp2;
-  } else if (index + 2 < endIndex && (((str[index] == 37) && (((str[index + 1]
-  >= 48 && str[index + 1] <= 57) || (str[index + 1] >= 65 && str[index + 1]
-  <= 70) || (str[index + 1] >= 97 && str[index + 1] <= 102)) && ((str[index+
-  2] >= 48 && str[index + 2] <= 57) || (str[index + 2] >= 65 && str[index+
-  2] <= 70) || (str[index + 2] >= 97 && str[index + 2] <= 102)))))) {
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 45 && str[index] <= 46)) || (str[index] == 95) || (str[index] == 126))))) {
+ indexTemp2 += 1;
+}
+else if (index < endIndex && ((((str[index] == 33) || (str[index] == 36) || ((str[index] >= 38 && str[index] <= 44)) || ((str[index] >= 58 && str[index] <= 59)) || (str[index] == 61))))) {
+ indexTemp2 += 1;
+}
+else if (index + 2 < endIndex && (((str[index] == 37) && (((((str[index + 1] >= 48 && str[index + 1] <= 57)) || ((str[index + 1] >= 65 && str[index + 1] <= 70)) || ((str[index + 1] >= 97 && str[index + 1] <= 102))) && (((str[index + 2] >= 48 && str[index + 2] <= 57)) || ((str[index + 2] >= 65 && str[index + 2] <= 70)) || ((str[index + 2] >= 97 && str[index + 2] <= 102)))))))) {
  indexTemp2 += 3;
 }
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
   indexTemp = index;
  } while (false);
  return indexTemp;
 }
-public static int ParseResinfo(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseResinfo(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx2, tx3;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -8536,16 +7663,16 @@ indexStart = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  tx2 = ParseMethodspec(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
 do {
   indexTemp2 = index;
  do {
@@ -8553,24 +7680,24 @@ do {
  tx3 = ParseCFWS(str, index, endIndex, tokener);
  if (tx3 == index) {
  break;
-} else {
- index = tx3;
 }
+ index=tx3;
  tx3 = ParseReasonspec(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -8578,216 +7705,176 @@ index = indexStart2; break;
  tx3 = ParseCFWS(str, index, endIndex, tokener);
  if (tx3 == index) {
  break;
-} else {
- index = tx3;
 }
+ index=tx3;
  tx3 = ParsePropspec(str, index, endIndex, tokener);
  if (tx3 == index) {
-index = indexStart2; break;
-} else {
- index = tx3;
+index=indexStart2;  break;
 }
+ index=tx3;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseResult(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseResult(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp = index;
-if (index + 3 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) ==
-  83) {
+if (index + 3 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 83) {
  indexTemp += 4;
-  } else if (index + 3 < endIndex && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) ==
-  76) {
+}
+else if (index + 3 < endIndex && (str[index] & ~32) == 70 && (str[index + 1] & ~32) == 65 && (str[index + 2] & ~32) == 73 && (str[index + 3] & ~32) == 76) {
  indexTemp += 4;
-  } else if (index + 7 < endIndex && (str[index] & ~32) == 83 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) ==
-  84 && (str[index + 4] & ~32) == 70 && (str[index + 5] & ~32) == 65 &&
-  (str[index + 6] & ~32) == 73 && (str[index + 7] & ~32) == 76) {
+}
+else if (index + 7 < endIndex && (str[index] & ~32) == 83 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 70 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 70 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32) == 73 && (str[index + 7] & ~32) == 76) {
  indexTemp += 8;
-  } else if (index + 6 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) ==
-  84 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 65 &&
-  (str[index + 6] & ~32) == 76) {
+}
+else if (index + 6 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 85 && (str[index + 3] & ~32) == 84 && (str[index + 4] & ~32) == 82 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32) == 76) {
  indexTemp += 7;
-  } else if (index + 3 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) ==
-  69) {
+}
+else if (index + 3 < endIndex && (str[index] & ~32) == 78 && (str[index + 1] & ~32) == 79 && (str[index + 2] & ~32) == 78 && (str[index + 3] & ~32) == 69) {
  indexTemp += 4;
-  } else if (index + 8 < endIndex && (str[index] & ~32) == 84 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) ==
-  80 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 &&
-  (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index+
-  8] & ~32) == 82) {
+}
+else if (index + 8 < endIndex && (str[index] & ~32) == 84 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 77 && (str[index + 3] & ~32) == 80 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) == 82) {
  indexTemp += 9;
-  } else if (index + 8 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 82 && (str[index + 3] & ~32) ==
-  77 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 &&
-  (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index+
-  8] & ~32) == 82) {
+}
+else if (index + 8 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 69 && (str[index + 2] & ~32) == 82 && (str[index + 3] & ~32) == 77 && (str[index + 4] & ~32) == 69 && (str[index + 5] & ~32) == 82 && (str[index + 6] & ~32) == 82 && (str[index + 7] & ~32) == 79 && (str[index + 8] & ~32) == 82) {
  indexTemp += 9;
 }
  return indexTemp;
 }
-public static int ParseSicSequence(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseSicSequence(string str, int index, int endIndex, ITokener tokener) {
 int i, i2, indexStart, indexStart2, indexTemp, indexTemp2, state, state2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-for (i = 0; i < 8; ++i) {
- if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
-   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
-   <= 58) || (str[index] == 61) || (str[index] == 63))) {
-  ++index;
- } else if (i< 3) {
-index = indexStart; break;
- } else {
- break;
+for (i = 0; i<8; i++) {
+ if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 32) || ((str[index] >= 39 && str[index] <= 41)) || ((str[index] >= 43 && str[index] <= 58)) || (str[index] == 61) || (str[index] == 63))))) ) {
+  index += 1;
+ } else if (i<3) {
+index=indexStart; break;
+ } else break;
 }
-}
-if (index == indexStart) {
- break;
-}
+if (index==indexStart)break;
  while (true) {
+  
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
  index = ParseFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 59)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseFWS(str, index, endIndex, tokener);
-for (i2 = 0; i2 < 8; ++i2) {
- if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-   (str[index] >= 97 && str[index] <= 122) || (str[index] == 32) ||
-   (str[index] >= 39 && str[index] <= 41) || (str[index] >= 43 && str[index]
-   <= 58) || (str[index] == 61) || (str[index] == 63))) {
-  ++index;
- } else if (i2< 3) {
-index = indexStart2; break;
- } else {
- break;
+for (i2 = 0; i2<8; i2++) {
+ if ((index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || (str[index] == 32) || ((str[index] >= 39 && str[index] <= 41)) || ((str[index] >= 43 && str[index] <= 58)) || (str[index] == 61) || (str[index] == 63))))) ) {
+  index += 1;
+ } else if (i2<3) {
+index=indexStart2; break;
+ } else break;
 }
-}
-if (index == indexStart2) {
- break;
-}
+if (index==indexStart2)break;
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-  } else if (tokener != null) {
-tokener.RestoreState(state2); break;
-} else {
- break;
+index=indexTemp2;
 }
+  else if (tokener != null) {
+tokener.RestoreState(state2); break;
+}
+  else break;
  }
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseSolicitationKeywords(string str, int index, int
-  endIndex, ITokener tokener) {
+public static int ParseSolicitationKeywords(string str, int index, int endIndex, ITokener tokener) {
 int indexStart2, indexTemp, indexTemp2;
  indexTemp = index;
  do {
-if (index < endIndex && ((str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122))) {
- ++index;
-} else {
+if (index < endIndex && (((((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)))))) {
+ index += 1;
+}
+else {
   break;
 }
-while ((index < endIndex && ((str[index] >= 45 && str[index] <= 46) ||
-  (str[index] == 95) || (str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 58)))) {
- ++index;
+while ((index < endIndex && (((((str[index] >= 45 && str[index] <= 46)) || (str[index] == 95) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 58)))))) ) {
+ index += 1;
 }
  while (true) {
   indexTemp2 = index;
  do {
  indexStart2 = index;
-if (index + 1 < endIndex && (str[index] == 44) && ((str[index + 1] >= 65 &&
-  str[index + 1] <= 90) || (str[index + 1] >= 97 && str[index + 1] <= 122))) {
+if (index + 1 < endIndex && (str[index] == 44) && (((((str[index + 1] >= 65 && str[index + 1] <= 90)) || ((str[index + 1] >= 97 && str[index + 1] <= 122)))))) {
  index += 2;
-} else {
+}
+else {
  break;
 }
-while ((index < endIndex && ((str[index] >= 45 && str[index] <= 46) ||
-  (str[index] == 95) || (str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 97 && str[index] <= 122) || (str[index] >= 48 && str[index]
-  <= 58)))) {
- ++index;
+while ((index < endIndex && (((((str[index] >= 45 && str[index] <= 46)) || (str[index] == 95) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 122)) || ((str[index] >= 48 && str[index] <= 58)))))) ) {
+ index += 1;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
-index = indexTemp2;
-} else {
- break;
+index=indexTemp2;
 }
+  else break;
  }
   indexTemp = index;
  } while (false);
  return indexTemp;
 }
-public static int ParseStrictHeaderTo(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseStrictHeaderTo(string str, int index, int endIndex, ITokener tokener) {
  return ParseAddressList(str, index, endIndex, tokener);
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseText(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseTextExceptOpeningParen(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp = index;
-if (index < endIndex && ((str[index] >= 1 && str[index] <= 9) || (str[index]
-  >= 11 && str[index] <= 12) || (str[index] >= 14 && str[index] <= 55295) ||
-  (str[index] >= 57344 && str[index] <= 65535))) {
- ++indexTemp;
-  } else if (index + 1 < endIndex && ((str[index] >= 55296 && str[index] <=
-  56319) && (str[index + 1] >= 56320 && str[index + 1] <= 57343))) {
+if (index < endIndex && (((str[index] >= 1 && str[index] <= 9)) || ((str[index] >= 11 && str[index] <= 12)) || ((str[index] >= 14 && str[index] <= 39)) || ((str[index] >= 41 && str[index] <= 55295)) || ((str[index] >= 57344 && str[index] <= 65535)))) {
+ indexTemp += 1;
+}
+else if (index + 1 < endIndex && ((((str[index] >= 55296 && str[index] <= 56319)) && ((str[index + 1] >= 56320 && str[index + 1] <= 57343))))) {
  indexTemp += 2;
 }
  return indexTemp;
 }
-public static int ParseTime(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseTime(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -8796,48 +7883,44 @@ indexStart = index;
  tx2 = ParseTimeOfDay(str, index, endIndex, tokener);
  if (tx2 == index) {
  break;
-} else {
- index = tx2;
 }
+ index=tx2;
  tx2 = ParseZone(str, index, endIndex, tokener);
  if (tx2 == index) {
-index = indexStart; break;
-} else {
- index = tx2;
+index=indexStart;  break;
 }
+ index=tx2;
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseTimeOfDay(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseTimeOfDay(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexStart2, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 58)) {
- ++index;
-} else {
- index = indexStart; break;
+ index += 1;
+}
+else {
+ index=indexStart; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
-} else {
- index = indexStart; break;
+}
+else {
+ index=indexStart; break;
 }
 do {
   indexTemp2 = index;
@@ -8845,76 +7928,61 @@ do {
  indexStart2 = index;
  index = ParseCFWS(str, index, endIndex, tokener);
 if (index < endIndex && (str[index] == 58)) {
- ++index;
-} else {
- index = indexStart2; break;
+ index += 1;
+}
+else {
+ index=indexStart2; break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
-} else {
- index = indexStart2; break;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
   if (indexTemp2 != index) {
- index = indexTemp2;
-} else { break;
+ index=indexTemp2;
+}
+  else { break;
 }
 } while (false);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 #if CODE_ANALYSIS
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-  "Microsoft.Usage",
-  "CA1801",
-  Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
+"Microsoft.Usage", 
+"CA1801", 
+Justification = "Tokener argument appears for consistency with other Parse* methods defined here.")]
 #endif
-public static int ParseTypeString(string str, int index, int endIndex,
-  ITokener tokener) {
+public static int ParseTypeString(string str, int index, int endIndex, ITokener tokener) {
 int indexTemp = index;
 if (index + 2 < endIndex && (str[index] & ~32) == 65 && (str[index + 1] & ~32) == 76 && (str[index + 2] & ~32) == 76) {
  indexTemp += 3;
-  } else if (index + 3 < endIndex && (str[index] & ~32) == 76 && (str[index + 1] & ~32) == 73 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) ==
-  84) {
+}
+else if (index + 3 < endIndex && (str[index] & ~32) == 76 && (str[index + 1] & ~32) == 73 && (str[index + 2] & ~32) == 83 && (str[index + 3] & ~32) == 84) {
  indexTemp += 4;
-  } else if (index + 10 < endIndex && (str[index] & ~32) == 84 && (str[index +
-  1] & ~32) == 82 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32)
-  == 78 && (str[index + 4] & ~32) == 83 && (str[index + 5] & ~32) == 65 &&
-  (str[index + 6] & ~32) == 67 && (str[index + 7] & ~32) == 84 && (str[index+
-  8] & ~32) == 73 && (str[index + 9] & ~32) == 79 && (str[index + 10] & ~32) == 78) {
+}
+else if (index + 10 < endIndex && (str[index] & ~32) == 84 && (str[index + 1] & ~32) == 82 && (str[index + 2] & ~32) == 65 && (str[index + 3] & ~32) == 78 && (str[index + 4] & ~32) == 83 && (str[index + 5] & ~32) == 65 && (str[index + 6] & ~32) == 67 && (str[index + 7] & ~32) == 84 && (str[index + 8] & ~32) == 73 && (str[index + 9] & ~32) == 79 && (str[index + 10] & ~32) == 78) {
  indexTemp += 11;
 }
  return indexTemp;
 }
-public static int ParseValue(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseValue(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
-if (index < endIndex && ((str[index] == 33) || (str[index] >= 35 &&
-  str[index] <= 36) || (str[index] >= 45 && str[index] <= 46) || (str[index]
-  >= 48 && str[index] <= 57) || (str[index] >= 65 && str[index] <= 90) ||
-  (str[index] >= 94 && str[index] <= 126) || (str[index] >= 42 && str[index]
-  <= 43) || (str[index] >= 38 && str[index] <= 39) || (str[index] == 63))) {
- ++indexTemp;
- while ((indexTemp < endIndex && ((str[indexTemp] == 33) || (str[indexTemp]
-   >= 35 && str[indexTemp] <= 36) || (str[indexTemp] >= 45 && str[indexTemp]
-   <= 46) || (str[indexTemp] >= 48 && str[indexTemp] <= 57) ||
-   (str[indexTemp] >= 65 && str[indexTemp] <= 90) || (str[indexTemp] >= 94 &&
-   str[indexTemp] <= 126) || (str[indexTemp] >= 42 && str[indexTemp] <=
-   43) || (str[indexTemp] >= 38 && str[indexTemp] <= 39) || (str[indexTemp]
-   == 63)))) {
-indexTemp++;
+if ((index < endIndex && ((((str[index] == 33) || ((str[index] >= 35 && str[index] <= 36)) || ((str[index] >= 45 && str[index] <= 46)) || ((str[index] >= 48 && str[index] <= 57)) || ((str[index] >= 65 && str[index] <= 90)) || ((str[index] >= 94 && str[index] <= 126)) || ((str[index] >= 42 && str[index] <= 43)) || ((str[index] >= 38 && str[index] <= 39)) || (str[index] == 63))))) ) {
+ indexTemp += 1;
+ while ((indexTemp < endIndex && ((((str[indexTemp] == 33) || ((str[indexTemp] >= 35 && str[indexTemp] <= 36)) || ((str[indexTemp] >= 45 && str[indexTemp] <= 46)) || ((str[indexTemp] >= 48 && str[indexTemp] <= 57)) || ((str[indexTemp] >= 65 && str[indexTemp] <= 90)) || ((str[indexTemp] >= 94 && str[indexTemp] <= 126)) || ((str[indexTemp] >= 42 && str[indexTemp] <= 43)) || ((str[indexTemp] >= 38 && str[indexTemp] <= 39)) || (str[indexTemp] == 63))))) ) {
+indexTemp += 1;
 }
  break;
 }
@@ -8923,13 +7991,10 @@ indexTemp++;
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseWord(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseWord(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, indexTemp2, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
@@ -8944,72 +8009,67 @@ indexStart = index;
  indexTemp = indexTemp2; break;
 }
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseYear(string str, int index, int endIndex, ITokener
-  tokener) {
+public static int ParseYear(string str, int index, int endIndex, ITokener tokener) {
 int indexStart, indexTemp, state;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
-if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57))) {
+if (index + 1 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57))) {
  index += 2;
-} else {
- index = indexStart; break;
 }
-while (index < endIndex && (str[index] >= 48 && str[index] <= 57)) {
- ++index;
+else {
+ index=indexStart; break;
+}
+while ((index < endIndex && ((str[index] >= 48 && str[index] <= 57)))) {
+ index += 1;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
-public static int ParseZone(string str, int index, int endIndex, ITokener
-  tokener) {
-int i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state,
-  state2;
+public static int ParseZone(string str, int index, int endIndex, ITokener tokener) {
+int i2, indexStart, indexStart2, indexTemp, indexTemp2, indexTemp3, state, state2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
+ 
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
  indexStart2 = index;
- for (i2 = 0;; ++i2) {
+ for (i2 = 0;;i2++) {
   indexTemp3 = ParseFWS(str, index, endIndex, tokener);
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
-  if (i2< 1) {
-   index = indexStart2;
+ index=indexTemp3;
+}
+  else {
+  if (i2<1) {
+   index=indexStart2;
   } break;
  }
  }
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
-if (index < endIndex && ((str[index] == 43) || (str[index] == 45))) {
- ++index;
-} else {
- index = indexStart2; break;
+if (index < endIndex && ((((str[index] == 43) || (str[index] == 45))))) {
+ index += 1;
 }
-if (index + 3 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
-  (str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 2] >= 48 &&
-  str[index + 2] <= 57) || (str[index + 3] >= 48 && str[index + 3] <= 57))) {
+else {
+ index = indexStart2;  break;
+}
+if (index + 3 < endIndex && ((str[index] >= 48 && str[index] <= 57) || (str[index + 1] >= 48 && str[index + 1] <= 57) || (str[index + 2] >= 48 && str[index + 2] <= 57) || (str[index + 3] >= 48 && str[index + 3] <= 57))) {
  index += 4;
-} else {
- index = indexStart2; break;
+}
+else {
+ index=indexStart2; break;
 }
   indexTemp2 = index;
   index = indexStart2;
@@ -9017,9 +8077,7 @@ if (index + 3 < endIndex && ((str[index] >= 48 && str[index] <= 57) ||
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
+ if (tokener != null)tokener.RestoreState(state2);
   state2 = (tokener != null) ? tokener.GetState() : 0;
  indexTemp2 = index;
  do {
@@ -9029,36 +8087,45 @@ do {
   indexTemp3 = index;
 if (index + 1 < endIndex && (str[index] & ~32) == 85 && (str[index + 1] & ~32) == 84) {
  indexTemp3 += 2;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 71 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 71 && (str[index + 1] & ~32) == 77 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 69 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 67 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 77 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 83 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
+}
+else if (index + 2 < endIndex && (str[index] & ~32) == 80 && (str[index + 1] & ~32) == 68 && (str[index + 2] & ~32) == 84) {
  indexTemp3 += 3;
-  } else if (index < endIndex && ((str[index] >= 65 && str[index] <= 73) ||
-  (str[index] >= 75 && str[index] <= 90) || (str[index] >= 97 && str[index]
-  <= 105) || (str[index] >= 107 && str[index] <= 122))) {
- ++indexTemp3;
+}
+else if (index < endIndex && (((str[index] >= 65 && str[index] <= 73)) || ((str[index] >= 75 && str[index] <= 90)) || ((str[index] >= 97 && str[index] <= 105)) || ((str[index] >= 107 && str[index] <= 122)))) {
+ indexTemp3 += 1;
 }
   if (indexTemp3 != index) {
- index = indexTemp3;
-} else {
- index = indexStart2; break;
+ index=indexTemp3;
+}
+  else {
+ index=indexStart2; break;
 }
 } while (false);
- if (index == indexStart2) {
+ if (index==indexStart2) {
  break;
 }
  index = ParseCFWS(str, index, endIndex, tokener);
@@ -9068,13 +8135,9 @@ if (index + 1 < endIndex && (str[index] & ~32) == 85 && (str[index + 1] & ~32) =
  if (indexTemp2 != index) {
  indexTemp = indexTemp2; break;
 }
- if (tokener != null) {
- tokener.RestoreState(state2);
-}
+ if (tokener != null)tokener.RestoreState(state2);
  } while (false);
- if (tokener != null && indexTemp == indexStart) {
- tokener.RestoreState(state);
-}
+ if (tokener != null && indexTemp == indexStart)tokener.RestoreState(state);
  return indexTemp;
 }
 }

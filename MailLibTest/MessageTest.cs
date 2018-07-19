@@ -33,7 +33,7 @@ namespace MailLibTest {
           false,
           String.Empty);
       if (fmtresult == 1) {
-        Console.WriteLine("fmtresult=1 for "+
+        Console.WriteLine("fmtresult=1 for " +
                     ret.Substring(0, Math.Min(ret.Length, 260)));
       }
         string messageTemp = ret;
@@ -110,7 +110,7 @@ bool boolTemp = EncodingTest.IsGoodAsciiMessageFormat(
           "TestGenerate") == 2;
 Assert.IsTrue(boolTemp, msgstring);
 }
-      if ((MessageGenerate(mtmessage)) == null) {
+      if (MessageGenerate(mtmessage) == null) {
  Assert.Fail();
  }
     }

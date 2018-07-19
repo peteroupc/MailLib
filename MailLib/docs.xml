@@ -1069,7 +1069,12 @@ and unrecognized media types as the media type <c>application/octet-stream</c>.<
             CTL character (U+007F, or a character less than U+0020 and not
             TAB) after being converted to Unicode, the encoded words are left
             un-decoded.</item>
-            <item>(b) </item></list>
+            <item>(b) This implementation can decode encoded
+            words regardless of the character length of the line in which they appear.
+            This implementation can generate a header field line with one or more
+            encoded words even if that line is more than 76 characters long. (This
+            implementation follows the recommendation to limit header field lines
+            to no more than 78 characters, where possible.)</item></list>
 <para>It would be appreciated if users of this library contact the author if they
  find other ways in which this implementation deviates from the mail specifications or other
 applicable specifications.</para>

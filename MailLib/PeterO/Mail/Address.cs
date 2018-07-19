@@ -103,7 +103,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Address.#ctor(System.String)"]/*'/>
     public Address(string addressValue) {
       if (addressValue == null) {
-        throw new ArgumentNullException("addressValue");
+        throw new ArgumentNullException(nameof(addressValue));
       }
       if (addressValue.Length == 0) {
         throw new ArgumentException("addressValue is empty.");
@@ -143,9 +143,9 @@ namespace PeterO.Mail {
   localPartEnd + 1,
   addressValue.Length);
       // Check length restrictions.
-      if (this.StringLength() > 997) {
-        // Maximum character length per line for an Internet message is 998;
-        // we check if the length exceeds 997 (thus excluding the space
+      if (this.StringLength() > Message.MaxHardHeaderLineLength - 1) {
+        // Maximum character length per line for an Internet message minus 1;
+        // we check if the length exceeds that number (thus excluding the space
         // character
         // of a folded line).
         throw new ArgumentException("Address too long");
@@ -154,10 +154,10 @@ namespace PeterO.Mail {
 
     internal Address(string localPart, string domain) {
       if (localPart == null) {
-        throw new ArgumentNullException("localPart");
+        throw new ArgumentNullException(nameof(localPart));
       }
       if (domain == null) {
-        throw new ArgumentNullException("domain");
+        throw new ArgumentNullException(nameof(domain));
       }
       this.localPart = localPart;
       this.domain = domain;

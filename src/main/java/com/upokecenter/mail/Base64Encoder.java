@@ -110,10 +110,10 @@ import com.upokecenter.text.*;
 
     private static byte[] StringAlphabetToBytes(String alphabetString) {
       if (alphabetString == null) {
-        throw new NullPointerException("alphabet");
+        throw new NullPointerException("alphabetString");
       }
       if (alphabetString.length() != 64) {
-      throw new IllegalArgumentException("alphabet.length (" +
+      throw new IllegalArgumentException("alphabet String length (" +
           alphabetString.length() + ") is not equal to 64");
       }
       byte[] alphabet = new byte[64];
