@@ -502,10 +502,9 @@ import com.upokecenter.text.*;
      * @return A text string form of this media type.
      */
     @Override public String toString() {
-      // NOTE: 76 is the maximum length of a line in an Internet
-      // message header, and 14 is the length of "Content-Type: " (with trailing
+      // NOTE: 14 is the length of "Content-Type: " (with trailing
       // space).
-      HeaderEncoder sa = new HeaderEncoder(76, 14);
+      HeaderEncoder sa = new HeaderEncoder(Message.MaxRecHeaderLineLength, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
       AppendParameters(this.parameters, sa);
       return sa.toString();

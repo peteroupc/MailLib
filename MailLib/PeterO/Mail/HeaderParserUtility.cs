@@ -103,6 +103,7 @@ namespace PeterO.Mail {
       }
       for (int i = 0; i < str.Length; ++i) {
         if (str[i] == '\\' || str[i] == '"') {
+          // Backslash or double quote
           return true;
         }
         if ((str[i] == ' ' || str[i] == '\t') && i + 1 < str.Length &&

@@ -49,14 +49,7 @@ namespace PeterO.Mail {
       return false;
     }
 
-    [Obsolete]
-    public static string EncodeComment(string str, int index, int endIndex) {
-      HeaderEncoder enc = new HeaderEncoder(76, 0);
-      EncodeCommentNew(enc, str, index, endIndex);
-      return enc.ToString();
-    }
-
-    public static void EncodeCommentNew(HeaderEncoder enc, string str, int
+    public static void EncodeComment(HeaderEncoder enc, string str, int
       index, int endIndex) {
       // NOTE: Assumes that the comment is syntactically valid
 #if DEBUG
@@ -395,9 +388,8 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
             asterisk + 1,
             charset.Length - (asterisk + 1));
                 charset = charset.Substring(0, asterisk);
-                if (!ParserUtility.IsValidLanguageTag(language)) {
-                  acceptedEncodedWord = false;
-                }
+             acceptedEncodedWord &=
+                  ParserUtility.IsValidLanguageTag(language);
               } else {
                 acceptedEncodedWord &= asterisk != 0;
               }
@@ -696,9 +688,8 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
 
     private static void EncodePhraseTextInternal(
       string str,
- int index,
+      int index,
       int endIndex,
- IList<int[]> tokens,
       HeaderEncoder enc) {
       // Assumes the value matches the production "phrase"
       // and that there are no comments in the value
@@ -763,15 +754,16 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
       }
     }
 
+    [Obsolete]
     public static string EncodeString(string str) {
       if (str == null) {
         throw new ArgumentNullException(nameof(str));
       }
-      return new HeaderEncoder(76, 0).AppendAsEncodedWords(
+      return new HeaderEncoder().AppendAsEncodedWords(
         str).ToString();
     }
 
-    public static void EncodePhraseTextNew(
+    public static void EncodePhraseText(
   HeaderEncoder enc,
   string str,
   int index,
@@ -796,27 +788,13 @@ if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
         }
         if (token[0] == HeaderParserUtility.TokenComment) {
           // Process this piece of the phrase
-          EncodePhraseTextInternal(str, lastIndex, token[1], tokens, enc);
+          EncodePhraseTextInternal(str, lastIndex, token[1], enc);
           // Append the comment
           enc.AppendString(str.Substring(token[1], token[2] - token[1]));
           lastIndex = token[2];
         }
       }
-      EncodePhraseTextInternal(str, lastIndex, endIndex, tokens, enc);
-    }
-
-    [Obsolete]
-    public static string EncodePhraseText(
-  string str,
-  int index,
-  int endIndex,
-  IList<int[]> tokens) {
-      if (index == endIndex) {
-        return String.Empty;
-      }
-      HeaderEncoder enc = new HeaderEncoder(76, 0);
-      EncodePhraseTextNew(enc, str, index, endIndex, tokens);
-      return enc.ToString();
+      EncodePhraseTextInternal(str, lastIndex, endIndex, enc);
     }
   }
 }

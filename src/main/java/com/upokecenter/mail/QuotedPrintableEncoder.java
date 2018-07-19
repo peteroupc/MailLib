@@ -17,6 +17,7 @@ import com.upokecenter.text.*;
      */
   final class QuotedPrintableEncoder implements ICharacterEncoder {
     private static final String HexAlphabet = "0123456789ABCDEF";
+    public static final int MaxLineLength = 76;
     private final int lineBreakMode;
     private final boolean unlimitedLineLength;
     private int lineCount;
@@ -33,8 +34,8 @@ import com.upokecenter.text.*;
     private int IncrementAndAppend(IWriter output, String appendStr) {
       int count = 0;
       if (!this.unlimitedLineLength) {
-        if (this.lineCount + appendStr.length() > 75) {
-          // 76 including the final '='
+        if (this.lineCount + appendStr.length() >= MaxLineLength) {
+          // MaxLineLength including the final '='
           output.write(0x3d);
           output.write(0x0d);
           output.write(0x0a);
@@ -65,8 +66,8 @@ import com.upokecenter.text.*;
   char b3) {
       int count = 0;
       if (!this.unlimitedLineLength) {
-        if (this.lineCount + 3 > 75) {
-          // 76 including the final '='
+        if (this.lineCount + 3 >= MaxLineLength) {
+          // MaxLineLength including the final '='
           output.write(0x3d);
           output.write(0x0d);
           output.write(0x0a);
@@ -93,8 +94,8 @@ import com.upokecenter.text.*;
     private int IncrementAndAppendChar(IWriter output, char ch) {
       int count = 1;
       if (!this.unlimitedLineLength) {
-        if (this.lineCount + 1 > 75) {
-          // 76 including the final '='
+        if (this.lineCount + 1 >= MaxLineLength) {
+          // MaxLineLength including the final '='
           byte[] buf;
           if (ch == '.') {
             buf = new byte[] { 0x3d, 0x0d, 0x0a, (byte)'=',

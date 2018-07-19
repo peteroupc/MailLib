@@ -33,7 +33,8 @@ namespace PeterO.Mail.Transforms {
 
     public Base64Transform(
   IByteReader input,
-  bool lenientLineBreaks) : this(input, lenientLineBreaks, 76, false) {
+  bool lenientLineBreaks) : this(input, lenientLineBreaks,
+                    Base64Encoder.MaxLineLength, false) {
     }
 
     public Base64Transform(

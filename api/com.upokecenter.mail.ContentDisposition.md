@@ -254,8 +254,8 @@ Converts a file name from the Content-Disposition header to a suitable name
  replaced with underscores; spaces and tabs are collapsed to a single
  space; leading and trailing spaces and tabs are removed; and the
  filename is truncated if it would otherwise be too long. The returned
- string will be in normalization form C. Returns "_" if "str" is null
- or empty.
+ string will be in normalization form C. Returns the empty string if
+ "str" is null or empty.
 
 ### GetFilename
     public String GetFilename()
@@ -264,8 +264,9 @@ Gets an adapted version of the "filename" parameter in this content
 
 **Returns:**
 
-* The adapted file name in the form of a string. Returns "_" if there
- is no "filename" parameter or that parameter is empty.
+* The adapted file name in the form of a string. Returns the empty
+ string if there is no "filename" parameter or that parameter is
+ empty.
 
 ### GetCreationDate
     public int[] GetCreationDate()

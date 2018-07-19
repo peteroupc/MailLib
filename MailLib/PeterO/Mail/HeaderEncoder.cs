@@ -16,7 +16,7 @@ namespace PeterO.Mail {
     private int column;
     private int startColumn;
 
-    public HeaderEncoder() : this(76, 0) { }
+    public HeaderEncoder() : this(Message.MaxRecHeaderLineLength, 0) { }
 
     public HeaderEncoder(int maxLineLength, int startColumn) {
       // Minimum supported max line length is 15 to accommodate
@@ -29,6 +29,10 @@ namespace PeterO.Mail {
       this.maxLineLength = maxLineLength;
       this.column = startColumn;
       this.startColumn = startColumn;
+    }
+
+    public void Reset() {
+      Reset(this.startColumn, 0);
     }
     public void Reset(int column, int length) {
       this.column = column;
@@ -211,8 +215,8 @@ namespace PeterO.Mail {
 
     private bool CanCharUnitFit(int currentWordLength, int unitLength, bool
       writeSpace) {
-  var effectiveMaxLength = 75;  // 75 is max. allowed length of an encoded
-        word
+      // 75 is max. allowed length of an encoded word
+      var effectiveMaxLength = 75;
       if (this.GetMaxLineLength() >= 0) {
         effectiveMaxLength = Math.Min(
          effectiveMaxLength,
@@ -281,17 +285,14 @@ namespace PeterO.Mail {
           ++i;
         }
   bool smallChar = ch < 0x80 && ch > 0x20 && ch != (char)'"' && ch !=
-          (char)','&&
-                "?()<>[]:;@\\.=_".IndexOf((char)ch) < 0;
+          (char)','&& "?()<>[]:;@\\.=_".IndexOf((char)ch) < 0;
         var unitLength = 1;
         if (ch == 0x20 || smallChar) {
           unitLength = 1;
         } else if (ch <= 0x7f) {
           unitLength = 3;
-        } else if (ch <= 0x7ff) {
-          unitLength = 6;
         } else {
- unitLength = (ch <= 0xffff) ? (9) : (12);
+ unitLength = (ch <= 0x7ff) ? (6) : ((ch <= 0xffff) ? (9) : (12));
 }
         if (!CanCharUnitFit(currentWordLength, unitLength, false)) {
           if (currentWordLength > 0) {
@@ -354,9 +355,10 @@ namespace PeterO.Mail {
           writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
           symbolBegin = i + 2;
           i += 2;
-        } else if (symbol[i] == ' ') {
+        } else if (symbol[i] == ' ' || symbol[i] == '\t') {
           AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
-          writeSpace = true;
+          AppendSpaceOrTab(symbol[i]);
+          writeSpace = false;
           symbolBegin = i + 1;
           ++i;
         } else if (symbol[i] == '\\' && i + 1 < symbol.Length) {
@@ -368,6 +370,18 @@ namespace PeterO.Mail {
         }
       }
       AppendSpaceAndSymbol(symbol, symbolBegin, symbol.Length, writeSpace);
+    }
+
+    private HeaderEncoder AppendSpaceOrTab(char ch) {
+      if (maxLineLength < 0 || this.column + 1 <= this.maxLineLength) {
+        this.builder.Append(ch);
+        ++this.column;
+      } else {
+        this.builder.Append("\r\n");
+        this.builder.Append(ch);
+        this.column = 1;
+      }
+      return this;
     }
 
     public HeaderEncoder AppendSpace() {

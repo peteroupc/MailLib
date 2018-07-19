@@ -16,6 +16,8 @@ import com.upokecenter.text.*;
      * Encodes binary data in Base64.
      */
   final class Base64Encoder implements ICharacterEncoder {
+    static final int MaxLineLength = 76;
+
     private static final byte[] Base64Classic = {
   0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d,
   0x4e, 0x4f, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a,
@@ -192,7 +194,7 @@ throw new
     private int LineAwareAppend(IWriter output, byte c) {
       int charCount = 0;
       if (!this.unlimitedLineLength) {
-        if (this.lineCount >= 76) {
+        if (this.lineCount >= MaxLineLength) {
           output.write((byte)0x0d);
           output.write((byte)0x0a);
           charCount += 2;
@@ -213,12 +215,12 @@ throw new
       int charCount = 0;
       byte[] bytes = new byte[6];
       if (!this.unlimitedLineLength) {
-        if (this.lineCount >= 76) {
+        if (this.lineCount >= MaxLineLength) {
           // Output CRLF
           bytes[charCount++] = (byte)0x0d;
           bytes[charCount++] = (byte)0x0a;
           this.lineCount = 0;
-        } else if (this.lineCount + 3 >= 76) {
+        } else if (this.lineCount + 3 >= MaxLineLength) {
           charCount += this.LineAwareAppend(output, c1);
           charCount += this.LineAwareAppend(output, c2);
           charCount += this.LineAwareAppend(output, c3);
