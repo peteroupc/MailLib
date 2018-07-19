@@ -32,6 +32,10 @@ namespace MailLibTest {
           ret,
           false,
           String.Empty);
+      if (fmtresult == 1) {
+        Console.WriteLine("fmtresult=1 for "+
+                          ret.Substring(0, Math.Min(ret.Length, 260)));
+      }
         string messageTemp = ret;
         Assert.IsTrue(
   fmtresult != 0,
@@ -74,10 +78,10 @@ namespace MailLibTest {
     }
 
     internal static void MessageConstructOnly(string valueMessageString) {
-      new Message(
+      Assert.NotNull(new Message(
   DataUtilities.GetUtf8Bytes(
   valueMessageString,
-  true));
+          true)));
     }
 
     private static void TestMediaTypeRoundTrip(string valueMessageString) {
@@ -104,7 +108,7 @@ bool boolTemp = EncodingTest.IsGoodAsciiMessageFormat(
           "TestGenerate") == 2;
 Assert.IsTrue(boolTemp, msgstring);
 }
-      MessageGenerate(mtmessage);
+      Assert.NotNull(MessageGenerate(mtmessage));
     }
 
     [Test]
@@ -129,6 +133,23 @@ Assert.IsTrue(boolTemp, msgstring);
         msgids.Add(msgid);
       }
     }
+
+[Test]
+    public void TestGenerateLineWrap() {
+      Message msg;
+      string longvalue = "name1<name1@example.com>,name2<name2@example.com>," +
+        "name3<name3@example.com>,name4<name4@example.com>";
+  msg = new Message();
+      msg.SetHeader("to", longvalue);
+      MessageGenerate(msg);
+      msg = new Message();
+      msg.SetHeader("cc", longvalue);
+      MessageGenerate(msg);
+      msg = new Message();
+      msg.SetHeader("bcc", longvalue);
+      MessageGenerate(msg);
+    }
+
     [Test]
     public void TestMultipleReplyTo() {
       const string ValueMultipleReplyTo = "Reply-to: x@example.com\r\n" +

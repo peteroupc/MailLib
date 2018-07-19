@@ -639,10 +639,11 @@ namespace PeterO.Mail {
     // 8098 (disposition notifications) refers to RFC 5322 for its
     // conventions (sec. 3.1.1). While RFC 822 allows white
     // space and comments to appear between lexical tokens
-    // of structured header fields (note in particular sec. A.3.3, which
+    // of structured header fields (see sec. 3.1.4 and 
+    // note in particular sec. A.3.3, which
     // shows white space between the header field name and the
     // colon), RFC 5322 doesn't (it refers to
-    // RFC 2234, which states that linear white space is no longer
+    // RFC 5234, which states that linear white space is no longer
     // implicit in ABNF productions). However, RFC 5322 includes
     // an obsolete syntax allowing optional white space to appear
     // between the header field and the colon (sec. 4.5.8).
@@ -794,7 +795,7 @@ namespace PeterO.Mail {
             headerValueStart,
             headerValueEnd - headerValueStart,
             false);  // throws on invalid UTF-8
-          } catch (ArgumentException ex) {
+          } catch (ArgumentException) {
             // Invalid UTF-8, so encapsulate
             headerValue = null;
             status[0] = 2;
@@ -1373,7 +1374,7 @@ namespace PeterO.Mail {
           int c = ungetStream.ReadByte();
           if (c == -1) {
             throw new
-  MessageDataException("Premature end before all headers were read");
+  MessageDataException("Premature end of message before all headers were read, while reading header field name");
           }
           ++lineCount;
           if (first && c == '\r') {
@@ -1408,7 +1409,7 @@ namespace PeterO.Mail {
                 c = ungetStream.ReadByte();
                 if (c == -1) {
                   throw new
-  MessageDataException("Premature end before all headers were read");
+  MessageDataException("Premature end before all headers were read (Mbox convention)");
                 }
                 if (c == '\r') {
                   if (ungetStream.ReadByte() == '\n') {
@@ -1449,7 +1450,7 @@ namespace PeterO.Mail {
           int c = ReadUtf8Char(ungetStream, bytesRead);
           if (c == -1) {
             throw new MessageDataException(
-              "Premature end before all headers were read");
+              "Premature end before all headers were read, while reading header field value");
           }
           if (c == '\r') {
             // We're only looking for the single-byte LF, so
@@ -1512,7 +1513,7 @@ namespace PeterO.Mail {
             }
             if (c < 0) {
               throw new
-  MessageDataException("Premature end before all headers were read");
+  MessageDataException("Premature end before all headers were read, while looking for LF");
             }
             sb.Append('\r');
             ungetStream.Unget();
@@ -1840,16 +1841,22 @@ namespace PeterO.Mail {
                 // Already outputted, continue
                 continue;
               }
+              bool isValidAddressing=this.IsValidAddressingField(name);
               haveHeaders[headerIndex] = true;
-              if (!this.IsValidAddressingField(name)) {
-                /*DebugUtility.Log (name);
+              /*DebugUtility.Log (name+" "+isValidAddressing);
                 {
                   var ssb = new StringBuilder();
                   foreach (var mhs in this.GetMultipleHeaders (name)) {
                     ssb.Append (mhs + " ");
+                 if(isValidAddressing && name=="sender"){
+                     DebugUtility.Log(""+new NamedAddress(mhs));
+                     DebugUtility.Log("" + new NamedAddress(mhs).DisplayName);
+                     DebugUtility.Log("" + new NamedAddress(mhs).Address);
+                 }
                   }
                   DebugUtility.Log (ssb.ToString());
                 }*/
+              if (!isValidAddressing) {
                 value = GenerateAddressList(
     ParseAddresses(this.GetMultipleHeaders(name)));
                 if (value.Length == 0) {
