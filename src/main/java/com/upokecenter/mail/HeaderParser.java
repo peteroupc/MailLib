@@ -1384,16 +1384,37 @@ tokener.RestoreState(state3); break;
 }
 public static int ParseDomainLiteral(String str, int index, int endIndex,
   ITokener tokener) {
-int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx3;
+int indexStart, indexTemp, state, tx2;
 indexStart = index;
  state = (tokener != null) ? tokener.GetState() : 0;
  indexTemp = index;
  do {
  index = ParseCFWS(str, index, endIndex, tokener);
+ tx2 = ParseDomainLiteralCore(str, index, endIndex, tokener);
+ if (tx2 == index) {
+index = indexStart; break;
+} else {
+ index = tx2;
+}
+ index = ParseCFWS(str, index, endIndex, tokener);
+  indexTemp = index;
+ } while (false);
+ if (tokener != null && indexTemp == indexStart) {
+ tokener.RestoreState(state);
+}
+ return indexTemp;
+}
+public static int ParseDomainLiteralCore(String str, int index, int
+  endIndex, ITokener tokener) {
+int indexStart, indexStart2, indexTemp, indexTemp2, state, state2, tx3;
+indexStart = index;
+ state = (tokener != null) ? tokener.GetState() : 0;
+ indexTemp = index;
+ do {
 if (index < endIndex && (str.charAt(index) == 91)) {
  ++index;
 } else {
- index = indexStart; break;
+ break;
 }
  while (true) {
   state2 = (tokener != null) ? tokener.GetState() : 0;
@@ -1424,7 +1445,6 @@ if (index < endIndex && (str.charAt(index) == 93)) {
 } else {
  index = indexStart; break;
 }
- index = ParseCFWS(str, index, endIndex, tokener);
   indexTemp = index;
  } while (false);
  if (tokener != null && indexTemp == indexStart) {

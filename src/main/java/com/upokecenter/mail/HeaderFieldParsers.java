@@ -17,7 +17,7 @@ private HeaderFieldParsers() {
 }
     private static final class UnstructuredHeaderField implements IHeaderFieldParser {
       public String DowngradeHeaderField(String name, String str) {
-        return HeaderEncoder.EncodeHeaderFieldAsEncodedWords(name, str);
+        return HeaderEncoder.EncodeFieldAsEncodedWords(name, str);
       }
 
       public String DecodeEncodedWords(String str) {
@@ -73,7 +73,7 @@ private HeaderFieldParsers() {
       }
 
       public String DowngradeHeaderField(String name, String str) {
-        return HeaderEncoder.EncodeHeaderField(
+        return HeaderEncoder.EncodeField(
           name,
           DowngradeHeaderFieldValue(this, str));
       }
@@ -83,7 +83,7 @@ private HeaderFieldParsers() {
         String str) {
         String originalString = str;
         List<String> originalGroups = null;
-        for (int phase = 0; phase < 5; ++phase) {
+        for (int phase = 0; phase < 4; ++phase) {
           if (str.indexOf('(') < 0 && phase == 0) {
             // No comments in the header field value, a common case
             continue;
@@ -567,7 +567,7 @@ private HeaderFieldParsers() {
       }
 
       @Override public String DowngradeHeaderField(String name, String str) {
-        return HeaderEncoder.EncodeHeaderField(
+        return HeaderEncoder.EncodeField(
           name,
           DowngradeHeaderFieldValueReceived(this, str));
       }
@@ -1484,7 +1484,6 @@ private HeaderFieldParsers() {
 
     private static Map<String, IHeaderFieldParser> CreateHeaderFieldList() {
       // NOTE: Header fields not mentioned here are treated as unstructured
-      // TODO: Support stricter Message-ID syntax in RFC 5536 sec. 3.1.3
       fieldMap = new HashMap<String,
         IHeaderFieldParser>();
       fieldMap.put("content-disposition",new HeaderContentDisposition());

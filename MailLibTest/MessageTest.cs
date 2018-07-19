@@ -34,7 +34,7 @@ namespace MailLibTest {
           String.Empty);
       if (fmtresult == 1) {
         Console.WriteLine("fmtresult=1 for "+
-                          ret.Substring(0, Math.Min(ret.Length, 260)));
+                    ret.Substring(0, Math.Min(ret.Length, 260)));
       }
         string messageTemp = ret;
         Assert.IsTrue(
@@ -78,10 +78,12 @@ namespace MailLibTest {
     }
 
     internal static void MessageConstructOnly(string valueMessageString) {
-      Assert.NotNull(new Message(
+      if ((new Message(
   DataUtilities.GetUtf8Bytes(
   valueMessageString,
-          true)));
+  true))) == null) {
+ Assert.Fail();
+ }
     }
 
     private static void TestMediaTypeRoundTrip(string valueMessageString) {
@@ -108,7 +110,9 @@ bool boolTemp = EncodingTest.IsGoodAsciiMessageFormat(
           "TestGenerate") == 2;
 Assert.IsTrue(boolTemp, msgstring);
 }
-      Assert.NotNull(MessageGenerate(mtmessage));
+      if ((MessageGenerate(mtmessage)) == null) {
+ Assert.Fail();
+ }
     }
 
     [Test]

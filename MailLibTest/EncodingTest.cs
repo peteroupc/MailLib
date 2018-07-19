@@ -1200,7 +1200,7 @@ namespace MailLibTest {
       expectedDSN = encap ? "X-Ignore: X\r\n" +
         ("Downgraded-Original-Recipient: " + expected) +
         "\r\n" + ("Downgraded-Final-Recipient: " + expected) +
-        "\r\nX-Ignore: Y\r\n\r\n" : "X-Ignore: X\r\n" +
+        "\r\nX-Ignore2: Y\r\n" : "X-Ignore: X\r\n" +
           ("Original-Recipient: " + expected) + "\r\n" +
           ("Final-Recipient: " + expected) + "\r\nX-Ignore2: Y\r\n";
       bytes = DowngradeDeliveryStatus(dsn);
