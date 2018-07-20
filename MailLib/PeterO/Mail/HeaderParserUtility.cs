@@ -97,6 +97,10 @@ namespace PeterO.Mail {
         // Space or tab at end
         return true;
       }
+      if (str.Length>=2 && str[0]=='=' && str[1]=='?'){
+        // "=?" at beginning (see RFC 2047 sec. 7)
+        return true;
+      }
       if (str[0] == ' ' || str[0] == '\t') {
         // Space or tab at beginning
         return true;
@@ -104,6 +108,12 @@ namespace PeterO.Mail {
       for (int i = 0; i < str.Length; ++i) {
         if (str[i] == '\\' || str[i] == '"') {
           // Backslash or double quote
+          return true;
+        }
+        if ((str[i] == ' ' || str[i] == '\t') && i + 2 < str.Length &&
+            (str[i + 1] == '=' && str[i + 2] == '?')) {
+          // space and/or tab followed by "=?"
+          // (see RFC 2047 sec. 7)
           return true;
         }
         if ((str[i] == ' ' || str[i] == '\t') && i + 1 < str.Length &&
