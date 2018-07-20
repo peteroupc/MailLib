@@ -425,6 +425,17 @@ public final void setSubject(String value) {
     }
 
     /**
+     * Generates this message's data as a byte array, using the same algorithm as
+     * the Generate method.
+     * @return The generated message as a byte array.
+     */
+    public byte[] GenerateBytes() {
+      ArrayWriter aw = new ArrayWriter();
+      this.Generate(aw, 0);
+      return aw.ToArray();
+    }
+
+    /**
      * Gets the byte array for this message's body. This method doesn't make a copy
      * of that byte array.
      * @return A byte array.
@@ -925,7 +936,8 @@ boolean foundColon = false;
  return false;
 }
           break;
-  } else if (s.charAt(i) == 0x0d || s.charAt(i) == 0x09 || s.charAt(i) == 0x20) {
+  }
+        if (s.charAt(i) == 0x0d || s.charAt(i) == 0x09 || s.charAt(i) == 0x20) {
  return false;
 }
       }

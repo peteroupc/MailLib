@@ -73,7 +73,7 @@ private HeaderFieldParsers() {
             name.length() + 2);
         str = HeaderEncoder.TrimLeadingFWS(str);
         str = DowngradeHeaderFieldValue(enc, this, str);
-    return new HeaderEncoder().AppendFieldName(name) + str;  // enc.toString();
+        return new HeaderEncoder().AppendFieldName(name) + str;
       }
 
       private static String DowngradeComments(
@@ -156,8 +156,8 @@ private HeaderFieldParsers() {
         enc.AppendString(str, lastIndex, str.length());
         return enc.toString();
       }
- private static String EncodeDomain(String str, int startIndex, int
-        endIndex) {
+      private static String EncodeDomain(String str, int startIndex, int
+             endIndex) {
         String domain = HeaderParserUtility.ParseDomain(
         str,
         startIndex,
@@ -211,8 +211,8 @@ private HeaderFieldParsers() {
             // than non-ASCII; say non-((ASCII instanceof shorthand) ? (shorthand)ASCII : null)), and find the end
             // of the group's display name
             for (int[] token2 : tokens) {
-           if (token2[0] == HeaderParserUtility.TokenPhrase &&
-                displayNameEnd < 0) {
+              if (token2[0] == HeaderParserUtility.TokenPhrase &&
+                   displayNameEnd < 0) {
                 displayNameEnd = token2[2];
               }
               if (token2[0] == HeaderParserUtility.TokenLocalPart &&
@@ -284,6 +284,49 @@ private HeaderFieldParsers() {
         return enc.toString();
       }
 
+      private static String DowngradeDomains(
+          HeaderEncoder enc,
+          StructuredHeaderField shf,
+          String str) {
+        String originalString = str;
+        if (!Message.HasTextToEscapeOrEncodedWordStarts(str)) {
+          // No text needs to be encoded
+          return str;
+        }
+        Tokener tokener = new Tokener();
+       int endIndex = shf.Parse(str, 0, str.length(), tokener);
+        if (endIndex != str.length()) {
+          // The header field is syntactically invalid,
+          // so downgrading is not possible
+          return str;
+        }
+        int lastIndex = 0;
+        // Get each relevant token sorted by starting index
+        List<int[]> tokens = tokener.GetTokens();
+        enc.Reset();
+        for (int[] token : tokens) {
+          if (token[1] < lastIndex) {
+            continue;
+          }
+          if (token[0] == HeaderParserUtility.TokenDomain) {
+                    String domain = EncodeDomain(str, token[1], token[2]);
+                    if (domain != null) {
+                    // Treat only domain literals and dot-atoms with
+                    // at least one dot as domains (this is primarily used
+                    // for the Received header field, where RFC 5322 atoms not
+                    // separated by dots are ((treated instanceof words) ? (words)treated : null), not domains)
+                    if (str.charAt(token[1])=='[' || domain.indexOf('.')>= 0) {
+            enc.AppendString(str, lastIndex, token[1]);
+            enc.AppendString(domain);
+            lastIndex = token[2];
+                    }
+                  }
+              }
+        }
+        enc.AppendString(str, lastIndex, str.length());
+        return enc.toString();
+      }
+
       private static String DowngradeMailboxes(
         HeaderEncoder enc,
         StructuredHeaderField shf,
@@ -295,7 +338,6 @@ private HeaderFieldParsers() {
           return str;
         }
         Tokener tokener = new Tokener();
-        List<String> originalGroups = null;
         int groupIndex = 0;
         int endIndex = shf.Parse(str, 0, str.length(), tokener);
         if (endIndex != str.length()) {
@@ -311,30 +353,30 @@ private HeaderFieldParsers() {
           if (token[1] < lastIndex) {
             continue;
           }
-                  if (token[0] == HeaderParserUtility.TokenMailbox) {
-                    int startIndex = token[1];
-                    endIndex = token[2];
-                    boolean nonasciiLocalPart = false;
-                    boolean hasPhrase = false;
-                    for (int[] token2 : tokens) {
-                    hasPhrase |= token2[0] == HeaderParserUtility.TokenPhrase;
-                    if (token2[0] == HeaderParserUtility.TokenLocalPart &&
-                    token2[1] >= startIndex && token2[2] <= endIndex &&
-                    Message.HasTextToEscape(
-                    str,
-                    token2[1],
-                    token2[2])) {
-                    nonasciiLocalPart = true;
-                    break;
-                    }
-                    }
-                    if (!nonasciiLocalPart) {
-                    int localLastIndex = startIndex;
-                    boolean nonasciiDomains = false;
-                    StringBuilder sb2 = new StringBuilder();
-                    for (int[] token2 : tokens) {
-                    if (token2[0] == HeaderParserUtility.TokenDomain) {
-                    if (token2[1] >= startIndex && token2[2] <= endIndex) {
+          if (token[0] == HeaderParserUtility.TokenMailbox) {
+            int startIndex = token[1];
+            endIndex = token[2];
+            boolean nonasciiLocalPart = false;
+            boolean hasPhrase = false;
+            for (int[] token2 : tokens) {
+              hasPhrase |= token2[0] == HeaderParserUtility.TokenPhrase;
+              if (token2[0] == HeaderParserUtility.TokenLocalPart &&
+              token2[1] >= startIndex && token2[2] <= endIndex &&
+              Message.HasTextToEscape(
+              str,
+              token2[1],
+              token2[2])) {
+                nonasciiLocalPart = true;
+                break;
+              }
+            }
+            if (!nonasciiLocalPart) {
+              int localLastIndex = startIndex;
+              boolean nonasciiDomains = false;
+              StringBuilder sb2 = new StringBuilder();
+              for (int[] token2 : tokens) {
+                if (token2[0] == HeaderParserUtility.TokenDomain) {
+                  if (token2[1] >= startIndex && token2[2] <= endIndex) {
                     // Domain within the mailbox
                     String domain = EncodeDomain(str, token2[1], token2[2]);
                     if (domain == null) {
@@ -348,73 +390,73 @@ private HeaderFieldParsers() {
                     localLastIndex)+(token2[1] - localLastIndex)));
                     sb2.append(domain);
                     localLastIndex = token2[2];
-                    }
-                    }
-                    }
-                    nonasciiLocalPart = nonasciiDomains;
-                    if (!nonasciiLocalPart) {
-                    // All of the domains could be converted to ASCII
-                    sb2.append(
-                    str.substring(
-                    localLastIndex, (
-                    localLastIndex)+(endIndex - localLastIndex)));
-                    enc.AppendString(str, lastIndex, startIndex);
-                    enc.AppendString(sb2.toString());
-                    lastIndex = endIndex;
-                    }
-                    }
-                    // Downgrading failed
-                    if (nonasciiLocalPart) {
-                    if (!hasPhrase) {
-                    String addrSpec = str.substring(
-                    token[1], (
-                    token[1])+(token[2] - token[1]));
-              enc.AppendString(str, lastIndex, startIndex);
-              enc.AppendSpace();
-              enc.AppendAsEncodedWords(addrSpec);
-              enc.AppendSpace();
-              enc.AppendSymbol(":;");
-                    } else {
-                    // Has a phrase, extract the addr-spec and convert
-                    // the mailbox to a group
-                    int angleAddrStart = HeaderParser.ParsePhrase(
-                    str,
-                    token[1],
-                    token[2],
-                    null);
-                    // append the rest of the String so far up to and
-                    // including the phrase
-                    enc.AppendString(str, lastIndex, angleAddrStart);
-                    int addrSpecStart = HeaderParser.ParseCFWS(
-                    str,
-                    angleAddrStart,
-                    token[2],
-                    null);
-                    if (addrSpecStart < token[2] && str.charAt(addrSpecStart) == '<') {
-                    ++addrSpecStart;
-                    }
-                    addrSpecStart = HeaderParser.ParseObsRoute(
-                    str,
-                    addrSpecStart,
-                    token[2],
-                    null);
-                    int addrSpecEnd = HeaderParser.ParseAddrSpec(
-                    str,
-                    addrSpecStart,
-                    token[2],
-                    null);
-                    String addrSpec = str.substring(
-                    addrSpecStart, (
-                    addrSpecStart)+(addrSpecEnd - addrSpecStart));
-              enc.AppendSpaceIfNeeded();
-              enc.AppendAsEncodedWords(addrSpec);
-              enc.AppendSpace();
-              enc.AppendSymbol(":;");
-                    }
-                    lastIndex = endIndex;
-                    }
-                    ++groupIndex;
                   }
+                }
+              }
+              nonasciiLocalPart = nonasciiDomains;
+              if (!nonasciiLocalPart) {
+                // All of the domains could be converted to ASCII
+                sb2.append(
+                str.substring(
+                localLastIndex, (
+                localLastIndex)+(endIndex - localLastIndex)));
+                enc.AppendString(str, lastIndex, startIndex);
+                enc.AppendString(sb2.toString());
+                lastIndex = endIndex;
+              }
+            }
+            // Downgrading failed
+            if (nonasciiLocalPart) {
+              if (!hasPhrase) {
+                String addrSpec = str.substring(
+                token[1], (
+                token[1])+(token[2] - token[1]));
+                enc.AppendString(str, lastIndex, startIndex);
+                enc.AppendSpace();
+                enc.AppendAsEncodedWords(addrSpec);
+                enc.AppendSpace();
+                enc.AppendSymbol(":;");
+              } else {
+                // Has a phrase, extract the addr-spec and convert
+                // the mailbox to a group
+                int angleAddrStart = HeaderParser.ParsePhrase(
+                str,
+                token[1],
+                token[2],
+                null);
+                // append the rest of the String so far up to and
+                // including the phrase
+                enc.AppendString(str, lastIndex, angleAddrStart);
+                int addrSpecStart = HeaderParser.ParseCFWS(
+                str,
+                angleAddrStart,
+                token[2],
+                null);
+                if (addrSpecStart < token[2] && str.charAt(addrSpecStart) == '<') {
+                  ++addrSpecStart;
+                }
+                addrSpecStart = HeaderParser.ParseObsRoute(
+                str,
+                addrSpecStart,
+                token[2],
+                null);
+                int addrSpecEnd = HeaderParser.ParseAddrSpec(
+                str,
+                addrSpecStart,
+                token[2],
+                null);
+                String addrSpec = str.substring(
+                addrSpecStart, (
+                addrSpecStart)+(addrSpecEnd - addrSpecStart));
+                enc.AppendSpaceIfNeeded();
+                enc.AppendAsEncodedWords(addrSpec);
+                enc.AppendSpace();
+                enc.AppendSymbol(":;");
+              }
+              lastIndex = endIndex;
+            }
+            ++groupIndex;
+          }
         }
         enc.AppendString(str, lastIndex, str.length());
         return enc.toString();
@@ -428,6 +470,7 @@ private HeaderFieldParsers() {
         str = DowngradePhrases(enc, shf, str);
         str = DowngradeGroups(enc, shf, str);
         str = DowngradeMailboxes(enc, shf, str);
+        str = DowngradeDomains(enc, shf, str);
         return str;
       }
 
@@ -502,6 +545,33 @@ private HeaderFieldParsers() {
         return HeaderParser.ParseHeaderReceived(str, index, endIndex, tokener);
       }
 
+     private static String TrimFWSFromRight(String str) {
+      if (((str) == null || (str).length() == 0)) {
+        return str;
+      }
+      int index = 0;
+      int valueSLength = str.length();
+      int indexStart = index;
+      index = str.length() - 1;
+      while (index >= 0) {
+        char c = str.charAt(index);
+        if (c == 0x0a && index >= 1 && str.charAt(index-1) == 0x0d) {
+           // CRLF
+           index-=2;
+        } else if (c == 0x09 || c == 0x20) {
+          --index;
+        } else {
+          int indexEnd = index + 1;
+          if (indexEnd == indexStart) {
+            return "";
+          }
+          return (indexEnd == str.length() && indexStart == 0) ? str :
+            str.substring(indexStart, (indexStart)+(indexEnd - indexStart));
+        }
+      }
+      return "";
+    }
+
       private static boolean IsCFWSWordCFWS(String str, int index, int
         endIndex, String word) {
         int si;
@@ -509,77 +579,91 @@ private HeaderFieldParsers() {
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
         si = HeaderParserUtility.ParseWord(str, index, endIndex, sb);
         if (si == index) {
- return false;
-}
-        String checkword = DataUtilities.ToLowerCaseAscii(si.toString());
-        if (!checkword.equals(word)) {
-            return false;
+          return false;
         }
-        index = HeaderParser.ParseCFWS(str, index + word.length(), endIndex,
+        String checkword = DataUtilities.ToLowerCaseAscii(sb.toString());
+        if (!checkword.equals(word)) {
+          return false;
+        }
+        index = HeaderParser.ParseCFWS(str, si, endIndex,
                 null);
         return index == endIndex;
       }
-      // TODO: Reinstate eventually
-       /* @Override public String DowngradeHeaderField(String name, String str) {
-        return HeaderEncoder.EncodeField(
-          name,
-          DowngradeHeaderFieldValueReceived(this, str));
-      }
-      private static String DowngradeHeaderFieldValueReceived(
-        HeaderReceived shf,
-        String str) {
-        // NOTE: Follows RFC 6857, except HasTextToEscape
-        // is broader than non-ASCII
-        String header = StructuredHeaderField.DowngradeHeaderFieldValue(
-          shf,
-          str);
-        int index = 0;
-        StringBuilder sb = new StringBuilder();
-        while (index < header.length()) {
-          int newindex = HeaderParser.ParseReceivedToken(header, index,
-            header.length(), null);
-          if (newindex == index) {
-            break;
-          }
-          if (IsCFWSWordCFWS(header, index, newindex, "for")) {
-            Tokener tokener = new Tokener();
-            int clauseEnd = HeaderParser.ParseReceivedToken(
-                header,
-                newindex,
-                header.length(),
-                tokener);
-            List<int[]> tokens = tokener.GetTokens();
-            boolean notGoodLocalPart = false;
-            for (int[] token : tokens) {
-              if (token[0] == HeaderParserUtility.TokenLocalPart) {
-                if (Message.HasTextToEscape(header, token[1], token[2])) {
-                  notGoodLocalPart = true;
-                  break;
-                }
-              }
-            }
-            if (!notGoodLocalPart) {
-              sb.append(header.substring(index, (index)+(clauseEnd - index)));
-            }
-            index = clauseEnd;
-          } else if (IsCFWSWordCFWS(header, index, newindex, "id")) {
-            int clauseEnd = HeaderParser.ParseReceivedToken(
-                header,
-                newindex,
-                header.length(),
-                null);
-            if (!Message.HasTextToEscape(header, index, clauseEnd)) {
-              sb.append(header.substring(index, (index)+(clauseEnd - index)));
-            }
-            index = clauseEnd;
-          } else {
-            sb.append(header.substring(index, (index)+(newindex - index)));
-            index = newindex;
-          }
+      @Override public String DowngradeHeaderField(String name, String str) {
+        // The 2 below is for the colon and space after the header field name
+        HeaderEncoder enc = new HeaderEncoder(Message.MaxRecHeaderLineLength,
+            name.length() + 2);
+        str = HeaderEncoder.TrimLeadingFWS(str);
+        str = DowngradeHeaderFieldValue(enc, this, str);
+        if (this.Parse(str, 0, str.length(), null) != str.length()) {
+          // The header field is syntactically invalid,
+          // so downgrading is not possible
+          return str;
         }
-        sb.append(header.substring(index));
-        return sb.toString();
-      }*/
+        String header = str;
+       int index = 0;
+       boolean changed = false;
+       StringBuilder sb = new StringBuilder();
+       int tokenEnd = HeaderParser.ParseCFWS(header, 0, header.length(), null);
+       while (index < header.length()) {
+         int newindex = HeaderParser.ParseReceivedToken(header, index,
+           header.length(), null);
+         if (newindex == index) {
+           tokenEnd = HeaderParser.ParseCFWS(header, index, header.length(), null);
+           sb.append(header.substring(index, (index)+(tokenEnd - index)));
+           break;
+         }
+         if (IsCFWSWordCFWS(header, index, newindex, "for")) {
+           Tokener tokener = new Tokener();
+           int clauseEnd = HeaderParser.ParseReceivedToken(
+               header,
+               newindex,
+               header.length(),
+               tokener);
+           List<int[]> tokens = tokener.GetTokens();
+           boolean notGoodLocalPart = false;
+           for (int[] token : tokens) {
+             if (token[0] == HeaderParserUtility.TokenLocalPart) {
+               if (Message.HasTextToEscape(header, token[1], token[2])) {
+                 notGoodLocalPart = true;
+                 break;
+               }
+             }
+           }
+           if (notGoodLocalPart) {
+             changed = true;
+           } else {
+             sb.append(header.substring(index, (index)+(clauseEnd - index)));
+           }
+           index = clauseEnd;
+         } else if (IsCFWSWordCFWS(header, index, newindex, "id")) {
+           int clauseEnd = HeaderParser.ParseReceivedToken(
+               header,
+               newindex,
+               header.length(),
+               null);
+           if (Message.HasTextToEscape(header, index, clauseEnd)) {
+             changed = true;
+           } else {
+             sb.append(header.substring(index, (index)+(clauseEnd - index)));
+           }
+           index = clauseEnd;
+         } else {
+           sb.append(header.substring(index, (index)+(newindex - index)));
+           index = newindex;
+         }
+       }
+       String receivedPart = sb.toString();
+       String datePart = header.substring(tokenEnd);
+       if (changed) {
+         receivedPart = TrimFWSFromRight(receivedPart);
+         return new HeaderEncoder().AppendFieldName(name)
+            .AppendString(receivedPart + datePart).toString();
+       } else {
+         return new HeaderEncoder().AppendFieldName(name).toString() +
+            str;
+       }
+     }
     }
 
     private static final class HeaderContentDisposition extends StructuredHeaderField {

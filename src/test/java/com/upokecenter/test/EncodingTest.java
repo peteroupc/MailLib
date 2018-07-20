@@ -1251,6 +1251,44 @@ import com.upokecenter.text.*;
       AssertUtf8Equal(expectedBytes, bytes);
     }
 
+  private static void TestDowngradeReceivedOne(String input, String
+      expected) {
+      Message msg = new Message();
+      msg.SetHeader("received", input);
+      msg = new Message(DataUtilities.GetUtf8Bytes(msg.Generate(), true));
+      String output = msg.GetHeader("received");
+      Assert.assertEquals(expected, output);
+    }
+
+    @Test
+    public void TestDowngradeReceived() {
+      TestDowngradeReceivedOne(
+  "from example.com id example for <me@example.com>; Sun,
+  01 Jul 2018 00:00:00 +0000",
+  "from example.com id example for <me@example.com>; Sun,
+  01 Jul 2018 00:00:00 +0000");
+      TestDowngradeReceivedOne(
+  "from e\u00e7f.example id example for <me@example.com>; Sun,
+  01 Jul 2018 00:00:00 +0000",
+  "from xn--ef-4ia.example id example for <me@example.com>; Sun,
+  01 Jul 2018 00:00:00 +0000");
+      TestDowngradeReceivedOne(
+  "from example.com id exa\u00e7fple for <me@example.com>; Sun,
+  01 Jul 2018 00:00:00 +0000",
+  "from example.com for <me@example.com>; Sun,
+  01 Jul 2018 00:00:00 +0000");
+      TestDowngradeReceivedOne(
+  "from example.com id example for <me@exa\u00e7fple.example>; Sun,
+  01 Jul 2018 00:00:00 +0000",
+  "from example.com id example for <me@xn--exafple-wxa.example>; Sun,
+  01 Jul 2018 00:00:00 +0000");
+      TestDowngradeReceivedOne(
+  "from example.com id example for <m\u00e7f@example.com>; Sun,
+  01 Jul 2018 00:00:00 +0000",
+  "from example.com id example; Sun,
+  01 Jul 2018 00:00:00 +0000");
+    }
+
     @Test(timeout = 25000)
     public void TestDowngradeDSN() {
       String ValueHexstart = "\\x" + "{";
@@ -1275,9 +1313,9 @@ import com.upokecenter.text.*;
 
       {
         String stringTemp =
-  "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=);\r\n x@x.example";
+  "(=?utf-8?Q?=C2=BE?=) rfc822(=?utf-8?Q?=C2=BE?=); e";
 
-        String stringTemp2 = "(\u00be) rfc822(\u00be); x@x.example";
+        String stringTemp2 = "(\u00be) rfc822(\u00be); e";
         TestDowngradeDSNOne(stringTemp, stringTemp2);
       }
 

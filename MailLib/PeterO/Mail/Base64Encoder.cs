@@ -143,7 +143,7 @@ throw new
         this.byte2 = -1;
         this.quantumCount = 0;
         return ret;
-      } 
+      }
       if (this.quantumCount == 1) {
         this.byte2 = ib;
         this.quantumCount = 2;

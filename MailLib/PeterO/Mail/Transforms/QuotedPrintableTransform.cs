@@ -16,7 +16,7 @@ namespace PeterO.Mail.Transforms {
     private readonly int maxLineSize;
     private readonly IByteReader input;
 
-    private readonly int[] printable = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    private readonly int[] printable = { 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,

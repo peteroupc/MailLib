@@ -4,7 +4,7 @@ using PeterO.Mail;
 
 namespace MailLibTest {
   [TestFixture]
-  public partial class MediaTypeBuilderTest {
+  public class MediaTypeBuilderTest {
     [Test]
     public void TestConstructor() {
       // not implemented yet

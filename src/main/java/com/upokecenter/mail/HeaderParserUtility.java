@@ -311,7 +311,7 @@ private HeaderParserUtility() {
         // May be an atom
         int si = HeaderParser.ParsePhraseAtom(str, index, endIndex, null);
         if (si != index) {
- builder.append(str.substring(index, (index)+(endIndex - index)));
+ builder.append(str.substring(index, (index)+(si - index)));
 }
         return si;
       }

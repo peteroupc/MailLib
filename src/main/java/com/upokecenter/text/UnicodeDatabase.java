@@ -10,7 +10,7 @@ at: http://peteroupc.github.io/
   final class UnicodeDatabase {
 private UnicodeDatabase() {
 }
-    private static volatile Object syncRoot = new Object();
+    private static final Object syncRoot = new Object();
 
     private static volatile ByteData classes;
 

@@ -16,7 +16,7 @@ import com.upokecenter.mail.*;
     private final int maxLineSize;
     private final IByteReader input;
 
-    private final int[] printable = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    private final int[] printable = { 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,

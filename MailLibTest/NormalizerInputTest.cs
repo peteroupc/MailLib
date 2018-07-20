@@ -7,7 +7,7 @@ using Test;
 
 namespace MailLibTest {
   [TestFixture]
-  public partial class NormalizerInputTest {
+  public class NormalizerInputTest {
     [Test]
     public void TestConstructor() {
       // not implemented yet

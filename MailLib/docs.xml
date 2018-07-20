@@ -688,7 +688,8 @@ deprecated that parameter.) </para>
 </doc>
 <doc name="T:PeterO.Mail.MailDateTime">
 <summary>
-            Not documented yet.
+Contains methods for parsing and generating date-time strings following the
+           Internet Message Format (RFC 5322).
             </summary>
 </doc>
 <doc name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[])">
@@ -1225,6 +1226,12 @@ header field, otherwise.</para></summary>
             <returns>The generated message.</returns>
             <exception cref='T:PeterO.Mail.MessageDataException'>The message
             can't be generated.</exception>
+</doc>
+<doc name="M:PeterO.Mail.Message.GenerateBytes">
+<summary>
+            Generates this message's data as a byte array, using the same algorithm as the Generate method.
+            </summary>
+            <returns>The generated message as a byte array.</returns>
 </doc>
 <doc name="M:PeterO.Mail.Message.GetBody">
 <summary>Gets the byte array for this message's body. This method
