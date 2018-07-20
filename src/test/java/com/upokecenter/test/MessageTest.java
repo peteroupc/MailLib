@@ -1235,8 +1235,12 @@ if (!(boolTemp)) {
       String messageStart = "MIME-Version: 1.0\r\n";
       messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
       messageStart += "Preamble\r\n";
-      String[] paddings = {"","\u0020","\t","\u0020\u0020",
-          "\t\u0020", "\u0020\t", "\t\t"};
+      String[] paddings = {
+        "",
+        "\u0020",
+        "\t", "\u0020\u0020",
+          "\t\u0020", "\u0020\t", "\t\t"
+      };
       for (Object padding1 : paddings) {
         for (Object padding2 : paddings) {
           String message = messageStart;
