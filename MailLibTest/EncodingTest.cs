@@ -1812,8 +1812,14 @@ string stringTemp =
       Assert.AreEqual(domain, address.Address.Domain);
     }
 
-    private static string[] addressHeaderFields = {"from","to","cc","bcc",
-  "disposition-notification-to", "sender"};
+    private static string[] addressHeaderFields = {
+      "from",
+      "to",
+      "cc",
+      "bcc",
+  "disposition-notification-to",
+      "sender"
+    };
     [Test]
     public void TestDowngradeAddress() {
       foreach (string valueHeader in addressHeaderFields) {

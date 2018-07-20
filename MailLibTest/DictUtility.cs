@@ -4,12 +4,13 @@ using System.Collections.Generic;
 namespace MailLibTest {
   public static class DictUtility {
     public static IList<IDictionary<String, String>>
-      DictList(params IDictionary<String, String>[] dicts) {
+      DictList(
+      params IDictionary<String, String>[] dicts) {
       if (dicts == null) {
         throw new ArgumentNullException(nameof(dicts));
       }
-       IList<IDictionary<String, String>> list = new List<IDictionary<String,
-         String>>();
+       IList<IDictionary<String, String>> list = 
+        new List<IDictionary<String, String>>();
        foreach (IDictionary<String, String> dict in dicts) {
           list.Add(dict);
        }
