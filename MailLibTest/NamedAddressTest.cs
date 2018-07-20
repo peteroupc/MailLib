@@ -5,7 +5,7 @@ using PeterO.Mail;
 
 namespace MailLibTest {
   [TestFixture]
-  public partial class NamedAddressTest {
+  public class NamedAddressTest {
     [Test]
     public void TestConstructor() {
       try {

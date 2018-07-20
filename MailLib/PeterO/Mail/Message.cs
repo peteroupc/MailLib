@@ -269,6 +269,14 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GenerateBytes"]/*'/>
+    public byte[] GenerateBytes() {
+      var aw = new ArrayWriter();
+      this.Generate(aw, 0);
+      return aw.ToArray();
+    }
+
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.GetBody"]/*'/>
     public byte[] GetBody() {
       return this.body;
@@ -612,7 +620,8 @@ var foundColon = false;
  return false;
 }
           break;
-  } else if (s[i] == 0x0d || s[i] == 0x09 || s[i] == 0x20) {
+  }
+        if (s[i] == 0x0d || s[i] == 0x09 || s[i] == 0x20) {
  return false;
 }
       }

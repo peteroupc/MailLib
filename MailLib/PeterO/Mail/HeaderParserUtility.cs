@@ -310,7 +310,7 @@ namespace PeterO.Mail {
         // May be an atom
         int si = HeaderParser.ParsePhraseAtom(str, index, endIndex, null);
         if (si != index) {
- builder.Append(str.Substring(index, endIndex - index));
+ builder.Append(str.Substring(index, si - index));
 }
         return si;
       }

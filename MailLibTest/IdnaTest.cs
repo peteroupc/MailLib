@@ -3,7 +3,7 @@ using PeterO.Text;
 
 namespace MailLibTest {
   [TestFixture]
-  public partial class IdnaTest {
+  public class IdnaTest {
     [Test]
     public void TestEncodeDomainName() {
       string tmp;
