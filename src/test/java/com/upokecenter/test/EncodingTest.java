@@ -1251,8 +1251,9 @@ import com.upokecenter.text.*;
       AssertUtf8Equal(expectedBytes, bytes);
     }
 
-  private static void TestDowngradeReceivedOne(String input, String
-      expected) {
+  private static void TestDowngradeReceivedOne(
+  String input,
+  String expected) {
       Message msg = new Message();
       msg.SetHeader("received", input);
       msg = new Message(DataUtilities.GetUtf8Bytes(msg.Generate(), true));
@@ -1262,31 +1263,22 @@ import com.upokecenter.text.*;
 
     @Test
     public void TestDowngradeReceived() {
+      String date = "; Sun, 01 Jul 2018 00:00:00 +0000";
       TestDowngradeReceivedOne(
-  "from example.com id example for <me@example.com>; Sun,
-  01 Jul 2018 00:00:00 +0000",
-  "from example.com id example for <me@example.com>; Sun,
-  01 Jul 2018 00:00:00 +0000");
+  "from example.com id example for <me@example.com>" + date,
+  "from example.com id example for <me@example.com>" + date);
       TestDowngradeReceivedOne(
-  "from e\u00e7f.example id example for <me@example.com>; Sun,
-  01 Jul 2018 00:00:00 +0000",
-  "from xn--ef-4ia.example id example for <me@example.com>; Sun,
-  01 Jul 2018 00:00:00 +0000");
+  "from e\u00e7f.example id example for <me@example.com>" + date,
+  "from xn--ef-4ia.example id example for <me@example.com>" + date);
       TestDowngradeReceivedOne(
-  "from example.com id exa\u00e7fple for <me@example.com>; Sun,
-  01 Jul 2018 00:00:00 +0000",
-  "from example.com for <me@example.com>; Sun,
-  01 Jul 2018 00:00:00 +0000");
+  "from example.com id exa\u00e7fple for <me@example.com>" + date,
+  "from example.com for <me@example.com>" + date);
       TestDowngradeReceivedOne(
-  "from example.com id example for <me@exa\u00e7fple.example>; Sun,
-  01 Jul 2018 00:00:00 +0000",
-  "from example.com id example for <me@xn--exafple-wxa.example>; Sun,
-  01 Jul 2018 00:00:00 +0000");
+  "from example.com id example for <me@exa\u00e7fple.example>" + date,
+  "from example.com id example for <me@xn--exafple-wxa.example>" + date);
       TestDowngradeReceivedOne(
-  "from example.com id example for <m\u00e7f@example.com>; Sun,
-  01 Jul 2018 00:00:00 +0000",
-  "from example.com id example; Sun,
-  01 Jul 2018 00:00:00 +0000");
+  "from example.com id example for <m\u00e7f@example.com>" + date,
+  "from example.com id example" + date);
     }
 
     @Test(timeout = 25000)
