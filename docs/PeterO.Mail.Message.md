@@ -40,7 +40,7 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * (a) If a sequence of encoded words decodes to a string with a CTL character (U+007F, or a character less than U+0020 and not TAB) after being converted to Unicode, the encoded words are left un-decoded.
 
- * (b)
+ * (b) This implementation can decode encoded words regardless of the character length of the line in which they appear. This implementation can generate a header field line with one or more encoded words even if that line is more than 76 characters long. (This implementation follows the recommendation in RFC 5322 to limit header field lines to no more than 78 characters, where possible.)
 
 It would be appreciated if users of this library contact the author if they find other ways in which this implementation deviates from the mail specifications or other applicable specifications.
 

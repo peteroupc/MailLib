@@ -1,7 +1,7 @@
 using System;
 
 namespace PeterO {
-  internal static class DateTimeUtilities {
+  static class DateTimeUtilities {
     private static int[] totdays = {
       0, 31, 59, 90, 120, 151, 181, 212, 243,
       273, 304, 334 };

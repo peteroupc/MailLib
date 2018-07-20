@@ -71,7 +71,7 @@ namespace PeterO.Mail {
             name.Length + 2);
         str = HeaderEncoder.TrimLeadingFWS(str);
         str = DowngradeHeaderFieldValue(enc, this, str);
-        return new HeaderEncoder().AppendFieldName(name) + str;  // enc.ToString();
+    return new HeaderEncoder().AppendFieldName(name) + str;  // enc.ToString();
       }
 
       private static string DowngradeComments(
@@ -154,15 +154,18 @@ namespace PeterO.Mail {
         enc.AppendString(str, lastIndex, str.Length);
         return enc.ToString();
       }
-      private static string EncodeDomain(string str, int startIndex, int endIndex) {
+ private static string EncodeDomain(string str, int startIndex, int
+        endIndex) {
         string domain = HeaderParserUtility.ParseDomain(
-        str, startIndex, endIndex);
+        str,
+        startIndex,
+        endIndex);
         // NOTE: "domain" can include domain literals, enclosed
         // in brackets; they are invalid under
         // "IsValidDomainName" .
         domain = (Message.HasTextToEscape(domain) &&
-                  Idna.IsValidDomainName(domain, false)) ? 
-          Idna.EncodeDomainName(domain) : 
+                  Idna.IsValidDomainName(domain, false)) ?
+          Idna.EncodeDomainName(domain) :
               str.Substring(
         startIndex,
         endIndex - startIndex);
@@ -206,8 +209,8 @@ namespace PeterO.Mail {
             // than non-ASCII; say non-ASCII as shorthand), and find the end
             // of the group's display name
             foreach (int[] token2 in tokens) {
-              if (token2[0] == HeaderParserUtility.TokenPhrase && displayNameEnd <
-                        0) {
+           if (token2[0] == HeaderParserUtility.TokenPhrase &&
+                displayNameEnd < 0) {
                 displayNameEnd = token2[2];
               }
               if (token2[0] == HeaderParserUtility.TokenLocalPart &&
@@ -278,6 +281,143 @@ namespace PeterO.Mail {
         enc.AppendString(str, lastIndex, str.Length);
         return enc.ToString();
       }
+
+      private static string DowngradeMailboxes(
+        HeaderEncoder enc,
+        StructuredHeaderField shf,
+        string str) {
+        string originalString = str;
+        if (str.IndexOf('@') < 0 ||
+           !Message.HasTextToEscapeOrEncodedWordStarts(str)) {
+          // No at-sign, or no text needs to be encoded
+          return str;
+        }
+        var tokener = new Tokener();
+        IList<string> originalGroups = null;
+        var groupIndex = 0;
+        int endIndex = shf.Parse(str, 0, str.Length, tokener);
+        if (endIndex != str.Length) {
+          // The header field is syntactically invalid,
+          // so downgrading is not possible
+          return str;
+        }
+        var lastIndex = 0;
+        // Get each relevant token sorted by starting index
+        IList<int[]> tokens = tokener.GetTokens();
+        enc.Reset();
+        foreach (int[] token in tokens) {
+          if (token[1] < lastIndex) {
+            continue;
+          }
+                  if (token[0] == HeaderParserUtility.TokenMailbox) {
+                    int startIndex = token[1];
+                    endIndex = token[2];
+                    var nonasciiLocalPart = false;
+                    var hasPhrase = false;
+                    foreach (int[] token2 in tokens) {
+                    hasPhrase |= token2[0] == HeaderParserUtility.TokenPhrase;
+                    if (token2[0] == HeaderParserUtility.TokenLocalPart &&
+                    token2[1] >= startIndex && token2[2] <= endIndex &&
+                    Message.HasTextToEscape(
+                    str,
+                    token2[1],
+                    token2[2])) {
+                    nonasciiLocalPart = true;
+                    break;
+                    }
+                    }
+                    if (!nonasciiLocalPart) {
+                    int localLastIndex = startIndex;
+                    var nonasciiDomains = false;
+                    var sb2 = new StringBuilder();
+                    foreach (int[] token2 in tokens) {
+                    if (token2[0] == HeaderParserUtility.TokenDomain) {
+                    if (token2[1] >= startIndex && token2[2] <= endIndex) {
+                    // Domain within the mailbox
+                    string domain = EncodeDomain(str, token2[1], token2[2]);
+                    if (domain == null) {
+                    // ASCII encoding failed
+                    nonasciiDomains = true;
+                    break;
+                    }
+                    sb2.Append(
+                    str.Substring(
+                    localLastIndex,
+                    token2[1] - localLastIndex));
+                    sb2.Append(domain);
+                    localLastIndex = token2[2];
+                    }
+                    }
+                    }
+                    nonasciiLocalPart = nonasciiDomains;
+                    if (!nonasciiLocalPart) {
+                    // All of the domains could be converted to ASCII
+                    sb2.Append(
+                    str.Substring(
+                    localLastIndex,
+                    endIndex - localLastIndex));
+                    enc.AppendString(str, lastIndex, startIndex);
+                    enc.AppendString(sb2.ToString());
+                    lastIndex = endIndex;
+                    }
+                    }
+                    // Downgrading failed
+                    if (nonasciiLocalPart) {
+                    if (!hasPhrase) {
+                    string addrSpec = str.Substring(
+                    token[1],
+                    token[2] - token[1]);
+              enc.AppendString(str, lastIndex, startIndex);
+              enc.AppendSpace();
+              enc.AppendAsEncodedWords(addrSpec);
+              enc.AppendSpace();
+              enc.AppendSymbol(":;");
+                    } else {
+                    // Has a phrase, extract the addr-spec and convert
+                    // the mailbox to a group
+                    int angleAddrStart = HeaderParser.ParsePhrase(
+                    str,
+                    token[1],
+                    token[2],
+                    null);
+                    // append the rest of the string so far up to and
+                    // including the phrase
+                    enc.AppendString(str, lastIndex, angleAddrStart);
+                    int addrSpecStart = HeaderParser.ParseCFWS(
+                    str,
+                    angleAddrStart,
+                    token[2],
+                    null);
+                    if (addrSpecStart < token[2] && str[addrSpecStart] == '<') {
+                    ++addrSpecStart;
+                    }
+                    addrSpecStart = HeaderParser.ParseObsRoute(
+                    str,
+                    addrSpecStart,
+                    token[2],
+                    null);
+                    int addrSpecEnd = HeaderParser.ParseAddrSpec(
+                    str,
+                    addrSpecStart,
+                    token[2],
+                    null);
+                    string addrSpec = str.Substring(
+                    addrSpecStart,
+                    addrSpecEnd - addrSpecStart);
+              enc.AppendSpaceIfNeeded();
+              enc.AppendAsEncodedWords(addrSpec);
+              enc.AppendSpace();
+              enc.AppendSymbol(":;");
+                    }
+                    lastIndex = endIndex;
+                    }
+                    ++groupIndex;
+                  }
+        }
+        enc.AppendString(str, lastIndex, str.Length);
+        return enc.ToString();
+      }
+
       public static string DowngradeHeaderFieldValue(
         HeaderEncoder enc,
         StructuredHeaderField shf,
@@ -285,155 +425,7 @@ namespace PeterO.Mail {
         str = DowngradeComments(enc, shf, str);
         str = DowngradePhrases(enc, shf, str);
         str = DowngradeGroups(enc, shf, str);
-        string originalString = str;
-        // There are four downgrading phases implemented here:
-        // comment, phrase, group, and mailbox.
-        // NOTE: Doesn't downgrade ID-Left or ID-Right
-        // if extended characters appear in those areas
-        // TODO: refactor out group and mailbox phases
-        for (int phase = 3; phase < 4; ++phase) {
-          if (!Message.HasTextToEscapeOrEncodedWordStarts(str)) {
-            // No text needs to be encoded
-            return str;
-          }
-          var tokener = new Tokener();
-          int endIndex = shf.Parse(str, 0, str.Length, tokener);
-          if (endIndex != str.Length) {
-            // The header field is syntactically invalid,
-            // so downgrading is not possible
-            return str;
-          }
-          var sb = new StringBuilder();
-          var lastIndex = 0;
-          // Get each relevant token sorted by starting index
-          IList<int[]> tokens = tokener.GetTokens();
-          var groupIndex = 0;
-
-          foreach (int[] token in tokens) {
-            if (token[1] < lastIndex) {
-              continue;
-            }
-
-            switch (phase) {
-              case 3: {
-                  // Mailbox downgrading
-                  if (token[0] == HeaderParserUtility.TokenMailbox) {
-                    int startIndex = token[1];
-                    endIndex = token[2];
-                    var nonasciiLocalPart = false;
-                    var hasPhrase = false;
-                    foreach (int[] token2 in tokens) {
-                      hasPhrase |= token2[0] == HeaderParserUtility.TokenPhrase;
-                      if (token2[0] == HeaderParserUtility.TokenLocalPart &&
-                        token2[1] >= startIndex && token2[2] <= endIndex &&
-                        Message.HasTextToEscape(
-                      str,
-                      token2[1],
-                      token2[2])) {
-                        nonasciiLocalPart = true;
-                        break;
-                      }
-                    }
-                    if (!nonasciiLocalPart) {
-                      int localLastIndex = startIndex;
-                      var nonasciiDomains = false;
-                      var sb2 = new StringBuilder();
-                      foreach (int[] token2 in tokens) {
-                        if (token2[0] == HeaderParserUtility.TokenDomain) {
-                          if (token2[1] >= startIndex && token2[2] <= endIndex) {
-                            // Domain within the mailbox
-                            string domain = EncodeDomain(str, token2[1], token2[2]);
-                            if (domain == null) {
-                              // ASCII encoding failed
-                              nonasciiDomains = true;
-                              break;
-                            }
-                            sb2.Append(
-                            str.Substring(
-                            localLastIndex,
-                            token2[1] - localLastIndex));
-                            sb2.Append(domain);
-                            localLastIndex = token2[2];
-                          }
-                        }
-                      }
-                      nonasciiLocalPart = nonasciiDomains;
-                      if (!nonasciiLocalPart) {
-                        // All of the domains could be converted to ASCII
-                        sb2.Append(
-                        str.Substring(
-                        localLastIndex,
-                        endIndex - localLastIndex));
-                        sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
-                        sb.Append(sb2.ToString());
-                        lastIndex = endIndex;
-                      }
-                    }
-                    // Downgrading failed
-                    if (nonasciiLocalPart) {
-                      sb.Append(str.Substring(lastIndex, startIndex - lastIndex));
-                      if (!hasPhrase) {
-                        string addrSpec = str.Substring(
-                        token[1],
-                        token[2] - token[1]);
-                        string encodedText = " " + Rfc2047.EncodeString(addrSpec) +
-                        " :;";
-                        sb.Append(encodedText);
-                      } else {
-                        // Has a phrase, extract the addr-spec and convert
-                        // the mailbox to a group
-                        int angleAddrStart = HeaderParser.ParsePhrase(
-                        str,
-                        token[1],
-                        token[2],
-                        null);
-                        // append the rest of the string so far up to and
-                        // including the phrase
-                        sb.Append(
-                        str.Substring(
-                        lastIndex,
-                        angleAddrStart - lastIndex));
-                        int addrSpecStart = HeaderParser.ParseCFWS(
-                        str,
-                        angleAddrStart,
-                        token[2],
-                        null);
-                        if (addrSpecStart < token[2] && str[addrSpecStart] == '<') {
-                          ++addrSpecStart;
-                        }
-                        addrSpecStart = HeaderParser.ParseObsRoute(
-                        str,
-                        addrSpecStart,
-                        token[2],
-                        null);
-                        int addrSpecEnd = HeaderParser.ParseAddrSpec(
-                        str,
-                        addrSpecStart,
-                        token[2],
-                        null);
-                        string addrSpec = str.Substring(
-                        addrSpecStart,
-                        addrSpecEnd - addrSpecStart);
-                        string valueSbString = sb.ToString();
-                        bool endsWithSpace = sb.Length > 0 && (valueSbString[valueSbString.Length -
-                                        1] == 0x20 || valueSbString[valueSbString.Length - 1] ==
-                                        0x09);
-                        string encodedText = (endsWithSpace ? String.Empty : " ") +
-                        Rfc2047.EncodeString(addrSpec) + " :;";
-                        sb.Append(encodedText);
-                      }
-                      lastIndex = endIndex;
-                    }
-                    ++groupIndex;
-                  }
-
-                  break;
-                }
-            }
-          }
-          sb.Append(str.Substring(lastIndex, str.Length - lastIndex));
-          str = sb.ToString();
-        }
+        str = DowngradeMailboxes(enc, shf, str);
         return str;
       }
 
@@ -516,23 +508,23 @@ namespace PeterO.Mail {
 
       private static bool IsCFWSWordCFWS(string str, int index, int
         endIndex, string word) {
+        int si;
+        var sb = new StringBuilder();
         index = HeaderParser.ParseCFWS(str, index, endIndex, null);
-        if (index + word.Length <= endIndex) {
-          string checkword =
-            DataUtilities.ToLowerCaseAscii(str.Substring(index,
-            word.Length));
-          if (!checkword.Equals(word)) {
+        si = HeaderParserUtility.ParseWord(str, index, endIndex, sb);
+        if (si == index) {
+ return false;
+}
+        string checkword = DataUtilities.ToLowerCaseAscii(si.ToString());
+        if (!checkword.Equals(word)) {
             return false;
-          }
-          index = HeaderParser.ParseCFWS(str, index + word.Length, endIndex,
-                null);
-          return index == endIndex;
         }
-        return false;
+        index = HeaderParser.ParseCFWS(str, index + word.Length, endIndex,
+                null);
+        return index == endIndex;
       }
-      /*
-       // TODO: Reinstate eventually
-      public override string DowngradeHeaderField(string name, string str) {
+      // TODO: Reinstate eventually
+       /* public override string DowngradeHeaderField(string name, string str) {
         return HeaderEncoder.EncodeField(
           name,
           DowngradeHeaderFieldValueReceived(this, str));

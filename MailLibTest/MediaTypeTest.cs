@@ -688,6 +688,27 @@ Assert.AreEqual(objectTemp, objectTemp2);
   DictUtility.MakeDict("params", ";FiLeNaMe=\"cc\"", "filename", "cc"),
   DictUtility.MakeDict("params", ";fIlEnAmE=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";fIlEnAmE=\"cc\"", "filename", "cc"),
+  DictUtility.MakeDict("params", ";filename=\"a\u0020\u0020b\"", "filename",
+ "a\u0020\u0020b"),
+  DictUtility.MakeDict("params", ";filename=\"a\u0020\tb\"", "filename",
+  "a\u0020\tb"),
+  DictUtility.MakeDict("params", ";filename=\"a\t\u0020b\"", "filename",
+  "a\t\u0020b"),
+  DictUtility.MakeDict("params", ";filename=\"a\t\tb\"", "filename", "a\t\tb"),
+  DictUtility.MakeDict("params", ";filename=\"\u0020\u0020b\"", "filename",
+  "\u0020\u0020ab"),
+  DictUtility.MakeDict("params", ";filename=\"\u0020\tb\"", "filename",
+  "\u0020\tab"),
+  DictUtility.MakeDict("params", ";filename=\"\t\u0020b\"", "filename",
+  "\t\u0020ab"),
+  DictUtility.MakeDict("params", ";filename=\"\t\tb\"", "filename", "\t\tb"),
+  DictUtility.MakeDict("params", ";filename=\"ab\u0020\u0020\"", "filename",
+ "ab\u0020\u0020"),
+  DictUtility.MakeDict("params", ";filename=\"ab\u0020\t\"", "filename",
+  "ab\u0020\t"),
+  DictUtility.MakeDict("params", ";filename=\"ab\t\u0020\"", "filename",
+  "ab\t\u0020"),
+  DictUtility.MakeDict("params", ";filename=\"ab\t\t\"", "filename", "ab\t\t"),
   DictUtility.MakeDict("params", ";filename=\"\\\\ab\"", "filename", "\\ab")
 );
 
@@ -913,8 +934,8 @@ Assert.AreEqual(
       foreach (IDictionary<string, string> dict in testMediaTypes) {
         MediaType mt = ParseAndTestAspects(dict["name"]);
         string str = mt.ToSingleLineString();
-        Assert.IsFalse(str.IndexOf("\r") >= 0);
-        Assert.IsFalse(str.IndexOf("\n") >= 0);
+        Assert.IsFalse(str.IndexOf("\r", StringComparison.Ordinal) >= 0);
+        Assert.IsFalse(str.IndexOf("\n", StringComparison.Ordinal) >= 0);
       }
     }
     [Test]

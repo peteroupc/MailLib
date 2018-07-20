@@ -36,7 +36,7 @@ namespace PeterO.Text {
 
     internal static int CodePointBefore(string str, int index) {
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       if (index <= 0) {
         return -1;
@@ -55,7 +55,7 @@ namespace PeterO.Text {
 
     internal static int CodePointAt(string str, int index) {
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       if (index >= str.Length) {
         return -1;
@@ -185,7 +185,7 @@ scripts = scripts ?? ByteData.Decompress(IdnaData.IdnaRelevantScripts);
     /// path='docs/doc[@name="M:PeterO.Text.Idna.EncodeDomainName(System.String)"]/*'/>
     public static string EncodeDomainName(string value) {
       if (value == null) {
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
       }
       if (value.Length == 0) {
         return String.Empty;

@@ -9,7 +9,7 @@ using Test;
 
 namespace MailLibTest {
   [TestFixture]
-  public partial class ContentDispositionTest {
+  public class ContentDispositionTest {
     private static ContentDisposition ParseAndTestAspects(string s) {
       ContentDisposition mt = ContentDisposition.Parse(s);
       if (mt == null) {
@@ -633,7 +633,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
 
     // Parameters not conforming to RFC 2231, but
     // have names with asterisks
-    internal static readonly string[] NoParams = new string[] {
+    internal static readonly string[] NoParams = {
 ";param*xx=value",
   ";param*0xx=value",
   ";param*xx0=value",

@@ -235,57 +235,57 @@ private MailDateTime() {
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 70 &&
                 (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) ==
-                      66) {
+                    66) {
             month = 2;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 &&
                 (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) ==
-                      82) {
+                    82) {
             month = 3;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 65 &&
                 (str.charAt(index + 1) & ~32) == 80 && (str.charAt(index + 2) & ~32) ==
-                      82) {
+                    82) {
             month = 4;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 77 &&
                 (str.charAt(index + 1) & ~32) == 65 && (str.charAt(index + 2) & ~32) ==
-                      89) {
+                    89) {
             month = 5;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 74 &&
                 (str.charAt(index + 1) & ~32) == 85 && (str.charAt(index + 2) & ~32) ==
-                      78) {
+                    78) {
             month = 6;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 74 &&
                 (str.charAt(index + 1) & ~32) == 85 && (str.charAt(index + 2) & ~32) ==
-                      76) {
+                    76) {
             month = 7;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 65 &&
                 (str.charAt(index + 1) & ~32) == 85 && (str.charAt(index + 2) & ~32) ==
-                      71) {
+                    71) {
             month = 8;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 83 &&
                 (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) ==
-                      80) {
+                    80) {
             month = 9;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 79 &&
                 (str.charAt(index + 1) & ~32) == 67 && (str.charAt(index + 2) & ~32) ==
-                      84) {
+                    84) {
             month = 10;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 78 &&
                 (str.charAt(index + 1) & ~32) == 79 && (str.charAt(index + 2) & ~32) ==
-                      86) {
+                    86) {
             month = 11;
             indexTemp2 += 3;
           } else if (index + 2 < endIndex && (str.charAt(index) & ~32) == 68 &&
                 (str.charAt(index + 1) & ~32) == 69 && (str.charAt(index + 2) & ~32) ==
-                      67) {
+                    67) {
             month = 12;
             indexTemp2 += 3;
           }
@@ -422,7 +422,7 @@ private MailDateTime() {
             indexTemp3 = index;
             do {
               indexStart3 = index;
-              for (i3 = 0; true; ++i3) {
+              for (i3 = 0; ; ++i3) {
                 indexTemp4 = HeaderParser.ParseFWS(str, index, endIndex, null);
                 if (indexTemp4 != index) {
                   index = indexTemp4;
@@ -527,9 +527,8 @@ private MailDateTime() {
                     offset = -7 * 60;
                     indexTemp4 += 3;
                   } else if (index < endIndex && ((str.charAt(index) >= 65 &&
-                 str.charAt(index) <= 73) || (str.charAt(index) >= 75 && str.charAt(index) <= 90)
-                      ||
-                    (str.charAt(index) >= 97 && str.charAt(index) <= 105) || (str.charAt(index)
+                 str.charAt(index) <= 73) || (str.charAt(index) >= 75 && str.charAt(index) <= 90) ||
+                (str.charAt(index) >= 97 && str.charAt(index) <= 105) || (str.charAt(index)
                     >= 107 && str.charAt(index) <= 122))) {
                     offset = 0;
                     ++indexTemp4;

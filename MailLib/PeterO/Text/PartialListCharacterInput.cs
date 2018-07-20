@@ -9,7 +9,7 @@ namespace PeterO.Text {
 
     public PartialListCharacterInput(IList<int> ilist, int start, int length) {
       if (ilist == null) {
-        throw new ArgumentNullException("ilist");
+        throw new ArgumentNullException(nameof(ilist));
       }
       if (start < 0) {
       throw new ArgumentException("start (" + start + ") is less than " +
@@ -38,7 +38,7 @@ namespace PeterO.Text {
 
     public PartialListCharacterInput(IList<int> ilist) {
       if (ilist == null) {
-  throw new ArgumentNullException("ilist");
+  throw new ArgumentNullException(nameof(ilist));
 }
       this.ilist = ilist;
       this.pos = 0;
@@ -51,7 +51,7 @@ namespace PeterO.Text {
 
     public int Read(int[] buf, int offset, int unitCount) {
       if (buf == null) {
-        throw new ArgumentNullException("buf");
+        throw new ArgumentNullException(nameof(buf));
       }
       if (offset < 0) {
     throw new ArgumentException("offset (" + offset + ") is less than " +

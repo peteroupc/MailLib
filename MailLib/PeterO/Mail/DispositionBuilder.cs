@@ -39,7 +39,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.#ctor(PeterO.Mail.ContentDisposition)"]/*'/>
     public DispositionBuilder(ContentDisposition mt) {
       if (mt == null) {
-        throw new ArgumentNullException("mt");
+        throw new ArgumentNullException(nameof(mt));
       }
       this.parameters = new Dictionary<string, string>(mt.Parameters);
       this.type = mt.DispositionType;
@@ -49,7 +49,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.#ctor(System.String)"]/*'/>
     public DispositionBuilder(string type) {
       if (type == null) {
-  throw new ArgumentNullException("type");
+  throw new ArgumentNullException(nameof(type));
 }
 if (type.Length == 0) {
   throw new ArgumentException("type" + " is empty.");
@@ -88,7 +88,7 @@ if (type.Length == 0) {
     /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.SetDispositionType(System.String)"]/*'/>
     public DispositionBuilder SetDispositionType(string str) {
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       if (str.Length == 0) {
         throw new ArgumentException("str is empty.");
@@ -105,7 +105,7 @@ if (type.Length == 0) {
     /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.RemoveParameter(System.String)"]/*'/>
     public DispositionBuilder RemoveParameter(string name) {
       if (name == null) {
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
       }
       this.parameters.Remove(DataUtilities.ToLowerCaseAscii(name));
       return this;
@@ -115,10 +115,10 @@ if (type.Length == 0) {
     /// path='docs/doc[@name="M:PeterO.Mail.DispositionBuilder.SetParameter(System.String,System.String)"]/*'/>
     public DispositionBuilder SetParameter(string name, string value) {
       if (value == null) {
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
       }
       if (name == null) {
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
       }
       if (name.Length == 0) {
         throw new ArgumentException("name is empty.");

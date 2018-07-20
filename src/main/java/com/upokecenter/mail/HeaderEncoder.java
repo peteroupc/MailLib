@@ -383,6 +383,18 @@ import com.upokecenter.util.*;
       return this;
     }
 
+    public HeaderEncoder AppendSpaceIfNeeded() {
+      if (this.builder.length() == 0) {
+ return AppendSpace();
+}
+      boolean endsWithSpace = (
+        this.builder.charAt(this.builder.length() - 1) == 0x20 || this.builder.charAt(this.builder.length() - 1) == 0x09);
+      if (!endsWithSpace) {
+ AppendSpace();
+}
+      return this;
+    }
+
     public HeaderEncoder AppendSpace() {
       if (maxLineLength < 0 || this.column + 1 <= this.maxLineLength) {
         this.builder.append(" ");

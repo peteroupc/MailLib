@@ -298,6 +298,25 @@ private HeaderParserUtility() {
       return addresses;
     }
 
+    public static int ParseWord(String str, int index, int endIndex,
+      StringBuilder builder) {
+      // NOTE: Assumes all CFWS has been read beforehand
+      if (index == endIndex) {
+ return index;
+}
+      if (str.charAt(index) == '"') {
+        // May be a quoted String
+        return MediaType.SkipQuotedString(str, index, endIndex, builder);
+      } else {
+        // May be an atom
+        int si = HeaderParser.ParsePhraseAtom(str, index, endIndex, null);
+        if (si != index) {
+ builder.append(str.substring(index, (index)+(endIndex - index)));
+}
+        return si;
+      }
+    }
+
     public static NamedAddress ParseAddress(
   String str,
   int index,

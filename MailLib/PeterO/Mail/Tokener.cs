@@ -45,10 +45,10 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.Tokener.Compare(System.Int32[],System.Int32[])"]/*'/>
     public int Compare(int[] x, int[] y) {
       if (x == null) {
-  throw new ArgumentNullException("x");
+  throw new ArgumentNullException(nameof(x));
 }
       if (y == null) {
-  throw new ArgumentNullException("y");
+  throw new ArgumentNullException(nameof(y));
 }
       // Sort by their start indexes
       if (x[1] == y[1]) {

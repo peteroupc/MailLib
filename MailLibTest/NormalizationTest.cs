@@ -11,7 +11,7 @@ namespace MailLibTest {
   public class NormalizationTest {
     public static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
-        throw new ArgumentNullException("delimiter");
+        throw new ArgumentNullException(nameof(delimiter));
       }
       if (delimiter.Length == 0) {
         throw new ArgumentException("delimiter is empty.");

@@ -4,7 +4,7 @@ using PeterO.Mail;
 
 namespace MailLibTest {
   [TestFixture]
-  public partial class DispositionBuilderTest {
+  public class DispositionBuilderTest {
     [Test]
     public void TestConstructor() {
       string stringNull = null;
