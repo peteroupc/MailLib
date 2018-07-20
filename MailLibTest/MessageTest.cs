@@ -1230,8 +1230,12 @@ Assert.IsTrue(boolTemp, msgstring);
       string messageStart = "MIME-Version: 1.0\r\n";
       messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
       messageStart += "Preamble\r\n";
-      string[] paddings = {String.Empty,"\u0020","\t","\u0020\u0020",
-          "\t\u0020", "\u0020\t", "\t\t"};
+      string[] paddings = {
+        String.Empty,
+        "\u0020", 
+        "\t", "\u0020\u0020",
+          "\t\u0020", "\u0020\t", "\t\t"
+      };
       foreach (var padding1 in paddings) {
         foreach (var padding2 in paddings) {
           string message = messageStart;
