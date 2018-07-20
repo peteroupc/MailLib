@@ -4,7 +4,7 @@
   <groupId>com.upokecenter</groupId>
   <artifactId>maillib</artifactId>
   <packaging>jar</packaging>
-  <version>0.11.0-SNAPSHOT</version>
+  <version>0.12.0-SNAPSHOT</version>
   <name>MailLib</name>
   <description>A Java library for parsing and generating Internet mail messages.</description>
   <url>https://github.com/peteroupc/MailLib</url>
@@ -119,7 +119,7 @@
     <dependency>
       <groupId>com.github.peteroupc</groupId>
       <artifactId>encoding</artifactId>
-      <version>0.2.0</version>
+      <version>0.4.0</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
