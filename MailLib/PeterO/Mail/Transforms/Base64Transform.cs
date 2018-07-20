@@ -21,6 +21,8 @@ namespace PeterO.Mail.Transforms {
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
+    public const int MaxLineLength = 76;
+
     private readonly IByteReader input;
     private readonly bool lenientLineBreaks;
     private readonly byte[] buffer;
@@ -34,7 +36,7 @@ namespace PeterO.Mail.Transforms {
     public Base64Transform(
   IByteReader input,
   bool lenientLineBreaks) : this(input, lenientLineBreaks,
-                    Base64Encoder.MaxLineLength, false) {
+                    MaxLineLength, false) {
     }
 
     public Base64Transform(

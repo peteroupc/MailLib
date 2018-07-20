@@ -100,8 +100,8 @@ namespace PeterO.Mail {
     public HeaderEncoder AppendString(string symbol, int startIndex, int
       endIndex) {
       if (symbol.Length > 0) {
-        var i = startIndex;
-        var symbolBegin = startIndex;
+        int i = startIndex;
+        int symbolBegin = startIndex;
         var writeSpace = false;
         while (i < endIndex) {
           if (symbol[i] == '\r' && i + 1 < endIndex &&
@@ -243,12 +243,12 @@ namespace PeterO.Mail {
           return str;
         }
         string ret = str;
-        for (var i = str.Length - 1; i >= 0; --i) {
-          switch (str[i]) {
-            case ' ':
-            case '\t':
+        for (int i = str.Length - 1; i >= 0; --i) {
+          switch ((int)str[i]) {
+            case 0x20:  // space
+            case 0x09:  // tab
               break;
-            case '\n':
+            case 0x0a:  // LF
               if (i > 0 && str[i - 1] == '\r') {
                 --i;
                 ret = str.Substring(0, i);
@@ -445,7 +445,7 @@ namespace PeterO.Mail {
     }
 
     public static string TrimLeadingFWS(string fieldValue) {
-      var fws = HeaderParser.ParseFWS(fieldValue, 0, fieldValue.Length, null);
+      int fws = HeaderParser.ParseFWS(fieldValue, 0, fieldValue.Length, null);
       if (fws > 0) {
         fieldValue = fieldValue.Substring(fws);
       }

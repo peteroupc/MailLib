@@ -944,8 +944,8 @@ boolean foundColon = false;
       if (!foundColon) {
  return false;
 }
-      var chunkLength = index;
-      for (var i = index; i < len;) {
+      int chunkLength = index;
+      for (int i = index; i < len;) {
         if (s.charAt(i) == 0x0d) {
           if (i + 2 >= len || s.charAt(i + 1) != 0x0a || (s.charAt(i + 2) != 0x09 && s.charAt(i +
             2) != 0x20)) {
@@ -955,7 +955,7 @@ boolean foundColon = false;
           i += 3;
           chunkLength = 1;
           boolean found = false;
-          for (var j = i; j < len; ++j) {
+          for (int j = i; j < len; ++j) {
             if (s.charAt(j) != 0x09 && s.charAt(j) != 0x20 && s.charAt(j) != 0x0d) {
               found = true; break;
             }

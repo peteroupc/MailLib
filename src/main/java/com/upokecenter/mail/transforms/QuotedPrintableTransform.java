@@ -16,6 +16,8 @@ import com.upokecenter.mail.*;
     private final int maxLineSize;
     private final IByteReader input;
 
+    public static final int MaxLineLength = 76;
+
     private final int[] printable = { 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -52,7 +54,7 @@ import com.upokecenter.mail.*;
     public QuotedPrintableTransform(
   IByteReader input,
   boolean allowBareLfCr) {
- this(input, allowBareLfCr, QuotedPrintableEncoder.MaxLineLength, false);
+ this(input, allowBareLfCr, MaxLineLength, false);
     }
 
     public QuotedPrintableTransform(
@@ -155,8 +157,7 @@ import com.upokecenter.mail.*;
               continue;
             }
             if (!this.checkStrictEncoding && (
-              this.maxLineSize > QuotedPrintableEncoder.MaxLineLength ||
-              this.maxLineSize < 0)) {
+              this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
               if (this.maxLineSize >= 0) {
                 ++this.lineCharCount;
                 if (this.lineCharCount > this.maxLineSize) {
@@ -179,7 +180,7 @@ import com.upokecenter.mail.*;
             return -1;
           } else {
             if (!this.checkStrictEncoding && (
-              this.maxLineSize > QuotedPrintableEncoder.MaxLineLength ||
+              this.maxLineSize > MaxLineLength ||
               this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
@@ -208,8 +209,7 @@ import com.upokecenter.mail.*;
             c |= b2 + 10 - 'a';
           } else {
             if (!this.checkStrictEncoding && (
-              this.maxLineSize > QuotedPrintableEncoder.MaxLineLength ||
-              this.maxLineSize < 0)) {
+              this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
@@ -332,7 +332,7 @@ import com.upokecenter.mail.*;
           // Invalid character
           if (this.maxLineSize < 0) {
             // Ignore the character
-          } else if (this.maxLineSize > QuotedPrintableEncoder.MaxLineLength) {
+          } else if (this.maxLineSize > MaxLineLength) {
             // Just increment the line count
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {

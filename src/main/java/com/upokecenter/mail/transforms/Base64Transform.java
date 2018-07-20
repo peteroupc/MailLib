@@ -21,6 +21,8 @@ import com.upokecenter.mail.*;
       -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
       41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
+    public static final int MaxLineLength = 76;
+
     private final IByteReader input;
     private final boolean lenientLineBreaks;
     private final byte[] buffer;
@@ -34,7 +36,7 @@ import com.upokecenter.mail.*;
     public Base64Transform(
   IByteReader input,
   boolean lenientLineBreaks) {
- this(input, lenientLineBreaks, Base64Encoder.MaxLineLength, false);
+ this(input, lenientLineBreaks, MaxLineLength, false);
     }
 
     public Base64Transform(
