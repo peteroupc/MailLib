@@ -18,7 +18,7 @@ namespace PeterO.Mail {
   {
     public int Encode(int c, IWriter s) {
       if (s == null) {
-  throw new ArgumentNullException("s");
+  throw new ArgumentNullException(nameof(s));
 }
       if (c < 0) {
  return -1;

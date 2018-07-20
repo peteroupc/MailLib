@@ -14,7 +14,7 @@ using PeterO.Text;
 namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.Base64Encoder"]/*'/>
-  internal sealed class Base64Encoder : ICharacterEncoder {
+  sealed class Base64Encoder : ICharacterEncoder {
     internal const int MaxLineLength = 76;
 
     private static readonly byte[] Base64Classic = {
@@ -89,8 +89,8 @@ namespace PeterO.Mail {
         if (b == 0x0d) {
           // CR
           this.haveCR = true;
-          count += this.AddByteInternal(output, (byte)0x0d);
-          count += this.AddByteInternal(output, (byte)0x0a);
+          count += this.AddByteInternal(output, 0x0d);
+          count += this.AddByteInternal(output, 0x0a);
           return count;
         }
         if (b == 0x0a && !this.haveCR) {
@@ -143,7 +143,8 @@ throw new
         this.byte2 = -1;
         this.quantumCount = 0;
         return ret;
-      } else if (this.quantumCount == 1) {
+      } 
+      if (this.quantumCount == 1) {
         this.byte2 = ib;
         this.quantumCount = 2;
         return 0;

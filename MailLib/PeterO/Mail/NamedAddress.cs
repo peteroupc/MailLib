@@ -94,7 +94,7 @@ if (this.displayName == null) {
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String)"]/*'/>
     public NamedAddress(string address) {
       if (address == null) {
-        throw new ArgumentNullException("address");
+        throw new ArgumentNullException(nameof(address));
       }
       var tokener = new Tokener();
       if (HeaderParser.ParseAddress(address, 0, address.Length, tokener) !=
@@ -119,7 +119,7 @@ if (this.displayName == null) {
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String)"]/*'/>
     public NamedAddress(string displayName, string address) {
       if (address == null) {
-        throw new ArgumentNullException("address");
+        throw new ArgumentNullException(nameof(address));
       }
       this.displayName = displayName;
       this.groupAddresses = new List<NamedAddress>();
@@ -131,7 +131,7 @@ if (this.displayName == null) {
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,PeterO.Mail.Address)"]/*'/>
     public NamedAddress(string displayName, Address address) {
       if (address == null) {
-        throw new ArgumentNullException("address");
+        throw new ArgumentNullException(nameof(address));
       }
       this.displayName = displayName;
       this.groupAddresses = new List<NamedAddress>();
@@ -143,10 +143,10 @@ if (this.displayName == null) {
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.String,System.String)"]/*'/>
     public NamedAddress(string displayName, string localPart, string domain) {
       if (localPart == null) {
-        throw new ArgumentNullException("localPart");
+        throw new ArgumentNullException(nameof(localPart));
       }
       if (domain == null) {
-        throw new ArgumentNullException("domain");
+        throw new ArgumentNullException(nameof(domain));
       }
       this.address = new Address(localPart, domain);
       this.groupAddresses = new List<NamedAddress>();
@@ -158,13 +158,13 @@ if (this.displayName == null) {
     /// path='docs/doc[@name="M:PeterO.Mail.NamedAddress.#ctor(System.String,System.Collections.Generic.IList{PeterO.Mail.NamedAddress})"]/*'/>
     public NamedAddress(string groupName, IList<NamedAddress> mailboxes) {
       if (groupName == null) {
-        throw new ArgumentNullException("groupName");
+        throw new ArgumentNullException(nameof(groupName));
       }
       if (groupName.Length == 0) {
         throw new ArgumentException("groupName is empty.");
       }
       if (mailboxes == null) {
-        throw new ArgumentNullException("mailboxes");
+        throw new ArgumentNullException(nameof(mailboxes));
       }
       this.isGroup = true;
       this.displayName = groupName;

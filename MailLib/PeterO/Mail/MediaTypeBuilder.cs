@@ -53,7 +53,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.#ctor(PeterO.Mail.MediaType)"]/*'/>
     public MediaTypeBuilder(MediaType mt) {
       if (mt == null) {
-        throw new ArgumentNullException("mt");
+        throw new ArgumentNullException(nameof(mt));
       }
       this.parameters = new Dictionary<string, string>(mt.Parameters);
       this.type = mt.TopLevelType;
@@ -94,7 +94,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.SetTopLevelType(System.String)"]/*'/>
     public MediaTypeBuilder SetTopLevelType(string str) {
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       if (str.Length == 0) {
         throw new ArgumentException("str is empty.");
@@ -111,7 +111,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.RemoveParameter(System.String)"]/*'/>
     public MediaTypeBuilder RemoveParameter(string name) {
       if (name == null) {
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
       }
       this.parameters.Remove(DataUtilities.ToLowerCaseAscii(name));
       return this;
@@ -121,10 +121,10 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.SetParameter(System.String,System.String)"]/*'/>
     public MediaTypeBuilder SetParameter(string name, string value) {
       if (value == null) {
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
       }
       if (name == null) {
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
       }
       if (name.Length == 0) {
         throw new ArgumentException("name is empty.");
@@ -142,7 +142,7 @@ if (MediaType.SkipMimeTypeSubtype(name, 0, name.Length, null) !=
     /// path='docs/doc[@name="M:PeterO.Mail.MediaTypeBuilder.SetSubType(System.String)"]/*'/>
     public MediaTypeBuilder SetSubType(string str) {
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       if (str.Length == 0) {
         throw new ArgumentException("str is empty.");

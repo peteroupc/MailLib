@@ -640,7 +640,7 @@ c == '$' || c == 0xa0 || c == 0x3000 || c == 0x180e || c == 0x1680 ||
 
     // Parameters not conforming to RFC 2231, but
     // have names with asterisks
-    static final String[] NoParams = new String[] {
+    static final String[] NoParams = {
 ";param*xx=value",
   ";param*0xx=value",
   ";param*xx0=value",

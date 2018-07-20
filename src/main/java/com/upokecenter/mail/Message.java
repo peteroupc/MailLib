@@ -69,27 +69,27 @@ import com.upokecenter.text.*;
      * words regardless of the character length of the line in which they
      * appear. This implementation can generate a header field line with one
      * or more encoded words even if that line is more than 76 characters
-     * long. (This implementation follows the recommendation to limit header
-     * field lines to no more than 78 characters, where possible.)</li></ul>
-     * <p>It would be appreciated if users of this library contact the
-     * author if they find other ways in which this implementation deviates
-     * from the mail specifications or other applicable specifications.</p>
-     * <p>Note that this class currently doesn't support the "padding"
-     * parameter for message bodies with the media type
-     * "application/octet-stream" or treated as that media type (see RFC
-     * 2046 sec. 4.5.1).</p> <p>Note that this implementation can decode an
-     * RFC 2047 encoded word that uses ISO-2022-JP (the only supported
-     * encoding that uses code switching) even if the encoded word's payload
-     * ends in a different mode from "ASCII mode". (Each encoded word still
-     * starts in "ASCII mode", though.) This, however, is not a deviation to
-     * RFC 2047 because the relevant rule only concerns bringing the output
-     * device back to "ASCII mode" after the decoded text is displayed (see
-     * last paragraph of sec. 6.2) -- since the decoded text is converted to
-     * Unicode rather than kept as ISO-2022-JP, this is not applicable since
-     * there is no such thing as "ASCII mode" in the Unicode Standard.</p>
-     * <p>Note that this library (the MailLib library) has no facilities for
-     * sending and receiving email messages, since that's outside this
-     * library's scope.</p>
+     * long. (This implementation follows the recommendation in RFC 5322 to
+     * limit header field lines to no more than 78 characters, where
+     * possible.)</li></ul> <p>It would be appreciated if users of this
+     * library contact the author if they find other ways in which this
+     * implementation deviates from the mail specifications or other
+     * applicable specifications.</p> <p>Note that this class currently
+     * doesn't support the "padding" parameter for message bodies with the
+     * media type "application/octet-stream" or treated as that media type
+     * (see RFC 2046 sec. 4.5.1).</p> <p>Note that this implementation can
+     * decode an RFC 2047 encoded word that uses ISO-2022-JP (the only
+     * supported encoding that uses code switching) even if the encoded
+     * word's payload ends in a different mode from "ASCII mode". (Each
+     * encoded word still starts in "ASCII mode", though.) This, however, is
+     * not a deviation to RFC 2047 because the relevant rule only concerns
+     * bringing the output device back to "ASCII mode" after the decoded
+     * text is displayed (see last paragraph of sec. 6.2) -- since the
+     * decoded text is converted to Unicode rather than kept as ISO-2022-JP,
+     * this is not applicable since there is no such thing as "ASCII mode"
+     * in the Unicode Standard.</p> <p>Note that this library (the MailLib
+     * library) has no facilities for sending and receiving email messages,
+     * since that's outside this library's scope.</p>
      */
   public final class Message {
     static final int MaxRecHeaderLineLength = 78;

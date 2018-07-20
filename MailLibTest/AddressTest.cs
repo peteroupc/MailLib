@@ -4,7 +4,7 @@ using PeterO.Mail;
 
 namespace MailLibTest {
   [TestFixture]
-  public partial class AddressTest {
+  public class AddressTest {
     private static void TestParseLocalPart(string str, string expected) {
       var na = new NamedAddress("b <" + str + "@example.com>");
       Address addr = na.Address;

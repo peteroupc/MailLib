@@ -18,7 +18,7 @@ namespace PeterO.Text {
   int index) {
 #if DEBUG
       if (buffer == null) {
-        throw new ArgumentNullException("buffer");
+        throw new ArgumentNullException(nameof(buffer));
       }
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -52,7 +52,7 @@ namespace PeterO.Text {
   int index) {
 #if DEBUG
       if (buffer == null) {
-        throw new ArgumentNullException("buffer");
+        throw new ArgumentNullException(nameof(buffer));
       }
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -224,7 +224,7 @@ namespace PeterO.Text {
    ICharacterInput stream,
    Normalization form) {
       if (stream == null) {
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
       }
       this.lastQcsIndex = -1;
       this.iterator = stream;
@@ -241,7 +241,7 @@ namespace PeterO.Text {
   ICharacterInput chars,
   Normalization form) {
       if (chars == null) {
-        throw new ArgumentNullException("chars");
+        throw new ArgumentNullException(nameof(chars));
       }
       var listIndex = 0;
       var array = new int[16];
@@ -319,7 +319,7 @@ UnicodeDatabase.IsQuickCheckStarter(
     /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Normalize(System.String,PeterO.Text.Normalization)"]/*'/>
     public static string Normalize(string str, Normalization form) {
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       if (str.Length <= 1024 && IsNormalized(str, form)) {
         return str;
@@ -332,7 +332,7 @@ UnicodeDatabase.IsQuickCheckStarter(
     /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.IsNormalized(System.String,PeterO.Text.Normalization)"]/*'/>
     public static bool IsNormalized(string str, Normalization form) {
       if (str == null) {
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       }
       // DebugUtility.Log (str);
       int mask = (form == Normalization.NFC) ? 0xff : 0x7f;
@@ -502,7 +502,7 @@ UnicodeDatabase.IsQuickCheckStarter(
     /// path='docs/doc[@name="M:PeterO.Text.NormalizerInput.Read(System.Int32[],System.Int32,System.Int32)"]/*'/>
     public int Read(int[] chars, int index, int length) {
       if (chars == null) {
-        throw new ArgumentNullException("chars");
+        throw new ArgumentNullException(nameof(chars));
       }
       if (index < 0) {
         throw new ArgumentException("index (" + index + ") is less than " +
@@ -797,7 +797,7 @@ UnicodeDatabase.IsQuickCheckStarter(
 
       public StringCharacterInput2(string str) {
         if (str == null) {
-          throw new ArgumentNullException("str");
+          throw new ArgumentNullException(nameof(str));
         }
         this.str = str;
         this.endIndex = str.Length;
@@ -805,7 +805,7 @@ UnicodeDatabase.IsQuickCheckStarter(
 
       public StringCharacterInput2(string str, int index, int length) {
         if (str == null) {
-          throw new ArgumentNullException("str");
+          throw new ArgumentNullException(nameof(str));
         }
         if (index < 0) {
           throw new ArgumentException("index (" + index + ") is less than " +
@@ -855,7 +855,7 @@ UnicodeDatabase.IsQuickCheckStarter(
 
       public int Read(int[] chars, int index, int length) {
         if (chars == null) {
-          throw new ArgumentNullException("chars");
+          throw new ArgumentNullException(nameof(chars));
         }
         if (index < 0) {
           throw new ArgumentException("index (" + index + ") is less than " +

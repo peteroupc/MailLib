@@ -9,7 +9,7 @@ using System;
 
 namespace PeterO.Text {
   internal static class UnicodeDatabase {
-    private static volatile object syncRoot = new Object();
+    private static readonly object syncRoot = new Object();
 
     private static volatile ByteData classes;
 

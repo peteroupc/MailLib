@@ -59,7 +59,7 @@ using System.Collections.Generic;
     /// path='docs/doc[@name="M:PeterO.Text.NormalizingCharacterInput.#ctor(System.String,PeterO.Text.Normalization)"]/*'/>
       public NormalizingCharacterInput(string str, Normalization form) {
         if ((str) == null) {
-  throw new ArgumentNullException("str");
+  throw new ArgumentNullException(nameof(str));
 }
         this.nci = new NormalizerInput(str, 0, str.Length, form);
       }
@@ -97,7 +97,7 @@ using System.Collections.Generic;
   [Obsolete("Instead of this method, create a NormalizerInput on the string and call ReadChar to get the normalized string's code points.")]
       public static IList<int> GetChars(string str, Normalization form) {
         if (str == null) {
-          throw new ArgumentNullException("str");
+          throw new ArgumentNullException(nameof(str));
         }
         IList<int> ret = new List<int>();
         int ch;
@@ -115,7 +115,7 @@ using System.Collections.Generic;
   ICharacterInput chars,
   Normalization form) {
         if (chars == null) {
-          throw new ArgumentNullException("chars");
+          throw new ArgumentNullException(nameof(chars));
         }
         IList<int> ret = new List<int>();
         int ch;
@@ -131,7 +131,7 @@ using System.Collections.Generic;
   [Obsolete("Either convert the array to a string or wrap it in an ICharacterInput and call the corresponding overload instead.")]
     public static bool IsNormalized(int[] charArray, Normalization form) {
      if (charArray == null) {
-      throw new ArgumentNullException("charArray");
+      throw new ArgumentNullException(nameof(charArray));
      }
      return IsNormalized(new PartialArrayCharacterInput(charArray), form);
    }

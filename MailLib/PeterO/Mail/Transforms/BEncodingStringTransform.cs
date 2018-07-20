@@ -29,7 +29,7 @@ namespace PeterO.Mail.Transforms {
 
     public BEncodingStringTransform(String input) {
       if (input == null) {
-        throw new ArgumentNullException("input");
+        throw new ArgumentNullException(nameof(input));
       }
       this.input = input;
       this.buffer = new byte[4];

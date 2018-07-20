@@ -297,6 +297,25 @@ namespace PeterO.Mail {
       return addresses;
     }
 
+    public static int ParseWord(string str, int index, int endIndex,
+      StringBuilder builder) {
+      // NOTE: Assumes all CFWS has been read beforehand
+      if (index == endIndex) {
+ return index;
+}
+      if (str[index] == '"') {
+        // May be a quoted string
+        return MediaType.SkipQuotedString(str, index, endIndex, builder);
+      } else {
+        // May be an atom
+        int si = HeaderParser.ParsePhraseAtom(str, index, endIndex, null);
+        if (si != index) {
+ builder.Append(str.Substring(index, endIndex - index));
+}
+        return si;
+      }
+    }
+
     public static NamedAddress ParseAddress(
   string str,
   int index,

@@ -98,7 +98,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="M:PeterO.Mail.ParserUtility.SplitAt(System.String,System.String)"]/*'/>
     public static string[] SplitAt(string str, string delimiter) {
       if (delimiter == null) {
-        throw new ArgumentNullException("delimiter");
+        throw new ArgumentNullException(nameof(delimiter));
       }
       if (delimiter.Length == 0) {
         throw new ArgumentException("delimiter is empty.");
