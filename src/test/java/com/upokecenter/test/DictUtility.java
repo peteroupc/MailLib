@@ -6,12 +6,13 @@ import java.util.*;
 private DictUtility() {
 }
     public static List<Map<String, String>>
-      DictList(Map<String, String>... dicts) {
+      DictList(
+      Map<String, String>... dicts) {
       if (dicts == null) {
         throw new NullPointerException("dicts");
       }
-       List<Map<String, String>> list = new ArrayList<Map<String,
-         String>>();
+       List<Map<String, String>> list =
+        new ArrayList<Map<String, String>>();
        for (Map<String, String> dict : dicts) {
           list.add(dict);
        }

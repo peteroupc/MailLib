@@ -9,7 +9,7 @@ namespace MailLibTest {
       if (dicts == null) {
         throw new ArgumentNullException(nameof(dicts));
       }
-       IList<IDictionary<String, String>> list = 
+       IList<IDictionary<String, String>> list =
         new List<IDictionary<String, String>>();
        foreach (IDictionary<String, String> dict in dicts) {
           list.Add(dict);

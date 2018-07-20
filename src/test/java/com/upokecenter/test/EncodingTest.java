@@ -1802,8 +1802,14 @@ public final void setValueMessage(Message value) {
       Assert.assertEquals(domain, address.getAddress().getDomain());
     }
 
-    private static String[] addressHeaderFields = {"from","to","cc","bcc",
-  "disposition-notification-to", "sender"};
+    private static String[] addressHeaderFields = {
+      "from",
+      "to",
+      "cc",
+      "bcc",
+  "disposition-notification-to",
+      "sender"
+    };
     @Test
     public void TestDowngradeAddress() {
       for (String valueHeader : addressHeaderFields) {

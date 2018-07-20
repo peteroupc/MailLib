@@ -1232,7 +1232,7 @@ Assert.IsTrue(boolTemp, msgstring);
       messageStart += "Preamble\r\n";
       string[] paddings = {
         String.Empty,
-        "\u0020", 
+        "\u0020",
         "\t", "\u0020\u0020",
           "\t\u0020", "\u0020\t", "\t\t"
       };
