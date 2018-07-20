@@ -2,7 +2,7 @@
 
     public static class MailDateTime
 
-Not documented yet.
+Contains methods for parsing and generating date-time strings following the Internet Message Format (RFC 5322).
 
 ### GenerateDateString
 

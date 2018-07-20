@@ -601,8 +601,9 @@ Assert.assertEquals(objectTemp, objectTemp2);
       }
     }
 
- public static final List<Map<String, String>> ValueTestParamTypes =
-      DictUtility.DictList(
+public static final List<Map<String, String>>
+      ValueTestParamTypes =
+         DictUtility.DictList(
   DictUtility.MakeDict("params", ";filename=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";filename=\"cc\"", "filename", "cc"),
   DictUtility.MakeDict("params", ";filename = x.y", "filename", "x.y"),
