@@ -1,6 +1,43 @@
 Older versions release notes
 ---------------------
 
+Version 0.10.0:
+
+- Character encoding conversion library moved out of this library (see [PeterO.Encoding](https://github.com/peteroupc/Encoding); currently uses version 0.2.0 of that library.
+- Updated normalization and IDNA data to Unicode 9.0
+- Normalization implementation renamed to NormalizerInput from NormalizerCharacterInput; the latter class is now deprecated
+- Add GetHeaderArray, SetDate, and GetDate methods of Message class
+- Add support for parsing several new header fields
+- Date header field is included in generated messages
+- Improve MakeFilename method of ContentDisposition class
+- Fix bugs in Unicode normalization implementation
+- Fixed several bugs and addressed corner cases in message generation, such as Quoted-Printable encoding
+- In the .NET version of the source code, documentation is moved out of the source code and placed into a consolidated XML file
+- SetBody method of Message class now returns the Message object that was edited
+- Other bug fixes
+
+Version 0.9.2:
+
+- Removed dependencies (.NET version)
+
+Version 0.9.1:
+
+- Removed a reference to OpenCover that was apparently left in version 0.9 (.NET version)
+
+Version 0.9:
+
+- The C# version of the library now also targets "dotnet", which should make it compatible with platform .NET runtime
+environments such as the upcoming cross-platform "coreclr" runtime.
+- Bug fixes to ensure number-format independence in some cases
+- ContentDisposition.MakeFilename implementation was improved
+- Another overload for GetEncoding was added
+- Additional fixes in character encodings
+- Known issue: The library implements character encodings based on the Encoding Standard
+candidate recommendation.  But several issues have emerged with that spec in the meantime.
+For example, GB18030 currently uses a problematic range table, so that for certain code points designed
+for that table, round-tripping is not possible.  As a result, tests on GB18030 are disabled
+for now.
+
 Version 0.8.1:
 
 - Fixes bugs in character encoding algorithms

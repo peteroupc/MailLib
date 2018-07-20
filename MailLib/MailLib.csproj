@@ -11,23 +11,24 @@
     <PackageProjectUrl>https://github.com/peteroupc/MailLib</PackageProjectUrl>
     <Description>A .NET library for parsing and generating Internet email messages.</Description>
     <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
-    <PackageReleaseNotes>Version 0.11.0:
+    <PackageReleaseNotes>Version 0.12.0:
 
-- Corrected the documentation for MediaType's and ContentDisposition's Parameters properties
-- Added DisplayName property in NamedAddress class
-- More robust ContentDisposition.MakeFilename method
-- Update Unicode data
-- Converted to .NET Standard
-- Updated Encoding library used
-- Supported parsing several new header fields
-- Bug fixes
+- The internal code for parsing and generating message headers was extensively refactored.  Much of the refactoring improves conformance with RFCs that define the message format and MIME.
+- As a result of the refactoring, the message generation can better ensure, when possible, that each line of a generated message is no more than 76 characters long, as recommended by those RFCs.
+- Many bugs were fixed, including those relating to downgrading header fields containing non-ASCII characters to ASCII in the Generate method.  Another bug involves an infinite decoding loop involving certain Content-Type and Content-Disposition strings.
+- One additional deviation to RFC 2047 (encoded words) is noted in the documentation for the Message class.  I think the deviation shows a weakness in that RFC.
+- At least three methods added to ContentDisposition class, including ToSingleLineString.
+- ToSingleLineString method added to MediaType class.
+- GenerateBytes method added to Message class.
+- Added MailDateTime class.
+- MakeFilename class in ContentDisposition is now idempotent and shows better. performance in some common cases of file names.
 </PackageReleaseNotes>
-    <Copyright>Written by Peter O. in 2013-2017.  Any copyright is released to the Public Domain.
+    <Copyright>Written by Peter O. in 2013-2018.  Any copyright is released to the Public Domain.
        (Exceptions involve classes that contain data generated from the Unicode Character Database.  See
        https://github.com/peteroupc/MailLib/LICENSE.md for more information.)</Copyright>
     <PackOnBuild>true</PackOnBuild>
-    <Version>0.11.0</Version>
-    <PackageVersion>0.11.0</PackageVersion>
+    <Version>0.12.0</Version>
+    <PackageVersion>0.12.0</PackageVersion>
     <Summary>A .NET library for parsing and generating Internet email messages.</Summary>
     <PackageTags>email mail mime parser charset charsets</PackageTags>
   </PropertyGroup>
