@@ -8,7 +8,7 @@ namespace MailLibTest {
   [TestFixture]
   public class MediaTypeTest {
     private static IList<IDictionary<string, string>> testMediaTypes =
-      DictUtility.DictList(
+      new List<IDictionary<string, string>> {
       DictUtility.MakeDict(
   "name",
   "multipart/example",
@@ -328,7 +328,7 @@ namespace MailLibTest {
   "0",
   "text",
   "1")
-);
+    };
 
 private static MediaType ParseAndTestAspects(string s) {
       MediaType mt = MediaType.Parse(s);
@@ -598,8 +598,9 @@ Assert.AreEqual(objectTemp, objectTemp2);
       }
     }
 
- public static readonly IList<IDictionary<string, string>> ValueTestParamTypes =
-      DictUtility.DictList(
+public static readonly IList<IDictionary<string, string>>
+      ValueTestParamTypes =
+         new List<IDictionary<string, string>> {
   DictUtility.MakeDict("params", ";filename=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";filename=\"cc\"", "filename", "cc"),
   DictUtility.MakeDict("params", ";filename = x.y", "filename", "x.y"),
@@ -737,7 +738,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
   "ab\t\u0020"),
   DictUtility.MakeDict("params", ";filename=\"ab\t\t\"", "filename", "ab\t\t"),
   DictUtility.MakeDict("params", ";filename=\"\\\\ab\"", "filename", "\\ab")
-);
+       };
 
     [Test]
     public void TestGetParameter() {

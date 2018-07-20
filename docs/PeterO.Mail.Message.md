@@ -279,6 +279,16 @@ The generated message.
  * PeterO.Mail.MessageDataException:
 The message can't be generated.
 
+### GenerateBytes
+
+    public byte[] GenerateBytes();
+
+Generates this message's data as a byte array, using the same algorithm as the Generate method.
+
+<b>Return Value:</b>
+
+The generated message as a byte array.
+
 ### GetBody
 
     public byte[] GetBody();
