@@ -96,14 +96,14 @@ import com.upokecenter.text.*;
             // Do nothing, this is an LF that follows CR
             this.haveCR = false;
           } else {
-            count += this.AddByteInternal(output, (byte)0x0d);
-            count += this.AddByteInternal(output, (byte)0x0a);
+            count += this.AddByteInternal(output, 0x0d);
+            count += this.AddByteInternal(output, 0x0a);
             this.haveCR = false;
           }
           return count;
         }
       }
-      count += this.AddByteInternal(output, (byte)b);
+      count += this.AddByteInternal(output, b);
       this.haveCR = false;
       return count;
     }
@@ -127,8 +127,8 @@ throw new
       return alphabet;
     }
 
-    private int AddByteInternal(IWriter output, byte b) {
-      int ib = ((int)b) & 0xff;
+    private int AddByteInternal(IWriter output, int b) {
+      int ib = b & 0xff;
       if (this.quantumCount == 2) {
         int ret = this.LineAwareAppendFour(
   output,

@@ -16,6 +16,8 @@ namespace PeterO.Mail.Transforms {
     private readonly int maxLineSize;
     private readonly IByteReader input;
 
+    public const int MaxLineLength = 76;
+
     private readonly int[] printable = { 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -52,7 +54,7 @@ namespace PeterO.Mail.Transforms {
     public QuotedPrintableTransform(
   IByteReader input,
   bool allowBareLfCr) : this(input, allowBareLfCr,
-                    QuotedPrintableEncoder.MaxLineLength, false) {
+                    MaxLineLength, false) {
     }
 
     public QuotedPrintableTransform(
@@ -157,8 +159,7 @@ namespace PeterO.Mail.Transforms {
               continue;
             }
             if (!this.checkStrictEncoding && (
-              this.maxLineSize > QuotedPrintableEncoder.MaxLineLength ||
-              this.maxLineSize < 0)) {
+              this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
               if (this.maxLineSize >= 0) {
                 ++this.lineCharCount;
                 if (this.lineCharCount > this.maxLineSize) {
@@ -181,7 +182,7 @@ namespace PeterO.Mail.Transforms {
             return -1;
           } else {
             if (!this.checkStrictEncoding && (
-              this.maxLineSize > QuotedPrintableEncoder.MaxLineLength ||
+              this.maxLineSize > MaxLineLength ||
               this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
@@ -210,8 +211,7 @@ namespace PeterO.Mail.Transforms {
             c |= b2 + 10 - 'a';
           } else {
             if (!this.checkStrictEncoding && (
-              this.maxLineSize > QuotedPrintableEncoder.MaxLineLength ||
-              this.maxLineSize < 0)) {
+              this.maxLineSize > MaxLineLength || this.maxLineSize < 0)) {
               // Unget the character, since it might
               // start a valid hex encoding or need
               // to be treated some other way
@@ -334,7 +334,7 @@ namespace PeterO.Mail.Transforms {
           // Invalid character
           if (this.maxLineSize < 0) {
             // Ignore the character
-          } else if (this.maxLineSize > QuotedPrintableEncoder.MaxLineLength) {
+          } else if (this.maxLineSize > MaxLineLength) {
             // Just increment the line count
             ++this.lineCharCount;
             if (this.lineCharCount > this.maxLineSize) {

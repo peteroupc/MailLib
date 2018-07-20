@@ -108,12 +108,12 @@ private Rfc2047() {
             ++index;
           }
           if (parenEnd == index) {
-            for (var k = parenStart; k < parenEnd; ++k) {
+            for (int k = parenStart; k < parenEnd; ++k) {
               enc.AppendSymbol(str.substring(k, (k)+(1)));
             }
             break;
           }
-          for (var k = parenStart; k < parenEnd; ++k) {
+          for (int k = parenStart; k < parenEnd; ++k) {
             enc.AppendSymbol(str.substring(k, (k)+(1)));
           }
           enc.AppendAsEncodedWords(str.substring(
@@ -202,12 +202,12 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
           }
         }
         if (builder.length() == 0) {
-            for (var k = parenStart; k < parenEnd; ++k) {
+            for (int k = parenStart; k < parenEnd; ++k) {
               enc.AppendSymbol(str.substring(k, (k)+(1)));
             }
           break;
         }
-        for (var k = parenStart; k < parenEnd; ++k) {
+        for (int k = parenStart; k < parenEnd; ++k) {
               enc.AppendSymbol(str.substring(k, (k)+(1)));
         }
         enc.AppendAsEncodedWords(builder.toString());

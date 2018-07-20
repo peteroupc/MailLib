@@ -100,8 +100,8 @@ import com.upokecenter.util.*;
     public HeaderEncoder AppendString(String symbol, int startIndex, int
       endIndex) {
       if (symbol.length() > 0) {
-        var i = startIndex;
-        var symbolBegin = startIndex;
+        int i = startIndex;
+        int symbolBegin = startIndex;
         boolean writeSpace = false;
         while (i < endIndex) {
           if (symbol.charAt(i) == '\r' && i + 1 < endIndex &&
@@ -243,12 +243,12 @@ import com.upokecenter.util.*;
           return str;
         }
         String ret = str;
-        for (var i = str.length() - 1; i >= 0; --i) {
-          switch (str.charAt(i)) {
-            case ' ':
-            case '\t':
+        for (int i = str.length() - 1; i >= 0; --i) {
+          switch ((int)str.charAt(i)) {
+            case 0x20:  // space
+            case 0x09:  // tab
               break;
-            case '\n':
+            case 0x0a:  // LF
               if (i > 0 && str.charAt(i - 1) == '\r') {
                 --i;
                 ret = str.substring(0, i);
@@ -445,7 +445,7 @@ import com.upokecenter.util.*;
     }
 
     public static String TrimLeadingFWS(String fieldValue) {
-      var fws = HeaderParser.ParseFWS(fieldValue, 0, fieldValue.length(), null);
+      int fws = HeaderParser.ParseFWS(fieldValue, 0, fieldValue.length(), null);
       if (fws > 0) {
         fieldValue = fieldValue.substring(fws);
       }

@@ -126,12 +126,12 @@ namespace PeterO.Mail {
             ++index;
           }
           if (parenEnd == index) {
-            for (var k = parenStart; k < parenEnd; ++k) {
+            for (int k = parenStart; k < parenEnd; ++k) {
               enc.AppendSymbol(str.Substring(k, 1));
             }
             break;
           }
-          for (var k = parenStart; k < parenEnd; ++k) {
+          for (int k = parenStart; k < parenEnd; ++k) {
             enc.AppendSymbol(str.Substring(k, 1));
           }
           enc.AppendAsEncodedWords(str.Substring(
@@ -220,12 +220,12 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
           }
         }
         if (builder.Length == 0) {
-            for (var k = parenStart; k < parenEnd; ++k) {
+            for (int k = parenStart; k < parenEnd; ++k) {
               enc.AppendSymbol(str.Substring(k, 1));
             }
           break;
         }
-        for (var k = parenStart; k < parenEnd; ++k) {
+        for (int k = parenStart; k < parenEnd; ++k) {
               enc.AppendSymbol(str.Substring(k, 1));
         }
         enc.AppendAsEncodedWords(builder.ToString());
