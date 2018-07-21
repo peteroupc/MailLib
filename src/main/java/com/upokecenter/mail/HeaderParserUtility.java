@@ -98,6 +98,10 @@ private HeaderParserUtility() {
         // Space or tab at end
         return true;
       }
+      if (str.length()>= 2 && str.charAt(0)=='=' && str.charAt(1)=='?') {
+        // "=?" at beginning (see RFC 2047 sec. 7)
+        return true;
+      }
       if (str.charAt(0) == ' ' || str.charAt(0) == '\t') {
         // Space or tab at beginning
         return true;
@@ -105,6 +109,12 @@ private HeaderParserUtility() {
       for (int i = 0; i < str.length(); ++i) {
         if (str.charAt(i) == '\\' || str.charAt(i) == '"') {
           // Backslash or double quote
+          return true;
+        }
+        if ((str.charAt(i) == ' ' || str.charAt(i) == '\t') && i + 2 < str.length() &&
+            (str.charAt(i + 1) == '=' && str.charAt(i + 2) == '?')) {
+          // space and/or tab followed by "=?"
+          // (see RFC 2047 sec. 7)
           return true;
         }
         if ((str.charAt(i) == ' ' || str.charAt(i) == '\t') && i + 1 < str.length() &&

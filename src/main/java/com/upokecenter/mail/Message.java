@@ -56,10 +56,11 @@ import com.upokecenter.text.*;
      * "iso-8859-*" (all single byte encodings).</li> <li>(d) In non-MIME
      * message bodies and in text/plain message bodies. Any 8-bit bytes are
      * replaced with the substitute character byte (0x1a).</li> <li>If the
-     * first line of the message starts with the word "From" followed by a
-     * space, it is skipped.</li> <li>The name <code>ascii</code> is treated as a
-     * synonym for <code>us-ascii</code>, despite being a reserved name under RFC
-     * 2046. The name <code>cp1252</code> is treated as a synonym for
+     * first line of the message starts with the word "From" (and no other
+     * case variations of that word) followed by a space or tab (U + 0020 or
+     * U + 0009), it is skipped.</li> <li>The name <code>ascii</code> is treated as
+     * a synonym for <code>us-ascii</code>, despite being a reserved name under
+     * RFC 2046. The name <code>cp1252</code> is treated as a synonym for
      * <code>windows-1252</code> , even though it's not an IANA registered
      * alias.</li> <li>The following deviations involve encoded words under
      * RFC 2047:</li> <li>(a) If a sequence of encoded words decodes to a
@@ -779,6 +780,44 @@ public final void setSubject(String value) {
       this.headers.add("");
       return this.SetHeader(index, name, value);
     }
+   /*
+    // TODO: Consider adding the following
+
+    public Message SetSubject(String value) {
+        return this.SetHeader("subject",value);
+    }
+
+    public Message SetFrom(String value) {
+        return this.SetHeader("from",value);
+    }
+
+    public Message AddTo(String... strings) {
+       for (var str in strings) {
+           this.AddHeader("to",str);
+       }
+       return this;
+    }
+
+    public Message AddCc(String... strings) {
+       for (var str in strings) {
+           this.AddHeader("cc",str);
+       }
+       return this;
+    }
+
+    public Message AddTo(NamedAddress... addresses) {
+       for (var str in addresses) {
+          this.AddHeader("to",str.toString());
+       }
+       return this;
+    }
+
+    public Message AddCc(NamedAddress... addresses) {
+       for (var str in addresses) {
+          this.AddHeader("cc",str);
+       }
+    }
+    */
 
     /**
      * Sets the body of this message to the specified string in HTML format. The
@@ -1953,7 +1992,7 @@ boolean foundColon = false;
       int lineLength = 0;
       // Assume 'allTextBytes' is false if this is a body part or not
       // all of the body is checked
-      boolean allTextBytes = (!isBodyPart) && lengthCheck != body.length;
+      boolean allTextBytes = (!isBodyPart) && lengthCheck == body.length;
       for (int i = 0; i < lengthCheck; ++i) {
         if (i > 0 && (allTextBytes ? (i % 108 == 0) : (i % 36 == 0))) {
           if (highBytes + ctlBytes > i / 3) {
@@ -2342,8 +2381,8 @@ boolean foundColon = false;
         builder.append("@local.invalid");
       } else {
         builder.append("@");
-        seq = addresses.get(0).isGroup() ? addresses.get(0).getName().hashCode() :
-          addresses.get(0).getAddress().toString().hashCode();
+        seq = addresses[0].IsGroup ? addresses[0].Name.hashCode() :
+          addresses[0].Address.toString().hashCode();
         for (int i = 0; i < 8; ++i) {
           builder.append(ValueHex.charAt(seq & 15));
           seq >>= 4;

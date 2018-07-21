@@ -319,6 +319,21 @@ Assert.assertEquals(
       na = new NamedAddress(null, "me@example.com");
       Assert.assertEquals("me@example.com", na.getName());
     }
+
+    @Test
+    public void TestNameEqualQMark() {
+      NamedAddress na;
+      na = new NamedAddress("=?utf-8?q?Me?=", "me@example.com");
+      Assert.assertEquals("=?utf-8?q?Me?=", na.getName());
+      Assert.assertEquals("\"=?utf-8?q?Me?=\" <me@example.com>", na.toString());
+      na = new NamedAddress("=?utf-8?q?Me", "me@example.com");
+      Assert.assertEquals("=?utf-8?q?Me", na.getName());
+      Assert.assertEquals("\"=?utf-8?q?Me\" <me@example.com>", na.toString());
+      na = new NamedAddress("=?utf-8?=", "me@example.com");
+      Assert.assertEquals("=?utf-8?=", na.getName());
+      Assert.assertEquals("\"=?utf-8?=\" <me@example.com>", na.toString());
+    }
+
     @Test
     public void TestToString() {
       String ValueMbox =
