@@ -2021,6 +2021,12 @@ boolean foundColon = false;
                  (byte)'\t')) {
             // Space followed immediately by CRLF
             allTextBytes = false;
+          } else if (i + 4 < body.length && body[i + 1] == (byte)'\n' &&
+                    body[i + 2] == (byte)'.' && body[i + 3] == (byte)'\r' &&
+                    body[i + 4] == (byte)'\n') {
+            // CR LF dot CR LF, the SMTP end-of-data indicator
+            // RFC 5321 sec. 4.1.1.4
+            allTextBytes = false;
           } else {
             ++i;
             lineLength = 0;

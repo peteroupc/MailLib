@@ -38,7 +38,7 @@ namespace PeterO.Mail {
     private static bool HasSuspiciousTextInStructured(string str) {
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
-        // Has ValueSpecials, or CTLs other than tab
+        // Has 'specials', or CTLs other than tab
         if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29 ||
           c == 0x3c || c == 0x3e || c == 0x5b || c == 0x5d || c == 0x3a || c
             == 0x3b || c == 0x40 ||
@@ -237,7 +237,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
     string str,
     int index,
     int endIndex) {
-      const string ValueSpecials = "()<>@,;:\\\"/[]?=.";
+      const string ValueSpecials = "()<>[]@,;:\\\"/?=.";
       int i = index;
       while (i < endIndex) {
         char c = str[i];
@@ -250,18 +250,48 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
       return i;
     }
 
+    // See point 3 of RFC 2047 sec. 5
+    private static readonly int[] smallchars ={
+      0,1,0,0, 0,0,0,0, 0,0,1,1, 0,1,0,1,
+      1,1,1,1, 1,1,1,1, 1,1,0,0, 0,1,0,0,
+0,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+1,1,1,1, 1,1,1,1, 1,1,1,0, 0,0,0,1,
+0,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+      1,1,1,1, 1,1,1,1, 1,1,1,0, 0,0,0,0};
+
+    // ASCII characters allowed in atoms
+    private static readonly int[] asciiAtext ={
+      0,1,0,1, 1,1,1,1, 0,0,1,1, 0,1,0,1,
+      1,1,1,1, 1,1,1,1, 1,1,0,0, 0,1,0,1,
+      0,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+      1,1,1,1, 1,1,1,1, 1,1,1,0, 0,0,1,1,
+      1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+      1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,0};
+
+
     private static int SkipEncodedText(
   string str,
   int index,
   int endIndex,
-  bool inComments) {
+  EncodedWordContext context,
+  int encoding) {
       int i = index;
       while (i < endIndex) {
         char c = str[i];
         if (c <= 0x20 || c >= 0x7F || c == '?') {
           break;
         }
-        if (inComments && (c == '(' || c == ')' || c == '\\')) {
+        if (context==EncodedWordContext.Comment && 
+            (c == '(' || c == ')' || c == '\\')) {
+          break;
+        }
+        if (context==EncodedWordContext.Phrase && 
+            (encodingChar=='Q' || encodingChar=='q') && 
+            smallchars[c-0x20]==0) {
+          break;
+        }
+        if (context==EncodedWordContext.Phrase && 
+            asciiAtext[c-0x20]==0) {
           break;
         }
         ++i;
@@ -318,8 +348,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
             ++index;
             // Check for a run of printable ASCII characters (except space)
             // with length up to 75 (also exclude '(' , '\', and ')' if the
-            // context
-            // is a comment)
+            // context is a comment)
             if (c >= 0x21 && c < 0x7e && (context !=
           EncodedWordContext.Comment || (c != '(' && c != ')' && c != '\\'
 ))) {
@@ -367,7 +396,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
   str,
   index,
   afterLast,
-  context == EncodedWordContext.Comment);
+  context, encodingChar);
 if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
                 i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
