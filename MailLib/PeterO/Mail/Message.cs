@@ -489,40 +489,40 @@ namespace PeterO.Mail {
       this.headers.Add(String.Empty);
       return this.SetHeader(index, name, value);
     }
-   /*
+   /* 
     // TODO: Consider adding the following
-
-    public Message SetSubject(string value) {
+    
+    public Message SetSubject(string value){
         return this.SetHeader("subject",value);
     }
 
-    public Message SetFrom(string value) {
+    public Message SetFrom(string value){
         return this.SetHeader("from",value);
     }
 
-    public Message AddTo(params string[] strings) {
-       for (var str in strings) {
+    public Message AddTo(params string[] strings){
+       for(var str in strings){
            this.AddHeader("to",str);
        }
        return this;
     }
 
-    public Message AddCc(params string[] strings) {
-       for (var str in strings) {
+    public Message AddCc(params string[] strings){
+       for(var str in strings){
            this.AddHeader("cc",str);
        }
        return this;
     }
 
-    public Message AddTo(params NamedAddress[] addresses) {
-       for (var str in addresses) {
+    public Message AddTo(params NamedAddress[] addresses){
+       for(var str in addresses){
           this.AddHeader("to",str.ToString());
        }
        return this;
     }
 
-    public Message AddCc(params NamedAddress[] addresses) {
-       for (var str in addresses) {
+    public Message AddCc(params NamedAddress[] addresses){
+       for(var str in addresses){
           this.AddHeader("cc",str);
        }
     }
@@ -1675,7 +1675,8 @@ var foundColon = false;
       var lineLength = 0;
       // Assume 'allTextBytes' is false if this is a body part or not
       // all of the body is checked
-      bool allTextBytes = (!isBodyPart) && lengthCheck == body.Length;
+      bool allTextBytes = (!isBodyPart) && 
+        lengthCheck == body.Length;
       for (int i = 0; i < lengthCheck; ++i) {
         if (i > 0 && (allTextBytes ? (i % 108 == 0) : (i % 36 == 0))) {
           if (highBytes + ctlBytes > i / 3) {
@@ -1703,6 +1704,12 @@ var foundColon = false;
           } else if (i > 0 && (body[i - 1] == (byte)' ' || body[i - 1] ==
                  (byte)'\t')) {
             // Space followed immediately by CRLF
+            allTextBytes = false;
+          } else if (i + 4 < body.Length && body[i + 1] == (byte)'\n' && 
+                     body[i + 2] == (byte)'.' && body[i + 3] == (byte)'\r' &&
+                     body[i + 4] == (byte)'\n') {
+            // CR LF dot CR LF, the SMTP end-of-data indicator
+            // RFC 5321 sec. 4.1.1.4
             allTextBytes = false;
           } else {
             ++i;
