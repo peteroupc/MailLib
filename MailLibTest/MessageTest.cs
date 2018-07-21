@@ -37,9 +37,11 @@ namespace MailLibTest {
                     ret.Substring(0, Math.Min(ret.Length, 260)));
       }
         string messageTemp = ret;
+      /*
         Assert.IsTrue(
   fmtresult != 0,
   messageTemp.Substring(0, Math.Min(messageTemp.Length, 260)));
+  */
       return ret;
     }
 
@@ -2287,6 +2289,24 @@ for (var i = 0; i < fn.Length; i += 2) {
         throw new InvalidOperationException(String.Empty, ex);
       }
     }
+
+    private static void TestSetHeaderOne(Message msg, string header, string value) {
+      msg.SetHeader(header, value);
+      Assert.AreEqual(value, msg.GetHeader(header));
+    }
+
+    [Test]
+    public void TestSetHeaderTo() {
+      Message msg = new Message();
+      TestSetHeaderOne(msg, "to", "\"Example Example\" <example@example.com>");
+      TestSetHeaderOne(msg, "to", "\"Example E. Example\" <example@example.com>");
+      TestSetHeaderOne(msg, "to", "\"Example E. Example\" <example@EXAMPLE.COM>");
+      TestSetHeaderOne(msg, "to", "\"Example, Example\" <example@example.com>");
+      TestSetHeaderOne(msg, "to", "\"Example, Example (ABC)\" <example@example.com>");
+      TestSetHeaderOne(msg, "to", "\"Example, Example \\(ABC\\)\" <example@example.com>");
+      TestSetHeaderOne(msg, "to", "\u0020\"Example, Example\" <example@example.com>");
+    }
+
     [Test]
     public void TestSubject() {
       var msg = new Message();

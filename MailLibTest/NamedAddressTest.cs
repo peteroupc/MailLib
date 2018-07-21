@@ -289,6 +289,21 @@ Assert.AreEqual(
       na = new NamedAddress(null, "me@example.com");
       Assert.AreEqual("me@example.com", na.Name);
     }
+
+    [Test]
+    public void TestNameEqualQMark(){
+      NamedAddress na;
+      na = new NamedAddress("=?utf-8?q?Me?=", "me@example.com");
+      Assert.AreEqual("=?utf-8?q?Me?=", na.Name);
+      Assert.AreEqual("\"=?utf-8?q?Me?=\" <me@example.com>",na.ToString());
+      na = new NamedAddress("=?utf-8?q?Me", "me@example.com");
+      Assert.AreEqual("=?utf-8?q?Me", na.Name);
+      Assert.AreEqual("\"=?utf-8?q?Me\" <me@example.com>",na.ToString());       
+      na = new NamedAddress("=?utf-8?=", "me@example.com");
+      Assert.AreEqual("=?utf-8?=", na.Name);
+      Assert.AreEqual("\"=?utf-8?=\" <me@example.com>",na.ToString());       
+    }
+
     [Test]
     public void TestToString() {
       const string ValueMbox =
