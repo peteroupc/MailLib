@@ -1058,8 +1058,9 @@ and unrecognized media types as the media type <c>application/octet-stream</c>.<
             <item>(d) In non-MIME message bodies and in text/plain message
             bodies. Any 8-bit bytes are replaced with the substitute character
             byte (0x1a).</item>
-            <item>If the first line of the message starts with the word "From"
-            followed by a space, it is skipped.</item>
+            <item>If the first line of the message starts with the word "From" (and
+            no other case variations of that word)
+            followed by a space or tab (U+0020 or U+0009), it is skipped.</item>
             <item>The name <c>ascii</c> is treated as a synonym for
             <c>us-ascii</c>, despite being a reserved name under RFC 2046. The
             name <c>cp1252</c> is treated as a synonym for <c>windows-1252</c>
