@@ -37,11 +37,9 @@ namespace MailLibTest {
                     ret.Substring(0, Math.Min(ret.Length, 260)));
       }
         string messageTemp = ret;
-      /*
         Assert.IsTrue(
   fmtresult != 0,
   messageTemp.Substring(0, Math.Min(messageTemp.Length, 260)));
-  */
       return ret;
     }
 
@@ -1007,6 +1005,31 @@ Assert.IsTrue(boolTemp, msgstring);
         }
       }
       return false;
+    }
+
+    [Test]
+    public void TestMostlyAscii() {
+      var msg = new Message();
+      Message msg2;
+      string body;
+       body = EncodingTest.Repeat(
+        EncodingTest.Repeat("a", 76) + "\r\n",
+        5) +
+   "\u00e7\r\nthe end";
+      msg.SetTextBody(body);
+      MessageGenerate(msg);
+      msg2 = new Message(msg.GenerateBytes());
+      Assert.AreEqual(body, DataUtilities.GetUtf8String(msg2.GetBody(), false));
+      body = EncodingTest.Repeat(
+                    EncodingTest.Repeat("a", 76) + "\r\n",
+                    20) +
+   "\u00e7\r\nthe end";
+      msg.SetTextBody(body);
+      msg2 = new Message(msg.GenerateBytes());
+      Assert.AreEqual(
+  body,
+  DataUtilities.GetUtf8String(msg2.GetBody(), false));
+      MessageGenerate(msg);
     }
 
     [Test]
@@ -2290,21 +2313,42 @@ for (var i = 0; i < fn.Length; i += 2) {
       }
     }
 
-    private static void TestSetHeaderOne(Message msg, string header, string value) {
+    private static void TestSetHeaderOne(
+  Message msg,
+  string header,
+  string value) {
       msg.SetHeader(header, value);
       Assert.AreEqual(value, msg.GetHeader(header));
     }
 
     [Test]
     public void TestSetHeaderTo() {
-      Message msg = new Message();
+      var msg = new Message();
       TestSetHeaderOne(msg, "to", "\"Example Example\" <example@example.com>");
-      TestSetHeaderOne(msg, "to", "\"Example E. Example\" <example@example.com>");
-      TestSetHeaderOne(msg, "to", "\"Example E. Example\" <example@EXAMPLE.COM>");
+   TestSetHeaderOne(
+  msg,
+  "to",
+  "\"Example E. Example\" <example@example.com>");
+   TestSetHeaderOne(
+  msg,
+  "to",
+  "\"Example E. Example\" <example@EXAMPLE.COM>");
       TestSetHeaderOne(msg, "to", "\"Example, Example\" <example@example.com>");
-      TestSetHeaderOne(msg, "to", "\"Example, Example (ABC)\" <example@example.com>");
-      TestSetHeaderOne(msg, "to", "\"Example, Example \\(ABC\\)\" <example@example.com>");
-      TestSetHeaderOne(msg, "to", "\u0020\"Example, Example\" <example@example.com>");
+      TestSetHeaderOne(
+  msg,
+  "to",
+  "\"Example,
+  Example (ABC)\" <example@example.com>");
+      TestSetHeaderOne(
+  msg,
+  "to",
+  "\"Example,
+  Example \\(ABC\\)\" <example@example.com>");
+      TestSetHeaderOne(
+  msg,
+  "to",
+  "\u0020\"Example,
+  Example\" <example@example.com>");
     }
 
     [Test]

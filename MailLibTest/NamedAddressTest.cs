@@ -291,17 +291,17 @@ Assert.AreEqual(
     }
 
     [Test]
-    public void TestNameEqualQMark(){
+    public void TestNameEqualQMark() {
       NamedAddress na;
       na = new NamedAddress("=?utf-8?q?Me?=", "me@example.com");
       Assert.AreEqual("=?utf-8?q?Me?=", na.Name);
-      Assert.AreEqual("\"=?utf-8?q?Me?=\" <me@example.com>",na.ToString());
+      Assert.AreEqual("\"=?utf-8?q?Me?=\" <me@example.com>", na.ToString());
       na = new NamedAddress("=?utf-8?q?Me", "me@example.com");
       Assert.AreEqual("=?utf-8?q?Me", na.Name);
-      Assert.AreEqual("\"=?utf-8?q?Me\" <me@example.com>",na.ToString());       
+      Assert.AreEqual("\"=?utf-8?q?Me\" <me@example.com>", na.ToString());
       na = new NamedAddress("=?utf-8?=", "me@example.com");
       Assert.AreEqual("=?utf-8?=", na.Name);
-      Assert.AreEqual("\"=?utf-8?=\" <me@example.com>",na.ToString());       
+      Assert.AreEqual("\"=?utf-8?=\" <me@example.com>", na.ToString());
     }
 
     [Test]

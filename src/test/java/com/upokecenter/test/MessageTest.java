@@ -1013,6 +1013,31 @@ if (!(boolTemp)) {
     }
 
     @Test
+    public void TestMostlyAscii() {
+      Message msg = new Message();
+      Message msg2;
+      String body;
+       body = EncodingTest.Repeat(
+        EncodingTest.Repeat("a", 76) + "\r\n",
+        5) +
+   "\u00e7\r\nthe end";
+      msg.SetTextBody(body);
+      MessageGenerate(msg);
+      msg2 = new Message(msg.GenerateBytes());
+      Assert.assertEquals(body, DataUtilities.GetUtf8String(msg2.GetBody(), false));
+      body = EncodingTest.Repeat(
+                    EncodingTest.Repeat("a", 76) + "\r\n",
+                    20) +
+   "\u00e7\r\nthe end";
+      msg.SetTextBody(body);
+      msg2 = new Message(msg.GenerateBytes());
+      Assert.assertEquals(
+  body,
+  DataUtilities.GetUtf8String(msg2.GetBody(), false));
+      MessageGenerate(msg);
+    }
+
+    @Test
     public void TestGetDate() {
       Message msg = new Message();
       int[] date;
@@ -1340,11 +1365,11 @@ if (!(boolTemp)) {
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals("application", msg.getParts().get(0).getContentType().getTopLevelType());
       body = msg.getParts().get(0).GetBody();
-      Assert.assertEquals(0, body[0]);
-      Assert.assertEquals(16, body[1]);
-      Assert.assertEquals(1, body[2]);
-      Assert.assertEquals(93, body[3]);
-      Assert.assertEquals(4, body.length);
+      Assert.assertEquals(0, body.charAt(0));
+      Assert.assertEquals(16, body.charAt(1));
+      Assert.assertEquals(1, body.charAt(2));
+      Assert.assertEquals(93, body.charAt(3));
+      Assert.assertEquals(4, body.length());
       // Base64 body part II
       message = messageStart;
       message += "Content-Type: application/octet-stream\r\n";
@@ -1363,11 +1388,11 @@ if (!(boolTemp)) {
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals("application", msg.getParts().get(0).getContentType().getTopLevelType());
       body = msg.getParts().get(0).GetBody();
-      Assert.assertEquals(0, body[0]);
-      Assert.assertEquals(16, body[1]);
-      Assert.assertEquals(1, body[2]);
-      Assert.assertEquals(93, body[3]);
-      Assert.assertEquals(4, body.length);
+      Assert.assertEquals(0, body.charAt(0));
+      Assert.assertEquals(16, body.charAt(1));
+      Assert.assertEquals(1, body.charAt(2));
+      Assert.assertEquals(93, body.charAt(3));
+      Assert.assertEquals(4, body.length());
       // Base64 in nested body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -1390,11 +1415,11 @@ if (!(boolTemp)) {
       Message part = msg.getParts().get(0);
       Assert.assertEquals("application", part.getParts().get(0).getContentType().getTopLevelType());
       body = part.getParts().get(0).GetBody();
-      Assert.assertEquals(0, body[0]);
-      Assert.assertEquals(16, body[1]);
-      Assert.assertEquals(1, body[2]);
-      Assert.assertEquals(93, body[3]);
-      Assert.assertEquals(4, body.length);
+      Assert.assertEquals(0, body.charAt(0));
+      Assert.assertEquals(16, body.charAt(1));
+      Assert.assertEquals(1, body.charAt(2));
+      Assert.assertEquals(93, body.charAt(3));
+      Assert.assertEquals(4, body.length());
       // Nested Multipart body part II
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
@@ -2298,6 +2323,45 @@ for (int i = 0; i < fn.length; i += 2) {
         throw new IllegalStateException("", ex);
       }
     }
+
+    private static void TestSetHeaderOne(
+  Message msg,
+  String header,
+  String value) {
+      msg.SetHeader(header, value);
+      Assert.assertEquals(value, msg.GetHeader(header));
+    }
+
+    @Test
+    public void TestSetHeaderTo() {
+      Message msg = new Message();
+      TestSetHeaderOne(msg, "to", "\"Example Example\" <example@example.com>");
+   TestSetHeaderOne(
+  msg,
+  "to",
+  "\"Example E. Example\" <example@example.com>");
+   TestSetHeaderOne(
+  msg,
+  "to",
+  "\"Example E. Example\" <example@EXAMPLE.COM>");
+      TestSetHeaderOne(msg, "to", "\"Example, Example\" <example@example.com>");
+      TestSetHeaderOne(
+  msg,
+  "to",
+  "\"Example,
+  Example (ABC)\" <example@example.com>");
+      TestSetHeaderOne(
+  msg,
+  "to",
+  "\"Example,
+  Example \\(ABC\\)\" <example@example.com>");
+      TestSetHeaderOne(
+  msg,
+  "to",
+  "\u0020\"Example,
+  Example\" <example@example.com>");
+    }
+
     @Test
     public void TestSubject() {
       Message msg = new Message();

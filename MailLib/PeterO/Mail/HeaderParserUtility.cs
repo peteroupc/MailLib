@@ -97,7 +97,7 @@ namespace PeterO.Mail {
         // Space or tab at end
         return true;
       }
-      if (str.Length>=2 && str[0]=='=' && str[1]=='?'){
+      if (str.Length>= 2 && str[0]=='=' && str[1]=='?') {
         // "=?" at beginning (see RFC 2047 sec. 7)
         return true;
       }
