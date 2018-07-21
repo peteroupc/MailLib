@@ -81,13 +81,13 @@ namespace PeterO.Mail {
         if (writeSpace) {
           this.builder.Append(" ");
         }
-      this.builder.Append(symbol.Substring(startIndex, endIndex -
-          startIndex));
+        this.builder.Append(symbol.Substring(startIndex, endIndex -
+            startIndex));
         this.column += (endIndex - startIndex) + spaceLength;
       } else {
         this.builder.Append("\r\n ");
-      this.builder.Append(symbol.Substring(startIndex, endIndex -
-          startIndex));
+        this.builder.Append(symbol.Substring(startIndex, endIndex -
+            startIndex));
         this.column = 1 + (endIndex - startIndex);
       }
       return false;  // No need to write space anymore
@@ -111,8 +111,8 @@ namespace PeterO.Mail {
             symbolBegin = i + 2;
             i += 2;
             continue;
-          } else if (symbol[i]=='<' || symbol[i]=='>' || symbol[i]==',' ||
-                    symbol[i]==';' || symbol[i]==':') {
+          } else if (symbol[i] == '<' || symbol[i] == '>' || symbol[i] == ',' ||
+                    symbol[i] == ';' || symbol[i] == ':') {
             // Additional characters between which linear white space can
             // freely appear
             // in structured header fields. They are the union of RFC 822's
@@ -140,8 +140,8 @@ namespace PeterO.Mail {
             if (si != i) {
               writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i,
                     writeSpace);
-           AppendQuotedStringOrDomain(symbol.Substring(i, si - i),
-                writeSpace);
+              AppendQuotedStringOrDomain(symbol.Substring(i, si - i),
+                   writeSpace);
               writeSpace = false;
               i = si;
               symbolBegin = si;
@@ -276,6 +276,14 @@ namespace PeterO.Mail {
       this.column += 3;
     }
 
+    private static readonly int[] smallchars ={
+      0,1,0,0, 0,0,0,0, 0,0,1,1, 0,1,0,1,
+      1,1,1,1, 1,1,1,1, 1,1,0,0, 0,1,0,0,
+0,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+1,1,1,1, 1,1,1,1, 1,1,1,0, 0,0,0,1,
+0,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
+      1,1,1,1, 1,1,1,1, 1,1,1,0, 0,0,0,0};
+
     public HeaderEncoder AppendAsEncodedWords(string symbol) {
       var i = 0;
       var currentWordLength = 0;
@@ -284,15 +292,14 @@ namespace PeterO.Mail {
         if (ch >= 0x10000) {
           ++i;
         }
-  bool smallChar = ch <= 0x7e && ch > 0x20 && ch != (char)'"' && ch !=
-          (char)','&& "?()<>[]:;@\\.=_".IndexOf((char)ch) < 0;
+        bool smallChar = ch <= 0x7e && ch > 0x20 && smallchars[ch - 0x20] == 1;
         var unitLength = 1;
         if (ch == 0x20 || smallChar) {
           unitLength = 1;
         } else {
- unitLength = (ch <= 0x7f) ? (3) : ((ch <= 0x7ff) ? (6) : ((ch <= 0xffff) ?
-   (9) : (12)));
-}
+          unitLength = (ch <= 0x7f) ? (3) : ((ch <= 0x7ff) ? (6) : ((ch <= 0xffff) ?
+            (9) : (12)));
+        }
         if (!CanCharUnitFit(currentWordLength, unitLength, false)) {
           if (currentWordLength > 0) {
             AppendSymbol("?=");
@@ -385,13 +392,13 @@ namespace PeterO.Mail {
 
     public HeaderEncoder AppendSpaceIfNeeded() {
       if (this.builder.Length == 0) {
- return AppendSpace();
-}
+        return AppendSpace();
+      }
       bool endsWithSpace = (
         this.builder[this.builder.Length - 1] == 0x20 || this.builder[this.builder.Length - 1] == 0x09);
       if (!endsWithSpace) {
- AppendSpace();
-}
+        AppendSpace();
+      }
       return this;
     }
 

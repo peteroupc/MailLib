@@ -5624,7 +5624,7 @@ index = indexStart2; break;
 
 public static int ParseLanguageRange(String str, int index, int endIndex,
   ITokener tokener) {
-int i2, indexStart2, indexTemp, indexTemp2;
+int i2, i3, indexStart2, indexStart3, indexTemp, indexTemp2, indexTemp3;
  indexTemp = index;
  do {
  indexTemp2 = index;
@@ -5643,11 +5643,38 @@ index = indexStart2; break;
 if (index == indexStart2) {
  break;
 }
-while ((index + 1 < endIndex && (((str.charAt(index) == 45) && ((str.charAt(index + 1) >=
-  65 && str.charAt(index + 1) <= 90) || (str.charAt(index + 1) >= 97 && str.charAt(index + 1) <=
-  122) || (str.charAt(index + 1) >= 48 && str.charAt(index + 1) <= 57)))))) {
- index += 2;
+ while (true) {
+  indexTemp3 = index;
+ do {
+ indexStart3 = index;
+if (index < endIndex && (str.charAt(index) == 45)) {
+ ++index;
+} else {
+ break;
 }
+for (i3 = 0; i3 < 8; ++i3) {
+ if (index < endIndex && ((str.charAt(index) >= 65 && str.charAt(index) <= 90) ||
+   (str.charAt(index) >= 97 && str.charAt(index) <= 122) || (str.charAt(index) >= 48 &&
+   str.charAt(index) <= 57))) {
+  ++index;
+ } else if (i3< 1) {
+index = indexStart3; break;
+ } else {
+ break;
+}
+}
+if (index == indexStart3) {
+ break;
+}
+  indexTemp3 = index;
+  index = indexStart3;
+ } while (false);
+  if (indexTemp3 != index) {
+index = indexTemp3;
+} else {
+ break;
+}
+ }
   indexTemp2 = index;
   index = indexStart2;
  } while (false);
