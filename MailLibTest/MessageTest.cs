@@ -2322,6 +2322,16 @@ for (var i = 0; i < fn.Length; i += 2) {
     }
 
     [Test]
+    public void TestSetHeaderAcceptLanguage() {
+      var msg = new Message();
+      TestSetHeaderOne(msg, "accept-language", "en-us");
+      TestSetHeaderOne(msg, "accept-language", "en-us\u002c de-de");
+      TestSetHeaderOne(msg, "accept-language", "en-us\u002cde-de");
+      TestSetHeaderOne(msg, "accept-language", "en-us \u002cde-de");
+      TestSetHeaderOne(msg, "accept-language", "en-us \u002c de-de");
+    }
+
+    [Test]
     public void TestSetHeaderTo() {
       var msg = new Message();
       TestSetHeaderOne(msg, "to", "\"Example Example\" <example@example.com>");
@@ -2337,18 +2347,15 @@ for (var i = 0; i < fn.Length; i += 2) {
       TestSetHeaderOne(
   msg,
   "to",
-  "\"Example,
-  Example (ABC)\" <example@example.com>");
+  "\"Example\u002c Example (ABC)\" <example@example.com>");
       TestSetHeaderOne(
   msg,
   "to",
-  "\"Example,
-  Example \\(ABC\\)\" <example@example.com>");
+  "\"Example\u002c Example \\(ABC\\)\" <example@example.com>");
       TestSetHeaderOne(
   msg,
   "to",
-  "\u0020\"Example,
-  Example\" <example@example.com>");
+  "\u0020\"Example\u002c Example\" <example@example.com>");
     }
 
     [Test]
