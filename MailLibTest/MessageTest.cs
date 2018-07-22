@@ -2321,11 +2321,21 @@ for (var i = 0; i < fn.Length; i += 2) {
       Assert.AreEqual(value, msg.GetHeader(header));
     }
 
+    private static void TestSetHeaderInvalid(
+Message msg,
+string header,
+string value) {
+      Assert.Throws<ArgumentException>(()=>msg.SetHeader(header, value));
+    }
+
     [Test]
     public void TestSetHeaderAcceptLanguage() {
       var msg = new Message();
       TestSetHeaderOne(msg, "accept-language", "en-us");
       TestSetHeaderOne(msg, "accept-language", "en-us\u002c de-de");
+      TestSetHeaderInvalid(msg, "accept-language", "enenenene-us\u002c de-de");
+      TestSetHeaderInvalid(msg, "accept-language", "en-ususususu\u002c de-de");
+      TestSetHeaderInvalid(msg, "accept-language", "en-us\u002c\u002c de-de");
       TestSetHeaderOne(msg, "accept-language", "en-us\u002cde-de");
       TestSetHeaderOne(msg, "accept-language", "en-us \u002cde-de");
       TestSetHeaderOne(msg, "accept-language", "en-us \u002c de-de");
