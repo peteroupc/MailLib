@@ -90,6 +90,15 @@ namespace PeterO.Mail {
       this.headers.Add("1.0");
     }
 
+    /// <summary>Not documented yet.</summary>
+    public static Message NewBodyPart(){
+      var msg=new Message();
+      msg.contentType = MediaType.TextPlainAscii;
+      // No headers by default (see RFC 2046 sec. 5.1)
+      msg.headers.Clear();
+      return msg;
+    }
+
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.SetCurrentDate"]/*'/>
     public Message SetCurrentDate() {
@@ -552,8 +561,8 @@ namespace PeterO.Mail {
       // The spec for multipart/alternative (RFC 2046) says that
       // the fanciest version of the message should go last (in
       // this case, the HTML version)
-      var textMessage = new Message().SetTextBody(text);
-      var htmlMessage = new Message().SetHtmlBody(html);
+      var textMessage = NewBodyPart().SetTextBody(text);
+      var htmlMessage = NewBodyPart().SetHtmlBody(html);
       this.contentType =
   MediaType.Parse("multipart/alternative; boundary=\"=_Boundary00000000\"");
       IList<Message> messageParts = this.Parts;
@@ -635,71 +644,6 @@ namespace PeterO.Mail {
       return true;
     }
 
-    // Returns true only if:
-    // * Header field has a name followed by colon followed by SP
-    // * Header field's value matches the production "unstructured"
-    // in RFC 5322 without any obsolete syntax
-    // * Each line is no more than MaxRecHeaderLineLength characters in length
-    // * Text has only printable ASCII characters, CR,
-    // LF, and/or TAB
-    internal static bool CanOutputRaw(string s) {
-var foundColon = false;
-      var index = 0;
-      int len = s.Length;
-      for (var i = 0; i < len; ++i) {
-        if (s[i] == ':') {
-          foundColon = true;
-          if (i + 1 >= len || s[i + 1] != 0x20) {
-            // Colon not followed by SPACE (0x20)
-            return false;
-          }
-          index = i + 2;
-          if (index > MaxRecHeaderLineLength) {
- return false;
-}
-          break;
-  }
-        if (s[i] == 0x0d || s[i] == 0x09 || s[i] == 0x20) {
- return false;
-}
-      }
-      if (!foundColon) {
- return false;
-}
-      int chunkLength = index;
-      for (int i = index; i < len;) {
-        if (s[i] == 0x0d) {
-          if (i + 2 >= len || s[i + 1] != 0x0a || (s[i + 2] != 0x09 && s[i +
-            2] != 0x20)) {
-            // bare CR, or CRLF not followed by SP/VTAB
-            return false;
-          }
-          i += 3;
-          chunkLength = 1;
-          var found = false;
-          for (int j = i; j < len; ++j) {
-            if (s[j] != 0x09 && s[j] != 0x20 && s[j] != 0x0d) {
-              found = true; break;
-            }
-          }
-          if (!found) {
- return false;
-}
-        } else {
-          char c = s[i];
-          if (chunkLength > MaxRecHeaderLineLength) {
- return false;
-}
-          if (c >= 0x7f || (c < 0x20 && c != 0x09 && c != 0x0d)) {
-            // CTLs (except TAB, SPACE, and CR) and non-ASCII
-            // characters
-            return false;
-          }
-          ++i;
-        }
-      }
-      return true;
-    }
 
     // Parse the delivery status byte array to downgrade
     // the Original-Recipient and Final-Recipient header fields
@@ -1935,12 +1879,8 @@ var foundColon = false;
           }
         }
         rawField = rawField ?? (HeaderEncoder.EncodeField(name, value));
-        if (CanOutputRaw(rawField)) {
-          AppendAscii(output, rawField);
-          if (rawField.IndexOf(": ", StringComparison.Ordinal) < 0) {
-            throw new MessageDataException("No colon+space: " + rawField);
-          }
-        } else if (HasTextToEscapeOrEncodedWordStarts(value)) {
+        if (!HeaderEncoder.CanOutputRaw(rawField)) {
+          DebugUtility.Log("Can't output "+name+" raw");
           string downgraded = HeaderFieldParsers.GetParser(name)
                     .DowngradeHeaderField(name, value);
           if (
@@ -2342,7 +2282,7 @@ var foundColon = false;
           }
           if (ch < 0) {
             if (boundaryChecker.HasNewBodyPart) {
-              var msg = new Message();
+              var msg = NewBodyPart();
               int stackCount = boundaryChecker.BoundaryCount();
               // Pop entries if needed to match the stack
 #if DEBUG

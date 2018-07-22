@@ -274,7 +274,7 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
   int index,
   int endIndex,
   EncodedWordContext context,
-  int encoding) {
+  int encodingChar) {
       int i = index;
       while (i < endIndex) {
         char c = str[i];
