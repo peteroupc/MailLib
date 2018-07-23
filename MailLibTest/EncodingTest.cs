@@ -1864,10 +1864,17 @@ string stringTemp =
   "(=?utf-8?Q?x_y?=)",
   stringTemp);
       }
+
       {
         string stringTemp = EncodeComment("(x\u00a0)");
         Assert.AreEqual(
   "(=?utf-8?Q?x=C2=A0?=)",
+  stringTemp);
+      }
+      {
+        string stringTemp = EncodeComment("(_\u00a0)");
+        Assert.AreEqual(
+  "(=?utf-8?Q?=5F=C2=A0?=)",
   stringTemp);
       }
       {

@@ -276,13 +276,13 @@ namespace PeterO.Mail {
       this.column += 3;
     }
 
-    private static readonly int[] smallchars ={
-      0,1,0,0, 0,0,0,0, 0,0,1,1, 0,1,0,1,
-      1,1,1,1, 1,1,1,1, 1,1,0,0, 0,1,0,0,
-0,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
-1,1,1,1, 1,1,1,1, 1,1,1,0, 0,0,0,1,
-0,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
-      1,1,1,1, 1,1,1,1, 1,1,1,0, 0,0,0,0};
+    private static readonly int[] smallchars = {
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0,
+  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
 
     public HeaderEncoder AppendAsEncodedWords(string symbol) {
       var i = 0;
@@ -297,7 +297,8 @@ namespace PeterO.Mail {
         if (ch == 0x20 || smallChar) {
           unitLength = 1;
         } else {
-          unitLength = (ch <= 0x7f) ? (3) : ((ch <= 0x7ff) ? (6) : ((ch <= 0xffff) ?
+     unitLength = (ch <= 0x7f) ? (3) : ((ch <= 0x7ff) ? (6) : ((ch <=
+            0xffff) ?
             (9) : (12)));
         }
         if (!CanCharUnitFit(currentWordLength, unitLength, false)) {
@@ -382,7 +383,8 @@ namespace PeterO.Mail {
         this.builder.Append((char)Base64Classic[(b1 >> 2) & 63]);
         this.builder.Append((char)Base64Classic[((b1 & 3) << 4) + ((b2 >> 4) &
           15)]);
-        this.builder.Append((char)Base64Classic[((b2 & 15) << 2) + ((value >> 6) & 3)]);
+        this.builder.Append((char)Base64Classic[((b2 & 15) << 2) + ((value>>
+          6) & 3)]);
         this.builder.Append((char)Base64Classic[value & 63]);
         this.column += 4;
         b64[2] = 0;
@@ -398,13 +400,14 @@ namespace PeterO.Mail {
     public HeaderEncoder AppendAsEncodedWordsB(string symbol) {
       var i = 0;
       var currentWordLength = 0;
-      int[] base64state = new int[] { 0, 0, 0 };
+      var base64state = new int[] { 0, 0, 0 };
       while (i < symbol.Length) {
         int ch = DataUtilities.CodePointAt(symbol, i);
         if (ch >= 0x10000) {
           ++i;
         }
-        var unitLength = (ch <= 0x7f) ? (1) : ((ch <= 0x7ff) ? (2) : ((ch <= 0xffff) ?
+ var unitLength = (ch <= 0x7f) ? (1) : ((ch <= 0x7ff) ? (2) : ((ch <=
+          0xffff) ?
             (3) : (4)));
         var bytesNeeded = 4 + (base64state[2] + unitLength > 3 ? 4 : 0);
         if (!CanCharUnitFit(currentWordLength, bytesNeeded, false)) {
@@ -461,7 +464,7 @@ namespace PeterO.Mail {
       var i = 0;
       var symbolBegin = 0;
       while (i < symbol.Length) {
-        if (symbol[i] == '\r' && i + 1 < symbol.Length && 
+        if (symbol[i] == '\r' && i + 1 < symbol.Length &&
            symbol[i + 1] == '\n') {
           writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
           symbolBegin = i + 2;
@@ -500,8 +503,7 @@ namespace PeterO.Mail {
         return AppendSpaceOrTab(ch);
       }
       bool endsWithSpace = (
-        this.builder[this.builder.Length - 1] == 0x20 ||
-           this.builder[this.builder.Length - 1] == 0x09);
+        this.builder[this.builder.Length - 1] == 0x20 || this.builder[this.builder.Length - 1] == 0x09);
       if (!endsWithSpace) {
         AppendSpaceOrTab(ch);
       }
@@ -524,8 +526,9 @@ namespace PeterO.Mail {
           this.builder.Append(symbol);
           this.column += symbol.Length;
         } else {
-          if(this.column>1)
-            this.builder.Append("\r\n ");
+          if (this.column>1) {
+ this.builder.Append("\r\n ");
+}
           this.builder.Append(symbol);
           this.column = 1 + symbol.Length;
         }
@@ -540,12 +543,13 @@ namespace PeterO.Mail {
     // * Each line is no more than MaxRecHeaderLineLength characters in length,
     // except that a line with no whitespace other than leading and trailing may
     // go up to MaxHardHeaderLineLength characters in length
+    // * Value has no all-whitespace or blank lines
     // * Text has only printable ASCII characters, CR,
     // LF, and/or TAB
     public static bool CanOutputRaw(string s) {
       var foundColon = false;
       int len = s.Length;
-      int chunkLength = 0;
+      var chunkLength = 0;
       for (var i = 0; i < len; ++i) {
         if (s[i] == ':') {
           foundColon = true;
@@ -566,7 +570,7 @@ namespace PeterO.Mail {
       if (!foundColon) {
         return false;
       }
-      int whitespaceState = 3;
+      var whitespaceState = 3;
       for (int i = chunkLength; i < len;) {
         if (s[i] == 0x0d) {
           if (i + 2 >= len || s[i + 1] != 0x0a || (s[i + 2] != 0x09 && s[i +
@@ -581,7 +585,7 @@ namespace PeterO.Mail {
           for (int j = i; j < len; ++j) {
             if (s[j] != 0x09 && s[j] != 0x20 && s[j] != 0x0d) {
               found = true; break;
-            } else if(s[j]==0x0d){
+            } else if (s[j]==0x0d) {
               // Possible CRLF after all-whitespace line
               return false;
             }
@@ -598,14 +602,18 @@ namespace PeterO.Mail {
             return false;
           }
           ++i;
-          chunkLength++;
+          ++chunkLength;
           if (c == 0x09 || c == 0x20) {
             // 1 = Whitespace at start of line
             // 2 = Nonwhitespace after initial whitespace
             // 3 = After nonwhitespace
-            if (whitespaceState == 2) whitespaceState = 3;
+            if (whitespaceState == 2) {
+ whitespaceState = 3;
+}
           } else {
-            if (whitespaceState == 1) whitespaceState = 2;
+            if (whitespaceState == 1) {
+ whitespaceState = 2;
+}
           }
           if (whitespaceState < 3) {
             if (chunkLength > Message.MaxHardHeaderLineLength) {
@@ -660,7 +668,9 @@ namespace PeterO.Mail {
     public static string EncodeField(string fieldName, string
         fieldValue) {
       var trialField = CapitalizeHeaderField(fieldName) + ": " + fieldValue;
-      if (CanOutputRaw(trialField)) return trialField;
+      if (CanOutputRaw(trialField)) {
+ return trialField;
+}
       var sa = new HeaderEncoder().AppendFieldName(fieldName);
       sa.AppendString(TrimLeadingFWS(fieldValue));
       return sa.ToString();

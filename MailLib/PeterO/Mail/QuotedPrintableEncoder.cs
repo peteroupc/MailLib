@@ -160,6 +160,7 @@ namespace PeterO.Mail {
               } else if (c == 0x3d) {
                 return count + this.IncrementAndAppend(output, "=3D");
               } else if (c == 0x2e && this.lineCount == 0) {
+                // Period at beginning of line
                 return count + this.IncrementAndAppend(output, "=2E");
               } else if (c == 0x46 && this.lineCount == 0) {
                 this.machineState = 3;

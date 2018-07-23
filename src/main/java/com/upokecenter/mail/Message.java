@@ -178,6 +178,18 @@ import com.upokecenter.text.*;
     }
 
     /**
+     * Not documented yet.
+     * @return A Message object.
+     */
+    public static Message NewBodyPart() {
+      Message msg = new Message();
+      msg.contentType = MediaType.TextPlainAscii;
+      // No headers by default (see RFC 2046 sec. 5.1)
+      msg.headers.clear();
+      return msg;
+    }
+
+    /**
      * Sets this message's Date header field to the current time as its value.
      * <p>This method can be used when the message is considered complete
      * and ready to be generated, for example, using the "Generate()"
@@ -861,8 +873,8 @@ public final void setSubject(String value) {
       // The spec for multipart/alternative (RFC 2046) says that
       // the fanciest version of the message should go last (in
       // this case, the HTML version)
-      Message textMessage = new Message().SetTextBody(text);
-      Message htmlMessage = new Message().SetHtmlBody(html);
+      var textMessage = NewBodyPart().SetTextBody(text);
+      var htmlMessage = NewBodyPart().SetHtmlBody(html);
       this.contentType =
   MediaType.Parse("multipart/alternative; boundary=\"=_Boundary00000000\"");
       List<Message> messageParts = this.getParts();
@@ -948,72 +960,6 @@ public final void setSubject(String value) {
           return false;
         }
         ++index;
-      }
-      return true;
-    }
-
-    // Returns true only if:
-    // * Header field has a name followed by colon followed by SP
-    // * Header field's value matches the production "unstructured"
-    // in RFC 5322 without any obsolete syntax
-    // * Each line is no more than MaxRecHeaderLineLength characters in length
-    // * Text has only printable ASCII characters, CR,
-    // LF, and/or TAB
-    static boolean CanOutputRaw(String s) {
-boolean foundColon = false;
-      int index = 0;
-      int len = s.length();
-      for (int i = 0; i < len; ++i) {
-        if (s.charAt(i) == ':') {
-          foundColon = true;
-          if (i + 1 >= len || s.charAt(i + 1) != 0x20) {
-            // Colon not followed by SPACE (0x20)
-            return false;
-          }
-          index = i + 2;
-          if (index > MaxRecHeaderLineLength) {
- return false;
-}
-          break;
-  }
-        if (s.charAt(i) == 0x0d || s.charAt(i) == 0x09 || s.charAt(i) == 0x20) {
- return false;
-}
-      }
-      if (!foundColon) {
- return false;
-}
-      int chunkLength = index;
-      for (int i = index; i < len;) {
-        if (s.charAt(i) == 0x0d) {
-          if (i + 2 >= len || s.charAt(i + 1) != 0x0a || (s.charAt(i + 2) != 0x09 && s.charAt(i +
-            2) != 0x20)) {
-            // bare CR, or CRLF not followed by SP/VTAB
-            return false;
-          }
-          i += 3;
-          chunkLength = 1;
-          boolean found = false;
-          for (int j = i; j < len; ++j) {
-            if (s.charAt(j) != 0x09 && s.charAt(j) != 0x20 && s.charAt(j) != 0x0d) {
-              found = true; break;
-            }
-          }
-          if (!found) {
- return false;
-}
-        } else {
-          char c = s.charAt(i);
-          if (chunkLength > MaxRecHeaderLineLength) {
- return false;
-}
-          if (c >= 0x7f || (c < 0x20 && c != 0x09 && c != 0x0d)) {
-            // CTLs (except TAB, SPACE, and CR) and non-ASCII
-            // characters
-            return false;
-          }
-          ++i;
-        }
       }
       return true;
     }
@@ -2244,12 +2190,8 @@ boolean foundColon = false;
           }
         }
         rawField = (rawField == null) ? ((HeaderEncoder.EncodeField(name, value))) : rawField;
-        if (CanOutputRaw(rawField)) {
-          AppendAscii(output, rawField);
-          if (rawField.indexOf(": ") < 0) {
-            throw new MessageDataException("No colon+space: " + rawField);
-          }
-        } else if (HasTextToEscapeOrEncodedWordStarts(value)) {
+        if (!HeaderEncoder.CanOutputRaw(rawField)) {
+          DebugUtility.Log("Can't output "+name+" raw");
           String downgraded = HeaderFieldParsers.GetParser(name)
                     .DowngradeHeaderField(name, value);
           if (
@@ -2621,7 +2563,7 @@ boolean foundColon = false;
           }
           if (ch < 0) {
             if (boundaryChecker.getHasNewBodyPart()) {
-              Message msg = new Message();
+              var msg = NewBodyPart();
               int stackCount = boundaryChecker.BoundaryCount();
               // Pop entries if needed to match the stack
 

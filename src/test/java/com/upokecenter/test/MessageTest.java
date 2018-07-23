@@ -1289,6 +1289,36 @@ if (!(boolTemp)) {
         }
       }
     }
+    @Test
+    public void TestBoundaryMatching() {
+      String messageStart = "MIME-Version: 1.0\r\n";
+      messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
+      messageStart += "Preamble\r\n";
+      String message;
+      message = messageStart;
+      message += "--b1\r\n";
+      message += "Content-Type: text/plain\r\n\r\n";
+      message += "Test\r\n";
+      message += "--b1--BOUNDARY\r\n";
+      message += "Epilogue\r\n";
+      message += "--b1--\r\n";
+      System.out.println(message);
+      Message msg;
+      msg = MessageFromString(message);
+      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
+      Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
+      message = messageStart;
+      message += "--b1BOUNDARY\r\n";
+      message += "Content-Type: text/plain\r\n\r\n";
+      message += "Test\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue\r\n";
+      msg = MessageFromString(message);
+      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
+      Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
+    }
 
     @Test
     public void TestBoundaryReading() {
@@ -2332,11 +2362,29 @@ for (int i = 0; i < fn.length; i += 2) {
       Assert.assertEquals(value, msg.GetHeader(header));
     }
 
+    private static void TestSetHeaderInvalid(
+  Message msg,
+  String header,
+  String value) {
+      try {
+ msg.SetHeader(header, value);
+Assert.fail("Should have failed");
+} catch (IllegalArgumentException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    }
+
     @Test
     public void TestSetHeaderAcceptLanguage() {
       Message msg = new Message();
       TestSetHeaderOne(msg, "accept-language", "en-us");
       TestSetHeaderOne(msg, "accept-language", "en-us\u002c de-de");
+      TestSetHeaderInvalid(msg, "accept-language", "enenenene-us\u002c de-de");
+      TestSetHeaderInvalid(msg, "accept-language", "en-ususususu\u002c de-de");
+      TestSetHeaderInvalid(msg, "accept-language", "en-us\u002c\u002c de-de");
       TestSetHeaderOne(msg, "accept-language", "en-us\u002cde-de");
       TestSetHeaderOne(msg, "accept-language", "en-us \u002cde-de");
       TestSetHeaderOne(msg, "accept-language", "en-us \u002c de-de");

@@ -40,7 +40,7 @@ private Rfc2047() {
     private static boolean HasSuspiciousTextInStructured(String str) {
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
-        // Has ValueSpecials, or CTLs other than tab
+        // Has 'specials', or CTLs other than tab
         if ((c < 0x20 && c != '\t') || c == 0x7F || c == 0x28 || c == 0x29 ||
           c == 0x3c || c == 0x3e || c == 0x5b || c == 0x5d || c == 0x3a || c
             == 0x3b || c == 0x40 ||
@@ -219,7 +219,7 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
     String str,
     int index,
     int endIndex) {
-      String ValueSpecials = "()<>@,;:\\\"/[]?=.";
+      String ValueSpecials = "()<>[]@,;:\\\"/?=.";
       int i = index;
       while (i < endIndex) {
         char c = str.charAt(i);
@@ -232,18 +232,47 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
       return i;
     }
 
+    // See point 3 of RFC 2047 sec. 5
+    private static final int[] smallchars = {
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0,
+  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
+
+    // ASCII characters allowed in atoms
+    private static final int[] asciiAtext = {
+      0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
+
     private static int SkipEncodedText(
   String str,
   int index,
   int endIndex,
-  boolean inComments) {
+  EncodedWordContext context,
+  int encodingChar) {
       int i = index;
       while (i < endIndex) {
         char c = str.charAt(i);
         if (c <= 0x20 || c >= 0x7F || c == '?') {
           break;
         }
-        if (inComments && (c == '(' || c == ')' || c == '\\')) {
+        if (context == EncodedWordContext.Comment &&
+            (c == '(' || c == ')' || c == '\\')) {
+          break;
+        }
+        if (context == EncodedWordContext.Phrase &&
+            (encodingChar=='Q' || encodingChar=='q') &&
+            smallchars[c-0x20]==0) {
+          break;
+        }
+        if (context == EncodedWordContext.Phrase &&
+            asciiAtext[c-0x20]==0) {
           break;
         }
         ++i;
@@ -300,8 +329,7 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
             ++index;
             // Check for a run of printable ASCII characters (except space)
             // with length up to 75 (also exclude '(' , '\', and ')' if the
-            // context
-            // is a comment)
+            // context is a comment)
             if (c >= 0x21 && c < 0x7e && (context !=
           EncodedWordContext.Comment || (c != '(' && c != ')' && c != '\\'
 ))) {
@@ -349,7 +377,8 @@ str.charAt(index + 1) == '\n' && (str.charAt(index + 2) == 0x20 || str.charAt(in
   str,
   index,
   afterLast,
-  context == EncodedWordContext.Comment);
+  context,
+  encodingChar);
 if (i2 != index && i2 + 1 < endIndex && str.charAt(i2) == '?' && str.charAt(i2 + 1) == '=' &&
                 i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;
