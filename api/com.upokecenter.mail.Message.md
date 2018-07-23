@@ -43,10 +43,11 @@
  "iso-8859-*" (all single byte encodings).</li> <li>(d) In non-MIME
  message bodies and in text/plain message bodies. Any 8-bit bytes are
  replaced with the substitute character byte (0x1a).</li> <li>If the
- first line of the message starts with the word "From" followed by a
- space, it is skipped.</li> <li>The name <code>ascii</code> is treated as a
- synonym for <code>us-ascii</code>, despite being a reserved name under RFC
- 2046. The name <code>cp1252</code> is treated as a synonym for
+ first line of the message starts with the word "From" (and no other
+ case variations of that word) followed by a space or tab (U + 0020 or
+ U + 0009), it is skipped.</li> <li>The name <code>ascii</code> is treated as
+ a synonym for <code>us-ascii</code>, despite being a reserved name under
+ RFC 2046. The name <code>cp1252</code> is treated as a synonym for
  <code>windows-1252</code> , even though it's not an IANA registered
  alias.</li> <li>The following deviations involve encoded words under
  RFC 2047:</li> <li>(a) If a sequence of encoded words decodes to a
@@ -138,6 +139,8 @@
  Gets this message's subject.
 * `List<NamedAddress> getToAddresses()`<br>
  Gets a list of addresses found in the To header field or fields.
+* `static Message NewBodyPart()`<br>
+ Not documented yet.
 * `Message RemoveHeader​(int index)`<br>
  Removes a header field by index.
 * `Message RemoveHeader​(String name)`<br>
@@ -218,6 +221,14 @@ Initializes a new instance of the <code>Message</code>
 Initializes a new instance of the <code>Message</code>
  class. The message will be plain text and have an artificial From
  address.
+### NewBodyPart
+    public static Message NewBodyPart()
+Not documented yet.
+
+**Returns:**
+
+* A Message object.
+
 ### SetCurrentDate
     public Message SetCurrentDate()
 Sets this message's Date header field to the current time as its value.

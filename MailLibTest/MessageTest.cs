@@ -1284,6 +1284,49 @@ Assert.IsTrue(boolTemp, msgstring);
         }
       }
     }
+    [Test]
+    public void TestBoundaryMatching() {
+      string messageStart = "MIME-Version: 1.0\r\n";
+      messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
+      messageStart += "Preamble\r\n";
+      string message;
+      message = messageStart;
+      message += "--b1\r\n";
+      message += "Content-Type: text/plain\r\n\r\n";
+      message += "Test\r\n";
+      message += "--b1BOUNDARY\r\n";
+      message += "Content-Type: text/plain\r\n\r\n";
+      message += "Test2\r\n";
+      message += "--b1BOUNDARY--\r\n";
+      message += "Content-Type: text/plain\r\n\r\n";
+      message += "Test3\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue\r\n";
+      message += "--b1--\r\n";
+      Console.WriteLine(message);
+      Message msg;
+      msg = MessageFromString(message);
+      Assert.AreEqual(3, msg.Parts.Count);
+      Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
+      Assert.AreEqual("Test", msg.Parts[0].BodyString);
+      Assert.AreEqual("Test2", msg.Parts[1].BodyString);
+      Assert.AreEqual("Test3", msg.Parts[2].BodyString);
+      message = messageStart;
+      message += "--b1BOUNDARY\r\n";
+      message += "Content-Type: text/plain\r\n\r\n";
+      message += "Test\r\n";
+      message += "--b1--BOUNDARY\r\n";
+      message += "Content-Type: text/plain\r\n\r\n";
+      message += "Test3\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue\r\n";
+      message += "--b1--\r\n";
+      msg = MessageFromString(message);
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual("text", msg.Parts[0].ContentType.TopLevelType);
+      Assert.AreEqual("Test", msg.Parts[0].BodyString);
+    }
+
 
     [Test]
     public void TestBoundaryReading() {
@@ -1429,6 +1472,16 @@ Assert.IsTrue(boolTemp, msgstring);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
       Assert.AreEqual("Test", msg.Parts[0].Parts[0].BodyString);
     }
+
+
+
+    [Test]
+    public void TestAuthResults() {
+      var msg = new Message();
+      Assert.DoesNotThrow(() => msg.SetHeader("authentication-results","a.b.c; d=e f.a=@example.com f.b=x f.c=y; g=x (y) h.a=me@example.com"));
+      Assert.DoesNotThrow(()=>msg.SetHeader("authentication-results","a.b.c;\r\n\td=e (f) g.h=ex@example.com;\r\n\ti=j k.m=@example.com"));
+    }
+
     [Test]
     public void TestArgumentValidationMediaType() {
       try {
@@ -2367,6 +2420,7 @@ string value) {
   "to",
   "\u0020\"Example\u002c Example\" <example@example.com>");
     }
+
 
     [Test]
     public void TestSubject() {

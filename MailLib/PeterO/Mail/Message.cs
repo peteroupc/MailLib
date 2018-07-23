@@ -91,8 +91,9 @@ namespace PeterO.Mail {
     }
 
     /// <summary>Not documented yet.</summary>
-    public static Message NewBodyPart(){
-      var msg=new Message();
+    /// <returns>A Message object.</returns>
+    public static Message NewBodyPart() {
+      var msg = new Message();
       msg.contentType = MediaType.TextPlainAscii;
       // No headers by default (see RFC 2046 sec. 5.1)
       msg.headers.Clear();
@@ -644,7 +645,6 @@ namespace PeterO.Mail {
       return true;
     }
 
-
     // Parse the delivery status byte array to downgrade
     // the Original-Recipient and Final-Recipient header fields
     // NOTE: RFC 3464 (delivery status notifications) refers
@@ -1122,104 +1122,43 @@ namespace PeterO.Mail {
       return list;
     }
 
-    internal static int ParseUnstructuredText(
-      string str,
-      int index,
-      int endIndex) {
-      int indexTemp = index;
-      do {
-        while (true) {
-          int indexTemp2 = index;
-          do {
-            int indexStart2 = index;
-            do {
-              int indexTemp3 = index;
-              do {
-                int indexStart3 = index;
-                do {
-                  int indexTemp4;
-                  indexTemp4 = index;
-                  do {
-                    int indexStart4 = index;
-                    while (index < endIndex && ((str[index] == 32) ||
-                  (str[index] == 9))) {
-                    ++index;
-                    }
-                    if (index + 1 < endIndex && str[index] == 13 && str[index +
-                   1] == 10) {
-                    index += 2;
-                    } else {
-                    index = indexStart4; break;
-                    }
-                    indexTemp4 = index;
-                    index = indexStart4;
-                  } while (false);
-                  if (indexTemp4 != index) {
-                    index = indexTemp4;
-                  } else {
-                    break;
-                  }
-                } while (false);
-                if (index < endIndex && ((str[index] == 32) || (str[index] ==
-                    9))) {
-                  ++index;
-                  while (index < endIndex && ((str[index] == 32) || (str[index]
-                   == 9))) {
-                    ++index;
-                  }
-                } else {
-                  index = indexStart3; break;
-                }
-                indexTemp3 = index;
-                index = indexStart3;
-              } while (false);
-              if (indexTemp3 != index) {
-                index = indexTemp3;
-              } else {
-                break;
-              }
-            } while (false);
-            do {
-              int indexTemp3 = index;
-              do {
-                if (index < endIndex && ((str[index] >= 128 && str[index] <=
-                    55295) || (str[index] >= 57344 && str[index] <= 65535))) {
-                  ++indexTemp3; break;
-                }
-                if (index + 1 < endIndex && ((str[index] >= 55296 &&
-                    str[index] <= 56319) && (str[index + 1] >= 56320 &&
-                    str[index + 1] <= 57343))) {
-                  indexTemp3 += 2; break;
-                }
-                if (index < endIndex && (str[index] >= 33 && str[index] <=
-                    126)) {
-                  ++indexTemp3; break;
-                }
-              } while (false);
-              if (indexTemp3 != index) {
-                index = indexTemp3;
-              } else {
-                index = indexStart2; break;
-              }
-            } while (false);
-            if (index == indexStart2) {
-              break;
-            }
-            indexTemp2 = index;
-            index = indexStart2;
-          } while (false);
-          if (indexTemp2 != index) {
-            index = indexTemp2;
-          } else {
-            break;
+    internal static int ParseUnstructuredText(string s, int startIndex, int endIndex) {
+      // Parses "unstructured" in RFC 5322 without obsolete syntax
+      // and with non-ASCII characters allowed
+      for (int i = startIndex; i < endIndex;) {
+        int c = DataUtilities.CodePointAt(s, i, 2);
+        // NOTE: Unpaired surrogates are replaced with -1
+        if (c == -1) return i;
+        else if (c >= 0x10000) { i += 2; } 
+        else if (c == 0x0d) {
+          if (i + 2 >= endIndex || s[i + 1] != 0x0a || (s[i + 2] != 0x09 && s[i +
+            2] != 0x20)) {
+            // bare CR, or CRLF not followed by SP/VTAB
+            return i;
           }
+          i += 3;
+          var found = false;
+          for (int j = i; j < endIndex; ++j) {
+            if (s[j] != 0x09 && s[j] != 0x20 && s[j] != 0x0d) {
+              found = true; break;
+            } else if (s[j] == 0x0d) {
+              // Possible CRLF after all-whitespace line
+              return i;
+            }
+          }
+          if (!found) {
+            // CRLF followed by an all-whitespace line
+            return i;
+          }
+        } else {
+          if (c == 0x7f || (c < 0x20 && c != 0x09 && c != 0x0d)) {
+            // CTLs (except TAB, SPACE, and CR)
+            return i;
+          }
+          ++i;
         }
-        while (index < endIndex && ((str[index] == 32) || (str[index] == 9))) {
-          ++index;
-        }
-        indexTemp = index;
-      } while (false);
-      return indexTemp;
+      }
+      return endIndex;
     }
 
     private static void AppendAscii(IWriter output, string str) {
@@ -1648,11 +1587,9 @@ namespace PeterO.Mail {
                  (byte)'\t')) {
             // Space followed immediately by CRLF
             allTextBytes = false;
-          } else if (i + 4 < body.Length && body[i + 1] == (byte)'\n' &&
-                    body[i + 2] == (byte)'.' && body[i + 3] == (byte)'\r' &&
-                    body[i + 4] == (byte)'\n') {
-            // CR LF dot CR LF, the SMTP end-of-data indicator
-            // RFC 5321 sec. 4.1.1.4
+          } else if (i + 2 < body.Length && body[i + 1] == (byte)'\n' &&
+                    body[i + 2] == (byte)'.') {
+            // CR LF dot (see RFC 5321 secs. 4.1.1.4 and 4.5.2)
             allTextBytes = false;
           } else {
             ++i;
@@ -1880,7 +1817,7 @@ namespace PeterO.Mail {
         }
         rawField = rawField ?? (HeaderEncoder.EncodeField(name, value));
         if (!HeaderEncoder.CanOutputRaw(rawField)) {
-          DebugUtility.Log("Can't output "+name+" raw");
+          //DebugUtility.Log("Can't output "+name+" raw");
           string downgraded = HeaderFieldParsers.GetParser(name)
                     .DowngradeHeaderField(name, value);
           if (

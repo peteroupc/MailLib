@@ -251,23 +251,22 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
     }
 
     // See point 3 of RFC 2047 sec. 5
-    private static readonly int[] smallchars ={
-      0,1,0,0, 0,0,0,0, 0,0,1,1, 0,1,0,1,
-      1,1,1,1, 1,1,1,1, 1,1,0,0, 0,1,0,0,
-0,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
-1,1,1,1, 1,1,1,1, 1,1,1,0, 0,0,0,1,
-0,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
-      1,1,1,1, 1,1,1,1, 1,1,1,0, 0,0,0,0};
+    private static readonly int[] smallchars = {
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0,
+  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
 
     // ASCII characters allowed in atoms
-    private static readonly int[] asciiAtext ={
-      0,1,0,1, 1,1,1,1, 0,0,1,1, 0,1,0,1,
-      1,1,1,1, 1,1,1,1, 1,1,0,0, 0,1,0,1,
-      0,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
-      1,1,1,1, 1,1,1,1, 1,1,1,0, 0,0,1,1,
-      1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1,
-      1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,0};
-
+    private static readonly int[] asciiAtext = {
+      0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1,
+      0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
 
     private static int SkipEncodedText(
   string str,
@@ -281,16 +280,16 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
         if (c <= 0x20 || c >= 0x7F || c == '?') {
           break;
         }
-        if (context==EncodedWordContext.Comment && 
+        if (context == EncodedWordContext.Comment &&
             (c == '(' || c == ')' || c == '\\')) {
           break;
         }
-        if (context==EncodedWordContext.Phrase && 
-            (encodingChar=='Q' || encodingChar=='q') && 
+        if (context == EncodedWordContext.Phrase &&
+            (encodingChar=='Q' || encodingChar=='q') &&
             smallchars[c-0x20]==0) {
           break;
         }
-        if (context==EncodedWordContext.Phrase && 
+        if (context == EncodedWordContext.Phrase &&
             asciiAtext[c-0x20]==0) {
           break;
         }
@@ -396,7 +395,8 @@ str[index + 1] == '\n' && (str[index + 2] == 0x20 || str[index + 2] ==
   str,
   index,
   afterLast,
-  context, encodingChar);
+  context,
+  encodingChar);
 if (i2 != index && i2 + 1 < endIndex && str[i2] == '?' && str[i2 + 1] == '=' &&
                 i2 + 2 == afterLast) {
                     acceptedEncodedWord = true;

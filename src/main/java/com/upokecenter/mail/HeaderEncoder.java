@@ -81,13 +81,13 @@ import com.upokecenter.util.*;
         if (writeSpace) {
           this.builder.append(" ");
         }
-      this.builder.append(symbol.substring(startIndex, (startIndex)+(endIndex -
-          startIndex)));
+        this.builder.append(symbol.substring(startIndex, (startIndex)+(endIndex -
+            startIndex)));
         this.column += (endIndex - startIndex) + spaceLength;
       } else {
         this.builder.append("\r\n ");
-      this.builder.append(symbol.substring(startIndex, (startIndex)+(endIndex -
-          startIndex)));
+        this.builder.append(symbol.substring(startIndex, (startIndex)+(endIndex -
+            startIndex)));
         this.column = 1 + (endIndex - startIndex);
       }
       return false;  // No need to write space anymore
@@ -111,8 +111,8 @@ import com.upokecenter.util.*;
             symbolBegin = i + 2;
             i += 2;
             continue;
-          } else if (symbol.charAt(i)=='<' || symbol.charAt(i)=='>' || symbol.charAt(i)==',' ||
-                    symbol.charAt(i)==';' || symbol.charAt(i)==':') {
+          } else if (symbol.charAt(i) == '<' || symbol.charAt(i) == '>' || symbol.charAt(i) == ',' ||
+                    symbol.charAt(i) == ';' || symbol.charAt(i) == ':') {
             // Additional characters between which linear white space can
             // freely appear
             // in structured header fields. They are the union of RFC 822's
@@ -140,8 +140,8 @@ import com.upokecenter.util.*;
             if (si != i) {
               writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i,
                     writeSpace);
-           AppendQuotedStringOrDomain(symbol.substring(i, (i)+(si - i)),
-                writeSpace);
+              AppendQuotedStringOrDomain(symbol.substring(i, (i)+(si - i)),
+                   writeSpace);
               writeSpace = false;
               i = si;
               symbolBegin = si;
@@ -276,6 +276,14 @@ import com.upokecenter.util.*;
       this.column += 3;
     }
 
+    private static final int[] smallchars = {
+      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0,
+  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+  0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
+
     public HeaderEncoder AppendAsEncodedWords(String symbol) {
       int i = 0;
       int currentWordLength = 0;
@@ -284,15 +292,15 @@ import com.upokecenter.util.*;
         if (ch >= 0x10000) {
           ++i;
         }
-  boolean smallChar = ch <= 0x7e && ch > 0x20 && ch != (char)'"' && ch !=
-          (char)','&& "?()<>[]:;@\\.=_".indexOf((char)ch) < 0;
+        boolean smallChar = ch <= 0x7e && ch > 0x20 && smallchars[ch - 0x20] == 1;
         int unitLength = 1;
         if (ch == 0x20 || smallChar) {
           unitLength = 1;
         } else {
- unitLength = (ch <= 0x7f) ? (3) : ((ch <= 0x7ff) ? (6) : ((ch <= 0xffff) ?
-   (9) : (12)));
-}
+     unitLength = (ch <= 0x7f) ? (3) : ((ch <= 0x7ff) ? (6) : ((ch <=
+            0xffff) ?
+            (9) : (12)));
+        }
         if (!CanCharUnitFit(currentWordLength, unitLength, false)) {
           if (currentWordLength > 0) {
             AppendSymbol("?=");
@@ -338,6 +346,113 @@ import com.upokecenter.util.*;
       return this;
     }
 
+    private static final byte[] Base64Classic = {
+  0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d,
+  0x4e, 0x4f, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a,
+  0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6a, 0x6b, 0x6c, 0x6d,
+  0x6e, 0x6f, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7a,
+        0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x2b, 0x2f
+       };
+
+    private void AppendFinalBase64(int[] b64) {
+      int b1 = b64[0];
+      int b2 = b64[1];
+      int quantumCount = b64[2];
+      if (quantumCount == 2) {
+        this.builder.append((char)Base64Classic[(b1 >> 2) & 63]);
+        this.builder.append((char)Base64Classic[((b1 & 3) << 4) + ((b2 >> 4) &
+          15)]);
+        this.builder.append((char)Base64Classic[((b2 & 15) << 2)]);
+        this.builder.append('=');
+        this.column += 4;
+      } else if (quantumCount == 1) {
+        this.builder.append((char)Base64Classic[(b1 >> 2) & 63]);
+        this.builder.append((char)Base64Classic[((b1 & 3) << 4) + ((b2 >> 4) &
+          15)]);
+        this.builder.append("==");
+        this.column += 4;
+      }
+      b64[2] = 0;
+    }
+
+    private void AppendBase64(int[] b64, int value) {
+      int quantumCount = b64[2];
+      if (quantumCount == 2) {
+        int b1 = b64[0];
+        int b2 = b64[1];
+        this.builder.append((char)Base64Classic[(b1 >> 2) & 63]);
+        this.builder.append((char)Base64Classic[((b1 & 3) << 4) + ((b2 >> 4) &
+          15)]);
+        this.builder.append((char)Base64Classic[((b2 & 15) << 2) + ((value>>
+          6) & 3)]);
+        this.builder.append((char)Base64Classic[value & 63]);
+        this.column += 4;
+        b64[2] = 0;
+      } else if (quantumCount == 1) {
+        b64[1] = value;
+        b64[2] = 2;
+      } else if (quantumCount == 0) {
+        b64[0] = value;
+        b64[2] = 1;
+      }
+    }
+
+    public HeaderEncoder AppendAsEncodedWordsB(String symbol) {
+      int i = 0;
+      int currentWordLength = 0;
+      int[] base64state = new int[] { 0, 0, 0 };
+      while (i < symbol.length()) {
+        int ch = DataUtilities.CodePointAt(symbol, i);
+        if (ch >= 0x10000) {
+          ++i;
+        }
+ var unitLength = (ch <= 0x7f) ? (1) : ((ch <= 0x7ff) ? (2) : ((ch <=
+          0xffff) ?
+            (3) : (4)));
+        var bytesNeeded = 4 + (base64state[2] + unitLength > 3 ? 4 : 0);
+        if (!CanCharUnitFit(currentWordLength, bytesNeeded, false)) {
+          if (currentWordLength > 0) {
+            AppendFinalBase64(base64state);
+            AppendSymbol("?=");
+            if (CanCharUnitFit(0, unitLength, true)) {
+              AppendSpace();
+            } else {
+              AppendBreak();
+            }
+          } else {
+            AppendBreak();
+          }
+          AppendSymbol("=?utf-8?B?");
+          currentWordLength = 12;
+        } else if (currentWordLength == 0) {
+          AppendSymbol("=?utf-8?B?");
+          currentWordLength = 12;
+        }
+        if (ch <= 0x7f) {
+          AppendBase64(base64state, ch);
+        } else if (ch <= 0x7ff) {
+          AppendBase64(base64state, 0xc0 | ((ch >> 6) & 0x1f));
+          AppendBase64(base64state, 0x80 | (ch & 0x3f));
+        } else if (ch <= 0xffff) {
+          AppendBase64(base64state, 0xe0 | ((ch >> 12) & 0x0f));
+          AppendBase64(base64state, 0x80 | ((ch >> 6) & 0x3f));
+          AppendBase64(base64state, 0x80 | (ch & 0x3f));
+        } else {
+          AppendBase64(base64state, 0xf0 | ((ch >> 18) & 0x07));
+          AppendBase64(base64state, 0x80 | ((ch >> 12) & 0x3f));
+          AppendBase64(base64state, 0x80 | ((ch >> 6) & 0x3f));
+          AppendBase64(base64state, 0x80 | (ch & 0x3f));
+        }
+        currentWordLength += bytesNeeded - 4;
+        ++i;
+      }
+      if (currentWordLength > 0) {
+        AppendFinalBase64(base64state);
+        AppendSymbol("?=");
+      }
+      return this;
+    }
+
     private void AppendQuotedStringOrDomain(String symbol, boolean writeSpace) {
       // NOTE: Assumes 'symbol' is a syntactically valid 'quoted-String'
       // and begins and ends with a double quote, or is a syntactically
@@ -349,8 +464,8 @@ import com.upokecenter.util.*;
       int i = 0;
       int symbolBegin = 0;
       while (i < symbol.length()) {
-        if (symbol.charAt(i) == '\r' && i + 1 < symbol.length() && symbol.charAt(i + 1) == '\n'
-) {
+        if (symbol.charAt(i) == '\r' && i + 1 < symbol.length() &&
+           symbol.charAt(i + 1) == '\n') {
           writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
           symbolBegin = i + 2;
           i += 2;
@@ -383,27 +498,24 @@ import com.upokecenter.util.*;
       return this;
     }
 
-    public HeaderEncoder AppendSpaceIfNeeded() {
+    public HeaderEncoder AppendSpaceOrTabIfNeeded(char ch) {
       if (this.builder.length() == 0) {
- return AppendSpace();
-}
+        return AppendSpaceOrTab(ch);
+      }
       boolean endsWithSpace = (
         this.builder.charAt(this.builder.length() - 1) == 0x20 || this.builder.charAt(this.builder.length() - 1) == 0x09);
       if (!endsWithSpace) {
- AppendSpace();
-}
+        AppendSpaceOrTab(ch);
+      }
       return this;
     }
 
+    public HeaderEncoder AppendSpaceIfNeeded() {
+      return AppendSpaceOrTabIfNeeded(' ');
+    }
+
     public HeaderEncoder AppendSpace() {
-      if (maxLineLength < 0 || this.column + 1 <= this.maxLineLength) {
-        this.builder.append(" ");
-        ++this.column;
-      } else {
-        this.builder.append("\r\n ");
-        this.column = 1;
-      }
-      return this;
+      return AppendSpaceOrTab(' ');
     }
     // NOTE: Assumes that all symbols being appended
     // contain no unpaired surrogates and no line breaks
@@ -414,12 +526,106 @@ import com.upokecenter.util.*;
           this.builder.append(symbol);
           this.column += symbol.length();
         } else {
-          this.builder.append("\r\n ");
+          if (this.column>1) {
+ this.builder.append("\r\n ");
+}
           this.builder.append(symbol);
           this.column = 1 + symbol.length();
         }
       }
       return this;
+    }
+
+    // Returns true only if:
+    // * Header field has a name followed by colon followed by SP
+    // * Header field's value matches the production "unstructured"
+    // in RFC 5322 without any obsolete syntax
+    // * Each line is no more than MaxRecHeaderLineLength characters in length,
+    // except that a line with no whitespace other than leading and trailing may
+    // go up to MaxHardHeaderLineLength characters in length
+    // * Text has only printable ASCII characters, CR,
+    // LF, and/or TAB
+    public static boolean CanOutputRaw(String s) {
+      boolean foundColon = false;
+      int len = s.length();
+      int chunkLength = 0;
+      for (int i = 0; i < len; ++i) {
+        if (s.charAt(i) == ':') {
+          foundColon = true;
+          if (i + 1 >= len || s.charAt(i + 1) != 0x20) {
+            // Colon not followed by SPACE (0x20)
+            return false;
+          }
+          chunkLength = i + 2;
+          if (chunkLength > Message.MaxRecHeaderLineLength) {
+            return false;
+          }
+          break;
+        }
+        if (s.charAt(i) == 0x0d || s.charAt(i) == 0x09 || s.charAt(i) == 0x20) {
+          return false;
+        }
+      }
+      if (!foundColon) {
+        return false;
+      }
+      int whitespaceState = 3;
+      for (int i = chunkLength; i < len;) {
+        if (s.charAt(i) == 0x0d) {
+          if (i + 2 >= len || s.charAt(i + 1) != 0x0a || (s.charAt(i + 2) != 0x09 && s.charAt(i +
+            2) != 0x20)) {
+            // bare CR, or CRLF not followed by SP/VTAB
+            return false;
+          }
+          i += 3;
+          chunkLength = 1;
+          whitespaceState = 1;
+          boolean found = false;
+          for (int j = i; j < len; ++j) {
+            if (s.charAt(j) != 0x09 && s.charAt(j) != 0x20 && s.charAt(j) != 0x0d) {
+              found = true; break;
+            } else if (s.charAt(j) == 0x0d) {
+              // Possible CRLF after all-whitespace line
+              return false;
+            }
+          }
+          if (!found) {
+            // CRLF followed by an all-whitespace line
+            return false;
+          }
+        } else {
+          char c = s.charAt(i);
+          if (c >= 0x7f || (c < 0x20 && c != 0x09 && c != 0x0d)) {
+            // CTLs (except TAB, SPACE, and CR) and non-ASCII
+            // characters
+            return false;
+          }
+          ++i;
+          ++chunkLength;
+          if (c == 0x09 || c == 0x20) {
+            // 1 = Whitespace at start of line
+            // 2 = Nonwhitespace after initial whitespace
+            // 3 = After nonwhitespace
+            if (whitespaceState == 2) {
+ whitespaceState = 3;
+}
+          } else {
+            if (whitespaceState == 1) {
+ whitespaceState = 2;
+}
+          }
+          if (whitespaceState < 3) {
+            if (chunkLength > Message.MaxHardHeaderLineLength) {
+              return false;
+            }
+          } else {
+            if (chunkLength > Message.MaxRecHeaderLineLength) {
+              return false;
+            }
+          }
+        }
+      }
+      return true;
     }
 
     private static String CapitalizeHeaderField(String s) {
@@ -460,6 +666,10 @@ import com.upokecenter.util.*;
     }
     public static String EncodeField(String fieldName, String
         fieldValue) {
+      var trialField = CapitalizeHeaderField(fieldName) + ": " + fieldValue;
+      if (CanOutputRaw(trialField)) {
+ return trialField;
+}
       HeaderEncoder sa = new HeaderEncoder().AppendFieldName(fieldName);
       sa.AppendString(TrimLeadingFWS(fieldValue));
       return sa.toString();
