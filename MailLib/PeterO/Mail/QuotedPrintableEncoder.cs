@@ -60,7 +60,6 @@ namespace PeterO.Mail {
 
     private int IncrementAndAppendChars(
   IWriter output,
-  char b1,
   char b2,
   char b3) {
       var count = 0;
@@ -74,15 +73,7 @@ namespace PeterO.Mail {
           count += 3;
         }
       }
-      if (this.lineCount == 0 && b1 == '.') {
-        output.WriteByte((byte)'=');
-        output.WriteByte((byte)'2');
-        output.WriteByte((byte)'E');
-        this.lineCount += 2;
-        count += 2;
-      } else {
-        output.WriteByte((byte)b1);
-      }
+        output.WriteByte(0x3d);
       output.WriteByte((byte)b2);
       output.WriteByte((byte)b3);
       this.lineCount += 3;
@@ -180,7 +171,6 @@ namespace PeterO.Mail {
                 // characters
                 count += this.IncrementAndAppendChars(
   output,
-  (char)0x3d,
   HexAlphabet[(c >> 4) & 15],
   HexAlphabet[c & 15]);
                 return count;

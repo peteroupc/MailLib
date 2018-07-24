@@ -43,24 +43,7 @@ import com.upokecenter.text.*;
   boolean padding,
   boolean lenientLineBreaks,
   boolean unlimitedLineLength) {
- this(
-  padding, lenientLineBreaks, unlimitedLineLength, Base64Classic);
-    }
-
-    public Base64Encoder(
-  boolean padding,
-  boolean lenientLineBreaks,
-  boolean unlimitedLineLength,
-  String alphabetString) {
- this(
-  padding, lenientLineBreaks, unlimitedLineLength, StringAlphabetToBytes(alphabetString));
-    }
-
-    public Base64Encoder(
-  boolean padding,
-  boolean lenientLineBreaks,
-  boolean unlimitedLineLength,
-  byte[] alphabet) {
+      byte[] alphabet = Base64Classic;
       if (alphabet == null) {
         throw new NullPointerException("alphabet");
       }

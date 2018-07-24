@@ -61,7 +61,6 @@ import com.upokecenter.text.*;
 
     private int IncrementAndAppendChars(
   IWriter output,
-  char b1,
   char b2,
   char b3) {
       int count = 0;
@@ -75,15 +74,7 @@ import com.upokecenter.text.*;
           count += 3;
         }
       }
-      if (this.lineCount == 0 && b1 == '.') {
-        output.write((byte)'=');
-        output.write((byte)'2');
-        output.write((byte)'E');
-        this.lineCount += 2;
-        count += 2;
-      } else {
-        output.write((byte)b1);
-      }
+        output.write(0x3d);
       output.write((byte)b2);
       output.write((byte)b3);
       this.lineCount += 3;
@@ -161,6 +152,7 @@ import com.upokecenter.text.*;
               } else if (c == 0x3d) {
                 return count + this.IncrementAndAppend(output, "=3D");
               } else if (c == 0x2e && this.lineCount == 0) {
+                // Period at beginning of line
                 return count + this.IncrementAndAppend(output, "=2E");
               } else if (c == 0x46 && this.lineCount == 0) {
                 this.machineState = 3;
@@ -180,7 +172,6 @@ import com.upokecenter.text.*;
                 // characters
                 count += this.IncrementAndAppendChars(
   output,
-  (char)0x3d,
   HexAlphabet.charAt((c >> 4) & 15),
   HexAlphabet.charAt(c & 15));
                 return count;

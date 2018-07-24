@@ -41,29 +41,8 @@ namespace PeterO.Mail {
     public Base64Encoder(
   bool padding,
   bool lenientLineBreaks,
-  bool unlimitedLineLength) : this(
-  padding,
-  lenientLineBreaks,
-  unlimitedLineLength,
-  Base64Classic) {
-    }
-
-    public Base64Encoder(
-  bool padding,
-  bool lenientLineBreaks,
-  bool unlimitedLineLength,
-  string alphabetString) : this(
-  padding,
-  lenientLineBreaks,
-  unlimitedLineLength,
-  StringAlphabetToBytes(alphabetString)) {
-    }
-
-    public Base64Encoder(
-  bool padding,
-  bool lenientLineBreaks,
-  bool unlimitedLineLength,
-  byte[] alphabet) {
+  bool unlimitedLineLength) {
+      byte[] alphabet = Base64Classic;
       if (alphabet == null) {
         throw new ArgumentNullException(nameof(alphabet));
       }

@@ -98,7 +98,12 @@ import com.upokecenter.util.*;
     }
 
     public HeaderEncoder AppendString(String symbol, int startIndex, int
-      endIndex) {
+  endIndex) {
+      return AppendString(symbol, startIndex, endIndex, true);
+    }
+
+      public HeaderEncoder AppendString(String symbol, int startIndex, int
+                    endIndex, boolean structured) {
       if (symbol.length() > 0) {
         int i = startIndex;
         int symbolBegin = startIndex;
@@ -111,8 +116,9 @@ import com.upokecenter.util.*;
             symbolBegin = i + 2;
             i += 2;
             continue;
-          } else if (symbol.charAt(i) == '<' || symbol.charAt(i) == '>' || symbol.charAt(i) == ',' ||
-                    symbol.charAt(i) == ';' || symbol.charAt(i) == ':') {
+          } else if (structured && (symbol.charAt(i) == '<' || symbol.charAt(i) == '>' ||
+            symbol.charAt(i) == ',' ||
+                    symbol.charAt(i) == ';')) {
             // Additional characters between which linear white space can
             // freely appear
             // in structured header fields. They are the union of RFC 822's
@@ -122,14 +128,15 @@ import com.upokecenter.util.*;
             // delimiters), square brackets (domain literal delimiters),
             // double quote (quoted String delimiter), at-sign (better not
             // to separate
-            // email addresses), and the backslash (since it serves as an escape
+            // email addresses), colon (separates components of times and IPv6
+            // addresses), and the backslash (since it serves as an escape
             // in some header fields).
             writeSpace = AppendSpaceAndSymbol(symbol, symbolBegin, i,
                  writeSpace);
             symbolBegin = i;
             ++i;
             continue;
-          } else if (symbol.charAt(i) == '"' || symbol.charAt(i) == '[') {
+          } else if (structured && (symbol.charAt(i) == '"' || symbol.charAt(i) == '[')) {
             // May begin quoted-String or domain literal
             // (use ParseQuotedStringCore instead of
             // ParseQuotedString because it excludes optional CFWS at ends)
@@ -148,7 +155,7 @@ import com.upokecenter.util.*;
             } else {
               ++i;
             }
-          } else if (symbol.charAt(i) == '(') {
+          } else if (structured && symbol.charAt(i) == '(') {
             // May begin comment
             int si = HeaderParserUtility.ParseCommentLax(symbol, i, endIndex,
                     null);
@@ -162,7 +169,14 @@ import com.upokecenter.util.*;
             } else {
               ++i;
             }
+          } else if (symbol.charAt(i) == ' ' && i+1 < endIndex && symbol.charAt(i+1)!='\t' &&
+                    symbol.charAt(i+1)!='\r' && symbol.charAt(i+1)!=' ') {
+            AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
+            writeSpace = true;
+            i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
+            symbolBegin = i;
           } else if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
+            //DebugUtility.Log("Special whitespace|" + symbol.substring(i,(i)+(// endIndex - i)));
             AppendSpaceAndSymbol(symbol, symbolBegin, i, writeSpace);
             writeSpace = true;
             i = HeaderParser.ParseFWS(symbol, i, endIndex, null);
@@ -178,6 +192,62 @@ import com.upokecenter.util.*;
         }
       }
       return this;
+    }
+
+    private boolean SimpleAppendString(String symbol, int startIndex, int
+  endIndex) {
+      if (symbol.length() > 0) {
+        int i = startIndex;
+        int symbolBegin = startIndex;
+        while (i < endIndex) {
+          if (symbol.charAt(i) == '\r' && i + 1 < endIndex &&
+               symbol.charAt(i + 1) == '\n') {
+            AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
+            symbolBegin = i + 2;
+            i += 2;
+            continue;
+          } else if (symbol.charAt(i) == '"') {
+            return false;
+          } else if (symbol.charAt(i) == '[') {
+            int j = i + 1;
+            while (j < endIndex) {
+              if (symbol.charAt(j) == ' ' || symbol.charAt(j) == '\t' || symbol.charAt(j) == '\r') {
+ return false;
+  } else if (symbol.charAt(j) == ']') {
+ break;
+} else {
+ ++j;
+}
+            }
+            return false;
+    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t'
+            &&
+                    symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
+            AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
+            AppendSpace();
+            symbolBegin = i + 1;
+            ++i;
+          } else if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
+ /*DebugUtility.Log("Special whitespace|" + symbol.substring(i,(i)+(endIndex -
+              i)));
+            */ AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
+            AppendBreak();
+            symbolBegin = i;
+            ++i;
+            while (i < endIndex) {
+              if (symbol.charAt(i) == ' ' || symbol.charAt(i) == '\t') {
+ ++i;
+} else {
+ break;
+}
+            }
+          } else {
+            ++i;
+          }
+        }
+        AppendSpaceAndSymbol(symbol, symbolBegin, endIndex, false);
+      }
+      return true;
     }
 
     private void AppendComment(String symbol, boolean writeSpace) {
@@ -280,7 +350,7 @@ import com.upokecenter.util.*;
       0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0,
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
 
@@ -298,8 +368,7 @@ import com.upokecenter.util.*;
           unitLength = 1;
         } else {
      unitLength = (ch <= 0x7f) ? (3) : ((ch <= 0x7ff) ? (6) : ((ch <=
-            0xffff) ?
-            (9) : (12)));
+            0xffff) ? (9) : (12)));
         }
         if (!CanCharUnitFit(currentWordLength, unitLength, false)) {
           if (currentWordLength > 0) {
@@ -407,8 +476,7 @@ import com.upokecenter.util.*;
           ++i;
         }
  var unitLength = (ch <= 0x7f) ? (1) : ((ch <= 0x7ff) ? (2) : ((ch <=
-          0xffff) ?
-            (3) : (4)));
+          0xffff) ? (3) : (4)));
         var bytesNeeded = 4 + (base64state[2] + unitLength > 3 ? 4 : 0);
         if (!CanCharUnitFit(currentWordLength, bytesNeeded, false)) {
           if (currentWordLength > 0) {
@@ -543,6 +611,7 @@ import com.upokecenter.util.*;
     // * Each line is no more than MaxRecHeaderLineLength characters in length,
     // except that a line with no whitespace other than leading and trailing may
     // go up to MaxHardHeaderLineLength characters in length
+    // * Value has no all-whitespace or blank lines
     // * Text has only printable ASCII characters, CR,
     // LF, and/or TAB
     public static boolean CanOutputRaw(String s) {
@@ -574,7 +643,7 @@ import com.upokecenter.util.*;
         if (s.charAt(i) == 0x0d) {
           if (i + 2 >= len || s.charAt(i + 1) != 0x0a || (s.charAt(i + 2) != 0x09 && s.charAt(i +
             2) != 0x20)) {
-            // bare CR, or CRLF not followed by SP/VTAB
+            // bare CR, or CRLF not followed by SP/TAB
             return false;
           }
           i += 3;
@@ -666,12 +735,23 @@ import com.upokecenter.util.*;
     }
     public static String EncodeField(String fieldName, String
         fieldValue) {
+      boolean structured = HeaderFieldParsers.GetParser(fieldName).IsStructured();
       var trialField = CapitalizeHeaderField(fieldName) + ": " + fieldValue;
       if (CanOutputRaw(trialField)) {
  return trialField;
 }
       HeaderEncoder sa = new HeaderEncoder().AppendFieldName(fieldName);
-      sa.AppendString(TrimLeadingFWS(fieldValue));
+      if (sa.SimpleAppendString(fieldValue, 0, fieldValue.length())) {
+        trialField = sa.toString();
+        if (CanOutputRaw(trialField)) {
+          return trialField;
+        }
+      }
+      //DebugUtility.Log("Must wrap '" + fieldName + "'");
+      //DebugUtility.Log(fieldValue);
+      sa = new HeaderEncoder().AppendFieldName(fieldName);
+      fieldValue = TrimLeadingFWS(fieldValue);
+      sa.AppendString(fieldValue, 0, fieldValue.length(), structured);
       return sa.toString();
     }
     @Override public String toString() {

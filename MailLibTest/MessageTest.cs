@@ -1327,7 +1327,6 @@ Assert.IsTrue(boolTemp, msgstring);
       Assert.AreEqual("Test", msg.Parts[0].BodyString);
     }
 
-
     [Test]
     public void TestBoundaryReading() {
       byte[] body;
@@ -1473,13 +1472,33 @@ Assert.IsTrue(boolTemp, msgstring);
       Assert.AreEqual("Test", msg.Parts[0].Parts[0].BodyString);
     }
 
-
-
     [Test]
     public void TestAuthResults() {
       var msg = new Message();
-      Assert.DoesNotThrow(() => msg.SetHeader("authentication-results","a.b.c; d=e f.a=@example.com f.b=x f.c=y; g=x (y) h.a=me@example.com"));
-      Assert.DoesNotThrow(()=>msg.SetHeader("authentication-results","a.b.c;\r\n\td=e (f) g.h=ex@example.com;\r\n\ti=j k.m=@example.com"));
+      try {
+      msg.SetHeader(
+       "authentication-results",
+       "example.com from=example.net; x=y (z); from=example.org; a=b (c)");
+    } catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+  }
+      try {
+ msg.SetHeader(
+  "authentication-results",
+  "a.b.c; d=e f.a=@example.com f.b=x f.c=y; g=x (y) h.a=me@example.com");
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+      try {
+ msg.SetHeader(
+  "authentication-results",
+  "a.b.c;\r\n\td=e (f) g.h=ex@example.com;\r\n\ti=j k.m=@example.com");
+} catch (Exception ex) {
+Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
     }
 
     [Test]
@@ -2375,10 +2394,18 @@ for (var i = 0; i < fn.Length; i += 2) {
     }
 
     private static void TestSetHeaderInvalid(
-Message msg,
-string header,
-string value) {
-      Assert.Throws<ArgumentException>(()=>msg.SetHeader(header, value));
+  Message msg,
+  string header,
+  string value) {
+      try {
+ msg.SetHeader(header, value);
+Assert.Fail("Should have failed");
+} catch (ArgumentException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
     }
 
     [Test]
@@ -2420,7 +2447,6 @@ string value) {
   "to",
   "\u0020\"Example\u002c Example\" <example@example.com>");
     }
-
 
     [Test]
     public void TestSubject() {
