@@ -2126,7 +2126,7 @@ object objectTemp =
       TestEncodedWordsPhrase(
   "me \"x:y\"",
   "=?utf-8?q?me?= \"x:y\"");
-      // Non-special (dollar sign) not allowed in 
+      // Non-special (dollar sign) not allowed in
       // Q-encoded encoded
       // words within a phrase
       TestEncodedWordsPhrase(

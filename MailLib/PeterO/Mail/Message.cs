@@ -1122,18 +1122,22 @@ namespace PeterO.Mail {
       return list;
     }
 
-    internal static int ParseUnstructuredText(string s, int startIndex, int endIndex) {
+    internal static int ParseUnstructuredText(string s, int startIndex, int
+      endIndex) {
       // Parses "unstructured" in RFC 5322 without obsolete syntax
       // and with non-ASCII characters allowed
       for (int i = startIndex; i < endIndex;) {
         int c = DataUtilities.CodePointAt(s, i, 2);
         // NOTE: Unpaired surrogates are replaced with -1
-        if (c == -1) return i;
-        else if (c >= 0x10000) { i += 2; } 
-        else if (c == 0x0d) {
-          if (i + 2 >= endIndex || s[i + 1] != 0x0a || (s[i + 2] != 0x09 && s[i +
-            2] != 0x20)) {
-            // bare CR, or CRLF not followed by SP/VTAB
+        if (c == -1) {
+ return i;
+  } else if (c >= 0x10000) {
+  { i += 2;
+}
+  } else if (c == 0x0d) {
+        if (i + 2 >= endIndex || s[i + 1] != 0x0a || (s[i + 2] != 0x09 &&
+            s[i + 2] != 0x20)) {
+            // bare CR, or CRLF not followed by SP/TAB
             return i;
           }
           i += 3;
@@ -1701,6 +1705,8 @@ namespace PeterO.Mail {
         }
       }
       string topLevel = builder.TopLevelType;
+      // NOTE: RFC 6532 allows any transfer encoding for the
+      // four global message types listed below.
       transferEnc = topLevel.Equals("message") ||
         topLevel.Equals("multipart") ? (topLevel.Equals("multipart") || (
           !builder.SubType.Equals("global") &&
@@ -1816,8 +1822,10 @@ namespace PeterO.Mail {
           }
         }
         rawField = rawField ?? (HeaderEncoder.EncodeField(name, value));
-        if (!HeaderEncoder.CanOutputRaw(rawField)) {
-          //DebugUtility.Log("Can't output "+name+" raw");
+        if (HeaderEncoder.CanOutputRaw(rawField)) {
+          AppendAscii(output, rawField);
+        } else {
+          //DebugUtility.Log("Can't output '"+name+"' raw");
           string downgraded = HeaderFieldParsers.GetParser(name)
                     .DowngradeHeaderField(name, value);
           if (
@@ -1850,10 +1858,6 @@ namespace PeterO.Mail {
               output,
               downgraded);
           }
-        } else {
-          AppendAscii(
-            output,
-            HeaderEncoder.EncodeField(name, value));
         }
         AppendAscii(output, "\r\n");
       }

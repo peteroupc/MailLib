@@ -1854,10 +1854,17 @@ public final void setValueMessage(Message value) {
   "(=?utf-8?Q?x_y?=)",
   stringTemp);
       }
+
       {
         String stringTemp = EncodeComment("(x\u00a0)");
         Assert.assertEquals(
   "(=?utf-8?Q?x=C2=A0?=)",
+  stringTemp);
+      }
+      {
+        String stringTemp = EncodeComment("(_\u00a0)");
+        Assert.assertEquals(
+  "(=?utf-8?Q?=5F=C2=A0?=)",
   stringTemp);
       }
       {

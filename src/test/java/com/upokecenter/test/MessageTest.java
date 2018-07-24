@@ -1299,21 +1299,33 @@ if (!(boolTemp)) {
       message += "--b1\r\n";
       message += "Content-Type: text/plain\r\n\r\n";
       message += "Test\r\n";
-      message += "--b1--BOUNDARY\r\n";
+      message += "--b1BOUNDARY\r\n";
+      message += "Content-Type: text/plain\r\n\r\n";
+      message += "Test2\r\n";
+      message += "--b1BOUNDARY--\r\n";
+      message += "Content-Type: text/plain\r\n\r\n";
+      message += "Test3\r\n";
+      message += "--b1--\r\n";
       message += "Epilogue\r\n";
       message += "--b1--\r\n";
       System.out.println(message);
       Message msg;
       msg = MessageFromString(message);
-      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(3, msg.getParts().size());
       Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
       Assert.assertEquals("Test", msg.getParts().get(0).getBodyString());
+      Assert.assertEquals("Test2", msg.getParts().get(1).getBodyString());
+      Assert.assertEquals("Test3", msg.getParts().get(2).getBodyString());
       message = messageStart;
       message += "--b1BOUNDARY\r\n";
       message += "Content-Type: text/plain\r\n\r\n";
       message += "Test\r\n";
+      message += "--b1--BOUNDARY\r\n";
+      message += "Content-Type: text/plain\r\n\r\n";
+      message += "Test3\r\n";
       message += "--b1--\r\n";
       message += "Epilogue\r\n";
+      message += "--b1--\r\n";
       msg = MessageFromString(message);
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals("text", msg.getParts().get(0).getContentType().getTopLevelType());
@@ -1464,6 +1476,36 @@ if (!(boolTemp)) {
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
       Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
     }
+
+    @Test
+    public void TestAuthResults() {
+      Message msg = new Message();
+      try {
+      msg.SetHeader(
+       "authentication-results",
+       "example.com from=example.net; x=y (z); from=example.org; a=b (c)");
+    } catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+  }
+      try {
+ msg.SetHeader(
+  "authentication-results",
+  "a.b.c; d=e f.a=@example.com f.b=x f.c=y; g=x (y) h.a=me@example.com");
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+      try {
+ msg.SetHeader(
+  "authentication-results",
+  "a.b.c;\r\n\td=e (f) g.h=ex@example.com;\r\n\ti=j k.m=@example.com");
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    }
+
     @Test
     public void TestArgumentValidationMediaType() {
       try {
