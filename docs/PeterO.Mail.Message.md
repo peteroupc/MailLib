@@ -313,7 +313,7 @@ A message object if this object's content type is "message/rfc822", "message/new
 
     public int[] GetDate();
 
-Gets the date and time extracted from this message's Date header field (the value of which is found as though GetHeader("date") were called). See for more information on the format of the date-time array returned by this method.
+Gets the date and time extracted from this message's Date header field (the value of which is found as though GetHeader("date") were called). See**PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)** for more information on the format of the date-time array returned by this method.
 
 <b>Return Value:</b>
 

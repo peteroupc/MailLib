@@ -18,6 +18,7 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="T:PeterO.Mail.Message"]/*'/>
   public sealed class Message {
     internal const int MaxRecHeaderLineLength = 78;
+    internal const int MaxShortHeaderLineLength = 76;
     internal const int MaxHardHeaderLineLength = 998;
 
     private const int EncodingBase64 = 2;
@@ -1578,6 +1579,9 @@ namespace PeterO.Mail {
         } else if (body[i] == 0x00) {
           allTextBytes = false;
           ++ctlBytes;
+        } else if (body[i] == 0x09) {
+          // TAB
+          allTextBytes = false;
         } else if (body[i] == 0x7f ||
             (body[i] < 0x20 && body[i] != 0x0d && body[i] != 0x0a && body[i] !=
                 0x09)) {
@@ -1612,7 +1616,7 @@ namespace PeterO.Mail {
         allTextBytes &= lineLength != 0 || i + 1 >= body.Length || body[i] !=
           '-' || body[i + 1] != '-';
         ++lineLength;
-        allTextBytes &= lineLength <= MaxRecHeaderLineLength;
+        allTextBytes &= lineLength <= MaxShortHeaderLineLength;
       }
       return (allTextBytes) ? EncodingSevenBit :
     ((highBytes > lengthCheck / 3) ? EncodingBase64 :
@@ -2094,6 +2098,11 @@ namespace PeterO.Mail {
                 MediaType.TextPlainAscii;
               haveInvalid = true;
             }
+            // For conformance with RFC 2049
+            if (this.contentType.IsText &&
+               String.IsNullOrEmpty(this.contentType.GetCharset()) {
+               this.contentType = MediaType.ApplicationOctetStream;
+            }
             haveContentType = true;
           }
         } else if (mime && name.Equals("content-disposition")) {
@@ -2111,7 +2120,7 @@ namespace PeterO.Mail {
         }
       }
       if (this.transferEncoding == EncodingUnknown) {
-        this.contentType = MediaType.Parse("application/octet-stream");
+        this.contentType = MediaType.ApplicationOctetStream;
       }
       if (!haveContentEncoding && this.contentType.TypeAndSubType.Equals(
         "message/rfc822")) {
@@ -2125,7 +2134,7 @@ namespace PeterO.Mail {
           // DEVIATION: Be a little more liberal with UTF-8
           this.transferEncoding = EncodingEightBit;
         } else if (this.contentType.TypeAndSubType.Equals("text/html")) {
-          if (charset.Equals("us-ascii") || charset.Equals("ascii") ||
+          if (charset.Equals("us-ascii") ||
               charset.Equals("windows-1252") || charset.Equals(
                 "windows-1251") ||
               (charset.Length > 9 && charset.Substring(0, 9).Equals(
@@ -2146,7 +2155,8 @@ namespace PeterO.Mail {
              !this.contentType.SubType.Equals(
                "global-disposition-notification") &&
              !this.contentType.SubType.Equals("global-delivery-status"))) {
-          if (this.transferEncoding == EncodingQuotedPrintable) {
+          if (this.transferEncoding == EncodingQuotedPrintable ||
+              this.transferEncoding == EncodingBase64) {
             // DEVIATION: Treat quoted-printable for multipart and message
             // as 7bit instead
             this.transferEncoding = EncodingSevenBit;

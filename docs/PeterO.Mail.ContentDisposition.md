@@ -92,7 +92,7 @@ Determines whether this object and another object are equal.
 
     public int[] GetCreationDate();
 
-Gets the date and time extracted from this content disposition's "creation-date" parameter, which specifies the date of creation of a file (RFC 2183 sec. 2.4). See for information on the format of this method's return value.
+Gets the date and time extracted from this content disposition's "creation-date" parameter, which specifies the date of creation of a file (RFC 2183 sec. 2.4). See **PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)**for information on the format of this method's return value.
 
 <b>Return Value:</b>
 
@@ -122,7 +122,7 @@ A 32-bit hash code.
 
     public int[] GetModificationDate();
 
-Gets the date and time extracted from this content disposition's "modification-date" parameter, which specifies the date of last modification of a file (RFC 2183 sec. 2.5). See for information on the format of this method's return value.
+Gets the date and time extracted from this content disposition's "modification-date" parameter, which specifies the date of last modification of a file (RFC 2183 sec. 2.5). See **PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)**for information on the format of this method's return value.
 
 <b>Return Value:</b>
 
@@ -157,7 +157,7 @@ The parameter <i>name</i>
 
     public int[] GetReadDate();
 
-Gets the date and time extracted from this content disposition's "read-date" parameter, which specifies the date at which a file was last read (RFC 2183 sec. 2.6). See for information on the format of this method's return value.
+Gets the date and time extracted from this content disposition's "read-date" parameter, which specifies the date at which a file was last read (RFC 2183 sec. 2.6). See **PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)**for information on the format of this method's return value.
 
 <b>Return Value:</b>
 

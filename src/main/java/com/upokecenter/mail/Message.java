@@ -25,12 +25,13 @@ import com.upokecenter.text.*;
      * multiple threads can access them at the same time.</p> <p>The
      * following lists known deviations from the mail specifications
      * (Internet Message Format and MIME):</p> <ul> <li>The
-     * content-transfer-encoding "quoted-printable" is treated as 7bit
-     * instead if it occurs in a message or body part with content type
-     * "multipart/*" or "message/*" (other than "message/global",
-     * "message/global-headers", "message/global-disposition-notification",
-     * or "message/global-delivery-status").</li> <li>If a message has two
-     * or more Content-Type header fields, it is treated as having a content
+     * content-transfer-encodings "quoted-printable" and "base64" are
+     * treated as 7bit instead if they occur in a message or body part with
+     * content type "multipart/*" or "message/*" (other than
+     * "message/global", "message/global-headers",
+     * "message/global-disposition-notification", or
+     * "message/global-delivery-status").</li> <li>If a message has two or
+     * more Content-Type header fields, it is treated as having a content
      * type of "application/octet-stream", unless one or more of the header
      * fields is syntactically invalid.</li> <li>Illegal UTF-8 byte
      * sequences appearing in header field values are replaced with
@@ -47,53 +48,55 @@ import com.upokecenter.text.*;
      * "message/rfc822", bytes with values greater than 127 (called "8-bit
      * bytes" in the rest of this summary) are still allowed, despite the
      * default value of "7bit" for "Content-Transfer-Encoding".</li> <li>In
-     * the following cases, if the transfer encoding is absent or declared
-     * as 7bit, 8-bit bytes are still allowed:</li> <li>(a) The preamble and
-     * epilogue of multipart messages, which will be ignored.</li> <li>(b)
-     * If the charset is declared to be <code>utf-8</code>.</li> <li>(c) If the
-     * content type is "text/html" and the charset is declared to be
-     * <code>ascii</code>, <code>us-ascii</code>, "windows-1252", "windows-1251", or
-     * "iso-8859-*" (all single byte encodings).</li> <li>(d) In non-MIME
-     * message bodies and in text/plain message bodies. Any 8-bit bytes are
-     * replaced with the substitute character byte (0x1a).</li> <li>If the
-     * first line of the message starts with the word "From" (and no other
-     * case variations of that word) followed by a space or tab (U + 0020 or
-     * U + 0009), it is skipped.</li> <li>The name <code>ascii</code> is treated as
-     * a synonym for <code>us-ascii</code>, despite being a reserved name under
-     * RFC 2046. The name <code>cp1252</code> is treated as a synonym for
-     * <code>windows-1252</code> , even though it's not an IANA registered
-     * alias.</li> <li>The following deviations involve encoded words under
-     * RFC 2047:</li> <li>(a) If a sequence of encoded words decodes to a
-     * string with a CTL character (U + 007F, or a character less than U + 0020
-     * and not TAB) after being converted to Unicode, the encoded words are
-     * left un-decoded.</li> <li>(b) This implementation can decode encoded
-     * words regardless of the character length of the line in which they
-     * appear. This implementation can generate a header field line with one
-     * or more encoded words even if that line is more than 76 characters
-     * long. (This implementation follows the recommendation in RFC 5322 to
-     * limit header field lines to no more than 78 characters, where
-     * possible.)</li></ul> <p>It would be appreciated if users of this
-     * library contact the author if they find other ways in which this
-     * implementation deviates from the mail specifications or other
-     * applicable specifications.</p> <p>Note that this class currently
-     * doesn't support the "padding" parameter for message bodies with the
-     * media type "application/octet-stream" or treated as that media type
-     * (see RFC 2046 sec. 4.5.1).</p> <p>Note that this implementation can
-     * decode an RFC 2047 encoded word that uses ISO-2022-JP (the only
-     * supported encoding that uses code switching) even if the encoded
-     * word's payload ends in a different mode from "ASCII mode". (Each
-     * encoded word still starts in "ASCII mode", though.) This, however, is
-     * not a deviation to RFC 2047 because the relevant rule only concerns
-     * bringing the output device back to "ASCII mode" after the decoded
-     * text is displayed (see last paragraph of sec. 6.2) -- since the
-     * decoded text is converted to Unicode rather than kept as ISO-2022-JP,
-     * this is not applicable since there is no such thing as "ASCII mode"
-     * in the Unicode Standard.</p> <p>Note that this library (the MailLib
-     * library) has no facilities for sending and receiving email messages,
-     * since that's outside this library's scope.</p>
+     * the following cases, if the transfer encoding is absent, declared as
+     * 7bit, or treated as 7bit, 8-bit bytes are still allowed:</li> <li>(a)
+     * The preamble and epilogue of multipart messages, which will be
+     * ignored.</li> <li>(b) If the charset is declared to be
+     * <code>utf-8</code>.</li> <li>(c) If the content type is "text/html" and the
+     * charset is declared to be <code>us-ascii</code>, "windows-1252",
+     * "windows-1251", or "iso-8859-*" (all single byte encodings).</li>
+     * <li>(d) In non-MIME message bodies and in text/plain message bodies.
+     * Any 8-bit bytes are replaced with the substitute character byte
+     * (0x1a).</li> <li>If the first line of the message starts with the
+     * word "From" (and no other case variations of that word) followed by a
+     * space or tab (U + 0020 or U + 0009), it is skipped.</li> <li>The name
+     * <code>ascii</code> is treated as a synonym for <code>us-ascii</code>, despite
+     * being a reserved name under RFC 2046. The name <code>cp1252</code> is
+     * treated as a synonym for <code>windows-1252</code> , even though it's not
+     * an IANA registered alias.</li> <li>The following deviations involve
+     * encoded words under RFC 2047:</li> <li>(a) If a sequence of encoded
+     * words decodes to a string with a CTL character (U + 007F, or a
+     * character less than U + 0020 and not TAB) after being converted to
+     * Unicode, the encoded words are left un-decoded.</li> <li>(b) This
+     * implementation can decode encoded words regardless of the character
+     * length of the line in which they appear. This implementation can
+     * generate a header field line with one or more encoded words even if
+     * that line is more than 76 characters long. (This implementation
+     * follows the recommendation in RFC 5322 to limit header field lines to
+     * no more than 78 characters, where possible.)</li></ul> <p>It would be
+     * appreciated if users of this library contact the author if they find
+     * other ways in which this implementation deviates from the mail
+     * specifications or other applicable specifications.</p> <p>Note that
+     * this class currently doesn't support the "padding" parameter for
+     * message bodies with the media type "application/octet-stream" or
+     * treated as that media type (see RFC 2046 sec. 4.5.1).</p> <p>Note
+     * that this implementation can decode an RFC 2047 encoded word that
+     * uses ISO-2022-JP (the only supported encoding that uses code
+     * switching) even if the encoded word's payload ends in a different
+     * mode from "ASCII mode". (Each encoded word still starts in "ASCII
+     * mode", though.) This, however, is not a deviation to RFC 2047 because
+     * the relevant rule only concerns bringing the output device back to
+     * "ASCII mode" after the decoded text is displayed (see last paragraph
+     * of sec. 6.2) -- since the decoded text is converted to Unicode rather
+     * than kept as ISO-2022-JP, this is not applicable since there is no
+     * such thing as "ASCII mode" in the Unicode Standard.</p> <p>Note that
+     * this library (the MailLib library) has no facilities for sending and
+     * receiving email messages, since that's outside this library's
+     * scope.</p>
      */
   public final class Message {
     static final int MaxRecHeaderLineLength = 78;
+    static final int MaxShortHeaderLineLength = 76;
     static final int MaxHardHeaderLineLength = 998;
 
     private static final int EncodingBase64 = 2;
@@ -1897,6 +1900,9 @@ public final void setSubject(String value) {
         } else if (body[i] == 0x00) {
           allTextBytes = false;
           ++ctlBytes;
+        } else if (body[i] == 0x09) {
+          // TAB
+          allTextBytes = false;
         } else if (body[i] == 0x7f ||
             (body[i] < 0x20 && body[i] != 0x0d && body[i] != 0x0a && body[i] !=
                 0x09)) {
@@ -1931,7 +1937,7 @@ public final void setSubject(String value) {
         allTextBytes &= lineLength != 0 || i + 1 >= body.length || body[i] !=
           '-' || body[i + 1] != '-';
         ++lineLength;
-        allTextBytes &= lineLength <= MaxRecHeaderLineLength;
+        allTextBytes &= lineLength <= MaxShortHeaderLineLength;
       }
       return (allTextBytes) ? EncodingSevenBit :
     ((highBytes > lengthCheck / 3) ? EncodingBase64 :
@@ -2397,6 +2403,11 @@ public final void setSubject(String value) {
                 MediaType.TextPlainAscii;
               haveInvalid = true;
             }
+            // For conformance with RFC 2049
+            if (this.contentType.isText() &&
+               ((this.contentType.GetCharset()) == null || (this.contentType.GetCharset()).length() == 0) {
+               this.contentType = MediaType.ApplicationOctetStream;
+            }
             haveContentType = true;
           }
         } else if (mime && name.equals("content-disposition")) {
@@ -2410,7 +2421,7 @@ public final void setSubject(String value) {
         }
       }
       if (this.transferEncoding == EncodingUnknown) {
-        this.contentType = MediaType.Parse("application/octet-stream");
+        this.contentType = MediaType.ApplicationOctetStream;
       }
       if (!haveContentEncoding && this.contentType.getTypeAndSubType().equals(
         "message/rfc822")) {
@@ -2424,7 +2435,7 @@ public final void setSubject(String value) {
           // DEVIATION: Be a little more liberal with UTF-8
           this.transferEncoding = EncodingEightBit;
         } else if (this.contentType.getTypeAndSubType().equals("text/html")) {
-          if (charset.equals("us-ascii") || charset.equals("ascii") ||
+          if (charset.equals("us-ascii") ||
               charset.equals("windows-1252") || charset.equals(
                 "windows-1251") ||
               (charset.length() > 9 && charset.substring(0, 9).equals(
@@ -2445,7 +2456,8 @@ public final void setSubject(String value) {
              !this.contentType.getSubType().equals(
                "global-disposition-notification") &&
              !this.contentType.getSubType().equals("global-delivery-status"))) {
-          if (this.transferEncoding == EncodingQuotedPrintable) {
+          if (this.transferEncoding == EncodingQuotedPrintable ||
+              this.transferEncoding == EncodingBase64) {
             // DEVIATION: Treat quoted-printable for multipart and message
             // as 7bit instead
             this.transferEncoding = EncodingSevenBit;

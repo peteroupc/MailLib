@@ -13,7 +13,7 @@ Generates a date-time string following the nternet Message Format (RFC 5322) fro
 
 <b>Parameters:</b>
 
- * <i>dateTime</i>: The date and time in the form of an 8-element array. Seefor information on the format of this parameter.
+ * <i>dateTime</i>: The date and time in the form of an 8-element array. See**PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)**for information on the format of this parameter.
 
 <b>Return Value:</b>
 
@@ -29,7 +29,7 @@ The parameter "dateTime" is null or invalid.
     public static int[] ParseDateString(
         string str);
 
-Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322). However, this method does not allow obsolete time zone strings to appear in the date-time string. Seefor information on the format of this method's return value.
+Gets the date and time extracted from a date-time string following the Internet Message Format (RFC 5322). However, this method does not allow obsolete time zone strings to appear in the date-time string. See**PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)**for information on the format of this method's return value.
 
 <b>Parameters:</b>
 
