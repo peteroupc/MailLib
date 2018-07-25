@@ -1020,8 +1020,8 @@ and unrecognized media types as the media type <c>application/octet-stream</c>.<
             <para>The following lists known deviations from the mail
             specifications (Internet Message Format and MIME):</para>
             <list type=''>
-            <item>The content-transfer-encoding "quoted-printable" is treated
-            as 7bit instead if it occurs in a message or body part with content
+            <item>The content-transfer-encodings "quoted-printable" and "base64" are treated
+            as 7bit instead if they occur in a message or body part with content
             type "multipart/*" or "message/*" (other than "message/global",
             "message/global-headers",
             "message/global-disposition-notification", or
@@ -1047,13 +1047,13 @@ and unrecognized media types as the media type <c>application/octet-stream</c>.<
             "message/rfc822", bytes with values greater than 127 (called "8-bit
             bytes" in the rest of this summary) are still allowed, despite the
             default value of "7bit" for "Content-Transfer-Encoding".</item>
-            <item>In the following cases, if the transfer encoding is absent or
-            declared as 7bit, 8-bit bytes are still allowed:</item>
+            <item>In the following cases, if the transfer encoding is absent,
+            declared as 7bit, or treated as 7bit, 8-bit bytes are still allowed:</item>
             <item>(a) The preamble and epilogue of multipart messages, which
             will be ignored.</item>
             <item>(b) If the charset is declared to be <c>utf-8</c>.</item>
             <item>(c) If the content type is "text/html" and the charset is
-            declared to be <c>ascii</c>, <c>us-ascii</c>, "windows-1252",
+            declared to be <c>us-ascii</c>, "windows-1252",
             "windows-1251", or "iso-8859-*" (all single byte encodings).</item>
             <item>(d) In non-MIME message bodies and in text/plain message
             bodies. Any 8-bit bytes are replaced with the substitute character
