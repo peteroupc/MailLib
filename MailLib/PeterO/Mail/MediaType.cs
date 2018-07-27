@@ -713,6 +713,7 @@ namespace PeterO.Mail {
       // none are found, though, a 7-bit ASCII text is still also UTF-8).
       // **** Content containing non-ASCII bytes "should be rejected".
       string param = this.GetParameter("charset");
+      param = Encodings.ResolveAliasForEmail(param);
       if (param != null) {
         return DataUtilities.ToLowerCaseAscii(param);
       }

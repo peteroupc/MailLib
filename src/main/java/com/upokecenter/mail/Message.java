@@ -38,61 +38,64 @@ import com.upokecenter.text.*;
      * replacement characters. Moreover, UTF-8 is parsed everywhere in
      * header field values, even in those parts of some structured header
      * fields where this appears not to be allowed. (UTF-8 is a character
-     * encoding for the Unicode character set.)</li> <li>The To and Cc
-     * header fields are allowed to contain only comments and whitespace,
-     * but these "empty" header fields will be omitted when generating.</li>
-     * <li>There is no line length limit imposed when parsing header fields,
-     * except header field names.</li> <li>There is no line length limit
-     * imposed when parsing quoted-printable or base64 encoded bodies.</li>
-     * <li>If the transfer encoding is absent and the content type is
-     * "message/rfc822", bytes with values greater than 127 (called "8-bit
-     * bytes" in the rest of this summary) are still allowed, despite the
-     * default value of "7bit" for "Content-Transfer-Encoding".</li> <li>In
-     * the following cases, if the transfer encoding is absent, declared as
-     * 7bit, or treated as 7bit, 8-bit bytes are still allowed:</li> <li>(a)
-     * The preamble and epilogue of multipart messages, which will be
-     * ignored.</li> <li>(b) If the charset is declared to be
-     * <code>utf-8</code>.</li> <li>(c) If the content type is "text/html" and the
-     * charset is declared to be <code>us-ascii</code>, "windows-1252",
-     * "windows-1251", or "iso-8859-*" (all single byte encodings).</li>
-     * <li>(d) In non-MIME message bodies and in text/plain message bodies.
-     * Any 8-bit bytes are replaced with the substitute character byte
-     * (0x1a).</li> <li>If the first line of the message starts with the
-     * word "From" (and no other case variations of that word) followed by a
-     * space or tab (U + 0020 or U + 0009), it is skipped.</li> <li>The name
-     * <code>ascii</code> is treated as a synonym for <code>us-ascii</code>, despite
-     * being a reserved name under RFC 2046. The name <code>cp1252</code> is
-     * treated as a synonym for <code>windows-1252</code> , even though it's not
-     * an IANA registered alias.</li> <li>The following deviations involve
-     * encoded words under RFC 2047:</li> <li>(a) If a sequence of encoded
-     * words decodes to a string with a CTL character (U + 007F, or a
-     * character less than U + 0020 and not TAB) after being converted to
-     * Unicode, the encoded words are left un-decoded.</li> <li>(b) This
-     * implementation can decode encoded words regardless of the character
-     * length of the line in which they appear. This implementation can
-     * generate a header field line with one or more encoded words even if
-     * that line is more than 76 characters long. (This implementation
-     * follows the recommendation in RFC 5322 to limit header field lines to
-     * no more than 78 characters, where possible.)</li></ul> <p>It would be
-     * appreciated if users of this library contact the author if they find
-     * other ways in which this implementation deviates from the mail
-     * specifications or other applicable specifications.</p> <p>Note that
-     * this class currently doesn't support the "padding" parameter for
-     * message bodies with the media type "application/octet-stream" or
-     * treated as that media type (see RFC 2046 sec. 4.5.1).</p> <p>Note
-     * that this implementation can decode an RFC 2047 encoded word that
-     * uses ISO-2022-JP (the only supported encoding that uses code
-     * switching) even if the encoded word's payload ends in a different
-     * mode from "ASCII mode". (Each encoded word still starts in "ASCII
-     * mode", though.) This, however, is not a deviation to RFC 2047 because
-     * the relevant rule only concerns bringing the output device back to
-     * "ASCII mode" after the decoded text is displayed (see last paragraph
-     * of sec. 6.2) -- since the decoded text is converted to Unicode rather
-     * than kept as ISO-2022-JP, this is not applicable since there is no
-     * such thing as "ASCII mode" in the Unicode Standard.</p> <p>Note that
-     * this library (the MailLib library) has no facilities for sending and
-     * receiving email messages, since that's outside this library's
-     * scope.</p>
+     * encoding for the Unicode character set.)</li> <li>This implementation
+     * can parse a message even if that message is without a From header
+     * field, without a Date header field, or without both.</li> <li>The To
+     * and Cc header fields are allowed to contain only comments and
+     * whitespace, but these "empty" header fields will be omitted when
+     * generating.</li> <li>There is no line length limit imposed when
+     * parsing header fields, except header field names.</li> <li>There is
+     * no line length limit imposed when parsing quoted-printable or base64
+     * encoded bodies.</li> <li>If the transfer encoding is absent and the
+     * content type is "message/rfc822", bytes with values greater than 127
+     * (called "8-bit bytes" in the rest of this summary) are still allowed,
+     * despite the default value of "7bit" for
+     * "Content-Transfer-Encoding".</li> <li>In the following cases, if the
+     * transfer encoding is absent, declared as 7bit, or treated as 7bit,
+     * 8-bit bytes are still allowed:</li> <li>(a) The preamble and epilogue
+     * of multipart messages, which will be ignored.</li> <li>(b) If the
+     * charset is declared to be <code>utf-8</code>.</li> <li>(c) If the content
+     * type is "text/html" and the charset is declared to be
+     * <code>us-ascii</code>, "windows-1252", "windows-1251", or "iso-8859-*" (all
+     * single byte encodings).</li> <li>(d) In non-MIME message bodies and
+     * in text/plain message bodies. Any 8-bit bytes are replaced with the
+     * substitute character byte (0x1a).</li> <li>If the first line of the
+     * message starts with the word "From" (and no other case variations of
+     * that word) followed by one or more space (U + 0020) followed by either
+     * the end of line or a character other than colon, that line is
+     * skipped.</li> <li>The name <code>ascii</code> is treated as a synonym for
+     * <code>us-ascii</code>, despite being a reserved name under RFC 2046. The
+     * name <code>cp1252</code> is treated as a synonym for <code>windows-1252</code> ,
+     * even though it's not an IANA registered alias.</li> <li>The following
+     * deviations involve encoded words under RFC 2047:</li> <li>(a) If a
+     * sequence of encoded words decodes to a string with a CTL character
+     * (U + 007F, or a character less than U + 0020 and not TAB) after being
+     * converted to Unicode, the encoded words are left un-decoded.</li>
+     * <li>(b) This implementation can decode encoded words regardless of
+     * the character length of the line in which they appear. This
+     * implementation can generate a header field line with one or more
+     * encoded words even if that line is more than 76 characters long.
+     * (This implementation follows the recommendation in RFC 5322 to limit
+     * header field lines to no more than 78 characters, where
+     * possible.)</li></ul> <p>It would be appreciated if users of this
+     * library contact the author if they find other ways in which this
+     * implementation deviates from the mail specifications or other
+     * applicable specifications.</p> <p>Note that this class currently
+     * doesn't support the "padding" parameter for message bodies with the
+     * media type "application/octet-stream" or treated as that media type
+     * (see RFC 2046 sec. 4.5.1).</p> <p>Note that this implementation can
+     * decode an RFC 2047 encoded word that uses ISO-2022-JP (the only
+     * supported encoding that uses code switching) even if the encoded
+     * word's payload ends in a different mode from "ASCII mode". (Each
+     * encoded word still starts in "ASCII mode", though.) This, however, is
+     * not a deviation to RFC 2047 because the relevant rule only concerns
+     * bringing the output device back to "ASCII mode" after the decoded
+     * text is displayed (see last paragraph of sec. 6.2) -- since the
+     * decoded text is converted to Unicode rather than kept as ISO-2022-JP,
+     * this is not applicable since there is no such thing as "ASCII mode"
+     * in the Unicode Standard.</p> <p>Note that this library (the MailLib
+     * library) has no facilities for sending and receiving email messages,
+     * since that's outside this library's scope.</p>
      */
   public final class Message {
     static final int MaxRecHeaderLineLength = 78;
@@ -252,7 +255,8 @@ import com.upokecenter.text.*;
     /**
      * Gets this message's content disposition. The content disposition specifies
      * how a user agent should display or otherwise handle this message. Can
-     * be set to null.
+     * be set to null. If set to a disposition or to null, updates the
+     * Content-Disposition header field as appropriate.
      * @return This message's content disposition, or null if none is specified.
      */
     public final ContentDisposition getContentDisposition() {
@@ -271,7 +275,8 @@ public final void setContentDisposition(ContentDisposition value) {
       }
 
     /**
-     * Gets this message's media type.
+     * Gets this message's media type. Cannot be set to null. If set to a media
+     * type, updates the Content-Type header field as appropriate.
      * @return This message's media type.
      * @throws java.lang.NullPointerException This value is being set and "value" is
      * null.
@@ -283,7 +288,8 @@ public final void setContentType(MediaType value) {
         if (value == null) {
           throw new NullPointerException("value");
         }
-        if (!this.getContentType().equals(value)) {
+        if (this.contentType == null ||
+            !this.contentType.equals(value)) {
           this.contentType = value;
           if (!value.isMultipart()) {
             List<Message> thisParts = this.getParts();
@@ -849,8 +855,8 @@ public final void setSubject(String value) {
         throw new NullPointerException("str");
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true, true);
-      this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
-        MediaType.TextPlainUtf8;
+      this.setContentType(IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
+        MediaType.TextPlainUtf8);
       return this;
     }
 
@@ -878,8 +884,7 @@ public final void setSubject(String value) {
       // this case, the HTML version)
       var textMessage = NewBodyPart().SetTextBody(text);
       var htmlMessage = NewBodyPart().SetHtmlBody(html);
-      this.contentType =
-  MediaType.Parse("multipart/alternative; boundary=\"=_Boundary00000000\"");
+      this.setContentType(MediaType.Parse("multipart/alternative); boundary=\"=_Boundary00000000\"");
       List<Message> messageParts = this.getParts();
       messageParts.clear();
       messageParts.add(textMessage);
@@ -903,8 +908,8 @@ public final void setSubject(String value) {
         throw new NullPointerException("str");
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true, true);
-      this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
-        MediaType.TextPlainUtf8;
+      this.setContentType(IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
+        MediaType.TextPlainUtf8);
       return this;
     }
 
@@ -934,7 +939,7 @@ public final void setSubject(String value) {
         if (lineLength == 0 && index + 4 < endIndex &&
             bytes[index] == 'F' && bytes[index + 1] == 'r' &&
             bytes[index + 2] == 'o' && bytes[index + 3] == 'm' &&
-            bytes[index + 4] == ' ') {
+            (bytes[index + 4] == ' ' || bytes[index + 4] == '\t')) {
           // Line starts with "From" followed by space
           return false;
         }
@@ -1529,7 +1534,7 @@ public final void setSubject(String value) {
       return sb.toString();
     }
 
-    private static boolean IsShortAndAllAscii(String str) {
+    private static int IsShortAndAllAscii(String str) {
       if (str.length() > 0x10000) {
         return false;
       }
@@ -1621,6 +1626,7 @@ public final void setSubject(String value) {
       int[] bytesRead = new int[1];
       StringBuilder sb = new StringBuilder();
       TransformWithUnget ungetStream = new TransformWithUnget(stream);
+      int ss = 0;
       while (true) {
         sb.delete(0, (0)+(sb.length()));
         boolean first = true;
@@ -1629,6 +1635,21 @@ public final void setSubject(String value) {
         lineCount = 0;
         while (true) {
           int c = ungetStream.read();
+          if (start && ss >= 0) {
+            if (ss == 0 && c == 'F') {
+ ++ss;
+  } else if (ss == 1 && c == 'r') {
+ ++ss;
+  } else if (ss == 2 && c == 'o') {
+ ++ss;
+  } else if (ss == 3 && c == 'm') {
+ ++ss;
+  } else if (ss == 4 && c == ' ') {
+ ++ss;
+} else {
+ ss = -1;
+}
+          }
           if (c == -1) {
             throw new
 
@@ -1659,28 +1680,42 @@ public final void setSubject(String value) {
             }
             break;
           } else if (c == 0x20 || c == 0x09) {
-            if (start && c == 0x20 && sb.length() == 4 && sb.toString().equals(
-              "From")) {
-              // Mbox convention, skip the entire line
+            if (ss == 5) {
+              ss = -1;
+              // Possible Mbox convention
+              boolean possibleMbox = true;
+              boolean isFromField = false;
               sb.delete(0, (0)+(sb.length()));
               while (true) {
                 c = ungetStream.read();
                 if (c == -1) {
-                  throw new
-
-  MessageDataException("Premature end before all headers were read (Mbox convention)");
-                }
-                if (c == '\r') {
+                  throw new MessageDataException(
+  "Premature end before all headers were read (Mbox convention)");
+                } else if (c==':' && possibleMbox) {
+                  // Full fledged From header field
+                  isFromField = true;
+                  sb.append("from");
+                  start = false;
+                  wsp = false;
+                  first = true;
+                  break;
+                } else if (c == '\r') {
+                  possibleMbox = false;
                   if (ungetStream.read() == '\n') {
                     // End of line was reached
+                    start = false;
+                    wsp = false;
+                    first = true;
                     break;
                   }
                   ungetStream.Unget();
+                } else if (c != 0x20) {
+                  possibleMbox = false;
                 }
               }
-              start = false;
-              wsp = false;
-              first = true;
+              if (isFromField) {
+ break;
+}
             } else {
               wsp = true;
               first = false;
@@ -1933,7 +1968,7 @@ public final void setSubject(String value) {
           '.';
         allTextBytes &= lineLength != 0 || i + 4 >= body.length || body[i] !=
           'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3] !=
-          'm' || body[i + 4] != ' ';
+                'm' || (body[i + 4] != ' ' && body[i+4]!='\t');
         allTextBytes &= lineLength != 0 || i + 1 >= body.length || body[i] !=
           '-' || body[i + 1] != '-';
         ++lineLength;
@@ -2359,7 +2394,7 @@ public final void setSubject(String value) {
           this.headers.set(i + 1, value);
         }
       }
-      this.contentType = digest ? MediaType.MessageRfc822 :
+      MediaType contentType = digest ? MediaType.MessageRfc822 :
         MediaType.TextPlainAscii;
       boolean haveInvalid = false;
       boolean haveContentEncoding = false;
@@ -2389,24 +2424,29 @@ public final void setSubject(String value) {
             // DEVIATION: If there is already a content type,
             // treat content type as application/octet-stream
             if (haveInvalid || MediaType.Parse(value, null) == null) {
-              this.contentType = MediaType.TextPlainAscii;
+              contentType = MediaType.TextPlainAscii;
               haveInvalid = true;
             } else {
-              this.contentType = MediaType.ApplicationOctetStream;
+              contentType = MediaType.ApplicationOctetStream;
             }
           } else {
-            this.contentType = MediaType.Parse(
+            contentType = MediaType.Parse(
               value,
               null);
-            if (this.contentType == null) {
-              this.contentType = digest ? MediaType.MessageRfc822 :
+            if (contentType == null) {
+              contentType = digest ? MediaType.MessageRfc822 :
                 MediaType.TextPlainAscii;
               haveInvalid = true;
             }
             // For conformance with RFC 2049
-            if (this.contentType.isText() &&
-               ((this.contentType.GetCharset()) == null || (this.contentType.GetCharset()).length() == 0) {
-               this.contentType = MediaType.ApplicationOctetStream;
+            if (contentType.isText()) {
+              if (((contentType.GetCharset()) == null || (contentType.GetCharset()).length() == 0)) {
+               contentType = MediaType.ApplicationOctetStream;
+              } else {
+               MediaTypeBuilder builder = new MediaTypeBuilder(contentType)
+                   .SetParameter("charset",contentType.GetCharset());
+               contentType = builder.ToMediaType();
+              }
             }
             haveContentType = true;
           }
@@ -2421,8 +2461,10 @@ public final void setSubject(String value) {
         }
       }
       if (this.transferEncoding == EncodingUnknown) {
-        this.contentType = MediaType.ApplicationOctetStream;
+        contentType = MediaType.ApplicationOctetStream;
       }
+      // Update content type as appropriate
+      this.setContentType(contentType);
       if (!haveContentEncoding && this.contentType.getTypeAndSubType().equals(
         "message/rfc822")) {
         // DEVIATION: Be a little more liberal with rfc822

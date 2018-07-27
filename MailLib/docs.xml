@@ -1036,6 +1036,9 @@ and unrecognized media types as the media type <c>application/octet-stream</c>.<
             structured header fields where this appears not to be allowed.
             (UTF-8 is a character encoding for the Unicode character
             set.)</item>
+<item>This implementation can parse a message even if that message
+is without a From header field,
+without a Date header field, or without both.</item>
             <item>The To and Cc header fields are allowed to contain only
             comments and whitespace, but these "empty" header fields will be
             omitted when generating.</item>
@@ -1060,7 +1063,8 @@ and unrecognized media types as the media type <c>application/octet-stream</c>.<
             byte (0x1a).</item>
             <item>If the first line of the message starts with the word "From" (and
             no other case variations of that word)
-            followed by a space or tab (U+0020 or U+0009), it is skipped.</item>
+            followed by one or more space (U+0020) followed by either
+            the end of line or a character other than colon, that line is skipped.</item>
             <item>The name <c>ascii</c> is treated as a synonym for
             <c>us-ascii</c>, despite being a reserved name under RFC 2046. The
             name <c>cp1252</c> is treated as a synonym for <c>windows-1252</c>
@@ -1168,12 +1172,14 @@ no such thing as "ASCII mode" in the Unicode Standard.</para>
 <doc name="P:PeterO.Mail.Message.ContentDisposition">
 <summary>Gets or sets this message's content disposition. The
             content disposition specifies how a user agent should display or
-            otherwise handle this message. Can be set to null.</summary>
+            otherwise handle this message. Can be set to null.  If set to a disposition or to null,
+  updates the Content-Disposition header field as appropriate.</summary>
             <value>This message&apos;s content disposition, or null if none is
             specified.</value>
 </doc>
 <doc name="P:PeterO.Mail.Message.ContentType">
-<summary>Gets or sets this message's media type.</summary>
+<summary>Gets or sets this message's media type. Cannot be set to null.  If set to a media type,
+  updates the Content-Type header field as appropriate.</summary>
             <value>This message&apos;s media type.</value>
             <exception cref='T:System.ArgumentNullException'>This value is
             being set and "value" is null.</exception>
