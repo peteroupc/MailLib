@@ -1093,6 +1093,15 @@ Assert.IsTrue(boolTemp, msgstring);
       if (msg.GetDate() != null) {
         Assert.Fail();
       }
+      msg.SetHeader("date", "1 Jan 2000 01:01:01 +1060");
+      if (msg.GetDate() != null) {
+        Assert.Fail();
+      }
+
+      msg.SetHeader("date", "1 Jan 2000 01:01:01 +1061");
+      if (msg.GetDate() != null) {
+        Assert.Fail();
+      }
     }
 
     [Test]
@@ -2047,6 +2056,50 @@ for (var i = 0; i < fn.Length; i += 2) {
       MessageFromString(MessageGenerate(msg));
       Assert.AreEqual(1, msg.FromAddresses.Count);
     }
+
+    [Test]
+   public void TestMbox() {
+// Test handling of Mbox convention at start of message
+string msgString;
+Message msg;
+msgString="From me@example.com\r\nFrom: me2@example.com\r\n\r\nBody";
+msg = MessageFromString(msgString);
+{
+string stringTemp = msg.GetHeader("from");
+Assert.AreEqual(
+  "me2@example.com",
+  stringTemp);
+}
+msgString="From : me@example.com\r\nX-From: me2@example.com\r\n\r\nBody";
+msg = MessageFromString(msgString);
+{
+string stringTemp = msg.GetHeader("from");
+Assert.AreEqual(
+  "me@example.com",
+  stringTemp);
+}
+msgString="From: me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
+try {
+ MessageConstructOnly(msgString);
+Assert.Fail("Should have failed");
+} catch (MessageDataException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+msgString="From : me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
+try {
+ MessageConstructOnly(msgString);
+Assert.Fail("Should have failed");
+} catch (MessageDataException) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.Fail(ex.ToString());
+throw new InvalidOperationException(String.Empty, ex);
+}
+}
+
     [Test]
     public void TestGetBody() {
       // not implemented yet

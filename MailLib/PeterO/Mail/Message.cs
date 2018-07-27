@@ -181,7 +181,8 @@ namespace PeterO.Mail {
         if (value == null) {
           throw new ArgumentNullException(nameof(value));
         }
-        if (!this.ContentType.Equals(value)) {
+        if (this.contentType == null ||
+            !this.contentType.Equals(value)) {
           this.contentType = value;
           if (!value.IsMultipart) {
             IList<Message> thisParts = this.Parts;
@@ -546,7 +547,7 @@ namespace PeterO.Mail {
         throw new ArgumentNullException(nameof(str));
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true, true);
-      this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
+      this.ContentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
         MediaType.TextPlainUtf8;
       return this;
     }
@@ -565,7 +566,7 @@ namespace PeterO.Mail {
       // this case, the HTML version)
       var textMessage = NewBodyPart().SetTextBody(text);
       var htmlMessage = NewBodyPart().SetHtmlBody(html);
-      this.contentType =
+      this.ContentType =
   MediaType.Parse("multipart/alternative; boundary=\"=_Boundary00000000\"");
       IList<Message> messageParts = this.Parts;
       messageParts.Clear();
@@ -581,7 +582,7 @@ namespace PeterO.Mail {
         throw new ArgumentNullException(nameof(str));
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true, true);
-      this.contentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
+      this.ContentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
         MediaType.TextPlainUtf8;
       return this;
     }
@@ -612,7 +613,7 @@ namespace PeterO.Mail {
         if (lineLength == 0 && index + 4 < endIndex &&
             bytes[index] == 'F' && bytes[index + 1] == 'r' &&
             bytes[index + 2] == 'o' && bytes[index + 3] == 'm' &&
-            bytes[index + 4] == ' ') {
+            (bytes[index + 4] == ' ' || bytes[index + 4] == '\t')) {
           // Line starts with "From" followed by space
           return false;
         }
@@ -1208,7 +1209,7 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    private static bool IsShortAndAllAscii(string str) {
+    private static int IsShortAndAllAscii(string str) {
       if (str.Length > 0x10000) {
         return false;
       }
@@ -1300,6 +1301,7 @@ namespace PeterO.Mail {
       var bytesRead = new int[1];
       var sb = new StringBuilder();
       var ungetStream = new TransformWithUnget(stream);
+      var ss = 0;
       while (true) {
         sb.Remove(0, sb.Length);
         var first = true;
@@ -1308,6 +1310,21 @@ namespace PeterO.Mail {
         lineCount = 0;
         while (true) {
           int c = ungetStream.ReadByte();
+          if (start && ss >= 0) {
+            if (ss == 0 && c == 'F') {
+ ++ss;
+  } else if (ss == 1 && c == 'r') {
+ ++ss;
+  } else if (ss == 2 && c == 'o') {
+ ++ss;
+  } else if (ss == 3 && c == 'm') {
+ ++ss;
+  } else if (ss == 4 && c == ' ') {
+ ++ss;
+} else {
+ ss = -1;
+}
+          }
           if (c == -1) {
             throw new
 
@@ -1338,28 +1355,42 @@ namespace PeterO.Mail {
             }
             break;
           } else if (c == 0x20 || c == 0x09) {
-            if (start && c == 0x20 && sb.Length == 4 && sb.ToString().Equals(
-              "From")) {
-              // Mbox convention, skip the entire line
+            if (ss == 5) {
+              ss = -1;
+              // Possible Mbox convention
+              var possibleMbox = true;
+              var isFromField = false;
               sb.Remove(0, sb.Length);
               while (true) {
                 c = ungetStream.ReadByte();
                 if (c == -1) {
-                  throw new
-
-  MessageDataException("Premature end before all headers were read (Mbox convention)");
-                }
-                if (c == '\r') {
+                  throw new MessageDataException(
+  "Premature end before all headers were read (Mbox convention)");
+                } else if (c==':' && possibleMbox) {
+                  // Full fledged From header field
+                  isFromField = true;
+                  sb.Append("from");
+                  start = false;
+                  wsp = false;
+                  first = true;
+                  break;
+                } else if (c == '\r') {
+                  possibleMbox = false;
                   if (ungetStream.ReadByte() == '\n') {
                     // End of line was reached
+                    start = false;
+                    wsp = false;
+                    first = true;
                     break;
                   }
                   ungetStream.Unget();
+                } else if (c != 0x20) {
+                  possibleMbox = false;
                 }
               }
-              start = false;
-              wsp = false;
-              first = true;
+              if (isFromField) {
+ break;
+}
             } else {
               wsp = true;
               first = false;
@@ -1612,7 +1643,7 @@ namespace PeterO.Mail {
           '.';
         allTextBytes &= lineLength != 0 || i + 4 >= body.Length || body[i] !=
           'F' || body[i + 1] != 'r' || body[i + 2] != 'o' || body[i + 3] !=
-          'm' || body[i + 4] != ' ';
+                'm' || (body[i + 4] != ' ' && body[i+4]!='\t');
         allTextBytes &= lineLength != 0 || i + 1 >= body.Length || body[i] !=
           '-' || body[i + 1] != '-';
         ++lineLength;
@@ -2054,7 +2085,7 @@ namespace PeterO.Mail {
           this.headers[i + 1] = value;
         }
       }
-      this.contentType = digest ? MediaType.MessageRfc822 :
+      MediaType contentType = digest ? MediaType.MessageRfc822 :
         MediaType.TextPlainAscii;
       var haveInvalid = false;
       var haveContentEncoding = false;
@@ -2084,24 +2115,29 @@ namespace PeterO.Mail {
             // DEVIATION: If there is already a content type,
             // treat content type as application/octet-stream
             if (haveInvalid || MediaType.Parse(value, null) == null) {
-              this.contentType = MediaType.TextPlainAscii;
+              contentType = MediaType.TextPlainAscii;
               haveInvalid = true;
             } else {
-              this.contentType = MediaType.ApplicationOctetStream;
+              contentType = MediaType.ApplicationOctetStream;
             }
           } else {
-            this.contentType = MediaType.Parse(
+            contentType = MediaType.Parse(
               value,
               null);
-            if (this.contentType == null) {
-              this.contentType = digest ? MediaType.MessageRfc822 :
+            if (contentType == null) {
+              contentType = digest ? MediaType.MessageRfc822 :
                 MediaType.TextPlainAscii;
               haveInvalid = true;
             }
             // For conformance with RFC 2049
-            if (this.contentType.IsText &&
-               String.IsNullOrEmpty(this.contentType.GetCharset()) {
-               this.contentType = MediaType.ApplicationOctetStream;
+            if (contentType.IsText) {
+              if (String.IsNullOrEmpty(contentType.GetCharset())) {
+               contentType = MediaType.ApplicationOctetStream;
+              } else {
+               MediaTypeBuilder builder = new MediaTypeBuilder(contentType)
+                   .SetParameter("charset",contentType.GetCharset());
+               contentType = builder.ToMediaType();
+              }
             }
             haveContentType = true;
           }
@@ -2120,8 +2156,10 @@ namespace PeterO.Mail {
         }
       }
       if (this.transferEncoding == EncodingUnknown) {
-        this.contentType = MediaType.ApplicationOctetStream;
+        contentType = MediaType.ApplicationOctetStream;
       }
+      // Update content type as appropriate
+      this.ContentType = contentType;
       if (!haveContentEncoding && this.contentType.TypeAndSubType.Equals(
         "message/rfc822")) {
         // DEVIATION: Be a little more liberal with rfc822

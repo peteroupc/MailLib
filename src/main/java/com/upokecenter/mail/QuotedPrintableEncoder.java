@@ -240,7 +240,7 @@ import com.upokecenter.text.*;
             }
           case 6: {
               // 'From' at beginning of line
-              if (c == 0x20) {
+              if (c == 0x20 || c == 0x09) {
                 count += this.IncrementAndAppend(output, "=46");
                 count += this.IncrementAndAppendChar(output, (char)'r');
                 count += this.IncrementAndAppendChar(output, (char)'o');
