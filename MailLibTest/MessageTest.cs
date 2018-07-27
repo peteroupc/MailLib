@@ -229,6 +229,30 @@ Assert.IsTrue(boolTemp, msgstring);
       Assert.AreEqual(
   MediaType.TextPlainAscii,
   MessageFromString(msg).ContentType);
+      // Unknown encoding
+      msg = ValueStartCTD +
+
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Transfer-Encoding: unknown\r\n\r\n";
+      Assert.AreEqual(
+  MediaType.ApplicationOctetStream,
+  MessageFromString(msg).ContentType);
+      // Unsupported charset
+      msg = ValueStartCTD + "Content-Type: text/plain;charset=unknown\r\n\r\n";
+      Assert.AreEqual(
+  MediaType.ApplicationOctetStream,
+  MessageFromString(msg).ContentType);
+      // Unregistered ISO-8859-*
+      msg = ValueStartCTD +
+        "Content-Type: text/plain;charset=iso-8859-999\r\n\r\n";
+      Assert.AreEqual(
+  MediaType.TextPlainAscii,
+  MessageFromString(msg).ContentType);
+      // Registered ISO-8859-*
+      msg = ValueStartCTD +
+        "Content-Type: text/plain;charset=iso-8859-2-windows-latin-2\r\n\r\n";
+      Assert.AreEqual(
+  MediaType.TextPlainAscii,
+  MessageFromString(msg).ContentType);
     }
 
     [Test]

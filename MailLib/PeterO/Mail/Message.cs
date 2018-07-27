@@ -566,8 +566,8 @@ namespace PeterO.Mail {
       // this case, the HTML version)
       var textMessage = NewBodyPart().SetTextBody(text);
       var htmlMessage = NewBodyPart().SetHtmlBody(html);
-      this.ContentType =
-  MediaType.Parse("multipart/alternative; boundary=\"=_Boundary00000000\"");
+      string mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
+      this.ContentType = MediaType.Parse(mtypestr);
       IList<Message> messageParts = this.Parts;
       messageParts.Clear();
       messageParts.Add(textMessage);
@@ -2134,7 +2134,7 @@ namespace PeterO.Mail {
               if (String.IsNullOrEmpty(contentType.GetCharset())) {
                contentType = MediaType.ApplicationOctetStream;
               } else {
-               MediaTypeBuilder builder = new MediaTypeBuilder(contentType)
+               var builder = new MediaTypeBuilder(contentType)
                    .SetParameter("charset",contentType.GetCharset());
                contentType = builder.ToMediaType();
               }

@@ -236,6 +236,30 @@ if (!(boolTemp)) {
       Assert.assertEquals(
   MediaType.TextPlainAscii,
   MessageFromString(msg).getContentType());
+      // Unknown encoding
+      msg = ValueStartCTD +
+
+  "Content-Type: text/plain;charset=utf-8\r\nContent-Transfer-Encoding: unknown\r\n\r\n";
+      Assert.assertEquals(
+  MediaType.ApplicationOctetStream,
+  MessageFromString(msg).getContentType());
+      // Unsupported charset
+      msg = ValueStartCTD + "Content-Type: text/plain;charset=unknown\r\n\r\n";
+      Assert.assertEquals(
+  MediaType.ApplicationOctetStream,
+  MessageFromString(msg).getContentType());
+      // Unregistered ISO-8859-*
+      msg = ValueStartCTD +
+        "Content-Type: text/plain;charset=iso-8859-999\r\n\r\n";
+      Assert.assertEquals(
+  MediaType.TextPlainAscii,
+  MessageFromString(msg).getContentType());
+      // Registered ISO-8859-*
+      msg = ValueStartCTD +
+        "Content-Type: text/plain;charset=iso-8859-2-windows-latin-2\r\n\r\n";
+      Assert.assertEquals(
+  MediaType.TextPlainAscii,
+  MessageFromString(msg).getContentType());
     }
 
     @Test
