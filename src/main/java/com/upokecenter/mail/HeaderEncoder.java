@@ -707,6 +707,9 @@ import com.upokecenter.util.*;
         afterHyphen = s.charAt(i) == '-';
       }
       String ret = builder.toString();
+      if (ret.equals("Content-Id")) {
+ return "Content-ID";
+}
       return ret.equals("Mime-Version") ? "MIME-Version" :
         (ret.equals("Message-Id") ? "Message-ID" : ret);
     }

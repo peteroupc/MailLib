@@ -112,7 +112,7 @@ The adapted file name in the form of a string. Returns the empty string if there
 
     public override int GetHashCode();
 
-Returns the hash code for this instance.
+Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
 
 <b>Return Value:</b>
 

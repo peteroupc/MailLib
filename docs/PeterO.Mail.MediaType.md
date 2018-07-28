@@ -64,7 +64,7 @@ Gets a list of the parameters contained in this media type object.
 
 <b>Returns:</b>
 
-A list of the parameters contained in this media type object. NOTE: Previous versions erroneously stated that the list will be sorted by name. In fact, the names will not be guaranteed to appear in any particular order; this is at least the case in version 0.10.0.
+A list of the parameters contained in this media type object; the names of each parameter appear in an undefined order. NOTE: Previous versions erroneously stated that the list will be sorted by name. In fact, the names will not be guaranteed to appear in any particular order; this is at least the case in version 0.10.0.
 
 ### SubType
 
@@ -126,7 +126,7 @@ If the "charset" parameter exists, returns that parameter with the basic upper-c
 
     public override int GetHashCode();
 
-Returns the hash code for this instance.
+Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.
 
 <b>Return Value:</b>
 

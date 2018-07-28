@@ -708,8 +708,9 @@ namespace PeterO.Mail {
         afterHyphen = s[i] == '-';
       }
       string ret = builder.ToString();
-      if (ret.Equals("Content-Id"))
-        return "Content-ID";
+      if (ret.Equals("Content-Id")) {
+ return "Content-ID";
+}
       return ret.Equals("Mime-Version") ? "MIME-Version" :
         (ret.Equals("Message-Id") ? "Message-ID" : ret);
     }

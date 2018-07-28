@@ -95,11 +95,31 @@
 * `Message​(InputStream stream) Message`<br>
  Initializes a new instance of the Message
  class.
+* `Message AddAttachment​(InputStream inputStream,
+             MediaType mediaType)`<br>
+ Not documented yet.
+* `Message AddAttachment​(InputStream inputStream,
+             MediaType mediaType,
+             String filename)`<br>
+ Not documented yet.
+* `Message AddAttachment​(InputStream inputStream,
+             String filename)`<br>
+ Not documented yet.
 * `Message AddHeader​(String name,
          String value)`<br>
  Adds a header field to the end of the message's header.
 * `Message AddHeader​(Map.Entry<String,String> header)`<br>
  Adds a header field to the end of the message's header.
+* `Message AddInline​(InputStream inputStream,
+         MediaType mediaType)`<br>
+ Not documented yet.
+* `Message AddInline​(InputStream inputStream,
+         MediaType mediaType,
+         String filename)`<br>
+ Not documented yet.
+* `Message AddInline​(InputStream inputStream,
+         String filename)`<br>
+ Not documented yet.
 * `String Generate()`<br>
  Generates this message's data in text form.
 * `byte[] GenerateBytes()`<br>
@@ -818,3 +838,91 @@ Sets the body of this message to the specified plain text string. The
 **Throws:**
 
 * <code>NullPointerException</code> - The parameter <code>str</code> is null.
+
+### AddAttachment
+    public Message AddAttachment​(InputStream inputStream, MediaType mediaType)
+Not documented yet.
+
+**Parameters:**
+
+* <code>inputStream</code> - Not documented yet.
+
+* <code>mediaType</code> - Not documented yet.
+
+**Returns:**
+
+* A Message object.
+
+### AddAttachment
+    public Message AddAttachment​(InputStream inputStream, String filename)
+Not documented yet.
+
+**Parameters:**
+
+* <code>inputStream</code> - Not documented yet.
+
+* <code>filename</code> - Not documented yet.
+
+**Returns:**
+
+* A Message object.
+
+### AddAttachment
+    public Message AddAttachment​(InputStream inputStream, MediaType mediaType, String filename)
+Not documented yet.
+
+**Parameters:**
+
+* <code>inputStream</code> - Not documented yet.
+
+* <code>mediaType</code> - Not documented yet.
+
+* <code>filename</code> - Not documented yet. (3).
+
+**Returns:**
+
+* A Message object.
+
+### AddInline
+    public Message AddInline​(InputStream inputStream, MediaType mediaType)
+Not documented yet.
+
+**Parameters:**
+
+* <code>inputStream</code> - Not documented yet.
+
+* <code>mediaType</code> - Not documented yet.
+
+**Returns:**
+
+* A Message object.
+
+### AddInline
+    public Message AddInline​(InputStream inputStream, String filename)
+Not documented yet.
+
+**Parameters:**
+
+* <code>inputStream</code> - Not documented yet.
+
+* <code>filename</code> - Not documented yet.
+
+**Returns:**
+
+* A Message object.
+
+### AddInline
+    public Message AddInline​(InputStream inputStream, MediaType mediaType, String filename)
+Not documented yet.
+
+**Parameters:**
+
+* <code>inputStream</code> - Not documented yet.
+
+* <code>mediaType</code> - Not documented yet.
+
+* <code>filename</code> - Not documented yet. (3).
+
+**Returns:**
+
+* A Message object.
