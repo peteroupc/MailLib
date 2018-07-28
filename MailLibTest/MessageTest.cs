@@ -2008,6 +2008,20 @@ MessageFromString(MessageFromString(msg).Generate())
     public void TestAddHeader() {
       // not implemented yet
     }
+    /*
+[Test]
+    public void TestAddAttachment() {
+      var msg = new Message();
+      msg.SetHeader("from", "me@example.com");
+      msg.SetHeader("subject", "Test message");
+      msg.SetTextBody("This is a test body");
+      using (var fs = new System.IO.FileStream(null, 
+                                               System.IO.FileMode.Open)) {
+        msg.AddAttachment(fs, "test.dat");
+      }
+      File.WriteAllBytes("message.eml",msg.GenerateBytes());
+      Console.WriteLine(msg.Generate());
+    } */
     [Test]
     public void TestBccAddresses() {
       // not implemented yet

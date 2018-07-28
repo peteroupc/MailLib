@@ -540,6 +540,12 @@ namespace PeterO.Mail {
     }
     */
 
+    private static readonly MediaType TextHtmlAscii=
+      MediaType.Parse("text/html; charset=us-ascii");
+
+    private static readonly MediaType TextHtmlUtf8=
+      MediaType.Parse("text/html; charset=utf-8");
+
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.SetHtmlBody(System.String)"]/*'/>
     public Message SetHtmlBody(string str) {
@@ -547,8 +553,8 @@ namespace PeterO.Mail {
         throw new ArgumentNullException(nameof(str));
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true, true);
-      this.ContentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
-        MediaType.TextPlainUtf8;
+      this.ContentType = IsShortAndAllAscii(str) ? TextHtmlAscii :
+        TextHtmlUtf8;
       return this;
     }
 
@@ -566,7 +572,7 @@ namespace PeterO.Mail {
       // this case, the HTML version)
       var textMessage = NewBodyPart().SetTextBody(text);
       var htmlMessage = NewBodyPart().SetHtmlBody(html);
-      string mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"";
+    string mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"" ;
       this.ContentType = MediaType.Parse(mtypestr);
       IList<Message> messageParts = this.Parts;
       messageParts.Clear();
@@ -585,6 +591,117 @@ namespace PeterO.Mail {
       this.ContentType = IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
         MediaType.TextPlainUtf8;
       return this;
+    }
+
+    private Message AddBodyPart(
+         Stream inputStream,
+         MediaType mediaType,
+         string filename,
+         string disposition) {
+      // ArgumentAssert.NotNull(inputStream);
+      // ArgumentAssert.NotNull(mediaType);
+      Message bodyPart = NewBodyPart();
+      bodyPart.SetHeader("content-id",this.GenerateMessageID());
+      bodyPart.ContentType = mediaType;
+      using(var ms = new MemoryStream()) {
+        inputStream.CopyTo(ms);
+        bodyPart.SetBody(ms.ToArray());
+      }
+      var dispBuilder = new DispositionBuilder(disposition);
+      if (!String.IsNullOrEmpty(filename)) {
+        string basename = BaseName(filename);
+        if (!String.IsNullOrEmpty(basename)) {
+          dispBuilder.SetParameter("filename",
+            basename);
+        }
+      }
+      bodyPart.ContentDisposition = dispBuilder.ToDisposition();
+      if (this.ContentType.IsMultipart) {
+        this.Parts.Add(bodyPart);
+      } else {
+        Message existingBody = NewBodyPart();
+        existingBody.ContentDisposition=ContentDisposition.Parse("inline");
+        existingBody.ContentType = this.ContentType;
+        existingBody.SetBody(this.GetBody());
+        string mtypestr = "multipart/mixed; boundary=\"=_Boundary00000000\"";
+        this.ContentType = MediaType.Parse(mtypestr);
+        this.Parts.Add(existingBody);
+        this.Parts.Add(bodyPart);
+      }
+      return this;
+    }
+    private static string BaseName(string filename) {
+      for (var i = filename.Length-1;i >= 0; --i) {
+         if (filename[i]=='\\' || filename[i]=='/') {
+            return filename.Substring(i + 1);
+         }
+      }
+      return filename;
+    }
+
+    private static string ExtensionName(string filename) {
+      for (var i = filename.Length-1;i >= 0; --i) {
+         if (filename[i]=='\\' || filename[i]=='/') {
+            return String.Empty;
+         } else if (filename[i]=='.') {
+            return filename.Substring(i);
+         }
+      }
+      return String.Empty;
+    }
+
+    private static MediaType SuggestMediaType(string filename) {
+      if (!String.IsNullOrEmpty(filename)) {
+        string ext = DataUtilities.ToLowerCaseAscii(
+           ExtensionName(filename));
+        if (ext==".txt") {
+ return MediaType.Parse("text/plain");
+}
+        if (ext==".htm" || ext==".html") {
+ return MediaType.Parse("text/html;charset=utf-8");
+         }
+        if (ext==".doc") {
+ return MediaType.Parse("application/msword");
+}
+        if (ext==".png") {
+ return MediaType.Parse("image/png");
+}
+        if (ext==".jpg" || ext==".jpeg") {
+ return MediaType.Parse("image/jpeg");
+}
+        if (ext==".gif") {
+ return MediaType.Parse("image/gif");
+}
+      }
+      return MediaType.ApplicationOctetStream;
+    }
+
+    public Message AddAttachment(Stream inputStream, MediaType mediaType) {
+      return AddBodyPart(inputStream,mediaType,null,"attachment");
+    }
+
+    public Message AddAttachment(Stream inputStream, string filename) {
+      return
+  AddBodyPart(inputStream,SuggestMediaType(filename),filename,"attachment");
+    }
+
+    public Message AddAttachment(Stream inputStream, MediaType mediaType,
+      string filename) {
+      return AddBodyPart(inputStream,mediaType,filename,"attachment");
+    }
+
+    public Message AddInline(Stream inputStream, MediaType mediaType) {
+      return AddBodyPart(inputStream,mediaType,null,"inline");
+    }
+
+    public Message AddInline(Stream inputStream, string filename) {
+  return
+        AddBodyPart(inputStream,SuggestMediaType(filename),filename,"inline");
+    }
+
+    public Message AddInline(Stream inputStream, MediaType mediaType, string
+      filename) {
+      return AddBodyPart(inputStream,mediaType,filename,"inline");
     }
 
     internal static bool CanBeUnencoded(
@@ -1209,7 +1326,7 @@ namespace PeterO.Mail {
       return sb.ToString();
     }
 
-    private static int IsShortAndAllAscii(string str) {
+    private static bool IsShortAndAllAscii(string str) {
       if (str.Length > 0x10000) {
         return false;
       }

@@ -606,14 +606,15 @@ namespace PeterO.Mail {
         }
         string header = str;
        var index = 0;
-       bool changed = false;
+       var changed = false;
        var sb = new StringBuilder();
        int tokenEnd = HeaderParser.ParseCFWS(header, 0, header.Length, null);
        while (index < header.Length) {
          int newindex = HeaderParser.ParseReceivedToken(header, index,
            header.Length, null);
          if (newindex == index) {
-           tokenEnd = HeaderParser.ParseCFWS(header, index, header.Length, null);
+         tokenEnd = HeaderParser.ParseCFWS(header, index, header.Length,
+             null);
            sb.Append(header.Substring(index, tokenEnd - index));
            break;
          }

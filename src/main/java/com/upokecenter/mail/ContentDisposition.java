@@ -73,14 +73,17 @@ import com.upokecenter.text.*;
     }
 
     /**
-     * Returns the hash code for this instance.
+     * Calculates the hash code of this object. No application or process IDs are
+     * used in the hash code calculation.
      * @return A 32-bit hash code.
      */
     @Override public int hashCode() {
       int valueHashCode = 632580499;
       if (this.dispositionType != null) {
-        valueHashCode = (valueHashCode + (632580503 *
-          this.dispositionType.hashCode()));
+        for (int i = 0;i<this.dispositionType.length(); ++i) {
+ valueHashCode = (valueHashCode + (632580503 *
+          this.dispositionType.charAt(i)));
+ }
       }
       if (this.parameters != null) {
         valueHashCode = (valueHashCode + (632580587 *

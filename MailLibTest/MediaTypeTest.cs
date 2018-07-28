@@ -599,8 +599,7 @@ Assert.AreEqual(objectTemp, objectTemp2);
     }
 
 public static readonly IList<IDictionary<string, string>>
-      ValueTestParamTypes =
-         new List<IDictionary<string, string>> {
+      ValueTestParamTypes = new List<IDictionary<string, string>> {
   DictUtility.MakeDict("params", ";filename=x.y", "filename", "x.y"),
   DictUtility.MakeDict("params", ";filename=\"cc\"", "filename", "cc"),
   DictUtility.MakeDict("params", ";filename = x.y", "filename", "x.y"),

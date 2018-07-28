@@ -67,7 +67,7 @@ Specifies how a message body should be displayed or handled by a mail user
  parameter, which specifies the date at which a file was last read
  (RFC 2183 sec.
 * `int hashCode()`<br>
- Returns the hash code for this instance.
+ Calculates the hash code of this object.
 * `boolean isAttachment()`<br>
  Gets a value indicating whether the disposition type is attachment.
 * `boolean isInline()`<br>
@@ -129,7 +129,8 @@ Determines whether this object and another object are equal.
 
 ### hashCode
     public int hashCode()
-Returns the hash code for this instance.
+Calculates the hash code of this object. No application or process IDs are
+ used in the hash code calculation.
 
 **Overrides:**
 

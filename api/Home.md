@@ -11,7 +11,8 @@ Specifies how a message body should be displayed or handled by a mail user
 Description of DispositionBuilder.
 
 * [com.upokecenter.mail.MailDateTime](com.upokecenter.mail.MailDateTime.md) -
-Not documented yet.
+Contains methods for parsing and generating date-time strings following the
+ Internet Message Format (RFC 5322).
 
 * [com.upokecenter.mail.MediaType](com.upokecenter.mail.MediaType.md) -
 Specifies what kind of data a message body is.

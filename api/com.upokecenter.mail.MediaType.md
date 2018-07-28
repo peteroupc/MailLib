@@ -55,7 +55,7 @@
  Gets the top level type and subtype of this media type, separated by a
  slash; for example, "text/plain".
 * `int hashCode()`<br>
- Returns the hash code for this instance.
+ Calculates the hash code of this object.
 * `boolean isMultipart()`<br>
  Gets a value indicating whether this is a multipart media type.
 * `boolean isText()`<br>
@@ -122,7 +122,8 @@ Determines whether this object and another object are equal.
 
 ### hashCode
     public int hashCode()
-Returns the hash code for this instance.
+Calculates the hash code of this object. No application or process IDs are
+ used in the hash code calculation.
 
 **Overrides:**
 
@@ -163,10 +164,11 @@ Gets a list of the parameters contained in this media type object.
 
 **Returns:**
 
-* A list of the parameters contained in this media type object. NOTE:
- Previous versions erroneously stated that the list will be sorted by
- name. In fact, the names will not be guaranteed to appear in any
- particular order; this is at least the case in version 0.10.0.
+* A list of the parameters contained in this media type object; the
+ names of each parameter appear in an undefined order. NOTE: Previous
+ versions erroneously stated that the list will be sorted by name. In
+ fact, the names will not be guaranteed to appear in any particular
+ order; this is at least the case in version 0.10.0.
 
 ### toString
     public String toString()

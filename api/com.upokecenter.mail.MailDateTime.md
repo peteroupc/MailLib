@@ -2,7 +2,8 @@
 
     public final class MailDateTime extends Object
 
-Not documented yet.
+Contains methods for parsing and generating date-time strings following the
+ Internet Message Format (RFC 5322).
 
 ## Methods
 

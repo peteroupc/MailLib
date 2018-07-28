@@ -117,8 +117,7 @@ import com.upokecenter.util.*;
             i += 2;
             continue;
           } else if (structured && (symbol.charAt(i) == '<' || symbol.charAt(i) == '>' ||
-            symbol.charAt(i) == ',' ||
-                    symbol.charAt(i) == ';')) {
+            symbol.charAt(i) == ',' || symbol.charAt(i) == ';')) {
             // Additional characters between which linear white space can
             // freely appear
             // in structured header fields. They are the union of RFC 822's
@@ -220,9 +219,8 @@ import com.upokecenter.util.*;
 }
             }
             return false;
-    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t'
-            &&
-                    symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
+    } else if (symbol.charAt(i) == ' ' && i + 1 < endIndex && symbol.charAt(i + 1) != '\t'&&
+            symbol.charAt(i + 1) != '\r' && symbol.charAt(i + 1) != ' ') {
             AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
             AppendSpace();
             symbolBegin = i + 1;
