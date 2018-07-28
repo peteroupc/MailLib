@@ -1018,6 +1018,7 @@ if (ext.equals(".rtf")) {
 }
 if (ext.equals(".docx")) {
  return
+
   MediaType.Parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 }
 if (ext.equals(".zip")) {
@@ -1043,12 +1044,10 @@ if (ext.equals(".eml")) {
  return MediaType.Parse("message/rfc822");
 }
 if (ext.equals(".htm") || ext.equals(".html") || ext.equals(".shtml")) {
-  { return MediaType.Parse("text/html;
-}charset=utf-8"); }
+ return MediaType.Parse("text/html\u003bcharset=utf-8"); }
 if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
   ext.equals(".srt") || ext.equals(".text") || ext.equals(".txt")) {
-  { return MediaType.Parse("text/plain;
-}charset=utf-8"); }
+  return MediaType.Parse("text/plain\u003bcharset=utf-8"); }
       }
       return MediaType.ApplicationOctetStream;
     }

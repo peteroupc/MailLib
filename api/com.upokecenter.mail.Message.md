@@ -97,14 +97,17 @@
  class.
 * `Message AddAttachment​(InputStream inputStream,
              MediaType mediaType)`<br>
- Not documented yet.
+ Adds an attachment to this message in the form of data from the given
+ readable stream, and with the given media type.
 * `Message AddAttachment​(InputStream inputStream,
              MediaType mediaType,
              String filename)`<br>
- Not documented yet.
+ Adds an attachment to this message in the form of data from the given
+ readable stream, and with the given media type and file name.
 * `Message AddAttachment​(InputStream inputStream,
              String filename)`<br>
- Not documented yet.
+ Adds an attachment to this message in the form of data from the given
+ readable stream, and with the given file name.
 * `Message AddHeader​(String name,
          String value)`<br>
  Adds a header field to the end of the message's header.
@@ -112,14 +115,17 @@
  Adds a header field to the end of the message's header.
 * `Message AddInline​(InputStream inputStream,
          MediaType mediaType)`<br>
- Not documented yet.
+ Adds an inline body part to this message in the form of data from the given
+ readable stream, and with the given media type.
 * `Message AddInline​(InputStream inputStream,
          MediaType mediaType,
          String filename)`<br>
- Not documented yet.
+ Adds an inline body part to this message in the form of data from the given
+ readable stream, and with the given media type and file name.
 * `Message AddInline​(InputStream inputStream,
          String filename)`<br>
- Not documented yet.
+ Adds an inline body part to this message in the form of data from the given
+ readable stream, and with the given file name.
 * `String Generate()`<br>
  Generates this message's data in text form.
 * `byte[] GenerateBytes()`<br>
@@ -252,7 +258,7 @@ Not documented yet.
 
 **Returns:**
 
-* A Message object.
+* This object.
 
 ### SetCurrentDate
     public Message SetCurrentDate()
@@ -841,88 +847,161 @@ Sets the body of this message to the specified plain text string. The
 
 ### AddAttachment
     public Message AddAttachment​(InputStream inputStream, MediaType mediaType)
-Not documented yet.
+Adds an attachment to this message in the form of data from the given
+ readable stream, and with the given media type. Before the new
+ attachment is added, if this message isn't already a multipart
+ message, it becomes a "multipart/mixed" message with the current body
+ converted to an inline body part.
 
 **Parameters:**
 
-* <code>inputStream</code> - Not documented yet.
+* <code>inputStream</code> - A readable data stream.
 
-* <code>mediaType</code> - Not documented yet.
+* <code>mediaType</code> - A media type to assign to the attachment.
 
 **Returns:**
 
-* A Message object.
+* This object.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter "inputStream" or
+ "mediaType" is null.
+
+* <code>PeterO.Mail.MessageDataException</code> - An I/O error occurred.
 
 ### AddAttachment
     public Message AddAttachment​(InputStream inputStream, String filename)
-Not documented yet.
+Adds an attachment to this message in the form of data from the given
+ readable stream, and with the given file name. Before the new
+ attachment is added, if this message isn't already a multipart
+ message, it becomes a "multipart/mixed" message with the current body
+ converted to an inline body part.
 
 **Parameters:**
 
-* <code>inputStream</code> - Not documented yet.
+* <code>inputStream</code> - A readable data stream.
 
-* <code>filename</code> - Not documented yet.
+* <code>filename</code> - A file name to assign to the attachment. If the file name
+ has one of certain extensions (such as ".html"), an appropriate media
+ type will be assigned to the attachment based on that extension;
+ otherwise, the media type "application/octet-stream" is assigned. Can
+ be null or empty, in which case no file name is assigned.
 
 **Returns:**
 
-* A Message object.
+* This object.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter "inputStream" is null.
+
+* <code>PeterO.Mail.MessageDataException</code> - An I/O error occurred.
 
 ### AddAttachment
     public Message AddAttachment​(InputStream inputStream, MediaType mediaType, String filename)
-Not documented yet.
+Adds an attachment to this message in the form of data from the given
+ readable stream, and with the given media type and file name. Before
+ the new attachment is added, if this message isn't already a
+ multipart message, it becomes a "multipart/mixed" message with the
+ current body converted to an inline body part.
 
 **Parameters:**
 
-* <code>inputStream</code> - Not documented yet.
+* <code>inputStream</code> - A readable data stream.
 
-* <code>mediaType</code> - Not documented yet.
+* <code>mediaType</code> - A media type to assign to the attachment.
 
-* <code>filename</code> - Not documented yet. (3).
+* <code>filename</code> - A file name to assign to the attachment. Can be null or
+ empty, in which case no file name is assigned.
 
 **Returns:**
 
-* A Message object.
+* This object.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter "inputStream" or
+ "mediaType" is null.
+
+* <code>PeterO.Mail.MessageDataException</code> - An I/O error occurred.
 
 ### AddInline
     public Message AddInline​(InputStream inputStream, MediaType mediaType)
-Not documented yet.
+Adds an inline body part to this message in the form of data from the given
+ readable stream, and with the given media type. Before the new body
+ part is added, if this message isn't already a multipart message, it
+ becomes a "multipart/mixed" message with the current body converted
+ to an inline body part.
 
 **Parameters:**
 
-* <code>inputStream</code> - Not documented yet.
+* <code>inputStream</code> - A readable data stream.
 
-* <code>mediaType</code> - Not documented yet.
+* <code>mediaType</code> - A media type to assign to the body part.
 
 **Returns:**
 
-* A Message object.
+* This object.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter "inputStream" or
+ "mediaType" is null.
+
+* <code>PeterO.Mail.MessageDataException</code> - An I/O error occurred.
 
 ### AddInline
     public Message AddInline​(InputStream inputStream, String filename)
-Not documented yet.
+Adds an inline body part to this message in the form of data from the given
+ readable stream, and with the given file name. Before the new body
+ part is added, if this message isn't already a multipart message, it
+ becomes a "multipart/mixed" message with the current body converted
+ to an inline body part.
 
 **Parameters:**
 
-* <code>inputStream</code> - Not documented yet.
+* <code>inputStream</code> - A readable data stream.
 
-* <code>filename</code> - Not documented yet.
+* <code>filename</code> - A file name to assign to the body part. If the file name has
+ one of certain extensions (such as ".html"), an appropriate media
+ type will be assigned to the body part based on that extension;
+ otherwise, the media type "application/octet-stream" is assigned. Can
+ be null or empty, in which case no file name is assigned.
 
 **Returns:**
 
-* A Message object.
+* This object.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter "inputStream" is null.
+
+* <code>PeterO.Mail.MessageDataException</code> - An I/O error occurred.
 
 ### AddInline
     public Message AddInline​(InputStream inputStream, MediaType mediaType, String filename)
-Not documented yet.
+Adds an inline body part to this message in the form of data from the given
+ readable stream, and with the given media type and file name. Before
+ the new body part is added, if this message isn't already a multipart
+ message, it becomes a "multipart/mixed" message with the current body
+ converted to an inline body part.
 
 **Parameters:**
 
-* <code>inputStream</code> - Not documented yet.
+* <code>inputStream</code> - A readable data stream.
 
-* <code>mediaType</code> - Not documented yet.
+* <code>mediaType</code> - A media type to assign to the body part.
 
-* <code>filename</code> - Not documented yet. (3).
+* <code>filename</code> - A file name to assign to the body part.
 
 **Returns:**
 
-* A Message object.
+* This object.
+
+**Throws:**
+
+* <code>NullPointerException</code> - The parameter "inputStream" or
+ "mediaType" is null.
+
+* <code>PeterO.Mail.MessageDataException</code> - An I/O error occurred.
