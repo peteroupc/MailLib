@@ -2019,6 +2019,20 @@ MessageFromString(MessageFromString(msg).Generate())
     public void TestAddHeader() {
       // not implemented yet
     }
+    /*
+@Test
+    public void TestAddAttachment() {
+      Message msg = new Message();
+      msg.SetHeader("from", "me@example.com");
+      msg.SetHeader("subject", "Test message");
+      msg.SetTextBody("This is a test body");
+      using (System.IO.FileStream fs = new System.IO.FileStream(null,
+                    System.IO.FileMode.Open)) {
+        msg.AddAttachment(fs, "test.dat");
+      }
+      File.WriteAllBytes("message.eml",msg.GenerateBytes());
+      System.out.println(msg.Generate());
+    } */
     @Test
     public void TestBccAddresses() {
       // not implemented yet
@@ -2097,7 +2111,7 @@ for (int i = 0; i < fn.length; i += 2) {
 // Test handling of Mbox convention at start of message
 String msgString;
 Message msg;
-msgString="From me@example.com\r\nFrom: me2@example.com\r\n\r\nBody";
+msgString = "From me@example.com\r\nFrom: me2@example.com\r\n\r\nBody";
 msg = MessageFromString(msgString);
 {
 String stringTemp = msg.GetHeader("from");
@@ -2105,7 +2119,7 @@ Assert.assertEquals(
   "me2@example.com",
   stringTemp);
 }
-msgString="From : me@example.com\r\nX-From: me2@example.com\r\n\r\nBody";
+msgString = "From : me@example.com\r\nX-From: me2@example.com\r\n\r\nBody";
 msg = MessageFromString(msgString);
 {
 String stringTemp = msg.GetHeader("from");
@@ -2113,7 +2127,7 @@ Assert.assertEquals(
   "me@example.com",
   stringTemp);
 }
-msgString="From: me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
+msgString = "From: me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
 try {
  MessageConstructOnly(msgString);
 Assert.fail("Should have failed");
@@ -2123,7 +2137,7 @@ Assert.fail("Should have failed");
  Assert.fail(ex.toString());
 throw new IllegalStateException("", ex);
 }
-msgString="From : me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
+msgString = "From : me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
 try {
  MessageConstructOnly(msgString);
 Assert.fail("Should have failed");

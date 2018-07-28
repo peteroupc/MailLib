@@ -91,8 +91,8 @@ namespace PeterO.Mail {
       this.headers.Add("1.0");
     }
 
-    /// <summary>Not documented yet.</summary>
-    /// <returns>A Message object.</returns>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.NewBodyPart"]/*'/>
     public static Message NewBodyPart() {
       var msg = new Message();
       msg.contentType = MediaType.TextPlainAscii;
@@ -598,14 +598,22 @@ namespace PeterO.Mail {
          MediaType mediaType,
          string filename,
          string disposition) {
-      // ArgumentAssert.NotNull(inputStream);
-      // ArgumentAssert.NotNull(mediaType);
+      if ((inputStream) == null) {
+  throw new ArgumentNullException(nameof(inputStream));
+}
+      if ((mediaType) == null) {
+  throw new ArgumentNullException(nameof(mediaType));
+}
       Message bodyPart = NewBodyPart();
       bodyPart.SetHeader("content-id",this.GenerateMessageID());
       bodyPart.ContentType = mediaType;
+      try {
       using(var ms = new MemoryStream()) {
         inputStream.CopyTo(ms);
         bodyPart.SetBody(ms.ToArray());
+      }
+      } catch (IOException ex) {
+        throw new MessageDataException("An I/O error occurred.",ex);
       }
       var dispBuilder = new DispositionBuilder(disposition);
       if (!String.IsNullOrEmpty(filename)) {
@@ -654,51 +662,96 @@ namespace PeterO.Mail {
       if (!String.IsNullOrEmpty(filename)) {
         string ext = DataUtilities.ToLowerCaseAscii(
            ExtensionName(filename));
-        if (ext==".txt") {
- return MediaType.Parse("text/plain");
-}
-        if (ext==".htm" || ext==".html") {
- return MediaType.Parse("text/html;charset=utf-8");
-         }
-        if (ext==".doc") {
+if (ext.Equals(".doc") || ext.Equals(".dot")) {
  return MediaType.Parse("application/msword");
 }
-        if (ext==".png") {
- return MediaType.Parse("image/png");
+if (ext.Equals(".bin") || ext.Equals(".deploy") || ext.Equals(".msp") ||
+  ext.Equals(".msu")) {
+ return MediaType.Parse("application/octet-stream");
 }
-        if (ext==".jpg" || ext==".jpeg") {
- return MediaType.Parse("image/jpeg");
+if (ext.Equals(".pdf")) {
+ return MediaType.Parse("application/pdf");
 }
-        if (ext==".gif") {
+if (ext.Equals(".key")) {
+ return MediaType.Parse("application/pgp-keys");
+}
+if (ext.Equals(".sig")) {
+ return MediaType.Parse("application/pgp-signature");
+}
+if (ext.Equals(".rtf")) {
+ return MediaType.Parse("application/rtf");
+}
+if (ext.Equals(".docx")) {
+ return
+  MediaType.Parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+}
+if (ext.Equals(".zip")) {
+ return MediaType.Parse("application/zip");
+}
+if (ext.Equals(".m4a") || ext.Equals(".mp2") || ext.Equals(".mp3") ||
+  ext.Equals(".mpega") || ext.Equals(".mpga")) {
+ return MediaType.Parse("audio/mpeg");
+}
+if (ext.Equals(".gif")) {
  return MediaType.Parse("image/gif");
 }
+if (ext.Equals(".jpe") || ext.Equals(".jpeg") || ext.Equals(".jpg")) {
+ return MediaType.Parse("image/jpeg");
+}
+if (ext.Equals(".png")) {
+ return MediaType.Parse("image/png");
+}
+if (ext.Equals(".tif") || ext.Equals(".tiff")) {
+ return MediaType.Parse("image/tiff");
+}
+if (ext.Equals(".eml")) {
+ return MediaType.Parse("message/rfc822");
+}
+if (ext.Equals(".htm") || ext.Equals(".html") || ext.Equals(".shtml")) {
+  { return MediaType.Parse("text/html;
+}charset=utf-8"); }
+if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
+  ext.Equals(".srt") || ext.Equals(".text") || ext.Equals(".txt")) {
+  { return MediaType.Parse("text/plain;
+}charset=utf-8"); }
       }
       return MediaType.ApplicationOctetStream;
     }
 
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
     public Message AddAttachment(Stream inputStream, MediaType mediaType) {
       return AddBodyPart(inputStream,mediaType,null,"attachment");
     }
 
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)"]/*'/>
     public Message AddAttachment(Stream inputStream, string filename) {
       return
   AddBodyPart(inputStream,SuggestMediaType(filename),filename,"attachment");
     }
 
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
     public Message AddAttachment(Stream inputStream, MediaType mediaType,
       string filename) {
       return AddBodyPart(inputStream,mediaType,filename,"attachment");
     }
 
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>
     public Message AddInline(Stream inputStream, MediaType mediaType) {
       return AddBodyPart(inputStream,mediaType,null,"inline");
     }
 
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)"]/*'/>
     public Message AddInline(Stream inputStream, string filename) {
-  return
-        AddBodyPart(inputStream,SuggestMediaType(filename),filename,"inline");
+  return AddBodyPart(inputStream,SuggestMediaType(filename),filename,"inline");
     }
 
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType,System.String)"]/*'/>
     public Message AddInline(Stream inputStream, MediaType mediaType, string
       filename) {
       return AddBodyPart(inputStream,mediaType,filename,"inline");

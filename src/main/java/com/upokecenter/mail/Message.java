@@ -185,7 +185,7 @@ import com.upokecenter.text.*;
 
     /**
      * Not documented yet.
-     * @return A Message object.
+     * @return This object.
      */
     public static Message NewBodyPart() {
       Message msg = new Message();
@@ -925,21 +925,31 @@ public final void setSubject(String value) {
          MediaType mediaType,
          String filename,
          String disposition) {
+      if ((inputStream) == null) {
+  throw new NullPointerException("inputStream");
+}
+      if ((mediaType) == null) {
+  throw new NullPointerException("mediaType");
+}
       Message bodyPart = NewBodyPart();
       bodyPart.SetHeader("content-id",this.GenerateMessageID());
       bodyPart.setContentType(mediaType);
+      try {
       java.io.ByteArrayOutputStream ms = null;
 try {
 ms = new java.io.ByteArrayOutputStream();
 
         inputStream.CopyTo(ms);
-        bodyPart.SetBody(ms.ToBytes());
+        bodyPart.SetBody(ms.toByteArray());
 }
 finally {
 try { if (ms != null) {
  ms.close();
  } } catch (java.io.IOException ex) {}
 }
+      } catch (IOException ex) {
+        throw new MessageDataException("An I/O error occurred.",ex);
+      }
       DispositionBuilder dispBuilder = new DispositionBuilder(disposition);
       if (!((filename) == null || (filename).length() == 0)) {
         String basename = BaseName(filename);
@@ -964,9 +974,8 @@ try { if (ms != null) {
       return this;
     }
     private static String BaseName(String filename) {
-      int start = 0;
       for (var i = filename.length()-1;i >= 0; --i) {
-         if (filename.charAt(i)=='\\' || filename=='/') {
+         if (filename.charAt(i)=='\\' || filename.charAt(i)=='/') {
             return filename.substring(i + 1);
          }
       }
@@ -974,9 +983,8 @@ try { if (ms != null) {
     }
 
     private static String ExtensionName(String filename) {
-      int start = 0;
       for (var i = filename.length()-1;i >= 0; --i) {
-         if (filename.charAt(i)=='\\' || filename=='/') {
+         if (filename.charAt(i)=='\\' || filename.charAt(i)=='/') {
             return "";
          } else if (filename.charAt(i)=='.') {
             return filename.substring(i);
@@ -989,51 +997,171 @@ try { if (ms != null) {
       if (!((filename) == null || (filename).length() == 0)) {
         String ext = DataUtilities.ToLowerCaseAscii(
            ExtensionName(filename));
-        if (ext==".txt") {
- return MediaType.Parse("text/plain");
-}
-        if (ext==".htm" || ext==".html") {
- return MediaType.Parse("text/html;
-}charset=utf-8");
-        if (ext==".doc") {
+if (ext.equals(".doc") || ext.equals(".dot")) {
  return MediaType.Parse("application/msword");
 }
-        if (ext==".png") {
- return MediaType.Parse("image/png");
+if (ext.equals(".bin") || ext.equals(".deploy") || ext.equals(".msp") ||
+  ext.equals(".msu")) {
+ return MediaType.Parse("application/octet-stream");
 }
-        if (ext==".jpg" || ext==".jpeg") {
- return MediaType.Parse("image/jpeg");
+if (ext.equals(".pdf")) {
+ return MediaType.Parse("application/pdf");
 }
-        if (ext==".gif") {
+if (ext.equals(".key")) {
+ return MediaType.Parse("application/pgp-keys");
+}
+if (ext.equals(".sig")) {
+ return MediaType.Parse("application/pgp-signature");
+}
+if (ext.equals(".rtf")) {
+ return MediaType.Parse("application/rtf");
+}
+if (ext.equals(".docx")) {
+ return
+  MediaType.Parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+}
+if (ext.equals(".zip")) {
+ return MediaType.Parse("application/zip");
+}
+if (ext.equals(".m4a") || ext.equals(".mp2") || ext.equals(".mp3") ||
+  ext.equals(".mpega") || ext.equals(".mpga")) {
+ return MediaType.Parse("audio/mpeg");
+}
+if (ext.equals(".gif")) {
  return MediaType.Parse("image/gif");
 }
+if (ext.equals(".jpe") || ext.equals(".jpeg") || ext.equals(".jpg")) {
+ return MediaType.Parse("image/jpeg");
+}
+if (ext.equals(".png")) {
+ return MediaType.Parse("image/png");
+}
+if (ext.equals(".tif") || ext.equals(".tiff")) {
+ return MediaType.Parse("image/tiff");
+}
+if (ext.equals(".eml")) {
+ return MediaType.Parse("message/rfc822");
+}
+if (ext.equals(".htm") || ext.equals(".html") || ext.equals(".shtml")) {
+  { return MediaType.Parse("text/html;
+}charset=utf-8"); }
+if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
+  ext.equals(".srt") || ext.equals(".text") || ext.equals(".txt")) {
+  { return MediaType.Parse("text/plain;
+}charset=utf-8"); }
       }
       return MediaType.ApplicationOctetStream;
     }
 
+    /**
+     * Adds an attachment to this message in the form of data from the given
+     * readable stream, and with the given media type. Before the new
+     * attachment is added, if this message isn't already a multipart
+     * message, it becomes a "multipart/mixed" message with the current body
+     * converted to an inline body part.
+     * @param inputStream A readable data stream.
+     * @param mediaType A media type to assign to the attachment.
+     * @return This object.
+     * @throws java.lang.NullPointerException The parameter "inputStream" or
+     * "mediaType" is null.
+     * @throws PeterO.Mail.MessageDataException An I/O error occurred.
+     */
     public Message AddAttachment(InputStream inputStream, MediaType mediaType) {
       return AddBodyPart(inputStream,mediaType,null,"attachment");
     }
 
+    /**
+     * Adds an attachment to this message in the form of data from the given
+     * readable stream, and with the given file name. Before the new
+     * attachment is added, if this message isn't already a multipart
+     * message, it becomes a "multipart/mixed" message with the current body
+     * converted to an inline body part.
+     * @param inputStream A readable data stream.
+     * @param filename A file name to assign to the attachment. If the file name
+     * has one of certain extensions (such as ".html"), an appropriate media
+     * type will be assigned to the attachment based on that extension;
+     * otherwise, the media type "application/octet-stream" is assigned. Can
+     * be null or empty, in which case no file name is assigned.
+     * @return This object.
+     * @throws java.lang.NullPointerException The parameter "inputStream" is null.
+     * @throws PeterO.Mail.MessageDataException An I/O error occurred.
+     */
     public Message AddAttachment(InputStream inputStream, String filename) {
       return
   AddBodyPart(inputStream,SuggestMediaType(filename),filename,"attachment");
     }
 
+    /**
+     * Adds an attachment to this message in the form of data from the given
+     * readable stream, and with the given media type and file name. Before
+     * the new attachment is added, if this message isn't already a
+     * multipart message, it becomes a "multipart/mixed" message with the
+     * current body converted to an inline body part.
+     * @param inputStream A readable data stream.
+     * @param mediaType A media type to assign to the attachment.
+     * @param filename A file name to assign to the attachment. Can be null or
+     * empty, in which case no file name is assigned.
+     * @return This object.
+     * @throws java.lang.NullPointerException The parameter "inputStream" or
+     * "mediaType" is null.
+     * @throws PeterO.Mail.MessageDataException An I/O error occurred.
+     */
     public Message AddAttachment(InputStream inputStream, MediaType mediaType,
       String filename) {
       return AddBodyPart(inputStream,mediaType,filename,"attachment");
     }
 
+    /**
+     * Adds an inline body part to this message in the form of data from the given
+     * readable stream, and with the given media type. Before the new body
+     * part is added, if this message isn't already a multipart message, it
+     * becomes a "multipart/mixed" message with the current body converted
+     * to an inline body part.
+     * @param inputStream A readable data stream.
+     * @param mediaType A media type to assign to the body part.
+     * @return This object.
+     * @throws java.lang.NullPointerException The parameter "inputStream" or
+     * "mediaType" is null.
+     * @throws PeterO.Mail.MessageDataException An I/O error occurred.
+     */
     public Message AddInline(InputStream inputStream, MediaType mediaType) {
       return AddBodyPart(inputStream,mediaType,null,"inline");
     }
 
+    /**
+     * Adds an inline body part to this message in the form of data from the given
+     * readable stream, and with the given file name. Before the new body
+     * part is added, if this message isn't already a multipart message, it
+     * becomes a "multipart/mixed" message with the current body converted
+     * to an inline body part.
+     * @param inputStream A readable data stream.
+     * @param filename A file name to assign to the body part. If the file name has
+     * one of certain extensions (such as ".html"), an appropriate media
+     * type will be assigned to the body part based on that extension;
+     * otherwise, the media type "application/octet-stream" is assigned. Can
+     * be null or empty, in which case no file name is assigned.
+     * @return This object.
+     * @throws java.lang.NullPointerException The parameter "inputStream" is null.
+     * @throws PeterO.Mail.MessageDataException An I/O error occurred.
+     */
     public Message AddInline(InputStream inputStream, String filename) {
-  return
-        AddBodyPart(inputStream,SuggestMediaType(filename),filename,"inline");
+  return AddBodyPart(inputStream,SuggestMediaType(filename),filename,"inline");
     }
 
+    /**
+     * Adds an inline body part to this message in the form of data from the given
+     * readable stream, and with the given media type and file name. Before
+     * the new body part is added, if this message isn't already a multipart
+     * message, it becomes a "multipart/mixed" message with the current body
+     * converted to an inline body part.
+     * @param inputStream A readable data stream.
+     * @param mediaType A media type to assign to the body part.
+     * @param filename A file name to assign to the body part.
+     * @return This object.
+     * @throws java.lang.NullPointerException The parameter "inputStream" or
+     * "mediaType" is null.
+     * @throws PeterO.Mail.MessageDataException An I/O error occurred.
+     */
     public Message AddInline(InputStream inputStream, MediaType mediaType, String
       filename) {
       return AddBodyPart(inputStream,mediaType,filename,"inline");
@@ -1660,7 +1788,7 @@ try { if (ms != null) {
       return sb.toString();
     }
 
-    private static int IsShortAndAllAscii(String str) {
+    private static boolean IsShortAndAllAscii(String str) {
       if (str.length() > 0x10000) {
         return false;
       }

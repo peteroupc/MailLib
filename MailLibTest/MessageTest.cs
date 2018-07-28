@@ -2015,8 +2015,8 @@ MessageFromString(MessageFromString(msg).Generate())
       msg.SetHeader("from", "me@example.com");
       msg.SetHeader("subject", "Test message");
       msg.SetTextBody("This is a test body");
-      using (var fs = new System.IO.FileStream(null, 
-                                               System.IO.FileMode.Open)) {
+      using (var fs = new System.IO.FileStream(null,
+                    System.IO.FileMode.Open)) {
         msg.AddAttachment(fs, "test.dat");
       }
       File.WriteAllBytes("message.eml",msg.GenerateBytes());
@@ -2100,7 +2100,7 @@ for (var i = 0; i < fn.Length; i += 2) {
 // Test handling of Mbox convention at start of message
 string msgString;
 Message msg;
-msgString="From me@example.com\r\nFrom: me2@example.com\r\n\r\nBody";
+msgString = "From me@example.com\r\nFrom: me2@example.com\r\n\r\nBody";
 msg = MessageFromString(msgString);
 {
 string stringTemp = msg.GetHeader("from");
@@ -2108,7 +2108,7 @@ Assert.AreEqual(
   "me2@example.com",
   stringTemp);
 }
-msgString="From : me@example.com\r\nX-From: me2@example.com\r\n\r\nBody";
+msgString = "From : me@example.com\r\nX-From: me2@example.com\r\n\r\nBody";
 msg = MessageFromString(msgString);
 {
 string stringTemp = msg.GetHeader("from");
@@ -2116,7 +2116,7 @@ Assert.AreEqual(
   "me@example.com",
   stringTemp);
 }
-msgString="From: me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
+msgString = "From: me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
 try {
  MessageConstructOnly(msgString);
 Assert.Fail("Should have failed");
@@ -2126,7 +2126,7 @@ Assert.Fail("Should have failed");
  Assert.Fail(ex.ToString());
 throw new InvalidOperationException(String.Empty, ex);
 }
-msgString="From : me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
+msgString = "From : me@example.com\r\nFrom me2@example.com\r\n\r\nBody";
 try {
  MessageConstructOnly(msgString);
 Assert.Fail("Should have failed");

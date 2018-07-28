@@ -8,11 +8,13 @@ Represents an email message, and contains methods and properties for accessing a
 
 The following lists known deviations from the mail specifications (Internet Message Format and MIME):
 
- * The content-transfer-encoding "quoted-printable" is treated as 7bit instead if it occurs in a message or body part with content type "multipart/*" or "message/*" (other than "message/global", "message/global-headers", "message/global-disposition-notification", or "message/global-delivery-status").
+ * The content-transfer-encodings "quoted-printable" and "base64" are treated as 7bit instead if they occur in a message or body part with content type "multipart/*" or "message/*" (other than "message/global", "message/global-headers", "message/global-disposition-notification", or "message/global-delivery-status").
 
  * If a message has two or more Content-Type header fields, it is treated as having a content type of "application/octet-stream", unless one or more of the header fields is syntactically invalid.
 
  * Illegal UTF-8 byte sequences appearing in header field values are replaced with replacement characters. Moreover, UTF-8 is parsed everywhere in header field values, even in those parts of some structured header fields where this appears not to be allowed. (UTF-8 is a character encoding for the Unicode character set.)
+
+ * This implementation can parse a message even if that message is without a From header field, without a Date header field, or without both.
 
  * The To and Cc header fields are allowed to contain only comments and whitespace, but these "empty" header fields will be omitted when generating.
 
@@ -22,17 +24,17 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * If the transfer encoding is absent and the content type is "message/rfc822", bytes with values greater than 127 (called "8-bit bytes" in the rest of this summary) are still allowed, despite the default value of "7bit" for "Content-Transfer-Encoding".
 
- * In the following cases, if the transfer encoding is absent or declared as 7bit, 8-bit bytes are still allowed:
+ * In the following cases, if the transfer encoding is absent, declared as 7bit, or treated as 7bit, 8-bit bytes are still allowed:
 
  * (a) The preamble and epilogue of multipart messages, which will be ignored.
 
  * (b) If the charset is declared to be  `utf-8` .
 
- * (c) If the content type is "text/html" and the charset is declared to be  `ascii` ,  `us-ascii` , "windows-1252", "windows-1251", or "iso-8859-*" (all single byte encodings).
+ * (c) If the content type is "text/html" and the charset is declared to be  `us-ascii` , "windows-1252", "windows-1251", or "iso-8859-*" (all single byte encodings).
 
  * (d) In non-MIME message bodies and in text/plain message bodies. Any 8-bit bytes are replaced with the substitute character byte (0x1a).
 
- * If the first line of the message starts with the word "From" followed by a space, it is skipped.
+ * If the first line of the message starts with the word "From" (and no other case variations of that word) followed by one or more space (U+0020) followed by either the end of line or a character other than colon, that line is skipped.
 
  * The name  `ascii`  is treated as a synonym for `us-ascii` , despite being a reserved name under RFC 2046. The name  `cp1252`  is treated as a synonym for  `windows-1252` , even though it's not an IANA registered alias.
 
@@ -123,7 +125,7 @@ A list of addresses found in the CC header field or fields.
 
     public PeterO.Mail.ContentDisposition ContentDisposition { get; set;}
 
-Gets or sets this message's content disposition. The content disposition specifies how a user agent should display or otherwise handle this message. Can be set to null.
+Gets or sets this message's content disposition. The content disposition specifies how a user agent should display or otherwise handle this message. Can be set to null. If set to a disposition or to null, updates the Content-Disposition header field as appropriate.
 
 <b>Returns:</b>
 
@@ -133,7 +135,7 @@ This message's content disposition, or null if none is specified.
 
     public PeterO.Mail.MediaType ContentType { get; set;}
 
-Gets or sets this message's media type.
+Gets or sets this message's media type. Cannot be set to null. If set to a media type, updates the Content-Type header field as appropriate.
 
 <b>Returns:</b>
 
@@ -206,6 +208,63 @@ Gets a list of addresses found in the To header field or fields.
 
 A list of addresses found in the To header field or fields.
 
+### AddAttachment
+
+    public PeterO.Mail.Message AddAttachment(
+        System.IO.Stream inputStream,
+        PeterO.Mail.MediaType mediaType);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>inputStream</i>: Not documented yet.
+
+ * <i>mediaType</i>: Not documented yet.
+
+<b>Return Value:</b>
+
+A Message object.
+
+### AddAttachment
+
+    public PeterO.Mail.Message AddAttachment(
+        System.IO.Stream inputStream,
+        PeterO.Mail.MediaType mediaType,
+        string filename);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>inputStream</i>: Not documented yet.
+
+ * <i>mediaType</i>: Not documented yet.
+
+ * <i>filename</i>: Not documented yet. (3).
+
+<b>Return Value:</b>
+
+A Message object.
+
+### AddAttachment
+
+    public PeterO.Mail.Message AddAttachment(
+        System.IO.Stream inputStream,
+        string filename);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>inputStream</i>: Not documented yet.
+
+ * <i>filename</i>: Not documented yet.
+
+<b>Return Value:</b>
+
+A Message object.
+
 ### AddHeader
 
     public PeterO.Mail.Message AddHeader(
@@ -257,6 +316,63 @@ The key or value of  <i>header</i>
 
  * System.ArgumentException:
 The header field name is too long or contains an invalid character, or the header field's value is syntactically invalid.
+
+### AddInline
+
+    public PeterO.Mail.Message AddInline(
+        System.IO.Stream inputStream,
+        PeterO.Mail.MediaType mediaType);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>inputStream</i>: Not documented yet.
+
+ * <i>mediaType</i>: Not documented yet.
+
+<b>Return Value:</b>
+
+A Message object.
+
+### AddInline
+
+    public PeterO.Mail.Message AddInline(
+        System.IO.Stream inputStream,
+        PeterO.Mail.MediaType mediaType,
+        string filename);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>inputStream</i>: Not documented yet.
+
+ * <i>mediaType</i>: Not documented yet.
+
+ * <i>filename</i>: Not documented yet. (3).
+
+<b>Return Value:</b>
+
+A Message object.
+
+### AddInline
+
+    public PeterO.Mail.Message AddInline(
+        System.IO.Stream inputStream,
+        string filename);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>inputStream</i>: Not documented yet.
+
+ * <i>filename</i>: Not documented yet.
+
+<b>Return Value:</b>
+
+A Message object.
 
 ### Generate
 
@@ -379,6 +495,16 @@ An array containing the values of all header fields with the given name, in the 
 
  * System.ArgumentNullException:
 Name is null.
+
+### NewBodyPart
+
+    public static PeterO.Mail.Message NewBodyPart();
+
+Not documented yet.
+
+<b>Return Value:</b>
+
+A Message object.
 
 ### RemoveHeader
 

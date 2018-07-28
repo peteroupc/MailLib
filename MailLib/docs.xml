@@ -1118,6 +1118,34 @@ no such thing as "ASCII mode" in the Unicode Standard.</para>
             <exception cref='T:System.ArgumentNullException'>The parameter
             <paramref name='stream'/> is null.</exception>
 </doc>
+<doc name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType)">
+<summary>Adds an attachment to this message in the form of data from the given readable stream, and with the given media type.  Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.</summary>
+            <param name='inputStream'>A readable data stream.</param>
+            <param name='mediaType'>A media type to assign to the attachment.</param>
+            <returns>This object.</returns>
+
+            <exception cref='T:System.ArgumentNullException'>The parameter "inputStream" or "mediaType" is null.</exception>
+            <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.</exception>
+</doc>
+<doc name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType,System.String)">
+<summary>Adds an attachment to this message in the form of data from the given readable stream, and with the given media type and file name. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.</summary>
+            <param name='inputStream'>A readable data stream.</param>
+            <param name='mediaType'>A media type to assign to the attachment.</param>
+            <param name='filename'>A file name to assign to the attachment.  Can be null or empty, in which case no file name is assigned.</param>
+            <returns>This object.</returns>
+
+            <exception cref='T:System.ArgumentNullException'>The parameter "inputStream" or "mediaType" is null.</exception>
+            <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.</exception>
+</doc>
+<doc name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)">
+<summary>Adds an attachment to this message in the form of data from the given readable stream, and with the given file name. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.</summary>
+            <param name='inputStream'>A readable data stream.</param>
+            <param name='filename'>A file name to assign to the attachment.  If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the attachment based on that extension; otherwise, the media type "application/octet-stream" is assigned.  Can be null or empty, in which case no file name is assigned.</param>
+            <returns>This object.</returns>
+
+            <exception cref='T:System.ArgumentNullException'>The parameter "inputStream" is null.</exception>
+            <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.</exception>
+</doc>
 <doc name="M:PeterO.Mail.Message.AddHeader(System.Collections.Generic.KeyValuePair{System.String,System.String})">
 <summary>Adds a header field to the end of the message's header.
             <para>Updates the ContentType and ContentDisposition properties if
@@ -1148,6 +1176,34 @@ no such thing as "ASCII mode" in the Unicode Standard.</para>
             <exception cref='T:System.ArgumentException'>The header field name
             is too long or contains an invalid character, or the header field's
             value is syntactically invalid.</exception>
+</doc>
+<doc name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType)">
+<summary>Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.</summary>
+            <param name='inputStream'>A readable data stream.</param>
+            <param name='mediaType'>A media type to assign to the body part.</param>
+            <returns>This object.</returns>
+
+            <exception cref='T:System.ArgumentNullException'>The parameter "inputStream" or "mediaType" is null.</exception>
+            <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.</exception>
+</doc>
+<doc name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType,System.String)">
+<summary>Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type and file name. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.</summary>
+            <param name='inputStream'>A readable data stream.</param>
+            <param name='mediaType'>A media type to assign to the body part.</param>
+            <param name='filename'>A file name to assign to the body part.</param>
+            <returns>This object.</returns>
+
+            <exception cref='T:System.ArgumentNullException'>The parameter "inputStream" or "mediaType" is null.</exception>
+            <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.</exception>
+</doc>
+<doc name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)">
+<summary>Adds an inline body part to this message in the form of data from the given readable stream, and with the given file name. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.</summary>
+            <param name='inputStream'>A readable data stream.</param>
+            <param name='filename'>A file name to assign to the body part.  If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the body part based on that extension; otherwise, the media type "application/octet-stream" is assigned.  Can be null or empty, in which case no file name is assigned.</param>
+            <returns>This object.</returns>
+
+            <exception cref='T:System.ArgumentNullException'>The parameter "inputStream" is null.</exception>
+            <exception cref='T:PeterO.Mail.MessageDataException'>An I/O error occurred.</exception>
 </doc>
 <doc name="P:PeterO.Mail.Message.BccAddresses">
 <summary>Gets a list of addresses found in the BCC header field or
@@ -1314,6 +1370,10 @@ this method.</summary>
 <doc name="P:PeterO.Mail.Message.MessageStackEntry.Message">
 <summary>Gets an internal value.</summary>
             <value>An internal value.</value>
+</doc>
+<doc name="M:PeterO.Mail.Message.NewBodyPart">
+<summary>Not documented yet.</summary>
+            <returns>This object.</returns>
 </doc>
 <doc name="P:PeterO.Mail.Message.Parts">
 <summary>Gets a list of all the parts of this message. This list is
