@@ -1120,6 +1120,15 @@ no such thing as "ASCII mode" in the Unicode Standard.</para>
 </doc>
 <doc name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType)">
 <summary>Adds an attachment to this message in the form of data from the given readable stream, and with the given media type.  Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.</summary>
+<example>The following example (written in C# for the .NET version) is an extension method that adds an attachment from a byte array to a message.<code>
+public static Message AddAttachmentFromBytes(this Message msg, 
+     byte[] bytes, MediaType mediaType){
+  using(var fs=new MemoryStream(bytes)){
+    return msg.AddAttachment(fs,mediaType);
+  }
+}
+</code>
+</example>
             <param name='inputStream'>A readable data stream.</param>
             <param name='mediaType'>A media type to assign to the attachment.</param>
             <returns>This object.</returns>
@@ -1139,6 +1148,14 @@ no such thing as "ASCII mode" in the Unicode Standard.</para>
 </doc>
 <doc name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,System.String)">
 <summary>Adds an attachment to this message in the form of data from the given readable stream, and with the given file name. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.</summary>
+<example>The following example (written in C# for the .NET version) is an extension method that adds an attachment from a data file to a message.<code>
+public static Message AddAttachmentFromFile(this Message msg, string filename){
+  using(var fs=new FileStream(filename,FileMode.Open)){
+    return msg.AddAttachment(fs,filename);
+  }
+}
+</code>
+</example>
             <param name='inputStream'>A readable data stream.</param>
             <param name='filename'>A file name to assign to the attachment.  If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the attachment based on that extension; otherwise, the media type "application/octet-stream" is assigned.  Can be null or empty, in which case no file name is assigned.</param>
             <returns>This object.</returns>
@@ -1179,6 +1196,15 @@ no such thing as "ASCII mode" in the Unicode Standard.</para>
 </doc>
 <doc name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,PeterO.Mail.MediaType)">
 <summary>Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.</summary>
+<example>The following example (written in C# for the .NET version) is an extension method that adds an inline body part from a byte array to a message.<code>
+public static Message AddInlineFromBytes(this Message msg, 
+     byte[] bytes, MediaType mediaType){
+  using(var fs=new MemoryStream(bytes)){
+    return msg.AddInline(fs,mediaType);
+  }
+}
+</code>
+</example>
             <param name='inputStream'>A readable data stream.</param>
             <param name='mediaType'>A media type to assign to the body part.</param>
             <returns>This object.</returns>
@@ -1198,6 +1224,14 @@ no such thing as "ASCII mode" in the Unicode Standard.</para>
 </doc>
 <doc name="M:PeterO.Mail.Message.AddInline(System.IO.Stream,System.String)">
 <summary>Adds an inline body part to this message in the form of data from the given readable stream, and with the given file name. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.</summary>
+<example>The following example (written in C# for the .NET version) is an extension method that adds an inline body part from a data file to a message.<code>
+public static Message AddAttachmentFromInline(this Message msg, string filename){
+  using(var fs=new FileStream(filename,FileMode.Open)){
+    return msg.AddInline(fs,filename);
+  }
+}
+</code>
+</example>
             <param name='inputStream'>A readable data stream.</param>
             <param name='filename'>A file name to assign to the body part.  If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the body part based on that extension; otherwise, the media type "application/octet-stream" is assigned.  Can be null or empty, in which case no file name is assigned.</param>
             <returns>This object.</returns>
@@ -1214,8 +1248,8 @@ no such thing as "ASCII mode" in the Unicode Standard.</para>
 <doc name="P:PeterO.Mail.Message.BodyString">
 <summary>Gets the body of this message as a text string.</summary>
             <value>The body of this message as a text string.</value>
-            <exception cref='T:System.NotSupportedException'>This message has
-            no character encoding declared on it (which is usually the case for
+            <exception cref='T:System.NotSupportedException'>Either this message is a multipart message, so it doesn't have its own body text, or this message has
+            no character encoding declared or assumed for it (which is usually the case for
             non-text messages), or the character encoding is not
             supported.</exception>
 </doc>

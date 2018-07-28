@@ -129,6 +129,8 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="P:PeterO.Mail.Message.BodyString"]/*'/>
     public string BodyString {
       get {
+        if(this.ContentType.IsMultipart)
+          throw new InvalidOperationException("This is a multipart message, so it doesn't have its own body text.");
         ICharacterEncoding charset = Encodings.GetEncoding(
           this.ContentType.GetCharset(),
           true);
@@ -2300,8 +2302,13 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
             }
             // For conformance with RFC 2049
             if (contentType.IsText) {
+              
               if (String.IsNullOrEmpty(contentType.GetCharset())) {
-               contentType = MediaType.ApplicationOctetStream;
+               if (!contentType.StoresCharsetInPayload()){
+                // Used unless the media type defines how charset
+                // is determined from the payload
+                contentType = MediaType.ApplicationOctetStream;
+               }
               } else {
                var builder = new MediaTypeBuilder(contentType)
                    .SetParameter("charset",contentType.GetCharset());

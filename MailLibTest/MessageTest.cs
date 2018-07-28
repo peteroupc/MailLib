@@ -167,6 +167,80 @@ Assert.IsTrue(boolTemp, msgstring);
       }
     }
 
+private static byte[] BytesFromString(string str){
+ return DataUtilities.GetUtf8Bytes(
+  str,
+  true);
+}
+
+
+[Test]
+public void TestAddAttachment(){
+  Message msg;
+  string stringBody="This is a sample body.";
+  byte[] bytesBody=BytesFromString(stringBody);
+  string stringPart="This is a sample body part.";
+  byte[] bytesPart=BytesFromString(stringPart);
+  try {
+  using(var ms=new MemoryStream(bytesPart)){
+        MediaType mt = MediaType.TextPlainAscii;
+        Assert.Throws<ArgumentNullException>(()=>new Message().AddAttachment(null,mt));
+    Assert.Throws<ArgumentNullException>(()=>new Message().AddAttachment(null,(MediaType)null));
+    Assert.Throws<ArgumentNullException>(()=>new Message().AddAttachment(null,(string)null));
+    Assert.Throws<ArgumentNullException>(()=>new Message().AddAttachment(ms,(MediaType)null));
+        Assert.DoesNotThrow(()=>new Message().AddAttachment(ms,(string)null));
+    Assert.Throws<ArgumentNullException>(()=>new Message().AddInline(null,mt));
+    Assert.Throws<ArgumentNullException>(()=>new Message().AddInline(null,(MediaType)null));
+    Assert.Throws<ArgumentNullException>(()=>new Message().AddInline(null,(string)null));
+    Assert.Throws<ArgumentNullException>(()=>new Message().AddInline(ms,(MediaType)null));
+        Assert.DoesNotThrow(()=>new Message().AddInline(ms,(string)null));
+  }
+  for(var phase=0;phase<12;phase++){
+  using(var ms=new MemoryStream(bytesPart)){
+   MediaType mt=(phase%2==0) ? MediaType.TextPlainAscii : 
+    MediaType.Parse("text/troff;charset=us-ascii");
+   string fn=null;
+   msg=new Message().SetTextBody(stringBody);
+   Assert.AreEqual("text/plain",msg.ContentType.TypeAndSubType);
+   switch(phase){
+    case 0:
+    case 1:Assert.AreEqual(msg,msg.AddAttachment(ms,mt));break;
+    case 2:
+    case 3:mt=MediaType.TextPlainAscii;
+     fn="example.txt";
+     Assert.AreEqual(msg,msg.AddAttachment(ms,fn));break;
+    case 4:
+    case 5:fn="example.txt";
+     Assert.AreEqual(msg,msg.AddAttachment(ms,mt,fn));break;
+    case 6:
+    case 7:Assert.AreEqual(msg,msg.AddInline(ms,mt));break;
+    case 8:
+    case 9:mt=MediaType.TextPlainAscii;
+     fn="example.txt";
+     Assert.AreEqual(msg,msg.AddInline(ms,fn));break;
+    case 10:
+    case 11:fn="example.txt";
+     Assert.AreEqual(msg,msg.AddInline(ms,mt,fn));break;
+   }   
+   Assert.AreEqual("multipart/mixed",msg.ContentType.TypeAndSubType);
+   Assert.AreEqual(2,msg.Parts.Count);
+   Assert.AreEqual("text/plain",msg.Parts[0].ContentType.TypeAndSubType);
+   Assert.AreEqual("inline",msg.Parts[0].ContentDisposition.DispositionType);
+   Assert.AreEqual(stringBody,msg.Parts[0].BodyString);
+   Assert.AreEqual(mt.TypeAndSubType,msg.Parts[1].ContentType.TypeAndSubType);
+   Assert.AreEqual(
+      phase<6 ? "attachment" : "inline",
+      msg.Parts[1].ContentDisposition.DispositionType);
+          Assert.AreEqual(stringPart,msg.Parts[1].BodyString);
+  }
+  }
+  } catch(IOException ioe){
+    Assert.Fail(ioe.ToString());
+    throw new InvalidOperationException("",ioe);
+  }
+}
+
+
     [Test]
     public void TestContentTypeDefaults() {
   const string ValueStartCTD = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
