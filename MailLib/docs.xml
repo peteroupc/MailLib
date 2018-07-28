@@ -414,7 +414,7 @@ unrecognized disposition types should be treated as "attachment".</summary>
             is no "filename" parameter or that parameter is empty.</returns>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.GetHashCode">
-<summary>Returns the hash code for this instance.</summary>
+<summary>Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.</summary>
             <returns>A 32-bit hash code.</returns>
 </doc>
 <doc name="M:PeterO.Mail.ContentDisposition.GetModificationDate">
@@ -796,7 +796,7 @@ and unrecognized media types as the media type <c>application/octet-stream</c>.<
             string in all other cases.</returns>
 </doc>
 <doc name="M:PeterO.Mail.MediaType.GetHashCode">
-<summary>Returns the hash code for this instance.</summary>
+<summary>Calculates the hash code of this object. No application or process IDs are used in the hash code calculation.</summary>
             <returns>A 32-bit signed integer.</returns>
 </doc>
 <doc name="M:PeterO.Mail.MediaType.GetParameter(System.String)">
@@ -827,7 +827,7 @@ and unrecognized media types as the media type <c>application/octet-stream</c>.<
 <summary>Gets a list of the parameters contained in this
             media type object.</summary>
             <value>A list of the parameters contained in this media type
-            object. <para>NOTE: Previous versions erroneously
+            object; the names of each parameter appear in an undefined order. <para>NOTE: Previous versions erroneously
             stated that the list will be sorted by name.  In fact, the names will not be
             guaranteed to appear in any particular order; this is at least the
             case in version 0.10.0.</para></value>

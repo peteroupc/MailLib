@@ -3,7 +3,8 @@ package com.upokecenter.mail;
 import com.upokecenter.util.*;
 
     /**
-     * Not documented yet.
+     * Contains methods for parsing and generating date-time strings following the
+     * Internet Message Format (RFC 5322).
      */
   public final class MailDateTime {
 private MailDateTime() {

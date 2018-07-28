@@ -52,12 +52,16 @@ namespace PeterO.Mail {
     public override int GetHashCode() {
       var hashCode = 632580499;
       if (this.topLevelType != null) {
-        hashCode = unchecked(hashCode + (632580503 *
-                  this.topLevelType.GetHashCode()));
+        for (var i = 0;i<this.topLevelType.Length; ++i) {
+ hashCode = unchecked(hashCode + (632580563 *
+             this.topLevelType[i]));
+ }
       }
       if (this.subType != null) {
-        hashCode = unchecked(hashCode + (632580563 *
-             this.subType.GetHashCode()));
+        for (var i = 0;i<this.subType.Length; ++i) {
+ hashCode = unchecked(hashCode + (632580563 *
+             this.subType[i]));
+ }
       }
       if (this.parameters != null) {
         hashCode = unchecked(hashCode + (632580587 * this.parameters.Count));

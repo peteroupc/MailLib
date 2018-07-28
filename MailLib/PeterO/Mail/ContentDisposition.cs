@@ -42,8 +42,10 @@ namespace PeterO.Mail {
     public override int GetHashCode() {
       var hashCode = 632580499;
       if (this.dispositionType != null) {
-        hashCode = unchecked(hashCode + (632580503 *
-          this.dispositionType.GetHashCode()));
+        for (var i = 0;i<this.dispositionType.Length; ++i) {
+ hashCode = unchecked(hashCode + (632580503 *
+          this.dispositionType[i]));
+ }
       }
       if (this.parameters != null) {
         hashCode = unchecked(hashCode + (632580587 *

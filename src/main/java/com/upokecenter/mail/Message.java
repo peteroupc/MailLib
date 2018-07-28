@@ -840,6 +840,12 @@ public final void setSubject(String value) {
     }
     */
 
+    private static final MediaType TextHtmlAscii=
+      MediaType.Parse("text/html; charset=us-ascii");
+
+    private static final MediaType TextHtmlUtf8=
+      MediaType.Parse("text/html; charset=utf-8");
+
     /**
      * Sets the body of this message to the specified string in HTML format. The
      * character sequences CR (carriage return, "&#x5c;r", U+000D), LF (line
@@ -855,8 +861,8 @@ public final void setSubject(String value) {
         throw new NullPointerException("str");
       }
       this.body = DataUtilities.GetUtf8Bytes(str, true, true);
-      this.setContentType(IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
-        MediaType.TextPlainUtf8);
+      this.setContentType(IsShortAndAllAscii(str) ? TextHtmlAscii :
+        TextHtmlUtf8);
       return this;
     }
 
@@ -884,7 +890,8 @@ public final void setSubject(String value) {
       // this case, the HTML version)
       var textMessage = NewBodyPart().SetTextBody(text);
       var htmlMessage = NewBodyPart().SetHtmlBody(html);
-      this.setContentType(MediaType.Parse("multipart/alternative); boundary=\"=_Boundary00000000\"");
+    String mtypestr = "multipart/alternative; boundary=\"=_Boundary00000000\"" ;
+      this.setContentType(MediaType.Parse(mtypestr));
       List<Message> messageParts = this.getParts();
       messageParts.clear();
       messageParts.add(textMessage);
@@ -911,6 +918,125 @@ public final void setSubject(String value) {
       this.setContentType(IsShortAndAllAscii(str) ? MediaType.TextPlainAscii :
         MediaType.TextPlainUtf8);
       return this;
+    }
+
+    private Message AddBodyPart(
+         InputStream inputStream,
+         MediaType mediaType,
+         String filename,
+         String disposition) {
+      Message bodyPart = NewBodyPart();
+      bodyPart.SetHeader("content-id",this.GenerateMessageID());
+      bodyPart.setContentType(mediaType);
+      java.io.ByteArrayOutputStream ms = null;
+try {
+ms = new java.io.ByteArrayOutputStream();
+
+        inputStream.CopyTo(ms);
+        bodyPart.SetBody(ms.ToBytes());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+      DispositionBuilder dispBuilder = new DispositionBuilder(disposition);
+      if (!((filename) == null || (filename).length() == 0)) {
+        String basename = BaseName(filename);
+        if (!((basename) == null || (basename).length() == 0)) {
+          dispBuilder.SetParameter("filename",
+            basename);
+        }
+      }
+      bodyPart.setContentDisposition(dispBuilder.ToDisposition());
+      if (this.getContentType().isMultipart()) {
+        this.getParts().add(bodyPart);
+      } else {
+        Message existingBody = NewBodyPart();
+        existingBody.setContentDisposition(ContentDisposition.Parse("inline"));
+        existingBody.setContentType(this.getContentType());
+        existingBody.SetBody(this.GetBody());
+        String mtypestr = "multipart/mixed; boundary=\"=_Boundary00000000\"";
+        this.setContentType(MediaType.Parse(mtypestr));
+        this.getParts().add(existingBody);
+        this.getParts().add(bodyPart);
+      }
+      return this;
+    }
+    private static String BaseName(String filename) {
+      int start = 0;
+      for (var i = filename.length()-1;i >= 0; --i) {
+         if (filename.charAt(i)=='\\' || filename=='/') {
+            return filename.substring(i + 1);
+         }
+      }
+      return filename;
+    }
+
+    private static String ExtensionName(String filename) {
+      int start = 0;
+      for (var i = filename.length()-1;i >= 0; --i) {
+         if (filename.charAt(i)=='\\' || filename=='/') {
+            return "";
+         } else if (filename.charAt(i)=='.') {
+            return filename.substring(i);
+         }
+      }
+      return "";
+    }
+
+    private static MediaType SuggestMediaType(String filename) {
+      if (!((filename) == null || (filename).length() == 0)) {
+        String ext = DataUtilities.ToLowerCaseAscii(
+           ExtensionName(filename));
+        if (ext==".txt") {
+ return MediaType.Parse("text/plain");
+}
+        if (ext==".htm" || ext==".html") {
+ return MediaType.Parse("text/html;
+}charset=utf-8");
+        if (ext==".doc") {
+ return MediaType.Parse("application/msword");
+}
+        if (ext==".png") {
+ return MediaType.Parse("image/png");
+}
+        if (ext==".jpg" || ext==".jpeg") {
+ return MediaType.Parse("image/jpeg");
+}
+        if (ext==".gif") {
+ return MediaType.Parse("image/gif");
+}
+      }
+      return MediaType.ApplicationOctetStream;
+    }
+
+    public Message AddAttachment(InputStream inputStream, MediaType mediaType) {
+      return AddBodyPart(inputStream,mediaType,null,"attachment");
+    }
+
+    public Message AddAttachment(InputStream inputStream, String filename) {
+      return
+  AddBodyPart(inputStream,SuggestMediaType(filename),filename,"attachment");
+    }
+
+    public Message AddAttachment(InputStream inputStream, MediaType mediaType,
+      String filename) {
+      return AddBodyPart(inputStream,mediaType,filename,"attachment");
+    }
+
+    public Message AddInline(InputStream inputStream, MediaType mediaType) {
+      return AddBodyPart(inputStream,mediaType,null,"inline");
+    }
+
+    public Message AddInline(InputStream inputStream, String filename) {
+  return
+        AddBodyPart(inputStream,SuggestMediaType(filename),filename,"inline");
+    }
+
+    public Message AddInline(InputStream inputStream, MediaType mediaType, String
+      filename) {
+      return AddBodyPart(inputStream,mediaType,filename,"inline");
     }
 
     static boolean CanBeUnencoded(

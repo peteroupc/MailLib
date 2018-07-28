@@ -117,8 +117,7 @@ namespace PeterO.Mail {
             i += 2;
             continue;
           } else if (structured && (symbol[i] == '<' || symbol[i] == '>' ||
-            symbol[i] == ',' ||
-                    symbol[i] == ';')) {
+            symbol[i] == ',' || symbol[i] == ';')) {
             // Additional characters between which linear white space can
             // freely appear
             // in structured header fields. They are the union of RFC 822's
@@ -221,9 +220,8 @@ namespace PeterO.Mail {
 }
             }
             return false;
-    } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t'
-            &&
-                    symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
+    } else if (symbol[i] == ' ' && i + 1 < endIndex && symbol[i + 1] != '\t'&&
+            symbol[i + 1] != '\r' && symbol[i + 1] != ' ') {
             AppendSpaceAndSymbol(symbol, symbolBegin, i, false);
             AppendSpace();
             symbolBegin = i + 1;
@@ -710,6 +708,8 @@ namespace PeterO.Mail {
         afterHyphen = s[i] == '-';
       }
       string ret = builder.ToString();
+      if (ret.Equals("Content-Id"))
+        return "Content-ID";
       return ret.Equals("Mime-Version") ? "MIME-Version" :
         (ret.Equals("Message-Id") ? "Message-ID" : ret);
     }

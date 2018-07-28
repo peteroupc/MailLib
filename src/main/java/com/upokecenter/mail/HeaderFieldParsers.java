@@ -609,7 +609,8 @@ private HeaderFieldParsers() {
          int newindex = HeaderParser.ParseReceivedToken(header, index,
            header.length(), null);
          if (newindex == index) {
-           tokenEnd = HeaderParser.ParseCFWS(header, index, header.length(), null);
+         tokenEnd = HeaderParser.ParseCFWS(header, index, header.length(),
+             null);
            sb.append(header.substring(index, (index)+(tokenEnd - index)));
            break;
          }
