@@ -204,13 +204,14 @@ Gets this media type's "charset" parameter, naming a character encoding used
 
 **Returns:**
 
-* If the "charset" parameter exists, returns that parameter with the
- basic upper-case letters A to Z (U + 0041 to U + 005A) converted to lower
- case. Returns <code>"us-ascii"</code> instead if the media type is
- ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain"
- and doesn't have a "charset" parameter (see RFC2046), or the default
- value for that parameter, if any, for the media type if the "charset"
- parameter is absent. Returns an empty string in all other cases.
+* If the "charset" parameter is present and non-empty, returns the
+ result of the Encodings.ResolveAliasForEmail method for that
+ parameter, except that result's basic upper-case letters A to Z
+ (U+0041 to U+005A) are converted to lower case. If the "charset"
+ parameter is absent or empty, returns the default value, if any, for
+ that parameter given the media type (e.g., "us-ascii" if the media
+ type is "text/plain"; see RFC2046), or the empty string if there is
+ none.
 
 ### GetParameter
     public String GetParameter​(String name)

@@ -236,6 +236,7 @@ import com.upokecenter.text.*;
     public final String getBodyString() {
         if (this.getContentType().isMultipart()) {
  throw new
+
   UnsupportedOperationException("This is a multipart message, so it doesn't have its own body text.");
 }
         ICharacterEncoding charset = Encodings.GetEncoding(
@@ -945,7 +946,14 @@ public final void setSubject(String value) {
 try {
 ms = new java.io.ByteArrayOutputStream();
 
-        inputStream.CopyTo(ms);
+        byte[] buffer = new byte[4096];
+        while (true) {
+          int cp = inputStream.Read(buffer, 0, buffer.length);
+          if (cp <= 0) {
+ break;
+}
+          ms.write(buffer, 0, cp);
+        }
         bodyPart.SetBody(ms.toByteArray());
 }
 finally {
@@ -2792,17 +2800,18 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
 
     private void ReadMultipartBody(IByteReader stream) {
       int baseTransferEncoding = this.transferEncoding;
-      BoundaryCheckerTransform boundaryChecker = new BoundaryCheckerTransform(stream);
+      List<MessageStackEntry> multipartStack = new ArrayList<MessageStackEntry>();
+      MessageStackEntry entry = new MessageStackEntry(this);
+      multipartStack.add(entry);
+      BoundaryCheckerTransform boundaryChecker = new BoundaryCheckerTransform(
+         stream,
+         entry.getBoundary());
       // Be liberal on the preamble and epilogue of multipart
       // messages, as they will be ignored.
       IByteReader currentTransform = MakeTransferEncoding(
         boundaryChecker,
         baseTransferEncoding,
         true);
-      List<MessageStackEntry> multipartStack = new ArrayList<MessageStackEntry>();
-      MessageStackEntry entry = new MessageStackEntry(this);
-      multipartStack.add(entry);
-      boundaryChecker.PushBoundary(entry.getBoundary());
       Message leaf = null;
       byte[] buffer = new byte[8192];
       int bufferCount = 0;
@@ -2857,8 +2866,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
               aw.Clear();
               ctype = msg.getContentType();
               leaf = ctype.isMultipart() ? null : msg;
-              boundaryChecker.PushBoundary(entry.getBoundary());
-              boundaryChecker.EndBodyPartHeaders();
+              boundaryChecker.EndBodyPartHeaders(entry.getBoundary());
               currentTransform = MakeTransferEncoding(
                 boundaryChecker,
                 msg.transferEncoding,
@@ -2937,28 +2945,23 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
     }
 
     private static class MessageStackEntry {
-      private final Message message;
+    /**
+     * This is an internal API.
+     * @return This is an internal API.
+     */
+      public final Message getMessage() { return propVarmessage; }
+private final void setMessage(Message value) { propVarmessage = value; }
+private volatile Message propVarmessage;
 
     /**
-     * Gets an internal value.
-     * @return An internal value.
+     * This is an internal API.
+     * @return This is an internal API.
      */
-      public final Message getMessage() {
-          return this.message;
-        }
-
-      private final String boundary;
-
-    /**
-     * Gets an internal value.
-     * @return An internal value.
-     */
-      public final String getBoundary() {
-          return this.boundary;
-        }
+      public final String getBoundary() { return propVarboundary; }
+private final void setBoundary(String value) { propVarboundary = value; }
+private volatile String propVarboundary;
 
       public MessageStackEntry(Message msg) {
-        this.message = msg;
         String newBoundary = "";
         MediaType mediaType = msg.getContentType();
         if (mediaType.isMultipart()) {
@@ -2973,7 +2976,8 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
                 newBoundary);
           }
         }
-        this.boundary = newBoundary;
+        this.setMessage(msg);
+        this.setBoundary(newBoundary);
       }
     }
   }

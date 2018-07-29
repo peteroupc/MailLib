@@ -25,9 +25,9 @@ import com.upokecenter.mail.*;
     private boolean endOfStream;
 
     private void ResizeBuffer(int size) {
-      this.buffer = (this.buffer == null) ? ((new byte[size + 10])) : this.buffer;
+      this.buffer = (this.buffer == null) ? ((new byte[size + 32])) : this.buffer;
       if (size > this.buffer.length) {
-        byte[] newbuffer = new byte[size + 10];
+        byte[] newbuffer = new byte[size + 32];
         System.arraycopy(this.buffer, 0, newbuffer, 0, this.buffer.length);
         this.buffer = newbuffer;
       }
@@ -35,14 +35,12 @@ import com.upokecenter.mail.*;
       this.bufferIndex = 0;
     }
 
-    public BoundaryCheckerTransform(IByteReader stream) {
+  public BoundaryCheckerTransform(IByteReader stream, String
+      initialBoundary) {
       this.input = stream;
       this.boundaries = new ArrayList<String>();
+      this.boundaries.add(initialBoundary);
       this.started = true;
-    }
-
-    public void PushBoundary(String boundary) {
-      this.boundaries.add(boundary);
     }
 
     public int read() {
@@ -59,18 +57,21 @@ import com.upokecenter.mail.*;
       if (this.hasNewBodyPart || this.endOfStream) {
         return -1;
       }
-int c = this.lastByte = this.ungetting ? this.lastByte :
+      int c = this.lastByte = this.ungetting ? this.lastByte :
         this.input.read();
       this.ungetting = false;
       if (this.readingHeaders) {
         return c;
       }
+      // NOTE: Rest of method only used when
+      // reading bodies of multipart body parts
       if (c < 0) {
         this.started = false;
         return c;
       }
       if (c == '-' && this.started) {
-        // Check for a boundary
+        // Check for a boundary at the start
+        // of the body part
         this.started = false;
     c = this.lastByte = this.ungetting ? this.lastByte :
           this.input.read();
@@ -83,7 +84,11 @@ int c = this.lastByte = this.ungetting ? this.lastByte :
         return '-';
       }
       this.started = false;
-      if (c == 0x0d) {
+      if (c != 0x0d) {
+        // Anything other than CR; return that character
+        return c;
+      }
+      // CR might signal next boundary or not
     c = this.lastByte = this.ungetting ? this.lastByte :
           this.input.read();
         this.ungetting = false;
@@ -139,8 +144,6 @@ int c = this.lastByte = this.ungetting ? this.lastByte :
         }
         this.ungetting = true;
         return 0x0d;
-      }
-      return c;
     }
 
     private int CheckBoundaries(boolean includeCrLf) {
@@ -348,9 +351,10 @@ int c = this.lastByte = this.ungetting ? this.lastByte :
       this.hasNewBodyPart = false;
     }
 
-    public void EndBodyPartHeaders() {
+    public void EndBodyPartHeaders(String boundary) {
       this.readingHeaders = false;
       this.hasNewBodyPart = false;
+      this.boundaries.add(boundary);
       this.started = true;  // in case a boundary delimiter immediately starts
     }
 

@@ -131,6 +131,7 @@ namespace PeterO.Mail {
       get {
         if (this.ContentType.IsMultipart) {
  throw new
+
   NotSupportedException("This is a multipart message, so it doesn't have its own body text.");
 }
         ICharacterEncoding charset = Encodings.GetEncoding(
@@ -613,7 +614,14 @@ namespace PeterO.Mail {
       bodyPart.ContentType = mediaType;
       try {
       using(var ms = new MemoryStream()) {
-        inputStream.CopyTo(ms);
+        byte[] buffer = new byte[4096];
+        while (true) {
+          int cp = inputStream.Read(buffer, 0, buffer.Length);
+          if (cp <= 0) {
+ break;
+}
+          ms.Write(buffer, 0, cp);
+        }
         bodyPart.SetBody(ms.ToArray());
       }
       } catch (IOException ex) {
@@ -2407,7 +2415,8 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
       var entry = new MessageStackEntry(this);
       multipartStack.Add(entry);
       var boundaryChecker = new BoundaryCheckerTransform(
-         stream, entry.Boundary);
+         stream,
+         entry.Boundary);
       // Be liberal on the preamble and epilogue of multipart
       // messages, as they will be ignored.
       IByteReader currentTransform = MakeTransferEncoding(
@@ -2583,11 +2592,12 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
     }
 
     private class MessageStackEntry {
-
     /// <summary>This is an internal API.</summary>
+    /// <value>This is an internal API.</value>
       public Message Message { get; private set; }
 
     /// <summary>This is an internal API.</summary>
+    /// <value>This is an internal API.</value>
       public string Boundary { get; private set; }
 
       public MessageStackEntry(Message msg) {

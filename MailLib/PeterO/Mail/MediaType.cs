@@ -698,7 +698,7 @@ namespace PeterO.Mail {
 #endif
     public string GetCharset() {
       // NOTE: RFC6657 changed the rules for the default charset in text
-      // media types, so that there is no default charset for as yet 
+      // media types, so that there is no default charset for as yet
       // undefined media types. However,
       // media types defined before this RFC (July 2012) are grandfathered
       // from the rule: those
@@ -718,7 +718,7 @@ namespace PeterO.Mail {
       // -- vnd.motorola.reflex*(5)*(10)
       //
       // Special procedure defined for charset detection:
-      // -- ecmascript*(8), javascript*(8), html, 
+      // -- ecmascript*(8), javascript*(8), html,
       // rtf*(5)
       //
       // XML formats (no default assumed if charset is absent, according
@@ -792,26 +792,22 @@ namespace PeterO.Mail {
       // none are found, though, a 7-bit ASCII text is still also UTF-8).
       // **** Content containing non-ASCII bytes "should be rejected".
       string param = this.GetParameter("charset");
-      param = Encodings.ResolveAliasForEmail(param);
       if (!String.IsNullOrEmpty(param)) {
+        // Charset parameter is present and non-empty
+        param = Encodings.ResolveAliasForEmail(param);
         return DataUtilities.ToLowerCaseAscii(param);
-      }
+      } else {
+        // Charset parameter is absent or empty
       if (this.IsText) {
         string sub = this.SubType;
         // Media types that assume a default of US-ASCII
         if (sub.Equals("plain") || sub.Equals("sgml") ||
-          sub.Equals("troff") || 
-            sub.Equals("dns") ||
-            sub.Equals("mizar") ||
-            sub.Equals("prs.prop.logic") ||
-            sub.Equals("vnd.ascii-art") ||
-            sub.Equals("vnd.dmclientscript") ||
-            sub.Equals("prs.lines.tag") ||
-            sub.Equals("vnd.latex-z") ||
-            sub.Equals("rfc822-headers") ||
-            sub.Equals("vnd.dvb.subtitle") ||
-            sub.Equals("vnd.fly") ||
-            sub.Equals("directory") ||
+          sub.Equals("troff") || sub.Equals("dns") ||
+            sub.Equals("mizar") || sub.Equals("prs.prop.logic") ||
+            sub.Equals("vnd.ascii-art") || sub.Equals("vnd.dmclientscript") ||
+            sub.Equals("prs.lines.tag") || sub.Equals("vnd.latex-z") ||
+            sub.Equals("rfc822-headers") || sub.Equals("vnd.dvb.subtitle") ||
+            sub.Equals("vnd.fly") || sub.Equals("directory") ||
           sub.Equals("css") || sub.Equals("richtext") ||
               sub.Equals("enriched") || sub.Equals("tab-separated-values") ||
               sub.Equals("vnd.in3d.spot") || sub.Equals("vnd.abc") ||
@@ -828,14 +824,14 @@ namespace PeterO.Mail {
    sub.Equals("calendar") || sub.Equals("vnd.a") ||
               sub.Equals("parameters") || sub.Equals("prs.fallenstein.rst") ||
               sub.Equals("vnd.esmertec.theme.descriptor") ||
-            sub.Equals("vnd.trolltech.linguist") ||
-            sub.Equals("csv-schema") ||
+            sub.Equals("vnd.trolltech.linguist") || sub.Equals("csv-schema") ||
               sub.Equals("vnd.graphviz") || sub.Equals("cache-manifest") ||
               sub.Equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";
         }
       }
-      return String.Empty;
+        return String.Empty;
+       }
     }
 
     /// <include file='../../docs.xml'

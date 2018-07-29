@@ -1649,6 +1649,78 @@ throw new InvalidOperationException(String.Empty, ex);
       Assert.AreEqual(1, msg.Parts.Count);
       Assert.AreEqual(1, msg.Parts[0].Parts.Count);
       Assert.AreEqual("Test", msg.Parts[0].Parts[0].BodyString);
+      // Nested Multipart body part
+      message = messageStart;
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "--b2\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Test\r\n";
+      message += "--Not-b2--\r\n";
+      message += "--b2--\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue";
+      msg = MessageFromString(message);
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(1, msg.Parts[0].Parts.Count);
+      Assert.AreEqual("Test\r\n--Not-b2--", msg.Parts[0].Parts[0].BodyString);
+      // Nested Multipart body part
+      message = messageStart;
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "--b2\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Test\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue";
+      msg = MessageFromString(message);
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(1, msg.Parts[0].Parts.Count);
+      Assert.AreEqual("Test", msg.Parts[0].Parts[0].BodyString);
+      // Nested Multipart body part
+      message = messageStart;
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "--b2\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Test\r\n";
+      message += "--Not-b2--\r\n";
+      message += "--b2\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Test2\r\n";
+      message += "--b2--\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue";
+      msg = MessageFromString(message);
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(2, msg.Parts[0].Parts.Count);
+      Assert.AreEqual("Test\r\n--Not-b2--", msg.Parts[0].Parts[0].BodyString);
+      Assert.AreEqual("Test2", msg.Parts[0].Parts[1].BodyString);
+      // Nested Multipart body part
+      message = messageStart;
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "--b2\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Test\r\n";
+      message += "--b2--\r\n";
+      message += "--Epilogue-for-b2--\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue";
+      msg = MessageFromString(message);
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(1, msg.Parts[0].Parts.Count);
+      Assert.AreEqual("Test", msg.Parts[0].Parts[0].BodyString);
+      // Nested Multipart body part
+      message = messageStart;
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "--b2\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Test\r\n";
+      message += "--b2--\r\n";
+      message += "--b2--epilogue--\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue";
+      msg = MessageFromString(message);
+      Assert.AreEqual(1, msg.Parts.Count);
+      Assert.AreEqual(1, msg.Parts[0].Parts.Count);
+      Assert.AreEqual("Test", msg.Parts[0].Parts[0].BodyString);
     }
 
     [Test]

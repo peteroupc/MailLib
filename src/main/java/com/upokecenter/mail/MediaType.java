@@ -662,9 +662,7 @@ import com.upokecenter.text.*;
        // Returns true if the media type is text and contains special
        // procedures for determining the charset from the payload
        // if no charset is given or supported in the charset
-       // parameter. As of Jul. 28, 2018, media types in
-       // this category are JavaScript, HTML, and XML media
-       // types.
+       // parameter.
        if (this.isText()) {
         String sub = this.getSubType();
         if (sub.equals("html")) {
@@ -674,6 +672,9 @@ import com.upokecenter.text.*;
  return true;
 }
         if (sub.equals("ecmascript")) {
+ return true;
+}
+        if (sub.equals("rtf")) {
  return true;
 }
         if (sub.equals("xml")) {
@@ -716,20 +717,20 @@ import com.upokecenter.text.*;
     /**
      * Gets this media type's "charset" parameter, naming a character encoding used
      * to represent text in the data that uses this media type.
-     * @return If the "charset" parameter exists, returns that parameter with the
-     * basic upper-case letters A to Z (U + 0041 to U + 005A) converted to lower
-     * case. Returns {@code "us-ascii"} instead if the media type is
-     * ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain"
-     * and doesn't have a "charset" parameter (see RFC2046), or the default
-     * value for that parameter, if any, for the media type if the "charset"
-     * parameter is absent. Returns an empty string in all other cases.
+     * @return If the "charset" parameter is present and non-empty, returns the
+     * result of the Encodings.ResolveAliasForEmail method for that
+     * parameter, except that result's basic upper-case letters A to Z
+     * (U+0041 to U+005A) are converted to lower case. If the "charset"
+     * parameter is absent or empty, returns the default value, if any, for
+     * that parameter given the media type (e.g., "us-ascii" if the media
+     * type is "text/plain"; see RFC2046), or the empty string if there is
+     * none.
      */
 
     public String GetCharset() {
       // NOTE: RFC6657 changed the rules for the default charset in text
-      // media types,
-      // so that there is no default charset for as yet undefined media
-      // types. However,
+      // media types, so that there is no default charset for as yet
+      // undefined media types. However,
       // media types defined before this RFC (July 2012) are grandfathered
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
@@ -744,16 +745,12 @@ import com.upokecenter.text.*;
       // -- 1d-interleaved-parityfec, fwdred, red, parityfec, encaprtp,
       // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback
       //
-      // These media types don't define a charset parameter:
-      // -- csv-schema, dns, grammar-ref-list, mizar, vnd.latex-z,
-      // vnd.motorola.reflex,
-      // vnd.si.uricatalogue*(7), prs.lines.tag, vnd.dmclientscript,
-      // vnd.dvb.subtitle,
-      // vnd.fly, rtf, rfc822-headers, prs.prop.logic, vnd.ascii-art****,
-      // vnd.hgl*(6), vnd.gml
+      // Charset determined out-of-band:
+      // -- vnd.motorola.reflex*(5)*(10)
       //
       // Special procedure defined for charset detection:
-      // -- ecmascript*(8), javascript*(8), html
+      // -- ecmascript*(8), javascript*(8), html,
+      // rtf*(5)
       //
       // XML formats (no default assumed if charset is absent, according
       // to RFC7303, the revision of the XML media type specification):
@@ -767,11 +764,26 @@ import com.upokecenter.text.*;
       // charset is treated as default is irrelevant):
       // -- example
       //
+      // These media types don't define a charset parameter (after
+      // RFC6657):
+      // -- grammar-ref-list*(9), vnd.hgl*(6)*(9), vnd.gml*(9)
+      //
       // Uses charset parameter, but no default charset specified (after
       // RFC6657):
       // -- markdown*
       //
       // -- US-ASCII assumed: --
+      //
+      // These media types don't define a charset parameter (before
+      // RFC6657):
+      // -- dns, mizar, vnd.latex-z,
+      // prs.lines.tag, vnd.dmclientscript,
+      // vnd.dvb.subtitle, rfc822-headers,
+      // vnd.si.uricatalogue*(7), vnd.si.fly*(7)
+      //
+      // No charset parameter defined, but does specify ASCII only (after
+      // RFC6657):
+      // -- vnd.ascii-art****, prs.prop.logic*
       //
       // These media types don't define a default charset:
       // -- css, richtext, enriched, tab-separated-values*,
@@ -792,34 +804,47 @@ import com.upokecenter.text.*;
       // UTF-8 default:
       // -- csv, calendar**, vnd.a***, parameters, prs.fallenstein.rst,
       // vnd.esmertec.theme.descriptor, vnd.trolltech.linguist,
-      // vnd.graphviz, vnd.sun.j2me.app-descriptor, strings*(5)
+      // vnd.graphviz, vnd.sun.j2me.app-descriptor, strings*(5),
+      // csv-schema*(5)
       //
       // * Required parameter.
       // ** No explicit default, but says that "[t]he charset supported
       // by this revision of iCalendar is UTF-8."
       // *(5) No charset parameter defined.
       // *(6) 8-bit encoding.
-      // *(7) Says "US-ASCII" is always used
+      // *(7) Says "US-ASCII" is always used, or otherwise says
+      // the media type contains ASCII text
       // *(8) RFC4329: If charset unrecognized, check for UTF-8/16/32 BOM if it
       // exists; otherwise use UTF-8. If UTF-8, ignore UTF-8 BOM
+      // *(9) After RFC 6657.
+      // *(10) Charset determined "in an a priori manner", rather than
+      // being stated in the payload.
       // *** Default is UTF-8 "if 8-bit bytes are encountered" (even if
       // none are found, though, a 7-bit ASCII text is still also UTF-8).
       // **** Content containing non-ASCII bytes "should be rejected".
       String param = this.GetParameter("charset");
-      param = Encodings.ResolveAliasForEmail(param);
       if (!((param) == null || (param).length() == 0)) {
+        // Charset parameter is present and non-empty
+        param = Encodings.ResolveAliasForEmail(param);
         return DataUtilities.ToLowerCaseAscii(param);
-      }
+      } else {
+        // Charset parameter is absent or empty
       if (this.isText()) {
         String sub = this.getSubType();
         // Media types that assume a default of US-ASCII
         if (sub.equals("plain") || sub.equals("sgml") ||
-          sub.equals("troff") || sub.equals("directory") ||
+          sub.equals("troff") || sub.equals("dns") ||
+            sub.equals("mizar") || sub.equals("prs.prop.logic") ||
+            sub.equals("vnd.ascii-art") || sub.equals("vnd.dmclientscript") ||
+            sub.equals("prs.lines.tag") || sub.equals("vnd.latex-z") ||
+            sub.equals("rfc822-headers") || sub.equals("vnd.dvb.subtitle") ||
+            sub.equals("vnd.fly") || sub.equals("directory") ||
           sub.equals("css") || sub.equals("richtext") ||
               sub.equals("enriched") || sub.equals("tab-separated-values") ||
               sub.equals("vnd.in3d.spot") || sub.equals("vnd.abc") ||
             sub.equals("vnd.wap.wmlscript") || sub.equals("vnd.curl") ||
-              sub.equals("vnd.fmi.flexstor") || sub.equals("uri-list")) {
+              sub.equals("vnd.fmi.flexstor") || sub.equals("uri-list") ||
+              sub.equals("vnd.si.uricatalogue")) {
           return "us-ascii";
         }
         // Media types that assume a default of UTF-8
@@ -830,13 +855,14 @@ import com.upokecenter.text.*;
    sub.equals("calendar") || sub.equals("vnd.a") ||
               sub.equals("parameters") || sub.equals("prs.fallenstein.rst") ||
               sub.equals("vnd.esmertec.theme.descriptor") ||
-            sub.equals("vnd.trolltech.linguist") ||
+            sub.equals("vnd.trolltech.linguist") || sub.equals("csv-schema") ||
               sub.equals("vnd.graphviz") || sub.equals("cache-manifest") ||
               sub.equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";
         }
       }
-      return "";
+        return "";
+       }
     }
 
     /**
