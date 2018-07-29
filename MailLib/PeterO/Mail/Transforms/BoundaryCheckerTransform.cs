@@ -35,14 +35,11 @@ namespace PeterO.Mail.Transforms {
       this.bufferIndex = 0;
     }
 
-    public BoundaryCheckerTransform(IByteReader stream) {
+    public BoundaryCheckerTransform(IByteReader stream, string initialBoundary) {
       this.input = stream;
       this.boundaries = new List<string>();
+      this.boundaries.Add(initialBoundary);
       this.started = true;
-    }
-
-    public void PushBoundary(string boundary) {
-      this.boundaries.Add(boundary);
     }
 
     public int ReadByte() {
@@ -368,19 +365,19 @@ if (this.bufferCount != 0) {
       this.hasNewBodyPart = false;
     }
 
-    public void EndBodyPartHeaders() {
+    public void EndBodyPartHeaders(string boundary) {
       #if DEBUG
       if (!this.readingHeaders) {
         throw new ArgumentException("doesn't satisfy this.readingHeaders");
       }
-      if (!this.bufferCount.Equals(0)) {
+      if (this.bufferCount!=0) {
         throw new ArgumentException("this.bufferCount (" +
-          this.bufferCount + ") is not equal to " + "0");
+          this.bufferCount + ") is not equal to 0");
       }
       #endif
-
       this.readingHeaders = false;
       this.hasNewBodyPart = false;
+      this.boundaries.Add(boundary);
       this.started = true;  // in case a boundary delimiter immediately starts
     }
 

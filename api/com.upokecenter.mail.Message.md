@@ -289,9 +289,11 @@ Gets the body of this message as a text string.
 
 **Throws:**
 
-* <code>UnsupportedOperationException</code> - This message has no character encoding
- declared on it (which is usually the case for non-text messages), or
- the character encoding is not supported.
+* <code>UnsupportedOperationException</code> - Either this message is a multipart
+ message, so it doesn't have its own body text, or this message has no
+ character encoding declared or assumed for it (which is usually the
+ case for non-text messages), or the character encoding is not
+ supported.
 
 ### getCCAddresses
     public final List<NamedAddress> getCCAddresses()

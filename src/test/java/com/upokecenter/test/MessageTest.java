@@ -174,6 +174,172 @@ if (!(boolTemp)) {
       }
     }
 
+private static byte[] BytesFromString(String str) {
+ return DataUtilities.GetUtf8Bytes(
+  str,
+  true);
+}
+
+@Test
+public void TestAddAttachment() {
+  Message msg;
+  String stringBody = "This is a sample body.";
+  byte[] bytesBody = BytesFromString(stringBody);
+  String stringPart = "This is a sample body part.";
+  byte[] bytesPart = BytesFromString(stringPart);
+  try {
+   {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytesPart);
+
+        MediaType mt = MediaType.TextPlainAscii;
+        try {
+ new Message().AddAttachment(null, mt);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ new Message().AddAttachment(null, (MediaType)null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ new Message().AddAttachment(null, (String)null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ new Message().AddAttachment(ms, (MediaType)null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        try {
+ new Message().AddAttachment(ms, (String)null);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ new Message().AddInline(null, mt);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ new Message().AddInline(null, (MediaType)null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ new Message().AddInline(null, (String)null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+    try {
+ new Message().AddInline(ms, (MediaType)null);
+Assert.fail("Should have failed");
+} catch (NullPointerException ex) {
+// NOTE: Intentionally empty
+} catch (Exception ex) {
+ Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+        try {
+ new Message().AddInline(ms, (String)null);
+} catch (Exception ex) {
+Assert.fail(ex.toString());
+throw new IllegalStateException("", ex);
+}
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+  for (int phase = 0; phase < 12; ++phase) {
+   {
+java.io.ByteArrayInputStream ms = null;
+try {
+ms = new java.io.ByteArrayInputStream(bytesPart);
+
+   MediaType mt = (phase % 2 == 0) ? MediaType.TextPlainAscii :
+    MediaType.Parse("text/troff;charset=us-ascii");
+   String fn = null;
+   msg = new Message().SetTextBody(stringBody);
+   Assert.assertEquals("text/plain", msg.getContentType().getTypeAndSubType());
+    switch (phase) {
+    case 0:
+    case 1:Assert.assertEquals(msg, msg.AddAttachment(ms, mt)); break;
+    case 2:
+    case 3:mt = MediaType.TextPlainAscii;
+     fn = "example.txt";
+     Assert.assertEquals(msg, msg.AddAttachment(ms, fn)); break;
+    case 4:
+    case 5:fn = "example.txt";
+     Assert.assertEquals(msg, msg.AddAttachment(ms, mt, fn)); break;
+    case 6:
+    case 7:Assert.assertEquals(msg, msg.AddInline(ms, mt)); break;
+    case 8:
+    case 9:mt = MediaType.TextPlainAscii;
+     fn = "example.txt";
+     Assert.assertEquals(msg, msg.AddInline(ms, fn)); break;
+    case 10:
+    case 11:fn = "example.txt";
+     Assert.assertEquals(msg, msg.AddInline(ms, mt, fn)); break;
+   }
+   Assert.assertEquals("multipart/mixed", msg.getContentType().getTypeAndSubType());
+   Assert.assertEquals(2, msg.getParts().size());
+   Assert.assertEquals("text/plain", msg.getParts().get(0).getContentType().getTypeAndSubType());
+   Assert.assertEquals("inline", msg.getParts().get(0).getContentDisposition().getDispositionType());
+   Assert.assertEquals(stringBody, msg.getParts().get(0).getBodyString());
+   Assert.assertEquals(mt.getTypeAndSubType(), msg.getParts().get(1).getContentType().getTypeAndSubType());
+   Assert.assertEquals(
+      phase < 6 ? "attachment" : "inline",
+      msg.getParts().get(1).getContentDisposition().getDispositionType());
+          Assert.assertEquals(stringPart, msg.getParts().get(1).getBodyString());
+}
+finally {
+try { if (ms != null) {
+ ms.close();
+ } } catch (java.io.IOException ex) {}
+}
+}
+  }
+  } catch (IOException ioe) {
+    Assert.fail(ioe.toString());
+    throw new IllegalStateException("", ioe);
+  }
+}
+
     @Test
     public void TestContentTypeDefaults() {
   String ValueStartCTD = "From: me@example.com\r\nMIME-Version: 1.0\r\n";
@@ -2093,8 +2259,8 @@ MessageFromString(MessageFromString(msg).Generate())
     @Test
     public void TestFileName() {
       String[] fn = ContentDispositionTest.FileNames;
-for (int i = 0; i < fn.length; i += 2) {
-        TestFileNameOne(fn[i], fn[i + 1]);
+for (int i = 0; i < fn.length(); i += 2) {
+        TestFileNameOne(fn.charAt(i), fn.charAt(i + 1));
       }
     }
     @Test

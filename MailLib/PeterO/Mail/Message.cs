@@ -129,8 +129,10 @@ namespace PeterO.Mail {
     /// path='docs/doc[@name="P:PeterO.Mail.Message.BodyString"]/*'/>
     public string BodyString {
       get {
-        if(this.ContentType.IsMultipart)
-          throw new InvalidOperationException("This is a multipart message, so it doesn't have its own body text.");
+        if (this.ContentType.IsMultipart) {
+ throw new
+  NotSupportedException("This is a multipart message, so it doesn't have its own body text.");
+}
         ICharacterEncoding charset = Encodings.GetEncoding(
           this.ContentType.GetCharset(),
           true);
@@ -2256,7 +2258,7 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
           this.headers[i + 1] = value;
         }
       }
-      MediaType contentType = digest ? MediaType.MessageRfc822 :
+      MediaType ctype = digest ? MediaType.MessageRfc822 :
         MediaType.TextPlainAscii;
       var haveInvalid = false;
       var haveContentEncoding = false;
@@ -2286,33 +2288,32 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
             // DEVIATION: If there is already a content type,
             // treat content type as application/octet-stream
             if (haveInvalid || MediaType.Parse(value, null) == null) {
-              contentType = MediaType.TextPlainAscii;
+              ctype = MediaType.TextPlainAscii;
               haveInvalid = true;
             } else {
-              contentType = MediaType.ApplicationOctetStream;
+              ctype = MediaType.ApplicationOctetStream;
             }
           } else {
-            contentType = MediaType.Parse(
+            ctype = MediaType.Parse(
               value,
               null);
-            if (contentType == null) {
-              contentType = digest ? MediaType.MessageRfc822 :
+            if (ctype == null) {
+              ctype = digest ? MediaType.MessageRfc822 :
                 MediaType.TextPlainAscii;
               haveInvalid = true;
             }
             // For conformance with RFC 2049
-            if (contentType.IsText) {
-              
-              if (String.IsNullOrEmpty(contentType.GetCharset())) {
-               if (!contentType.StoresCharsetInPayload()){
+            if (ctype.IsText) {
+              if (String.IsNullOrEmpty(ctype.GetCharset())) {
+               if (!ctype.StoresCharsetInPayload()) {
                 // Used unless the media type defines how charset
                 // is determined from the payload
-                contentType = MediaType.ApplicationOctetStream;
+                ctype = MediaType.ApplicationOctetStream;
                }
               } else {
-               var builder = new MediaTypeBuilder(contentType)
-                   .SetParameter("charset",contentType.GetCharset());
-               contentType = builder.ToMediaType();
+               var builder = new MediaTypeBuilder(ctype)
+                   .SetParameter("charset",ctype.GetCharset());
+               ctype = builder.ToMediaType();
               }
             }
             haveContentType = true;
@@ -2332,10 +2333,10 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
         }
       }
       if (this.transferEncoding == EncodingUnknown) {
-        contentType = MediaType.ApplicationOctetStream;
+        ctype = MediaType.ApplicationOctetStream;
       }
       // Update content type as appropriate
-      this.ContentType = contentType;
+      this.ContentType = ctype;
       if (!haveContentEncoding && this.contentType.TypeAndSubType.Equals(
         "message/rfc822")) {
         // DEVIATION: Be a little more liberal with rfc822
@@ -2402,17 +2403,17 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
 
     private void ReadMultipartBody(IByteReader stream) {
       int baseTransferEncoding = this.transferEncoding;
-      var boundaryChecker = new BoundaryCheckerTransform(stream);
+      IList<MessageStackEntry> multipartStack = new List<MessageStackEntry>();
+      var entry = new MessageStackEntry(this);
+      multipartStack.Add(entry);
+      var boundaryChecker = new BoundaryCheckerTransform(
+         stream, entry.Boundary);
       // Be liberal on the preamble and epilogue of multipart
       // messages, as they will be ignored.
       IByteReader currentTransform = MakeTransferEncoding(
         boundaryChecker,
         baseTransferEncoding,
         true);
-      IList<MessageStackEntry> multipartStack = new List<MessageStackEntry>();
-      var entry = new MessageStackEntry(this);
-      multipartStack.Add(entry);
-      boundaryChecker.PushBoundary(entry.Boundary);
       Message leaf = null;
       var buffer = new byte[8192];
       var bufferCount = 0;
@@ -2488,8 +2489,7 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
               aw.Clear();
               ctype = msg.ContentType;
               leaf = ctype.IsMultipart ? null : msg;
-              boundaryChecker.PushBoundary(entry.Boundary);
-              boundaryChecker.EndBodyPartHeaders();
+              boundaryChecker.EndBodyPartHeaders(entry.Boundary);
               currentTransform = MakeTransferEncoding(
                 boundaryChecker,
                 msg.transferEncoding,
@@ -2583,25 +2583,12 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
     }
 
     private class MessageStackEntry {
-      private readonly Message message;
 
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
-      public Message Message {
-        get {
-          return this.message;
-        }
-      }
+    /// <summary>This is an internal API.</summary>
+      public Message Message { get; private set; }
 
-      private readonly string boundary;
-
-    /// <include file='../../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
-      public string Boundary {
-        get {
-          return this.boundary;
-        }
-      }
+    /// <summary>This is an internal API.</summary>
+      public string Boundary { get; private set; }
 
       public MessageStackEntry(Message msg) {
 #if DEBUG
@@ -2609,8 +2596,6 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
           throw new ArgumentNullException(nameof(msg));
         }
 #endif
-
-        this.message = msg;
         string newBoundary = String.Empty;
         MediaType mediaType = msg.ContentType;
         if (mediaType.IsMultipart) {
@@ -2625,7 +2610,8 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
                 newBoundary);
           }
         }
-        this.boundary = newBoundary;
+        this.Message = msg;
+        this.Boundary = newBoundary;
       }
     }
   }

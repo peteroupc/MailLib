@@ -227,11 +227,17 @@ import com.upokecenter.text.*;
     /**
      * Gets the body of this message as a text string.
      * @return The body of this message as a text string.
-     * @throws UnsupportedOperationException This message has no character encoding
-     * declared on it (which is usually the case for non-text messages), or
-     * the character encoding is not supported.
+     * @throws UnsupportedOperationException Either this message is a multipart
+     * message, so it doesn't have its own body text, or this message has no
+     * character encoding declared or assumed for it (which is usually the
+     * case for non-text messages), or the character encoding is not
+     * supported.
      */
     public final String getBodyString() {
+        if (this.getContentType().isMultipart()) {
+ throw new
+  UnsupportedOperationException("This is a multipart message, so it doesn't have its own body text.");
+}
         ICharacterEncoding charset = Encodings.GetEncoding(
           this.getContentType().GetCharset(),
           true);
@@ -2647,7 +2653,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
           this.headers.set(i + 1, value);
         }
       }
-      MediaType contentType = digest ? MediaType.MessageRfc822 :
+      MediaType ctype = digest ? MediaType.MessageRfc822 :
         MediaType.TextPlainAscii;
       boolean haveInvalid = false;
       boolean haveContentEncoding = false;
@@ -2677,28 +2683,32 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
             // DEVIATION: If there is already a content type,
             // treat content type as application/octet-stream
             if (haveInvalid || MediaType.Parse(value, null) == null) {
-              contentType = MediaType.TextPlainAscii;
+              ctype = MediaType.TextPlainAscii;
               haveInvalid = true;
             } else {
-              contentType = MediaType.ApplicationOctetStream;
+              ctype = MediaType.ApplicationOctetStream;
             }
           } else {
-            contentType = MediaType.Parse(
+            ctype = MediaType.Parse(
               value,
               null);
-            if (contentType == null) {
-              contentType = digest ? MediaType.MessageRfc822 :
+            if (ctype == null) {
+              ctype = digest ? MediaType.MessageRfc822 :
                 MediaType.TextPlainAscii;
               haveInvalid = true;
             }
             // For conformance with RFC 2049
-            if (contentType.isText()) {
-              if (((contentType.GetCharset()) == null || (contentType.GetCharset()).length() == 0)) {
-               contentType = MediaType.ApplicationOctetStream;
+            if (ctype.isText()) {
+              if (((ctype.GetCharset()) == null || (ctype.GetCharset()).length() == 0)) {
+               if (!ctype.StoresCharsetInPayload()) {
+                // Used unless the media type defines how charset
+                // is determined from the payload
+                ctype = MediaType.ApplicationOctetStream;
+               }
               } else {
-               MediaTypeBuilder builder = new MediaTypeBuilder(contentType)
-                   .SetParameter("charset",contentType.GetCharset());
-               contentType = builder.ToMediaType();
+               MediaTypeBuilder builder = new MediaTypeBuilder(ctype)
+                   .SetParameter("charset",ctype.GetCharset());
+               ctype = builder.ToMediaType();
               }
             }
             haveContentType = true;
@@ -2714,10 +2724,10 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
         }
       }
       if (this.transferEncoding == EncodingUnknown) {
-        contentType = MediaType.ApplicationOctetStream;
+        ctype = MediaType.ApplicationOctetStream;
       }
       // Update content type as appropriate
-      this.setContentType(contentType);
+      this.setContentType(ctype);
       if (!haveContentEncoding && this.contentType.getTypeAndSubType().equals(
         "message/rfc822")) {
         // DEVIATION: Be a little more liberal with rfc822
