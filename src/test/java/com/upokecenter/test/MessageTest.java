@@ -1674,6 +1674,78 @@ try { if (ms != null) {
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
       Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
+      // Nested Multipart body part
+      message = messageStart;
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "--b2\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Test\r\n";
+      message += "--Not-b2--\r\n";
+      message += "--b2--\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue";
+      msg = MessageFromString(message);
+      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
+      Assert.assertEquals("Test\r\n--Not-b2--", msg.getParts().get(0).getParts().get(0).getBodyString());
+      // Nested Multipart body part
+      message = messageStart;
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "--b2\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Test\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue";
+      msg = MessageFromString(message);
+      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
+      Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
+      // Nested Multipart body part
+      message = messageStart;
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "--b2\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Test\r\n";
+      message += "--Not-b2--\r\n";
+      message += "--b2\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Test2\r\n";
+      message += "--b2--\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue";
+      msg = MessageFromString(message);
+      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(2, msg.getParts().get(0).getParts().size());
+      Assert.assertEquals("Test\r\n--Not-b2--", msg.getParts().get(0).getParts().get(0).getBodyString());
+      Assert.assertEquals("Test2", msg.getParts().get(0).getParts().get(1).getBodyString());
+      // Nested Multipart body part
+      message = messageStart;
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "--b2\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Test\r\n";
+      message += "--b2--\r\n";
+      message += "--Epilogue-for-b2--\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue";
+      msg = MessageFromString(message);
+      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
+      Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
+      // Nested Multipart body part
+      message = messageStart;
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "--b2\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Test\r\n";
+      message += "--b2--\r\n";
+      message += "--b2--epilogue--\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue";
+      msg = MessageFromString(message);
+      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
+      Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
     }
 
     @Test

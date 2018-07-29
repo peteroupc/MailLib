@@ -474,10 +474,11 @@ private static MediaType ParseAndTestAspects(String s) {
                   stringTemp);
       }
       {
+        // NOTE: 'UTF-8' (with single quotes) is now treated as unknown
         String stringTemp = ParseAndTestAspects("text/plain; charset='UTF-8'")
 .GetCharset();
         Assert.assertEquals(
-                  "'utf-8'",
+                  "",
                   stringTemp);
       }
       {

@@ -25,9 +25,9 @@ namespace PeterO.Mail.Transforms {
     private bool endOfStream;
 
     private void ResizeBuffer(int size) {
-      this.buffer = this.buffer ?? (new byte[size + 10]);
+      this.buffer = this.buffer ?? (new byte[size + 32]);
       if (size > this.buffer.Length) {
-        var newbuffer = new byte[size + 10];
+        var newbuffer = new byte[size + 32];
         Array.Copy(this.buffer, newbuffer, this.buffer.Length);
         this.buffer = newbuffer;
       }
@@ -35,7 +35,8 @@ namespace PeterO.Mail.Transforms {
       this.bufferIndex = 0;
     }
 
-    public BoundaryCheckerTransform(IByteReader stream, string initialBoundary) {
+  public BoundaryCheckerTransform(IByteReader stream, string
+      initialBoundary) {
       this.input = stream;
       this.boundaries = new List<string>();
       this.boundaries.Add(initialBoundary);
@@ -56,18 +57,21 @@ namespace PeterO.Mail.Transforms {
       if (this.hasNewBodyPart || this.endOfStream) {
         return -1;
       }
-int c = this.lastByte = this.ungetting ? this.lastByte :
+      int c = this.lastByte = this.ungetting ? this.lastByte :
         this.input.ReadByte();
       this.ungetting = false;
       if (this.readingHeaders) {
         return c;
       }
+      // NOTE: Rest of method only used when
+      // reading bodies of multipart body parts
       if (c < 0) {
         this.started = false;
         return c;
       }
       if (c == '-' && this.started) {
-        // Check for a boundary
+        // Check for a boundary at the start
+        // of the body part
         this.started = false;
     c = this.lastByte = this.ungetting ? this.lastByte :
           this.input.ReadByte();
@@ -80,7 +84,11 @@ int c = this.lastByte = this.ungetting ? this.lastByte :
         return '-';
       }
       this.started = false;
-      if (c == 0x0d) {
+      if (c != 0x0d) {
+        // Anything other than CR; return that character
+        return c;
+      }
+      // CR might signal next boundary or not
     c = this.lastByte = this.ungetting ? this.lastByte :
           this.input.ReadByte();
         this.ungetting = false;
@@ -136,8 +144,6 @@ int c = this.lastByte = this.ungetting ? this.lastByte :
         }
         this.ungetting = true;
         return 0x0d;
-      }
-      return c;
     }
 
     private int CheckBoundaries(bool includeCrLf) {
@@ -370,7 +376,7 @@ if (this.bufferCount != 0) {
       if (!this.readingHeaders) {
         throw new ArgumentException("doesn't satisfy this.readingHeaders");
       }
-      if (this.bufferCount!=0) {
+      if (this.bufferCount != 0) {
         throw new ArgumentException("this.bufferCount (" +
           this.bufferCount + ") is not equal to 0");
       }
