@@ -636,25 +636,54 @@ namespace PeterO.Mail {
        // Returns true if the media type is text and contains special
        // procedures for determining the charset from the payload
        // if no charset is given or supported in the charset
-       // parameter.  As of Jul. 28, 2018, media types in
-       // this category are JavaScript, HTML, and XML media
-       // types.
-       if(this.IsText){
+       // parameter.
+       if (this.IsText) {
         string sub = this.SubType;
-        if(sub.Equals("html"))return true;
-        if(sub.Equals("javascript"))return true;
-        if(sub.Equals("ecmascript"))return true;
-        if(sub.Equals("xml"))return true;
-        if(sub.Equals("xml-external-parsed-entity"))return true;
-        if(sub.Equals("vnd.in3d.3dml"))return true;
-        if(sub.Equals("vnd.iptc.newsml"))return true;
-        if(sub.Equals("vnd.iptc.nitf"))return true;
-        if(sub.Equals("vnd.ms-mediapackage"))return true;
-        if(sub.Equals("vnd.net2phone.commcenter.command"))return true;
-        if(sub.Equals("vnd.radisys.msml-basic-layout"))return true;
-        if(sub.Equals("vnd.wap.si"))return true;
-        if(sub.Equals("vnd.wap.sl"))return true;
-        if(sub.Equals("vnd.wap.wml"))return true;
+        if (sub.Equals("html")) {
+ return true;
+}
+        if (sub.Equals("javascript")) {
+ return true;
+}
+        if (sub.Equals("ecmascript")) {
+ return true;
+}
+        if (sub.Equals("rtf")) {
+ return true;
+}
+        if (sub.Equals("xml")) {
+ return true;
+}
+        if (sub.Equals("xml-external-parsed-entity")) {
+ return true;
+}
+        if (sub.Equals("vnd.in3d.3dml")) {
+ return true;
+}
+        if (sub.Equals("vnd.iptc.newsml")) {
+ return true;
+}
+        if (sub.Equals("vnd.iptc.nitf")) {
+ return true;
+}
+        if (sub.Equals("vnd.ms-mediapackage")) {
+ return true;
+}
+        if (sub.Equals("vnd.net2phone.commcenter.command")) {
+ return true;
+}
+        if (sub.Equals("vnd.radisys.msml-basic-layout")) {
+ return true;
+}
+        if (sub.Equals("vnd.wap.si")) {
+ return true;
+}
+        if (sub.Equals("vnd.wap.sl")) {
+ return true;
+}
+        if (sub.Equals("vnd.wap.wml")) {
+ return true;
+}
        }
        return false;
     }
@@ -669,9 +698,8 @@ namespace PeterO.Mail {
 #endif
     public string GetCharset() {
       // NOTE: RFC6657 changed the rules for the default charset in text
-      // media types,
-      // so that there is no default charset for as yet undefined media
-      // types. However,
+      // media types, so that there is no default charset for as yet 
+      // undefined media types. However,
       // media types defined before this RFC (July 2012) are grandfathered
       // from the rule: those
       // media types "that fail to specify how the charset is determined" still
@@ -686,21 +714,18 @@ namespace PeterO.Mail {
       // -- 1d-interleaved-parityfec, fwdred, red, parityfec, encaprtp,
       // raptorfec, rtp-enc-aescm128, t140, ulpfec, rtx, rtploopback
       //
-      // These media types don't define a charset parameter:
-      // -- csv-schema, dns, grammar-ref-list, mizar, vnd.latex-z,
-      // vnd.motorola.reflex,
-      // vnd.si.uricatalogue*(7), prs.lines.tag, vnd.dmclientscript,
-      // vnd.dvb.subtitle,
-      // vnd.fly, rtf, rfc822-headers, prs.prop.logic, vnd.ascii-art****,
-      // vnd.hgl*(6), vnd.gml
+      // Charset determined out-of-band:
+      // -- vnd.motorola.reflex*(5)*(10)
       //
       // Special procedure defined for charset detection:
-      // -- ecmascript*(8), javascript*(8), html
+      // -- ecmascript*(8), javascript*(8), html, 
+      // rtf*(5)
       //
       // XML formats (no default assumed if charset is absent, according
       // to RFC7303, the revision of the XML media type specification):
       // -- xml, xml-external-parsed-entity,
-      // vnd.in3d.3dml*, vnd.iptc.newsml, vnd.iptc.nitf, vnd.ms-mediapackage*(5),
+      // vnd.in3d.3dml*, vnd.iptc.newsml, vnd.iptc.nitf,
+      // vnd.ms-mediapackage*(5),
       // vnd.net2phone.commcenter.command, vnd.radisys.msml-basic-layout,
       // vnd.wap.si, vnd.wap.sl, vnd.wap.wml
       //
@@ -708,11 +733,26 @@ namespace PeterO.Mail {
       // charset is treated as default is irrelevant):
       // -- example
       //
+      // These media types don't define a charset parameter (after
+      // RFC6657):
+      // -- grammar-ref-list*(9), vnd.hgl*(6)*(9), vnd.gml*(9)
+      //
       // Uses charset parameter, but no default charset specified (after
       // RFC6657):
       // -- markdown*
       //
       // -- US-ASCII assumed: --
+      //
+      // These media types don't define a charset parameter (before
+      // RFC6657):
+      // -- dns, mizar, vnd.latex-z,
+      // prs.lines.tag, vnd.dmclientscript,
+      // vnd.dvb.subtitle, rfc822-headers,
+      // vnd.si.uricatalogue*(7), vnd.si.fly*(7)
+      //
+      // No charset parameter defined, but does specify ASCII only (after
+      // RFC6657):
+      // -- vnd.ascii-art****, prs.prop.logic*
       //
       // These media types don't define a default charset:
       // -- css, richtext, enriched, tab-separated-values*,
@@ -733,16 +773,21 @@ namespace PeterO.Mail {
       // UTF-8 default:
       // -- csv, calendar**, vnd.a***, parameters, prs.fallenstein.rst,
       // vnd.esmertec.theme.descriptor, vnd.trolltech.linguist,
-      // vnd.graphviz, vnd.sun.j2me.app-descriptor, strings*(5)
+      // vnd.graphviz, vnd.sun.j2me.app-descriptor, strings*(5),
+      // csv-schema*(5)
       //
       // * Required parameter.
       // ** No explicit default, but says that "[t]he charset supported
       // by this revision of iCalendar is UTF-8."
       // *(5) No charset parameter defined.
       // *(6) 8-bit encoding.
-      // *(7) Says "US-ASCII" is always used
+      // *(7) Says "US-ASCII" is always used, or otherwise says
+      // the media type contains ASCII text
       // *(8) RFC4329: If charset unrecognized, check for UTF-8/16/32 BOM if it
-      // exists; otherwise use UTF-8.  If UTF-8, ignore UTF-8 BOM
+      // exists; otherwise use UTF-8. If UTF-8, ignore UTF-8 BOM
+      // *(9) After RFC 6657.
+      // *(10) Charset determined "in an a priori manner", rather than
+      // being stated in the payload.
       // *** Default is UTF-8 "if 8-bit bytes are encountered" (even if
       // none are found, though, a 7-bit ASCII text is still also UTF-8).
       // **** Content containing non-ASCII bytes "should be rejected".
@@ -755,12 +800,24 @@ namespace PeterO.Mail {
         string sub = this.SubType;
         // Media types that assume a default of US-ASCII
         if (sub.Equals("plain") || sub.Equals("sgml") ||
-          sub.Equals("troff") || sub.Equals("directory") ||
+          sub.Equals("troff") || 
+            sub.Equals("dns") ||
+            sub.Equals("mizar") ||
+            sub.Equals("prs.prop.logic") ||
+            sub.Equals("vnd.ascii-art") ||
+            sub.Equals("vnd.dmclientscript") ||
+            sub.Equals("prs.lines.tag") ||
+            sub.Equals("vnd.latex-z") ||
+            sub.Equals("rfc822-headers") ||
+            sub.Equals("vnd.dvb.subtitle") ||
+            sub.Equals("vnd.fly") ||
+            sub.Equals("directory") ||
           sub.Equals("css") || sub.Equals("richtext") ||
               sub.Equals("enriched") || sub.Equals("tab-separated-values") ||
               sub.Equals("vnd.in3d.spot") || sub.Equals("vnd.abc") ||
             sub.Equals("vnd.wap.wmlscript") || sub.Equals("vnd.curl") ||
-              sub.Equals("vnd.fmi.flexstor") || sub.Equals("uri-list")) {
+              sub.Equals("vnd.fmi.flexstor") || sub.Equals("uri-list") ||
+              sub.Equals("vnd.si.uricatalogue")) {
           return "us-ascii";
         }
         // Media types that assume a default of UTF-8
@@ -772,6 +829,7 @@ namespace PeterO.Mail {
               sub.Equals("parameters") || sub.Equals("prs.fallenstein.rst") ||
               sub.Equals("vnd.esmertec.theme.descriptor") ||
             sub.Equals("vnd.trolltech.linguist") ||
+            sub.Equals("csv-schema") ||
               sub.Equals("vnd.graphviz") || sub.Equals("cache-manifest") ||
               sub.Equals("vnd.sun.j2me.app-descriptor")) {
           return "utf-8";

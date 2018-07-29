@@ -658,6 +658,61 @@ import com.upokecenter.text.*;
       return i;
     }
 
+    boolean StoresCharsetInPayload() {
+       // Returns true if the media type is text and contains special
+       // procedures for determining the charset from the payload
+       // if no charset is given or supported in the charset
+       // parameter. As of Jul. 28, 2018, media types in
+       // this category are JavaScript, HTML, and XML media
+       // types.
+       if (this.isText()) {
+        String sub = this.getSubType();
+        if (sub.equals("html")) {
+ return true;
+}
+        if (sub.equals("javascript")) {
+ return true;
+}
+        if (sub.equals("ecmascript")) {
+ return true;
+}
+        if (sub.equals("xml")) {
+ return true;
+}
+        if (sub.equals("xml-external-parsed-entity")) {
+ return true;
+}
+        if (sub.equals("vnd.in3d.3dml")) {
+ return true;
+}
+        if (sub.equals("vnd.iptc.newsml")) {
+ return true;
+}
+        if (sub.equals("vnd.iptc.nitf")) {
+ return true;
+}
+        if (sub.equals("vnd.ms-mediapackage")) {
+ return true;
+}
+        if (sub.equals("vnd.net2phone.commcenter.command")) {
+ return true;
+}
+        if (sub.equals("vnd.radisys.msml-basic-layout")) {
+ return true;
+}
+        if (sub.equals("vnd.wap.si")) {
+ return true;
+}
+        if (sub.equals("vnd.wap.sl")) {
+ return true;
+}
+        if (sub.equals("vnd.wap.wml")) {
+ return true;
+}
+       }
+       return false;
+    }
+
     /**
      * Gets this media type's "charset" parameter, naming a character encoding used
      * to represent text in the data that uses this media type.
@@ -692,18 +747,19 @@ import com.upokecenter.text.*;
       // These media types don't define a charset parameter:
       // -- csv-schema, dns, grammar-ref-list, mizar, vnd.latex-z,
       // vnd.motorola.reflex,
-      // vnd.si.uricatalogue, prs.lines.tag, vnd.dmclientscript,
+      // vnd.si.uricatalogue*(7), prs.lines.tag, vnd.dmclientscript,
       // vnd.dvb.subtitle,
       // vnd.fly, rtf, rfc822-headers, prs.prop.logic, vnd.ascii-art****,
       // vnd.hgl*(6), vnd.gml
       //
       // Special procedure defined for charset detection:
-      // -- ecmascript, javascript, html
+      // -- ecmascript*(8), javascript*(8), html
       //
       // XML formats (no default assumed if charset is absent, according
       // to RFC7303, the revision of the XML media type specification):
       // -- xml, xml-external-parsed-entity,
-      // vnd.in3d.3dml*, vnd.iptc.newsml, vnd.iptc.nitf, vnd.ms-mediapackage,
+      // vnd.in3d.3dml*, vnd.iptc.newsml, vnd.iptc.nitf,
+      // vnd.ms-mediapackage*(5),
       // vnd.net2phone.commcenter.command, vnd.radisys.msml-basic-layout,
       // vnd.wap.si, vnd.wap.sl, vnd.wap.wml
       //
@@ -718,9 +774,9 @@ import com.upokecenter.text.*;
       // -- US-ASCII assumed: --
       //
       // These media types don't define a default charset:
-      // -- css, richtext, enriched, tab-separated-values,
+      // -- css, richtext, enriched, tab-separated-values*,
       // vnd.in3d.spot*, vnd.abc, vnd.wap.wmlscript, vnd.curl,
-      // vnd.fmi.flexstor, uri-list, directory
+      // vnd.fmi.flexstor, uri-list, directory*
       //
       // US-ASCII default:
       // -- plain, sgml, troff
@@ -743,12 +799,15 @@ import com.upokecenter.text.*;
       // by this revision of iCalendar is UTF-8."
       // *(5) No charset parameter defined.
       // *(6) 8-bit encoding.
+      // *(7) Says "US-ASCII" is always used
+      // *(8) RFC4329: If charset unrecognized, check for UTF-8/16/32 BOM if it
+      // exists; otherwise use UTF-8. If UTF-8, ignore UTF-8 BOM
       // *** Default is UTF-8 "if 8-bit bytes are encountered" (even if
       // none are found, though, a 7-bit ASCII text is still also UTF-8).
       // **** Content containing non-ASCII bytes "should be rejected".
       String param = this.GetParameter("charset");
       param = Encodings.ResolveAliasForEmail(param);
-      if (param != null) {
+      if (!((param) == null || (param).length() == 0)) {
         return DataUtilities.ToLowerCaseAscii(param);
       }
       if (this.isText()) {
