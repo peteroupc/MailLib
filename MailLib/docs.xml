@@ -1061,10 +1061,12 @@ without a Date header field, or without both.</item>
             <item>(d) In non-MIME message bodies and in text/plain message
             bodies. Any 8-bit bytes are replaced with the substitute character
             byte (0x1a).</item>
-            <item>If the first line of the message starts with the word "From" (and
+            <item>If the message starts with the word "From" (and
             no other case variations of that word)
-            followed by one or more space (U+0020) followed by either
-            the end of line or a character other than colon, that line is skipped.</item>
+            followed by one or more space (U+0020) not followed by colon,
+            that text and the rest of the text is skipped up to and including
+            a line feed (U+000A). (See also RFC 4155, which describes the so-called
+            "mbox" convention with "From" lines of this kind.)</item>
             <item>The name <c>ascii</c> is treated as a synonym for
             <c>us-ascii</c>, despite being a reserved name under RFC 2046. The
             name <c>cp1252</c> is treated as a synonym for <c>windows-1252</c>

@@ -1534,16 +1534,17 @@ try { if (ms != null) {
     @Test
     public void TestBoundaryReading() {
       byte[] body;
+      Message msg;
+      String message;
       String messageStart = "MIME-Version: 1.0\r\n";
       messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
-      messageStart += "Preamble\r\n";
+        messageStart += "Preamble\r\n";
       messageStart += "--b1\r\n";
-      String message = messageStart;
+      message = messageStart;
       message += "Content-Type: text/plain\r\n\r\n";
       message += "Test\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
-      Message msg;
       msg = MessageFromString(message);
       Assert.assertEquals("multipart", msg.getContentType().getTopLevelType());
       {
@@ -1674,11 +1675,21 @@ try { if (ms != null) {
       Assert.assertEquals(1, msg.getParts().size());
       Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
       Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
+    }
+
+    @Test
+    public void TestBoundaryReading2() {
+      Message msg;
+      String message;
+      String messageStart = "MIME-Version: 1.0\r\n";
+      messageStart += "Content-Type: multipart/mixed; boundary=b1\r\n\r\n";
+      messageStart += "Preamble\r\n";
+      messageStart += "--b1\r\n";
       // Nested Multipart body part
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
       message += "--b2\r\n";
-      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n\r\n";
       message += "Test\r\n";
       message += "--Not-b2--\r\n";
       message += "--b2--\r\n";
@@ -1692,7 +1703,7 @@ try { if (ms != null) {
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
       message += "--b2\r\n";
-      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n\r\n";
       message += "Test\r\n";
       message += "--b1--\r\n";
       message += "Epilogue";
@@ -1704,11 +1715,11 @@ try { if (ms != null) {
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
       message += "--b2\r\n";
-      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n\r\n";
       message += "Test\r\n";
       message += "--Not-b2--\r\n";
       message += "--b2\r\n";
-      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n\r\n";
       message += "Test2\r\n";
       message += "--b2--\r\n";
       message += "--b1--\r\n";
@@ -1722,7 +1733,21 @@ try { if (ms != null) {
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
       message += "--b2\r\n";
-      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n\r\n";
+      message += "Test\r\n";
+      message += "--b2--\r\n";
+      message += "Epilogue-for-b2--\r\n";
+      message += "--b1--\r\n";
+      message += "Epilogue";
+      msg = MessageFromString(message);
+      Assert.assertEquals(1, msg.getParts().size());
+      Assert.assertEquals(1, msg.getParts().get(0).getParts().size());
+      Assert.assertEquals("Test", msg.getParts().get(0).getParts().get(0).getBodyString());
+      // Nested Multipart body part
+      message = messageStart;
+      message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
+      message += "--b2\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n\r\n";
       message += "Test\r\n";
       message += "--b2--\r\n";
       message += "--Epilogue-for-b2--\r\n";
@@ -1736,7 +1761,7 @@ try { if (ms != null) {
       message = messageStart;
       message += "Content-Type: multipart/mixed; boundary=b2\r\n\r\n";
       message += "--b2\r\n";
-      message += "Content-Type: text/plain;charset=utf-8\r\n";
+      message += "Content-Type: text/plain;charset=utf-8\r\n\r\n";
       message += "Test\r\n";
       message += "--b2--\r\n";
       message += "--b2--epilogue--\r\n";
