@@ -614,7 +614,7 @@ namespace PeterO.Mail {
       bodyPart.ContentType = mediaType;
       try {
       using(var ms = new MemoryStream()) {
-        byte[] buffer = new byte[4096];
+        var buffer = new byte[4096];
         while (true) {
           int cp = inputStream.Read(buffer, 0, buffer.Length);
           if (cp <= 0) {
@@ -1555,16 +1555,13 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
                   wsp = false;
                   first = true;
                   break;
-                } else if (c == '\r') {
-                  possibleMbox = false;
-                  if (ungetStream.ReadByte() == '\n') {
-                    // End of line was reached
+                } else if (c == '\n') {
+                  // End of line was reached
+                    possibleMbox = false;
                     start = false;
                     wsp = false;
                     first = true;
                     break;
-                  }
-                  ungetStream.Unget();
                 } else if (c != 0x20) {
                   possibleMbox = false;
                 }
@@ -2592,10 +2589,14 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
     }
 
     private class MessageStackEntry {
+    /// <xmlbegin id='0'/>
+    /// <xmlend/>
     /// <summary>This is an internal API.</summary>
     /// <value>This is an internal API.</value>
       public Message Message { get; private set; }
 
+    /// <xmlbegin id='1'/>
+    /// <xmlend/>
     /// <summary>This is an internal API.</summary>
     /// <value>This is an internal API.</value>
       public string Boundary { get; private set; }
