@@ -479,7 +479,8 @@ Generates this message's data in text form. <p>The generated message will
 
 **Throws:**
 
-* <code>PeterO.Mail.MessageDataException</code> - The message can't be generated.
+* <code>MessageDataException</code> - The message can't be
+ generated.
 
 ### GenerateBytes
     public byte[] GenerateBytes()
@@ -872,7 +873,7 @@ Adds an attachment to this message in the form of data from the given
 * <code>NullPointerException</code> - The parameter "inputStream" or
  "mediaType" is null.
 
-* <code>PeterO.Mail.MessageDataException</code> - An I/O error occurred.
+* <code>MessageDataException</code> - An I/O error occurred.
 
 ### AddAttachment
     public Message AddAttachment​(InputStream inputStream, String filename)
@@ -900,7 +901,7 @@ Adds an attachment to this message in the form of data from the given
 
 * <code>NullPointerException</code> - The parameter "inputStream" is null.
 
-* <code>PeterO.Mail.MessageDataException</code> - An I/O error occurred.
+* <code>MessageDataException</code> - An I/O error occurred.
 
 ### AddAttachment
     public Message AddAttachment​(InputStream inputStream, MediaType mediaType, String filename)
@@ -928,7 +929,7 @@ Adds an attachment to this message in the form of data from the given
 * <code>NullPointerException</code> - The parameter "inputStream" or
  "mediaType" is null.
 
-* <code>PeterO.Mail.MessageDataException</code> - An I/O error occurred.
+* <code>MessageDataException</code> - An I/O error occurred.
 
 ### AddInline
     public Message AddInline​(InputStream inputStream, MediaType mediaType)
@@ -953,7 +954,7 @@ Adds an inline body part to this message in the form of data from the given
 * <code>NullPointerException</code> - The parameter "inputStream" or
  "mediaType" is null.
 
-* <code>PeterO.Mail.MessageDataException</code> - An I/O error occurred.
+* <code>MessageDataException</code> - An I/O error occurred.
 
 ### AddInline
     public Message AddInline​(InputStream inputStream, String filename)
@@ -981,7 +982,7 @@ Adds an inline body part to this message in the form of data from the given
 
 * <code>NullPointerException</code> - The parameter "inputStream" is null.
 
-* <code>PeterO.Mail.MessageDataException</code> - An I/O error occurred.
+* <code>MessageDataException</code> - An I/O error occurred.
 
 ### AddInline
     public Message AddInline​(InputStream inputStream, MediaType mediaType, String filename)
@@ -1008,4 +1009,4 @@ Adds an inline body part to this message in the form of data from the given
 * <code>NullPointerException</code> - The parameter "inputStream" or
  "mediaType" is null.
 
-* <code>PeterO.Mail.MessageDataException</code> - An I/O error occurred.
+* <code>MessageDataException</code> - An I/O error occurred.

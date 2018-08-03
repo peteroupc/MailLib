@@ -17,9 +17,16 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[])"]/*'/>
     public static string GenerateDateString(int[] dateTime) {
+      return GenerateDateString(dateTime, false);
+    }
+    public static string GenerateDateString(int[] dateTime, bool gmt) {
       if (!DateTimeUtilities.IsValidDateTime(dateTime) ||
         dateTime[0] < 0) {
         throw new ArgumentException("Invalid date and time");
+      }
+      if (gmt && dateTime[7] != 0) {
+        throw new NotSupportedException(
+          "Time zone offsets other than 0 are currently not supported for gmt=true.");
       }
       int dow = DateTimeUtilities.GetDayOfWeek(dateTime);
       if (dow < 0) {
@@ -52,15 +59,19 @@ namespace PeterO.Mail {
       sb.Append((char)('0' + ((dateTime[5] / 10) % 10)));
       sb.Append((char)('0' + (dateTime[5] % 10)));
       sb.Append(' ');
-      int offset = dateTime[7];
-      sb.Append((offset < 0) ? '-' : '+');
-      offset = Math.Abs(offset);
-      int hours = (offset / 60) % 24;
-      int minutes = offset % 60;
-      sb.Append((char)('0' + ((hours / 10) % 10)));
-      sb.Append((char)('0' + (hours % 10)));
-      sb.Append((char)('0' + ((minutes / 10) % 10)));
-      sb.Append((char)('0' + (minutes % 10)));
+      if (gmt) {
+        sb.Append("GMT");
+      } else {
+        int offset = dateTime[7];
+        sb.Append((offset < 0) ? '-' : '+');
+        offset = Math.Abs(offset);
+        int hours = (offset / 60) % 24;
+        int minutes = offset % 60;
+        sb.Append((char)('0' + ((hours / 10) % 10)));
+        sb.Append((char)('0' + (hours % 10)));
+        sb.Append((char)('0' + ((minutes / 10) % 10)));
+        sb.Append((char)('0' + (minutes % 10)));
+      }
       return sb.ToString();
     }
 

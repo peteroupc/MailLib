@@ -728,6 +728,7 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
       }
       return MediaType.ApplicationOctetStream;
     }
+    // TODO: Make these methods return the body part, not 'this'.
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.AddAttachment(System.IO.Stream,PeterO.Mail.MediaType)"]/*'/>

@@ -120,9 +120,8 @@ namespace PeterO.Mail {
             symbol[i] == ',' || symbol[i] == ';')) {
             // Additional characters between which linear white space can
             // freely appear
-            // in structured header fields. They are the union of RFC 822's
-            // specials
-            // and RFC 2045's tspecials, with the exception of parentheses
+            // in structured header fields. They are the intersection of RFC 822's
+            // specials and RFC 2045's tspecials, with the exception of parentheses
             // (comment
             // delimiters), square brackets (domain literal delimiters),
             // double quote (quoted string delimiter), at-sign (better not
@@ -414,14 +413,9 @@ namespace PeterO.Mail {
       return this;
     }
 
-    private static readonly byte[] Base64Classic = {
-  0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d,
-  0x4e, 0x4f, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a,
-  0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6a, 0x6b, 0x6c, 0x6d,
-  0x6e, 0x6f, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7a,
-        0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x2b, 0x2f
-      };
-
+private const string Base64Classic = 
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
+      "jklmnopqrstuvwxyz0123456789+/";
     private void AppendFinalBase64(int[] b64) {
       int b1 = b64[0];
       int b2 = b64[1];
@@ -445,23 +439,27 @@ namespace PeterO.Mail {
 
     private void AppendBase64(int[] b64, int value) {
       int quantumCount = b64[2];
-      if (quantumCount == 2) {
-        int b1 = b64[0];
-        int b2 = b64[1];
-        this.builder.Append((char)Base64Classic[(b1 >> 2) & 63]);
-        this.builder.Append((char)Base64Classic[((b1 & 3) << 4) + ((b2 >> 4) &
-          15)]);
-        this.builder.Append((char)Base64Classic[((b2 & 15) << 2) + ((value>>
-          6) & 3)]);
-        this.builder.Append((char)Base64Classic[value & 63]);
-        this.column += 4;
-        b64[2] = 0;
-      } else if (quantumCount == 1) {
-        b64[1] = value;
-        b64[2] = 2;
-      } else if (quantumCount == 0) {
-        b64[0] = value;
-        b64[2] = 1;
+      switch (quantumCount) {
+        case 2:
+          int b1 = b64[0];
+          int b2 = b64[1];
+          this.builder.Append((char)Base64Classic[(b1 >> 2) & 63]);
+          this.builder.Append((char)Base64Classic[((b1 & 3) << 4) + ((b2 >> 4) &
+            15)]);
+          this.builder.Append((char)Base64Classic[((b2 & 15) << 2) + ((value >>
+            6) & 3)]);
+          this.builder.Append((char)Base64Classic[value & 63]);
+          this.column += 4;
+          b64[2] = 0;
+          break;
+        case 1:
+          b64[1] = value;
+          b64[2] = 2;
+          break;
+        case 0:
+          b64[0] = value;
+          b64[2] = 1;
+          break;
       }
     }
 
