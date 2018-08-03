@@ -16,9 +16,10 @@ namespace PeterO.Mail {
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="T:PeterO.Mail.MediaType"]/*'/>
   public sealed class MediaType {
-    // Printable ASCII characters that cannot appear in an
-    // attribute value under RFC 2231
-    private const string AttrNameSpecials = "()<>@,;:\\\"/[]?='%*";
+    // Printable ASCII characters that cannot appear in a
+    // parameter value under RFC 2231 (including single quote
+    // and percent)
+    private const string AttrValueSpecials = "()<>@,;:\\\"/[]?='%*";
     private const string ValueHex = "0123456789ABCDEF";
 
     private readonly string topLevelType;
@@ -301,7 +302,16 @@ namespace PeterO.Mail {
     }
 
     private static bool IsAttributeChar(int c) {
-      return c >= 33 && c <= 126 && AttrNameSpecials.IndexOf((char)c) < 0;
+      return c >= 33 && c <= 126 && AttrValueSpecials.IndexOf((char)c) < 0;
+    }
+    // Intersection of ASCII characters that can appear in a URI path and in
+    // an RFC 2231 parameter value (excludes percent
+    // and single quote, which serve special purposes
+    // in such values)
+    private static bool IsIsecnOfUrlPathAndAttrValueChar(int c) {
+      return c >= 33 && c <= 126 && ((c >= 'A' && c <= 'Z') ||
+                                     (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
+                                     "!$&*+-._~".IndexOf((char)c) >= 0);
     }
     private static void PctAppend(StringBuilder sb, int w) {
       // NOTE: Use uppercase hex characters
@@ -317,7 +327,7 @@ namespace PeterO.Mail {
     }
 
     private static int EncodeContinuation(string str, int startPos,
-      HeaderEncoder sa) {
+      HeaderEncoder sa, bool uriSafe) {
       int column = sa.GetColumn();
       int maxLineLength = sa.GetMaxLineLength();
       int index = startPos;
@@ -333,7 +343,7 @@ namespace PeterO.Mail {
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
-        if (IsAttributeChar(c)) {
+        if (uriSafe ? IsIsecnOfUrlPathAndAttrValueChar(c) : IsAttributeChar(c)) {
           ++contin;
         } else if (c <= 0x7f) {
           contin += 3;
@@ -375,7 +385,7 @@ namespace PeterO.Mail {
         // No room to put any continuation here;
         // add a line break and try again
         sa.AppendBreak();
-        return EncodeContinuation(str, startPos, sa);
+        return EncodeContinuation(str, startPos, sa, uriSafe);
       }
       sa.AppendSymbol(sb.ToString());
       return index;
@@ -384,7 +394,8 @@ namespace PeterO.Mail {
     private static void AppendComplexParamValue(
   string name,
   string str,
-  HeaderEncoder sa) {
+  HeaderEncoder sa,
+    bool uriSafe) {
 #if DEBUG
       if ((str) == null) {
         throw new ArgumentNullException(nameof(str));
@@ -407,7 +418,7 @@ namespace PeterO.Mail {
       int oldcolumn = sa.GetColumn();
       int oldlength = sa.GetLength();
       sa.AppendSymbol(name + "*").AppendSymbol("=");
-      if (EncodeContinuation(str, 0, sa) != str.Length) {
+      if (EncodeContinuation(str, 0, sa, uriSafe) != str.Length) {
         sa.Reset(oldcolumn, oldlength);
         var contin = 0;
         var index = 0;
@@ -417,7 +428,7 @@ namespace PeterO.Mail {
           }
           sa.AppendSymbol(name + "*" + ParserUtility.IntToString(contin) + "*")
      .AppendSymbol("=");
-          index = EncodeContinuation(str, index, sa);
+          index = EncodeContinuation(str, index, sa, uriSafe);
           ++contin;
         }
       }
@@ -426,23 +437,33 @@ namespace PeterO.Mail {
     private static bool AppendSimpleParamValue(
   string name,
   string str,
-  HeaderEncoder sa) {
-      sa.AppendSymbol(name);
-      sa.AppendSymbol("=");
+  HeaderEncoder sa,
+    bool uriSafe) {
       if (str.Length == 0) {
-        sa.AppendSymbol("\"\"");
+        if (uriSafe) {
+          sa.AppendSymbol(name + "*");
+          sa.AppendSymbol("=");
+          sa.AppendSymbol("utf-8''");
+        } else {
+          sa.AppendSymbol(name);
+          sa.AppendSymbol("=");
+          sa.AppendSymbol("\"\"");
+        }
         return true;
       }
+      sa.AppendSymbol(name);
+      sa.AppendSymbol("=");
       var simple = true;
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
-        if (!(c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=".IndexOf(c) < 0)) {
+        if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) : (!IsAttributeChar(c))) {
           simple = false;
         }
       }
       if (simple) {
         return sa.TryAppendSymbol(str);
       }
+      if (uriSafe) return false;
       var sb = new StringBuilder();
       sb.Append('"');
       for (int i = 0; i < str.Length; ++i) {
@@ -465,10 +486,15 @@ namespace PeterO.Mail {
       sb.Append('"');
       return sa.TryAppendSymbol(sb.ToString());
     }
-
     internal static void AppendParameters(
       IDictionary<string, string> parameters,
       HeaderEncoder sa) {
+       AppendParameters(parameters, sa, false);
+    }
+      internal static void AppendParameters(
+      IDictionary<string, string> parameters,
+      HeaderEncoder sa,
+      bool uriSafe){
       var keylist = new List<string>(parameters.Keys);
       keylist.Sort();
       foreach (string key in keylist) {
@@ -477,9 +503,9 @@ namespace PeterO.Mail {
         sa.AppendSymbol(";");
         int oldcolumn = sa.GetColumn();
         int oldlength = sa.GetLength();
-        if (!AppendSimpleParamValue(name, value, sa)) {
+        if (!AppendSimpleParamValue(name, value, sa, uriSafe)) {
           sa.Reset(oldcolumn, oldlength);
-          AppendComplexParamValue(name, value, sa);
+          AppendComplexParamValue(name, value, sa, uriSafe);
         }
       }
     }
@@ -502,6 +528,14 @@ namespace PeterO.Mail {
       var sa = new HeaderEncoder(-1, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
       AppendParameters(this.parameters, sa);
+      return sa.ToString();
+    }
+
+    public string ToUriSafeString() {
+      // NOTE: 14 is the length of "Content-Type: " (with trailing space).
+      var sa = new HeaderEncoder(-1, 14);
+      sa.AppendSymbol(this.topLevelType + "/" + this.subType);
+      AppendParameters(this.parameters, sa, true);
       return sa.ToString();
     }
 
@@ -543,7 +577,7 @@ namespace PeterO.Mail {
       while (i < endIndex) {
         char c = str[i];
         if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
-          AttrNameSpecials.IndexOf(c) >= 0)) {
+          AttrValueSpecials.IndexOf(c) >= 0)) {
           break;
         }
         if (builder != null) {

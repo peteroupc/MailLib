@@ -447,7 +447,8 @@ public final void setSubject(String value) {
      * LF alone. If the message has any other content type, only CR followed
      * by LF is considered a line break.</p>
      * @return The generated message.
-     * @throws PeterO.Mail.MessageDataException The message can't be generated.
+     * @throws com.upokecenter.mail.MessageDataException The message can't be
+     * generated.
      */
     public String Generate() {
       ArrayWriter aw = new ArrayWriter();
@@ -1067,6 +1068,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
       }
       return MediaType.ApplicationOctetStream;
     }
+    // TODO: Make these methods return the body part, not 'this'.
 
     /**
      * Adds an attachment to this message in the form of data from the given
@@ -1079,7 +1081,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * @return This object.
      * @throws java.lang.NullPointerException The parameter "inputStream" or
      * "mediaType" is null.
-     * @throws PeterO.Mail.MessageDataException An I/O error occurred.
+     * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddAttachment(InputStream inputStream, MediaType mediaType) {
       return AddBodyPart(inputStream,mediaType,null,"attachment");
@@ -1099,7 +1101,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * be null or empty, in which case no file name is assigned.
      * @return This object.
      * @throws java.lang.NullPointerException The parameter "inputStream" is null.
-     * @throws PeterO.Mail.MessageDataException An I/O error occurred.
+     * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddAttachment(InputStream inputStream, String filename) {
       return
@@ -1119,7 +1121,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * @return This object.
      * @throws java.lang.NullPointerException The parameter "inputStream" or
      * "mediaType" is null.
-     * @throws PeterO.Mail.MessageDataException An I/O error occurred.
+     * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddAttachment(InputStream inputStream, MediaType mediaType,
       String filename) {
@@ -1137,7 +1139,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * @return This object.
      * @throws java.lang.NullPointerException The parameter "inputStream" or
      * "mediaType" is null.
-     * @throws PeterO.Mail.MessageDataException An I/O error occurred.
+     * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(InputStream inputStream, MediaType mediaType) {
       return AddBodyPart(inputStream,mediaType,null,"inline");
@@ -1157,7 +1159,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * be null or empty, in which case no file name is assigned.
      * @return This object.
      * @throws java.lang.NullPointerException The parameter "inputStream" is null.
-     * @throws PeterO.Mail.MessageDataException An I/O error occurred.
+     * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(InputStream inputStream, String filename) {
   return AddBodyPart(inputStream,SuggestMediaType(filename),filename,"inline");
@@ -1175,7 +1177,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
      * @return This object.
      * @throws java.lang.NullPointerException The parameter "inputStream" or
      * "mediaType" is null.
-     * @throws PeterO.Mail.MessageDataException An I/O error occurred.
+     * @throws com.upokecenter.mail.MessageDataException An I/O error occurred.
      */
     public Message AddInline(InputStream inputStream, MediaType mediaType, String
       filename) {

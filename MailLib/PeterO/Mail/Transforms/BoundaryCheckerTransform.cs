@@ -39,8 +39,8 @@ namespace PeterO.Mail.Transforms {
       initialBoundary) {
       this.input = stream;
       this.boundaries = new List<string>();
-      this.boundaries.Add(initialBoundary);
       this.started = true;
+      this.boundaries.Add(initialBoundary);
     }
 
     public int ReadByte() {
