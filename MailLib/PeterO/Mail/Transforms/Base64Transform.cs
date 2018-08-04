@@ -82,14 +82,20 @@ namespace PeterO.Mail.Transforms {
           }
           if (count == 2) {
             if (this.checkStrictEncoding && this.paddingCount != 2) {
-            throw new MessageDataException("Invalid amount of base64 padding");
+              throw new MessageDataException("Invalid amount of base64 padding");
+            }
+            if (this.checkStrictEncoding && (value & 0x0F) != 0) {
+              throw new MessageDataException("Invalid base64 padding");
             }
             value <<= 12;
             return (int)((value >> 16) & 0xff);
           }
           if (count == 3) {
             if (this.checkStrictEncoding && this.paddingCount != 1) {
-            throw new MessageDataException("Invalid amount of base64 padding");
+              throw new MessageDataException("Invalid amount of base64 padding");
+            }
+            if (this.checkStrictEncoding && (value & 0x03) != 0) {
+              throw new MessageDataException("Invalid base64 padding");
             }
             value <<= 6;
             this.ResizeBuffer(1);
@@ -122,7 +128,7 @@ namespace PeterO.Mail.Transforms {
               MessageDataException("Invalid base64 character: 0x0A bare");
           }
         } else if (c >= 0x80) {
-          // Ignore
+          // Ignore (this behavior is allowed by MIME, RFC 2045)
         } else {
           int oldc = c;
           c = Alphabet[c];
@@ -146,6 +152,8 @@ namespace PeterO.Mail.Transforms {
         if (this.maxLineLength > 0) {
           ++this.lineCharCount;
           if (this.lineCharCount > this.maxLineLength) {
+           // NOTE: Behavior required for MIME, but not necessarily
+           // for other protocols that use base64
             throw new MessageDataException("Encoded base64 line too long");
           }
         }

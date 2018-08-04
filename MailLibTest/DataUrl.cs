@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using PeterO;
+using Test;
 using PeterO.Cbor;
 using PeterO.Mail;
 using System.Text;
+using System.IO;
+using NUnit.Framework;
 namespace MailLibTest {
-  public static class DataUrl {
+  public class DataUrl {
     public static MediaType DataUrlMediaType(string url) {
       int[] parts = URIUtility.splitIRI(
         url);
@@ -30,8 +34,11 @@ namespace MailLibTest {
           // type "text/plain" is assumed.
           mediaType = "text/plain" + mediaType;
         }
+        if (mediaType.IndexOf('/') < 0) {
+
+        }
         if (mediaType.IndexOf('(') >= 0) {
-          // Use default media type if the string has parentheses
+          // The media type string has parentheses
           // (comment delimiters), which are not valid in Data-URL
           // media types since ABNFs (at the time of RFC 2397) did not allow
           // white space to be specified implicitly (RFC 2234).  
@@ -41,11 +48,28 @@ namespace MailLibTest {
           // On the other hand, URIs already don't allow white space
           // or line breaks, so there is no need to check for those
           // here since ParseIRI already did that.
-          return MediaType.TextPlainAscii;
+          // NOTE: This code returns null, but another alternative
+          // is to use MediaType.TextPlainAscii, the recommended default media type for
+          // syntactically invalid Content-Type values (RFC 2045 sec. 5.2).
+          // However, returning null here is the saner thing to do,
+          // since the purported data URL might be problematic in other ways.
+          return null;
         }
-        return MediaType.Parse(mediaType, MediaType.TextPlainAscii);
+        return MediaType.Parse(mediaType, null);
       }
       return null;
+    }
+
+    internal static void TestDataUrlRoundTrip(string data) {
+      MediaType mt = DataUrlMediaType(data);
+      byte[] bytes = DataUrlBytes(data);
+      Assert.NotNull(mt,data);
+      Assert.NotNull(bytes, data);
+      string data2 = MakeDataUrl(bytes, mt);
+      MediaType mt2 = DataUrlMediaType(data2);
+      byte[] bytes2 = DataUrlBytes(data2);
+      TestCommon.AssertByteArraysEqual(bytes, bytes2);
+      Assert.AreEqual(mt, mt2, data);
     }
 
     private static int ToHex(char b1) {
@@ -58,6 +82,15 @@ namespace MailLibTest {
       }
       return 1;
     }
+    internal static readonly int[] Alphabet = { -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+        -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
+      52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1,
+      -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+      15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1,
+      -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 };
 
     public static byte[] DataUrlBytes(string url) {
       int[] parts = URIUtility.splitIRI(
@@ -76,11 +109,33 @@ namespace MailLibTest {
             .Equals(";base64"));
         // NOTE: Rejects base64 if non-base64 characters
         // are present, since RFC 2397 doesn't state otherwise
-        // (see RFC 4648)
+        // (see RFC 4648). Base 64 also uses no line breaks
+        // even if longer than 76 characters, 
+        // since RFC 2397 doesn't state otherwise
+        // (see RFC 4648).
+        var aw = new PeterO.ArrayWriter();
         if (usesBase64) {
-          // TODO: Not yet implemented
+          int base64Length = path.Length - (mediaTypePart + 1);
+          if ((base64Length % 4) != 0) return null;
+          for (var i = mediaTypePart + 1; i < path.Length; i += 4) {
+            bool lastBlock = (i + 4 >= path.Length);
+            int b1 = 0, b2 = 0, b3 = 0, b4 = 0;
+            b1 = (path[i] > 0x7f) ? -1 : Alphabet[(int)path[i]];
+            b2 = (path[i + 1] > 0x7f) ? -1 : Alphabet[(int)path[i + 1]];
+            if (lastBlock && path[i + 2] == '=' && path[i + 3] == '=') {
+            } else if (lastBlock && path[i + 3] == '=') {
+              b3 = (path[i + 2] > 0x7f) ? -1 : Alphabet[(int)path[i + 2]];
+            } else {
+              b3 = (path[i + 2] > 0x7f) ? -1 : Alphabet[(int)path[i + 2]];
+              b4 = (path[i + 3] > 0x7f) ? -1 : Alphabet[(int)path[i + 3]];
+            }
+            if (b1 < 0 || b2 < 0 || b3 < 0 || b4 < 0) return null;
+            int v = (b1 << 18) | (b2 << 12) | (b3 << 6) | (b4);
+            aw.WriteByte((byte)((v >> 16) & 0xFF));
+            if (path[i + 2] != '=') aw.WriteByte((byte)((v >> 8) & 0xFF));
+            if (path[i + 3] != '=') aw.WriteByte((byte)((v) & 0xFF));
+          }
         } else {
-          var aw = new PeterO.ArrayWriter();
           for (var i = mediaTypePart + 1; i < path.Length;) {
             if (path[i] == '%') {
               // NOTE: No further character checking done here
@@ -95,8 +150,8 @@ namespace MailLibTest {
               i++;
             }
           }
-          return aw.ToArray();
         }
+        return aw.ToArray();
       }
       return null;
     }
@@ -146,7 +201,15 @@ namespace MailLibTest {
     public static string MakeDataUrl(byte[] bytes, MediaType mediaType) {
       StringBuilder builder = new StringBuilder();
       builder.Append("data:");
-      builder.Append(mediaType.ToUriSafeString());
+      string mediaTypeString = mediaType.ToUriSafeString();
+      if (mediaType.TypeAndSubType.Equals("text/plain")) {
+        if (mediaTypeString.Substring(0, 10).Equals("text/plain")) {
+          // Strip 'text/plain' from the media type string,
+          // since that's the default for data URIs
+          mediaTypeString = mediaTypeString.Substring(10);
+        }
+      }
+      builder.Append(mediaTypeString);
       builder.Append(";base64,");
       AppendBase64(builder, bytes);
       return builder.ToString();
