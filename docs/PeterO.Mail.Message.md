@@ -34,7 +34,7 @@ The following lists known deviations from the mail specifications (Internet Mess
 
  * (d) In non-MIME message bodies and in text/plain message bodies. Any 8-bit bytes are replaced with the substitute character byte (0x1a).
 
- * If the first line of the message starts with the word "From" (and no other case variations of that word) followed by one or more space (U+0020) followed by either the end of line or a character other than colon, that line is skipped.
+ * If the message starts with the word "From" (and no other case variations of that word) followed by one or more space (U+0020) not followed by colon, that text and the rest of the text is skipped up to and including a line feed (U+000A). (See also RFC 4155, which describes the so-called "mbox" convention with "From" lines of this kind.)
 
  * The name  `ascii`  is treated as a synonym for `us-ascii` , despite being a reserved name under RFC 2046. The name  `cp1252`  is treated as a synonym for  `windows-1252` , even though it's not an IANA registered alias.
 
@@ -109,7 +109,7 @@ The body of this message as a text string.
 <b>Exceptions:</b>
 
  * System.NotSupportedException:
-This message has no character encoding declared on it (which is usually the case for non-text messages), or the character encoding is not supported.
+Either this message is a multipart message, so it doesn't have its own body text, or this message has no character encoding declared or assumed for it (which is usually the case for non-text messages), or the character encoding is not supported.
 
 ### CCAddresses
 
@@ -214,17 +214,34 @@ A list of addresses found in the To header field or fields.
         System.IO.Stream inputStream,
         PeterO.Mail.MediaType mediaType);
 
-Not documented yet.
+Adds an attachment to this message in the form of data from the given readable stream, and with the given media type. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+
+The following example (written in C# for the .NET version) is an extension method that adds an attachment from a byte array to a message.
+
+    public static Message AddAttachmentFromBytes(this Message msg,
+         byte[] bytes, MediaType mediaType){
+      using(var fs=new MemoryStream(bytes)){
+        return msg.AddAttachment(fs,mediaType);
+      }
+    }
 
 <b>Parameters:</b>
 
- * <i>inputStream</i>: Not documented yet.
+ * <i>inputStream</i>: A readable data stream.
 
- * <i>mediaType</i>: Not documented yet.
+ * <i>mediaType</i>: A media type to assign to the attachment.
 
 <b>Return Value:</b>
 
-A Message object.
+This object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter "inputStream" or "mediaType" is null.
+
+ * PeterO.Mail.MessageDataException:
+An I/O error occurred.
 
 ### AddAttachment
 
@@ -233,19 +250,27 @@ A Message object.
         PeterO.Mail.MediaType mediaType,
         string filename);
 
-Not documented yet.
+Adds an attachment to this message in the form of data from the given readable stream, and with the given media type and file name. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
 
 <b>Parameters:</b>
 
- * <i>inputStream</i>: Not documented yet.
+ * <i>inputStream</i>: A readable data stream.
 
- * <i>mediaType</i>: Not documented yet.
+ * <i>mediaType</i>: A media type to assign to the attachment.
 
- * <i>filename</i>: Not documented yet. (3).
+ * <i>filename</i>: A file name to assign to the attachment. Can be null or empty, in which case no file name is assigned.
 
 <b>Return Value:</b>
 
-A Message object.
+This object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter "inputStream" or "mediaType" is null.
+
+ * PeterO.Mail.MessageDataException:
+An I/O error occurred.
 
 ### AddAttachment
 
@@ -253,17 +278,33 @@ A Message object.
         System.IO.Stream inputStream,
         string filename);
 
-Not documented yet.
+Adds an attachment to this message in the form of data from the given readable stream, and with the given file name. Before the new attachment is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+
+The following example (written in C# for the .NET version) is an extension method that adds an attachment from a data file to a message.
+
+    public static Message AddAttachmentFromFile(this Message msg, string filename){
+      using(var fs=new FileStream(filename,FileMode.Open)){
+        return msg.AddAttachment(fs,filename);
+      }
+    }
 
 <b>Parameters:</b>
 
- * <i>inputStream</i>: Not documented yet.
+ * <i>inputStream</i>: A readable data stream.
 
- * <i>filename</i>: Not documented yet.
+ * <i>filename</i>: A file name to assign to the attachment. If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the attachment based on that extension; otherwise, the media type "application/octet-stream" is assigned. Can be null or empty, in which case no file name is assigned.
 
 <b>Return Value:</b>
 
-A Message object.
+This object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter "inputStream" is null.
+
+ * PeterO.Mail.MessageDataException:
+An I/O error occurred.
 
 ### AddHeader
 
@@ -323,17 +364,34 @@ The header field name is too long or contains an invalid character, or the heade
         System.IO.Stream inputStream,
         PeterO.Mail.MediaType mediaType);
 
-Not documented yet.
+Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+
+The following example (written in C# for the .NET version) is an extension method that adds an inline body part from a byte array to a message.
+
+    public static Message AddInlineFromBytes(this Message msg,
+         byte[] bytes, MediaType mediaType){
+      using(var fs=new MemoryStream(bytes)){
+        return msg.AddInline(fs,mediaType);
+      }
+    }
 
 <b>Parameters:</b>
 
- * <i>inputStream</i>: Not documented yet.
+ * <i>inputStream</i>: A readable data stream.
 
- * <i>mediaType</i>: Not documented yet.
+ * <i>mediaType</i>: A media type to assign to the body part.
 
 <b>Return Value:</b>
 
-A Message object.
+This object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter "inputStream" or "mediaType" is null.
+
+ * PeterO.Mail.MessageDataException:
+An I/O error occurred.
 
 ### AddInline
 
@@ -342,19 +400,27 @@ A Message object.
         PeterO.Mail.MediaType mediaType,
         string filename);
 
-Not documented yet.
+Adds an inline body part to this message in the form of data from the given readable stream, and with the given media type and file name. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
 
 <b>Parameters:</b>
 
- * <i>inputStream</i>: Not documented yet.
+ * <i>inputStream</i>: A readable data stream.
 
- * <i>mediaType</i>: Not documented yet.
+ * <i>mediaType</i>: A media type to assign to the body part.
 
- * <i>filename</i>: Not documented yet. (3).
+ * <i>filename</i>: A file name to assign to the body part.
 
 <b>Return Value:</b>
 
-A Message object.
+This object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter "inputStream" or "mediaType" is null.
+
+ * PeterO.Mail.MessageDataException:
+An I/O error occurred.
 
 ### AddInline
 
@@ -362,17 +428,33 @@ A Message object.
         System.IO.Stream inputStream,
         string filename);
 
-Not documented yet.
+Adds an inline body part to this message in the form of data from the given readable stream, and with the given file name. Before the new body part is added, if this message isn't already a multipart message, it becomes a "multipart/mixed" message with the current body converted to an inline body part.
+
+The following example (written in C# for the .NET version) is an extension method that adds an inline body part from a data file to a message.
+
+    public static Message AddAttachmentFromInline(this Message msg, string filename){
+      using(var fs=new FileStream(filename,FileMode.Open)){
+        return msg.AddInline(fs,filename);
+      }
+    }
 
 <b>Parameters:</b>
 
- * <i>inputStream</i>: Not documented yet.
+ * <i>inputStream</i>: A readable data stream.
 
- * <i>filename</i>: Not documented yet.
+ * <i>filename</i>: A file name to assign to the body part. If the file name has one of certain extensions (such as ".html"), an appropriate media type will be assigned to the body part based on that extension; otherwise, the media type "application/octet-stream" is assigned. Can be null or empty, in which case no file name is assigned.
 
 <b>Return Value:</b>
 
-A Message object.
+This object.
+
+<b>Exceptions:</b>
+
+ * System.ArgumentNullException:
+The parameter "inputStream" is null.
+
+ * PeterO.Mail.MessageDataException:
+An I/O error occurred.
 
 ### Generate
 
@@ -504,7 +586,7 @@ Not documented yet.
 
 <b>Return Value:</b>
 
-A Message object.
+This object.
 
 ### RemoveHeader
 

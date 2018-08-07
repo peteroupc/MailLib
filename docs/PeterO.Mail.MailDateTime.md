@@ -24,6 +24,24 @@ A date-time string.
  * System.ArgumentException:
 The parameter "dateTime" is null or invalid.
 
+### GenerateDateString
+
+    public static string GenerateDateString(
+        int[] dateTime,
+        bool gmt);
+
+Not documented yet.
+
+<b>Parameters:</b>
+
+ * <i>dateTime</i>: Not documented yet.
+
+ * <i>gmt</i>: Not documented yet.
+
+<b>Return Value:</b>
+
+A string object.
+
 ### ParseDateString
 
     public static int[] ParseDateString(

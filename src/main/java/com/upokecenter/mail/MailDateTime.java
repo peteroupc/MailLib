@@ -30,9 +30,23 @@ private MailDateTime() {
      * invalid.
      */
     public static String GenerateDateString(int[] dateTime) {
+      return GenerateDateString(dateTime, false);
+    }
+
+    /**
+     * Not documented yet.
+     * @param dateTime The parameter {@code dateTime} is not documented yet.
+     * @param gmt The parameter {@code gmt} is not documented yet.
+     * @return A text string.
+     */
+    public static String GenerateDateString(int[] dateTime, boolean gmt) {
       if (!DateTimeUtilities.IsValidDateTime(dateTime) ||
         dateTime[0] < 0) {
         throw new IllegalArgumentException("Invalid date and time");
+      }
+      if (gmt && dateTime[7] != 0) {
+        throw new UnsupportedOperationException(
+  "Time zone offsets other than 0 are currently not supported for gmt=true.");
       }
       int dow = DateTimeUtilities.GetDayOfWeek(dateTime);
       if (dow < 0) {
@@ -65,15 +79,19 @@ private MailDateTime() {
       sb.append((char)('0' + ((dateTime[5] / 10) % 10)));
       sb.append((char)('0' + (dateTime[5] % 10)));
       sb.append(' ');
-      int offset = dateTime[7];
-      sb.append((offset < 0) ? '-' : '+');
-      offset = Math.abs(offset);
-      int hours = (offset / 60) % 24;
-      int minutes = offset % 60;
-      sb.append((char)('0' + ((hours / 10) % 10)));
-      sb.append((char)('0' + (hours % 10)));
-      sb.append((char)('0' + ((minutes / 10) % 10)));
-      sb.append((char)('0' + (minutes % 10)));
+      if (gmt) {
+        sb.append("GMT");
+      } else {
+        int offset = dateTime[7];
+        sb.append((offset < 0) ? '-' : '+');
+        offset = Math.abs(offset);
+        int hours = (offset / 60) % 24;
+        int minutes = offset % 60;
+        sb.append((char)('0' + ((hours / 10) % 10)));
+        sb.append((char)('0' + (hours % 10)));
+        sb.append((char)('0' + ((minutes / 10) % 10)));
+        sb.append((char)('0' + (minutes % 10)));
+      }
       return sb.toString();
     }
 

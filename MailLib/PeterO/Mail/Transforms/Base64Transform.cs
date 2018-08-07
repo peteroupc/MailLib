@@ -82,9 +82,10 @@ namespace PeterO.Mail.Transforms {
           }
           if (count == 2) {
             if (this.checkStrictEncoding && this.paddingCount != 2) {
-              throw new MessageDataException("Invalid amount of base64 padding");
+            throw new
+                MessageDataException("Invalid amount of base64 padding");
             }
-            if (this.checkStrictEncoding && (value & 0x0F) != 0) {
+            if (this.checkStrictEncoding && (value & 0x0f) != 0) {
               throw new MessageDataException("Invalid base64 padding");
             }
             value <<= 12;
@@ -92,7 +93,8 @@ namespace PeterO.Mail.Transforms {
           }
           if (count == 3) {
             if (this.checkStrictEncoding && this.paddingCount != 1) {
-              throw new MessageDataException("Invalid amount of base64 padding");
+            throw new
+                MessageDataException("Invalid amount of base64 padding");
             }
             if (this.checkStrictEncoding && (value & 0x03) != 0) {
               throw new MessageDataException("Invalid base64 padding");

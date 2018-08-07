@@ -310,8 +310,8 @@ namespace PeterO.Mail {
     // in such values)
     private static bool IsIsecnOfUrlPathAndAttrValueChar(int c) {
       return c >= 33 && c <= 126 && ((c >= 'A' && c <= 'Z') ||
-                                     (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
-                                     "!$&*+-._~".IndexOf((char)c) >= 0);
+                    (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
+                    "!$&*+-._~".IndexOf((char)c) >= 0);
     }
     private static void PctAppend(StringBuilder sb, int w) {
       // NOTE: Use uppercase hex characters
@@ -343,7 +343,8 @@ namespace PeterO.Mail {
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
-        if (uriSafe ? IsIsecnOfUrlPathAndAttrValueChar(c) : IsAttributeChar(c)) {
+      if (uriSafe ? IsIsecnOfUrlPathAndAttrValueChar(c) :
+          IsAttributeChar(c)) {
           ++contin;
         } else if (c <= 0x7f) {
           contin += 3;
@@ -395,7 +396,7 @@ namespace PeterO.Mail {
   string name,
   string str,
   HeaderEncoder sa,
-    bool uriSafe) {
+  bool uriSafe) {
 #if DEBUG
       if ((str) == null) {
         throw new ArgumentNullException(nameof(str));
@@ -438,7 +439,7 @@ namespace PeterO.Mail {
   string name,
   string str,
   HeaderEncoder sa,
-    bool uriSafe) {
+  bool uriSafe) {
       if (str.Length == 0) {
         if (uriSafe) {
           sa.AppendSymbol(name + "*");
@@ -456,14 +457,17 @@ namespace PeterO.Mail {
       var simple = true;
       for (int i = 0; i < str.Length; ++i) {
         char c = str[i];
-        if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) : (!IsAttributeChar(c))) {
+if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
+          (!IsAttributeChar(c))) {
           simple = false;
         }
       }
       if (simple) {
         return sa.TryAppendSymbol(str);
       }
-      if (uriSafe) return false;
+      if (uriSafe) {
+ return false;
+}
       var sb = new StringBuilder();
       sb.Append('"');
       for (int i = 0; i < str.Length; ++i) {
@@ -494,7 +498,7 @@ namespace PeterO.Mail {
       internal static void AppendParameters(
       IDictionary<string, string> parameters,
       HeaderEncoder sa,
-      bool uriSafe){
+      bool uriSafe) {
       var keylist = new List<string>(parameters.Keys);
       keylist.Sort();
       foreach (string key in keylist) {
@@ -531,6 +535,8 @@ namespace PeterO.Mail {
       return sa.ToString();
     }
 
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MediaType.ToUriSafeString"]/*'/>
     public string ToUriSafeString() {
       // NOTE: 14 is the length of "Content-Type: " (with trailing space).
       var sa = new HeaderEncoder(-1, 14);

@@ -39,8 +39,8 @@ import com.upokecenter.mail.*;
       initialBoundary) {
       this.input = stream;
       this.boundaries = new ArrayList<String>();
-      this.boundaries.add(initialBoundary);
       this.started = true;
+      this.boundaries.add(initialBoundary);
     }
 
     public int read() {
