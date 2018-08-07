@@ -10,6 +10,9 @@ Contains methods for parsing and generating date-time strings following the
 * `static String GenerateDateString​(int[] dateTime)`<br>
  Generates a date-time string following the Internet Message Format (RFC
  5322) from an 8-element array.
+* `static String GenerateDateString​(int[] dateTime,
+                  boolean gmt)`<br>
+ Not documented yet.
 * `static int[] ParseDateString​(String str)`<br>
  Gets the date and time extracted from a date-time string following the
  Internet Message Format (RFC 5322).
@@ -40,6 +43,20 @@ Generates a date-time string following the Internet Message Format (RFC
 
 * <code>IllegalArgumentException</code> - The parameter "dateTime" is null or
  invalid.
+
+### GenerateDateString
+    public static String GenerateDateString​(int[] dateTime, boolean gmt)
+Not documented yet.
+
+**Parameters:**
+
+* <code>dateTime</code> - The parameter <code>dateTime</code> is not documented yet.
+
+* <code>gmt</code> - The parameter <code>gmt</code> is not documented yet.
+
+**Returns:**
+
+* A text string.
 
 ### ParseDateString
     public static int[] ParseDateString​(String str, boolean parseObsoleteZones)

@@ -133,8 +133,12 @@
 * `byte[] GenerateBytes()`<br>
  Generates this message's data as a byte array, using the same algorithm as
  the Generate method.
+* `List<NamedAddress> GetAddresses​(String headerName)`<br>
+ Not documented yet.
 * `List<NamedAddress> getBccAddresses()`<br>
- Gets a list of addresses found in the BCC header field or fields.
+ Deprecated.
+Use GetAddresses(\Bcc\) instead.
+ Use GetAddresses(\Bcc\) instead.
 * `byte[] GetBody()`<br>
  Gets the byte array for this message's body.
 * `Message GetBodyMessage()`<br>
@@ -142,7 +146,9 @@
 * `String getBodyString()`<br>
  Gets the body of this message as a text string.
 * `List<NamedAddress> getCCAddresses()`<br>
- Gets a list of addresses found in the CC header field or fields.
+ Deprecated.
+Use GetAddresses(\Cc\) instead.
+ Use GetAddresses(\Cc\) instead.
 * `ContentDisposition getContentDisposition()`<br>
  Gets this message's content disposition.
 * `MediaType getContentType()`<br>
@@ -154,7 +160,9 @@
  Gets a file name suggested by this message for saving the message's body
  to a file.
 * `List<NamedAddress> getFromAddresses()`<br>
- Gets a list of addresses found in the From header field or fields.
+ Deprecated.
+Use GetAddresses(\From\) instead.
+ Use GetAddresses(\From\) instead.
 * `Map.Entry<String,String> GetHeader​(int index)`<br>
  Gets the name and value of a header field by index.
 * `String GetHeader​(String name)`<br>
@@ -171,7 +179,9 @@
 * `String getSubject()`<br>
  Gets this message's subject.
 * `List<NamedAddress> getToAddresses()`<br>
- Gets a list of addresses found in the To header field or fields.
+ Deprecated.
+Use GetAddresses(\To\) instead.
+ Use GetAddresses(\To\) instead.
 * `static Message NewBodyPart()`<br>
  Not documented yet.
 * `Message RemoveHeader​(int index)`<br>
@@ -274,8 +284,9 @@ Sets this message's Date header field to the current time as its value.
 * This object.
 
 ### getBccAddresses
-    public final List<NamedAddress> getBccAddresses()
-Gets a list of addresses found in the BCC header field or fields.
+    @Deprecated public final List<NamedAddress> getBccAddresses()
+Deprecated.
+<div class='deprecationComment'>Use GetAddresses(\Bcc\) instead.</div>
 
 **Returns:**
 
@@ -298,8 +309,9 @@ Gets the body of this message as a text string.
  supported.
 
 ### getCCAddresses
-    public final List<NamedAddress> getCCAddresses()
-Gets a list of addresses found in the CC header field or fields.
+    @Deprecated public final List<NamedAddress> getCCAddresses()
+Deprecated.
+<div class='deprecationComment'>Use GetAddresses(\Cc\) instead.</div>
 
 **Returns:**
 
@@ -349,9 +361,22 @@ Gets this message's media type. Cannot be set to null. If set to a media
  no filename suggested by the content type or content disposition, or
  if that filename is an empty string.
 
+### GetAddresses
+    public List<NamedAddress> GetAddresses​(String headerName)
+Not documented yet.
+
+**Parameters:**
+
+* <code>headerName</code> - The parameter <code>headerName</code> is not documented yet.
+
+**Returns:**
+
+* An IList(NamedAddress) object.
+
 ### getFromAddresses
-    public final List<NamedAddress> getFromAddresses()
-Gets a list of addresses found in the From header field or fields.
+    @Deprecated public final List<NamedAddress> getFromAddresses()
+Deprecated.
+<div class='deprecationComment'>Use GetAddresses(\From\) instead.</div>
 
 **Returns:**
 
@@ -390,8 +415,9 @@ Gets this message's subject.
 ### setSubject
     public final void setSubject​(String value)
 ### getToAddresses
-    public final List<NamedAddress> getToAddresses()
-Gets a list of addresses found in the To header field or fields.
+    @Deprecated public final List<NamedAddress> getToAddresses()
+Deprecated.
+<div class='deprecationComment'>Use GetAddresses(\To\) instead.</div>
 
 **Returns:**
 
@@ -462,16 +488,16 @@ Generates this message's data in text form. <p>The generated message will
  same name, and the address set to
  <code>me@[header-name]-address.invalid</code> as the address (a
  <code>.invalid</code> address is a reserved address that can never belong
- to anyone). (An exception is that the Resent-From and Resent-Sender
- header fields may appear more than once.) The generated message
- should always have a From header field.</p> <p>If a Date and/or
- Message-ID header field doesn't exist, a field with that name will be
- generated (using the current local time for the Date field).</p>
- <p>When encoding the message's body, if the message has a text
- content type ("text/*"), the line breaks are a CR byte (carriage
- return, 0x0d) followed by an LF byte (line feed, 0x0a), CR alone, or
- LF alone. If the message has any other content type, only CR followed
- by LF is considered a line break.</p>
+ to anyone). (An exception is that the Resent-* header fields may
+ appear more than once.) The generated message should always have a
+ From header field.</p> <p>If a Date and/or Message-ID header field
+ doesn't exist, a field with that name will be generated (using the
+ current local time for the Date field).</p> <p>When encoding the
+ message's body, if the message has a text content type ("text/*"),
+ the line breaks are a CR byte (carriage return, 0x0d) followed by an
+ LF byte (line feed, 0x0a), CR alone, or LF alone. If the message has
+ any other content type, only CR followed by LF is considered a line
+ break.</p>
 
 **Returns:**
 

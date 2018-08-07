@@ -221,8 +221,10 @@ import com.upokecenter.text.*;
     /**
      * Gets a list of addresses found in the BCC header field or fields.
      * @return A list of addresses found in the BCC header field or fields.
-     */
-    public final List<NamedAddress> getBccAddresses() {
+     * @deprecated Use GetAddresses(\Bcc\) instead.
+ */
+@Deprecated
+public final List<NamedAddress> getBccAddresses() {
         return ParseAddresses(this.GetMultipleHeaders("bcc"));
       }
 
@@ -256,8 +258,10 @@ import com.upokecenter.text.*;
     /**
      * Gets a list of addresses found in the CC header field or fields.
      * @return A list of addresses found in the CC header field or fields.
-     */
-    public final List<NamedAddress> getCCAddresses() {
+     * @deprecated Use GetAddresses(\Cc\) instead.
+ */
+@Deprecated
+public final List<NamedAddress> getCCAddresses() {
         return ParseAddresses(this.GetMultipleHeaders("cc"));
       }
 
@@ -328,9 +332,33 @@ public final void setContentType(MediaType value) {
       }
 
     /**
+     * Not documented yet.
+     * @param headerName The parameter {@code headerName} is not documented yet.
+     * @return An IList(NamedAddress) object.
+     */
+    public List<NamedAddress> GetAddresses(String headerName) {
+      if ((headerName) == null) {
+  throw new NullPointerException("headerName");
+}
+if ((headerName).length == 0) {
+  throw new IllegalArgumentException("headerName"+ " is empty.");
+}
+      headerName = DataUtilities.ToLowerCaseAscii(headerName);
+      if (ValueHeaderIndices.containsKey(headerName) &&
+         ValueHeaderIndices.get(headerName) <= 5) {
+        // TODO: Maybe support Resent-*
+        return ParseAddresses(this.GetMultipleHeaders(headerName));
+      } else {
+        throw new UnsupportedOperationException("Not supported for: " + headerName);
+      }
+    }
+
+    /**
      * Gets a list of addresses found in the From header field or fields.
      * @return A list of addresses found in the From header field or fields.
-     */
+     * @deprecated Use GetAddresses(\From\) instead.
+ */
+@Deprecated
     public final List<NamedAddress> getFromAddresses() {
         return ParseAddresses(this.GetMultipleHeaders("from"));
       }
@@ -378,8 +406,10 @@ public final void setSubject(String value) {
     /**
      * Gets a list of addresses found in the To header field or fields.
      * @return A list of addresses found in the To header field or fields.
-     */
-    public final List<NamedAddress> getToAddresses() {
+     * @deprecated Use GetAddresses(\To\) instead.
+ */
+@Deprecated
+public final List<NamedAddress> getToAddresses() {
         return ParseAddresses(this.GetMultipleHeaders("to"));
       }
 
@@ -436,16 +466,16 @@ public final void setSubject(String value) {
      * same name, and the address set to
      * <code>me@[header-name]-address.invalid</code> as the address (a
      * <code>.invalid</code> address is a reserved address that can never belong
-     * to anyone). (An exception is that the Resent-From and Resent-Sender
-     * header fields may appear more than once.) The generated message
-     * should always have a From header field.</p> <p>If a Date and/or
-     * Message-ID header field doesn't exist, a field with that name will be
-     * generated (using the current local time for the Date field).</p>
-     * <p>When encoding the message's body, if the message has a text
-     * content type ("text/*"), the line breaks are a CR byte (carriage
-     * return, 0x0d) followed by an LF byte (line feed, 0x0a), CR alone, or
-     * LF alone. If the message has any other content type, only CR followed
-     * by LF is considered a line break.</p>
+     * to anyone). (An exception is that the Resent-* header fields may
+     * appear more than once.) The generated message should always have a
+     * From header field.</p> <p>If a Date and/or Message-ID header field
+     * doesn't exist, a field with that name will be generated (using the
+     * current local time for the Date field).</p> <p>When encoding the
+     * message's body, if the message has a text content type ("text/*"),
+     * the line breaks are a CR byte (carriage return, 0x0d) followed by an
+     * LF byte (line feed, 0x0a), CR alone, or LF alone. If the message has
+     * any other content type, only CR followed by LF is considered a line
+     * break.</p>
      * @return The generated message.
      * @throws com.upokecenter.mail.MessageDataException The message can't be
      * generated.
@@ -1843,11 +1873,11 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
       dict.put("cc",1);
       dict.put("bcc",2);
       dict.put("from",3);
-      dict.put("reply-to",4);
-      dict.put("resent-to",5);
-      dict.put("resent-cc",6);
-      dict.put("resent-bcc",7);
-      dict.put("sender",8);
+      dict.put("sender",4);
+      dict.put("reply-to",5);
+      dict.put("resent-to",6);
+      dict.put("resent-cc",7);
+      dict.put("resent-bcc",8);
       dict.put("resent-from",9);
       dict.put("resent-sender",10);
       return dict;
@@ -2401,7 +2431,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
         } else {
           if (ValueHeaderIndices.containsKey(name)) {
             int headerIndex = ValueHeaderIndices.get(name);
-            if (headerIndex < 9) {
+            if (headerIndex <= 5) {
               if (haveHeaders[headerIndex]) {
                 // Already outputted, continue
                 continue;
@@ -2429,10 +2459,8 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
                   rawField = this.SynthesizeField(name);
                 }
               }
-            }
-            if (headerIndex == 9 || headerIndex == 10) {
-              // Resent-From/Resent-Sender, can appear
-              // more than once
+            } else if (headerIndex <= 10) {
+              // Resent-* fields can appear more than once
               value = GenerateAddressList(ParseAddresses(value));
               if (value.length() == 0) {
                 // No addresses, synthesize a field

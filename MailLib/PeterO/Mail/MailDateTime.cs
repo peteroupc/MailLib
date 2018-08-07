@@ -19,6 +19,9 @@ namespace PeterO.Mail {
     public static string GenerateDateString(int[] dateTime) {
       return GenerateDateString(dateTime, false);
     }
+
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)"]/*'/>
     public static string GenerateDateString(int[] dateTime, bool gmt) {
       if (!DateTimeUtilities.IsValidDateTime(dateTime) ||
         dateTime[0] < 0) {
@@ -26,7 +29,7 @@ namespace PeterO.Mail {
       }
       if (gmt && dateTime[7] != 0) {
         throw new NotSupportedException(
-          "Time zone offsets other than 0 are currently not supported for gmt=true.");
+  "Time zone offsets other than 0 are currently not supported for gmt=true.");
       }
       int dow = DateTimeUtilities.GetDayOfWeek(dateTime);
       if (dow < 0) {

@@ -120,7 +120,7 @@ Gets this media type's "charset" parameter, naming a character encoding used to 
 
 <b>Return Value:</b>
 
-If the "charset" parameter exists, returns that parameter with the basic upper-case letters A to Z (U+0041 to U+005A) converted to lower case. Returns  `"us-ascii"`  instead if the media type is ill-formed (RFC2045 sec. 5.2), or if the media type is "text/plain" and doesn't have a "charset" parameter (see RFC2046), or the default value for that parameter, if any, for the media type if the "charset" parameter is absent. Returns an empty string in all other cases.
+If the "charset" parameter is present and non-empty, returns the result of the Encodings.ResolveAliasForEmail method for that parameter, except that result's basic upper-case letters A to Z (U+0041 to U+005A) are converted to lower case. If the "charset" parameter is absent or empty, returns the default value, if any, for that parameter given the media type (e.g., "us-ascii" if the media type is "text/plain"; see RFC2046), or the empty string if there is none.
 
 ### GetHashCode
 
@@ -175,13 +175,15 @@ A media type object, or MediaType.TextPlainAscii if  <i>mediaTypeValue</i>
         string str,
         PeterO.Mail.MediaType defaultValue);
 
-Parses a media type string and returns a media type object, or the default value if the string is invalid. This method checks the syntactic validity of the string, but not whether it has all parameters it's required to have or whether the parameters themselves are set to valid values for the parameter.RFC 2231 extensions allow each media type parameter to be associated with a character encoding and/or language, and support parameter values that span two or more key-value pairs. Parameters making use of RFC 2231 extensions have names with an asterisk ("*"). Such a parameter will be ignored if it is ill-formed because of RFC 2231's rules (except for illegal percent-decoding or undecodable sequences for the given character enoding). Examples of RFC 2231 extensions follow (both examples encode the same "filename" parameter):
+Parses a media type string and returns a media type object, or the default value if the string is invalid. This method checks the syntactic validity of the string, but not whether it has all parameters it's required to have or whether the parameters themselves are set to valid values for the parameter.This method assumes the given media type string was directly extracted from the Content-Type header field (as defined for email messages) and follows the syntax given in RFC 2045. Accordingly, among other things, the media type string can contain comments (delimited by parentheses).
+
+RFC 2231 extensions allow each media type parameter to be associated with a character encoding and/or language, and support parameter values that span two or more key-value pairs. Parameters making use of RFC 2231 extensions have names with an asterisk ("*"). Such a parameter will be ignored if it is ill-formed because of RFC 2231's rules (except for illegal percent-decoding or undecodable sequences for the given character enoding). Examples of RFC 2231 extensions follow (both examples encode the same "filename" parameter):
 
 <b>text/example; filename*=utf-8'en'filename.txt</b>
 
 <b>text/example; filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b>
 
-This implementation ignores keys (in parameter key-value pairs) that appear more than once in the media type. Nothing in RFCs 2045, 2183, 6266, or 7231 explicitly disallows such keys, or otherwise specifies error-handling behavior for such keys.
+This implementation ignores keys (in parameter key-value pairs) that appear more than once in the media type. Nothing in RFCs 2045, 2183, 2231, 6266, or 7231 explicitly disallows such keys, or otherwise specifies error-handling behavior for such keys.
 
 <b>Parameters:</b>
 
@@ -218,3 +220,13 @@ Converts this media type to a text string form suitable for inserting in email h
 <b>Return Value:</b>
 
 A text string form of this media type.
+
+### ToUriSafeString
+
+    public string ToUriSafeString();
+
+Not documented yet.
+
+<b>Return Value:</b>
+
+A string object.

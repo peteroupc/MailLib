@@ -32,9 +32,10 @@ import com.upokecenter.text.*;
      * <code>application/octet-stream</code>.</p>
      */
   public final class MediaType {
-    // Printable ASCII characters that cannot appear in an
-    // attribute value under RFC 2231
-    private static final String AttrNameSpecials = "()<>@,;:\\\"/[]?='%*";
+    // Printable ASCII characters that cannot appear in a
+    // parameter value under RFC 2231 (including single quote
+    // and percent)
+    private static final String AttrValueSpecials = "()<>@,;:\\\"/[]?='%*";
     private static final String ValueHex = "0123456789ABCDEF";
 
     private final String topLevelType;
@@ -331,7 +332,16 @@ import com.upokecenter.text.*;
     }
 
     private static boolean IsAttributeChar(int c) {
-      return c >= 33 && c <= 126 && AttrNameSpecials.indexOf((char)c) < 0;
+      return c >= 33 && c <= 126 && AttrValueSpecials.indexOf((char)c) < 0;
+    }
+    // Intersection of ASCII characters that can appear in a URI path and in
+    // an RFC 2231 parameter value (excludes percent
+    // and single quote, which serve special purposes
+    // in such values)
+    private static boolean IsIsecnOfUrlPathAndAttrValueChar(int c) {
+      return c >= 33 && c <= 126 && ((c >= 'A' && c <= 'Z') ||
+                    (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
+                    "!$&*+-._~".indexOf((char)c) >= 0);
     }
     private static void PctAppend(StringBuilder sb, int w) {
       // NOTE: Use uppercase hex characters
@@ -347,7 +357,7 @@ import com.upokecenter.text.*;
     }
 
     private static int EncodeContinuation(String str, int startPos,
-      HeaderEncoder sa) {
+      HeaderEncoder sa, boolean uriSafe) {
       int column = sa.GetColumn();
       int maxLineLength = sa.GetMaxLineLength();
       int index = startPos;
@@ -363,7 +373,8 @@ import com.upokecenter.text.*;
         } else if ((c & 0xf800) == 0xd800) {
           c = 0xfffd;
         }
-        if (IsAttributeChar(c)) {
+      if (uriSafe ? IsIsecnOfUrlPathAndAttrValueChar(c) :
+          IsAttributeChar(c)) {
           ++contin;
         } else if (c <= 0x7f) {
           contin += 3;
@@ -405,7 +416,7 @@ import com.upokecenter.text.*;
         // No room to put any continuation here;
         // add a line break and try again
         sa.AppendBreak();
-        return EncodeContinuation(str, startPos, sa);
+        return EncodeContinuation(str, startPos, sa, uriSafe);
       }
       sa.AppendSymbol(sb.toString());
       return index;
@@ -414,7 +425,8 @@ import com.upokecenter.text.*;
     private static void AppendComplexParamValue(
   String name,
   String str,
-  HeaderEncoder sa) {
+  HeaderEncoder sa,
+  boolean uriSafe) {
       int column = sa.GetColumn();
       // Check if parameter is short enough for the column that
       // no continuations are needed
@@ -422,7 +434,7 @@ import com.upokecenter.text.*;
       int oldcolumn = sa.GetColumn();
       int oldlength = sa.GetLength();
       sa.AppendSymbol(name + "*").AppendSymbol("=");
-      if (EncodeContinuation(str, 0, sa) != str.length()) {
+      if (EncodeContinuation(str, 0, sa, uriSafe) != str.length()) {
         sa.Reset(oldcolumn, oldlength);
         int contin = 0;
         int index = 0;
@@ -432,7 +444,7 @@ import com.upokecenter.text.*;
           }
           sa.AppendSymbol(name + "*" + ParserUtility.IntToString(contin) + "*")
      .AppendSymbol("=");
-          index = EncodeContinuation(str, index, sa);
+          index = EncodeContinuation(str, index, sa, uriSafe);
           ++contin;
         }
       }
@@ -441,23 +453,36 @@ import com.upokecenter.text.*;
     private static boolean AppendSimpleParamValue(
   String name,
   String str,
-  HeaderEncoder sa) {
-      sa.AppendSymbol(name);
-      sa.AppendSymbol("=");
+  HeaderEncoder sa,
+  boolean uriSafe) {
       if (str.length() == 0) {
-        sa.AppendSymbol("\"\"");
+        if (uriSafe) {
+          sa.AppendSymbol(name + "*");
+          sa.AppendSymbol("=");
+          sa.AppendSymbol("utf-8''");
+        } else {
+          sa.AppendSymbol(name);
+          sa.AppendSymbol("=");
+          sa.AppendSymbol("\"\"");
+        }
         return true;
       }
+      sa.AppendSymbol(name);
+      sa.AppendSymbol("=");
       boolean simple = true;
       for (int i = 0; i < str.length(); ++i) {
         char c = str.charAt(i);
-        if (!(c >= 33 && c <= 126 && "()<>,;[]:@\"\\/?=".indexOf(c) < 0)) {
+if (uriSafe ? (!IsIsecnOfUrlPathAndAttrValueChar(c)) :
+          (!IsAttributeChar(c))) {
           simple = false;
         }
       }
       if (simple) {
         return sa.TryAppendSymbol(str);
       }
+      if (uriSafe) {
+ return false;
+}
       StringBuilder sb = new StringBuilder();
       sb.append('"');
       for (int i = 0; i < str.length(); ++i) {
@@ -480,10 +505,15 @@ import com.upokecenter.text.*;
       sb.append('"');
       return sa.TryAppendSymbol(sb.toString());
     }
-
     static void AppendParameters(
       Map<String, String> parameters,
       HeaderEncoder sa) {
+       AppendParameters(parameters, sa, false);
+    }
+      static void AppendParameters(
+      Map<String, String> parameters,
+      HeaderEncoder sa,
+      boolean uriSafe) {
       ArrayList<String> keylist = new ArrayList<String>(parameters.keySet());
       java.util.Collections.sort(keylist);
       for (String key : keylist) {
@@ -492,9 +522,9 @@ import com.upokecenter.text.*;
         sa.AppendSymbol(";");
         int oldcolumn = sa.GetColumn();
         int oldlength = sa.GetLength();
-        if (!AppendSimpleParamValue(name, value, sa)) {
+        if (!AppendSimpleParamValue(name, value, sa, uriSafe)) {
           sa.Reset(oldcolumn, oldlength);
-          AppendComplexParamValue(name, value, sa);
+          AppendComplexParamValue(name, value, sa, uriSafe);
         }
       }
     }
@@ -528,6 +558,18 @@ import com.upokecenter.text.*;
       HeaderEncoder sa = new HeaderEncoder(-1, 14);
       sa.AppendSymbol(this.topLevelType + "/" + this.subType);
       AppendParameters(this.parameters, sa);
+      return sa.toString();
+    }
+
+    /**
+     * Not documented yet.
+     * @return A text string.
+     */
+    public String ToUriSafeString() {
+      // NOTE: 14 is the length of "Content-Type: " (with trailing space).
+      HeaderEncoder sa = new HeaderEncoder(-1, 14);
+      sa.AppendSymbol(this.topLevelType + "/" + this.subType);
+      AppendParameters(this.parameters, sa, true);
       return sa.toString();
     }
 
@@ -569,7 +611,7 @@ import com.upokecenter.text.*;
       while (i < endIndex) {
         char c = str.charAt(i);
         if (c <= 0x20 || c >= 0x7f || ((c & 0x7f) == c &&
-          AttrNameSpecials.indexOf(c) >= 0)) {
+          AttrValueSpecials.indexOf(c) >= 0)) {
           break;
         }
         if (builder != null) {
@@ -1299,21 +1341,26 @@ import com.upokecenter.text.*;
      * value if the string is invalid. This method checks the syntactic
      * validity of the string, but not whether it has all parameters it's
      * required to have or whether the parameters themselves are set to
-     * valid values for the parameter. <p>RFC 2231 extensions allow each
-     * media type parameter to be associated with a character encoding
-     * and/or language, and support parameter values that span two or more
-     * key-value pairs. Parameters making use of RFC 2231 extensions have
-     * names with an asterisk ("*"). Such a parameter will be ignored if it
-     * is ill-formed because of RFC 2231's rules (except for illegal
-     * percent-decoding or undecodable sequences for the given character
-     * enoding). Examples of RFC 2231 extensions follow (both examples
-     * encode the same "filename" parameter):</p> <p><b>text/example;
-     * filename*=utf-8'en'filename.txt</b></p> <p><b>text/example;
-     * filename*0*=utf-8'en'file; filename*1*=name%2Etxt</b></p> <p>This
-     * implementation ignores keys (in parameter key-value pairs) that
-     * appear more than once in the media type. Nothing in RFCs 2045, 2183,
-     * 6266, or 7231 explicitly disallows such keys, or otherwise specifies
-     * error-handling behavior for such keys.</p>
+     * valid values for the parameter. <p>This method assumes the given
+     * media type string was directly extracted from the Content-Type header
+     * field (as defined for email messages) and follows the syntax given in
+     * RFC 2045. Accordingly, among other things, the media type string can
+     * contain comments (delimited by parentheses).</p> <p>RFC 2231
+     * extensions allow each media type parameter to be associated with a
+     * character encoding and/or language, and support parameter values that
+     * span two or more key-value pairs. Parameters making use of RFC 2231
+     * extensions have names with an asterisk ("*"). Such a parameter will
+     * be ignored if it is ill-formed because of RFC 2231's rules (except
+     * for illegal percent-decoding or undecodable sequences for the given
+     * character enoding). Examples of RFC 2231 extensions follow (both
+     * examples encode the same "filename" parameter):</p>
+     * <p><b>text/example; filename*=utf-8'en'filename.txt</b></p>
+     * <p><b>text/example; filename*0*=utf-8'en'file;
+     * filename*1*=name%2Etxt</b></p> <p>This implementation ignores keys
+     * (in parameter key-value pairs) that appear more than once in the
+     * media type. Nothing in RFCs 2045, 2183, 2231, 6266, or 7231
+     * explicitly disallows such keys, or otherwise specifies error-handling
+     * behavior for such keys.</p>
      * @param str A text string representing a media type. This media type can
      * include parameters.
      * @param defaultValue The media type to return if the string is syntactically

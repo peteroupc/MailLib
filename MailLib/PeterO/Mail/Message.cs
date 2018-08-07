@@ -119,7 +119,8 @@ namespace PeterO.Mail {
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.Message.BccAddresses"]/*'/>
-    public IList<NamedAddress> BccAddresses {
+    [Obsolete("Use GetAddresses(\"Bcc\") instead.")]
+public IList<NamedAddress> BccAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("bcc"));
       }
@@ -149,7 +150,8 @@ namespace PeterO.Mail {
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.Message.CCAddresses"]/*'/>
-    public IList<NamedAddress> CCAddresses {
+    [Obsolete("Use GetAddresses(\"Cc\") instead.")]
+public IList<NamedAddress> CCAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("cc"));
       }
@@ -211,7 +213,27 @@ namespace PeterO.Mail {
     }
 
     /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="M:PeterO.Mail.Message.GetAddresses(System.String)"]/*'/>
+    public IList<NamedAddress> GetAddresses(string headerName) {
+      if ((headerName) == null) {
+  throw new ArgumentNullException(nameof(headerName));
+}
+if ((headerName).Length == 0) {
+  throw new ArgumentException("headerName"+ " is empty.");
+}
+      headerName = DataUtilities.ToLowerCaseAscii(headerName);
+      if (ValueHeaderIndices.ContainsKey(headerName) &&
+         ValueHeaderIndices[headerName] <= 5) {
+        // TODO: Maybe support Resent-*
+        return ParseAddresses(this.GetMultipleHeaders(headerName));
+      } else {
+        throw new NotSupportedException("Not supported for: " + headerName);
+      }
+    }
+
+    /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.Message.FromAddresses"]/*'/>
+    [Obsolete("Use GetAddresses(\"From\") instead.")]
     public IList<NamedAddress> FromAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("from"));
@@ -255,7 +277,8 @@ namespace PeterO.Mail {
 
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="P:PeterO.Mail.Message.ToAddresses"]/*'/>
-    public IList<NamedAddress> ToAddresses {
+    [Obsolete("Use GetAddresses(\"To\") instead.")]
+public IList<NamedAddress> ToAddresses {
       get {
         return ParseAddresses(this.GetMultipleHeaders("to"));
       }
@@ -1429,11 +1452,11 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
       dict["cc"] = 1;
       dict["bcc"] = 2;
       dict["from"] = 3;
-      dict["reply-to"] = 4;
-      dict["resent-to"] = 5;
-      dict["resent-cc"] = 6;
-      dict["resent-bcc"] = 7;
-      dict["sender"] = 8;
+      dict["sender"] = 4;
+      dict["reply-to"] = 5;
+      dict["resent-to"] = 6;
+      dict["resent-cc"] = 7;
+      dict["resent-bcc"] = 8;
       dict["resent-from"] = 9;
       dict["resent-sender"] = 10;
       return dict;
@@ -1995,7 +2018,7 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
         } else {
           if (ValueHeaderIndices.ContainsKey(name)) {
             int headerIndex = ValueHeaderIndices[name];
-            if (headerIndex < 9) {
+            if (headerIndex <= 5) {
               if (haveHeaders[headerIndex]) {
                 // Already outputted, continue
                 continue;
@@ -2023,10 +2046,8 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
                   rawField = this.SynthesizeField(name);
                 }
               }
-            }
-            if (headerIndex == 9 || headerIndex == 10) {
-              // Resent-From/Resent-Sender, can appear
-              // more than once
+            } else if (headerIndex <= 10) {
+              // Resent-* fields can appear more than once
               value = GenerateAddressList(ParseAddresses(value));
               if (value.Length == 0) {
                 // No addresses, synthesize a field
@@ -2590,16 +2611,12 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
     }
 
     private class MessageStackEntry {
-    /// <xmlbegin id='0'/>
-    /// <xmlend/>
-    /// <summary>This is an internal API.</summary>
-    /// <value>This is an internal API.</value>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Message"]/*'/>
       public Message Message { get; private set; }
 
-    /// <xmlbegin id='1'/>
-    /// <xmlend/>
-    /// <summary>This is an internal API.</summary>
-    /// <value>This is an internal API.</value>
+    /// <include file='../../docs.xml'
+    /// path='docs/doc[@name="P:PeterO.Mail.Message.MessageStackEntry.Boundary"]/*'/>
       public string Boundary { get; private set; }
 
       public MessageStackEntry(Message msg) {

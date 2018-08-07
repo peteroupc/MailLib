@@ -705,6 +705,12 @@ Contains methods for parsing and generating date-time strings following the
            <see cref='M:PeterO.Mail.MailDateTime.ParseDateString(System.String,System.Boolean)'/>
            for information on the format of this parameter.</param>
 </doc>
+<doc name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)">
+<summary>Not documented yet.</summary>
+            <param name='dateTime'>The parameter <paramref name='dateTime'/> is not documented yet.</param>
+            <param name='gmt'>The parameter <paramref name='gmt'/> is not documented yet.</param>
+            <returns>A text string.</returns>
+</doc>
 <doc name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String)">
 <summary>
            Gets the date and time extracted from a date-time string following the
@@ -901,6 +907,10 @@ and unrecognized media types as the media type <c>application/octet-stream</c>.<
    starting with "Content-Type" followed by a space), and consists
    of one or more lines.</summary>
             <returns>A text string form of this media type.</returns>
+</doc>
+<doc name="M:PeterO.Mail.MediaType.ToUriSafeString">
+<summary>Not documented yet.</summary>
+            <returns>A text string.</returns>
 </doc>
 <doc name="P:PeterO.Mail.MediaType.TopLevelType">
 <summary>Gets the name of this media type's top-level type (such as
@@ -1312,7 +1322,7 @@ header field, otherwise.</para></summary>
             header fields with the same name, and the address set to
             <c>me@[header-name]-address.invalid</c> as the address (a
             <c>.invalid</c> address is a reserved address that can never belong
-            to anyone). (An exception is that the Resent-From and Resent-Sender
+            to anyone). (An exception is that the Resent-*
             header fields may appear more than once.) The generated message
             should always have a From header
             field.</para>
@@ -1333,6 +1343,11 @@ header field, otherwise.</para></summary>
             Generates this message's data as a byte array, using the same algorithm as the Generate method.
             </summary>
             <returns>The generated message as a byte array.</returns>
+</doc>
+<doc name="M:PeterO.Mail.Message.GetAddresses(System.String)">
+<summary>Not documented yet.</summary>
+            <param name='headerName'>The parameter <paramref name='headerName'/> is not documented yet.</param>
+            <returns>An IList(NamedAddress) object.</returns>
 </doc>
 <doc name="M:PeterO.Mail.Message.GetBody">
 <summary>Gets the byte array for this message's body. This method
@@ -1402,12 +1417,12 @@ this method.</summary>
             <value>A snapshot of the header fields of this message.</value>
 </doc>
 <doc name="P:PeterO.Mail.Message.MessageStackEntry.Boundary">
-<summary>Gets an internal value.</summary>
-            <value>An internal value.</value>
+<summary>This is an internal API.</summary>
+            <value>This is an internal API.</value>
 </doc>
 <doc name="P:PeterO.Mail.Message.MessageStackEntry.Message">
-<summary>Gets an internal value.</summary>
-            <value>An internal value.</value>
+<summary>This is an internal API.</summary>
+            <value>This is an internal API.</value>
 </doc>
 <doc name="M:PeterO.Mail.Message.NewBodyPart">
 <summary>Not documented yet.</summary>

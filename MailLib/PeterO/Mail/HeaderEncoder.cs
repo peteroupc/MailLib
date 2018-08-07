@@ -120,8 +120,10 @@ namespace PeterO.Mail {
             symbol[i] == ',' || symbol[i] == ';')) {
             // Additional characters between which linear white space can
             // freely appear
-            // in structured header fields. They are the intersection of RFC 822's
-            // specials and RFC 2045's tspecials, with the exception of parentheses
+            // in structured header fields. They are the intersection of RFC
+            // 822's
+            // specials and RFC 2045's tspecials, with the exception of
+            // parentheses
             // (comment
             // delimiters), square brackets (domain literal delimiters),
             // double quote (quoted string delimiter), at-sign (better not
@@ -413,9 +415,8 @@ namespace PeterO.Mail {
       return this;
     }
 
-private const string Base64Classic = 
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" +
-      "jklmnopqrstuvwxyz0123456789+/";
+private const string Base64Classic =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" + "jklmnopqrstuvwxyz0123456789+/";
     private void AppendFinalBase64(int[] b64) {
       int b1 = b64[0];
       int b2 = b64[1];
