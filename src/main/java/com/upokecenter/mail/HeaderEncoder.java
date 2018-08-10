@@ -602,7 +602,9 @@ private static final String Base64Classic =
     }
 
     // Returns true only if:
-    // * Header field has a name followed by colon followed by SP
+    // * Header field has a name followed by colon followed by SP,
+    // unless the name is exactly 997 characters long (in which
+    // case the colon must be followed by CRLF).
     // * Header field's value matches the production "unstructured"
     // in RFC 5322 without any obsolete syntax
     // * Each line is no more than MaxRecHeaderLineLength characters in length,
@@ -618,6 +620,15 @@ private static final String Base64Classic =
       for (int i = 0; i < len; ++i) {
         if (s.charAt(i) == ':') {
           foundColon = true;
+          if (i == 997) {
+            if (i + 2 >= len || s.charAt(i + 1) != 0x0d || s.charAt(i + 2) != 0x0a) {
+              // Colon not followed by CRLF in 997-character
+              // header field name
+              return false;
+            }
+            chunkLength = i + 1;
+            break;
+          }
           if (i + 1 >= len || s.charAt(i + 1) != 0x20) {
             // Colon not followed by SPACE (0x20)
             return false;
@@ -694,7 +705,24 @@ private static final String Base64Classic =
       return true;
     }
 
-    private static String CapitalizeHeaderField(String s) {
+    public static boolean CanOutputRawForNews(String s) {
+      if (!CanOutputRaw(s)) {
+ return false;
+}
+      int colon = s.indexOf(':');
+      if (colon < 0 || colon + 1 < s.length() || s.charAt(colon + 1) != ' ') {
+ return false;
+}
+      for (var i = colon + 1; i < s.length(); ++i) {
+        char c = s.charAt(i);
+        if (c != 0x0d && c != 0x0a && c != 0x20 && c != 0x09) {
+ return true;
+}
+      }
+      return false;
+    }
+
+      private static String CapitalizeHeaderField(String s) {
       StringBuilder builder = new StringBuilder();
       boolean afterHyphen = true;
       for (int i = 0; i < s.length(); ++i) {

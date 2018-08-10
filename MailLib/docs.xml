@@ -706,10 +706,9 @@ Contains methods for parsing and generating date-time strings following the
            for information on the format of this parameter.</param>
 </doc>
 <doc name="M:PeterO.Mail.MailDateTime.GenerateDateString(System.Int32[],System.Boolean)">
-<summary>Not documented yet.</summary>
-            <param name='dateTime'>The parameter <paramref name='dateTime'/> is not documented yet.</param>
-            <param name='gmt'>The parameter <paramref name='gmt'/> is not documented yet.</param>
-            <returns>A text string.</returns>
+
+            <summary>Not documented yet.</summary><param name='dateTime'>The parameter <paramref name='dateTime'/> is not documented yet.</param><param name='gmt'>The parameter <paramref name='gmt'/> is not documented yet.</param><returns>A text string.</returns>
+
 </doc>
 <doc name="M:PeterO.Mail.MailDateTime.ParseDateString(System.String)">
 <summary>
@@ -1010,7 +1009,8 @@ and unrecognized media types as the media type <c>application/octet-stream</c>.<
             <returns>A MediaType object.</returns>
 </doc>
 <doc name="M:PeterO.Mail.MediaTypeBuilder.ToString">
-<summary>Converts this object to a text string.</summary>
+<summary>Converts this object to a text string of the media type it represents,
+in the same form as <c>MediaType.ToString</c>.</summary>
             <returns>A string representation of this object.</returns>
 </doc>
 <doc name="P:PeterO.Mail.MediaTypeBuilder.TopLevelType">
@@ -1282,8 +1282,9 @@ public static Message AddAttachmentFromInline(this Message msg, string filename)
             specified.</value>
 </doc>
 <doc name="P:PeterO.Mail.Message.ContentType">
-<summary>Gets or sets this message's media type. Cannot be set to null.  If set to a media type,
-  updates the Content-Type header field as appropriate.</summary>
+<summary>Gets or sets this message's media type.
+When getting, the media type may differ in certain cases from the value of the Content-Type header field, if any, and may have a value even if the Content-Type header field is absent from this message.
+If set to a media type, updates the Content-Type header field as appropriate.  Cannot be set to null.</summary>
             <value>This message&apos;s media type.</value>
             <exception cref='T:System.ArgumentNullException'>This value is
             being set and "value" is null.</exception>
@@ -1345,9 +1346,9 @@ header field, otherwise.</para></summary>
             <returns>The generated message as a byte array.</returns>
 </doc>
 <doc name="M:PeterO.Mail.Message.GetAddresses(System.String)">
-<summary>Not documented yet.</summary>
-            <param name='headerName'>The parameter <paramref name='headerName'/> is not documented yet.</param>
-            <returns>An IList(NamedAddress) object.</returns>
+
+            <summary>Not documented yet.</summary><param name='headerName'>The parameter <paramref name='headerName'/> is not documented yet.</param><returns>An IList(NamedAddress) object.</returns>
+
 </doc>
 <doc name="M:PeterO.Mail.Message.GetBody">
 <summary>Gets the byte array for this message's body. This method
@@ -1801,15 +1802,6 @@ this method.</summary>
 <summary>Gets a value indicating whether a new body part was
             detected.</summary>
             <value><c>true</c> If a new body part was detected; otherwise, <c>false</c>.</value>
-</doc>
-<doc name="M:PeterO.Mail.WordWrapEncoder.ToString">
-<summary>Converts this object to a text string.</summary>
-            <returns>A string representation of this object.</returns>
-</doc>
-<doc name="P:PeterO.ReadOnlyMap`2.IsReadOnly">
-<summary>Gets a value indicating whether this dictionary is
-            read-only.</summary>
-            <value>Always true.</value>
 </doc>
 <doc name="M:PeterO.Text.ByteData.DecompressLz4(System.Byte[])">
 <summary>Decompresses a byte array compressed using the LZ4 format

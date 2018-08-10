@@ -210,9 +210,9 @@ if (HeaderParser.ParseHeaderEmail(emails, 0, emails.length()) !=
         if (mediaTypePart == -1) {
           return null;
         }
-     boolean usesBase64 = (mediaTypePart >= 7 && path.substring(mediaTypePart -
-          7, (mediaTypePart -
-          7)+(7)).toLowerCase().equals(";base64"));
+     boolean usesBase64 = mediaTypePart >= 7 && path.substring(mediaTypePart -
+       7, (mediaTypePart -
+       7)+(7)).toLowerCase().equals(";base64");
         // NOTE: Rejects base64 if non-base64 characters
         // are present, since RFC 2397 doesn't state otherwise
         // (see RFC 4648). Base 64 also uses no line breaks

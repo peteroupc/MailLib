@@ -306,7 +306,7 @@ namespace MailLibTest {
        "From: Joe P Customer <customer@example.com>, " +
        "Jane W Customer <jane@example.com>\r\n\r\nTest";
       Message msg = MessageTest.MessageFromString(ValueTestString);
-      IList<NamedAddress> addresses = msg.FromAddresses;
+      IList<NamedAddress> addresses = msg.GetAddresses("from");
       Assert.AreEqual(2, addresses.Count);
       {
         string stringTemp = addresses[0].ToString();

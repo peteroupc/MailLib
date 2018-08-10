@@ -288,8 +288,11 @@ public final void setContentDisposition(ContentDisposition value) {
       }
 
     /**
-     * Gets this message's media type. Cannot be set to null. If set to a media
-     * type, updates the Content-Type header field as appropriate.
+     * Gets this message's media type. When getting, the media type may differ in
+     * certain cases from the value of the Content-Type header field, if
+     * any, and may have a value even if the Content-Type header field is
+     * absent from this message. If set to a media type, updates the
+     * Content-Type header field as appropriate. Cannot be set to null.
      * @return This message's media type.
      * @throws java.lang.NullPointerException This value is being set and "value" is
      * null.
@@ -650,6 +653,14 @@ public final List<NamedAddress> getToAddresses() {
       return list.toArray(new String[] { });
     }
 
+/// <summary></summary>
+public Message ClearHeaders() {
+this.headers.clear();
+        this.contentType = MediaType.TextPlainAscii;
+this.contentDisposition = null;
+return this;
+}
+
     /**
      * Removes a header field by index. <p>Updates the ContentType and
      * ContentDisposition properties if those header fields have been
@@ -973,6 +984,8 @@ public final List<NamedAddress> getToAddresses() {
 }
       Message bodyPart = NewBodyPart();
       bodyPart.SetHeader("content-id",this.GenerateMessageID());
+    // NOTE: Using the setter because it also adds a Content-Type
+// header field
       bodyPart.setContentType(mediaType);
       try {
       java.io.ByteArrayOutputStream ms = null;
@@ -2602,7 +2615,7 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
         builder.append(ValueHex.charAt(seq & 15));
         seq >>= 4;
       }
-      List<NamedAddress> addresses = this.getFromAddresses();
+      List<NamedAddress> addresses = this.GetAddresses("from");
       if (addresses == null || addresses.size() == 0) {
         builder.append("@local.invalid");
       } else {
@@ -2764,7 +2777,10 @@ if (ext.equals(".asc") || ext.equals(".brf") || ext.equals(".pot") ||
         ctype = MediaType.ApplicationOctetStream;
       }
       // Update content type as appropriate
-      this.setContentType(ctype);
+       // NOTE: Setting the field, not the setter,
+      // because it's undesirable here to add a Content-Type
+       // header field, as the setter does
+      this.contentType = ctype;
       if (!haveContentEncoding && this.contentType.getTypeAndSubType().equals(
         "message/rfc822")) {
         // DEVIATION: Be a little more liberal with rfc822

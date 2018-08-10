@@ -533,68 +533,72 @@ throw new InvalidOperationException(String.Empty, ex);
   "utf-8");
       TestRfc2231Extension("; charset*=''utf-8", "charset", "utf-8");
       TestRfc2231Extension(
-  "; charset*0=a;charset*1=b",
+  "; charset*0=ut;charset*1=f-8",
   "charset",
-  "ab");
+  "utf-8");
       TestRfc2231Extension(
-  "; charset*=utf-8''a%20b",
-  "charset",
+        "; charset*0=ut;charset*1=f;charset*2=-8",
+        "charset",
+        "utf-8");
+      TestRfc2231Extension(
+  "; mockcharset*=utf-8''a%20b",
+  "mockcharset",
   "a b");
       TestRfc2231Extension(
-  "; charset*=iso-8859-1''a%a0b",
-  "charset",
+  "; mockcharset*=iso-8859-1''a%a0b",
+  "mockcharset",
   "a\u00a0b");
       TestRfc2231Extension(
-  "; charset*=utf-8''a%c2%a0b",
-  "charset",
+  "; mockcharset*=utf-8''a%c2%a0b",
+  "mockcharset",
   "a\u00a0b");
       TestRfc2231Extension(
-  "; charset*=iso-8859-1''a%a0b",
-  "charset",
+  "; mockcharset*=iso-8859-1''a%a0b",
+  "mockcharset",
   "a\u00a0b");
       TestRfc2231Extension(
-  "; charset*=utf-8''a%c2%a0b",
-  "charset",
+  "; mockcharset*=utf-8''a%c2%a0b",
+  "mockcharset",
   "a\u00a0b");
       TestRfc2231Extension(
-  "; charset*0=\"a\";charset*1=b",
-  "charset",
+  "; mockcharset*0=\"a\";mockcharset*1=b",
+  "mockcharset",
   "ab");
 
       TestRfc2231Extension(
-      "; charset*0*=utf-8''a%20b;charset*1*=c%20d",
-      "charset",
+      "; mockcharset*0*=utf-8''a%20b;mockcharset*1*=c%20d",
+      "mockcharset",
       "a bc d");
       TestRfc2231Extension(
-        "; charset*0=ab;charset*1*=iso-8859-1-en-xyz",
-        "charset",
+        "; mockcharset*0=ab;mockcharset*1*=iso-8859-1-en-xyz",
+        "mockcharset",
         "abiso-8859-1-en-xyz");
       TestRfc2231Extension(
-        "; charset*0*=utf-8''a%20b;charset*1*=iso-8859-1-en-xyz",
-        "charset",
+        "; mockcharset*0*=utf-8''a%20b;mockcharset*1*=iso-8859-1-en-xyz",
+        "mockcharset",
         "a biso-8859-1-en-xyz");
       TestRfc2231Extension(
-        "; charset*0*=utf-8''a%20b;charset*1=a%20b",
-        "charset",
+        "; mockcharset*0*=utf-8''a%20b;mockcharset*1=a%20b",
+        "mockcharset",
         "a ba%20b");
       TestRfc2231Extension(
-         "; Charset*0*=utf-8''a%20b;cHarset*1=a%20b",
-         "charset",
+         "; mockCharset*0*=utf-8''a%20b;mockcHarset*1=a%20b",
+         "mockcharset",
          "a ba%20b");
       TestRfc2231Extension(
-         "; Charset*0*=utf-8''a%20b;cHarset*1=\"a%20b\"",
-         "charset",
+         "; mockCharset*0*=utf-8''a%20b;mockcHarset*1=\"a%20b\"",
+         "mockcharset",
          "a ba%20b");
       TestRfc2231Extension(
-        "\r\n (; charset=x;y=\");ChaRseT*=''a%41b-c(\")",
-        "charset",
+        "\r\n (; mockcharset=x;y=\");mockChaRseT*=''a%41b-c(\")",
+        "mockcharset",
         "aAb-c");
       TestRfc2231Extension(
-        ";\r\n chARSet (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
-        "charset",
+        ";\r\n mockchARSet (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
+        "mockcharset",
         "abc");
       TestRfc2231Extension(
-        ";\r\n charsET (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
+        ";\r\n mockcharsET (xx=y) = (\"z;) abc (d;e\") ; format = flowed",
         "format",
         "flowed");
     }
@@ -2305,6 +2309,16 @@ MessageFromString(MessageFromString(msg).Generate())
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
+      // Non-MIME message with no Content-Type
+      string msgString;
+      msgString = "From: me@example.com\r\n\r\nBody";
+      msg = MessageFromString(msgString);
+      {
+string stringTemp = msg.ContentType.ToString();
+Assert.AreEqual(
+  "text/plain;charset=us-ascii",
+  stringTemp);
+}
     }
 
     private static void TestFileNameOne(string input, string expected) {
@@ -2411,6 +2425,13 @@ throw new InvalidOperationException(String.Empty, ex);
         Assert.Fail(ex.ToString());
         throw new InvalidOperationException(String.Empty, ex);
       }
+      // Non-MIME message with no Content-Type
+      string msgString;
+      msgString = "From: me@example.com\r\n\r\nBody";
+      msg = MessageFromString(msgString);
+      Assert.AreEqual(
+      null,
+      msg.GetHeader("content-type"));
     }
     [Test]
     public void TestHeaderFields() {

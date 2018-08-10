@@ -413,6 +413,14 @@ public IList<NamedAddress> ToAddresses {
       return (string[])list.ToArray();
     }
 
+/// <summary></summary>
+public Message ClearHeaders() {
+this.headers.Clear();
+        this.contentType = MediaType.TextPlainAscii;
+this.contentDisposition = null;
+return this;
+}
+
     /// <include file='../../docs.xml'
     /// path='docs/doc[@name="M:PeterO.Mail.Message.RemoveHeader(System.Int32)"]/*'/>
     public Message RemoveHeader(int index) {
@@ -634,6 +642,8 @@ public IList<NamedAddress> ToAddresses {
 }
       Message bodyPart = NewBodyPart();
       bodyPart.SetHeader("content-id",this.GenerateMessageID());
+    // NOTE: Using the setter because it also adds a Content-Type
+// header field
       bodyPart.ContentType = mediaType;
       try {
       using(var ms = new MemoryStream()) {
@@ -2197,7 +2207,7 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
         builder.Append(ValueHex[seq & 15]);
         seq >>= 4;
       }
-      IList<NamedAddress> addresses = this.FromAddresses;
+      IList<NamedAddress> addresses = this.GetAddresses("from");
       if (addresses == null || addresses.Count == 0) {
         builder.Append("@local.invalid");
       } else {
@@ -2363,7 +2373,10 @@ if (ext.Equals(".asc") || ext.Equals(".brf") || ext.Equals(".pot") ||
         ctype = MediaType.ApplicationOctetStream;
       }
       // Update content type as appropriate
-      this.ContentType = ctype;
+       // NOTE: Setting the field, not the setter,
+      // because it's undesirable here to add a Content-Type
+       // header field, as the setter does
+      this.contentType = ctype;
       if (!haveContentEncoding && this.contentType.TypeAndSubType.Equals(
         "message/rfc822")) {
         // DEVIATION: Be a little more liberal with rfc822

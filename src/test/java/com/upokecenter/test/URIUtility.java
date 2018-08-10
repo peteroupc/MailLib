@@ -547,6 +547,83 @@ retString.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
       return true;
     }
 
+public static String BuildIRI(
+  String schemeAndAuthority,
+  String path,
+  String query,
+  String fragment) {
+  StringBuilder builder = new StringBuilder();
+  if (!((schemeAndAuthority) == null || (schemeAndAuthority).length() == 0)) {
+    int[] irisplit = splitIRI(schemeAndAuthority);
+     // NOTE: Path component is always present in URIs;
+     // we check here whether path component is empty
+    if (irisplit == null || (irisplit[0] < 0 && irisplit[2] < 0) ||
+      irisplit[4] != irisplit[5] || irisplit[6] >= 0 || irisplit[8] >= 0) {
+ throw new IllegalArgumentException("invalid schemeAndAuthority");
+}
+  }
+  if (((path) == null || (path).length() == 0)) {
+ path = "";
+}
+  for (int phase = 0; phase < 3; ++phase) {
+    String s = path;
+    if (phase == 1) {
+      s = query;
+      if (query == null) {
+ continue;
+}
+      builder.append('?');
+    } else if (phase == 2) {
+      s = fragment;
+      if (fragment == null) {
+ continue;
+}
+      builder.append('#');
+    }
+      int index = 0;
+      while (index < s.length()) {
+        int c = s.charAt(index);
+        if ((c & 0xfc00) == 0xd800 && index + 1 < s.length() &&
+            s.charAt(index + 1) >= 0xdc00 && s.charAt(index + 1) <= 0xdfff) {
+          // Get the Unicode code point for the surrogate pair
+          c = 0x10000 + ((c - 0xd800) << 10) + (s.charAt(index + 1) - 0xdc00);
+        } else if ((c & 0xf800) == 0xd800) {
+          c = 0xfffd;
+        }
+        if (c >= 0x10000) {
+ ++index;
+}
+        if (c == '%') {
+          if (index + 2 < s.length() && isHexChar(s.charAt(index + 1)) &&
+            isHexChar(s.charAt(index + 2))) {
+            builder.append('%');
+            builder.append(s.charAt(index + 1));
+            builder.append(s.charAt(index + 2));
+            index += 3;
+          } else {
+            builder.append("%25");
+            ++index;
+          }
+        } else if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
+            (c >= '0' && c <= '9') ||
+            "-_.~/(=):!$&'*+,;@".indexOf((char)c) >= 0) {
+          // NOTE: Question mark will be percent encoded even though
+          // it can appear in query and fragment strings
+          builder.append((char)c);
+          ++index;
+        } else {
+          percentEncodeUtf8(builder, c);
+          ++index;
+        }
+      }
+  }
+  String ret = builder.toString();
+  if (splitIRI(ret) == null) {
+ throw new IllegalArgumentException();
+}
+  return ret;
+}
+
     public static boolean isValidIRI(String s) {
       return ((s == null) ?
   null : splitIRI(
@@ -861,6 +938,7 @@ retString.append((char)(((c - 0x10000) & 0x3ff) + 0xdc00));
               s.charAt(index + 2) == '5') {
             // Zone identifier in an IPv6 address
             // (see RFC6874)
+            // TODO: Allow only if address has prefix fe80::/10
             index += 3;
             boolean haveChar = false;
             while (index < endOffset) {
@@ -1056,11 +1134,11 @@ if (ret == null) {
  return null;
 }
 return new String[] {
- ret[0] < 0 ? null : ToLowerCaseAscii(s.substring(ret[0], (ret[0])+(ret[1] - ret[0]))),
- ret[2] < 0 ? null : s.substring(ret[2], (ret[2])+(ret[3] - ret[2])),
- ret[4] < 0 ? null : s.substring(ret[4], (ret[4])+(ret[5] - ret[4])),
- ret[6] < 0 ? null : s.substring(ret[6], (ret[6])+(ret[7] - ret[6])),
- ret[8] < 0 ? null : s.substring(ret[8], (ret[8])+(ret[9] - ret[8]))
+ ret.charAt(0) < 0 ? null : ToLowerCaseAscii(s.substring(ret.charAt(0), (ret.charAt(0))+(ret.charAt(1) - ret.charAt(0)))),
+ ret.charAt(2) < 0 ? null : s.substring(ret.charAt(2), (ret.charAt(2))+(ret.charAt(3) - ret.charAt(2))),
+ ret.charAt(4) < 0 ? null : s.substring(ret.charAt(4), (ret.charAt(4))+(ret.charAt(5) - ret.charAt(4))),
+ ret.charAt(6) < 0 ? null : s.substring(ret.charAt(6), (ret.charAt(6))+(ret.charAt(7) - ret.charAt(6))),
+ ret.charAt(8) < 0 ? null : s.substring(ret.charAt(8), (ret.charAt(8))+(ret.charAt(9) - ret.charAt(8)))
 };
     }
 
