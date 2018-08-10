@@ -305,7 +305,7 @@ import com.upokecenter.text.*;
        "From: Joe P Customer <customer@example.com>, " +
        "Jane W Customer <jane@example.com>\r\n\r\nTest";
       Message msg = MessageTest.MessageFromString(ValueTestString);
-      List<NamedAddress> addresses = msg.getFromAddresses();
+      List<NamedAddress> addresses = msg.GetAddresses("from");
       Assert.assertEquals(2, addresses.size());
       {
         String stringTemp = addresses.get(0).toString();

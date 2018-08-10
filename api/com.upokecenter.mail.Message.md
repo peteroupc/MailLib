@@ -128,6 +128,7 @@
          String filename)`<br>
  Adds an inline body part to this message in the form of data from the given
  readable stream, and with the given file name.
+* `Message ClearHeaders()`<br>
 * `String Generate()`<br>
  Generates this message's data in text form.
 * `byte[] GenerateBytes()`<br>
@@ -332,8 +333,11 @@ Gets this message's content disposition. The content disposition specifies
     public final void setContentDisposition​(ContentDisposition value)
 ### getContentType
     public final MediaType getContentType()
-Gets this message's media type. Cannot be set to null. If set to a media
- type, updates the Content-Type header field as appropriate.
+Gets this message's media type. When getting, the media type may differ in
+ certain cases from the value of the Content-Type header field, if
+ any, and may have a value even if the Content-Type header field is
+ absent from this message. If set to a media type, updates the
+ Content-Type header field as appropriate. Cannot be set to null.
 
 **Returns:**
 
@@ -644,6 +648,8 @@ Gets an array with the values of all header fields with the specified name,
 
 * <code>NullPointerException</code> - Name is null.
 
+### ClearHeaders
+    public Message ClearHeaders()
 ### RemoveHeader
     public Message RemoveHeader​(int index)
 Removes a header field by index. <p>Updates the ContentType and

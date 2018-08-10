@@ -44,8 +44,7 @@ namespace PeterO {
       }
     }
 
-    /// <include file='../docs.xml'
-    /// path='docs/doc[@name="P:PeterO.ReadOnlyMap`2.IsReadOnly"]/*'/>
+    /// <value></value>
     public bool IsReadOnly {
       get {
         return true;
